@@ -3,7 +3,6 @@
 
 var program = require('commander');
 var path = require('path');
-var Codecept = require('../lib/codecept');
 var Config = require('../lib/config');
 var print = require('../lib/output');
 var fileExists = require('../lib/utils').fileExists;
@@ -12,6 +11,11 @@ var fs = require('fs');
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
+
+program.command('shell [path]')
+  .alias('sh')
+  .description('Interative shell')
+  .action(require('../lib/command/interactive'));
 
 program.command('generate test [path]')
   .alias('gt')
@@ -28,16 +32,6 @@ program.command('generate object [path]')
   .option('--type, -t [kind]', 'type of object to be created')
   .description('Generates an empty support object (page/step/fragment).')
   .action(require('../lib/command/generate').pageObject);
-
-
-
-// program.command('g helper [path]')
-//   .description('Generates a custom Helper')
-//   .action(require('../lib/command/createHelper'));
-
-// program.command('g helper [path]')
-//   .description('Generates a custom Helper')
-//   .action(require('../lib/command/createHelper'));
 
 program.command('run [suite] [test]')
   .description('Executes tests')
@@ -66,19 +60,7 @@ program.command('run [suite] [test]')
   .option('--recursive', 'include sub directories')
   .option('--trace', 'trace function calls')
 
-  .action((suite, test, options) => {
-    console.log('CodeceptJS v'+ Codecept.version());
-    let configFile = path.join(process.cwd(), suite || '', 'codecept.json');
-    if (!fileExists(configFile)) {
-      print.error(`Config file not found at ${configFile}`);
-      console.log('Exiting... ');
-      return;     
-    }
-    let config = Config.load(configFile);
-    let codecept = new Codecept(config, options);
-    codecept.loadTests(path.join(process.cwd(), suite || ''), config.tests);
-    codecept.run(test);
-});
+  .action(require('../lib/command/run'));
 
 if (process.argv.length <= 2) {
   console.log('CodeceptJS v'+ Codecept.version());
