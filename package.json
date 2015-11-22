@@ -26,9 +26,7 @@
     "commander": "^2.9.0",
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
-    "inquirer-autocomplete-prompt": "^0.1.3",
     "mocha": "^2.3.3",
-    "readline2": "^1.0.1",
     "webdriverio": "^3.2.5"
   },
   "devDependencies": {
@@ -40,7 +38,6 @@
     "gulp-exclude-gitignore": "^1.0.0",
     "gulp-istanbul": "^0.9.0",
     "gulp-mocha": "^2.0.0",
-    "gulp-nsp": "^0.4.5",
     "gulp-plumber": "^1.0.0"
   },
   "scripts": {
