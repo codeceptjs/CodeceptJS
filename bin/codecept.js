@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+'use strict';
+
+var program = require('commander');
+var path = require('path');
+var Codecept = require('../lib/codecept');
+var Config = require('../lib/config');
+var print = require('../lib/output');
+var fileExists = require('../lib/utils').fileExists;
+var fs = require('fs');
+
+program.command('init [path]')
+  .description('Creates dummy config in current dir or [path]')
+  .action(require('../lib/command/init'));
+
+program.command('generate test [path]')
+  .alias('gt')
+  .description('Generates an empty test')
+  .action(require('../lib/command/generate').test);
+
+program.command('generate pageobject [path]')
+  .alias('gpo')
+  .description('Generates an empty page object.')
+  .action(require('../lib/command/generate').pageObject);
+
+program.command('generate object [path]')
+  .alias('go')
+  .option('--type, -t [kind]', 'type of object to be created')
+  .description('Generates an empty support object (page/step/fragment).')
+  .action(require('../lib/command/generate').pageObject);
+
+
+
+// program.command('g helper [path]')
+//   .description('Generates a custom Helper')
+//   .action(require('../lib/command/createHelper'));
+
+// program.command('g helper [path]')
+//   .description('Generates a custom Helper')
+//   .action(require('../lib/command/createHelper'));
+
+program.command('run [suite] [test]')
+  .description('Executes tests')
+
+  // codecept-only options
+  .option('--steps', 'show step-by-step execution')
+  .option('--debug', 'output additional information')
+
+  // mocha options
+  .option('-c, --colors', 'force enabling of colors')
+  .option('-C, --no-colors', 'force disabling of colors')
+  .option('-G, --growl', 'enable growl notification support')
+  .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
+  .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
+  .option('-S, --sort', "sort test files")
+  .option('-b, --bail', "bail after first test failure")
+  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-f, --fgrep <string>', 'only run tests containing <string>')
+  .option('-i, --invert', 'inverts --grep and --fgrep matches')
+  .option('--full-trace', 'display the full stack trace')
+  .option('--compilers <ext>:<module>,...', 'use the given module(s) to compile files')
+  .option('--debug-brk', "enable node's debugger breaking on the first line")
+  .option('--inline-diffs', 'display actual/expected differences inline within each string')
+  .option('--no-exit', 'require a clean shutdown of the event loop: mocha will not call process.exit')
+  .option('--recursive', 'include sub directories')
+  .option('--trace', 'trace function calls')
+
+  .action((suite, test, options) => {
+    console.log('CodeceptJS v'+ Codecept.version());
+    let configFile = path.join(process.cwd(), suite || '', 'codecept.json');
+    if (!fileExists(configFile)) {
+      print.error(`Config file not found at ${configFile}`);
+      console.log('Exiting... ');
+      return;     
+    }
+    let config = Config.load(configFile);
+    let codecept = new Codecept(config, options);
+    codecept.loadTests(path.join(process.cwd(), suite || ''), config.tests);
+    codecept.run(test);
+});
+
+if (process.argv.length <= 2) {
+  console.log('CodeceptJS v'+ Codecept.version());
+  program.outputHelp()
+}
+program.parse(process.argv);
