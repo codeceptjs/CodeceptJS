@@ -55,4 +55,5 @@ gulp.task('coveralls', ['test'], function () {
     .pipe(coveralls());
 });
 
+gulp.task('prepublish', []);
 gulp.task('default', ['static', 'test', 'coveralls']);
