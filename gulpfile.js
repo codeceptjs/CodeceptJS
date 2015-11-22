@@ -13,7 +13,7 @@ gulp.task('docs', function () {
 
   gulp.src('./lib/helper/*.js')
     .pipe(documentation({ format: 'md' }))
-    .pipe(gulp.dest('Helpers.md'));
+    .pipe(gulp.dest('docs'));
     
 });    
 
