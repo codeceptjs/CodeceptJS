@@ -4,6 +4,7 @@
 var program = require('commander');
 var path = require('path');
 var Config = require('../lib/config');
+var Codecept = require('../lib/codecept');
 var print = require('../lib/output');
 var fileExists = require('../lib/utils').fileExists;
 var fs = require('fs');
