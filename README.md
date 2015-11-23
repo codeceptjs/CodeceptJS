@@ -1,5 +1,28 @@
-# codeceptjs [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> Modern Era Aceptance Testing Framework for NodeJS
+# codeceptjs [![NPM version][npm-image]][npm-url]
+
+
+## Modern Era Aceptance Testing Framework for NodeJS
+
+CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others). 
+It abstracts browser interaction to simple steps which is written from a user perspective. 
+A simple test that verifies that "Welcome" text is present on a main page of a site will look like:
+
+```js
+Feature('CodeceptJS demo');
+
+Scenario('check Welcome page on site', (I) => {
+  I.amOnPage('/');
+  I.see('Welcome');
+}
+``` 
+
+Codeception tests are:
+
+* **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.
+* Written from **user's perspecitve**. Every action is a method of `I`, which emulates user interaction.
+* backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
+
+
 
 
 ## Install
