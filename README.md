@@ -1,4 +1,4 @@
-# codeceptjs [![NPM version][npm-image]][npm-url]
+# codeceptjs [![NPM version][npm-image]][npm-url] [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md)
 
 
 ## Modern Era Aceptance Testing Framework for NodeJS
@@ -24,8 +24,8 @@ Codeception tests are:
 
 Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has two helpers:
 
-* **WebDriverIO** - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
-* **FileSystem** - simple helper for testing filesystem.
+* [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#webdriverio) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
+* [**FileSystem**](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#filesystem) - simple helper for testing filesystem.
 
 And more to come...
 
@@ -53,20 +53,35 @@ as CodeceptJS unifies them and makes them work as they were sycnhronous.
 $ npm install -g codeceptjs
 ```
 
-
-## Usage
+Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run 
 
 ```
 codeceptjs init
 ```
 
-WIP
+to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers,
+if you need to write Selenium WebDriver tests.
+
+After that create your first test by executing:
+
+```
+codeceptjs generate test
+```
+
+Now test is created and can be executed with 
+
+```
+codeceptjs run
+```
 
 ## Examples
+
+Learn CodeceptJS by following examples.
 
 ```js
 Feature('CodeceptJS Demonstration');
 
+//
 Scenario('test some forms', (I) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   I.fillField('Email', 'hello@world.com');
