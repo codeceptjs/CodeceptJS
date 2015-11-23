@@ -19,10 +19,32 @@ Scenario('check Welcome page on site', (I) => {
 Codeception tests are:
 
 * **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.
-* Written from **user's perspecitve**. Every action is a method of `I`, which emulates user interaction.
+* Written from **user's perspecitve**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
 * backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
 
+Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has two helpers:
 
+* **WebDriverIO** - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
+* **FileSystem** - simple helper for testing filesystem.
+
+And more to come...
+
+## Why CodeceptJS?
+
+CodeceptJS is a successor of [Codeception](http://codeception.com), a popoular full-stack testing framework for PHP.
+With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be. 
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc, 
+as CodeceptJS unifies them and makes them work as they were sycnhronous.
+
+## Features
+
+* Based on [Mocha](https://mochajs.org/) testing framework.
+* Designed for scenario driven acceptance testing in BDD-style
+* Uses ES6 natively without transpiler.
+* Selenium WebDriver integration using [webdriverio](http://webdriver.io).
+* Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
+* Interactive debugging shell: pause test at any point and try different commands in a browser. 
+* Easily create tests, pageobjects, stepobjects with CLI generators.
 
 
 ## Install
@@ -43,7 +65,6 @@ WIP
 ## Examples
 
 ```js
-var assert = require('assert');
 Feature('CodeceptJS Demonstration');
 
 Scenario('test some forms', (I) => {
