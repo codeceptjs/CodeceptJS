@@ -132,7 +132,7 @@ In this case 'User is valid' string will be searched only inside elements locate
 In case you need to return a value from a webpage and use it directly in test, you should use methods with `grab` prefix. 
 They are expected to be used inside a generator functions, and their results will be available in test:
 
-```
+```js
 var assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
@@ -215,7 +215,7 @@ Before((I) => { // or Background
 });
 
 Scenario('test some forms', (I, docsPage) => {
-  docsPage.sendForm('hello@world.com','123456);
+  docsPage.sendForm('hello@world.com','123456');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
