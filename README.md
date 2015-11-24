@@ -100,6 +100,33 @@ Scenario('test some forms', (I) => {
 All actions are performed by I object; assertions functions start with `see` function. 
 In this examples all methods of I are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#webdriverio) to learn how to use them.
 
+Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development. 
+
+```
+codeceptjs run --steps
+```
+
+This will produce an output:
+
+```
+CodeceptJS Demonstration --
+ test some forms
+ • I am on page "http://simple-form-bootstrap.plataformatec.com.br/documentation"
+ • I fill field "Email", "hello@world.com"
+ • I fill field "Password", "123456"
+ • I check option "Active"
+ • I check option "Male"
+ • I click "Create User"
+ • I see "User is valid"
+ • I dont see in current url "/documentation"
+ ✓ OK in 17752ms
+```
+
+CodeceptJS has an ultimate feature to help you develop and debug you test. 
+You can **pause execution of test in any place and use interactive shell** to try different actions and locatots.
+Just add `pause()` call at any place in test and run it. 
+
+
 We filled form with `fillField` methods, which located form elements by their label. 
 The same way you can locate element by name, CSS or XPath locators in tests:
 
