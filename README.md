@@ -21,7 +21,7 @@ Codeception tests are:
 
 * **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.
 * Written from **user's perspecitve**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
-* backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
+* Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
 
 Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has two helpers:
 
@@ -32,7 +32,7 @@ And more to come...
 
 ## Why CodeceptJS?
 
-CodeceptJS is a successor of [Codeception](http://codeception.com), a popoular full-stack testing framework for PHP.
+CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be. 
 You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc, 
 as CodeceptJS unifies them and makes them work as they were sycnhronous.
@@ -257,7 +257,7 @@ Scenario('test some forms', (I, docsPage) => {
 
 ## Current State
 
-CodeceptJS is in its early days. Any feedback, issues, and pull requests are welcome. Try i, and if you like it - help us make it better!
+CodeceptJS is in its early days. Any feedback, issues, and pull requests are welcome. Try it, and if you like it - help us make it better!
 
 ## License
 
