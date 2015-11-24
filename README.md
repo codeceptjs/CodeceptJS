@@ -2,7 +2,7 @@
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
-## Modern Era Aceptance Testing Framework for NodeJS
+## Modern Era Acceptance Testing Framework for NodeJS
 
 CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others). 
 It abstracts browser interaction to simple steps which is written from a user perspective. 
