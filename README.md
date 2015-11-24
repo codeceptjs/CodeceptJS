@@ -1,5 +1,6 @@
-# codeceptjs [![NPM version][npm-image]][npm-url] [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md)
+# CodeceptJs [![NPM version][npm-image]][npm-url]
 
+Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md)
 
 ## Modern Era Aceptance Testing Framework for NodeJS
 
@@ -74,14 +75,16 @@ Now test is created and can be executed with
 codeceptjs run
 ```
 
-## Examples
+## Usage
 
-Learn CodeceptJS by following examples.
+Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriverIO helper enabled.
 
+### Basics
+
+Let's see how we can handle basic form testing:
 ```js
 Feature('CodeceptJS Demonstration');
 
-//
 Scenario('test some forms', (I) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   I.fillField('Email', 'hello@world.com');
@@ -92,10 +95,135 @@ Scenario('test some forms', (I) => {
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
-
 ```
 
-WIP
+All actions are performed by I object; assertions functions start with `see` function. 
+In this examples all methods of I are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#webdriverio) to learn how to use them.
+
+We filled form with `fillField` methods, which located form elements by their label. 
+The same way you can locate element by name, CSS or XPath locators in tests:
+
+```js
+// by name
+I.fillField('user_basic[email]', 'hello@world.com');
+// by CSS
+I.fillField('#user_basic_email', 'hello@world.com');
+// don't make us guess locator type, specify it
+I.fillField({css: '#user_basic_email'}, 'hello@world.com');
+``` 
+
+Other methods like `checkOption`, and `click` work in a similar manner. They can take lables or CSS or XPath locators to find elements to interact.
+ 
+### Assertions
+ 
+Assertions start with `see` or `dontSee` prefix. In our case we are asserting that string 'User is valid' is somewhere in a webpage. 
+However, we can narrow the search to particular element by providing a second parameter:
+
+```js
+I.see('User is valid');
+// better to specify context:
+I.see('User is valid', '.alert-success');
+```
+
+In this case 'User is valid' string will be searched only inside elements located by CSS `.alert-success`.
+
+### Grabbers
+
+In case you need to return a value from a webpage and use it directly in test, you should use methods with `grab` prefix. 
+They are expected to be used inside a generator functions, and their results will be available in test:
+
+```
+var assert = require('assert');
+
+Feature('CodeceptJS Demonstration');
+
+Scenario('test page title', function*(I) {
+  I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
+  var title = yield I.grabTitle();
+  assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
+});
+```
+
+The same way you can grab text, attributes, or form values and use them in next test steps.
+
+### Before/After
+
+Common preperation steps like opening a web page, logging in a user, can be placed in `Before` or `Background`:
+
+```js
+Feature('CodeceptJS Demonstration');
+
+Before((I) => { // or Background
+  I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
+});
+
+Scenario('test some forms', (I) => {
+  I.click('Create User');
+  I.see('User is valid');
+  I.dontSeeInCurrentUrl('/documentation');
+});
+
+Scenario('test title', (I) => {
+  I.seeInTitle('Example application');
+});
+```
+
+## PageObjects
+
+CodeceptJS provides the most simple way to create and use page objects in your test.
+You can create one by running
+
+```
+codeceptjs generate pageobject
+```
+
+It will create a page object file for you and add it to config. 
+Let's assume we created one named `docsPage`:
+
+```js
+'use strict';
+
+let I;
+
+module.exports = {
+  
+  _init() {
+    I = require('codeceptjs/actor')();
+  },
+  
+  fields: {
+    email: '#user_basic_email',
+    password: '#user_basic_password'
+  },
+  submitButton: {css: '#new_user_basic input[type=submit]'},
+
+  sendForm(email, password) {
+    I.fillField(this.fields.email, email);
+    I.fillField(this.fields.password, password);
+    I.click(this.submitButton);
+  }
+}
+```
+
+You can easily inject it to test by providing its name in test arguments:
+
+```js
+Feature('CodeceptJS Demonstration');
+
+Before((I) => { // or Background
+  I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
+});
+
+Scenario('test some forms', (I, docsPage) => {
+  docsPage.sendForm('hello@world.com','123456);
+  I.see('User is valid');
+  I.dontSeeInCurrentUrl('/documentation');
+});
+```
+
+## Current State
+
+CodeceptJS is in its early days. Any feedback, issues, and pull requests are welcome. Try i, and if you like it - help us make it better!
 
 ## License
 
