@@ -35,7 +35,7 @@ And more to come...
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be. 
 You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc, 
-as CodeceptJS unifies them and makes them work as they were sycnhronous.
+as CodeceptJS unifies them and makes them work as they were synchronous.
 
 ## Features
 
