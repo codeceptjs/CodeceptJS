@@ -123,7 +123,7 @@ CodeceptJS Demonstration --
 ```
 
 CodeceptJS has an ultimate feature to help you develop and debug you test. 
-You can **pause execution of test in any place and use interactive shell** to try different actions and locatots.
+You can **pause execution of test in any place and use interactive shell** to try different actions and locators.
 Just add `pause()` call at any place in a test and run it. 
 
 Interactive shell can be started outside test context by running:
