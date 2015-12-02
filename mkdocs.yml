@@ -1,0 +1,6 @@
+site_name: CodeceptJS
+theme_dir: layout
+pages:
+- index: 'index.md' 
+- api: 'API.md'
+copyright: Created by CodeceptJS Team
