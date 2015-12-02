@@ -1,0 +1,8 @@
+site_name: CodeceptJS
+theme_dir: layout
+pages:
+- index: 'index.md' 
+extra_css:
+- 'css/default.css'
+- 'css/style.css'
+- 'css/fonts.css'
