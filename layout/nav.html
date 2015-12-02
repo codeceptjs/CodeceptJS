@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
 
         <div class="right hidden-md" style="float:right; text-align: right">
             <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
@@ -25,7 +25,7 @@
         <div class="navbar-collapse collapse">
             <!-- Main navigation -->
             <ul class="nav navbar-nav">
-            {% for nav_item in nav %}
+            {% for nav_item in nav %}            
             {% if nav_item.children %}
                 <li class="dropdown{% if nav_item.active %} active{% endif %}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ nav_item.title }} <b class="caret"></b></a>
@@ -38,9 +38,11 @@
                     </ul>
                 </li>
             {% else %}
+                {% if nav_item.url != '.' %}
                 <li {% if nav_item.active %}class="active"{% endif %}>
                     <a href="{{ nav_item.url }}">{{ nav_item.title }}</a>
                 </li>
+                {% endif %}
             {% endif %}
             {% endfor %}
             </ul>

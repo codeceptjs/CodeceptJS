@@ -19,7 +19,19 @@ body .navbar {
 }
 
 body .navbar a {
-  color: #fff;
+  color: #e5e5e5 !important;
+}
+
+body .navbar .dropdown-menu {
+  background: #333;
+}
+
+body .navbar .dropdown-menu {
+  background: #333 !important;
+}
+
+body .navbar .dropdown-menu>li>a:hover { 
+  background: #8C16C3;
 }
 
 footer {
@@ -35,21 +47,18 @@ footer .imglist li {
   padding-right: 15px;
 }
 
-footer .imglist .github {
-  background: #EDEDED;
-
+footer .imglist {
   color: #666;
   font-weight: 400;
 }
 
-footer .imglist .twitter {
-  background: #EDEDED;
-  color: #666;
-  font-weight: 400;
+footer .imglist img {
+  width: 64px;
+  margin-right: 10px;
+  opacity: 0.5;
 }
-
 footer .imglist a {
-  color: #666;
+  color: #e5e5e5;
 }
 
 footer a {
@@ -58,7 +67,8 @@ footer a {
 
 footer .rebilly {
   background: rgba(255,255,255,0.3);
-  width:300px
+  width:300px;
+  border-radius: 30px;
 }
 
 .jumbotron {
