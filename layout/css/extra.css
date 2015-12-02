@@ -196,3 +196,10 @@ h2, .page h2, .page h3 {
 .page p {
   margin-bottom: 2em;
 }
+
+.light {
+  background: #FFEB3B;
+  padding: 0.5em;
+  margin-left: -0.5em;
+  margin-right: 0.5em;
+}
