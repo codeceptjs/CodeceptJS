@@ -1,6 +1,6 @@
 # CodeceptJs [![NPM version][npm-image]][npm-url]
 
-Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md) | [Demo](https://github.com/Codeception/codeceptjs-demo)
+Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
 ## Modern Era Acceptance Testing Framework for NodeJS
 

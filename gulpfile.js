@@ -7,14 +7,16 @@ var istanbul = require('gulp-istanbul');
 var plumber = require('gulp-plumber');
 var coveralls = require('gulp-coveralls');
 var documentation = require('gulp-documentation');
+var glob = require('glob');
 
 gulp.task('docs', function () {
 
-  gulp.src('./lib/helper/*.js')
-    .pipe(documentation({ format: 'md' }))
-    .pipe(gulp.dest('docs'));
-    
-});    
+  glob.sync('./lib/helper/*.js').forEach((file) => {
+    gulp.src(file)
+      .pipe(documentation({ filename: path.basename(file,'.js')+'.md', shallow: true, format: 'md', github: true }))
+      .pipe(gulp.dest('docs'));
+    });
+  });    
 
 gulp.task('static', function () {
   return gulp.src('**/*.js')
