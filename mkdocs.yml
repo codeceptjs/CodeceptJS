@@ -2,6 +2,7 @@ site_name: CodeceptJS
 theme_dir: layout
 pages:
 - Index: 'index.md'
+- Quickstart: 'quickstart.md'
 - Helpers:
     - 'WebDriverIO': 'helpers/WebDriverIO.md'
     - 'FileSystem': 'helpers/FileSystem.md'
