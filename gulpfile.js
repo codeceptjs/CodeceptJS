@@ -14,7 +14,7 @@ gulp.task('docs', function () {
   glob.sync('./lib/helper/*.js').forEach((file) => {
     gulp.src(file)
       .pipe(documentation({ filename: path.basename(file,'.js')+'.md', shallow: true, format: 'md', github: true }))
-      .pipe(gulp.dest('docs'));
+      .pipe(gulp.dest('docs/helpers'));
     });
   });    
 
