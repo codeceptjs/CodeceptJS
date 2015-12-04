@@ -11,7 +11,7 @@ npm install -g codeceptjs
 
 ## Setup
 
-Initialize CodeceptJS running:
+Initialize CodeceptJS by running:
 
 ```bash
 codeceptjs init
@@ -50,7 +50,58 @@ WebDriverIO helper will ask for additional configuration as well:
 ? [WebDriverIO] Browser in which testing will be performed firefox
 ```
 
-If you agree with defaults, finish the installation.
+If you agree with defaults press enter and finish the installation.
 
 ## Creating First Test
+
+Tests can be easily created by running 
+
+```bash
+codeceptjs gt
+```
+
+*(or `generate test`)*
+
+Provide a test name and open generated file in your favorite JavaScript editor (with ES6 support).
+
+```js
+Feature('My First Test');
+
+Scenario('test something', (I) => {
+  
+});
+```
+
+Inside the scenario block you can write your first test scenario by using [actions from WebDriverIO helper](http://127.0.0.1:8000/helpers/WebDriverIO/). Let's assume we have a web server on `localhost` is running and there is a **Welcome** text on the first page. The simplest test will look like this:
+
+```js
+Feature('My First Test');
+
+Scenario('test something', (I) => {
+  I.amOnPage('/');
+  I.see('Welcome');
+});
+```
+
+Before running this test we should ensure that [Selenium Web Server is running](http://127.0.0.1:8000/helpers/WebDriverIO/#selenium-installation). Then we can execute tests with 
+
+```bash
+codeceptjs run --steps
+```
+
+*steps option will display test execution process in console*
+
+If everything is done right, you will see in console:
+
+```bash
+My First Test --
+  test something
+   • I am on page "/"
+   • I see "Welcome"
+ ✓ OK    
+```
+
+## Congrats! Your first test is running.
+
+Wasn't it hard, right?
 

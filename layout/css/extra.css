@@ -161,6 +161,7 @@ footer .rebilly {
   color: #999;
   font-size: 1.5em;
   display: inline-block;
+  text-transform: uppercase;;
   margin-right: 10px;
   font-family: 'Montserrat'
 }
@@ -170,7 +171,7 @@ footer .rebilly {
   color: #666;
   font-family: 'Ubuntu Mono', 'monospace';
   padding: 1em;
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 400;
   padding-left: 2em;
   padding-right: 2em;
@@ -271,23 +272,34 @@ h2, .page h2, .page h3 {
 body .bs-sidebar {
   position: static !important;
   width: 100%;
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 .reference {
-  font-size: 16px;
+  font-size: 1.3em;
 }
 
 .reference h2 {
   text-transform: none;
 }
 
-.reference code {
+.reference li>code {
   color: #607D8B;
   font-weight: bold;
 }
 
+.reference p {
+  margin-bottom: 1em;
+  line-height: 1.5em;
+}
+
 .reference h1 {
+  padding-bottom: 0.5em;
+  background: url('/images/scr01.jpg');
   margin-top: 1em;
-  border-bottom: 3px solid #aaa;
+  padding-left: 0.5em;
+  color: #e5e5e5;
+  letter-spacing: 5px;
+  font-size: 3em;
+  text-shadow: 0px 2px 1px #333;
 }

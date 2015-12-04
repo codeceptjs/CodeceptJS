@@ -1,8 +1,14 @@
 site_name: CodeceptJS
 theme_dir: layout
+repo_url: https://github.com/codeception/codeceptjs/
 pages:
 - Index: 'index.md'
 - Quickstart: 'quickstart.md'
+- Guides:
+    - 'Basics': 'basics.md'
+    - 'Acceptance Testing': 'acceptance.md'
+    - 'Helpers': 'helpers.md'
+    - 'Page Objects': 'pageobjects.md'
 - Helpers:
     - 'WebDriverIO': 'helpers/WebDriverIO.md'
     - 'FileSystem': 'helpers/FileSystem.md'
