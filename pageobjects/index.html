@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>Page Objects - CodeceptJS</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-md" style="margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+                <li >
+                    <a href="..">Index</a>
+                </li>
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/">Helpers</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Page Objects</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../helpers/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../helpers/WebDriverIO/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#pageobjects">PageObjects</a></li>
+        
+            <li><a href="#pageobjects_1">PageObjects</a></li>
+        
+            <li><a href="#actor">Actor</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h1 id="pageobjects">PageObjects</h1>
+<p>UI of your web application has interaction areas which can be shared across different tests.
+To avoid code duplication you can put common locators and methods into one place.</p>
+<h2 id="pageobjects_1">PageObjects</h2>
+<p>In case an application has different pages (login, admin, etc) you should use a page object.
+CodeceptJS can generate a template for it with next command</p>
+<pre><code>codeceptjs gpo
+</code></pre>
+
+<p><em>(or generate pageobject)</em></p>
+<p>This will create a sample template for a page object and include it into <code>codecept.json</code> config.</p>
+<pre><code class="js">'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = require('codeceptjs/actor')();
+  }
+
+  // insert your locators and methods here
+}
+</code></pre>
+
+<p>As you see, <code>I</code> object is available there so you can use it as you do in tests.
+General page object for a login page may look like this:</p>
+<pre><code class="js">'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = require('codeceptjs/actor')();
+  },
+
+  // setting locators
+  fields: {
+    email: '#user_basic_email',
+    password: '#user_basic_password'
+  },
+  submitButton: {css: '#new_user_basic input[type=submit]'},
+
+  // intorucing methods
+  sendForm(email, password) {
+    I.fillField(this.fields.email, email);
+    I.fillField(this.fields.password, password);
+    I.click(this.submitButton);
+  }
+}
+</code></pre>
+
+<p>You can include this pageobject in test by its name (defined in <code>codecept.json</code>). In case you created a <code>loginPage</code> object 
+it should be added to list of test arguments to be included in test:</p>
+<pre><code class="js">Scenario('login', (I, loginPage) =&gt; {
+  loginPage.sendForm('john@doe.com','123456');
+  I.see('Hello, John');
+});
+</code></pre>
+
+<p>In a similar manner CodeceptJS allows you to generate <strong>StepObjects</strong>, <strong>PageFragments</strong> and any other are abstraction
+by running <code>go</code> command with <code>--kind</code> option:</p>
+<pre><code>codeceptjs go --kind fragment
+</code></pre>
+
+<h2 id="actor">Actor</h2>
+<p>Login example above can be reworked so the method <code>login</code> would be available in <code>I</code> object itself.
+This is recommended if most of tests require user authentication and for not to require <code>loginPage</code> every time.</p>
+<p>At initialization you were asked to create custom steps file. If you accepted this option you may use <code>custom_steps.js</code> file to extend <code>I</code>.
+See how <code>login</code> method can be added to <code>I</code>:  </p>
+<pre><code class="js">'use strict';
+// in this file you can append custom step methods to 'I' object
+
+module.exports = function() {
+  return require('./lib/actor')({
+
+    login: function(email, password) {
+      this.fillField('Email', email);
+      this.fillField('Password', password);
+      this.click('Submit');       
+    }  
+  });
+}
+</code></pre>
+
+<p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.  </p>
+<h3 id="done">done()</h3></div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+    <footer>
+
+        <div class="container">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+
+
+    </footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>        
+        <script src="../js/base.js"></script>
+    </body>
+</html>

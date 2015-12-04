@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>WebDriverIO - CodeceptJS</title>
+
+        <link href="../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-md" style="margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+                <li >
+                    <a href="../..">Index</a>
+                </li>
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="../../quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li class="active">
+                            <a href="./">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../../pageobjects/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../FileSystem/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#webdriverio">WebDriverIO</a></li>
+        
+            <li><a href="#selenium-installation">Selenium Installation</a></li>
+        
+            <li><a href="#phantomjs-installation">PhantomJS Installation</a></li>
+        
+            <li><a href="#configuration">Configuration</a></li>
+        
+            <li><a href="#connect-through-proxy">Connect through proxy</a></li>
+        
+            <li><a href="#access-from-helpers">Access From Helpers</a></li>
+        
+            <li><a href="#amonpage">amOnPage</a></li>
+        
+            <li><a href="#attachfile">attachFile</a></li>
+        
+            <li><a href="#checkoption">checkOption</a></li>
+        
+            <li><a href="#click">click</a></li>
+        
+            <li><a href="#dontsee">dontSee</a></li>
+        
+            <li><a href="#dontseeelement">dontSeeElement</a></li>
+        
+            <li><a href="#dontseeincurrenturl">dontSeeInCurrentUrl</a></li>
+        
+            <li><a href="#doubleclick">doubleClick</a></li>
+        
+            <li><a href="#executeasyncscript">executeAsyncScript</a></li>
+        
+            <li><a href="#executescript">executeScript</a></li>
+        
+            <li><a href="#fillfield">fillField</a></li>
+        
+            <li><a href="#grabattribute">grabAttribute</a></li>
+        
+            <li><a href="#grabtextfrom">grabTextFrom</a></li>
+        
+            <li><a href="#grabtitle">grabTitle</a></li>
+        
+            <li><a href="#grabvaluefrom">grabValueFrom</a></li>
+        
+            <li><a href="#see">see</a></li>
+        
+            <li><a href="#seeelement">seeElement</a></li>
+        
+            <li><a href="#seeincurrenturl">seeInCurrentUrl</a></li>
+        
+            <li><a href="#seeintitle">seeInTitle</a></li>
+        
+            <li><a href="#selectoption">selectOption</a></li>
+        
+            <li><a href="#wait">wait</a></li>
+        
+            <li><a href="#waitforelement">waitForElement</a></li>
+        
+            <li><a href="#waitforenabled">waitForEnabled</a></li>
+        
+            <li><a href="#waitfortext">waitForText</a></li>
+        
+            <li><a href="#waitforvisible">waitForVisible</a></li>
+        
+            <li><a href="#waituntil">waitUntil</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h1 id="webdriverio">WebDriverIO</h1>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L90-L495" title="Source code on GitHub">lib/helper/WebDriverIO.js:90-495</a></p>
+<p>WebDriverIO helper which wraps <a href="http://webdriver.io/">webdriverio</a> library to 
+manipulate browser using Selenium WebDriver or PhantomJS. </p>
+<h4 id="selenium-installation">Selenium Installation</h4>
+<ol>
+<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
+<li>Launch the daemon: <code>java -jar selenium-server-standalone-2.xx.xxx.jar</code></li>
+</ol>
+<h4 id="phantomjs-installation">PhantomJS Installation</h4>
+<p>PhantomJS is a headless alternative to Selenium Server that implements <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol">the WebDriver protocol</a>.
+It allows you to run Selenium tests on a server without a GUI installed.</p>
+<ol>
+<li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
+<li>Run PhantomJS in WebDriver mode: <code>phantomjs --webdriver=4444</code></li>
+</ol>
+<h3 id="configuration">Configuration</h3>
+<p>This helper should be configured in codecept.json</p>
+<ul>
+<li><code>url</code> - base url of website to be tested</li>
+<li><code>browser</code> - browser in which perform testing </li>
+</ul>
+<p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">http://webdriver.io/guide/getstarted/configuration.html</a></p>
+<h3 id="connect-through-proxy">Connect through proxy</h3>
+<p>CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
+need to update the <code>helpers.WebDriverIO.proxy</code> key.</p>
+<pre><code class="js">{
+    &quot;helpers&quot;: {
+        &quot;WebDriverIO&quot;: {
+            &quot;proxy&quot;: {
+                &quot;proxyType&quot;: &quot;manual|pac&quot;,
+                &quot;proxyAutoconfigUrl&quot;: &quot;URL TO PAC FILE&quot;,
+                &quot;httpProxy&quot;: &quot;PROXY SERVER&quot;,
+                &quot;sslProxy&quot;: &quot;PROXY SERVER&quot;,
+                &quot;ftpProxy&quot;: &quot;PROXY SERVER&quot;,
+                &quot;socksProxy&quot;: &quot;PROXY SERVER&quot;,
+                &quot;socksUsername&quot;: &quot;USERNAME&quot;,
+                &quot;socksPassword&quot;: &quot;PASSWORD&quot;,
+                &quot;noProxy&quot;: &quot;BYPASS ADDRESSES&quot;
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>For example,</p>
+<pre><code class="js">{
+    &quot;helpers&quot;: {
+        &quot;WebDriverIO&quot;: {
+            &quot;proxy&quot;: {
+                &quot;proxyType&quot;: &quot;manual&quot;,
+                &quot;httpProxy&quot;: &quot;http://corporate.proxy:8080&quot;,
+                &quot;socksUsername&quot;: &quot;codeceptjs&quot;,
+                &quot;socksPassword&quot;: &quot;secret&quot;,
+                &quot;noProxy&quot;: &quot;127.0.0.1,localhost&quot;
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>Please refer to <a href="https://code.google.com/p/selenium/wiki/DesiredCapabilities#Proxy_JSON_Object">Selenium - Proxy Object</a> for more information.</p>
+<h2 id="access-from-helpers">Access From Helpers</h2>
+<p>Receive a WebDriverIO client from a custom helper by accessing <code>brorwser</code> property:</p>
+<pre><code>this.helpers['WebDriverIO'].browser
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
+<h2 id="amonpage">amOnPage</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L128-L132" title="Source code on GitHub">lib/helper/WebDriverIO.js:128-132</a></p>
+<p>Opens a web page in a browser. Requires relative or absolute url. 
+If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
+<pre><code class="js">I.amOnPage('/'); // opens main page of website
+I.amOnPage('https://github.com'); // opens github
+I.amOnPage('/login'); // opens a login page
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>url</code>  </li>
+</ul>
+<h2 id="attachfile">attachFile</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L248-L250" title="Source code on GitHub">lib/helper/WebDriverIO.js:248-250</a></p>
+<p>Attaches a file to element located by CSS or XPath</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>pathToFile</code>  </li>
+</ul>
+<h2 id="checkoption">checkOption</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L263-L279" title="Source code on GitHub">lib/helper/WebDriverIO.js:263-279</a></p>
+<p>Selects a checkbox or radio button. 
+Element is located by label or name or CSS or XPath.</p>
+<p>The second parameter is a context (CSS or XPath locator) to narrow the search. </p>
+<pre><code class="js">I.checkOption('#agree');
+I.checkOption('I Agree to Terms and Conditions');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>option</code>  </li>
+<li><code>context</code>  </li>
+</ul>
+<h2 id="click">click</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L157-L170" title="Source code on GitHub">lib/helper/WebDriverIO.js:157-170</a></p>
+<p>Perform a click on a link or a button, given by a locator. 
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string. 
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched. 
+For images, the "alt" attribute and inner text of any parent links are searched.</p>
+<p>The second parameter is a context (CSS or XPath locator) to narrow the search.</p>
+<pre><code class="js">// simple link
+I.click('Logout');
+// button of form
+I.click('Submit');
+// CSS button
+I.click('#form input[type=submit]');
+// XPath
+I.click('//form/*[@type=submit]');
+// link in context
+I.click('Logout', '#nav');
+// using strict locator
+I.click({css: 'nav a.login'});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>link</code>  </li>
+<li><code>context</code>  </li>
+</ul>
+<h2 id="dontsee">dontSee</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L369-L371" title="Source code on GitHub">lib/helper/WebDriverIO.js:369-371</a></p>
+<p>Opposite to <code>see</code>. Checks that a text is not present on a page.
+Use context parameter to narrow down the search.</p>
+<pre><code class="js">I.dontSee('Login'); // assume we are already logged in
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>context</code>  </li>
+</ul>
+<h2 id="dontseeelement">dontSeeElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L390-L394" title="Source code on GitHub">lib/helper/WebDriverIO.js:390-394</a></p>
+<p>Opposite to <code>seeElement</code>. Checks that element is not on page.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="dontseeincurrenturl">dontSeeInCurrentUrl</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L412-L416" title="Source code on GitHub">lib/helper/WebDriverIO.js:412-416</a></p>
+<p>Checks that current url does not contain a provided fragment.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlFragment</code>  </li>
+</ul>
+<h2 id="doubleclick">doubleClick</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L175-L177" title="Source code on GitHub">lib/helper/WebDriverIO.js:175-177</a></p>
+<p>Performs a double-click on an element matched by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="executeasyncscript">executeAsyncScript</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L432-L434" title="Source code on GitHub">lib/helper/WebDriverIO.js:432-434</a></p>
+<p>Executes async script on page.
+Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>fn</code>  </li>
+</ul>
+<h2 id="executescript">executeScript</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L424-L426" title="Source code on GitHub">lib/helper/WebDriverIO.js:424-426</a></p>
+<p>Executes sync script on a page.
+Pass arguments to function as additional parameters.
+Will return execution result to a test. 
+In this case you should use generator and yield to receive results.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>fn</code>  </li>
+</ul>
+<h2 id="fillfield">fillField</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L194-L202" title="Source code on GitHub">lib/helper/WebDriverIO.js:194-202</a></p>
+<p>Fills a text field or textarea with the given string.
+Field is located by name, label, CSS, or XPath.</p>
+<pre><code class="js">// by label
+I.fillField('Email', 'hello@world.com');
+// by name
+I.fillField('password', '123456');
+// by CSS
+I.fillField('form#login input[name=username]', 'John');
+// or by strict locator
+I.fillField({css: 'form#login input[name=username]'}, 'John');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>field</code>  </li>
+<li><code>value</code>  </li>
+</ul>
+<h2 id="grabattribute">grabAttribute</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L317-L321" title="Source code on GitHub">lib/helper/WebDriverIO.js:317-321</a></p>
+<p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>attr</code>  </li>
+</ul>
+<h2 id="grabtextfrom">grabTextFrom</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L289-L293" title="Source code on GitHub">lib/helper/WebDriverIO.js:289-293</a></p>
+<p>Retrieves a text from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let pin = yield I.grabTextFrom('#pin');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="grabtitle">grabTitle</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L340-L345" title="Source code on GitHub">lib/helper/WebDriverIO.js:340-345</a></p>
+<p>Retrieves a page title and returns it to test. 
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let title = yield I.grabTitle();
+</code></pre>
+
+<h2 id="grabvaluefrom">grabValueFrom</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L303-L307" title="Source code on GitHub">lib/helper/WebDriverIO.js:303-307</a></p>
+<p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let email = yield I.grabValueFrom('input[name=email]');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="see">see</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L357-L359" title="Source code on GitHub">lib/helper/WebDriverIO.js:357-359</a></p>
+<p>Checks that a page contains a visible text.
+Use context parameter to narrow down the search.</p>
+<pre><code class="js">I.see('Welcome'); // text welcome on a page
+I.see('Welcome', '.content'); // text inside .content div
+I.see('Register', {css: 'form.register'}); // use strict locator
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>context</code>  </li>
+</ul>
+<h2 id="seeelement">seeElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L381-L385" title="Source code on GitHub">lib/helper/WebDriverIO.js:381-385</a></p>
+<p>Checks that element is present on page.
+Element is located by CSS or XPath.</p>
+<pre><code class="js">I.seeElement('#modal');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="seeincurrenturl">seeInCurrentUrl</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L403-L407" title="Source code on GitHub">lib/helper/WebDriverIO.js:403-407</a></p>
+<p>Checks that current url contains a provided fragment.</p>
+<pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlFragment</code>  </li>
+</ul>
+<h2 id="seeintitle">seeInTitle</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L326-L330" title="Source code on GitHub">lib/helper/WebDriverIO.js:326-330</a></p>
+<p>Checks that title contains text.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+</ul>
+<h2 id="selectoption">selectOption</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L218-L243" title="Source code on GitHub">lib/helper/WebDriverIO.js:218-243</a></p>
+<p>Selects an option in a drop-down select.
+Field is siearched by label | name | CSS | XPath.
+Option is selected by visible text or by value.</p>
+<pre><code class="js">I.selectOption('Choose Plan', 'Monthly'); // select by label
+I.selectOption('subscription', 'Monthly'); // match option by text
+I.selectOption('subscription', '0'); // or by value
+I.selectOption('//form/select[@name=account]','Permium');
+I.selectOption('form select[name=account]', 'Premium');
+I.selectOption({css: 'form select[name=account]'}, 'Premium');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>select</code>  </li>
+<li><code>option</code>  </li>
+</ul>
+<h2 id="wait">wait</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L439-L441" title="Source code on GitHub">lib/helper/WebDriverIO.js:439-441</a></p>
+<p>Pauses execution for a number of seconds.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waitforelement">waitForElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L456-L459" title="Source code on GitHub">lib/helper/WebDriverIO.js:456-459</a></p>
+<p>Waits for element to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waitforenabled">waitForEnabled</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L447-L450" title="Source code on GitHub">lib/helper/WebDriverIO.js:447-450</a></p>
+<p>Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waitfortext">waitForText</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L466-L477" title="Source code on GitHub">lib/helper/WebDriverIO.js:466-477</a></p>
+<p>Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>sec</code>  </li>
+<li><code>context</code>  </li>
+</ul>
+<h2 id="waitforvisible">waitForVisible</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L483-L486" title="Source code on GitHub">lib/helper/WebDriverIO.js:483-486</a></p>
+<p>Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waituntil">waitUntil</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/01c4b1c7e05e98b9a4ad234864c25e6c2099c606/lib/helper/WebDriverIO.js#L491-L494" title="Source code on GitHub">lib/helper/WebDriverIO.js:491-494</a></p>
+<p>Waits for a function to return true (waits for 1sec by default).</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>fn</code>  </li>
+<li><code>sec</code>  </li>
+</ul></div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+    <footer>
+
+        <div class="container">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+
+
+    </footer>
+
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>        
+        <script src="../../js/base.js"></script>
+    </body>
+</html>

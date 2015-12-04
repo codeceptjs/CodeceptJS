@@ -1,0 +1,339 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "", 
+            "title": "Index"
+        }, 
+        {
+            "location": "/quickstart/", 
+            "text": "QuickStart\n\n\nNodeJS v 4.2.0\n and higher required to start. \nInstall \nCodeceptJS\n with NPM:\n\n\nnpm install -g codeceptjs\n\n\n\n\n(you may need \nsudo\n to do it).\n\n\nSetup\n\n\nInitialize CodeceptJS by running:\n\n\ncodeceptjs init\n\n\n\n\nIt will create \ncodecept.js\n config in current directory (or provide path in the first argument).\n\n\nYou will be asked for tests location (they will be searched in current dir by default). \n\n\nOn next step you are asked to select \nHelpers\n. Helpers include actions which can be used in tests.\nWe recommend to start with \nWebDriverIO\n helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.\n\n\n? What helpers do you want to use? \n\u276f\u25c9 WebDriverIO\n \u25ef FileSystem\n\n\n\n\nThen you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.\n\n\n? Where should logs, screenshots, and reports to be stored? ./output\n\n\n\n\nIf you are going to extend test suite by writing custom steps you should probably agree to create \nsteps_file.js\n\n\n? Would you like to extend I object with custom steps? Yes\n? Where would you like to place custom steps? ./steps_file.js\n\n\n\n\nWebDriverIO helper will ask for additional configuration as well:\n\n\n? [WebDriverIO] Base url of site to be tested http://localhost\n? [WebDriverIO] Browser in which testing will be performed firefox\n\n\n\n\nIf you agree with defaults press enter and finish the installation.\n\n\nCreating First Test\n\n\nTests can be easily created by running \n\n\ncodeceptjs gt\n\n\n\n\n(or \ngenerate test\n)\n\n\nProvide a test name and open generated file in your favorite JavaScript editor (with ES6 support).\n\n\nFeature('My First Test');\n\nScenario('test something', (I) =\n {\n\n});\n\n\n\n\nInside the scenario block you can write your first test scenario by using \nactions from WebDriverIO helper\n. Let's assume we have a web server on \nlocalhost\n is running and there is a \nWelcome\n text on the first page. The simplest test will look like this:\n\n\nFeature('My First Test');\n\nScenario('test something', (I) =\n {\n  I.amOnPage('/');\n  I.see('Welcome');\n});\n\n\n\n\nBefore running this test we should ensure that \nSelenium Web Server is running\n. Then we can execute tests with \n\n\ncodeceptjs run --steps\n\n\n\n\nsteps option will display test execution process in console\n\n\nIf everything is done right, you will see in console:\n\n\nMy First Test --\n  test something\n   \u2022 I am on page \n/\n\n   \u2022 I see \nWelcome\n\n \u2713 OK    \n\n\n\n\nCongrats! Your first test is running.\n\n\nWasn't it hard, right?", 
+            "title": "Quickstart"
+        }, 
+        {
+            "location": "/quickstart/#quickstart", 
+            "text": "NodeJS v 4.2.0  and higher required to start. \nInstall  CodeceptJS  with NPM:  npm install -g codeceptjs  (you may need  sudo  to do it).", 
+            "title": "QuickStart"
+        }, 
+        {
+            "location": "/quickstart/#setup", 
+            "text": "Initialize CodeceptJS by running:  codeceptjs init  It will create  codecept.js  config in current directory (or provide path in the first argument).  You will be asked for tests location (they will be searched in current dir by default).   On next step you are asked to select  Helpers . Helpers include actions which can be used in tests.\nWe recommend to start with  WebDriverIO  helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.  ? What helpers do you want to use? \n\u276f\u25c9 WebDriverIO\n \u25ef FileSystem  Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.  ? Where should logs, screenshots, and reports to be stored? ./output  If you are going to extend test suite by writing custom steps you should probably agree to create  steps_file.js  ? Would you like to extend I object with custom steps? Yes\n? Where would you like to place custom steps? ./steps_file.js  WebDriverIO helper will ask for additional configuration as well:  ? [WebDriverIO] Base url of site to be tested http://localhost\n? [WebDriverIO] Browser in which testing will be performed firefox  If you agree with defaults press enter and finish the installation.", 
+            "title": "Setup"
+        }, 
+        {
+            "location": "/quickstart/#creating-first-test", 
+            "text": "Tests can be easily created by running   codeceptjs gt  (or  generate test )  Provide a test name and open generated file in your favorite JavaScript editor (with ES6 support).  Feature('My First Test');\n\nScenario('test something', (I) =  {\n\n});  Inside the scenario block you can write your first test scenario by using  actions from WebDriverIO helper . Let's assume we have a web server on  localhost  is running and there is a  Welcome  text on the first page. The simplest test will look like this:  Feature('My First Test');\n\nScenario('test something', (I) =  {\n  I.amOnPage('/');\n  I.see('Welcome');\n});  Before running this test we should ensure that  Selenium Web Server is running . Then we can execute tests with   codeceptjs run --steps  steps option will display test execution process in console  If everything is done right, you will see in console:  My First Test --\n  test something\n   \u2022 I am on page  / \n   \u2022 I see  Welcome \n \u2713 OK", 
+            "title": "Creating First Test"
+        }, 
+        {
+            "location": "/quickstart/#congrats-your-first-test-is-running", 
+            "text": "Wasn't it hard, right?", 
+            "title": "Congrats! Your first test is running."
+        }, 
+        {
+            "location": "/basics/", 
+            "text": "Basics\n\n\nCodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.\n\n\nFeature('CodeceptJS demo');\n\nScenario('check Welcome page on site', (I) =\n {\n  I.amOnPage('/');\n  I.see('Welcome');\n}\n\n\n\n\nTests are expected to be written in ECMAScript 6. \nEach test is described inside a \nScenario\n function with \nI\n object passed into it. \nI object is an \nactor\n, an abstraction for a testing user. I is a proxy object for currently enabled \nHelpers\n.\n\n\n  \nhelpers\n: {\n    \nWebDriverIO\n: {\n      \nurl\n: \nhttp://localhost\n,\n      \nbrowser\n: \nfirefox\n\n    }\n  }\n\n\n\n\nFor current config all methods of \nI\n will be taken from \nWebDriverIO\n helper. \nThis is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.\n\n\nHow It Works\n\n\nTests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.\nHowever, behind the scene \nall actions are wrapped in promises\n inside the \nI\n object. \n\nGlobal promise\n chain is initialized before each test and all \nI.*\n calls will be appended to it as well as setup and teardown.\n\n\nIf you want to get information from a running test you can use \nyield\n inside a \ngenerator function\n and special methods of helpers started with \ngrab\n prefix.\n\n\nScenario('try grabbers', function* (I) {\n  var title = yield I.grabTitle();\n});\n\n\n\n\nthen you can use those variables in assertions:\n\n\nvar title = yield I.grabTitle();\nvar assert = require('assert');\nassert.equal(title, 'CodeceptJS');\n\n\n\n\nPause\n\n\nTest execuition can be paused in any place of a test with \npause()\n call. \nThis also launches interactive console where you can call actions of \nI\n object.\n\n\n\n\nYou can also the pause to check the web application in a browser. Press \nENTER\n to resumet test execution.   \n\n\nInteractive shell can be started outside test context by running\n\n\ncodeceptjs shell\n\n\n\n\nBefore\n\n\nCommon preperation steps like opening a web page, logging in a user, can be placed in \nBefore\n or \nBackground\n hook:\n\n\nFeature('CodeceptJS Demonstration');\n\nBefore((I) =\n { // or Background\n  I.amOnPage('/documentation');\n});\n\nScenario('test some forms', (I) =\n {\n  I.click('Create User');\n  I.see('User is valid');\n  I.dontSeeInCurrentUrl('/documentation');\n});\n\nScenario('test title', (I) =\n {\n  I.seeInTitle('Example application');\n});\n\n\n\n\n\n\ndone()", 
+            "title": "Basics"
+        }, 
+        {
+            "location": "/basics/#basics", 
+            "text": "CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.  Feature('CodeceptJS demo');\n\nScenario('check Welcome page on site', (I) =  {\n  I.amOnPage('/');\n  I.see('Welcome');\n}  Tests are expected to be written in ECMAScript 6. \nEach test is described inside a  Scenario  function with  I  object passed into it. \nI object is an  actor , an abstraction for a testing user. I is a proxy object for currently enabled  Helpers .     helpers : {\n     WebDriverIO : {\n       url :  http://localhost ,\n       browser :  firefox \n    }\n  }  For current config all methods of  I  will be taken from  WebDriverIO  helper. \nThis is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.", 
+            "title": "Basics"
+        }, 
+        {
+            "location": "/basics/#how-it-works", 
+            "text": "Tests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.\nHowever, behind the scene  all actions are wrapped in promises  inside the  I  object.  Global promise  chain is initialized before each test and all  I.*  calls will be appended to it as well as setup and teardown.  If you want to get information from a running test you can use  yield  inside a  generator function  and special methods of helpers started with  grab  prefix.  Scenario('try grabbers', function* (I) {\n  var title = yield I.grabTitle();\n});  then you can use those variables in assertions:  var title = yield I.grabTitle();\nvar assert = require('assert');\nassert.equal(title, 'CodeceptJS');", 
+            "title": "How It Works"
+        }, 
+        {
+            "location": "/basics/#pause", 
+            "text": "Test execuition can be paused in any place of a test with  pause()  call. \nThis also launches interactive console where you can call actions of  I  object.   You can also the pause to check the web application in a browser. Press  ENTER  to resumet test execution.     Interactive shell can be started outside test context by running  codeceptjs shell", 
+            "title": "Pause"
+        }, 
+        {
+            "location": "/basics/#before", 
+            "text": "Common preperation steps like opening a web page, logging in a user, can be placed in  Before  or  Background  hook:  Feature('CodeceptJS Demonstration');\n\nBefore((I) =  { // or Background\n  I.amOnPage('/documentation');\n});\n\nScenario('test some forms', (I) =  {\n  I.click('Create User');\n  I.see('User is valid');\n  I.dontSeeInCurrentUrl('/documentation');\n});\n\nScenario('test title', (I) =  {\n  I.seeInTitle('Example application');\n});   done()", 
+            "title": "Before"
+        }, 
+        {
+            "location": "/acceptance/", 
+            "text": "Acceptance Testing\n\n\nHow does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page. \n\n\nAcceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check \nnot just functionality of application but a user interface\n (UI) as well.\n\n\nBy default CodeceptJS uses \nWebDriverIO\n helper and \nSelenium\n to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like. \n\n\nIn case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.\n\n\nI.amOnPage('/login');\nI.fillField('Username', 'john');\nI.fillField('Password', '123456');\nI.click('Login');\nI.see('Welcome, John');\n\n\n\n\nThis is how we can check that login form of a simple web application works. At first we opened \n/login\n page, then filled forms and in the end we saw the greetings text.\n\n\nLocating Element\n\n\nElement can be found by CSS or XPath locators. Practically every steps \nin WebDriverIO helper accept them both. \n\n\nI.seeElement('.user'); // element with CSS class user\nI.seeElement('//button(contains(., \npress me\n)]'); // button\n\n\n\n\nBy default CodeceptJS tries to guess the locator type. \nIn order to specify exact locator type you can pass a hash called \nstrict locator\n. \n\n\nI.seeElement({css: 'div.user'});\nI.seeElement({xpath: '//div[@class=user]'});\n\n\n\n\nStrict locators allow to specify additional locator types:\n\n\n// locate form element by name\nI.seeElement({name: 'password'});\n// locate element by text\nI.seeElement({text: 'press me'});\n// locate element by id\nI.seeElement({id: 'users'});\n\n\n\n\nClicking\n\n\nCodeceptJS provides a flexible syntax to specify an element to click.\n\n\nBy default CodeceptJS tries to find button or link with exact text on it\n\n\n// search for link or button\nI.click('Login');\n\n\n\n\nIf none found, CodeceptJS tries to find link or button containing that text. In case an image is clickable its \nalt\n attribute will be checked for text inclusion. Form buttons will also be searched by name.\n\n\nTo narrow down the results you can specify a context in second parameter.\n\n\nI.click('Login', '.nav'); // search only in .nav\nI.click('Login', {css: 'footer'}); // search only in footer\n\n\n\n\nTo skip the global search pass exact strict locator (or start locator with \n//\n or \n.\n or \n#\n).\nIn this case you are not limited to buttons and links. Any element found by that locator is clicked.\n\n\n// click element by CSS\nI.click('#signup'); \n// click element located by name inside a form\nI.click({name: 'submit'}, '#user\nform'); \n\n\n\n\nFilling Fields\n\n\nClicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most routine waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.\n\n\nLet's submit this sample form for a test:\n\n\nform method=\npost\n action=\n/update\n id=\nupdate_form\n\n     \nlabel for=\nuser_name\nName\n/label\n\n     \ninput type=\ntext\n name=\nuser[name]\n id=\nuser_name\n /\n\n     \nlabel for=\nuser_email\nEmail\n/label\n\n     \ninput type=\ntext\n name=\nuser[email]\n id=\nuser_email\n /\n     \n     \nlabel for=\nuser_gender\nGender\n/label\n\n     \nselect id=\nuser_gender\n name=\nuser[gender]\n\n          \noption value=\nm\nMale\n/option\n\n          \noption value=\nf\nFemale\n/option\n\n     \n/select\n     \n     \ninput type=\nsubmit\n name=\nsubmitButton\n value=\nUpdate\n /\n\n\n/form\n\n\n\n\n\nWe need to fill in all those fields and click \"Update\" button. CodeceptJS matches form elements by their label, name, or by CSS or XPath locators.\n\n\n// we are using label to match user_name field\nI.fillField('Name', 'Miles');\n// we can use input name\nI.fillField('user[email]','miles@davis.com');\n// select element by label, choose option by text\nI.selectOption('Gender','Male');\n// click 'Update' button, found by text\nI.click('Update');\n\n\n\n\nAlternative scenario:\n\n\n// we are using CSS\nI.fillField('#user_name', 'Miles');\nI.fillField('#user_email','miles@davis.com');\n// select element by label, option by value\nI.selectOption('#user_gender','m');\n// click 'Update' button, found by name\nI.click('submitButton', '#update_form');\n\n\n\n\nAssertions\n\n\nIn order to verify the expected behavior of a web application, web page connects should be checked. \nCodeceptJS provides built-in assertions for that. They start with \nsee\n (or \ndontSee\n) prefix, as they describe user's current vision. \n\n\nThe most general and common assertion is \nsee\n:\n\n\n// Just a visible text on a page\nI.see('Hello');\n// text inside .msg element\nI.see('Hello', '.msg');\n// opposite\nI.dontSee('Bye');\n\n\n\n\nYou should provide a text as first argument, and optionally a locator to narrow the search context.\n\n\nYou can check that specific element exists (or not) on a page, as it was described in \nLocating Element\n section.\n\n\nI.seeElement('.notice');\nI.dontSeeElement('.error');\n\n\n\n\nAdditional assertions:\n\n\nI.seeInCurrentUrl('/user/miles');\nI.seeInField('user[name]', 'Miles');\nI.seeInTitle('My Website');\n\n\n\n\nTo see all possible assertions see the helper's reference.\n\n\nGrabbing\n\n\nSometimes you need to retrieve a data from a page to use it in next steps of a scenario.\nImagine, application generates a password and you want to ensure that user can login using this password.\n\n\nI.fillField('email', 'miles@davis.com')\nI.click('Generate Password');\n$password = yield I.grabTextFrom('#password');\nI.click('Login');\nI.fillField('email', 'miles@davis.com');\nI.fillField('password', $password);\nI.click('Log in!');\n\n\n\n\ngrabTextFrom\n action is used here to retrieve text from an element. All actions starting with \ngrab\n prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with \nyield\n keyword of ES6. To make it work your test should be written inside a generator function (notice \n*\n in its definition):\n\n\nScenario('use page title', function*(I) {\n  // ...\n  var password = yield I.grabTextFrom('#password');\n  I.fillField('password', password);\n});\n\n\n\n\nWaiting\n\n\nIn modern web applications rendering is happen on client side. \nSometims that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.\nTo handle this cases \nwait*\n methods introduced.\n\n\nI.waitForElement('#agree_button', 30); // secs\n// clicks a button only when it is visible\nI.click('#agree_button');\n\n\n\n\nMore wait actions can be found in helper's reference.\n\n\n\n\ndone()\n\n\nCodeceptJS through helpers provides user friendly API for interact with a webpage. In this section we desctibed using WebDriverIO helper which allows to control browser through Selenium WebDriver.", 
+            "title": "Acceptance Testing"
+        }, 
+        {
+            "location": "/acceptance/#acceptance-testing", 
+            "text": "How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.   Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check  not just functionality of application but a user interface  (UI) as well.  By default CodeceptJS uses  WebDriverIO  helper and  Selenium  to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.   In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.  I.amOnPage('/login');\nI.fillField('Username', 'john');\nI.fillField('Password', '123456');\nI.click('Login');\nI.see('Welcome, John');  This is how we can check that login form of a simple web application works. At first we opened  /login  page, then filled forms and in the end we saw the greetings text.", 
+            "title": "Acceptance Testing"
+        }, 
+        {
+            "location": "/acceptance/#locating-element", 
+            "text": "Element can be found by CSS or XPath locators. Practically every steps \nin WebDriverIO helper accept them both.   I.seeElement('.user'); // element with CSS class user\nI.seeElement('//button(contains(.,  press me )]'); // button  By default CodeceptJS tries to guess the locator type. \nIn order to specify exact locator type you can pass a hash called  strict locator .   I.seeElement({css: 'div.user'});\nI.seeElement({xpath: '//div[@class=user]'});  Strict locators allow to specify additional locator types:  // locate form element by name\nI.seeElement({name: 'password'});\n// locate element by text\nI.seeElement({text: 'press me'});\n// locate element by id\nI.seeElement({id: 'users'});", 
+            "title": "Locating Element"
+        }, 
+        {
+            "location": "/acceptance/#clicking", 
+            "text": "CodeceptJS provides a flexible syntax to specify an element to click.  By default CodeceptJS tries to find button or link with exact text on it  // search for link or button\nI.click('Login');  If none found, CodeceptJS tries to find link or button containing that text. In case an image is clickable its  alt  attribute will be checked for text inclusion. Form buttons will also be searched by name.  To narrow down the results you can specify a context in second parameter.  I.click('Login', '.nav'); // search only in .nav\nI.click('Login', {css: 'footer'}); // search only in footer  To skip the global search pass exact strict locator (or start locator with  //  or  .  or  # ).\nIn this case you are not limited to buttons and links. Any element found by that locator is clicked.  // click element by CSS\nI.click('#signup'); \n// click element located by name inside a form\nI.click({name: 'submit'}, '#user form');", 
+            "title": "Clicking"
+        }, 
+        {
+            "location": "/acceptance/#filling-fields", 
+            "text": "Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most routine waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.  Let's submit this sample form for a test:  form method= post  action= /update  id= update_form \n      label for= user_name Name /label \n      input type= text  name= user[name]  id= user_name  / \n      label for= user_email Email /label \n      input type= text  name= user[email]  id= user_email  /      \n      label for= user_gender Gender /label \n      select id= user_gender  name= user[gender] \n           option value= m Male /option \n           option value= f Female /option \n      /select      \n      input type= submit  name= submitButton  value= Update  /  /form   We need to fill in all those fields and click \"Update\" button. CodeceptJS matches form elements by their label, name, or by CSS or XPath locators.  // we are using label to match user_name field\nI.fillField('Name', 'Miles');\n// we can use input name\nI.fillField('user[email]','miles@davis.com');\n// select element by label, choose option by text\nI.selectOption('Gender','Male');\n// click 'Update' button, found by text\nI.click('Update');  Alternative scenario:  // we are using CSS\nI.fillField('#user_name', 'Miles');\nI.fillField('#user_email','miles@davis.com');\n// select element by label, option by value\nI.selectOption('#user_gender','m');\n// click 'Update' button, found by name\nI.click('submitButton', '#update_form');", 
+            "title": "Filling Fields"
+        }, 
+        {
+            "location": "/acceptance/#assertions", 
+            "text": "In order to verify the expected behavior of a web application, web page connects should be checked. \nCodeceptJS provides built-in assertions for that. They start with  see  (or  dontSee ) prefix, as they describe user's current vision.   The most general and common assertion is  see :  // Just a visible text on a page\nI.see('Hello');\n// text inside .msg element\nI.see('Hello', '.msg');\n// opposite\nI.dontSee('Bye');  You should provide a text as first argument, and optionally a locator to narrow the search context.  You can check that specific element exists (or not) on a page, as it was described in  Locating Element  section.  I.seeElement('.notice');\nI.dontSeeElement('.error');  Additional assertions:  I.seeInCurrentUrl('/user/miles');\nI.seeInField('user[name]', 'Miles');\nI.seeInTitle('My Website');  To see all possible assertions see the helper's reference.", 
+            "title": "Assertions"
+        }, 
+        {
+            "location": "/acceptance/#grabbing", 
+            "text": "Sometimes you need to retrieve a data from a page to use it in next steps of a scenario.\nImagine, application generates a password and you want to ensure that user can login using this password.  I.fillField('email', 'miles@davis.com')\nI.click('Generate Password');\n$password = yield I.grabTextFrom('#password');\nI.click('Login');\nI.fillField('email', 'miles@davis.com');\nI.fillField('password', $password);\nI.click('Log in!');  grabTextFrom  action is used here to retrieve text from an element. All actions starting with  grab  prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with  yield  keyword of ES6. To make it work your test should be written inside a generator function (notice  *  in its definition):  Scenario('use page title', function*(I) {\n  // ...\n  var password = yield I.grabTextFrom('#password');\n  I.fillField('password', password);\n});", 
+            "title": "Grabbing"
+        }, 
+        {
+            "location": "/acceptance/#waiting", 
+            "text": "In modern web applications rendering is happen on client side. \nSometims that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.\nTo handle this cases  wait*  methods introduced.  I.waitForElement('#agree_button', 30); // secs\n// clicks a button only when it is visible\nI.click('#agree_button');  More wait actions can be found in helper's reference.   done()  CodeceptJS through helpers provides user friendly API for interact with a webpage. In this section we desctibed using WebDriverIO helper which allows to control browser through Selenium WebDriver.", 
+            "title": "Waiting"
+        }, 
+        {
+            "location": "/helpers/", 
+            "text": "Helpers\n\n\nHelpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.\nMethods of Helper class will be available in tests in \nI\n object. This abstracts test scenarios from the implementation and allows easy switching between backends. \nFunctionality of CodeceptJS should be extended by writing a custom helpers.\n\n\nYou can either access core Helpers (and underlying libraries) or create a new from scratch. \n\n\nDevelopment\n\n\nHelpers can be created by running a generator command:\n\n\ncodeceptjs gh\n\n\n\n\n(or \ngenerate helper\n)\n\n\nHelpers are ES6 classes inherited from \ncorresponding abstract class\n.\nGenerated Helper will be added to \ncodecept.json\n config. It should look like this:\n\n\n'use strict';\n\nlet Helper = require('codeceptjs/helper');\n\nclass MyHelper extends Helper {\n\n  // before/after hooks\n  _before() {\n    // remove if not used  \n  }\n\n  _after() {\n    // remove if not used\n  }\n\n  // add custom methods here  \n  // If you need to access other helpers\n  // use: this.helpers['helperName']    \n\n}\n\nmodule.exports = MyHelper;\n\n\n\n\nAll methods except those starting from \n_\n will be added to \nI\n object and trated as test actions.\nEvery method should return a value in order to be appended into promise chain.\n\n\nWebDriverIO Example\n\n\nNext example demontrates how to use WebDriverIO library to create your own test action.\nMethod \nseeAuthenication\n will use \nclient\n instance of WebDriverIO to get access to cookies.\nStandard NodeJS assertion library will be used.\n\n\n'use strict';\nlet Helper = require('codeceptjs/helper');\n\n// use any assertion library you like\nlet assert = require('assert');\n\nclass MyHelper extends Helper {  \n  /**\n   * checks that authentication cookie is set \n   */\n  seeAuthentication() {    \n    // access current client of WebDriverIO helper\n    let client = this.helpers['WebDriverIO'].browser;\n\n    // get all cookies according to http://webdriver.io/api/protocol/cookie.html\n    // any helper method should return a value in order to be added to promise chain\n    return client.cookie(function(err, res) {\n      // get values\n      let cookies = res.value;\n      for (let k in cookies) {\n        // check for a cookie\n        if (cookies[k].name != 'logged_in') continue;\n        assert.equal(cookies[k].value, 'yes');\n        return;        \n      }\n      assert.fail(cookies, 'logged_in', \nAuth cookie not set\n);      \n    });\n  }\n}\n\n\n\n\nInitialization\n\n\nHelpers can be configured in \ncodecept.json\n and config values are passed into constructor.\nBy default config values will be stored in \nthis.config\n. You can redefine constructor to provide custom initialization and customization.\n\n\nconstructor(config) {\n  config.defaultValue = '42';\n  super(config);\n}\n\n\n\n\nHooks\n\n\nHelpers may contain several hooks you can use to handle events of a test.\nImplement corresponding methods to them.  \n\n\n\n\n_init\n - before all tests\n\n\n_before\n - before a test\n\n\n_beforeStep\n - before each step\n\n\n_afterStep\n - after each step\n\n\n\n\nEach implemented method should return a value as they will be added to global promise chain as well.\n\n\ndone()", 
+            "title": "Helpers"
+        }, 
+        {
+            "location": "/helpers/#helpers", 
+            "text": "Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.\nMethods of Helper class will be available in tests in  I  object. This abstracts test scenarios from the implementation and allows easy switching between backends. \nFunctionality of CodeceptJS should be extended by writing a custom helpers.  You can either access core Helpers (and underlying libraries) or create a new from scratch.", 
+            "title": "Helpers"
+        }, 
+        {
+            "location": "/helpers/#development", 
+            "text": "Helpers can be created by running a generator command:  codeceptjs gh  (or  generate helper )  Helpers are ES6 classes inherited from  corresponding abstract class .\nGenerated Helper will be added to  codecept.json  config. It should look like this:  'use strict';\n\nlet Helper = require('codeceptjs/helper');\n\nclass MyHelper extends Helper {\n\n  // before/after hooks\n  _before() {\n    // remove if not used  \n  }\n\n  _after() {\n    // remove if not used\n  }\n\n  // add custom methods here  \n  // If you need to access other helpers\n  // use: this.helpers['helperName']    \n\n}\n\nmodule.exports = MyHelper;  All methods except those starting from  _  will be added to  I  object and trated as test actions.\nEvery method should return a value in order to be appended into promise chain.", 
+            "title": "Development"
+        }, 
+        {
+            "location": "/helpers/#webdriverio-example", 
+            "text": "Next example demontrates how to use WebDriverIO library to create your own test action.\nMethod  seeAuthenication  will use  client  instance of WebDriverIO to get access to cookies.\nStandard NodeJS assertion library will be used.  'use strict';\nlet Helper = require('codeceptjs/helper');\n\n// use any assertion library you like\nlet assert = require('assert');\n\nclass MyHelper extends Helper {  \n  /**\n   * checks that authentication cookie is set \n   */\n  seeAuthentication() {    \n    // access current client of WebDriverIO helper\n    let client = this.helpers['WebDriverIO'].browser;\n\n    // get all cookies according to http://webdriver.io/api/protocol/cookie.html\n    // any helper method should return a value in order to be added to promise chain\n    return client.cookie(function(err, res) {\n      // get values\n      let cookies = res.value;\n      for (let k in cookies) {\n        // check for a cookie\n        if (cookies[k].name != 'logged_in') continue;\n        assert.equal(cookies[k].value, 'yes');\n        return;        \n      }\n      assert.fail(cookies, 'logged_in',  Auth cookie not set );      \n    });\n  }\n}", 
+            "title": "WebDriverIO Example"
+        }, 
+        {
+            "location": "/helpers/#initialization", 
+            "text": "Helpers can be configured in  codecept.json  and config values are passed into constructor.\nBy default config values will be stored in  this.config . You can redefine constructor to provide custom initialization and customization.  constructor(config) {\n  config.defaultValue = '42';\n  super(config);\n}", 
+            "title": "Initialization"
+        }, 
+        {
+            "location": "/helpers/#hooks", 
+            "text": "Helpers may contain several hooks you can use to handle events of a test.\nImplement corresponding methods to them.     _init  - before all tests  _before  - before a test  _beforeStep  - before each step  _afterStep  - after each step   Each implemented method should return a value as they will be added to global promise chain as well.  done()", 
+            "title": "Hooks"
+        }, 
+        {
+            "location": "/pageobjects/", 
+            "text": "PageObjects\n\n\nUI of your web application has interaction areas which can be shared across different tests.\nTo avoid code duplication you can put common locators and methods into one place.\n\n\nPageObjects\n\n\nIn case an application has different pages (login, admin, etc) you should use a page object.\nCodeceptJS can generate a template for it with next command\n\n\ncodeceptjs gpo\n\n\n\n\n(or generate pageobject)\n\n\nThis will create a sample template for a page object and include it into \ncodecept.json\n config.\n\n\n'use strict';\nlet I;\n\nmodule.exports = {\n\n  _init() {\n    I = require('codeceptjs/actor')();\n  }\n\n  // insert your locators and methods here\n}\n\n\n\n\nAs you see, \nI\n object is available there so you can use it as you do in tests.\nGeneral page object for a login page may look like this:\n\n\n'use strict';\nlet I;\n\nmodule.exports = {\n\n  _init() {\n    I = require('codeceptjs/actor')();\n  },\n\n  // setting locators\n  fields: {\n    email: '#user_basic_email',\n    password: '#user_basic_password'\n  },\n  submitButton: {css: '#new_user_basic input[type=submit]'},\n\n  // intorucing methods\n  sendForm(email, password) {\n    I.fillField(this.fields.email, email);\n    I.fillField(this.fields.password, password);\n    I.click(this.submitButton);\n  }\n}\n\n\n\n\nYou can include this pageobject in test by its name (defined in \ncodecept.json\n). In case you created a \nloginPage\n object \nit should be added to list of test arguments to be included in test:\n\n\nScenario('login', (I, loginPage) =\n {\n  loginPage.sendForm('john@doe.com','123456');\n  I.see('Hello, John');\n});\n\n\n\n\nIn a similar manner CodeceptJS allows you to generate \nStepObjects\n, \nPageFragments\n and any other are abstraction\nby running \ngo\n command with \n--kind\n option:\n\n\ncodeceptjs go --kind fragment\n\n\n\n\nActor\n\n\nLogin example above can be reworked so the method \nlogin\n would be available in \nI\n object itself.\nThis is recommended if most of tests require user authentication and for not to require \nloginPage\n every time.\n\n\nAt initialization you were asked to create custom steps file. If you accepted this option you may use \ncustom_steps.js\n file to extend \nI\n.\nSee how \nlogin\n method can be added to \nI\n:  \n\n\n'use strict';\n// in this file you can append custom step methods to 'I' object\n\nmodule.exports = function() {\n  return require('./lib/actor')({\n\n    login: function(email, password) {\n      this.fillField('Email', email);\n      this.fillField('Password', password);\n      this.click('Submit');       \n    }  \n  });\n}\n\n\n\n\nPlease notice that instead of \nI\n you should use \nthis\n in current context.  \n\n\ndone()", 
+            "title": "Page Objects"
+        }, 
+        {
+            "location": "/pageobjects/#pageobjects", 
+            "text": "UI of your web application has interaction areas which can be shared across different tests.\nTo avoid code duplication you can put common locators and methods into one place.", 
+            "title": "PageObjects"
+        }, 
+        {
+            "location": "/pageobjects/#pageobjects_1", 
+            "text": "In case an application has different pages (login, admin, etc) you should use a page object.\nCodeceptJS can generate a template for it with next command  codeceptjs gpo  (or generate pageobject)  This will create a sample template for a page object and include it into  codecept.json  config.  'use strict';\nlet I;\n\nmodule.exports = {\n\n  _init() {\n    I = require('codeceptjs/actor')();\n  }\n\n  // insert your locators and methods here\n}  As you see,  I  object is available there so you can use it as you do in tests.\nGeneral page object for a login page may look like this:  'use strict';\nlet I;\n\nmodule.exports = {\n\n  _init() {\n    I = require('codeceptjs/actor')();\n  },\n\n  // setting locators\n  fields: {\n    email: '#user_basic_email',\n    password: '#user_basic_password'\n  },\n  submitButton: {css: '#new_user_basic input[type=submit]'},\n\n  // intorucing methods\n  sendForm(email, password) {\n    I.fillField(this.fields.email, email);\n    I.fillField(this.fields.password, password);\n    I.click(this.submitButton);\n  }\n}  You can include this pageobject in test by its name (defined in  codecept.json ). In case you created a  loginPage  object \nit should be added to list of test arguments to be included in test:  Scenario('login', (I, loginPage) =  {\n  loginPage.sendForm('john@doe.com','123456');\n  I.see('Hello, John');\n});  In a similar manner CodeceptJS allows you to generate  StepObjects ,  PageFragments  and any other are abstraction\nby running  go  command with  --kind  option:  codeceptjs go --kind fragment", 
+            "title": "PageObjects"
+        }, 
+        {
+            "location": "/pageobjects/#actor", 
+            "text": "Login example above can be reworked so the method  login  would be available in  I  object itself.\nThis is recommended if most of tests require user authentication and for not to require  loginPage  every time.  At initialization you were asked to create custom steps file. If you accepted this option you may use  custom_steps.js  file to extend  I .\nSee how  login  method can be added to  I :    'use strict';\n// in this file you can append custom step methods to 'I' object\n\nmodule.exports = function() {\n  return require('./lib/actor')({\n\n    login: function(email, password) {\n      this.fillField('Email', email);\n      this.fillField('Password', password);\n      this.click('Submit');       \n    }  \n  });\n}  Please notice that instead of  I  you should use  this  in current context.    done()", 
+            "title": "Actor"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/", 
+            "text": "WebDriverIO\n\n\nlib/helper/WebDriverIO.js:90-495\n\n\nWebDriverIO helper which wraps \nwebdriverio\n library to \nmanipulate browser using Selenium WebDriver or PhantomJS. \n\n\nSelenium Installation\n\n\n\n\nDownload \nSelenium Server\n\n\nLaunch the daemon: \njava -jar selenium-server-standalone-2.xx.xxx.jar\n\n\n\n\nPhantomJS Installation\n\n\nPhantomJS is a headless alternative to Selenium Server that implements \nthe WebDriver protocol\n.\nIt allows you to run Selenium tests on a server without a GUI installed.\n\n\n\n\nDownload \nPhantomJS\n\n\nRun PhantomJS in WebDriver mode: \nphantomjs --webdriver=4444\n\n\n\n\nConfiguration\n\n\nThis helper should be configured in codecept.json\n\n\n\n\nurl\n - base url of website to be tested\n\n\nbrowser\n - browser in which perform testing \n\n\n\n\nAdditional configuration params can be used from \nhttp://webdriver.io/guide/getstarted/configuration.html\n\n\nConnect through proxy\n\n\nCodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will\nneed to update the \nhelpers.WebDriverIO.proxy\n key.\n\n\n{\n    \nhelpers\n: {\n        \nWebDriverIO\n: {\n            \nproxy\n: {\n                \nproxyType\n: \nmanual|pac\n,\n                \nproxyAutoconfigUrl\n: \nURL TO PAC FILE\n,\n                \nhttpProxy\n: \nPROXY SERVER\n,\n                \nsslProxy\n: \nPROXY SERVER\n,\n                \nftpProxy\n: \nPROXY SERVER\n,\n                \nsocksProxy\n: \nPROXY SERVER\n,\n                \nsocksUsername\n: \nUSERNAME\n,\n                \nsocksPassword\n: \nPASSWORD\n,\n                \nnoProxy\n: \nBYPASS ADDRESSES\n\n            }\n        }\n    }\n}\n\n\n\n\nFor example,\n\n\n{\n    \nhelpers\n: {\n        \nWebDriverIO\n: {\n            \nproxy\n: {\n                \nproxyType\n: \nmanual\n,\n                \nhttpProxy\n: \nhttp://corporate.proxy:8080\n,\n                \nsocksUsername\n: \ncodeceptjs\n,\n                \nsocksPassword\n: \nsecret\n,\n                \nnoProxy\n: \n127.0.0.1,localhost\n\n            }\n        }\n    }\n}\n\n\n\n\nPlease refer to \nSelenium - Proxy Object\n for more information.\n\n\nAccess From Helpers\n\n\nReceive a WebDriverIO client from a custom helper by accessing \nbrorwser\n property:\n\n\nthis.helpers['WebDriverIO'].browser\n\n\n\nParameters\n\n\n\n\nconfig\n  \n\n\n\n\namOnPage\n\n\nlib/helper/WebDriverIO.js:128-132\n\n\nOpens a web page in a browser. Requires relative or absolute url. \nIf url starts with \n/\n, opens a web page of a site defined in \nurl\n config parameter.\n\n\nI.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page\n\n\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\nattachFile\n\n\nlib/helper/WebDriverIO.js:248-250\n\n\nAttaches a file to element located by CSS or XPath\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\npathToFile\n  \n\n\n\n\ncheckOption\n\n\nlib/helper/WebDriverIO.js:263-279\n\n\nSelects a checkbox or radio button. \nElement is located by label or name or CSS or XPath.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search. \n\n\nI.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\n\n\n\n\nParameters\n\n\n\n\noption\n  \n\n\ncontext\n  \n\n\n\n\nclick\n\n\nlib/helper/WebDriverIO.js:157-170\n\n\nPerform a click on a link or a button, given by a locator. \nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string. \nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched. \nFor images, the \"alt\" attribute and inner text of any parent links are searched.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\n// simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});\n\n\n\n\nParameters\n\n\n\n\nlink\n  \n\n\ncontext\n  \n\n\n\n\ndontSee\n\n\nlib/helper/WebDriverIO.js:369-371\n\n\nOpposite to \nsee\n. Checks that a text is not present on a page.\nUse context parameter to narrow down the search.\n\n\nI.dontSee('Login'); // assume we are already logged in\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\ndontSeeElement\n\n\nlib/helper/WebDriverIO.js:390-394\n\n\nOpposite to \nseeElement\n. Checks that element is not on page.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ndontSeeInCurrentUrl\n\n\nlib/helper/WebDriverIO.js:412-416\n\n\nChecks that current url does not contain a provided fragment.\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\ndoubleClick\n\n\nlib/helper/WebDriverIO.js:175-177\n\n\nPerforms a double-click on an element matched by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nexecuteAsyncScript\n\n\nlib/helper/WebDriverIO.js:432-434\n\n\nExecutes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nexecuteScript\n\n\nlib/helper/WebDriverIO.js:424-426\n\n\nExecutes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test. \nIn this case you should use generator and yield to receive results.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nfillField\n\n\nlib/helper/WebDriverIO.js:194-202\n\n\nFills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.\n\n\n// by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\ngrabAttribute\n\n\nlib/helper/WebDriverIO.js:317-321\n\n\nRetrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet hint = yield I.grabAttributeFrom('#tooltip', 'title');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nattr\n  \n\n\n\n\ngrabTextFrom\n\n\nlib/helper/WebDriverIO.js:289-293\n\n\nRetrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet pin = yield I.grabTextFrom('#pin');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ngrabTitle\n\n\nlib/helper/WebDriverIO.js:340-345\n\n\nRetrieves a page title and returns it to test. \nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet title = yield I.grabTitle();\n\n\n\n\ngrabValueFrom\n\n\nlib/helper/WebDriverIO.js:303-307\n\n\nRetrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet email = yield I.grabValueFrom('input[name=email]');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nsee\n\n\nlib/helper/WebDriverIO.js:357-359\n\n\nChecks that a page contains a visible text.\nUse context parameter to narrow down the search.\n\n\nI.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\nseeElement\n\n\nlib/helper/WebDriverIO.js:381-385\n\n\nChecks that element is present on page.\nElement is located by CSS or XPath.\n\n\nI.seeElement('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nseeInCurrentUrl\n\n\nlib/helper/WebDriverIO.js:403-407\n\n\nChecks that current url contains a provided fragment.\n\n\nI.seeInCurrentUrl('/register'); // we are on registration page\n\n\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\nseeInTitle\n\n\nlib/helper/WebDriverIO.js:326-330\n\n\nChecks that title contains text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nselectOption\n\n\nlib/helper/WebDriverIO.js:218-243\n\n\nSelects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.\n\n\nI.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');\n\n\n\n\nParameters\n\n\n\n\nselect\n  \n\n\noption\n  \n\n\n\n\nwait\n\n\nlib/helper/WebDriverIO.js:439-441\n\n\nPauses execution for a number of seconds.\n\n\nParameters\n\n\n\n\nsec\n  \n\n\n\n\nwaitForElement\n\n\nlib/helper/WebDriverIO.js:456-459\n\n\nWaits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitForEnabled\n\n\nlib/helper/WebDriverIO.js:447-450\n\n\nWaits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitForText\n\n\nlib/helper/WebDriverIO.js:466-477\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nsec\n  \n\n\ncontext\n  \n\n\n\n\nwaitForVisible\n\n\nlib/helper/WebDriverIO.js:483-486\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitUntil\n\n\nlib/helper/WebDriverIO.js:491-494\n\n\nWaits for a function to return true (waits for 1sec by default).\n\n\nParameters\n\n\n\n\nfn\n  \n\n\nsec", 
+            "title": "WebDriverIO"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#webdriverio", 
+            "text": "lib/helper/WebDriverIO.js:90-495  WebDriverIO helper which wraps  webdriverio  library to \nmanipulate browser using Selenium WebDriver or PhantomJS.   Selenium Installation   Download  Selenium Server  Launch the daemon:  java -jar selenium-server-standalone-2.xx.xxx.jar   PhantomJS Installation  PhantomJS is a headless alternative to Selenium Server that implements  the WebDriver protocol .\nIt allows you to run Selenium tests on a server without a GUI installed.   Download  PhantomJS  Run PhantomJS in WebDriver mode:  phantomjs --webdriver=4444   Configuration  This helper should be configured in codecept.json   url  - base url of website to be tested  browser  - browser in which perform testing    Additional configuration params can be used from  http://webdriver.io/guide/getstarted/configuration.html  Connect through proxy  CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will\nneed to update the  helpers.WebDriverIO.proxy  key.  {\n     helpers : {\n         WebDriverIO : {\n             proxy : {\n                 proxyType :  manual|pac ,\n                 proxyAutoconfigUrl :  URL TO PAC FILE ,\n                 httpProxy :  PROXY SERVER ,\n                 sslProxy :  PROXY SERVER ,\n                 ftpProxy :  PROXY SERVER ,\n                 socksProxy :  PROXY SERVER ,\n                 socksUsername :  USERNAME ,\n                 socksPassword :  PASSWORD ,\n                 noProxy :  BYPASS ADDRESSES \n            }\n        }\n    }\n}  For example,  {\n     helpers : {\n         WebDriverIO : {\n             proxy : {\n                 proxyType :  manual ,\n                 httpProxy :  http://corporate.proxy:8080 ,\n                 socksUsername :  codeceptjs ,\n                 socksPassword :  secret ,\n                 noProxy :  127.0.0.1,localhost \n            }\n        }\n    }\n}  Please refer to  Selenium - Proxy Object  for more information.", 
+            "title": "WebDriverIO"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#access-from-helpers", 
+            "text": "Receive a WebDriverIO client from a custom helper by accessing  brorwser  property:  this.helpers['WebDriverIO'].browser  Parameters   config", 
+            "title": "Access From Helpers"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#amonpage", 
+            "text": "lib/helper/WebDriverIO.js:128-132  Opens a web page in a browser. Requires relative or absolute url. \nIf url starts with  / , opens a web page of a site defined in  url  config parameter.  I.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page  Parameters   url", 
+            "title": "amOnPage"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#attachfile", 
+            "text": "lib/helper/WebDriverIO.js:248-250  Attaches a file to element located by CSS or XPath  Parameters   locator     pathToFile", 
+            "title": "attachFile"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#checkoption", 
+            "text": "lib/helper/WebDriverIO.js:263-279  Selects a checkbox or radio button. \nElement is located by label or name or CSS or XPath.  The second parameter is a context (CSS or XPath locator) to narrow the search.   I.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');  Parameters   option     context", 
+            "title": "checkOption"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#click", 
+            "text": "lib/helper/WebDriverIO.js:157-170  Perform a click on a link or a button, given by a locator. \nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string. \nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched. \nFor images, the \"alt\" attribute and inner text of any parent links are searched.  The second parameter is a context (CSS or XPath locator) to narrow the search.  // simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});  Parameters   link     context", 
+            "title": "click"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontsee", 
+            "text": "lib/helper/WebDriverIO.js:369-371  Opposite to  see . Checks that a text is not present on a page.\nUse context parameter to narrow down the search.  I.dontSee('Login'); // assume we are already logged in  Parameters   text     context", 
+            "title": "dontSee"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontseeelement", 
+            "text": "lib/helper/WebDriverIO.js:390-394  Opposite to  seeElement . Checks that element is not on page.  Parameters   locator", 
+            "title": "dontSeeElement"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontseeincurrenturl", 
+            "text": "lib/helper/WebDriverIO.js:412-416  Checks that current url does not contain a provided fragment.  Parameters   urlFragment", 
+            "title": "dontSeeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#doubleclick", 
+            "text": "lib/helper/WebDriverIO.js:175-177  Performs a double-click on an element matched by CSS or XPath.  Parameters   locator", 
+            "title": "doubleClick"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#executeasyncscript", 
+            "text": "lib/helper/WebDriverIO.js:432-434  Executes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.  Parameters   fn", 
+            "title": "executeAsyncScript"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#executescript", 
+            "text": "lib/helper/WebDriverIO.js:424-426  Executes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test. \nIn this case you should use generator and yield to receive results.  Parameters   fn", 
+            "title": "executeScript"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#fillfield", 
+            "text": "lib/helper/WebDriverIO.js:194-202  Fills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.  // by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');  Parameters   field     value", 
+            "title": "fillField"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#grabattribute", 
+            "text": "lib/helper/WebDriverIO.js:317-321  Retrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let hint = yield I.grabAttributeFrom('#tooltip', 'title');  Parameters   locator     attr", 
+            "title": "grabAttribute"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#grabtextfrom", 
+            "text": "lib/helper/WebDriverIO.js:289-293  Retrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let pin = yield I.grabTextFrom('#pin');  Parameters   locator", 
+            "title": "grabTextFrom"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#grabtitle", 
+            "text": "lib/helper/WebDriverIO.js:340-345  Retrieves a page title and returns it to test. \nResumes test execution, so  should be used inside a generator with  yield  operator.  let title = yield I.grabTitle();", 
+            "title": "grabTitle"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#grabvaluefrom", 
+            "text": "lib/helper/WebDriverIO.js:303-307  Retrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let email = yield I.grabValueFrom('input[name=email]');  Parameters   locator", 
+            "title": "grabValueFrom"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#see", 
+            "text": "lib/helper/WebDriverIO.js:357-359  Checks that a page contains a visible text.\nUse context parameter to narrow down the search.  I.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator  Parameters   text     context", 
+            "title": "see"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seeelement", 
+            "text": "lib/helper/WebDriverIO.js:381-385  Checks that element is present on page.\nElement is located by CSS or XPath.  I.seeElement('#modal');  Parameters   locator", 
+            "title": "seeElement"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seeincurrenturl", 
+            "text": "lib/helper/WebDriverIO.js:403-407  Checks that current url contains a provided fragment.  I.seeInCurrentUrl('/register'); // we are on registration page  Parameters   urlFragment", 
+            "title": "seeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seeintitle", 
+            "text": "lib/helper/WebDriverIO.js:326-330  Checks that title contains text.  Parameters   text", 
+            "title": "seeInTitle"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#selectoption", 
+            "text": "lib/helper/WebDriverIO.js:218-243  Selects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.  I.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');  Parameters   select     option", 
+            "title": "selectOption"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#wait", 
+            "text": "lib/helper/WebDriverIO.js:439-441  Pauses execution for a number of seconds.  Parameters   sec", 
+            "title": "wait"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#waitforelement", 
+            "text": "lib/helper/WebDriverIO.js:456-459  Waits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
+            "title": "waitForElement"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#waitforenabled", 
+            "text": "lib/helper/WebDriverIO.js:447-450  Waits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
+            "title": "waitForEnabled"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#waitfortext", 
+            "text": "lib/helper/WebDriverIO.js:466-477  Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  Parameters   text     sec     context", 
+            "title": "waitForText"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#waitforvisible", 
+            "text": "lib/helper/WebDriverIO.js:483-486  Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
+            "title": "waitForVisible"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#waituntil", 
+            "text": "lib/helper/WebDriverIO.js:491-494  Waits for a function to return true (waits for 1sec by default).  Parameters   fn     sec", 
+            "title": "waitUntil"
+        }, 
+        {
+            "location": "/helpers/FileSystem/", 
+            "text": "FileSystem\n\n\nlib/helper/FileSystem.js:22-87\n\n\nHelper for testing filesystem.\nCan be easily used to check file structures:\n\n\nI.amInPath('test');\nI.seeFile('codecept.json');\nI.seeInThisFile('FileSystem');\nI.dontSeeInThisFile(\nWebDriverIO\n);\n\n\n\n\namInPath\n\n\nlib/helper/FileSystem.js:34-37\n\n\nEnters a directory In local filesystem. \nStarts from a current directory\n\n\nParameters\n\n\n\n\nopenPath\n  \n\n\n\n\ndontSeeFileContentsEqual\n\n\nlib/helper/FileSystem.js:82-85\n\n\nChecks that contents of file found by \nseeFile\n doesn't equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\ndontSeeInThisFile\n\n\nlib/helper/FileSystem.js:66-69\n\n\nChecks that file found by \nseeFile\n doesn't include text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeFile\n\n\nlib/helper/FileSystem.js:49-53\n\n\nChecks that file exists\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeFileContentsEqual\n\n\nlib/helper/FileSystem.js:74-77\n\n\nChecks that contents of file found by \nseeFile\n equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeInThisFile\n\n\nlib/helper/FileSystem.js:58-61\n\n\nChecks that file found by \nseeFile\n includes a text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nwriteToFile\n\n\nlib/helper/FileSystem.js:42-44\n\n\nWrites test to file\n\n\nParameters\n\n\n\n\nname\n  \n\n\ntext", 
+            "title": "FileSystem"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#filesystem", 
+            "text": "lib/helper/FileSystem.js:22-87  Helper for testing filesystem.\nCan be easily used to check file structures:  I.amInPath('test');\nI.seeFile('codecept.json');\nI.seeInThisFile('FileSystem');\nI.dontSeeInThisFile( WebDriverIO );", 
+            "title": "FileSystem"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#aminpath", 
+            "text": "lib/helper/FileSystem.js:34-37  Enters a directory In local filesystem. \nStarts from a current directory  Parameters   openPath", 
+            "title": "amInPath"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#dontseefilecontentsequal", 
+            "text": "lib/helper/FileSystem.js:82-85  Checks that contents of file found by  seeFile  doesn't equal to text.  Parameters   text     encoding", 
+            "title": "dontSeeFileContentsEqual"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#dontseeinthisfile", 
+            "text": "lib/helper/FileSystem.js:66-69  Checks that file found by  seeFile  doesn't include text.  Parameters   text     encoding", 
+            "title": "dontSeeInThisFile"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#seefile", 
+            "text": "lib/helper/FileSystem.js:49-53  Checks that file exists  Parameters   name", 
+            "title": "seeFile"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#seefilecontentsequal", 
+            "text": "lib/helper/FileSystem.js:74-77  Checks that contents of file found by  seeFile  equal to text.  Parameters   text     encoding", 
+            "title": "seeFileContentsEqual"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#seeinthisfile", 
+            "text": "lib/helper/FileSystem.js:58-61  Checks that file found by  seeFile  includes a text.  Parameters   text     encoding", 
+            "title": "seeInThisFile"
+        }, 
+        {
+            "location": "/helpers/FileSystem/#writetofile", 
+            "text": "lib/helper/FileSystem.js:42-44  Writes test to file  Parameters   name     text", 
+            "title": "writeToFile"
+        }
+    ]
+}

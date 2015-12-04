@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>CodeceptJS</title>
+
+        <link href="./css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+        <link href="./css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-md" style="margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="helpers/">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="pageobjects/">Page Objects</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="helpers/WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="helpers/FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="quickstart/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+                    
+            <div class="jumbotron">    
+  <div class="container"> 
+    <img src="/images/cjs-base.png" style="width: 150px" alt="">
+    <h1>CodeceptJS</h1>
+    <div class="motto">Modern Era Acceptance Testing for NodeJS</div>
+  </div> 
+  <div class="row">
+    <div class="col-md-4">
+      <img src="/images/Checklist.svg" alt="">
+      <h3>Scenario Driven</h3>    
+      <p>
+        Write acceptacne tests from user's perspecitve. Every command is described as an action of a user visiting a site. 
+
+      </p>
+    </div>
+    <div class="col-md-4">
+      <img src="/images/Mind-Map-Paper.svg" alt="">
+      <h3>Backend Agnostic</h3>
+      <p>
+      CodeceptJS provides a general high-level API which can easily be executed using one of popular test runner libraries:
+      </p>
+    </div>
+    <div class="col-md-4">
+      <img src="/images/Coding-Html.svg" alt="">
+      <h3>Interactive shell</h3>
+      <p>
+        Control browser in realtime with API of CodeceptJS. Click buttons, fill fileds, try different locators inside a running test! 
+
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="sample">
+      <pre>
+        <code class="javascript">I.amOnPage('/');
+I.click('Login');
+I.fillField('Username', 'john');
+I.fillField('Password', '123456');
+I.click('Enter');
+I.see('Welcome');
+</code></pre>
+</div>
+    </div>
+    <div class="col-md-4">
+      <div class="sample">
+      <ul>
+        <li><a href="http://webdriverio.com" target="_blank">WebDriverIO</a></li>
+        <li>Protractor <em><small>(work in progress)</small></em></li>
+      <li>Nightmare <em><small>(work in progress)</small></em></li>        
+        <li>PhantomJS <em><small>(work in progress)</small></em></li>
+        <li>or others...</li>
+      </ul>      
+    </div>
+    </div>
+    <div class="col-md-4">
+      <div class="sample">
+              <img src="/images/shell.png" alt="">
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+<span class="install-label">INSTALL</span>
+
+      <span class="install">
+        npm install -g codeceptjs
+      </span>    &nbsp;
+      <a href="/quickstart" class="btn btn-danger btn-lg">Quickstart &raquo;</a>
+</div>
+
+<div class="container page">
+  <div class="row">
+  <div class="text-center"><h2>In Action</h2></div>
+  
+    <div class="col-md-6">
+    <pre><code class="javascript">Feature('CodeceptJS Demonstration');
+
+Scenario('submit form successfully', (I) => 
+&nbsp;&nbsp;I.amOnPage('/documentation')
+&nbsp;&nbsp;I.fillField('Email', 'hello@world.com')
+&nbsp;&nbsp;I.fillField('Password', '123456')
+&nbsp;&nbsp;I.checkOption('Active')
+&nbsp;&nbsp;I.checkOption('Male'); 
+&nbsp;&nbsp;I.click('Create User')
+&nbsp;&nbsp;I.see('User is valid')
+&nbsp;&nbsp;I.dontSeeInCurrentUrl('/documentation')
+});</code></pre>
+  </div>
+  <div class="col-md-6">
+    <img src="/images/demo.gif" alt="">
+  </div>
+</div>
+<div class="row">
+<div class="col-md-6">
+  <h2>Features</h2>
+
+<p>
+  <ul>
+    <li><strong>Synchronous Tests API</strong>. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.</li>
+    <li>
+Written from <strong>user's perspective</strong>. Every action is a method of I. That makes test easy to read, write and maintain even for non-tech persons.      
+    </li>
+    <li>
+<strong>Backend agnostic</strong>. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
+      
+    </li>
+    <li><strong>PageObjects</strong> and StepObjects are supported out of the box. They can be generated and used in tests through dependency injection.</li>
+
+    <li>Written in <strong>ES6</strong> without transpilers. This allows to use latest features of ES6 and NodeJS natively and makes source code modern and easy to extend.</li>
+  </ul>
+</p>
+
+  <h3>Voice of Developers</h3>
+
+<div class="reddit-embed" data-embed-media="www.redditmedia.com" data-embed-parent="false" data-embed-live="true" data-embed-created="2015-12-02T11:19:39.756Z"><a href="https://www.reddit.com/r/node/comments/3u2b6b/codeceptjs_a_new_end_to_end_testing_framework/cxbazhg">Comment</a> from discussion <a href="https://www.reddit.com/r/node/comments/3u2b6b/codeceptjs_a_new_end_to_end_testing_framework/">CodeceptJS - a new end to end testing framework with nice synchonous API</a>.</div><script async src="https://www.redditstatic.com/comment-embed.js"></script>
+
+<blockquote class="twitter-tweet" data-conversation="none" lang="uk"><p lang="en" dir="ltr"><a href="https://twitter.com/codeception">@codeception</a> Ahh. Well, so far, very promising. Excited to use it.</p>&mdash; Jeffrey Way (@jeffrey_way) <a href="https://twitter.com/jeffrey_way/status/669314229690884096">25 Листопад 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</div>
+
+    <div class="col-md-6">
+  
+    
+
+
+    <h2>Comparisons</h2>
+
+    <p>Learn what makes CodeceptJS different from current solutions</p>
+
+    <h3>vs Mocha + WebDriver</h3>
+
+    <p>
+      CodeceptJS is based on Mocha and uses WebDriverIO library behind the scene. However, complexity of WebDriver libraries are hidden inside DSL for you to <strong>concentrate on test scenarios</strong>. That also makes CodeceptJS easy to maintain and read.
+    </p>
+    <h3>vs Protractor</h3>
+
+    <p>CodeceptJS is a high-level testing system which incorporates Protractor as test execution backend. You can write tests in a simple and readable DSL and make them be <strong>executed with Protractor for your AngularJS</strong> app</p>
+
+    <h3>vs CucumberJS</h3>
+
+    <p>
+      Like CucumberJS our framework uses scenarios and steps. Unlike CucumberJS, common <strong>steps are predefined</strong>. That allows you to concentrate on testing and not on building a test framework. We use <strong>JavaScript DSL</strong> instead of Gherkin, to provide better flexibility in testing.
+
+    </p>
+
+    
+    <h2>Powered By</h2>
+
+    <ul class="imglist powered">
+      <li><a target="_blank" href="https://mochajs.org">
+        <img src="/images/mocha.png" alt="Mocha JS Framework">
+        </a>
+      </li>
+      <li>
+        <a target="_blank" href="http://webdriver.io/"></a>
+        <img src="/images/webdriverio.png" alt="WebDriverIO Selenium Bindings">
+        </a>
+      </li>
+      <li>
+        <a target="_blank" href="http://www.seleniumhq.org/">
+          <img src="/images/selenium.png" alt="Selenium">      
+        </a>
+      </li>
+    </ul>
+
+    </div>
+
+</div>
+</div>
+        
+
+    <footer>
+
+        <div class="container">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+
+
+    </footer>
+
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>        
+        <script src="./js/base.js"></script>
+    </body>
+</html>
