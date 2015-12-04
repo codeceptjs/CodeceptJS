@@ -67,7 +67,7 @@ footer a {
 
 footer .rebilly {
   background: rgba(255,255,255,0.3);
-  width:300px;
+  width: 300px;
   border-radius: 30px;
 }
 
@@ -168,6 +168,7 @@ footer .rebilly {
 
 .install {
   background: #F9F9F9;
+  display: inline-block;
   color: #666;
   font-family: 'Ubuntu Mono', 'monospace';
   padding: 1em;
