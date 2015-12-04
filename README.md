@@ -123,7 +123,7 @@ CodeceptJS Demonstration --
 ```
 
 CodeceptJS has an ultimate feature to help you develop and debug you test. 
-You can **pause execution of test in any place and use interactive shell** to try different actions and locatots.
+You can **pause execution of test in any place and use interactive shell** to try different actions and locators.
 Just add `pause()` call at any place in a test and run it. 
 
 Interactive shell can be started outside test context by running:
@@ -254,6 +254,51 @@ Scenario('test some forms', (I, docsPage) => {
   I.dontSeeInCurrentUrl('/documentation');
 });
 ```
+
+## Connect through proxy
+
+CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
+need to update the `helpers.WebDriverIO.proxy` key.
+
+```js
+{
+    "helpers": {
+        "WebDriverIO": {
+            "proxy": {
+                "proxyType": "manual|pac",
+                "proxyAutoconfigUrl": "URL TO PAC FILE",
+                "httpProxy": "PROXY SERVER",
+                "sslProxy": "PROXY SERVER",
+                "ftpProxy": "PROXY SERVER",
+                "socksProxy": "PROXY SERVER",
+                "socksUsername": "USERNAME",
+                "socksPassword": "PASSWORD",
+                "noProxy": "BYPASS ADDRESSES"
+            }
+        }
+    }
+}
+```
+
+For example,
+
+```js
+{
+    "helpers": {
+        "WebDriverIO": {
+            "proxy": {
+                "proxyType": "manual",
+                "httpProxy": "http://corporate.proxy:8080",
+                "socksUsername": "codeceptjs",
+                "socksPassword": "secret",
+                "noProxy": "127.0.0.1,localhost"
+            }
+        }
+    }
+}
+```
+
+Please refer to [Selenium - Proxy Object](https://code.google.com/p/selenium/wiki/DesiredCapabilities#Proxy_JSON_Object) for more information.
 
 ## Current State
 
