@@ -5,9 +5,11 @@ let assert = require('assert');
 let path = require('path');
 let sinon = require('sinon');
 
-global.codecept_dir = path.join(__dirname, '/..');
-
 describe('Container', () => {
+  
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/..');    
+  });
   
   afterEach(() => {
     container.clear();
@@ -66,8 +68,7 @@ describe('Container', () => {
       }
       container.create(config);
       // custom helpers
-      assert.ok(container.helpers('MyHelper'));      
-      container.helpers('MyHelper').should.not.be.empty;
+      assert.ok(container.helpers('MyHelper'));
       container.helpers('MyHelper').method().should.eql('hello world');
       
       // built-in helpers

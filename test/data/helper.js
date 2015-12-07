@@ -1,7 +1,7 @@
 'use strict';
 let Helper = require('../../lib/helper');
 
-module.exports = class MyHelper extends Helper {
+class MyHelper extends Helper {
    
   method() {
     return 'hello world';
@@ -16,3 +16,5 @@ module.exports = class MyHelper extends Helper {
   }
   
 }
+
+module.exports = MyHelper;
