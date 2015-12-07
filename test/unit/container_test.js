@@ -65,8 +65,13 @@ describe('Container', () => {
         }
       }
       container.create(config);
-      assert.ok(container.helpers('MyHelper'));
+      // custom helpers
+      assert.ok(container.helpers('MyHelper'));      
       container.helpers('MyHelper').should.not.be.empty;
+      container.helpers('MyHelper').method().should.eql('hello world');
+      
+      // built-in helpers
+      assert.ok(container.helpers('FileSystem'));
       container.helpers('FileSystem').should.be.instanceOf(FileSystem);
     });
     
