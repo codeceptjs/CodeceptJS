@@ -21,7 +21,7 @@ describe('Scenario', () => {
     assert.ok(fn.called);
   });
   
-  it('should work with generator func', (done) => {
+  it('should work with generator func', () => {
     let counter = 0;
     test.fn = function*() {
       yield counter++;
@@ -31,11 +31,8 @@ describe('Scenario', () => {
     }
     scenario.setup();
     scenario.test(test).fn(() => null);
-    recorder.promise()
-      .then(() => assert.equal(counter, 3))
-      .then(done)
-      .catch((err) => done(err));
-    ;
+    return recorder.promise()
+      .then(() => assert.equal(counter, 3));
   });
   
   describe('events', () => {

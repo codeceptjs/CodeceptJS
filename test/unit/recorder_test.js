@@ -45,20 +45,16 @@ describe('Recorder', () => {
       recorder.add(() => counter++);
       recorder.add(() => counter++);
       recorder.add(() => counter.should.eql(2));
-      recorder.promise()
-        .then(() => done())
-        .catch((err) => done(err));
+      return recorder.promise();
     });
     
-    it('should not add steps when stopped', (done) => {
+    it('should not add steps when stopped', () => {
       let counter = 0;
       recorder.add(() => counter++);
       recorder.stop();
       recorder.add(() => counter++);
-      recorder.promise()
-        .then(() => counter.should.eql(1))
-        .then(() => done())
-        .catch((err) => done(err));
+      return recorder.promise()
+        .then(() => counter.should.eql(1));
     });
   });
 });

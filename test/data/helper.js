@@ -1,12 +1,18 @@
 'use strict';
-module.exports = class MyHelper {
-  
-  constructor(config) {
-    this.config = config;
-  }
-  
+let Helper = require('../../lib/helper');
+
+module.exports = class MyHelper extends Helper {
+   
   method() {
     return 'hello world';
+  }
+  
+  method2() {
+    return 'hello another world';
+  }
+  
+  _hiddenMethod() {
+    return 'hello dark side';
   }
   
 }
