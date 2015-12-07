@@ -1,4 +1,4 @@
-# CodeceptJs [![NPM version][npm-image]][npm-url]
+# CodeceptJs [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg)](https://travis-ci.org/Codeception/CodeceptJS)
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
