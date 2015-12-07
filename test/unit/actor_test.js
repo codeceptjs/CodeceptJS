@@ -8,7 +8,7 @@ global.codecept_dir = path.join(__dirname, '/..');
 let I;
 
 describe('Actor', () => {
-  
+    
   beforeEach(() => {
     container.clear({
       MyHelper: {
