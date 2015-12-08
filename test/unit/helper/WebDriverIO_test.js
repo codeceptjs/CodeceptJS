@@ -159,6 +159,12 @@ describe('WebDriverIO', function() {
         .then(() => assert.equal(formContents('terms'), 'agree'));              
     });
     
+    it('should check option by using context', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.checkOption('I Agree'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('terms'), 'agree'));              
+    });    
   });
   
   describe('#selectOption', () => {

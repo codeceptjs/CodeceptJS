@@ -16,6 +16,6 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - "selenium-standalone start >/dev/null 2>&1 &"
-  - "php -S -t test/data/app 127.0.0.1:8000 2>&1 >/dev/null &"
+  - "php -S -t test/data/app 127.0.0.1:8000 &"
 
 script: gulp test
