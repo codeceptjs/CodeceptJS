@@ -3,10 +3,14 @@ node_js:
   - '4.2'
   - '5.1'
 
+addons:
+  apt:
+    packages:
+    - php5-cli
+
 before_install:
   - npm install selenium-standalone@latest -g
   - selenium-standalone install
-  - apt-get install php5-cli
   
 before_script:
   - "selenium-standalone start 2>&1 >/dev/null &"

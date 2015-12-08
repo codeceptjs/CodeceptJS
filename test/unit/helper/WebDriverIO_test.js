@@ -22,6 +22,10 @@ describe('WebDriverIO', function() {
   this.timeout(10000);
   
   before(() => {
+    try {      
+      fs.unlinkSync(dataFile);
+    } catch (err) {}
+    
     wd = new WebDriverIO({
       url: site_url,
       browser: 'firefox'
@@ -29,7 +33,6 @@ describe('WebDriverIO', function() {
   });
   
   beforeEach(() => {
-    fs.unlinkSync(dataFile);
     return wd._before();
   });
    
@@ -130,7 +133,72 @@ describe('WebDriverIO', function() {
       return wd.amOnPage('/form/example7')
         .then(() => wd.click('Buy Chocolate Bar'))
         .then(() => wd.seeInCurrentUrl('/'));      
-    });
+    });    
   });
+  
+  describe('#checkOption', () => {
+   
+    it('should check option by css', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.checkOption('#checkin'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('terms'), 'agree'));      
+    });
+
+    it('should check option by name', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.checkOption('terms'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('terms'), 'agree'));              
+    });
+    
+    it('should check option by label', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.checkOption('I Agree'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('terms'), 'agree'));              
+    });
+    
+  });
+  
+  describe('#selectOption', () => {
+    it('should select option by css', () => {
+      return wd.amOnPage('/form/select')
+        .then(() => wd.selectOption('form select[name=age]', 'adult'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('age'), 'adult'));                    
+    });
+    
+    it('should select option by name', () => {
+      return wd.amOnPage('/form/select')
+        .then(() => wd.selectOption('age', 'adult'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('age'), 'adult'));      
+    });
+    
+    it('should select option by label', () => {
+      return wd.amOnPage('/form/select')
+        .then(() => wd.selectOption('Select your age', 'dead'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('age'), 'dead'));      
+    });
+    
+    it('should select option by label and option text', () => {
+      return wd.amOnPage('/form/select')
+        .then(() => wd.selectOption('Select your age', '21-60'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('age'), 'adult'));      
+    });
+    
+    xit('should select multiple options by text', () => {
+      return wd.amOnPage('/form/select_multiple')
+        .then(() => wd.selectOption('What do you like the most?', ['eat', 'adult']))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('like'), ['eat', 'adult']));      
+      
+    });  
+  });
+  
+  
   
 });
