@@ -145,6 +145,13 @@ describe('WebDriverIO', function() {
         .then(() => assert.equal(formContents('terms'), 'agree'));      
     });
 
+    it('should check option by strict locator', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.checkOption({id: 'checkin'}))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('terms'), 'agree'));      
+    });
+
     it('should check option by name', () => {
       return wd.amOnPage('/form/checkbox')
         .then(() => wd.checkOption('terms'))
@@ -159,11 +166,11 @@ describe('WebDriverIO', function() {
         .then(() => assert.equal(formContents('terms'), 'agree'));              
     });
     
-    it('should check option by using context', () => {
-      return wd.amOnPage('/form/checkbox')
-        .then(() => wd.checkOption('I Agree'))
-        .then(() => wd.click('Submit'))
-        .then(() => assert.equal(formContents('terms'), 'agree'));              
+    it('should check option by context', () => {
+      return wd.amOnPage('/form/example1')
+        .then(() => wd.checkOption('Remember me next time', '.rememberMe'))
+        .then(() => wd.click('Login'))
+        .then(() => assert.equal(formContents('LoginForm')['rememberMe'], 1));              
     });    
   });
   
@@ -194,15 +201,17 @@ describe('WebDriverIO', function() {
         .then(() => wd.selectOption('Select your age', '21-60'))
         .then(() => wd.click('Submit'))
         .then(() => assert.equal(formContents('age'), 'adult'));      
-    });
-    
-    xit('should select multiple options by text', () => {
-      return wd.amOnPage('/form/select_multiple')
-        .then(() => wd.selectOption('What do you like the most?', ['eat', 'adult']))
+    });    
+  });
+  
+  describe('#fillField', () => {
+    xit('should fill input fields', () => {
+      return wd.amOnPage('/form/select')
+        .then(() => wd.selectOption('Select your age', '21-60'))
         .then(() => wd.click('Submit'))
-        .then(() => assert.equal(formContents('like'), ['eat', 'adult']));      
+        .then(() => assert.equal(formContents('age'), 'adult'));      
       
-    });  
+    });
   });
   
   
