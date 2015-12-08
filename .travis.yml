@@ -13,7 +13,9 @@ before_install:
   - selenium-standalone install
   
 before_script:
-  - "selenium-standalone start 2>&1 >/dev/null &"
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - "selenium-standalone start >/dev/null 2>&1 &"
   - "php -S -t test/data/app 127.0.0.1:8000 2>&1 >/dev/null &"
 
 script: gulp test
