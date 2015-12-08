@@ -26,14 +26,14 @@ describe('equal assertion', () => {
     equal.params.expected = 'hello';
     equal.params.actual = 'hi';
     let err = equal.getFailedAssertion();
-    err.inspect().should.equal("expected contents of webpage to equal")
+    err.inspect().should.equal("expected contents of webpage 'hello' to equal 'hi'")
   });
 
   it('should provide nice negate error message', () => {
     equal.params.expected = 'hello';
     equal.params.actual = 'hello';
     let err = equal.getFailedNegation();
-    err.inspect().should.equal("expected contents of webpage not to equal")  });
+    err.inspect().should.equal("expected contents of webpage 'hello' not to equal 'hello'")  });
 
   
 });

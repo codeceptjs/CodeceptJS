@@ -29,7 +29,7 @@
     "commander": "^2.9.0",
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
-    "mocha": "^2.3.3",
+    "mocha": "^2.3.4",
     "sinon": "^1.17.2",
     "webdriverio": "^3.2.5"
   },
