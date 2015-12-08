@@ -205,13 +205,36 @@ describe('WebDriverIO', function() {
   });
   
   describe('#fillField', () => {
-    xit('should fill input fields', () => {
-      return wd.amOnPage('/form/select')
-        .then(() => wd.selectOption('Select your age', '21-60'))
+    it('should fill input fields', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.fillField('Name', 'Nothing special'))
         .then(() => wd.click('Submit'))
-        .then(() => assert.equal(formContents('age'), 'adult'));      
-      
+        .then(() => assert.equal(formContents('name'), 'Nothing special'));            
     });
+
+    it('should fill field by css', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.fillField('#name', 'Nothing special'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('name'), 'Nothing special'));                  
+    });
+    
+    it('should fill field by strict locator', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.fillField({id: 'name'}, 'Nothing special'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('name'), 'Nothing special'));                  
+    });
+    
+    it('should fill field by name', () => {
+      return wd.amOnPage('/form/example1')
+        .then(() => wd.fillField('LoginForm[username]', 'davert'))
+        .then(() => wd.fillField('LoginForm[password]', '123456'))
+        .then(() => wd.click('Login'))
+        .then(() => assert.equal(formContents('LoginForm')['username'], 'davert'))
+        .then(() => assert.equal(formContents('LoginForm')['password'], '123456'));                          
+    });
+    
   });
   
   
