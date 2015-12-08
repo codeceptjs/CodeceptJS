@@ -3,4 +3,13 @@ node_js:
   - '4.2'
   - '5.1'
 
+before_install:
+  - npm install selenium-standalone@latest -g
+  - selenium-standalone install
+  - apt-get install php5-cli
+  
+before_script:
+  - "selenium-standalone start 2>&1 >/dev/null &"
+  - "php -S -t test/data/app 127.0.0.1:8000 2>&1 >/dev/null &"
+
 script: gulp test

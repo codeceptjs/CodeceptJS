@@ -24,4 +24,11 @@ class RoboFile extends \Robo\Tasks
             ->checkout('master')
             ->run();
     }
+    
+    function testServer() 
+    {
+        $this->taskServer(8000)
+            ->dir('test/data/app')
+            ->run();
+    }
 }
