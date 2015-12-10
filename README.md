@@ -146,7 +146,7 @@ I.fillField('#user_basic_email', 'hello@world.com');
 I.fillField({css: '#user_basic_email'}, 'hello@world.com');
 ``` 
 
-Other methods like `checkOption`, and `click` work in a similar manner. They can take lables or CSS or XPath locators to find elements to interact.
+Other methods like `checkOption`, and `click` work in a similar manner. They can take labels or CSS or XPath locators to find elements to interact.
  
 ### Assertions
  
