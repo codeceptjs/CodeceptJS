@@ -22,6 +22,7 @@ describe('WebDriverIO', function() {
   this.timeout(10000);
   
   before(() => {
+    global.codecept_dir = path.join(__dirname, '../../data');
     try {      
       fs.unlinkSync(dataFile);
     } catch (err) {}
@@ -103,6 +104,16 @@ describe('WebDriverIO', function() {
         .then(() => wd.see("Don't do that at home!",'h3'))
         .then(() => wd.see('Текст', 'p'));      
     });        
+  });
+  
+  describe('see element : #seeElement, #dontSeeElement', () => {
+    it('should check visible elements on page', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.seeElement('input[name=name]'))
+        .then(() => wd.seeElement('//input[@id="name"]'))
+        .then(() => wd.dontSeeElement('#something-beyond'))
+        .then(() => wd.dontSeeElement('//input[@id="something-beyond"]'));
+    });
   });
   
   describe('#click', () => {
@@ -209,6 +220,13 @@ describe('WebDriverIO', function() {
         .then(() => wd.click('Submit'))
         .then(() => assert.equal(formContents('age'), 'adult'));      
     });    
+    
+    it('should select multiple options', () => {
+      return wd.amOnPage('/form/select_multiple')
+        .then(() => wd.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.deepEqual(formContents('like'), ['play','adult']));      
+    });        
   });
   
   describe('#fillField', () => {
@@ -336,5 +354,77 @@ describe('WebDriverIO', function() {
         .then(() => wd.dontSeeInField('select2', 'not seen three'))
         .then(() => wd.seeInField('select2', 'see test three'));      
     });
+    
+    it('should check checkbox is checked :)', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.seeCheckboxIsChecked('input[type=checkbox]'))        
+    });
+
+    it('should check checkbox is not checked', () => {
+      return wd.amOnPage('/form/checkbox') 
+        .then(() => wd.dontSeeCheckboxIsChecked('#checkin'));
+    });
+  });
+  
+  describe('#grabTextFrom, #grabValueFrom, #grabAttribute', () => {
+    it('should grab text from page', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.grabTextFrom('h1'))
+        .then((val) => assert.equal(val, "Welcome to test app!"))
+        .then(() => wd.grabTextFrom('//h1'))
+        .then((val) => assert.equal(val, "Welcome to test app!"));       
+    });
+    
+    it('should grab value from field', () => {
+      return wd.amOnPage('/form/hidden')
+        .then(() => wd.grabValueFrom('#action'))
+        .then((val) => assert.equal(val, "kill_people"))
+        .then(() => wd.grabValueFrom("//form/input[@name='action']"))
+        .then((val) => assert.equal(val, "kill_people"))        
+        .then(() => wd.amOnPage('/form/textarea'))
+        .then(() => wd.grabValueFrom('#description'))
+        .then((val) => assert.equal(val, "sunrise"))       
+        .then(() => wd.amOnPage('/form/select'))
+        .then(() => wd.grabValueFrom('#age'))
+        .then((val) => assert.equal(val, "oldfag"));      
+    });
+    
+    it('should grab attribute from element', () => {
+      return wd.amOnPage('/search')
+        .then(() => wd.grabAttribute({css: 'form'}, 'method')) 
+        .then((val) => assert.equal(val, "get"))     
+    });    
+  });
+  
+  describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
+    it('should check page title', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeInTitle('TestEd Beta 2.0'))
+        .then(() => wd.dontSeeInTitle('Welcome to test app'))
+        .then(() => wd.amOnPage('/info'))
+        .then(() => wd.dontSeeInTitle('TestEd Beta 2.0'));      
+    });
+    
+    it('should grab page title', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.grabTitle())
+        .then((val) => assert.equal(val, "TestEd Beta 2.0"))      
+    });
+  });
+  
+  describe('#attachFile', () => {
+    it('should upload file located by CSS', () => {
+      return wd.amOnPage('/form/file')
+        .then(() => wd.attachFile('#avatar', 'app/avatar.jpg'))
+        .then(() => wd.click('Submit'))
+        .then(() => formContents()['files'].should.have.key('avatar'));
+    });
+    
+    it('should upload file located by label', () => {
+      return wd.amOnPage('/form/file')
+        .then(() => wd.attachFile('Avatar', 'app/avatar.jpg'))
+        .then(() => wd.click('Submit'))
+        .then(() => formContents()['files'].should.have.key('avatar'));
+    });    
   });
 });
