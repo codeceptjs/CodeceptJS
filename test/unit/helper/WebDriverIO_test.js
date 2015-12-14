@@ -9,7 +9,7 @@ let path = require('path');
 let fs = require('fs');
 let fileExists = require('../../../lib/utils').fileExists;
 const dataFile = path.join(__dirname, '../../data/app/db');
-
+let AssertionFailedError = require('../../../lib/assert/error');
 
 function formContents(key) {
   let data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
@@ -520,4 +520,44 @@ describe('WebDriverIO', function () {
         .then(() => wd.cancelPopup());
     });
   });
+
+  describe('#waitForText', () => {
+    it('should wait for text', () => {
+      return wd.amOnPage('/dynamic')
+        .then(() => wd.dontSee('Dynamic text'))
+        .then(() => wd.waitForText('Dynamic text', 2))
+        .then(() => wd.see('Dynamic text'));
+    });
+
+    it('should wait for text in context', () => {
+      return wd.amOnPage('/dynamic')
+        .then(() => wd.dontSee('Dynamic text'))
+        .then(() => wd.waitForText('Dynamic text', 2, '#text'))
+        .then(() => wd.see('Dynamic text'));
+    });
+
+    it('should return error if not present', () => {
+      return wd.amOnPage('/dynamic')
+        .then(() => wd.waitForText('Nothing here', 0, '#text'))
+        .catch((e) => {
+
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.be.equal('expected element #text to include Nothing here');
+
+        });
+    });
+
+    it('should return error if waiting is too small', () => {
+      return wd.amOnPage('/dynamic')
+        .then(() => wd.waitForText('Dynamic text', 0.5))
+        .catch((e) => {
+
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.be.equal('expected element body to include Dynamic text');
+
+        });
+    });
+
+  });
+
 });
