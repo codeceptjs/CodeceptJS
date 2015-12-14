@@ -21,9 +21,9 @@ gulp.task('docs', function () {
 gulp.task('static', function () {
   return gulp.src('**/*.js')
     .pipe(excludeGitignore())
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+    .pipe(eslint({fix: true}))
+    .pipe(eslint.format())    
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('pre-test', function () {

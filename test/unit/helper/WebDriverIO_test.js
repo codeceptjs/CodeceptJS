@@ -7,6 +7,7 @@ let site_url = 'http://127.0.0.1:8000';
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
+let fileExists = require('../../../lib/utils').fileExists;
 const dataFile = path.join(__dirname, '../../data/app/db');
 
 
@@ -229,7 +230,7 @@ describe('WebDriverIO', function() {
     });        
   });
   
-  describe('#fillField', () => {
+  describe('#fillField, #appendField', () => {
     it('should fill input fields', () => {
       return wd.amOnPage('/form/field')
         .then(() => wd.fillField('Name', 'Nothing special'))
@@ -272,7 +273,14 @@ describe('WebDriverIO', function() {
         .then(() => wd.fillField('Description', 'Nothing special'))
         .then(() => wd.click('Submit'))
         .then(() => assert.equal(formContents('description'), 'Nothing special'));                        
-    });    
+    });
+    
+    it('should append field value', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.appendField('Name', '_AND_NEW'))
+        .then(() => wd.click('Submit'))
+        .then(() => assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW'));
+    });
   });
   
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -420,11 +428,89 @@ describe('WebDriverIO', function() {
         .then(() => formContents()['files'].should.have.key('avatar'));
     });
     
-    it('should upload file located by label', () => {
+    it('should upload file located by label' , () => {
       return wd.amOnPage('/form/file')
         .then(() => wd.attachFile('Avatar', 'app/avatar.jpg'))
         .then(() => wd.click('Submit'))
         .then(() => formContents()['files'].should.have.key('avatar'));
+    });    
+  });
+  
+  describe('#saveScreenshot', () => {      
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+    
+    it('should create a screenshot file in output dir', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.saveScreenshot('user.png'))
+        .then(() => assert.ok(fileExists(path.join(output_dir, 'user.png')), null, 'file does not exists'));
+    });
+    
+    it('should create a screenshot file in output dir', () => {
+      let test = { name: 'should do smth' };
+      return wd.amOnPage('/')
+        .then(() => wd._failed(test))
+        .then(() => assert.ok(fileExists(path.join(output_dir, 'should_do_smth.failed.png')), null, 'file does not exists'));
+    });        
+  });
+  
+  describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
+    it('should do all cookie stuff', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.setCookie({name: 'auth', value: '123456'}))
+        .then(() => wd.seeCookie('auth'))
+        .then(() => wd.dontSeeCookie('auuth'))
+        .then(() => wd.grabCookie('auth'))
+        .then((cookie) => assert.equal(cookie.value, '123456'))
+        .then(() => wd.clearCookie('auth'))   
+        .then(() => wd.dontSeeCookie('auth'))
+    });
+  });
+  
+  describe('#seeInSource', () => {
+    it('should check for text to be in HTML source', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeInSource('<title>TestEd Beta 2.0</title>'))
+        .then(() => wd.dontSeeInSource('<meta'));
+    });
+  });
+  
+  describe('window size : #resizeWindow', () => {
+    it('should change the active window size', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.resizeWindow('maximize'))
+        .then(function() { return this.windowHandleSize((err, size) => {
+            assert.equal(size.value.width, 640);
+            return assert.equal(size.value.height, 480);
+          });
+        });
+    });
+  });
+  
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
+    afterEach(() => {
+      return wd.cancelPopup();
+    });
+    
+    it('should accept popup window', () => {
+      return wd.amOnPage('/form/popup')
+        .then(() => wd.click('Confirm'))
+        .then(() => wd.acceptPopup())
+        .then(() => wd.see('Yes', '#result'));      
+    });
+    
+    it('should cancel popup', () => {
+      return wd.amOnPage('/form/popup')
+        .then(() => wd.click('Confirm'))
+        .then(() => wd.cancelPopup())
+        .then(() => wd.see('No', '#result'));      
+    });
+    
+    it('should check text in popup', () => {
+      return wd.amOnPage('/form/popup')
+        .then(() => wd.click('Alert'))
+        .then(() => wd.seeInPopup('Really?'))    
     });    
   });
 });

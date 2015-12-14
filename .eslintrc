@@ -41,10 +41,6 @@
       2,
       "as-needed"
     ],
-    "quotes": [
-      2,
-      "single"
-    ],
     "space-after-keywords": [
       2,
       "always"
@@ -60,10 +56,6 @@
       2,
       "never"
     ],
-    "strict": [
-      2,
-      "global"
-    ],
     "curly": [
       2,
       "all"
@@ -76,7 +68,6 @@
         "afterColon": true
       }
     ],
-    "no-eval": 2,
     "no-with": 2,
     "space-infix-ops": 2,
     "dot-notation": [
