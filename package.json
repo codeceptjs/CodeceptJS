@@ -29,11 +29,11 @@
     "commander": "^2.9.0",
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
-    "mocha": "^2.3.3",
-    "sinon": "^1.17.2",
+    "mocha": "^2.3.4",
     "webdriverio": "^3.2.5"
   },
   "devDependencies": {
+    "sinon": "^1.17.2",
     "chai": "^3.4.1",
     "documentation": "^3.0.4",
     "gulp": "^3.6.0",
@@ -42,6 +42,7 @@
     "gulp-eslint": "^1.0.0",
     "gulp-exclude-gitignore": "^1.0.0",
     "gulp-istanbul": "^0.9.0",
+    "gulp-jscs": "^3.0.2",
     "gulp-mocha": "^2.0.0",
     "gulp-plumber": "^1.0.0"
   },

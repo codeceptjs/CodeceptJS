@@ -13,17 +13,17 @@ gulp.task('docs', function () {
 
   glob.sync('./lib/helper/*.js').forEach((file) => {
     gulp.src(file)
-      .pipe(documentation({ filename: path.basename(file,'.js')+'.md', shallow: true, format: 'md', github: true }))
+      .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md', github: true }))
       .pipe(gulp.dest('docs/helpers'));
-    });
-  });    
+  });
+});
 
 gulp.task('static', function () {
   return gulp.src('**/*.js')
     .pipe(excludeGitignore())
-    .pipe(eslint())
+    .pipe(eslint({fix: true}))
     .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('pre-test', function () {
