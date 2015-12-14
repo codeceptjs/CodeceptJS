@@ -37,6 +37,7 @@ $urls = array(
     '/unset-cookie' => 'unsetCookie',
     '/external_url' => 'external_url',
     '/iframe' => 'iframe',
+    '/dynamic' => 'dynamic',
 );
 
 glue::stick($urls);
