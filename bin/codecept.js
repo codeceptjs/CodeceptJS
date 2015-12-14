@@ -69,7 +69,7 @@ program.command('run [suite] [test]')
   .action(require('../lib/command/run'));
 
 if (process.argv.length <= 2) {
-  console.log('CodeceptJS v'+ Codecept.version());
-  program.outputHelp()
+  console.log('CodeceptJS v' + Codecept.version());
+  program.outputHelp();
 }
 program.parse(process.argv);
