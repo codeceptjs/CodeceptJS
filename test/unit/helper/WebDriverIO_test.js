@@ -281,6 +281,16 @@ describe('WebDriverIO', function () {
         .then(() => wd.click('Submit'))
         .then(() => assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW'));
     });
+    
+    it('should be able to send special keys to element', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.appendField('Name', ''))
+        .then(() => wd.pressKey([`Control`,`a`]))
+        .then(() => wd.pressKey(`Delete`))
+        .then(() => wd.pressKey(['Shift', '111']))
+        .then(() => wd.pressKey('1'))
+        .then(() => wd.seeInField('Name', '!!!1'));        
+    });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -479,7 +489,7 @@ describe('WebDriverIO', function () {
   describe('window size : #resizeWindow', () => {
     it('should change the active window size', () => {
       return wd.amOnPage('/')
-        .then(() => wd.resizeWindow('maximize'))
+        .then(() => wd.resizeWindow(640, 480))
         .then(function () { return this.windowHandleSize((err, size) => {
           assert.equal(size.value.width, 640);
           return assert.equal(size.value.height, 480);
@@ -489,10 +499,6 @@ describe('WebDriverIO', function () {
   });
 
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
-    afterEach(() => {
-      return wd.cancelPopup();
-    });
-
     it('should accept popup window', () => {
       return wd.amOnPage('/form/popup')
         .then(() => wd.click('Confirm'))
@@ -511,6 +517,7 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/form/popup')
         .then(() => wd.click('Alert'))
         .then(() => wd.seeInPopup('Really?'))
+        .then(() => wd.cancelPopup());
     });
   });
 });
