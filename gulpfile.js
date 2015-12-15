@@ -8,6 +8,7 @@ var plumber = require('gulp-plumber');
 var coveralls = require('gulp-coveralls');
 var documentation = require('gulp-documentation');
 var glob = require('glob');
+var guppy = require('git-guppy')(gulp);
 
 gulp.task('docs', function () {
 
