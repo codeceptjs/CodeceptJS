@@ -22,10 +22,18 @@ gulp.task('docs', function () {
 gulp.task('static', function () {
   return gulp.src('**/*.js')
     .pipe(excludeGitignore())
-    .pipe(eslint({fix: true}))
+    .pipe(eslint({fix: true, quiet: true}))
     .pipe(eslint.format())
     .pipe(gulp.dest('.'));
 });
+
+gulp.task('lint', function () {
+  return gulp.src('**/*.js')
+    .pipe(excludeGitignore())
+    .pipe(eslint())
+    .pipe(gulp.dest('.'));
+});
+
 
 gulp.task('pre-commit', ['static']);
 
