@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Helpers - CodeceptJS</title>
+	<title>Releases - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -85,7 +85,7 @@
             
                         
             
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
@@ -97,8 +97,8 @@
                             <a href="../acceptance/">Acceptance Testing</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Helpers</a>
+                        <li >
+                            <a href="../helpers/">Helpers</a>
                         </li>
                     
                         <li >
@@ -115,11 +115,11 @@
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="WebDriverIO/">WebDriverIO</a>
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
                         </li>
                     
                         <li >
-                            <a href="FileSystem/">FileSystem</a>
+                            <a href="../helpers/FileSystem/">FileSystem</a>
                         </li>
                     
                     </ul>
@@ -128,8 +128,8 @@
                         
             
                 
-                <li >
-                    <a href="../changelog/">Releases</a>
+                <li class="active">
+                    <a href="./">Releases</a>
                 </li>
                 
             
@@ -139,12 +139,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../acceptance/">
+                    <a rel="next" href="../helpers/FileSystem/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
-                <li >
-                    <a rel="prev" href="../pageobjects/">
+                <li class="disabled">
+                    <a rel="prev" >
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -171,115 +171,33 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#helpers">Helpers</a></li>
-        
-            <li><a href="#development">Development</a></li>
-        
-            <li><a href="#webdriverio-example">WebDriverIO Example</a></li>
-        
-            <li><a href="#initialization">Initialization</a></li>
-        
-            <li><a href="#hooks">Hooks</a></li>
+        <li class="main active"><a href="#020">0.2.0</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="helpers">Helpers</h1>
-<p>Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
-Methods of Helper class will be available in tests in <code>I</code> object. This abstracts test scenarios from the implementation and allows easy switching between backends. 
-Functionality of CodeceptJS should be extended by writing a custom helpers.</p>
-<p>You can either access core Helpers (and underlying libraries) or create a new from scratch. </p>
-<h2 id="development">Development</h2>
-<p>Helpers can be created by running a generator command:</p>
-<pre><code class="bash">codeceptjs gh
-</code></pre>
-
-<p><em>(or <code>generate helper</code>)</em></p>
-<p>Helpers are ES6 classes inherited from <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js">corresponding abstract class</a>.
-Generated Helper will be added to <code>codecept.json</code> config. It should look like this:</p>
-<pre><code class="js">'use strict';
-
-let Helper = require('codeceptjs/helper');
-
-class MyHelper extends Helper {
-
-  // before/after hooks
-  _before() {
-    // remove if not used  
-  }
-
-  _after() {
-    // remove if not used
-  }
-
-  // add custom methods here  
-  // If you need to access other helpers
-  // use: this.helpers['helperName']    
-
-}
-
-module.exports = MyHelper;
-</code></pre>
-
-<p>All methods except those starting from <code>_</code> will be added to <code>I</code> object and trated as test actions.
-Every method should return a value in order to be appended into promise chain.</p>
-<h2 id="webdriverio-example">WebDriverIO Example</h2>
-<p>Next example demontrates how to use WebDriverIO library to create your own test action.
-Method <code>seeAuthenication</code> will use <code>client</code> instance of WebDriverIO to get access to cookies.
-Standard NodeJS assertion library will be used.</p>
-<pre><code class="js">'use strict';
-let Helper = require('codeceptjs/helper');
-
-// use any assertion library you like
-let assert = require('assert');
-
-class MyHelper extends Helper {  
-  /**
-   * checks that authentication cookie is set 
-   */
-  seeAuthentication() {    
-    // access current client of WebDriverIO helper
-    let client = this.helpers['WebDriverIO'].browser;
-
-    // get all cookies according to http://webdriver.io/api/protocol/cookie.html
-    // any helper method should return a value in order to be added to promise chain
-    return client.cookie(function(err, res) {
-      // get values
-      let cookies = res.value;
-      for (let k in cookies) {
-        // check for a cookie
-        if (cookies[k].name != 'logged_in') continue;
-        assert.equal(cookies[k].value, 'yes');
-        return;        
-      }
-      assert.fail(cookies, 'logged_in', &quot;Auth cookie not set&quot;);      
-    });
-  }
-}
-</code></pre>
-
-<h2 id="initialization">Initialization</h2>
-<p>Helpers can be configured in <code>codecept.json</code> and config values are passed into constructor.
-By default config values will be stored in <code>this.config</code>. You can redefine constructor to provide custom initialization and customization.</p>
-<pre><code class="js">constructor(config) {
-  config.defaultValue = '42';
-  super(config);
-}
-</code></pre>
-
-<h2 id="hooks">Hooks</h2>
-<p>Helpers may contain several hooks you can use to handle events of a test.
-Implement corresponding methods to them.  </p>
+<h1 id="020">0.2.0</h1>
 <ul>
-<li><code>_init</code> - before all tests</li>
-<li><code>_before</code> - before a test</li>
-<li><code>_beforeStep</code> - before each step</li>
-<li><code>_afterStep</code> - after each step</li>
-</ul>
-<p>Each implemented method should return a value as they will be added to global promise chain as well.</p>
-<h3 id="done">done()</h3></div>
+<li><strong>within</strong> context hook added</li>
+<li><code>--reporter</code> option supported</li>
+<li>[WebDriverIO] added features and methods:</li>
+<li>elements: <code>seeElement</code>, ...</li>
+<li>popups: <code>acceptPopup</code>, <code>cancelPopup</code>, <code>seeInPopup</code>,...</li>
+<li>navigation: <code>moveCursorTo</code>, <code>scrollTo</code></li>
+<li>saving screenshots on failure; <code>saveScreenshot</code> </li>
+<li>cookies: <code>setCookie</code>, <code>seeCookie</code>, ...</li>
+<li>source: <code>seeInSource</code></li>
+<li>form: <code>seeCheckboxIsChecked</code>, <code>selectOption</code> to support multiple selects</li>
+<li>keyboard: <code>appendField</code>, <code>pressKey</code></li>
+<li>mouse: <code>rightClick</code></li>
+<li>tests added</li>
+<li>[WebDriverIO] proxy configuration added by @petehouston </li>
+<li>[WebDriverIO] fixed <code>waitForText</code> method by @roadhump. Fixes #11</li>
+<li>Fixed creating output dir when it already exists on init by @alfirin</li>
+<li>Fixed loading of custom helpers</li>
+</ul></div>
             <div class="clearfix"></div>
         </div>
         

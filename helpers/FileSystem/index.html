@@ -125,6 +125,14 @@
                     </ul>
                 </li>
             
+                        
+            
+                
+                <li >
+                    <a href="../../changelog/">Releases</a>
+                </li>
+                
+            
             
             </ul>
 
@@ -135,8 +143,8 @@
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
-                <li class="disabled">
-                    <a rel="prev" >
+                <li >
+                    <a rel="prev" href="../../changelog/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -185,7 +193,7 @@
             <div class="col-md-7" role="main">
 
 <h1 id="filesystem">FileSystem</h1>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L22-L87" title="Source code on GitHub">lib/helper/FileSystem.js:22-87</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L22-L87" title="Source code on GitHub">lib/helper/FileSystem.js:22-87</a></p>
 <p>Helper for testing filesystem.
 Can be easily used to check file structures:</p>
 <pre><code class="js">I.amInPath('test');
@@ -195,15 +203,15 @@ I.dontSeeInThisFile(&quot;WebDriverIO&quot;);
 </code></pre>
 
 <h2 id="aminpath">amInPath</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L34-L37" title="Source code on GitHub">lib/helper/FileSystem.js:34-37</a></p>
-<p>Enters a directory In local filesystem. 
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L34-L37" title="Source code on GitHub">lib/helper/FileSystem.js:34-37</a></p>
+<p>Enters a directory In local filesystem.
 Starts from a current directory</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>openPath</code>  </li>
 </ul>
 <h2 id="dontseefilecontentsequal">dontSeeFileContentsEqual</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L82-L85" title="Source code on GitHub">lib/helper/FileSystem.js:82-85</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L82-L85" title="Source code on GitHub">lib/helper/FileSystem.js:82-85</a></p>
 <p>Checks that contents of file found by <code>seeFile</code> doesn't equal to text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -211,7 +219,7 @@ Starts from a current directory</p>
 <li><code>encoding</code>  </li>
 </ul>
 <h2 id="dontseeinthisfile">dontSeeInThisFile</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L66-L69" title="Source code on GitHub">lib/helper/FileSystem.js:66-69</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L66-L69" title="Source code on GitHub">lib/helper/FileSystem.js:66-69</a></p>
 <p>Checks that file found by <code>seeFile</code> doesn't include text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -219,14 +227,14 @@ Starts from a current directory</p>
 <li><code>encoding</code>  </li>
 </ul>
 <h2 id="seefile">seeFile</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L49-L53" title="Source code on GitHub">lib/helper/FileSystem.js:49-53</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L49-L53" title="Source code on GitHub">lib/helper/FileSystem.js:49-53</a></p>
 <p>Checks that file exists</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>name</code>  </li>
 </ul>
 <h2 id="seefilecontentsequal">seeFileContentsEqual</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L74-L77" title="Source code on GitHub">lib/helper/FileSystem.js:74-77</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L74-L77" title="Source code on GitHub">lib/helper/FileSystem.js:74-77</a></p>
 <p>Checks that contents of file found by <code>seeFile</code> equal to text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -234,7 +242,7 @@ Starts from a current directory</p>
 <li><code>encoding</code>  </li>
 </ul>
 <h2 id="seeinthisfile">seeInThisFile</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L58-L61" title="Source code on GitHub">lib/helper/FileSystem.js:58-61</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L58-L61" title="Source code on GitHub">lib/helper/FileSystem.js:58-61</a></p>
 <p>Checks that file found by <code>seeFile</code> includes a text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -242,7 +250,7 @@ Starts from a current directory</p>
 <li><code>encoding</code>  </li>
 </ul>
 <h2 id="writetofile">writeToFile</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/efe25d76220d1de4dc7b4152262d9163b04a196b/lib/helper/FileSystem.js#L42-L44" title="Source code on GitHub">lib/helper/FileSystem.js:42-44</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/FileSystem.js#L42-L44" title="Source code on GitHub">lib/helper/FileSystem.js:42-44</a></p>
 <p>Writes test to file</p>
 <p><strong>Parameters</strong></p>
 <ul>

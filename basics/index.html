@@ -125,6 +125,14 @@
                     </ul>
                 </li>
             
+                        
+            
+                
+                <li >
+                    <a href="../changelog/">Releases</a>
+                </li>
+                
+            
             
             </ul>
 
@@ -170,6 +178,14 @@
             <li><a href="#pause">Pause</a></li>
         
             <li><a href="#before">Before</a></li>
+        
+            <li><a href="#within">Within</a></li>
+        
+            <li><a href="#skipping">Skipping</a></li>
+        
+            <li><a href="#reporters">Reporters</a></li>
+        
+            <li><a href="#bootstrap">Bootstrap</a></li>
         
     
     </ul>
@@ -241,6 +257,38 @@ Scenario('test some forms', (I) =&gt; {
 Scenario('test title', (I) =&gt; {
   I.seeInTitle('Example application');
 });
+</code></pre>
+
+<h2 id="within">Within</h2>
+<p>To specify the exact area on a page where actions can be performed you can use <code>within</code> function.
+Everything executed in its context will be narrowed to context specified by locator:</p>
+<pre><code class="js">I.amOnPage('https://github.com');
+within('.form-signup-home', function () {
+  I.fillField('user[login]', 'User');
+  I.fillField('user[email]', 'user@user.com');
+  I.fillField('user[password]', 'user@user.com');
+  I.click('button');
+});
+I.see('There were problems creating your account.');
+</code></pre>
+
+<p>When running steps inside a within block will be shown with a shift:</p>
+<p><img alt="within" src="http://codecept.io/images/within.png" /></p>
+<h2 id="skipping">Skipping</h2>
+<p>Like in Mocha you can use <code>x</code> and <code>only</code> to skip tests or making a single test to run.</p>
+<ul>
+<li><code>xScenario</code> - skips current test</li>
+<li><code>Scenario.only</code> - executes only the current test</li>
+</ul>
+<h2 id="reporters">Reporters</h2>
+<p>CodeceptJS supports <a href="https://mochajs.org/#reporters">Mocha Reporters</a>.
+They can be used with <code>--reporter</code> optons.
+By default a custom console reporter is enabled. </p>
+<p>We are currently working on improving reporters support.</p>
+<h2 id="bootstrap">Bootstrap</h2>
+<p>In case you need to execute arbitrary code before the tests,
+you can place it into your bootstrap file and provide a relative path to it in <code>codecept.json</code></p>
+<pre><code class="json">bootstrap: &quot;./run_server.js&quot;
 </code></pre>
 
 <hr />

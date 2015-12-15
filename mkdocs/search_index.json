@@ -32,7 +32,7 @@
         }, 
         {
             "location": "/basics/", 
-            "text": "Basics\n\n\nCodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.\n\n\nFeature('CodeceptJS demo');\n\nScenario('check Welcome page on site', (I) =\n {\n  I.amOnPage('/');\n  I.see('Welcome');\n}\n\n\n\n\nTests are expected to be written in ECMAScript 6. \nEach test is described inside a \nScenario\n function with \nI\n object passed into it. \nI object is an \nactor\n, an abstraction for a testing user. I is a proxy object for currently enabled \nHelpers\n.\n\n\n  \nhelpers\n: {\n    \nWebDriverIO\n: {\n      \nurl\n: \nhttp://localhost\n,\n      \nbrowser\n: \nfirefox\n\n    }\n  }\n\n\n\n\nFor current config all methods of \nI\n will be taken from \nWebDriverIO\n helper. \nThis is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.\n\n\nHow It Works\n\n\nTests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.\nHowever, behind the scene \nall actions are wrapped in promises\n inside the \nI\n object. \n\nGlobal promise\n chain is initialized before each test and all \nI.*\n calls will be appended to it as well as setup and teardown.\n\n\nIf you want to get information from a running test you can use \nyield\n inside a \ngenerator function\n and special methods of helpers started with \ngrab\n prefix.\n\n\nScenario('try grabbers', function* (I) {\n  var title = yield I.grabTitle();\n});\n\n\n\n\nthen you can use those variables in assertions:\n\n\nvar title = yield I.grabTitle();\nvar assert = require('assert');\nassert.equal(title, 'CodeceptJS');\n\n\n\n\nPause\n\n\nTest execuition can be paused in any place of a test with \npause()\n call. \nThis also launches interactive console where you can call actions of \nI\n object.\n\n\n\n\nYou can also the pause to check the web application in a browser. Press \nENTER\n to resumet test execution.   \n\n\nInteractive shell can be started outside test context by running\n\n\ncodeceptjs shell\n\n\n\n\nBefore\n\n\nCommon preperation steps like opening a web page, logging in a user, can be placed in \nBefore\n or \nBackground\n hook:\n\n\nFeature('CodeceptJS Demonstration');\n\nBefore((I) =\n { // or Background\n  I.amOnPage('/documentation');\n});\n\nScenario('test some forms', (I) =\n {\n  I.click('Create User');\n  I.see('User is valid');\n  I.dontSeeInCurrentUrl('/documentation');\n});\n\nScenario('test title', (I) =\n {\n  I.seeInTitle('Example application');\n});\n\n\n\n\n\n\ndone()", 
+            "text": "Basics\n\n\nCodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.\n\n\nFeature('CodeceptJS demo');\n\nScenario('check Welcome page on site', (I) =\n {\n  I.amOnPage('/');\n  I.see('Welcome');\n}\n\n\n\n\nTests are expected to be written in ECMAScript 6. \nEach test is described inside a \nScenario\n function with \nI\n object passed into it. \nI object is an \nactor\n, an abstraction for a testing user. I is a proxy object for currently enabled \nHelpers\n.\n\n\n  \nhelpers\n: {\n    \nWebDriverIO\n: {\n      \nurl\n: \nhttp://localhost\n,\n      \nbrowser\n: \nfirefox\n\n    }\n  }\n\n\n\n\nFor current config all methods of \nI\n will be taken from \nWebDriverIO\n helper. \nThis is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.\n\n\nHow It Works\n\n\nTests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.\nHowever, behind the scene \nall actions are wrapped in promises\n inside the \nI\n object. \n\nGlobal promise\n chain is initialized before each test and all \nI.*\n calls will be appended to it as well as setup and teardown.\n\n\nIf you want to get information from a running test you can use \nyield\n inside a \ngenerator function\n and special methods of helpers started with \ngrab\n prefix.\n\n\nScenario('try grabbers', function* (I) {\n  var title = yield I.grabTitle();\n});\n\n\n\n\nthen you can use those variables in assertions:\n\n\nvar title = yield I.grabTitle();\nvar assert = require('assert');\nassert.equal(title, 'CodeceptJS');\n\n\n\n\nPause\n\n\nTest execuition can be paused in any place of a test with \npause()\n call. \nThis also launches interactive console where you can call actions of \nI\n object.\n\n\n\n\nYou can also the pause to check the web application in a browser. Press \nENTER\n to resumet test execution.   \n\n\nInteractive shell can be started outside test context by running\n\n\ncodeceptjs shell\n\n\n\n\nBefore\n\n\nCommon preperation steps like opening a web page, logging in a user, can be placed in \nBefore\n or \nBackground\n hook:\n\n\nFeature('CodeceptJS Demonstration');\n\nBefore((I) =\n { // or Background\n  I.amOnPage('/documentation');\n});\n\nScenario('test some forms', (I) =\n {\n  I.click('Create User');\n  I.see('User is valid');\n  I.dontSeeInCurrentUrl('/documentation');\n});\n\nScenario('test title', (I) =\n {\n  I.seeInTitle('Example application');\n});\n\n\n\n\nWithin\n\n\nTo specify the exact area on a page where actions can be performed you can use \nwithin\n function.\nEverything executed in its context will be narrowed to context specified by locator:\n\n\nI.amOnPage('https://github.com');\nwithin('.form-signup-home', function () {\n  I.fillField('user[login]', 'User');\n  I.fillField('user[email]', 'user@user.com');\n  I.fillField('user[password]', 'user@user.com');\n  I.click('button');\n});\nI.see('There were problems creating your account.');\n\n\n\n\nWhen running steps inside a within block will be shown with a shift:\n\n\n\n\nSkipping\n\n\nLike in Mocha you can use \nx\n and \nonly\n to skip tests or making a single test to run.\n\n\n\n\nxScenario\n - skips current test\n\n\nScenario.only\n - executes only the current test\n\n\n\n\nReporters\n\n\nCodeceptJS supports \nMocha Reporters\n.\nThey can be used with \n--reporter\n optons.\nBy default a custom console reporter is enabled. \n\n\nWe are currently working on improving reporters support.\n\n\nBootstrap\n\n\nIn case you need to execute arbitrary code before the tests,\nyou can place it into your bootstrap file and provide a relative path to it in \ncodecept.json\n\n\nbootstrap: \n./run_server.js\n\n\n\n\n\n\n\ndone()", 
             "title": "Basics"
         }, 
         {
@@ -52,8 +52,28 @@
         }, 
         {
             "location": "/basics/#before", 
-            "text": "Common preperation steps like opening a web page, logging in a user, can be placed in  Before  or  Background  hook:  Feature('CodeceptJS Demonstration');\n\nBefore((I) =  { // or Background\n  I.amOnPage('/documentation');\n});\n\nScenario('test some forms', (I) =  {\n  I.click('Create User');\n  I.see('User is valid');\n  I.dontSeeInCurrentUrl('/documentation');\n});\n\nScenario('test title', (I) =  {\n  I.seeInTitle('Example application');\n});   done()", 
+            "text": "Common preperation steps like opening a web page, logging in a user, can be placed in  Before  or  Background  hook:  Feature('CodeceptJS Demonstration');\n\nBefore((I) =  { // or Background\n  I.amOnPage('/documentation');\n});\n\nScenario('test some forms', (I) =  {\n  I.click('Create User');\n  I.see('User is valid');\n  I.dontSeeInCurrentUrl('/documentation');\n});\n\nScenario('test title', (I) =  {\n  I.seeInTitle('Example application');\n});", 
             "title": "Before"
+        }, 
+        {
+            "location": "/basics/#within", 
+            "text": "To specify the exact area on a page where actions can be performed you can use  within  function.\nEverything executed in its context will be narrowed to context specified by locator:  I.amOnPage('https://github.com');\nwithin('.form-signup-home', function () {\n  I.fillField('user[login]', 'User');\n  I.fillField('user[email]', 'user@user.com');\n  I.fillField('user[password]', 'user@user.com');\n  I.click('button');\n});\nI.see('There were problems creating your account.');  When running steps inside a within block will be shown with a shift:", 
+            "title": "Within"
+        }, 
+        {
+            "location": "/basics/#skipping", 
+            "text": "Like in Mocha you can use  x  and  only  to skip tests or making a single test to run.   xScenario  - skips current test  Scenario.only  - executes only the current test", 
+            "title": "Skipping"
+        }, 
+        {
+            "location": "/basics/#reporters", 
+            "text": "CodeceptJS supports  Mocha Reporters .\nThey can be used with  --reporter  optons.\nBy default a custom console reporter is enabled.   We are currently working on improving reporters support.", 
+            "title": "Reporters"
+        }, 
+        {
+            "location": "/basics/#bootstrap", 
+            "text": "In case you need to execute arbitrary code before the tests,\nyou can place it into your bootstrap file and provide a relative path to it in  codecept.json  bootstrap:  ./run_server.js    done()", 
+            "title": "Bootstrap"
         }, 
         {
             "location": "/acceptance/", 
@@ -147,12 +167,12 @@
         }, 
         {
             "location": "/helpers/WebDriverIO/", 
-            "text": "WebDriverIO\n\n\nlib/helper/WebDriverIO.js:90-495\n\n\nWebDriverIO helper which wraps \nwebdriverio\n library to \nmanipulate browser using Selenium WebDriver or PhantomJS. \n\n\nSelenium Installation\n\n\n\n\nDownload \nSelenium Server\n\n\nLaunch the daemon: \njava -jar selenium-server-standalone-2.xx.xxx.jar\n\n\n\n\nPhantomJS Installation\n\n\nPhantomJS is a headless alternative to Selenium Server that implements \nthe WebDriver protocol\n.\nIt allows you to run Selenium tests on a server without a GUI installed.\n\n\n\n\nDownload \nPhantomJS\n\n\nRun PhantomJS in WebDriver mode: \nphantomjs --webdriver=4444\n\n\n\n\nConfiguration\n\n\nThis helper should be configured in codecept.json\n\n\n\n\nurl\n - base url of website to be tested\n\n\nbrowser\n - browser in which perform testing \n\n\n\n\nAdditional configuration params can be used from \nhttp://webdriver.io/guide/getstarted/configuration.html\n\n\nConnect through proxy\n\n\nCodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will\nneed to update the \nhelpers.WebDriverIO.proxy\n key.\n\n\n{\n    \nhelpers\n: {\n        \nWebDriverIO\n: {\n            \nproxy\n: {\n                \nproxyType\n: \nmanual|pac\n,\n                \nproxyAutoconfigUrl\n: \nURL TO PAC FILE\n,\n                \nhttpProxy\n: \nPROXY SERVER\n,\n                \nsslProxy\n: \nPROXY SERVER\n,\n                \nftpProxy\n: \nPROXY SERVER\n,\n                \nsocksProxy\n: \nPROXY SERVER\n,\n                \nsocksUsername\n: \nUSERNAME\n,\n                \nsocksPassword\n: \nPASSWORD\n,\n                \nnoProxy\n: \nBYPASS ADDRESSES\n\n            }\n        }\n    }\n}\n\n\n\n\nFor example,\n\n\n{\n    \nhelpers\n: {\n        \nWebDriverIO\n: {\n            \nproxy\n: {\n                \nproxyType\n: \nmanual\n,\n                \nhttpProxy\n: \nhttp://corporate.proxy:8080\n,\n                \nsocksUsername\n: \ncodeceptjs\n,\n                \nsocksPassword\n: \nsecret\n,\n                \nnoProxy\n: \n127.0.0.1,localhost\n\n            }\n        }\n    }\n}\n\n\n\n\nPlease refer to \nSelenium - Proxy Object\n for more information.\n\n\nAccess From Helpers\n\n\nReceive a WebDriverIO client from a custom helper by accessing \nbrorwser\n property:\n\n\nthis.helpers['WebDriverIO'].browser\n\n\n\nParameters\n\n\n\n\nconfig\n  \n\n\n\n\namOnPage\n\n\nlib/helper/WebDriverIO.js:128-132\n\n\nOpens a web page in a browser. Requires relative or absolute url. \nIf url starts with \n/\n, opens a web page of a site defined in \nurl\n config parameter.\n\n\nI.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page\n\n\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\nattachFile\n\n\nlib/helper/WebDriverIO.js:248-250\n\n\nAttaches a file to element located by CSS or XPath\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\npathToFile\n  \n\n\n\n\ncheckOption\n\n\nlib/helper/WebDriverIO.js:263-279\n\n\nSelects a checkbox or radio button. \nElement is located by label or name or CSS or XPath.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search. \n\n\nI.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\n\n\n\n\nParameters\n\n\n\n\noption\n  \n\n\ncontext\n  \n\n\n\n\nclick\n\n\nlib/helper/WebDriverIO.js:157-170\n\n\nPerform a click on a link or a button, given by a locator. \nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string. \nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched. \nFor images, the \"alt\" attribute and inner text of any parent links are searched.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\n// simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});\n\n\n\n\nParameters\n\n\n\n\nlink\n  \n\n\ncontext\n  \n\n\n\n\ndontSee\n\n\nlib/helper/WebDriverIO.js:369-371\n\n\nOpposite to \nsee\n. Checks that a text is not present on a page.\nUse context parameter to narrow down the search.\n\n\nI.dontSee('Login'); // assume we are already logged in\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\ndontSeeElement\n\n\nlib/helper/WebDriverIO.js:390-394\n\n\nOpposite to \nseeElement\n. Checks that element is not on page.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ndontSeeInCurrentUrl\n\n\nlib/helper/WebDriverIO.js:412-416\n\n\nChecks that current url does not contain a provided fragment.\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\ndoubleClick\n\n\nlib/helper/WebDriverIO.js:175-177\n\n\nPerforms a double-click on an element matched by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nexecuteAsyncScript\n\n\nlib/helper/WebDriverIO.js:432-434\n\n\nExecutes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nexecuteScript\n\n\nlib/helper/WebDriverIO.js:424-426\n\n\nExecutes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test. \nIn this case you should use generator and yield to receive results.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nfillField\n\n\nlib/helper/WebDriverIO.js:194-202\n\n\nFills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.\n\n\n// by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\ngrabAttribute\n\n\nlib/helper/WebDriverIO.js:317-321\n\n\nRetrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet hint = yield I.grabAttributeFrom('#tooltip', 'title');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nattr\n  \n\n\n\n\ngrabTextFrom\n\n\nlib/helper/WebDriverIO.js:289-293\n\n\nRetrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet pin = yield I.grabTextFrom('#pin');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ngrabTitle\n\n\nlib/helper/WebDriverIO.js:340-345\n\n\nRetrieves a page title and returns it to test. \nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet title = yield I.grabTitle();\n\n\n\n\ngrabValueFrom\n\n\nlib/helper/WebDriverIO.js:303-307\n\n\nRetrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet email = yield I.grabValueFrom('input[name=email]');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nsee\n\n\nlib/helper/WebDriverIO.js:357-359\n\n\nChecks that a page contains a visible text.\nUse context parameter to narrow down the search.\n\n\nI.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\nseeElement\n\n\nlib/helper/WebDriverIO.js:381-385\n\n\nChecks that element is present on page.\nElement is located by CSS or XPath.\n\n\nI.seeElement('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nseeInCurrentUrl\n\n\nlib/helper/WebDriverIO.js:403-407\n\n\nChecks that current url contains a provided fragment.\n\n\nI.seeInCurrentUrl('/register'); // we are on registration page\n\n\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\nseeInTitle\n\n\nlib/helper/WebDriverIO.js:326-330\n\n\nChecks that title contains text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nselectOption\n\n\nlib/helper/WebDriverIO.js:218-243\n\n\nSelects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.\n\n\nI.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');\n\n\n\n\nParameters\n\n\n\n\nselect\n  \n\n\noption\n  \n\n\n\n\nwait\n\n\nlib/helper/WebDriverIO.js:439-441\n\n\nPauses execution for a number of seconds.\n\n\nParameters\n\n\n\n\nsec\n  \n\n\n\n\nwaitForElement\n\n\nlib/helper/WebDriverIO.js:456-459\n\n\nWaits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitForEnabled\n\n\nlib/helper/WebDriverIO.js:447-450\n\n\nWaits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitForText\n\n\nlib/helper/WebDriverIO.js:466-477\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nsec\n  \n\n\ncontext\n  \n\n\n\n\nwaitForVisible\n\n\nlib/helper/WebDriverIO.js:483-486\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitUntil\n\n\nlib/helper/WebDriverIO.js:491-494\n\n\nWaits for a function to return true (waits for 1sec by default).\n\n\nParameters\n\n\n\n\nfn\n  \n\n\nsec", 
+            "text": "WebDriverIO\n\n\nlib/helper/WebDriverIO.js:99-902\n\n\nWebDriverIO helper which wraps \nwebdriverio\n library to\nmanipulate browser using Selenium WebDriver or PhantomJS.\n\n\nSelenium Installation\n\n\n\n\nDownload \nSelenium Server\n\n\nLaunch the daemon: \njava -jar selenium-server-standalone-2.xx.xxx.jar\n\n\n\n\nPhantomJS Installation\n\n\nPhantomJS is a headless alternative to Selenium Server that implements \nthe WebDriver protocol\n.\nIt allows you to run Selenium tests on a server without a GUI installed.\n\n\n\n\nDownload \nPhantomJS\n\n\nRun PhantomJS in WebDriver mode: \nphantomjs --webdriver=4444\n\n\n\n\nConfiguration\n\n\nThis helper should be configured in codecept.json\n\n\n\n\nurl\n - base url of website to be tested\n\n\nbrowser\n - browser in which perform testing\n\n\nwindow_size\n: (optional) default window size. Set to \nmaximize\n or a dimension in the format \n640x480\n.\n\n\n\n\nAdditional configuration params can be used from \nhttp://webdriver.io/guide/getstarted/configuration.html\n\n\nConnect through proxy\n\n\nCodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will\nneed to update the \nhelpers.WebDriverIO.proxy\n key.\n\n\n{\n    \nhelpers\n: {\n        \nWebDriverIO\n: {\n            \nproxy\n: {\n                \nproxyType\n: \nmanual|pac\n,\n                \nproxyAutoconfigUrl\n: \nURL TO PAC FILE\n,\n                \nhttpProxy\n: \nPROXY SERVER\n,\n                \nsslProxy\n: \nPROXY SERVER\n,\n                \nftpProxy\n: \nPROXY SERVER\n,\n                \nsocksProxy\n: \nPROXY SERVER\n,\n                \nsocksUsername\n: \nUSERNAME\n,\n                \nsocksPassword\n: \nPASSWORD\n,\n                \nnoProxy\n: \nBYPASS ADDRESSES\n\n            }\n        }\n    }\n}\n\n\n\n\nFor example,\n\n\n{\n    \nhelpers\n: {\n        \nWebDriverIO\n: {\n            \nproxy\n: {\n                \nproxyType\n: \nmanual\n,\n                \nhttpProxy\n: \nhttp://corporate.proxy:8080\n,\n                \nsocksUsername\n: \ncodeceptjs\n,\n                \nsocksPassword\n: \nsecret\n,\n                \nnoProxy\n: \n127.0.0.1,localhost\n\n            }\n        }\n    }\n}\n\n\n\n\nPlease refer to \nSelenium - Proxy Object\n for more information.\n\n\nAccess From Helpers\n\n\nReceive a WebDriverIO client from a custom helper by accessing \nbrorwser\n property:\n\n\nthis.helpers['WebDriverIO'].browser\n\n\n\nParameters\n\n\n\n\nconfig\n  \n\n\n\n\n_locate\n\n\nlib/helper/WebDriverIO.js:171-173\n\n\nGet elements by different locator types, including strict locator\nShould be used in custom helpers:\n\n\nthis.helpers['WebDriverIO']._locate({name: 'password'}).then //...\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nacceptPopup\n\n\nlib/helper/WebDriverIO.js:774-780\n\n\nAccepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.\nDon't confuse popups with modal windows, as created by \nvarious libraries\n.\n\n\namOnPage\n\n\nlib/helper/WebDriverIO.js:185-190\n\n\nOpens a web page in a browser. Requires relative or absolute url.\nIf url starts with \n/\n, opens a web page of a site defined in \nurl\n config parameter.\n\n\nI.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page\n\n\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\nappendField\n\n\nlib/helper/WebDriverIO.js:278-286\n\n\nAppends text to a input field or textarea.\nField is located by name, label, CSS or XPath\n\n\nI.appendField('#myTextField', 'appended');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\nattachFile\n\n\nlib/helper/WebDriverIO.js:368-381\n\n\nAttaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).\n\n\nI.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\npathToFile\n  \n\n\n\n\ncancelPopup\n\n\nlib/helper/WebDriverIO.js:785-791\n\n\nDismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.\n\n\ncheckOption\n\n\nlib/helper/WebDriverIO.js:397-413\n\n\nSelects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\nI.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');\n\n\n\n\nParameters\n\n\n\n\noption\n  \n\n\ncontext\n  \n\n\n\n\nclearCookie\n\n\nlib/helper/WebDriverIO.js:731-733\n\n\nClears a cookie by name,\nif none provided clears all cookies\n\n\nI.clearCookie();\nI.clearCookie('test');\n\n\n\n\nParameters\n\n\n\n\ncookie\n  \n\n\n\n\nclick\n\n\nlib/helper/WebDriverIO.js:215-229\n\n\nPerform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\n// simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});\n\n\n\n\nParameters\n\n\n\n\nlink\n  \n\n\ncontext\n  \n\n\n\n\ndontSee\n\n\nlib/helper/WebDriverIO.js:512-514\n\n\nOpposite to \nsee\n. Checks that a text is not present on a page.\nUse context parameter to narrow down the search.\n\n\nI.dontSee('Login'); // assume we are already logged in\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\ndontSeeCheckboxIsChecked\n\n\nlib/helper/WebDriverIO.js:555-557\n\n\nVerifies that the specified checkbox is not checked.\n\n\nParameters\n\n\n\n\nfield\n  \n\n\n\n\ndontSeeCookie\n\n\nlib/helper/WebDriverIO.js:751-755\n\n\nChecks that cookie with given name does not exist.\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\ndontSeeCurrentUrlEquals\n\n\nlib/helper/WebDriverIO.js:649-653\n\n\nChecks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\n\n\nParameters\n\n\n\n\nuri\n  \n\n\n\n\ndontSeeElement\n\n\nlib/helper/WebDriverIO.js:576-580\n\n\nOpposite to \nseeElement\n. Checks that element is not on page.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ndontSeeInCurrentUrl\n\n\nlib/helper/WebDriverIO.js:621-625\n\n\nChecks that current url does not contain a provided fragment.\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\ndontSeeInField\n\n\nlib/helper/WebDriverIO.js:535-537\n\n\nChecks that value of input field or textare doesn't equal to given value\nOpposite to \nseeInField\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\ndontSeeInSource\n\n\nlib/helper/WebDriverIO.js:598-602\n\n\nChecks that the current page contains the given string in its raw source code\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\ndontSeeInTitle\n\n\nlib/helper/WebDriverIO.js:469-473\n\n\nChecks that title does not contain text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\ndoubleClick\n\n\nlib/helper/WebDriverIO.js:234-236\n\n\nPerforms a double-click on an element matched by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nexecuteAsyncScript\n\n\nlib/helper/WebDriverIO.js:669-671\n\n\nExecutes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nexecuteScript\n\n\nlib/helper/WebDriverIO.js:661-663\n\n\nExecutes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nfillField\n\n\nlib/helper/WebDriverIO.js:260-268\n\n\nFills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.\n\n\n// by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\ngrabAttribute\n\n\nlib/helper/WebDriverIO.js:451-455\n\n\nRetrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet hint = yield I.grabAttributeFrom('#tooltip', 'title');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nattr\n  \n\n\n\n\ngrabCookie\n\n\nlib/helper/WebDriverIO.js:766-768\n\n\nGets a cookie object by name\n\n\n\n\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\n\n\nlet cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');\n\n\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\ngrabTextFrom\n\n\nlib/helper/WebDriverIO.js:423-427\n\n\nRetrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet pin = yield I.grabTextFrom('#pin');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ngrabTitle\n\n\nlib/helper/WebDriverIO.js:483-488\n\n\nRetrieves a page title and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet title = yield I.grabTitle();\n\n\n\n\ngrabValueFrom\n\n\nlib/helper/WebDriverIO.js:437-441\n\n\nRetrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet email = yield I.grabValueFrom('input[name=email]');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nmoveCursorTo\n\n\nlib/helper/WebDriverIO.js:695-697\n\n\nMoves cursor to element matched by locator.\nExtra shift can be set with offsetX and offsetY options\n\n\nI.moveCursorTo('.tooltip');\nI.moveCursorTo('#submit', 5,5);\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\noffsetX\n  \n\n\noffsetY\n  \n\n\n\n\npressKey\n\n\nlib/helper/WebDriverIO.js:815-817\n\n\nPresses a key on a focused element.\nSpeical keys like 'Enter', 'Control', \netc\n\nwill be replaced with corresponding unicode.\n\n\nI.pressKey('Enter');\nI.pressKey(['Control','a']);\n\n\n\n\nParameters\n\n\n\n\nkey\n  \n\n\n\n\nresizeWindow\n\n\nlib/helper/WebDriverIO.js:823-828\n\n\nResize the current window to provided width and height.\nFirst parameter can be set to \nmaximize\n\n\nParameters\n\n\n\n\nwidth\n  \n\n\nheight\n  \n\n\n\n\nrightClick\n\n\nlib/helper/WebDriverIO.js:241-243\n\n\nPerforms right click on an element matched by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nsaveScreenshot\n\n\nlib/helper/WebDriverIO.js:707-709\n\n\nSaves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.\n\n\nI.saveScreenshot('debug.png');\n\n\n\n\nParameters\n\n\n\n\nfileName\n  \n\n\n\n\nscrollTo\n\n\nlib/helper/WebDriverIO.js:682-684\n\n\nScrolls to element matched by locator.\nExtra shift can be set with offsetX and offsetY options\n\n\nI.scrollTo('footer');\nI.scrollTo('#submit', 5,5);\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\noffsetX\n  \n\n\noffsetY\n  \n\n\n\n\nsee\n\n\nlib/helper/WebDriverIO.js:500-502\n\n\nChecks that a page contains a visible text.\nUse context parameter to narrow down the search.\n\n\nI.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\nseeCheckboxIsChecked\n\n\nlib/helper/WebDriverIO.js:548-550\n\n\nVerifies that the specified checkbox is checked.\n\n\nI.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\n\n\nseeCookie\n\n\nlib/helper/WebDriverIO.js:742-746\n\n\nChecks that cookie with given name exists.\n\n\nI.seeCookie('Auth');\n\n\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeCurrentUrlEquals\n\n\nlib/helper/WebDriverIO.js:639-643\n\n\nChecks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:\n\n\nI.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');\n\n\n\n\nParameters\n\n\n\n\nuri\n  \n\n\n\n\nseeElement\n\n\nlib/helper/WebDriverIO.js:567-571\n\n\nChecks that element is present on page.\nElement is located by CSS or XPath.\n\n\nI.seeElement('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nseeInCurrentUrl\n\n\nlib/helper/WebDriverIO.js:612-616\n\n\nChecks that current url contains a provided fragment.\n\n\nI.seeInCurrentUrl('/register'); // we are on registration page\n\n\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\nseeInField\n\n\nlib/helper/WebDriverIO.js:527-529\n\n\nChecks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.\n\n\nI.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\nseeInPopup\n\n\nlib/helper/WebDriverIO.js:796-803\n\n\nChecks that the active JavaScript popup, as created by \nwindow.alert|window.confirm|window.prompt\n, contains the given string.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nseeInSource\n\n\nlib/helper/WebDriverIO.js:589-593\n\n\nChecks that the current page contains the given string in its raw source code.\n\n\nI.seeInSource('\nh1\nGreen eggs \namp; ham\n/h1\n');\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nseeInTitle\n\n\nlib/helper/WebDriverIO.js:460-464\n\n\nChecks that title contains text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nselectOption\n\n\nlib/helper/WebDriverIO.js:308-356\n\n\nSelects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.\n\n\nI.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');\n\n\n\n\nProvide an array for the second argument to select multiple options.\n\n\nI.selectOption('Which OS do you use?', ['Andriod', 'OSX']);\n\n\n\n\nParameters\n\n\n\n\nselect\n  \n\n\noption\n  \n\n\n\n\nsetCookie\n\n\nlib/helper/WebDriverIO.js:718-720\n\n\nSets a \ncookie\n object\n\n\nI.setCookie({name: 'auth', value: true});\n\n\n\n\nParameters\n\n\n\n\ncookie\n  \n\n\n\n\nwait\n\n\nlib/helper/WebDriverIO.js:833-835\n\n\nPauses execution for a number of seconds.\n\n\nParameters\n\n\n\n\nsec\n  \n\n\n\n\nwaitForElement\n\n\nlib/helper/WebDriverIO.js:850-853\n\n\nWaits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitForEnabled\n\n\nlib/helper/WebDriverIO.js:841-844\n\n\nWaits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitForText\n\n\nlib/helper/WebDriverIO.js:865-884\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nI.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nsec\n  \n\n\ncontext\n  \n\n\n\n\nwaitForVisible\n\n\nlib/helper/WebDriverIO.js:890-893\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nselector\n  \n\n\nsec\n  \n\n\n\n\nwaitUntil\n\n\nlib/helper/WebDriverIO.js:898-901\n\n\nWaits for a function to return true (waits for 1sec by default).\n\n\nParameters\n\n\n\n\nfn\n  \n\n\nsec", 
             "title": "WebDriverIO"
         }, 
         {
             "location": "/helpers/WebDriverIO/#webdriverio", 
-            "text": "lib/helper/WebDriverIO.js:90-495  WebDriverIO helper which wraps  webdriverio  library to \nmanipulate browser using Selenium WebDriver or PhantomJS.   Selenium Installation   Download  Selenium Server  Launch the daemon:  java -jar selenium-server-standalone-2.xx.xxx.jar   PhantomJS Installation  PhantomJS is a headless alternative to Selenium Server that implements  the WebDriver protocol .\nIt allows you to run Selenium tests on a server without a GUI installed.   Download  PhantomJS  Run PhantomJS in WebDriver mode:  phantomjs --webdriver=4444   Configuration  This helper should be configured in codecept.json   url  - base url of website to be tested  browser  - browser in which perform testing    Additional configuration params can be used from  http://webdriver.io/guide/getstarted/configuration.html  Connect through proxy  CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will\nneed to update the  helpers.WebDriverIO.proxy  key.  {\n     helpers : {\n         WebDriverIO : {\n             proxy : {\n                 proxyType :  manual|pac ,\n                 proxyAutoconfigUrl :  URL TO PAC FILE ,\n                 httpProxy :  PROXY SERVER ,\n                 sslProxy :  PROXY SERVER ,\n                 ftpProxy :  PROXY SERVER ,\n                 socksProxy :  PROXY SERVER ,\n                 socksUsername :  USERNAME ,\n                 socksPassword :  PASSWORD ,\n                 noProxy :  BYPASS ADDRESSES \n            }\n        }\n    }\n}  For example,  {\n     helpers : {\n         WebDriverIO : {\n             proxy : {\n                 proxyType :  manual ,\n                 httpProxy :  http://corporate.proxy:8080 ,\n                 socksUsername :  codeceptjs ,\n                 socksPassword :  secret ,\n                 noProxy :  127.0.0.1,localhost \n            }\n        }\n    }\n}  Please refer to  Selenium - Proxy Object  for more information.", 
+            "text": "lib/helper/WebDriverIO.js:99-902  WebDriverIO helper which wraps  webdriverio  library to\nmanipulate browser using Selenium WebDriver or PhantomJS.  Selenium Installation   Download  Selenium Server  Launch the daemon:  java -jar selenium-server-standalone-2.xx.xxx.jar   PhantomJS Installation  PhantomJS is a headless alternative to Selenium Server that implements  the WebDriver protocol .\nIt allows you to run Selenium tests on a server without a GUI installed.   Download  PhantomJS  Run PhantomJS in WebDriver mode:  phantomjs --webdriver=4444   Configuration  This helper should be configured in codecept.json   url  - base url of website to be tested  browser  - browser in which perform testing  window_size : (optional) default window size. Set to  maximize  or a dimension in the format  640x480 .   Additional configuration params can be used from  http://webdriver.io/guide/getstarted/configuration.html  Connect through proxy  CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will\nneed to update the  helpers.WebDriverIO.proxy  key.  {\n     helpers : {\n         WebDriverIO : {\n             proxy : {\n                 proxyType :  manual|pac ,\n                 proxyAutoconfigUrl :  URL TO PAC FILE ,\n                 httpProxy :  PROXY SERVER ,\n                 sslProxy :  PROXY SERVER ,\n                 ftpProxy :  PROXY SERVER ,\n                 socksProxy :  PROXY SERVER ,\n                 socksUsername :  USERNAME ,\n                 socksPassword :  PASSWORD ,\n                 noProxy :  BYPASS ADDRESSES \n            }\n        }\n    }\n}  For example,  {\n     helpers : {\n         WebDriverIO : {\n             proxy : {\n                 proxyType :  manual ,\n                 httpProxy :  http://corporate.proxy:8080 ,\n                 socksUsername :  codeceptjs ,\n                 socksPassword :  secret ,\n                 noProxy :  127.0.0.1,localhost \n            }\n        }\n    }\n}  Please refer to  Selenium - Proxy Object  for more information.", 
             "title": "WebDriverIO"
         }, 
         {
@@ -161,138 +181,263 @@
             "title": "Access From Helpers"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#_locate", 
+            "text": "lib/helper/WebDriverIO.js:171-173  Get elements by different locator types, including strict locator\nShould be used in custom helpers:  this.helpers['WebDriverIO']._locate({name: 'password'}).then //...  Parameters   locator", 
+            "title": "_locate"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#acceptpopup", 
+            "text": "lib/helper/WebDriverIO.js:774-780  Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.\nDon't confuse popups with modal windows, as created by  various libraries .", 
+            "title": "acceptPopup"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#amonpage", 
-            "text": "lib/helper/WebDriverIO.js:128-132  Opens a web page in a browser. Requires relative or absolute url. \nIf url starts with  / , opens a web page of a site defined in  url  config parameter.  I.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page  Parameters   url", 
+            "text": "lib/helper/WebDriverIO.js:185-190  Opens a web page in a browser. Requires relative or absolute url.\nIf url starts with  / , opens a web page of a site defined in  url  config parameter.  I.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page  Parameters   url", 
             "title": "amOnPage"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#appendfield", 
+            "text": "lib/helper/WebDriverIO.js:278-286  Appends text to a input field or textarea.\nField is located by name, label, CSS or XPath  I.appendField('#myTextField', 'appended');  Parameters   field     value", 
+            "title": "appendField"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#attachfile", 
-            "text": "lib/helper/WebDriverIO.js:248-250  Attaches a file to element located by CSS or XPath  Parameters   locator     pathToFile", 
+            "text": "lib/helper/WebDriverIO.js:368-381  Attaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).  I.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');  Parameters   locator     pathToFile", 
             "title": "attachFile"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#cancelpopup", 
+            "text": "lib/helper/WebDriverIO.js:785-791  Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.", 
+            "title": "cancelPopup"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#checkoption", 
-            "text": "lib/helper/WebDriverIO.js:263-279  Selects a checkbox or radio button. \nElement is located by label or name or CSS or XPath.  The second parameter is a context (CSS or XPath locator) to narrow the search.   I.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');  Parameters   option     context", 
+            "text": "lib/helper/WebDriverIO.js:397-413  Selects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.  The second parameter is a context (CSS or XPath locator) to narrow the search.  I.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');  Parameters   option     context", 
             "title": "checkOption"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#clearcookie", 
+            "text": "lib/helper/WebDriverIO.js:731-733  Clears a cookie by name,\nif none provided clears all cookies  I.clearCookie();\nI.clearCookie('test');  Parameters   cookie", 
+            "title": "clearCookie"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#click", 
-            "text": "lib/helper/WebDriverIO.js:157-170  Perform a click on a link or a button, given by a locator. \nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string. \nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched. \nFor images, the \"alt\" attribute and inner text of any parent links are searched.  The second parameter is a context (CSS or XPath locator) to narrow the search.  // simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});  Parameters   link     context", 
+            "text": "lib/helper/WebDriverIO.js:215-229  Perform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.  The second parameter is a context (CSS or XPath locator) to narrow the search.  // simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});  Parameters   link     context", 
             "title": "click"
         }, 
         {
             "location": "/helpers/WebDriverIO/#dontsee", 
-            "text": "lib/helper/WebDriverIO.js:369-371  Opposite to  see . Checks that a text is not present on a page.\nUse context parameter to narrow down the search.  I.dontSee('Login'); // assume we are already logged in  Parameters   text     context", 
+            "text": "lib/helper/WebDriverIO.js:512-514  Opposite to  see . Checks that a text is not present on a page.\nUse context parameter to narrow down the search.  I.dontSee('Login'); // assume we are already logged in  Parameters   text     context", 
             "title": "dontSee"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#dontseecheckboxischecked", 
+            "text": "lib/helper/WebDriverIO.js:555-557  Verifies that the specified checkbox is not checked.  Parameters   field", 
+            "title": "dontSeeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontseecookie", 
+            "text": "lib/helper/WebDriverIO.js:751-755  Checks that cookie with given name does not exist.  Parameters   name", 
+            "title": "dontSeeCookie"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontseecurrenturlequals", 
+            "text": "lib/helper/WebDriverIO.js:649-653  Checks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.  Parameters   uri", 
+            "title": "dontSeeCurrentUrlEquals"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#dontseeelement", 
-            "text": "lib/helper/WebDriverIO.js:390-394  Opposite to  seeElement . Checks that element is not on page.  Parameters   locator", 
+            "text": "lib/helper/WebDriverIO.js:576-580  Opposite to  seeElement . Checks that element is not on page.  Parameters   locator", 
             "title": "dontSeeElement"
         }, 
         {
             "location": "/helpers/WebDriverIO/#dontseeincurrenturl", 
-            "text": "lib/helper/WebDriverIO.js:412-416  Checks that current url does not contain a provided fragment.  Parameters   urlFragment", 
+            "text": "lib/helper/WebDriverIO.js:621-625  Checks that current url does not contain a provided fragment.  Parameters   urlFragment", 
             "title": "dontSeeInCurrentUrl"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#dontseeinfield", 
+            "text": "lib/helper/WebDriverIO.js:535-537  Checks that value of input field or textare doesn't equal to given value\nOpposite to  seeInField  Parameters   field     value", 
+            "title": "dontSeeInField"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontseeinsource", 
+            "text": "lib/helper/WebDriverIO.js:598-602  Checks that the current page contains the given string in its raw source code  Parameters   text", 
+            "title": "dontSeeInSource"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#dontseeintitle", 
+            "text": "lib/helper/WebDriverIO.js:469-473  Checks that title does not contain text.  Parameters   text", 
+            "title": "dontSeeInTitle"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#doubleclick", 
-            "text": "lib/helper/WebDriverIO.js:175-177  Performs a double-click on an element matched by CSS or XPath.  Parameters   locator", 
+            "text": "lib/helper/WebDriverIO.js:234-236  Performs a double-click on an element matched by CSS or XPath.  Parameters   locator", 
             "title": "doubleClick"
         }, 
         {
             "location": "/helpers/WebDriverIO/#executeasyncscript", 
-            "text": "lib/helper/WebDriverIO.js:432-434  Executes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.  Parameters   fn", 
+            "text": "lib/helper/WebDriverIO.js:669-671  Executes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.  Parameters   fn", 
             "title": "executeAsyncScript"
         }, 
         {
             "location": "/helpers/WebDriverIO/#executescript", 
-            "text": "lib/helper/WebDriverIO.js:424-426  Executes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test. \nIn this case you should use generator and yield to receive results.  Parameters   fn", 
+            "text": "lib/helper/WebDriverIO.js:661-663  Executes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.  Parameters   fn", 
             "title": "executeScript"
         }, 
         {
             "location": "/helpers/WebDriverIO/#fillfield", 
-            "text": "lib/helper/WebDriverIO.js:194-202  Fills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.  // by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');  Parameters   field     value", 
+            "text": "lib/helper/WebDriverIO.js:260-268  Fills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.  // by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');  Parameters   field     value", 
             "title": "fillField"
         }, 
         {
             "location": "/helpers/WebDriverIO/#grabattribute", 
-            "text": "lib/helper/WebDriverIO.js:317-321  Retrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let hint = yield I.grabAttributeFrom('#tooltip', 'title');  Parameters   locator     attr", 
+            "text": "lib/helper/WebDriverIO.js:451-455  Retrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let hint = yield I.grabAttributeFrom('#tooltip', 'title');  Parameters   locator     attr", 
             "title": "grabAttribute"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#grabcookie", 
+            "text": "lib/helper/WebDriverIO.js:766-768  Gets a cookie object by name   Resumes test execution, so  should be used inside a generator with  yield  operator.   let cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');  Parameters   name", 
+            "title": "grabCookie"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#grabtextfrom", 
-            "text": "lib/helper/WebDriverIO.js:289-293  Retrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let pin = yield I.grabTextFrom('#pin');  Parameters   locator", 
+            "text": "lib/helper/WebDriverIO.js:423-427  Retrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let pin = yield I.grabTextFrom('#pin');  Parameters   locator", 
             "title": "grabTextFrom"
         }, 
         {
             "location": "/helpers/WebDriverIO/#grabtitle", 
-            "text": "lib/helper/WebDriverIO.js:340-345  Retrieves a page title and returns it to test. \nResumes test execution, so  should be used inside a generator with  yield  operator.  let title = yield I.grabTitle();", 
+            "text": "lib/helper/WebDriverIO.js:483-488  Retrieves a page title and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let title = yield I.grabTitle();", 
             "title": "grabTitle"
         }, 
         {
             "location": "/helpers/WebDriverIO/#grabvaluefrom", 
-            "text": "lib/helper/WebDriverIO.js:303-307  Retrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let email = yield I.grabValueFrom('input[name=email]');  Parameters   locator", 
+            "text": "lib/helper/WebDriverIO.js:437-441  Retrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let email = yield I.grabValueFrom('input[name=email]');  Parameters   locator", 
             "title": "grabValueFrom"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#movecursorto", 
+            "text": "lib/helper/WebDriverIO.js:695-697  Moves cursor to element matched by locator.\nExtra shift can be set with offsetX and offsetY options  I.moveCursorTo('.tooltip');\nI.moveCursorTo('#submit', 5,5);  Parameters   locator     offsetX     offsetY", 
+            "title": "moveCursorTo"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#presskey", 
+            "text": "lib/helper/WebDriverIO.js:815-817  Presses a key on a focused element.\nSpeical keys like 'Enter', 'Control',  etc \nwill be replaced with corresponding unicode.  I.pressKey('Enter');\nI.pressKey(['Control','a']);  Parameters   key", 
+            "title": "pressKey"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#resizewindow", 
+            "text": "lib/helper/WebDriverIO.js:823-828  Resize the current window to provided width and height.\nFirst parameter can be set to  maximize  Parameters   width     height", 
+            "title": "resizeWindow"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#rightclick", 
+            "text": "lib/helper/WebDriverIO.js:241-243  Performs right click on an element matched by CSS or XPath.  Parameters   locator", 
+            "title": "rightClick"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#savescreenshot", 
+            "text": "lib/helper/WebDriverIO.js:707-709  Saves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.  I.saveScreenshot('debug.png');  Parameters   fileName", 
+            "title": "saveScreenshot"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#scrollto", 
+            "text": "lib/helper/WebDriverIO.js:682-684  Scrolls to element matched by locator.\nExtra shift can be set with offsetX and offsetY options  I.scrollTo('footer');\nI.scrollTo('#submit', 5,5);  Parameters   locator     offsetX     offsetY", 
+            "title": "scrollTo"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#see", 
-            "text": "lib/helper/WebDriverIO.js:357-359  Checks that a page contains a visible text.\nUse context parameter to narrow down the search.  I.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator  Parameters   text     context", 
+            "text": "lib/helper/WebDriverIO.js:500-502  Checks that a page contains a visible text.\nUse context parameter to narrow down the search.  I.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator  Parameters   text     context", 
             "title": "see"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#seecheckboxischecked", 
+            "text": "lib/helper/WebDriverIO.js:548-550  Verifies that the specified checkbox is checked.  I.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});  Parameters   field", 
+            "title": "seeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seecookie", 
+            "text": "lib/helper/WebDriverIO.js:742-746  Checks that cookie with given name exists.  I.seeCookie('Auth');  Parameters   name", 
+            "title": "seeCookie"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seecurrenturlequals", 
+            "text": "lib/helper/WebDriverIO.js:639-643  Checks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:  I.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');  Parameters   uri", 
+            "title": "seeCurrentUrlEquals"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#seeelement", 
-            "text": "lib/helper/WebDriverIO.js:381-385  Checks that element is present on page.\nElement is located by CSS or XPath.  I.seeElement('#modal');  Parameters   locator", 
+            "text": "lib/helper/WebDriverIO.js:567-571  Checks that element is present on page.\nElement is located by CSS or XPath.  I.seeElement('#modal');  Parameters   locator", 
             "title": "seeElement"
         }, 
         {
             "location": "/helpers/WebDriverIO/#seeincurrenturl", 
-            "text": "lib/helper/WebDriverIO.js:403-407  Checks that current url contains a provided fragment.  I.seeInCurrentUrl('/register'); // we are on registration page  Parameters   urlFragment", 
+            "text": "lib/helper/WebDriverIO.js:612-616  Checks that current url contains a provided fragment.  I.seeInCurrentUrl('/register'); // we are on registration page  Parameters   urlFragment", 
             "title": "seeInCurrentUrl"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#seeinfield", 
+            "text": "lib/helper/WebDriverIO.js:527-529  Checks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.  I.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');  Parameters   field     value", 
+            "title": "seeInField"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seeinpopup", 
+            "text": "lib/helper/WebDriverIO.js:796-803  Checks that the active JavaScript popup, as created by  window.alert|window.confirm|window.prompt , contains the given string.  Parameters   text", 
+            "title": "seeInPopup"
+        }, 
+        {
+            "location": "/helpers/WebDriverIO/#seeinsource", 
+            "text": "lib/helper/WebDriverIO.js:589-593  Checks that the current page contains the given string in its raw source code.  I.seeInSource(' h1 Green eggs  amp; ham /h1 ');  Parameters   text", 
+            "title": "seeInSource"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#seeintitle", 
-            "text": "lib/helper/WebDriverIO.js:326-330  Checks that title contains text.  Parameters   text", 
+            "text": "lib/helper/WebDriverIO.js:460-464  Checks that title contains text.  Parameters   text", 
             "title": "seeInTitle"
         }, 
         {
             "location": "/helpers/WebDriverIO/#selectoption", 
-            "text": "lib/helper/WebDriverIO.js:218-243  Selects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.  I.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');  Parameters   select     option", 
+            "text": "lib/helper/WebDriverIO.js:308-356  Selects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.  I.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');  Provide an array for the second argument to select multiple options.  I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);  Parameters   select     option", 
             "title": "selectOption"
         }, 
         {
+            "location": "/helpers/WebDriverIO/#setcookie", 
+            "text": "lib/helper/WebDriverIO.js:718-720  Sets a  cookie  object  I.setCookie({name: 'auth', value: true});  Parameters   cookie", 
+            "title": "setCookie"
+        }, 
+        {
             "location": "/helpers/WebDriverIO/#wait", 
-            "text": "lib/helper/WebDriverIO.js:439-441  Pauses execution for a number of seconds.  Parameters   sec", 
+            "text": "lib/helper/WebDriverIO.js:833-835  Pauses execution for a number of seconds.  Parameters   sec", 
             "title": "wait"
         }, 
         {
             "location": "/helpers/WebDriverIO/#waitforelement", 
-            "text": "lib/helper/WebDriverIO.js:456-459  Waits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
+            "text": "lib/helper/WebDriverIO.js:850-853  Waits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
             "title": "waitForElement"
         }, 
         {
             "location": "/helpers/WebDriverIO/#waitforenabled", 
-            "text": "lib/helper/WebDriverIO.js:447-450  Waits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
+            "text": "lib/helper/WebDriverIO.js:841-844  Waits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
             "title": "waitForEnabled"
         }, 
         {
             "location": "/helpers/WebDriverIO/#waitfortext", 
-            "text": "lib/helper/WebDriverIO.js:466-477  Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  Parameters   text     sec     context", 
+            "text": "lib/helper/WebDriverIO.js:865-884  Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  I.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');  Parameters   text     sec     context", 
             "title": "waitForText"
         }, 
         {
             "location": "/helpers/WebDriverIO/#waitforvisible", 
-            "text": "lib/helper/WebDriverIO.js:483-486  Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
+            "text": "lib/helper/WebDriverIO.js:890-893  Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   selector     sec", 
             "title": "waitForVisible"
         }, 
         {
             "location": "/helpers/WebDriverIO/#waituntil", 
-            "text": "lib/helper/WebDriverIO.js:491-494  Waits for a function to return true (waits for 1sec by default).  Parameters   fn     sec", 
+            "text": "lib/helper/WebDriverIO.js:898-901  Waits for a function to return true (waits for 1sec by default).  Parameters   fn     sec", 
             "title": "waitUntil"
         }, 
         {
             "location": "/helpers/FileSystem/", 
-            "text": "FileSystem\n\n\nlib/helper/FileSystem.js:22-87\n\n\nHelper for testing filesystem.\nCan be easily used to check file structures:\n\n\nI.amInPath('test');\nI.seeFile('codecept.json');\nI.seeInThisFile('FileSystem');\nI.dontSeeInThisFile(\nWebDriverIO\n);\n\n\n\n\namInPath\n\n\nlib/helper/FileSystem.js:34-37\n\n\nEnters a directory In local filesystem. \nStarts from a current directory\n\n\nParameters\n\n\n\n\nopenPath\n  \n\n\n\n\ndontSeeFileContentsEqual\n\n\nlib/helper/FileSystem.js:82-85\n\n\nChecks that contents of file found by \nseeFile\n doesn't equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\ndontSeeInThisFile\n\n\nlib/helper/FileSystem.js:66-69\n\n\nChecks that file found by \nseeFile\n doesn't include text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeFile\n\n\nlib/helper/FileSystem.js:49-53\n\n\nChecks that file exists\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeFileContentsEqual\n\n\nlib/helper/FileSystem.js:74-77\n\n\nChecks that contents of file found by \nseeFile\n equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeInThisFile\n\n\nlib/helper/FileSystem.js:58-61\n\n\nChecks that file found by \nseeFile\n includes a text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nwriteToFile\n\n\nlib/helper/FileSystem.js:42-44\n\n\nWrites test to file\n\n\nParameters\n\n\n\n\nname\n  \n\n\ntext", 
+            "text": "FileSystem\n\n\nlib/helper/FileSystem.js:22-87\n\n\nHelper for testing filesystem.\nCan be easily used to check file structures:\n\n\nI.amInPath('test');\nI.seeFile('codecept.json');\nI.seeInThisFile('FileSystem');\nI.dontSeeInThisFile(\nWebDriverIO\n);\n\n\n\n\namInPath\n\n\nlib/helper/FileSystem.js:34-37\n\n\nEnters a directory In local filesystem.\nStarts from a current directory\n\n\nParameters\n\n\n\n\nopenPath\n  \n\n\n\n\ndontSeeFileContentsEqual\n\n\nlib/helper/FileSystem.js:82-85\n\n\nChecks that contents of file found by \nseeFile\n doesn't equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\ndontSeeInThisFile\n\n\nlib/helper/FileSystem.js:66-69\n\n\nChecks that file found by \nseeFile\n doesn't include text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeFile\n\n\nlib/helper/FileSystem.js:49-53\n\n\nChecks that file exists\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeFileContentsEqual\n\n\nlib/helper/FileSystem.js:74-77\n\n\nChecks that contents of file found by \nseeFile\n equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeInThisFile\n\n\nlib/helper/FileSystem.js:58-61\n\n\nChecks that file found by \nseeFile\n includes a text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nwriteToFile\n\n\nlib/helper/FileSystem.js:42-44\n\n\nWrites test to file\n\n\nParameters\n\n\n\n\nname\n  \n\n\ntext", 
             "title": "FileSystem"
         }, 
         {
@@ -302,7 +447,7 @@
         }, 
         {
             "location": "/helpers/FileSystem/#aminpath", 
-            "text": "lib/helper/FileSystem.js:34-37  Enters a directory In local filesystem. \nStarts from a current directory  Parameters   openPath", 
+            "text": "lib/helper/FileSystem.js:34-37  Enters a directory In local filesystem.\nStarts from a current directory  Parameters   openPath", 
             "title": "amInPath"
         }, 
         {
@@ -334,6 +479,16 @@
             "location": "/helpers/FileSystem/#writetofile", 
             "text": "lib/helper/FileSystem.js:42-44  Writes test to file  Parameters   name     text", 
             "title": "writeToFile"
+        }, 
+        {
+            "location": "/changelog/", 
+            "text": "0.2.0\n\n\n\n\nwithin\n context hook added\n\n\n--reporter\n option supported\n\n\n[WebDriverIO] added features and methods:\n\n\nelements: \nseeElement\n, ...\n\n\npopups: \nacceptPopup\n, \ncancelPopup\n, \nseeInPopup\n,...\n\n\nnavigation: \nmoveCursorTo\n, \nscrollTo\n\n\nsaving screenshots on failure; \nsaveScreenshot\n \n\n\ncookies: \nsetCookie\n, \nseeCookie\n, ...\n\n\nsource: \nseeInSource\n\n\nform: \nseeCheckboxIsChecked\n, \nselectOption\n to support multiple selects\n\n\nkeyboard: \nappendField\n, \npressKey\n\n\nmouse: \nrightClick\n\n\ntests added\n\n\n[WebDriverIO] proxy configuration added by @petehouston \n\n\n[WebDriverIO] fixed \nwaitForText\n method by @roadhump. Fixes #11\n\n\nFixed creating output dir when it already exists on init by @alfirin\n\n\nFixed loading of custom helpers", 
+            "title": "Releases"
+        }, 
+        {
+            "location": "/changelog/#020", 
+            "text": "within  context hook added  --reporter  option supported  [WebDriverIO] added features and methods:  elements:  seeElement , ...  popups:  acceptPopup ,  cancelPopup ,  seeInPopup ,...  navigation:  moveCursorTo ,  scrollTo  saving screenshots on failure;  saveScreenshot    cookies:  setCookie ,  seeCookie , ...  source:  seeInSource  form:  seeCheckboxIsChecked ,  selectOption  to support multiple selects  keyboard:  appendField ,  pressKey  mouse:  rightClick  tests added  [WebDriverIO] proxy configuration added by @petehouston   [WebDriverIO] fixed  waitForText  method by @roadhump. Fixes #11  Fixed creating output dir when it already exists on init by @alfirin  Fixed loading of custom helpers", 
+            "title": "0.2.0"
         }
     ]
 }
