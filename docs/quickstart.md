@@ -72,7 +72,7 @@ Scenario('test something', (I) => {
 });
 ```
 
-Inside the scenario block you can write your first test scenario by using [actions from WebDriverIO helper](http://127.0.0.1:8000/helpers/WebDriverIO/). Let's assume we have a web server on `localhost` is running and there is a **Welcome** text on the first page. The simplest test will look like this:
+Inside the scenario block you can write your first test scenario by using [actions from WebDriverIO helper](/helpers/WebDriverIO/). Let's assume we have a web server on `localhost` is running and there is a **Welcome** text on the first page. The simplest test will look like this:
 
 ```js
 Feature('My First Test');
@@ -83,7 +83,7 @@ Scenario('test something', (I) => {
 });
 ```
 
-Before running this test we should ensure that [Selenium Web Server is running](http://127.0.0.1:8000/helpers/WebDriverIO/#selenium-installation). Then we can execute tests with 
+Before running this test we should ensure that [Selenium Web Server is running](/helpers/WebDriverIO/#selenium-installation). Then we can execute tests with 
 
 ```bash
 codeceptjs run --steps
