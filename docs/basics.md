@@ -92,12 +92,14 @@ To specify the exact area on a page where actions can be performed you can use `
 Everything executed in its context will be narrowed to context specified by locator:
 
 ```js
-I.amOnPage('/');
-within('form.user', function () {
-  I.fillField('name', 'miles');
-  I.fillField('email', 'miles@davis.com');
+I.amOnPage('https://github.com');
+within('.form-signup-home', function () {
+  I.fillField('user[login]', 'User');
+  I.fillField('user[email]', 'user@user.com');
+  I.fillField('user[password]', 'user@user.com');
   I.click('button');
 });
+I.see('There were problems creating your account.');
 ```
 
 When running steps inside a within block will be shown with a shift:
