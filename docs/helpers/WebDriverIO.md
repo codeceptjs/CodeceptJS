@@ -1,9 +1,9 @@
 # WebDriverIO
 
-[lib/helper/WebDriverIO.js:90-495](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L90-L495 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:99-902](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L99-L902 "Source code on GitHub")
 
-WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to 
-manipulate browser using Selenium WebDriver or PhantomJS. 
+WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to
+manipulate browser using Selenium WebDriver or PhantomJS.
 
 #### Selenium Installation
 
@@ -23,7 +23,8 @@ It allows you to run Selenium tests on a server without a GUI installed.
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
--   `browser` - browser in which perform testing 
+-   `browser` - browser in which perform testing
+-   `window_size`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 
 Additional configuration params can be used from <http://webdriver.io/guide/getstarted/configuration.html>
 
@@ -82,11 +83,33 @@ Receive a WebDriverIO client from a custom helper by accessing `brorwser` proper
 
 -   `config`  
 
+## _locate
+
+[lib/helper/WebDriverIO.js:171-173](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L171-L173 "Source code on GitHub")
+
+Get elements by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## acceptPopup
+
+[lib/helper/WebDriverIO.js:774-780](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L774-L780 "Source code on GitHub")
+
+Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+Don't confuse popups with modal windows, as created by [various libraries](http://jster.net/category/windows-modals-popups).
+
 ## amOnPage
 
-[lib/helper/WebDriverIO.js:128-132](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L128-L132 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:185-190](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L185-L190 "Source code on GitHub")
 
-Opens a web page in a browser. Requires relative or absolute url. 
+Opens a web page in a browser. Requires relative or absolute url.
 If url starts with `/`, opens a web page of a site defined in `url` config parameter.
 
 ```js
@@ -99,29 +122,57 @@ I.amOnPage('/login'); // opens a login page
 
 -   `url`  
 
+## appendField
+
+[lib/helper/WebDriverIO.js:278-286](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L278-L286 "Source code on GitHub")
+
+Appends text to a input field or textarea.
+Field is located by name, label, CSS or XPath
+
+```js
+I.appendField('#myTextField', 'appended');
+```
+
+**Parameters**
+
+-   `field`  
+-   `value`  
+
 ## attachFile
 
-[lib/helper/WebDriverIO.js:248-250](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L248-L250 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:368-381](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L368-L381 "Source code on GitHub")
 
-Attaches a file to element located by CSS or XPath
+Attaches a file to element located by label, name, CSS or XPath
+Path to file is relative current codecept directory (where codecept.json is located).
+File will be uploaded to remove system (if tests are running remotely).
+
+    I.attachFile('Avatar', 'data/avatar.jpg');
+    I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 **Parameters**
 
 -   `locator`  
 -   `pathToFile`  
 
+## cancelPopup
+
+[lib/helper/WebDriverIO.js:785-791](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L785-L791 "Source code on GitHub")
+
+Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+
 ## checkOption
 
-[lib/helper/WebDriverIO.js:263-279](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L263-L279 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:397-413](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L397-L413 "Source code on GitHub")
 
-Selects a checkbox or radio button. 
+Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
-The second parameter is a context (CSS or XPath locator) to narrow the search. 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
 
 ```js
 I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
+I.checkOption('agree', '//form');
 ```
 
 **Parameters**
@@ -129,13 +180,29 @@ I.checkOption('I Agree to Terms and Conditions');
 -   `option`  
 -   `context`  
 
+## clearCookie
+
+[lib/helper/WebDriverIO.js:731-733](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L731-L733 "Source code on GitHub")
+
+Clears a cookie by name,
+if none provided clears all cookies
+
+```js
+I.clearCookie();
+I.clearCookie('test');
+```
+
+**Parameters**
+
+-   `cookie`  
+
 ## click
 
-[lib/helper/WebDriverIO.js:157-170](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L157-L170 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:215-229](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L215-L229 "Source code on GitHub")
 
-Perform a click on a link or a button, given by a locator. 
-If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string. 
-For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched. 
+Perform a click on a link or a button, given by a locator.
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
 For images, the "alt" attribute and inner text of any parent links are searched.
 
 The second parameter is a context (CSS or XPath locator) to narrow the search.
@@ -162,7 +229,7 @@ I.click({css: 'nav a.login'});
 
 ## dontSee
 
-[lib/helper/WebDriverIO.js:369-371](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L369-L371 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:512-514](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L512-L514 "Source code on GitHub")
 
 Opposite to `see`. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.
@@ -176,9 +243,40 @@ I.dontSee('Login'); // assume we are already logged in
 -   `text`  
 -   `context`  
 
+## dontSeeCheckboxIsChecked
+
+[lib/helper/WebDriverIO.js:555-557](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L555-L557 "Source code on GitHub")
+
+Verifies that the specified checkbox is not checked.
+
+**Parameters**
+
+-   `field`  
+
+## dontSeeCookie
+
+[lib/helper/WebDriverIO.js:751-755](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L751-L755 "Source code on GitHub")
+
+Checks that cookie with given name does not exist.
+
+**Parameters**
+
+-   `name`  
+
+## dontSeeCurrentUrlEquals
+
+[lib/helper/WebDriverIO.js:649-653](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L649-L653 "Source code on GitHub")
+
+Checks that current url is not equal to provided one.
+If a relative url provided, a configured url will be prepended to it.
+
+**Parameters**
+
+-   `uri`  
+
 ## dontSeeElement
 
-[lib/helper/WebDriverIO.js:390-394](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L390-L394 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:576-580](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L576-L580 "Source code on GitHub")
 
 Opposite to `seeElement`. Checks that element is not on page.
 
@@ -188,7 +286,7 @@ Opposite to `seeElement`. Checks that element is not on page.
 
 ## dontSeeInCurrentUrl
 
-[lib/helper/WebDriverIO.js:412-416](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L412-L416 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:621-625](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L621-L625 "Source code on GitHub")
 
 Checks that current url does not contain a provided fragment.
 
@@ -196,9 +294,41 @@ Checks that current url does not contain a provided fragment.
 
 -   `urlFragment`  
 
+## dontSeeInField
+
+[lib/helper/WebDriverIO.js:535-537](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L535-L537 "Source code on GitHub")
+
+Checks that value of input field or textare doesn't equal to given value
+Opposite to `seeInField`
+
+**Parameters**
+
+-   `field`  
+-   `value`  
+
+## dontSeeInSource
+
+[lib/helper/WebDriverIO.js:598-602](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L598-L602 "Source code on GitHub")
+
+Checks that the current page contains the given string in its raw source code
+
+**Parameters**
+
+-   `text`  
+
+## dontSeeInTitle
+
+[lib/helper/WebDriverIO.js:469-473](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L469-L473 "Source code on GitHub")
+
+Checks that title does not contain text.
+
+**Parameters**
+
+-   `text`  
+
 ## doubleClick
 
-[lib/helper/WebDriverIO.js:175-177](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L175-L177 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:234-236](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L234-L236 "Source code on GitHub")
 
 Performs a double-click on an element matched by CSS or XPath.
 
@@ -208,7 +338,7 @@ Performs a double-click on an element matched by CSS or XPath.
 
 ## executeAsyncScript
 
-[lib/helper/WebDriverIO.js:432-434](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L432-L434 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:669-671](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L669-L671 "Source code on GitHub")
 
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -219,11 +349,11 @@ Provided function should execute a passed callback (as first argument) to signal
 
 ## executeScript
 
-[lib/helper/WebDriverIO.js:424-426](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L424-L426 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:661-663](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L661-L663 "Source code on GitHub")
 
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
-Will return execution result to a test. 
+Will return execution result to a test.
 In this case you should use generator and yield to receive results.
 
 **Parameters**
@@ -232,7 +362,7 @@ In this case you should use generator and yield to receive results.
 
 ## fillField
 
-[lib/helper/WebDriverIO.js:194-202](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L194-L202 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:260-268](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L260-L268 "Source code on GitHub")
 
 Fills a text field or textarea with the given string.
 Field is located by name, label, CSS, or XPath.
@@ -255,7 +385,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 ## grabAttribute
 
-[lib/helper/WebDriverIO.js:317-321](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L317-L321 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:451-455](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L451-L455 "Source code on GitHub")
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -269,9 +399,26 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 -   `locator`  
 -   `attr`  
 
+## grabCookie
+
+[lib/helper/WebDriverIO.js:766-768](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L766-L768 "Source code on GitHub")
+
+Gets a cookie object by name
+
+-   Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let cookie = I.grabCookie('auth');
+assert(cookie.value, '123456');
+```
+
+**Parameters**
+
+-   `name`  
+
 ## grabTextFrom
 
-[lib/helper/WebDriverIO.js:289-293](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L289-L293 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:423-427](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L423-L427 "Source code on GitHub")
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -286,9 +433,9 @@ let pin = yield I.grabTextFrom('#pin');
 
 ## grabTitle
 
-[lib/helper/WebDriverIO.js:340-345](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L340-L345 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:483-488](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L483-L488 "Source code on GitHub")
 
-Retrieves a page title and returns it to test. 
+Retrieves a page title and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
 ```js
@@ -297,7 +444,7 @@ let title = yield I.grabTitle();
 
 ## grabValueFrom
 
-[lib/helper/WebDriverIO.js:303-307](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L303-L307 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:437-441](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L437-L441 "Source code on GitHub")
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -310,9 +457,99 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 -   `locator`  
 
+## moveCursorTo
+
+[lib/helper/WebDriverIO.js:695-697](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L695-L697 "Source code on GitHub")
+
+Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`  
+-   `offsetY`  
+
+## pressKey
+
+[lib/helper/WebDriverIO.js:815-817](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L815-L817 "Source code on GitHub")
+
+Presses a key on a focused element.
+Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+will be replaced with corresponding unicode.
+
+```js
+I.pressKey('Enter');
+I.pressKey(['Control','a']);
+```
+
+**Parameters**
+
+-   `key`  
+
+## resizeWindow
+
+[lib/helper/WebDriverIO.js:823-828](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L823-L828 "Source code on GitHub")
+
+Resize the current window to provided width and height.
+First parameter can be set to `maximize`
+
+**Parameters**
+
+-   `width`  
+-   `height`  
+
+## rightClick
+
+[lib/helper/WebDriverIO.js:241-243](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L241-L243 "Source code on GitHub")
+
+Performs right click on an element matched by CSS or XPath.
+
+**Parameters**
+
+-   `locator`  
+
+## saveScreenshot
+
+[lib/helper/WebDriverIO.js:707-709](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L707-L709 "Source code on GitHub")
+
+Saves a screenshot to ouput folder (set in codecept.json).
+Filename is relative to output folder.
+
+```js
+I.saveScreenshot('debug.png');
+```
+
+**Parameters**
+
+-   `fileName`  
+
+## scrollTo
+
+[lib/helper/WebDriverIO.js:682-684](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L682-L684 "Source code on GitHub")
+
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`  
+-   `offsetY`  
+
 ## see
 
-[lib/helper/WebDriverIO.js:357-359](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L357-L359 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:500-502](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L500-L502 "Source code on GitHub")
 
 Checks that a page contains a visible text.
 Use context parameter to narrow down the search.
@@ -328,9 +565,56 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 -   `text`  
 -   `context`  
 
+## seeCheckboxIsChecked
+
+[lib/helper/WebDriverIO.js:548-550](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L548-L550 "Source code on GitHub")
+
+Verifies that the specified checkbox is checked.
+
+```js
+I.seeCheckboxIsChecked('Agree');
+I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
+I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
+```
+
+**Parameters**
+
+-   `field`  
+
+## seeCookie
+
+[lib/helper/WebDriverIO.js:742-746](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L742-L746 "Source code on GitHub")
+
+Checks that cookie with given name exists.
+
+```js
+I.seeCookie('Auth');
+```
+
+**Parameters**
+
+-   `name`  
+
+## seeCurrentUrlEquals
+
+[lib/helper/WebDriverIO.js:639-643](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L639-L643 "Source code on GitHub")
+
+Checks that current url is equal to provided one.
+If a relative url provided, a configured url will be prepended to it.
+So both examples will work:
+
+```js
+I.seeCurrentUrlEquals('/register');
+I.seeCurrentUrlEquals('http://my.site.com/register');
+```
+
+**Parameters**
+
+-   `uri`  
+
 ## seeElement
 
-[lib/helper/WebDriverIO.js:381-385](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L381-L385 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:567-571](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L567-L571 "Source code on GitHub")
 
 Checks that element is present on page.
 Element is located by CSS or XPath.
@@ -345,7 +629,7 @@ I.seeElement('#modal');
 
 ## seeInCurrentUrl
 
-[lib/helper/WebDriverIO.js:403-407](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L403-L407 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:612-616](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L612-L616 "Source code on GitHub")
 
 Checks that current url contains a provided fragment.
 
@@ -357,9 +641,52 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 -   `urlFragment`  
 
+## seeInField
+
+[lib/helper/WebDriverIO.js:527-529](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L527-L529 "Source code on GitHub")
+
+Checks that the given input field or textarea equals to given value.
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+
+```js
+I.seeInField('Username', 'davert');
+I.seeInField({css: 'form textarea'},'Type your comment here');
+I.seeInField('form input[type=hidden]','hidden_value');
+I.seeInField('#searchform input','Search');
+```
+
+**Parameters**
+
+-   `field`  
+-   `value`  
+
+## seeInPopup
+
+[lib/helper/WebDriverIO.js:796-803](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L796-L803 "Source code on GitHub")
+
+Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the given string.
+
+**Parameters**
+
+-   `text`  
+
+## seeInSource
+
+[lib/helper/WebDriverIO.js:589-593](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L589-L593 "Source code on GitHub")
+
+Checks that the current page contains the given string in its raw source code.
+
+```js
+I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+**Parameters**
+
+-   `text`  
+
 ## seeInTitle
 
-[lib/helper/WebDriverIO.js:326-330](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L326-L330 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:460-464](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L460-L464 "Source code on GitHub")
 
 Checks that title contains text.
 
@@ -369,7 +696,7 @@ Checks that title contains text.
 
 ## selectOption
 
-[lib/helper/WebDriverIO.js:218-243](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L218-L243 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:308-356](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L308-L356 "Source code on GitHub")
 
 Selects an option in a drop-down select.
 Field is siearched by label | name | CSS | XPath.
@@ -384,14 +711,34 @@ I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
 ```
 
+Provide an array for the second argument to select multiple options.
+
+```js
+I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
+```
+
 **Parameters**
 
 -   `select`  
 -   `option`  
 
+## setCookie
+
+[lib/helper/WebDriverIO.js:718-720](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L718-L720 "Source code on GitHub")
+
+Sets a [cookie](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object) object
+
+```js
+I.setCookie({name: 'auth', value: true});
+```
+
+**Parameters**
+
+-   `cookie`  
+
 ## wait
 
-[lib/helper/WebDriverIO.js:439-441](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L439-L441 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:833-835](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L833-L835 "Source code on GitHub")
 
 Pauses execution for a number of seconds.
 
@@ -401,7 +748,7 @@ Pauses execution for a number of seconds.
 
 ## waitForElement
 
-[lib/helper/WebDriverIO.js:456-459](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L456-L459 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:850-853](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L850-L853 "Source code on GitHub")
 
 Waits for element to be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -413,7 +760,7 @@ Element can be located by CSS or XPath.
 
 ## waitForEnabled
 
-[lib/helper/WebDriverIO.js:447-450](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L447-L450 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:841-844](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L841-L844 "Source code on GitHub")
 
 Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -425,11 +772,16 @@ Element can be located by CSS or XPath.
 
 ## waitForText
 
-[lib/helper/WebDriverIO.js:466-477](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L466-L477 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:865-884](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L865-L884 "Source code on GitHub")
 
 Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
 Narrow down search results by providing context.
+
+```js
+I.waitForText('Thank you, form has been submitted');
+I.waitForText('Thank you, form has been submitted', 5, '#modal');
+```
 
 **Parameters**
 
@@ -439,7 +791,7 @@ Narrow down search results by providing context.
 
 ## waitForVisible
 
-[lib/helper/WebDriverIO.js:483-486](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L483-L486 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:890-893](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L890-L893 "Source code on GitHub")
 
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -451,7 +803,7 @@ Element can be located by CSS or XPath.
 
 ## waitUntil
 
-[lib/helper/WebDriverIO.js:491-494](https://github.com/Codeception/CodeceptJS/blob/0902229a59ad1b27eb592c5ae153c90f9a31cd8a/lib/helper/WebDriverIO.js#L491-L494 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:898-901](https://github.com/Codeception/CodeceptJS/blob/b48c3c1c77188e519f9a9b26a9bf71ece61ac682/lib/helper/WebDriverIO.js#L898-L901 "Source code on GitHub")
 
 Waits for a function to return true (waits for 1sec by default).
 
