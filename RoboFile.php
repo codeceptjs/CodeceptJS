@@ -14,7 +14,8 @@ class RoboFile extends \Robo\Tasks
     
     function publishSite()
     {
-        $this->stopOnFail();        
+        $this->stopOnFail();
+        $this->_copy('CHANGELOG.md', 'docs/changelog.md');        
         $this->taskGitStack()
             ->checkout('site')
             ->merge('master')
@@ -23,6 +24,7 @@ class RoboFile extends \Robo\Tasks
         $this->taskGitStack()
             ->checkout('master')
             ->run();
+        $this->_remove('docs/changelog.md');            
     }
     
     function testServer() 
