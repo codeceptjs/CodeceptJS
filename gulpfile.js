@@ -8,8 +8,8 @@ var plumber = require('gulp-plumber');
 var coveralls = require('gulp-coveralls');
 var documentation = require('gulp-documentation');
 var glob = require('glob');
-var changed = require('gulp-changed');
 var guppy = require('git-guppy')(gulp);
+var gitmodified = require('gulp-gitmodified');
 
 gulp.task('docs', function () {
 
@@ -22,8 +22,7 @@ gulp.task('docs', function () {
 
 gulp.task('static', function () {
   return gulp.src('**/*.js')
-		.pipe(changed('.'))  
-    .pipe(excludeGitignore())
+    .pipe(gitmodified(['added', 'modified']))
     .pipe(eslint({fix: true, quiet: true}))
     .pipe(gulp.dest('.'));
 });
