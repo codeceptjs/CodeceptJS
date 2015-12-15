@@ -100,6 +100,10 @@ within('form.user', function () {
 });
 ```
 
+When running steps inside a within block will be shown with a shift:
+
+![within](http://codecept.io/images/within.png)
+
 ---
 
 ### done()
