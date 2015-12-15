@@ -113,6 +113,14 @@ Like in Mocha you can use `x` and `only` to skip tests or making a single test t
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
 
+## Reporters
+
+CodeceptJS supports [Mocha Reporters](https://mochajs.org/#reporters).
+They can be used with `--reporter` optons.
+By default a custom console reporter is enabled. 
+
+We are currently working on improving reporters support.
+
 ## Bootstrap
 
 In case you need to execute arbitrary code before the tests,
