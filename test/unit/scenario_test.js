@@ -58,9 +58,9 @@ describe('Scenario', () => {
       test.fn = () => {
         throw new Error('ups');
       };
-      scenario.test(test).fn();
-      return recorder.promise()
-        .then(() => assert.ok(failed.called));
+      return scenario.test(test).fn()
+        .then(() => assert.ok(failed.called))
+        .catch(() => null);        
     });
 
     it('should fire failed event on async error', () => {
@@ -69,7 +69,8 @@ describe('Scenario', () => {
       };
       scenario.test(test).fn();
       return recorder.promise()
-        .then(() => assert.ok(failed.called));
+        .then(() => assert.ok(failed.called))
+        .catch(() => null);
     });
   });
 });

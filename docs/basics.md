@@ -106,6 +106,22 @@ When running steps inside a within block will be shown with a shift:
 
 ![within](http://codecept.io/images/within.png)
 
+## Skipping
+
+Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
+
+* `xScenario` - skips current test
+* `Scenario.only` - executes only the current test
+
+## Bootstrap
+
+In case you need to execute arbitrary code before the tests,
+you can place it into your bootstrap file and provide a relative path to it in `codecept.json`
+
+```json
+bootstrap: "./run_server.js"
+```
+
 ---
 
 ### done()
