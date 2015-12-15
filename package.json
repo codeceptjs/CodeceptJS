@@ -47,6 +47,7 @@
     "gulp-jscs": "^3.0.2",
     "gulp-mocha": "^2.0.0",
     "gulp-plumber": "^1.0.0",
+    "guppy-pre-commit": "^0.3.0",
     "sinon": "^1.17.2"
   },
   "scripts": {
