@@ -11,12 +11,6 @@ describe('Recorder', () => {
     recorder.promise().should.be.instanceof(Promise);
   });
 
-  it('should execute finish handler in the end', (done) => {
-    recorder.finishHandler(() => done());
-    recorder.add(() => true);
-    recorder.finalize();
-  });
-
   it('should execute error handler on error', (done) => {
     recorder.errHandler(() => done());
     recorder.throw(new Error('err'));

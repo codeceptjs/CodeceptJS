@@ -27,11 +27,11 @@ class RoboFile extends \Robo\Tasks
     
     function testServer() 
     {
-        $this->taskExec('selenium-standalone start')
-          ->background()
-          ->run();
         $this->taskServer(8000)
             ->dir('test/data/app')
+            ->background()            
             ->run();
+        $this->taskExec('selenium-standalone start')
+          ->run();
     }
 }

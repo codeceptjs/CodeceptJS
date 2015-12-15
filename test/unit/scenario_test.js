@@ -58,8 +58,7 @@ describe('Scenario', () => {
       test.fn = () => {
         throw new Error('ups');
       };
-      recorder.errHandler(() => null);
-      scenario.test(test).fn(() => null);
+      scenario.test(test).fn();
       return recorder.promise()
         .then(() => assert.ok(failed.called));
     });
@@ -68,8 +67,7 @@ describe('Scenario', () => {
       test.fn = () => {
         recorder.throw(new Error('ups'));
       };
-      recorder.errHandler(() => null);
-      scenario.test(test).fn(() => null);
+      scenario.test(test).fn();
       return recorder.promise()
         .then(() => assert.ok(failed.called));
     });

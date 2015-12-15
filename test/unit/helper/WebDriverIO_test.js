@@ -281,15 +281,15 @@ describe('WebDriverIO', function () {
         .then(() => wd.click('Submit'))
         .then(() => assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW'));
     });
-    
+
     it('should be able to send special keys to element', () => {
       return wd.amOnPage('/form/field')
         .then(() => wd.appendField('Name', ''))
-        .then(() => wd.pressKey([`Control`,`a`]))
+        .then(() => wd.pressKey([`Control`, `a`]))
         .then(() => wd.pressKey(`Delete`))
         .then(() => wd.pressKey(['Shift', '111']))
         .then(() => wd.pressKey('1'))
-        .then(() => wd.seeInField('Name', '!!!1'));        
+        .then(() => wd.seeInField('Name', '!!!1'));
     });
   });
 
@@ -375,7 +375,7 @@ describe('WebDriverIO', function () {
 
     it('should check checkbox is checked :)', () => {
       return wd.amOnPage('/info')
-        .then(() => wd.seeCheckboxIsChecked('input[type=checkbox]'))
+        .then(() => wd.seeCheckboxIsChecked('input[type=checkbox]'));
     });
 
     it('should check checkbox is not checked', () => {
@@ -410,7 +410,7 @@ describe('WebDriverIO', function () {
     it('should grab attribute from element', () => {
       return wd.amOnPage('/search')
         .then(() => wd.grabAttribute({css: 'form'}, 'method'))
-        .then((val) => assert.equal(val, "get"))
+        .then((val) => assert.equal(val, "get"));
     });
   });
 
@@ -426,7 +426,7 @@ describe('WebDriverIO', function () {
     it('should grab page title', () => {
       return wd.amOnPage('/')
         .then(() => wd.grabTitle())
-        .then((val) => assert.equal(val, "TestEd Beta 2.0"))
+        .then((val) => assert.equal(val, "TestEd Beta 2.0"));
     });
   });
 
