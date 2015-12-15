@@ -9,5 +9,6 @@
     }
   },
   "mocha": {},
-  "name": "tests"
+  "name": "tests",
+  "bootstrap": "./bootstrap.js"
 }
