@@ -33,7 +33,7 @@ describe('equal assertion', () => {
     equal.params.expected = 'hello';
     equal.params.actual = 'hello';
     let err = equal.getFailedNegation();
-    err.inspect().should.equal("expected contents of webpage 'hello' not to equal 'hello'") });
+    err.inspect().should.equal("expected contents of webpage 'hello' not to equal 'hello'"); });
 
 
 });
