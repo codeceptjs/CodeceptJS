@@ -60,7 +60,7 @@ describe('Scenario', () => {
       };
       return scenario.test(test).fn()
         .then(() => assert.ok(failed.called))
-        .catch(() => null);        
+        .catch(() => null);
     });
 
     it('should fire failed event on async error', () => {
