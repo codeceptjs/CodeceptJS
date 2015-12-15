@@ -37,6 +37,7 @@
     "chai": "^3.4.1",
     "css-to-xpath": "^0.1.0",
     "documentation": "^3.0.4",
+    "git-guppy": "^1.0.1",
     "gulp": "^3.6.0",
     "gulp-coveralls": "^0.1.0",
     "gulp-documentation": "^2.1.0",

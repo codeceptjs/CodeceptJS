@@ -26,6 +26,8 @@ gulp.task('static', function () {
     .pipe(gulp.dest('.'));
 });
 
+gulp.task('pre-commit', ['static']);
+
 gulp.task('pre-test', function () {
   return gulp.src('lib/**/*.js')
     .pipe(istanbul({
