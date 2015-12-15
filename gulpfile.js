@@ -23,7 +23,6 @@ gulp.task('static', function () {
   return gulp.src('**/*.js')
     .pipe(excludeGitignore())
     .pipe(eslint({fix: true, quiet: true}))
-    .pipe(eslint.format())
     .pipe(gulp.dest('.'));
 });
 
