@@ -1,4 +1,4 @@
-# CodeceptJs [![NPM version][npm-image]][npm-url]
+# CodeceptJs [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg)](https://travis-ci.org/Codeception/CodeceptJS)
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
@@ -146,7 +146,7 @@ I.fillField('#user_basic_email', 'hello@world.com');
 I.fillField({css: '#user_basic_email'}, 'hello@world.com');
 ``` 
 
-Other methods like `checkOption`, and `click` work in a similar manner. They can take lables or CSS or XPath locators to find elements to interact.
+Other methods like `checkOption`, and `click` work in a similar manner. They can take labels or CSS or XPath locators to find elements to interact.
  
 ### Assertions
  

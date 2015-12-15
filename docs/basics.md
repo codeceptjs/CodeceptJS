@@ -86,6 +86,50 @@ Scenario('test title', (I) => {
 });
 ```
 
+## Within 
+
+To specify the exact area on a page where actions can be performed you can use `within` function.
+Everything executed in its context will be narrowed to context specified by locator:
+
+```js
+I.amOnPage('https://github.com');
+within('.form-signup-home', function () {
+  I.fillField('user[login]', 'User');
+  I.fillField('user[email]', 'user@user.com');
+  I.fillField('user[password]', 'user@user.com');
+  I.click('button');
+});
+I.see('There were problems creating your account.');
+```
+
+When running steps inside a within block will be shown with a shift:
+
+![within](http://codecept.io/images/within.png)
+
+## Skipping
+
+Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
+
+* `xScenario` - skips current test
+* `Scenario.only` - executes only the current test
+
+## Reporters
+
+CodeceptJS supports [Mocha Reporters](https://mochajs.org/#reporters).
+They can be used with `--reporter` optons.
+By default a custom console reporter is enabled. 
+
+We are currently working on improving reporters support.
+
+## Bootstrap
+
+In case you need to execute arbitrary code before the tests,
+you can place it into your bootstrap file and provide a relative path to it in `codecept.json`
+
+```json
+bootstrap: "./run_server.js"
+```
+
 ---
 
 ### done()

@@ -1,0 +1,14 @@
+{
+  "tests": "./*_test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "WebDriverIO": {
+      "url": "http://localhost",
+      "browser": "firefox"
+    }
+  },
+  "mocha": {},
+  "name": "tests",
+  "bootstrap": "./bootstrap.js"
+}

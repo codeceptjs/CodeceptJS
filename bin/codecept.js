@@ -51,7 +51,7 @@ program.command('run [suite] [test]')
   .option('-C, --no-colors', 'force disabling of colors')
   .option('-G, --growl', 'enable growl notification support')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
-  .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
+  .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', "sort test files")
   .option('-b, --bail', "bail after first test failure")
   .option('-d, --debug', "enable node's debugger, synonym for node --debug")
@@ -69,7 +69,7 @@ program.command('run [suite] [test]')
   .action(require('../lib/command/run'));
 
 if (process.argv.length <= 2) {
-  console.log('CodeceptJS v'+ Codecept.version());
-  program.outputHelp()
+  console.log('CodeceptJS v' + Codecept.version());
+  program.outputHelp();
 }
 program.parse(process.argv);
