@@ -86,6 +86,20 @@ Scenario('test title', (I) => {
 });
 ```
 
+## Within 
+
+To specify the exact area on a page where actions can be performed you can use `within` function.
+Everything executed in its context will be narrowed to context specified by locator:
+
+```js
+I.amOnPage('/');
+within('form.user', function () {
+  I.fillField('name', 'miles');
+  I.fillField('email', 'miles@davis.com');
+  I.click('button');
+});
+```
+
 ---
 
 ### done()
