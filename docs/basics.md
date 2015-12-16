@@ -116,7 +116,7 @@ Like in Mocha you can use `x` and `only` to skip tests or making a single test t
 ## Reporters
 
 CodeceptJS supports [Mocha Reporters](https://mochajs.org/#reporters).
-They can be used with `--reporter` optons.
+They can be used with `--reporter` options.
 By default a custom console reporter is enabled. 
 
 We are currently working on improving reporters support.
