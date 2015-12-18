@@ -54,7 +54,14 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 $ npm install -g codeceptjs
 ```
 
-Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run 
+Move to the directory where you'd like to have your tests (and codeceptjs config) stored, and install CodeceptJS as a
+local dev dependency:
+
+```
+$ npm install --save-dev codeceptjs
+```
+
+Once installed globally and in the project, from the project root, run 
 
 ```
 codeceptjs init
