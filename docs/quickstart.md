@@ -17,7 +17,7 @@ Initialize CodeceptJS running:
 codeceptjs init
 ```
 
-It will create `codecept.js` config in current directory (or provide path in the first argument).
+It will create `codecept.json` config in current directory (or provide path in the first argument).
 
 You will be asked for tests location (they will be searched in current dir by default). 
 
