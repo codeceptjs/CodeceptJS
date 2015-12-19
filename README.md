@@ -4,8 +4,8 @@ Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/d
 
 ## Modern Era Acceptance Testing Framework for NodeJS
 
-CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others). 
-It abstracts browser interaction to simple steps which is written from a user perspective. 
+CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others).
+It abstracts browser interaction to simple steps which is written from a user perspective.
 A simple test that verifies that "Welcome" text is present on a main page of a site will look like:
 
 ```js
@@ -15,7 +15,7 @@ Scenario('check Welcome page on site', (I) => {
   I.amOnPage('/');
   I.see('Welcome');
 }
-``` 
+```
 
 Codeception tests are:
 
@@ -25,16 +25,16 @@ Codeception tests are:
 
 Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has two helpers:
 
-* [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#webdriverio) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
-* [**FileSystem**](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#filesystem) - simple helper for testing filesystem.
+* [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
+* [**FileSystem**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/FileSystem.md) - simple helper for testing filesystem.
 
 And more to come...
 
 ## Why CodeceptJS?
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
-With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be. 
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc, 
+With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc,
 as CodeceptJS unifies them and makes them work as they were synchronous.
 
 ## Features
@@ -44,7 +44,7 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 * Uses ES6 natively without transpiler.
 * Selenium WebDriver integration using [webdriverio](http://webdriver.io).
 * Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
-* Interactive debugging shell: pause test at any point and try different commands in a browser. 
+* Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
 
 
@@ -54,7 +54,7 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 $ npm install -g codeceptjs
 ```
 
-Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run 
+Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run
 
 ```
 codeceptjs init
@@ -69,7 +69,7 @@ After that create your first test by executing:
 codeceptjs generate test
 ```
 
-Now test is created and can be executed with 
+Now test is created and can be executed with
 
 ```
 codeceptjs run
@@ -97,10 +97,10 @@ Scenario('test some forms', (I) => {
 });
 ```
 
-All actions are performed by I object; assertions functions start with `see` function. 
+All actions are performed by I object; assertions functions start with `see` function.
 In this examples all methods of I are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#webdriverio) to learn how to use them.
 
-Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development. 
+Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
 ```
 codeceptjs run --steps
@@ -122,9 +122,9 @@ CodeceptJS Demonstration --
  ✓ OK in 17752ms
 ```
 
-CodeceptJS has an ultimate feature to help you develop and debug you test. 
+CodeceptJS has an ultimate feature to help you develop and debug you test.
 You can **pause execution of test in any place and use interactive shell** to try different actions and locators.
-Just add `pause()` call at any place in a test and run it. 
+Just add `pause()` call at any place in a test and run it.
 
 Interactive shell can be started outside test context by running:
 
@@ -134,7 +134,7 @@ codeceptjs shell
 
 ### Actions
 
-We filled form with `fillField` methods, which located form elements by their label. 
+We filled form with `fillField` methods, which located form elements by their label.
 The same way you can locate element by name, CSS or XPath locators in tests:
 
 ```js
@@ -144,13 +144,13 @@ I.fillField('user_basic[email]', 'hello@world.com');
 I.fillField('#user_basic_email', 'hello@world.com');
 // don't make us guess locator type, specify it
 I.fillField({css: '#user_basic_email'}, 'hello@world.com');
-``` 
+```
 
 Other methods like `checkOption`, and `click` work in a similar manner. They can take labels or CSS or XPath locators to find elements to interact.
- 
+
 ### Assertions
- 
-Assertions start with `see` or `dontSee` prefix. In our case we are asserting that string 'User is valid' is somewhere in a webpage. 
+
+Assertions start with `see` or `dontSee` prefix. In our case we are asserting that string 'User is valid' is somewhere in a webpage.
 However, we can narrow the search to particular element by providing a second parameter:
 
 ```js
@@ -163,7 +163,7 @@ In this case 'User is valid' string will be searched only inside elements locate
 
 ### Grabbers
 
-In case you need to return a value from a webpage and use it directly in test, you should use methods with `grab` prefix. 
+In case you need to return a value from a webpage and use it directly in test, you should use methods with `grab` prefix.
 They are expected to be used inside a generator functions, and their results will be available in test:
 
 ```js
@@ -211,7 +211,7 @@ You can create one by running
 codeceptjs generate pageobject
 ```
 
-It will create a page object file for you and add it to config. 
+It will create a page object file for you and add it to config.
 Let's assume we created one named `docsPage`:
 
 ```js
@@ -220,11 +220,11 @@ Let's assume we created one named `docsPage`:
 let I;
 
 module.exports = {
-  
+
   _init() {
     I = require('codeceptjs/actor')();
   },
-  
+
   fields: {
     email: '#user_basic_email',
     password: '#user_basic_password'
