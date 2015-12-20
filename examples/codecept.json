@@ -10,5 +10,12 @@
   },
   "mocha": {},
   "name": "tests",
-  "bootstrap": "./bootstrap.js"
+  "bootstrap": "./bootstrap.js",
+  "include": {
+    "I": "./custom_steps.js",
+    "Smth": "./pages/Smth.js",
+    "loginPage": "./pages/Login.js",
+    "signinFragment": "./fragments/Signin.js",
+    "featuresPage": "./pages/Features.js"
+  }
 }

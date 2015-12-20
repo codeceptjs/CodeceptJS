@@ -1,3 +1,9 @@
+# 0.2.2
+
+Fixed generation of custom steps file and page objects. 
+Please replace `require('codeceptjs/actor')` to `actor` in your `custom_steps.js`.
+Whenever you need to create `I` object (in page objects, custom steps, but not in tests) just call `actor()`;
+
 # 0.2.0
 
 * **within** context hook added

@@ -75,7 +75,7 @@ Please refer to [Selenium - Proxy Object](https://code.google.com/p/selenium/wik
 
 ## Access From Helpers
 
-Receive a WebDriverIO client from a custom helper by accessing `brorwser` property:
+Receive a WebDriverIO client from a custom helper by accessing `browser` property:
 
     this.helpers['WebDriverIO'].browser
 
