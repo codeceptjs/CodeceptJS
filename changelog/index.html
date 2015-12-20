@@ -171,13 +171,20 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#020">0.2.0</a></li>
+        <li class="main active"><a href="#022">0.2.2</a></li>
+        
+    
+        <li class="main "><a href="#020">0.2.0</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
+<h1 id="022">0.2.2</h1>
+<p>Fixed generation of custom steps file and page objects. 
+Please replace <code>require('codeceptjs/actor')</code> to <code>actor</code> in your <code>custom_steps.js</code>.
+Whenever you need to create <code>I</code> object (in page objects, custom steps, but not in tests) just call <code>actor()</code>;</p>
 <h1 id="020">0.2.0</h1>
 <ul>
 <li><strong>within</strong> context hook added</li>
