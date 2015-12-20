@@ -1,8 +1,8 @@
 
 Feature('GitHub');
 
-Before((I) => {
-  I.amOnPage('https://github.com');
+Before((Smth) => {
+  Smth.openGitHub();
 });
 
 Scenario('search', (I) => {
@@ -20,7 +20,7 @@ Scenario('signin', (I) => {
   I.see('Incorrect username or password.', '.flash-error');
 });
 
-Scenario.only('register', (I) => {
+Scenario.only('register', (I, featuresPage) => {
   within('.form-signup-home', function () {
     I.fillField('user[login]', 'User');
     I.fillField('user[email]', 'user@user.com');
@@ -29,4 +29,6 @@ Scenario.only('register', (I) => {
     I.click('button');
   });
   I.see('There were problems creating your account.');
+  featuresPage.openFeatures();
+  I.see('Field-tested tools for any project');
 });
