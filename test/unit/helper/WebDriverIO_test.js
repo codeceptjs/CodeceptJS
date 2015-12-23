@@ -19,6 +19,10 @@ function formContents(key) {
   return data;
 }
 
+function expectError() {
+  throw new Error('should not be thrown');
+}
+
 describe('WebDriverIO', function () {
   this.timeout(10000);
 
@@ -299,6 +303,16 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeInField('#empty_input', ''));
     });
 
+    it('should throw error if field is not empty', () => {      
+      return wd.amOnPage('/form/empty')
+        .then(() => wd.seeInField('#empty_input', 'Ayayay'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.be.equal('expected fields by #empty_input to include Ayayay');
+        });
+    });
+
     it('should check for empty textarea', () => {
       return wd.amOnPage('/form/empty')
         .then(() => wd.seeInField('#empty_textarea', ''));
@@ -540,10 +554,8 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 0, '#text'))
         .catch((e) => {
-
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected element #text to include Nothing here');
-
         });
     });
 
