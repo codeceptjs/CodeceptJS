@@ -323,7 +323,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeInField('Name', 'OLD_VALUE'))
         .then(() => wd.seeInField('name', 'OLD_VALUE'))
         .then(() => wd.seeInField('//input[@id="name"]', 'OLD_VALUE'))
-        .then(() => wd.dontSeeInField('//input[@id="name"]', 'VALUE'));
+        .then(() => wd.dontSeeInField('//input[@id="name"]', 'NOtVALUE'));
     });
 
     it('should check textarea equals', () => {
