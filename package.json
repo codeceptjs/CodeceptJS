@@ -31,7 +31,7 @@
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
     "mocha": "^2.3.4",
-    "webdriverio": "^3.2.5"
+    "webdriverio": "~3.4.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",

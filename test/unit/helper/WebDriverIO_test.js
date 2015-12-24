@@ -302,11 +302,11 @@ describe('WebDriverIO', function () {
         .then(() => assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW'));
     });
 
-    it('should be able to send special keys to element', () => {
+    it.only('should be able to send special keys to element', () => {
       return wd.amOnPage('/form/field')
-        .then(() => wd.appendField('Name', ''))
+        .then(() => wd.appendField('Name', '-'))
         .then(() => wd.pressKey([`Control`, `a`]))
-        .then(() => wd.pressKey(`Delete`))
+        .then(() => wd.pressKey([`Delete`]))
         .then(() => wd.pressKey(['Shift', '111']))
         .then(() => wd.pressKey('1'))
         .then(() => wd.seeInField('Name', '!!!1'));
