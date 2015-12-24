@@ -19,6 +19,10 @@ function formContents(key) {
   return data;
 }
 
+function expectError() {
+  throw new Error('should not be thrown');
+}
+
 describe('WebDriverIO', function () {
   this.timeout(10000);
 
@@ -88,6 +92,22 @@ describe('WebDriverIO', function () {
         .then(() => wd.see('Welcome to test app!'))
         .then(() => wd.see('A wise man said: "debug!"'))
         .then(() => wd.dontSee('Info'));
+    });
+
+    it('should fail when text is not on site', () => {
+      return wd.amOnPage('/') 
+        .then(() => wd.see('Something incredible!'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('web page');
+        })
+        .then(() => wd.dontSee('Welcome'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('web page');
+        });
     });
 
     it('should check text inside element', () => {
@@ -282,11 +302,11 @@ describe('WebDriverIO', function () {
         .then(() => assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW'));
     });
 
-    it('should be able to send special keys to element', () => {
+    it.only('should be able to send special keys to element', () => {
       return wd.amOnPage('/form/field')
-        .then(() => wd.appendField('Name', ''))
+        .then(() => wd.appendField('Name', '-'))
         .then(() => wd.pressKey([`Control`, `a`]))
-        .then(() => wd.pressKey(`Delete`))
+        .then(() => wd.pressKey([`Delete`]))
         .then(() => wd.pressKey(['Shift', '111']))
         .then(() => wd.pressKey('1'))
         .then(() => wd.seeInField('Name', '!!!1'));
@@ -299,6 +319,16 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeInField('#empty_input', ''));
     });
 
+    it('should throw error if field is not empty', () => {      
+      return wd.amOnPage('/form/empty')
+        .then(() => wd.seeInField('#empty_input', 'Ayayay'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.be.equal('expected fields by #empty_input to include Ayayay');
+        });
+    });
+
     it('should check for empty textarea', () => {
       return wd.amOnPage('/form/empty')
         .then(() => wd.seeInField('#empty_textarea', ''));
@@ -309,7 +339,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeInField('Name', 'OLD_VALUE'))
         .then(() => wd.seeInField('name', 'OLD_VALUE'))
         .then(() => wd.seeInField('//input[@id="name"]', 'OLD_VALUE'))
-        .then(() => wd.dontSeeInField('//input[@id="name"]', 'VALUE'));
+        .then(() => wd.dontSeeInField('//input[@id="name"]', 'NOtVALUE'));
     });
 
     it('should check textarea equals', () => {
@@ -539,22 +569,20 @@ describe('WebDriverIO', function () {
     it('should return error if not present', () => {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 0, '#text'))
+        .then(expectError)
         .catch((e) => {
-
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected element #text to include Nothing here');
-
         });
     });
 
     it('should return error if waiting is too small', () => {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.5))
+        .then(expectError)
         .catch((e) => {
-
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected element body to include Dynamic text');
-
         });
     });
 
