@@ -1,3 +1,8 @@
+## 0.2.3
+
+* [WebDriverIO] fixed `seeInField` to work with single value elements like: input[type=text], textareas, and multiple: select, input[type=radio], input[type=checkbox]
+* [WebDriverIO] fixed `pressKey`, key modifeiers (Control, Command, Alt, Shift) are released after the action
+
 ## 0.2.2
 
 Fixed generation of custom steps file and page objects. 
