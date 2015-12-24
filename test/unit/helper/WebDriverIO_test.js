@@ -94,7 +94,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.dontSee('Info'));
     });
 
-    it.only('should fail when text is not on site', () => {
+    it('should fail when text is not on site', () => {
       return wd.amOnPage('/') 
         .then(() => wd.see('Something incredible!'))
         .then(expectError)
@@ -108,7 +108,7 @@ describe('WebDriverIO', function () {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web page');
         });
-    });    
+    });
 
     it('should check text inside element', () => {
       return wd.amOnPage('/')
