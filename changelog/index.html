@@ -171,7 +171,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#022">0.2.2</a></li>
+        <li class="main active"><a href="#023">0.2.3</a></li>
+        
+    
+        <li class="main "><a href="#022">0.2.2</a></li>
         
     
         <li class="main "><a href="#020">0.2.0</a></li>
@@ -181,6 +184,11 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="023">0.2.3</h2>
+<ul>
+<li>[WebDriverIO] fixed <code>seeInField</code> to work with single value elements like: input[type=text], textareas, and multiple: select, input[type=radio], input[type=checkbox]</li>
+<li>[WebDriverIO] fixed <code>pressKey</code>, key modifeiers (Control, Command, Alt, Shift) are released after the action</li>
+</ul>
 <h2 id="022">0.2.2</h2>
 <p>Fixed generation of custom steps file and page objects. 
 Please replace <code>require('codeceptjs/actor')</code> to <code>actor</code> in your <code>custom_steps.js</code>.
