@@ -36,4 +36,13 @@ class RoboFile extends \Robo\Tasks
         $this->taskExec('selenium-standalone start')
           ->run();
     }
+    
+    function release() 
+    {
+        $this->stopOnFail();
+        $this->docs();
+        $this->publishSite();
+        $this->_exec('npm release');
+        $this->yell('It is released!');  
+    }
 }
