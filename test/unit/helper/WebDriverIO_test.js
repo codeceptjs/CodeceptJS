@@ -94,6 +94,22 @@ describe('WebDriverIO', function () {
         .then(() => wd.dontSee('Info'));
     });
 
+    it.only('should fail when text is not on site', () => {
+      return wd.amOnPage('/') 
+        .then(() => wd.see('Something incredible!'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('web page');
+        })
+        .then(() => wd.dontSee('Welcome'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('web page');
+        });
+    });    
+
     it('should check text inside element', () => {
       return wd.amOnPage('/')
         .then(() => wd.see('Welcome to test app!', 'h1'))
@@ -553,6 +569,7 @@ describe('WebDriverIO', function () {
     it('should return error if not present', () => {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 0, '#text'))
+        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected element #text to include Nothing here');
@@ -562,11 +579,10 @@ describe('WebDriverIO', function () {
     it('should return error if waiting is too small', () => {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.5))
+        .then(expectError)
         .catch((e) => {
-
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected element body to include Dynamic text');
-
         });
     });
 
