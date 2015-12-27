@@ -10,6 +10,10 @@ class RoboFile extends \Robo\Tasks
     {
         $this->taskGulpRun('docs')
           ->run();
+        $this->taskGitStack()
+          ->add('docs')
+          ->commit('updated docs')
+          ->run();          
     }
     
     function publishSite()
@@ -40,9 +44,9 @@ class RoboFile extends \Robo\Tasks
     function release() 
     {
         $this->stopOnFail();
-        $this->docs();
+        $this->docs();          
         $this->publishSite();
-        $this->_exec('npm release');
+        $this->_exec('npm publish');
         $this->yell('It is released!');  
     }
 }
