@@ -1,3 +1,7 @@
+## 0.2.4
+
+* Fixed accessing helpers from custom helper by @pim.   
+
 ## 0.2.3
 
 * [WebDriverIO] fixed `seeInField` to work with single value elements like: input[type=text], textareas, and multiple: select, input[type=radio], input[type=checkbox]

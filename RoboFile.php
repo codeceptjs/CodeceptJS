@@ -42,7 +42,7 @@ class RoboFile extends \Robo\Tasks
         $this->stopOnFail();
         $this->docs();
         $this->publishSite();
-        $this->_exec('npm release');
+        $this->_exec('npm publish');
         $this->yell('It is released!');  
     }
 }
