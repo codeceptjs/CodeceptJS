@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - '4.2'
   - '5.1'
+  - '5.2'
   
 sudo: required
 dist: trusty
