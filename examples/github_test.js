@@ -20,7 +20,7 @@ Scenario('signin', (I) => {
   I.see('Incorrect username or password.', '.flash-error');
 });
 
-Scenario.only('register', (I, featuresPage) => {
+Scenario('register', (I, featuresPage) => {
   within('.form-signup-home', function () {
     I.fillField('user[login]', 'User');
     I.fillField('user[email]', 'user@user.com');
