@@ -19,16 +19,16 @@ class RoboFile extends \Robo\Tasks
     function publishSite()
     {
         $this->stopOnFail();
-        $this->_copy('CHANGELOG.md', 'docs/changelog.md');        
         $this->taskGitStack()
             ->checkout('site')
             ->merge('master')
             ->run();
+        $this->_copy('CHANGELOG.md', 'docs/changelog.md');        
         $this->_exec('mkdocs gh-deploy');
+        $this->_remove('docs/changelog.md');            
         $this->taskGitStack()
             ->checkout('master')
             ->run();
-        $this->_remove('docs/changelog.md');            
     }
     
     function testServer() 
