@@ -13,7 +13,7 @@ class RoboFile extends \Robo\Tasks
         $this->taskGitStack()
           ->add('docs')
           ->commit('updated docs')
-          ->run();4          
+          ->run();     
     }
     
     function publishSite()
