@@ -22,7 +22,7 @@ Generated Helper will be added to `codecept.json` config. It should look like th
 ```js
 'use strict';
 
-let Helper = require('codeceptjs/helper');
+let Helper = codecept_helper;
 
 class MyHelper extends Helper {
 
