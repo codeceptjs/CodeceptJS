@@ -1,3 +1,8 @@
+## 0.2.5
+
+* Fixed issues with using yield inside a test #45 #47 #43
+* Fixed generating a custom helper. Helper class is now accessible with `codecept_helper` var. Fixes #48 
+
 ## 0.2.4
 
 * Fixed accessing helpers from custom helper by @pim.   
