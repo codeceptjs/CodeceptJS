@@ -98,7 +98,7 @@ Scenario('test some forms', (I) => {
 ```
 
 All actions are performed by I object; assertions functions start with `see` function.
-In this examples all methods of I are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/API.md#webdriverio) to learn how to use them.
+In this examples all methods of `I` are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) to learn how to use them.
 
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
