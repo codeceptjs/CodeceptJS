@@ -227,6 +227,21 @@ I.click({css: 'nav a.login'});
 -   `link`
 -   `context`
 
+## countAppearances
+
+[lib/helper/WebDriverIO.js:423-427](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L423-L427 "Source code on GitHub")
+
+Counts the appearance of an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let number = yield I.countAppearances('#submitBtn');
+```
+
+**Parameters**
+
+-   `selector`
+
 ## dontSee
 
 [lib/helper/WebDriverIO.js:512-514](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L512-L514 "Source code on GitHub")
