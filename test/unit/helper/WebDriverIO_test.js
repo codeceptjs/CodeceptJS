@@ -95,7 +95,7 @@ describe('WebDriverIO', function () {
     });
 
     it('should fail when text is not on site', () => {
-      return wd.amOnPage('/') 
+      return wd.amOnPage('/')
         .then(() => wd.see('Something incredible!'))
         .then(expectError)
         .catch((e) => {
@@ -319,7 +319,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeInField('#empty_input', ''));
     });
 
-    it('should throw error if field is not empty', () => {      
+    it('should throw error if field is not empty', () => {
       return wd.amOnPage('/form/empty')
         .then(() => wd.seeInField('#empty_input', 'Ayayay'))
         .then(expectError)
@@ -586,6 +586,15 @@ describe('WebDriverIO', function () {
         });
     });
 
+  });
+
+  describe('#waitToHide', () => {
+    it('should until element is not visible', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.click('More info'))
+        .then(() => wd.waitToHide('#area1'))
+        .then(() => wd.seeInCurrentUrl('/info'));
+    });
   });
 
 });
