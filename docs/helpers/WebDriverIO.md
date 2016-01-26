@@ -81,7 +81,7 @@ Receive a WebDriverIO client from a custom helper by accessing `browser` propert
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _locate
 
@@ -96,7 +96,7 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## acceptPopup
 
@@ -120,7 +120,7 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## appendField
 
@@ -135,8 +135,8 @@ I.appendField('#myTextField', 'appended');
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## attachFile
 
@@ -151,8 +151,8 @@ File will be uploaded to remove system (if tests are running remotely).
 
 **Parameters**
 
--   `locator`  
--   `pathToFile`  
+-   `locator`
+-   `pathToFile`
 
 ## cancelPopup
 
@@ -177,8 +177,8 @@ I.checkOption('agree', '//form');
 
 **Parameters**
 
--   `option`  
--   `context`  
+-   `option`
+-   `context`
 
 ## clearCookie
 
@@ -194,7 +194,7 @@ I.clearCookie('test');
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`
 
 ## click
 
@@ -224,8 +224,8 @@ I.click({css: 'nav a.login'});
 
 **Parameters**
 
--   `link`  
--   `context`  
+-   `link`
+-   `context`
 
 ## dontSee
 
@@ -240,8 +240,8 @@ I.dontSee('Login'); // assume we are already logged in
 
 **Parameters**
 
--   `text`  
--   `context`  
+-   `text`
+-   `context`
 
 ## dontSeeCheckboxIsChecked
 
@@ -251,7 +251,7 @@ Verifies that the specified checkbox is not checked.
 
 **Parameters**
 
--   `field`  
+-   `field`
 
 ## dontSeeCookie
 
@@ -261,7 +261,7 @@ Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## dontSeeCurrentUrlEquals
 
@@ -272,7 +272,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `uri`  
+-   `uri`
 
 ## dontSeeElement
 
@@ -282,7 +282,7 @@ Opposite to `seeElement`. Checks that element is not on page.
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## dontSeeInCurrentUrl
 
@@ -292,7 +292,7 @@ Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `urlFragment`  
+-   `urlFragment`
 
 ## dontSeeInField
 
@@ -303,8 +303,8 @@ Opposite to `seeInField`
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## dontSeeInSource
 
@@ -314,7 +314,7 @@ Checks that the current page contains the given string in its raw source code
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## dontSeeInTitle
 
@@ -324,7 +324,7 @@ Checks that title does not contain text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## doubleClick
 
@@ -334,7 +334,7 @@ Performs a double-click on an element matched by CSS or XPath.
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## executeAsyncScript
 
@@ -345,7 +345,7 @@ Provided function should execute a passed callback (as first argument) to signal
 
 **Parameters**
 
--   `fn`  
+-   `fn`
 
 ## executeScript
 
@@ -358,7 +358,7 @@ In this case you should use generator and yield to receive results.
 
 **Parameters**
 
--   `fn`  
+-   `fn`
 
 ## fillField
 
@@ -380,8 +380,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## grabAttribute
 
@@ -396,8 +396,8 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 
 **Parameters**
 
--   `locator`  
--   `attr`  
+-   `locator`
+-   `attr`
 
 ## grabCookie
 
@@ -414,7 +414,7 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## grabTextFrom
 
@@ -429,7 +429,7 @@ let pin = yield I.grabTextFrom('#pin');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## grabTitle
 
@@ -455,7 +455,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## moveCursorTo
 
@@ -471,9 +471,9 @@ I.moveCursorTo('#submit', 5,5);
 
 **Parameters**
 
--   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `locator`
+-   `offsetX`
+-   `offsetY`
 
 ## pressKey
 
@@ -490,7 +490,7 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 
-To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.  
+To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
 
 ```js
 I.pressKey('Control');
@@ -500,7 +500,7 @@ I.pressKey('Control');
 
 **Parameters**
 
--   `key`  
+-   `key`
 
 ## resizeWindow
 
@@ -511,8 +511,8 @@ First parameter can be set to `maximize`
 
 **Parameters**
 
--   `width`  
--   `height`  
+-   `width`
+-   `height`
 
 ## rightClick
 
@@ -522,7 +522,7 @@ Performs right click on an element matched by CSS or XPath.
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## saveScreenshot
 
@@ -537,7 +537,7 @@ I.saveScreenshot('debug.png');
 
 **Parameters**
 
--   `fileName`  
+-   `fileName`
 
 ## scrollTo
 
@@ -553,9 +553,9 @@ I.scrollTo('#submit', 5,5);
 
 **Parameters**
 
--   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `locator`
+-   `offsetX`
+-   `offsetY`
 
 ## see
 
@@ -572,8 +572,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 **Parameters**
 
--   `text`  
--   `context`  
+-   `text`
+-   `context`
 
 ## seeCheckboxIsChecked
 
@@ -589,7 +589,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 **Parameters**
 
--   `field`  
+-   `field`
 
 ## seeCookie
 
@@ -603,7 +603,7 @@ I.seeCookie('Auth');
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## seeCurrentUrlEquals
 
@@ -620,7 +620,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `uri`  
+-   `uri`
 
 ## seeElement
 
@@ -635,7 +635,7 @@ I.seeElement('#modal');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## seeInCurrentUrl
 
@@ -649,7 +649,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `urlFragment`  
+-   `urlFragment`
 
 ## seeInField
 
@@ -667,8 +667,8 @@ I.seeInField('#searchform input','Search');
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## seeInPopup
 
@@ -678,7 +678,7 @@ Checks that the active JavaScript popup, as created by `window.alert|window.conf
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInSource
 
@@ -692,7 +692,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInTitle
 
@@ -702,7 +702,7 @@ Checks that title contains text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## selectOption
 
@@ -729,8 +729,8 @@ I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
 
 **Parameters**
 
--   `select`  
--   `option`  
+-   `select`
+-   `option`
 
 ## setCookie
 
@@ -744,7 +744,7 @@ I.setCookie({name: 'auth', value: true});
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`
 
 ## wait
 
@@ -754,7 +754,7 @@ Pauses execution for a number of seconds.
 
 **Parameters**
 
--   `sec`  
+-   `sec`
 
 ## waitForElement
 
@@ -765,8 +765,8 @@ Element can be located by CSS or XPath.
 
 **Parameters**
 
--   `selector`  
--   `sec`  
+-   `selector`
+-   `sec`
 
 ## waitForEnabled
 
@@ -777,8 +777,8 @@ Element can be located by CSS or XPath.
 
 **Parameters**
 
--   `selector`  
--   `sec`  
+-   `selector`
+-   `sec`
 
 ## waitForText
 
@@ -795,9 +795,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 **Parameters**
 
--   `text`  
--   `sec`  
--   `context`  
+-   `text`
+-   `sec`
+-   `context`
 
 ## waitForVisible
 
@@ -808,16 +808,28 @@ Element can be located by CSS or XPath.
 
 **Parameters**
 
--   `selector`  
--   `sec`  
+-   `selector`
+-   `sec`
+
+## waitToHide
+
+[lib/helper/WebDriverIO.js:916-919](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L916-L919 "Source code on GitHub")
+
+Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+**Parameters**
+
+-   `selector`
+-   `sec`
 
 ## waitUntil
 
-[lib/helper/WebDriverIO.js:915-918](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L915-L918 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:924-927](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L924-L927 "Source code on GitHub")
 
 Waits for a function to return true (waits for 1sec by default).
 
 **Parameters**
 
--   `fn`  
--   `sec`  
+-   `fn`
+-   `sec`
