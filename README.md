@@ -222,7 +222,7 @@ let I;
 module.exports = {
 
   _init() {
-    I = require('codeceptjs/actor')();
+    I = actor();
   },
 
   fields: {
