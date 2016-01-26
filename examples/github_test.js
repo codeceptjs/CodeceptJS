@@ -20,13 +20,13 @@ Scenario('signin', (I) => {
   I.see('Incorrect username or password.', '.flash-error');
 });
 
-Scenario('register', (I, featuresPage) => {
+Scenario.only('register', (I, featuresPage) => {
   within('.form-signup-home', function () {
     I.fillField('user[login]', 'User');
     I.fillField('user[email]', 'user@user.com');
     I.fillField('user[password]', 'user@user.com');
     // I.fillField('q', 'aaa');
-    I.click('button');
+    I.click('button12');
   });
   I.see('There were problems creating your account.');
   featuresPage.openFeatures();
