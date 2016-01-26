@@ -813,7 +813,7 @@ Element can be located by CSS or XPath.
 
 ## waitToHide
 
-[lib/helper/WebDriverIO.js:916-919](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L907-L910 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:916-919](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L916-L919 "Source code on GitHub")
 
 Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -825,7 +825,7 @@ Element can be located by CSS or XPath.
 
 ## waitUntil
 
-[lib/helper/WebDriverIO.js:924-927](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L915-L918 "Source code on GitHub")
+[lib/helper/WebDriverIO.js:924-927](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L924-L927 "Source code on GitHub")
 
 Waits for a function to return true (waits for 1sec by default).
 
