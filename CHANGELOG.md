@@ -1,3 +1,9 @@
+## 0.2.6
+
+* Fixed `done() was called multiple times`
+* [WebDriverIO] added `waitToHide` method by @fabioel
+* Added global `Helper` (alias `codecept_helper)`, object use for writing custom Helpers. Generator updated. Changes to #48 
+
 ## 0.2.5
 
 * Fixed issues with using yield inside a test #45 #47 #43
