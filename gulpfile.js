@@ -37,26 +37,18 @@ gulp.task('lint', function () {
 
 gulp.task('pre-commit', ['static']);
 
-gulp.task('pre-test', function () {
-  return gulp.src('lib/**/*.js')
-    .pipe(istanbul({
-      includeUntested: true
-    }))
-    .pipe(istanbul.hookRequire());
-});
-
 gulp.task('test', function (cb) {
   var mochaErr;
 
-  gulp.src('test/**/*.js')
-    // .pipe(plumber())
-    .pipe(mocha({reporter: 'spec'}));
-    // .on('error', function (err) {
-      // mochaErr = err;
-    // })
-    // .on('end', function () {
-      // cb(mochaErr);
-    // });
+  gulp.src('./test/**/*_test.js')
+    .pipe(plumber())
+    .pipe(mocha({reporter: 'spec'}))
+    .on('error', function (err) {
+      mochaErr = err;
+    })
+    .on('end', function () {
+      cb(mochaErr);
+    });
 });
 
 gulp.task('coveralls', ['test'], function () {

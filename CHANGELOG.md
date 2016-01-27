@@ -1,3 +1,9 @@
+## 0.2.7
+
+* process ends with exit code 1 on error or failure #49
+* fixed registereing global Helper #57
+* fixed handling error in within block #50
+
 ## 0.2.6
 
 * Fixed `done() was called multiple times`

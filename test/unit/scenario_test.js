@@ -58,7 +58,8 @@ describe('Scenario', () => {
       test.fn = () => {
         throw new Error('ups');
       };
-      return scenario.test(test).fn()
+      scenario.test(test).fn();
+      return recorder.promise()
         .then(() => assert.ok(failed.called))
         .catch(() => null);
     });
