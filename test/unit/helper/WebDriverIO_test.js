@@ -597,11 +597,10 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#countAppearances', () => {
+  describe('#seeNumberOfElements', () => {
     it('should return 1 as count', () => {
       return wd.amOnPage('/')
-        .then(() => wd.countAppearances('#area1'))
-        .then((val) => assert.equal(val, 1));
+        .then(() => wd.seeNumberOfElements('#area1', 1));
     });
   });
 
