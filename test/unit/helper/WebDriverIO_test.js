@@ -302,7 +302,7 @@ describe('WebDriverIO', function () {
         .then(() => assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW'));
     });
 
-    it.only('should be able to send special keys to element', () => {
+    it('should be able to send special keys to element', () => {
       return wd.amOnPage('/form/field')
         .then(() => wd.appendField('Name', '-'))
         .then(() => wd.pressKey([`Control`, `a`]))
