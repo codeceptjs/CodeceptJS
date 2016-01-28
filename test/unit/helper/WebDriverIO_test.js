@@ -597,4 +597,11 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#seeNumberOfElements', () => {
+    it('should return 1 as count', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeNumberOfElements('#area1', 1));
+    });
+  });
+
 });
