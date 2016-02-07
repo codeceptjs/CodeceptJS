@@ -186,7 +186,7 @@ Scenario('use page title', function*(I) {
 ## Waiting
 
 In modern web applications rendering is happen on client side. 
-Sometims that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
+Sometimes that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
 To handle this cases `wait*` methods introduced.
 
 ```js
@@ -201,4 +201,4 @@ More wait actions can be found in helper's reference.
 
 ### done()
 
-CodeceptJS through helpers provides user friendly API for interact with a webpage. In this section we desctibed using WebDriverIO helper which allows to control browser through Selenium WebDriver.
+CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
