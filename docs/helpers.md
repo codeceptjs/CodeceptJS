@@ -44,12 +44,12 @@ class MyHelper extends Helper {
 module.exports = MyHelper;
 ```
 
-All methods except those starting from `_` will be added to `I` object and trated as test actions.
+All methods except those starting from `_` will be added to `I` object and treated as test actions.
 Every method should return a value in order to be appended into promise chain.
 
 ## WebDriverIO Example  
 
-Next example demontrates how to use WebDriverIO library to create your own test action.
+Next example demonstrates how to use WebDriverIO library to create your own test action.
 Method `seeAuthenication` will use `client` instance of WebDriverIO to get access to cookies.
 Standard NodeJS assertion library will be used.
 

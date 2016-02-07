@@ -51,12 +51,12 @@ assert.equal(title, 'CodeceptJS');
 
 ## Pause
 
-Test execuition can be paused in any place of a test with `pause()` call. 
+Test execution can be paused in any place of a test with `pause()` call. 
 This also launches interactive console where you can call actions of `I` object.
 
 ![shell](/images/shell.png)
 
-You can also the pause to check the web application in a browser. Press `ENTER` to resumet test execution.   
+You can also the pause to check the web application in a browser. Press `ENTER` to resume test execution.   
 
 Interactive shell can be started outside test context by running
 
@@ -66,7 +66,7 @@ codeceptjs shell
 
 ## Before
 
-Common preperation steps like opening a web page, logging in a user, can be placed in `Before` or `Background` hook:
+Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background` hook:
 
 ```js
 Feature('CodeceptJS Demonstration');
