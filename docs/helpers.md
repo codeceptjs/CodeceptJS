@@ -50,7 +50,7 @@ Every method should return a value in order to be appended into promise chain.
 ## WebDriverIO Example  
 
 Next example demonstrates how to use WebDriverIO library to create your own test action.
-Method `seeAuthenication` will use `client` instance of WebDriverIO to get access to cookies.
+Method `seeAuthentication` will use `client` instance of WebDriverIO to get access to cookies.
 Standard NodeJS assertion library will be used.
 
 ```js
