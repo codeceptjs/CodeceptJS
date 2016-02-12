@@ -32,12 +32,14 @@
     "inquirer": "^0.11.0",
     "mocha": "^2.4.2",
     "protractor": "^3.0.0",
-    "selenium-webdriver": "^2.48.2",
+    "selenium-webdriver": "~2.48.2",
     "webdriverio": "~3.4.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
+    "co": "^4.6.0",
+    "co-mocha": "^1.1.2",
     "documentation": "^3.0.4",
     "git-guppy": "^1.0.1",
     "gulp": "^3.6.0",
