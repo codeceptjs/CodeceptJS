@@ -1,3 +1,7 @@
+## 0.2.8
+
+* [WebDriverIO] added `seeNumberOfElements` by @fabioel
+
 ## 0.2.7
 
 * process ends with exit code 1 on error or failure #49

@@ -49,7 +49,7 @@ module.exports = {
   },
   submitButton: {css: '#new_user_basic input[type=submit]'},
 
-  // intorucing methods
+  // introducing methods
   sendForm(email, password) {
     I.fillField(this.fields.email, email);
     I.fillField(this.fields.password, password);
