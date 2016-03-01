@@ -223,11 +223,11 @@ class MyHelper extends Helper {
 module.exports = MyHelper;
 </code></pre>
 
-<p>All methods except those starting from <code>_</code> will be added to <code>I</code> object and trated as test actions.
+<p>All methods except those starting from <code>_</code> will be added to <code>I</code> object and treated as test actions.
 Every method should return a value in order to be appended into promise chain.</p>
 <h2 id="webdriverio-example">WebDriverIO Example</h2>
-<p>Next example demontrates how to use WebDriverIO library to create your own test action.
-Method <code>seeAuthenication</code> will use <code>client</code> instance of WebDriverIO to get access to cookies.
+<p>Next example demonstrates how to use WebDriverIO library to create your own test action.
+Method <code>seeAuthentication</code> will use <code>client</code> instance of WebDriverIO to get access to cookies.
 Standard NodeJS assertion library will be used.</p>
 <pre><code class="js">'use strict';
 let Helper = require('codeceptjs/helper');

@@ -4,7 +4,7 @@
     
     <url>
      <loc>None/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>None/quickstart/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -21,25 +21,25 @@
         
     <url>
      <loc>None/basics/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/acceptance/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/pageobjects/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -49,13 +49,13 @@
         
     <url>
      <loc>None/helpers/WebDriverIO/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/FileSystem/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -64,7 +64,7 @@
     
     <url>
      <loc>None/changelog/</loc>
-     <lastmod>2016-01-27</lastmod>
+     <lastmod>2016-03-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

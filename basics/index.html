@@ -232,16 +232,16 @@ assert.equal(title, 'CodeceptJS');
 </code></pre>
 
 <h2 id="pause">Pause</h2>
-<p>Test execuition can be paused in any place of a test with <code>pause()</code> call. 
+<p>Test execution can be paused in any place of a test with <code>pause()</code> call. 
 This also launches interactive console where you can call actions of <code>I</code> object.</p>
 <p><img alt="shell" src="../images/shell.png" /></p>
-<p>You can also the pause to check the web application in a browser. Press <code>ENTER</code> to resumet test execution.   </p>
+<p>You can also the pause to check the web application in a browser. Press <code>ENTER</code> to resume test execution.   </p>
 <p>Interactive shell can be started outside test context by running</p>
 <pre><code class="bash">codeceptjs shell
 </code></pre>
 
 <h2 id="before">Before</h2>
-<p>Common preperation steps like opening a web page, logging in a user, can be placed in <code>Before</code> or <code>Background</code> hook:</p>
+<p>Common preparation steps like opening a web page, logging in a user, can be placed in <code>Before</code> or <code>Background</code> hook:</p>
 <pre><code class="js">Feature('CodeceptJS Demonstration');
 
 Before((I) =&gt; { // or Background
