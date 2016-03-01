@@ -316,6 +316,22 @@ Checks that the current page contains the given string in its raw source code
 
 -   `text`  
 
+## seeNumberOfElements
+
+[lib/helper/WebDriverIO.js:612-616](https://github.com/Codeception/CodeceptJS/blob/ed6736edbc7c818b3c206623fb069978a81cbfd8/lib/helper/WebDriverIO.js#L612-L616 "Source code on GitHub")
+
+Asserts that a given elements ocurrs a given number of times in the DOM
+The element located by CSS or XPath and returns it to test.
+
+```js
+I.seeNumberOfElements('#submitBtn', 1);
+```
+
+**Parameters**
+
+-   `selector`
+-   `number`
+
 ## dontSeeInTitle
 
 [lib/helper/WebDriverIO.js:469-473](https://github.com/Codeception/CodeceptJS/blob/3d4a6ac9a8f64ab2a666e8d218d995c541218cf3/lib/helper/WebDriverIO.js#L469-L473 "Source code on GitHub")
