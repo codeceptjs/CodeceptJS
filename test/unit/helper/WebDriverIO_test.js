@@ -414,7 +414,7 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#grabTextFrom, #grabValueFrom, #grabAttribute', () => {
+  describe('#grabTextFrom, #grabValueFrom, #grabAttribute, #grabCssFrom', () => {
     it('should grab text from page', () => {
       return wd.amOnPage('/')
         .then(() => wd.grabTextFrom('h1'))
@@ -441,6 +441,12 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/search')
         .then(() => wd.grabAttribute({css: 'form'}, 'method'))
         .then((val) => assert.equal(val, "get"));
+    });
+
+    it('should grab css from element', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.grabCssFrom('#area1', 'prop'))
+        .then((val) => assert.equal(val, "myTest"));
     });
   });
 

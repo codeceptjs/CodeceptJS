@@ -11,7 +11,7 @@
 </p>
 
 
-<div id="area1">
+<div id="area1" prop="myTest">
     <a href="/form/file"> Test Link </a>
 </div>
 <div id="area2">
