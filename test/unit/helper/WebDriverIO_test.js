@@ -414,6 +414,14 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#grabHTMLFrom', () => {
+    it('should grab html from element', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.grabTextFrom('#area3'))
+        .then((val) => assert.equal(val, '<a href="info">Document-Relative Link</a>'));
+    });
+  }
+
   describe('#grabTextFrom, #grabValueFrom, #grabAttribute', () => {
     it('should grab text from page', () => {
       return wd.amOnPage('/')
