@@ -69,10 +69,10 @@ Scenario('login', (I, loginPage) => {
 ```
 
 In a similar manner CodeceptJS allows you to generate **StepObjects**, **PageFragments** and any other are abstraction
-by running `go` command with `--kind` option:
+by running `go` command with `--type` option:
 
 ```
-codeceptjs go --kind fragment
+codeceptjs go --type fragment
 ```
 
 ## Actor
