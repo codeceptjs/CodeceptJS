@@ -8,20 +8,10 @@ let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
 let fileExists = require('../../../lib/utils').fileExists;
-const dataFile = path.join(__dirname, '../../data/app/db');
 let AssertionFailedError = require('../../../lib/assert/error');
+let formContents = require('../../../lib/utils').test.submittedData(path.join(__dirname, '../../data/app/db'));
+let expectError = require('../../../lib/utils').test.expectError;
 
-function formContents(key) {
-  let data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
-  if (key) {
-    return data['form'][key];
-  }
-  return data;
-}
-
-function expectError() {
-  throw new Error('should not be thrown');
-}
 
 describe('WebDriverIO', function () {
   this.timeout(10000);
@@ -532,7 +522,7 @@ describe('WebDriverIO', function () {
           assert.equal(size.value.width, 640);
           return assert.equal(size.value.height, 480);
         });
-        });
+      });
     });
   });
 
@@ -593,7 +583,6 @@ describe('WebDriverIO', function () {
           e.inspect().should.be.equal('expected element body to include Dynamic text');
         });
     });
-
   });
 
   describe('#waitToHide', () => {

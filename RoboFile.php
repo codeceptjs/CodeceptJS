@@ -13,7 +13,7 @@ class RoboFile extends \Robo\Tasks
         $this->taskGitStack()
           ->add('docs')
           ->commit('updated docs')
-          ->run();     
+          ->run();
     }
     
     function publishSite()
@@ -35,10 +35,7 @@ class RoboFile extends \Robo\Tasks
     {
         $this->taskServer(8000)
             ->dir('test/data/app')
-            ->background()            
             ->run();
-        $this->taskExec('selenium-standalone start')
-          ->run();
     }
     
     function release() 

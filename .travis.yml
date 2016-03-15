@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-  - '4.2'
-  - '5.2'
-  - '5.4'  
+  - '4.3'
+  - '5.7'
   
 sudo: required
 dist: trusty
@@ -13,13 +12,13 @@ addons:
       - php5-cli
 
 before_install:
-  - npm install selenium-standalone@latest -g
-  - selenium-standalone install
+  - wget http://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.52.0.jar
  
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - "selenium-standalone start >/dev/null 2>&1 &"
+  - "java -jar selenium-server-standalone-2.52.0.jar -port 4444 >/dev/null 2>&1 &"
   - "php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &"
+  - sleep 10
 
 script: gulp test
