@@ -1,0 +1,6 @@
+Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let email = yield I.grabValueFrom('input[name=email]');
+```

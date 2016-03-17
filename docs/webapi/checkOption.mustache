@@ -1,0 +1,10 @@
+Selects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.checkOption('#agree');
+I.checkOption('I Agree to Terms and Conditions');
+I.checkOption('agree', '//form');
+```
