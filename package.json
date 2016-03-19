@@ -31,11 +31,11 @@
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
     "mocha": "^2.4.2",
-    "protractor": "^3.0.0",
-    "selenium-webdriver": "~2.48.2",
-    "webdriverio": "~3.4.0"
+    "npm-install-package": "^1.0.2"
   },
   "devDependencies": {
+    "protractor": "^3.0.0",
+    "selenium-webdriver": "~2.48.2",   
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co": "^4.6.0",
