@@ -277,59 +277,6 @@ module.exports.tests = function() {
       return I.dontSeeInField('//textarea[@id="description"]', 'sunset');
     });
 
-    xit('should check values in checkboxes', function*() {
-      yield I.amOnPage('/form/field_values')
-      yield I.dontSeeInField('checkbox[]', 'not seen one');
-      yield I.seeInField('checkbox[]', 'see test one');
-      yield I.dontSeeInField('checkbox[]', 'not seen two');
-      yield I.seeInField('checkbox[]', 'see test two');
-      yield I.dontSeeInField('checkbox[]', 'not seen three');
-      return I.seeInField('checkbox[]', 'see test three');
-    });
-
-    xit('should check values with boolean', function*() {
-      yield I.amOnPage('/form/field_values')
-      yield I.seeInField('checkbox1', true);
-      yield I.dontSeeInField('checkbox1', false);
-      yield I.seeInField('checkbox2', false);
-      yield I.dontSeeInField('checkbox2', true);
-      yield I.seeInField('radio2', true);
-      yield I.dontSeeInField('radio2', false);
-      yield I.seeInField('radio3', false);
-      return I.dontSeeInField('radio3', true);
-    });
-
-    xit('should check values in radio', function*() {
-      yield I.amOnPage('/form/field_values')
-      yield I.seeInField('radio1', 'see test one');
-      yield I.dontSeeInField('radio1', 'not seen one');
-      yield I.dontSeeInField('radio1', 'not seen two');
-      return I.dontSeeInField('radio1', 'not seen three');
-    });
-
-    xit('should check values in select', function*() {
-      yield I.amOnPage('/form/field_values')
-      yield I.seeInField('select1', 'see test one');
-      yield I.dontSeeInField('select1', 'not seen one');
-      yield I.dontSeeInField('select1', 'not seen two');
-      return I.dontSeeInField('select1', 'not seen three');
-    });
-
-    xit('should check for empty select field', function*() {
-      yield I.amOnPage('/form/field_values')
-      return I.seeInField('select3', '');
-    });
-
-    xit('should check for select multiple field', function*() {
-      yield I.amOnPage('/form/field_values')
-      yield I.dontSeeInField('select2', 'not seen one');
-      yield I.seeInField('select2', 'see test one');
-      yield I.dontSeeInField('select2', 'not seen two');
-      yield I.seeInField('select2', 'see test two');
-      yield I.dontSeeInField('select2', 'not seen three');
-      return I.seeInField('select2', 'see test three');
-    });
-
     it('should check checkbox is checked :)', function*() {
       yield I.amOnPage('/info')
       return I.seeCheckboxIsChecked('input[type=checkbox]');
@@ -365,7 +312,7 @@ module.exports.tests = function() {
     });
 
     it('should grab attribute from element', function*() {
-      I.amOnPage('/search');
+      yield I.amOnPage('/search');
       let val = yield I.grabAttribute({css: 'form'}, 'method');
       return assert.equal(val, "get");
     });
