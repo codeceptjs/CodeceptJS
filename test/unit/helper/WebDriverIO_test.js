@@ -117,13 +117,22 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('see element : #seeElement, #dontSeeElement', () => {
-    it('should check visible elements on page', () => {
+  describe('see element : #seeElementInDOM, #dontSeeElementInDOM', () => {
+    it('should check elements are in the DOM', () => {
       return wd.amOnPage('/form/field')
-        .then(() => wd.seeElement('input[name=name]'))
-        .then(() => wd.seeElement('//input[@id="name"]'))
-        .then(() => wd.dontSeeElement('#something-beyond'))
-        .then(() => wd.dontSeeElement('//input[@id="something-beyond"]'));
+        .then(() => wd.seeElementInDOM('input[name=name]'))
+        .then(() => wd.seeElementInDOM('//input[@id="name"]'))
+        .then(() => wd.dontSeeElementInDOM('#something-beyond'))
+        .then(() => wd.dontSeeElementInDOM('//input[@id="something-beyond"]'));
+    });
+  });
+
+  describe('see element : #seeElement, #dontSeeElement', () => {
+    it('should check elements are visible on the page', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.seeElementInDOM('input[name=email]'))
+        .then(() => wd.dontSeeElement('input[name=email]'))
+        .then(() => wd.dontSeeElement('#something-beyond'));
     });
   });
 
