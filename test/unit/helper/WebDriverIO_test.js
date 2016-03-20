@@ -304,11 +304,8 @@ describe('WebDriverIO', function () {
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
-    it('should check for empty field', () => {
-      return wd.amOnPage('/form/empty')
-        .then(() => wd.seeInField('#empty_input', ''));
-    });
 
+    // not works in selenium webdriver
     it('should throw error if field is not empty', () => {
       return wd.amOnPage('/form/empty')
         .then(() => wd.seeInField('#empty_input', 'Ayayay'))
@@ -317,6 +314,11 @@ describe('WebDriverIO', function () {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected fields by #empty_input to include Ayayay');
         });
+    });
+
+    it('should check for empty field', () => {
+      return wd.amOnPage('/form/empty')
+        .then(() => wd.seeInField('#empty_input', ''));
     });
 
     it('should check for empty textarea', () => {
@@ -410,7 +412,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.grabTextFrom('#area3'))
         .then((val) => assert.equal(val, '<a href="info">Document-Relative Link</a>'));
     });
-  }
+  });
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttribute', () => {
     it('should grab text from page', () => {
@@ -505,6 +507,8 @@ describe('WebDriverIO', function () {
         .then(() => wd.dontSeeCookie('auth'));
     });
   });
+
+  // custom tests
 
   describe('#clearField', () => {
     it('should clear a given element', () => {
