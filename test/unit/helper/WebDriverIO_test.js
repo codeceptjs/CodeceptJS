@@ -174,7 +174,7 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
+  describe.only('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
     it('should accept popup window', () => {
       return wd.amOnPage('/form/popup')
         .then(() => wd.click('Confirm'))

@@ -1,6 +1,14 @@
 ## 0.3.0
 
+* Webdriverio removed from dependencies list. You will need to install it manually after upgrade. WebDriverIO is not the only backend for running selenium tests, so you are free to choose your favorite and install it.
+* [Protractor] helper added. Now you can test AngularJS applications by using its official library within the unigied CodeceptJS API!
+* [SeleniumWebdriver] helper added. You can switch to official JS bindings for Selenium.
+* [WebDriverIO] **updated to webdriverio v 4.0**
+* [WebDriverIO] `clearField` method added by @fabioel
 * [WebDriverIO] added `dragAndDrop` by @fabioel
+* [WebDriverIO] fixed `scrollTo` method by @sensone
+* [WebDriverIO] fixed `windowSize: maximize` option in config
+* fixed `within` block doesn't end in output not #79
 
 ## 0.2.8
 
