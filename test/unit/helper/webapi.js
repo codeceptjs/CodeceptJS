@@ -65,13 +65,28 @@ module.exports.tests = function() {
     });
   });
 
-  describe('see element : #seeElement, #dontSeeElement', () => {
+  describe.only('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
     it('should check visible elements on page', function*() {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');
+    });
+
+    it('should check elements are in the DOM', function*() {
+      yield I.amOnPage('/form/field');
+      yield I.seeElementInDOM('input[name=name]');
+      yield I.seeElementInDOM('//input[@id="name"]');
+      yield I.dontSeeElementInDOM('#something-beyond');
+      return I.dontSeeElementInDOM('//input[@id="something-beyond"]');
+    });
+
+    it('should check elements are visible on the page', function*() {
+      yield I.amOnPage('/form/field');
+      yield I.seeElementInDOM('input[name=email]');
+      yield I.dontSeeElement('input[name=email]');
+      return I.dontSeeElement('#something-beyond');
     });
   });
 

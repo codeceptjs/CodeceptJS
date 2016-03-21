@@ -61,7 +61,7 @@ describe('SeleniumWebdriver', function () {
   webApiTests.tests();
 
   describe('see text : #see', () => {
-    it.only('should fail when text is not on site', () => {
+    it('should fail when text is not on site', () => {
       return I.amOnPage('/')
         .then(() => I.see('Something incredible!'))
         .then(expectError)
