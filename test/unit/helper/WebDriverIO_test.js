@@ -75,7 +75,25 @@ describe('WebDriverIO', function () {
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web page');
-        });
+      });
+  });
+
+  describe('see element : #seeElementInDOM, #dontSeeElementInDOM', () => {
+    it('should check elements are in the DOM', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.seeElementInDOM('input[name=name]'))
+        .then(() => wd.seeElementInDOM('//input[@id="name"]'))
+        .then(() => wd.dontSeeElementInDOM('#something-beyond'))
+        .then(() => wd.dontSeeElementInDOM('//input[@id="something-beyond"]'));
+    });
+  });
+
+  describe('see element : #seeElement, #dontSeeElement', () => {
+    it('should check elements are visible on the page', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd.seeElementInDOM('input[name=email]'))
+        .then(() => wd.dontSeeElement('input[name=email]'))
+        .then(() => wd.dontSeeElement('#something-beyond'));
     });
   });
 
