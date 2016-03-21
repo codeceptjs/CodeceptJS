@@ -90,7 +90,7 @@ describe('SeleniumWebdriver', function () {
           e.toString().should.not.include('web page');
           e.inspect().should.include("expected element {css: 'a'}");
         });
-    })
+    });
   });
 
 });
