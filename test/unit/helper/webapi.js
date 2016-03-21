@@ -65,7 +65,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe.only('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
+  describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
     it('should check visible elements on page', function*() {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');

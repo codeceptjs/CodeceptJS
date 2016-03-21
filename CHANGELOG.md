@@ -1,6 +1,6 @@
 ## 0.3.0
 
-* Webdriverio removed from dependencies list. You will need to install it manually after upgrade. WebDriverIO is not the only backend for running selenium tests, so you are free to choose your favorite and install it.
+* webdriverio package removed from dependencies list. You will need to install it manually after upgrade. WebDriverIO is not the only backend for running selenium tests, so you are free to choose your favorite and install it.
 * [Protractor] helper added. Now you can test AngularJS applications by using its official library within the unigied CodeceptJS API!
 * [SeleniumWebdriver] helper added. You can switch to official JS bindings for Selenium.
 * [WebDriverIO] **updated to webdriverio v 4.0**
