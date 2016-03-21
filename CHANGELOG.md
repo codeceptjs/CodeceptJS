@@ -1,3 +1,7 @@
+## 0.3.0
+
+* [WebDriverIO] added `dragAndDrop` by @fabioel
+
 ## 0.2.8
 
 * [WebDriverIO] added `seeNumberOfElements` by @fabioel
@@ -12,16 +16,16 @@
 
 * Fixed `done() was called multiple times`
 * [WebDriverIO] added `waitToHide` method by @fabioel
-* Added global `Helper` (alias `codecept_helper)`, object use for writing custom Helpers. Generator updated. Changes to #48 
+* Added global `Helper` (alias `codecept_helper)`, object use for writing custom Helpers. Generator updated. Changes to #48
 
 ## 0.2.5
 
 * Fixed issues with using yield inside a test #45 #47 #43
-* Fixed generating a custom helper. Helper class is now accessible with `codecept_helper` var. Fixes #48 
+* Fixed generating a custom helper. Helper class is now accessible with `codecept_helper` var. Fixes #48
 
 ## 0.2.4
 
-* Fixed accessing helpers from custom helper by @pim.   
+* Fixed accessing helpers from custom helper by @pim.
 
 ## 0.2.3
 
@@ -30,7 +34,7 @@
 
 ## 0.2.2
 
-Fixed generation of custom steps file and page objects. 
+Fixed generation of custom steps file and page objects.
 Please replace `require('codeceptjs/actor')` to `actor` in your `custom_steps.js`.
 Whenever you need to create `I` object (in page objects, custom steps, but not in tests) just call `actor()`;
 
@@ -42,14 +46,14 @@ Whenever you need to create `I` object (in page objects, custom steps, but not i
   - elements: `seeElement`, ...
   - popups: `acceptPopup`, `cancelPopup`, `seeInPopup`,...
   - navigation: `moveCursorTo`, `scrollTo`
-  - saving screenshots on failure; `saveScreenshot` 
+  - saving screenshots on failure; `saveScreenshot`
   - cookies: `setCookie`, `seeCookie`, ...
   - source: `seeInSource`
   - form: `seeCheckboxIsChecked`, `selectOption` to support multiple selects
   - keyboard: `appendField`, `pressKey`
   - mouse: `rightClick`
 * tests added
-* [WebDriverIO] proxy configuration added by @petehouston 
+* [WebDriverIO] proxy configuration added by @petehouston
 * [WebDriverIO] fixed `waitForText` method by @roadhump. Fixes #11
 * Fixed creating output dir when it already exists on init by @alfirin
 * Fixed loading of custom helpers
