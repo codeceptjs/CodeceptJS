@@ -29,7 +29,7 @@ Scenario.only('register', (I) => {
     // I.fillField('q', 'aaa');
     I.click('button');
   });
-  I.see('There were problems creating your account.');
+  I.see('Taaaahere were problems creating your account.');
   I.click('Explore');
   I.seeInCurrentUrl('/explore');
 });
