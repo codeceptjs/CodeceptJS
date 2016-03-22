@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>Protractor - CodeceptJS</title>
+
+        <link href="../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-30075781-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-sm hidden-xs hidden-md" style="margin-left: 10px; margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+                <li >
+                    <a href="../..">Index</a>
+                </li>
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="../../quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Protractor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../SeleniumWebdriver/">SeleniumWebdriver</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                
+                <li >
+                    <a href="../../changelog/">Releases</a>
+                </li>
+                
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../WebDriverIO/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../SeleniumWebdriver/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#protractor">Protractor</a></li>
+        
+            <li><a href="#selenium-installation">Selenium Installation</a></li>
+        
+            <li><a href="#phantomjs-installation">PhantomJS Installation</a></li>
+        
+            <li><a href="#configuration">Configuration</a></li>
+        
+            <li><a href="#aminsideangularapp">amInsideAngularApp</a></li>
+        
+            <li><a href="#amoutsideangularapp">amOutsideAngularApp</a></li>
+        
+            <li><a href="#waitforclickable">waitForClickable</a></li>
+        
+            <li><a href="#waitforelement">waitForElement</a></li>
+        
+            <li><a href="#waitfortext">waitForText</a></li>
+        
+            <li><a href="#waitforvisible">waitForVisible</a></li>
+        
+    
+        <li class="main "><a href="#protractor_inheritedmethods">Protractor_InheritedMethods</a></li>
+        
+            <li><a href="#amonpage">amOnPage</a></li>
+        
+            <li><a href="#appendfield">appendField</a></li>
+        
+            <li><a href="#attachfile">attachFile</a></li>
+        
+            <li><a href="#checkoption">checkOption</a></li>
+        
+            <li><a href="#clearcookie">clearCookie</a></li>
+        
+            <li><a href="#click">click</a></li>
+        
+            <li><a href="#dontsee">dontSee</a></li>
+        
+            <li><a href="#dontseecheckboxischecked">dontSeeCheckboxIsChecked</a></li>
+        
+            <li><a href="#dontseecookie">dontSeeCookie</a></li>
+        
+            <li><a href="#dontseecurrenturlequals">dontSeeCurrentUrlEquals</a></li>
+        
+            <li><a href="#dontseeelement">dontSeeElement</a></li>
+        
+            <li><a href="#dontseeincurrenturl">dontSeeInCurrentUrl</a></li>
+        
+            <li><a href="#dontseeinfield">dontSeeInField</a></li>
+        
+            <li><a href="#dontseeinsource">dontSeeInSource</a></li>
+        
+            <li><a href="#dontseeintitle">dontSeeInTitle</a></li>
+        
+            <li><a href="#executeasyncscript">executeAsyncScript</a></li>
+        
+            <li><a href="#executescript">executeScript</a></li>
+        
+            <li><a href="#fillfield">fillField</a></li>
+        
+            <li><a href="#grabattribute">grabAttribute</a></li>
+        
+            <li><a href="#grabcookie">grabCookie</a></li>
+        
+            <li><a href="#grabtextfrom">grabTextFrom</a></li>
+        
+            <li><a href="#grabtitle">grabTitle</a></li>
+        
+            <li><a href="#grabvaluefrom">grabValueFrom</a></li>
+        
+            <li><a href="#presskey">pressKey</a></li>
+        
+            <li><a href="#resizewindow">resizeWindow</a></li>
+        
+            <li><a href="#savescreenshot">saveScreenshot</a></li>
+        
+            <li><a href="#see">see</a></li>
+        
+            <li><a href="#seecheckboxischecked">seeCheckboxIsChecked</a></li>
+        
+            <li><a href="#seecookie">seeCookie</a></li>
+        
+            <li><a href="#seecurrenturlequals">seeCurrentUrlEquals</a></li>
+        
+            <li><a href="#seeelement">seeElement</a></li>
+        
+            <li><a href="#seeincurrenturl">seeInCurrentUrl</a></li>
+        
+            <li><a href="#seeinfield">seeInField</a></li>
+        
+            <li><a href="#seeinsource">seeInSource</a></li>
+        
+            <li><a href="#seeintitle">seeInTitle</a></li>
+        
+            <li><a href="#selectoption">selectOption</a></li>
+        
+            <li><a href="#setcookie">setCookie</a></li>
+        
+            <li><a href="#waitforelement_1">waitForElement</a></li>
+        
+            <li><a href="#waitforenabled">waitForEnabled</a></li>
+        
+            <li><a href="#waitfortext_1">waitForText</a></li>
+        
+            <li><a href="#waitforvisible_1">waitForVisible</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h1 id="protractor">Protractor</h1>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L48-L232" title="Source code on GitHub">lib/helper/Protractor.js:48-232</a></p>
+<p><strong>Extends SeleniumWebdriver</strong></p>
+<p>Protractor helper is based on <a href="http://www.protractortest.org">Protractor library</a> and used for testing AngularJS applications.</p>
+<h4 id="selenium-installation">Selenium Installation</h4>
+<ol>
+<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
+<li>Launch the daemon: <code>java -jar selenium-server-standalone-2.xx.xxx.jar</code></li>
+</ol>
+<h4 id="phantomjs-installation">PhantomJS Installation</h4>
+<p>PhantomJS is a headless alternative to Selenium Server that implements <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol">the WebDriver protocol</a>.
+It allows you to run Selenium tests on a server without a GUI installed.</p>
+<ol>
+<li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
+<li>Run PhantomJS in WebDriver mode: <code>phantomjs --webdriver=4444</code></li>
+</ol>
+<h3 id="configuration">Configuration</h3>
+<p>This helper should be configured in codecept.json</p>
+<ul>
+<li><code>url</code> - base url of website to be tested</li>
+<li><code>browser</code> - browser in which perform testing</li>
+<li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
+<li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
+</ul>
+<p>other options are the same as in <a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">Protractor config</a>.</p>
+<h2 id="aminsideangularapp">amInsideAngularApp</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L158-L171" title="Source code on GitHub">lib/helper/Protractor.js:158-171</a></p>
+<p>Enters Angular mode (switched on by default)
+Should be used after "amOutsideAngularApp"</p>
+<h2 id="amoutsideangularapp">amOutsideAngularApp</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L147-L152" title="Source code on GitHub">lib/helper/Protractor.js:147-152</a></p>
+<p>Switch to non-Angular mode,
+start using WebDriver instead of Protractor in this session</p>
+<h2 id="waitforclickable">waitForClickable</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L185-L189" title="Source code on GitHub">lib/helper/Protractor.js:185-189</a></p>
+<p>Waits for element to become clickable for number of seconds.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waitforelement">waitForElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L176-L180" title="Source code on GitHub">lib/helper/Protractor.js:176-180</a></p>
+<p>Waits for element to be present on page (by default waits for 1sec).
+ Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waitfortext">waitForText</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L203-L210" title="Source code on GitHub">lib/helper/Protractor.js:203-210</a></p>
+<p>Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.</p>
+<pre><code class="js">I.waitForText('Thank you, form has been submitted');
+I.waitForText('Thank you, form has been submitted', 5, '#modal');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>sec</code>  </li>
+<li><code>context</code>  </li>
+</ul>
+<h2 id="waitforvisible">waitForVisible</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L194-L198" title="Source code on GitHub">lib/helper/Protractor.js:194-198</a></p>
+<p>Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h1 id="protractor_inheritedmethods">Protractor_InheritedMethods</h1>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L412-L578" title="Source code on GitHub">lib/helper/Protractor.js:412-578</a></p>
+<p><strong>Extends SeleniumWebdriver</strong></p>
+<p>Methods below are inherited from SeleniumWebdriver helper,
+in a similar manner as Protractor is extending SeleniumWebdriverJS.</p>
+<h2 id="amonpage">amOnPage</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L417-L417" title="Source code on GitHub">lib/helper/Protractor.js:417-417</a></p>
+<p>Opens a web page in a browser. Requires relative or absolute url.
+If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
+<pre><code class="js">I.amOnPage('/'); // opens main page of website
+I.amOnPage('https://github.com'); // opens github
+I.amOnPage('/login'); // opens a login page
+</code></pre>
+
+<h2 id="appendfield">appendField</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L421-L421" title="Source code on GitHub">lib/helper/Protractor.js:421-421</a></p>
+<p>Appends text to a input field or textarea.
+Field is located by name, label, CSS or XPath</p>
+<pre><code class="js">I.appendField('#myTextField', 'appended');
+</code></pre>
+
+<h2 id="attachfile">attachFile</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L425-L425" title="Source code on GitHub">lib/helper/Protractor.js:425-425</a></p>
+<p>Attaches a file to element located by label, name, CSS or XPath
+Path to file is relative current codecept directory (where codecept.json is located).
+File will be uploaded to remove system (if tests are running remotely).</p>
+<pre><code class="js">I.attachFile('Avatar', 'data/avatar.jpg');
+I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
+</code></pre>
+
+<h2 id="checkoption">checkOption</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L429-L429" title="Source code on GitHub">lib/helper/Protractor.js:429-429</a></p>
+<p>Selects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.</p>
+<p>The second parameter is a context (CSS or XPath locator) to narrow the search.</p>
+<pre><code class="js">I.checkOption('#agree');
+I.checkOption('I Agree to Terms and Conditions');
+I.checkOption('agree', '//form');
+</code></pre>
+
+<h2 id="clearcookie">clearCookie</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L433-L433" title="Source code on GitHub">lib/helper/Protractor.js:433-433</a></p>
+<p>Clears a cookie by name,
+if none provided clears all cookies</p>
+<pre><code class="js">I.clearCookie();
+I.clearCookie('test');
+</code></pre>
+
+<h2 id="click">click</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L437-L437" title="Source code on GitHub">lib/helper/Protractor.js:437-437</a></p>
+<p>Perform a click on a link or a button, given by a locator.
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.</p>
+<p>The second parameter is a context (CSS or XPath locator) to narrow the search.</p>
+<pre><code class="js">// simple link
+I.click('Logout');
+// button of form
+I.click('Submit');
+// CSS button
+I.click('#form input[type=submit]');
+// XPath
+I.click('//form/*[@type=submit]');
+// link in context
+I.click('Logout', '#nav');
+// using strict locator
+I.click({css: 'nav a.login'});
+</code></pre>
+
+<h2 id="dontsee">dontSee</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L473-L473" title="Source code on GitHub">lib/helper/Protractor.js:473-473</a></p>
+<p>Opposite to <code>see</code>. Checks that a text is not present on a page.
+Use context parameter to narrow down the search.</p>
+<pre><code class="js">I.dontSee('Login'); // assume we are already logged in
+</code></pre>
+
+<h2 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L441-L441" title="Source code on GitHub">lib/helper/Protractor.js:441-441</a></p>
+<p>Verifies that the specified checkbox is not checked.</p>
+<h2 id="dontseecookie">dontSeeCookie</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L445-L445" title="Source code on GitHub">lib/helper/Protractor.js:445-445</a></p>
+<p>Checks that cookie with given name does not exist.</p>
+<h2 id="dontseecurrenturlequals">dontSeeCurrentUrlEquals</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L449-L449" title="Source code on GitHub">lib/helper/Protractor.js:449-449</a></p>
+<p>Checks that current url is not equal to provided one.
+If a relative url provided, a configured url will be prepended to it.</p>
+<h2 id="dontseeelement">dontSeeElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L453-L453" title="Source code on GitHub">lib/helper/Protractor.js:453-453</a></p>
+<p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
+<h2 id="dontseeincurrenturl">dontSeeInCurrentUrl</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L457-L457" title="Source code on GitHub">lib/helper/Protractor.js:457-457</a></p>
+<p>Checks that current url does not contain a provided fragment.</p>
+<h2 id="dontseeinfield">dontSeeInField</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L461-L461" title="Source code on GitHub">lib/helper/Protractor.js:461-461</a></p>
+<p>Checks that value of input field or textare doesn't equal to given value
+Opposite to <code>seeInField</code>.</p>
+<h2 id="dontseeinsource">dontSeeInSource</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L465-L465" title="Source code on GitHub">lib/helper/Protractor.js:465-465</a></p>
+<p>Checks that the current page contains the given string in its raw source code</p>
+<h2 id="dontseeintitle">dontSeeInTitle</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L469-L469" title="Source code on GitHub">lib/helper/Protractor.js:469-469</a></p>
+<p>Checks that title does not contain text.</p>
+<h2 id="executeasyncscript">executeAsyncScript</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L477-L477" title="Source code on GitHub">lib/helper/Protractor.js:477-477</a></p>
+<p>Executes async script on page.
+Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
+<h2 id="executescript">executeScript</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L481-L481" title="Source code on GitHub">lib/helper/Protractor.js:481-481</a></p>
+<p>Executes sync script on a page.
+Pass arguments to function as additional parameters.
+Will return execution result to a test.
+In this case you should use generator and yield to receive results.</p>
+<h2 id="fillfield">fillField</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L485-L485" title="Source code on GitHub">lib/helper/Protractor.js:485-485</a></p>
+<p>Fills a text field or textarea with the given string.
+Field is located by name, label, CSS, or XPath.</p>
+<pre><code class="js">// by label
+I.fillField('Email', 'hello@world.com');
+// by name
+I.fillField('password', '123456');
+// by CSS
+I.fillField('form#login input[name=username]', 'John');
+// or by strict locator
+I.fillField({css: 'form#login input[name=username]'}, 'John');
+</code></pre>
+
+<h2 id="grabattribute">grabAttribute</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L489-L489" title="Source code on GitHub">lib/helper/Protractor.js:489-489</a></p>
+<p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let hint = yield I.grabAttribute('#tooltip', 'title');
+</code></pre>
+
+<h2 id="grabcookie">grabCookie</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L493-L493" title="Source code on GitHub">lib/helper/Protractor.js:493-493</a></p>
+<p>Gets a cookie object by name
+* Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let cookie = I.grabCookie('auth');
+assert(cookie.value, '123456');
+</code></pre>
+
+<h2 id="grabtextfrom">grabTextFrom</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L497-L497" title="Source code on GitHub">lib/helper/Protractor.js:497-497</a></p>
+<p>Retrieves a text from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let pin = yield I.grabTextFrom('#pin');
+</code></pre>
+
+<h2 id="grabtitle">grabTitle</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L501-L501" title="Source code on GitHub">lib/helper/Protractor.js:501-501</a></p>
+<p>Retrieves a page title and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let title = yield I.grabTitle();
+</code></pre>
+
+<h2 id="grabvaluefrom">grabValueFrom</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L505-L505" title="Source code on GitHub">lib/helper/Protractor.js:505-505</a></p>
+<p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+<pre><code class="js">let email = yield I.grabValueFrom('input[name=email]');
+</code></pre>
+
+<h2 id="presskey">pressKey</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L509-L509" title="Source code on GitHub">lib/helper/Protractor.js:509-509</a></p>
+<p>Presses a key on a focused element.
+Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
+will be replaced with corresponding unicode.
+If modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
+<pre><code class="js">I.pressKey('Enter');
+I.pressKey(['Control','a']);
+</code></pre>
+
+<h2 id="resizewindow">resizeWindow</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L513-L513" title="Source code on GitHub">lib/helper/Protractor.js:513-513</a></p>
+<p>Resize the current window to provided width and height.
+First parameter can be set to <code>maximize</code></p>
+<h2 id="savescreenshot">saveScreenshot</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L517-L517" title="Source code on GitHub">lib/helper/Protractor.js:517-517</a></p>
+<p>Saves a screenshot to ouput folder (set in codecept.json).
+Filename is relative to output folder.</p>
+<pre><code class="js">I.saveScreenshot('debug.png');
+</code></pre>
+
+<h2 id="see">see</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L553-L553" title="Source code on GitHub">lib/helper/Protractor.js:553-553</a></p>
+<p>Checks that a page contains a visible text.
+Use context parameter to narrow down the search.</p>
+<pre><code class="js">I.see('Welcome'); // text welcome on a page
+I.see('Welcome', '.content'); // text inside .content div
+I.see('Register', {css: 'form.register'}); // use strict locator
+</code></pre>
+
+<h2 id="seecheckboxischecked">seeCheckboxIsChecked</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L521-L521" title="Source code on GitHub">lib/helper/Protractor.js:521-521</a></p>
+<p>Verifies that the specified checkbox is checked.</p>
+<pre><code class="js">I.seeCheckboxIsChecked('Agree');
+I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
+I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
+</code></pre>
+
+<h2 id="seecookie">seeCookie</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L525-L525" title="Source code on GitHub">lib/helper/Protractor.js:525-525</a></p>
+<p>Checks that cookie with given name exists.</p>
+<pre><code class="js">I.seeCookie('Auth');
+</code></pre>
+
+<h2 id="seecurrenturlequals">seeCurrentUrlEquals</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L529-L529" title="Source code on GitHub">lib/helper/Protractor.js:529-529</a></p>
+<p>Checks that current url is equal to provided one.
+If a relative url provided, a configured url will be prepended to it.
+So both examples will work:</p>
+<pre><code class="js">I.seeCurrentUrlEquals('/register');
+I.seeCurrentUrlEquals('http://my.site.com/register');
+</code></pre>
+
+<h2 id="seeelement">seeElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L533-L533" title="Source code on GitHub">lib/helper/Protractor.js:533-533</a></p>
+<p>Checks that a given Element is visible
+Element is located by CSS or XPath.</p>
+<pre><code class="js">I.seeElement('#modal');
+</code></pre>
+
+<h2 id="seeincurrenturl">seeInCurrentUrl</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L537-L537" title="Source code on GitHub">lib/helper/Protractor.js:537-537</a></p>
+<p>Checks that current url contains a provided fragment.</p>
+<pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
+</code></pre>
+
+<h2 id="seeinfield">seeInField</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L541-L541" title="Source code on GitHub">lib/helper/Protractor.js:541-541</a></p>
+<p>Checks that the given input field or textarea equals to given value.
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.</p>
+<pre><code class="js">I.seeInField('Username', 'davert');
+I.seeInField({css: 'form textarea'},'Type your comment here');
+I.seeInField('form input[type=hidden]','hidden_value');
+I.seeInField('#searchform input','Search');
+</code></pre>
+
+<h2 id="seeinsource">seeInSource</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L545-L545" title="Source code on GitHub">lib/helper/Protractor.js:545-545</a></p>
+<p>Checks that the current page contains the given string in its raw source code.</p>
+<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+</code></pre>
+
+<h2 id="seeintitle">seeInTitle</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L549-L549" title="Source code on GitHub">lib/helper/Protractor.js:549-549</a></p>
+<p>Checks that title contains text.</p>
+<h2 id="selectoption">selectOption</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L557-L557" title="Source code on GitHub">lib/helper/Protractor.js:557-557</a></p>
+<p>Selects an option in a drop-down select.
+Field is siearched by label | name | CSS | XPath.
+Option is selected by visible text or by value.</p>
+<pre><code class="js">I.selectOption('Choose Plan', 'Monthly'); // select by label
+I.selectOption('subscription', 'Monthly'); // match option by text
+I.selectOption('subscription', '0'); // or by value
+I.selectOption('//form/select[@name=account]','Permium');
+I.selectOption('form select[name=account]', 'Premium');
+I.selectOption({css: 'form select[name=account]'}, 'Premium');
+</code></pre>
+
+<p>Provide an array for the second argument to select multiple options.</p>
+<pre><code class="js">I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
+</code></pre>
+
+<h2 id="setcookie">setCookie</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L561-L561" title="Source code on GitHub">lib/helper/Protractor.js:561-561</a></p>
+<p>Sets a cookie</p>
+<pre><code class="js">I.setCookie({name: 'auth', value: true});
+</code></pre>
+
+<h2 id="waitforelement_1">waitForElement</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L565-L565" title="Source code on GitHub">lib/helper/Protractor.js:565-565</a></p>
+<p>Waits for element to be present on page (by default waits for 1sec).
+ Element can be located by CSS or XPath.</p>
+<h2 id="waitforenabled">waitForEnabled</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L569-L569" title="Source code on GitHub">lib/helper/Protractor.js:569-569</a></p>
+<p>Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<h2 id="waitfortext_1">waitForText</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L573-L573" title="Source code on GitHub">lib/helper/Protractor.js:573-573</a></p>
+<p>Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.</p>
+<pre><code class="js">I.waitForText('Thank you, form has been submitted');
+I.waitForText('Thank you, form has been submitted', 5, '#modal');
+</code></pre>
+
+<h2 id="waitforvisible_1">waitForVisible</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L577-L577" title="Source code on GitHub">lib/helper/Protractor.js:577-577</a></p>
+<p>Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p></div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+    <footer>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+</div>
+
+    </footer>
+
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>        
+        <script src="../../js/base.js"></script>
+    </body>
+</html>

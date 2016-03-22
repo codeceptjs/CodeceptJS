@@ -481,6 +481,481 @@
             "title": "waitUntil"
         }, 
         {
+            "location": "/helpers/Protractor/", 
+            "text": "Protractor\n\n\nlib/helper/Protractor.js:48-232\n\n\nExtends SeleniumWebdriver\n\n\nProtractor helper is based on \nProtractor library\n and used for testing AngularJS applications.\n\n\nSelenium Installation\n\n\n\n\nDownload \nSelenium Server\n\n\nLaunch the daemon: \njava -jar selenium-server-standalone-2.xx.xxx.jar\n\n\n\n\nPhantomJS Installation\n\n\nPhantomJS is a headless alternative to Selenium Server that implements \nthe WebDriver protocol\n.\nIt allows you to run Selenium tests on a server without a GUI installed.\n\n\n\n\nDownload \nPhantomJS\n\n\nRun PhantomJS in WebDriver mode: \nphantomjs --webdriver=4444\n\n\n\n\nConfiguration\n\n\nThis helper should be configured in codecept.json\n\n\n\n\nurl\n - base url of website to be tested\n\n\nbrowser\n - browser in which perform testing\n\n\ndriver\n - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.\n\n\nseleniumAddress\n - Selenium address to connect (default: \nhttp://localhost:4444/wd/hub\n)\n\n\n\n\nother options are the same as in \nProtractor config\n.\n\n\namInsideAngularApp\n\n\nlib/helper/Protractor.js:158-171\n\n\nEnters Angular mode (switched on by default)\nShould be used after \"amOutsideAngularApp\"\n\n\namOutsideAngularApp\n\n\nlib/helper/Protractor.js:147-152\n\n\nSwitch to non-Angular mode,\nstart using WebDriver instead of Protractor in this session\n\n\nwaitForClickable\n\n\nlib/helper/Protractor.js:185-189\n\n\nWaits for element to become clickable for number of seconds.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nsec\n  \n\n\n\n\nwaitForElement\n\n\nlib/helper/Protractor.js:176-180\n\n\nWaits for element to be present on page (by default waits for 1sec).\n Element can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nsec\n  \n\n\n\n\nwaitForText\n\n\nlib/helper/Protractor.js:203-210\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nI.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nsec\n  \n\n\ncontext\n  \n\n\n\n\nwaitForVisible\n\n\nlib/helper/Protractor.js:194-198\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nsec\n  \n\n\n\n\nProtractor_InheritedMethods\n\n\nlib/helper/Protractor.js:412-578\n\n\nExtends SeleniumWebdriver\n\n\nMethods below are inherited from SeleniumWebdriver helper,\nin a similar manner as Protractor is extending SeleniumWebdriverJS.\n\n\namOnPage\n\n\nlib/helper/Protractor.js:417-417\n\n\nOpens a web page in a browser. Requires relative or absolute url.\nIf url starts with \n/\n, opens a web page of a site defined in \nurl\n config parameter.\n\n\nI.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page\n\n\n\n\nappendField\n\n\nlib/helper/Protractor.js:421-421\n\n\nAppends text to a input field or textarea.\nField is located by name, label, CSS or XPath\n\n\nI.appendField('#myTextField', 'appended');\n\n\n\n\nattachFile\n\n\nlib/helper/Protractor.js:425-425\n\n\nAttaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).\n\n\nI.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');\n\n\n\n\ncheckOption\n\n\nlib/helper/Protractor.js:429-429\n\n\nSelects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\nI.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');\n\n\n\n\nclearCookie\n\n\nlib/helper/Protractor.js:433-433\n\n\nClears a cookie by name,\nif none provided clears all cookies\n\n\nI.clearCookie();\nI.clearCookie('test');\n\n\n\n\nclick\n\n\nlib/helper/Protractor.js:437-437\n\n\nPerform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\n// simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});\n\n\n\n\ndontSee\n\n\nlib/helper/Protractor.js:473-473\n\n\nOpposite to \nsee\n. Checks that a text is not present on a page.\nUse context parameter to narrow down the search.\n\n\nI.dontSee('Login'); // assume we are already logged in\n\n\n\n\ndontSeeCheckboxIsChecked\n\n\nlib/helper/Protractor.js:441-441\n\n\nVerifies that the specified checkbox is not checked.\n\n\ndontSeeCookie\n\n\nlib/helper/Protractor.js:445-445\n\n\nChecks that cookie with given name does not exist.\n\n\ndontSeeCurrentUrlEquals\n\n\nlib/helper/Protractor.js:449-449\n\n\nChecks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\n\n\ndontSeeElement\n\n\nlib/helper/Protractor.js:453-453\n\n\nOpposite to \nseeElement\n. Checks that element is not visible\n\n\ndontSeeInCurrentUrl\n\n\nlib/helper/Protractor.js:457-457\n\n\nChecks that current url does not contain a provided fragment.\n\n\ndontSeeInField\n\n\nlib/helper/Protractor.js:461-461\n\n\nChecks that value of input field or textare doesn't equal to given value\nOpposite to \nseeInField\n.\n\n\ndontSeeInSource\n\n\nlib/helper/Protractor.js:465-465\n\n\nChecks that the current page contains the given string in its raw source code\n\n\ndontSeeInTitle\n\n\nlib/helper/Protractor.js:469-469\n\n\nChecks that title does not contain text.\n\n\nexecuteAsyncScript\n\n\nlib/helper/Protractor.js:477-477\n\n\nExecutes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.\n\n\nexecuteScript\n\n\nlib/helper/Protractor.js:481-481\n\n\nExecutes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.\n\n\nfillField\n\n\nlib/helper/Protractor.js:485-485\n\n\nFills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.\n\n\n// by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');\n\n\n\n\ngrabAttribute\n\n\nlib/helper/Protractor.js:489-489\n\n\nRetrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet hint = yield I.grabAttribute('#tooltip', 'title');\n\n\n\n\ngrabCookie\n\n\nlib/helper/Protractor.js:493-493\n\n\nGets a cookie object by name\n* Resumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');\n\n\n\n\ngrabTextFrom\n\n\nlib/helper/Protractor.js:497-497\n\n\nRetrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet pin = yield I.grabTextFrom('#pin');\n\n\n\n\ngrabTitle\n\n\nlib/helper/Protractor.js:501-501\n\n\nRetrieves a page title and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet title = yield I.grabTitle();\n\n\n\n\ngrabValueFrom\n\n\nlib/helper/Protractor.js:505-505\n\n\nRetrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet email = yield I.grabValueFrom('input[name=email]');\n\n\n\n\npressKey\n\n\nlib/helper/Protractor.js:509-509\n\n\nPresses a key on a focused element.\nSpeical keys like 'Enter', 'Control', \netc\n\nwill be replaced with corresponding unicode.\nIf modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.\n\n\nI.pressKey('Enter');\nI.pressKey(['Control','a']);\n\n\n\n\nresizeWindow\n\n\nlib/helper/Protractor.js:513-513\n\n\nResize the current window to provided width and height.\nFirst parameter can be set to \nmaximize\n\n\nsaveScreenshot\n\n\nlib/helper/Protractor.js:517-517\n\n\nSaves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.\n\n\nI.saveScreenshot('debug.png');\n\n\n\n\nsee\n\n\nlib/helper/Protractor.js:553-553\n\n\nChecks that a page contains a visible text.\nUse context parameter to narrow down the search.\n\n\nI.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator\n\n\n\n\nseeCheckboxIsChecked\n\n\nlib/helper/Protractor.js:521-521\n\n\nVerifies that the specified checkbox is checked.\n\n\nI.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});\n\n\n\n\nseeCookie\n\n\nlib/helper/Protractor.js:525-525\n\n\nChecks that cookie with given name exists.\n\n\nI.seeCookie('Auth');\n\n\n\n\nseeCurrentUrlEquals\n\n\nlib/helper/Protractor.js:529-529\n\n\nChecks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:\n\n\nI.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');\n\n\n\n\nseeElement\n\n\nlib/helper/Protractor.js:533-533\n\n\nChecks that a given Element is visible\nElement is located by CSS or XPath.\n\n\nI.seeElement('#modal');\n\n\n\n\nseeInCurrentUrl\n\n\nlib/helper/Protractor.js:537-537\n\n\nChecks that current url contains a provided fragment.\n\n\nI.seeInCurrentUrl('/register'); // we are on registration page\n\n\n\n\nseeInField\n\n\nlib/helper/Protractor.js:541-541\n\n\nChecks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.\n\n\nI.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');\n\n\n\n\nseeInSource\n\n\nlib/helper/Protractor.js:545-545\n\n\nChecks that the current page contains the given string in its raw source code.\n\n\nI.seeInSource('\nh1\nGreen eggs \namp; ham\n/h1\n');\n\n\n\n\nseeInTitle\n\n\nlib/helper/Protractor.js:549-549\n\n\nChecks that title contains text.\n\n\nselectOption\n\n\nlib/helper/Protractor.js:557-557\n\n\nSelects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.\n\n\nI.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');\n\n\n\n\nProvide an array for the second argument to select multiple options.\n\n\nI.selectOption('Which OS do you use?', ['Andriod', 'OSX']);\n\n\n\n\nsetCookie\n\n\nlib/helper/Protractor.js:561-561\n\n\nSets a cookie\n\n\nI.setCookie({name: 'auth', value: true});\n\n\n\n\nwaitForElement\n\n\nlib/helper/Protractor.js:565-565\n\n\nWaits for element to be present on page (by default waits for 1sec).\n Element can be located by CSS or XPath.\n\n\nwaitForEnabled\n\n\nlib/helper/Protractor.js:569-569\n\n\nWaits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nwaitForText\n\n\nlib/helper/Protractor.js:573-573\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nI.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');\n\n\n\n\nwaitForVisible\n\n\nlib/helper/Protractor.js:577-577\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.", 
+            "title": "Protractor"
+        }, 
+        {
+            "location": "/helpers/Protractor/#protractor", 
+            "text": "lib/helper/Protractor.js:48-232  Extends SeleniumWebdriver  Protractor helper is based on  Protractor library  and used for testing AngularJS applications.  Selenium Installation   Download  Selenium Server  Launch the daemon:  java -jar selenium-server-standalone-2.xx.xxx.jar   PhantomJS Installation  PhantomJS is a headless alternative to Selenium Server that implements  the WebDriver protocol .\nIt allows you to run Selenium tests on a server without a GUI installed.   Download  PhantomJS  Run PhantomJS in WebDriver mode:  phantomjs --webdriver=4444   Configuration  This helper should be configured in codecept.json   url  - base url of website to be tested  browser  - browser in which perform testing  driver  - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.  seleniumAddress  - Selenium address to connect (default:  http://localhost:4444/wd/hub )   other options are the same as in  Protractor config .", 
+            "title": "Protractor"
+        }, 
+        {
+            "location": "/helpers/Protractor/#aminsideangularapp", 
+            "text": "lib/helper/Protractor.js:158-171  Enters Angular mode (switched on by default)\nShould be used after \"amOutsideAngularApp\"", 
+            "title": "amInsideAngularApp"
+        }, 
+        {
+            "location": "/helpers/Protractor/#amoutsideangularapp", 
+            "text": "lib/helper/Protractor.js:147-152  Switch to non-Angular mode,\nstart using WebDriver instead of Protractor in this session", 
+            "title": "amOutsideAngularApp"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitforclickable", 
+            "text": "lib/helper/Protractor.js:185-189  Waits for element to become clickable for number of seconds.  Parameters   locator     sec", 
+            "title": "waitForClickable"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitforelement", 
+            "text": "lib/helper/Protractor.js:176-180  Waits for element to be present on page (by default waits for 1sec).\n Element can be located by CSS or XPath.  Parameters   locator     sec", 
+            "title": "waitForElement"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitfortext", 
+            "text": "lib/helper/Protractor.js:203-210  Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  I.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');  Parameters   text     sec     context", 
+            "title": "waitForText"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitforvisible", 
+            "text": "lib/helper/Protractor.js:194-198  Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   locator     sec", 
+            "title": "waitForVisible"
+        }, 
+        {
+            "location": "/helpers/Protractor/#protractor_inheritedmethods", 
+            "text": "lib/helper/Protractor.js:412-578  Extends SeleniumWebdriver  Methods below are inherited from SeleniumWebdriver helper,\nin a similar manner as Protractor is extending SeleniumWebdriverJS.", 
+            "title": "Protractor_InheritedMethods"
+        }, 
+        {
+            "location": "/helpers/Protractor/#amonpage", 
+            "text": "lib/helper/Protractor.js:417-417  Opens a web page in a browser. Requires relative or absolute url.\nIf url starts with  / , opens a web page of a site defined in  url  config parameter.  I.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page", 
+            "title": "amOnPage"
+        }, 
+        {
+            "location": "/helpers/Protractor/#appendfield", 
+            "text": "lib/helper/Protractor.js:421-421  Appends text to a input field or textarea.\nField is located by name, label, CSS or XPath  I.appendField('#myTextField', 'appended');", 
+            "title": "appendField"
+        }, 
+        {
+            "location": "/helpers/Protractor/#attachfile", 
+            "text": "lib/helper/Protractor.js:425-425  Attaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).  I.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');", 
+            "title": "attachFile"
+        }, 
+        {
+            "location": "/helpers/Protractor/#checkoption", 
+            "text": "lib/helper/Protractor.js:429-429  Selects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.  The second parameter is a context (CSS or XPath locator) to narrow the search.  I.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');", 
+            "title": "checkOption"
+        }, 
+        {
+            "location": "/helpers/Protractor/#clearcookie", 
+            "text": "lib/helper/Protractor.js:433-433  Clears a cookie by name,\nif none provided clears all cookies  I.clearCookie();\nI.clearCookie('test');", 
+            "title": "clearCookie"
+        }, 
+        {
+            "location": "/helpers/Protractor/#click", 
+            "text": "lib/helper/Protractor.js:437-437  Perform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.  The second parameter is a context (CSS or XPath locator) to narrow the search.  // simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});", 
+            "title": "click"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontsee", 
+            "text": "lib/helper/Protractor.js:473-473  Opposite to  see . Checks that a text is not present on a page.\nUse context parameter to narrow down the search.  I.dontSee('Login'); // assume we are already logged in", 
+            "title": "dontSee"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseecheckboxischecked", 
+            "text": "lib/helper/Protractor.js:441-441  Verifies that the specified checkbox is not checked.", 
+            "title": "dontSeeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseecookie", 
+            "text": "lib/helper/Protractor.js:445-445  Checks that cookie with given name does not exist.", 
+            "title": "dontSeeCookie"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseecurrenturlequals", 
+            "text": "lib/helper/Protractor.js:449-449  Checks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.", 
+            "title": "dontSeeCurrentUrlEquals"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseeelement", 
+            "text": "lib/helper/Protractor.js:453-453  Opposite to  seeElement . Checks that element is not visible", 
+            "title": "dontSeeElement"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseeincurrenturl", 
+            "text": "lib/helper/Protractor.js:457-457  Checks that current url does not contain a provided fragment.", 
+            "title": "dontSeeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseeinfield", 
+            "text": "lib/helper/Protractor.js:461-461  Checks that value of input field or textare doesn't equal to given value\nOpposite to  seeInField .", 
+            "title": "dontSeeInField"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseeinsource", 
+            "text": "lib/helper/Protractor.js:465-465  Checks that the current page contains the given string in its raw source code", 
+            "title": "dontSeeInSource"
+        }, 
+        {
+            "location": "/helpers/Protractor/#dontseeintitle", 
+            "text": "lib/helper/Protractor.js:469-469  Checks that title does not contain text.", 
+            "title": "dontSeeInTitle"
+        }, 
+        {
+            "location": "/helpers/Protractor/#executeasyncscript", 
+            "text": "lib/helper/Protractor.js:477-477  Executes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.", 
+            "title": "executeAsyncScript"
+        }, 
+        {
+            "location": "/helpers/Protractor/#executescript", 
+            "text": "lib/helper/Protractor.js:481-481  Executes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.", 
+            "title": "executeScript"
+        }, 
+        {
+            "location": "/helpers/Protractor/#fillfield", 
+            "text": "lib/helper/Protractor.js:485-485  Fills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.  // by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');", 
+            "title": "fillField"
+        }, 
+        {
+            "location": "/helpers/Protractor/#grabattribute", 
+            "text": "lib/helper/Protractor.js:489-489  Retrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let hint = yield I.grabAttribute('#tooltip', 'title');", 
+            "title": "grabAttribute"
+        }, 
+        {
+            "location": "/helpers/Protractor/#grabcookie", 
+            "text": "lib/helper/Protractor.js:493-493  Gets a cookie object by name\n* Resumes test execution, so  should be used inside a generator with  yield  operator.  let cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');", 
+            "title": "grabCookie"
+        }, 
+        {
+            "location": "/helpers/Protractor/#grabtextfrom", 
+            "text": "lib/helper/Protractor.js:497-497  Retrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let pin = yield I.grabTextFrom('#pin');", 
+            "title": "grabTextFrom"
+        }, 
+        {
+            "location": "/helpers/Protractor/#grabtitle", 
+            "text": "lib/helper/Protractor.js:501-501  Retrieves a page title and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let title = yield I.grabTitle();", 
+            "title": "grabTitle"
+        }, 
+        {
+            "location": "/helpers/Protractor/#grabvaluefrom", 
+            "text": "lib/helper/Protractor.js:505-505  Retrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let email = yield I.grabValueFrom('input[name=email]');", 
+            "title": "grabValueFrom"
+        }, 
+        {
+            "location": "/helpers/Protractor/#presskey", 
+            "text": "lib/helper/Protractor.js:509-509  Presses a key on a focused element.\nSpeical keys like 'Enter', 'Control',  etc \nwill be replaced with corresponding unicode.\nIf modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.  I.pressKey('Enter');\nI.pressKey(['Control','a']);", 
+            "title": "pressKey"
+        }, 
+        {
+            "location": "/helpers/Protractor/#resizewindow", 
+            "text": "lib/helper/Protractor.js:513-513  Resize the current window to provided width and height.\nFirst parameter can be set to  maximize", 
+            "title": "resizeWindow"
+        }, 
+        {
+            "location": "/helpers/Protractor/#savescreenshot", 
+            "text": "lib/helper/Protractor.js:517-517  Saves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.  I.saveScreenshot('debug.png');", 
+            "title": "saveScreenshot"
+        }, 
+        {
+            "location": "/helpers/Protractor/#see", 
+            "text": "lib/helper/Protractor.js:553-553  Checks that a page contains a visible text.\nUse context parameter to narrow down the search.  I.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator", 
+            "title": "see"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seecheckboxischecked", 
+            "text": "lib/helper/Protractor.js:521-521  Verifies that the specified checkbox is checked.  I.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});", 
+            "title": "seeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seecookie", 
+            "text": "lib/helper/Protractor.js:525-525  Checks that cookie with given name exists.  I.seeCookie('Auth');", 
+            "title": "seeCookie"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seecurrenturlequals", 
+            "text": "lib/helper/Protractor.js:529-529  Checks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:  I.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');", 
+            "title": "seeCurrentUrlEquals"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seeelement", 
+            "text": "lib/helper/Protractor.js:533-533  Checks that a given Element is visible\nElement is located by CSS or XPath.  I.seeElement('#modal');", 
+            "title": "seeElement"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seeincurrenturl", 
+            "text": "lib/helper/Protractor.js:537-537  Checks that current url contains a provided fragment.  I.seeInCurrentUrl('/register'); // we are on registration page", 
+            "title": "seeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seeinfield", 
+            "text": "lib/helper/Protractor.js:541-541  Checks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.  I.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');", 
+            "title": "seeInField"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seeinsource", 
+            "text": "lib/helper/Protractor.js:545-545  Checks that the current page contains the given string in its raw source code.  I.seeInSource(' h1 Green eggs  amp; ham /h1 ');", 
+            "title": "seeInSource"
+        }, 
+        {
+            "location": "/helpers/Protractor/#seeintitle", 
+            "text": "lib/helper/Protractor.js:549-549  Checks that title contains text.", 
+            "title": "seeInTitle"
+        }, 
+        {
+            "location": "/helpers/Protractor/#selectoption", 
+            "text": "lib/helper/Protractor.js:557-557  Selects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.  I.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');  Provide an array for the second argument to select multiple options.  I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);", 
+            "title": "selectOption"
+        }, 
+        {
+            "location": "/helpers/Protractor/#setcookie", 
+            "text": "lib/helper/Protractor.js:561-561  Sets a cookie  I.setCookie({name: 'auth', value: true});", 
+            "title": "setCookie"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitforelement_1", 
+            "text": "lib/helper/Protractor.js:565-565  Waits for element to be present on page (by default waits for 1sec).\n Element can be located by CSS or XPath.", 
+            "title": "waitForElement"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitforenabled", 
+            "text": "lib/helper/Protractor.js:569-569  Waits for element to become enabled (by default waits for 1sec).\nElement can be located by CSS or XPath.", 
+            "title": "waitForEnabled"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitfortext_1", 
+            "text": "lib/helper/Protractor.js:573-573  Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  I.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');", 
+            "title": "waitForText"
+        }, 
+        {
+            "location": "/helpers/Protractor/#waitforvisible_1", 
+            "text": "lib/helper/Protractor.js:577-577  Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.", 
+            "title": "waitForVisible"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/", 
+            "text": "SeleniumWebdriver\n\n\nlib/helper/SeleniumWebdriver.js:47-584\n\n\nExtends Helper\n\n\nProtractor helper is based on \nProtractor library\n and used for testing AngularJS applications.\n\n\nSelenium Installation\n\n\n\n\nDownload \nSelenium Server\n\n\nLaunch the daemon: \njava -jar selenium-server-standalone-2.xx.xxx.jar\n\n\n\n\nPhantomJS Installation\n\n\nPhantomJS is a headless alternative to Selenium Server that implements \nthe WebDriver protocol\n.\nIt allows you to run Selenium tests on a server without a GUI installed.\n\n\n\n\nDownload \nPhantomJS\n\n\nRun PhantomJS in WebDriver mode: \nphantomjs --webdriver=4444\n\n\n\n\nConfiguration\n\n\nThis helper should be configured in codecept.json\n\n\n\n\nurl\n - base url of website to be tested\n\n\nbrowser\n - browser in which perform testing\n\n\ndriver\n - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.\n\n\nseleniumAddress\n - Selenium address to connect (default: \nhttp://localhost:4444/wd/hub\n)\n\n\nwaitForTimeout\n: (optional) sets default wait time in \nms\n for all \nwait*\n functions. 1000 by default;\n\n\n\n\nother options are the same as in \nProtractor config\n.\n\n\namOnPage\n\n\nlib/helper/SeleniumWebdriver.js:129-134\n\n\nOpens a web page in a browser. Requires relative or absolute url.\nIf url starts with \n/\n, opens a web page of a site defined in \nurl\n config parameter.\n\n\nI.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page\n\n\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\nappendField\n\n\nlib/helper/SeleniumWebdriver.js:260-267\n\n\nAppends text to a input field or textarea.\nField is located by name, label, CSS or XPath\n\n\nI.appendField('#myTextField', 'appended');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\nattachFile\n\n\nlib/helper/SeleniumWebdriver.js:226-241\n\n\nAttaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).\n\n\nI.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\npathToFile\n  \n\n\n\n\ncheckOption\n\n\nlib/helper/SeleniumWebdriver.js:272-285\n\n\nSelects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\nI.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');\n\n\n\n\nParameters\n\n\n\n\noption\n  \n\n\ncontext\n  \n\n\n\n\nclearCookie\n\n\nlib/helper/SeleniumWebdriver.js:503-508\n\n\nClears a cookie by name,\nif none provided clears all cookies\n\n\nI.clearCookie();\nI.clearCookie('test');\n\n\n\n\nParameters\n\n\n\n\ncookie\n  \n\n\n\n\nclick\n\n\nlib/helper/SeleniumWebdriver.js:139-145\n\n\nPerform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\n// simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});\n\n\n\n\nParameters\n\n\n\n\nlink\n  \n\n\ncontext\n  \n\n\n\n\ndontSee\n\n\nlib/helper/SeleniumWebdriver.js:157-159\n\n\nOpposite to \nsee\n. Checks that a text is not present on a page.\nUse context parameter to narrow down the search.\n\n\nI.dontSee('Login'); // assume we are already logged in\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\ndontSeeCheckboxIsChecked\n\n\nlib/helper/SeleniumWebdriver.js:298-301\n\n\nVerifies that the specified checkbox is not checked.\n\n\nParameters\n\n\n\n\noption\n  \n\n\n\n\ndontSeeCookie\n\n\nlib/helper/SeleniumWebdriver.js:522-526\n\n\nChecks that cookie with given name does not exist.\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\ndontSeeCurrentUrlEquals\n\n\nlib/helper/SeleniumWebdriver.js:459-463\n\n\nChecks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\n\n\nParameters\n\n\n\n\nuri\n  \n\n\n\n\ndontSeeElement\n\n\nlib/helper/SeleniumWebdriver.js:371-377\n\n\nOpposite to \nseeElement\n. Checks that element is not visible\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ndontSeeElementInDOM\n\n\nlib/helper/SeleniumWebdriver.js:391-395\n\n\nOpposite to \nseeElementInDOM\n. Checks that element is not on page.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ndontSeeInCurrentUrl\n\n\nlib/helper/SeleniumWebdriver.js:441-445\n\n\nChecks that current url does not contain a provided fragment.\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\ndontSeeInField\n\n\nlib/helper/SeleniumWebdriver.js:253-255\n\n\nChecks that value of input field or textare doesn't equal to given value\nOpposite to \nseeInField\n.\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\ndontSeeInSource\n\n\nlib/helper/SeleniumWebdriver.js:409-413\n\n\nChecks that the current page contains the given string in its raw source code\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\ndontSeeInTitle\n\n\nlib/helper/SeleniumWebdriver.js:341-345\n\n\nChecks that title does not contain text.\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nexecuteAsyncScript\n\n\nlib/helper/SeleniumWebdriver.js:425-427\n\n\nExecutes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nexecuteScript\n\n\nlib/helper/SeleniumWebdriver.js:418-420\n\n\nExecutes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nfillField\n\n\nlib/helper/SeleniumWebdriver.js:193-201\n\n\nFills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.\n\n\n// by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\ngrabAttribute\n\n\nlib/helper/SeleniumWebdriver.js:325-327\n\n\nRetrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet hint = yield I.grabAttribute('#tooltip', 'title');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nattr\n  \n\n\n\n\ngrabCookie\n\n\nlib/helper/SeleniumWebdriver.js:533-535\n\n\nGets a cookie object by name\n* Resumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');\n\n\n\n\nReturns cookie in JSON \nformat\n.\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\ngrabTextFrom\n\n\nlib/helper/SeleniumWebdriver.js:306-308\n\n\nRetrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet pin = yield I.grabTextFrom('#pin');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\ngrabTitle\n\n\nlib/helper/SeleniumWebdriver.js:350-355\n\n\nRetrieves a page title and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet title = yield I.grabTitle();\n\n\n\n\ngrabValueFrom\n\n\nlib/helper/SeleniumWebdriver.js:313-320\n\n\nRetrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet email = yield I.grabValueFrom('input[name=email]');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\npressKey\n\n\nlib/helper/SeleniumWebdriver.js:206-221\n\n\nPresses a key on a focused element.\nSpeical keys like 'Enter', 'Control', \netc\n\nwill be replaced with corresponding unicode.\nIf modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.\n\n\nI.pressKey('Enter');\nI.pressKey(['Control','a']);\n\n\n\n\nParameters\n\n\n\n\nkey\n  \n\n\n\n\nresizeWindow\n\n\nlib/helper/SeleniumWebdriver.js:540-545\n\n\nResize the current window to provided width and height.\nFirst parameter can be set to \nmaximize\n\n\nParameters\n\n\n\n\nwidth\n  \n\n\nheight\n  \n\n\n\n\nsaveScreenshot\n\n\nlib/helper/SeleniumWebdriver.js:468-480\n\n\nSaves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.\n\n\nI.saveScreenshot('debug.png');\n\n\n\n\nParameters\n\n\n\n\nfileName\n  \n\n\n\n\nsee\n\n\nlib/helper/SeleniumWebdriver.js:150-152\n\n\nChecks that a page contains a visible text.\nUse context parameter to narrow down the search.\n\n\nI.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\ncontext\n  \n\n\n\n\nseeCheckboxIsChecked\n\n\nlib/helper/SeleniumWebdriver.js:290-293\n\n\nVerifies that the specified checkbox is checked.\n\n\nI.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});\n\n\n\n\nParameters\n\n\n\n\noption\n  \n\n\n\n\nseeCookie\n\n\nlib/helper/SeleniumWebdriver.js:513-517\n\n\nChecks that cookie with given name exists.\n\n\nI.seeCookie('Auth');\n\n\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeCurrentUrlEquals\n\n\nlib/helper/SeleniumWebdriver.js:450-454\n\n\nChecks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:\n\n\nI.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');\n\n\n\n\nParameters\n\n\n\n\nuri\n  \n\n\n\n\nseeElement\n\n\nlib/helper/SeleniumWebdriver.js:360-366\n\n\nChecks that a given Element is visible\nElement is located by CSS or XPath.\n\n\nI.seeElement('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nseeElementInDOM\n\n\nlib/helper/SeleniumWebdriver.js:382-386\n\n\nChecks that a given Element is present in the DOM\nElement is located by CSS or XPath.\n\n\nI.seeElementInDOM('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\nseeInCurrentUrl\n\n\nlib/helper/SeleniumWebdriver.js:432-436\n\n\nChecks that current url contains a provided fragment.\n\n\nI.seeInCurrentUrl('/register'); // we are on registration page\n\n\n\n\nParameters\n\n\n\n\nurlFragment\n  \n\n\n\n\nseeInField\n\n\nlib/helper/SeleniumWebdriver.js:246-248\n\n\nChecks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.\n\n\nI.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');\n\n\n\n\nParameters\n\n\n\n\nfield\n  \n\n\nvalue\n  \n\n\n\n\nseeInSource\n\n\nlib/helper/SeleniumWebdriver.js:400-404\n\n\nChecks that the current page contains the given string in its raw source code.\n\n\nI.seeInSource('\nh1\nGreen eggs \namp; ham\n/h1\n');\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nseeInTitle\n\n\nlib/helper/SeleniumWebdriver.js:332-336\n\n\nChecks that title contains text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nselectOption\n\n\nlib/helper/SeleniumWebdriver.js:164-188\n\n\nSelects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.\n\n\nI.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');\n\n\n\n\nProvide an array for the second argument to select multiple options.\n\n\nI.selectOption('Which OS do you use?', ['Andriod', 'OSX']);\n\n\n\n\nParameters\n\n\n\n\nselect\n  \n\n\noption\n  \n\n\n\n\nsetCookie\n\n\nlib/helper/SeleniumWebdriver.js:487-498\n\n\nSets a cookie\n\n\nI.setCookie({name: 'auth', value: true});\n\n\n\n\nUses Selenium's JSON \ncookie format\n.\n\n\nParameters\n\n\n\n\ncookie\n  \n\n\n\n\nwait\n\n\nlib/helper/SeleniumWebdriver.js:550-552\n\n\nPauses execution for a number of seconds.\n\n\nParameters\n\n\n\n\nsec\n  \n\n\n\n\nwaitForElement\n\n\nlib/helper/SeleniumWebdriver.js:557-561\n\n\nWaits for element to be present on page (by default waits for 1sec).\n Element can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nsec\n  \n\n\n\n\nwaitForText\n\n\nlib/helper/SeleniumWebdriver.js:575-582\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nI.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nsec\n  \n\n\ncontext\n  \n\n\n\n\nwaitForVisible\n\n\nlib/helper/SeleniumWebdriver.js:566-570\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\nsec", 
+            "title": "SeleniumWebdriver"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seleniumwebdriver", 
+            "text": "lib/helper/SeleniumWebdriver.js:47-584  Extends Helper  Protractor helper is based on  Protractor library  and used for testing AngularJS applications.  Selenium Installation   Download  Selenium Server  Launch the daemon:  java -jar selenium-server-standalone-2.xx.xxx.jar   PhantomJS Installation  PhantomJS is a headless alternative to Selenium Server that implements  the WebDriver protocol .\nIt allows you to run Selenium tests on a server without a GUI installed.   Download  PhantomJS  Run PhantomJS in WebDriver mode:  phantomjs --webdriver=4444   Configuration  This helper should be configured in codecept.json   url  - base url of website to be tested  browser  - browser in which perform testing  driver  - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.  seleniumAddress  - Selenium address to connect (default:  http://localhost:4444/wd/hub )  waitForTimeout : (optional) sets default wait time in  ms  for all  wait*  functions. 1000 by default;   other options are the same as in  Protractor config .", 
+            "title": "SeleniumWebdriver"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#amonpage", 
+            "text": "lib/helper/SeleniumWebdriver.js:129-134  Opens a web page in a browser. Requires relative or absolute url.\nIf url starts with  / , opens a web page of a site defined in  url  config parameter.  I.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page  Parameters   url", 
+            "title": "amOnPage"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#appendfield", 
+            "text": "lib/helper/SeleniumWebdriver.js:260-267  Appends text to a input field or textarea.\nField is located by name, label, CSS or XPath  I.appendField('#myTextField', 'appended');  Parameters   field     value", 
+            "title": "appendField"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#attachfile", 
+            "text": "lib/helper/SeleniumWebdriver.js:226-241  Attaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).  I.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');  Parameters   locator     pathToFile", 
+            "title": "attachFile"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#checkoption", 
+            "text": "lib/helper/SeleniumWebdriver.js:272-285  Selects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.  The second parameter is a context (CSS or XPath locator) to narrow the search.  I.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');  Parameters   option     context", 
+            "title": "checkOption"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#clearcookie", 
+            "text": "lib/helper/SeleniumWebdriver.js:503-508  Clears a cookie by name,\nif none provided clears all cookies  I.clearCookie();\nI.clearCookie('test');  Parameters   cookie", 
+            "title": "clearCookie"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#click", 
+            "text": "lib/helper/SeleniumWebdriver.js:139-145  Perform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.  The second parameter is a context (CSS or XPath locator) to narrow the search.  // simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});  Parameters   link     context", 
+            "title": "click"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontsee", 
+            "text": "lib/helper/SeleniumWebdriver.js:157-159  Opposite to  see . Checks that a text is not present on a page.\nUse context parameter to narrow down the search.  I.dontSee('Login'); // assume we are already logged in  Parameters   text     context", 
+            "title": "dontSee"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseecheckboxischecked", 
+            "text": "lib/helper/SeleniumWebdriver.js:298-301  Verifies that the specified checkbox is not checked.  Parameters   option", 
+            "title": "dontSeeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseecookie", 
+            "text": "lib/helper/SeleniumWebdriver.js:522-526  Checks that cookie with given name does not exist.  Parameters   name", 
+            "title": "dontSeeCookie"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseecurrenturlequals", 
+            "text": "lib/helper/SeleniumWebdriver.js:459-463  Checks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.  Parameters   uri", 
+            "title": "dontSeeCurrentUrlEquals"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseeelement", 
+            "text": "lib/helper/SeleniumWebdriver.js:371-377  Opposite to  seeElement . Checks that element is not visible  Parameters   locator", 
+            "title": "dontSeeElement"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseeelementindom", 
+            "text": "lib/helper/SeleniumWebdriver.js:391-395  Opposite to  seeElementInDOM . Checks that element is not on page.  Parameters   locator", 
+            "title": "dontSeeElementInDOM"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseeincurrenturl", 
+            "text": "lib/helper/SeleniumWebdriver.js:441-445  Checks that current url does not contain a provided fragment.  Parameters   urlFragment", 
+            "title": "dontSeeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseeinfield", 
+            "text": "lib/helper/SeleniumWebdriver.js:253-255  Checks that value of input field or textare doesn't equal to given value\nOpposite to  seeInField .  Parameters   field     value", 
+            "title": "dontSeeInField"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseeinsource", 
+            "text": "lib/helper/SeleniumWebdriver.js:409-413  Checks that the current page contains the given string in its raw source code Parameters   text", 
+            "title": "dontSeeInSource"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#dontseeintitle", 
+            "text": "lib/helper/SeleniumWebdriver.js:341-345  Checks that title does not contain text. Parameters   text", 
+            "title": "dontSeeInTitle"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#executeasyncscript", 
+            "text": "lib/helper/SeleniumWebdriver.js:425-427  Executes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.  Parameters   fn", 
+            "title": "executeAsyncScript"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#executescript", 
+            "text": "lib/helper/SeleniumWebdriver.js:418-420  Executes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.  Parameters   fn", 
+            "title": "executeScript"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#fillfield", 
+            "text": "lib/helper/SeleniumWebdriver.js:193-201  Fills a text field or textarea with the given string.\nField is located by name, label, CSS, or XPath.  // by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');  Parameters   field     value", 
+            "title": "fillField"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#grabattribute", 
+            "text": "lib/helper/SeleniumWebdriver.js:325-327  Retrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let hint = yield I.grabAttribute('#tooltip', 'title');  Parameters   locator     attr", 
+            "title": "grabAttribute"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#grabcookie", 
+            "text": "lib/helper/SeleniumWebdriver.js:533-535  Gets a cookie object by name\n* Resumes test execution, so  should be used inside a generator with  yield  operator.  let cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');  Returns cookie in JSON  format .  Parameters   name", 
+            "title": "grabCookie"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#grabtextfrom", 
+            "text": "lib/helper/SeleniumWebdriver.js:306-308  Retrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let pin = yield I.grabTextFrom('#pin');  Parameters   locator", 
+            "title": "grabTextFrom"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#grabtitle", 
+            "text": "lib/helper/SeleniumWebdriver.js:350-355  Retrieves a page title and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let title = yield I.grabTitle();", 
+            "title": "grabTitle"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#grabvaluefrom", 
+            "text": "lib/helper/SeleniumWebdriver.js:313-320  Retrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let email = yield I.grabValueFrom('input[name=email]');  Parameters   locator", 
+            "title": "grabValueFrom"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#presskey", 
+            "text": "lib/helper/SeleniumWebdriver.js:206-221  Presses a key on a focused element.\nSpeical keys like 'Enter', 'Control',  etc \nwill be replaced with corresponding unicode.\nIf modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.  I.pressKey('Enter');\nI.pressKey(['Control','a']);  Parameters   key", 
+            "title": "pressKey"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#resizewindow", 
+            "text": "lib/helper/SeleniumWebdriver.js:540-545  Resize the current window to provided width and height.\nFirst parameter can be set to  maximize  Parameters   width     height", 
+            "title": "resizeWindow"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#savescreenshot", 
+            "text": "lib/helper/SeleniumWebdriver.js:468-480  Saves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.  I.saveScreenshot('debug.png');  Parameters   fileName", 
+            "title": "saveScreenshot"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#see", 
+            "text": "lib/helper/SeleniumWebdriver.js:150-152  Checks that a page contains a visible text.\nUse context parameter to narrow down the search.  I.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator  Parameters   text     context", 
+            "title": "see"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seecheckboxischecked", 
+            "text": "lib/helper/SeleniumWebdriver.js:290-293  Verifies that the specified checkbox is checked.  I.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});  Parameters   option", 
+            "title": "seeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seecookie", 
+            "text": "lib/helper/SeleniumWebdriver.js:513-517  Checks that cookie with given name exists.  I.seeCookie('Auth');  Parameters   name", 
+            "title": "seeCookie"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seecurrenturlequals", 
+            "text": "lib/helper/SeleniumWebdriver.js:450-454  Checks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:  I.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');  Parameters   uri", 
+            "title": "seeCurrentUrlEquals"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seeelement", 
+            "text": "lib/helper/SeleniumWebdriver.js:360-366  Checks that a given Element is visible\nElement is located by CSS or XPath.  I.seeElement('#modal');  Parameters   locator", 
+            "title": "seeElement"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seeelementindom", 
+            "text": "lib/helper/SeleniumWebdriver.js:382-386  Checks that a given Element is present in the DOM\nElement is located by CSS or XPath.  I.seeElementInDOM('#modal');  Parameters   locator", 
+            "title": "seeElementInDOM"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seeincurrenturl", 
+            "text": "lib/helper/SeleniumWebdriver.js:432-436  Checks that current url contains a provided fragment.  I.seeInCurrentUrl('/register'); // we are on registration page  Parameters   urlFragment", 
+            "title": "seeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seeinfield", 
+            "text": "lib/helper/SeleniumWebdriver.js:246-248  Checks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.  I.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');  Parameters   field     value", 
+            "title": "seeInField"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seeinsource", 
+            "text": "lib/helper/SeleniumWebdriver.js:400-404  Checks that the current page contains the given string in its raw source code.  I.seeInSource(' h1 Green eggs  amp; ham /h1 ');  Parameters   text", 
+            "title": "seeInSource"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#seeintitle", 
+            "text": "lib/helper/SeleniumWebdriver.js:332-336  Checks that title contains text.  Parameters   text", 
+            "title": "seeInTitle"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#selectoption", 
+            "text": "lib/helper/SeleniumWebdriver.js:164-188  Selects an option in a drop-down select.\nField is siearched by label | name | CSS | XPath.\nOption is selected by visible text or by value.  I.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Permium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');  Provide an array for the second argument to select multiple options.  I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);  Parameters   select     option", 
+            "title": "selectOption"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#setcookie", 
+            "text": "lib/helper/SeleniumWebdriver.js:487-498  Sets a cookie  I.setCookie({name: 'auth', value: true});  Uses Selenium's JSON  cookie format .  Parameters   cookie", 
+            "title": "setCookie"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#wait", 
+            "text": "lib/helper/SeleniumWebdriver.js:550-552  Pauses execution for a number of seconds.  Parameters   sec", 
+            "title": "wait"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#waitforelement", 
+            "text": "lib/helper/SeleniumWebdriver.js:557-561  Waits for element to be present on page (by default waits for 1sec).\n Element can be located by CSS or XPath.  Parameters   locator     sec", 
+            "title": "waitForElement"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#waitfortext", 
+            "text": "lib/helper/SeleniumWebdriver.js:575-582  Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  I.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');  Parameters   text     sec     context", 
+            "title": "waitForText"
+        }, 
+        {
+            "location": "/helpers/SeleniumWebdriver/#waitforvisible", 
+            "text": "lib/helper/SeleniumWebdriver.js:566-570  Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  Parameters   locator     sec", 
+            "title": "waitForVisible"
+        }, 
+        {
             "location": "/helpers/FileSystem/", 
             "text": "FileSystem\n\n\nlib/helper/FileSystem.js:22-87\n\n\nExtends Helper\n\n\nHelper for testing filesystem.\nCan be easily used to check file structures:\n\n\nI.amInPath('test');\nI.seeFile('codecept.json');\nI.seeInThisFile('FileSystem');\nI.dontSeeInThisFile(\nWebDriverIO\n);\n\n\n\n\namInPath\n\n\nlib/helper/FileSystem.js:34-37\n\n\nEnters a directory In local filesystem.\nStarts from a current directory\n\n\nParameters\n\n\n\n\nopenPath\n  \n\n\n\n\ndontSeeFileContentsEqual\n\n\nlib/helper/FileSystem.js:82-85\n\n\nChecks that contents of file found by \nseeFile\n doesn't equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\ndontSeeInThisFile\n\n\nlib/helper/FileSystem.js:66-69\n\n\nChecks that file found by \nseeFile\n doesn't include text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeFile\n\n\nlib/helper/FileSystem.js:49-53\n\n\nChecks that file exists\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeFileContentsEqual\n\n\nlib/helper/FileSystem.js:74-77\n\n\nChecks that contents of file found by \nseeFile\n equal to text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nseeInThisFile\n\n\nlib/helper/FileSystem.js:58-61\n\n\nChecks that file found by \nseeFile\n includes a text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\nencoding\n  \n\n\n\n\nwriteToFile\n\n\nlib/helper/FileSystem.js:42-44\n\n\nWrites test to file\n\n\nParameters\n\n\n\n\nname\n  \n\n\ntext", 
             "title": "FileSystem"

@@ -54,6 +54,18 @@
     </url>
         
     <url>
+     <loc>None/helpers/Protractor/</loc>
+     <lastmod>2016-03-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/SeleniumWebdriver/</loc>
+     <lastmod>2016-03-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>None/helpers/FileSystem/</loc>
      <lastmod>2016-03-22</lastmod>
      <changefreq>daily</changefreq>
