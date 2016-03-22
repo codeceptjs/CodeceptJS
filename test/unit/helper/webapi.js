@@ -303,7 +303,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#grabTextFrom, #grabValueFrom, #grabAttribute', () => {
+  describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
     it('should grab text from page', function*() {
       yield I.amOnPage('/');
       let val = yield I.grabTextFrom('h1');
@@ -328,7 +328,7 @@ module.exports.tests = function() {
 
     it('should grab attribute from element', function*() {
       yield I.amOnPage('/search');
-      let val = yield I.grabAttribute({css: 'form'}, 'method');
+      let val = yield I.grabAttributeFrom({css: 'form'}, 'method');
       return assert.equal(val, "get");
     });
   });
