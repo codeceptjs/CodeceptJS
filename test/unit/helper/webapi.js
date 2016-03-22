@@ -377,7 +377,7 @@ module.exports.tests = function() {
     });
 
     it('should create a screenshot file in output dir', () => {
-      let test = { name: 'sw should do smth' };
+      let test = { title: 'sw should do smth' };
       return I.amOnPage('/')
         .then(() => I._failed(test))
         .then(() => assert.ok(fileExists(path.join(output_dir, 'sw_should_do_smth.failed.png')), null, 'file does not exists'));
