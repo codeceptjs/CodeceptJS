@@ -11,7 +11,9 @@ pages:
     - 'Page Objects': 'pageobjects.md'
 - Helpers:
     - 'WebDriverIO': 'helpers/WebDriverIO.md'
+    - 'Protractor': 'helpers/Protractor.md'
+    - 'SeleniumWebdriver': 'helpers/SeleniumWebdriver.md'
     - 'FileSystem': 'helpers/FileSystem.md'
-- Releases: 'changelog.md'    
+- Releases: 'changelog.md'
 copyright: Created by CodeceptJS Team
 google_analytics: ['UA-30075781-3','auto']
