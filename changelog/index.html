@@ -171,7 +171,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#028">0.2.8</a></li>
+        <li class="main active"><a href="#030">0.3.0</a></li>
+        
+    
+        <li class="main "><a href="#028">0.2.8</a></li>
         
     
         <li class="main "><a href="#027">0.2.7</a></li>
@@ -199,6 +202,22 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="030">0.3.0</h2>
+<p><strong>Breaking Change</strong>: webdriverio package removed from dependencies list. You will need to install it manually after the upgrade.
+Starting from 0.3.0 webdriverio is not the only backend for running selenium tests, so you are free to choose between Protractor, SeleniumWebdriver, and webdriverio and install them.</p>
+<ul>
+<li><strong>[Protractor] helper added</strong>. Now you can test AngularJS applications by using its official library within the unigied CodeceptJS API!</li>
+<li><strong>[SeleniumWebdriver] helper added</strong>. You can switch to official JS bindings for Selenium.</li>
+<li>[WebDriverIO] <strong>updated to webdriverio v 4.0</strong></li>
+<li>[WebDriverIO] <code>clearField</code> method added by @fabioel</li>
+<li>[WebDriverIO] added <code>dragAndDrop</code> by @fabioel</li>
+<li>[WebDriverIO] fixed <code>scrollTo</code> method by @sensone</li>
+<li>[WebDriverIO] fixed <code>windowSize: maximize</code> option in config</li>
+<li>[WebDriverIO] <code>seeElement</code> and <code>dontSeeElement</code> check element for visibility by @fabioel and @davertmik</li>
+<li>[WebDriverIO] <code>seeElementInDOM</code>, <code>dontSeeElementInDOM</code> added to check element exists on page.</li>
+<li>[WebDriverIO] fixed saving screenshots on failure. Fixes #70</li>
+<li>fixed <code>within</code> block doesn't end in output not #79</li>
+</ul>
 <h2 id="028">0.2.8</h2>
 <ul>
 <li>[WebDriverIO] added <code>seeNumberOfElements</code> by @fabioel</li>
@@ -213,16 +232,16 @@
 <ul>
 <li>Fixed <code>done() was called multiple times</code></li>
 <li>[WebDriverIO] added <code>waitToHide</code> method by @fabioel</li>
-<li>Added global <code>Helper</code> (alias <code>codecept_helper)</code>, object use for writing custom Helpers. Generator updated. Changes to #48 </li>
+<li>Added global <code>Helper</code> (alias <code>codecept_helper)</code>, object use for writing custom Helpers. Generator updated. Changes to #48</li>
 </ul>
 <h2 id="025">0.2.5</h2>
 <ul>
 <li>Fixed issues with using yield inside a test #45 #47 #43</li>
-<li>Fixed generating a custom helper. Helper class is now accessible with <code>codecept_helper</code> var. Fixes #48 </li>
+<li>Fixed generating a custom helper. Helper class is now accessible with <code>codecept_helper</code> var. Fixes #48</li>
 </ul>
 <h2 id="024">0.2.4</h2>
 <ul>
-<li>Fixed accessing helpers from custom helper by @pim.   </li>
+<li>Fixed accessing helpers from custom helper by @pim.</li>
 </ul>
 <h2 id="023">0.2.3</h2>
 <ul>
@@ -230,7 +249,7 @@
 <li>[WebDriverIO] fixed <code>pressKey</code>, key modifeiers (Control, Command, Alt, Shift) are released after the action</li>
 </ul>
 <h2 id="022">0.2.2</h2>
-<p>Fixed generation of custom steps file and page objects. 
+<p>Fixed generation of custom steps file and page objects.
 Please replace <code>require('codeceptjs/actor')</code> to <code>actor</code> in your <code>custom_steps.js</code>.
 Whenever you need to create <code>I</code> object (in page objects, custom steps, but not in tests) just call <code>actor()</code>;</p>
 <h2 id="020">0.2.0</h2>
@@ -241,14 +260,14 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
 <li>elements: <code>seeElement</code>, ...</li>
 <li>popups: <code>acceptPopup</code>, <code>cancelPopup</code>, <code>seeInPopup</code>,...</li>
 <li>navigation: <code>moveCursorTo</code>, <code>scrollTo</code></li>
-<li>saving screenshots on failure; <code>saveScreenshot</code> </li>
+<li>saving screenshots on failure; <code>saveScreenshot</code></li>
 <li>cookies: <code>setCookie</code>, <code>seeCookie</code>, ...</li>
 <li>source: <code>seeInSource</code></li>
 <li>form: <code>seeCheckboxIsChecked</code>, <code>selectOption</code> to support multiple selects</li>
 <li>keyboard: <code>appendField</code>, <code>pressKey</code></li>
 <li>mouse: <code>rightClick</code></li>
 <li>tests added</li>
-<li>[WebDriverIO] proxy configuration added by @petehouston </li>
+<li>[WebDriverIO] proxy configuration added by @petehouston</li>
 <li>[WebDriverIO] fixed <code>waitForText</code> method by @roadhump. Fixes #11</li>
 <li>Fixed creating output dir when it already exists on init by @alfirin</li>
 <li>Fixed loading of custom helpers</li>
