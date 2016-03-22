@@ -485,7 +485,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `field`  
 -   `value`  
 
-## grabAttribute
+## grabAttributeFrom
 
 [lib/helper/WebDriverIO.js:474-478](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L474-L478 "Source code on GitHub")
 
@@ -493,7 +493,7 @@ Retrieves an attribute from an element located by CSS or XPath and returns it to
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
 ```js
-let hint = yield I.grabAttribute('#tooltip', 'title');
+let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 ```
 
 **Parameters**
