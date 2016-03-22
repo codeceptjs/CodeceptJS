@@ -1,6 +1,6 @@
 # SeleniumWebdriver
 
-[lib/helper/SeleniumWebdriver.js:46-557](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L46-L557 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:47-584](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L47-L584 "Source code on GitHub")
 
 **Extends Helper**
 
@@ -25,15 +25,15 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
--   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
+-   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 
 other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
 
 ## amOnPage
 
-[lib/helper/SeleniumWebdriver.js:128-133](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L128-L133 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:129-134](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L129-L134 "Source code on GitHub")
 
 Opens a web page in a browser. Requires relative or absolute url.
 If url starts with `/`, opens a web page of a site defined in `url` config parameter.
@@ -46,11 +46,11 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`
+-   `url`  
 
 ## appendField
 
-[lib/helper/SeleniumWebdriver.js:259-266](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L259-L266 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:260-267](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L260-L267 "Source code on GitHub")
 
 Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath
@@ -61,12 +61,12 @@ I.appendField('#myTextField', 'appended');
 
 **Parameters**
 
--   `field`
--   `value`
+-   `field`  
+-   `value`  
 
 ## attachFile
 
-[lib/helper/SeleniumWebdriver.js:225-240](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L225-L240 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:226-241](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L226-L241 "Source code on GitHub")
 
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
@@ -79,12 +79,12 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 **Parameters**
 
--   `locator`
--   `pathToFile`
+-   `locator`  
+-   `pathToFile`  
 
 ## checkOption
 
-[lib/helper/SeleniumWebdriver.js:271-284](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L271-L284 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:272-285](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L272-L285 "Source code on GitHub")
 
 Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
@@ -99,12 +99,12 @@ I.checkOption('agree', '//form');
 
 **Parameters**
 
--   `option`
--   `context`
+-   `option`  
+-   `context`  
 
 ## clearCookie
 
-[lib/helper/SeleniumWebdriver.js:476-481](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L476-L481 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:503-508](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L503-L508 "Source code on GitHub")
 
 Clears a cookie by name,
 if none provided clears all cookies
@@ -116,11 +116,11 @@ I.clearCookie('test');
 
 **Parameters**
 
--   `cookie`
+-   `cookie`  
 
 ## click
 
-[lib/helper/SeleniumWebdriver.js:138-144](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L138-L144 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:139-145](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L139-L145 "Source code on GitHub")
 
 Perform a click on a link or a button, given by a locator.
 If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
@@ -146,12 +146,12 @@ I.click({css: 'nav a.login'});
 
 **Parameters**
 
--   `link`
--   `context`
+-   `link`  
+-   `context`  
 
 ## dontSee
 
-[lib/helper/SeleniumWebdriver.js:156-158](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L156-L158 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:157-159](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L157-L159 "Source code on GitHub")
 
 Opposite to `see`. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.
@@ -162,104 +162,114 @@ I.dontSee('Login'); // assume we are already logged in
 
 **Parameters**
 
--   `text`
--   `context`
+-   `text`  
+-   `context`  
 
 ## dontSeeCheckboxIsChecked
 
-[lib/helper/SeleniumWebdriver.js:297-300](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L297-L300 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:298-301](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L298-L301 "Source code on GitHub")
 
  Verifies that the specified checkbox is not checked.
-
+ 
 **Parameters**
 
--   `option`
+-   `option`  
 
 ## dontSeeCookie
 
-[lib/helper/SeleniumWebdriver.js:495-499](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L495-L499 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:522-526](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L522-L526 "Source code on GitHub")
 
 Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`
+-   `name`  
 
 ## dontSeeCurrentUrlEquals
 
-[lib/helper/SeleniumWebdriver.js:437-441](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L437-L441 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:459-463](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L459-L463 "Source code on GitHub")
 
 Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `uri`
+-   `uri`  
 
 ## dontSeeElement
 
-[lib/helper/SeleniumWebdriver.js:368-373](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L368-L373 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:371-377](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L371-L377 "Source code on GitHub")
 
-Opposite to `seeElement`. Checks that element is not on page.
+Opposite to `seeElement`. Checks that element is not visible
 
 **Parameters**
 
--   `locator`
+-   `locator`  
+
+## dontSeeElementInDOM
+
+[lib/helper/SeleniumWebdriver.js:391-395](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L391-L395 "Source code on GitHub")
+
+Opposite to `seeElementInDOM`. Checks that element is not on page.
+
+**Parameters**
+
+-   `locator`  
 
 ## dontSeeInCurrentUrl
 
-[lib/helper/SeleniumWebdriver.js:419-423](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L419-L423 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:441-445](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L441-L445 "Source code on GitHub")
 
 Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `urlFragment`
+-   `urlFragment`  
 
 ## dontSeeInField
 
-[lib/helper/SeleniumWebdriver.js:252-254](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L252-L254 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:253-255](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L253-L255 "Source code on GitHub")
 
 Checks that value of input field or textare doesn't equal to given value
 Opposite to `seeInField`.
 
 **Parameters**
 
--   `field`
--   `value`
+-   `field`  
+-   `value`  
 
 ## dontSeeInSource
 
-[lib/helper/SeleniumWebdriver.js:387-391](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L387-L391 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:409-413](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L409-L413 "Source code on GitHub")
 
 Checks that the current page contains the given string in its raw source code
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## dontSeeInTitle
 
-[lib/helper/SeleniumWebdriver.js:340-344](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L340-L344 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:341-345](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L341-L345 "Source code on GitHub")
 
 Checks that title does not contain text.
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## executeAsyncScript
 
-[lib/helper/SeleniumWebdriver.js:403-405](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L403-L405 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:425-427](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L425-L427 "Source code on GitHub")
 
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
 **Parameters**
 
--   `fn`
+-   `fn`  
 
 ## executeScript
 
-[lib/helper/SeleniumWebdriver.js:396-398](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L396-L398 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:418-420](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L418-L420 "Source code on GitHub")
 
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
@@ -268,11 +278,11 @@ In this case you should use generator and yield to receive results.
 
 **Parameters**
 
--   `fn`
+-   `fn`  
 
 ## fillField
 
-[lib/helper/SeleniumWebdriver.js:192-200](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L192-L200 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:193-201](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L193-L201 "Source code on GitHub")
 
 Fills a text field or textarea with the given string.
 Field is located by name, label, CSS, or XPath.
@@ -290,28 +300,28 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 **Parameters**
 
--   `field`
--   `value`
+-   `field`  
+-   `value`  
 
 ## grabAttribute
 
-[lib/helper/SeleniumWebdriver.js:324-326](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L324-L326 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:325-327](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L325-L327 "Source code on GitHub")
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
 ```js
-let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+let hint = yield I.grabAttribute('#tooltip', 'title');
 ```
 
 **Parameters**
 
--   `locator`
--   `attr`
+-   `locator`  
+-   `attr`  
 
 ## grabCookie
 
-[lib/helper/SeleniumWebdriver.js:506-508](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L506-L508 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:533-535](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L533-L535 "Source code on GitHub")
 
 Gets a cookie object by name
 * Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -324,11 +334,11 @@ Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWire
 
 **Parameters**
 
--   `name`
+-   `name`  
 
 ## grabTextFrom
 
-[lib/helper/SeleniumWebdriver.js:305-307](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L305-L307 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:306-308](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L306-L308 "Source code on GitHub")
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -339,11 +349,11 @@ let pin = yield I.grabTextFrom('#pin');
 
 **Parameters**
 
--   `locator`
+-   `locator`  
 
 ## grabTitle
 
-[lib/helper/SeleniumWebdriver.js:349-354](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L349-L354 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:350-355](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L350-L355 "Source code on GitHub")
 
 Retrieves a page title and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -354,7 +364,7 @@ let title = yield I.grabTitle();
 
 ## grabValueFrom
 
-[lib/helper/SeleniumWebdriver.js:312-319](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L312-L319 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:313-320](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L313-L320 "Source code on GitHub")
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -365,11 +375,11 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 **Parameters**
 
--   `locator`
+-   `locator`  
 
 ## pressKey
 
-[lib/helper/SeleniumWebdriver.js:205-220](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L205-L220 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:206-221](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L206-L221 "Source code on GitHub")
 
 Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
@@ -382,23 +392,38 @@ I.pressKey(['Control','a']);
 
 **Parameters**
 
--   `key`
+-   `key`  
 
 ## resizeWindow
 
-[lib/helper/SeleniumWebdriver.js:513-518](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L513-L518 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:540-545](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L540-L545 "Source code on GitHub")
 
 Resize the current window to provided width and height.
 First parameter can be set to `maximize`
 
 **Parameters**
 
--   `width`
--   `height`
+-   `width`  
+-   `height`  
+
+## saveScreenshot
+
+[lib/helper/SeleniumWebdriver.js:468-480](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L468-L480 "Source code on GitHub")
+
+Saves a screenshot to ouput folder (set in codecept.json).
+Filename is relative to output folder.
+
+```js
+I.saveScreenshot('debug.png');
+```
+
+**Parameters**
+
+-   `fileName`  
 
 ## see
 
-[lib/helper/SeleniumWebdriver.js:149-151](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L149-L151 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:150-152](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L150-L152 "Source code on GitHub")
 
 Checks that a page contains a visible text.
 Use context parameter to narrow down the search.
@@ -411,12 +436,12 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 **Parameters**
 
--   `text`
--   `context`
+-   `text`  
+-   `context`  
 
 ## seeCheckboxIsChecked
 
-[lib/helper/SeleniumWebdriver.js:289-292](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L289-L292 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:290-293](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L290-L293 "Source code on GitHub")
 
 Verifies that the specified checkbox is checked.
 
@@ -428,11 +453,11 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 **Parameters**
 
--   `option`
+-   `option`  
 
 ## seeCookie
 
-[lib/helper/SeleniumWebdriver.js:486-490](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L486-L490 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:513-517](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L513-L517 "Source code on GitHub")
 
 Checks that cookie with given name exists.
 
@@ -441,11 +466,11 @@ I.seeCookie('Auth');
 ```
 **Parameters**
 
--   `name`
+-   `name`  
 
 ## seeCurrentUrlEquals
 
-[lib/helper/SeleniumWebdriver.js:428-432](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L428-L432 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:450-454](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L450-L454 "Source code on GitHub")
 
 Checks that current url is equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
@@ -458,13 +483,13 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `uri`
+-   `uri`  
 
 ## seeElement
 
-[lib/helper/SeleniumWebdriver.js:359-363](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L359-L363 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:360-366](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L360-L366 "Source code on GitHub")
 
-Checks that element is present on page.
+Checks that a given Element is visible
 Element is located by CSS or XPath.
 
 ```js
@@ -473,11 +498,26 @@ I.seeElement('#modal');
 
 **Parameters**
 
--   `locator`
+-   `locator`  
+
+## seeElementInDOM
+
+[lib/helper/SeleniumWebdriver.js:382-386](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L382-L386 "Source code on GitHub")
+
+Checks that a given Element is present in the DOM
+Element is located by CSS or XPath.
+
+```js
+I.seeElementInDOM('#modal');
+```
+
+**Parameters**
+
+-   `locator`  
 
 ## seeInCurrentUrl
 
-[lib/helper/SeleniumWebdriver.js:410-414](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L410-L414 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:432-436](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L432-L436 "Source code on GitHub")
 
 Checks that current url contains a provided fragment.
 
@@ -487,11 +527,11 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `urlFragment`
+-   `urlFragment`  
 
 ## seeInField
 
-[lib/helper/SeleniumWebdriver.js:245-247](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L245-L247 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:246-248](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L246-L248 "Source code on GitHub")
 
 Checks that the given input field or textarea equals to given value.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
@@ -505,12 +545,12 @@ I.seeInField('#searchform input','Search');
 
 **Parameters**
 
--   `field`
--   `value`
+-   `field`  
+-   `value`  
 
 ## seeInSource
 
-[lib/helper/SeleniumWebdriver.js:378-382](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L378-L382 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:400-404](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L400-L404 "Source code on GitHub")
 
 Checks that the current page contains the given string in its raw source code.
 
@@ -520,21 +560,21 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## seeInTitle
 
-[lib/helper/SeleniumWebdriver.js:331-335](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L331-L335 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:332-336](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L332-L336 "Source code on GitHub")
 
 Checks that title contains text.
 
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## selectOption
 
-[lib/helper/SeleniumWebdriver.js:163-187](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L163-L187 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:164-188](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L164-L188 "Source code on GitHub")
 
 Selects an option in a drop-down select.
 Field is siearched by label | name | CSS | XPath.
@@ -557,12 +597,12 @@ I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
 
 **Parameters**
 
--   `select`
--   `option`
+-   `select`  
+-   `option`  
 
 ## setCookie
 
-[lib/helper/SeleniumWebdriver.js:460-471](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L460-L471 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:487-498](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L487-L498 "Source code on GitHub")
 
 Sets a cookie
 
@@ -573,33 +613,33 @@ Uses Selenium's JSON [cookie format](https://code.google.com/p/selenium/wiki/Jso
 
 **Parameters**
 
--   `cookie`
+-   `cookie`  
 
 ## wait
 
-[lib/helper/SeleniumWebdriver.js:523-525](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L523-L525 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:550-552](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L550-L552 "Source code on GitHub")
 
 Pauses execution for a number of seconds.
 
 **Parameters**
 
--   `sec`
+-   `sec`  
 
 ## waitForElement
 
-[lib/helper/SeleniumWebdriver.js:530-534](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L530-L534 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:557-561](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L557-L561 "Source code on GitHub")
 
  Waits for element to be present on page (by default waits for 1sec).
  Element can be located by CSS or XPath.
-
+ 
 **Parameters**
 
--   `locator`
--   `sec`
+-   `locator`  
+-   `sec`  
 
 ## waitForText
 
-[lib/helper/SeleniumWebdriver.js:548-555](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L548-L555 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:575-582](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L575-L582 "Source code on GitHub")
 
 Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -612,18 +652,18 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 **Parameters**
 
--   `text`
--   `sec`
--   `context`
+-   `text`  
+-   `sec`  
+-   `context`  
 
 ## waitForVisible
 
-[lib/helper/SeleniumWebdriver.js:539-543](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L539-L543 "Source code on GitHub")
+[lib/helper/SeleniumWebdriver.js:566-570](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/SeleniumWebdriver.js#L566-L570 "Source code on GitHub")
 
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 **Parameters**
 
--   `locator`
--   `sec`
+-   `locator`  
+-   `sec`  
