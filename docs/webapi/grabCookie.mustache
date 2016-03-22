@@ -1,0 +1,7 @@
+Gets a cookie object by name
+* Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let cookie = I.grabCookie('auth');
+assert(cookie.value, '123456');
+```

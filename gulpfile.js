@@ -10,13 +10,18 @@ var documentation = require('gulp-documentation');
 var glob = require('glob');
 var guppy = require('git-guppy')(gulp);
 var gitmodified = require('gulp-gitmodified');
+var mustache = require("gulp-mustache");
 
 gulp.task('docs', function () {
 
   glob.sync('./lib/helper/*.js').forEach((file) => {
+    var mustache = require("gulp-mustache");
     gulp.src(file)
       .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md', github: true }))
+      .pipe(gulp.dest('docs/helpers'))
+      .pipe(mustache({}, {extension: '.md'}))
       .pipe(gulp.dest('docs/helpers'));
+
   });
 });
 
