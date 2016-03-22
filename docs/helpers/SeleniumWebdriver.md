@@ -25,6 +25,7 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
+-   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 
@@ -45,7 +46,7 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## appendField
 
@@ -60,8 +61,8 @@ I.appendField('#myTextField', 'appended');
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## attachFile
 
@@ -78,8 +79,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 **Parameters**
 
--   `locator`  
--   `pathToFile`  
+-   `locator`
+-   `pathToFile`
 
 ## checkOption
 
@@ -98,8 +99,8 @@ I.checkOption('agree', '//form');
 
 **Parameters**
 
--   `option`  
--   `context`  
+-   `option`
+-   `context`
 
 ## clearCookie
 
@@ -115,7 +116,7 @@ I.clearCookie('test');
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`
 
 ## click
 
@@ -145,8 +146,8 @@ I.click({css: 'nav a.login'});
 
 **Parameters**
 
--   `link`  
--   `context`  
+-   `link`
+-   `context`
 
 ## dontSee
 
@@ -161,18 +162,18 @@ I.dontSee('Login'); // assume we are already logged in
 
 **Parameters**
 
--   `text`  
--   `context`  
+-   `text`
+-   `context`
 
 ## dontSeeCheckboxIsChecked
 
 [lib/helper/SeleniumWebdriver.js:297-300](https://github.com/Codeception/CodeceptJS/blob/ab150429d6280421e9267f06b5676e271490ed89/lib/helper/SeleniumWebdriver.js#L297-L300 "Source code on GitHub")
 
  Verifies that the specified checkbox is not checked.
- 
+
 **Parameters**
 
--   `option`  
+-   `option`
 
 ## dontSeeCookie
 
@@ -182,7 +183,7 @@ Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## dontSeeCurrentUrlEquals
 
@@ -193,7 +194,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `uri`  
+-   `uri`
 
 ## dontSeeElement
 
@@ -203,7 +204,7 @@ Opposite to `seeElement`. Checks that element is not on page.
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## dontSeeInCurrentUrl
 
@@ -213,7 +214,7 @@ Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `urlFragment`  
+-   `urlFragment`
 
 ## dontSeeInField
 
@@ -224,8 +225,8 @@ Opposite to `seeInField`.
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## dontSeeInSource
 
@@ -234,7 +235,7 @@ Opposite to `seeInField`.
 Checks that the current page contains the given string in its raw source code
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## dontSeeInTitle
 
@@ -243,7 +244,7 @@ Checks that the current page contains the given string in its raw source code
 Checks that title does not contain text.
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## executeAsyncScript
 
@@ -254,7 +255,7 @@ Provided function should execute a passed callback (as first argument) to signal
 
 **Parameters**
 
--   `fn`  
+-   `fn`
 
 ## executeScript
 
@@ -267,7 +268,7 @@ In this case you should use generator and yield to receive results.
 
 **Parameters**
 
--   `fn`  
+-   `fn`
 
 ## fillField
 
@@ -289,8 +290,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## grabAttribute
 
@@ -305,8 +306,8 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 
 **Parameters**
 
--   `locator`  
--   `attr`  
+-   `locator`
+-   `attr`
 
 ## grabCookie
 
@@ -323,7 +324,7 @@ Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWire
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## grabTextFrom
 
@@ -338,7 +339,7 @@ let pin = yield I.grabTextFrom('#pin');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## grabTitle
 
@@ -364,7 +365,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## pressKey
 
@@ -381,7 +382,7 @@ I.pressKey(['Control','a']);
 
 **Parameters**
 
--   `key`  
+-   `key`
 
 ## resizeWindow
 
@@ -392,8 +393,8 @@ First parameter can be set to `maximize`
 
 **Parameters**
 
--   `width`  
--   `height`  
+-   `width`
+-   `height`
 
 ## see
 
@@ -410,8 +411,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 **Parameters**
 
--   `text`  
--   `context`  
+-   `text`
+-   `context`
 
 ## seeCheckboxIsChecked
 
@@ -427,7 +428,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 **Parameters**
 
--   `option`  
+-   `option`
 
 ## seeCookie
 
@@ -440,7 +441,7 @@ I.seeCookie('Auth');
 ```
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## seeCurrentUrlEquals
 
@@ -457,7 +458,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `uri`  
+-   `uri`
 
 ## seeElement
 
@@ -472,7 +473,7 @@ I.seeElement('#modal');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## seeInCurrentUrl
 
@@ -486,7 +487,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `urlFragment`  
+-   `urlFragment`
 
 ## seeInField
 
@@ -504,8 +505,8 @@ I.seeInField('#searchform input','Search');
 
 **Parameters**
 
--   `field`  
--   `value`  
+-   `field`
+-   `value`
 
 ## seeInSource
 
@@ -519,7 +520,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInTitle
 
@@ -529,7 +530,7 @@ Checks that title contains text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## selectOption
 
@@ -556,8 +557,8 @@ I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
 
 **Parameters**
 
--   `select`  
--   `option`  
+-   `select`
+-   `option`
 
 ## setCookie
 
@@ -572,7 +573,7 @@ Uses Selenium's JSON [cookie format](https://code.google.com/p/selenium/wiki/Jso
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`
 
 ## wait
 
@@ -582,7 +583,7 @@ Pauses execution for a number of seconds.
 
 **Parameters**
 
--   `sec`  
+-   `sec`
 
 ## waitForElement
 
@@ -590,11 +591,11 @@ Pauses execution for a number of seconds.
 
  Waits for element to be present on page (by default waits for 1sec).
  Element can be located by CSS or XPath.
- 
+
 **Parameters**
 
--   `locator`  
--   `sec`  
+-   `locator`
+-   `sec`
 
 ## waitForText
 
@@ -611,9 +612,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 **Parameters**
 
--   `text`  
--   `sec`  
--   `context`  
+-   `text`
+-   `sec`
+-   `context`
 
 ## waitForVisible
 
@@ -624,5 +625,5 @@ Element can be located by CSS or XPath.
 
 **Parameters**
 
--   `locator`  
--   `sec`  
+-   `locator`
+-   `sec`
