@@ -55,7 +55,7 @@
     "protractor": "^3.0.0",
     "selenium-webdriver": "~2.48.2",
     "sinon": "^1.17.2",
-    "webdriverio": "^4.0.4"
+    "webdriverio": ">3.4.0 <5.0.0"
   },
   "scripts": {
     "prepublish": "gulp prepublish",

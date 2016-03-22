@@ -10,6 +10,7 @@
 * [WebDriverIO] fixed `windowSize: maximize` option in config
 * [WebDriverIO] `seeElement` and `dontSeeElement` check element for visibility by @fabioel and @davertmik
 * [WebDriverIO] `seeElementInDOM`, `dontSeeElementInDOM` to check element exists on page.
+* 
 * fixed `within` block doesn't end in output not #79
 
 
