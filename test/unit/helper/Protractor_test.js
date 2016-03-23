@@ -300,7 +300,7 @@ describe('Protractor', function() {
 
   });
 
-  describe('#grabTextFrom, #grabValueFrom, #grabAttribute', () => {
+  describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
     it('should grab text from page', function*() {
       yield I.amOnPage('/#/info');
       let val = yield I.grabTextFrom('p.jumbotron');
@@ -321,7 +321,7 @@ describe('Protractor', function() {
 
     it('should grab attribute from element', function*() {
       yield I.amOnPage('/#/info');
-      let val = yield I.grabAttribute('a.btn', 'ng-href');
+      let val = yield I.grabAttributeFrom('a.btn', 'ng-href');
       return expect(val).to.equal('#/');
     });
   });

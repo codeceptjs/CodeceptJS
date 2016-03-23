@@ -1,6 +1,6 @@
 # Protractor
 
-[lib/helper/Protractor.js:48-232](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L48-L232 "Source code on GitHub")
+[lib/helper/Protractor.js:47-233](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L47-L233 "Source code on GitHub")
 
 **Extends SeleniumWebdriver**
 
@@ -32,21 +32,21 @@ other options are the same as in [Protractor config](https://github.com/angular/
 
 ## amInsideAngularApp
 
-[lib/helper/Protractor.js:158-171](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L158-L171 "Source code on GitHub")
+[lib/helper/Protractor.js:157-170](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L157-L170 "Source code on GitHub")
 
 Enters Angular mode (switched on by default)
 Should be used after "amOutsideAngularApp"
 
 ## amOutsideAngularApp
 
-[lib/helper/Protractor.js:147-152](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L147-L152 "Source code on GitHub")
+[lib/helper/Protractor.js:146-151](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L146-L151 "Source code on GitHub")
 
 Switch to non-Angular mode,
 start using WebDriver instead of Protractor in this session
 
 ## waitForClickable
 
-[lib/helper/Protractor.js:185-189](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L185-L189 "Source code on GitHub")
+[lib/helper/Protractor.js:184-188](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L184-L188 "Source code on GitHub")
 
 Waits for element to become clickable for number of seconds.
 
@@ -57,7 +57,7 @@ Waits for element to become clickable for number of seconds.
 
 ## waitForElement
 
-[lib/helper/Protractor.js:176-180](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L176-L180 "Source code on GitHub")
+[lib/helper/Protractor.js:175-179](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L175-L179 "Source code on GitHub")
 
  Waits for element to be present on page (by default waits for 1sec).
  Element can be located by CSS or XPath.
@@ -69,7 +69,7 @@ Waits for element to become clickable for number of seconds.
 
 ## waitForText
 
-[lib/helper/Protractor.js:203-210](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L203-L210 "Source code on GitHub")
+[lib/helper/Protractor.js:202-209](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L202-L209 "Source code on GitHub")
 
 Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -88,7 +88,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 ## waitForVisible
 
-[lib/helper/Protractor.js:194-198](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L194-L198 "Source code on GitHub")
+[lib/helper/Protractor.js:193-197](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L193-L197 "Source code on GitHub")
 
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -98,18 +98,9 @@ Element can be located by CSS or XPath.
 -   `locator`  
 -   `sec`  
 
-# Protractor_InheritedMethods
-
-[lib/helper/Protractor.js:412-578](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L412-L578 "Source code on GitHub")
-
-**Extends SeleniumWebdriver**
-
-Methods below are inherited from SeleniumWebdriver helper,
-in a similar manner as Protractor is extending SeleniumWebdriverJS.
-
 ## amOnPage
 
-[lib/helper/Protractor.js:417-417](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L417-L417 "Source code on GitHub")
+[lib/helper/Protractor.js:415-415](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L415-L415 "Source code on GitHub")
 
 Opens a web page in a browser. Requires relative or absolute url.
 If url starts with `/`, opens a web page of a site defined in `url` config parameter.
@@ -122,7 +113,7 @@ I.amOnPage('/login'); // opens a login page
 
 ## appendField
 
-[lib/helper/Protractor.js:421-421](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L421-L421 "Source code on GitHub")
+[lib/helper/Protractor.js:425-425](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L425-L425 "Source code on GitHub")
 
 Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath
@@ -133,7 +124,7 @@ I.appendField('#myTextField', 'appended');
 
 ## attachFile
 
-[lib/helper/Protractor.js:425-425](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L425-L425 "Source code on GitHub")
+[lib/helper/Protractor.js:435-435](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L435-L435 "Source code on GitHub")
 
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
@@ -146,7 +137,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 ## checkOption
 
-[lib/helper/Protractor.js:429-429](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L429-L429 "Source code on GitHub")
+[lib/helper/Protractor.js:445-445](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L445-L445 "Source code on GitHub")
 
 Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
@@ -161,7 +152,7 @@ I.checkOption('agree', '//form');
 
 ## clearCookie
 
-[lib/helper/Protractor.js:433-433](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L433-L433 "Source code on GitHub")
+[lib/helper/Protractor.js:455-455](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L455-L455 "Source code on GitHub")
 
 Clears a cookie by name,
 if none provided clears all cookies
@@ -173,7 +164,7 @@ I.clearCookie('test');
 
 ## click
 
-[lib/helper/Protractor.js:437-437](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L437-L437 "Source code on GitHub")
+[lib/helper/Protractor.js:465-465](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L465-L465 "Source code on GitHub")
 
 Perform a click on a link or a button, given by a locator.
 If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
@@ -199,7 +190,7 @@ I.click({css: 'nav a.login'});
 
 ## dontSee
 
-[lib/helper/Protractor.js:473-473](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L473-L473 "Source code on GitHub")
+[lib/helper/Protractor.js:555-555](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L555-L555 "Source code on GitHub")
 
 Opposite to `see`. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.
@@ -210,62 +201,62 @@ I.dontSee('Login'); // assume we are already logged in
 
 ## dontSeeCheckboxIsChecked
 
-[lib/helper/Protractor.js:441-441](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L441-L441 "Source code on GitHub")
+[lib/helper/Protractor.js:475-475](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L475-L475 "Source code on GitHub")
 
  Verifies that the specified checkbox is not checked.
  
 ## dontSeeCookie
 
-[lib/helper/Protractor.js:445-445](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L445-L445 "Source code on GitHub")
+[lib/helper/Protractor.js:485-485](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L485-L485 "Source code on GitHub")
 
 Checks that cookie with given name does not exist.
 
 ## dontSeeCurrentUrlEquals
 
-[lib/helper/Protractor.js:449-449](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L449-L449 "Source code on GitHub")
+[lib/helper/Protractor.js:495-495](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L495-L495 "Source code on GitHub")
 
 Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
 ## dontSeeElement
 
-[lib/helper/Protractor.js:453-453](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L453-L453 "Source code on GitHub")
+[lib/helper/Protractor.js:505-505](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L505-L505 "Source code on GitHub")
 
 Opposite to `seeElement`. Checks that element is not visible
 
 ## dontSeeInCurrentUrl
 
-[lib/helper/Protractor.js:457-457](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L457-L457 "Source code on GitHub")
+[lib/helper/Protractor.js:515-515](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L515-L515 "Source code on GitHub")
 
 Checks that current url does not contain a provided fragment.
 
 ## dontSeeInField
 
-[lib/helper/Protractor.js:461-461](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L461-L461 "Source code on GitHub")
+[lib/helper/Protractor.js:525-525](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L525-L525 "Source code on GitHub")
 
 Checks that value of input field or textare doesn't equal to given value
 Opposite to `seeInField`.
 
 ## dontSeeInSource
 
-[lib/helper/Protractor.js:465-465](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L465-L465 "Source code on GitHub")
+[lib/helper/Protractor.js:535-535](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L535-L535 "Source code on GitHub")
 
 Checks that the current page contains the given string in its raw source code
 ## dontSeeInTitle
 
-[lib/helper/Protractor.js:469-469](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L469-L469 "Source code on GitHub")
+[lib/helper/Protractor.js:545-545](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L545-L545 "Source code on GitHub")
 
 Checks that title does not contain text.
 ## executeAsyncScript
 
-[lib/helper/Protractor.js:477-477](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L477-L477 "Source code on GitHub")
+[lib/helper/Protractor.js:565-565](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L565-L565 "Source code on GitHub")
 
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
 ## executeScript
 
-[lib/helper/Protractor.js:481-481](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L481-L481 "Source code on GitHub")
+[lib/helper/Protractor.js:575-575](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L575-L575 "Source code on GitHub")
 
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
@@ -274,9 +265,9 @@ In this case you should use generator and yield to receive results.
 
 ## fillField
 
-[lib/helper/Protractor.js:485-485](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L485-L485 "Source code on GitHub")
+[lib/helper/Protractor.js:585-585](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L585-L585 "Source code on GitHub")
 
-Fills a text field or textarea with the given string.
+Fills a text field or textarea, after clearing its value,  with the given string.
 Field is located by name, label, CSS, or XPath.
 
 ```js
@@ -290,20 +281,20 @@ I.fillField('form#login input[name=username]', 'John');
 I.fillField({css: 'form#login input[name=username]'}, 'John');
 ```
 
-## grabAttribute
+## grabAttributeFrom
 
-[lib/helper/Protractor.js:489-489](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L489-L489 "Source code on GitHub")
+[lib/helper/Protractor.js:595-595](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L595-L595 "Source code on GitHub")
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
 ```js
-let hint = yield I.grabAttribute('#tooltip', 'title');
+let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 ```
 
 ## grabCookie
 
-[lib/helper/Protractor.js:493-493](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L493-L493 "Source code on GitHub")
+[lib/helper/Protractor.js:605-605](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L605-L605 "Source code on GitHub")
 
 Gets a cookie object by name
 * Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -314,7 +305,7 @@ assert(cookie.value, '123456');
 ```
 ## grabTextFrom
 
-[lib/helper/Protractor.js:497-497](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L497-L497 "Source code on GitHub")
+[lib/helper/Protractor.js:615-615](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L615-L615 "Source code on GitHub")
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -325,7 +316,7 @@ let pin = yield I.grabTextFrom('#pin');
 
 ## grabTitle
 
-[lib/helper/Protractor.js:501-501](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L501-L501 "Source code on GitHub")
+[lib/helper/Protractor.js:625-625](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L625-L625 "Source code on GitHub")
 
 Retrieves a page title and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -336,7 +327,7 @@ let title = yield I.grabTitle();
 
 ## grabValueFrom
 
-[lib/helper/Protractor.js:505-505](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L505-L505 "Source code on GitHub")
+[lib/helper/Protractor.js:635-635](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L635-L635 "Source code on GitHub")
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
@@ -347,7 +338,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 ## pressKey
 
-[lib/helper/Protractor.js:509-509](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L509-L509 "Source code on GitHub")
+[lib/helper/Protractor.js:645-645](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L645-L645 "Source code on GitHub")
 
 Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
@@ -360,14 +351,14 @@ I.pressKey(['Control','a']);
 
 ## resizeWindow
 
-[lib/helper/Protractor.js:513-513](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L513-L513 "Source code on GitHub")
+[lib/helper/Protractor.js:655-655](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L655-L655 "Source code on GitHub")
 
 Resize the current window to provided width and height.
 First parameter can be set to `maximize`
 
 ## saveScreenshot
 
-[lib/helper/Protractor.js:517-517](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L517-L517 "Source code on GitHub")
+[lib/helper/Protractor.js:665-665](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L665-L665 "Source code on GitHub")
 
 Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder.
@@ -378,7 +369,7 @@ I.saveScreenshot('debug.png');
 
 ## see
 
-[lib/helper/Protractor.js:553-553](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L553-L553 "Source code on GitHub")
+[lib/helper/Protractor.js:755-755](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L755-L755 "Source code on GitHub")
 
 Checks that a page contains a visible text.
 Use context parameter to narrow down the search.
@@ -391,7 +382,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 ## seeCheckboxIsChecked
 
-[lib/helper/Protractor.js:521-521](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L521-L521 "Source code on GitHub")
+[lib/helper/Protractor.js:675-675](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L675-L675 "Source code on GitHub")
 
 Verifies that the specified checkbox is checked.
 
@@ -403,7 +394,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 ## seeCookie
 
-[lib/helper/Protractor.js:525-525](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L525-L525 "Source code on GitHub")
+[lib/helper/Protractor.js:685-685](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L685-L685 "Source code on GitHub")
 
 Checks that cookie with given name exists.
 
@@ -412,7 +403,7 @@ I.seeCookie('Auth');
 ```
 ## seeCurrentUrlEquals
 
-[lib/helper/Protractor.js:529-529](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L529-L529 "Source code on GitHub")
+[lib/helper/Protractor.js:695-695](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L695-L695 "Source code on GitHub")
 
 Checks that current url is equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
@@ -425,7 +416,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 ## seeElement
 
-[lib/helper/Protractor.js:533-533](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L533-L533 "Source code on GitHub")
+[lib/helper/Protractor.js:705-705](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L705-L705 "Source code on GitHub")
 
 Checks that a given Element is visible
 Element is located by CSS or XPath.
@@ -436,7 +427,7 @@ I.seeElement('#modal');
 
 ## seeInCurrentUrl
 
-[lib/helper/Protractor.js:537-537](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L537-L537 "Source code on GitHub")
+[lib/helper/Protractor.js:715-715](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L715-L715 "Source code on GitHub")
 
 Checks that current url contains a provided fragment.
 
@@ -446,7 +437,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 ## seeInField
 
-[lib/helper/Protractor.js:541-541](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L541-L541 "Source code on GitHub")
+[lib/helper/Protractor.js:725-725](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L725-L725 "Source code on GitHub")
 
 Checks that the given input field or textarea equals to given value.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
@@ -460,7 +451,7 @@ I.seeInField('#searchform input','Search');
 
 ## seeInSource
 
-[lib/helper/Protractor.js:545-545](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L545-L545 "Source code on GitHub")
+[lib/helper/Protractor.js:735-735](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L735-L735 "Source code on GitHub")
 
 Checks that the current page contains the given string in its raw source code.
 
@@ -470,13 +461,13 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 ## seeInTitle
 
-[lib/helper/Protractor.js:549-549](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L549-L549 "Source code on GitHub")
+[lib/helper/Protractor.js:745-745](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L745-L745 "Source code on GitHub")
 
 Checks that title contains text.
 
 ## selectOption
 
-[lib/helper/Protractor.js:557-557](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L557-L557 "Source code on GitHub")
+[lib/helper/Protractor.js:765-765](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L765-L765 "Source code on GitHub")
 
 Selects an option in a drop-down select.
 Field is siearched by label | name | CSS | XPath.
@@ -499,7 +490,7 @@ I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
 
 ## setCookie
 
-[lib/helper/Protractor.js:561-561](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L561-L561 "Source code on GitHub")
+[lib/helper/Protractor.js:775-775](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L775-L775 "Source code on GitHub")
 
 Sets a cookie
 
@@ -508,21 +499,21 @@ I.setCookie({name: 'auth', value: true});
 ```
 ## waitForElement
 
-[lib/helper/Protractor.js:565-565](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L565-L565 "Source code on GitHub")
+[lib/helper/Protractor.js:785-785](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L785-L785 "Source code on GitHub")
 
  Waits for element to be present on page (by default waits for 1sec).
  Element can be located by CSS or XPath.
  
 ## waitForEnabled
 
-[lib/helper/Protractor.js:569-569](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L569-L569 "Source code on GitHub")
+[lib/helper/Protractor.js:795-795](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L795-L795 "Source code on GitHub")
 
 Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ## waitForText
 
-[lib/helper/Protractor.js:573-573](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L573-L573 "Source code on GitHub")
+[lib/helper/Protractor.js:805-805](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L805-L805 "Source code on GitHub")
 
 Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -535,7 +526,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 ## waitForVisible
 
-[lib/helper/Protractor.js:577-577](https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/Protractor.js#L577-L577 "Source code on GitHub")
+[lib/helper/Protractor.js:815-815](https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/Protractor.js#L815-L815 "Source code on GitHub")
 
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.

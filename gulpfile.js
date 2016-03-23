@@ -12,6 +12,7 @@ var guppy = require('git-guppy')(gulp);
 var gitmodified = require('gulp-gitmodified');
 var mustache = require("gulp-mustache");
 
+
 gulp.task('docs', function () {
 
   glob.sync('./lib/helper/*.js').forEach((file) => {
@@ -26,14 +27,14 @@ gulp.task('docs', function () {
 });
 
 gulp.task('static', function () {
-  return gulp.src('**/*.js')
+  return gulp.src('lib/**/*.js')
     .pipe(gitmodified(['added', 'modified']))
     .pipe(eslint({fix: true, quiet: true}))
     .pipe(gulp.dest('.'));
 });
 
 gulp.task('lint', function () {
-  return gulp.src('**/*.js')
+  return gulp.src('lib/**/*.js')
     .pipe(excludeGitignore())
     .pipe(eslint())
     .pipe(gulp.dest('.'));
