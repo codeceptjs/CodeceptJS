@@ -369,7 +369,7 @@ describe('Protractor', function() {
     });
 
     it('should create a screenshot on fail', function*() {
-      let test = { name: 'protractor should do smth' };
+      let test = { title: 'protractor should do smth' };
       yield I.amOnPage('/')
       yield I._failed(test);
       return assert.ok(fileExists(path.join(output_dir, 'protractor_should_do_smth.failed.png')), null, 'file does not exists');
