@@ -1,7 +1,5 @@
 # FileSystem
 
-[docs/build/FileSystem.js:22-87](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L22-L87 "Source code on GitHub")
-
 **Extends Helper**
 
 Helper for testing filesystem.
@@ -16,8 +14,6 @@ I.dontSeeInThisFile("WebDriverIO");
 
 ## amInPath
 
-[docs/build/FileSystem.js:34-37](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L34-L37 "Source code on GitHub")
-
 Enters a directory In local filesystem.
 Starts from a current directory
 
@@ -26,8 +22,6 @@ Starts from a current directory
 -   `openPath`  
 
 ## dontSeeFileContentsEqual
-
-[docs/build/FileSystem.js:82-85](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L82-L85 "Source code on GitHub")
 
 Checks that contents of file found by `seeFile` doesn't equal to text.
 
@@ -38,8 +32,6 @@ Checks that contents of file found by `seeFile` doesn't equal to text.
 
 ## dontSeeInThisFile
 
-[docs/build/FileSystem.js:66-69](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L66-L69 "Source code on GitHub")
-
 Checks that file found by `seeFile` doesn't include text.
 
 **Parameters**
@@ -49,8 +41,6 @@ Checks that file found by `seeFile` doesn't include text.
 
 ## seeFile
 
-[docs/build/FileSystem.js:49-53](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L49-L53 "Source code on GitHub")
-
 Checks that file exists
 
 **Parameters**
@@ -58,8 +48,6 @@ Checks that file exists
 -   `name`  
 
 ## seeFileContentsEqual
-
-[docs/build/FileSystem.js:74-77](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L74-L77 "Source code on GitHub")
 
 Checks that contents of file found by `seeFile` equal to text.
 
@@ -70,8 +58,6 @@ Checks that contents of file found by `seeFile` equal to text.
 
 ## seeInThisFile
 
-[docs/build/FileSystem.js:58-61](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L58-L61 "Source code on GitHub")
-
 Checks that file found by `seeFile` includes a text.
 
 **Parameters**
@@ -80,8 +66,6 @@ Checks that file found by `seeFile` includes a text.
 -   `encoding`  
 
 ## writeToFile
-
-[docs/build/FileSystem.js:42-44](https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/FileSystem.js#L42-L44 "Source code on GitHub")
 
 Writes test to file
 

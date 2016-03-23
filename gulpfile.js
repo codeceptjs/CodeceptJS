@@ -21,7 +21,7 @@ gulp.task('docs', function () {
       .pipe(gulp.dest('docs/build'))
       .pipe(mustache({}, {extension: '.js'}))
       .pipe(gulp.dest('docs/build'))
-      .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md', github: true }))
+      .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md'}))
       .pipe(gulp.dest('docs/helpers'));
   });
 });
