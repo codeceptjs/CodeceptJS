@@ -547,7 +547,7 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param link link or button located by text, or any element located by CSS|XPath|strict locator
+@param link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
  *
  * @name click
@@ -585,7 +585,7 @@ var _dontSeeCookie;
  * Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
-@param uri
+@param url
  *
  * @name dontSeeCurrentUrlEquals
  * @kind function
@@ -750,7 +750,7 @@ var _grabAttributeFrom;
 let cookie = I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
-@param cookie
+@param name
  *
  * @name grabCookie
  * @kind function

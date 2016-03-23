@@ -397,7 +397,7 @@ I.click({css: 'nav a.login'});
 <table>
 <thead>
 <tr>
-<th>-   <code>link</code>  link or button located by text, or any element located by CSS</th>
+<th>-   <code>link</code>  or button located by text, or any element located by CSS</th>
 <th>XPath</th>
 <th>strict locator</th>
 </tr>
@@ -433,7 +433,7 @@ Use context parameter to narrow down the search.</p>
 If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>uri</code>  </li>
+<li><code>url</code>  </li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
@@ -452,7 +452,6 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  </li>
-<li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="dontseeinfield">dontSeeInField</h2>
 <p>Checks that value of input field or textare doesn't equal to given value
@@ -535,8 +534,7 @@ assert(cookie.value, '123456');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
-<li><code>name</code>  </li>
+<li><code>name</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
 </ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -640,7 +638,6 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  </li>
-<li><code>uri</code>  </li>
 </ul>
 <h2 id="seeelement">seeElement</h2>
 <p>Checks that a given Element is visible
@@ -670,7 +667,6 @@ Element is located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  </li>
-<li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="seeinfield">seeInField</h2>
 <p>Checks that the given input field or textarea equals to given value.

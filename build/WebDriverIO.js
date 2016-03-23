@@ -310,7 +310,7 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param link link or button located by text, or any element located by CSS|XPath|strict locator
+@param link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
    */
   click(link, context) {
@@ -412,11 +412,6 @@ I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
 @param select field located by label|name|CSS|XPath|strict locator
 @param option
    *
-   * Provide an array for the second argument to select multiple options.
-   *
-   * ```js
-   * I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
-   * ```
    */
   selectOption(select, option) {
     return findFields(this.browser, select).then(function (res) {
@@ -805,9 +800,9 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 ```
 @param url
    */
-  seeInCurrentUrl(urlFragment) {
+  seeInCurrentUrl(url) {
     return this.browser.url().then(function (res) {
-      return stringIncludes('url').assert(urlFragment, res.value);
+      return stringIncludes('url').assert(url, res.value);
     });
   }
 
@@ -816,9 +811,9 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 @param url
    */
-  dontSeeInCurrentUrl(urlFragment) {
+  dontSeeInCurrentUrl(url) {
     return this.browser.url().then(function (res) {
-      return stringIncludes('url').negate(urlFragment, res.value);
+      return stringIncludes('url').negate(url, res.value);
     });
   }
 
@@ -833,9 +828,9 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 ```
 @param url
    */
-  seeCurrentUrlEquals(uri) {
+  seeCurrentUrlEquals(url) {
     return this.browser.url().then((res) => {
-      return urlEquals(this.options.url).assert(uri, res.value);
+      return urlEquals(this.options.url).assert(url, res.value);
     });
   }
 
@@ -843,11 +838,11 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
     * Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
-@param uri
+@param url
     */
-  dontSeeCurrentUrlEquals(uri) {
+  dontSeeCurrentUrlEquals(url) {
     return this.browser.url().then((res) => {
-      return urlEquals(this.options.url).negate(uri, res.value);
+      return urlEquals(this.options.url).negate(url, res.value);
     });
   }
 
@@ -987,7 +982,7 @@ I.seeCookie('Auth');
 let cookie = I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
-@param cookie
+@param name
    */
   grabCookie(name) {
     return this.browser.getCookie(name);
@@ -1089,6 +1084,12 @@ First parameter can be set to `maximize`
 
   /**
    * Pauses execution for a number of seconds.
+
+```js
+I.wait(2); // wait 2 secs
+```
+
+@param sec
    */
   wait(sec) {
     return this.browser.pause(sec * 1000);
@@ -1101,9 +1102,9 @@ Element can be located by CSS or XPath.
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForEnabled(selector, sec) {
+  waitForEnabled(locator, sec) {
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForEnabled(withStrictLocator(selector), sec * 1000);
+    return this.browser.waitForEnabled(withStrictLocator(locator), sec * 1000);
   }
 
   /**
@@ -1118,9 +1119,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForElement(selector, sec) {
+  waitForElement(locator, sec) {
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForExist(withStrictLocator(selector), sec * 1000);
+    return this.browser.waitForExist(withStrictLocator(locator), sec * 1000);
   }
 
   /**
@@ -1169,18 +1170,18 @@ I.waitForVisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForVisible(selector, sec) {
+  waitForVisible(locator, sec) {
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForVisible(withStrictLocator(selector), sec * 1000);
+    return this.browser.waitForVisible(withStrictLocator(locator), sec * 1000);
   }
 
   /**
    * Waits for an element to become invisible on a page (by default waits for 1sec).
    * Element can be located by CSS or XPath.
    */
-  waitToHide(selector, sec) {
+  waitToHide(locator, sec) {
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForVisible(withStrictLocator(selector), sec * 1000, true);
+    return this.browser.waitForVisible(withStrictLocator(locator), sec * 1000, true);
   }
 
   /**

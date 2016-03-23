@@ -165,7 +165,7 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param link link or button located by text, or any element located by CSS|XPath|strict locator
+@param link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
    */
   click(link, context) {
@@ -644,9 +644,9 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 ```
 @param url
    */
-  seeInCurrentUrl(urlFragment) {
+  seeInCurrentUrl(url) {
     return this.browser.getCurrentUrl().then(function (currentUrl) {
-      return stringIncludes('url').assert(urlFragment, currentUrl);
+      return stringIncludes('url').assert(url, currentUrl);
     });
   }
 
@@ -655,9 +655,9 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 @param url
    */
-  dontSeeInCurrentUrl(urlFragment) {
+  dontSeeInCurrentUrl(url) {
     return this.browser.getCurrentUrl().then(function (currentUrl) {
-      return stringIncludes('url').negate(urlFragment, currentUrl);
+      return stringIncludes('url').negate(url, currentUrl);
     });
   }
 
@@ -672,9 +672,9 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 ```
 @param url
    */
-  seeCurrentUrlEquals(uri) {
+  seeCurrentUrlEquals(url) {
     return this.browser.getCurrentUrl().then((currentUrl) => {
-      return urlEquals(this.options.url).assert(uri, currentUrl);
+      return urlEquals(this.options.url).assert(url, currentUrl);
     });
   }
 
@@ -682,11 +682,11 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
    * Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
-@param uri
+@param url
    */
-  dontSeeCurrentUrlEquals(uri) {
+  dontSeeCurrentUrlEquals(url) {
     return this.browser.getCurrentUrl().then((currentUrl) => {
-      return urlEquals(this.options.url).negate(uri, currentUrl);
+      return urlEquals(this.options.url).negate(url, currentUrl);
     });
   }
 
@@ -786,7 +786,7 @@ I.seeCookie('Auth');
 let cookie = I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
-@param cookie
+@param name
    *
    * Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
    */

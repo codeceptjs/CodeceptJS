@@ -554,7 +554,7 @@ I.click({css: 'nav a.login'});
 <table>
 <thead>
 <tr>
-<th>-   <code>link</code>  link or button located by text, or any element located by CSS</th>
+<th>-   <code>link</code>  or button located by text, or any element located by CSS</th>
 <th>XPath</th>
 <th>strict locator</th>
 </tr>
@@ -589,7 +589,7 @@ Use context parameter to narrow down the search.</p>
 If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>uri</code>  </li>
+<li><code>url</code>  </li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
@@ -608,7 +608,6 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  </li>
-<li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="dontseeinfield">dontSeeInField</h2>
 <p>Checks that value of input field or textare doesn't equal to given value
@@ -700,7 +699,6 @@ assert(cookie.value, '123456');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  </li>
 <li><code>name</code>  </li>
 </ul>
 <h2 id="grabhtmlfrom">grabHTMLFrom</h2>
@@ -849,7 +847,6 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  </li>
-<li><code>uri</code>  </li>
 </ul>
 <h2 id="seeelement">seeElement</h2>
 <p>Checks that a given Element is visible
@@ -879,7 +876,6 @@ Element is located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  </li>
-<li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="seeinfield">seeInField</h2>
 <p>Checks that the given input field or textarea equals to given value.
@@ -946,8 +942,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>select</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>option</code>  Provide an array for the second argument to select multiple options.<code>js
-    I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);</code></li>
+<li><code>option</code>  </li>
 </ul>
 <h2 id="setcookie">setCookie</h2>
 <p>Sets a cookie</p>
@@ -960,6 +955,9 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 </ul>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>
+<pre><code class="js">I.wait(2); // wait 2 secs
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>sec</code>  </li>
@@ -974,7 +972,6 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>selector</code>  </li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitforenabled">waitForEnabled</h2>
@@ -983,7 +980,6 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>selector</code>  </li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitfortext">waitForText</h2>
@@ -1008,7 +1004,6 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>selector</code>  </li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waittohide">waitToHide</h2>
@@ -1016,7 +1011,7 @@ Element can be located by CSS or XPath.</p>
 Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>selector</code>  </li>
+<li><code>locator</code>  </li>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waituntil">waitUntil</h2>
