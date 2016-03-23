@@ -206,17 +206,17 @@
 
 <h2 id="angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</h2>
 <h3 id="introduction">Introduction</h3>
-<p>One goal of CodeceptJS in diversified world of JavaScript testing libraries is to create unified high level API for end-to-end testing, powered by differnet backends.
-CodeceptJS allows you to write a test and switch in config execution drivers: will it be wedriverio, selenium-webdriver, or protractor.
-This way you won't be bound to implementation, and your acceptance tests will work no matter of framework running behind them.</p>
+<p>CodeceptJS is an acceptance testing framework.In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by differnet backends.
+CodeceptJS allows you to write a test and switch in config execution drivers: will it be <em>wedriverio</em>, <em>selenium-webdriver</em>, or <em>protractor</em> depends on you.
+This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.</p>
 <p>As you know, <a href="http://www.protractortest.org/#/">Protractor</a> is an official tool for testing AngularJS applications.
-CodeceptJS should not be considerend as alternative to Protractor, but a testing framework utilizing this powerful library.</p>
+CodeceptJS should not be considerend as alternative to Protractor but a testing framework utilizing this powerful library.</p>
 <p><img alt="" src="http://codecept.io/images/angular-protractor.png" /></p>
 <p>So there is no magic in testing of AngularJS application in CodeceptJS.
 You just execute regular Protractor commands, packed in a simple high-level API.</p>
 <p><img alt="" src="http://codecept.io/images/todo.png" /></p>
 <p>As an example we will use popular <a href="http://todomvc.com/examples/angularjs/#/">TodoMVC application</a>.
-How would we test creating a new Todo item in CodeceptJS?</p>
+How would we test creating a new todo item in CodeceptJS?</p>
 <pre><code class="js">Scenario('create todo item', (I) =&gt; {
   I.amOnPage('/');
   I.dontSeeElement('#todo-count');
@@ -227,7 +227,7 @@ How would we test creating a new Todo item in CodeceptJS?</p>
 });
 </code></pre>
 
-<p>The similar test written in native syntax of Protractor (inherited from selenium-webdriver) would look like:</p>
+<p>The similar test written in native syntax of Protractor (inherited from selenium-webdriver) would look like this:</p>
 <pre><code class="js">it('should create todo item', (I) =&gt; {
   browser.get(&quot;http://todomvc.com/examples/angularjs/#/&quot;);
   expect(element(by.css(&quot;#todo-count&quot;)).isPresent()).toBeFalsy();
@@ -382,7 +382,7 @@ Scenario('check todo item', (I) =&gt; {
 </code></pre>
 
 <h3 id="locators">Locators</h3>
-<p>Like you may've noticed, CodeceptJS doesn't use <code>by.*</code> locators similar to Protractor or Selenium Webdriver.
+<p>Like you may have noticed, CodeceptJS doesn't use <code>by.*</code> locators similar to Protractor or Selenium Webdriver.
 Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
 you can specify them using so-called strict locators. This is an absolute analogy of <code>by</code>, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:</p>
 <pre><code>{css: 'button'}
@@ -395,7 +395,7 @@ So links and buttons can be searched by their text.</p>
 <p>Same thing happens for form fields: they are searched by field names, labels, and so on.</p>
 <p>Using such smart locators makes tests easy to write, however, searching an element by text is slower than using CSS|XPath and much slower than using strict locators.</p>
 <h3 id="refactoring">Refactoring</h3>
-<p>In previous examples, we've moved actions into <code>createTodo</code> funciton. Is there a more elegant way of refactoring?
+<p>In previous examples, we've moved actions into <code>createTodo</code> function. Is there a more elegant way of refactoring?
 Can we have something like <code>I.createTodo()</code> to be used in code? Sure, we can do so by editing <code>steps_file.js</code> created by init command.</p>
 <pre><code class="js">'use strict';
 // in this file you can append custom step methods to 'I' object
@@ -413,7 +413,7 @@ module.exports = function() {
 <p>And that's all, method is available to use as <code>I.createTodo(title)</code>:</p>
 <pre><code class="js">Scenario('create todo item', (I) =&gt; {
   I.dontSeeElement('#todo-count');
-  createTodo(I, 'Write a guide');
+  I.createTodo('Write a guide');
   I.see('Write a guide', {repeater: &quot;todo in todos&quot;});
   I.see('1 item left', '#todo-count');
 });
