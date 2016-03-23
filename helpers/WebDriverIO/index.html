@@ -245,7 +245,7 @@
         
             <li><a href="#fillfield">fillField</a></li>
         
-            <li><a href="#grabattribute">grabAttribute</a></li>
+            <li><a href="#grabattributefrom">grabAttributeFrom</a></li>
         
             <li><a href="#grabcookie">grabCookie</a></li>
         
@@ -317,7 +317,7 @@
             <div class="col-md-7" role="main">
 
 <h1 id="webdriverio">WebDriverIO</h1>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L160-L904" title="Source code on GitHub">lib/helper/WebDriverIO.js:160-904</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L160-L904" title="Source code on GitHub">lib/helper/WebDriverIO.js:160-904</a></p>
 <p><strong>Extends Helper</strong></p>
 <p>WebDriverIO helper which wraps <a href="http://webdriver.io/">webdriverio</a> library to
 manipulate browser using Selenium WebDriver or PhantomJS.</p>
@@ -441,7 +441,7 @@ Individual control is something that is planned for a later version.</p>
 </code></pre>
 
 <h2 id="95locate">_locate</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L268-L270" title="Source code on GitHub">lib/helper/WebDriverIO.js:268-270</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L268-L270" title="Source code on GitHub">lib/helper/WebDriverIO.js:268-270</a></p>
 <p>Get elements by different locator types, including strict locator
 Should be used in custom helpers:</p>
 <pre><code class="js">this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
@@ -452,11 +452,11 @@ Should be used in custom helpers:</p>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="acceptpopup">acceptPopup</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L756-L762" title="Source code on GitHub">lib/helper/WebDriverIO.js:756-762</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L756-L762" title="Source code on GitHub">lib/helper/WebDriverIO.js:756-762</a></p>
 <p>Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by <a href="http://jster.net/category/windows-modals-popups">various libraries</a>.</p>
 <h2 id="amonpage">amOnPage</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L275-L280" title="Source code on GitHub">lib/helper/WebDriverIO.js:275-280</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L275-L280" title="Source code on GitHub">lib/helper/WebDriverIO.js:275-280</a></p>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
 <pre><code class="js">I.amOnPage('/'); // opens main page of website
@@ -469,7 +469,7 @@ I.amOnPage('/login'); // opens a login page
 <li><code>url</code>  </li>
 </ul>
 <h2 id="appendfield">appendField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L331-L339" title="Source code on GitHub">lib/helper/WebDriverIO.js:331-339</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L331-L339" title="Source code on GitHub">lib/helper/WebDriverIO.js:331-339</a></p>
 <p>Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath</p>
 <pre><code class="js">I.appendField('#myTextField', 'appended');
@@ -481,7 +481,7 @@ Field is located by name, label, CSS or XPath</p>
 <li><code>value</code>  </li>
 </ul>
 <h2 id="attachfile">attachFile</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L403-L416" title="Source code on GitHub">lib/helper/WebDriverIO.js:403-416</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L403-L416" title="Source code on GitHub">lib/helper/WebDriverIO.js:403-416</a></p>
 <p>Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
 File will be uploaded to remove system (if tests are running remotely).</p>
@@ -495,10 +495,10 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 <li><code>pathToFile</code>  </li>
 </ul>
 <h2 id="cancelpopup">cancelPopup</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L767-L773" title="Source code on GitHub">lib/helper/WebDriverIO.js:767-773</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L767-L773" title="Source code on GitHub">lib/helper/WebDriverIO.js:767-773</a></p>
 <p>Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.</p>
 <h2 id="checkoption">checkOption</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L421-L437" title="Source code on GitHub">lib/helper/WebDriverIO.js:421-437</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L421-L437" title="Source code on GitHub">lib/helper/WebDriverIO.js:421-437</a></p>
 <p>Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.</p>
 <p>The second parameter is a context (CSS or XPath locator) to narrow the search.</p>
@@ -513,7 +513,7 @@ I.checkOption('agree', '//form');
 <li><code>context</code>  </li>
 </ul>
 <h2 id="clearcookie">clearCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L716-L718" title="Source code on GitHub">lib/helper/WebDriverIO.js:716-718</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L716-L718" title="Source code on GitHub">lib/helper/WebDriverIO.js:716-718</a></p>
 <p>Clears a cookie by name,
 if none provided clears all cookies</p>
 <pre><code class="js">I.clearCookie();
@@ -525,7 +525,7 @@ I.clearCookie('test');
 <li><code>cookie</code>  </li>
 </ul>
 <h2 id="clearfield">clearField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L723-L725" title="Source code on GitHub">lib/helper/WebDriverIO.js:723-725</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L723-L725" title="Source code on GitHub">lib/helper/WebDriverIO.js:723-725</a></p>
 <p>Clears a <code>&lt;textarea&gt;</code> or text <code>&lt;input&gt;</code> element's value.</p>
 <pre><code class="js">I.clearField('#email');
 </code></pre>
@@ -535,7 +535,7 @@ I.clearCookie('test');
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="click">click</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L285-L299" title="Source code on GitHub">lib/helper/WebDriverIO.js:285-299</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L285-L299" title="Source code on GitHub">lib/helper/WebDriverIO.js:285-299</a></p>
 <p>Perform a click on a link or a button, given by a locator.
 If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
 For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
@@ -561,7 +561,7 @@ I.click({css: 'nav a.login'});
 <li><code>context</code>  </li>
 </ul>
 <h2 id="dontsee">dontSee</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L518-L520" title="Source code on GitHub">lib/helper/WebDriverIO.js:518-520</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L518-L520" title="Source code on GitHub">lib/helper/WebDriverIO.js:518-520</a></p>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.</p>
 <pre><code class="js">I.dontSee('Login'); // assume we are already logged in
@@ -573,21 +573,21 @@ Use context parameter to narrow down the search.</p>
 <li><code>context</code>  </li>
 </ul>
 <h2 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L546-L548" title="Source code on GitHub">lib/helper/WebDriverIO.js:546-548</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L546-L548" title="Source code on GitHub">lib/helper/WebDriverIO.js:546-548</a></p>
 <p>Verifies that the specified checkbox is not checked.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  </li>
 </ul>
 <h2 id="dontseecookie">dontSeeCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L739-L743" title="Source code on GitHub">lib/helper/WebDriverIO.js:739-743</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L739-L743" title="Source code on GitHub">lib/helper/WebDriverIO.js:739-743</a></p>
 <p>Checks that cookie with given name does not exist.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>name</code>  </li>
 </ul>
 <h2 id="dontseecurrenturlequals">dontSeeCurrentUrlEquals</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L649-L653" title="Source code on GitHub">lib/helper/WebDriverIO.js:649-653</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L649-L653" title="Source code on GitHub">lib/helper/WebDriverIO.js:649-653</a></p>
 <p>Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
@@ -595,28 +595,28 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <li><code>uri</code>  </li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L562-L566" title="Source code on GitHub">lib/helper/WebDriverIO.js:562-566</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L562-L566" title="Source code on GitHub">lib/helper/WebDriverIO.js:562-566</a></p>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="dontseeelementindom">dontSeeElementInDOM</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L580-L584" title="Source code on GitHub">lib/helper/WebDriverIO.js:580-584</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L580-L584" title="Source code on GitHub">lib/helper/WebDriverIO.js:580-584</a></p>
 <p>Opposite to <code>seeElementInDOM</code>. Checks that element is not on page.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="dontseeincurrenturl">dontSeeInCurrentUrl</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L631-L635" title="Source code on GitHub">lib/helper/WebDriverIO.js:631-635</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L631-L635" title="Source code on GitHub">lib/helper/WebDriverIO.js:631-635</a></p>
 <p>Checks that current url does not contain a provided fragment.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="dontseeinfield">dontSeeInField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L532-L534" title="Source code on GitHub">lib/helper/WebDriverIO.js:532-534</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L532-L534" title="Source code on GitHub">lib/helper/WebDriverIO.js:532-534</a></p>
 <p>Checks that value of input field or textare doesn't equal to given value
 Opposite to <code>seeInField</code>.</p>
 <p><strong>Parameters</strong></p>
@@ -625,28 +625,28 @@ Opposite to <code>seeInField</code>.</p>
 <li><code>value</code>  </li>
 </ul>
 <h2 id="dontseeinsource">dontSeeInSource</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L598-L602" title="Source code on GitHub">lib/helper/WebDriverIO.js:598-602</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L598-L602" title="Source code on GitHub">lib/helper/WebDriverIO.js:598-602</a></p>
 <p>Checks that the current page contains the given string in its raw source code
 <strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="dontseeintitle">dontSeeInTitle</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L492-L496" title="Source code on GitHub">lib/helper/WebDriverIO.js:492-496</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L492-L496" title="Source code on GitHub">lib/helper/WebDriverIO.js:492-496</a></p>
 <p>Checks that title does not contain text.
 <strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="doubleclick">doubleClick</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L304-L306" title="Source code on GitHub">lib/helper/WebDriverIO.js:304-306</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L304-L306" title="Source code on GitHub">lib/helper/WebDriverIO.js:304-306</a></p>
 <p>Performs a double-click on an element matched by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="draganddrop">dragAndDrop</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L826-L831" title="Source code on GitHub">lib/helper/WebDriverIO.js:826-831</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L826-L831" title="Source code on GitHub">lib/helper/WebDriverIO.js:826-831</a></p>
 <p>Drag an item to a destination element.</p>
 <pre><code class="js">I.dragAndDrop('#dragHandle', '#container');
 </code></pre>
@@ -657,7 +657,7 @@ Opposite to <code>seeInField</code>.</p>
 <li><code>destElement</code>  </li>
 </ul>
 <h2 id="executeasyncscript">executeAsyncScript</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L665-L667" title="Source code on GitHub">lib/helper/WebDriverIO.js:665-667</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L665-L667" title="Source code on GitHub">lib/helper/WebDriverIO.js:665-667</a></p>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
 <p><strong>Parameters</strong></p>
@@ -665,7 +665,7 @@ Provided function should execute a passed callback (as first argument) to signal
 <li><code>fn</code>  </li>
 </ul>
 <h2 id="executescript">executeScript</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L658-L660" title="Source code on GitHub">lib/helper/WebDriverIO.js:658-660</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L658-L660" title="Source code on GitHub">lib/helper/WebDriverIO.js:658-660</a></p>
 <p>Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
@@ -675,8 +675,8 @@ In this case you should use generator and yield to receive results.</p>
 <li><code>fn</code>  </li>
 </ul>
 <h2 id="fillfield">fillField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L318-L326" title="Source code on GitHub">lib/helper/WebDriverIO.js:318-326</a></p>
-<p>Fills a text field or textarea with the given string.
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L318-L326" title="Source code on GitHub">lib/helper/WebDriverIO.js:318-326</a></p>
+<p>Fills a text field or textarea, after clearing its value,  with the given string.
 Field is located by name, label, CSS, or XPath.</p>
 <pre><code class="js">// by label
 I.fillField('Email', 'hello@world.com');
@@ -693,11 +693,11 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 <li><code>field</code>  </li>
 <li><code>value</code>  </li>
 </ul>
-<h2 id="grabattribute">grabAttribute</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L474-L478" title="Source code on GitHub">lib/helper/WebDriverIO.js:474-478</a></p>
+<h2 id="grabattributefrom">grabAttributeFrom</h2>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L474-L478" title="Source code on GitHub">lib/helper/WebDriverIO.js:474-478</a></p>
 <p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let hint = yield I.grabAttribute('#tooltip', 'title');
+<pre><code class="js">let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -706,7 +706,7 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <li><code>attr</code>  </li>
 </ul>
 <h2 id="grabcookie">grabCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L748-L750" title="Source code on GitHub">lib/helper/WebDriverIO.js:748-750</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L748-L750" title="Source code on GitHub">lib/helper/WebDriverIO.js:748-750</a></p>
 <p>Gets a cookie object by name
 * Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let cookie = I.grabCookie('auth');
@@ -718,7 +718,7 @@ assert(cookie.value, '123456');
 <li><code>name</code>  </li>
 </ul>
 <h2 id="grabhtmlfrom">grabHTMLFrom</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L456-L460" title="Source code on GitHub">lib/helper/WebDriverIO.js:456-460</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L456-L460" title="Source code on GitHub">lib/helper/WebDriverIO.js:456-460</a></p>
 <p>Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let postHTML = yield I.grabHTMLFrom('#post');
@@ -729,7 +729,7 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L442-L446" title="Source code on GitHub">lib/helper/WebDriverIO.js:442-446</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L442-L446" title="Source code on GitHub">lib/helper/WebDriverIO.js:442-446</a></p>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let pin = yield I.grabTextFrom('#pin');
@@ -740,14 +740,14 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="grabtitle">grabTitle</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L501-L506" title="Source code on GitHub">lib/helper/WebDriverIO.js:501-506</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L501-L506" title="Source code on GitHub">lib/helper/WebDriverIO.js:501-506</a></p>
 <p>Retrieves a page title and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let title = yield I.grabTitle();
 </code></pre>
 
 <h2 id="grabvaluefrom">grabValueFrom</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L465-L469" title="Source code on GitHub">lib/helper/WebDriverIO.js:465-469</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L465-L469" title="Source code on GitHub">lib/helper/WebDriverIO.js:465-469</a></p>
 <p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let email = yield I.grabValueFrom('input[name=email]');
@@ -758,7 +758,7 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="movecursorto">moveCursorTo</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L691-L693" title="Source code on GitHub">lib/helper/WebDriverIO.js:691-693</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L691-L693" title="Source code on GitHub">lib/helper/WebDriverIO.js:691-693</a></p>
 <p>Moves cursor to element matched by locator.
 Extra shift can be set with offsetX and offsetY options</p>
 <pre><code class="js">I.moveCursorTo('.tooltip');
@@ -772,7 +772,7 @@ I.moveCursorTo('#submit', 5,5);
 <li><code>offsetY</code>  </li>
 </ul>
 <h2 id="presskey">pressKey</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L798-L807" title="Source code on GitHub">lib/helper/WebDriverIO.js:798-807</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L798-L807" title="Source code on GitHub">lib/helper/WebDriverIO.js:798-807</a></p>
 <p>Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
 will be replaced with corresponding unicode.
@@ -792,7 +792,7 @@ I.pressKey('Control');
 <li><code>key</code>  </li>
 </ul>
 <h2 id="resizewindow">resizeWindow</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L812-L817" title="Source code on GitHub">lib/helper/WebDriverIO.js:812-817</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L812-L817" title="Source code on GitHub">lib/helper/WebDriverIO.js:812-817</a></p>
 <p>Resize the current window to provided width and height.
 First parameter can be set to <code>maximize</code></p>
 <p><strong>Parameters</strong></p>
@@ -801,14 +801,14 @@ First parameter can be set to <code>maximize</code></p>
 <li><code>height</code>  </li>
 </ul>
 <h2 id="rightclick">rightClick</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L311-L313" title="Source code on GitHub">lib/helper/WebDriverIO.js:311-313</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L311-L313" title="Source code on GitHub">lib/helper/WebDriverIO.js:311-313</a></p>
 <p>Performs right click on an element matched by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="savescreenshot">saveScreenshot</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L698-L702" title="Source code on GitHub">lib/helper/WebDriverIO.js:698-702</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L698-L702" title="Source code on GitHub">lib/helper/WebDriverIO.js:698-702</a></p>
 <p>Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder.</p>
 <pre><code class="js">I.saveScreenshot('debug.png');
@@ -819,7 +819,7 @@ Filename is relative to output folder.</p>
 <li><code>fileName</code>  </li>
 </ul>
 <h2 id="scrollto">scrollTo</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L678-L680" title="Source code on GitHub">lib/helper/WebDriverIO.js:678-680</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L678-L680" title="Source code on GitHub">lib/helper/WebDriverIO.js:678-680</a></p>
 <p>Scrolls to element matched by locator.
 Extra shift can be set with offsetX and offsetY options</p>
 <pre><code class="js">I.scrollTo('footer');
@@ -833,7 +833,7 @@ I.scrollTo('#submit', 5,5);
 <li><code>offsetY</code>  </li>
 </ul>
 <h2 id="see">see</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L511-L513" title="Source code on GitHub">lib/helper/WebDriverIO.js:511-513</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L511-L513" title="Source code on GitHub">lib/helper/WebDriverIO.js:511-513</a></p>
 <p>Checks that a page contains a visible text.
 Use context parameter to narrow down the search.</p>
 <pre><code class="js">I.see('Welcome'); // text welcome on a page
@@ -847,7 +847,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 <li><code>context</code>  </li>
 </ul>
 <h2 id="seecheckboxischecked">seeCheckboxIsChecked</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L539-L541" title="Source code on GitHub">lib/helper/WebDriverIO.js:539-541</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L539-L541" title="Source code on GitHub">lib/helper/WebDriverIO.js:539-541</a></p>
 <p>Verifies that the specified checkbox is checked.</p>
 <pre><code class="js">I.seeCheckboxIsChecked('Agree');
 I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
@@ -859,7 +859,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <li><code>field</code>  </li>
 </ul>
 <h2 id="seecookie">seeCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L730-L734" title="Source code on GitHub">lib/helper/WebDriverIO.js:730-734</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L730-L734" title="Source code on GitHub">lib/helper/WebDriverIO.js:730-734</a></p>
 <p>Checks that cookie with given name exists.</p>
 <pre><code class="js">I.seeCookie('Auth');
 </code></pre>
@@ -869,7 +869,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <li><code>name</code>  </li>
 </ul>
 <h2 id="seecurrenturlequals">seeCurrentUrlEquals</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L640-L644" title="Source code on GitHub">lib/helper/WebDriverIO.js:640-644</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L640-L644" title="Source code on GitHub">lib/helper/WebDriverIO.js:640-644</a></p>
 <p>Checks that current url is equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 So both examples will work:</p>
@@ -882,7 +882,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 <li><code>uri</code>  </li>
 </ul>
 <h2 id="seeelement">seeElement</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L553-L557" title="Source code on GitHub">lib/helper/WebDriverIO.js:553-557</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L553-L557" title="Source code on GitHub">lib/helper/WebDriverIO.js:553-557</a></p>
 <p>Checks that a given Element is visible
 Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElement('#modal');
@@ -893,7 +893,7 @@ Element is located by CSS or XPath.</p>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="seeelementindom">seeElementInDOM</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L571-L575" title="Source code on GitHub">lib/helper/WebDriverIO.js:571-575</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L571-L575" title="Source code on GitHub">lib/helper/WebDriverIO.js:571-575</a></p>
 <p>Checks that a given Element is present in the DOM
 Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElementInDOM('#modal');
@@ -904,7 +904,7 @@ Element is located by CSS or XPath.</p>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="seeincurrenturl">seeInCurrentUrl</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L622-L626" title="Source code on GitHub">lib/helper/WebDriverIO.js:622-626</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L622-L626" title="Source code on GitHub">lib/helper/WebDriverIO.js:622-626</a></p>
 <p>Checks that current url contains a provided fragment.</p>
 <pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
 </code></pre>
@@ -914,7 +914,7 @@ Element is located by CSS or XPath.</p>
 <li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="seeinfield">seeInField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L525-L527" title="Source code on GitHub">lib/helper/WebDriverIO.js:525-527</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L525-L527" title="Source code on GitHub">lib/helper/WebDriverIO.js:525-527</a></p>
 <p>Checks that the given input field or textarea equals to given value.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.</p>
 <pre><code class="js">I.seeInField('Username', 'davert');
@@ -929,14 +929,14 @@ I.seeInField('#searchform input','Search');
 <li><code>value</code>  </li>
 </ul>
 <h2 id="seeinpopup">seeInPopup</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L778-L785" title="Source code on GitHub">lib/helper/WebDriverIO.js:778-785</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L778-L785" title="Source code on GitHub">lib/helper/WebDriverIO.js:778-785</a></p>
 <p>Checks that the active JavaScript popup, as created by <code>window.alert|window.confirm|window.prompt</code>, contains the given string.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="seeinsource">seeInSource</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L589-L593" title="Source code on GitHub">lib/helper/WebDriverIO.js:589-593</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L589-L593" title="Source code on GitHub">lib/helper/WebDriverIO.js:589-593</a></p>
 <p>Checks that the current page contains the given string in its raw source code.</p>
 <pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
 </code></pre>
@@ -946,14 +946,14 @@ I.seeInField('#searchform input','Search');
 <li><code>text</code>  </li>
 </ul>
 <h2 id="seeintitle">seeInTitle</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L483-L487" title="Source code on GitHub">lib/helper/WebDriverIO.js:483-487</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L483-L487" title="Source code on GitHub">lib/helper/WebDriverIO.js:483-487</a></p>
 <p>Checks that title contains text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="seenumberofelements">seeNumberOfElements</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L612-L617" title="Source code on GitHub">lib/helper/WebDriverIO.js:612-617</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L612-L617" title="Source code on GitHub">lib/helper/WebDriverIO.js:612-617</a></p>
 <p>asserts that an element appears a given number of times in the DOM
 Element is located by label or name or CSS or XPath.</p>
 <pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
@@ -965,7 +965,7 @@ Element is located by label or name or CSS or XPath.</p>
 <li><code>num</code>  </li>
 </ul>
 <h2 id="selectoption">selectOption</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L350-L398" title="Source code on GitHub">lib/helper/WebDriverIO.js:350-398</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L350-L398" title="Source code on GitHub">lib/helper/WebDriverIO.js:350-398</a></p>
 <p>Selects an option in a drop-down select.
 Field is siearched by label | name | CSS | XPath.
 Option is selected by visible text or by value.</p>
@@ -991,7 +991,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <li><code>option</code>  </li>
 </ul>
 <h2 id="setcookie">setCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L709-L711" title="Source code on GitHub">lib/helper/WebDriverIO.js:709-711</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L709-L711" title="Source code on GitHub">lib/helper/WebDriverIO.js:709-711</a></p>
 <p>Sets a cookie</p>
 <pre><code class="js">I.setCookie({name: 'auth', value: true});
 </code></pre>
@@ -1002,14 +1002,14 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <li><code>cookie</code>  </li>
 </ul>
 <h2 id="wait">wait</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L836-L838" title="Source code on GitHub">lib/helper/WebDriverIO.js:836-838</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L836-L838" title="Source code on GitHub">lib/helper/WebDriverIO.js:836-838</a></p>
 <p>Pauses execution for a number of seconds.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waitforelement">waitForElement</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L851-L854" title="Source code on GitHub">lib/helper/WebDriverIO.js:851-854</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L851-L854" title="Source code on GitHub">lib/helper/WebDriverIO.js:851-854</a></p>
 <p>Waits for element to be present on page (by default waits for 1sec).
  Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
@@ -1018,7 +1018,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waitforenabled">waitForEnabled</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L843-L846" title="Source code on GitHub">lib/helper/WebDriverIO.js:843-846</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L843-L846" title="Source code on GitHub">lib/helper/WebDriverIO.js:843-846</a></p>
 <p>Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
@@ -1027,7 +1027,7 @@ Element can be located by CSS or XPath.</p>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waitfortext">waitForText</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L859-L878" title="Source code on GitHub">lib/helper/WebDriverIO.js:859-878</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L859-L878" title="Source code on GitHub">lib/helper/WebDriverIO.js:859-878</a></p>
 <p>Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
 Narrow down search results by providing context.</p>
@@ -1042,7 +1042,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 <li><code>context</code>  </li>
 </ul>
 <h2 id="waitforvisible">waitForVisible</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L883-L886" title="Source code on GitHub">lib/helper/WebDriverIO.js:883-886</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L883-L886" title="Source code on GitHub">lib/helper/WebDriverIO.js:883-886</a></p>
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
@@ -1051,7 +1051,7 @@ Element can be located by CSS or XPath.</p>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waittohide">waitToHide</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L892-L895" title="Source code on GitHub">lib/helper/WebDriverIO.js:892-895</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L892-L895" title="Source code on GitHub">lib/helper/WebDriverIO.js:892-895</a></p>
 <p>Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
@@ -1060,7 +1060,7 @@ Element can be located by CSS or XPath.</p>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waituntil">waitUntil</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/f6289b7fd02f0b8e74ae11eca0dd10ea271b0763/lib/helper/WebDriverIO.js#L900-L903" title="Source code on GitHub">lib/helper/WebDriverIO.js:900-903</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/WebDriverIO.js#L900-L903" title="Source code on GitHub">lib/helper/WebDriverIO.js:900-903</a></p>
 <p>Waits for a function to return true (waits for 1sec by default).</p>
 <p><strong>Parameters</strong></p>
 <ul>
