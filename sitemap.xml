@@ -32,6 +32,12 @@
     </url>
         
     <url>
+     <loc>None/angular/</loc>
+     <lastmod>2016-03-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>None/helpers/</loc>
      <lastmod>2016-03-24</lastmod>
      <changefreq>daily</changefreq>

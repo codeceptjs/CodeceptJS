@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>AngularJS Testing - CodeceptJS</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-30075781-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-sm hidden-xs hidden-md" style="margin-left: 10px; margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+                <li >
+                    <a href="..">Index</a>
+                </li>
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">AngularJS Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Protractor/">Protractor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                
+                <li >
+                    <a href="../changelog/">Releases</a>
+                </li>
+                
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../acceptance/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../helpers/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</a></li>
+        
+            <li><a href="#introduction">Introduction</a></li>
+        
+            <li><a href="#setting-up-codeceptjs-with-protractor">Setting up CodeceptJS with Protractor</a></li>
+        
+            <li><a href="#writing-first-test">Writing First Test</a></li>
+        
+            <li><a href="#running-several-scenarios">Running Several Scenarios</a></li>
+        
+            <li><a href="#locators">Locators</a></li>
+        
+            <li><a href="#refactoring">Refactoring</a></li>
+        
+            <li><a href="#done">done()</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h2 id="angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</h2>
+<h3 id="introduction">Introduction</h3>
+<p>One goal of CodeceptJS in diversified world of JavaScript testing libraries is to create unified high level API for end-to-end testing, powered by differnet backends.
+CodeceptJS allows you to write a test and switch in config execution drivers: will it be wedriverio, selenium-webdriver, or protractor.
+This way you won't be bound to implementation, and your acceptance tests will work no matter of framework running behind them.</p>
+<p>As you know, <a href="http://www.protractortest.org/#/">Protractor</a> is an official tool for testing AngularJS applications.
+CodeceptJS should not be considerend as alternative to Protractor, but a testing framework utilizing this powerful library.</p>
+<p><img alt="" src="http://codecept.io/images/angular-protractor.png" /></p>
+<p>So there is no magic in testing of AngularJS application in CodeceptJS.
+You just execute regular Protractor commands, packed in a simple high-level API.</p>
+<p><img alt="" src="http://codecept.io/images/todo.png" /></p>
+<p>As an example we will use popular <a href="http://todomvc.com/examples/angularjs/#/">TodoMVC application</a>.
+How would we test creating a new Todo item in CodeceptJS?</p>
+<pre><code class="js">Scenario('create todo item', (I) =&gt; {
+  I.amOnPage('/');
+  I.dontSeeElement('#todo-count');
+  I.fillField({model: 'newTodo'}, 'Write a guide');
+  I.pressKey('Enter');
+  I.see('Write a guide', {repeater: &quot;todo in todos&quot;});
+  I.see('1 item left', '#todo-count');
+});
+</code></pre>
+
+<p>The similar test written in native syntax of Protractor (inherited from selenium-webdriver) would look like:</p>
+<pre><code class="js">it('should create todo item', (I) =&gt; {
+  browser.get(&quot;http://todomvc.com/examples/angularjs/#/&quot;);
+  expect(element(by.css(&quot;#todo-count&quot;)).isPresent()).toBeFalsy();
+  var inputField = element(by.model(&quot;newTodo&quot;));
+  inputField.sendKeys(&quot;Write a guide&quot;);
+  inputField.sendKeys(protractor.Key.ENTER);
+  var todos = element.all(by.repeater(&quot;todo in todos&quot;));
+  expect(todos.last().getText()).toEqual(&quot;Write a guide&quot;));
+  element(by.css(&quot;#todo-count&quot;)).getText()).toContain('1 items left');
+});
+</code></pre>
+
+<p>Comparing to the API proposed by CodeceptJS, this code looks a bit more complicated.
+But what the more important, it's really really hard to read and follow its logic.
+Readability is the most crucial part in acceptance testing.
+You should easily change tests when changes specification or design.
+Probably, only a person who writes Protractor tests in your company,
+could do those changes, while CodeceptJS allows anyone to work with tests.
+Contrary, CodeceptJS provides CodeceptJS provides scenario-driven approach, so test is just a step-by-step representation of real user actions.
+This way you can easily read, and follow test scenario, and edit it when you need it to be changed.</p>
+<p>In this way CodeceptJS is more similar to Cucumber, so if you run a test with <code>--steps</code> option you will see this output:</p>
+<pre><code class="bash">TodoMvc --
+ create todo item
+ • I am on page &quot;/&quot;
+ • I dont see element &quot;#todo-count&quot;
+ • I fill field {&quot;model&quot;:&quot;newTodo&quot;}, &quot;Write a guide&quot;
+ • I press key &quot;Enter&quot;
+ • I see &quot;Write a guide&quot;, {&quot;repeater&quot;:&quot;todo in todos&quot;}
+ • I see &quot;1 item left&quot;, &quot;#todo-count&quot;
+ ✓ OK in 968ms
+</code></pre>
+
+<p>Unlike Cucumber, CodeceptJS is not about writing test scenarios above for business rules.
+To say it again, its <strong>goal is to provide standard action steps you can use for testing applications</strong>.
+Surely, it can't cover 100% of cases but it aims for 90%, for others you can write your own steps inside a <a href="http://codecept.io/helpers/">custom Helper</a> using API of Protractor</p>
+<h3 id="setting-up-codeceptjs-with-protractor">Setting up CodeceptJS with Protractor</h3>
+<p>To start using CodeceptJS you will need to install it via NPM and initialize it in directory with tests.</p>
+<pre><code class="bash">npm install -g codeceptjs
+codeceptjs init
+</code></pre>
+
+<p>You will be asked questions about initial configuration, make sure you select Protractor helper.
+If you didn't have Protracotr library it <strong>will be installed</strong>.
+Please agree to extend steps, and use <code>http://todomvc.com/examples/angularjs/</code> as a url for Protractor helper.</p>
+<p>For TodoMVC application you will have following config created in <code>codecept.json</code> file:</p>
+<pre><code class="json">{
+  &quot;tests&quot;: &quot;./*_test.js&quot;,
+  &quot;timeout&quot;: 10000,
+  &quot;output&quot;: &quot;./output&quot;,
+  &quot;helpers&quot;: {
+    &quot;Protractor&quot;: {
+      &quot;url&quot;: &quot;http://todomvc.com/examples/angularjs/&quot;,
+      &quot;driver&quot;: &quot;hosted&quot;,
+      &quot;browser&quot;: &quot;firefox&quot;,
+      &quot;rootElement&quot;: &quot;body&quot;
+    }
+  },
+  &quot;include&quot;: {
+    &quot;I&quot;: &quot;./steps_file.js&quot;
+  },
+  &quot;bootstrap&quot;: false,
+  &quot;mocha&quot;: {},
+  &quot;name&quot;: &quot;todoangular&quot;
+}
+</code></pre>
+
+<p>First test can be generated with <code>gt</code> command:</p>
+<pre><code class="bash">codeceptjs gt
+</code></pre>
+
+<p>After that you can start writing your first CodeceptJS/Angular tests.
+Please look into the reference of [Protractor helper])(http://codecept.io/helpers/Protractor/) for all available actions.
+You can also run <code>list</code> command to see methods of I:</p>
+<pre><code class="bash">codeceptjs list
+</code></pre>
+
+<h3 id="writing-first-test">Writing First Test</h3>
+<p>Test scenario should always use <code>I</code> object to execute commands.
+This is important as all methods of <code>I</code> are running in global promise chain, this way CodeceptJS makes sure everything is executed in right order.
+At first a page should be opened to proceed, we use <code>amOnPage</code> command for that. As we already specified full URL to TodoMVC app,
+we can pass relative path into it instead of absolute url:</p>
+<pre><code class="js">Feature('Todo MVC');
+
+Scenario('create todo item', (I) =&gt; {
+  I.amOnPage('/');
+});
+</code></pre>
+
+<p>All scenarios should describe actions on site and assertions taken in the end. In CodeceptJS assertion commands have <code>see</code> or <code>dontSee</code> prefix:</p>
+<pre><code class="js">Feature('Todo MVC');
+
+Scenario('create todo item', (I) =&gt; {
+  I.amOnPage('/');
+  I.dontSeeElement('#todo-count');
+});
+</code></pre>
+
+<p>A test can be executed with <code>run</code> command, we recommend to use <code>--steps</code> options to follow step-by-step execution:</p>
+<pre><code>$ codeceptjs run --steps
+
+CodeceptJS v0.3.2
+Test root is assumed to be /home/davert/demos/todoangular
+Using the selenium server at http://localhost:4444/wd/hub
+
+TodoMvc --
+ create todo item
+ • I am on page &quot;/&quot;
+ • I dont see element &quot;#todo-count&quot;
+</code></pre>
+
+<h3 id="running-several-scenarios">Running Several Scenarios</h3>
+<p>By writing a test in similar manner we will have a test shown in the beginning of this guide. Probably we would like not to finish with one test,
+but have more, for testing editing of todo items, checking todo items, and more.</p>
+<p>Let's prepare our test for multiple scenarios. All test scenarios will need to open main page of application, so <code>amOnPage</code> can be moved into the <code>Before</code> hook:
+Scenarios will probably deal with created todo items, so we can move logic of crating new todo into a function.</p>
+<pre><code class="js">Feature('TodoMvc');
+
+Before((I) =&gt; {
+  I.amOnPage('/');
+});
+
+var createTodo = function (I, name) {
+  I.fillField({model: 'newTodo'}, name);
+  I.pressKey('Enter');
+}
+
+Scenario('create todo item', (I) =&gt; {
+  I.dontSeeElement('#todo-count');
+  createTodo(I, 'Write a guide');
+  I.see('Write a guide', {repeater: &quot;todo in todos&quot;});
+  I.see('1 item left', '#todo-count');
+});
+</code></pre>
+
+<p>and so we can add even more tests!</p>
+<pre><code class="js">Scenario('edit todo', (I) =&gt; {
+  createTodo(I, 'write a review');
+  I.see('write a review', {repeater: &quot;todo in todos&quot;});
+  I.doubleClick('write a review');
+  I.pressKey(['Control', 'a']);
+  I.pressKey('write old review');
+  I.pressKey('Enter');
+  I.see('write old review', {repeater: &quot;todo in todos&quot;});
+});
+
+Scenario('check todo item', (I) =&gt; {
+  createTodo(I, 'my new item');
+  I.see('1 item left', '#todo-count');
+  I.checkOption({model: 'todo.completed'});
+  I.see('0 items left', '#todo-count');
+});
+</code></pre>
+
+<h3 id="locators">Locators</h3>
+<p>Like you may've noticed, CodeceptJS doesn't use <code>by.*</code> locators similar to Protractor or Selenium Webdriver.
+Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
+you can specify them using so-called strict locators. This is an absolute analogy of <code>by</code>, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:</p>
+<pre><code>{css: 'button'}
+{repeater: &quot;todo in todos&quot;}
+{binding: 'latest'}
+</code></pre>
+
+<p>When we deal with clicks, CodeceptJS can take a text and search a web page for a valid clickable element with that text.
+So links and buttons can be searched by their text.</p>
+<p>Same thing happens for form fields: they are searched by field names, labels, and so on.</p>
+<p>Using such smart locators makes tests easy to write, however, searching an element by text is slower than using CSS|XPath and much slower than using strict locators.</p>
+<h3 id="refactoring">Refactoring</h3>
+<p>In previous examples, we've moved actions into <code>createTodo</code> funciton. Is there a more elegant way of refactoring?
+Can we have something like <code>I.createTodo()</code> to be used in code? Sure, we can do so by editing <code>steps_file.js</code> created by init command.</p>
+<pre><code class="js">'use strict';
+// in this file you can append custom step methods to 'I' object
+
+module.exports = function() {
+  return actor({
+    createTodo: function(title) {
+      this.fillField({model: 'newTodo'}, title);
+      this.pressKey('Enter');
+    }
+  });
+}
+</code></pre>
+
+<p>And that's all, method is available to use as <code>I.createTodo(title)</code>:</p>
+<pre><code class="js">Scenario('create todo item', (I) =&gt; {
+  I.dontSeeElement('#todo-count');
+  createTodo(I, 'Write a guide');
+  I.see('Write a guide', {repeater: &quot;todo in todos&quot;});
+  I.see('1 item left', '#todo-count');
+});
+</code></pre>
+
+<p>To learn more about refactoring options in CodeceptJS read <a href="http://codecept.io/pageobjects/">PageObjects guide</a>.</p>
+<h3 id="done">done()</h3></div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+    <footer>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+</div>
+
+    </footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>        
+        <script src="../js/base.js"></script>
+        <script src="../build/FileSystem.js"></script>
+        <script src="../build/Protractor.js"></script>
+        <script src="../build/SeleniumWebdriver.js"></script>
+        <script src="../build/WebDriverIO.js"></script>
+    </body>
+</html>
