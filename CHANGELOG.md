@@ -1,3 +1,7 @@
+## 0.3.1
+
+* Fixed `init` command
+
 ## 0.3.0
 
 **Breaking Change**: webdriverio package removed from dependencies list. You will need to install it manually after the upgrade.
