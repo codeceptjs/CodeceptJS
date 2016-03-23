@@ -12,28 +12,29 @@ var guppy = require('git-guppy')(gulp);
 var gitmodified = require('gulp-gitmodified');
 var mustache = require("gulp-mustache");
 
+
 gulp.task('docs', function () {
 
   glob.sync('./lib/helper/*.js').forEach((file) => {
     var mustache = require("gulp-mustache");
     gulp.src(file)
-      .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md', github: true }))
-      .pipe(gulp.dest('docs/helpers'))
-      .pipe(mustache({}, {extension: '.md'}))
+      .pipe(gulp.dest('docs/build'))
+      .pipe(mustache({}, {extension: '.js'}))
+      .pipe(gulp.dest('docs/build'))
+      .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md'}))
       .pipe(gulp.dest('docs/helpers'));
-
   });
 });
 
 gulp.task('static', function () {
-  return gulp.src('**/*.js')
+  return gulp.src('lib/**/*.js')
     .pipe(gitmodified(['added', 'modified']))
     .pipe(eslint({fix: true, quiet: true}))
     .pipe(gulp.dest('.'));
 });
 
 gulp.task('lint', function () {
-  return gulp.src('**/*.js')
+  return gulp.src('lib/**/*.js')
     .pipe(excludeGitignore())
     .pipe(eslint())
     .pipe(gulp.dest('.'));
