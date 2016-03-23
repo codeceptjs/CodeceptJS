@@ -9,8 +9,12 @@ This way you won't be bound to implementation, and your acceptance tests will wo
 As you know, [Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
 CodeceptJS should not be considerend as alternative to Protractor, but a testing framework utilizing this powerful library.
 
+![](http://codecept.io/images/angular-protractor.png)
+
 So there is no magic in testing of AngularJS application in CodeceptJS.
 You just execute regular Protractor commands, packed in a simple high-level API.
+
+![](http://codecept.io/images/todo.png)
 
 As an example we will use popular [TodoMVC application](http://todomvc.com/examples/angularjs/#/).
 How would we test creating a new Todo item in CodeceptJS?
