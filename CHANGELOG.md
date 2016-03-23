@@ -1,3 +1,11 @@
+## 0.3.2
+
+* Added `codeceptjs list` command which shows all available methods of `I` object.
+* [Protractor][SeleniumWebdriver] fixed closing browser instances
+* [Protractor][SeleniumWebdriver] `doubleClick` method added
+* [WebDriverIO][Protractor][SeleniumWebdriver] `doubleClick` method to locate clickable elements by text, `context` option added.
+* Fixed using assert in generator without yields #89
+
 ## 0.3.1
 
 * Fixed `init` command

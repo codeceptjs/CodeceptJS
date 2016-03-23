@@ -1,10 +1,10 @@
 # Helpers
 
 Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
-Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends. 
+Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends.
 Functionality of CodeceptJS should be extended by writing a custom helpers.
 
-You can either access core Helpers (and underlying libraries) or create a new from scratch. 
+You can either access core Helpers (and underlying libraries) or create a new from scratch.
 
 ## Development
 
@@ -28,17 +28,17 @@ class MyHelper extends Helper {
 
   // before/after hooks
   _before() {
-    // remove if not used  
+    // remove if not used
   }
-  
+
   _after() {
     // remove if not used
   }
-  
-  // add custom methods here  
+
+  // add custom methods here
   // If you need to access other helpers
-  // use: this.helpers['helperName']    
-  
+  // use: this.helpers['helperName']
+
 }
 
 module.exports = MyHelper;
@@ -47,7 +47,7 @@ module.exports = MyHelper;
 All methods except those starting from `_` will be added to `I` object and treated as test actions.
 Every method should return a value in order to be appended into promise chain.
 
-## WebDriverIO Example  
+## WebDriverIO Example
 
 Next example demonstrates how to use WebDriverIO library to create your own test action.
 Method `seeAuthentication` will use `client` instance of WebDriverIO to get access to cookies.
@@ -55,19 +55,19 @@ Standard NodeJS assertion library will be used.
 
 ```js
 'use strict';
-let Helper = require('codeceptjs/helper');
+let Helper = codecept_helper;
 
 // use any assertion library you like
 let assert = require('assert');
 
-class MyHelper extends Helper {  
+class MyHelper extends Helper {
   /**
-   * checks that authentication cookie is set 
+   * checks that authentication cookie is set
    */
-  seeAuthentication() {    
+  seeAuthentication() {
     // access current client of WebDriverIO helper
     let client = this.helpers['WebDriverIO'].browser;
-    
+
     // get all cookies according to http://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
     return client.cookie(function(err, res) {
@@ -77,9 +77,9 @@ class MyHelper extends Helper {
         // check for a cookie
         if (cookies[k].name != 'logged_in') continue;
         assert.equal(cookies[k].value, 'yes');
-        return;        
+        return;
       }
-      assert.fail(cookies, 'logged_in', "Auth cookie not set");      
+      assert.fail(cookies, 'logged_in', "Auth cookie not set");
     });
   }
 }
@@ -100,7 +100,7 @@ constructor(config) {
 ## Hooks
 
 Helpers may contain several hooks you can use to handle events of a test.
-Implement corresponding methods to them.  
+Implement corresponding methods to them.
 
 * `_init` - before all tests
 * `_before` - before a test

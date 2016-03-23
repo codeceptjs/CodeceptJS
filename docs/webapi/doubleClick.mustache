@@ -1,7 +1,12 @@
-Performs a double-click on an element matched by CSS or XPath.
+Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
 
 ```js
-I.click({css: 'button.accept'});
+I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 ```
 
 @param locator
+@param context
