@@ -2,12 +2,12 @@
 
 ### Introduction
 
-One goal of CodeceptJS in diversified world of JavaScript testing libraries is to create unified high level API for end-to-end testing, powered by differnet backends.
-CodeceptJS allows you to write a test and switch in config execution drivers: will it be wedriverio, selenium-webdriver, or protractor.
-This way you won't be bound to implementation, and your acceptance tests will work no matter of framework running behind them.
+CodeceptJS is an acceptance testing framework.In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by differnet backends.
+CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *selenium-webdriver*, or *protractor* depends on you.
+This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.
 
 As you know, [Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
-CodeceptJS should not be considerend as alternative to Protractor, but a testing framework utilizing this powerful library.
+CodeceptJS should not be considerend as alternative to Protractor but a testing framework utilizing this powerful library.
 
 ![](http://codecept.io/images/angular-protractor.png)
 
@@ -17,7 +17,7 @@ You just execute regular Protractor commands, packed in a simple high-level API.
 ![](http://codecept.io/images/todo.png)
 
 As an example we will use popular [TodoMVC application](http://todomvc.com/examples/angularjs/#/).
-How would we test creating a new Todo item in CodeceptJS?
+How would we test creating a new todo item in CodeceptJS?
 
 ```js
 Scenario('create todo item', (I) => {
@@ -30,7 +30,7 @@ Scenario('create todo item', (I) => {
 });
 ```
 
-The similar test written in native syntax of Protractor (inherited from selenium-webdriver) would look like:
+The similar test written in native syntax of Protractor (inherited from selenium-webdriver) would look like this:
 
 ```js
 it('should create todo item', (I) => {
@@ -44,6 +44,7 @@ it('should create todo item', (I) => {
   element(by.css("#todo-count")).getText()).toContain('1 items left');
 });
 ```
+
 Comparing to the API proposed by CodeceptJS, this code looks a bit more complicated.
 But what the more important, it's really really hard to read and follow its logic.
 Readability is the most crucial part in acceptance testing.
@@ -214,7 +215,7 @@ Scenario('check todo item', (I) => {
 
 ### Locators
 
-Like you may've noticed, CodeceptJS doesn't use `by.*` locators similar to Protractor or Selenium Webdriver.
+Like you may have noticed, CodeceptJS doesn't use `by.*` locators similar to Protractor or Selenium Webdriver.
 Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
 you can specify them using so-called strict locators. This is an absolute analogy of `by`, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:
 
@@ -232,7 +233,7 @@ Using such smart locators makes tests easy to write, however, searching an eleme
 
 ### Refactoring
 
-In previous examples, we've moved actions into `createTodo` funciton. Is there a more elegant way of refactoring?
+In previous examples, we've moved actions into `createTodo` function. Is there a more elegant way of refactoring?
 Can we have something like `I.createTodo()` to be used in code? Sure, we can do so by editing `steps_file.js` created by init command.
 
 ```js
@@ -253,7 +254,7 @@ And that's all, method is available to use as `I.createTodo(title)`:
 ```js
 Scenario('create todo item', (I) => {
   I.dontSeeElement('#todo-count');
-  createTodo(I, 'Write a guide');
+  I.createTodo('Write a guide');
   I.see('Write a guide', {repeater: "todo in todos"});
   I.see('1 item left', '#todo-count');
 });
