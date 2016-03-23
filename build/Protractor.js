@@ -498,7 +498,7 @@ I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
 I.checkOption('agree', '//form');
 ```
-@param option located by label | name | CSS | XPath | strict locator
+@param field checkbox located by label | name | CSS | XPath | strict locator
 @param context (optional) element located by CSS | XPath | strict locator
  *
  * @name checkOption
@@ -547,7 +547,7 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param link clickable link or button located by text, or any element located by CSS|XPath|strict locator
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
  *
  * @name click

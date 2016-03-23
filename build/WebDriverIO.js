@@ -310,19 +310,19 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param link clickable link or button located by text, or any element located by CSS|XPath|strict locator
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
    */
-  click(link, context) {
+  click(locator, context) {
     let client = this.browser;
     let clickMethod = this.browser.isMobile ? 'touchClick' : 'elementIdClick';
     if (context) {
       client = client.element(context);
     }
-    return findClickable(client, link).then(function (res) {
+    return findClickable(client, locator).then(function (res) {
       if (!res.value || res.value.length === 0) {
-        if (typeof(link) === "object") link = JSON.stringify(link);
-        throw new Error(`Clickable element ${link.toString()} was not found by text|CSS|XPath`);
+        if (typeof(locator) === "object") locator = JSON.stringify(locator);
+        throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
       }
       let elem = res.value[0];
       return this[clickMethod](elem.ELEMENT);
@@ -331,6 +331,12 @@ I.click({css: 'nav a.login'});
 
   /**
    * Performs a double-click on an element matched by CSS or XPath.
+
+```js
+I.click({css: 'button.accept'});
+```
+
+@param locator
    */
   doubleClick(locator) {
     return this.browser.doubleClick(withStrictLocator(locator));
@@ -501,18 +507,18 @@ I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
 I.checkOption('agree', '//form');
 ```
-@param option located by label | name | CSS | XPath | strict locator
+@param field checkbox located by label | name | CSS | XPath | strict locator
 @param context (optional) element located by CSS | XPath | strict locator
    */
-  checkOption(option, context) {
+  checkOption(field, context) {
     let client = this.browser;
     let clickMethod = this.browser.isMobile ? 'touchClick' : 'elementIdClick';
     if (context) {
       client = client.element(withStrictLocator(context));
     }
-    return findCheckable(client, option).then((res) => {
+    return findCheckable(client, field).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Checkable ${option} cant be located by name|text|CSS|XPath`);
+        throw new Error(`Checkable ${field} cant be located by name|text|CSS|XPath`);
       }
       let elem = res.value[0];
       return client.elementIdSelected(elem.ELEMENT).then(function (isSelected) {

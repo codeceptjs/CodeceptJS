@@ -165,26 +165,28 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param link clickable link or button located by text, or any element located by CSS|XPath|strict locator
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
    */
-  click(link, context) {
+  click(locator, context) {
     let matcher = this.browser;
     if (context) {
       matcher = matcher.findElement(guessLocator(context) || by.css(context));
     }
-    return co(findClickable(matcher, link)).then((el) => el.click());
+    return co(findClickable(matcher, locator)).then((el) => el.click());
   }
 
   /**
    * Performs a double-click on an element matched by CSS or XPath.
+
+```js
+I.click({css: 'button.accept'});
+```
+
+@param locator
    */
-  doubleClick(link, context) {
-    let matcher = this.browser;
-    if (context) {
-      matcher = matcher.findElement(guessLocator(context) || by.css(context));
-    }
-    return co(findClickable(matcher, link)).then((el) => el.doubleClick());
+  doubleClick(locator) {
+    return this.browser.findElement(guessLocator(locator)).then((el) => el.doubleClick());
   }
 
   /**
@@ -408,17 +410,17 @@ I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
 I.checkOption('agree', '//form');
 ```
-@param option located by label | name | CSS | XPath | strict locator
+@param field checkbox located by label | name | CSS | XPath | strict locator
 @param context (optional) element located by CSS | XPath | strict locator
    */
-  checkOption(option, context) {
+  checkOption(field, context) {
     let matcher = this.browser;
     if (context) {
       matcher = matcher.findElement(guessLocator(context) || by.css(context));
     }
-    return co(findCheckable(matcher, option)).then((els) => {
+    return co(findCheckable(matcher, field)).then((els) => {
       if (!els.length) {
-        throw new Error(`Option ${option} not found by name|text|CSS|XPath`);
+        throw new Error(`Option ${field} not found by name|text|CSS|XPath`);
       }
       return els[0].isSelected().then((selected) => {
         if (!selected) return els[0].click();
@@ -436,9 +438,9 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 ```
 @param field located by label|name|CSS|XPath|strict locator
    */
-  seeCheckboxIsChecked(option)
+  seeCheckboxIsChecked(field)
   {
-    return co.wrap(proceedIsChecked).call(this, 'assert', option);
+    return co.wrap(proceedIsChecked).call(this, 'assert', field);
   }
 
   /**
@@ -446,9 +448,9 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
  @param field located by label|name|CSS|XPath|strict locator
    */
-  dontSeeCheckboxIsChecked(option)
+  dontSeeCheckboxIsChecked(field)
   {
-    return co.wrap(proceedIsChecked).call(this, 'negate', option);
+    return co.wrap(proceedIsChecked).call(this, 'negate', field);
   }
 
   /**

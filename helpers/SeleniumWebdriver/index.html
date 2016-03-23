@@ -355,7 +355,7 @@ I.checkOption('agree', '//form');
 <table>
 <thead>
 <tr>
-<th>-   <code>option</code>  located by label</th>
+<th>-   <code>field</code>  checkbox located by label</th>
 <th>name</th>
 <th>CSS</th>
 </tr>
@@ -397,7 +397,7 @@ I.click({css: 'nav a.login'});
 <table>
 <thead>
 <tr>
-<th>-   <code>link</code>  clickable link or button located by text, or any element located by CSS</th>
+<th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
 <th>XPath</th>
 <th>strict locator</th>
 </tr>
@@ -420,7 +420,6 @@ Use context parameter to narrow down the search.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>option</code>  </li>
 </ul>
 <h2 id="dontseecookie">dontSeeCookie</h2>
 <p>Checks that cookie with given name does not exist.</p>
@@ -475,10 +474,12 @@ Opposite to <code>seeInField</code>.</p>
 </ul>
 <h2 id="doubleclick">doubleClick</h2>
 <p>Performs a double-click on an element matched by CSS or XPath.</p>
+<pre><code class="js">I.click({css: 'button.accept'});
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>link</code>  </li>
-<li><code>context</code>  </li>
+<li><code>locator</code>  </li>
 </ul>
 <h2 id="executeasyncscript">executeAsyncScript</h2>
 <p>Executes async script on page.
@@ -616,7 +617,6 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>option</code>  </li>
 </ul>
 <h2 id="seecookie">seeCookie</h2>
 <p>Checks that cookie with given name exists.</p>
