@@ -281,7 +281,7 @@
             <div class="col-md-7" role="main">
 
 <h1 id="seleniumwebdriver">SeleniumWebdriver</h1>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L48-L596" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:48-596</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L48-L874" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:48-874</a></p>
 <p><strong>Extends Helper</strong></p>
 <p>SeleniumWebdriver helper is based on the official <a href="https://www.npmjs.com/package/selenium-webdriver">Selenium Webdriver JS</a>
 library. It implements common web api methods (amOnPage, click, see).</p>
@@ -308,7 +308,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 </ul>
 <p>other options are the same as in <a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">Protractor config</a>.</p>
 <h2 id="amonpage">amOnPage</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L130-L135" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:130-135</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L139-L144" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:139-144</a></p>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
 <pre><code class="js">I.amOnPage('/'); // opens main page of website
@@ -318,10 +318,10 @@ I.amOnPage('/login'); // opens a login page
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  url path or global url</li>
 </ul>
 <h2 id="appendfield">appendField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L272-L279" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:272-279</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L389-L396" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:389-396</a></p>
 <p>Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath</p>
 <pre><code class="js">I.appendField('#myTextField', 'appended');
@@ -329,11 +329,11 @@ Field is located by name, label, CSS or XPath</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  </li>
-<li><code>value</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>value</code>  text value</li>
 </ul>
 <h2 id="attachfile">attachFile</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L238-L253" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:238-253</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L334-L349" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:334-349</a></p>
 <p>Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
 File will be uploaded to remove system (if tests are running remotely).</p>
@@ -343,11 +343,13 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>file</code>  local file path relative to codecept.json config file</li>
 <li><code>locator</code>  </li>
 <li><code>pathToFile</code>  </li>
 </ul>
 <h2 id="checkoption">checkOption</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L284-L297" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:284-297</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L412-L425" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:412-425</a></p>
 <p>Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.</p>
 <p>The second parameter is a context (CSS or XPath locator) to narrow the search.</p>
@@ -358,11 +360,12 @@ I.checkOption('agree', '//form');
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>option</code>  </li>
-<li><code>context</code>  </li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator</li>
 </ul>
 <h2 id="clearcookie">clearCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L515-L520" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:515-520</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L747-L752" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:747-752</a></p>
 <p>Clears a cookie by name,
 if none provided clears all cookies</p>
 <pre><code class="js">I.clearCookie();
@@ -371,10 +374,11 @@ I.clearCookie('test');
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>cookieName</code>  (optional)</li>
 <li><code>cookie</code>  </li>
 </ul>
 <h2 id="click">click</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L140-L146" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:140-146</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L170-L176" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:170-176</a></p>
 <p>Perform a click on a link or a button, given by a locator.
 If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
 For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
@@ -396,11 +400,12 @@ I.click({css: 'nav a.login'});
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>locator</code>  link or button located by text, or any element located by CSS|XPath|strict locator</li>
 <li><code>link</code>  </li>
 <li><code>context</code>  </li>
 </ul>
 <h2 id="dontsee">dontSee</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L169-L171" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:169-171</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L215-L217" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:215-217</a></p>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.</p>
 <pre><code class="js">I.dontSee('Login'); // assume we are already logged in
@@ -408,77 +413,83 @@ Use context parameter to narrow down the search.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
-<li><code>context</code>  </li>
+<li><code>text</code>  is not present</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search</li>
 </ul>
 <h2 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L310-L313" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:310-313</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L447-L450" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:447-450</a></p>
 <p>Verifies that the specified checkbox is not checked.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>option</code>  </li>
 </ul>
 <h2 id="dontseecookie">dontSeeCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L534-L538" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:534-538</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L773-L777" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:773-777</a></p>
 <p>Checks that cookie with given name does not exist.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>name</code>  </li>
 </ul>
 <h2 id="dontseecurrenturlequals">dontSeeCurrentUrlEquals</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L471-L475" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:471-475</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L685-L689" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:685-689</a></p>
 <p>Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>url</code>  </li>
 <li><code>uri</code>  </li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L383-L389" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:383-389</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L556-L562" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:556-562</a></p>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|Strict locator</li>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="dontseeelementindom">dontSeeElementInDOM</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L403-L407" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:403-407</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L584-L588" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:584-588</a></p>
 <p>Opposite to <code>seeElementInDOM</code>. Checks that element is not on page.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|Strict locator</li>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="dontseeincurrenturl">dontSeeInCurrentUrl</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L453-L457" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:453-457</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L656-L660" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:656-660</a></p>
 <p>Checks that current url does not contain a provided fragment.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>url</code>  </li>
 <li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="dontseeinfield">dontSeeInField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L265-L267" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:265-267</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L375-L377" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:375-377</a></p>
 <p>Checks that value of input field or textare doesn't equal to given value
 Opposite to <code>seeInField</code>.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  </li>
-<li><code>value</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>value</code>  is not expected to be a field value</li>
 </ul>
 <h2 id="dontseeinsource">dontSeeInSource</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L421-L425" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:421-425</a></p>
-<p>Checks that the current page contains the given string in its raw source code
-<strong>Parameters</strong></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L609-L613" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:609-613</a></p>
+<p>Checks that the current page contains the given string in its raw source code</p>
+<p><strong>Parameters</strong></p>
 <ul>
+<li><code>string</code>  </li>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="dontseeintitle">dontSeeInTitle</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L353-L357" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:353-357</a></p>
-<p>Checks that title does not contain text.
-<strong>Parameters</strong></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L513-L517" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:513-517</a></p>
+<p>Checks that title does not contain text.</p>
+<p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="doubleclick">doubleClick</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L151-L157" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:151-157</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L181-L187" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:181-187</a></p>
 <p>Performs a double-click on an element matched by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -486,25 +497,27 @@ Opposite to <code>seeInField</code>.</p>
 <li><code>context</code>  </li>
 </ul>
 <h2 id="executeasyncscript">executeAsyncScript</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L437-L439" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:437-439</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L633-L635" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:633-635</a></p>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>script</code>  </li>
 <li><code>fn</code>  </li>
 </ul>
 <h2 id="executescript">executeScript</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L430-L432" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:430-432</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L623-L625" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:623-625</a></p>
 <p>Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
 In this case you should use generator and yield to receive results.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>script</code>  </li>
 <li><code>fn</code>  </li>
 </ul>
 <h2 id="fillfield">fillField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L205-L213" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:205-213</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L284-L292" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:284-292</a></p>
 <p>Fills a text field or textarea, after clearing its value,  with the given string.
 Field is located by name, label, CSS, or XPath.</p>
 <pre><code class="js">// by label
@@ -519,11 +532,11 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>value</code>  </li>
 </ul>
 <h2 id="grabattributefrom">grabAttributeFrom</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L337-L339" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:337-339</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L493-L495" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:493-495</a></p>
 <p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let hint = yield I.grabAttributeFrom('#tooltip', 'title');
@@ -531,24 +544,26 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|strict locator</li>
+<li><code>attribute</code>  </li>
 <li><code>locator</code>  </li>
 <li><code>attr</code>  </li>
 </ul>
 <h2 id="grabcookie">grabCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L545-L547" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:545-547</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L791-L793" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:791-793</a></p>
 <p>Gets a cookie object by name
-* Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let cookie = I.grabCookie('auth');
 assert(cookie.value, '123456');
 </code></pre>
 
-<p>Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</p>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>cookie</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
 <li><code>name</code>  </li>
 </ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L318-L320" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:318-320</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L461-L463" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:461-463</a></p>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let pin = yield I.grabTextFrom('#pin');
@@ -556,17 +571,18 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|strict locator</li>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="grabtitle">grabTitle</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L362-L367" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:362-367</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L527-L532" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:527-532</a></p>
 <p>Retrieves a page title and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let title = yield I.grabTitle();
 </code></pre>
 
 <h2 id="grabvaluefrom">grabValueFrom</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L325-L332" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:325-332</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L474-L481" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:474-481</a></p>
 <p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
 <pre><code class="js">let email = yield I.grabValueFrom('input[name=email]');
@@ -574,10 +590,11 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="presskey">pressKey</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L218-L233" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:218-233</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L305-L320" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:305-320</a></p>
 <p>Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
 will be replaced with corresponding unicode.
@@ -591,7 +608,7 @@ I.pressKey(['Control','a']);
 <li><code>key</code>  </li>
 </ul>
 <h2 id="resizewindow">resizeWindow</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L552-L557" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:552-557</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L802-L807" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:802-807</a></p>
 <p>Resize the current window to provided width and height.
 First parameter can be set to <code>maximize</code></p>
 <p><strong>Parameters</strong></p>
@@ -600,7 +617,7 @@ First parameter can be set to <code>maximize</code></p>
 <li><code>height</code>  </li>
 </ul>
 <h2 id="savescreenshot">saveScreenshot</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L480-L492" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:480-492</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L700-L712" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:700-712</a></p>
 <p>Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder.</p>
 <pre><code class="js">I.saveScreenshot('debug.png');
@@ -608,10 +625,11 @@ Filename is relative to output folder.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>filename</code>  </li>
 <li><code>fileName</code>  </li>
 </ul>
 <h2 id="see">see</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L162-L164" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:162-164</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L201-L203" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:201-203</a></p>
 <p>Checks that a page contains a visible text.
 Use context parameter to narrow down the search.</p>
 <pre><code class="js">I.see('Welcome'); // text welcome on a page
@@ -621,11 +639,11 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
-<li><code>context</code>  </li>
+<li><code>text</code>  expected on page</li>
+<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text</li>
 </ul>
 <h2 id="seecheckboxischecked">seeCheckboxIsChecked</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L302-L305" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:302-305</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L437-L440" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:437-440</a></p>
 <p>Verifies that the specified checkbox is checked.</p>
 <pre><code class="js">I.seeCheckboxIsChecked('Agree');
 I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
@@ -634,10 +652,11 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>option</code>  </li>
 </ul>
 <h2 id="seecookie">seeCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L525-L529" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:525-529</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L762-L766" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:762-766</a></p>
 <p>Checks that cookie with given name exists.</p>
 <pre><code class="js">I.seeCookie('Auth');
 </code></pre>
@@ -647,7 +666,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <li><code>name</code>  </li>
 </ul>
 <h2 id="seecurrenturlequals">seeCurrentUrlEquals</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L462-L466" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:462-466</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L673-L677" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:673-677</a></p>
 <p>Checks that current url is equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 So both examples will work:</p>
@@ -657,10 +676,11 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>url</code>  </li>
 <li><code>uri</code>  </li>
 </ul>
 <h2 id="seeelement">seeElement</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L372-L378" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:372-378</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L543-L549" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:543-549</a></p>
 <p>Checks that a given Element is visible
 Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElement('#modal');
@@ -668,10 +688,11 @@ Element is located by CSS or XPath.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>located</code>  by CSS|XPath|strict locator</li>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="seeelementindom">seeElementInDOM</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L394-L398" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:394-398</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L573-L577" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:573-577</a></p>
 <p>Checks that a given Element is present in the DOM
 Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElementInDOM('#modal');
@@ -679,20 +700,22 @@ Element is located by CSS or XPath.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|strict locator</li>
 <li><code>locator</code>  </li>
 </ul>
 <h2 id="seeincurrenturl">seeInCurrentUrl</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L444-L448" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:444-448</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L645-L649" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:645-649</a></p>
 <p>Checks that current url contains a provided fragment.</p>
 <pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>url</code>  </li>
 <li><code>urlFragment</code>  </li>
 </ul>
 <h2 id="seeinfield">seeInField</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L258-L260" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:258-260</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L364-L366" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:364-366</a></p>
 <p>Checks that the given input field or textarea equals to given value.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.</p>
 <pre><code class="js">I.seeInField('Username', 'davert');
@@ -703,28 +726,29 @@ I.seeInField('#searchform input','Search');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>value</code>  </li>
 </ul>
 <h2 id="seeinsource">seeInSource</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L412-L416" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:412-416</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L598-L602" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:598-602</a></p>
 <p>Checks that the current page contains the given string in its raw source code.</p>
 <pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>html</code>  </li>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="seeintitle">seeInTitle</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L344-L348" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:344-348</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L502-L506" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:502-506</a></p>
 <p>Checks that title contains text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="selectoption">selectOption</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L176-L200" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:176-200</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L241-L265" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:241-265</a></p>
 <p>Selects an option in a drop-down select.
 Field is siearched by label | name | CSS | XPath.
 Option is selected by visible text or by value.</p>
@@ -742,38 +766,45 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>value</code>  </li>
 <li><code>select</code>  </li>
 <li><code>option</code>  </li>
 </ul>
 <h2 id="setcookie">setCookie</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L499-L510" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:499-510</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L724-L735" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:724-735</a></p>
 <p>Sets a cookie</p>
 <pre><code class="js">I.setCookie({name: 'auth', value: true});
 </code></pre>
 
-<p>Uses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie format</a>.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  </li>
+<li><code>cookie</code>  Uses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie format</a>.</li>
 </ul>
 <h2 id="wait">wait</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L562-L564" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:562-564</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L812-L814" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:812-814</a></p>
 <p>Pauses execution for a number of seconds.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waitforelement">waitForElement</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L569-L573" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:569-573</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L828-L832" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:828-832</a></p>
 <p>Waits for element to be present on page (by default waits for 1sec).
- Element can be located by CSS or XPath.</p>
+Element can be located by CSS or XPath.</p>
+<pre><code class="js">I.waitForElement('.btn.continue');
+I.waitForElement('.btn.continue', 5); // wait for 5 secs
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|strict locator</li>
+<li><code>time</code>  seconds to wait, 1 by default</li>
 <li><code>locator</code>  </li>
 <li><code>sec</code>  </li>
 </ul>
 <h2 id="waitfortext">waitForText</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L587-L594" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:587-594</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L865-L872" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:865-872</a></p>
 <p>Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
 Narrow down search results by providing context.</p>
@@ -783,16 +814,21 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  to wait for</li>
+<li><code>time</code>  seconds to wait, 1 by default</li>
 <li><code>sec</code>  </li>
-<li><code>context</code>  </li>
+<li><code>context</code>  element located by CSS|XPath|strict locator</li>
 </ul>
 <h2 id="waitforvisible">waitForVisible</h2>
-<p><a href="https://github.com/Codeception/CodeceptJS/blob/b8d01e3fea9f43246c606eddefc9a1209721daff/lib/helper/SeleniumWebdriver.js#L578-L582" title="Source code on GitHub">lib/helper/SeleniumWebdriver.js:578-582</a></p>
+<p><a href="https://github.com/Codeception/CodeceptJS/blob/6e124db3371850a45323ea9b87f41ad1ed148371/docs/build/SeleniumWebdriver.js#L845-L849" title="Source code on GitHub">docs/build/SeleniumWebdriver.js:845-849</a></p>
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForVisible('#popup');
+</code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>element</code>  located by CSS|XPath|strict locator</li>
+<li><code>time</code>  seconds to wait, 1 by default</li>
 <li><code>locator</code>  </li>
 <li><code>sec</code>  </li>
 </ul></div>
