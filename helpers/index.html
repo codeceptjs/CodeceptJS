@@ -196,9 +196,9 @@
 
 <h1 id="helpers">Helpers</h1>
 <p>Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
-Methods of Helper class will be available in tests in <code>I</code> object. This abstracts test scenarios from the implementation and allows easy switching between backends. 
+Methods of Helper class will be available in tests in <code>I</code> object. This abstracts test scenarios from the implementation and allows easy switching between backends.
 Functionality of CodeceptJS should be extended by writing a custom helpers.</p>
-<p>You can either access core Helpers (and underlying libraries) or create a new from scratch. </p>
+<p>You can either access core Helpers (and underlying libraries) or create a new from scratch.</p>
 <h2 id="development">Development</h2>
 <p>Helpers can be created by running a generator command:</p>
 <pre><code class="bash">codeceptjs gh
@@ -215,16 +215,16 @@ class MyHelper extends Helper {
 
   // before/after hooks
   _before() {
-    // remove if not used  
+    // remove if not used
   }
 
   _after() {
     // remove if not used
   }
 
-  // add custom methods here  
+  // add custom methods here
   // If you need to access other helpers
-  // use: this.helpers['helperName']    
+  // use: this.helpers['helperName']
 
 }
 
@@ -238,16 +238,16 @@ Every method should return a value in order to be appended into promise chain.</
 Method <code>seeAuthentication</code> will use <code>client</code> instance of WebDriverIO to get access to cookies.
 Standard NodeJS assertion library will be used.</p>
 <pre><code class="js">'use strict';
-let Helper = require('codeceptjs/helper');
+let Helper = codecept_helper;
 
 // use any assertion library you like
 let assert = require('assert');
 
-class MyHelper extends Helper {  
+class MyHelper extends Helper {
   /**
-   * checks that authentication cookie is set 
+   * checks that authentication cookie is set
    */
-  seeAuthentication() {    
+  seeAuthentication() {
     // access current client of WebDriverIO helper
     let client = this.helpers['WebDriverIO'].browser;
 
@@ -260,9 +260,9 @@ class MyHelper extends Helper {
         // check for a cookie
         if (cookies[k].name != 'logged_in') continue;
         assert.equal(cookies[k].value, 'yes');
-        return;        
+        return;
       }
-      assert.fail(cookies, 'logged_in', &quot;Auth cookie not set&quot;);      
+      assert.fail(cookies, 'logged_in', &quot;Auth cookie not set&quot;);
     });
   }
 }
@@ -279,7 +279,7 @@ By default config values will be stored in <code>this.config</code>. You can red
 
 <h2 id="hooks">Hooks</h2>
 <p>Helpers may contain several hooks you can use to handle events of a test.
-Implement corresponding methods to them.  </p>
+Implement corresponding methods to them.</p>
 <ul>
 <li><code>_init</code> - before all tests</li>
 <li><code>_before</code> - before a test</li>
