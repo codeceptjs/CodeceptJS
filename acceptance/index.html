@@ -203,9 +203,12 @@
             <div class="col-md-7" role="main">
 
 <h1 id="acceptance-testing">Acceptance Testing</h1>
-<p>How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page. </p>
+<p>How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.</p>
 <p>Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check <strong>not just functionality of application but a user interface</strong> (UI) as well.</p>
-<p>By default CodeceptJS uses <a href="http://127.0.0.1:8000/helpers/WebDriverIO/">WebDriverIO</a> helper and <strong>Selenium</strong> to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like. </p>
+<p>By default CodeceptJS uses <a href="../helpers/WebDriverIO/">WebDriverIO</a> helper and <strong>Selenium</strong> to automate browser.
+However, you can also choose <a href="../helpers/SeleniumWebdriver">SeleniumWebdriver</a> or <a href="../helpers/Protractor">Protractor</a> helpers, driven by corresponding libraries.
+No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.</p>
+<p>Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.</p>
 <p>In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.</p>
 <pre><code class="js">I.amOnPage('/login');
 I.fillField('Username', 'john');
@@ -216,14 +219,14 @@ I.see('Welcome, John');
 
 <p>This is how we can check that login form of a simple web application works. At first we opened <code>/login</code> page, then filled forms and in the end we saw the greetings text.</p>
 <h2 id="locating-element">Locating Element</h2>
-<p>Element can be found by CSS or XPath locators. Practically every steps 
-in WebDriverIO helper accept them both. </p>
+<p>Element can be found by CSS or XPath locators. Practically every steps
+in WebDriverIO helper accept them both.</p>
 <pre><code class="js">I.seeElement('.user'); // element with CSS class user
 I.seeElement('//button(contains(., &quot;press me&quot;)]'); // button
 </code></pre>
 
-<p>By default CodeceptJS tries to guess the locator type. 
-In order to specify exact locator type you can pass a hash called <strong>strict locator</strong>. </p>
+<p>By default CodeceptJS tries to guess the locator type.
+In order to specify exact locator type you can pass a hash called <strong>strict locator</strong>.</p>
 <pre><code class="js">I.seeElement({css: 'div.user'});
 I.seeElement({xpath: '//div[@class=user]'});
 </code></pre>
@@ -253,9 +256,9 @@ I.click('Login', {css: 'footer'}); // search only in footer
 <p>To skip the global search pass exact strict locator (or start locator with <code>//</code> or <code>.</code> or <code>#</code>).
 In this case you are not limited to buttons and links. Any element found by that locator is clicked.</p>
 <pre><code class="js">// click element by CSS
-I.click('#signup'); 
+I.click('#signup');
 // click element located by name inside a form
-I.click({name: 'submit'}, '#user&gt;form'); 
+I.click({name: 'submit'}, '#user&gt;form');
 </code></pre>
 
 <h2 id="filling-fields">Filling Fields</h2>
@@ -265,12 +268,12 @@ I.click({name: 'submit'}, '#user&gt;form');
      &lt;label for=&quot;user_name&quot;&gt;Name&lt;/label&gt;
      &lt;input type=&quot;text&quot; name=&quot;user[name]&quot; id=&quot;user_name&quot; /&gt;
      &lt;label for=&quot;user_email&quot;&gt;Email&lt;/label&gt;
-     &lt;input type=&quot;text&quot; name=&quot;user[email]&quot; id=&quot;user_email&quot; /&gt;     
+     &lt;input type=&quot;text&quot; name=&quot;user[email]&quot; id=&quot;user_email&quot; /&gt;
      &lt;label for=&quot;user_gender&quot;&gt;Gender&lt;/label&gt;
      &lt;select id=&quot;user_gender&quot; name=&quot;user[gender]&quot;&gt;
           &lt;option value=&quot;m&quot;&gt;Male&lt;/option&gt;
           &lt;option value=&quot;f&quot;&gt;Female&lt;/option&gt;
-     &lt;/select&gt;     
+     &lt;/select&gt;
      &lt;input type=&quot;submit&quot; name=&quot;submitButton&quot; value=&quot;Update&quot; /&gt;
 &lt;/form&gt;
 </code></pre>
@@ -297,8 +300,8 @@ I.click('submitButton', '#update_form');
 </code></pre>
 
 <h2 id="assertions">Assertions</h2>
-<p>In order to verify the expected behavior of a web application, web page connects should be checked. 
-CodeceptJS provides built-in assertions for that. They start with <code>see</code> (or <code>dontSee</code>) prefix, as they describe user's current vision. </p>
+<p>In order to verify the expected behavior of a web application, web page connects should be checked.
+CodeceptJS provides built-in assertions for that. They start with <code>see</code> (or <code>dontSee</code>) prefix, as they describe user's current vision.</p>
 <p>The most general and common assertion is <code>see</code>:</p>
 <pre><code class="js">// Just a visible text on a page
 I.see('Hello');
@@ -342,7 +345,7 @@ I.click('Log in!');
 </code></pre>
 
 <h2 id="waiting">Waiting</h2>
-<p>In modern web applications rendering is happen on client side. 
+<p>In modern web applications rendering is happen on client side.
 Sometimes that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
 To handle this cases <code>wait*</code> methods introduced.</p>
 <pre><code class="js">I.waitForElement('#agree_button', 30); // secs
