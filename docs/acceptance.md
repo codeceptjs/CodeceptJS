@@ -1,10 +1,14 @@
 # Acceptance Testing
 
-How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page. 
+How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
-By default CodeceptJS uses [WebDriverIO](http://127.0.0.1:8000/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like. 
+By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser.
+However, you can also choose [SeleniumWebdriver](/helpers/SeleniumWebdriver) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
+No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
+
+Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
 
 In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
 
@@ -20,16 +24,16 @@ This is how we can check that login form of a simple web application works. At f
 
 ## Locating Element
 
-Element can be found by CSS or XPath locators. Practically every steps 
-in WebDriverIO helper accept them both. 
+Element can be found by CSS or XPath locators. Practically every steps
+in WebDriverIO helper accept them both.
 
 ```js
 I.seeElement('.user'); // element with CSS class user
 I.seeElement('//button(contains(., "press me")]'); // button
 ```
 
-By default CodeceptJS tries to guess the locator type. 
-In order to specify exact locator type you can pass a hash called **strict locator**. 
+By default CodeceptJS tries to guess the locator type.
+In order to specify exact locator type you can pass a hash called **strict locator**.
 
 ```js
 I.seeElement({css: 'div.user'});
@@ -72,9 +76,9 @@ In this case you are not limited to buttons and links. Any element found by that
 
 ```js
 // click element by CSS
-I.click('#signup'); 
+I.click('#signup');
 // click element located by name inside a form
-I.click({name: 'submit'}, '#user>form'); 
+I.click({name: 'submit'}, '#user>form');
 ```
 
 ## Filling Fields
@@ -88,12 +92,12 @@ Let's submit this sample form for a test:
      <label for="user_name">Name</label>
      <input type="text" name="user[name]" id="user_name" />
      <label for="user_email">Email</label>
-     <input type="text" name="user[email]" id="user_email" />     
+     <input type="text" name="user[email]" id="user_email" />
      <label for="user_gender">Gender</label>
      <select id="user_gender" name="user[gender]">
           <option value="m">Male</option>
           <option value="f">Female</option>
-     </select>     
+     </select>
      <input type="submit" name="submitButton" value="Update" />
 </form>
 ```
@@ -125,8 +129,8 @@ I.click('submitButton', '#update_form');
 
 ## Assertions
 
-In order to verify the expected behavior of a web application, web page connects should be checked. 
-CodeceptJS provides built-in assertions for that. They start with `see` (or `dontSee`) prefix, as they describe user's current vision. 
+In order to verify the expected behavior of a web application, web page connects should be checked.
+CodeceptJS provides built-in assertions for that. They start with `see` (or `dontSee`) prefix, as they describe user's current vision.
 
 The most general and common assertion is `see`:
 
@@ -185,7 +189,7 @@ Scenario('use page title', function*(I) {
 
 ## Waiting
 
-In modern web applications rendering is happen on client side. 
+In modern web applications rendering is happen on client side.
 Sometimes that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
 To handle this cases `wait*` methods introduced.
 

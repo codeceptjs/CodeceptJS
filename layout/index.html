@@ -1,15 +1,15 @@
-<div class="jumbotron">    
+<div class="jumbotron">
   <div class="container">
     <img src="/images/cjs-base.png" style="width: 150px" alt="">
     <h1>CodeceptJS</h1>
     <div class="motto">Modern Era Acceptance Testing for NodeJS</div>
-  </div> 
+  </div>
   <div class="row" >
     <div class="col-md-4">
       <img src="/images/Checklist.svg" alt="">
-      <h3>Scenario Driven</h3>    
+      <h3>Scenario Driven</h3>
       <p>
-        Write acceptance tests from user's perspective. Every command is described as an action of a user visiting a site. 
+        Write acceptance tests from user's perspective. Every command is described as an action of a user visiting a site.
 
       </p>
     </div>
@@ -24,7 +24,7 @@
       <img src="/images/Coding-Html.svg" alt="">
       <h3>Interactive shell</h3>
       <p>
-        Control browser in realtime with API of CodeceptJS. Click buttons, fill fields, try different locators inside a running test! 
+        Control browser in realtime with API of CodeceptJS. Click buttons, fill fields, try different locators inside a running test!
 
       </p>
     </div>
@@ -46,11 +46,12 @@ I.see('Welcome');
       <div class="sample">
       <ul>
         <li><a href="http://webdriver.io" target="_blank">WebDriverIO</a></li>
-        <li>Protractor <em><small>(work in progress)</small></em></li>
-      <li>Nightmare <em><small>(work in progress)</small></em></li>        
-        <li>PhantomJS <em><small>(work in progress)</small></em></li>
+        <li><a href="http://www.protractortest.org/" target="_blank"></a>Protractor</li>
+        <li><a href="https://www.npmjs.com/package/selenium-webdriver" target="_blank"></a>Selenium WebDriver JS</li>
+        <li></li>
+        <li>Nightmare <em><small>(work in progress)</small></em></li>
         <li>or others...</li>
-      </ul>      
+      </ul>
     </div>
     </div>
     <div class="col-md-4">
@@ -74,16 +75,16 @@ I.see('Welcome');
 <div class="container page">
   <div class="row">
   <div class="text-center"><h2>In Action</h2></div>
-  
+
     <div class="col-md-6">
     <pre><code class="javascript">Feature('CodeceptJS Demonstration');
 
-Scenario('submit form successfully', (I) => 
+Scenario('submit form successfully', (I) =>
 &nbsp;&nbsp;I.amOnPage('/documentation')
 &nbsp;&nbsp;I.fillField('Email', 'hello@world.com')
 &nbsp;&nbsp;I.fillField('Password', '123456')
 &nbsp;&nbsp;I.checkOption('Active')
-&nbsp;&nbsp;I.checkOption('Male'); 
+&nbsp;&nbsp;I.checkOption('Male');
 &nbsp;&nbsp;I.click('Create User')
 &nbsp;&nbsp;I.see('User is valid')
 &nbsp;&nbsp;I.dontSeeInCurrentUrl('/documentation')
@@ -101,11 +102,11 @@ Scenario('submit form successfully', (I) =>
   <ul>
     <li><strong>Synchronous Tests API</strong>. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.</li>
     <li>
-Written from <strong>user's perspective</strong>. Every action is a method of I. That makes test easy to read, write and maintain even for non-tech persons.      
+Written from <strong>user's perspective</strong>. Every action is a method of I. That makes test easy to read, write and maintain even for non-tech persons.
     </li>
     <li>
 <strong>Backend agnostic</strong>. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
-      
+
     </li>
     <li><strong>PageObjects</strong> and StepObjects are supported out of the box. They can be generated and used in tests through dependency injection.</li>
 
@@ -115,16 +116,20 @@ Written from <strong>user's perspective</strong>. Every action is a method of I.
 
   <h3>Voice of Developers</h3>
 
-<div class="reddit-embed" data-embed-media="www.redditmedia.com" data-embed-parent="false" data-embed-live="true" data-embed-created="2015-12-02T11:19:39.756Z"><a href="https://www.reddit.com/r/node/comments/3u2b6b/codeceptjs_a_new_end_to_end_testing_framework/cxbazhg">Comment</a> from discussion <a href="https://www.reddit.com/r/node/comments/3u2b6b/codeceptjs_a_new_end_to_end_testing_framework/">CodeceptJS - a new end to end testing framework with nice synchonous API</a>.</div><script async src="https://www.redditstatic.com/comment-embed.js"></script>
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Implementing acceptance tests for the massive codebase at <a href="https://twitter.com/KingdomAdvisors">@KingdomAdvisors</a> has been a joy, thanks to <a href="https://twitter.com/CodeceptJS">@CodeceptJS</a> <a href="https://twitter.com/hashtag/craftcms?src=hash">#craftcms</a></p>&mdash; Selvin Ortiz (@selvinortiz) <a href="https://twitter.com/selvinortiz/status/691730160593141760">January 25, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <blockquote class="twitter-tweet" data-conversation="none" lang="uk"><p lang="en" dir="ltr"><a href="https://twitter.com/codeception">@codeception</a> Ahh. Well, so far, very promising. Excited to use it.</p>&mdash; Jeffrey Way (@jeffrey_way) <a href="https://twitter.com/jeffrey_way/status/669314229690884096">25 Листопад 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Starting playing around with <a href="https://twitter.com/CodeceptJS">@CodeceptJS</a> today. Very easy to set-up and loving the interactive shell - very useful <a href="https://twitter.com/hashtag/testing?src=hash">#testing</a></p>&mdash; David Wardlaw (@DaveyBoyWardlaw) <a href="https://twitter.com/DaveyBoyWardlaw/status/699344024499572736">February 15, 2016</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 </div>
 
     <div class="col-md-6">
-  
-    
+
+
 
 
     <h2>Comparisons</h2>
@@ -147,7 +152,7 @@ Written from <strong>user's perspective</strong>. Every action is a method of I.
 
     </p>
 
-    
+
     <h2>Powered By</h2>
 
     <ul class="imglist powered">
@@ -163,7 +168,12 @@ Written from <strong>user's perspective</strong>. Every action is a method of I.
       </li>
       <li>
         <a target="_blank" href="http://www.seleniumhq.org/">
-          <img src="/images/selenium.png" alt="Selenium">      
+          <img src="/images/selenium.png" alt="Selenium">
+        </a>
+      </li>
+      <li>
+        <a target="_blank" href="http://www.protractortest.org/">
+          <img src="/images/protractor.png" alt="Protractor end to end testing for AngularJS">
         </a>
       </li>
     </ul>
