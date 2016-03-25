@@ -1,7 +1,5 @@
 # SeleniumWebdriver
 
-**Extends Helper**
-
 SeleniumWebdriver helper is based on the official [Selenium Webdriver JS](https://www.npmjs.com/package/selenium-webdriver)
 library. It implements common web api methods (amOnPage, click, see).
 
@@ -27,8 +25,32 @@ This helper should be configured in codecept.json
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+-   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 
-other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+## Access From Helpers
+
+Receive a WebDriverIO client from a custom helper by accessing `browser` property:
+
+```js
+this.helpers['Protractor'].browser
+```
+
+**Parameters**
+
+-   `config`  
+
+## _locate
+
+Get elements by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+```
+
+**Parameters**
+
+-   `locator`  
 
 ## amOnPage
 
@@ -227,15 +249,20 @@ Checks that title does not contain text.
 
 ## doubleClick
 
-Performs a double-click on an element matched by CSS or XPath.
+Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
 
 ```js
-I.click({css: 'button.accept'});
+I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 ```
 
 **Parameters**
 
 -   `locator`  
+-   `context`  
 
 ## executeAsyncScript
 
