@@ -1,3 +1,9 @@
+## 0.3.3
+
+**Fixed global installation**. CodeceptJS can now locate globally located modules.
+CodeceptJS is also recommended for local installation.
+Depending on installation type additional modules (webdriverio, protractor, ...) will be loaded either from local or from global path.
+
 ## 0.3.2
 
 * Added `codeceptjs list` command which shows all available methods of `I` object.
