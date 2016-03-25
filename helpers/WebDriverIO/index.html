@@ -199,7 +199,7 @@
         
             <li><a href="#access-from-helpers">Access From Helpers</a></li>
         
-            <li><a href="#95locate">_locate</a></li>
+            <li><a href="#_locate">_locate</a></li>
         
             <li><a href="#acceptpopup">acceptPopup</a></li>
         
@@ -321,7 +321,6 @@
             <div class="col-md-7" role="main">
 
 <h1 id="webdriverio">WebDriverIO</h1>
-<p><strong>Extends Helper</strong></p>
 <p>WebDriverIO helper which wraps <a href="http://webdriver.io/">webdriverio</a> library to
 manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <h4 id="selenium-installation">Selenium Installation</h4>
@@ -330,7 +329,7 @@ manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <li>Launch the daemon: <code>java -jar selenium-server-standalone-2.xx.xxx.jar</code></li>
 </ol>
 <h4 id="phantomjs-installation">PhantomJS Installation</h4>
-<p>PhantomJS is a headless alternative to Selenium Server that implements <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol">the WebDriver protocol</a>.
+<p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.</p>
 <ol>
 <li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
@@ -343,6 +342,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
+<li><code>desiredCapabilities</code>:</li>
 </ul>
 <p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">http://webdriver.io/guide/getstarted/configuration.html</a></p>
 <h3 id="connect-through-proxy">Connect through proxy</h3>
@@ -387,8 +387,8 @@ need to update the <code>helpers.WebDriverIO.desiredCapabilities.proxy</code> ke
 }
 </code></pre>
 
-<p>Please refer to <a href="https://code.google.com/p/selenium/wiki/DesiredCapabilities#Proxy_JSON_Object">Selenium - Proxy Object</a> for more information.</p>
-<h2 id="cloud-providers">Cloud Providers</h2>
+<p>Please refer to <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Selenium - Proxy Object</a> for more information.</p>
+<h3 id="cloud-providers">Cloud Providers</h3>
 <p>WebDriverIO makes it possible to execute tests against services like <code>Sauce Labs</code> <code>BrowserStack</code> <code>TestingBot</code>
 Check out their documentation on <a href="http://webdriver.io/guide/testrunner/cloudservices.html">available parameters</a></p>
 <p>Connecting to <code>BrowserStack</code> and <code>Sauce Labs</code> is simple. All you need to do
@@ -414,7 +414,7 @@ service provider to connect to.</p>
 }
 </code></pre>
 
-<h2 id="multiremote-capabilities">Multiremote Capabilities</h2>
+<h3 id="multiremote-capabilities">Multiremote Capabilities</h3>
 <p>This is a work in progress but you can control two browsers at a time right out of the box.
 Individual control is something that is planned for a later version.</p>
 <p>Here is the <a href="http://webdriver.io/guide/usage/multiremote.html">webdriverio docs</a> on the subject</p>
@@ -443,7 +443,11 @@ Individual control is something that is planned for a later version.</p>
 <pre><code class="js">this.helpers['WebDriverIO'].browser
 </code></pre>
 
-<h2 id="95locate">_locate</h2>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
+<h2 id="_locate">_locate</h2>
 <p>Get elements by different locator types, including strict locator
 Should be used in custom helpers:</p>
 <pre><code class="js">this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
@@ -634,13 +638,18 @@ Opposite to <code>seeInField</code>.</p>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="doubleclick">doubleClick</h2>
-<p>Performs a double-click on an element matched by CSS or XPath.</p>
-<pre><code class="js">I.click({css: 'button.accept'});
+<p>Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.</p>
+<pre><code class="js">I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>context</code>  </li>
 </ul>
 <h2 id="draganddrop">dragAndDrop</h2>
 <p>Drag an item to a destination element.</p>

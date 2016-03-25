@@ -191,9 +191,21 @@
         
             <li><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#access-from-helpers">Access From Helpers</a></li>
+        
+            <li><a href="#_locate">_locate</a></li>
+        
             <li><a href="#aminsideangularapp">amInsideAngularApp</a></li>
         
             <li><a href="#amoutsideangularapp">amOutsideAngularApp</a></li>
+        
+            <li><a href="#havemodule">haveModule</a></li>
+        
+            <li><a href="#moveto">moveTo</a></li>
+        
+            <li><a href="#refresh">refresh</a></li>
+        
+            <li><a href="#resetmodule">resetModule</a></li>
         
             <li><a href="#waitforclickable">waitForClickable</a></li>
         
@@ -283,7 +295,6 @@
             <div class="col-md-7" role="main">
 
 <h1 id="protractor">Protractor</h1>
-<p><strong>Extends SeleniumWebdriver</strong></p>
 <p>Protractor helper is based on <a href="http://www.protractortest.org">Protractor library</a> and used for testing AngularJS applications.</p>
 <h4 id="selenium-installation">Selenium Installation</h4>
 <ol>
@@ -291,7 +302,7 @@
 <li>Launch the daemon: <code>java -jar selenium-server-standalone-2.xx.xxx.jar</code></li>
 </ol>
 <h4 id="phantomjs-installation">PhantomJS Installation</h4>
-<p>PhantomJS is a headless alternative to Selenium Server that implements <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol">the WebDriver protocol</a>.
+<p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.</p>
 <ol>
 <li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
@@ -304,14 +315,57 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
+<li><code>rootElement</code> - Root element of AngularJS application (default: body)</li>
+<li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
+<li><code>proxy</code>: set proxy settings</li>
 </ul>
 <p>other options are the same as in <a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">Protractor config</a>.</p>
+<h2 id="access-from-helpers">Access From Helpers</h2>
+<p>Receive a WebDriverIO client from a custom helper by accessing <code>browser</code> property:</p>
+<pre><code class="js">this.helpers['Protractor'].browser
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
+<h2 id="_locate">_locate</h2>
+<p>Get elements by different locator types, including strict locator
+Should be used in custom helpers:</p>
+<pre><code class="js">this.helpers['Protractor']._locate({model: 'newTodo'}).then //...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
 <h2 id="aminsideangularapp">amInsideAngularApp</h2>
 <p>Enters Angular mode (switched on by default)
 Should be used after "amOutsideAngularApp"</p>
 <h2 id="amoutsideangularapp">amOutsideAngularApp</h2>
 <p>Switch to non-Angular mode,
 start using WebDriver instead of Protractor in this session</p>
+<h2 id="havemodule">haveModule</h2>
+<p>Injects Angular module</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>modName</code>  </li>
+<li><code>fn</code>  </li>
+</ul>
+<h2 id="moveto">moveTo</h2>
+<p>Moves to url</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>path</code>  </li>
+</ul>
+<h2 id="refresh">refresh</h2>
+<p>Reloads page</p>
+<h2 id="resetmodule">resetModule</h2>
+<p>Resets Angualr module</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>modName</code>  </li>
+</ul>
 <h2 id="waitforclickable">waitForClickable</h2>
 <p>Waits for element to become clickable for number of seconds.</p>
 <p><strong>Parameters</strong></p>

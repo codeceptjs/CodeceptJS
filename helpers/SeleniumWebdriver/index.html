@@ -191,6 +191,10 @@
         
             <li><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#access-from-helpers">Access From Helpers</a></li>
+        
+            <li><a href="#_locate">_locate</a></li>
+        
             <li><a href="#amonpage">amOnPage</a></li>
         
             <li><a href="#appendfield">appendField</a></li>
@@ -285,7 +289,6 @@
             <div class="col-md-7" role="main">
 
 <h1 id="seleniumwebdriver">SeleniumWebdriver</h1>
-<p><strong>Extends Helper</strong></p>
 <p>SeleniumWebdriver helper is based on the official <a href="https://www.npmjs.com/package/selenium-webdriver">Selenium Webdriver JS</a>
 library. It implements common web api methods (amOnPage, click, see).</p>
 <h4 id="selenium-installation">Selenium Installation</h4>
@@ -308,8 +311,27 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
+<li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
 </ul>
-<p>other options are the same as in <a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">Protractor config</a>.</p>
+<h2 id="access-from-helpers">Access From Helpers</h2>
+<p>Receive a WebDriverIO client from a custom helper by accessing <code>browser</code> property:</p>
+<pre><code class="js">this.helpers['Protractor'].browser
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
+<h2 id="_locate">_locate</h2>
+<p>Get elements by different locator types, including strict locator
+Should be used in custom helpers:</p>
+<pre><code class="js">this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
 <h2 id="amonpage">amOnPage</h2>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
@@ -477,13 +499,18 @@ Opposite to <code>seeInField</code>.</p>
 <li><code>text</code>  </li>
 </ul>
 <h2 id="doubleclick">doubleClick</h2>
-<p>Performs a double-click on an element matched by CSS or XPath.</p>
-<pre><code class="js">I.click({css: 'button.accept'});
+<p>Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.</p>
+<pre><code class="js">I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>context</code>  </li>
 </ul>
 <h2 id="executeasyncscript">executeAsyncScript</h2>
 <p>Executes async script on page.

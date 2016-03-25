@@ -10,6 +10,7 @@ const xpathLocator = require('../utils').xpathLocator;
 const fileExists = require('../utils').fileExists;
 const assert = require('assert');
 const path = require('path');
+const requireg = require('requireg');
 
 let withinStore = {};
 
@@ -25,7 +26,7 @@ let withinStore = {};
  *
  * #### PhantomJS Installation
  *
- * PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
+ * PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
  * It allows you to run Selenium tests on a server without a GUI installed.
  *
  * 1. Download [PhantomJS](http://phantomjs.org/download.html)
@@ -39,6 +40,7 @@ let withinStore = {};
  * * `browser` - browser in which perform testing
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `waitForTimeout`: (optional) sets default wait time in *ms* for all `wait*` functions. 1000 by default;
+ * * `desiredCapabilities`:
  *
  *
  * Additional configuration params can be used from http://webdriver.io/guide/getstarted/configuration.html
@@ -90,9 +92,10 @@ let withinStore = {};
  * }
  * ```
  *
- * Please refer to [Selenium - Proxy Object](https://code.google.com/p/selenium/wiki/DesiredCapabilities#Proxy_JSON_Object) for more information.
+ * Please refer to [Selenium - Proxy Object](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities) for more information.
  *
- * ## Cloud Providers
+ * ### Cloud Providers
+ *
  * WebDriverIO makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
  * Check out their documentation on [available parameters](http://webdriver.io/guide/testrunner/cloudservices.html)
  *
@@ -121,7 +124,8 @@ let withinStore = {};
  * }
  * ```
  *
- * ## Multiremote Capabilities
+ * ### Multiremote Capabilities
+ *
  * This is a work in progress but you can control two browsers at a time right out of the box.
  * Individual control is something that is planned for a later version.
  *
@@ -161,7 +165,7 @@ class WebDriverIO extends Helper {
 
   constructor(config) {
     super(config);
-    webdriverio = require('webdriverio');
+    webdriverio = requireg('webdriverio');
 
     // set defaults
     this.options = {
@@ -196,9 +200,9 @@ class WebDriverIO extends Helper {
   static _checkRequirements()
   {
     try {
-        require.resolve("webdriverio");
+      requireg("webdriverio");
     } catch(e) {
-      return ["webdriverio@^4.0.4"];
+      return ["webdriverio"];
     }
   }
 
@@ -330,16 +334,32 @@ I.click({css: 'nav a.login'});
   }
 
   /**
-   * Performs a double-click on an element matched by CSS or XPath.
+   * Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
 
 ```js
-I.click({css: 'button.accept'});
+I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 ```
 
 @param locator
+@param context
    */
-  doubleClick(locator) {
-    return this.browser.doubleClick(withStrictLocator(locator));
+  doubleClick(locator, context) {
+    let client = this.browser;
+    if (context) {
+      client = client.element(context);
+    }
+    return findClickable(client, locator).then(function (res) {
+      if (!res.value || res.value.length === 0) {
+        if (typeof(locator) === "object") locator = JSON.stringify(locator);
+        throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
+      }
+      let elem = res.value[0];
+      return this.moveTo(elem.ELEMENT).doDoubleClick();
+    });
   }
 
   /**

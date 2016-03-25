@@ -1,6 +1,7 @@
 'use strict';
-let webdriver, until;
+let until;
 
+const requireg = require('requireg')
 const Helper = require('../helper');
 const stringIncludes = require('../assert/include').includes;
 const urlEquals = require('../assert/equal').urlEquals;
@@ -42,16 +43,21 @@ let withinStore = {};
  * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+ * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
  *
- * other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+ * ## Access From Helpers
+ *
+ * Receive a WebDriverIO client from a custom helper by accessing `browser` property:
+ *
+ * ```js
+ * this.helpers['Protractor'].browser
+ * ```
+ *
  */
 class SeleniumWebdriver extends Helper {
 
   constructor(config) {
     super(config);
-
-    webdriver = require('selenium-webdriver');
-    until = require('selenium-webdriver').until;
 
     this.options = {
       browser: 'firefox',
@@ -62,15 +68,17 @@ class SeleniumWebdriver extends Helper {
     };
     this.options = Object.assign(this.options, config);
     this.options.waitforTimeout /= 1000; // convert to seconds
-
   }
 
   _init() {
-    global.by = require('selenium-webdriver').By;
+    this.webdriver = requireg('selenium-webdriver');
+    until = this.webdriver.until;
+    global.by = this.webdriver.By;
+
     this.context = 'body'
     this.options.rootElement = 'body' // protractor compat
 
-    this.browserBuilder = new webdriver.Builder()
+    this.browserBuilder = new this.webdriver.Builder()
       .withCapabilities(this.options.capabilities)
       .forBrowser(this.options.browser)
       .usingServer(this.options.seleniumAddress);
@@ -78,12 +86,12 @@ class SeleniumWebdriver extends Helper {
     if (this.options.proxy) this.browserBuilder.setProxy(this.options.proxy);
   }
 
-  static _require()
+  static _checkRequirements()
   {
     try {
-      require.resolve("selenium-webdriver");
+      requireg("selenium-webdriver");
     } catch(e) {
-      return ["selenium-webdriver@~2.48.2"];
+      return ["selenium-webdriver"];
     }
   }
 
@@ -122,6 +130,18 @@ class SeleniumWebdriver extends Helper {
     this.browser.findElement = withinStore.elFn;
     this.browser.findElements = withinStore.elsFn;
     this.context = this.options.rootElement;
+  }
+
+  /**
+   * Get elements by different locator types, including strict locator
+   * Should be used in custom helpers:
+   *
+   * ```js
+   * this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+   * ```
+   */
+  _locate(locator) {
+    return this.browser.findElements(guessLocator(locator));
   }
 
   /**
@@ -177,16 +197,25 @@ I.click({css: 'nav a.login'});
   }
 
   /**
-   * Performs a double-click on an element matched by CSS or XPath.
+   * Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
 
 ```js
-I.click({css: 'button.accept'});
+I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 ```
 
 @param locator
+@param context
    */
-  doubleClick(locator) {
-    return this.browser.findElement(guessLocator(locator)).then((el) => el.doubleClick());
+  doubleClick(locator, context) {
+    let matcher = this.browser;
+    if (context) {
+      matcher = matcher.findElement(guessLocator(context) || by.css(context));
+    }
+    return co(findClickable(matcher, locator)).then((el) => this.browser.actions().doubleClick(el).perform());
   }
 
   /**
@@ -309,14 +338,14 @@ I.pressKey(['Control','a']);
   pressKey(key) {
     let modifier;
     if (Array.isArray(key) && ~['Control','Command','Shift','Alt'].indexOf(key[0])) {
-      modifier = webdriver.Key[key[0].toUpperCase()];
+      modifier = this.webdriver.Key[key[0].toUpperCase()];
       key = key[1];
     }
     if (key == 'Enter') {
-       key = webdriver.Key.ENTER;
+       key = this.webdriver.Key.ENTER;
     }
 
-    let action = new webdriver.ActionSequence(this.browser);
+    let action = new this.webdriver.ActionSequence(this.browser);
     if (modifier) action.keyDown(modifier)
     action.sendKeys(key);
     if (modifier) action.keyUp(modifier)
@@ -1018,6 +1047,7 @@ function *findClickable(matcher, locator) {
     `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][contains(./@value, ${literal})]`,
     `.//input[./@type = 'image'][contains(./@alt, ${literal})]`,
     `.//button[contains(normalize-space(string(.)), ${literal})]`,
+    `.//label[contains(normalize-space(string(.)), ${literal})]`,
     `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][./@name = ${literal}]`,
     `.//button[./@name = ${literal}]`
   ]);
