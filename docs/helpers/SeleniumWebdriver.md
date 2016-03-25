@@ -27,9 +27,30 @@ This helper should be configured in codecept.json
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 
+## Access From Helpers
+
+Receive a WebDriverIO client from a custom helper by accessing `browser` property:
+
+```js
+this.helpers['Protractor'].browser
+```
+
 **Parameters**
 
 -   `config`  
+
+## _locate
+
+Get elements by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+```
+
+**Parameters**
+
+-   `locator`  
 
 ## amOnPage
 

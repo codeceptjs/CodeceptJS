@@ -23,13 +23,36 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
+-   `rootElement` - Root element of AngularJS application (default: body)
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
+-   `proxy`: set proxy settings
 
 other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+
+## Access From Helpers
+
+Receive a WebDriverIO client from a custom helper by accessing `browser` property:
+
+```js
+this.helpers['Protractor'].browser
+```
 
 **Parameters**
 
 -   `config`  
+
+## _locate
+
+Get elements by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+this.helpers['Protractor']._locate({model: 'newTodo'}).then //...
+```
+
+**Parameters**
+
+-   `locator`  
 
 ## amInsideAngularApp
 
@@ -61,8 +84,6 @@ Moves to url
 ## refresh
 
 Reloads page
-
-_Angular specific_
 
 ## resetModule
 
