@@ -19,7 +19,7 @@ program.command('shell [path]')
   .action(require('../lib/command/interactive'));
 
 program.command('list [path]')
-  .alias('sh')
+  .alias('l')
   .description('List all actions for I.')
   .action(require('../lib/command/list'));
 
