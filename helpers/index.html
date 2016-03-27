@@ -275,6 +275,9 @@ class MyHelper extends Helper {
 </code></pre>
 
 <h2 id="protractor-example">Protractor Example</h2>
+<p>Protractor example demonstrates usage of global <code>element</code> and <code>by</code> objects.
+However <code>browser</code> should be accessed from a helper instance via <code>this.helpers['Protractor']</code>;
+We also use <code>chai-as-promised</code> library to have nice assertions with promises.</p>
 <pre><code class="js">'use strict';
 let Helper = codecept_helper;
 
