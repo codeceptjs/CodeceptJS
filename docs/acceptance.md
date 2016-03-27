@@ -8,9 +8,11 @@ By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Sel
 However, you can also choose [SeleniumWebdriver](/helpers/SeleniumWebdriver) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
-Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
-
 In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
+
+Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
+That is what a test look like.
+
 
 ```js
 I.amOnPage('/login');

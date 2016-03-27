@@ -51,7 +51,7 @@ Every method should return a value in order to be appended into promise chain.
 
 Next example demonstrates how to use WebDriverIO library to create your own test action.
 Method `seeAuthentication` will use `client` instance of WebDriverIO to get access to cookies.
-Standard NodeJS assertion library will be used.
+Standard NodeJS assertion library will be used (you can use any).
 
 ```js
 'use strict';
@@ -81,6 +81,36 @@ class MyHelper extends Helper {
       }
       assert.fail(cookies, 'logged_in', "Auth cookie not set");
     });
+  }
+}
+```
+
+## Protractor Example
+
+```js
+'use strict';
+let Helper = codecept_helper;
+
+// use any assertion library you like
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+var expect = chai.expect;
+
+class MyHelper extends Helper {
+  /**
+   * checks that authentication cookie is set
+   */
+  seeInHistory(historyPosition, value) {
+    // access browser instance from Protractor helper
+    this.helpers['Protractor'].browser.refresh();
+
+    // you can use `element` as well as in protractor
+    var history = element.all(by.repeater('result in memory'));
+
+    // use chai as promised for better assertions
+    // end your method with `return` to handle promises
+    return expect(history.get(historyPosition).getText()).to.eventually.equal(value);
   }
 }
 ```

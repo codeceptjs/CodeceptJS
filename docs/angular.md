@@ -262,4 +262,27 @@ Scenario('create todo item', (I) => {
 
 To learn more about refactoring options in CodeceptJS read [PageObjects guide](http://codecept.io/pageobjects/).
 
+### Extending
+
+What if CodeceptJS doesn't provide some of Protractor functionality you actually need? Sure its API is to general,
+and this case is possible. If you don't know how to do something with CodeceptJS - revert back to Protractor syntax!
+
+Create custom helper, define methods for it, and use it inside the I object. Your Helper can access `browser` from Protractor
+by accessing Protractor helper:
+
+```js
+let browser = this.helpers['Protractor'].browser;
+```
+
+or use global `element` and `by` variables to locate elements:
+
+```js
+element.all(by.repeater('result in memory'));
+```
+
+This way we recommend to implement all custom logic using low-level Protractor syntax and using it inside scenario tests.
+Please see an [example of such helper](http://codecept.io/helpers/#protractor-example).
+
 ### done()
+
+Almost ) This example is [available on GitHub](https://github.com/DavertMik/codeceptjs-angular-todomvc).
