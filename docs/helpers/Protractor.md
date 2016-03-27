@@ -66,7 +66,13 @@ start using WebDriver instead of Protractor in this session
 
 ## haveModule
 
-Injects Angular module
+Injects Angular module.
+
+```js
+I.haveModule('modName', function() {
+  angular.module('modName', []).value('foo', 'bar');
+});
+```
 
 **Parameters**
 
@@ -87,7 +93,12 @@ Reloads page
 
 ## resetModule
 
-Resets Angualr module
+Removes mocked Angualr module. If modName not specified - clears all mock modules.
+
+```js
+I.resetModule(); // clears all
+I.resetModule('modName');
+```
 
 **Parameters**
 
