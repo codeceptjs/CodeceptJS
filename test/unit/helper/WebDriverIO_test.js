@@ -226,4 +226,29 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe.only('#switchTo', () => {
+      it('should switch reference to iframe content', () => {
+          return wd.amOnPage('/iframe')
+            .then(() => wd.switchTo('content'))
+            .then(() => wd.see('Information\nLots of valuable data here'));
+      });
+
+      it('should return error if iframe selector is invalid', () => {
+          return wd.amOnPage('/iframe')
+            .then(() => wd.switchTo('#invalidIframeSelector'))
+            .then(expectError)
+            .catch((e) => {
+                e.should.be.instanceOf(Error);
+                e.seleniumStack.type.should.be.equal('NoSuchFrame');
+            });
+      });
+
+      it('should return to parent frame given a null locator', () => {
+        return wd.amOnPage('/iframe')
+          .then(() => wd.switchTo('content'))
+          .then(() => wd.see('Information\nLots of valuable data here'))
+          .then(() => wd.switchTo(null))
+          .then(() => wd.see('Iframe test'));
+      });
+  });
 });
