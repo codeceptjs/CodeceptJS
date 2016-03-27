@@ -226,7 +226,7 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe.only('#switchTo', () => {
+  describe('#switchTo', () => {
       it('should switch reference to iframe content', () => {
           return wd.amOnPage('/iframe')
             .then(() => wd.switchTo('content'))
