@@ -882,3 +882,12 @@ Waits for a function to return true (waits for 1sec by default).
 
 -   `fn`  
 -   `sec`  
+
+## switchTo
+
+Switches context to the content within an IFrame element.
+A null locator will return the context to the current window.
+
+**Paramters**
+
+-   `locator`
