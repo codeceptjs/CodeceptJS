@@ -72,7 +72,6 @@ class SeleniumWebdriver extends Helper {
 
   _init() {
     this.webdriver = requireg('selenium-webdriver');
-    until = this.webdriver.until;
     global.by = this.webdriver.By;
 
     this.context = 'body'
@@ -867,7 +866,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
   waitForElement(locator, sec) {
     sec = sec || this.options.waitforTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(until.elementsLocated(el), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementsLocated(el), sec*1000);
   }
 
   /**
@@ -884,7 +883,7 @@ I.waitForVisible('#popup');
   waitForVisible(locator, sec) {
     sec = sec || this.options.waitforTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(until.elementIsVisible(el), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec*1000);
   }
 
   /**
@@ -907,7 +906,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     }
     let el = this.browser.findElement(guessLocator(context) || by.css(context));
     sec = sec || this.options.waitforTimeout;
-    return this.browser.wait(until.elementTextIs(el, text), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementTextIs(el, text), sec*1000);
   }
 
 }

@@ -197,6 +197,8 @@
         
             <li><a href="#refactoring">Refactoring</a></li>
         
+            <li><a href="#extending">Extending</a></li>
+        
             <li><a href="#done">done()</a></li>
         
     
@@ -420,7 +422,22 @@ module.exports = function() {
 </code></pre>
 
 <p>To learn more about refactoring options in CodeceptJS read <a href="http://codecept.io/pageobjects/">PageObjects guide</a>.</p>
-<h3 id="done">done()</h3></div>
+<h3 id="extending">Extending</h3>
+<p>What if CodeceptJS doesn't provide some of Protractor functionality you actually need? Sure its API is to general,
+and this case is possible. If you don't know how to do something with CodeceptJS - revert back to Protractor syntax!</p>
+<p>Create custom helper, define methods for it, and use it inside the I object. Your Helper can access <code>browser</code> from Protractor
+by accessing Protractor helper:</p>
+<pre><code class="js">let browser = this.helpers['Protractor'].browser;
+</code></pre>
+
+<p>or use global <code>element</code> and <code>by</code> variables to locate elements:</p>
+<pre><code class="js">element.all(by.repeater('result in memory'));
+</code></pre>
+
+<p>This way we recommend to implement all custom logic using low-level Protractor syntax and using it inside scenario tests.
+Please see an <a href="http://codecept.io/helpers/#protractor-example">example of such helper</a>.</p>
+<h3 id="done">done()</h3>
+<p>Almost ) This example is <a href="https://github.com/DavertMik/codeceptjs-angular-todomvc">available on GitHub</a>.</p></div>
             <div class="clearfix"></div>
         </div>
         

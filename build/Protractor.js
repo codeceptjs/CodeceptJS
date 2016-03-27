@@ -260,14 +260,25 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   }
 
   /**
-   * Injects Angular module
+   * Injects Angular module.
+   *
+   * ```js
+   * I.haveModule('modName', function() {
+   *   angular.module('modName', []).value('foo', 'bar');
+   * });
+   * ```
    */
   haveModule(modName, fn) {
     return this.browser.addMockModule(modName, fn);
   }
 
   /**
-   * Resets Angualr module
+   * Removes mocked Angualr module. If modName not specified - clears all mock modules.
+   *
+   * ```js
+   * I.resetModule(); // clears all
+   * I.resetModule('modName');
+   * ```
    */
   resetModule(modName) {
     if (!modName) {
@@ -275,8 +286,6 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     }
     return this.browser.removeMockModule(modName);
   }
-
-
 }
 
 module.exports = Protractor;

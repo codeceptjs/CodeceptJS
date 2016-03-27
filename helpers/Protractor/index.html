@@ -346,7 +346,12 @@ Should be used after "amOutsideAngularApp"</p>
 <p>Switch to non-Angular mode,
 start using WebDriver instead of Protractor in this session</p>
 <h2 id="havemodule">haveModule</h2>
-<p>Injects Angular module</p>
+<p>Injects Angular module.</p>
+<pre><code class="js">I.haveModule('modName', function() {
+  angular.module('modName', []).value('foo', 'bar');
+});
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>modName</code>  </li>
@@ -361,7 +366,11 @@ start using WebDriver instead of Protractor in this session</p>
 <h2 id="refresh">refresh</h2>
 <p>Reloads page</p>
 <h2 id="resetmodule">resetModule</h2>
-<p>Resets Angualr module</p>
+<p>Removes mocked Angualr module. If modName not specified - clears all mock modules.</p>
+<pre><code class="js">I.resetModule(); // clears all
+I.resetModule('modName');
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>modName</code>  </li>
