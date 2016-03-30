@@ -1,7 +1,5 @@
 # WebDriverIO
 
-**Extends Helper**
-
 WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
@@ -12,7 +10,7 @@ manipulate browser using Selenium WebDriver or PhantomJS.
 
 #### PhantomJS Installation
 
-PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
+PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.
 
 1.  Download [PhantomJS](http://phantomjs.org/download.html)
@@ -26,6 +24,7 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+-   `desiredCapabilities`:
 
 Additional configuration params can be used from <http://webdriver.io/guide/getstarted/configuration.html>
 
@@ -76,9 +75,9 @@ For example,
 }
 ```
 
-Please refer to [Selenium - Proxy Object](https://code.google.com/p/selenium/wiki/DesiredCapabilities#Proxy_JSON_Object) for more information.
+Please refer to [Selenium - Proxy Object](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities) for more information.
 
-## Cloud Providers
+### Cloud Providers
 
 WebDriverIO makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
 Check out their documentation on [available parameters](http://webdriver.io/guide/testrunner/cloudservices.html)
@@ -108,7 +107,7 @@ service provider to connect to.
 }
 ```
 
-## Multiremote Capabilities
+### Multiremote Capabilities
 
 This is a work in progress but you can control two browsers at a time right out of the box.
 Individual control is something that is planned for a later version.
@@ -144,7 +143,11 @@ Receive a WebDriverIO client from a custom helper by accessing `browser` propert
 this.helpers['WebDriverIO'].browser
 ```
 
-## \_locate
+**Parameters**
+
+-   `config`  
+
+## _locate
 
 Get elements by different locator types, including strict locator
 Should be used in custom helpers:
@@ -375,15 +378,20 @@ Checks that title does not contain text.
 
 ## doubleClick
 
-Performs a double-click on an element matched by CSS or XPath.
+Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
 
 ```js
-I.click({css: 'button.accept'});
+I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
 ```
 
 **Parameters**
 
 -   `locator`  
+-   `context`  
 
 ## dragAndDrop
 
@@ -874,3 +882,12 @@ Waits for a function to return true (waits for 1sec by default).
 
 -   `fn`  
 -   `sec`  
+
+## switchTo
+
+Switches context to the content within an IFrame element.
+A null locator will return the context to the current window.
+
+**Paramters**
+
+-   `locator`

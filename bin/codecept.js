@@ -18,6 +18,11 @@ program.command('shell [path]')
   .description('Interative shell')
   .action(require('../lib/command/interactive'));
 
+program.command('list [path]')
+  .alias('l')
+  .description('List all actions for I.')
+  .action(require('../lib/command/list'));
+
 program.command('generate test [path]')
   .alias('gt')
   .description('Generates an empty test')

@@ -1,7 +1,5 @@
 # FileSystem
 
-**Extends Helper**
-
 Helper for testing filesystem.
 Can be easily used to check file structures:
 

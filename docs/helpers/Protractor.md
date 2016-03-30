@@ -1,7 +1,5 @@
 # Protractor
 
-**Extends SeleniumWebdriver**
-
 Protractor helper is based on [Protractor library](http://www.protractortest.org) and used for testing AngularJS applications.
 
 #### Selenium Installation
@@ -11,7 +9,7 @@ Protractor helper is based on [Protractor library](http://www.protractortest.org
 
 #### PhantomJS Installation
 
-PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
+PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.
 
 1.  Download [PhantomJS](http://phantomjs.org/download.html)
@@ -25,8 +23,13 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
+-   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 
 other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+
+**Parameters**
+
+-   `config`  
 
 ## amInsideAngularApp
 
@@ -37,6 +40,37 @@ Should be used after "amOutsideAngularApp"
 
 Switch to non-Angular mode,
 start using WebDriver instead of Protractor in this session
+
+## haveModule
+
+Injects Angular module
+
+**Parameters**
+
+-   `modName`  
+-   `fn`  
+
+## moveTo
+
+Moves to url
+
+**Parameters**
+
+-   `path`  
+
+## refresh
+
+Reloads page
+
+_Angular specific_
+
+## resetModule
+
+Resets Angualr module
+
+**Parameters**
+
+-   `modName`  
 
 ## waitForClickable
 

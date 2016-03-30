@@ -1,3 +1,17 @@
+## 0.3.3
+
+**Fixed global installation**. CodeceptJS can now locate globally located modules.
+CodeceptJS is also recommended for local installation.
+Depending on installation type additional modules (webdriverio, protractor, ...) will be loaded either from local or from global path.
+
+## 0.3.2
+
+* Added `codeceptjs list` command which shows all available methods of `I` object.
+* [Protractor][SeleniumWebdriver] fixed closing browser instances
+* [Protractor][SeleniumWebdriver] `doubleClick` method added
+* [WebDriverIO][Protractor][SeleniumWebdriver] `doubleClick` method to locate clickable elements by text, `context` option added.
+* Fixed using assert in generator without yields #89
+
 ## 0.3.1
 
 * Fixed `init` command
