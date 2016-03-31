@@ -3,11 +3,17 @@
 **NodeJS v 4.2.0** and higher required to start. 
 Install **CodeceptJS** with NPM:
 
+You can install it globally:
+
 ```bash
-npm install -g codeceptjs
+[sudo] npm install -g codeceptjs
 ```
 
-(you may need `sudo` to do it).
+or locally
+
+```bash
+npm install --save-dev codeceptjs
+```
 
 ## Setup
 
@@ -104,4 +110,3 @@ My First Test --
 ## Congrats! Your first test is running.
 
 Wasn't it hard, right?
-
