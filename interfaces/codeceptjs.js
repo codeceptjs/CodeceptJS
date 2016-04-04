@@ -58,6 +58,7 @@ module.exports = function (suite) {
       suites.unshift(suite);
       suite.beforeEach('codeceptjs.before', scenario.setup);
       suite.afterEach('finialize codeceptjs', scenario.teardown);
+      console.log(suite);
       return suite;
     };
 

@@ -52,9 +52,6 @@ class Codecept {
 
   loadTests(pattern) {
     pattern = pattern || this.config.tests;
-    if (pattern.indexOf('_test.js') < 0) {
-      pattern += '**/*_test.js';
-    }
     glob.sync(fsPath.join(codecept_dir, pattern)).forEach((file) => {
       this.testFiles.push(fsPath.resolve(file));
     });
