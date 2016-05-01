@@ -1,3 +1,9 @@
+## 0.3.4
+
+* [Protractor] version 3.3.0 comptaibility, NPM 3 compatibility. Please update Protractor!
+* allows using absolute path for helpers, output, in config and in command line. By @denis-sokolov
+* Fixes 'Cannot read property '1' of null in generate.js:44' by @seethislight
+
 ## 0.3.3
 
 **Fixed global installation**. CodeceptJS can now locate globally located modules.

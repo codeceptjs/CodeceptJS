@@ -798,6 +798,14 @@ I.setCookie({name: 'auth', value: true});
 
 -   `cookie`  Uses Selenium's JSON [cookie format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
+## switchTo
+
+Switches frame or in case of null locator reverts to parent.
+
+**Parameters**
+
+-   `locator`  
+
 ## wait
 
 Pauses execution for a number of seconds.
