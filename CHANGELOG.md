@@ -1,3 +1,7 @@
+## 0.3.4
+
+* [Protractor] version 3.3.0 comptaibility
+
 ## 0.3.3
 
 **Fixed global installation**. CodeceptJS can now locate globally located modules.

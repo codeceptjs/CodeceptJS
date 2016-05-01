@@ -87,6 +87,11 @@ class MyHelper extends Helper {
 
 ## Protractor Example
 
+Protractor example demonstrates usage of global `element` and `by` objects.
+However `browser` should be accessed from a helper instance via `this.helpers['Protractor']`;
+We also use `chai-as-promised` library to have nice assertions with promises.
+
+
 ```js
 'use strict';
 let Helper = codecept_helper;
