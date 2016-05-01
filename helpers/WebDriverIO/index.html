@@ -301,6 +301,8 @@
         
             <li><a href="#setcookie">setCookie</a></li>
         
+            <li><a href="#switchto">switchTo</a></li>
+        
             <li><a href="#wait">wait</a></li>
         
             <li><a href="#waitforelement">waitForElement</a></li>
@@ -968,6 +970,12 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>cookie</code>  Uses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie format</a>.</li>
+</ul>
+<h2 id="switchto">switchTo</h2>
+<p>Switches frame or in case of null locator reverts to parent.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
 </ul>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>

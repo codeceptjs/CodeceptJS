@@ -1217,6 +1217,14 @@ I.waitForVisible('#popup');
     sec = sec || this.options.waitForTimeout;
     return this.browser.waitUntil(fn, sec);
   }
+
+  /**
+   * Switches frame or in case of null locator reverts to parent.
+   */
+  switchTo(locator) {
+    locator = locator || null;
+    return this.browser.frame(locator);
+  }
 }
 
 function proceedSee(assertType, text, context) {

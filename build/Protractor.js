@@ -74,13 +74,21 @@ class Protractor extends SeleniumWebdriver {
   }
 
   _init() {
-    this.webdriver = requireg('protractor/node_modules/selenium-webdriver');
+    try {
+      // get selenium-webdriver
+      this.webdriver = requireg('selenium-webdriver');
+    } catch (e) {
+      // maybe it is installed as protractor dependency?
+      this.webdriver = requireg('protractor/node_modules/selenium-webdriver');
+    }
     protractorWrapper = requireg('protractor').wrapDriver;
     EC = requireg('protractor').ExpectedConditions;
 
     global.by = requireg('protractor').By;
     global.element = requireg('protractor').element;
-    this.driverProvider = requireg('protractor/built/driverProviders/'+this.options.driver)(this.options);
+    let driverProviderModule = requireg('protractor/built/driverProviders/'+this.options.driver);
+    let className = Object.keys(driverProviderModule)[0];
+    this.driverProvider = new driverProviderModule[className](this.options);
     this.driverProvider.setupEnv();
   }
 
@@ -88,8 +96,9 @@ class Protractor extends SeleniumWebdriver {
   {
     try {
       requireg("protractor");
+      require('assert').ok(requireg("protractor/built/driverProviders/hosted").Hosted);
     } catch(e) {
-      return ["protractor"];
+      return ["protractor@^3.3.0"];
     }
   }
 
