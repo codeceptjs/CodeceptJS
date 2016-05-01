@@ -26,6 +26,8 @@ Codeception tests are:
 Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has two helpers:
 
 * [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
+* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper enpowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
+* [**SeleniumWebdriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/SeleniumWebdriver.md) - helper which for selenium testing using official Selenium Webdriver JS bindings.
 * [**FileSystem**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/FileSystem.md) - simple helper for testing filesystem.
 
 And more to come...
