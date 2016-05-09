@@ -185,6 +185,8 @@
     
         <li class="main active"><a href="#quickstart">QuickStart</a></li>
         
+            <li><a href="#setup">Setup</a></li>
+        
             <li><a href="#creating-first-test">Creating First Test</a></li>
         
             <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running.</a></li>
@@ -197,42 +199,17 @@
 <h1 id="quickstart">QuickStart</h1>
 <p><strong>NodeJS v 4.2.0</strong> and higher required to start.
 Install <strong>CodeceptJS</strong> with NPM:</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre><code class="bash">npm install -g codeceptjs
-=======
-You can install it globally:
-
+<p>You can install it globally:</p>
+<pre><code>[sudo] npm install -g codeceptjs
 </code></pre>
 
-<p>[sudo] npm install -g codeceptjs</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<pre><code>
-or locally
-
+<p>or locally</p>
+<pre><code>npm install --save-dev codeceptjs
 </code></pre>
 
-<p>npm install --save-dev codeceptjs</p>
-<pre><code>
-## Setup
-
-Initialize CodeceptJS by running:
-
-```bash
-codeceptjs init
+<h2 id="setup">Setup</h2>
+<p>Initialize CodeceptJS running:</p>
+<pre><code>codeceptjs init
 </code></pre>
 
 <p>It will create <code>codecept.json</code> config in current directory (or provide path in the first argument).</p>
@@ -241,31 +218,28 @@ codeceptjs init
 We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.
 If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
 No matter what helper you've chosen they will be similar in use.</p>
-<pre><code class="bash">? What helpers do you want to use?
-</code></pre>
-
-<p>❯◉ WebDriverIO
+<pre><code>? What helpers do you want to use?
+❯◉ WebDriverIO
  ◯ Protractor
  ◯ SeleniumWebdriver
- ◯ FileSystem</p>
-<pre><code>
-Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.
+ ◯ FileSystem
+</code></pre>
 
-```bash
-? Where should logs, screenshots, and reports to be stored? ./output
+<p>Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.</p>
+<pre><code>? Where should logs, screenshots, and reports to be stored? ./output
 </code></pre>
 
 <p>If you are going to extend test suite by writing custom steps you should probably agree to create <code>steps_file.js</code></p>
-<pre><code class="bash">? Would you like to extend I object with custom steps? Yes
+<pre><code>? Would you like to extend I object with custom steps? Yes
 ? Where would you like to place custom steps? ./steps_file.js
 </code></pre>
 
 <p>WebDriverIO helper will ask for additional configuration as well:</p>
-<pre><code class="bash">? [WebDriverIO] Base url of site to be tested http://localhost
+<pre><code>? [WebDriverIO] Base url of site to be tested http://localhost
 ? [WebDriverIO] Browser in which testing will be performed firefox
 </code></pre>
 
-<p>If you agree with defaults press enter and finish the installation.</p>
+<p>If you agree with defaults, finish the installation.</p>
 <p>Depending on a helper you've chosen you will be asked to install corresponding package manually in the end of init.
 In case of webdriver you will need to run</p>
 <pre><code>[sudo] npm install -g webdriverio
@@ -274,25 +248,7 @@ In case of webdriver you will need to run</p>
 <p>for global installation. In case CodeceptJS is installed locally, webdriverio can be installed locally as well.
 In a similar way you may install <code>protractor</code> or <code>selenium-webdriver</code>.</p>
 <h2 id="creating-first-test">Creating First Test</h2>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Tests can be easily created by running
-=======
-Tests can be easily created by running</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>Tests can be easily created by running</p>
 <pre><code class="bash">codeceptjs gt
 </code></pre>
 
@@ -301,11 +257,7 @@ Tests can be easily created by running</p>
 <pre><code class="js">Feature('My First Test');
 
 Scenario('test something', (I) =&gt; {
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
 
-=======
-
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; master
 });
 </code></pre>
 
@@ -318,25 +270,7 @@ Scenario('test something', (I) =&gt; {
 });
 </code></pre>
 
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Before running this test we should ensure that <a href="../helpers/WebDriverIO/#selenium-installation">Selenium Web Server is running</a>. Then we can execute tests with
-=======
-Before running this test we should ensure that <a href="../helpers/WebDriverIO/#selenium-installation">Selenium Web Server is running</a>. Then we can execute tests with</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>Before running this test we should ensure that <a href="../helpers/WebDriverIO/#selenium-installation">Selenium Web Server is running</a>. Then we can execute tests with</p>
 <pre><code class="bash">codeceptjs run --steps
 </code></pre>
 
@@ -346,33 +280,11 @@ Before running this test we should ensure that <a href="../helpers/WebDriverIO/#
   test something
    • I am on page &quot;/&quot;
    • I see &quot;Welcome&quot;
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
  ✓ OK
-=======
- ✓ OK
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; master
 </code></pre>
 
 <h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running.</h2>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-Wasn't it hard, right?</p>
-<p>=======
-Wasn't it hard, right?</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote></div>
+<p>Wasn't it hard, right?</p></div>
             <div class="clearfix"></div>
         </div>
         
