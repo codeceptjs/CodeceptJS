@@ -19,7 +19,7 @@ Scenario('check Welcome page on site', (I) => {
 
 Codeception tests are:
 
-* **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.
+* **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be too.
 * Written from **user's perspective**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
 * Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
 
