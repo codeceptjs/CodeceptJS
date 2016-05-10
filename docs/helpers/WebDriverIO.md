@@ -160,6 +160,42 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 
 -   `locator`  
 
+## _locateCheckable
+
+Find a checkbox by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateClickable
+
+Find a clickable element by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateFields
+
+Find field elements by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateFields('Your email').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
 ## acceptPopup
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
@@ -798,6 +834,14 @@ I.setCookie({name: 'auth', value: true});
 
 -   `cookie`  Uses Selenium's JSON [cookie format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
+## switchTo
+
+Switches frame or in case of null locator reverts to parent.
+
+**Parameters**
+
+-   `locator`  
+
 ## wait
 
 Pauses execution for a number of seconds.
@@ -882,12 +926,3 @@ Waits for a function to return true (waits for 1sec by default).
 
 -   `fn`  
 -   `sec`  
-
-## switchTo
-
-Switches context to the content within an IFrame element.
-A null locator will return the context to the current window.
-
-**Paramters**
-
--   `locator`
