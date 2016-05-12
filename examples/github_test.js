@@ -1,4 +1,4 @@
-
+/// <reference path="./steps.d.ts" />
 Feature('GitHub');
 
 Before((Smth) => {
