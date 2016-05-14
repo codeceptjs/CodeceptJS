@@ -286,7 +286,7 @@ In this case you should use generator and yield to receive results.
 
 ## fillField
 
-Fills a text field or textarea, after clearing its value,  with the given string.
+Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.
 
 ```js
@@ -373,7 +373,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
-If modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
 ```js
 I.pressKey('Enter');
@@ -542,14 +542,14 @@ Checks that title contains text.
 ## selectOption
 
 Selects an option in a drop-down select.
-Field is siearched by label | name | CSS | XPath.
+Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
 
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
 I.selectOption('subscription', 'Monthly'); // match option by text
 I.selectOption('subscription', '0'); // or by value
-I.selectOption('//form/select[@name=account]','Permium');
+I.selectOption('//form/select[@name=account]','Premium');
 I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
 ```
@@ -557,7 +557,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 Provide an array for the second argument to select multiple options.
 
 ```js
-I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
+I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 ```
 
 **Parameters**
