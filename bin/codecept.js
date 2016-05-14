@@ -23,6 +23,10 @@ program.command('list [path]')
   .description('List all actions for I.')
   .action(require('../lib/command/list'));
 
+program.command('def [path]')
+  .description('List all actions for I.')
+  .action(require('../lib/command/definitions'));
+
 program.command('generate test [path]')
   .alias('gt')
   .description('Generates an empty test')
