@@ -94,12 +94,20 @@ codeceptjs generate helper
 
 ## TypeScript Definitions
 
-Produces `steps.d.ts` file with TypeScript definitions.
-When refrerenced in tests can be used by IDE to provide autocompletion.
+TypeScript Definitions allows IDEs to provide autocompletion when writing tests.
 
 ```
 codeceptjs def
 ```
+
+Produces `steps.d.ts` file, which refrerenced in the very beginning of a test file.
+
+```js
+/// <reference path="./steps.d.ts" />
+Feature('My new test');
+```
+
+After doing that IDE should provide autocompletion for `I` object inside `Scenario` and `within` blocks.
 
 ## List Commands
 
