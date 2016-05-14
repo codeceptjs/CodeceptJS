@@ -30,7 +30,7 @@ gulp.task('static', function () {
   return gulp.src('lib/**/*.js')
     .pipe(gitmodified(['added', 'modified']))
     .pipe(eslint({fix: true, quiet: true}))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('lib'));
 });
 
 gulp.task('lint', function () {
