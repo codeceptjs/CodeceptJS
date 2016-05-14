@@ -276,11 +276,16 @@
 </code></pre>
 
 <h2 id="typescript-definitions">TypeScript Definitions</h2>
-<p>Produces <code>steps.d.ts</code> file with TypeScript definitions.
-When refrerenced in tests can be used by IDE to provide autocompletion.</p>
+<p>TypeScript Definitions allows IDEs to provide autocompletion when writing tests.</p>
 <pre><code>codeceptjs def
 </code></pre>
 
+<p>Produces <code>steps.d.ts</code> file, which refrerenced in the very beginning of a test file.</p>
+<pre><code class="js">/// &lt;reference path=&quot;./steps.d.ts&quot; /&gt;
+Feature('My new test');
+</code></pre>
+
+<p>After doing that IDE should provide autocompletion for <code>I</code> object inside <code>Scenario</code> and <code>within</code> blocks.</p>
 <h2 id="list-commands">List Commands</h2>
 <p>Prints all avialable methods of <code>I</code> to console</p>
 <pre><code>codeceptjs list
