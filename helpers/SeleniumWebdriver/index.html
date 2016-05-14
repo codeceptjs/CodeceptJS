@@ -542,7 +542,7 @@ In this case you should use generator and yield to receive results.</p>
 <li><code>fn</code>  </li>
 </ul>
 <h2 id="fillfield">fillField</h2>
-<p>Fills a text field or textarea, after clearing its value,  with the given string.
+<p>Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.</p>
 <pre><code class="js">// by label
 I.fillField('Email', 'hello@world.com');
@@ -611,7 +611,7 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <p>Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
 will be replaced with corresponding unicode.
-If modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
+If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
 <pre><code class="js">I.pressKey('Enter');
 I.pressKey(['Control','a']);
 </code></pre>
@@ -743,18 +743,18 @@ I.seeInField('#searchform input','Search');
 </ul>
 <h2 id="selectoption">selectOption</h2>
 <p>Selects an option in a drop-down select.
-Field is siearched by label | name | CSS | XPath.
+Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.</p>
 <pre><code class="js">I.selectOption('Choose Plan', 'Monthly'); // select by label
 I.selectOption('subscription', 'Monthly'); // match option by text
 I.selectOption('subscription', '0'); // or by value
-I.selectOption('//form/select[@name=account]','Permium');
+I.selectOption('//form/select[@name=account]','Premium');
 I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
 </code></pre>
 
 <p>Provide an array for the second argument to select multiple options.</p>
-<pre><code class="js">I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
+<pre><code class="js">I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 </code></pre>
 
 <p><strong>Parameters</strong></p>

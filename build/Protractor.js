@@ -282,7 +282,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   }
 
   /**
-   * Removes mocked Angualr module. If modName not specified - clears all mock modules.
+   * Removes mocked Angular module. If modName not specified - clears all mock modules.
    *
    * ```js
    * I.resetModule(); // clears all
@@ -452,9 +452,10 @@ I.click({css: 'nav a.login'});
 var _click;
 
 /**
- *  Verifies that the specified checkbox is not checked.
+ * Verifies that the specified checkbox is not checked.
 
- @param field located by label|name|CSS|XPath|strict locator
+@param field located by label|name|CSS|XPath|strict locator
+
  *
  * @name dontSeeCheckboxIsChecked
  * @kind function
@@ -596,7 +597,7 @@ In this case you should use generator and yield to receive results.
 var _executeScript;
 
 /**
- * Fills a text field or textarea, after clearing its value,  with the given string.
+ * Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.
 
 ```js
@@ -611,6 +612,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ```
 @param field located by label|name|CSS|XPath|strict locator
 @param value
+
  *
  * @name fillField
  * @kind function
@@ -704,13 +706,14 @@ var _grabValueFrom;
  * Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
-If modiferier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
 ```js
 I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 @param key
+
  *
  * @name pressKey
  * @kind function
@@ -898,14 +901,14 @@ var _see;
 
 /**
  * Selects an option in a drop-down select.
-Field is siearched by label | name | CSS | XPath.
+Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
 
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
 I.selectOption('subscription', 'Monthly'); // match option by text
 I.selectOption('subscription', '0'); // or by value
-I.selectOption('//form/select[@name=account]','Permium');
+I.selectOption('//form/select[@name=account]','Premium');
 I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
 ```
@@ -913,10 +916,11 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 Provide an array for the second argument to select multiple options.
 
 ```js
-I.selectOption('Which OS do you use?', ['Andriod', 'OSX']);
+I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 ```
 @param select field located by label|name|CSS|XPath|strict locator
 @param option
+
  *
  * @name selectOption
  * @kind function
