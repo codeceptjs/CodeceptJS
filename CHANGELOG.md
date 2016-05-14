@@ -1,3 +1,13 @@
+## 0.3.5
+
+* Introduced IDE autocompletion support for Visual Studio Code and others. Added command for generating TypeScript definitions for `I` object. Use it as
+
+```
+codeceptjs def
+```
+
+to generate steps definition file and include it into tests by reference. By @kaflan
+
 ## 0.3.4
 
 * [Protractor] version 3.3.0 comptaibility, NPM 3 compatibility. Please update Protractor!
