@@ -139,6 +139,19 @@
             
                         
             
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../commands/">Commands</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
                 
                 <li class="active">
                     <a href="./">Releases</a>
@@ -151,7 +164,7 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../helpers/FileSystem/">
+                    <a rel="next" href="../commands/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
@@ -183,7 +196,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#034">0.3.4</a></li>
+        <li class="main active"><a href="#035">0.3.5</a></li>
+        
+    
+        <li class="main "><a href="#034">0.3.4</a></li>
         
     
         <li class="main "><a href="#033">0.3.3</a></li>
@@ -226,6 +242,14 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="035">0.3.5</h2>
+<ul>
+<li>Introduced IDE autocompletion support for Visual Studio Code and others. Added command for generating TypeScript definitions for <code>I</code> object. Use it as</li>
+</ul>
+<pre><code>codeceptjs def
+</code></pre>
+
+<p>to generate steps definition file and include it into tests by reference. By @kaflan</p>
 <h2 id="034">0.3.4</h2>
 <ul>
 <li>[Protractor] version 3.3.0 comptaibility, NPM 3 compatibility. Please update Protractor!</li>
