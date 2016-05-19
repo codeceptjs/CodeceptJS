@@ -251,4 +251,49 @@ describe('WebDriverIO', function () {
           .then(() => wd.see('Iframe test'));
       });
   });
+
+  describe('#_locateClickable', () => {
+    it('should locate a button to click', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateClickable('Submit'))
+        .then((res) => {
+          res.length.should.be.equal(1)
+        })
+    });
+
+    it('should not locate a non-existing checkbox', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateClickable('I disagree'))
+        .then((res) => res.length.should.be.equal(0))
+    });
+  });
+
+  describe('#_locateCheckable', () => {
+    it('should locate a checkbox', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateCheckable('I Agree'))
+        .then((res) => res.length.should.be.equal(1))
+    });
+
+    it('should not locate a non-existing checkbox', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateCheckable('I disagree'))
+        .then((res) => res.length.should.be.equal(0))
+    });
+  });
+
+  describe('#_locateFields', () => {
+    it('should locate a field', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd._locateFields('Name'))
+        .then((res) => res.length.should.be.equal(1))
+    });
+
+    it('should not locate a non-existing field', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd._locateFields('Mother-in-law'))
+        .then((res) => res.length.should.be.equal(0))
+    });
+  });
+
 });

@@ -160,6 +160,42 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 
 -   `locator`  
 
+## _locateCheckable
+
+Find a checkbox by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateClickable
+
+Find a clickable element by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateFields
+
+Find field elements by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateFields('Your email').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
 ## acceptPopup
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
