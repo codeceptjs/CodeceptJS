@@ -44,6 +44,7 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 * Based on [Mocha](https://mochajs.org/) testing framework.
 * Designed for scenario driven acceptance testing in BDD-style
 * Uses ES6 natively without transpiler.
+* Also plays nice with TypeScript.
 * Selenium WebDriver integration using [webdriverio](http://webdriver.io).
 * Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 * Interactive debugging shell: pause test at any point and try different commands in a browser.
@@ -76,6 +77,14 @@ Now test is created and can be executed with
 ```
 codeceptjs run
 ```
+
+If you want to write your tests using TypeScript just generate standard Type Definitions by executing:
+
+```
+codeceptjs def .
+```
+
+Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
 ## Usage
 
