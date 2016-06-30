@@ -52,6 +52,7 @@
     "gulp-mustache": "^2.2.0",
     "gulp-plumber": "^1.0.0",
     "guppy-pre-commit": "^0.3.0",
+    "nightmare": "^2.5.2",
     "protractor": "^3.3.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
