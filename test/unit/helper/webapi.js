@@ -69,6 +69,7 @@ module.exports.tests = function() {
     it('should check visible elements on page', function*() {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
+      yield I.seeElement({name: 'name'});
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');

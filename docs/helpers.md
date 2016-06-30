@@ -47,6 +47,14 @@ module.exports = MyHelper;
 All methods except those starting from `_` will be added to `I` object and treated as test actions.
 Every method should return a value in order to be appended into promise chain.
 
+After writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:
+
+```
+codeceptjs def .
+```
+
+This way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.
+
 ## WebDriverIO Example
 
 Next example demonstrates how to use WebDriverIO library to create your own test action.
