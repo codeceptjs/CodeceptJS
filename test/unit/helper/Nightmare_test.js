@@ -64,7 +64,7 @@ describe('Nightmare', function () {
       return I.amOnPage('/')
         .then(() => I.see('Something incredible!'))
         .then(expectError)
-        .thenCatch((e) => {
+        .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web application');
         })
@@ -74,7 +74,7 @@ describe('Nightmare', function () {
       return I.amOnPage('/')
         .then(() => I.dontSee('Welcome'))
         .then(expectError)
-        .thenCatch((e) => {
+        .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web application');
         });
@@ -84,7 +84,7 @@ describe('Nightmare', function () {
       return I.amOnPage('/')
         .then(() => I.see('debug', {css: 'a'}))
         .then(expectError)
-        .thenCatch((e) => {
+        .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.toString().should.not.include('web page');
           e.inspect().should.include("expected element {css: 'a'}");

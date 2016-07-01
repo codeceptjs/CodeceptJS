@@ -129,7 +129,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#checkOption', () => {
+  describe.only('#checkOption', () => {
     it('should check option by css', function*() {
       yield I.amOnPage('/form/checkbox')
       yield I.checkOption('#checkin');
