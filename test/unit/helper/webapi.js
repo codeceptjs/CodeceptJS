@@ -171,7 +171,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe.only('#selectOption', () => {
+  describe('#selectOption', () => {
     it('should select option by css', function*() {
       yield I.amOnPage('/form/select');
       yield I.selectOption('form select[name=age]', 'adult');
