@@ -144,6 +144,18 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#pressKey', () => {
+    it('should be able to send special keys to element', function*() {
+      yield wd.amOnPage('/form/field');
+      yield wd.appendField('Name', '-');
+      yield wd.pressKey([`Control`, `A`]);
+      yield wd.pressKey([`Delete`]);
+      yield wd.pressKey(['Shift', '1']);
+      yield wd.pressKey('1');
+      return wd.seeInField('Name', '!!!1');
+    });
+  });
+
   describe('#clearField', () => {
     it('should clear a given element', () => {
       return wd.amOnPage('/form/field')

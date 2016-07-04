@@ -58,6 +58,19 @@ describe('SeleniumWebdriver', function () {
     });
   });
 
+  describe('#pressKey', () => {
+    it('should be able to send special keys to element', function*() {
+      yield I.amOnPage('/form/field');
+      yield I.appendField('Name', '-');
+      yield I.pressKey([`Control`, `A`]);
+      yield I.pressKey([`Delete`]);
+      yield I.pressKey(['Shift', '1']);
+      yield I.pressKey('1');
+      return I.seeInField('Name', '!!!1');
+    });
+  });
+
+
   webApiTests.tests();
 
   describe('see text : #see', () => {

@@ -15,6 +15,11 @@ module.exports.init = function(testData)
 
 module.exports.tests = function() {
 
+  let isHelper = (helperName) => {
+    return I.constructor.name == helperName;
+  }
+
+
   beforeEach(function() {
     I = data.I;
     site_url = data.site_url;
@@ -129,7 +134,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe.only('#checkOption', () => {
+  describe('#checkOption', () => {
     it('should check option by css', function*() {
       yield I.amOnPage('/form/checkbox')
       yield I.checkOption('#checkin');
@@ -166,7 +171,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#selectOption', () => {
+  describe.only('#selectOption', () => {
     it('should select option by css', function*() {
       yield I.amOnPage('/form/select');
       yield I.selectOption('form select[name=age]', 'adult');
@@ -253,16 +258,6 @@ module.exports.tests = function() {
       yield I.appendField('Name', '_AND_NEW');
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
-    });
-
-    it('should be able to send special keys to element', function*() {
-      yield I.amOnPage('/form/field');
-      yield I.appendField('Name', '-');
-      yield I.pressKey([`Control`, `a`]);
-      yield I.pressKey([`Delete`]);
-      yield I.pressKey(['Shift', '111']);
-      yield I.pressKey('1');
-      return I.seeInField('Name', '!!!1');
     });
   });
 
@@ -359,6 +354,7 @@ module.exports.tests = function() {
     });
 
     it('should upload file located by label', function*() {
+      if (isHelper('Nightmare')) return;
       yield I.amOnPage('/form/file');
       yield I.attachFile('Avatar', 'app/avatar.jpg');
       yield I.click('Submit');
