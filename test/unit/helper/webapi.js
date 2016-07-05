@@ -381,7 +381,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
+  describe.only('cookies : #setCookie, #clearCookies, #seeCookie', () => {
     it('should do all cookie stuff', () => {
       return I.amOnPage('/')
         .then(() => I.setCookie({name: 'auth', value: '123456'}))
