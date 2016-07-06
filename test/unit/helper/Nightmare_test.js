@@ -15,9 +15,9 @@ let webApiTests = require('./webapi');
 
 describe('Nightmare', function () {
   this.timeout(10000);
+  global.codecept_dir = path.join(__dirname, '/../../data');
 
   before(function() {
-    global.codecept_dir = path.join(__dirname, '../../data');
     try {
       fs.unlinkSync(dataFile);
     } catch (err) {}

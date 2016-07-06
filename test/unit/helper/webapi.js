@@ -19,7 +19,6 @@ module.exports.tests = function() {
     return I.constructor.name == helperName;
   }
 
-
   beforeEach(function() {
     I = data.I;
     site_url = data.site_url;
@@ -363,17 +362,19 @@ module.exports.tests = function() {
   });
 
   describe('#saveScreenshot', () => {
+
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
 
     it('should create a screenshot file in output dir', () => {
+      let sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
-        .then(() => I.saveScreenshot('sw-user.png'))
-        .then(() => assert.ok(fileExists(path.join(output_dir, 'sw-user.png')), null, 'file does not exists'));
+        .then(() => I.saveScreenshot('screenshot_'+sec))
+        .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_'+sec)), null, 'file does not exists'));
     });
 
-    it('should create a screenshot file in output dir', () => {
+    it('should create a screenshot on fail', () => {
       let test = { title: 'sw should do smth' };
       return I.amOnPage('/')
         .then(() => I._failed(test))
@@ -381,7 +382,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe.only('cookies : #setCookie, #clearCookies, #seeCookie', () => {
+  describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
     it('should do all cookie stuff', () => {
       return I.amOnPage('/')
         .then(() => I.setCookie({name: 'auth', value: '123456'}))
