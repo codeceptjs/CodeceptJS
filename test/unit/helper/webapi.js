@@ -4,12 +4,12 @@ require('co-mocha')(require('mocha'));
 let I, data, site_url;
 let assert = require('assert');
 let path = require('path');
-let formContents = require('../../../lib/utils').test.submittedData(path.join(__dirname, '../../data/app/db'));
+let dataFile = path.join(__dirname, '../../data/app/db');
+let formContents = require('../../../lib/utils').test.submittedData(dataFile);
 let should = require('chai').should();
 let fileExists = require('../../../lib/utils').fileExists;
 
-module.exports.init = function(testData)
-{
+module.exports.init = function(testData) {
   data = testData;
 }
 
@@ -22,6 +22,7 @@ module.exports.tests = function() {
   beforeEach(function() {
     I = data.I;
     site_url = data.site_url;
+    if (fileExists(dataFile)) require('fs').unlink(dataFile);
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, ...', () => {
@@ -95,6 +96,16 @@ module.exports.tests = function() {
     });
   });
 
+  describe('#seeInSource, #dontSeeInSource', () => {
+    it('should check meta of a page', function*() {
+      yield I.amOnPage('/info');
+      yield I.seeInSource('<body>');
+      yield I.dontSeeInSource('<meta>');
+      yield I.seeInSource('Invisible text');
+      return I.seeInSource('content="text/html; charset=utf-8"');
+    });
+  });
+
   describe('#click', () => {
     it('should click by inner text', function*() {
       yield I.amOnPage('/');
@@ -130,6 +141,15 @@ module.exports.tests = function() {
       yield I.amOnPage('/form/example7');
       yield I.click('Buy Chocolate Bar');
       return I.seeInCurrentUrl('/');
+    });
+  });
+
+  describe('#doubleClick', () => {
+    it('it should doubleClick', function*() {
+      yield I.amOnPage('/form/doubleclick');
+      yield I.dontSee('Done');
+      yield I.doubleClick('#block');
+      return I.see('Done');
     });
   });
 
@@ -362,7 +382,6 @@ module.exports.tests = function() {
   });
 
   describe('#saveScreenshot', () => {
-
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
@@ -409,4 +428,5 @@ module.exports.tests = function() {
         .then(() => I.see('Dynamic text'));
     });
   });
+
 }

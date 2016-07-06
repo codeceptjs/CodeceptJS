@@ -23,7 +23,8 @@ describe('Nightmare', function () {
     } catch (err) {}
 
     I = new Nightmare({
-      url: site_url
+      url: site_url,
+      show: true
     });
     I._init();
   });
