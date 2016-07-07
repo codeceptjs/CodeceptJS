@@ -15,7 +15,9 @@ before_install:
   - wget http://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.52.0.jar
 
 before_script:
-  - tree -d .
+  - chmod -R 777 test/data
+  - ls -ll test/data
+  - ls -ll test/data/output
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - "java -jar selenium-server-standalone-2.52.0.jar -port 4444 >/dev/null 2>&1 &"
