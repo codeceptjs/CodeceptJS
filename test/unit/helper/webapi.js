@@ -381,7 +381,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#saveScreenshot', () => {
+  describe.only('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
