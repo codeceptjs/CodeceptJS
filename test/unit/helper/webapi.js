@@ -381,7 +381,7 @@ module.exports.tests = function() {
     });
   });
 
-  describe.only('#saveScreenshot', () => {
+  describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
@@ -394,10 +394,11 @@ module.exports.tests = function() {
     });
 
     it('should create a screenshot on fail', () => {
-      let test = { title: 'sw should do smth' };
+      let sec = (new Date()).getUTCMilliseconds().toString();
+      let test = { title: 'sw should do smth '+sec };
       return I.amOnPage('/')
         .then(() => I._failed(test))
-        .then(() => assert.ok(fileExists(path.join(output_dir, 'sw_should_do_smth.failed.png')), null, 'file does not exists'));
+        .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
     });
   });
 
