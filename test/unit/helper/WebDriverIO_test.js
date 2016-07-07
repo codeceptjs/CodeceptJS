@@ -212,7 +212,7 @@ describe('WebDriverIO', function () {
   describe('#waitForText', () => {
     it('should return error if not present', () => {
       return wd.amOnPage('/dynamic')
-        .then(() => wd.waitForText('Nothing here', 0, '#text'))
+        .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
@@ -222,7 +222,7 @@ describe('WebDriverIO', function () {
 
     it('should return error if waiting is too small', () => {
       return wd.amOnPage('/dynamic')
-        .then(() => wd.waitForText('Dynamic text', 0.5))
+        .then(() => wd.waitForText('Dynamic text', 0.1))
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
