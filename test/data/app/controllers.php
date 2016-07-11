@@ -167,7 +167,7 @@ class form {
         data::set('form', $_POST);
         data::set('files', $_FILES);
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) data::set('ajax','post');
-
+        echo "I am here!!!";
         $notice = 'Thank you!';
         include __DIR__.'/view/index.php';
     }

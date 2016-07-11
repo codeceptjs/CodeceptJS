@@ -3,9 +3,10 @@
   "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "SeleniumWebdriver": {
+    "Nightmare": {
       "url": "http://localhost",
-      "browser": "firefox"
+      "browser": "firefox",
+      "show": true
     }
   },
   "mocha": {},

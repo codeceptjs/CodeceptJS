@@ -144,6 +144,18 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#pressKey', () => {
+    it('should be able to send special keys to element', function*() {
+      yield wd.amOnPage('/form/field');
+      yield wd.appendField('Name', '-');
+      yield wd.pressKey([`Control`, `a`]);
+      yield wd.pressKey(`Delete`);
+      yield wd.pressKey(['Shift', '111']);
+      yield wd.pressKey('1');
+      return wd.seeInField('Name', '!!!1');
+    });
+  });
+
   describe('#clearField', () => {
     it('should clear a given element', () => {
       return wd.amOnPage('/form/field')
@@ -200,7 +212,7 @@ describe('WebDriverIO', function () {
   describe('#waitForText', () => {
     it('should return error if not present', () => {
       return wd.amOnPage('/dynamic')
-        .then(() => wd.waitForText('Nothing here', 0, '#text'))
+        .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
@@ -210,7 +222,7 @@ describe('WebDriverIO', function () {
 
     it('should return error if waiting is too small', () => {
       return wd.amOnPage('/dynamic')
-        .then(() => wd.waitForText('Dynamic text', 0.5))
+        .then(() => wd.waitForText('Dynamic text', 0.1))
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
