@@ -6,7 +6,7 @@
     "Nightmare": {
       "url": "http://localhost",
       "browser": "firefox",
-      "show": true
+      "show": false
     }
   },
   "mocha": {},
