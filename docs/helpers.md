@@ -149,6 +149,8 @@ Implement corresponding methods to them.
 * `_before` - before a test
 * `_beforeStep` - before each step
 * `_afterStep` - after each step
+* `_beforeSuite` - before each suite (Protractor and SeleniumWebdriver only)
+* `_afterSuite` - after each suite (Protractor and SeleniumWebdriver only)
 
 Each implemented method should return a value as they will be added to global promise chain as well.
 
