@@ -33,6 +33,11 @@ describe('Protractor', function() {
     global.codecept_dir = path.join(__dirname, '../../data');
     I = new Protractor({url: site_url});
     I._init();
+    I._beforeSuite();
+  });
+
+  after(() => {
+    return I._afterSuite();
   });
 
   beforeEach(() => {
