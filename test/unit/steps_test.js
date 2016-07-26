@@ -55,11 +55,9 @@ describe('Step', () => {
     });
 
     it('should fire events on run', () => {
-      event.dispatcher.on(event.step.init, init = sinon.spy());
       event.dispatcher.on(event.step.before, before = sinon.spy());
       event.dispatcher.on(event.step.after, after = sinon.spy());
       step.run();
-      assert(init.called);
       assert(before.called);
       assert(after.called);
     });
