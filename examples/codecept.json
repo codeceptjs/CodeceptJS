@@ -3,10 +3,10 @@
   "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "Nightmare": {
+    "WebDriverIO": {
       "url": "http://localhost",
       "browser": "firefox",
-      "show": false
+      "restart": false
     }
   },
   "mocha": {},
