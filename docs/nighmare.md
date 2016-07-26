@@ -215,4 +215,3 @@ by CSS/XPath or a strict locator. Then `browser.evaluate` method was called to
 use locate found elements on a page and return attribute from the first of them.
 
 ## done()
-
