@@ -2,7 +2,7 @@
 
 ### Introduction
 
-CodeceptJS is an acceptance testing framework.In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by differnet backends.
+CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by differnet backends.
 CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *selenium-webdriver*, or *protractor* depends on you.
 This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.
 
