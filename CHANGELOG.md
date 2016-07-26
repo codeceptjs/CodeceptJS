@@ -1,3 +1,11 @@
+## 0.4.0
+
+* [Nightmare] Helper added [http://codecept.io/nightmare] for faster web testing.
+* [Protractor][SeleniumWebdriver][WebDriverIO] added `restart: false` option to reuse one browser between tests
+* Added `--verbose` option for `run` command to log and print global promise and events.
+* Fixed errors with shutting down and cleanup.
+* Fixed handling of failures inside within block
+
 ## 0.3.5
 
 * Introduced IDE autocompletion support for Visual Studio Code and others. Added command for generating TypeScript definitions for `I` object. Use it as

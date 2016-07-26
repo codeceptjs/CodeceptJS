@@ -27,7 +27,7 @@ describe('SeleniumWebdriver', function () {
       browser: 'firefox'
     });
     I._init();
-    browser = I._beforeSuite();
+    browser = I._before();
   });
 
   after(function() {
