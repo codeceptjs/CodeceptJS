@@ -27,15 +27,15 @@ describe('SeleniumWebdriver', function () {
       browser: 'firefox'
     });
     I._init();
+    browser = I._beforeSuite();
+  });
+
+  after(function() {
+    I._afterSuite();
   });
 
   beforeEach(function() {
     webApiTests.init({ I, site_url});
-    return browser = I._before();
-  });
-
-  afterEach(() => {
-    return I._after();
   });
 
   describe('open page : #amOnPage', () => {
