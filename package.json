@@ -54,7 +54,7 @@
     "guppy-pre-commit": "^0.3.0",
     "nightmare": "^2.5.2",
     "nightmare-upload": "^0.1.1",
-    "protractor": "^3.3.0",
+    "protractor": "^4.0.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
     "webdriverio": ">3.4.0 <5.0.0"
