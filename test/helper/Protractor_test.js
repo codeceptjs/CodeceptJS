@@ -6,7 +6,7 @@ let site_url = 'http://davertmik.github.io/angular-demo-app';
 let assert = require('assert');
 let I, browser;
 let path = require('path');
-let by = require('protractor').By;
+let by = require('protractor').Browser.By;
 var chai = require('chai');
 let should = require('chai').should();
 var chaiAsPromised = require('chai-as-promised');
