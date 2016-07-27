@@ -9,7 +9,7 @@ dist: trusty
 env:
   - HELPER=Protractor
   - HELPER=Nightmare
-  - HELPER=SeleniumWebDriver
+  - HELPER=SeleniumWebdriver
   - HELPER=WebDriverIO
 
 addons:
