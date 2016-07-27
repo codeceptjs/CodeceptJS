@@ -327,6 +327,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
+<li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>rootElement</code> - Root element of AngularJS application (default: body)</li>
 <li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
@@ -882,6 +883,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
         <script src="../../js/highlight.pack.js"></script>        
         <script src="../../js/base.js"></script>
         <script src="../../build/FileSystem.js"></script>
+        <script src="../../build/Nightmare.js"></script>
         <script src="../../build/Protractor.js"></script>
         <script src="../../build/SeleniumWebdriver.js"></script>
         <script src="../../build/WebDriverIO.js"></script>

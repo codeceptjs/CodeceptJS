@@ -196,7 +196,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#035">0.3.5</a></li>
+        <li class="main active"><a href="#040">0.4.0</a></li>
+        
+    
+        <li class="main "><a href="#035">0.3.5</a></li>
         
     
         <li class="main "><a href="#034">0.3.4</a></li>
@@ -242,6 +245,16 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="040">0.4.0</h2>
+<ul>
+<li><strong>Nightmare Helper</strong> added [http://codecept.io/nightmare] for faster web testing.</li>
+<li>[Protractor][SeleniumWebdriver][WebDriverIO] added <code>restart: false</code> option to reuse one browser between tests</li>
+<li><strong>Protractor 4.0</strong> compatibility. Please upgrade Protractor library.</li>
+<li>Added <code>--verbose</code> option for <code>run</code> command to log and print global promise and events.</li>
+<li>Fixed errors with shutting down and cleanup.</li>
+<li>Fixed starting interactive shell with <code>codeceptjs shell</code>.</li>
+<li>Fixed handling of failures inside within block</li>
+</ul>
 <h2 id="035">0.3.5</h2>
 <ul>
 <li>Introduced IDE autocompletion support for Visual Studio Code and others. Added command for generating TypeScript definitions for <code>I</code> object. Use it as</li>
@@ -397,6 +410,7 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
         <script src="../js/highlight.pack.js"></script>        
         <script src="../js/base.js"></script>
         <script src="../build/FileSystem.js"></script>
+        <script src="../build/Nightmare.js"></script>
         <script src="../build/Protractor.js"></script>
         <script src="../build/SeleniumWebdriver.js"></script>
         <script src="../build/WebDriverIO.js"></script>

@@ -243,6 +243,10 @@
 <pre><code>codeceptjs run . github_test.js --debug
 </code></pre>
 
+<p>Run test with internal logs printed (global promises, and events).</p>
+<pre><code>codeceptjs run . github_test.js --verbose
+</code></pre>
+
 <p>Run tests and produce xunit report:</p>
 <pre><code>codeceptjs run --reporter xunit
 </code></pre>
@@ -345,6 +349,7 @@ Feature('My new test');
         <script src="../js/highlight.pack.js"></script>        
         <script src="../js/base.js"></script>
         <script src="../build/FileSystem.js"></script>
+        <script src="../build/Nightmare.js"></script>
         <script src="../build/Protractor.js"></script>
         <script src="../build/SeleniumWebdriver.js"></script>
         <script src="../build/WebDriverIO.js"></script>

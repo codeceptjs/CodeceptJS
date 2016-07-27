@@ -39,6 +39,7 @@ let withinStore = {};
  * * `url` - base url of website to be tested
  * * `browser` - browser in which perform testing
  * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
+ * * `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `rootElement` - Root element of AngularJS application (default: body)
  * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
@@ -81,11 +82,10 @@ class Protractor extends SeleniumWebdriver {
       // maybe it is installed as protractor dependency?
       this.webdriver = requireg('protractor/node_modules/selenium-webdriver');
     }
-    protractorWrapper = requireg('protractor').wrapDriver;
-    EC = requireg('protractor').ExpectedConditions;
+    protractorWrapper = requireg('protractor').Browser.wrapDriver;
+    EC = requireg('protractor').Browser.ExpectedConditions;
+    global.by = requireg('protractor').Browser.By;
 
-    global.by = requireg('protractor').By;
-    global.element = requireg('protractor').element;
     let driverProviderModule = requireg('protractor/built/driverProviders/'+this.options.driver);
     let className = Object.keys(driverProviderModule)[0];
     this.driverProvider = new driverProviderModule[className](this.options);
@@ -96,9 +96,10 @@ class Protractor extends SeleniumWebdriver {
   {
     try {
       requireg("protractor");
+      require('assert').ok(requireg("protractor").Browser);
       require('assert').ok(requireg("protractor/built/driverProviders/hosted").Hosted);
     } catch(e) {
-      return ["protractor@^3.3.0"];
+      return ["protractor@^4.0.0"];
     }
   }
 
@@ -111,15 +112,17 @@ class Protractor extends SeleniumWebdriver {
     ];
   }
 
-  _before() {
+  _startBrowser() {
     this.browser = this.driverProvider.getNewDriver();
-    this.amInsideAngularApp();
-    this.context = this.options.rootElement;
+    global.element = this.browser.element;
     return this.browser;
   }
 
-  _after() {
-    return this.browser.quit();
+  _before() {
+    super._before();
+    this.amInsideAngularApp();
+    this.context = this.options.rootElement;
+    return this.browser;
   }
 
   _withinBegin(locator) {
@@ -132,9 +135,9 @@ class Protractor extends SeleniumWebdriver {
 
         this.browser.findElement = (l) => l ? context.element(l).getWebElement() : context.getWebElement();
         this.browser.findElements = (l) => context.all(l).getWebElements();
-        return;
+        return context;
     }
-    super._withinBegin(locator);
+    return super._withinBegin(locator);
   }
 
   _withinEnd() {
@@ -161,6 +164,7 @@ class Protractor extends SeleniumWebdriver {
    */
   amOutsideAngularApp() {
      if (this.browser.driver && this.insideAngular) {
+       console.log(this.browser.driver);
        this.browser = this.browser.driver;
        this.insideAngular = false;
      }

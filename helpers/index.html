@@ -252,6 +252,11 @@ module.exports = MyHelper;
 
 <p>All methods except those starting from <code>_</code> will be added to <code>I</code> object and treated as test actions.
 Every method should return a value in order to be appended into promise chain.</p>
+<p>After writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:</p>
+<pre><code>codeceptjs def .
+</code></pre>
+
+<p>This way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.</p>
 <h2 id="webdriverio-example">WebDriverIO Example</h2>
 <p>Next example demonstrates how to use WebDriverIO library to create your own test action.
 Method <code>seeAuthentication</code> will use <code>client</code> instance of WebDriverIO to get access to cookies.
@@ -335,6 +340,8 @@ Implement corresponding methods to them.</p>
 <li><code>_before</code> - before a test</li>
 <li><code>_beforeStep</code> - before each step</li>
 <li><code>_afterStep</code> - after each step</li>
+<li><code>_beforeSuite</code> - before each suite </li>
+<li><code>_afterSuite</code> - after each suite </li>
 </ul>
 <p>Each implemented method should return a value as they will be added to global promise chain as well.</p>
 <h3 id="done">done()</h3></div>
@@ -393,6 +400,7 @@ Implement corresponding methods to them.</p>
         <script src="../js/highlight.pack.js"></script>        
         <script src="../js/base.js"></script>
         <script src="../build/FileSystem.js"></script>
+        <script src="../build/Nightmare.js"></script>
         <script src="../build/Protractor.js"></script>
         <script src="../build/SeleniumWebdriver.js"></script>
         <script src="../build/WebDriverIO.js"></script>

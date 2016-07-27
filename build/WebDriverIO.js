@@ -38,9 +38,10 @@ let withinStore = {};
  *
  * * `url` - base url of website to be tested
  * * `browser` - browser in which perform testing
+ * * `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `waitForTimeout`: (optional) sets default wait time in *ms* for all `wait*` functions. 1000 by default;
- * * `desiredCapabilities`:
+ * * `desiredCapabilities`: Selenium capabilities
  *
  *
  * Additional configuration params can be used from http://webdriver.io/guide/getstarted/configuration.html
@@ -170,7 +171,8 @@ class WebDriverIO extends Helper {
     // set defaults
     this.options = {
       waitforTimeout: 1000, // ms
-      desiredCapabilities: {}
+      desiredCapabilities: {},
+      restart: true
     };
 
     // override defaults with config
@@ -213,8 +215,14 @@ class WebDriverIO extends Helper {
     ];
   }
 
-  _before() {
-    this.failedTestName = null;
+  _beforeSuite() {
+    if (!this.options.restart) {
+      this.debugSection('Session','Starting singleton browser session');
+      return this._startBrowser();
+    }
+  }
+
+  _startBrowser() {
     if (this.options.multiremote) {
       this.browser = webdriverio.multiremote(this.options.multiremote);
     } else {
@@ -228,12 +236,26 @@ class WebDriverIO extends Helper {
       let dimensions = this.options.windowSize.split('x');
       this.browser.windowHandleSize({ width: dimensions[0], height: dimensions[1] });
     }
+    return this.browser;
+  }
+
+  _before() {
+    if (this.options.restart) this._startBrowser();
+    this.failedTestName = null;
     this.context = 'body';
     return this.browser;
   }
 
   _after() {
-    return this.browser.end();
+    if (this.options.restart) return this.browser.end();
+    this.debugSection('Session', 'cleaning cookies and localStorage');
+    return this.browser.execute('localStorage.clear();').then(() => {
+      return this.browser.deleteCookie();
+    });
+  }
+
+  _afterSuite() {
+    if (!this.options.restart) return this.browser.end();
   }
 
   _failed(test) {
@@ -271,6 +293,45 @@ class WebDriverIO extends Helper {
    */
   _locate(locator) {
     return this.browser.elements(withStrictLocator(locator));
+  }
+
+  /**
+   * Find a checkbox by providing human readable text:
+   *
+   * ```js
+   * this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+   * ```
+   */
+  _locateCheckable(locator) {
+    return findCheckable(this.browser, locator).then(function(res){
+      return res.value;
+    })
+  }
+
+  /**
+   * Find a clickable element by providing human readable text:
+   *
+   * ```js
+   * this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+   * ```
+   */
+  _locateClickable(locator) {
+    return findClickable(this.browser, locator).then(function(res){
+      return res.value;
+    })
+  }
+
+  /**
+   * Find field elements by providing human readable text:
+   *
+   * ```js
+   * this.helpers['WebDriverIO']._locateFields('Your email').then // ...
+   * ```
+   */
+  _locateFields(locator) {
+    return findFields(this.browser, locator).then(function(res){
+      return res.value;
+    })
   }
 
   /**
@@ -1100,7 +1161,7 @@ First parameter can be set to `maximize`
 
  /**
   * Drag an item to a destination element.
-
+  *
   * ```js
   * I.dragAndDrop('#dragHandle', '#container');
   * ```
@@ -1171,8 +1232,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   waitForText(text, sec, context) {
     sec = sec || this.options.waitForTimeout;
     context = context || 'body';
-    return this.browser
-      .waitUntil(function () {
+    return this.browser.waitUntil(function () {
         return this.getText(context).then(function (source) {
           if (Array.isArray(source)) {
             return source.filter(part => part.indexOf(text) >= 0).length > 0;
@@ -1181,7 +1241,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
         });
       }, sec * 1000)
       .catch((e) => {
-        if (e.type === 'CommandError') {
+        if (e.type === 'WaitUntilTimeoutError') {
           return proceedSee.call(this, 'assert', text, context);
         } else {
           throw e;
@@ -1400,7 +1460,7 @@ function withStrictLocator(locator) {
   case 'xpath':
   case 'css': return value;
   case 'id': return '#' + value;
-  case 'name': return `[name="value"]`;
+  case 'name': return `[name="${value}"]`;
   }
 }
 

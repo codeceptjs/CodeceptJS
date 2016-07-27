@@ -214,6 +214,12 @@
         
             <li><a href="#_locate">_locate</a></li>
         
+            <li><a href="#_locatecheckable">_locateCheckable</a></li>
+        
+            <li><a href="#_locateclickable">_locateClickable</a></li>
+        
+            <li><a href="#_locatefields">_locateFields</a></li>
+        
             <li><a href="#acceptpopup">acceptPopup</a></li>
         
             <li><a href="#amonpage">amOnPage</a></li>
@@ -355,9 +361,10 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
+<li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
-<li><code>desiredCapabilities</code>:</li>
+<li><code>desiredCapabilities</code>: Selenium capabilities</li>
 </ul>
 <p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">http://webdriver.io/guide/getstarted/configuration.html</a></p>
 <h3 id="connect-through-proxy">Connect through proxy</h3>
@@ -466,6 +473,33 @@ Individual control is something that is planned for a later version.</p>
 <p>Get elements by different locator types, including strict locator
 Should be used in custom helpers:</p>
 <pre><code class="js">this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="_locatecheckable">_locateCheckable</h2>
+<p>Find a checkbox by providing human readable text:</p>
+<pre><code class="js">this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="_locateclickable">_locateClickable</h2>
+<p>Find a clickable element by providing human readable text:</p>
+<pre><code class="js">this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="_locatefields">_locateFields</h2>
+<p>Find field elements by providing human readable text:</p>
+<pre><code class="js">this.helpers['WebDriverIO']._locateFields('Your email').then // ...
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -1113,6 +1147,7 @@ Element can be located by CSS or XPath.</p>
         <script src="../../js/highlight.pack.js"></script>        
         <script src="../../js/base.js"></script>
         <script src="../../build/FileSystem.js"></script>
+        <script src="../../build/Nightmare.js"></script>
         <script src="../../build/Protractor.js"></script>
         <script src="../../build/SeleniumWebdriver.js"></script>
         <script src="../../build/WebDriverIO.js"></script>
