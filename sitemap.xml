@@ -38,6 +38,12 @@
     </url>
         
     <url>
+     <loc>None/nightmare/</loc>
+     <lastmod>2016-07-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>None/helpers/</loc>
      <lastmod>2016-07-28</lastmod>
      <changefreq>daily</changefreq>
@@ -67,6 +73,12 @@
         
     <url>
      <loc>None/helpers/SeleniumWebdriver/</loc>
+     <lastmod>2016-07-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/Nightmare/</loc>
      <lastmod>2016-07-28</lastmod>
      <changefreq>daily</changefreq>
     </url>

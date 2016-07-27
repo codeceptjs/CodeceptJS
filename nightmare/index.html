@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>Nightmare Testing - CodeceptJS</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-30075781-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-sm hidden-xs hidden-md" style="margin-left: 10px; margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+                <li >
+                    <a href="..">Index</a>
+                </li>
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../angular/">AngularJS Testing</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Nightmare Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Protractor/">Protractor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Nightmare/">Nightmare</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../commands/">Commands</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                
+                <li >
+                    <a href="../changelog/">Releases</a>
+                </li>
+                
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../angular/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../helpers/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#blazing-fast-tests-with-nightmare">Blazing Fast Tests with Nightmare</a></li>
+        
+            <li><a href="#how-fast-is-nigthmare-js">How Fast Is Nigthmare JS?</a></li>
+        
+            <li><a href="#setup">Setup</a></li>
+        
+            <li><a href="#configuring-nightmare">Configuring Nightmare</a></li>
+        
+            <li><a href="#opening-a-web-page">Opening a Web Page</a></li>
+        
+            <li><a href="#manipulating-web-page">Manipulating Web Page</a></li>
+        
+            <li><a href="#extending-nightmare-helper">Extending Nightmare Helper</a></li>
+        
+            <li><a href="#done">done()</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h1 id="blazing-fast-tests-with-nightmare">Blazing Fast Tests with Nightmare</h1>
+<p>Selenium WebDriver is considered to be standard for end to end testing of web applications.
+Despite its popularity it have its drawbacks, it requires a real browser and Selenium server to control it.
+This hardens setting it up testing environment for CI server and slows down test execution.</p>
+<p>Is there a sane alternative to Selenium?</p>
+<p>Yes, how about <a href="http://www.nightmarejs.org">NightmareJS</a>?</p>
+<p>It is modern Electron based testing framework which allows to execute tests in headless mode as well as in window mode for debug purposes.
+This makes Nightmare very useful, much more handy than PhantomJS. Nightmare is in active development and has nice API for writing acceptance tests.
+Unfortunately, as all other JavaScript testing frameworks it has its own very custom API.
+What if you choose it for a project and suddenly you realize that you need something more powerful, like Selenium?
+Yes, that might be a problem if you are not using CodeceptJS.
+The one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nigthmare.</p>
+<p>Compare a test written using Nigthmare API:</p>
+<pre><code class="js">nightmare
+  .goto('http://yahoo.com')
+  .type('form[action*=&quot;/search&quot;] [name=p]', 'github nightmare')
+  .click('form[action*=&quot;/search&quot;] [type=submit]')
+  .wait('#main')
+  .evaluate(function () {
+    return document.querySelector('#main .searchCenterMiddle li a').href
+  })
+</code></pre>
+
+<p>with a similar CodeceptJS test:</p>
+<pre><code class="js">  I.amOnPage('http://yahoo.com');
+  I.fillField('p', 'github nightmare');
+  I.click('Search Web');
+  I.waitForElement('#main');
+  I.seeElement('#main .searchCenterMiddle li a');
+  I.seeElement(&quot;//a[contains(@href,'github.com/segmentio/nightmare')]&quot;);
+  I.see('segmentio/nightmare','#main li a');
+</code></pre>
+
+<p>NightmareJS support only CSS locators for web elements, while CodeceptJS improves it to use XPath as well.
+This is how form can be located by labels, and buttons by text in examples above. It is done by injecting
+client-side scrips (for element location) to every loaded page. Also all events like click, doubleClick, keyPress are <strong>simulated</strong> by JavaScript,
+this makes testing less relevant, as they are not native to operating systems.</p>
+<h2 id="how-fast-is-nigthmare-js">How Fast Is Nigthmare JS?</h2>
+<p>Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.</p>
+<pre><code>docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
+codeceptjs run yahoo_test.js --steps
+</code></pre>
+
+<p>This provides use with output:</p>
+<pre><code> Yahoo basic test
+ &gt; WebDriverIO._before
+ • I am on page &quot;http://yahoo.com&quot;
+ • I fill field &quot;p&quot;, &quot;github nightmare&quot;
+ • I click &quot;Search Web&quot;
+ • I wait for element &quot;#main&quot;, 2
+ • I see element &quot;#main .searchCenterMiddle li a&quot;
+ • I see &quot;segmentio/nightmare&quot;, &quot;li a&quot;
+ ✓ OK in 17591ms
+</code></pre>
+
+<p>When we switch helper to Nigthmare:</p>
+<pre><code> Yahoo basic test
+ &gt; Nightmare._before
+ • I am on page &quot;http://yahoo.com&quot;
+ • I fill field &quot;p&quot;, &quot;github nightmare&quot;
+ • I click &quot;Search Web&quot;
+ • I wait for element &quot;#main&quot;, 2
+ • I see element &quot;#main .searchCenterMiddle li a&quot;
+ • I see &quot;segmentio/nightmare&quot;, &quot;li a&quot;
+ ✓ OK in 5490ms
+</code></pre>
+
+<p>As you see the Nigthmare test was almost <strong>3 times faster</strong> than Selenium test.
+Sure, this can't be taken as a valuable benchmark but more like a proof of concept.</p>
+<h2 id="setup">Setup</h2>
+<p>To start you need CodeceptJS with nightmare and nightmare-upload packages installed.</p>
+<pre><code class="bash">npm install -g codeceptjs nightmare nightmare-upload
+</code></pre>
+
+<p>And a basic project initialized</p>
+<pre><code>codeceptjs init
+</code></pre>
+
+<p>You will be asked for a Helper to use, you should select Nightmare and provide url of a website you are testing.
+Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStart page</a>.</p>
+<p>(If you already have CodeceptJS project, just install nightmare globally or locally and enable it in config)</p>
+<h2 id="configuring-nightmare">Configuring Nightmare</h2>
+<p>To enable Nightmare tests you should enable <code>Nightmare</code> helper in <code>codecept.json</code> config:</p>
+<pre><code class="js">{ // ..
+  &quot;helpers&quot;: {
+    &quot;Nigthmare&quot;: {
+      &quot;url&quot;: &quot;http://localhost&quot;,
+      &quot;show&quot;: false
+    }
+  }
+  // ..
+}
+</code></pre>
+
+<p>Turn on the <code>show</code> option if you want to follow test progress in a window. This is very useful for debugging.
+All other options can be taken from <a href="https://github.com/segmentio/nightmare#api">NightmareJS API</a>.</p>
+<p>Option <code>waitForAction</code> defines how long to wait after a click, doubleClick or pressKey action is performed.
+Test execution may happen much faster than the response is rendered, so make sure you set a proper delay value.
+By default CodeceptJS waits for 500ms.</p>
+<h2 id="opening-a-web-page">Opening a Web Page</h2>
+<p>Nightmare provides you with more control to browser engine than Selenium does.
+This allows you to use headers in your tests. For instance, CodeceptJS provides <code>haveHeader</code> method
+to set default headers for all your HTTP requests:</p>
+<pre><code class="js">I.haveHeader('x-tested-with', 'codeceptjs');
+</code></pre>
+
+<p>When opening a web page you can set headers as well. <code>amOnPage</code> methods can take headers as second parameter:</p>
+<pre><code class="js">// use basic http auth
+I.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);
+</code></pre>
+
+<p>As a small bonus: all <code>console.log</code> calls on a page will be also shown in <code>--debug</code> mode.</p>
+<h2 id="manipulating-web-page">Manipulating Web Page</h2>
+<p>Nigthmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
+This means that all CodeceptJS actions like <code>click</code>, <code>fillField</code>, <code>selectOption</code> and others are supposed to work in the very same manner.
+They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.</p>
+<p>Assertions start with <code>see</code> prefix. You can check text on a page, elements on page and others.</p>
+<h2 id="extending-nightmare-helper">Extending Nightmare Helper</h2>
+<p>CodeceptJS allows you to define and connect own helpers. If some functionality of
+Nightmare helper is missing you can easily create <code>ExtendedNightmare</code> helper by running:</p>
+<pre><code>codecepjs gh
+</code></pre>
+
+<p>Learn more about <a href="http://codecept.io/helpers/">Helpers</a>.</p>
+<p>Nigthmare instance can be accessed by custom helper:</p>
+<pre><code class="js">// returns current nightmare instance
+this.helpers['Nightmare'].browser;
+</code></pre>
+
+<p>This way you can call <a href="https://github.com/segmentio/nightmare#interact-with-the-page">native Nightmare commands</a>.</p>
+<p>It is important to understand that Nightmare executes JavaScript on client and on server side.
+If you need to find an element you should search for it using client side script, but if you want
+to do an assertion you should return a data to server side.</p>
+<p>Nightmare provides <code>evaulate</code> method to execute client-side JavaScript. CodeceptJS registers <code>codeceptjs</code>
+object globally on client side with <code>findElement</code> and <code>findElements</code> methods in it. They return IDs of matched elements
+so you can access them in next calls to <code>evaluate</code>:</p>
+<pre><code class="js">// inside a custom helper class
+seeAttributeContains(locator, attribute, expectedValue) {
+  // let's use chai assertion library
+  let assert = require('chai').assert;
+  // get nightmare instance
+  let browser = this.helpers['Nightmare'].browser;
+  // find an element by CSS or XPath:
+  return this.helpers['Nightmare']._locate(locator).then(function(els) {
+    // we received an array with IDs of matched elements
+    // now let's execute client-side script to get attribute for the first element
+    return browser.evaluate(function(el, attribute) {
+      // this is executed inside a web page!
+      return codeceptjs.fetchElement(el).getAttribute(attribute);
+    }, els[0], attribute); // function + its params
+  }).then(function(attributeValue) {
+    // get attribute value and back to server side
+    // execute an assertion
+    assert.include(attributeValye, expectedValue);
+  });
+}
+</code></pre>
+
+<p>It can be used in tests like:</p>
+<pre><code class="js">I.seeAttributeContains('#main img', 'src', '/cat.jpg');
+</code></pre>
+
+<p>This sample assertion used <code>_locate</code> helper method which searched for elements
+by CSS/XPath or a strict locator. Then <code>browser.evaluate</code> method was called to
+use locate found elements on a page and return attribute from the first of them.</p>
+<h2 id="done">done()</h2></div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+    <footer>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+</div>
+
+    </footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>        
+        <script src="../js/base.js"></script>
+        <script src="../build/FileSystem.js"></script>
+        <script src="../build/Nightmare.js"></script>
+        <script src="../build/Protractor.js"></script>
+        <script src="../build/SeleniumWebdriver.js"></script>
+        <script src="../build/WebDriverIO.js"></script>
+    </body>
+</html>

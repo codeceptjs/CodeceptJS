@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>SeleniumWebdriver - CodeceptJS</title>
+	<title>Nightmare - CodeceptJS</title>
 
         <link href="../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -130,12 +130,12 @@
                             <a href="../Protractor/">Protractor</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">SeleniumWebdriver</a>
+                        <li >
+                            <a href="../SeleniumWebdriver/">SeleniumWebdriver</a>
                         </li>
                     
-                        <li >
-                            <a href="../Nightmare/">Nightmare</a>
+                        <li class="active">
+                            <a href="./">Nightmare</a>
                         </li>
                     
                         <li >
@@ -172,12 +172,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../Protractor/">
+                    <a rel="next" href="../SeleniumWebdriver/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../Nightmare/">
+                    <a rel="prev" href="../FileSystem/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -204,15 +204,9 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#seleniumwebdriver">SeleniumWebdriver</a></li>
-        
-            <li><a href="#selenium-installation">Selenium Installation</a></li>
-        
-            <li><a href="#phantomjs-installation">PhantomJS Installation</a></li>
+        <li class="main active"><a href="#nightmare">Nightmare</a></li>
         
             <li><a href="#configuration">Configuration</a></li>
-        
-            <li><a href="#access-from-helpers">Access From Helpers</a></li>
         
             <li><a href="#_locate">_locate</a></li>
         
@@ -266,11 +260,17 @@
         
             <li><a href="#grabvaluefrom">grabValueFrom</a></li>
         
+            <li><a href="#haveheader">haveHeader</a></li>
+        
             <li><a href="#presskey">pressKey</a></li>
         
             <li><a href="#resizewindow">resizeWindow</a></li>
         
+            <li><a href="#resizewindow_1">resizeWindow</a></li>
+        
             <li><a href="#savescreenshot">saveScreenshot</a></li>
+        
+            <li><a href="#scrollto">scrollTo</a></li>
         
             <li><a href="#see">see</a></li>
         
@@ -309,45 +309,43 @@
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="seleniumwebdriver">SeleniumWebdriver</h1>
-<p>SeleniumWebdriver helper is based on the official <a href="https://www.npmjs.com/package/selenium-webdriver">Selenium Webdriver JS</a>
-library. It implements common web api methods (amOnPage, click, see).</p>
-<h4 id="selenium-installation">Selenium Installation</h4>
-<ol>
-<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
-<li>Launch the daemon: <code>java -jar selenium-server-standalone-2.xx.xxx.jar</code></li>
-</ol>
-<h4 id="phantomjs-installation">PhantomJS Installation</h4>
-<p>PhantomJS is a headless alternative to Selenium Server that implements <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol">the WebDriver protocol</a>.
-It allows you to run Selenium tests on a server without a GUI installed.</p>
-<ol>
-<li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
-<li>Run PhantomJS in WebDriver mode: <code>phantomjs --webdriver=4444</code></li>
-</ol>
+<h1 id="nightmare">Nightmare</h1>
+<p>Nightmare helper wraps <a href="https://github.com/segmentio/nightmare">Nightmare</a> library to provide
+fastest headless testing using Electron engine. Unlike Selenium-based drivers this uses
+Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
+less trusted.</p>
+<p>Requires <code>nightmare</code> and <code>nigthmare-upload</code> packages to be installed.</p>
 <h3 id="configuration">Configuration</h3>
 <p>This helper should be configured in codecept.json</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
-<li><code>browser</code> - browser in which perform testing</li>
-<li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
-<li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
-<li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
-<li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
-<li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
+<li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500</li>
+<li><code>waitForTimeout</code>: (optional) default wait* timeout</li>
+<li>
+<p><code>windowSize</code>: (optional) default window size. Set a dimension like <code>640x480</code>.</p>
+</li>
+<li>
+<p>options from <a href="https://github.com/segmentio/nightmare#api">Nightmare configuration</a></p>
+</li>
 </ul>
-<h2 id="access-from-helpers">Access From Helpers</h2>
-<p>Receive a WebDriverIO client from a custom helper by accessing <code>browser</code> property:</p>
-<pre><code class="js">this.helpers['Protractor'].browser
-</code></pre>
-
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>config</code>  </li>
 </ul>
 <h2 id="_locate">_locate</h2>
-<p>Get elements by different locator types, including strict locator
-Should be used in custom helpers:</p>
-<pre><code class="js">this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+<p>Locate elements by different locator types, including strict locator.
+Should be used in custom helpers.</p>
+<p>This method return promise with array of IDs of found elements.
+Actual elements can be accessed inside <code>evaulate</code> by using <code>codeceptjs.fetchElement()</code>
+client-side function:</p>
+<pre><code class="js">// get an inner text of an element
+
+let browser = this.helpers['Nigthmare'].browser;
+let value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {
+  return browser.evaluate(function(el) {
+    return codeceptjs.fetchElement(el).value;
+  }, els[0]);
+});
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -364,7 +362,9 @@ I.amOnPage('/login'); // opens a login page
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  url path or global url</li>
+<li><code>url</code>  url path or global urlIn a second argument a list of request headers can be passed:<code>js
+    I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])</code></li>
+<li><code>headers</code>  </li>
 </ul>
 <h2 id="appendfield">appendField</h2>
 <p>Appends text to a input field or textarea.
@@ -388,7 +388,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>pathToFile</code>  local file path relative to codecept.json config file</li>
+<li><code>pathToFile</code>  local file path relative to codecept.json config fileDue to technical limitation this <strong>works only with CSS selectors</strong></li>
 </ul>
 <h2 id="checkoption">checkOption</h2>
 <p>Selects a checkbox or radio button.
@@ -588,7 +588,8 @@ assert(cookie.value, '123456');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>name</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
+<li><code>name</code>  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:<code>js
+    I.grabCookie({ secure: true});</code>If you'd like get all cookies for all urls, use: <code>.grabCookie({ url: null }).</code></li>
 </ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -616,20 +617,33 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
 </ul>
-<h2 id="presskey">pressKey</h2>
-<p>Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
-will be replaced with corresponding unicode.
-If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
-<pre><code class="js">I.pressKey('Enter');
-I.pressKey(['Control','a']);
+<h2 id="haveheader">haveHeader</h2>
+<p>Add a header override for all HTTP requests. If header is undefined, the header overrides will be reset.</p>
+<pre><code class="js">I.haveHeader('x-my-custom-header', 'some value');
+I.haveHeader(); // clear headers
 </code></pre>
 
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>header</code>  </li>
+<li><code>value</code>  </li>
+</ul>
+<h2 id="presskey">pressKey</h2>
+<p>Sends <a href="http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent">input event</a> on a page.
+Can submit special keys like 'Enter', 'Backspace', etc</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>key</code>  </li>
 </ul>
 <h2 id="resizewindow">resizeWindow</h2>
+<p>Resize the current window to provided width and height.
+First parameter can be set to <code>maximize</code></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>width</code>  or <code>maximize</code></li>
+<li><code>height</code>  </li>
+</ul>
+<h2 id="resizewindow_1">resizeWindow</h2>
 <p>Resize the current window to provided width and height.
 First parameter can be set to <code>maximize</code></p>
 <p><strong>Parameters</strong></p>
@@ -646,6 +660,19 @@ Filename is relative to output folder.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fileName</code>  </li>
+</ul>
+<h2 id="scrollto">scrollTo</h2>
+<p>Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options</p>
+<pre><code class="js">I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>offsetX</code>  </li>
+<li><code>offsetY</code>  </li>
 </ul>
 <h2 id="see">see</h2>
 <p>Checks that a page contains a visible text.
@@ -778,7 +805,8 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  </li>
+<li><code>cookie</code>  Wrapper for <code>.cookies.set(cookie)</code>.
+    <a href="https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie">See more</a></li>
 </ul>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>

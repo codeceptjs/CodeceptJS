@@ -126,6 +126,51 @@
             "title": "AngularJS E2E Testing with CodeceptJS"
         }, 
         {
+            "location": "/nightmare/", 
+            "text": "Blazing Fast Tests with Nightmare\n\n\nSelenium WebDriver is considered to be standard for end to end testing of web applications.\nDespite its popularity it have its drawbacks, it requires a real browser and Selenium server to control it.\nThis hardens setting it up testing environment for CI server and slows down test execution.\n\n\nIs there a sane alternative to Selenium?\n\n\nYes, how about \nNightmareJS\n?\n\n\nIt is modern Electron based testing framework which allows to execute tests in headless mode as well as in window mode for debug purposes.\nThis makes Nightmare very useful, much more handy than PhantomJS. Nightmare is in active development and has nice API for writing acceptance tests.\nUnfortunately, as all other JavaScript testing frameworks it has its own very custom API.\nWhat if you choose it for a project and suddenly you realize that you need something more powerful, like Selenium?\nYes, that might be a problem if you are not using CodeceptJS.\nThe one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nigthmare.\n\n\nCompare a test written using Nigthmare API:\n\n\nnightmare\n  .goto('http://yahoo.com')\n  .type('form[action*=\n/search\n] [name=p]', 'github nightmare')\n  .click('form[action*=\n/search\n] [type=submit]')\n  .wait('#main')\n  .evaluate(function () {\n    return document.querySelector('#main .searchCenterMiddle li a').href\n  })\n\n\n\n\nwith a similar CodeceptJS test:\n\n\n  I.amOnPage('http://yahoo.com');\n  I.fillField('p', 'github nightmare');\n  I.click('Search Web');\n  I.waitForElement('#main');\n  I.seeElement('#main .searchCenterMiddle li a');\n  I.seeElement(\n//a[contains(@href,'github.com/segmentio/nightmare')]\n);\n  I.see('segmentio/nightmare','#main li a');\n\n\n\n\nNightmareJS support only CSS locators for web elements, while CodeceptJS improves it to use XPath as well.\nThis is how form can be located by labels, and buttons by text in examples above. It is done by injecting\nclient-side scrips (for element location) to every loaded page. Also all events like click, doubleClick, keyPress are \nsimulated\n by JavaScript,\nthis makes testing less relevant, as they are not native to operating systems.\n\n\nHow Fast Is Nigthmare JS?\n\n\nLet's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.\n\n\ndocker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0\ncodeceptjs run yahoo_test.js --steps\n\n\n\n\nThis provides use with output:\n\n\n Yahoo basic test\n \n WebDriverIO._before\n \u2022 I am on page \nhttp://yahoo.com\n\n \u2022 I fill field \np\n, \ngithub nightmare\n\n \u2022 I click \nSearch Web\n\n \u2022 I wait for element \n#main\n, 2\n \u2022 I see element \n#main .searchCenterMiddle li a\n\n \u2022 I see \nsegmentio/nightmare\n, \nli a\n\n \u2713 OK in 17591ms\n\n\n\n\nWhen we switch helper to Nigthmare:\n\n\n Yahoo basic test\n \n Nightmare._before\n \u2022 I am on page \nhttp://yahoo.com\n\n \u2022 I fill field \np\n, \ngithub nightmare\n\n \u2022 I click \nSearch Web\n\n \u2022 I wait for element \n#main\n, 2\n \u2022 I see element \n#main .searchCenterMiddle li a\n\n \u2022 I see \nsegmentio/nightmare\n, \nli a\n\n \u2713 OK in 5490ms\n\n\n\n\nAs you see the Nigthmare test was almost \n3 times faster\n than Selenium test.\nSure, this can't be taken as a valuable benchmark but more like a proof of concept.\n\n\nSetup\n\n\nTo start you need CodeceptJS with nightmare and nightmare-upload packages installed.\n\n\nnpm install -g codeceptjs nightmare nightmare-upload\n\n\n\n\nAnd a basic project initialized\n\n\ncodeceptjs init\n\n\n\n\nYou will be asked for a Helper to use, you should select Nightmare and provide url of a website you are testing.\nSetup process is explained on \nQuickStart page\n.\n\n\n(If you already have CodeceptJS project, just install nightmare globally or locally and enable it in config)\n\n\nConfiguring Nightmare\n\n\nTo enable Nightmare tests you should enable \nNightmare\n helper in \ncodecept.json\n config:\n\n\n{ // ..\n  \nhelpers\n: {\n    \nNigthmare\n: {\n      \nurl\n: \nhttp://localhost\n,\n      \nshow\n: false\n    }\n  }\n  // ..\n}\n\n\n\n\nTurn on the \nshow\n option if you want to follow test progress in a window. This is very useful for debugging.\nAll other options can be taken from \nNightmareJS API\n.\n\n\nOption \nwaitForAction\n defines how long to wait after a click, doubleClick or pressKey action is performed.\nTest execution may happen much faster than the response is rendered, so make sure you set a proper delay value.\nBy default CodeceptJS waits for 500ms.\n\n\nOpening a Web Page\n\n\nNightmare provides you with more control to browser engine than Selenium does.\nThis allows you to use headers in your tests. For instance, CodeceptJS provides \nhaveHeader\n method\nto set default headers for all your HTTP requests:\n\n\nI.haveHeader('x-tested-with', 'codeceptjs');\n\n\n\n\nWhen opening a web page you can set headers as well. \namOnPage\n methods can take headers as second parameter:\n\n\n// use basic http auth\nI.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);\n\n\n\n\nAs a small bonus: all \nconsole.log\n calls on a page will be also shown in \n--debug\n mode.\n\n\nManipulating Web Page\n\n\nNigthmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.\nThis means that all CodeceptJS actions like \nclick\n, \nfillField\n, \nselectOption\n and others are supposed to work in the very same manner.\nThey are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.\n\n\nAssertions start with \nsee\n prefix. You can check text on a page, elements on page and others.\n\n\nExtending Nightmare Helper\n\n\nCodeceptJS allows you to define and connect own helpers. If some functionality of\nNightmare helper is missing you can easily create \nExtendedNightmare\n helper by running:\n\n\ncodecepjs gh\n\n\n\n\nLearn more about \nHelpers\n.\n\n\nNigthmare instance can be accessed by custom helper:\n\n\n// returns current nightmare instance\nthis.helpers['Nightmare'].browser;\n\n\n\n\nThis way you can call \nnative Nightmare commands\n.\n\n\nIt is important to understand that Nightmare executes JavaScript on client and on server side.\nIf you need to find an element you should search for it using client side script, but if you want\nto do an assertion you should return a data to server side.\n\n\nNightmare provides \nevaulate\n method to execute client-side JavaScript. CodeceptJS registers \ncodeceptjs\n\nobject globally on client side with \nfindElement\n and \nfindElements\n methods in it. They return IDs of matched elements\nso you can access them in next calls to \nevaluate\n:\n\n\n// inside a custom helper class\nseeAttributeContains(locator, attribute, expectedValue) {\n  // let's use chai assertion library\n  let assert = require('chai').assert;\n  // get nightmare instance\n  let browser = this.helpers['Nightmare'].browser;\n  // find an element by CSS or XPath:\n  return this.helpers['Nightmare']._locate(locator).then(function(els) {\n    // we received an array with IDs of matched elements\n    // now let's execute client-side script to get attribute for the first element\n    return browser.evaluate(function(el, attribute) {\n      // this is executed inside a web page!\n      return codeceptjs.fetchElement(el).getAttribute(attribute);\n    }, els[0], attribute); // function + its params\n  }).then(function(attributeValue) {\n    // get attribute value and back to server side\n    // execute an assertion\n    assert.include(attributeValye, expectedValue);\n  });\n}\n\n\n\n\nIt can be used in tests like:\n\n\nI.seeAttributeContains('#main img', 'src', '/cat.jpg');\n\n\n\n\nThis sample assertion used \n_locate\n helper method which searched for elements\nby CSS/XPath or a strict locator. Then \nbrowser.evaluate\n method was called to\nuse locate found elements on a page and return attribute from the first of them.\n\n\ndone()", 
+            "title": "Nightmare Testing"
+        }, 
+        {
+            "location": "/nightmare/#blazing-fast-tests-with-nightmare", 
+            "text": "Selenium WebDriver is considered to be standard for end to end testing of web applications.\nDespite its popularity it have its drawbacks, it requires a real browser and Selenium server to control it.\nThis hardens setting it up testing environment for CI server and slows down test execution.  Is there a sane alternative to Selenium?  Yes, how about  NightmareJS ?  It is modern Electron based testing framework which allows to execute tests in headless mode as well as in window mode for debug purposes.\nThis makes Nightmare very useful, much more handy than PhantomJS. Nightmare is in active development and has nice API for writing acceptance tests.\nUnfortunately, as all other JavaScript testing frameworks it has its own very custom API.\nWhat if you choose it for a project and suddenly you realize that you need something more powerful, like Selenium?\nYes, that might be a problem if you are not using CodeceptJS.\nThe one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nigthmare.  Compare a test written using Nigthmare API:  nightmare\n  .goto('http://yahoo.com')\n  .type('form[action*= /search ] [name=p]', 'github nightmare')\n  .click('form[action*= /search ] [type=submit]')\n  .wait('#main')\n  .evaluate(function () {\n    return document.querySelector('#main .searchCenterMiddle li a').href\n  })  with a similar CodeceptJS test:    I.amOnPage('http://yahoo.com');\n  I.fillField('p', 'github nightmare');\n  I.click('Search Web');\n  I.waitForElement('#main');\n  I.seeElement('#main .searchCenterMiddle li a');\n  I.seeElement( //a[contains(@href,'github.com/segmentio/nightmare')] );\n  I.see('segmentio/nightmare','#main li a');  NightmareJS support only CSS locators for web elements, while CodeceptJS improves it to use XPath as well.\nThis is how form can be located by labels, and buttons by text in examples above. It is done by injecting\nclient-side scrips (for element location) to every loaded page. Also all events like click, doubleClick, keyPress are  simulated  by JavaScript,\nthis makes testing less relevant, as they are not native to operating systems.", 
+            "title": "Blazing Fast Tests with Nightmare"
+        }, 
+        {
+            "location": "/nightmare/#how-fast-is-nigthmare-js", 
+            "text": "Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.  docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0\ncodeceptjs run yahoo_test.js --steps  This provides use with output:   Yahoo basic test\n   WebDriverIO._before\n \u2022 I am on page  http://yahoo.com \n \u2022 I fill field  p ,  github nightmare \n \u2022 I click  Search Web \n \u2022 I wait for element  #main , 2\n \u2022 I see element  #main .searchCenterMiddle li a \n \u2022 I see  segmentio/nightmare ,  li a \n \u2713 OK in 17591ms  When we switch helper to Nigthmare:   Yahoo basic test\n   Nightmare._before\n \u2022 I am on page  http://yahoo.com \n \u2022 I fill field  p ,  github nightmare \n \u2022 I click  Search Web \n \u2022 I wait for element  #main , 2\n \u2022 I see element  #main .searchCenterMiddle li a \n \u2022 I see  segmentio/nightmare ,  li a \n \u2713 OK in 5490ms  As you see the Nigthmare test was almost  3 times faster  than Selenium test.\nSure, this can't be taken as a valuable benchmark but more like a proof of concept.", 
+            "title": "How Fast Is Nigthmare JS?"
+        }, 
+        {
+            "location": "/nightmare/#setup", 
+            "text": "To start you need CodeceptJS with nightmare and nightmare-upload packages installed.  npm install -g codeceptjs nightmare nightmare-upload  And a basic project initialized  codeceptjs init  You will be asked for a Helper to use, you should select Nightmare and provide url of a website you are testing.\nSetup process is explained on  QuickStart page .  (If you already have CodeceptJS project, just install nightmare globally or locally and enable it in config)", 
+            "title": "Setup"
+        }, 
+        {
+            "location": "/nightmare/#configuring-nightmare", 
+            "text": "To enable Nightmare tests you should enable  Nightmare  helper in  codecept.json  config:  { // ..\n   helpers : {\n     Nigthmare : {\n       url :  http://localhost ,\n       show : false\n    }\n  }\n  // ..\n}  Turn on the  show  option if you want to follow test progress in a window. This is very useful for debugging.\nAll other options can be taken from  NightmareJS API .  Option  waitForAction  defines how long to wait after a click, doubleClick or pressKey action is performed.\nTest execution may happen much faster than the response is rendered, so make sure you set a proper delay value.\nBy default CodeceptJS waits for 500ms.", 
+            "title": "Configuring Nightmare"
+        }, 
+        {
+            "location": "/nightmare/#opening-a-web-page", 
+            "text": "Nightmare provides you with more control to browser engine than Selenium does.\nThis allows you to use headers in your tests. For instance, CodeceptJS provides  haveHeader  method\nto set default headers for all your HTTP requests:  I.haveHeader('x-tested-with', 'codeceptjs');  When opening a web page you can set headers as well.  amOnPage  methods can take headers as second parameter:  // use basic http auth\nI.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);  As a small bonus: all  console.log  calls on a page will be also shown in  --debug  mode.", 
+            "title": "Opening a Web Page"
+        }, 
+        {
+            "location": "/nightmare/#manipulating-web-page", 
+            "text": "Nigthmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.\nThis means that all CodeceptJS actions like  click ,  fillField ,  selectOption  and others are supposed to work in the very same manner.\nThey are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.  Assertions start with  see  prefix. You can check text on a page, elements on page and others.", 
+            "title": "Manipulating Web Page"
+        }, 
+        {
+            "location": "/nightmare/#extending-nightmare-helper", 
+            "text": "CodeceptJS allows you to define and connect own helpers. If some functionality of\nNightmare helper is missing you can easily create  ExtendedNightmare  helper by running:  codecepjs gh  Learn more about  Helpers .  Nigthmare instance can be accessed by custom helper:  // returns current nightmare instance\nthis.helpers['Nightmare'].browser;  This way you can call  native Nightmare commands .  It is important to understand that Nightmare executes JavaScript on client and on server side.\nIf you need to find an element you should search for it using client side script, but if you want\nto do an assertion you should return a data to server side.  Nightmare provides  evaulate  method to execute client-side JavaScript. CodeceptJS registers  codeceptjs \nobject globally on client side with  findElement  and  findElements  methods in it. They return IDs of matched elements\nso you can access them in next calls to  evaluate :  // inside a custom helper class\nseeAttributeContains(locator, attribute, expectedValue) {\n  // let's use chai assertion library\n  let assert = require('chai').assert;\n  // get nightmare instance\n  let browser = this.helpers['Nightmare'].browser;\n  // find an element by CSS or XPath:\n  return this.helpers['Nightmare']._locate(locator).then(function(els) {\n    // we received an array with IDs of matched elements\n    // now let's execute client-side script to get attribute for the first element\n    return browser.evaluate(function(el, attribute) {\n      // this is executed inside a web page!\n      return codeceptjs.fetchElement(el).getAttribute(attribute);\n    }, els[0], attribute); // function + its params\n  }).then(function(attributeValue) {\n    // get attribute value and back to server side\n    // execute an assertion\n    assert.include(attributeValye, expectedValue);\n  });\n}  It can be used in tests like:  I.seeAttributeContains('#main img', 'src', '/cat.jpg');  This sample assertion used  _locate  helper method which searched for elements\nby CSS/XPath or a strict locator. Then  browser.evaluate  method was called to\nuse locate found elements on a page and return attribute from the first of them.", 
+            "title": "Extending Nightmare Helper"
+        }, 
+        {
+            "location": "/nightmare/#done", 
+            "text": "", 
+            "title": "done()"
+        }, 
+        {
             "location": "/helpers/", 
             "text": "Helpers\n\n\nHelpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.\nMethods of Helper class will be available in tests in \nI\n object. This abstracts test scenarios from the implementation and allows easy switching between backends.\nFunctionality of CodeceptJS should be extended by writing a custom helpers.\n\n\nYou can either access core Helpers (and underlying libraries) or create a new from scratch.\n\n\nDevelopment\n\n\nHelpers can be created by running a generator command:\n\n\ncodeceptjs gh\n\n\n\n\n(or \ngenerate helper\n)\n\n\nHelpers are ES6 classes inherited from \ncorresponding abstract class\n.\nGenerated Helper will be added to \ncodecept.json\n config. It should look like this:\n\n\n'use strict';\n\nlet Helper = codecept_helper;\n\nclass MyHelper extends Helper {\n\n  // before/after hooks\n  _before() {\n    // remove if not used\n  }\n\n  _after() {\n    // remove if not used\n  }\n\n  // add custom methods here\n  // If you need to access other helpers\n  // use: this.helpers['helperName']\n\n}\n\nmodule.exports = MyHelper;\n\n\n\n\nAll methods except those starting from \n_\n will be added to \nI\n object and treated as test actions.\nEvery method should return a value in order to be appended into promise chain.\n\n\nAfter writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:\n\n\ncodeceptjs def .\n\n\n\n\nThis way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.\n\n\nWebDriverIO Example\n\n\nNext example demonstrates how to use WebDriverIO library to create your own test action.\nMethod \nseeAuthentication\n will use \nclient\n instance of WebDriverIO to get access to cookies.\nStandard NodeJS assertion library will be used (you can use any).\n\n\n'use strict';\nlet Helper = codecept_helper;\n\n// use any assertion library you like\nlet assert = require('assert');\n\nclass MyHelper extends Helper {\n  /**\n   * checks that authentication cookie is set\n   */\n  seeAuthentication() {\n    // access current client of WebDriverIO helper\n    let client = this.helpers['WebDriverIO'].browser;\n\n    // get all cookies according to http://webdriver.io/api/protocol/cookie.html\n    // any helper method should return a value in order to be added to promise chain\n    return client.cookie(function(err, res) {\n      // get values\n      let cookies = res.value;\n      for (let k in cookies) {\n        // check for a cookie\n        if (cookies[k].name != 'logged_in') continue;\n        assert.equal(cookies[k].value, 'yes');\n        return;\n      }\n      assert.fail(cookies, 'logged_in', \nAuth cookie not set\n);\n    });\n  }\n}\n\n\n\n\nProtractor Example\n\n\nProtractor example demonstrates usage of global \nelement\n and \nby\n objects.\nHowever \nbrowser\n should be accessed from a helper instance via \nthis.helpers['Protractor']\n;\nWe also use \nchai-as-promised\n library to have nice assertions with promises.\n\n\n'use strict';\nlet Helper = codecept_helper;\n\n// use any assertion library you like\nvar chai = require('chai');\nvar chaiAsPromised = require('chai-as-promised');\nchai.use(chaiAsPromised);\nvar expect = chai.expect;\n\nclass MyHelper extends Helper {\n  /**\n   * checks that authentication cookie is set\n   */\n  seeInHistory(historyPosition, value) {\n    // access browser instance from Protractor helper\n    this.helpers['Protractor'].browser.refresh();\n\n    // you can use `element` as well as in protractor\n    var history = element.all(by.repeater('result in memory'));\n\n    // use chai as promised for better assertions\n    // end your method with `return` to handle promises\n    return expect(history.get(historyPosition).getText()).to.eventually.equal(value);\n  }\n}\n\n\n\n\nInitialization\n\n\nHelpers can be configured in \ncodecept.json\n and config values are passed into constructor.\nBy default config values will be stored in \nthis.config\n. You can redefine constructor to provide custom initialization and customization.\n\n\nconstructor(config) {\n  config.defaultValue = '42';\n  super(config);\n}\n\n\n\n\nHooks\n\n\nHelpers may contain several hooks you can use to handle events of a test.\nImplement corresponding methods to them.\n\n\n\n\n_init\n - before all tests\n\n\n_before\n - before a test\n\n\n_beforeStep\n - before each step\n\n\n_afterStep\n - after each step\n\n\n_beforeSuite\n - before each suite \n\n\n_afterSuite\n - after each suite \n\n\n\n\nEach implemented method should return a value as they will be added to global promise chain as well.\n\n\ndone()", 
             "title": "Helpers"
@@ -997,6 +1042,256 @@
         }, 
         {
             "location": "/helpers/SeleniumWebdriver/#waitforvisible", 
+            "text": "Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  I.waitForVisible('#popup');  Parameters   locator   element located by CSS|XPath|strict locator  sec   time seconds to wait, 1 by default", 
+            "title": "waitForVisible"
+        }, 
+        {
+            "location": "/helpers/Nightmare/", 
+            "text": "Nightmare\n\n\nNightmare helper wraps \nNightmare\n library to provide\nfastest headless testing using Electron engine. Unlike Selenium-based drivers this uses\nChromium-based browser with Electron with lots of client side scripts, thus should be less stable and\nless trusted.\n\n\nRequires \nnightmare\n and \nnigthmare-upload\n packages to be installed.\n\n\nConfiguration\n\n\nThis helper should be configured in codecept.json\n\n\n\n\nurl\n - base url of website to be tested\n\n\nwaitForAction\n: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500\n\n\nwaitForTimeout\n: (optional) default wait* timeout\n\n\n\n\nwindowSize\n: (optional) default window size. Set a dimension like \n640x480\n.\n\n\n\n\n\n\noptions from \nNightmare configuration\n\n\n\n\n\n\nParameters\n\n\n\n\nconfig\n  \n\n\n\n\n_locate\n\n\nLocate elements by different locator types, including strict locator.\nShould be used in custom helpers.\n\n\nThis method return promise with array of IDs of found elements.\nActual elements can be accessed inside \nevaulate\n by using \ncodeceptjs.fetchElement()\n\nclient-side function:\n\n\n// get an inner text of an element\n\nlet browser = this.helpers['Nigthmare'].browser;\nlet value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {\n  return browser.evaluate(function(el) {\n    return codeceptjs.fetchElement(el).value;\n  }, els[0]);\n});\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\n\n\namOnPage\n\n\nOpens a web page in a browser. Requires relative or absolute url.\nIf url starts with \n/\n, opens a web page of a site defined in \nurl\n config parameter.\n\n\nI.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page\n\n\n\n\nParameters\n\n\n\n\nurl\n  url path or global urlIn a second argument a list of request headers can be passed:\njs\n    I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])\n\n\nheaders\n  \n\n\n\n\nappendField\n\n\nAppends text to a input field or textarea.\nField is located by name, label, CSS or XPath\n\n\nI.appendField('#myTextField', 'appended');\n\n\n\n\nParameters\n\n\n\n\nfield\n  located by label|name|CSS|XPath|strict locator\n\n\nvalue\n  text value\n\n\n\n\nattachFile\n\n\nAttaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).\n\n\nI.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  field located by label|name|CSS|XPath|strict locator\n\n\npathToFile\n  local file path relative to codecept.json config fileDue to technical limitation this \nworks only with CSS selectors\n\n\n\n\ncheckOption\n\n\nSelects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\nI.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');\n\n\n\n\nParameters\n\n\n\n\n\n\n\n\n-   \nfield\n  checkbox located by label\n\n\nname\n\n\nCSS\n\n\n\n\n\n\n\n\n\n\nclearCookie\n\n\nClears a cookie by name,\nif none provided clears all cookies\n\n\nI.clearCookie();\nI.clearCookie('test');\n\n\n\n\nParameters\n\n\n\n\ncookie\n  (optional)\n\n\n\n\nclick\n\n\nPerform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.\n\n\nThe second parameter is a context (CSS or XPath locator) to narrow the search.\n\n\n// simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});\n\n\n\n\nParameters\n\n\n\n\n\n\n\n\n-   \nlocator\n  clickable link or button located by text, or any element located by CSS\n\n\nXPath\n\n\nstrict locator\n\n\n\n\n\n\n\n\n\n\ndontSee\n\n\nOpposite to \nsee\n. Checks that a text is not present on a page.\nUse context parameter to narrow down the search.\n\n\nI.dontSee('Login'); // assume we are already logged in\n\n\n\n\nParameters\n\n\n\n\ntext\n  is not present\n\n\ncontext\n  (optional) element located by CSS|XPath|strict locator in which to perfrom search\n\n\n\n\ndontSeeCheckboxIsChecked\n\n\nVerifies that the specified checkbox is not checked.\n\n\nParameters\n\n\n\n\nfield\n  located by label|name|CSS|XPath|strict locator\n\n\n\n\ndontSeeCookie\n\n\nChecks that cookie with given name does not exist.\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\ndontSeeCurrentUrlEquals\n\n\nChecks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\ndontSeeElement\n\n\nOpposite to \nseeElement\n. Checks that element is not visible\n\n\nParameters\n\n\n\n\nlocator\n  located by CSS|XPath|Strict locator\n\n\n\n\ndontSeeElementInDOM\n\n\nOpposite to \nseeElementInDOM\n. Checks that element is not on page.\n\n\nParameters\n\n\n\n\nlocator\n  located by CSS|XPath|Strict locator\n\n\n\n\ndontSeeInCurrentUrl\n\n\nChecks that current url does not contain a provided fragment.\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\ndontSeeInField\n\n\nChecks that value of input field or textare doesn't equal to given value\nOpposite to \nseeInField\n.\n\n\nParameters\n\n\n\n\nfield\n  located by label|name|CSS|XPath|strict locator\n\n\nvalue\n  is not expected to be a field value\n\n\n\n\ndontSeeInSource\n\n\nChecks that the current page contains the given string in its raw source code\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\ndontSeeInTitle\n\n\nChecks that title does not contain text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\ndoubleClick\n\n\nPerforms a double-click on an element matched by link|button|label|CSS or XPath.\nContext can be specified as second parameter to narrow search.\n\n\nI.doubleClick('Edit');\nI.doubleClick('Edit', '.actions');\nI.doubleClick({css: 'button.accept'});\nI.doubleClick('.btn.edit');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\ncontext\n  \n\n\n\n\nexecuteAsyncScript\n\n\nExecutes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nexecuteScript\n\n\nExecutes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.\n\n\nParameters\n\n\n\n\nfn\n  \n\n\n\n\nfillField\n\n\nFills a text field or textarea, after clearing its value, with the given string.\nField is located by name, label, CSS, or XPath.\n\n\n// by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');\n\n\n\n\nParameters\n\n\n\n\nfield\n  located by label|name|CSS|XPath|strict locator\n\n\nvalue\n  \n\n\n\n\ngrabAttributeFrom\n\n\nRetrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet hint = yield I.grabAttributeFrom('#tooltip', 'title');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  element located by CSS|XPath|strict locator\n\n\nattr\n  \n\n\n\n\ngrabCookie\n\n\nGets a cookie object by name\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');\n\n\n\n\nParameters\n\n\n\n\nname\n  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:\njs\n    I.grabCookie({ secure: true});\nIf you'd like get all cookies for all urls, use: \n.grabCookie({ url: null }).\n\n\n\n\ngrabTextFrom\n\n\nRetrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet pin = yield I.grabTextFrom('#pin');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  element located by CSS|XPath|strict locator\n\n\n\n\ngrabTitle\n\n\nRetrieves a page title and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet title = yield I.grabTitle();\n\n\n\n\ngrabValueFrom\n\n\nRetrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so \nshould be used inside a generator with \nyield\n operator.\n\n\nlet email = yield I.grabValueFrom('input[name=email]');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  field located by label|name|CSS|XPath|strict locator\n\n\n\n\nhaveHeader\n\n\nAdd a header override for all HTTP requests. If header is undefined, the header overrides will be reset.\n\n\nI.haveHeader('x-my-custom-header', 'some value');\nI.haveHeader(); // clear headers\n\n\n\n\nParameters\n\n\n\n\nheader\n  \n\n\nvalue\n  \n\n\n\n\npressKey\n\n\nSends \ninput event\n on a page.\nCan submit special keys like 'Enter', 'Backspace', etc\n\n\nParameters\n\n\n\n\nkey\n  \n\n\n\n\nresizeWindow\n\n\nResize the current window to provided width and height.\nFirst parameter can be set to \nmaximize\n\n\nParameters\n\n\n\n\nwidth\n  or \nmaximize\n\n\nheight\n  \n\n\n\n\nresizeWindow\n\n\nResize the current window to provided width and height.\nFirst parameter can be set to \nmaximize\n\n\nParameters\n\n\n\n\nwidth\n  or \nmaximize\n\n\nheight\n  \n\n\n\n\nsaveScreenshot\n\n\nSaves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.\n\n\nI.saveScreenshot('debug.png');\n\n\n\n\nParameters\n\n\n\n\nfileName\n  \n\n\n\n\nscrollTo\n\n\nScrolls to element matched by locator.\nExtra shift can be set with offsetX and offsetY options\n\n\nI.scrollTo('footer');\nI.scrollTo('#submit', 5,5);\n\n\n\n\nParameters\n\n\n\n\nlocator\n  \n\n\noffsetX\n  \n\n\noffsetY\n  \n\n\n\n\nsee\n\n\nChecks that a page contains a visible text.\nUse context parameter to narrow down the search.\n\n\nI.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator\n\n\n\n\nParameters\n\n\n\n\ntext\n  expected on page\n\n\ncontext\n  (optional) element located by CSS|Xpath|strict locator in which to search for text\n\n\n\n\nseeCheckboxIsChecked\n\n\nVerifies that the specified checkbox is checked.\n\n\nI.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});\n\n\n\n\nParameters\n\n\n\n\nfield\n  located by label|name|CSS|XPath|strict locator\n\n\n\n\nseeCookie\n\n\nChecks that cookie with given name exists.\n\n\nI.seeCookie('Auth');\n\n\n\n\nParameters\n\n\n\n\nname\n  \n\n\n\n\nseeCurrentUrlEquals\n\n\nChecks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:\n\n\nI.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');\n\n\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\nseeElement\n\n\nChecks that a given Element is visible\nElement is located by CSS or XPath.\n\n\nI.seeElement('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  located by CSS|XPath|strict locator\n\n\n\n\nseeElementInDOM\n\n\nChecks that a given Element is present in the DOM\nElement is located by CSS or XPath.\n\n\nI.seeElementInDOM('#modal');\n\n\n\n\nParameters\n\n\n\n\nlocator\n  located by CSS|XPath|strict locator\n\n\n\n\nseeInCurrentUrl\n\n\nChecks that current url contains a provided fragment.\n\n\nI.seeInCurrentUrl('/register'); // we are on registration page\n\n\n\n\nParameters\n\n\n\n\nurl\n  \n\n\n\n\nseeInField\n\n\nChecks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.\n\n\nI.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');\n\n\n\n\nParameters\n\n\n\n\nfield\n  located by label|name|CSS|XPath|strict locator\n\n\nvalue\n  \n\n\n\n\nseeInSource\n\n\nChecks that the current page contains the given string in its raw source code.\n\n\nI.seeInSource('\nh1\nGreen eggs \namp; ham\n/h1\n');\n\n\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nseeInTitle\n\n\nChecks that title contains text.\n\n\nParameters\n\n\n\n\ntext\n  \n\n\n\n\nselectOption\n\n\nSelects an option in a drop-down select.\nField is searched by label | name | CSS | XPath.\nOption is selected by visible text or by value.\n\n\nI.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Premium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');\n\n\n\n\nProvide an array for the second argument to select multiple options.\n\n\nI.selectOption('Which OS do you use?', ['Android', 'iOS']);\n\n\n\n\nParameters\n\n\n\n\nselect\n  field located by label|name|CSS|XPath|strict locator\n\n\noption\n  \n\n\n\n\nsetCookie\n\n\nSets a cookie\n\n\nI.setCookie({name: 'auth', value: true});\n\n\n\n\nParameters\n\n\n\n\ncookie\n  Wrapper for \n.cookies.set(cookie)\n.\n    \nSee more\n\n\n\n\nwait\n\n\nPauses execution for a number of seconds.\n\n\nI.wait(2); // wait 2 secs\n\n\n\n\nParameters\n\n\n\n\nsec\n  \n\n\n\n\nwaitForElement\n\n\nWaits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nI.waitForElement('.btn.continue');\nI.waitForElement('.btn.continue', 5); // wait for 5 secs\n\n\n\n\nParameters\n\n\n\n\nlocator\n  element located by CSS|XPath|strict locator\n\n\nsec\n  time seconds to wait, 1 by default\n\n\n\n\nwaitForText\n\n\nWaits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.\n\n\nI.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');\n\n\n\n\nParameters\n\n\n\n\ntext\n  to wait for\n\n\nsec\n  seconds to wait\n\n\ncontext\n  element located by CSS|XPath|strict locator\n\n\n\n\nwaitForVisible\n\n\nWaits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.\n\n\nI.waitForVisible('#popup');\n\n\n\nParameters\n\n\n\n\nlocator\n  element located by CSS|XPath|strict locator\n\n\nsec\n  time seconds to wait, 1 by default", 
+            "title": "Nightmare"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#nightmare", 
+            "text": "Nightmare helper wraps  Nightmare  library to provide\nfastest headless testing using Electron engine. Unlike Selenium-based drivers this uses\nChromium-based browser with Electron with lots of client side scripts, thus should be less stable and\nless trusted.  Requires  nightmare  and  nigthmare-upload  packages to be installed.  Configuration  This helper should be configured in codecept.json   url  - base url of website to be tested  waitForAction : (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500  waitForTimeout : (optional) default wait* timeout   windowSize : (optional) default window size. Set a dimension like  640x480 .    options from  Nightmare configuration    Parameters   config", 
+            "title": "Nightmare"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#_locate", 
+            "text": "Locate elements by different locator types, including strict locator.\nShould be used in custom helpers.  This method return promise with array of IDs of found elements.\nActual elements can be accessed inside  evaulate  by using  codeceptjs.fetchElement() \nclient-side function:  // get an inner text of an element\n\nlet browser = this.helpers['Nigthmare'].browser;\nlet value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {\n  return browser.evaluate(function(el) {\n    return codeceptjs.fetchElement(el).value;\n  }, els[0]);\n});  Parameters   locator", 
+            "title": "_locate"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#amonpage", 
+            "text": "Opens a web page in a browser. Requires relative or absolute url.\nIf url starts with  / , opens a web page of a site defined in  url  config parameter.  I.amOnPage('/'); // opens main page of website\nI.amOnPage('https://github.com'); // opens github\nI.amOnPage('/login'); // opens a login page  Parameters   url   url path or global urlIn a second argument a list of request headers can be passed: js\n    I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])  headers", 
+            "title": "amOnPage"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#appendfield", 
+            "text": "Appends text to a input field or textarea.\nField is located by name, label, CSS or XPath  I.appendField('#myTextField', 'appended');  Parameters   field   located by label|name|CSS|XPath|strict locator  value   text value", 
+            "title": "appendField"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#attachfile", 
+            "text": "Attaches a file to element located by label, name, CSS or XPath\nPath to file is relative current codecept directory (where codecept.json is located).\nFile will be uploaded to remove system (if tests are running remotely).  I.attachFile('Avatar', 'data/avatar.jpg');\nI.attachFile('form input[name=avatar]', 'data/avatar.jpg');  Parameters   locator   field located by label|name|CSS|XPath|strict locator  pathToFile   local file path relative to codecept.json config fileDue to technical limitation this  works only with CSS selectors", 
+            "title": "attachFile"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#checkoption", 
+            "text": "Selects a checkbox or radio button.\nElement is located by label or name or CSS or XPath.  The second parameter is a context (CSS or XPath locator) to narrow the search.  I.checkOption('#agree');\nI.checkOption('I Agree to Terms and Conditions');\nI.checkOption('agree', '//form');  Parameters     -    field   checkbox located by label  name  CSS", 
+            "title": "checkOption"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#clearcookie", 
+            "text": "Clears a cookie by name,\nif none provided clears all cookies  I.clearCookie();\nI.clearCookie('test');  Parameters   cookie   (optional)", 
+            "title": "clearCookie"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#click", 
+            "text": "Perform a click on a link or a button, given by a locator.\nIf a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.\nFor buttons, the \"value\" attribute, \"name\" attribute, and inner text are searched. For links, the link text is searched.\nFor images, the \"alt\" attribute and inner text of any parent links are searched.  The second parameter is a context (CSS or XPath locator) to narrow the search.  // simple link\nI.click('Logout');\n// button of form\nI.click('Submit');\n// CSS button\nI.click('#form input[type=submit]');\n// XPath\nI.click('//form/*[@type=submit]');\n// link in context\nI.click('Logout', '#nav');\n// using strict locator\nI.click({css: 'nav a.login'});  Parameters     -    locator   clickable link or button located by text, or any element located by CSS  XPath  strict locator", 
+            "title": "click"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontsee", 
+            "text": "Opposite to  see . Checks that a text is not present on a page.\nUse context parameter to narrow down the search.  I.dontSee('Login'); // assume we are already logged in  Parameters   text   is not present  context   (optional) element located by CSS|XPath|strict locator in which to perfrom search", 
+            "title": "dontSee"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseecheckboxischecked", 
+            "text": "Verifies that the specified checkbox is not checked.  Parameters   field   located by label|name|CSS|XPath|strict locator", 
+            "title": "dontSeeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseecookie", 
+            "text": "Checks that cookie with given name does not exist.  Parameters   name", 
+            "title": "dontSeeCookie"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseecurrenturlequals", 
+            "text": "Checks that current url is not equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.  Parameters   url", 
+            "title": "dontSeeCurrentUrlEquals"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseeelement", 
+            "text": "Opposite to  seeElement . Checks that element is not visible  Parameters   locator   located by CSS|XPath|Strict locator", 
+            "title": "dontSeeElement"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseeelementindom", 
+            "text": "Opposite to  seeElementInDOM . Checks that element is not on page.  Parameters   locator   located by CSS|XPath|Strict locator", 
+            "title": "dontSeeElementInDOM"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseeincurrenturl", 
+            "text": "Checks that current url does not contain a provided fragment.  Parameters   url", 
+            "title": "dontSeeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseeinfield", 
+            "text": "Checks that value of input field or textare doesn't equal to given value\nOpposite to  seeInField .  Parameters   field   located by label|name|CSS|XPath|strict locator  value   is not expected to be a field value", 
+            "title": "dontSeeInField"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseeinsource", 
+            "text": "Checks that the current page contains the given string in its raw source code  Parameters   text", 
+            "title": "dontSeeInSource"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#dontseeintitle", 
+            "text": "Checks that title does not contain text.  Parameters   text", 
+            "title": "dontSeeInTitle"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#doubleclick", 
+            "text": "Performs a double-click on an element matched by link|button|label|CSS or XPath.\nContext can be specified as second parameter to narrow search.  I.doubleClick('Edit');\nI.doubleClick('Edit', '.actions');\nI.doubleClick({css: 'button.accept'});\nI.doubleClick('.btn.edit');  Parameters   locator     context", 
+            "title": "doubleClick"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#executeasyncscript", 
+            "text": "Executes async script on page.\nProvided function should execute a passed callback (as first argument) to signal it is finished.  Parameters   fn", 
+            "title": "executeAsyncScript"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#executescript", 
+            "text": "Executes sync script on a page.\nPass arguments to function as additional parameters.\nWill return execution result to a test.\nIn this case you should use generator and yield to receive results.  Parameters   fn", 
+            "title": "executeScript"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#fillfield", 
+            "text": "Fills a text field or textarea, after clearing its value, with the given string.\nField is located by name, label, CSS, or XPath.  // by label\nI.fillField('Email', 'hello@world.com');\n// by name\nI.fillField('password', '123456');\n// by CSS\nI.fillField('form#login input[name=username]', 'John');\n// or by strict locator\nI.fillField({css: 'form#login input[name=username]'}, 'John');  Parameters   field   located by label|name|CSS|XPath|strict locator  value", 
+            "title": "fillField"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#grabattributefrom", 
+            "text": "Retrieves an attribute from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let hint = yield I.grabAttributeFrom('#tooltip', 'title');  Parameters   locator   element located by CSS|XPath|strict locator  attr", 
+            "title": "grabAttributeFrom"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#grabcookie", 
+            "text": "Gets a cookie object by name\nResumes test execution, so  should be used inside a generator with  yield  operator.  let cookie = I.grabCookie('auth');\nassert(cookie.value, '123456');  Parameters   name   Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object: js\n    I.grabCookie({ secure: true}); If you'd like get all cookies for all urls, use:  .grabCookie({ url: null }).", 
+            "title": "grabCookie"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#grabtextfrom", 
+            "text": "Retrieves a text from an element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let pin = yield I.grabTextFrom('#pin');  Parameters   locator   element located by CSS|XPath|strict locator", 
+            "title": "grabTextFrom"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#grabtitle", 
+            "text": "Retrieves a page title and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let title = yield I.grabTitle();", 
+            "title": "grabTitle"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#grabvaluefrom", 
+            "text": "Retrieves a value from a form element located by CSS or XPath and returns it to test.\nResumes test execution, so  should be used inside a generator with  yield  operator.  let email = yield I.grabValueFrom('input[name=email]');  Parameters   locator   field located by label|name|CSS|XPath|strict locator", 
+            "title": "grabValueFrom"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#haveheader", 
+            "text": "Add a header override for all HTTP requests. If header is undefined, the header overrides will be reset.  I.haveHeader('x-my-custom-header', 'some value');\nI.haveHeader(); // clear headers  Parameters   header     value", 
+            "title": "haveHeader"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#presskey", 
+            "text": "Sends  input event  on a page.\nCan submit special keys like 'Enter', 'Backspace', etc  Parameters   key", 
+            "title": "pressKey"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#resizewindow", 
+            "text": "Resize the current window to provided width and height.\nFirst parameter can be set to  maximize  Parameters   width   or  maximize  height", 
+            "title": "resizeWindow"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#resizewindow_1", 
+            "text": "Resize the current window to provided width and height.\nFirst parameter can be set to  maximize  Parameters   width   or  maximize  height", 
+            "title": "resizeWindow"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#savescreenshot", 
+            "text": "Saves a screenshot to ouput folder (set in codecept.json).\nFilename is relative to output folder.  I.saveScreenshot('debug.png');  Parameters   fileName", 
+            "title": "saveScreenshot"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#scrollto", 
+            "text": "Scrolls to element matched by locator.\nExtra shift can be set with offsetX and offsetY options  I.scrollTo('footer');\nI.scrollTo('#submit', 5,5);  Parameters   locator     offsetX     offsetY", 
+            "title": "scrollTo"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#see", 
+            "text": "Checks that a page contains a visible text.\nUse context parameter to narrow down the search.  I.see('Welcome'); // text welcome on a page\nI.see('Welcome', '.content'); // text inside .content div\nI.see('Register', {css: 'form.register'}); // use strict locator  Parameters   text   expected on page  context   (optional) element located by CSS|Xpath|strict locator in which to search for text", 
+            "title": "see"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seecheckboxischecked", 
+            "text": "Verifies that the specified checkbox is checked.  I.seeCheckboxIsChecked('Agree');\nI.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms\nI.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});  Parameters   field   located by label|name|CSS|XPath|strict locator", 
+            "title": "seeCheckboxIsChecked"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seecookie", 
+            "text": "Checks that cookie with given name exists.  I.seeCookie('Auth');  Parameters   name", 
+            "title": "seeCookie"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seecurrenturlequals", 
+            "text": "Checks that current url is equal to provided one.\nIf a relative url provided, a configured url will be prepended to it.\nSo both examples will work:  I.seeCurrentUrlEquals('/register');\nI.seeCurrentUrlEquals('http://my.site.com/register');  Parameters   url", 
+            "title": "seeCurrentUrlEquals"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seeelement", 
+            "text": "Checks that a given Element is visible\nElement is located by CSS or XPath.  I.seeElement('#modal');  Parameters   locator   located by CSS|XPath|strict locator", 
+            "title": "seeElement"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seeelementindom", 
+            "text": "Checks that a given Element is present in the DOM\nElement is located by CSS or XPath.  I.seeElementInDOM('#modal');  Parameters   locator   located by CSS|XPath|strict locator", 
+            "title": "seeElementInDOM"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seeincurrenturl", 
+            "text": "Checks that current url contains a provided fragment.  I.seeInCurrentUrl('/register'); // we are on registration page  Parameters   url", 
+            "title": "seeInCurrentUrl"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seeinfield", 
+            "text": "Checks that the given input field or textarea equals to given value.\nFor fuzzy locators, fields are matched by label text, the \"name\" attribute, CSS, and XPath.  I.seeInField('Username', 'davert');\nI.seeInField({css: 'form textarea'},'Type your comment here');\nI.seeInField('form input[type=hidden]','hidden_value');\nI.seeInField('#searchform input','Search');  Parameters   field   located by label|name|CSS|XPath|strict locator  value", 
+            "title": "seeInField"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seeinsource", 
+            "text": "Checks that the current page contains the given string in its raw source code.  I.seeInSource(' h1 Green eggs  amp; ham /h1 ');  Parameters   text", 
+            "title": "seeInSource"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#seeintitle", 
+            "text": "Checks that title contains text.  Parameters   text", 
+            "title": "seeInTitle"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#selectoption", 
+            "text": "Selects an option in a drop-down select.\nField is searched by label | name | CSS | XPath.\nOption is selected by visible text or by value.  I.selectOption('Choose Plan', 'Monthly'); // select by label\nI.selectOption('subscription', 'Monthly'); // match option by text\nI.selectOption('subscription', '0'); // or by value\nI.selectOption('//form/select[@name=account]','Premium');\nI.selectOption('form select[name=account]', 'Premium');\nI.selectOption({css: 'form select[name=account]'}, 'Premium');  Provide an array for the second argument to select multiple options.  I.selectOption('Which OS do you use?', ['Android', 'iOS']);  Parameters   select   field located by label|name|CSS|XPath|strict locator  option", 
+            "title": "selectOption"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#setcookie", 
+            "text": "Sets a cookie  I.setCookie({name: 'auth', value: true});  Parameters   cookie   Wrapper for  .cookies.set(cookie) .\n     See more", 
+            "title": "setCookie"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#wait", 
+            "text": "Pauses execution for a number of seconds.  I.wait(2); // wait 2 secs  Parameters   sec", 
+            "title": "wait"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#waitforelement", 
+            "text": "Waits for element to be present on page (by default waits for 1sec).\nElement can be located by CSS or XPath.  I.waitForElement('.btn.continue');\nI.waitForElement('.btn.continue', 5); // wait for 5 secs  Parameters   locator   element located by CSS|XPath|strict locator  sec   time seconds to wait, 1 by default", 
+            "title": "waitForElement"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#waitfortext", 
+            "text": "Waits for a text to appear (by default waits for 1sec).\nElement can be located by CSS or XPath.\nNarrow down search results by providing context.  I.waitForText('Thank you, form has been submitted');\nI.waitForText('Thank you, form has been submitted', 5, '#modal');  Parameters   text   to wait for  sec   seconds to wait  context   element located by CSS|XPath|strict locator", 
+            "title": "waitForText"
+        }, 
+        {
+            "location": "/helpers/Nightmare/#waitforvisible", 
             "text": "Waits for an element to become visible on a page (by default waits for 1sec).\nElement can be located by CSS or XPath.  I.waitForVisible('#popup');  Parameters   locator   element located by CSS|XPath|strict locator  sec   time seconds to wait, 1 by default", 
             "title": "waitForVisible"
         }, 
