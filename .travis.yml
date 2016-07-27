@@ -30,4 +30,4 @@ before_script:
 
 script:
   - gulp test
-  - ./node_modules/.bin/mocha test/helper/${HELPER}_test.js
+  - [[ "$TRAVIS_NODE_VERSION" == "4.3" ]] || ./node_modules/.bin/mocha test/helper/${HELPER}_test.js
