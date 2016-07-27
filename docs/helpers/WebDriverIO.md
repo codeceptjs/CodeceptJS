@@ -22,9 +22,10 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
+-   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
--   `desiredCapabilities`:
+-   `desiredCapabilities`: Selenium capabilities
 
 Additional configuration params can be used from <http://webdriver.io/guide/getstarted/configuration.html>
 
@@ -154,6 +155,42 @@ Should be used in custom helpers:
 
 ```js
 this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateCheckable
+
+Find a checkbox by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateClickable
+
+Find a clickable element by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateFields
+
+Find field elements by providing human readable text:
+
+```js
+this.helpers['WebDriverIO']._locateFields('Your email').then // ...
 ```
 
 **Parameters**

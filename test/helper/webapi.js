@@ -4,20 +4,25 @@ require('co-mocha')(require('mocha'));
 let I, data, site_url;
 let assert = require('assert');
 let path = require('path');
-let formContents = require('../../../lib/utils').test.submittedData(path.join(__dirname, '../../data/app/db'));
+let dataFile = path.join(__dirname, '/../data/app/db');
+let formContents = require('../../lib/utils').test.submittedData(dataFile);
 let should = require('chai').should();
-let fileExists = require('../../../lib/utils').fileExists;
+let fileExists = require('../../lib/utils').fileExists;
 
-module.exports.init = function(testData)
-{
+module.exports.init = function(testData) {
   data = testData;
 }
 
 module.exports.tests = function() {
 
+  let isHelper = (helperName) => {
+    return I.constructor.name == helperName;
+  }
+
   beforeEach(function() {
     I = data.I;
     site_url = data.site_url;
+    if (fileExists(dataFile)) require('fs').unlink(dataFile);
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, ...', () => {
@@ -69,6 +74,7 @@ module.exports.tests = function() {
     it('should check visible elements on page', function*() {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
+      yield I.seeElement({name: 'name'});
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');
@@ -87,6 +93,16 @@ module.exports.tests = function() {
       yield I.seeElementInDOM('input[name=email]');
       yield I.dontSeeElement('input[name=email]');
       return I.dontSeeElement('#something-beyond');
+    });
+  });
+
+  describe('#seeInSource, #dontSeeInSource', () => {
+    it('should check meta of a page', function*() {
+      yield I.amOnPage('/info');
+      yield I.seeInSource('<body>');
+      yield I.dontSeeInSource('<meta>');
+      yield I.seeInSource('Invisible text');
+      return I.seeInSource('content="text/html; charset=utf-8"');
     });
   });
 
@@ -125,6 +141,15 @@ module.exports.tests = function() {
       yield I.amOnPage('/form/example7');
       yield I.click('Buy Chocolate Bar');
       return I.seeInCurrentUrl('/');
+    });
+  });
+
+  describe('#doubleClick', () => {
+    it('it should doubleClick', function*() {
+      yield I.amOnPage('/form/doubleclick');
+      yield I.dontSee('Done');
+      yield I.doubleClick('#block');
+      return I.see('Done');
     });
   });
 
@@ -253,16 +278,6 @@ module.exports.tests = function() {
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
-
-    it('should be able to send special keys to element', function*() {
-      yield I.amOnPage('/form/field');
-      yield I.appendField('Name', '-');
-      yield I.pressKey([`Control`, `a`]);
-      yield I.pressKey([`Delete`]);
-      yield I.pressKey(['Shift', '111']);
-      yield I.pressKey('1');
-      return I.seeInField('Name', '!!!1');
-    });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -358,6 +373,7 @@ module.exports.tests = function() {
     });
 
     it('should upload file located by label', function*() {
+      if (isHelper('Nightmare')) return;
       yield I.amOnPage('/form/file');
       yield I.attachFile('Avatar', 'app/avatar.jpg');
       yield I.click('Submit');
@@ -371,16 +387,18 @@ module.exports.tests = function() {
     });
 
     it('should create a screenshot file in output dir', () => {
+      let sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
-        .then(() => I.saveScreenshot('sw-user.png'))
-        .then(() => assert.ok(fileExists(path.join(output_dir, 'sw-user.png')), null, 'file does not exists'));
+        .then(() => I.saveScreenshot('screenshot_'+sec))
+        .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_'+sec)), null, 'file does not exists'));
     });
 
-    it('should create a screenshot file in output dir', () => {
-      let test = { title: 'sw should do smth' };
+    it('should create a screenshot on fail', () => {
+      let sec = (new Date()).getUTCMilliseconds().toString();
+      let test = { title: 'sw should do smth '+sec };
       return I.amOnPage('/')
         .then(() => I._failed(test))
-        .then(() => assert.ok(fileExists(path.join(output_dir, 'sw_should_do_smth.failed.png')), null, 'file does not exists'));
+        .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
     });
   });
 
@@ -411,4 +429,5 @@ module.exports.tests = function() {
         .then(() => I.see('Dynamic text'));
     });
   });
+
 }

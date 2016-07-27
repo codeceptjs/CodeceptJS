@@ -1,16 +1,16 @@
 'use strict';
 
-let WebDriverIO = require('../../../lib/helper/WebDriverIO');
+let WebDriverIO = require('../../lib/helper/WebDriverIO');
 let should = require('chai').should();
 let wd;
 let site_url = 'http://127.0.0.1:8000';
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
-let fileExists = require('../../../lib/utils').fileExists;
-let AssertionFailedError = require('../../../lib/assert/error');
-let formContents = require('../../../lib/utils').test.submittedData(path.join(__dirname, '../../data/app/db'));
-let expectError = require('../../../lib/utils').test.expectError;
+let fileExists = require('../../lib/utils').fileExists;
+let AssertionFailedError = require('../../lib/assert/error');
+let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
+let expectError = require('../../lib/utils').test.expectError;
 let webApiTests = require('./webapi');
 
 
@@ -18,7 +18,7 @@ describe('WebDriverIO', function () {
   this.timeout(10000);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '../../data');
+    global.codecept_dir = path.join(__dirname, '/../data');
     try {
       fs.unlinkSync(dataFile);
     } catch (err) {}
@@ -144,6 +144,18 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#pressKey', () => {
+    it('should be able to send special keys to element', function*() {
+      yield wd.amOnPage('/form/field');
+      yield wd.appendField('Name', '-');
+      yield wd.pressKey([`Control`, `a`]);
+      yield wd.pressKey(`Delete`);
+      yield wd.pressKey(['Shift', '111']);
+      yield wd.pressKey('1');
+      return wd.seeInField('Name', '!!!1');
+    });
+  });
+
   describe('#clearField', () => {
     it('should clear a given element', () => {
       return wd.amOnPage('/form/field')
@@ -200,7 +212,7 @@ describe('WebDriverIO', function () {
   describe('#waitForText', () => {
     it('should return error if not present', () => {
       return wd.amOnPage('/dynamic')
-        .then(() => wd.waitForText('Nothing here', 0, '#text'))
+        .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
@@ -210,7 +222,7 @@ describe('WebDriverIO', function () {
 
     it('should return error if waiting is too small', () => {
       return wd.amOnPage('/dynamic')
-        .then(() => wd.waitForText('Dynamic text', 0.5))
+        .then(() => wd.waitForText('Dynamic text', 0.1))
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
@@ -251,4 +263,49 @@ describe('WebDriverIO', function () {
           .then(() => wd.see('Iframe test'));
       });
   });
+
+  describe('#_locateClickable', () => {
+    it('should locate a button to click', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateClickable('Submit'))
+        .then((res) => {
+          res.length.should.be.equal(1)
+        })
+    });
+
+    it('should not locate a non-existing checkbox', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateClickable('I disagree'))
+        .then((res) => res.length.should.be.equal(0))
+    });
+  });
+
+  describe('#_locateCheckable', () => {
+    it('should locate a checkbox', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateCheckable('I Agree'))
+        .then((res) => res.length.should.be.equal(1))
+    });
+
+    it('should not locate a non-existing checkbox', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd._locateCheckable('I disagree'))
+        .then((res) => res.length.should.be.equal(0))
+    });
+  });
+
+  describe('#_locateFields', () => {
+    it('should locate a field', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd._locateFields('Name'))
+        .then((res) => res.length.should.be.equal(1))
+    });
+
+    it('should not locate a non-existing field', () => {
+      return wd.amOnPage('/form/field')
+        .then(() => wd._locateFields('Mother-in-law'))
+        .then((res) => res.length.should.be.equal(0))
+    });
+  });
+
 });

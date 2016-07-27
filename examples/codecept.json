@@ -3,9 +3,10 @@
   "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "SeleniumWebdriver": {
+    "WebDriverIO": {
       "url": "http://localhost",
-      "browser": "firefox"
+      "browser": "firefox",
+      "restart": false
     }
   },
   "mocha": {},

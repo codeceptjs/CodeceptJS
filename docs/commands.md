@@ -42,6 +42,12 @@ Run single test in debug mode
 codeceptjs run . github_test.js --debug
 ```
 
+Run test with internal logs printed (global promises, and events).
+
+```
+codeceptjs run . github_test.js --verbose
+```
+
 Run tests and produce xunit report:
 
 ```

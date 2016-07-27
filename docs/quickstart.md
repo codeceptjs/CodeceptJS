@@ -37,6 +37,7 @@ No matter what helper you've chosen they will be similar in use.
 ❯◉ WebDriverIO
  ◯ Protractor
  ◯ SeleniumWebdriver
+ ◯ Nightmare
  ◯ FileSystem
 ```
 

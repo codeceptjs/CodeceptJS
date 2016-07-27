@@ -54,6 +54,7 @@ program.command('run [suite] [test]')
   // codecept-only options
   .option('--steps', 'show step-by-step execution')
   .option('--debug', 'output additional information')
+  .option('--verbose', 'output internal logging information')
 
   // mocha options
   .option('-c, --colors', 'force enabling of colors')
