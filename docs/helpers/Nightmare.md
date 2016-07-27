@@ -1,40 +1,23 @@
-# SeleniumWebdriver
+# Nightmare
 
-SeleniumWebdriver helper is based on the official [Selenium Webdriver JS](https://www.npmjs.com/package/selenium-webdriver)
-library. It implements common web api methods (amOnPage, click, see).
+Nightmare helper wraps [Nightmare](https://github.com/segmentio/nightmare) library to provide
+fastest headless testing using Electron engine. Unlike Selenium-based drivers this uses
+Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
+less trusted.
 
-#### Selenium Installation
-
-1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-2.  Launch the daemon: `java -jar selenium-server-standalone-2.xx.xxx.jar`
-
-#### PhantomJS Installation
-
-PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
-It allows you to run Selenium tests on a server without a GUI installed.
-
-1.  Download [PhantomJS](http://phantomjs.org/download.html)
-2.  Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
+Requires `nightmare` and `nigthmare-upload` packages to be installed.
 
 ### Configuration
 
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
--   `browser` - browser in which perform testing
--   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
--   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
--   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
--   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
--   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
+-   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
+-   `waitForTimeout`: (optional) default wait* timeout
+-   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
 
-## Access From Helpers
 
-Receive a WebDriverIO client from a custom helper by accessing `browser` property:
-
-```js
-this.helpers['Protractor'].browser
-```
+-   options from [Nightmare configuration](https://github.com/segmentio/nightmare#api)
 
 **Parameters**
 
@@ -42,11 +25,22 @@ this.helpers['Protractor'].browser
 
 ## _locate
 
-Get elements by different locator types, including strict locator
-Should be used in custom helpers:
+Locate elements by different locator types, including strict locator.
+Should be used in custom helpers.
+
+This method return promise with array of IDs of found elements.
+Actual elements can be accessed inside `evaulate` by using `codeceptjs.fetchElement()`
+client-side function:
 
 ```js
-this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+// get an inner text of an element
+
+let browser = this.helpers['Nigthmare'].browser;
+let value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {
+  return browser.evaluate(function(el) {
+    return codeceptjs.fetchElement(el).value;
+  }, els[0]);
+});
 ```
 
 **Parameters**
@@ -66,7 +60,10 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`  url path or global url
+-   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
+    I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
+    ```
+-   `headers`  
 
 ## appendField
 
@@ -96,7 +93,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 **Parameters**
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
--   `pathToFile`  local file path relative to codecept.json config file
+-   `pathToFile`  local file path relative to codecept.json config fileDue to technical limitation this **works only with CSS selectors**
 
 ## checkOption
 
@@ -332,7 +329,9 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
+-   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:```js
+    I.grabCookie({ secure: true});
+    ```If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ## grabTextFrom
 
@@ -369,21 +368,38 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
 
-## pressKey
+## haveHeader
 
-Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
-will be replaced with corresponding unicode.
-If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+Add a header override for all HTTP requests. If header is undefined, the header overrides will be reset.
 
 ```js
-I.pressKey('Enter');
-I.pressKey(['Control','a']);
+I.haveHeader('x-my-custom-header', 'some value');
+I.haveHeader(); // clear headers
 ```
 
 **Parameters**
 
+-   `header`  
+-   `value`  
+
+## pressKey
+
+Sends [input event](http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent) on a page.
+Can submit special keys like 'Enter', 'Backspace', etc
+
+**Parameters**
+
 -   `key`  
+
+## resizeWindow
+
+Resize the current window to provided width and height.
+First parameter can be set to `maximize`
+
+**Parameters**
+
+-   `width`  or `maximize`
+-   `height`  
 
 ## resizeWindow
 
@@ -407,6 +423,22 @@ I.saveScreenshot('debug.png');
 **Parameters**
 
 -   `fileName`  
+
+## scrollTo
+
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`  
+-   `offsetY`  
 
 ## see
 
@@ -576,7 +608,8 @@ I.setCookie({name: 'auth', value: true});
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`  Wrapper for `.cookies.set(cookie)`.
+    [See more](https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie)
 
 ## wait
 
