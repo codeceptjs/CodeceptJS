@@ -8,12 +8,14 @@ pages:
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
     - 'AngularJS Testing': 'angular.md'
+    - 'Nightmare Testing': 'nightmare.md'
     - 'Helpers': 'helpers.md'
     - 'Page Objects': 'pageobjects.md'
 - Helpers:
     - 'WebDriverIO': 'helpers/WebDriverIO.md'
     - 'Protractor': 'helpers/Protractor.md'
     - 'SeleniumWebdriver': 'helpers/SeleniumWebdriver.md'
+    - 'Nightmare': 'helpers/Nightmare.md'
     - 'FileSystem': 'helpers/FileSystem.md'
 - Reference:
     - 'Commands': 'commands.md'
