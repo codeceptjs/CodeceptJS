@@ -6,22 +6,28 @@ node_js:
 sudo: required
 dist: trusty
 
+env:
+  - HELPER=Protractor
+  - HELPER=Nightmare
+  - HELPER=SeleniumWebdriver
+  - HELPER=WebDriverIO
+
 addons:
   apt:
     packages:
       - php5-cli
 
 before_install:
-  - wget http://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.52.0.jar
+  - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
 
 before_script:
   - chmod -R 777 test/data
-  - ls -ll test/data
-  - ls -ll test/data/output
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - "java -jar selenium-server-standalone-2.52.0.jar -port 4444 >/dev/null 2>&1 &"
+  - "java -jar selenium-server-standalone-2.53.0.jar -port 4444 >/dev/null 2>&1 &"
   - "php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &"
   - sleep 10
 
-script: gulp test
+script:
+  - gulp test
+  - '[[ "$TRAVIS_NODE_VERSION" == "4.3" ]] || ./node_modules/.bin/mocha test/helper/${HELPER}_test.js'

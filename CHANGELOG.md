@@ -1,9 +1,11 @@
 ## 0.4.0
 
-* [Nightmare] Helper added [http://codecept.io/nightmare] for faster web testing.
+* **Nightmare Helper** added [http://codecept.io/nightmare] for faster web testing.
 * [Protractor][SeleniumWebdriver][WebDriverIO] added `restart: false` option to reuse one browser between tests
+* **Protractor 4.0** compatibility. Please upgrade Protractor library.
 * Added `--verbose` option for `run` command to log and print global promise and events.
 * Fixed errors with shutting down and cleanup.
+* Fixed starting interactive shell with `codeceptjs shell`.
 * Fixed handling of failures inside within block
 
 ## 0.3.5
