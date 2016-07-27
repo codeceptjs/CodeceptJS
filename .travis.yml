@@ -18,7 +18,7 @@ addons:
       - php5-cli
 
 before_install:
-  - wget http://selenium-release.storage.googleapis.com/2.52/selenium-server-standalone-2.53.0.jar
+  - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
 
 before_script:
   - chmod -R 777 test/data
