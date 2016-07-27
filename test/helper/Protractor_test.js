@@ -1,6 +1,6 @@
 'use strict';
 
-let Protractor = require('../../../lib/helper/Protractor');
+let Protractor = require('../../lib/helper/Protractor');
 let site_url = 'http://davertmik.github.io/angular-demo-app';
 // let site_url = 'http://127.0.0.1:5000';
 let assert = require('assert');
@@ -12,10 +12,10 @@ let should = require('chai').should();
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
-let AssertionFailedError = require('../../../lib/assert/error');
-let formContents = require('../../../lib/utils').test.submittedData(path.join(__dirname, '../../data/app/db'));
-let fileExists = require('../../../lib/utils').fileExists;
-let expectError = require('../../../lib/utils').test.expectErrors;
+let AssertionFailedError = require('../../lib/assert/error');
+let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '../data/app/db'));
+let fileExists = require('../../lib/utils').fileExists;
+let expectError = require('../../lib/utils').test.expectErrors;
 
 require('co-mocha')(require('mocha'));
 
@@ -30,7 +30,7 @@ describe('Protractor', function() {
   this.timeout(20000);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '../../data');
+    global.codecept_dir = path.join(__dirname, '../data');
     I = new Protractor({url: site_url});
     I._init();
     I._beforeSuite();
