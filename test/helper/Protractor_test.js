@@ -13,7 +13,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
 let AssertionFailedError = require('../../lib/assert/error');
-let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '../data/app/db'));
+let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 let fileExists = require('../../lib/utils').fileExists;
 let expectError = require('../../lib/utils').test.expectErrors;
 
