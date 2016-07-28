@@ -206,7 +206,7 @@
     
         <li class="main active"><a href="#blazing-fast-tests-with-nightmare">Blazing Fast Tests with Nightmare</a></li>
         
-            <li><a href="#how-fast-is-nigthmare-js">How Fast Is Nigthmare JS?</a></li>
+            <li><a href="#how-fast-is-nightmare-js">How Fast Is Nightmare JS?</a></li>
         
             <li><a href="#setup">Setup</a></li>
         
@@ -236,8 +236,8 @@ This makes Nightmare very useful, much more handy than PhantomJS. Nightmare is i
 Unfortunately, as all other JavaScript testing frameworks it has its own very custom API.
 What if you choose it for a project and suddenly you realize that you need something more powerful, like Selenium?
 Yes, that might be a problem if you are not using CodeceptJS.
-The one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nigthmare.</p>
-<p>Compare a test written using Nigthmare API:</p>
+The one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nightmare.</p>
+<p>Compare a test written using Nightmare API:</p>
 <pre><code class="js">nightmare
   .goto('http://yahoo.com')
   .type('form[action*=&quot;/search&quot;] [name=p]', 'github nightmare')
@@ -262,7 +262,7 @@ The one idea behind CodeceptJS is to unify different testing backends under one 
 This is how form can be located by labels, and buttons by text in examples above. It is done by injecting
 client-side scrips (for element location) to every loaded page. Also all events like click, doubleClick, keyPress are <strong>simulated</strong> by JavaScript,
 this makes testing less relevant, as they are not native to operating systems.</p>
-<h2 id="how-fast-is-nigthmare-js">How Fast Is Nigthmare JS?</h2>
+<h2 id="how-fast-is-nightmare-js">How Fast Is Nightmare JS?</h2>
 <p>Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.</p>
 <pre><code>docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
 codeceptjs run yahoo_test.js --steps
@@ -280,7 +280,7 @@ codeceptjs run yahoo_test.js --steps
  ✓ OK in 17591ms
 </code></pre>
 
-<p>When we switch helper to Nigthmare:</p>
+<p>When we switch helper to Nightmare:</p>
 <pre><code> Yahoo basic test
  &gt; Nightmare._before
  • I am on page &quot;http://yahoo.com&quot;
@@ -292,7 +292,7 @@ codeceptjs run yahoo_test.js --steps
  ✓ OK in 5490ms
 </code></pre>
 
-<p>As you see the Nigthmare test was almost <strong>3 times faster</strong> than Selenium test.
+<p>As you see the Nightmare test was almost <strong>3 times faster</strong> than Selenium test.
 Sure, this can't be taken as a valuable benchmark but more like a proof of concept.</p>
 <h2 id="setup">Setup</h2>
 <p>To start you need CodeceptJS with nightmare and nightmare-upload packages installed.</p>
@@ -310,7 +310,7 @@ Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStar
 <p>To enable Nightmare tests you should enable <code>Nightmare</code> helper in <code>codecept.json</code> config:</p>
 <pre><code class="js">{ // ..
   &quot;helpers&quot;: {
-    &quot;Nigthmare&quot;: {
+    &quot;Nightmare&quot;: {
       &quot;url&quot;: &quot;http://localhost&quot;,
       &quot;show&quot;: false
     }
@@ -338,7 +338,7 @@ I.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);
 
 <p>As a small bonus: all <code>console.log</code> calls on a page will be also shown in <code>--debug</code> mode.</p>
 <h2 id="manipulating-web-page">Manipulating Web Page</h2>
-<p>Nigthmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
+<p>Nightmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
 This means that all CodeceptJS actions like <code>click</code>, <code>fillField</code>, <code>selectOption</code> and others are supposed to work in the very same manner.
 They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.</p>
 <p>Assertions start with <code>see</code> prefix. You can check text on a page, elements on page and others.</p>
@@ -349,7 +349,7 @@ Nightmare helper is missing you can easily create <code>ExtendedNightmare</code>
 </code></pre>
 
 <p>Learn more about <a href="http://codecept.io/helpers/">Helpers</a>.</p>
-<p>Nigthmare instance can be accessed by custom helper:</p>
+<p>Nightmare instance can be accessed by custom helper:</p>
 <pre><code class="js">// returns current nightmare instance
 this.helpers['Nightmare'].browser;
 </code></pre>
