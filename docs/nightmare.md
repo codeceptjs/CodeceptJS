@@ -13,9 +13,9 @@ This makes Nightmare very useful, much more handy than PhantomJS. Nightmare is i
 Unfortunately, as all other JavaScript testing frameworks it has its own very custom API.
 What if you choose it for a project and suddenly you realize that you need something more powerful, like Selenium?
 Yes, that might be a problem if you are not using CodeceptJS.
-The one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nigthmare.
+The one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nightmare.
 
-Compare a test written using Nigthmare API:
+Compare a test written using Nightmare API:
 
 ```js
 nightmare
@@ -45,7 +45,7 @@ This is how form can be located by labels, and buttons by text in examples above
 client-side scrips (for element location) to every loaded page. Also all events like click, doubleClick, keyPress are **simulated** by JavaScript,
 this makes testing less relevant, as they are not native to operating systems.
 
-## How Fast Is Nigthmare JS?
+## How Fast Is Nightmare JS?
 
 Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.
 
@@ -68,7 +68,7 @@ This provides use with output:
  ✓ OK in 17591ms
 ```
 
-When we switch helper to Nigthmare:
+When we switch helper to Nightmare:
 
 ```
  Yahoo basic test
@@ -82,7 +82,7 @@ When we switch helper to Nigthmare:
  ✓ OK in 5490ms
 ```
 
-As you see the Nigthmare test was almost **3 times faster** than Selenium test.
+As you see the Nightmare test was almost **3 times faster** than Selenium test.
 Sure, this can't be taken as a valuable benchmark but more like a proof of concept.
 
 ## Setup
@@ -111,7 +111,7 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
 ```js
 { // ..
   "helpers": {
-    "Nigthmare": {
+    "Nightmare": {
       "url": "http://localhost",
       "show": false
     }
@@ -147,7 +147,7 @@ As a small bonus: all `console.log` calls on a page will be also shown in `--deb
 
 ## Manipulating Web Page
 
-Nigthmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
+Nightmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
 This means that all CodeceptJS actions like `click`, `fillField`, `selectOption` and others are supposed to work in the very same manner.
 They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.
 
@@ -164,7 +164,7 @@ codecepjs gh
 
 Learn more about [Helpers](http://codecept.io/helpers/).
 
-Nigthmare instance can be accessed by custom helper:
+Nightmare instance can be accessed by custom helper:
 
 ```js
 // returns current nightmare instance
