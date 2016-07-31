@@ -1,3 +1,8 @@
+## 0.4.1
+
+* Added custom steps to step definition list. See #174 by @jayS-de
+* [WebDriverIO] Fixed using `waitForTimeout` option by @stephane-ruhlmann. See #178
+
 ## 0.4.0
 
 * **[Nightmare](http://codecept.io/nightmare) Helper** added for faster web testing.
