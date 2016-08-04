@@ -15,7 +15,7 @@ module.exports = {
         'resetModule': 'resetoModulo',
         'amOnPage': 'estouNaPagina',
         'click': 'clico',
-        'doubleClick': 'duploClico',
+        'doubleClick': 'clicoDuplamente',
         'see': 'vejo',
         'dontSee': 'naoVejo',
         'selectOption': 'selecionoAOpcao',
