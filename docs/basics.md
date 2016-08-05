@@ -139,6 +139,14 @@ you can place it into your teardown file and provide a relative path to it in `c
 "teardown": "./stop_server.js"
 ```
 
+> If you create `codecept.json` file using `codecept init` command, by default `bootstrap.js` file with automatic browser service startup ( [phantomjs](https://github.com/ariya/phantomjs) or selenium server), is copied to your project directory and defined like the default
+
+To run `bootstrap` async, add the extra key below:
+
+```json
+bootstrapAsync: true
+```
+
 ---
 
 ### done()
