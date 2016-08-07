@@ -216,7 +216,7 @@ describe('WebDriverIO', function () {
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected element #text to include Nothing here');
+          e.inspect().should.be.equal('expected element #text to include "Nothing here"');
         });
     });
 
@@ -226,7 +226,7 @@ describe('WebDriverIO', function () {
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected element body to include Dynamic text');
+          e.inspect().should.be.equal('expected element body to include "Dynamic text"');
         });
     });
   });
