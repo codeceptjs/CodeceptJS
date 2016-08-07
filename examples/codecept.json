@@ -6,7 +6,7 @@
     "WebDriverIO": {
       "url": "http://localhost",
       "browser": "firefox",
-      "restart": false
+      "restart": true
     }
   },
   "mocha": {},
