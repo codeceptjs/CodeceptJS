@@ -9,7 +9,11 @@
       "restart": true
     }
   },
-  "mocha": {},
+  "mocha": {
+    "reporterOptions": {
+        "mochaFile": "./output/result.xml"
+    }
+  },
   "name": "tests",
   "bootstrap": "./bootstrap.js",
   "include": {
