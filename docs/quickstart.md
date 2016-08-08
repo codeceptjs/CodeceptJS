@@ -122,6 +122,18 @@ My First Test --
  ✓ OK
 ```
 
+### Configuring IntelliSense (optional)
+
+If you are using Visual Studio Code or other IDE that supports Typescript Definitions,
+you can generate step definitions with
+
+```
+codeceptjs def
+```
+
+Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
+method autocompletion while writing tests.
+
 ## Congrats! Your first test is running.
 
 Wasn't it hard, right?
