@@ -86,7 +86,7 @@ describe('WebDriverIO', function () {
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected fields by #empty_input to include Ayayay');
+          e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
         });
     });
 

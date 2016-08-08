@@ -279,7 +279,7 @@ describe('Protractor', function() {
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected field by #ssh to include something');
+          e.inspect().should.be.equal('expected field by #ssh to include "something"');
         });
     });
 
