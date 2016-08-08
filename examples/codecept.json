@@ -5,8 +5,8 @@
   "helpers": {
     "WebDriverIO": {
       "url": "http://localhost",
-      "browser": "firefox",
-      "restart": true
+      "browser": "chrome",
+      "restart": false
     }
   },
   "mocha": {
