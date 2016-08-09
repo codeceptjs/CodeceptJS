@@ -40,7 +40,7 @@ class RoboFile extends \Robo\Tasks
 
     function release()
     {
-        $package = json_decode(file_get_contents('package.json'));
+        $package = json_decode(file_get_contents('package.json'), true);
         $version = $package['version'];
         $this->docs();
         $this->stopOnFail();
