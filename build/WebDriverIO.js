@@ -224,7 +224,7 @@ class WebDriverIO extends Helper {
 
   _startBrowser() {
     if (this.options.multiremote) {
-      this.browser = webdriverio.multiremote(this.options.multiremote);
+      this.browser = webdriverio.multiremote(this.options.multiremote).init();
     } else {
       this.browser = webdriverio.remote(this.options).init();
     }
