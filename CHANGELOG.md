@@ -1,3 +1,9 @@
+## 0.4.3
+
+* [Protractor ] Regression fixed to ^4.0.0 support
+* Translations included into package
+* `teardown` option added to config (opposite to `bootstrap`), expects a JS file to be executed after tests stop.
+
 ## 0.4.2
 
 * Added ability to localize tests with translation [#189](https://github.com/Codeception/CodeceptJS/pull/189). Thanks to @abner
