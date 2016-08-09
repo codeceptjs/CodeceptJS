@@ -1,7 +1,7 @@
 ## 0.4.2
 
 * Added ability to localize tests with translation [#189](https://github.com/Codeception/CodeceptJS/pull/189). Thanks to @abner
-  * [Translation] ru_RU translation added.
+  * [Translation] ru-RU translation added.
   * [Translation] pt-BR translation added.
 * [Protractor] Protractor 4.0.4 compatibility.
 * [WebDriverIO][SeleniumWebdriver][Protractor] Fixed single browser session  mode for `restart: false`
