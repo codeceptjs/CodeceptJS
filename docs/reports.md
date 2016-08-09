@@ -114,6 +114,9 @@ Result will be located at `output/result.xml` file.
 ## Html
 
 Best HTML reports could be prodused with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
+
+![](http://codecept.io/images/mochawesome.png)
+
 Install it via NPM:
 
 ```
