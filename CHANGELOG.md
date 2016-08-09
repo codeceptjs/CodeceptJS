@@ -4,6 +4,7 @@
   * [Translation] ru_RU translation added.
   * [Translation] pt-BR translation added.
 * [Protractor] Protractor 4.0.4 compatibility.
+* [WebDriverIO][SeleniumWebdriver][Protractor] Fixed single browser session  mode for `restart: false`
 * Fixed using of 3rd party reporters (xunit, mocha-junit-reporter, mochawesome). Added guide.
 
 ## 0.4.1

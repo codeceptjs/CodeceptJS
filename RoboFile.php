@@ -40,9 +40,16 @@ class RoboFile extends \Robo\Tasks
 
     function release()
     {
+        $package = json_decode(file_get_contents('package.json'));
+        $version = $package['version'];
         $this->docs();
         $this->stopOnFail();
         $this->publishSite();
+        $this->taskGitStack()
+            ->tag($version)
+            ->push('origin master --tags')
+            ->run();
+
         $this->_exec('npm publish');
         $this->yell('It is released!');
     }
