@@ -15,16 +15,7 @@ They can be enabled in config file like:
 
 By enabling this feature and running with `--steps` option steps will be translated:
 
-```
- signin
- • Я на странице "https://github.com"
- • Я кликаю "Sign in"
- • Я вижу "Sign in to GitHub"
- • Я заполнаю поле "Username or email address", "something@totest.com"
- • Я заполнаю поле "Password", "123456"
- • Я кликаю "Sign in"
-
-```
+![](http://codecept.io/images/translate-ru1.png)
 
 This also enables localized method names for actor object.
 
