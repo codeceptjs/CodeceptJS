@@ -31,6 +31,25 @@ Scenario('пробую написать реферат', (Я) => {
 });
 ```
 
+For write your steps in portuguese you can enable the portuguese translation in config file like:
+
+```json
+  "translation": "pt-BR"
+```
+
+Your test will be like this:
+
+```js
+Scenario('Efetuar login', (Eu) => {
+    Eu.estouNaPagina('http://minhaAplicacao.com.br');
+    Eu.preenchoOCampo("login", "usuario@minhaAplicacao.com.br");
+    Eu.preenchoOCampo("senha", "123456");
+    Eu.clico("Entrar");
+    Eu.vejo("Seja bem vindo usuário!");
+});
+```
+
+
 To get autocompletion for localized method names generate definitions by running
 
 ```

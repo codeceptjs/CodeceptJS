@@ -15,7 +15,8 @@
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "translations"
   ],
   "main": "lib/codecept.js",
   "keywords": [
