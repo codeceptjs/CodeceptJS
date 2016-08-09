@@ -26,13 +26,13 @@ describe('equal assertion', () => {
     equal.params.needle = 'hello';
     equal.params.haystack = 'x';
     let err = equal.getFailedAssertion();
-    err.inspect().should.equal("expected contents of webpage to include hello");
+    err.inspect().should.equal('expected contents of webpage to include "hello"');
   });
 
   it('should provide nice negate error message', () => {
     equal.params.needle = 'hello';
     equal.params.haystack = 'h';
     let err = equal.getFailedNegation();
-    err.inspect().should.equal("expected contents of webpage not to include hello");
+    err.inspect().should.equal('expected contents of webpage not to include "hello"');
   });
 });

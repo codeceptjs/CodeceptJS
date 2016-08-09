@@ -15,6 +15,27 @@ describe('Container', () => {
     container.clear();
   });
 
+
+  describe('#translation', () => {
+    let Translation = require('../../lib/translation');
+
+    it('should create empty translation', () => {
+      container.create({});
+      container.translation().should.be.instanceOf(Translation);
+      container.translation().loaded.should.be.false;
+      container.translation().actionAliasFor('see').should.eql('see');
+    });
+
+    it('should create russian translation', () => {
+      container.create({ translation: 'ru-RU' });
+      container.translation().should.be.instanceOf(Translation);
+      container.translation().loaded.should.be.true;
+      container.translation().I.should.eql('Я');
+      container.translation().actionAliasFor('see').should.eql('вижу');
+    });
+
+  });
+
   describe('#helpers', () => {
     beforeEach(() => {
       container.clear({
@@ -91,10 +112,8 @@ describe('Container', () => {
       container.support('I').should.have.keys('_init', 'doSomething');
       assert(global.I_initialized);
     });
-
-
-
   });
+
 
 
 });

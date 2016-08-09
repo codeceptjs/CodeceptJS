@@ -20,11 +20,10 @@ let expectError = require('../../lib/utils').test.expectErrors;
 require('co-mocha')(require('mocha'));
 
 function assertFormContains(key, value) {
-  return browser.element(by.id('data')).getText().then((text) => {
+  return browser.element(global.by.id('data')).getText().then((text) => {
     return expect(JSON.parse(text)).to.have.deep.property(key, value);
   });
 }
-
 
 describe('Protractor', function() {
   this.timeout(20000);
@@ -279,7 +278,7 @@ describe('Protractor', function() {
         .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected field by #ssh to include something');
+          e.inspect().should.be.equal('expected field by #ssh to include "something"');
         });
     });
 
