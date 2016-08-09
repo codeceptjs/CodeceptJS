@@ -19,6 +19,8 @@ pages:
     - 'FileSystem': 'helpers/FileSystem.md'
 - Reference:
     - 'Commands': 'commands.md'
+    - 'Reports': 'reports.md'
+    - 'Translation': 'translation.md'
 - Releases: 'changelog.md'
 copyright: Created by CodeceptJS Team
 google_analytics: ['UA-30075781-3','auto']
