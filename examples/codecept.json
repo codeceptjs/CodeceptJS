@@ -5,11 +5,15 @@
   "helpers": {
     "WebDriverIO": {
       "url": "http://localhost",
-      "browser": "firefox",
-      "restart": false
+      "browser": "chrome",
+      "restart": true
     }
   },
-  "mocha": {},
+  "mocha": {
+    "reporterOptions": {
+        "mochaFile": "./output/result.xml"
+    }
+  },
   "name": "tests",
   "bootstrap": "./bootstrap.js",
   "include": {
