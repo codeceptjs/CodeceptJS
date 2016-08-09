@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Helpers - CodeceptJS</title>
+	<title>Reports - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -85,7 +85,7 @@
             
                         
             
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
@@ -105,8 +105,8 @@
                             <a href="../nightmare/">Nightmare Testing</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Helpers</a>
+                        <li >
+                            <a href="../helpers/">Helpers</a>
                         </li>
                     
                         <li >
@@ -123,23 +123,23 @@
                     <ul class="dropdown-menu">
                     
                         <li >
-                            <a href="WebDriverIO/">WebDriverIO</a>
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
                         </li>
                     
                         <li >
-                            <a href="Protractor/">Protractor</a>
+                            <a href="../helpers/Protractor/">Protractor</a>
                         </li>
                     
                         <li >
-                            <a href="SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
                         </li>
                     
                         <li >
-                            <a href="Nightmare/">Nightmare</a>
+                            <a href="../helpers/Nightmare/">Nightmare</a>
                         </li>
                     
                         <li >
-                            <a href="FileSystem/">FileSystem</a>
+                            <a href="../helpers/FileSystem/">FileSystem</a>
                         </li>
                     
                     </ul>
@@ -147,7 +147,7 @@
             
                         
             
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
@@ -155,8 +155,8 @@
                             <a href="../commands/">Commands</a>
                         </li>
                     
-                        <li >
-                            <a href="../reports/">Reports</a>
+                        <li class="active">
+                            <a href="./">Reports</a>
                         </li>
                     
                         <li >
@@ -180,12 +180,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../nightmare/">
+                    <a rel="next" href="../commands/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../pageobjects/">
+                    <a rel="prev" href="../translation/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -212,155 +212,133 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#helpers">Helpers</a></li>
+        <li class="main active"><a href="#reporters">Reporters</a></li>
         
-            <li><a href="#development">Development</a></li>
+            <li><a href="#cli-default">Cli (default)</a></li>
         
-            <li><a href="#webdriverio-example">WebDriverIO Example</a></li>
+            <li><a href="#xml">XML</a></li>
         
-            <li><a href="#protractor-example">Protractor Example</a></li>
-        
-            <li><a href="#initialization">Initialization</a></li>
-        
-            <li><a href="#hooks">Hooks</a></li>
+            <li><a href="#html">Html</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="helpers">Helpers</h1>
-<p>Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
-Methods of Helper class will be available in tests in <code>I</code> object. This abstracts test scenarios from the implementation and allows easy switching between backends.
-Functionality of CodeceptJS should be extended by writing a custom helpers.</p>
-<p>You can either access core Helpers (and underlying libraries) or create a new from scratch.</p>
-<h2 id="development">Development</h2>
-<p>Helpers can be created by running a generator command:</p>
-<pre><code class="bash">codeceptjs gh
+<h1 id="reporters">Reporters</h1>
+<h2 id="cli-default">Cli (default)</h2>
+<p>By default CodeceptJS provides cli reporter with console output.
+Test names and failures will be printed to screen.</p>
+<pre><code>GitHub --
+ ✓ search in 2577ms
+ ✓ signin in 2170ms
+ ✖ register in 1306ms
+
+-- FAILURES:
+
+  1) GitHub: register:
+      Field q not found by name|text|CSS|XPath
+
+  Scenario Steps:
+
+  - Within .js-signup-form: I.fillField(&quot;q&quot;, &quot;aaa&quot;) at examples/github_test.js:29:7
+  - Within .js-signup-form: I.fillField(&quot;user[password]&quot;, &quot;user@user.com&quot;) at examples/github_test.js:28:7
+  - Within .js-signup-form: I.fillField(&quot;user[email]&quot;, &quot;user@user.com&quot;) at examples/github_test.js:27:7
+  - Within .js-signup-form: I.fillField(&quot;user[login]&quot;, &quot;User&quot;) at examples/github_test.js:26:7
+
+
+
+  Run with --verbose flag to see NodeJS stacktrace
 </code></pre>
 
-<p><em>(or <code>generate helper</code>)</em></p>
-<p>Helpers are ES6 classes inherited from <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js">corresponding abstract class</a>.
-Generated Helper will be added to <code>codecept.json</code> config. It should look like this:</p>
-<pre><code class="js">'use strict';
+<p>For dynamic step-by-step output add <code>--steps</code> option to <code>run</code> command:</p>
+<pre><code>GitHub --
+ search
+ • I am on page &quot;https://github.com&quot;
+ • I am on page &quot;https://github.com/search&quot;
+ • I fill field &quot;Search GitHub&quot;, &quot;CodeceptJS&quot;
+ • I press key &quot;Enter&quot;
+ • I see &quot;Codeception/CodeceptJS&quot;, &quot;a&quot;
+ ✓ OK in 2681ms
 
-let Helper = codecept_helper;
+ signin
+ • I am on page &quot;https://github.com&quot;
+ • I click &quot;Sign in&quot;
+ • I see &quot;Sign in to GitHub&quot;
+ • I fill field &quot;Username or email address&quot;, &quot;something@totest.com&quot;
+ • I fill field &quot;Password&quot;, &quot;123456&quot;
+ • I click &quot;Sign in&quot;
+ • I see &quot;Incorrect username or password.&quot;, &quot;.flash-error&quot;
+ ✓ OK in 2252ms
 
-class MyHelper extends Helper {
-
-  // before/after hooks
-  _before() {
-    // remove if not used
-  }
-
-  _after() {
-    // remove if not used
-  }
-
-  // add custom methods here
-  // If you need to access other helpers
-  // use: this.helpers['helperName']
-
-}
-
-module.exports = MyHelper;
+ register
+ • I am on page &quot;https://github.com&quot;
+   Within .js-signup-form:
+   • I fill field &quot;user[login]&quot;, &quot;User&quot;
+   • I fill field &quot;user[email]&quot;, &quot;user@user.com&quot;
+   • I fill field &quot;user[password]&quot;, &quot;user@user.com&quot;
+   • I fill field &quot;q&quot;, &quot;aaa&quot;
+ ✖ FAILED in 1260ms
 </code></pre>
 
-<p>All methods except those starting from <code>_</code> will be added to <code>I</code> object and treated as test actions.
-Every method should return a value in order to be appended into promise chain.</p>
-<p>After writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:</p>
-<pre><code>codeceptjs def .
+<p>To get additional information about test execution use <code>--debug</code> option. This will show execution steps
+as well as notices from test runner. To get even more information with more technical details like error stacktraces,
+and global promises, or events use <code>--verbose</code> mode.</p>
+<pre><code>GitHub --
+ register
+   [1] Starting recording promises
+   Emitted | test.before
+ &gt; WebDriverIO._before
+   [1] Queued | hook WebDriverIO._before()
+   [1] Queued | amOnPage: https://github.com
+   Emitted | step.before (I am on page &quot;https://github.com&quot;)
+ • I am on page &quot;https://github.com&quot;
+   Emitted | step.after (I am on page &quot;https://github.com&quot;)
+   Emitted | test.start ([object Object])
+...
 </code></pre>
 
-<p>This way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.</p>
-<h2 id="webdriverio-example">WebDriverIO Example</h2>
-<p>Next example demonstrates how to use WebDriverIO library to create your own test action.
-Method <code>seeAuthentication</code> will use <code>client</code> instance of WebDriverIO to get access to cookies.
-Standard NodeJS assertion library will be used (you can use any).</p>
-<pre><code class="js">'use strict';
-let Helper = codecept_helper;
-
-// use any assertion library you like
-let assert = require('assert');
-
-class MyHelper extends Helper {
-  /**
-   * checks that authentication cookie is set
-   */
-  seeAuthentication() {
-    // access current client of WebDriverIO helper
-    let client = this.helpers['WebDriverIO'].browser;
-
-    // get all cookies according to http://webdriver.io/api/protocol/cookie.html
-    // any helper method should return a value in order to be added to promise chain
-    return client.cookie(function(err, res) {
-      // get values
-      let cookies = res.value;
-      for (let k in cookies) {
-        // check for a cookie
-        if (cookies[k].name != 'logged_in') continue;
-        assert.equal(cookies[k].value, 'yes');
-        return;
-      }
-      assert.fail(cookies, 'logged_in', &quot;Auth cookie not set&quot;);
-    });
-  }
-}
+<p>Please use verbose output when reporting issues to GitHub.</p>
+<h2 id="xml">XML</h2>
+<p>Use default xunit reporter of Mocha to print xml reports. Provide <code>--reporter xunit</code> to get the report to screen.
+It is recommended to use more powerful <a href="https://www.npmjs.com/package/mocha-junit-reporter"><code>mocha-junit-reporter</code></a> package
+ot get better support for Jenkins CI.</p>
+<p>Install it via NPM (locally or globally, depending on CodeceptJS installation type):</p>
+<pre><code>npm i mocha-junit-reporter
 </code></pre>
 
-<h2 id="protractor-example">Protractor Example</h2>
-<p>Protractor example demonstrates usage of global <code>element</code> and <code>by</code> objects.
-However <code>browser</code> should be accessed from a helper instance via <code>this.helpers['Protractor']</code>;
-We also use <code>chai-as-promised</code> library to have nice assertions with promises.</p>
-<pre><code class="js">'use strict';
-let Helper = codecept_helper;
-
-// use any assertion library you like
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-var expect = chai.expect;
-
-class MyHelper extends Helper {
-  /**
-   * checks that authentication cookie is set
-   */
-  seeInHistory(historyPosition, value) {
-    // access browser instance from Protractor helper
-    this.helpers['Protractor'].browser.refresh();
-
-    // you can use `element` as well as in protractor
-    var history = element.all(by.repeater('result in memory'));
-
-    // use chai as promised for better assertions
-    // end your method with `return` to handle promises
-    return expect(history.get(historyPosition).getText()).to.eventually.equal(value);
-  }
-}
+<p>Additional configuration should be added to <code>codecept.json</code> to print xml report to <code>output</code> directory:</p>
+<pre><code class="json">  &quot;mocha&quot;: {
+    &quot;reporterOptions&quot;: {
+        &quot;mochaFile&quot;: &quot;output/result.xml&quot;
+    }
+  },
 </code></pre>
 
-<h2 id="initialization">Initialization</h2>
-<p>Helpers can be configured in <code>codecept.json</code> and config values are passed into constructor.
-By default config values will be stored in <code>this.config</code>. You can redefine constructor to provide custom initialization and customization.</p>
-<pre><code class="js">constructor(config) {
-  config.defaultValue = '42';
-  super(config);
-}
+<p>Execute CodeceptJS with JUnit reporter:</p>
+<pre><code>codeceptjs run --reporter mocha-junit-reporter
 </code></pre>
 
-<h2 id="hooks">Hooks</h2>
-<p>Helpers may contain several hooks you can use to handle events of a test.
-Implement corresponding methods to them.</p>
-<ul>
-<li><code>_init</code> - before all tests</li>
-<li><code>_before</code> - before a test</li>
-<li><code>_beforeStep</code> - before each step</li>
-<li><code>_afterStep</code> - after each step</li>
-<li><code>_beforeSuite</code> - before each suite </li>
-<li><code>_afterSuite</code> - after each suite </li>
-</ul>
-<p>Each implemented method should return a value as they will be added to global promise chain as well.</p>
-<h3 id="done">done()</h3></div>
+<p>Result will be located at <code>output/result.xml</code> file.</p>
+<h2 id="html">Html</h2>
+<p>Best HTML reports could be prodused with <a href="https://www.npmjs.com/package/mochawesome">mochawesome</a> reporter.
+Install it via NPM:</p>
+<pre><code>npm i mochawesome
+</code></pre>
+
+<p>Configure it to use <code>output</code> directory to print HTML reports:</p>
+<pre><code class="json">  &quot;mocha&quot;: {
+    &quot;reporterOptions&quot;: {
+        &quot;reportDir&quot;: &quot;output&quot;
+    }
+  },
+</code></pre>
+
+<p>Execute CodeceptJS with HTML reporter:</p>
+<pre><code>codeceptjs run --reporter mochawesome.
+</code></pre>
+
+<p>Result will be located at <code>output/index.html</code> file.</p></div>
             <div class="clearfix"></div>
         </div>
         

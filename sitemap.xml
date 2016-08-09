@@ -99,6 +99,18 @@
      <changefreq>daily</changefreq>
     </url>
         
+    <url>
+     <loc>None/reports/</loc>
+     <lastmod>2016-08-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/translation/</loc>
+     <lastmod>2016-08-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
     
