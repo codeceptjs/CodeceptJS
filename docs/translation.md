@@ -37,7 +37,7 @@ For write your steps in portuguese you can enable the portuguese translation in 
   "translation": "pt-BR"
 ```
 
-You test will be like this:
+Your test will be like this:
 
 ```js
 Scenario('Efetuar login', (Eu) => {
