@@ -10,7 +10,7 @@ CodeceptJS can generate a template for it with next command
 
 ```
 codeceptjs gpo
-``` 
+```
 *(or generate pageobject)*
 
 This will create a sample template for a page object and include it into `codecept.json` config.
@@ -20,11 +20,11 @@ This will create a sample template for a page object and include it into `codece
 let I;
 
 module.exports = {
-  
+
   _init() {
     I = require('codeceptjs/actor')();
   }
-  
+
   // insert your locators and methods here
 }
 ```
@@ -57,8 +57,8 @@ module.exports = {
   }
 }
 ```
- 
-You can include this pageobject in test by its name (defined in `codecept.json`). In case you created a `loginPage` object 
+
+You can include this pageobject in test by its name (defined in `codecept.json`). In case you created a `loginPage` object
 it should be added to list of test arguments to be included in test:
 
 ```js
@@ -68,11 +68,72 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
-In a similar manner CodeceptJS allows you to generate **StepObjects**, **PageFragments** and any other are abstraction
-by running `go` command with `--kind` option:
+### Page Fragments
+
+In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
+by running `go` command with `--kind` (or `-t`) option:
 
 ```
 codeceptjs go --kind fragment
+```
+
+Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
+Technically they are the same as PageObject but conceptually they are a bit different.
+For instance, it is recommended that Page Fragment to include a root locator of a component.
+Methods of page fragment can use `within` block to narrow scope to a root locator:
+
+```js
+let I;
+// fragments/modal.js
+module.exports = {
+
+  _init() {
+    I = require('codeceptjs/actor')();
+  },
+
+  root: '#modal',
+
+  // we are clicking "Accept: inside a popup window
+  accept() {
+    within(this.root, function() {
+      I.click('Accept');
+    });
+  }
+}
+```
+
+### StepObjects
+
+StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
+StepObject can be created similarly to PageObjects or PageFragments:
+
+```
+codeceptjs go --kind step
+```
+
+Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:
+
+```js
+let I, userPage, permissionPage;
+module.exports = {
+
+  _init() {
+    I = require('codeceptjs/actor')();
+    userPage = require('../pages/user');
+    userPage._init();
+    permissionPage = require('../pages/permissions');
+    permissionPage._init();
+
+  },
+
+  createUser(name) {
+    // action composed from actions of page objects
+    userPage.open();
+    userPage.create(name);
+    permissionPage.activate(name);
+  }
+
+};
 ```
 
 ## Actor
@@ -81,7 +142,7 @@ Login example above can be reworked so the method `login` would be available in 
 This is recommended if most of tests require user authentication and for not to require `loginPage` every time.
 
 At initialization you were asked to create custom steps file. If you accepted this option you may use `custom_steps.js` file to extend `I`.
-See how `login` method can be added to `I`:  
+See how `login` method can be added to `I`:
 
 ```js
 'use strict';
@@ -89,15 +150,15 @@ See how `login` method can be added to `I`:
 
 module.exports = function() {
   return require('./lib/actor')({
-        
+
     login: function(email, password) {
       this.fillField('Email', email);
       this.fillField('Password', password);
-      this.click('Submit');       
-    }  
+      this.click('Submit');
+    }
   });
 }
 ```
-Please notice that instead of `I` you should use `this` in current context.  
+Please notice that instead of `I` you should use `this` in current context.
 
 ### done()

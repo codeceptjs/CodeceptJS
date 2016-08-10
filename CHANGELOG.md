@@ -3,6 +3,14 @@
 * [Protractor ] Regression fixed to ^4.0.0 support
 * Translations included into package
 * `teardown` option added to config (opposite to `bootstrap`), expects a JS file to be executed after tests stop.
+* Configuration can be set via JavaScript file `codecept.conf.js` instead of `codecept.json`. It should export `config` object:
+
+```js
+// inside codecept.conf.js
+exports.config = {
+  // contents of codecept.json
+}
+```
 
 ## 0.4.2
 
