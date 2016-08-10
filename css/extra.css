@@ -1,11 +1,11 @@
-body {  
+body {
     font-family: 'Source Sans Pro', sans-serif;
     padding-top: 40px;
 }
 
 h1,h2,h3,h4,h5 {
   font-family: 'Montserrat', sans-serif;
-  font-weight: bold;  
+  font-weight: bold;
 }
 
 body h2 {
@@ -30,7 +30,7 @@ body .navbar .dropdown-menu {
   background: #333 !important;
 }
 
-body .navbar .dropdown-menu>li>a:hover { 
+body .navbar .dropdown-menu>li>a:hover {
   background: #8C16C3;
 }
 
@@ -62,7 +62,7 @@ footer .imglist a {
 }
 
 footer a {
-  color #fff;
+  color: #fff;
 }
 
 footer .rebilly {
@@ -81,7 +81,7 @@ footer .rebilly {
 }
 
 .jumbotron p {
- text-align: left; 
+ text-align: left;
  font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -136,8 +136,8 @@ footer .rebilly {
 .jumbotron h3 {
   font-size: 1em;
   font-weight: 900;
-  font-family: 'Source Sans Pro', sans-serif; 
-  margin: 1em 0em;  
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 1em 0em;
   text-transform: uppercase;
 }
 
@@ -182,7 +182,7 @@ footer .rebilly {
 
 body pre {
   padding: 0;
-  margin: 0;  
+  margin: 0;
   line-height: 0;
   border: none;
 }
@@ -198,7 +198,7 @@ body pre code {
 
 .jumbotron pre code {
   background: #6D2491;
-  color: #fff;  
+  color: #fff;
 }
 
 .jumbotron code .hljs-string {
@@ -283,7 +283,7 @@ body .bs-sidebar {
   text-transform: none;
 }
 
-.reference li>code {
+.reference li>code, .reference p>code {
   color: #607D8B;
   font-weight: bold;
 }
