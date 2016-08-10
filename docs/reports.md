@@ -18,10 +18,10 @@ GitHub --
 
   Scenario Steps:
 
-  - Within .js-signup-form: I.fillField("q", "aaa") at examples/github_test.js:29:7
-  - Within .js-signup-form: I.fillField("user[password]", "user@user.com") at examples/github_test.js:28:7
-  - Within .js-signup-form: I.fillField("user[email]", "user@user.com") at examples/github_test.js:27:7
-  - Within .js-signup-form: I.fillField("user[login]", "User") at examples/github_test.js:26:7
+  - I.fillField("q", "aaa") at examples/github_test.js:29:7
+  - I.fillField("user[password]", "user@user.com") at examples/github_test.js:28:7
+  - I.fillField("user[email]", "user@user.com") at examples/github_test.js:27:7
+  - I.fillField("user[login]", "User") at examples/github_test.js:26:7
 
 
 
