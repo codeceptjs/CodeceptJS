@@ -274,7 +274,7 @@ module.exports = {
 }
 </code></pre>
 
-<p>You can include this pageobject in test by its name (defined in <code>codecept.json</code>). In case you created a <code>loginPage</code> object 
+<p>You can include this pageobject in test by its name (defined in <code>codecept.json</code>). In case you created a <code>loginPage</code> object
 it should be added to list of test arguments to be included in test:</p>
 <pre><code class="js">Scenario('login', (I, loginPage) =&gt; {
   loginPage.sendForm('john@doe.com','123456');
@@ -282,16 +282,69 @@ it should be added to list of test arguments to be included in test:</p>
 });
 </code></pre>
 
-<p>In a similar manner CodeceptJS allows you to generate <strong>StepObjects</strong>, <strong>PageFragments</strong> and any other are abstraction
-by running <code>go</code> command with <code>--kind</code> option:</p>
+<h3 id="page-fragments">Page Fragments</h3>
+<p>In a similar manner CodeceptJS allows you to generate <strong>PageFragments</strong> and any other are abstraction
+by running <code>go</code> command with <code>--kind</code> (or <code>-t</code>) option:</p>
 <pre><code>codeceptjs go --kind fragment
+</code></pre>
+
+<p>Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
+Technically they are the same as PageObject but conceptually they are a bit different.
+For instance, it is recommended that Page Fragment to include a root locator of a component.
+Methods of page fragment can use <code>within</code> block to narrow scope to a root locator:</p>
+<pre><code class="js">let I;
+// fragments/modal.js
+module.exports = {
+
+  _init() {
+    I = require('codeceptjs/actor')();
+  },
+
+  root: '#modal',
+
+  // we are clicking &quot;Accept: inside a popup window
+  accept() {
+    within(this.root, function() {
+      I.click('Accept');
+    });
+  }
+}
+</code></pre>
+
+<h3 id="stepobjects">StepObjects</h3>
+<p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
+StepObject can be created similarly to PageObjects or PageFragments:</p>
+<pre><code>codeceptjs go --kind step
+</code></pre>
+
+<p>Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:</p>
+<pre><code class="js">let I, userPage, permissionPage;
+module.exports = {
+
+  _init() {
+    I = require('codeceptjs/actor')();
+    userPage = require('../pages/user');
+    userPage._init();
+    permissionPage = require('../pages/permissions');
+    permissionPage._init();
+
+  },
+
+  createUser(name) {
+    // action composed from actions of page objects
+    userPage.open();
+    userPage.create(name);
+    permissionPage.activate(name);
+  }
+
+};
 </code></pre>
 
 <h2 id="actor">Actor</h2>
 <p>Login example above can be reworked so the method <code>login</code> would be available in <code>I</code> object itself.
 This is recommended if most of tests require user authentication and for not to require <code>loginPage</code> every time.</p>
 <p>At initialization you were asked to create custom steps file. If you accepted this option you may use <code>custom_steps.js</code> file to extend <code>I</code>.
-See how <code>login</code> method can be added to <code>I</code>:  </p>
+See how <code>login</code> method can be added to <code>I</code>:</p>
 <pre><code class="js">'use strict';
 // in this file you can append custom step methods to 'I' object
 
@@ -301,13 +354,13 @@ module.exports = function() {
     login: function(email, password) {
       this.fillField('Email', email);
       this.fillField('Password', password);
-      this.click('Submit');       
-    }  
+      this.click('Submit');
+    }
   });
 }
 </code></pre>
 
-<p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.  </p>
+<p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.</p>
 <h3 id="done">done()</h3></div>
             <div class="clearfix"></div>
         </div>

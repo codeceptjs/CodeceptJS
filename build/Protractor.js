@@ -83,13 +83,20 @@ class Protractor extends SeleniumWebdriver {
       this.webdriver = requireg('protractor/node_modules/selenium-webdriver');
     }
 
-    // due to api changes in protractor we need to guess wrapper
-    protractorWrapper = requireg('protractor').wrapDriver;
-    if (!protractorWrapper) protractorWrapper = requireg('protractor').ProtractorBrowser.wrapDriver;
-    if (!protractorWrapper) protractorWrapper = requireg('protractor').Browser.wrapDriver;
+    let ptor = requireg('protractor');
 
-    EC = requireg('protractor').Browser.ExpectedConditions || requireg('protractor').ProtractorBrowser.ExpectedConditions;
-    global.by = requireg('protractor').Browser.By || requireg('protractor').ProtractorBrowser.By;
+    // due to api changes in protractor we need to guess wrapper
+    protractorWrapper = ptor.wrapDriver;
+    if (!protractorWrapper && ptor.Browser) protractorWrapper = ptor.Browser.wrapDriver;
+    if (!protractorWrapper && ptor.ProtractorBrowser) protractorWrapper = ptor.ProtractorBrowser.wrapDriver;
+    if (!protractorWrapper) throw Error('Current Protractor version is not supported');
+
+    let browser = ptor.ProtractorBrowser ? ptor.ProtractorBrowser : ptor.Browser;
+
+    EC = browser.ExpectedConditions;
+    global.by = browser.By;
+
+    if (!EC || !global.by) throw Error('Current Protractor version is not supported');
 
     let driverProviderModule = requireg('protractor/built/driverProviders/'+this.options.driver);
     let className = Object.keys(driverProviderModule)[0];
@@ -105,7 +112,7 @@ class Protractor extends SeleniumWebdriver {
       require('assert').ok(requireg("protractor").Browser);
       require('assert').ok(requireg("protractor/built/driverProviders/hosted").Hosted);
     } catch(e) {
-      return ["protractor@^4.0.4"];
+      return ["protractor@^4.0.0"];
     }
   }
 

@@ -212,7 +212,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#042">0.4.2</a></li>
+        <li class="main active"><a href="#043">0.4.3</a></li>
+        
+    
+        <li class="main "><a href="#042">0.4.2</a></li>
         
     
         <li class="main "><a href="#041">0.4.1</a></li>
@@ -267,6 +270,24 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="043">0.4.3</h2>
+<ul>
+<li>[Protractor] Regression fixed to ^4.0.0 support</li>
+<li>Translations included into package.</li>
+<li><code>teardown</code> option added to config (opposite to <code>bootstrap</code>), expects a JS file to be executed after tests stop.</li>
+<li><a href="http://codecept.io/configuration/">Configuration</a> can be set via JavaScript file <code>codecept.conf.js</code> instead of <code>codecept.json</code>. It should export <code>config</code> object:</li>
+</ul>
+<pre><code class="js">// inside codecept.conf.js
+exports.config = {
+  // contents of codecept.json
+}
+</code></pre>
+
+<ul>
+<li>Added <code>--profile</code> option to pass its value to <code>codecept.conf.js</code> as <code>process.profile</code> for <a href="http://codecept.io/configuration#dynamic-configuration">dynamic configuration</a>.</li>
+<li>Documentation for <a href="http://codecept.io/pageobjects#PageFragments">StepObjects, PageFragments</a> updated.</li>
+<li>Documentation for <a href="http://codecept.io/configuration/">Configuration</a> added.</li>
+</ul>
 <h2 id="042">0.4.2</h2>
 <ul>
 <li>Added ability to localize tests with translation <a href="https://github.com/Codeception/CodeceptJS/pull/189">#189</a>. Thanks to @abner</li>
@@ -275,6 +296,8 @@
 <li>[Protractor] Protractor 4.0.4 compatibility.</li>
 <li>[WebDriverIO][SeleniumWebdriver][Protractor] Fixed single browser session  mode for <code>restart: false</code></li>
 <li>Fixed using of 3rd party reporters (xunit, mocha-junit-reporter, mochawesome). Added guide.</li>
+<li>Documentation for <a href="http://codecept.io/translation/">Translation</a> added.</li>
+<li>Documentation for <a href="http://codecept.io/reports/">Reports</a> added.</li>
 </ul>
 <h2 id="041">0.4.1</h2>
 <ul>

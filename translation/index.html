@@ -243,6 +243,20 @@
 });
 </code></pre>
 
+<p>For write your steps in portuguese you can enable the portuguese translation in config file like:</p>
+<pre><code class="json">  &quot;translation&quot;: &quot;pt-BR&quot;
+</code></pre>
+
+<p>Your test will be like this:</p>
+<pre><code class="js">Scenario('Efetuar login', (Eu) =&gt; {
+    Eu.estouNaPagina('http://minhaAplicacao.com.br');
+    Eu.preenchoOCampo(&quot;login&quot;, &quot;usuario@minhaAplicacao.com.br&quot;);
+    Eu.preenchoOCampo(&quot;senha&quot;, &quot;123456&quot;);
+    Eu.clico(&quot;Entrar&quot;);
+    Eu.vejo(&quot;Seja bem vindo usuário!&quot;);
+});
+</code></pre>
+
 <p>To get autocompletion for localized method names generate definitions by running</p>
 <pre><code>codeceptjs def
 </code></pre></div>
