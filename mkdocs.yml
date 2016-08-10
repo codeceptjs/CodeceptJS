@@ -19,6 +19,7 @@ pages:
     - 'FileSystem': 'helpers/FileSystem.md'
 - Reference:
     - 'Commands': 'commands.md'
+    - 'Configuration': 'configuration.md'
     - 'Reports': 'reports.md'
     - 'Translation': 'translation.md'
 - Releases: 'changelog.md'
