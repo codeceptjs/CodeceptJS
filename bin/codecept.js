@@ -75,6 +75,7 @@ program.command('run [suite] [test]')
   .option('--no-exit', 'require a clean shutdown of the event loop: mocha will not call process.exit')
   .option('--recursive', 'include sub directories')
   .option('--trace', 'trace function calls')
+  .option('--profile [value]', 'configuration profile to be used')
 
   .action(require('../lib/command/run'));
 

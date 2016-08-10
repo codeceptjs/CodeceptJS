@@ -1,3 +1,20 @@
+## 0.4.3
+
+* [Protractor] Regression fixed to ^4.0.0 support
+* Translations included into package.
+* `teardown` option added to config (opposite to `bootstrap`), expects a JS file to be executed after tests stop.
+* [Configuration](http://codecept.io/configuration/) can be set via JavaScript file `codecept.conf.js` instead of `codecept.json`. It should export `config` object:
+
+```js
+// inside codecept.conf.js
+exports.config = {
+  // contents of codecept.json
+}
+```
+* Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).
+* Documentation for [StepObjects, PageFragments](http://codecept.io/pageobjects#PageFragments) updated.
+* Documentation for [Configuration](http://codecept.io/configuration/) added.
+
 ## 0.4.2
 
 * Added ability to localize tests with translation [#189](https://github.com/Codeception/CodeceptJS/pull/189). Thanks to @abner
@@ -6,6 +23,8 @@
 * [Protractor] Protractor 4.0.4 compatibility.
 * [WebDriverIO][SeleniumWebdriver][Protractor] Fixed single browser session  mode for `restart: false`
 * Fixed using of 3rd party reporters (xunit, mocha-junit-reporter, mochawesome). Added guide.
+* Documentation for [Translation](http://codecept.io/translation/) added.
+* Documentation for [Reports](http://codecept.io/reports/) added.
 
 ## 0.4.1
 

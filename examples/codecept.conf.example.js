@@ -1,17 +1,21 @@
-{
+console.log('Use JS config file');
+
+console.log(process.profile);
+
+exports.config = {
   "tests": "./*_test.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {
     "WebDriverIO": {
       "url": "http://localhost",
-      "browser": "chrome",
+      "browser": process.profile || 'firefox',
       "restart": true
     }
   },
   "mocha": {
     "reporterOptions": {
-      "mochaFile": "./output/result.xml"
+        "mochaFile": "./output/result.xml"
     }
   },
   "name": "tests",
