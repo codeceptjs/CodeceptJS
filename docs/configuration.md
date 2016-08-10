@@ -49,7 +49,7 @@ exports.config = {
 
 (Don't copy-paste this config, it's just demo)
 
-### Profile
+## Profile
 
 Using values from `process.profile` you can change the config dynamically.
 It provides value of `--profile` option passed to runner.

@@ -68,7 +68,7 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
-### Page Fragments
+## Page Fragments
 
 In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
 by running `go` command with `--kind` (or `-t`) option:
@@ -102,7 +102,7 @@ module.exports = {
 }
 ```
 
-### StepObjects
+## StepObjects
 
 StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:
