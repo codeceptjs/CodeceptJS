@@ -220,6 +220,10 @@
         
             <li><a href="#pageobjects_1">PageObjects</a></li>
         
+            <li><a href="#page-fragments">Page Fragments</a></li>
+        
+            <li><a href="#stepobjects">StepObjects</a></li>
+        
             <li><a href="#actor">Actor</a></li>
         
     
@@ -286,7 +290,7 @@ it should be added to list of test arguments to be included in test:</p>
 });
 </code></pre>
 
-<h3 id="page-fragments">Page Fragments</h3>
+<h2 id="page-fragments">Page Fragments</h2>
 <p>In a similar manner CodeceptJS allows you to generate <strong>PageFragments</strong> and any other are abstraction
 by running <code>go</code> command with <code>--kind</code> (or <code>-t</code>) option:</p>
 <pre><code>codeceptjs go --kind fragment
@@ -315,7 +319,7 @@ module.exports = {
 }
 </code></pre>
 
-<h3 id="stepobjects">StepObjects</h3>
+<h2 id="stepobjects">StepObjects</h2>
 <p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:</p>
 <pre><code>codeceptjs go --kind step
