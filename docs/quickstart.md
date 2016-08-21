@@ -136,4 +136,4 @@ method autocompletion while writing tests.
 
 ## Congrats! Your first test is running.
 
-Wasn't it hard, right?
+Wasn't so hard, right?
