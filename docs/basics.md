@@ -56,7 +56,7 @@ This also launches interactive console where you can call actions of `I` object.
 
 ![shell](/images/shell.png)
 
-You can also the pause to check the web application in a browser. Press `ENTER` to resume test execution.   
+You can also use the pause to check the web application in a browser. Press `ENTER` to resume test execution.   
 
 Interactive shell can be started outside test context by running
 
