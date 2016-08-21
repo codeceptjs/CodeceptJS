@@ -104,7 +104,7 @@ Scenario('test something', (I) => {
 });
 ```
 
-Before running this test we should ensure that [Selenium Web Server is running](./helpers/WebDriverIO/#selenium-installation). Then we can execute tests with
+Before running this test we should ensure that [Selenium Web Server is running](./helpers/WebDriverIO.md/#selenium-installation). Then we can execute tests with
 
 ```bash
 codeceptjs run --steps
