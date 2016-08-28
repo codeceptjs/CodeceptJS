@@ -1,3 +1,9 @@
+## 0.4.4
+
+* Interactive shell fixed. Start it by running `codeceptjs shell`
+* Added `--profile` option to `shell` command to use dynamic configuration.
+* Added `--verbose` option to `shell` command for most complete output.
+
 ## 0.4.3
 
 * [Protractor] Regression fixed to ^4.0.0 support
