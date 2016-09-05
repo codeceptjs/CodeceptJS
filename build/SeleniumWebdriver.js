@@ -367,8 +367,10 @@ I.pressKey(['Control','a']);
       modifier = this.webdriver.Key[key[0].toUpperCase()];
       key = key[1];
     }
-    if (key == 'Enter') {
-       key = this.webdriver.Key.ENTER;
+
+    // guess special key in Selenium Webdriver list
+    if (this.webdriver.Key[key.toUpperCase()]) {
+      key = this.webdriver.Key[key.toUpperCase()];
     }
 
     let action = new this.webdriver.ActionSequence(this.browser);
