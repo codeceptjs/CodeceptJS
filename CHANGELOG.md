@@ -1,3 +1,8 @@
+## 0.4.5
+
+* Fixed running `codecept def` command by @jankaspar
+* [Protractor][SeleniumWebdriver] Added support for special keys in `pressKey` method. Fixes #216
+
 ## 0.4.4
 
 * Interactive shell fixed. Start it by running `codeceptjs shell`
