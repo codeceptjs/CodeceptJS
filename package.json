@@ -33,8 +33,7 @@
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
     "mocha": "^2.4.2",
-    "requireg": "^0.1.5",
-    "async": "^2.0.1"
+    "requireg": "^0.1.5"
   },
   "devDependencies": {
     "chai": "^3.4.1",
