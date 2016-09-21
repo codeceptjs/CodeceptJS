@@ -16,6 +16,8 @@ program.command('init [path]')
 program.command('shell [path]')
   .alias('sh')
   .description('Interative shell')
+  .option('--verbose', 'output internal logging information')
+  .option('--profile [value]', 'configuration profile to be used')
   .action(require('../lib/command/interactive'));
 
 program.command('list [path]')
@@ -55,6 +57,7 @@ program.command('run [suite] [test]')
   .option('--steps', 'show step-by-step execution')
   .option('--debug', 'output additional information')
   .option('--verbose', 'output internal logging information')
+  .option('--profile [value]', 'configuration profile to be used')
 
   // mocha options
   .option('-c, --colors', 'force enabling of colors')

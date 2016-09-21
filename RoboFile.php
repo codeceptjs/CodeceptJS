@@ -15,35 +15,42 @@ class RoboFile extends \Robo\Tasks
           ->commit('updated docs')
           ->run();
     }
-    
+
     function publishSite()
     {
-        $this->stopOnFail();
         $this->taskGitStack()
             ->checkout('site')
             ->merge('master')
             ->run();
-        $this->_copy('CHANGELOG.md', 'docs/changelog.md');        
+        $this->stopOnFail();
+        $this->_copy('CHANGELOG.md', 'docs/changelog.md');
         $this->_exec('mkdocs gh-deploy');
-        $this->_remove('docs/changelog.md');            
+        $this->_remove('docs/changelog.md');
         $this->taskGitStack()
             ->checkout('master')
             ->run();
     }
-    
-    function testServer() 
+
+    function testServer()
     {
         $this->taskServer(8000)
             ->dir('test/data/app')
             ->run();
     }
-    
-    function release() 
+
+    function release()
     {
+        $package = json_decode(file_get_contents('package.json'), true);
+        $version = $package['version'];
+        $this->docs();
         $this->stopOnFail();
-        $this->docs();          
         $this->publishSite();
+        $this->taskGitStack()
+            ->tag($version)
+            ->push('origin master --tags')
+            ->run();
+
         $this->_exec('npm publish');
-        $this->yell('It is released!');  
+        $this->yell('It is released!');
     }
 }

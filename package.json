@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "0.4.0",
+  "version": "0.4.5",
   "description": "Modern Era Aceptance Testing Framework for NodeJS",
   "homepage": "http://codecept.io",
   "repository": "Codeception/codeceptjs",
@@ -15,7 +15,8 @@
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "translations"
   ],
   "main": "lib/codecept.js",
   "keywords": [
@@ -25,8 +26,8 @@
     "acceptance"
   ],
   "dependencies": {
+    "chalk": "^1.1.3",
     "co": "^4.6.0",
-    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "escape-string-regexp": "^1.0.3",
     "glob": "^6.0.1",

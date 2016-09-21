@@ -27,6 +27,7 @@ Codeception uses **Helper** modules to provide actions to `I` object. Currently 
 
 * [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
 * [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper enpowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
+* [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - helper which for testing web applications indi Electron  using NightmareJS.
 * [**SeleniumWebdriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/SeleniumWebdriver.md) - helper which for selenium testing using official Selenium Webdriver JS bindings.
 * [**FileSystem**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/FileSystem.md) - simple helper for testing filesystem.
 
@@ -101,7 +102,7 @@ Scenario('test some forms', (I) => {
   I.fillField('Email', 'hello@world.com');
   I.fillField('Password', '123456');
   I.checkOption('Active');
-  I.checkOption('Male');  
+  I.checkOption('Male');
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
