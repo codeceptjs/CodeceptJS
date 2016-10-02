@@ -1,6 +1,6 @@
 ## 0.4.6
 
-* Added `BeforeSuite` and `AfterSuite` hooks to scenario by @APshenkin. See [updated documentation](http://codecept.io/basics/#beforeSuite)
+* Added `BeforeSuite` and `AfterSuite` hooks to scenario by @APshenkin. See [updated documentation](http://codecept.io/basics/#beforesuite)
 
 ## 0.4.5
 
