@@ -1,3 +1,7 @@
+## 0.4.6
+
+* Added `BeforeSuite` and `AfterSuite` hooks to scenario by @APshenkin. See [updated documentation](http://codecept.io/basics/#beforeSuite)
+
 ## 0.4.5
 
 * Fixed running `codecept def` command by @jankaspar
