@@ -91,16 +91,10 @@ Same as `Before` you can use `After` to run teardown for each scenario.
 ## BeforeSuite
 
 If you need to run complex setup before all tests and teardown this afterwards you can use `BeforeSuite` and `AfterSuite`
-functions. Unlike `Before` and `After` hooks, `BeforeSuite` and `AfterSuite` doesn't have access to `I` object.
-You can use them to execute plain JavaScript code, which is expected to return a promise.
+functions. Unlike Before and After hooks, `BeforeSuite` and `AfterSuite` dont have access to `I` object.
+You can use them to execute some JavaScript code, which is expected to return a promise.
 
-Here are some ideas where to use BeforeSuite.
-
-> You can use these feature, If your web application has any integration with client application. E.g. web application connects to client application in my project using Websockets to send/get information about installed apps(games) and statuses about installation on PC. Also web application calls client app to launch the game. So in my web tests sometimes I need to install different versions of client app for tests (with different settings) to check that everything works well. But I don't need to reinstall app after each test or one time (on launching tests). Because of this BeforeSuite|AfterSuite are best for me.
-
-> During tests I use webdrivercss to test CSS https://github.com/webdriverio/webdrivercss . So for this I need reference screenshots. It's very expensive, to save all screenshots to repository, because the repository will be too large and also during tests run you don't need all screenshots. Because of this I use the remote server to save screenshots. Before tests I have to download them and during scenarios I check the CSS using these screenshots. And after test suite I upload difference to remote server.
-
-*[Via @APshenkin](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933)*
+[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
 
 ## Within
 
