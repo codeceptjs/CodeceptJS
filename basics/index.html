@@ -224,6 +224,8 @@
         
             <li><a href="#before">Before</a></li>
         
+            <li><a href="#beforesuite">BeforeSuite</a></li>
+        
             <li><a href="#within">Within</a></li>
         
             <li><a href="#skipping">Skipping</a></li>
@@ -246,7 +248,7 @@
 Scenario('check Welcome page on site', (I) =&gt; {
   I.amOnPage('/');
   I.see('Welcome');
-}
+})
 </code></pre>
 
 <p>Tests are expected to be written in ECMAScript 6.
@@ -282,7 +284,7 @@ assert.equal(title, 'CodeceptJS');
 <p>Test execution can be paused in any place of a test with <code>pause()</code> call.
 This also launches interactive console where you can call actions of <code>I</code> object.</p>
 <p><img alt="shell" src="../images/shell.png" /></p>
-<p>You can also use <code>pause()</code> to check the web application in a browser. Press <code>ENTER</code> to resume test execution.   </p>
+<p>You can also use <code>pause()</code> to check the web application in a browser. Press <code>ENTER</code> to resume test execution.</p>
 <p>Interactive shell can be started outside test context by running</p>
 <pre><code class="bash">codeceptjs shell
 </code></pre>
@@ -306,6 +308,17 @@ Scenario('test title', (I) =&gt; {
 });
 </code></pre>
 
+<p>Same as <code>Before</code> you can use <code>After</code> to run teardown for each scenario.</p>
+<h2 id="beforesuite">BeforeSuite</h2>
+<p>If you need to run complex setup before all tests and teardown this afterwards you can use <code>BeforeSuite</code> and <code>AfterSuite</code>
+functions. Unlike <code>Before</code> and <code>After</code> hooks, <code>BeforeSuite</code> and <code>AfterSuite</code> doesn't have access to <code>I</code> object.
+You can use them to execute plain JavaScript code, which is expected to return a promise.</p>
+<p>Here are some ideas where to use BeforeSuite.</p>
+<blockquote>
+<p>You can use these feature, If your web application has any integration with client application. E.g. web application connects to client application in my project using Websockets to send/get information about installed apps(games) and statuses about installation on PC. Also web application calls client app to launch the game. So in my web tests sometimes I need to install different versions of client app for tests (with different settings) to check that everything works well. But I don't need to reinstall app after each test or one time (on launching tests). Because of this BeforeSuite|AfterSuite are best for me.</p>
+<p>During tests I use webdrivercss to test CSS https://github.com/webdriverio/webdrivercss . So for this I need reference screenshots. It's very expensive, to save all screenshots to repository, because the repository will be too large and also during tests run you don't need all screenshots. Because of this I use the remote server to save screenshots. Before tests I have to download them and during scenarios I check the CSS using these screenshots. And after test suite I upload difference to remote server.</p>
+</blockquote>
+<p><em><a href="https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933">Via @APshenkin</a></em></p>
 <h2 id="within">Within</h2>
 <p>To specify the exact area on a page where actions can be performed you can use <code>within</code> function.
 Everything executed in its context will be narrowed to context specified by locator:</p>
