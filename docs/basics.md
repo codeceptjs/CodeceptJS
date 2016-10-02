@@ -94,7 +94,7 @@ If you need to run complex setup before all tests and teardown this afterwards y
 functions. Unlike Before and After hooks, `BeforeSuite` and `AfterSuite` dont have access to `I` object.
 You can use them to execute some JavaScript code, which is expected to return a promise.
 
-[Here are some ideas] where to use BeforeSuite(https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933).
+[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
 
 ## Within
 
