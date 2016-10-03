@@ -4,7 +4,7 @@ let recorder = require('../../lib/recorder');
 let event = require('../../lib/event');
 let assert = require('assert');
 let sinon = require('sinon');
-let test, fn, before, after, failed, started;
+let test, fn, before, after, beforeSuite, afterSuite, failed, started;
 
 describe('Scenario', () => {
 
@@ -40,6 +40,9 @@ describe('Scenario', () => {
       event.dispatcher.on(event.test.before, before = sinon.spy());
       event.dispatcher.on(event.test.after, after = sinon.spy());
       event.dispatcher.on(event.test.started, started = sinon.spy());
+      event.dispatcher.on(event.suite.before, beforeSuite = sinon.spy());
+      event.dispatcher.on(event.suite.after, afterSuite = sinon.spy());
+      scenario.suiteSetup();
       scenario.setup();
     });
 
@@ -47,7 +50,10 @@ describe('Scenario', () => {
       scenario.test(test).fn(() => null);
       assert.ok(started.called);
       scenario.teardown();
+      scenario.suiteTeardown();
       return recorder.promise()
+        .then(() => assert.ok(beforeSuite.called))
+        .then(() => assert.ok(afterSuite.called))
         .then(() => assert.ok(before.called))
         .then(() => assert.ok(after.called));
     });
