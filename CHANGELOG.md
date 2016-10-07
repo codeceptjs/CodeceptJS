@@ -2,6 +2,7 @@
 
 * Improved docs for `BeforeSuite`; fixed its usage with `restart: false` option by @APshenkin.
 * Added `Nightmare` to list of available helpers on `init`.
+* [Nightmare] Removed double `resizeWindow` implementation.
 
 ## 0.4.6
 
