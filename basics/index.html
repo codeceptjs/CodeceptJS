@@ -311,8 +311,18 @@ Scenario('test title', (I) =&gt; {
 <p>Same as <code>Before</code> you can use <code>After</code> to run teardown for each scenario.</p>
 <h2 id="beforesuite">BeforeSuite</h2>
 <p>If you need to run complex setup before all tests and teardown this afterwards you can use <code>BeforeSuite</code> and <code>AfterSuite</code>
-functions. Unlike Before and After hooks, <code>BeforeSuite</code> and <code>AfterSuite</code> dont have access to <code>I</code> object.
-You can use them to execute some JavaScript code, which is expected to return a promise.</p>
+functions. <code>BeforeSuite</code> and <code>AfterSuite</code> have access to <code>I</code> object, but <code>BeforeSuite/AfterSuite</code> don't have an access to the browser because it's not running at this moment.
+You can use them to execute handlers that will setup your environment. <code>BeforeSuite/AfterSuite</code> will work  only for a file where it was declared (so you can declare different setups for files)</p>
+<pre><code class="js">BeforeSuite((I) =&gt; {
+  I.syncDown('testfolder');
+});
+
+AfterSuite((I) =&gt; {
+  I.syncUp('testfolder');
+  I.clearDir('testfolder');
+})
+</code></pre>
+
 <p><a href="https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933">Here are some ideas</a> where to use BeforeSuite hooks.</p>
 <h2 id="within">Within</h2>
 <p>To specify the exact area on a page where actions can be performed you can use <code>within</code> function.

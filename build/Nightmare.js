@@ -563,20 +563,6 @@ First parameter can be set to `maximize`
   }
 
   /**
-   * Resize the current window to provided width and height.
-First parameter can be set to `maximize`
-
-@param width or `maximize`
-@param height
-   */
-  resizeWindow(width, height) {
-    if (width === 'maximize') {
-      throw new Error('Not supported in Nightmare, use exact width and height');
-    }
-    return this.browser.viewport(width, height);
-  }
-
-  /**
    * Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
