@@ -91,8 +91,19 @@ Same as `Before` you can use `After` to run teardown for each scenario.
 ## BeforeSuite
 
 If you need to run complex setup before all tests and teardown this afterwards you can use `BeforeSuite` and `AfterSuite`
-functions. Unlike Before and After hooks, `BeforeSuite` and `AfterSuite` dont have access to `I` object.
-You can use them to execute some JavaScript code, which is expected to return a promise.
+functions. `BeforeSuite` and `AfterSuite` have access to `I` object, but `BeforeSuite/AfterSuite` don't have an access to the browser because it's not running at this moment.
+You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work  only for a file where it was declared (so you can declare different setups for files)
+
+```js
+BeforeSuite((I) => {
+  I.syncDown('testfolder');
+});
+
+AfterSuite((I) => {
+  I.syncUp('testfolder');
+  I.clearDir('testfolder');
+})
+```
 
 [Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
 

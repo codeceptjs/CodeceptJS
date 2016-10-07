@@ -401,16 +401,6 @@ First parameter can be set to `maximize`
 -   `width`  or `maximize`
 -   `height`  
 
-## resizeWindow
-
-Resize the current window to provided width and height.
-First parameter can be set to `maximize`
-
-**Parameters**
-
--   `width`  or `maximize`
--   `height`  
-
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
