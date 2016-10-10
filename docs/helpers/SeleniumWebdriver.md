@@ -33,7 +33,7 @@ This helper should be configured in codecept.json
 Receive a WebDriverIO client from a custom helper by accessing `browser` property:
 
 ```js
-this.helpers['Protractor'].browser
+this.helpers['SeleniumWebdriver'].browser
 ```
 
 **Parameters**
