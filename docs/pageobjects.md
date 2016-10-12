@@ -118,7 +118,7 @@ let I, userPage, permissionPage;
 module.exports = {
 
   _init() {
-    I = require('codeceptjs/actor')();
+    I = actor();
     userPage = require('../pages/user');
     userPage._init();
     permissionPage = require('../pages/permissions');
@@ -149,7 +149,7 @@ See how `login` method can be added to `I`:
 // in this file you can append custom step methods to 'I' object
 
 module.exports = function() {
-  return require('./lib/actor')({
+  return actor({
 
     login: function(email, password) {
       this.fillField('Email', email);
