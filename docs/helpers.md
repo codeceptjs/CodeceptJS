@@ -151,9 +151,9 @@ You can also pass additional config options to your helper from a config:
 
 ```js
 "helpers": {
-  // here goes standard helpers
-  // ...
-  //
+  // here goes standard helpers: 
+  // WebDriverIO, Protractor, Nightmare, etc...
+  // and their configuration
   "MyHelper": {
     "require": "./my_helper.js",
     "defaultHost": "http://mysite.com"
