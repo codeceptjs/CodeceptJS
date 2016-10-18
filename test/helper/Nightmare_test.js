@@ -71,6 +71,17 @@ describe('Nightmare', function () {
         })
     });
 
+
+    it('should fail when clicable element not found', () => {
+      return I.amOnPage('/')
+        .then(() => I.click('Welcome'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(Error);
+          e.message.should.include('Clickable');
+        });
+    });
+
     it('should fail when text on site', () => {
       return I.amOnPage('/')
         .then(() => I.dontSee('Welcome'))
