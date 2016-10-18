@@ -369,7 +369,10 @@ module.exports.tests = function() {
       yield I.amOnPage('/form/file');
       yield I.attachFile('#avatar', 'app/avatar.jpg');
       yield I.click('Submit');
-      return formContents()['files'].should.have.key('avatar');
+      yield I.amOnPage('/');
+      formContents()['files'].should.have.key('avatar');
+      formContents()['files']['avatar']['name'].should.eql('avatar.jpg');
+      formContents()['files']['avatar']['type'].should.eql('image/jpeg');
     });
 
     it('should upload file located by label', function*() {
@@ -377,7 +380,10 @@ module.exports.tests = function() {
       yield I.amOnPage('/form/file');
       yield I.attachFile('Avatar', 'app/avatar.jpg');
       yield I.click('Submit');
-      return formContents()['files'].should.have.key('avatar');
+      formContents()['files'].should.have.key('avatar');
+      formContents()['files']['avatar']['name'].should.eql('avatar.jpg');
+      formContents()['files']['avatar']['type'].should.eql('image/jpeg');
+
     });
   });
 
