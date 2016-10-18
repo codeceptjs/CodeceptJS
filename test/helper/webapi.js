@@ -424,7 +424,6 @@ module.exports.tests = function() {
   describe('#moveCursorTo', () => {
     it('should trigger hover event', () => {
       return I.amOnPage('/form/hover')
-        .then(() => I.wait(1))
         .then(() => I.moveCursorTo('#hover'))
         .then(() => I.waitForText('Hovered!', 2))
         .then(() => I.see('Hovered'));

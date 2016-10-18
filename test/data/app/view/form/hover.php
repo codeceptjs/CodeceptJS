@@ -1,15 +1,11 @@
 <html>
+<head></head>
 <body>
 <br>
 <br><br><br><br><br><br><br><br><br><br>
-<span id="hover" onmouseover="show()">Hover me!</span>
+<span id="hover" onmouseover="document.getElementById('show').innerText = 'Hovered!'">Hover me!</span>
 
 <div id="show"></div>
 
-<script>
-  function show() {
-    document.getElementById('show').innerText = 'Hovered!';
-  }
-</script>
 </body>
 </html>
