@@ -22,7 +22,7 @@ module.exports.tests = function() {
   beforeEach(function() {
     I = data.I;
     site_url = data.site_url;
-    if (fileExists(dataFile)) require('fs').unlink(dataFile);
+    if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, ...', () => {
