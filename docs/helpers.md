@@ -19,10 +19,10 @@ codeceptjs gh
 This command generates a basic helper and appends it to `helpers` section of config file:
 
 ```json
-"helpers" {
-  "WebDriverIO": { }, // here goes WebDriverIO config
-  "MyHelper": { // here goes custom helper
-    "require": "./path/to/module.js" // include MyHelper
+"helpers": {
+  "WebDriverIO": {  },
+  "MyHelper": {
+    "require": "./path/to/module.js"
   }
 }
 ```
@@ -149,9 +149,11 @@ Helpers should be enabled inside `codecept.json` or `codecept.conf.js` files. Co
 does that for you, however you can enable them manually by placing helper to `helpers` section inside config file.
 You can also pass additional config options to your helper from a config:
 
-```json
+```js
 "helpers": {
   // here goes standard helpers
+  // ...
+  //
   "MyHelper": {
     "require": "./my_helper.js",
     "defaultHost": "http://mysite.com"
