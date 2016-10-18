@@ -155,12 +155,13 @@ You can also pass additional config options to your helper from a config:
   // WebDriverIO, Protractor, Nightmare, etc...
   // and their configuration
   "MyHelper": {
-    "require": "./my_helper.js",
-    "defaultHost": "http://mysite.com"
+    "require": "./my_helper.js", // path to module
+    "defaultHost": "http://mysite.com" // custom config param
   }
 
 }
 ```
+*(please note, this example contains comments, while JSON format doesn't support them)*
 
 Config values will be stored inside helper in `this.config`. To get `defaultHost` value you can use
 
