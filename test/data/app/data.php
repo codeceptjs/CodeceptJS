@@ -29,9 +29,10 @@ class data {
 
     protected static function load()
     {
-        $data = file_get_contents(__DIR__.self::$filename);
-        $data = $data ? json_decode($data, true) : $data = array();
-        if (!is_array($data)) $data = array();
+	$data = array();
+	if (file_exists(__DIR__.self::$filename)) {
+	    $data = json_decode(file_get_contents(__DIR__.self::$filename), true);
+	}
         return $data;
     }
 
