@@ -29,23 +29,23 @@ program.command('def [path]')
   .description('List all actions for I.')
   .action(require('../lib/command/definitions'));
 
-program.command('generate test [path]')
+program.command('generate:test [path]')
   .alias('gt')
   .description('Generates an empty test')
   .action(require('../lib/command/generate').test);
 
-program.command('generate pageobject [path]')
+program.command('generate:pageobject [path]')
   .alias('gpo')
   .description('Generates an empty page object')
   .action(require('../lib/command/generate').pageObject);
 
-program.command('generate object [path]')
+program.command('generate:object [path]')
   .alias('go')
   .option('--type, -t [kind]', 'type of object to be created')
   .description('Generates an empty support object (page/step/fragment)')
   .action(require('../lib/command/generate').pageObject);
 
-program.command('generate helper [path]')
+program.command('generate:helper [path]')
   .alias('gh')
   .description('Generates a new helper')
   .action(require('../lib/command/generate').helper);
