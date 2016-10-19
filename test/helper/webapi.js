@@ -425,7 +425,7 @@ module.exports.tests = function() {
     it('should trigger hover event', () => {
       return I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover'))
-        .then(() => I.see('Hovered'));
+        .then(() => I.see('Hovered', '#show'));
     });
   });
 
