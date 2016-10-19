@@ -420,6 +420,7 @@ module.exports.tests = function() {
         .then(() => I.dontSeeCookie('auth'));
     });
   });
+
   describe('#waitForText', () => {
     it('should wait for text', () => {
       return I.amOnPage('/dynamic')

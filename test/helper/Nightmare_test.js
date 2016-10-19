@@ -60,6 +60,17 @@ describe('Nightmare', function () {
 
   webApiTests.tests();
 
+
+  // should work for webdriverio and seleniumwebdriver
+  // but somehow fails on Travis CI :(
+  describe('#moveCursorTo', () => {
+    it('should trigger hover event', () => {
+      return I.amOnPage('/form/hover')
+        .then(() => I.moveCursorTo('#hover'))
+        .then(() => I.see('Hovered', '#show'));
+    });
+  });
+
   describe('see text : #see', () => {
     it('should fail when text is not on site', () => {
       return I.amOnPage('/')
