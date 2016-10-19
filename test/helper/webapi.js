@@ -421,14 +421,6 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#moveCursorTo', () => {
-    it('should trigger hover event', () => {
-      return I.amOnPage('/form/hover')
-        .then(() => I.moveCursorTo('#hover'))
-        .then(() => I.see('Hovered', '#show'));
-    });
-  });
-
   describe('#waitForText', () => {
     it('should wait for text', () => {
       return I.amOnPage('/dynamic')
