@@ -26,6 +26,7 @@ This helper should be configured in codecept.json
 -   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+-   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 
 ## Access From Helpers
@@ -33,7 +34,7 @@ This helper should be configured in codecept.json
 Receive a WebDriverIO client from a custom helper by accessing `browser` property:
 
 ```js
-this.helpers['Protractor'].browser
+this.helpers['SeleniumWebdriver'].browser
 ```
 
 **Parameters**
@@ -86,7 +87,7 @@ I.appendField('#myTextField', 'appended');
 
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -368,6 +369,22 @@ let email = yield I.grabValueFrom('input[name=email]');
 **Parameters**
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
+
+## moveCursorTo
+
+Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`  
+-   `offsetY`  
 
 ## pressKey
 
