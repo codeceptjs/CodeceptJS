@@ -183,7 +183,7 @@ class Nightmare extends Helper {
     locator = guessLocator(locator) || {css: locator};
     this.browser.evaluate(function(by, locator) {
       var el = codeceptjs.findElement(by, locator);
-      if (!el) throw Error(`Element by ${by}: ${locator} not found`);
+      if (!el) throw new Error(`Element by ${by}: ${locator} not found`);
       window.codeceptjs.within = el;
     }, lctype(locator), lcval(locator));
   }
@@ -495,6 +495,7 @@ I.click({css: 'nav a.login'});
       context = guessLocator(context) || {css: context};
     }
     return co(findClickable.call(this, locator, context)).then((el) => {
+      if (el === null) throw new Error(`Clickable element "${locator}" not found by name|text|title|CSS|XPath`);
       return this.browser.evaluate(function(el) {
         return window.codeceptjs.clickEl(el);
       }, el).wait(this.options.waitForAction); // wait for click event to happen
@@ -520,11 +521,32 @@ I.doubleClick('.btn.edit');
       context = guessLocator(context) || {css: context};
     }
     return co(findClickable.call(this, locator, context)).then((el) => {
+      if (el === null) throw new Error(`Clickable element "${locator}" not found by name|text|title|CSS|XPath`);
       return this.browser.evaluate(function(el) {
         return window.codeceptjs.doubleClickEl(el);
       }, el).wait(this.options.waitForAction); // wait for click event to happen
     });
   }
+
+  /**
+   * Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
+   */
+  moveCursorTo(locator, offsetX, offsetY) {
+    return this.browser.findElement(guessLocator(locator) || { css: locator}).then((el) => {
+      if (el === null) throw new Error(`Element ${locator} not found`);
+      return this.browser.evaluate(function(el, x, y) {
+        return window.codeceptjs.hoverEl(el, x, y);
+      }, el, offsetX, offsetY).wait(this.options.waitForAction); // wait for hover event to happen
+    });
+  }
+
 
   /**
    * Executes sync script on a page.
@@ -706,7 +728,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
   /**
    * Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -714,6 +736,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
 @param pathToFile local file path relative to codecept.json config file
+
    *
    * Due to technical limitation this **works only with CSS selectors**
    */
@@ -1048,7 +1071,7 @@ I.saveScreenshot('debug.png');
     locator = guessLocator(locator) || {css: locator};
     return this.browser.evaluate(function(by, locator, offsetX, offsetY) {
       let el = codeceptjs.findElement(by, locator);
-      if (!el) throw Error(`Element not found ${by}: ${locator}`);
+      if (!el) throw new Error(`Element not found ${by}: ${locator}`);
       let rect = el.getBoundingClientRect();
       window.scrollTo(rect.left+offsetX, rect.top + offsetY);
     }, lctype(locator), lcval(locator), offsetX, offsetY);
@@ -1175,13 +1198,14 @@ function *findClickable(locator, context) {
     `.//button[contains(normalize-space(string(.)), ${literal})]`,
     `.//label[contains(normalize-space(string(.)), ${literal})]`,
     `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][./@name = ${literal}]`,
-    `.//button[./@name = ${literal}]`
+    `.//button[./@name = ${literal} or ./@title=${literal}]`,
   ]);
 
   els = yield this.browser.findElements({xpath: wideLocator}, contextEl);
   if (els.length) {
     return els[0];
   }
+
   if (isXPath(locator)) {
     return this.browser.findElement({xpath: locator}, contextEl);
   }

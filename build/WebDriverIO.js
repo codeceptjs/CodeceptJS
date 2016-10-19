@@ -42,7 +42,28 @@ let withinStore = {};
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `waitForTimeout`: (optional) sets default wait time in *ms* for all `wait*` functions. 1000 by default;
  * * `desiredCapabilities`: Selenium capabilities
+ * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
+ * * `timeouts`: [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) defined as hash.
  *
+ * Example:
+ *
+ * ```json
+ * {
+ *    "helpers": {
+ *      "WebDriverIO" : {
+ *        "browser": "chrome",
+ *        "restart": false,
+ *        "windowSize": "maximize,
+ *        "timeouts": {
+ *          "script": 60000,
+ *          "page load": 10000,
+ *          "implicit" : 5000
+ *        }
+ *      }
+ *    }
+ * }
+ *
+ * ```
  *
  * Additional configuration params can be used from http://webdriver.io/guide/getstarted/configuration.html
  *
@@ -172,7 +193,8 @@ class WebDriverIO extends Helper {
     this.options = {
       waitForTimeout: 1000, // ms
       desiredCapabilities: {},
-      restart: true
+      restart: true,
+      manualStart: false
     };
 
     // override defaults with config
@@ -216,7 +238,7 @@ class WebDriverIO extends Helper {
   }
 
   _beforeSuite() {
-    if (!this.options.restart) {
+    if (!this.options.restart && !this.options.manualStart) {
       this.debugSection('Session','Starting singleton browser session');
       return this._startBrowser();
     }
@@ -227,6 +249,10 @@ class WebDriverIO extends Helper {
       this.browser = webdriverio.multiremote(this.options.multiremote).init();
     } else {
       this.browser = webdriverio.remote(this.options).init();
+    }
+
+    if (this.options.timeouts) {
+      this.defineTimeout(this.options.timeouts);
     }
 
     if (this.options.windowSize === 'maximize') {
@@ -240,7 +266,7 @@ class WebDriverIO extends Helper {
   }
 
   _before() {
-    if (this.options.restart) this._startBrowser();
+    if (this.options.restart && !this.options.manualStart) this._startBrowser();
     this.failedTestName = null;
     this.context = 'body';
     return this.browser;
@@ -332,6 +358,27 @@ class WebDriverIO extends Helper {
     return findFields(this.browser, locator).then(function(res){
       return res.value;
     })
+  }
+
+  /**
+   * Set [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) in realtime.
+   * Timeouts are expected to be passed as object:
+   *
+   * ```js
+   * I.defineTimeout({ script: 5000 });
+   * I.defineTimeout({ implicit: 10000, "page load": 10000, script: 5000 });
+   * ```
+   */
+  defineTimeout(timeouts) {
+    if (timeouts.implicit) {
+      this.browser.timeouts('implicit', timeouts.implicit);
+    }
+    if (timeouts['page load']) {
+      this.browser.timeouts('page load', timeouts['page load']);
+    }
+    if (timeouts.script) {
+      this.browser.timeouts('script', timeouts.script);
+    }
   }
 
   /**
@@ -555,7 +602,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
   /**
    * Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -563,6 +610,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
 @param pathToFile local file path relative to codecept.json config file
+
    */
   attachFile(locator, pathToFile) {
     let file = path.join(global.codecept_dir, pathToFile);
@@ -570,11 +618,12 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
       throw new Error(`File at ${file} can not be found on local system`);
     }
     return findFields(this.browser, locator).then((el) => {
-      this.browser.uploadFile(file).then((res) => {
-        if (!el.length) {
+      this.debug("Uploading "+file);
+      return this.browser.uploadFile(file).then((res) => {
+        if (!el.value || el.value.length === 0) {
           throw new Error(`File field ${locator} not found by name|text|CSS|XPath`);
         }
-        return this.browser.elementIdValue(el[0].ELEMENT, res.value);
+        return this.browser.elementIdValue(el.value[0].ELEMENT, res.value);
       });
     });
   }
@@ -973,12 +1022,13 @@ Provided function should execute a passed callback (as first argument) to signal
 
   /**
    * Moves cursor to element matched by locator.
-   * Extra shift can be set with offsetX and offsetY options
-   *
-   * ```js
-   * I.moveCursorTo('.tooltip');
-   * I.moveCursorTo('#submit', 5,5);
-   * ```
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
    */
   moveCursorTo(locator, offsetX, offsetY) {
     return this.browser.moveToObject(withStrictLocator(locator), offsetX, offsetY);

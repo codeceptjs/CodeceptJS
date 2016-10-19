@@ -350,6 +350,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>rootElement</code> - Root element of AngularJS application (default: body)</li>
+<li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
 <li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
 <li><code>proxy</code>: set proxy settings</li>
 </ul>
@@ -478,7 +479,7 @@ Field is located by name, label, CSS or XPath</p>
 <h2 id="attachfile">attachFile</h2>
 <p>Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).</p>
+File will be uploaded to remote system (if tests are running remotely).</p>
 <pre><code class="js">I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 </code></pre>

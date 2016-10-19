@@ -216,7 +216,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#047">0.4.7</a></li>
+        <li class="main active"><a href="#048">0.4.8</a></li>
+        
+    
+        <li class="main "><a href="#047">0.4.7</a></li>
         
     
         <li class="main "><a href="#046">0.4.6</a></li>
@@ -286,6 +289,17 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="048">0.4.8</h2>
+<ul>
+<li>[Protractor][SeleniumWebdriver][Nightmare] added <code>moveCursorTo</code> method.</li>
+<li>[Protractor][SeleniumWebdriver][WebDriverIO] Added <code>manualStart</code> option to start browser manually in the beginning of test. By @cnworks. <a href="https://github.com/Codeception/CodeceptJS/pull/255">PR #250</a></li>
+<li>Fixed <code>codeceptjs init</code> to work with nested directories and file masks.</li>
+<li>Fixed <code>codeceptjs gt</code> to generate test with proper file name suffix. By @Zougi.</li>
+<li>[Nightmare] Fixed: Error is thrown when clicking on element which can't be locate. By @davetmik</li>
+<li>[WebDriverIO] Fixed <code>attachFile</code> for file upload. By @giuband and @davetmik</li>
+<li>[WebDriverIO] Add support for timeouts in config and with <code>defineTimeouts</code> method. By @easternbloc <a href="https://github.com/Codeception/CodeceptJS/pull/258">#258</a> and <a href="https://github.com/Codeception/CodeceptJS/pull/267">#267</a> by @davetmik</li>
+<li>Fixed hanging of CodeceptJS when error is thrown by event dispatcher. Fix by @Zougi and @davetmik</li>
+</ul>
 <h2 id="047">0.4.7</h2>
 <ul>
 <li>Improved docs for <code>BeforeSuite</code>; fixed its usage with <code>restart: false</code> option by @APshenkin.</li>

@@ -258,6 +258,8 @@
         
             <li><a href="#click">click</a></li>
         
+            <li><a href="#definetimeout">defineTimeout</a></li>
+        
             <li><a href="#dontsee">dontSee</a></li>
         
             <li><a href="#dontseecheckboxischecked">dontSeeCheckboxIsChecked</a></li>
@@ -385,7 +387,26 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
 <li><code>desiredCapabilities</code>: Selenium capabilities</li>
+<li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
+<li><code>timeouts</code>: <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> defined as hash.</li>
 </ul>
+<p>Example:</p>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;WebDriverIO&quot; : {
+       &quot;browser&quot;: &quot;chrome&quot;,
+       &quot;restart&quot;: false,
+       &quot;windowSize&quot;: &quot;maximize,
+       &quot;timeouts&quot;: {
+         &quot;script&quot;: 60000,
+         &quot;page load&quot;: 10000,
+         &quot;implicit&quot; : 5000
+       }
+     }
+   }
+}
+</code></pre>
+
 <p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">http://webdriver.io/guide/getstarted/configuration.html</a></p>
 <h3 id="connect-through-proxy">Connect through proxy</h3>
 <p>CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
@@ -555,7 +576,7 @@ Field is located by name, label, CSS or XPath</p>
 <h2 id="attachfile">attachFile</h2>
 <p>Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).</p>
+File will be uploaded to remote system (if tests are running remotely).</p>
 <pre><code class="js">I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 </code></pre>
@@ -638,6 +659,17 @@ I.click({css: 'nav a.login'});
 </thead>
 <tbody></tbody>
 </table>
+<h2 id="definetimeout">defineTimeout</h2>
+<p>Set <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> in realtime.
+Timeouts are expected to be passed as object:</p>
+<pre><code class="js">I.defineTimeout({ script: 5000 });
+I.defineTimeout({ implicit: 10000, &quot;page load&quot;: 10000, script: 5000 });
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>timeouts</code>  </li>
+</ul>
 <h2 id="dontsee">dontSee</h2>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.</p>

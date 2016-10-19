@@ -224,7 +224,7 @@
         
             <li><a href="#protractor-example">Protractor Example</a></li>
         
-            <li><a href="#initialization">Initialization</a></li>
+            <li><a href="#configuration">Configuration</a></li>
         
             <li><a href="#hooks">Hooks</a></li>
         
@@ -244,6 +244,15 @@ Functionality of CodeceptJS should be extended by writing a custom helpers.</p>
 </code></pre>
 
 <p><em>(or <code>generate helper</code>)</em></p>
+<p>This command generates a basic helper and appends it to <code>helpers</code> section of config file:</p>
+<pre><code class="json">&quot;helpers&quot;: {
+  &quot;WebDriverIO&quot;: {  },
+  &quot;MyHelper&quot;: {
+    &quot;require&quot;: &quot;./path/to/module.js&quot;
+  }
+}
+</code></pre>
+
 <p>Helpers are ES6 classes inherited from <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js">corresponding abstract class</a>.
 Generated Helper will be added to <code>codecept.json</code> config. It should look like this:</p>
 <pre><code class="js">'use strict';
@@ -310,6 +319,8 @@ class MyHelper extends Helper {
     });
   }
 }
+
+module.exports = MyHelper;
 </code></pre>
 
 <h2 id="protractor-example">Protractor Example</h2>
@@ -341,13 +352,35 @@ class MyHelper extends Helper {
     return expect(history.get(historyPosition).getText()).to.eventually.equal(value);
   }
 }
+
+module.exports = MyHelper;
 </code></pre>
 
-<h2 id="initialization">Initialization</h2>
-<p>Helpers can be configured in <code>codecept.json</code> and config values are passed into constructor.
-By default config values will be stored in <code>this.config</code>. You can redefine constructor to provide custom initialization and customization.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Helpers should be enabled inside <code>codecept.json</code> or <code>codecept.conf.js</code> files. Command <code>generate helper</code>
+does that for you, however you can enable them manually by placing helper to <code>helpers</code> section inside config file.
+You can also pass additional config options to your helper from a config:</p>
+<pre><code class="js">&quot;helpers&quot;: {
+  // here goes standard helpers: 
+  // WebDriverIO, Protractor, Nightmare, etc...
+  // and their configuration
+  &quot;MyHelper&quot;: {
+    &quot;require&quot;: &quot;./my_helper.js&quot;, // path to module
+    &quot;defaultHost&quot;: &quot;http://mysite.com&quot; // custom config param
+  }
+
+}
+</code></pre>
+
+<p><em>(please note, this example contains comments, while JSON format doesn't support them)</em></p>
+<p>Config values will be stored inside helper in <code>this.config</code>. To get <code>defaultHost</code> value you can use</p>
+<pre><code class="js">this.config.defaultHost
+</code></pre>
+
+<p>in any place of your helper. You can also redefine config options inside a constructor:</p>
 <pre><code class="js">constructor(config) {
-  config.defaultValue = '42';
+  config.defaultHost += '/api';
+  console.log(config.defaultHost); // http://mysite.com/api
   super(config);
 }
 </code></pre>
@@ -360,8 +393,8 @@ Implement corresponding methods to them.</p>
 <li><code>_before</code> - before a test</li>
 <li><code>_beforeStep</code> - before each step</li>
 <li><code>_afterStep</code> - after each step</li>
-<li><code>_beforeSuite</code> - before each suite </li>
-<li><code>_afterSuite</code> - after each suite </li>
+<li><code>_beforeSuite</code> - before each suite</li>
+<li><code>_afterSuite</code> - after each suite</li>
 </ul>
 <p>Each implemented method should return a value as they will be added to global promise chain as well.</p>
 <h3 id="done">done()</h3></div>

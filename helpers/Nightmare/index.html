@@ -274,6 +274,8 @@
         
             <li><a href="#haveheader">haveHeader</a></li>
         
+            <li><a href="#movecursorto">moveCursorTo</a></li>
+        
             <li><a href="#presskey">pressKey</a></li>
         
             <li><a href="#resizewindow">resizeWindow</a></li>
@@ -390,7 +392,7 @@ Field is located by name, label, CSS or XPath</p>
 <h2 id="attachfile">attachFile</h2>
 <p>Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).</p>
+File will be uploaded to remote system (if tests are running remotely).</p>
 <pre><code class="js">I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 </code></pre>
@@ -637,6 +639,19 @@ I.haveHeader(); // clear headers
 <ul>
 <li><code>header</code>  </li>
 <li><code>value</code>  </li>
+</ul>
+<h2 id="movecursorto">moveCursorTo</h2>
+<p>Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options</p>
+<pre><code class="js">I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>offsetX</code>  </li>
+<li><code>offsetY</code>  </li>
 </ul>
 <h2 id="presskey">pressKey</h2>
 <p>Sends <a href="http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent">input event</a> on a page.

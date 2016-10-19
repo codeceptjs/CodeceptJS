@@ -44,6 +44,7 @@ let withinStore = {};
  * * `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+ * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
  * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
  *
  * ## Access From Helpers
@@ -51,7 +52,7 @@ let withinStore = {};
  * Receive a WebDriverIO client from a custom helper by accessing `browser` property:
  *
  * ```js
- * this.helpers['Protractor'].browser
+ * this.helpers['SeleniumWebdriver'].browser
  * ```
  *
  */
@@ -66,6 +67,7 @@ class SeleniumWebdriver extends Helper {
       seleniumAddress: 'http://localhost:4444/wd/hub',
       restart: true,
       waitforTimeout: 1000, // ms
+      manualStart: false,
       capabilities: {}
     };
     this.options = Object.assign(this.options, config);
@@ -109,14 +111,14 @@ class SeleniumWebdriver extends Helper {
   }
 
   _beforeSuite() {
-    if (!this.options.restart) {
+    if (!this.options.restart && !this.options.manualStart) {
       this.debugSection('Session','Starting singleton browser session');
       return this._startBrowser();
     }
   }
 
   _before() {
-   if (this.options.restart) return this._startBrowser();
+   if (this.options.restart && !this.options.manualStart) return this._startBrowser();
   }
 
   _after() {
@@ -239,6 +241,26 @@ I.doubleClick('.btn.edit');
       matcher = matcher.findElement(guessLocator(context) || by.css(context));
     }
     return co(findClickable(matcher, locator)).then((el) => this.browser.actions().doubleClick(el).perform());
+  }
+
+  /**
+   * Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
+   */
+  moveCursorTo(locator, offsetX, offsetY) {
+    let offset = null;
+    if (offsetX !== null || offsetY !== null) {
+      offset = {x: offsetX, y: offsetY};
+    }
+    return this.browser.findElement(guessLocator(locator) || by.css(locator)).then((el) => {
+      return this.browser.actions().mouseMove(el, offset).perform();
+    })
   }
 
   /**
@@ -383,7 +405,7 @@ I.pressKey(['Control','a']);
   /**
    * Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -391,6 +413,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
 @param pathToFile local file path relative to codecept.json config file
+
    */
   attachFile(locator, pathToFile) {
     let file = path.join(global.codecept_dir, pathToFile);

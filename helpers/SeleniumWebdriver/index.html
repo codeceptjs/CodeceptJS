@@ -278,6 +278,8 @@
         
             <li><a href="#grabvaluefrom">grabValueFrom</a></li>
         
+            <li><a href="#movecursorto">moveCursorTo</a></li>
+        
             <li><a href="#presskey">pressKey</a></li>
         
             <li><a href="#resizewindow">resizeWindow</a></li>
@@ -345,11 +347,12 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
+<li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
 <li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
 </ul>
 <h2 id="access-from-helpers">Access From Helpers</h2>
 <p>Receive a WebDriverIO client from a custom helper by accessing <code>browser</code> property:</p>
-<pre><code class="js">this.helpers['Protractor'].browser
+<pre><code class="js">this.helpers['SeleniumWebdriver'].browser
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -392,7 +395,7 @@ Field is located by name, label, CSS or XPath</p>
 <h2 id="attachfile">attachFile</h2>
 <p>Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).</p>
+File will be uploaded to remote system (if tests are running remotely).</p>
 <pre><code class="js">I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 </code></pre>
@@ -627,6 +630,19 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
+</ul>
+<h2 id="movecursorto">moveCursorTo</h2>
+<p>Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options</p>
+<pre><code class="js">I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>offsetX</code>  </li>
+<li><code>offsetY</code>  </li>
 </ul>
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
