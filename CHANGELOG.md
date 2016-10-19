@@ -1,3 +1,15 @@
+## 0.4.8
+
+* [Protractor][SeleniumWebdriver][Nightmare] added `moveCursorTo` method.
+* [Protractor][SeleniumWebdriver][WebDriverIO] Added `manualStart` option to start browser manually in the beginning of test. By @cnworks. [PR #250](https://github.com/Codeception/CodeceptJS/pull/255)
+* Fixed `codeceptjs init` to work with nested directories and file masks.
+* Fixed `codeceptjs gt` to generate test with proper file name suffix. By @Zougi.
+* [Nightmare] Fixed: Error is thrown when clicking on element which can't be locate. By @davetmik
+* [WebDriverIO] Fixed `attachFile` for file upload. By @giuband and @davetmik
+* [WebDriverIO] Add support for timeouts in config and with `defineTimeouts` method. By @easternbloc [#258](https://github.com/Codeception/CodeceptJS/pull/258) and [#267](https://github.com/Codeception/CodeceptJS/pull/267) by @davetmik
+* Fixed hanging of CodeceptJS when error is thrown by event dispatcher. Fix by @Zougi and @davetmik
+
+
 ## 0.4.7
 
 * Improved docs for `BeforeSuite`; fixed its usage with `restart: false` option by @APshenkin.
