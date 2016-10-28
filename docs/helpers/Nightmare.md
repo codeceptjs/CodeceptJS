@@ -83,7 +83,7 @@ I.appendField('#myTextField', 'appended');
 
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -382,6 +382,22 @@ I.haveHeader(); // clear headers
 -   `header`  
 -   `value`  
 
+## moveCursorTo
+
+Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`  
+-   `offsetY`  
+
 ## pressKey
 
 Sends [input event](http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent) on a page.
@@ -390,16 +406,6 @@ Can submit special keys like 'Enter', 'Backspace', etc
 **Parameters**
 
 -   `key`  
-
-## resizeWindow
-
-Resize the current window to provided width and height.
-First parameter can be set to `maximize`
-
-**Parameters**
-
--   `width`  or `maximize`
--   `height`  
 
 ## resizeWindow
 

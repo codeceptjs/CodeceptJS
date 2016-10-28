@@ -16,6 +16,17 @@ codeceptjs gh
 
 *(or `generate helper`)*
 
+This command generates a basic helper and appends it to `helpers` section of config file:
+
+```json
+"helpers": {
+  "WebDriverIO": {  },
+  "MyHelper": {
+    "require": "./path/to/module.js"
+  }
+}
+```
+
 Helpers are ES6 classes inherited from [corresponding abstract class](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js).
 Generated Helper will be added to `codecept.json` config. It should look like this:
 
@@ -91,6 +102,8 @@ class MyHelper extends Helper {
     });
   }
 }
+
+module.exports = MyHelper;
 ```
 
 ## Protractor Example
@@ -126,16 +139,42 @@ class MyHelper extends Helper {
     return expect(history.get(historyPosition).getText()).to.eventually.equal(value);
   }
 }
+
+module.exports = MyHelper;
 ```
 
-## Initialization
+## Configuration
 
-Helpers can be configured in `codecept.json` and config values are passed into constructor.
-By default config values will be stored in `this.config`. You can redefine constructor to provide custom initialization and customization.
+Helpers should be enabled inside `codecept.json` or `codecept.conf.js` files. Command `generate helper`
+does that for you, however you can enable them manually by placing helper to `helpers` section inside config file.
+You can also pass additional config options to your helper from a config:
+
+```js
+"helpers": {
+  // here goes standard helpers: 
+  // WebDriverIO, Protractor, Nightmare, etc...
+  // and their configuration
+  "MyHelper": {
+    "require": "./my_helper.js", // path to module
+    "defaultHost": "http://mysite.com" // custom config param
+  }
+
+}
+```
+*(please note, this example contains comments, while JSON format doesn't support them)*
+
+Config values will be stored inside helper in `this.config`. To get `defaultHost` value you can use
+
+```js
+this.config.defaultHost
+```
+
+in any place of your helper. You can also redefine config options inside a constructor:
 
 ```js
 constructor(config) {
-  config.defaultValue = '42';
+  config.defaultHost += '/api';
+  console.log(config.defaultHost); // http://mysite.com/api
   super(config);
 }
 ```
@@ -149,9 +188,10 @@ Implement corresponding methods to them.
 * `_before` - before a test
 * `_beforeStep` - before each step
 * `_afterStep` - after each step
-* `_beforeSuite` - before each suite 
-* `_afterSuite` - after each suite 
+* `_beforeSuite` - before each suite
+* `_afterSuite` - after each suite
 
 Each implemented method should return a value as they will be added to global promise chain as well.
+
 
 ### done()

@@ -26,6 +26,27 @@ This helper should be configured in codecept.json
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `desiredCapabilities`: Selenium capabilities
+-   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
+-   `timeouts`: [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) defined as hash.
+
+Example:
+
+```json
+{
+   "helpers": {
+     "WebDriverIO" : {
+       "browser": "chrome",
+       "restart": false,
+       "windowSize": "maximize,
+       "timeouts": {
+         "script": 60000,
+         "page load": 10000,
+         "implicit" : 5000
+       }
+     }
+   }
+}
+```
 
 Additional configuration params can be used from <http://webdriver.io/guide/getstarted/configuration.html>
 
@@ -235,7 +256,7 @@ I.appendField('#myTextField', 'appended');
 
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
-File will be uploaded to remove system (if tests are running remotely).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -323,6 +344,20 @@ I.click({css: 'nav a.login'});
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
+
+## defineTimeout
+
+Set [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) in realtime.
+Timeouts are expected to be passed as object:
+
+```js
+I.defineTimeout({ script: 5000 });
+I.defineTimeout({ implicit: 10000, "page load": 10000, script: 5000 });
+```
+
+**Parameters**
+
+-   `timeouts`  
 
 ## dontSee
 

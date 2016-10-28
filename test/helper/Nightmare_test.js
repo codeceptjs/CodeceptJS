@@ -60,6 +60,17 @@ describe('Nightmare', function () {
 
   webApiTests.tests();
 
+
+  // should work for webdriverio and seleniumwebdriver
+  // but somehow fails on Travis CI :(
+  describe('#moveCursorTo', () => {
+    it('should trigger hover event', () => {
+      return I.amOnPage('/form/hover')
+        .then(() => I.moveCursorTo('#hover'))
+        .then(() => I.see('Hovered', '#show'));
+    });
+  });
+
   describe('see text : #see', () => {
     it('should fail when text is not on site', () => {
       return I.amOnPage('/')
@@ -69,6 +80,17 @@ describe('Nightmare', function () {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web application');
         })
+    });
+
+
+    it('should fail when clicable element not found', () => {
+      return I.amOnPage('/')
+        .then(() => I.click('Welcome'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(Error);
+          e.message.should.include('Clickable');
+        });
     });
 
     it('should fail when text on site', () => {
