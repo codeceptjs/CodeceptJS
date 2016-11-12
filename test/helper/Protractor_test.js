@@ -410,24 +410,24 @@ describe('Protractor', function() {
     });
   });
 
-  // describe('#amOutsideAngularApp', function() {
-  //   it('should work outside angular app', function*() {
-  //     yield I.amOutsideAngularApp();
-  //     yield I.amOnPage(web_app_url);
-  //     yield I.click('More info');
-  //     return I.see('Information', 'h1');
-  //   });
+  describe('#amOutsideAngularApp', function() {
+    it('should work outside angular app', function*() {
+      yield I.amOutsideAngularApp();
+      yield I.amOnPage(web_app_url);
+      yield I.click('More info');
+      return I.see('Information', 'h1');
+    });
 
-  //   it('should switch between applications', function*() {
-  //     yield I.amOutsideAngularApp();
-  //     yield I.amOnPage(web_app_url);
-  //     yield I.see('Welcome', 'h1');
-  //     yield I.amInsideAngularApp();
-  //     yield I.amOnPage('/');
-  //     yield I.seeInCurrentUrl(site_url);
-  //     return I.see('Create Event');
-  //   });
-  // });
+    it('should switch between applications', function*() {
+      yield I.amOutsideAngularApp();
+      yield I.amOnPage(web_app_url);
+      yield I.see('Welcome', 'h1');
+      yield I.amInsideAngularApp();
+      yield I.amOnPage('/');
+      yield I.seeInCurrentUrl(site_url);
+      return I.see('Create Event');
+    });
+  });
 
   describe('#waitForText', () => {
     beforeEach(() => {
