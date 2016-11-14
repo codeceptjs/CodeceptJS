@@ -3,4 +3,23 @@ Pass arguments to function as additional parameters.
 Will return execution result to a test.
 In this case you should use generator and yield to receive results.
 
-@param fn
+Example with jQuery DatePicker:
+
+```js
+// change date of jQuery DatePicker
+I.executeScript(function() {
+  // now we are inside browser context
+  $('date')).datetimepicker('setDate', new Date());
+});
+```
+Can return values. Don't forget to use `yield` to get them.
+
+```js
+let date = yield I.executeScript(function(el) {
+  // only basic types can be returned
+  return $(el)).datetimepicker('getDate').toString();
+}, '#date'); // passing selector
+```
+
+@param `fn` function to be executed in browser context
+@param `...args` args to be passed to function
