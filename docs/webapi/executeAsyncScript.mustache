@@ -9,7 +9,7 @@ In order to make components completely rendered we are waiting for [nextTick](ht
 
 ```js
 I.executeAsyncScript(function(done) {
-  Vue.nextTick(() => done());
+  Vue.nextTick(done); // waiting for next tick
 })
 ```
 
