@@ -227,6 +227,34 @@ module.exports.tests = function() {
     });
   });
 
+  describe('#executeScript', function() {
+    it('should execute synchronous script', function*() {
+      yield I.amOnPage('/');
+      yield I.executeScript(function() { document.getElementById('link').innerHTML = 'Appended'; });
+      return I.see('Appended', 'a');
+    });
+
+    it('should return value from sync script', function*() {
+      yield I.amOnPage('/');
+      let val = yield I.executeScript(function(a) { return a + 5 }, 5);
+      assert.equal(val, 10);
+    });
+
+    it('should execute async script', function*() {
+      yield I.amOnPage('/');
+      let val = yield I.executeAsyncScript(function(val, done) {
+        setTimeout(function() {
+          document.getElementById('link').innerHTML = val;
+          done(5);
+        }, 100);
+      }, 'Timeout');
+      assert.equal(val, 5);
+      return I.see('Timeout', 'a');
+    });
+
+
+  });
+
   describe('#fillField, #appendField', () => {
     it('should fill input fields', function*() {
       yield I.amOnPage('/form/field');
