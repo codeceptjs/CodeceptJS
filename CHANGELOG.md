@@ -1,3 +1,7 @@
+## 0.4.9
+
+* [SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed `executeScript`, `executeAsyncScript` to work and return values.
+
 ## 0.4.8
 
 * [Protractor][SeleniumWebdriver][Nightmare] added `moveCursorTo` method.
