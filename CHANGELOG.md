@@ -1,6 +1,9 @@
 ## 0.4.9
 
 * [SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed `executeScript`, `executeAsyncScript` to work and return values.
+* Added `--config` option to `codeceptjs run` to manually specify config file by @cnworks
+* [Protractor] Simplified behavior of `amOutsideAngularApp` by using `ignoreSynchronization`. Fixes #278
+
 
 ## 0.4.8
 
