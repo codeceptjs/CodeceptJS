@@ -58,6 +58,7 @@ program.command('run [suite] [test]')
   .option('--debug', 'output additional information')
   .option('--verbose', 'output internal logging information')
   .option('--profile [value]', 'configuration profile to be used')
+  .option('--config [file]', 'configuration file to be used')
 
   // mocha options
   .option('-c, --colors', 'force enabling of colors')
