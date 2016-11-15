@@ -393,6 +393,10 @@ $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
 ```
 
+**Parameters**
+
+-   `fn`  function to be executed in browser context
+
 ## executeScript
 
 Executes sync script on a page.
@@ -418,6 +422,10 @@ let date = yield I.executeScript(function(el) {
 return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
 ```
+
+**Parameters**
+
+-   `fn`  function to be executed in browser context
 
 ## fillField
 
