@@ -722,8 +722,8 @@ let date = yield I.executeScript(function(el) {
 }, '#date'); // passing jquery selector
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
    */
   executeScript(fn) {
     return this.browser.executeScript.apply(this.browser, arguments);
@@ -751,8 +751,8 @@ let val = yield I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
    */
   executeAsyncScript(fn) {
     this.browser.manage().timeouts().setScriptTimeout(this.options.scriptTimeout);

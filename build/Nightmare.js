@@ -572,8 +572,8 @@ let date = yield I.executeScript(function(el) {
 }, '#date'); // passing jquery selector
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
    *
    * Wrapper for synchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2)
    */
@@ -603,8 +603,8 @@ let val = yield I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
    *
    * Wrapper for asynchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2).
    * Unlike NightmareJS implementation calling `done` will return its first argument. 

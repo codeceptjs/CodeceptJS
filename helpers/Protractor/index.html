@@ -654,6 +654,10 @@ $.ajax(url, { success: (data) =&gt; done(data); }
 }, 'http://ajax.callback.url/');
 </code></pre>
 
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>fn</code>  function to be executed in browser context</li>
+</ul>
 <h2 id="executescript">executeScript</h2>
 <p>Executes sync script on a page.
 Pass arguments to function as additional parameters.
@@ -674,6 +678,10 @@ return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
 </code></pre>
 
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>fn</code>  function to be executed in browser context</li>
+</ul>
 <h2 id="fillfield">fillField</h2>
 <p>Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.</p>

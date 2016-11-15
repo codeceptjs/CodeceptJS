@@ -1012,8 +1012,8 @@ let date = yield I.executeScript(function(el) {
 }, '#date'); // passing jquery selector
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
    *
    * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
    */
@@ -1043,8 +1043,8 @@ let val = yield I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
    */
   executeAsyncScript(fn) {
     return this.browser.executeAsync.apply(this.browser, arguments).then((res) => res.value);

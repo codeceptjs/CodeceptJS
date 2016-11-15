@@ -636,8 +636,8 @@ let val = yield I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
  *
  * @name executeAsyncScript
  * @kind function
@@ -670,8 +670,8 @@ let date = yield I.executeScript(function(el) {
 }, '#date'); // passing jquery selector
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
  *
  * @name executeScript
  * @kind function
