@@ -44,6 +44,7 @@ let withinStore = {};
  * * `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+ * * `scriptTimeout`: (optional) sets default timeout for scripts in `executeAsync`. 1000 by default.
  * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
  * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
  *
@@ -67,6 +68,7 @@ class SeleniumWebdriver extends Helper {
       seleniumAddress: 'http://localhost:4444/wd/hub',
       restart: true,
       waitforTimeout: 1000, // ms
+      scriptTimeout: 1000, // ms
       manualStart: false,
       capabilities: {}
     };
@@ -702,10 +704,29 @@ Pass arguments to function as additional parameters.
 Will return execution result to a test.
 In this case you should use generator and yield to receive results.
 
-@param fn
+Example with jQuery DatePicker:
+
+```js
+// change date of jQuery DatePicker
+I.executeScript(function() {
+  // now we are inside browser context
+  $('date')).datetimepicker('setDate', new Date());
+});
+```
+Can return values. Don't forget to use `yield` to get them.
+
+```js
+let date = yield I.executeScript(function(el) {
+  // only basic types can be returned
+  return $(el)).datetimepicker('getDate').toString();
+}, '#date'); // passing selector
+```
+
+@param `fn` function to be executed in browser context
+@param `...args` args to be passed to function
    */
   executeScript(fn) {
-    return this.browser.execute.apply(this.browser, arguments);
+    return this.browser.executeScript.apply(this.browser, arguments);
   }
 
   /**
@@ -713,9 +734,30 @@ In this case you should use generator and yield to receive results.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
 @param fn
+@param args
+
+Examples for Vue.js.
+In order to make components completely rendered we are waiting for [nextTick](https://vuejs.org/v2/api/#Vue-nextTick).
+
+```js
+I.executeAsyncScript(function(done) {
+  Vue.nextTick(done); // waiting for next tick
+})
+```
+
+By passing value to `done()` function you can return values.
+Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
+
+```js
+let val = yield I.executeAsyncScript(function(url, done) {
+ // in browser context
+ $.ajax(url, { success: (data) => done(data); }
+}, 'http://ajax.callback.url/');
+```
    */
   executeAsyncScript(fn) {
-    return this.browser.executeAsync.apply(this.browser, arguments);
+    this.browser.manage().timeouts().setScriptTimeout(this.options.scriptTimeout);
+    return this.browser.executeAsyncScript.apply(this.browser, arguments);
   }
 
   /**
@@ -936,6 +978,42 @@ I.waitForVisible('#popup');
     sec = sec || this.options.waitforTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec*1000);
+  }
+
+  /**
+   * Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForInvisible('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitForInvisible(locator, sec) {
+    sec = sec || this.options.waitforTimeout;
+    let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
+    return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), sec*1000);
+  }
+
+  /**
+   * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForStalenessOf('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitForStalenessOf(locator, sec) {
+    sec = sec || this.options.waitforTimeout;
+    let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
+    return this.browser.wait(this.webdriver.until.stalenessOf(el), sec*1000);
   }
 
   /**

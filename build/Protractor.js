@@ -127,8 +127,10 @@ class Protractor extends SeleniumWebdriver {
   }
 
   _startBrowser() {
-    this.browser = this.driverProvider.getNewDriver();
-    global.element = this.browser.element;
+    let browser = this.driverProvider.getNewDriver();
+    global.element = browser.element;
+    this.browser = protractorWrapper(browser, this.options.url, this.options.rootElement);
+    this.browser.ready = this.browser.manage().timeouts().setScriptTimeout(this.options.scriptsTimeout);
     return this.browser;
   }
 
@@ -177,10 +179,9 @@ class Protractor extends SeleniumWebdriver {
    * start using WebDriver instead of Protractor in this session
    */
   amOutsideAngularApp() {
-     if (this.browser.driver && this.insideAngular) {
-       this.browser = this.browser.driver;
-       this.insideAngular = false;
-     }
+    if (!this.browser) return;
+    this.browser.ignoreSynchronization = true;
+    return Promise.resolve(this.insideAngular = false);
   }
 
   /**
@@ -191,15 +192,8 @@ class Protractor extends SeleniumWebdriver {
     if (this.browser.driver && this.insideAngular) {
       return; // already inside angular
     }
-    this.browser = protractorWrapper(this.browser, this.options.url, this.options.rootElement);
-    this.browser.ready = this.browser.manage().timeouts().setScriptTimeout(this.options.scriptsTimeout);
-
-    if (this.options.useAllAngular2AppRoots) this.browser.useAllAngular2AppRoots();
-    if (this.options.getPageTimeout) this.browser.getPageTimeout = this.options.getPageTimeout;
-    if (this.options.allScriptsTimeout) this.browser.allScriptsTimeout = this.options.allScriptsTimeout;
-    if (this.options.debuggerServerPort) this.browser.debuggerServerPort_ = this.options.debuggerServerPort;
-
-    this.insideAngular = true;
+    this.browser.ignoreSynchronization = false;
+    return Promise.resolve(this.insideAngular = true);
   }
 
   /**
@@ -247,6 +241,40 @@ I.waitForVisible('#popup');
   }
 
   /**
+   * Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForInvisible('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitForInvisible(locator, sec) {
+    sec = sec || 1;
+    let el = this.browser.element(guessLocator(locator) || by.css(locator));
+    return this.browser.wait(EC.invisibilityOf(el), sec*1000);
+  }
+
+  /**
+   * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForStalenessOf('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitForStalenessOf(locator, sec) {
+    return this.waitForInvisible(locator, sec);
+  }
+
+  /**
    * Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
 Narrow down search results by providing context.
@@ -266,7 +294,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     }
     let el = this.browser.element(guessLocator(context) || by.css(context));
     sec = sec || 1;
-    return this.browser.wait  (EC.textToBePresentInElement(el, text), sec*1000);
+    return this.browser.wait(EC.textToBePresentInElement(el, text), sec*1000);
   }
 
   // ANGULAR SPECIFIC
@@ -591,6 +619,26 @@ var _dontSee;
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
 @param fn
+@param args
+
+Examples for Vue.js.
+In order to make components completely rendered we are waiting for [nextTick](https://vuejs.org/v2/api/#Vue-nextTick).
+
+```js
+I.executeAsyncScript(function(done) {
+  Vue.nextTick(done); // waiting for next tick
+})
+```
+
+By passing value to `done()` function you can return values.
+Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
+
+```js
+let val = yield I.executeAsyncScript(function(url, done) {
+ // in browser context
+ $.ajax(url, { success: (data) => done(data); }
+}, 'http://ajax.callback.url/');
+```
  *
  * @name executeAsyncScript
  * @kind function
@@ -605,7 +653,26 @@ Pass arguments to function as additional parameters.
 Will return execution result to a test.
 In this case you should use generator and yield to receive results.
 
-@param fn
+Example with jQuery DatePicker:
+
+```js
+// change date of jQuery DatePicker
+I.executeScript(function() {
+  // now we are inside browser context
+  $('date')).datetimepicker('setDate', new Date());
+});
+```
+Can return values. Don't forget to use `yield` to get them.
+
+```js
+let date = yield I.executeScript(function(el) {
+  // only basic types can be returned
+  return $(el)).datetimepicker('getDate').toString();
+}, '#date'); // passing selector
+```
+
+@param `fn` function to be executed in browser context
+@param `...args` args to be passed to function
  *
  * @name executeScript
  * @kind function

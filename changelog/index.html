@@ -216,7 +216,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#048">0.4.8</a></li>
+        <li class="main active"><a href="#049">0.4.9</a></li>
+        
+    
+        <li class="main "><a href="#048">0.4.8</a></li>
         
     
         <li class="main "><a href="#047">0.4.7</a></li>
@@ -289,6 +292,14 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="049">0.4.9</h2>
+<ul>
+<li>[SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed <code>executeScript</code>, <code>executeAsyncScript</code> to work and return values.</li>
+<li>[Protractor][SeleniumWebdriver][WebDriverIO] Added <code>waitForInvisible</code> and <code>waitForStalenessOf</code> methods by @Nighthawk14.</li>
+<li>Added <code>--config</code> option to <code>codeceptjs run</code> to manually specify config file by @cnworks</li>
+<li>[Protractor] Simplified behavior of <code>amOutsideAngularApp</code> by using <code>ignoreSynchronization</code>. Fixes #278</li>
+<li>Set exit code to 1 when test fails at <code>Before</code>/<code>After</code> hooks. Fixes #279</li>
+</ul>
 <h2 id="048">0.4.8</h2>
 <ul>
 <li>[Protractor][SeleniumWebdriver][Nightmare] added <code>moveCursorTo</code> method.</li>

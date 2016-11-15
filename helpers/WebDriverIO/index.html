@@ -350,6 +350,10 @@
         
             <li><a href="#waitforenabled">waitForEnabled</a></li>
         
+            <li><a href="#waitforinvisible">waitForInvisible</a></li>
+        
+            <li><a href="#waitforstalenessof">waitForStalenessOf</a></li>
+        
             <li><a href="#waitfortext">waitForText</a></li>
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
@@ -768,12 +772,37 @@ Provided function should execute a passed callback (as first argument) to signal
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fn</code>  </li>
+<li><code>args</code>  Examples for Vue.js.
+    In order to make components completely rendered we are waiting for <a href="https://vuejs.org/v2/api/#Vue-nextTick">nextTick</a>.<code>js
+    I.executeAsyncScript(function(done) {
+    Vue.nextTick(done); // waiting for next tick
+    })</code>By passing value to <code>done()</code> function you can return values.
+    Additional arguments can be passed as well, while <code>done</code> function is always last parameter in arguments list.<code>js
+    let val = yield I.executeAsyncScript(function(url, done) {
+    // in browser context
+    $.ajax(url, { success: (data) =&gt; done(data); }
+    }, 'http://ajax.callback.url/');</code></li>
 </ul>
 <h2 id="executescript">executeScript</h2>
 <p>Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
 In this case you should use generator and yield to receive results.</p>
+<p>Example with jQuery DatePicker:</p>
+<pre><code class="js">// change date of jQuery DatePicker
+I.executeScript(function() {
+// now we are inside browser context
+$('date')).datetimepicker('setDate', new Date());
+});
+</code></pre>
+
+<p>Can return values. Don't forget to use <code>yield</code> to get them.</p>
+<pre><code class="js">let date = yield I.executeScript(function(el) {
+// only basic types can be returned
+return $(el)).datetimepicker('getDate').toString();
+}, '#date'); // passing selector
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fn</code>  </li>
@@ -1100,6 +1129,26 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <h2 id="waitforenabled">waitForEnabled</h2>
 <p>Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitforinvisible">waitForInvisible</h2>
+<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForInvisible('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitforstalenessof">waitForStalenessOf</h2>
+<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForStalenessOf('#popup');
+</code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
