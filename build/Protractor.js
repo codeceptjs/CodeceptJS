@@ -618,16 +618,12 @@ var _dontSee;
  * Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-@param fn
-@param args
-
-Examples for Vue.js.
-In order to make components completely rendered we are waiting for [nextTick](https://vuejs.org/v2/api/#Vue-nextTick).
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick](https://vuejs.org/v2/api/#Vue-nextTick).
 
 ```js
 I.executeAsyncScript(function(done) {
   Vue.nextTick(done); // waiting for next tick
-})
+});
 ```
 
 By passing value to `done()` function you can return values.
@@ -639,6 +635,9 @@ let val = yield I.executeAsyncScript(function(url, done) {
  $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
 ```
+
+@param `fn` function to be executed in browser context
+@param `...args` args to be passed to function
  *
  * @name executeAsyncScript
  * @kind function
@@ -667,8 +666,8 @@ Can return values. Don't forget to use `yield` to get them.
 ```js
 let date = yield I.executeScript(function(el) {
   // only basic types can be returned
-  return $(el)).datetimepicker('getDate').toString();
-}, '#date'); // passing selector
+  return $(el).datetimepicker('getDate').toString();
+}, '#date'); // passing jquery selector
 ```
 
 @param `fn` function to be executed in browser context

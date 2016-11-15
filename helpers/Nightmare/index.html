@@ -549,20 +549,23 @@ I.doubleClick('.btn.edit');
 <h2 id="executeasyncscript">executeAsyncScript</h2>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
+<p>Example: In Vue.js to make components completely rendered we are waiting for <a href="https://vuejs.org/v2/api/#Vue-nextTick">nextTick</a>.</p>
+<pre><code class="js">I.executeAsyncScript(function(done) {
+Vue.nextTick(done); // waiting for next tick
+});
+</code></pre>
+
+<p>By passing value to <code>done()</code> function you can return values.
+Additional arguments can be passed as well, while <code>done</code> function is always last parameter in arguments list.</p>
+<pre><code class="js">let val = yield I.executeAsyncScript(function(url, done) {
+// in browser context
+$.ajax(url, { success: (data) =&gt; done(data); }
+}, 'http://ajax.callback.url/');
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fn</code>  </li>
-<li><code>args</code>  Examples for Vue.js.
-    In order to make components completely rendered we are waiting for <a href="https://vuejs.org/v2/api/#Vue-nextTick">nextTick</a>.<code>js
-    I.executeAsyncScript(function(done) {
-    Vue.nextTick(done); // waiting for next tick
-    })</code>By passing value to <code>done()</code> function you can return values.
-    Additional arguments can be passed as well, while <code>done</code> function is always last parameter in arguments list.<code>js
-    let val = yield I.executeAsyncScript(function(url, done) {
-    // in browser context
-    $.ajax(url, { success: (data) =&gt; done(data); }
-    }, 'http://ajax.callback.url/');</code>Wrapper for asynchronous <a href="https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2">evaluate</a>.
-    Unlike NightmareJS implementation calling <code>done</code> will return its first argument.</li>
 </ul>
 <h2 id="executescript">executeScript</h2>
 <p>Executes sync script on a page.
@@ -580,8 +583,8 @@ $('date')).datetimepicker('setDate', new Date());
 <p>Can return values. Don't forget to use <code>yield</code> to get them.</p>
 <pre><code class="js">let date = yield I.executeScript(function(el) {
 // only basic types can be returned
-return $(el)).datetimepicker('getDate').toString();
-}, '#date'); // passing selector
+return $(el).datetimepicker('getDate').toString();
+}, '#date'); // passing jquery selector
 </code></pre>
 
 <p><strong>Parameters</strong></p>
