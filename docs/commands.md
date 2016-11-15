@@ -48,6 +48,12 @@ Run test with internal logs printed (global promises, and events).
 codeceptjs run . github_test.js --verbose
 ```
 
+Select config file manually
+
+```
+codeceptjs run --config my.codecept.conf.js`
+```
+
 Run tests and produce xunit report:
 
 ```

@@ -486,6 +486,18 @@ Provided function should execute a passed callback (as first argument) to signal
 **Parameters**
 
 -   `fn`  
+-   `args`  Examples for Vue.js.
+    In order to make components completely rendered we are waiting for [nextTick](https://vuejs.org/v2/api/#Vue-nextTick).```js
+    I.executeAsyncScript(function(done) {
+    Vue.nextTick(done); // waiting for next tick
+    })
+    ```By passing value to `done()` function you can return values.
+    Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.```js
+    let val = yield I.executeAsyncScript(function(url, done) {
+    // in browser context
+    $.ajax(url, { success: (data) => done(data); }
+    }, 'http://ajax.callback.url/');
+    ```
 
 ## executeScript
 
@@ -493,6 +505,25 @@ Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
 In this case you should use generator and yield to receive results.
+
+Example with jQuery DatePicker:
+
+```js
+// change date of jQuery DatePicker
+I.executeScript(function() {
+// now we are inside browser context
+$('date')).datetimepicker('setDate', new Date());
+});
+```
+
+Can return values. Don't forget to use `yield` to get them.
+
+```js
+let date = yield I.executeScript(function(el) {
+// only basic types can be returned
+return $(el)).datetimepicker('getDate').toString();
+}, '#date'); // passing selector
+```
 
 **Parameters**
 
@@ -909,6 +940,30 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForInvisible
+
+Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForInvisible('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForStalenessOf
+
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForStalenessOf('#popup');
 
 **Parameters**
 
