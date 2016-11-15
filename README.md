@@ -70,7 +70,7 @@ if you need to write Selenium WebDriver tests.
 After that create your first test by executing:
 
 ```
-codeceptjs generate test
+codeceptjs generate:test
 ```
 
 Now test is created and can be executed with
