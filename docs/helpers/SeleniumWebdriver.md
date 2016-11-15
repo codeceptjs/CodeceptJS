@@ -292,7 +292,7 @@ $.ajax(url, { success: (data) => done(data); }
 
 **Parameters**
 
--   `fn`  
+-   `fn`  function to be executed in browser context
 
 ## executeScript
 
@@ -322,7 +322,7 @@ return $(el).datetimepicker('getDate').toString();
 
 **Parameters**
 
--   `fn`  
+-   `fn`  function to be executed in browser context
 
 ## fillField
 
