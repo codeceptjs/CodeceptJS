@@ -1,8 +1,10 @@
 ## 0.4.9
 
 * [SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed `executeScript`, `executeAsyncScript` to work and return values.
+* [Protractor][SeleniumWebdriver][WebDriverIO] Added `waitForInvisible` and `waitForStalenessOf` methods by @Nighthawk14.
 * Added `--config` option to `codeceptjs run` to manually specify config file by @cnworks
 * [Protractor] Simplified behavior of `amOutsideAngularApp` by using `ignoreSynchronization`. Fixes #278
+* Set exit code to 1 when test fails at `Before`/`After` hooks. Fixes #279
 
 
 ## 0.4.8
