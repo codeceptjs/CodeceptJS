@@ -2,7 +2,7 @@
 
 let Protractor = require('../../lib/helper/Protractor');
 let site_url = 'http://davertmik.github.io/angular-demo-app';
-// let site_url = 'http://127.0.0.1:5000';
+const web_app_url = 'http://127.0.0.1:8000'
 let assert = require('assert');
 let I, browser;
 let path = require('path');
@@ -345,7 +345,7 @@ describe('Protractor', function() {
   describe('#attachFile', () => {
     beforeEach(() => {
       I.amOutsideAngularApp(); // switch off angular mode
-      return I.amOnPage('http://localhost:8000/form/file');
+      return I.amOnPage(web_app_url + '/form/file');
     });
 
     it('should upload file located by CSS', function*() {
@@ -407,6 +407,25 @@ describe('Protractor', function() {
       let size = yield I.browser.manage().window().getSize();
       assert.equal(size.width, 640);
       assert.equal(size.height, 480);
+    });
+  });
+
+  describe('#amOutsideAngularApp', function() {
+    it('should work outside angular app', function*() {
+      yield I.amOutsideAngularApp();
+      yield I.amOnPage(web_app_url);
+      yield I.click('More info');
+      return I.see('Information', 'h1');
+    });
+
+    it('should switch between applications', function*() {
+      yield I.amOutsideAngularApp();
+      yield I.amOnPage(web_app_url);
+      yield I.see('Welcome', 'h1');
+      yield I.amInsideAngularApp();
+      yield I.amOnPage('/');
+      yield I.seeInCurrentUrl(site_url);
+      return I.see('Create Event');
     });
   });
 

@@ -1,0 +1,9 @@
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForStalenessOf('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
