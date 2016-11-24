@@ -1,0 +1,19 @@
+Waits for an element to become visible on a page and then clicks the element.
+Element can be located by CSS or XPath. Accepts either a single locator string or
+an array of locator strings. The latter makes it possible to perform multi-step actions
+with a single call to this method.
+
+Wait for a single element to become visible and then click it:
+```
+I.waitForVisibleThenClick('#popup');
+```
+
+Iterate over multiple elements, waiting for each one to become visible, clicking it, and waiting for `delay` seconds
+before moving on to the next element:
+```
+I.waitForVisibleThenClick(['#popup', '.next-btn', '.save-btn']);
+```
+
+@param locator element located by CSS|XPath|strict locator.
+@param sec     maximum time to wait for element to become visible (in seconds), 1 by default.
+@param delay   time to wait after clicking an element (in seconds), 0 by default.
