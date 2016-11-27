@@ -14,17 +14,11 @@
 <div id="step_4" class="invisible_button">Steps Complete!</div>
 
 <script>
-  function getByID( id ) {
-    return document.getElementById( id );
-  }
-  function removeClass( el, cls ) {
-    el.classList.remove( cls );
-    return el;
-  }
+  /**
+   * Utility Functions
+   */
 
-  setTimeout(function () {
-    getByID('text').textContent = 'Dynamic text';
-
+  function _prepareStepButtons() {
     ['step_1', 'step_2', 'step_3'].forEach( function( id, index ) {
       var num = index + 2,
         nextIDNum = num.toString();
@@ -34,6 +28,26 @@
         removeClass( getByID( nextID ), 'invisible_button' );
       });
     });
+  }
+
+  function getByID( id ) {
+    return document.getElementById( id );
+  }
+
+  function removeClass( el, cls ) {
+    el.classList.remove( cls );
+    return el;
+  }
+
+
+  /**
+   * Do Stuff
+   */
+
+  _prepareStepButtons();
+
+  setTimeout(function () {
+    getByID('text').textContent = 'Dynamic text';
 
     removeClass( getByID('step_1'), 'invisible_button' );
   }, 1000);
