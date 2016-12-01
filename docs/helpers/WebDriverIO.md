@@ -211,7 +211,7 @@ this.helpers['WebDriverIO'].browser
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _locate
 
@@ -1185,3 +1185,394 @@ Appium: support
 
 -   `fn`  
 -   `sec`  
+
+#### Appium extra methods
+
+## sendAppToBackground
+
+Send the currently active app to the background and return it back.
+
+Appium: support only Android
+
+```js
+I.sendAppToBackground(5);
+```
+
+**Parameters**
+
+-   `seconds`  number of seconds after the app will open again
+
+## getContext
+
+Retrieve current context
+
+Appium: support Android and iOS
+
+```js
+let context = yield I.getContext()
+/*
+return
+{ status: 0,
+value: 'NATIVE_APP',
+sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
+*/
+```
+
+## switchToContext
+
+Switch to the specified context
+
+Appium: support Android and iOS
+
+```js
+I.switchToContext('NATIVE_APP')
+```
+
+**Parameters**
+
+-   `value`  name of context
+
+## getAllContexts
+
+Get list of all available contexts
+
+Appium: support Android and iOS
+
+```js
+let context = yield I.getAllContexts()
+/*
+return
+{ status: 0,
+value: 'NATIVE_APP',
+sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
+```
+
+## getCurrentActivity
+
+Receive the current activity on an Android device.
+
+Appium: support only Android
+
+```js
+let context = yield I.getCurrentActivity()
+/*
+return
+{ status: 0,
+value: '.ui.WalkthroughActivity',
+sessionId: '1a54b0c3-e60f-4176-bb26-bce7cd6fed82' }
+```
+
+## sendDeviceKeyEvent
+
+Send a key event to the device
+
+Appium: support only Android
+
+```js
+I.sendDeviceKeyEvent('NATIVE_APP')
+```
+
+**Parameters**
+
+-   `keyValue`  device specifc key value. List of keys: https://developer.android.com/reference/android/view/KeyEvent.html
+
+## getCurrentDeviceActivity
+
+Get current device activity.
+
+Appium: support only Android
+
+```js
+let context = yield I.getCurrentDeviceActivity()
+/*
+return
+.ui.WalkthroughActivity
+```
+
+## getGeoLocation
+
+Get the current geolocation.
+Only for browser, firstly you sould setGeoLocation
+
+Appium: support Android
+
+```js
+let context = yield I.getGeoLocation()
+/*
+return
+{ accuracy: 100, altitude: 0, latitude: 2, longitude: 6 }
+```
+
+## setGeoLocation
+
+Set the current geolocation.
+Only for browser.
+
+Appium: support Android
+
+```js
+I.setGeoLocation(30, 50.33, 551)
+```
+
+**Parameters**
+
+-   `latitude`
+-   `longitude`
+-   `altitude`
+
+## getNetworkConnection
+
+Get informations about the current network connection (Data/WIFI/Airplane). The actual server value will be a number. However WebdriverIO additional properties to the response object to allow easier assertions.
+
+Appium: support only Android
+
+```js
+let context = yield I.getNetworkConnection()
+/*
+return
+{ status: 0,
+value: 6,
+sessionId: '24781a27-4d0e-45ee-b964-6b3934d63fb7',
+inAirplaneMode: false,
+hasWifi: true,
+hasData: true }
+```
+
+## getOrientation
+
+Get the current browser orientation.
+
+Appium: support Android and iOS
+
+```js
+let context = yield I.getOrientation()
+/*
+return
+portrait
+```
+
+## hideDeviceKeyboard
+
+Hide the keyboard. (taps outside to hide keyboard per default)
+
+Appium: support Android and iOS
+
+```js
+I.hideDeviceKeyboard('tapOutside');
+I.hideDeviceKeyboard('pressKey', 'Done');
+```
+
+**Parameters**
+
+-   `strategy` desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
+-   `key` - key to close keyboard
+
+## checkDeviceLock
+
+Check whether the device is locked or not.
+
+Appium: support only Android
+
+```js
+let context = yield I.checkDeviceLock()
+/*
+return
+{ status: 0,
+value: false,
+sessionId: '1a4c2213-c9a4-477b-9005-9ffb682dcd91' }
+```
+
+## lockDevice
+
+Lock the device.
+
+Appium: support only Android
+
+```js
+I.lockDevice()
+```
+
+## longPressKeycode
+
+Lock the device.
+
+Appium: support only Android
+
+```js
+I.longPressKeycode(3)
+```
+
+**Parameters**
+
+-   `keycode` key code to press
+-   `metastate` - meta state to be activated
+
+## openNotifications
+
+Open the notifications panel on the device.
+
+Appium: support only Android
+
+```js
+I.openNotifications(3)
+```
+
+## getDeviceOrientation
+
+Protocol bindings for all mobile orientation operations.
+
+Appium: support only Android
+
+```js
+let context = yield I.getDeviceOrientation()
+/*
+return
+{ status: 0,
+value: 'PORTRAIT',
+sessionId: '0dd0c618-9b22-436d-bc72-cbb4e68de796' }
+```
+
+## getSettings
+
+Either retrieve a JSON hash of all the currently specified settings or update the current setting on the device.
+
+Appium: support only Android
+
+```js
+let context = yield I.getDeviceOrientation()
+/*
+return
+{ status: 0,
+value: { ignoreUnimportantViews: false },
+sessionId: 'ef9e1a42-0f1c-48dc-a5d3-ebc127e7952f' }
+```
+
+## swipe
+
+Perform a swipe on the screen or an element. If you want to swipe on a specific element make sure you provide a selector argument. If not just pass xoffset and yoffset as command arguments.
+
+Appium: support Android and iOS
+
+```js
+I.swipe('//elem', 300, 200, 150);
+```
+
+**Parameters**
+
+-   `locator` element to swipe on
+-   `xoffset` - x offset of swipe gesture (in pixels or relative units)
+-   `yoffset` - y offset of swipe gesture (in pixels or relative units)
+-   `speed` - time (in seconds) to spend performing the swipe
+
+## swipeDown
+
+Perform a swipe down on an element.
+
+Appium: support Android and iOS
+
+```js
+I.swipeDown('//elem', 300, 200);
+```
+
+**Parameters**
+
+-   `locator` element to swipe on
+-   `yoffset` - y offset of swipe gesture (in pixels or relative units)
+-   `speed` - time (in seconds) to spend performing the swipe
+
+## swipeLeft
+
+Perform a swipe left on an element.
+
+Appium: support Android and iOS
+
+```js
+I.swipeDown('//elem', 300, 200);
+```
+
+**Parameters**
+
+-   `locator` element to swipe on
+-   `xoffset` - x offset of swipe gesture (in pixels or relative units)
+-   `speed` - time (in seconds) to spend performing the swipe
+
+## swipeRight
+
+Perform a swipe right on an element.
+
+Appium: support Android and iOS
+
+```js
+I.swipeRight('//elem', 300, 200);
+```
+
+**Parameters**
+
+-   `locator` element to swipe on
+-   `xoffset` - x offset of swipe gesture (in pixels or relative units)
+-   `speed` - time (in seconds) to spend performing the swipe
+
+## swipeUp
+
+Perform a swipe right on an element.
+
+Appium: support Android and iOS
+
+```js
+I.swipeUp('//elem', 300, 200);
+```
+
+**Parameters**
+
+-   `locator` element to swipe on
+-   `yoffset` - y offset of swipe gesture (in pixels or relative units)
+-   `speed` - time (in seconds) to spend performing the swipe
+
+## swipeTo
+
+Perform a swipe in selected direction on an element to seachable element.
+
+Appium: support Android and iOS
+
+```js
+I.swipeTo("//searchelem", "//elem", 'left', 30, 400, 100);
+```
+
+**Parameters**
+
+-   `seachableLocator` - element to search
+-   `scrollLocator` - element to swipe on
+-   `direction` - direction to swipe ('down', 'up', 'left', 'right')
+-   `timeout` - seconds to wait
+-   `offset` - offset of swipe gesture (in pixels or relative units)
+-   `speed` - time (in seconds) to spend performing the swipe
+
+## toggleAirplaneMode
+
+Switch the state (enabled/disabled) of airplane mode.
+
+Appium: support only Android
+
+```js
+I.toggleAirplaneMode();
+```
+
+## toggleLocationServices
+
+Switch the state (enabled/disabled) of the location service.
+
+Appium: support only Android
+
+```js
+I.toggleLocationServices();
+```
+
+## toggleWiFi
+
+Switch the state (enabled/disabled) of the wifi service.
+
+Appium: support only Android
+
+```js
+I.toggleWiFi();
+```
