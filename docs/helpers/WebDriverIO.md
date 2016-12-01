@@ -1186,175 +1186,186 @@ Appium: support
 -   `fn`  
 -   `sec`  
 
+
 #### Appium extra methods
 
-## checkAppInstallation
+## checkAppIsInstalled
 
 Check if an app is installed.
 
 Appium: support only Android
 
 ```js
-I.checkAppInstallation(com.Slack);
-
-com.Slack
-{ status: 0,
-value: true,
-sessionId: '4d6323d8-f07d-4e74-9e12-7649288b7c67' }
+I.checkAppIsInstalled("com.MainApp");
 ```
 
 **Parameters**
 
--   `bundleId`  number of seconds after the app will open again
+-   `bundleId` -	ID of bundled app
 
-## checkDeviceLock
+## checkAppIsNotInstalled
 
-Check whether the device is locked or not.
+Check if an app is not installed.
 
 Appium: support only Android
 
 ```js
-let context = yield I.checkDeviceLock()
-/*
-return
-{ status: 0,
-value: false,
-sessionId: '1a4c2213-c9a4-477b-9005-9ffb682dcd91' }
+I.checkAppIsNotInstalled("com.MainApp");
 ```
 
-## getAllContexts
+**Parameters**
+
+-   `bundleId` -	ID of bundled app
+
+## checkCurrentActivityIs
+
+check current activity on an Android device.
+
+Appium: support only Android
+
+```js
+I.checkCurrentActivityIs(".MainActivity");
+```
+
+**Parameters**
+
+-   `currentActivity` -	expected current activity
+
+## checkDeviceIsLocked
+
+Check whether the device is locked.
+
+Appium: support only Android
+
+```js
+I.checkDeviceIsLocked()
+```
+
+## checkDeviceIsNotLocked
+
+Check whether the device is not locked.
+
+Appium: support only Android
+
+```js
+I.checkDeviceIsNotLocked()
+```
+
+## checkOrientationIs
+
+Check the device orientation
+
+Appium: support Android and iOS
+
+```js
+I.checkOrientationIs("landscape");
+```
+
+**Parameters**
+
+-   `orientation` -	expected orientation ("landscape" or "portrait")
+
+## grabAllContexts
 
 Get list of all available contexts
 
 Appium: support Android and iOS
 
 ```js
-let context = yield I.getAllContexts()
+let contexts = yield I.grabAllContexts()
 /*
-return
-{ status: 0,
-value: 'NATIVE_APP',
-sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
-```
-
-## getContext
-
-Retrieve current context
-
-Appium: support Android and iOS
-
-```js
-let context = yield I.getContext()
-/*
-return
 { status: 0,
 value: 'NATIVE_APP',
 sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
 */
 ```
 
-## getCurrentActivity
+## grabContext
 
-Receive the current activity on an Android device.
+Retrieve current context
 
-Appium: support only Android
+Appium: support Android and iOS
 
 ```js
-let context = yield I.getCurrentActivity()
+let context = yield I.grabContext()
 /*
-return
 { status: 0,
-value: '.ui.WalkthroughActivity',
-sessionId: '1a54b0c3-e60f-4176-bb26-bce7cd6fed82' }
+value: 'NATIVE_APP',
+sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
+*/
 ```
 
-## getCurrentDeviceActivity
+## grabCurrentActivity
 
 Get current device activity.
 
 Appium: support only Android
 
 ```js
-let context = yield I.getCurrentDeviceActivity()
+let currentActivity = yield I.grabCurrentActivity()
 /*
-return
 .ui.WalkthroughActivity
+*/
 ```
 
-
-## getDeviceOrientation
-
-Protocol bindings for all mobile orientation operations.
-
-Appium: support only Android
-
-```js
-let context = yield I.getDeviceOrientation()
-/*
-return
-{ status: 0,
-value: 'PORTRAIT',
-sessionId: '0dd0c618-9b22-436d-bc72-cbb4e68de796' }
-```
-
-## getGeoLocation
+## grabGeoLocation
 
 Get the current geolocation.
 Only for browser, firstly you sould setGeoLocation
 
-Appium: support Android
+Appium: support Android and iOS
 
 ```js
-let context = yield I.getGeoLocation()
+let geoLocation = yield I.grabGeoLocation()
 /*
-return
 { accuracy: 100, altitude: 0, latitude: 2, longitude: 6 }
+*/
 ```
 
-## getNetworkConnection
+## grabNetworkConnection
 
 Get informations about the current network connection (Data/WIFI/Airplane). The actual server value will be a number. However WebdriverIO additional properties to the response object to allow easier assertions.
 
 Appium: support only Android
 
 ```js
-let context = yield I.getNetworkConnection()
+let networkConnection = yield I.grabNetworkConnection()
 /*
-return
 { status: 0,
 value: 6,
 sessionId: '24781a27-4d0e-45ee-b964-6b3934d63fb7',
 inAirplaneMode: false,
 hasWifi: true,
 hasData: true }
+*/
 ```
 
-## getOrientation
+## grabOrientation
 
-Get the current browser orientation.
+Get current orientation.
 
 Appium: support Android and iOS
 
 ```js
-let context = yield I.getOrientation()
+let orientation = yield I.grabOrientation()
 /*
-return
 portrait
+*/
 ```
 
-## getSettings
+## grabSettings
 
-Either retrieve a JSON hash of all the currently specified settings or update the current setting on the device.
+Get all the currently specified settings
 
 Appium: support only Android
 
 ```js
-let context = yield I.getDeviceOrientation()
+let settings = yield I.grabSettings()
 /*
-return
 { status: 0,
 value: { ignoreUnimportantViews: false },
 sessionId: 'ef9e1a42-0f1c-48dc-a5d3-ebc127e7952f' }
+*/
 ```
 
 ## hideDeviceKeyboard
@@ -1370,23 +1381,22 @@ I.hideDeviceKeyboard('pressKey', 'Done');
 
 **Parameters**
 
--   `strategy` desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
+-   `strategy` - desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
 -   `key` - key to close keyboard
 
 ## installApp
 
-ong press on an element using finger motion events.
+Install an app on device.
 
 Appium: support only Android
 
 ```js
-I.installApp('tapOutside');
+I.installApp('/path/to/my/App.apk');
 ```
 
 **Parameters**
 
--   `path` desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
--   `key` - key to close keyboard
+-   `path` - path to Android application
 
 
 ## lockDevice
@@ -1401,7 +1411,7 @@ I.lockDevice()
 
 ## longPressKeycode
 
-Lock the device.
+Press a particular key code on the device.
 
 Appium: support only Android
 
@@ -1411,22 +1421,19 @@ I.longPressKeycode(3)
 
 ## makeTouchAction
 
-The Touch Action API provides the basis of all gestures that can be
-* automated in Appium. At its core is the ability to chain together ad hoc
-* individual actions, which will then be applied to an element in the
-* application on the device.
+The Touch Action API provides the basis of all gestures that can be automated in Appium. At its core is the ability to chain together ad hoc individual actions, which will then be applied to an element in the application on the device.
 Full documentation http://webdriver.io/api/mobile/touchAction.html
 
-Appium: support Android
+Appium: support Android and iOS
 
 ```js
-I.makeTouchAction('tapOutside');
+I.makeTouchAction('//UITextbox', 'tap');
 ```
 
 **Parameters**
 
--   `locator` desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
--   `action` - key to close keyboard
+-   `locator` - selector to execute the touchAction on
+-   `action` - action to execute
 
 ## openNotifications
 
@@ -1435,7 +1442,7 @@ Open the notifications panel on the device.
 Appium: support only Android
 
 ```js
-I.openNotifications(3)
+I.openNotifications()
 ```
 
 ## pullFile
@@ -1445,13 +1452,13 @@ Pulls a file from the device.
 Appium: support Android and iOS
 
 ```js
-I.pullFile('tapOutside');
+I.pullFile('/sdcard/myfile.txt', 'c:/tmp/myfile.txt');
 ```
 
 **Parameters**
 
--   `path` desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
--   `dest` - key to close keyboard
+-   `path` - device path to file
+-   `dest` - destination path to file
 
 ## removeApp
 
@@ -1460,12 +1467,12 @@ Remove an app from the device.
 Appium: support only Android
 
 ```js
-I.removeApp('tapOutside');
+I.removeApp('com.Myapp');
 ```
 
 **Parameters**
 
--   `bundleId` desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
+-   `bundleId` -  bundle ID of application
 
 ## sendAppToBackground
 
@@ -1479,42 +1486,42 @@ I.sendAppToBackground(5);
 
 **Parameters**
 
--   `seconds`  number of seconds after the app will open again
+-   `seconds` -  number of seconds after the app will open again
 
 ## sendDeviceKeyEvent
 
 Send a key event to the device
+list of keys: https://developer.android.com/reference/android/view/KeyEvent.html
 
 Appium: support only Android
 
 ```js
-I.sendDeviceKeyEvent('NATIVE_APP')
+I.sendDeviceKeyEvent(3)
 ```
 
 **Parameters**
 
--   `keyValue`  device specifc key value. List of keys: https://developer.android.com/reference/android/view/KeyEvent.html
+-   `keyValue` - device specific key value.
 
-## setDeviceOrientation
+## setOrientation
 
-Protocol bindings for all mobile orientation operations.
+Set a device orientation. Will fail, if app will not change orientation
 
-Appium: support only Android
+Appium: support Android and iOS
 
 ```js
-I.setDeviceOrientation('NATIVE_APP')
+I.setOrientation('landscape')
 ```
 
 **Parameters**
 
--   `deviceOrientation`  device specifc key value. List of keys: https://developer.android.com/reference/android/view/KeyEvent.html
+-   `orientation` - orientation (landscape/portrait)
 
 ## setGeoLocation
 
-Set the current geolocation.
-Only for browser.
+Set the current geolocation. Only for browser. (don't know usage).
 
-Appium: support Android
+Appium: support only Android
 
 ```js
 I.setGeoLocation(30, 50.33, 551)
@@ -1529,52 +1536,50 @@ I.setGeoLocation(30, 50.33, 551)
 ## setNetworkConnection
 
 Set network connection.
-Only for browser.
 
-Appium: support Android
+Appium: support only Android
 
 ```js
-I.setNetworkConnection(30, 50.33, 551)
+I.setNetworkConnection(1)
 ```
 
 **Parameters**
 
--   `value`
+-   `value` - bitmasks of network connection. See http://webdriver.io/api/mobile/setNetworkConnection.html
 
 ## setSettings
 
-Either retrieve a JSON hash of all the currently specified settings or update the current setting on the device.
-Only for browser.
+Update the current setting on the device
 
-Appium: support Android
+Appium: support Android and iOS
 
 ```js
-I.setSettings(30, 50.33, 551)
+I.setSettings({ cyberdelia: 'open' })
 ```
 
 **Parameters**
 
--   `settings`
+-   `settings` - key/value pairs defining settings on the device
 
 ## startActivity
 
 Start an arbitrary Android activity during a session.
 
-Appium: support Android
+Appium: support only Android
 
 ```js
-I.startActivity(30, 50.33, 551)
+I.startActivity('io.appium.android.apis','.view.DragAndDropDemo')
 ```
 
 **Parameters**
 
--   `appPackage`
--   `appActivity`
+-   `appPackage` - name of app
+-   `appActivity` - name of activity
 
 
 ## swipe
 
-Perform a swipe on the screen or an element. If you want to swipe on a specific element make sure you provide a selector argument. If not just pass xoffset and yoffset as command arguments.
+Perform a swipe on the screen or an element.
 
 Appium: support Android and iOS
 
@@ -1584,7 +1589,7 @@ I.swipe('//elem', 300, 200, 150);
 
 **Parameters**
 
--   `locator` element to swipe on
+-   `locator` - element to swipe on
 -   `xoffset` - x offset of swipe gesture (in pixels or relative units)
 -   `yoffset` - y offset of swipe gesture (in pixels or relative units)
 -   `speed` - time (in seconds) to spend performing the swipe
@@ -1601,7 +1606,7 @@ I.swipeDown('//elem', 300, 200);
 
 **Parameters**
 
--   `locator` element to swipe on
+-   `locator` - element to swipe on
 -   `yoffset` - y offset of swipe gesture (in pixels or relative units)
 -   `speed` - time (in seconds) to spend performing the swipe
 
@@ -1617,7 +1622,7 @@ I.swipeDown('//elem', 300, 200);
 
 **Parameters**
 
--   `locator` element to swipe on
+-   `locator` - element to swipe on
 -   `xoffset` - x offset of swipe gesture (in pixels or relative units)
 -   `speed` - time (in seconds) to spend performing the swipe
 
@@ -1633,7 +1638,7 @@ I.swipeRight('//elem', 300, 200);
 
 **Parameters**
 
--   `locator` element to swipe on
+-   `locator` - element to swipe on
 -   `xoffset` - x offset of swipe gesture (in pixels or relative units)
 -   `speed` - time (in seconds) to spend performing the swipe
 
@@ -1668,7 +1673,7 @@ I.swipeUp('//elem', 300, 200);
 
 **Parameters**
 
--   `locator` element to swipe on
+-   `locator` - element to swipe on
 -   `yoffset` - y offset of swipe gesture (in pixels or relative units)
 -   `speed` - time (in seconds) to spend performing the swipe
 
@@ -1677,7 +1682,7 @@ I.swipeUp('//elem', 300, 200);
 
 Switch to the specified context
 
-Appium: support Android and iOS
+Appium: support only Android
 
 ```js
 I.switchToContext('NATIVE_APP')
@@ -1685,7 +1690,7 @@ I.switchToContext('NATIVE_APP')
 
 **Parameters**
 
--   `value`  name of context
+-   `value` - name of context
 
 
 ## toggleAirplaneMode
@@ -1720,23 +1725,29 @@ I.toggleWiFi();
 
 ## touchPerform
 
-Performs a specific touch action. The action object need to contain the action name
+Performs a specific touch action. The action object need to contain the action name, x/y coordinates
 
 Appium: support Android and iOS
 
 ```js
-I.touchPerform('//elem', 300, 200);
+I.touchPerform([{
+    action: 'press',
+    options: {
+        x: 100,
+        y: 250
+    }
+}]);
 ```
 
 **Parameters**
 
--   `actions` element to swipe on
+-   `actions` - touch action as object or object[] with attributes like touchCount, x, y, duration
 
 ## unlockDevice
 
-Unlock the device. Works only with slide and unlock,performs wery slow
+Unlock the device. Works only with slide and unlock. Performs wery slow
 
-Appium: support Android and iOS
+Appium: support only Android
 
 ```js
 I.unlockDevice();
