@@ -151,6 +151,16 @@ you can place it into your bootstrap file and provide a relative path to it in `
 "bootstrap": "./run_server.js"
 ```
 
+To run `bootstrap` async, just export a function in your bootstrap file
+
+```js
+module.exports = function(done) {
+  // async instructions
+  // call done() to continue execution
+  // otherwise call done('error description')
+}
+```
+
 ## teardown
 
 In case you need to execute arbitrary code after the tests have run,
