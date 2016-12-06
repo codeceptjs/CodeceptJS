@@ -173,11 +173,13 @@ Here is the [webdriverio docs](http://webdriver.io/guide/usage/multiremote.html)
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
 -   `platformName` - Which mobile OS platform to use
 -   `appPackage` - Java package of the Android app you want to run
-   `appActivity` - Activity name for the Android activity you want to launch from your package.
+-   `appActivity` - Activity name for the Android activity you want to launch from your package. (Android)
 -   `deviceName`: The kind of mobile device or emulator to use
 -   `platformVersion`: Mobile OS version
 -   `app` - The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.
+-   `bundleId` - Bundle ID of the app under test. Useful for starting an app on a real device or for using other caps which require the bundle ID during test startup. (IOs)
 -   `browserName`: Name of mobile web browser to automate. Should be an empty string if automating an app instead.
+
 
 Example:
 
