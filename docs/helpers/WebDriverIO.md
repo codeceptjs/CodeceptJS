@@ -1265,6 +1265,16 @@ I.checkOrientationIs("landscape");
 
 -   `orientation` -	expected orientation ("landscape" or "portrait")
 
+## closeApp
+
+Close the given application.
+
+Appium: support only iOS
+
+```js
+I.closeApp();
+```
+
 ## grabAllContexts
 
 Get list of all available contexts
@@ -1435,6 +1445,16 @@ I.makeTouchAction('//UITextbox', 'tap');
 -   `locator` - selector to execute the touchAction on
 -   `action` - action to execute
 
+## makeShake
+
+Perform a shake action on the device.
+
+Appium: support only iOS
+
+```js
+I.makeShake();
+```
+
 ## openNotifications
 
 Open the notifications panel on the device.
@@ -1474,6 +1494,27 @@ I.removeApp('com.Myapp');
 
 -   `bundleId` -  bundle ID of application
 
+## rotate
+
+Perform a rotation gesture centered on the specified element.
+
+Appium: support only iOS
+
+not tested
+
+```js
+I.rotate(114, 198);
+```
+
+**Parameters**
+
+-   `x` -  x offset to use for the center of the rotate gesture (default 0)
+-   `y` -  y offset to use for the center of the rotate gesture (default 0)
+-   `duration` -  The length of hold time for the specified gesture, in seconds. (default 1)
+-   `radius` -  The distance in points from the center to the edge of the circular path.
+-   `rotation` -  The length of rotation in radians. (default pi (π))
+-   `touchCount` -  The number of touches to use in the specified gesture. (Effectively, the number of fingers a user would use to make the specified gesture.) Valid values are 1 to 5. (default 2)
+
 ## sendAppToBackground
 
 Send the currently active app to the background and return it back.
@@ -1502,6 +1543,22 @@ I.sendDeviceKeyEvent(3)
 **Parameters**
 
 -   `keyValue` - device specific key value.
+
+## setImmediateValue
+
+Set immediate value in app.
+
+Appium: support only iOs
+not tested
+
+```js
+I.setImmediateValue(el, 'foo')
+```
+
+**Parameters**
+
+-   `id` - ID of a WebElement JSON object to route the command to.
+-   `value` - The sequence of keys to type. An array must be provided. The server should flatten the array items to a single string to be typed.
 
 ## setOrientation
 
@@ -1560,6 +1617,21 @@ I.setSettings({ cyberdelia: 'open' })
 **Parameters**
 
 -   `settings` - key/value pairs defining settings on the device
+
+## simulateTouchId
+
+ Simulate Touch ID with either valid (match == true) or invalid (match == false) fingerprint.
+
+Appium: support only iOS
+not tested
+
+```js
+I.simulateTouchId(true)
+```
+
+**Parameters**
+
+-   `match` - if true the command simulates a valid fingerprint
 
 ## startActivity
 
