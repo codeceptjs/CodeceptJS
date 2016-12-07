@@ -465,21 +465,21 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#waitForVisibleThenClick', () => {
+  describe('#waitForVisibleThenClick', function*() {
     it('should wait for element to become visible and then click it', () => {
-      return I.amOnPage('/dynamic')
-        .then(() => I.dontSeeElement('#step_1'))
-        .then(() => I.waitForVisibleThenClick('#step_1'))
-        .then(() => I.seeElement('#step_2'));
+      yield I.amOnPage('/dynamic');
+      yield I.dontSeeElement('#step_1');
+      yield I.waitForVisibleThenClick('#step_1');
+      return I.seeElement('#step_2');
     });
 
-    it('should wait for each element to become visible and then click it before moving on to the next element', () => {
+    it('should wait for each element to become visible and then click it before moving on to the next element', function*() {
       let elements = ['#step_1', '#step_2', '#step_3'];
 
-      return I.amOnPage('/dynamic')
-        .then(() => I.dontSeeElement('#step_1'))
-        .then(() => I.waitForVisibleThenClick(elements))
-        .then(() => I.seeElement('#step_4'));
+      yield I.amOnPage('/dynamic');
+      yield I.dontSeeElement('#step_1');
+      yield I.waitForVisibleThenClick(elements);
+      return I.seeElement('#step_4');
     });
   });
 
