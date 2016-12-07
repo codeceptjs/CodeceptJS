@@ -466,20 +466,20 @@ module.exports.tests = function() {
   });
 
   describe('#waitForVisibleThenClick', () => {
-    it('should wait for element to become visible and then click it', function*() {
-      yield I.amOnPage('/dynamic');
-      yield I.dontSeeElement('#step_1');
-      yield I.waitForVisibleThenClick('#step_1');
-      return I.seeElement('#step_2');
+    it('should wait for element to become visible and then click it', () => {
+      return I.amOnPage('/dynamic')
+        .then(() => I.dontSeeElement('#step_1'))
+        .then(() => I.waitForVisibleThenClick('#step_1'))
+        .then(() => I.seeElement('#step_2'));
     });
 
-    it('should wait for each element to become visible and then click it before moving on to the next element', function*() {
+    it('should wait for each element to become visible and then click it before moving on to the next element', () => {
       let elements = ['#step_1', '#step_2', '#step_3'];
 
-      yield I.amOnPage('/dynamic');
-      yield I.dontSeeElement('#step_1');
-      yield I.waitForVisibleThenClick(elements);
-      return I.seeElement('#step_4');
+      return I.amOnPage('/dynamic')
+        .then(() => I.dontSeeElement('#step_1'))
+        .then(() => I.waitForVisibleThenClick(elements))
+        .then(() => I.seeElement('#step_4'));
     });
   });
 
