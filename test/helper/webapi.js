@@ -465,8 +465,8 @@ module.exports.tests = function() {
     });
   });
 
-  describe('#waitForVisibleThenClick', function*() {
-    it('should wait for element to become visible and then click it', () => {
+  describe('#waitForVisibleThenClick', () => {
+    it('should wait for element to become visible and then click it', function*() {
       yield I.amOnPage('/dynamic');
       yield I.dontSeeElement('#step_1');
       yield I.waitForVisibleThenClick('#step_1');
