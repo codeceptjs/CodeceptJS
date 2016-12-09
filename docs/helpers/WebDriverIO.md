@@ -1189,7 +1189,7 @@ Appium: support
 -   `sec`  
 
 
-#### Appium extra methods
+# Appium extra methods
 
 ## checkAppIsInstalled
 
