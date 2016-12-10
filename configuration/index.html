@@ -239,17 +239,27 @@
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
 <li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
-<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run (see example in a section below). It can either be:</li>
-<li>a path to a js file that will be executed (via <code>require</code>) before tests. If the file exports a
+<li>
+<p><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run (see example in a section below). It can either be:</p>
+</li>
+<li>
+<p>a path to a js file that will be executed (via <code>require</code>) before tests. If the file exports a
     function, the function is called right away with a callback parameter. When the
     callback is called with no arguments, tests are executed. If instead the callback is called with an
-    error as first argument, test execution is aborted and the process stops.</li>
-<li>a function (dynamic configuration only). The function is called before tests with a callback function
+    error as first argument, test execution is aborted and the process stops.</p>
+</li>
+<li>
+<p>a function (dynamic configuration only). The function is called before tests with a callback function
     as the only parameter. When the callback is called with no arguments, tests are executed. If instead
-    the callback is called with an error as first argument, test execution is aborted and the process stops.</li>
-<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</li>
-<li>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a
-    function, the function is called right away with a callback parameter.</li>
+    the callback is called with an error as first argument, test execution is aborted and the process stops.</p>
+</li>
+<li>
+<p><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</p>
+</li>
+<li>
+<p>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a
+    function, the function is called right away with a callback parameter.</p>
+</li>
 <li>
 <p>a function (dynamic configuration only). The function is called after tests with a callback parameter.</p>
 </li>
@@ -316,7 +326,7 @@ module.exports = function(done) {
 </code></pre>
 
 <p>In case of dynamic config bootstrap/teardown functions can be placed inside a config itself:</p>
-<pre><code class="js">let server = require('./app_server');
+<pre><code class="js">var server = require('./app_server');
 
 exports.config = {
   bootstrap: function(done) {
