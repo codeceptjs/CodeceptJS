@@ -1,3 +1,8 @@
+## 0.4.11
+
+* Fixed regression in 0.4.11
+* Added `bootstrap`/`teardown` config options to accept functions as parameters by @pscanf. #319
+
 ## 0.4.10
 
 * [Protractor] Protrctor 4.0.12+ support.
