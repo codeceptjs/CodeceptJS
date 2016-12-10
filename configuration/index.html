@@ -220,6 +220,8 @@
         
             <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
         
+            <li><a href="#bootstrap-teardown">Bootstrap / Teardown</a></li>
+        
             <li><a href="#profile">Profile</a></li>
         
     
@@ -239,27 +241,17 @@
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
 <li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
-<li>
-<p><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run (see example in a section below). It can either be:</p>
-</li>
-<li>
-<p>a path to a js file that will be executed (via <code>require</code>) before tests. If the file exports a
+<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run (see example in a section below). It can either be:</li>
+<li>a path to a js file that will be executed (via <code>require</code>) before tests. If the file exports a
     function, the function is called right away with a callback parameter. When the
     callback is called with no arguments, tests are executed. If instead the callback is called with an
-    error as first argument, test execution is aborted and the process stops.</p>
-</li>
-<li>
-<p>a function (dynamic configuration only). The function is called before tests with a callback function
+    error as first argument, test execution is aborted and the process stops.</li>
+<li>a function (dynamic configuration only). The function is called before tests with a callback function
     as the only parameter. When the callback is called with no arguments, tests are executed. If instead
-    the callback is called with an error as first argument, test execution is aborted and the process stops.</p>
-</li>
-<li>
-<p><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</p>
-</li>
-<li>
-<p>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a
-    function, the function is called right away with a callback parameter.</p>
-</li>
+    the callback is called with an error as first argument, test execution is aborted and the process stops.</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</li>
+<li>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a
+    function, the function is called right away with a callback parameter.</li>
 <li>
 <p>a function (dynamic configuration only). The function is called after tests with a callback parameter.</p>
 </li>
@@ -304,7 +296,7 @@
 </code></pre>
 
 <p>(Don't copy-paste this config, it's just demo)</p>
-<h3 id="bootstrap-teardown">Bootstrap / Teardown</h3>
+<h2 id="bootstrap-teardown">Bootstrap / Teardown</h2>
 <p><code>bootstrap</code> and <code>teardown</code> options can accept either a JS file to be executed or a function in case of dynamic config.
 If a file returns a function with a param it is considered to be asynchronous. This can be useful to start server in the beginning of tests and stop it after:</p>
 <p>File: <code>codecept.json</code>:</p>
