@@ -429,6 +429,20 @@ describe('Protractor', function() {
     });
   });
 
+  describe('waitForVisible', () => {
+    beforeEach(() => {
+      return I.amOnPage('/#/info');
+    });
+
+    it('wait for element', function*() {
+      yield I.dontSeeElement('#hello');
+      yield I.waitForVisible('#hello', 2);
+      yield I.seeElement('#hello');
+      yield I.see('Boom', '#hello');
+    });
+
+  });
+
   describe('#waitForText', () => {
     beforeEach(() => {
       return I.amOnPage('/#/info');
