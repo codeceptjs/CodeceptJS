@@ -246,12 +246,9 @@
     function, the function is called right away with a callback parameter. When the
     callback is called with no arguments, tests are executed. If instead the callback is called with an
     error as first argument, test execution is aborted and the process stops.</li>
-<li>a function (dynamic configuration only). The function is called before tests with a callback function
-    as the only parameter. When the callback is called with no arguments, tests are executed. If instead
-    the callback is called with an error as first argument, test execution is aborted and the process stops.</li>
+<li>a function (dynamic configuration only). The function is called before tests with a callback function as the only parameter. When the callback is called with no arguments, tests are executed. If instead the callback is called with an error as first argument, test execution is aborted and the process stops.</li>
 <li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</li>
-<li>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a
-    function, the function is called right away with a callback parameter.</li>
+<li>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a function, the function is called right away with a callback parameter.</li>
 <li>
 <p>a function (dynamic configuration only). The function is called after tests with a callback parameter.</p>
 </li>
