@@ -344,6 +344,13 @@ module.exports.tests = function() {
       yield I.amOnPage('/form/checkbox')
       return I.dontSeeCheckboxIsChecked('#checkin');
     });
+
+    it('should match fields with the same name', function*() {
+      yield I.amOnPage('/form/example20')
+      let txt = yield I.grabTextFrom('body');
+      yield I.seeInField("//input[@name='txtName'][2]", 'emma')
+      return I.seeInField("input[name='txtName']:nth-child(2)", 'emma')
+    })
   });
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
