@@ -1,7 +1,7 @@
 ## 0.4.11
 
 * Fixed regression in 0.4.11
-* Added `bootstrap`/`teardown` config options to accept functions as parameters by @pscanf. #319
+* Added `bootstrap`/`teardown` config options to accept functions as parameters by @pscanf. See updated [config reference](http://codecept.io/configuration/) #319
 
 ## 0.4.10
 
