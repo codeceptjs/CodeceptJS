@@ -1,3 +1,18 @@
+## 0.4.10
+
+* [Protractor] Protrctor 4.0.12+ support.
+* Enabled async bootstrap file by @abachar. Use inside `bootstrap.js`:
+
+```js
+module.exports = function(done) {
+  // async instructions
+  // call done() to continue execution
+  // otherwise call done('error description')
+}
+```
+
+* Changed 'pending' to 'skipped' in reports by @timja-kainos. See #315
+
 ## 0.4.9
 
 * [SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed `executeScript`, `executeAsyncScript` to work and return values.
