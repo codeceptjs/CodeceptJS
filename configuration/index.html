@@ -239,9 +239,23 @@
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
 <li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
-<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - JS file to be executed before tests</li>
-<li><strong>teardown</strong>: - JS file to be executed after tests</li>
-<li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print steps output, as well as used in source code.</li>
+<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run (see example in a section below). It can either be:</li>
+<li>a path to a js file that will be executed (via <code>require</code>) before tests. If the file exports a
+    function, the function is called right away with a callback parameter. When the
+    callback is called with no arguments, tests are executed. If instead the callback is called with an
+    error as first argument, test execution is aborted and the process stops.</li>
+<li>a function (dynamic configuration only). The function is called before tests with a callback function
+    as the only parameter. When the callback is called with no arguments, tests are executed. If instead
+    the callback is called with an error as first argument, test execution is aborted and the process stops.</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</li>
+<li>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a
+    function, the function is called right away with a callback parameter.</li>
+<li>
+<p>a function (dynamic configuration only). The function is called after tests with a callback parameter.</p>
+</li>
+<li>
+<p><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print steps output, as well as used in source code.</p>
+</li>
 </ul>
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
 <p>By default <code>codecept.json</code> is used for configuration. However, you can switch to JS format for more dynamic options.
@@ -261,6 +275,16 @@
       waitforTimeout: 10000
     }
   },
+
+  bootstrap: function(done) {
+    console.log('Custom bootstrap goes here!');
+    done();
+  },
+  teardown: function(done) {
+    console.log('Custom teardown goes here!');
+    done();
+  }
+
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
 
@@ -270,6 +294,45 @@
 </code></pre>
 
 <p>(Don't copy-paste this config, it's just demo)</p>
+<h3 id="bootstrap-teardown">Bootstrap / Teardown</h3>
+<p><code>bootstrap</code> and <code>teardown</code> options can accept either a JS file to be executed or a function in case of dynamic config.
+If a file returns a function with a param it is considered to be asynchronous. This can be useful to start server in the beginning of tests and stop it after:</p>
+<p>File: <code>codecept.json</code>:</p>
+<pre><code class="js">  &quot;bootstrap&quot;: &quot;./bootstrap.js&quot;
+  &quot;teardown&quot;: &quot;./teardown.js&quot;
+</code></pre>
+
+<p>File: <code>bootstrap.js</code>:</p>
+<pre><code class="js">global.server = require('./app_server');
+module.exports = function(done) {
+  server.launch(done);
+}
+</code></pre>
+
+<p>File: <code>teardown.js</code>:</p>
+<pre><code class="js">module.exports = function(done) {
+  server.stop(done);
+}
+</code></pre>
+
+<p>In case of dynamic config bootstrap/teardown functions can be placed inside a config itself:</p>
+<pre><code class="js">let server = require('./app_server');
+
+exports.config = {
+  bootstrap: function(done) {
+    server.launch(done);
+  },
+  teardown: function(done) {
+    server.stop(done);
+  }
+  // ...
+  // other config options
+}
+
+</code></pre>
+
+<p>If bootstrap / teardown function doesn't accept a param it is executed as is, in sync manner.
+Synchronous execution also happens if bootstrap/teardown file is required but not exporting anything.</p>
 <h2 id="profile">Profile</h2>
 <p>Using values from <code>process.profile</code> you can change the config dynamically.
 It provides value of <code>--profile</code> option passed to runner.
