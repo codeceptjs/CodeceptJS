@@ -356,6 +356,14 @@ you can place it into your bootstrap file and provide a relative path to it in <
 <pre><code class="json">&quot;bootstrap&quot;: &quot;./run_server.js&quot;
 </code></pre>
 
+<p>To run <code>bootstrap</code> async, just export a function in your bootstrap file</p>
+<pre><code class="js">module.exports = function(done) {
+  // async instructions
+  // call done() to continue execution
+  // otherwise call done('error description')
+}
+</code></pre>
+
 <h2 id="teardown">teardown</h2>
 <p>In case you need to execute arbitrary code after the tests have run,
 you can place it into your teardown file and provide a relative path to it in <code>codecept.json</code></p>
