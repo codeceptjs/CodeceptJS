@@ -13,9 +13,21 @@ Here is an overview of available options with their defaults:
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
 * **name**: `"tests"` - test suite name (not used)
-* **bootstrap**: `"./bootstrap.js"` - JS file to be executed before tests
-* **teardown**: - JS file to be executed after tests
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run (see example in a section below). It can either be:
+  * a path to a js file that will be executed (via `require`) before tests. If the file exports a
+    function, the function is called right away with a callback parameter. When the
+    callback is called with no arguments, tests are executed. If instead the callback is called with an
+    error as first argument, test execution is aborted and the process stops.
+  * a function (dynamic configuration only). The function is called before tests with a callback function
+    as the only parameter. When the callback is called with no arguments, tests are executed. If instead
+    the callback is called with an error as first argument, test execution is aborted and the process stops.
+* **teardown**: - an option to run code _after_ tests are run (see example in a section below). It can either be:
+  * a path to a js file that will be executed (via `require`) after tests. If the file exports a
+    function, the function is called right away with a callback parameter.
+  * a function (dynamic configuration only). The function is called after tests with a callback parameter.
+
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print steps output, as well as used in source code.
+
 
 ## Dynamic Configuration
 
@@ -39,6 +51,16 @@ exports.config = {
       waitforTimeout: 10000
     }
   },
+
+  bootstrap: function(done) {
+    console.log('Custom bootstrap goes here!');
+    done();
+  },
+  teardown: function(done) {
+    console.log('Custom teardown goes here!');
+    done();
+  }
+
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
 
@@ -48,6 +70,56 @@ exports.config = {
 ```
 
 (Don't copy-paste this config, it's just demo)
+
+### Bootstrap / Teardown
+
+`bootstrap` and `teardown` options can accept either a JS file to be executed or a function in case of dynamic config.
+If a file returns a function with a param it is considered to be asynchronous. This can be useful to start server in the beginning of tests and stop it after:
+
+File: `codecept.json`:
+
+```js
+  "bootstrap": "./bootstrap.js"
+  "teardown": "./teardown.js"
+```
+
+File: `bootstrap.js`:
+
+```js
+global.server = require('./app_server');
+module.exports = function(done) {
+  server.launch(done);
+}
+```
+
+File: `teardown.js`:
+
+```js
+module.exports = function(done) {
+  server.stop(done);
+}
+```
+
+In case of dynamic config bootstrap/teardown functions can be placed inside a config itself:
+
+```js
+let server = require('./app_server');
+
+exports.config = {
+  bootstrap: function(done) {
+    server.launch(done);
+  },
+  teardown: function(done) {
+    server.stop(done);
+  }
+  // ...
+  // other config options
+}
+
+```
+
+If bootstrap / teardown function doesn't accept a param it is executed as is, in sync manner.
+Synchronous execution also happens if bootstrap/teardown file is required but not exporting anything.
 
 ## Profile
 
