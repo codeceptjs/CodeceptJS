@@ -1,6 +1,6 @@
 ## 0.4.12
 
-* Bootstrap / Teardown improved with [Hooks](codecept.io/configuration/#hooks). Various options for setup/teardown provided.
+* Bootstrap / Teardown improved with [Hooks](http://codecept.io/configuration/#hooks). Various options for setup/teardown provided.
 * Added `--override` or `-o` option for runner to dynamically override configs. Valid JSON should be passed:
 
 ```

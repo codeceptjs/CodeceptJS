@@ -13,15 +13,21 @@ Here is an overview of available options with their defaults:
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
 * **name**: `"tests"` - test suite name (not used)
-* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run [Hooks](#hooks)).
-* **teardown**: - an option to run code _after_ tests are run (see [Hooks](#hooks)).
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](#hooks)).
+* **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks)).
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print steps output, as well as used in source code.
 
 
 ## Dynamic Configuration
 
- By default `codecept.json` is used for configuration. However, you can switch to JS format for more dynamic options.
- Create `codecept.conf.js` file and make it export `config` property:
+ By default `codecept.json` is used for configuration. You can override its values in runtime by using `--override` or `-o` option in command line, passing valid JSON as a value:
+
+ ```
+ codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'
+ ```
+
+ You can also switch to JS configuration format for more dynamic options.
+ Create `codecept.conf.js` file and make it export `config` property.
 
  See the config example:
 
@@ -31,7 +37,6 @@ exports.config = {
     WebDriverIO: {
       // load variables from the environment and provide defaults
       url: process.env.CODECEPT_URL || 'http://localhost:3000',
-      browser: process.profile || 'chrome',
 
       user: process.env.CLOUDSERVICE_USER,
       key: process.env.CLOUDSERVICE_KEY,
@@ -40,15 +45,6 @@ exports.config = {
       waitforTimeout: 10000
     }
   },
-
-  bootstrap: function(done) {
-    console.log('Custom bootstrap goes here!');
-    done();
-  },
-  teardown: function(done) {
-    console.log('Custom teardown goes here!');
-    done();
-  }
 
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
@@ -68,7 +64,7 @@ They can be used to launch stop webserver, selenium server, etc. There are diffe
 `bootstrap` and `teardown` options can be:
 
 * JS file, executed as is (synchronously).
-* JS file exporting a function;  If function accepts a callback is executed asynchronously. See example:
+* JS file exporting a function; If function accepts a callback is executed asynchronously. See example:
 
 Config (`codecept.json`):
 
@@ -82,9 +78,16 @@ Bootstrap file (`bootstrap.js`):
 // bootstrap.js
 var server = require('./app_server');
 module.exports = function(done) {
+  // on error call done('error description') to stop
+  if (!server.validateConfig()) {
+    done("Can't execute server with invalid config, tests stopped");
+  }
+  // call done() to continue execution
   server.launch(done);
 }
 ```
+
+Pass error description inside a callback (`done('error')`) to prevent test execution on bootstrap.
 
 * JS file exporting an object with `bootstrap` and (or) `teardown` methods for corresponding hooks.
 
@@ -140,4 +143,17 @@ For instance, with the config above we can change browser value using `profile` 
 
 ```
 codeceptjs run --profile firefox
+```
+
+```js
+exports.config = {
+  helpers: {
+    WebDriverIO: {
+      url: 'http://localhost:3000',
+      // load value from `profile`
+      browser: process.profile || 'firefox'
+
+    }
+  }
+};
 ```
