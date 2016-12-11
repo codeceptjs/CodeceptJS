@@ -54,6 +54,12 @@ Select config file manually
 codeceptjs run --config my.codecept.conf.js`
 ```
 
+Override config on the fly. Provide valid JSON which will be merged into current config:
+
+```
+codeceptjs run --override '{ "helpers": {"WebDriverIO": {"browser": "chrome"}}}'
+```
+
 Run tests and produce xunit report:
 
 ```
