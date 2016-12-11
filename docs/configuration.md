@@ -13,26 +13,15 @@ Here is an overview of available options with their defaults:
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
 * **name**: `"tests"` - test suite name (not used)
-* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run (see example in a section below). It can either be:
-  * a path to a js file that will be executed (via `require`) before tests. If the file exports a
-    function, the function is called right away with a callback parameter. When the
-    callback is called with no arguments, tests are executed. If instead the callback is called with an
-    error as first argument, test execution is aborted and the process stops.
-  * a function (dynamic configuration only). The function is called before tests with a callback function
-    as the only parameter. When the callback is called with no arguments, tests are executed. If instead
-    the callback is called with an error as first argument, test execution is aborted and the process stops.
-* **teardown**: - an option to run code _after_ tests are run (see example in a section below). It can either be:
-  * a path to a js file that will be executed (via `require`) after tests. If the file exports a
-    function, the function is called right away with a callback parameter.
-  * a function (dynamic configuration only). The function is called after tests with a callback parameter.
-
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run [Hooks](#hooks)).
+* **teardown**: - an option to run code _after_ tests are run (see [Hooks](#hooks)).
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print steps output, as well as used in source code.
 
 
 ## Dynamic Configuration
 
  By default `codecept.json` is used for configuration. However, you can switch to JS format for more dynamic options.
- Create `codecept.conf.js` file and make it export `config` property.
+ Create `codecept.conf.js` file and make it export `config` property:
 
  See the config example:
 
@@ -71,39 +60,62 @@ exports.config = {
 
 (Don't copy-paste this config, it's just demo)
 
-### Bootstrap / Teardown
+## Hooks
 
-`bootstrap` and `teardown` options can accept either a JS file to be executed or a function in case of dynamic config.
-If a file returns a function with a param it is considered to be asynchronous. This can be useful to start server in the beginning of tests and stop it after:
+Hooks are implemented as `bootstrap` and `teardown` options in config. You can use them to prepare test environment before execution and cleanup after.
+They can be used to launch stop webserver, selenium server, etc. There are different sync and async ways to define bootstrap and teardown functions.
 
-File: `codecept.json`:
+`bootstrap` and `teardown` options can be:
+
+* JS file, executed as is (synchronously).
+* JS file exporting a function;  If function accepts a callback is executed asynchronously. See example:
+
+Config (`codecept.json`):
 
 ```js
   "bootstrap": "./bootstrap.js"
-  "teardown": "./teardown.js"
 ```
 
-File: `bootstrap.js`:
+Bootstrap file (`bootstrap.js`):
 
 ```js
-global.server = require('./app_server');
+// bootstrap.js
+var server = require('./app_server');
 module.exports = function(done) {
   server.launch(done);
 }
 ```
 
-File: `teardown.js`:
+* JS file exporting an object with `bootstrap` and (or) `teardown` methods for corresponding hooks.
+
+Config (`codecept.json`):
 
 ```js
-module.exports = function(done) {
-  server.stop(done);
+  "bootstrap": "./bootstrap.js"
+  "teardown": "./bootstrap.js"
+```
+
+Bootstrap file (`bootstrap.js`):
+
+```js
+// bootstrap.js
+var server = require('./app_server');
+module.exports = {
+  bootstrap: function(done) {
+    server.launch(done);
+  },
+  teardown: function(done) {
+    server.stop(done);
+  }
 }
 ```
 
-In case of dynamic config bootstrap/teardown functions can be placed inside a config itself:
+* JS function in case of dynamic config. If function accepts a callback is executed asynchronously. See example:
+
+Config JS (`codecept.conf.js`):
 
 ```js
-let server = require('./app_server');
+var server = require('./app_server');
 
 exports.config = {
   bootstrap: function(done) {
@@ -117,9 +129,6 @@ exports.config = {
 }
 
 ```
-
-If bootstrap / teardown function doesn't accept a param it is executed as is, in sync manner.
-Synchronous execution also happens if bootstrap/teardown file is required but not exporting anything.
 
 ## Profile
 
