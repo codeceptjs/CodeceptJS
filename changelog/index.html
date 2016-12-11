@@ -216,7 +216,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#0411">0.4.11</a></li>
+        <li class="main active"><a href="#0412">0.4.12</a></li>
+        
+    
+        <li class="main "><a href="#0411">0.4.11</a></li>
         
     
         <li class="main "><a href="#0410">0.4.10</a></li>
@@ -298,6 +301,18 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="0412">0.4.12</h2>
+<ul>
+<li>Bootstrap / Teardown improved with <a href="http://codecept.io/configuration/#hooks">Hooks</a>. Various options for setup/teardown provided.</li>
+<li>Added <code>--override</code> or <code>-o</code> option for runner to dynamically override configs. Valid JSON should be passed:</li>
+</ul>
+<pre><code>codeceptjs run -o '{ &quot;bootstrap&quot;: &quot;bootstrap.js&quot;}'
+codeceptjs run -o '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;chrome&quot;}}}'
+</code></pre>
+
+<ul>
+<li>Added <a href="https://github.com/Codeception/CodeceptJS/tree/master/test/runner">regression tests</a> for codeceptjs tests runner.</li>
+</ul>
 <h2 id="0411">0.4.11</h2>
 <ul>
 <li>Fixed regression in 0.4.10</li>

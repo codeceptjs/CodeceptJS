@@ -220,7 +220,7 @@
         
             <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
         
-            <li><a href="#bootstrap-teardown">Bootstrap / Teardown</a></li>
+            <li><a href="#hooks">Hooks</a></li>
         
             <li><a href="#profile">Profile</a></li>
         
@@ -241,23 +241,14 @@
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
 <li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
-<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run (see example in a section below). It can either be:</li>
-<li>a path to a js file that will be executed (via <code>require</code>) before tests. If the file exports a
-    function, the function is called right away with a callback parameter. When the
-    callback is called with no arguments, tests are executed. If instead the callback is called with an
-    error as first argument, test execution is aborted and the process stops.</li>
-<li>a function (dynamic configuration only). The function is called before tests with a callback function as the only parameter. When the callback is called with no arguments, tests are executed. If instead the callback is called with an error as first argument, test execution is aborted and the process stops.</li>
-<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run (see example in a section below). It can either be:</li>
-<li>a path to a js file that will be executed (via <code>require</code>) after tests. If the file exports a function, the function is called right away with a callback parameter.</li>
-<li>
-<p>a function (dynamic configuration only). The function is called after tests with a callback parameter.</p>
-</li>
-<li>
-<p><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print steps output, as well as used in source code.</p>
-</li>
+<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
+<li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print steps output, as well as used in source code.</li>
 </ul>
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
-<p>By default <code>codecept.json</code> is used for configuration. However, you can switch to JS format for more dynamic options.
+<p>By default <code>codecept.json</code> is used for configuration. You can override its values in runtime by using <code>--override</code> or <code>-o</code> option in command line, passing valid JSON as a value:</p>
+<p><code>codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'</code></p>
+<p>You can also switch to JS configuration format for more dynamic options.
  Create <code>codecept.conf.js</code> file and make it export <code>config</code> property.</p>
 <p>See the config example:</p>
 <pre><code class="js">exports.config = {
@@ -265,7 +256,6 @@
     WebDriverIO: {
       // load variables from the environment and provide defaults
       url: process.env.CODECEPT_URL || 'http://localhost:3000',
-      browser: process.profile || 'chrome',
 
       user: process.env.CLOUDSERVICE_USER,
       key: process.env.CLOUDSERVICE_KEY,
@@ -274,15 +264,6 @@
       waitforTimeout: 10000
     }
   },
-
-  bootstrap: function(done) {
-    console.log('Custom bootstrap goes here!');
-    done();
-  },
-  teardown: function(done) {
-    console.log('Custom teardown goes here!');
-    done();
-  }
 
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
@@ -293,28 +274,57 @@
 </code></pre>
 
 <p>(Don't copy-paste this config, it's just demo)</p>
-<h2 id="bootstrap-teardown">Bootstrap / Teardown</h2>
-<p><code>bootstrap</code> and <code>teardown</code> options can accept either a JS file to be executed or a function in case of dynamic config.
-If a file returns a function with a param it is considered to be asynchronous. This can be useful to start server in the beginning of tests and stop it after:</p>
-<p>File: <code>codecept.json</code>:</p>
+<h2 id="hooks">Hooks</h2>
+<p>Hooks are implemented as <code>bootstrap</code> and <code>teardown</code> options in config. You can use them to prepare test environment before execution and cleanup after.
+They can be used to launch stop webserver, selenium server, etc. There are different sync and async ways to define bootstrap and teardown functions.</p>
+<p><code>bootstrap</code> and <code>teardown</code> options can be:</p>
+<ul>
+<li>JS file, executed as is (synchronously).</li>
+<li>JS file exporting a function; If function accepts a callback is executed asynchronously. See example:</li>
+</ul>
+<p>Config (<code>codecept.json</code>):</p>
 <pre><code class="js">  &quot;bootstrap&quot;: &quot;./bootstrap.js&quot;
-  &quot;teardown&quot;: &quot;./teardown.js&quot;
 </code></pre>
 
-<p>File: <code>bootstrap.js</code>:</p>
-<pre><code class="js">global.server = require('./app_server');
+<p>Bootstrap file (<code>bootstrap.js</code>):</p>
+<pre><code class="js">// bootstrap.js
+var server = require('./app_server');
 module.exports = function(done) {
+  // on error call done('error description') to stop
+  if (!server.validateConfig()) {
+    done(&quot;Can't execute server with invalid config, tests stopped&quot;);
+  }
+  // call done() to continue execution
   server.launch(done);
 }
 </code></pre>
 
-<p>File: <code>teardown.js</code>:</p>
-<pre><code class="js">module.exports = function(done) {
-  server.stop(done);
+<p>Pass error description inside a callback (<code>done('error')</code>) to prevent test execution on bootstrap.</p>
+<ul>
+<li>JS file exporting an object with <code>bootstrap</code> and (or) <code>teardown</code> methods for corresponding hooks.</li>
+</ul>
+<p>Config (<code>codecept.json</code>):</p>
+<pre><code class="js">  &quot;bootstrap&quot;: &quot;./bootstrap.js&quot;
+  &quot;teardown&quot;: &quot;./bootstrap.js&quot;
+</code></pre>
+
+<p>Bootstrap file (<code>bootstrap.js</code>):</p>
+<pre><code class="js">// bootstrap.js
+var server = require('./app_server');
+module.exports = {
+  bootstrap: function(done) {
+    server.launch(done);
+  },
+  teardown: function(done) {
+    server.stop(done);
+  }
 }
 </code></pre>
 
-<p>In case of dynamic config bootstrap/teardown functions can be placed inside a config itself:</p>
+<ul>
+<li>JS function in case of dynamic config. If function accepts a callback is executed asynchronously. See example:</li>
+</ul>
+<p>Config JS (<code>codecept.conf.js</code>):</p>
 <pre><code class="js">var server = require('./app_server');
 
 exports.config = {
@@ -330,14 +340,24 @@ exports.config = {
 
 </code></pre>
 
-<p>If bootstrap / teardown function doesn't accept a param it is executed as is, in sync manner.
-Synchronous execution also happens if bootstrap/teardown file is required but not exporting anything.</p>
 <h2 id="profile">Profile</h2>
 <p>Using values from <code>process.profile</code> you can change the config dynamically.
 It provides value of <code>--profile</code> option passed to runner.
 Use its value to change config value on the fly.</p>
 <p>For instance, with the config above we can change browser value using <code>profile</code> option</p>
 <pre><code>codeceptjs run --profile firefox
+</code></pre>
+
+<pre><code class="js">exports.config = {
+  helpers: {
+    WebDriverIO: {
+      url: 'http://localhost:3000',
+      // load value from `profile`
+      browser: process.profile || 'firefox'
+
+    }
+  }
+};
 </code></pre></div>
             <div class="clearfix"></div>
         </div>
