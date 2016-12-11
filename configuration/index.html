@@ -247,7 +247,9 @@
 </ul>
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
 <p>By default <code>codecept.json</code> is used for configuration. You can override its values in runtime by using <code>--override</code> or <code>-o</code> option in command line, passing valid JSON as a value:</p>
-<p><code>codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'</code></p>
+<pre><code>codeceptjs run -o '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;firefox&quot;}}}'
+</code></pre>
+
 <p>You can also switch to JS configuration format for more dynamic options.
  Create <code>codecept.conf.js</code> file and make it export <code>config</code> property.</p>
 <p>See the config example:</p>
