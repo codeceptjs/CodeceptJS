@@ -1,3 +1,35 @@
+## 0.4.12
+
+* Bootstrap / Teardown improved with [Hooks](http://codecept.io/configuration/#hooks). Various options for setup/teardown provided.
+* Added `--override` or `-o` option for runner to dynamically override configs. Valid JSON should be passed:
+
+```
+codeceptjs run -o '{ "bootstrap": "bootstrap.js"}'
+codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "chrome"}}}'
+```
+
+* Added [regression tests](https://github.com/Codeception/CodeceptJS/tree/master/test/runner) for codeceptjs tests runner.
+
+## 0.4.11
+
+* Fixed regression in 0.4.10
+* Added `bootstrap`/`teardown` config options to accept functions as parameters by @pscanf. See updated [config reference](http://codecept.io/configuration/) #319
+
+## 0.4.10
+
+* [Protractor] Protrctor 4.0.12+ support.
+* Enabled async bootstrap file by @abachar. Use inside `bootstrap.js`:
+
+```js
+module.exports = function(done) {
+  // async instructions
+  // call done() to continue execution
+  // otherwise call done('error description')
+}
+```
+
+* Changed 'pending' to 'skipped' in reports by @timja-kainos. See #315
+
 ## 0.4.9
 
 * [SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed `executeScript`, `executeAsyncScript` to work and return values.

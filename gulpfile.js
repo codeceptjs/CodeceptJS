@@ -46,7 +46,7 @@ gulp.task('pre-commit', ['static']);
 gulp.task('test', function (cb) {
   var mochaErr;
 
-  gulp.src('./test/unit/**/*_test.js')
+  gulp.src(['./test/unit/**/*_test.js', './test/runner/**/*_test.js'])
     .pipe(plumber())
     .pipe(mocha({reporter: 'spec'}))
     .on('error', function (err) {

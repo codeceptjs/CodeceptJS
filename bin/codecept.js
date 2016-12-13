@@ -57,6 +57,7 @@ program.command('run [suite] [test]')
   .option('--steps', 'show step-by-step execution')
   .option('--debug', 'output additional information')
   .option('--verbose', 'output internal logging information')
+  .option('-o, --override [value]', 'override current config options')
   .option('--profile [value]', 'configuration profile to be used')
   .option('--config [file]', 'configuration file to be used')
 
