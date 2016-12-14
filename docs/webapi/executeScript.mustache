@@ -17,9 +17,9 @@ Can return values. Don't forget to use `yield` to get them.
 ```js
 let date = yield I.executeScript(function(el) {
   // only basic types can be returned
-  return $(el)).datetimepicker('getDate').toString();
-}, '#date'); // passing selector
+  return $(el).datetimepicker('getDate').toString();
+}, '#date'); // passing jquery selector
 ```
 
-@param `fn` function to be executed in browser context
-@param `...args` args to be passed to function
+@param fn function to be executed in browser context
+@param ...args args to be passed to function
