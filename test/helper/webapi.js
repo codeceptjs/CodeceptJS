@@ -306,6 +306,32 @@ module.exports.tests = function() {
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
+
+  });
+
+
+  describe('#clearField', () => {
+    it('should clear a given element', () => {
+      return I.amOnPage('/form/field')
+        .then(() => I.fillField('#name', 'Nothing special'))
+        .then(() => I.seeInField('#name', 'Nothing special'))
+        .then(() => I.clearField('#name'))
+        .then(() => I.dontSeeInField('#name', 'Nothing special'));
+    });
+
+    it('should clear field by name', function*() {
+      yield I.amOnPage('/form/example1');
+      yield I.clearField('LoginForm[username]');
+      yield I.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
+
+    it('should clear field by locator', function*() {
+      yield I.amOnPage('/form/example1');
+      yield I.clearField('#LoginForm_username');
+      yield I.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -470,5 +496,36 @@ module.exports.tests = function() {
         .then(() => I.see('Dynamic text'));
     });
   });
+
+  describe('#waitForElement', () => {
+    it('should wait for visibile element', () => {
+      return I.amOnPage('/form/wait_visible')
+        .then(() => I.dontSee('Step One Button'))
+        .then(() => I.dontSeeElement('#step_1'))
+        .then(() => I.waitForVisible('#step_1', 2))
+        .then(() => I.seeElement('#step_1'))
+        .then(() => I.click('#step_1'))
+        .then(() => I.waitForVisible('#step_2', 2))
+        .then(() => I.see('Step Two Button'));
+    });
+
+   it('should wait for element in DOM', () => {
+      return I.amOnPage('/form/wait_visible')
+        .then(() => I.waitForElement('#step_2'))
+        .then(() => I.dontSeeElement('#step_2'))
+        .then(() => I.seeElementInDOM('#step_2'))
+    });
+
+
+    it('should wait for element to appear', () => {
+      return I.amOnPage('/form/wait_element')
+        .then(() => I.dontSee('Hello'))
+        .then(() => I.dontSeeElement('h1'))
+        .then(() => I.waitForElement('h1', 2))
+        .then(() => I.see('Hello'))
+    });
+
+
+  })
 
 }

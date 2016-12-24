@@ -127,6 +127,20 @@ I.clearCookie('test');
 
 -   `cookie`  (optional)
 
+## clearField
+
+Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+
 ## click
 
 Perform a click on a link or a button, given by a locator.

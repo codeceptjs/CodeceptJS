@@ -156,16 +156,6 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#clearField', () => {
-    it('should clear a given element', () => {
-      return wd.amOnPage('/form/field')
-        .then(() => wd.fillField('#name', 'Nothing special'))
-        .then(() => wd.seeInField('#name', 'Nothing special'))
-        .then(() => wd.clearField('#name'))
-        .then(() => wd.dontSeeInField('#name', 'Nothing special'));
-    });
-  });
-
   describe('#seeInSource', () => {
     it('should check for text to be in HTML source', () => {
       return wd.amOnPage('/')
