@@ -319,6 +319,12 @@ module.exports.tests = function() {
         .then(() => I.dontSeeInField('#name', 'Nothing special'));
     });
 
+    it('should clear field by name', function*() {
+      yield I.amOnPage('/form/example1');
+      yield I.clearField('LoginForm[username]');
+      yield I.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
 
     it('should clear field by locator', function*() {
       yield I.amOnPage('/form/example1');
