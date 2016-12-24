@@ -216,7 +216,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#0412">0.4.12</a></li>
+        <li class="main active"><a href="#0413">0.4.13</a></li>
+        
+    
+        <li class="main "><a href="#0412">0.4.12</a></li>
         
     
         <li class="main "><a href="#0411">0.4.11</a></li>
@@ -301,6 +304,35 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="0413">0.4.13</h2>
+<ul>
+<li>Added <strong>retries</strong> option <code>Feature</code> and <code>Scenario</code> to rerun fragile tests:</li>
+</ul>
+<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) =&gt; {
+  // test goes here
+});
+</code></pre>
+
+<ul>
+<li>Added <strong>timeout</strong> option <code>Feature</code> and <code>Scenario</code> to specify timeout.</li>
+</ul>
+<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) =&gt; {
+  // test goes here
+});
+</code></pre>
+
+<ul>
+<li>[WebDriverIO] Added <code>uniqueScreenshotNames</code> option to set unique screenshot names for failed tests. By @APshenkin. See <a href="https://github.com/Codeception/CodeceptJS/pull/299">#299</a></li>
+<li>[WebDriverIO] <code>clearField</code> method improved to accept name/label locators and throw errors.</li>
+<li>[Nightmare][SeleniumWebdriver][Protractor] <code>clearField</code> method added.</li>
+<li>[Nightmare] Fixed <code>waitForElement</code>, and <code>waitForVisible</code> methods.</li>
+<li>[Nightmare] Fixed <code>resizeWindow</code> by @norisk-it</li>
+<li>Added italian <a href="http://codecept.io/translation/#italian">translation</a>.</li>
+</ul>
 <h2 id="0412">0.4.12</h2>
 <ul>
 <li>Bootstrap / Teardown improved with <a href="http://codecept.io/configuration/#hooks">Hooks</a>. Various options for setup/teardown provided.</li>

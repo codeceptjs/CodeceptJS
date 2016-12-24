@@ -607,7 +607,7 @@ let val = yield I.executeAsyncScript(function(url, done) {
 @param ...args args to be passed to function
    *
    * Wrapper for asynchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2).
-   * Unlike NightmareJS implementation calling `done` will return its first argument. 
+   * Unlike NightmareJS implementation calling `done` will return its first argument.
    */
   executeAsyncScript(fn) {
     return this.browser.evaluate.apply(this.browser, arguments)
@@ -623,9 +623,9 @@ First parameter can be set to `maximize`
    */
   resizeWindow(width, height) {
     if (width === 'maximize') {
-      return this.browser.manage().window().maximize();
+      throw new Error(`Nightmare doesn't support resizeWindow to maximum!`);
     }
-    return this.browser.manage().window().setSize(width, height);
+    return this.browser.viewport(width, height);
   }
 
   /**
@@ -681,6 +681,20 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
       }
       return this.browser.enterText(els[0], value, true);
     });
+  }
+
+  /**
+   * Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+@param field located by label|name|CSS|XPath|strict locator
+   */
+  clearField(field) {
+    return this.fillField(field, '');
   }
 
   /**
@@ -1032,8 +1046,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     if (!context) {
       context = this.context;
     }
-    this.browser.optionWaitTimeout = sec*1000 || this.options.waitForTimeout;
     let locator = guessLocator(context) || { css: context};
+    this.browser.optionWaitTimeout = sec*1000 || this.options.waitForTimeout;
 
     return this.browser.wait(function(by, locator, text) {
       return codeceptjs.findElement(by, locator).innerText.indexOf(text) > -1;
@@ -1055,8 +1069,10 @@ I.waitForVisible('#popup');
     this.browser.optionWaitTimeout = sec*1000  || this.options.waitForTimeout;;
     locator = guessLocator(locator) || { css: locator};
 
-    return this.browser.wait(function(by, locator, text) {
-      return codeceptjs.findElement(by, locator).offsetParent !== null;
+    return this.browser.wait(function(by, locator) {
+      var el = codeceptjs.findElement(by, locator);
+      if (!el) return false;
+      return el.offsetParent !== null;
     }, lctype(locator), lcval(locator));
   }
 
@@ -1076,7 +1092,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
     this.browser.optionWaitTimeout = sec*1000 || this.options.waitForTimeout;
     locator = guessLocator(locator) || { css: locator};
 
-    return this.browser.wait(function(by, locator, text) {
+    return this.browser.wait(function(by, locator) {
       return codeceptjs.findElement(by, locator) !== null;
     }, lctype(locator), lcval(locator));
   }

@@ -234,7 +234,9 @@
         
             <li><a href="#bootstrap">Bootstrap</a></li>
         
-            <li><a href="#teardown">teardown</a></li>
+            <li><a href="#teardown">Teardown</a></li>
+        
+            <li><a href="#test-options">Test Options</a></li>
         
     
     </ul>
@@ -364,12 +366,55 @@ you can place it into your bootstrap file and provide a relative path to it in <
 }
 </code></pre>
 
-<h2 id="teardown">teardown</h2>
+<h2 id="teardown">Teardown</h2>
 <p>In case you need to execute arbitrary code after the tests have run,
 you can place it into your teardown file and provide a relative path to it in <code>codecept.json</code></p>
 <pre><code class="json">&quot;teardown&quot;: &quot;./stop_server.js&quot;
 </code></pre>
 
+<h2 id="test-options">Test Options</h2>
+<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
+<pre><code class="js">Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) =&gt; {});
+</code></pre>
+
+<h3 id="timeout">Timeout</h3>
+<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
+<pre><code class="js">Feature('Stop me', {timeout: 5000}); // set timeout to 5s
+</code></pre>
+
+<p>or for the test:</p>
+<pre><code class="js">// set timeout to 1s
+Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
+
+// disable timeout for this scenario
+Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
+</code></pre>
+
+<h3 id="retries">Retries</h3>
+<p>Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
+This can be done with <code>retries</code> option added to <code>Feature</code> declaration.</p>
+<p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
+You can set number of a retries for a feature:</p>
+<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
+</code></pre>
+
+<p>Every Scenario inside this feature will be rerun 3 times.
+You can make an exception for a specific scenario by passing <code>retries</code> option to it:</p>
+<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) =&gt; {
+  // test goes here
+});
+
+Scenario('Really complex', (I) =&gt; {
+  // test goes here
+});
+</code></pre>
+
+<p>"Really complex" test will be restarted 3 times,
+while "Not that complex" test will be rerun only once.</p>
 <hr />
 <h3 id="done">done()</h3></div>
             <div class="clearfix"></div>

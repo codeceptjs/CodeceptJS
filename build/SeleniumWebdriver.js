@@ -482,6 +482,25 @@ I.appendField('#myTextField', 'appended');
   }
 
   /**
+   * Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+@param field located by label|name|CSS|XPath|strict locator
+   */
+  clearField(field, value) {
+    return co(findFields(this.browser, field)).then(co.wrap(function*(els) {
+      if (!els.length) {
+        throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
+      }
+      return els[0].clear();
+    }));
+  }
+
+  /**
    * Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
@@ -958,8 +977,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
    */
   waitForElement(locator, sec) {
     sec = sec || this.options.waitforTimeout;
-    let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.elementsLocated(el), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || by.css(locator)), sec*1000);
   }
 
   /**

@@ -232,6 +232,8 @@
         
             <li><a href="#clearcookie">clearCookie</a></li>
         
+            <li><a href="#clearfield">clearField</a></li>
+        
             <li><a href="#click">click</a></li>
         
             <li><a href="#dontsee">dontSee</a></li>
@@ -432,6 +434,17 @@ I.clearCookie('test');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>cookie</code>  (optional)</li>
+</ul>
+<h2 id="clearfield">clearField</h2>
+<p>Clears a <code>&lt;textarea&gt;</code> or text <code>&lt;input&gt;</code> element's value.</p>
+<pre><code class="js">I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 </ul>
 <h2 id="click">click</h2>
 <p>Perform a click on a link or a button, given by a locator.

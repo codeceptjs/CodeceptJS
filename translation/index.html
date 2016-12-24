@@ -218,23 +218,33 @@
     
         <li class="main active"><a href="#translation">Translation</a></li>
         
+            <li><a href="#russian">Russian</a></li>
+        
+            <li><a href="#portuguese">Portuguese</a></li>
+        
+            <li><a href="#italian">Italian</a></li>
+        
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
 <h1 id="translation">Translation</h1>
-<p>Test output and the way tests are written can be localized.</p>
-<p>CodeceptJS provides built in translations to:</p>
-<ul>
-<li><code>ru-RU</code></li>
-<li><code>pt-BR</code></li>
-</ul>
-<p>They can be enabled in config file like:</p>
+<p>Test output and the way tests are written can be localized.
+This way scenarios can be written in almost native language using UTF support of JavaScript.
+If you have non-English team and you work on non-English project consider enabling translation
+by setting translation to <a href="https://github.com/Codeception/CodeceptJS/blob/master/translations/index.js">one of available languages</a>.</p>
+<p>Please refer to translated steps inside translation files and send Pull Requests to add missing.</p>
+<p>To get autocompletion for localized method names generate definitions by running</p>
+<pre><code>codeceptjs def
+</code></pre>
+
+<h2 id="russian">Russian</h2>
+<p>Add to config:</p>
 <pre><code class="json">  &quot;translation&quot;: &quot;ru-RU&quot;
 </code></pre>
 
-<p>By enabling this feature and running with <code>--steps</code> option steps will be translated:</p>
+<p>when running with <code>--steps</code> option steps output will be translated:</p>
 <p><img alt="" src="http://codecept.io/images/translate-ru1.png" /></p>
 <p>This also enables localized method names for actor object.</p>
 <p>This way tests can be written in native language while it is still JavaScript:</p>
@@ -247,11 +257,12 @@
 });
 </code></pre>
 
-<p>For write your steps in portuguese you can enable the portuguese translation in config file like:</p>
+<h2 id="portuguese">Portuguese</h2>
+<p>To write your tests in portuguese you can enable the portuguese translation in config file like:</p>
 <pre><code class="json">  &quot;translation&quot;: &quot;pt-BR&quot;
 </code></pre>
 
-<p>Your test will be like this:</p>
+<p>Now you can write test like this:</p>
 <pre><code class="js">Scenario('Efetuar login', (Eu) =&gt; {
     Eu.estouNaPagina('http://minhaAplicacao.com.br');
     Eu.preenchoOCampo(&quot;login&quot;, &quot;usuario@minhaAplicacao.com.br&quot;);
@@ -261,8 +272,19 @@
 });
 </code></pre>
 
-<p>To get autocompletion for localized method names generate definitions by running</p>
-<pre><code>codeceptjs def
+<h2 id="italian">Italian</h2>
+<p>Add to config</p>
+<pre><code class="json">  &quot;translation&quot;: &quot;it-IT&quot;
+</code></pre>
+
+<p>Now you can write test like this:</p>
+<pre><code class="js">Scenario('Effettuare il Login su GitHub', (io) =&gt; {
+    io.sono_sulla_pagina('https://github.com/login');
+    io.compilo_il_campo(&quot;Username or email address&quot;, &quot;giuseppe-santoro&quot;);
+    io.compilo_il_campo(&quot;Password&quot;, &quot;*********&quot;);
+    io.faccio_click_su(&quot;Sign in&quot;);
+    io.vedo(&quot;Learn Git and GitHub without any code!&quot;);
+});
 </code></pre></div>
             <div class="clearfix"></div>
         </div>
