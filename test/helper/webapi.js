@@ -309,6 +309,25 @@ module.exports.tests = function() {
 
   });
 
+
+  describe('#clearField', () => {
+    it('should clear a given element', () => {
+      return I.amOnPage('/form/field')
+        .then(() => I.fillField('#name', 'Nothing special'))
+        .then(() => I.seeInField('#name', 'Nothing special'))
+        .then(() => I.clearField('#name'))
+        .then(() => I.dontSeeInField('#name', 'Nothing special'));
+    });
+
+
+    it('should clear field by locator', function*() {
+      yield I.amOnPage('/form/example1');
+      yield I.clearField('#LoginForm_username');
+      yield I.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
+  });
+
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', function*() {
       yield I.amOnPage('/form/empty')

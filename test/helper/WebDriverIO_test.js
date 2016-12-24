@@ -156,25 +156,6 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#clearField', () => {
-    it('should clear a given element', () => {
-      return wd.amOnPage('/form/field')
-        .then(() => wd.fillField('#name', 'Nothing special'))
-        .then(() => wd.seeInField('#name', 'Nothing special'))
-        .then(() => wd.clearField('#name'))
-        .then(() => wd.dontSeeInField('#name', 'Nothing special'));
-    });
-
-
-    it('should clear field by locator', function*() {
-      yield wd.amOnPage('/form/example1');
-      yield wd.clearField('#LoginForm_username');
-      yield wd.click('Login');
-      return assert.equal(formContents('LoginForm')['username'], '');
-    });
-
-  });
-
   describe('#seeInSource', () => {
     it('should check for text to be in HTML source', () => {
       return wd.amOnPage('/')
