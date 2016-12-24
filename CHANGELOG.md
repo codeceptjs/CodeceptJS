@@ -1,6 +1,6 @@
 ## 0.4.13
 
-* Added option to rerun fragile tests:
+* Added **retries** option `Feature` and `Scenario` to rerun fragile tests:
 
 ```js
 Feature('Complex JS Stuff', {retries: 3})
@@ -9,6 +9,23 @@ Scenario('Not that complex', {retries: 1}, (I) => {
   // test goes here
 });
 ```
+
+* Added **timeout** option `Feature` and `Scenario` to specify timeout.
+
+```js
+Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) => {
+  // test goes here
+});
+```
+
+* [WebDriverIO] Added `uniqueScreenshotNames` option to set unique screenshot names for failed tests. By @APshenkin. See [#299](https://github.com/Codeception/CodeceptJS/pull/299)
+* [WebDriverIO] `clearField` method improved to accept name/label locators and throw errors.
+* [Nightmare][SeleniumWebdriver][Protractor] `clearField` method added.
+* [Nightmare] Fixed `waitForElement`, and `waitForVisible` methods.
+* [Nightmare] Fixed `resizeWindow` by @norisk-it
+* Added italian [translation](http://codecept.io/translation/#italian).
 
 ## 0.4.12
 
