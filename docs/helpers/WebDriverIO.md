@@ -309,12 +309,14 @@ I.clearCookie('test');
 Clears a `<textarea>` or text `<input>` element's value.
 
 ```js
+I.clearField('Email');
+I.clearField('user[email]');
 I.clearField('#email');
 ```
 
 **Parameters**
 
--   `locator`  field located by label|name|CSS|XPath|strict locator
+-   `field`  located by label|name|CSS|XPath|strict locator
 
 ## click
 
