@@ -306,6 +306,7 @@ module.exports.tests = function() {
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
+
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
