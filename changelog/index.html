@@ -318,9 +318,9 @@ Scenario('Not that complex', {retries: 1}, (I) =&gt; {
 <ul>
 <li>Added <strong>timeout</strong> option <code>Feature</code> and <code>Scenario</code> to specify timeout.</li>
 </ul>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
+<pre><code class="js">Feature('Complex JS Stuff', {timeout: 5000})
 
-Scenario('Not that complex', {retries: 1}, (I) =&gt; {
+Scenario('Not that complex', {timeout: 1000}, (I) =&gt; {
   // test goes here
 });
 </code></pre>
