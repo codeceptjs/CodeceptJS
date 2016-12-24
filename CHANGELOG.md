@@ -1,3 +1,15 @@
+## 0.4.13
+
+* Added option to rerun fragile tests:
+
+```js
+Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) => {
+  // test goes here
+});
+```
+
 ## 0.4.12
 
 * Bootstrap / Teardown improved with [Hooks](http://codecept.io/configuration/#hooks). Various options for setup/teardown provided.

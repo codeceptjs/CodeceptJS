@@ -161,7 +161,7 @@ module.exports = function(done) {
 }
 ```
 
-## teardown
+## Teardown
 
 In case you need to execute arbitrary code after the tests have run,
 you can place it into your teardown file and provide a relative path to it in `codecept.json`
@@ -169,6 +169,62 @@ you can place it into your teardown file and provide a relative path to it in `c
 ```json
 "teardown": "./stop_server.js"
 ```
+
+## Test Options
+
+Features and Scenarios have their options that can be set by passing a hash after their names:
+
+```js
+Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) => {});
+```
+
+### Timeout
+
+By default there is no timeout for tests, however you can change this value for a specific suite:
+
+```js
+Feature('Stop me', {timeout: 5000}); // set timeout to 5s
+```
+
+or for the test:
+
+```js
+// set timeout to 1s
+Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+
+// disable timeout for this scenario
+Scenario("Don't stop me", {timeout: 0}, (I) => {});
+```
+
+### Retries
+
+Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
+This can be done with `retries` option added to `Feature` declaration.
+
+CodeceptJS implements retries the same way [Mocha do](https://mochajs.org#retry-tests);
+You can set number of a retries for a feature:
+
+```js
+Feature('Complex JS Stuff', {retries: 3})
+```
+Every Scenario inside this feature will be rerun 3 times.
+You can make an exception for a specific scenario by passing `retries` option to it:
+
+```js
+Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) => {
+  // test goes here
+});
+
+Scenario('Really complex', (I) => {
+  // test goes here
+});
+```
+"Really complex" test will be restarted 3 times,
+while "Not that complex" test will be rerun only once.
 
 ---
 

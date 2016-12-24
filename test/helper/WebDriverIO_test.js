@@ -164,6 +164,15 @@ describe('WebDriverIO', function () {
         .then(() => wd.clearField('#name'))
         .then(() => wd.dontSeeInField('#name', 'Nothing special'));
     });
+
+
+    it('should clear field by locator', function*() {
+      yield wd.amOnPage('/form/example1');
+      yield wd.clearField('#LoginForm_username');
+      yield wd.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
+
   });
 
   describe('#seeInSource', () => {
