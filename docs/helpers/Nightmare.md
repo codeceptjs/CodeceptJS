@@ -84,6 +84,7 @@ I.appendField('#myTextField', 'appended');
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.json is located).
 File will be uploaded to remote system (if tests are running remotely).
+
 This function will not work if the Chromium devtools panel is open as Chromium allows only one attachment to the debugger at a time. [See more](https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs)
 
 ```js
