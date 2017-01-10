@@ -13,9 +13,9 @@ Scenario('Not that complex', {retries: 1}, (I) => {
 * Added **timeout** option `Feature` and `Scenario` to specify timeout.
 
 ```js
-Feature('Complex JS Stuff', {retries: 3})
+Feature('Complex JS Stuff', {timeout: 5000})
 
-Scenario('Not that complex', {retries: 1}, (I) => {
+Scenario('Not that complex', {timeout: 1000}, (I) => {
   // test goes here
 });
 ```

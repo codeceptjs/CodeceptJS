@@ -6,3 +6,4 @@ site
 .idea
 docs/build
 test/data/output
+examples/output
