@@ -22,7 +22,9 @@ describe('list/def commands', () => {
 
 
   it('def should create definition file', (done) => {
-    require('fs').unlinkSync(codecept_dir + '/steps.d.ts');
+    try {
+      require('fs').unlinkSync(codecept_dir + '/steps.d.ts');
+    } catch (e) {}
     exec(`${runner} def ${codecept_dir}`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       stdout.should.include('<reference path="./steps.d.ts" />');
