@@ -26,7 +26,7 @@ describe('list/def commands', () => {
     exec(`${runner} def ${codecept_dir}`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       stdout.should.include('<reference path="./steps.d.ts" />');
-      require('fs').existsSync(codecept_dir + '/steps.d.ts');
+      require('fs').existsSync(codecept_dir + '/steps.d.ts').should.be.ok;
       assert(!err);
       done();
     });
