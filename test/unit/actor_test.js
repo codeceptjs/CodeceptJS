@@ -23,8 +23,8 @@ describe('Actor', () => {
     I = actor();
   });
 
-  it('should take all methods of helpers', () => {
-    I.should.have.keys(['hello', 'bye', 'greeting']);
+  it('should take all methods from helpers and built in', () => {
+    I.should.have.keys(['hello', 'bye', 'greeting', 'say']);
   });
 
   it('should return promise', () => {
