@@ -479,6 +479,13 @@ module.exports.tests = function() {
         .then(() => I.clearCookie('auth'))
         .then(() => I.dontSeeCookie('auth'));
     });
+
+    it('should clear all cookies', () => {
+      return I.amOnPage('/')
+        .then(() => I.setCookie({name: 'auth', value: '123456'}))
+        .then(() => I.clearCookie())
+        .then(() => I.dontSeeCookie('auth'));
+    });
   });
 
   describe('#waitForText', () => {
