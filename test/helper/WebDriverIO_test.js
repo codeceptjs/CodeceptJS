@@ -25,7 +25,8 @@ describe('WebDriverIO', function () {
 
     wd = new WebDriverIO({
       url: site_url,
-      browser: 'firefox'
+      browser: 'firefox',
+      windowSize: '500x400'
     });
   });
 
@@ -161,18 +162,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/')
         .then(() => wd.seeInSource('<title>TestEd Beta 2.0</title>'))
         .then(() => wd.dontSeeInSource('<meta'));
-    });
-  });
-
-  describe('window size : #resizeWindow', () => {
-    it('should change the active window size', () => {
-      return wd.amOnPage('/')
-        .then(() => wd.resizeWindow(640, 480))
-        .then(function () { return this.windowHandleSize((err, size) => {
-          assert.equal(size.value.width, 640);
-          return assert.equal(size.value.height, 480);
-        });
-      });
     });
   });
 
