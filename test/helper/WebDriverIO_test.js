@@ -286,5 +286,4 @@ describe('WebDriverIO', function () {
         .then((res) => res.length.should.be.equal(0))
     });
   });
-
 });

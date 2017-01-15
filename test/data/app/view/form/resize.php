@@ -1,11 +1,13 @@
 <html>
-<body>
+<head>
 <script type="text/javascript">
 function printWindowSize() {
   document.getElementById('height').innerText = 'Height '+ window.outerHeight;
   document.getElementById('width').innerText = 'Width '+ window.outerWidth;
 }
 </script>
+</head>
+<body>
 
 <div>
     <button onclick="printWindowSize()">Window Size</button>
