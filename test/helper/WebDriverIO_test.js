@@ -25,7 +25,7 @@ describe('WebDriverIO', function () {
 
     wd = new WebDriverIO({
       url: site_url,
-      browser: 'firefox',
+      browser: 'chrome',
       windowSize: '500x400'
     });
   });

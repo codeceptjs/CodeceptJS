@@ -21,12 +21,11 @@ services:
   - docker
 
 before_install:
-  - docker pull selenium/standalone-firefox
-  - docker run -d --net=host selenium/standalone-firefox
+  - docker pull selenium/standalone-chrome
 
 before_script:
+  - docker run -d --net=host selenium/standalone-chrome
   - chmod -R 777 test/data
-  - docker
   - "php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &"
   - sleep 10
 
