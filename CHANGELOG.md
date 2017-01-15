@@ -1,5 +1,50 @@
 ## 0.4.14
 
+* `_beforeStep` and `_afterStep` hooks in helpers are synchronized. Allows to perform additional actions between steps.
+
+Example: fail if JS error occur in custom helper using WebdriverIO:
+
+```js
+_before() {
+  this.err = null;
+  this.helpers['WebDriverIO'].browser.on('error', (e) => this.err = e);
+}
+
+_afterStep() {
+ if (this.err) throw new Error('Browser JS error '+this.err);
+}
+```
+
+Example: fail if JS error occur in custom helper using Nightmare:
+
+```js
+_before() {
+  this.err = null;
+  this.helpers['Nightmare'].browser.on('page', (type, message, stack) => {
+    this.err = `${message} ${stack}`;
+  });
+}
+
+_afterStep() {
+ if (this.err) throw new Error('Browser JS error '+this.err);
+}
+```
+
+* Fixed `codecept list` and `codecept def` commands.
+* Added `I.say` method to print arbitrary comments.
+
+```js
+I.say('I am going to publish post');
+I.say('I enter title and body');
+I.say('I expect post is visible on site');
+```
+
+* [Nightmare] `restart` option added. `restart: false` allows to run all tests in a single window, disabled by default. By @nairvijays99
+* [Nightmare] Fixed `resizeWindow` command.
+* [Protractor][SeleniumWebdriver] added `windowSize` config option to resize window on start.
+* Fixed "Scenario.skip causes 'Cannot read property retries of undefined'" by @MasterOfPoppets
+* Fixed providing absolute paths for tests in config by @lennym
+
 ## 0.4.13
 
 * Added **retries** option `Feature` and `Scenario` to rerun fragile tests:
