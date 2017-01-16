@@ -25,7 +25,8 @@ describe('WebDriverIO', function () {
 
     wd = new WebDriverIO({
       url: site_url,
-      browser: 'firefox'
+      browser: 'chrome',
+      windowSize: '500x400'
     });
   });
 
@@ -164,18 +165,6 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('window size : #resizeWindow', () => {
-    it('should change the active window size', () => {
-      return wd.amOnPage('/')
-        .then(() => wd.resizeWindow(640, 480))
-        .then(function () { return this.windowHandleSize((err, size) => {
-          assert.equal(size.value.width, 640);
-          return assert.equal(size.value.height, 480);
-        });
-      });
-    });
-  });
-
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
     it('should accept popup window', () => {
       return wd.amOnPage('/form/popup')
@@ -297,5 +286,4 @@ describe('WebDriverIO', function () {
         .then((res) => res.length.should.be.equal(0))
     });
   });
-
 });
