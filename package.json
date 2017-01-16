@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "0.4.13",
+  "version": "0.4.14",
   "description": "Modern Era Aceptance Testing Framework for NodeJS",
   "homepage": "http://codecept.io",
   "repository": "Codeception/codeceptjs",
