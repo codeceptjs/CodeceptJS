@@ -25,6 +25,7 @@ This helper should be configured in codecept.json
 -   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `rootElement` - Root element of AngularJS application (default: body)
+-   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 -   `proxy`: set proxy settings

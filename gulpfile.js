@@ -1,5 +1,6 @@
 var path = require('path');
 var gulp = require('gulp');
+const gulpIf = require('gulp-if');
 var eslint = require('gulp-eslint');
 var excludeGitignore = require('gulp-exclude-gitignore');
 var mocha = require('gulp-mocha');
@@ -12,6 +13,11 @@ var guppy = require('git-guppy')(gulp);
 var gitmodified = require('gulp-gitmodified');
 var mustache = require("gulp-mustache");
 
+function isFixed(file) {
+	// Has ESLint fixed the file contents?
+  console.log('fixed', file.eslint != null && file.eslint.fixed);
+	return file.eslint != null && file.eslint.fixed;
+}
 
 gulp.task('docs', function () {
 
@@ -28,18 +34,11 @@ gulp.task('docs', function () {
 
 gulp.task('static', function () {
   return gulp.src('lib/**/*.js')
-    .pipe(gitmodified(['added', 'modified']))
-    .pipe(eslint({fix: true, quiet: true}))
+    // .pipe(gitmodified(['added', 'modified']))
+    .pipe(eslint({fix: true}))
+    // .pipe(eslint.format())
     .pipe(gulp.dest('lib'));
 });
-
-gulp.task('lint', function () {
-  return gulp.src('lib/**/*.js')
-    .pipe(excludeGitignore())
-    .pipe(eslint())
-    .pipe(gulp.dest('.'));
-});
-
 
 gulp.task('pre-commit', ['static']);
 

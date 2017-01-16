@@ -23,17 +23,15 @@ describe('Actor', () => {
     I = actor();
   });
 
-  it('should take all methods of helpers', () => {
-    I.should.have.keys(['hello', 'bye', 'greeting']);
-  });
-
-  it('should wrap methods into promise', () => {
-    I.hello.toString().should.include('recorder.addStep');
+  it('should take all methods from helpers and built in', () => {
+    I.should.have.keys(['hello', 'bye', 'greeting', 'say']);
   });
 
   it('should return promise', () => {
     let recorder = require('../../lib/recorder');
     recorder.start();
-    I.hello().should.be.instanceOf(Promise);
+    let promise = I.hello();
+    promise.should.be.instanceOf(Promise);
+    return promise.then((val) => val.should.eql('hello world'));
   });
 });

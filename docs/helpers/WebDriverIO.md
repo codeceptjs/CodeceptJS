@@ -37,7 +37,7 @@ Example:
      "WebDriverIO" : {
        "browser": "chrome",
        "restart": false,
-       "windowSize": "maximize,
+       "windowSize": "maximize",
        "timeouts": {
          "script": 60000,
          "page load": 10000,

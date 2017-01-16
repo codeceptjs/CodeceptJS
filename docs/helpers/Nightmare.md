@@ -93,7 +93,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 **Parameters**
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
--   `pathToFile`  local file path relative to codecept.json config fileDue to technical limitation this **works only with CSS selectors**
+-   `pathToFile`  local file path relative to codecept.json config file##### Limitations:-   works only with CSS selectors.
+    -   doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. [See more](https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs))
 
 ## checkOption
 
