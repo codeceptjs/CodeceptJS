@@ -14,6 +14,7 @@ Scenario('search', (I) => {
 
 Scenario('signin', (I) => {
   I.click('Sign in');
+  I.say('it should not enter');
   I.see('Sign in to GitHub');
   I.fillField('Username or email address', 'something@totest.com');
   I.fillField('Password', '123456');

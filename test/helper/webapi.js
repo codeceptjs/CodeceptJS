@@ -479,6 +479,13 @@ module.exports.tests = function() {
         .then(() => I.clearCookie('auth'))
         .then(() => I.dontSeeCookie('auth'));
     });
+
+    it('should clear all cookies', () => {
+      return I.amOnPage('/')
+        .then(() => I.setCookie({name: 'auth', value: '123456'}))
+        .then(() => I.clearCookie())
+        .then(() => I.dontSeeCookie('auth'));
+    });
   });
 
   describe('#waitForText', () => {
@@ -494,6 +501,23 @@ module.exports.tests = function() {
         .then(() => I.dontSee('Dynamic text'))
         .then(() => I.waitForText('Dynamic text', 2, '#text'))
         .then(() => I.see('Dynamic text'));
+    });
+  });
+
+  describe('window size #resizeWindow', () => {
+    it('should set initial window size', () => {
+      return I.amOnPage('/form/resize')
+        .then(() => I.click('Window Size'))
+        .then(() => I.see('Height 400', '#height'))
+        .then(() => I.see('Width 500', '#width'))
+    });
+
+    it('should resize window to specific dimensions', () => {
+      return I.amOnPage('/form/resize')
+        .then(() => I.resizeWindow(800, 600))
+        .then(() => I.click('Window Size'))
+        .then(() => I.see('Height 600', '#height'))
+        .then(() => I.see('Width 800', '#width'))
     });
   });
 
