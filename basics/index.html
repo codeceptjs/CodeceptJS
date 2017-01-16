@@ -228,6 +228,8 @@
         
             <li><a href="#within">Within</a></li>
         
+            <li><a href="#comments">Comments</a></li>
+        
             <li><a href="#skipping">Skipping</a></li>
         
             <li><a href="#reporters">Reporters</a></li>
@@ -341,6 +343,14 @@ I.see('There were problems creating your account.');
 
 <p>When running steps inside a within block will be shown with a shift:</p>
 <p><img alt="within" src="http://codecept.io/images/within.png" /></p>
+<h2 id="comments">Comments</h2>
+<p>There is a simple way to add additional comments to your test scenario.
+Use <code>say</code> command to print information to screen:</p>
+<pre><code class="js">I.say('I am going to publish post');
+I.say('I enter title and body');
+I.say('I expect post is visible on site');
+</code></pre>
+
 <h2 id="skipping">Skipping</h2>
 <p>Like in Mocha you can use <code>x</code> and <code>only</code> to skip tests or making a single test to run.</p>
 <ul>
