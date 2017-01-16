@@ -1,3 +1,7 @@
+## 0.4.15
+
+* Fixed regression in recorder sessions: `oldpromise is not defined`.
+
 ## 0.4.14
 
 * `_beforeStep` and `_afterStep` hooks in helpers are synchronized. Allows to perform additional actions between steps.
