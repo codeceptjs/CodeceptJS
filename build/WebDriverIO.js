@@ -54,7 +54,7 @@ let withinStore = {};
  *      "WebDriverIO" : {
  *        "browser": "chrome",
  *        "restart": false,
- *        "windowSize": "maximize,
+ *        "windowSize": "maximize",
  *        "timeouts": {
  *          "script": 60000,
  *          "page load": 10000,
@@ -310,10 +310,10 @@ class WebDriverIO extends Helper {
     withinStore.elsFn = this.browser.elements;
     this.context = locator;
     return this.browser.element(withStrictLocator(locator)).then((res) => {
-      this.browser.element = function(l) {
+      this.browser.element = function (l) {
         return this.elementIdElement(res.value.ELEMENT, l);
       };
-      this.browser.elements = function(l) {
+      this.browser.elements = function (l) {
         return this.elementIdElements(res.value.ELEMENT, l);
       };
     });
@@ -345,9 +345,9 @@ class WebDriverIO extends Helper {
    * ```
    */
   _locateCheckable(locator) {
-    return findCheckable(this.browser, locator).then(function(res) {
+    return findCheckable(this.browser, locator).then(function (res) {
       return res.value;
-    })
+    });
   }
 
   /**
@@ -358,9 +358,9 @@ class WebDriverIO extends Helper {
    * ```
    */
   _locateClickable(locator) {
-    return findClickable(this.browser, locator).then(function(res) {
+    return findClickable(this.browser, locator).then(function (res) {
       return res.value;
-    })
+    });
   }
 
   /**
@@ -371,9 +371,9 @@ class WebDriverIO extends Helper {
    * ```
    */
   _locateFields(locator) {
-    return findFields(this.browser, locator).then(function(res) {
+    return findFields(this.browser, locator).then(function (res) {
       return res.value;
-    })
+    });
   }
 
   /**
@@ -447,9 +447,9 @@ I.click({css: 'nav a.login'});
     if (context) {
       client = client.element(context);
     }
-    return findClickable(client, locator).then(function(res) {
+    return findClickable(client, locator).then(function (res) {
       if (!res.value || res.value.length === 0) {
-        if (typeof(locator) === "object") locator = JSON.stringify(locator);
+        if (typeof locator === "object") locator = JSON.stringify(locator);
         throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
       }
       let elem = res.value[0];
@@ -476,9 +476,9 @@ I.doubleClick('.btn.edit');
     if (context) {
       client = client.element(context);
     }
-    return findClickable(client, locator).then(function(res) {
+    return findClickable(client, locator).then(function (res) {
       if (!res.value || res.value.length === 0) {
-        if (typeof(locator) === "object") locator = JSON.stringify(locator);
+        if (typeof locator === "object") locator = JSON.stringify(locator);
         throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
       }
       let elem = res.value[0];
@@ -512,7 +512,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
    */
   fillField(field, value) {
-    return findFields(this.browser, field).then(function(res) {
+    return findFields(this.browser, field).then(function (res) {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
       }
@@ -532,7 +532,7 @@ I.appendField('#myTextField', 'appended');
 @param value text value
    */
   appendField(field, value) {
-    return findFields(this.browser, field).then(function(res) {
+    return findFields(this.browser, field).then(function (res) {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
       }
@@ -566,7 +566,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
    *
    */
   selectOption(select, option) {
-    return findFields(this.browser, select).then(function(res) {
+    return findFields(this.browser, select).then(function (res) {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Selectable field ${select} not found by name|text|CSS|XPath`);
       }
@@ -673,7 +673,7 @@ I.checkOption('agree', '//form');
         throw new Error(`Checkable ${field} cant be located by name|text|CSS|XPath`);
       }
       let elem = res.value[0];
-      return client.elementIdSelected(elem.ELEMENT).then(function(isSelected) {
+      return client.elementIdSelected(elem.ELEMENT).then(function (isSelected) {
         if (isSelected.value) return true;
         return this[clickMethod](elem.ELEMENT);
       });
@@ -690,7 +690,7 @@ let pin = yield I.grabTextFrom('#pin');
 @param locator element located by CSS|XPath|strict locator
    */
   grabTextFrom(locator) {
-    return this.browser.getText(withStrictLocator(locator)).then(function(text) {
+    return this.browser.getText(withStrictLocator(locator)).then(function (text) {
       return text;
     });
   }
@@ -704,7 +704,7 @@ let pin = yield I.grabTextFrom('#pin');
    * ```
    */
   grabHTMLFrom(locator) {
-    return this.browser.getHTML(withStrictLocator(locator)).then(function(html) {
+    return this.browser.getHTML(withStrictLocator(locator)).then(function (html) {
       return html;
     });
   }
@@ -719,7 +719,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 @param locator field located by label|name|CSS|XPath|strict locator
    */
   grabValueFrom(locator) {
-    return this.browser.getValue(withStrictLocator(locator)).then(function(text) {
+    return this.browser.getValue(withStrictLocator(locator)).then(function (text) {
       return text;
     });
   }
@@ -735,7 +735,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 @param attr
    */
   grabAttributeFrom(locator, attr) {
-    return this.browser.getAttribute(withStrictLocator(locator), attr).then(function(text) {
+    return this.browser.getAttribute(withStrictLocator(locator), attr).then(function (text) {
       return text;
     });
   }
@@ -869,7 +869,7 @@ I.seeElement('#modal');
 @param locator located by CSS|XPath|strict locator
    */
   seeElement(locator) {
-    return this.browser.isVisible(withStrictLocator(locator)).then(function(res) {
+    return this.browser.isVisible(withStrictLocator(locator)).then(function (res) {
       return truth(`elements of ${locator}`, 'to be seen').assert(res);
     });
   }
@@ -880,7 +880,7 @@ I.seeElement('#modal');
 @param locator located by CSS|XPath|Strict locator
    */
   dontSeeElement(locator) {
-    return this.browser.isVisible(withStrictLocator(locator)).then(function(res) {
+    return this.browser.isVisible(withStrictLocator(locator)).then(function (res) {
       return truth(`elements of ${locator}`, 'to be seen').negate(res);
     });
   }
@@ -895,7 +895,7 @@ I.seeElementInDOM('#modal');
 @param locator located by CSS|XPath|strict locator
    */
   seeElementInDOM(locator) {
-    return this.browser.elements(withStrictLocator(locator)).then(function(res) {
+    return this.browser.elements(withStrictLocator(locator)).then(function (res) {
       return empty('elements').negate(res.value);
     });
   }
@@ -906,7 +906,7 @@ I.seeElementInDOM('#modal');
 @param locator located by CSS|XPath|Strict locator
    */
   dontSeeElementInDOM(locator) {
-    return this.browser.elements(withStrictLocator(locator)).then(function(res) {
+    return this.browser.elements(withStrictLocator(locator)).then(function (res) {
       return empty('elements').assert(res.value);
     });
   }
@@ -946,7 +946,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
    */
   seeNumberOfElements(selector, num) {
     return this.browser.elements(withStrictLocator(selector))
-      .then(function(res) {
+      .then(function (res) {
         return assert.equal(res.value.length, num);
       });
   }
@@ -960,7 +960,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 @param url
    */
   seeInCurrentUrl(url) {
-    return this.browser.url().then(function(res) {
+    return this.browser.url().then(function (res) {
       return stringIncludes('url').assert(url, res.value);
     });
   }
@@ -971,7 +971,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 @param url
    */
   dontSeeInCurrentUrl(url) {
-    return this.browser.url().then(function(res) {
+    return this.browser.url().then(function (res) {
       return stringIncludes('url').negate(url, res.value);
     });
   }
@@ -1148,7 +1148,7 @@ I.clearField('#email');
 @param field located by label|name|CSS|XPath|strict locator
    */
   clearField(field) {
-    return findFields(this.browser, field).then(function(res) {
+    return findFields(this.browser, field).then(function (res) {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
       }
@@ -1167,7 +1167,7 @@ I.seeCookie('Auth');
 @param name
    */
   seeCookie(name) {
-    return this.browser.getCookie(name).then(function(res) {
+    return this.browser.getCookie(name).then(function (res) {
       return truth('cookie ' + name, 'to be set').assert(res);
     });
   }
@@ -1178,7 +1178,7 @@ I.seeCookie('Auth');
 @param name
    */
   dontSeeCookie(name) {
-    return this.browser.getCookie(name).then(function(res) {
+    return this.browser.getCookie(name).then(function (res) {
       return truth('cookie ' + name, 'to be set').negate(res);
     });
   }
@@ -1202,7 +1202,7 @@ assert(cookie.value, '123456');
    * Don't confuse popups with modal windows, as created by [various libraries](http://jster.net/category/windows-modals-popups).
    */
   acceptPopup() {
-    return this.browser.alertText().then(function(res) {
+    return this.browser.alertText().then(function (res) {
       if (res !== null) {
         return this.alertAccept();
       }
@@ -1213,7 +1213,7 @@ assert(cookie.value, '123456');
    * Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
    */
   cancelPopup() {
-    return this.browser.alertText().then(function(res) {
+    return this.browser.alertText().then(function (res) {
       if (res !== null) {
         return this.alertDismiss();
       }
@@ -1224,7 +1224,7 @@ assert(cookie.value, '123456');
    * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the given string.
    */
   seeInPopup(text) {
-    return this.browser.alertText().then(function(res) {
+    return this.browser.alertText().then(function (res) {
       if (res === null) {
         throw new Error('Popup is not opened');
       }
@@ -1258,7 +1258,7 @@ I.pressKey(['Control','a']);
     if (Array.isArray(key) && ~['Control', 'Command', 'Shift', 'Alt'].indexOf(key[0])) {
       modifier = key[0];
     }
-    return this.browser.keys(key).then(function() {
+    return this.browser.keys(key).then(function () {
       if (!modifier) return true;
       return this.keys(modifier); // release modifeier
     });
@@ -1354,14 +1354,14 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   waitForText(text, sec, context) {
     sec = sec || this.options.waitForTimeout;
     context = context || 'body';
-    return this.browser.waitUntil(function() {
-        return this.getText(context).then(function(source) {
-          if (Array.isArray(source)) {
-            return source.filter(part => part.indexOf(text) >= 0).length > 0;
-          }
-          return source.indexOf(text) >= 0;
-        });
-      }, sec * 1000)
+    return this.browser.waitUntil(function () {
+      return this.getText(context).then(function (source) {
+        if (Array.isArray(source)) {
+          return source.filter(part => part.indexOf(text) >= 0).length > 0;
+        }
+        return source.indexOf(text) >= 0;
+      });
+    }, sec * 1000)
       .catch((e) => {
         if (e.type === 'WaitUntilTimeoutError') {
           return proceedSee.call(this, 'assert', text, context);
@@ -1458,13 +1458,13 @@ function proceedSee(assertType, text, context) {
   } else {
     description = 'element ' + context;
   }
-  return this.browser.getText(withStrictLocator(context)).then(function(source) {
+  return this.browser.getText(withStrictLocator(context)).then(function (source) {
     return stringIncludes(description)[assertType](text, source);
   });
 }
 
 function findClickable(client, locator) {
-  if (typeof(locator) === 'object') return client.elements(withStrictLocator(locator));
+  if (typeof locator === 'object') return client.elements(withStrictLocator(locator));
   if (isCSSorXPathLocator(locator)) return client.elements(locator);
 
   let literal = xpathLocator.literal(locator);
@@ -1475,7 +1475,7 @@ function findClickable(client, locator) {
     `.//a/img[normalize-space(@alt)=${literal}]/ancestor::a`,
     `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][normalize-space(@value)=${literal}]`
   ]);
-  return client.elements(narrowLocator).then(function(els) {
+  return client.elements(narrowLocator).then(function (els) {
     if (els.value.length) {
       return els;
     }
@@ -1487,7 +1487,7 @@ function findClickable(client, locator) {
       `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][./@name = ${literal}]`,
       `.//button[./@name = ${literal}]`
     ]);
-    return client.elements(wideLocator).then(function(els) {
+    return client.elements(wideLocator).then(function (els) {
       if (els.value.length) {
         return els;
       }
@@ -1497,7 +1497,7 @@ function findClickable(client, locator) {
 }
 
 function findFields(client, locator) {
-  if (typeof(locator) === 'object') return client.elements(withStrictLocator(locator));
+  if (typeof locator === 'object') return client.elements(withStrictLocator(locator));
   if (isCSSorXPathLocator(locator)) return client.elements(locator);
 
   let literal = xpathLocator.literal(locator);
@@ -1516,7 +1516,7 @@ function findFields(client, locator) {
 }
 
 function proceedSeeField(assertType, field, value) {
-  return findFields(this.browser, field).then(function(res) {
+  return findFields(this.browser, field).then(function (res) {
     if (!res.value || res.value.length === 0) {
       throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
     }
@@ -1536,13 +1536,13 @@ function proceedSeeField(assertType, field, value) {
           return stringIncludes('fields by ' + field)[assertType](value, val);
         });
       });
-    }
+    };
 
     var proceedSingle = (el) => {
       return this.elementIdAttribute(el.ELEMENT, 'value').then((res) => {
         return stringIncludes('fields by ' + field)[assertType](value, res.value);
       });
-    }
+    };
 
     return this.elementIdName(res.value[0].ELEMENT).then((tag) => {
       if (tag.value == 'select') {
@@ -1563,7 +1563,7 @@ function proceedSeeField(assertType, field, value) {
 }
 
 function proceedSeeCheckbox(assertType, field) {
-  return findFields(this.browser, field).then(function(res) {
+  return findFields(this.browser, field).then(function (res) {
     if (!res.value || res.value.length === 0) {
       throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
     }
@@ -1578,7 +1578,7 @@ function proceedSeeCheckbox(assertType, field) {
 }
 
 function findCheckable(client, locator) {
-  if (typeof(locator) === 'object') return client.elements(withStrictLocator(locator));
+  if (typeof locator === 'object') return client.elements(withStrictLocator(locator));
   if (isCSSorXPathLocator(locator)) return client.elements(locator);
 
   let literal = xpathLocator.literal(locator);
@@ -1586,10 +1586,10 @@ function findCheckable(client, locator) {
     `.//input[@type = 'checkbox' or @type = 'radio'][(@id = //label[contains(normalize-space(string(.)), ${literal})]/@for) or @placeholder = ${literal}]`,
     `.//label[contains(normalize-space(string(.)), ${literal})]//input[@type = 'radio' or @type = 'checkbox']`
   ]);
-  return client.elements(byText).then(function(els) {
+  return client.elements(byText).then(function (els) {
     if (els.value.length) return els;
     let byName = `.//input[@type = 'checkbox' or @type = 'radio'][@name = ${literal}]`;
-    return client.elements(byName).then(function(els) {
+    return client.elements(byName).then(function (els) {
       if (els.value.length) return els;
       return client.elements(locator); // by css or xpath
     });
@@ -1608,21 +1608,21 @@ function isCSSorXPathLocator(locator) {
 
 function withStrictLocator(locator) {
   if (!locator) return null;
-  if (typeof(locator) !== 'object') return locator;
+  if (typeof locator !== 'object') return locator;
   let key = Object.keys(locator)[0];
   let value = locator[key];
 
   locator.toString = () => `{${key}: '${value}'}`;
 
   switch (key) {
-    case 'by':
-    case 'xpath':
-    case 'css':
-      return value;
-    case 'id':
-      return '#' + value;
-    case 'name':
-      return `[name="${value}"]`;
+  case 'by':
+  case 'xpath':
+  case 'css':
+    return value;
+  case 'id':
+    return '#' + value;
+  case 'name':
+    return `[name="${value}"]`;
   }
 }
 

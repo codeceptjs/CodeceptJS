@@ -230,6 +230,8 @@
         
             <li><a href="#extending-nightmare-helper">Extending Nightmare Helper</a></li>
         
+            <li><a href="#additional-links">Additional Links</a></li>
+        
             <li><a href="#done">done()</a></li>
         
     
@@ -324,7 +326,8 @@ Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStar
   &quot;helpers&quot;: {
     &quot;Nightmare&quot;: {
       &quot;url&quot;: &quot;http://localhost&quot;,
-      &quot;show&quot;: false
+      &quot;show&quot;: false,
+      &quot;restart&quot;: false
     }
   }
   // ..
@@ -333,6 +336,7 @@ Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStar
 
 <p>Turn on the <code>show</code> option if you want to follow test progress in a window. This is very useful for debugging.
 All other options can be taken from <a href="https://github.com/segmentio/nightmare#api">NightmareJS API</a>.</p>
+<p>Turn off the <code>restart</code> option if you want to run your suite in a single browser instance.</p>
 <p>Option <code>waitForAction</code> defines how long to wait after a click, doubleClick or pressKey action is performed.
 Test execution may happen much faster than the response is rendered, so make sure you set a proper delay value.
 By default CodeceptJS waits for 500ms.</p>
@@ -402,6 +406,10 @@ seeAttributeContains(locator, attribute, expectedValue) {
 <p>This sample assertion used <code>_locate</code> helper method which searched for elements
 by CSS/XPath or a strict locator. Then <code>browser.evaluate</code> method was called to
 use locate found elements on a page and return attribute from the first of them.</p>
+<h2 id="additional-links">Additional Links</h2>
+<ul>
+<li><a href="http://codenroll.it/acceptance-testing-with-codecept-js/">Nightmare Tutorial</a> by jploskonka.</li>
+</ul>
 <h2 id="done">done()</h2></div>
             <div class="clearfix"></div>
         </div>

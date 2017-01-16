@@ -402,7 +402,10 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>pathToFile</code>  local file path relative to codecept.json config fileDue to technical limitation this <strong>works only with CSS selectors</strong></li>
+<li><code>pathToFile</code>  local file path relative to codecept.json config file##### Limitations:-   works only with CSS selectors.<ul>
+<li>doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. <a href="https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs">See more</a>)</li>
+</ul>
+</li>
 </ul>
 <h2 id="checkoption">checkOption</h2>
 <p>Selects a checkbox or radio button.

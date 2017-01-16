@@ -1,7 +1,7 @@
 'use strict';
 let until;
 
-const requireg = require('requireg')
+const requireg = require('requireg');
 const Helper = require('../helper');
 const stringIncludes = require('../assert/include').includes;
 const urlEquals = require('../assert/equal').urlEquals;
@@ -45,6 +45,7 @@ let withinStore = {};
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
  * * `scriptTimeout`: (optional) sets default timeout for scripts in `executeAsync`. 1000 by default.
+ * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
  * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
  *
@@ -67,6 +68,7 @@ class SeleniumWebdriver extends Helper {
       url: 'http://localhost',
       seleniumAddress: 'http://localhost:4444/wd/hub',
       restart: true,
+      windowSize: null,
       waitforTimeout: 1000, // ms
       scriptTimeout: 1000, // ms
       manualStart: false,
@@ -80,8 +82,8 @@ class SeleniumWebdriver extends Helper {
     this.webdriver = requireg('selenium-webdriver');
     global.by = this.webdriver.By;
 
-    this.context = 'body'
-    this.options.rootElement = 'body' // protractor compat
+    this.context = 'body';
+    this.options.rootElement = 'body'; // protractor compat
 
     this.browserBuilder = new this.webdriver.Builder()
       .withCapabilities(this.options.capabilities)
@@ -91,8 +93,7 @@ class SeleniumWebdriver extends Helper {
     if (this.options.proxy) this.browserBuilder.setProxy(this.options.proxy);
   }
 
-  static _checkRequirements()
-  {
+  static _checkRequirements() {
     try {
       requireg("selenium-webdriver");
     } catch(e) {
@@ -109,18 +110,30 @@ class SeleniumWebdriver extends Helper {
 
   _startBrowser() {
     this.browser = this.browserBuilder.build();
+
+    if (this.options.windowSize == 'maximize') {
+      this.resizeWindow(this.options.windowSize);
+    }
+
+    if (this.options.windowSize) {
+      var size = this.options.windowSize.split('x');
+      this.resizeWindow(parseInt(size[0]), parseInt(size[1]));
+    }
+
     return this.browser;
   }
 
   _beforeSuite() {
     if (!this.options.restart && !this.options.manualStart) {
-      this.debugSection('Session','Starting singleton browser session');
+      this.debugSection('Session', 'Starting singleton browser session');
       return this._startBrowser();
     }
   }
 
   _before() {
-   if (this.options.restart && !this.options.manualStart) return this._startBrowser();
+    if (this.options.restart && !this.options.manualStart) {
+      return this._startBrowser();
+    }
   }
 
   _after() {
@@ -129,7 +142,7 @@ class SeleniumWebdriver extends Helper {
     this.debugSection('Session', 'cleaning cookies and localStorage');
     return this.browser.executeScript('localStorage.clear();').then(() => {
       return this.browser.manage().deleteAllCookies();
-    })
+    });
   }
 
   _afterSuite() {
@@ -262,7 +275,7 @@ I.moveCursorTo('#submit', 5,5);
     }
     return this.browser.findElement(guessLocator(locator) || by.css(locator)).then((el) => {
       return this.browser.actions().mouseMove(el, offset).perform();
-    })
+    });
   }
 
   /**
@@ -387,7 +400,7 @@ I.pressKey(['Control','a']);
    */
   pressKey(key) {
     let modifier;
-    if (Array.isArray(key) && ~['Control','Command','Shift','Alt'].indexOf(key[0])) {
+    if (Array.isArray(key) && ~['Control', 'Command', 'Shift', 'Alt'].indexOf(key[0])) {
       modifier = this.webdriver.Key[key[0].toUpperCase()];
       key = key[1];
     }
@@ -398,9 +411,9 @@ I.pressKey(['Control','a']);
     }
 
     let action = new this.webdriver.ActionSequence(this.browser);
-    if (modifier) action.keyDown(modifier)
+    if (modifier) action.keyDown(modifier);
     action.sendKeys(key);
-    if (modifier) action.keyUp(modifier)
+    if (modifier) action.keyUp(modifier);
     return action.perform();
   }
 
@@ -431,7 +444,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
         this.browser.setFileDetector(new remote.FileDetector());
       }
       return els[0].sendKeys(file);
-     });
+    });
   }
 
   /**
@@ -549,8 +562,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 @param field located by label|name|CSS|XPath|strict locator
 
    */
-  dontSeeCheckboxIsChecked(field)
-  {
+  dontSeeCheckboxIsChecked(field) {
     return co.wrap(proceedIsChecked).call(this, 'negate', field);
   }
 
@@ -577,7 +589,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 @param locator field located by label|name|CSS|XPath|strict locator
    */
   grabValueFrom(locator) {
-    return co(findFields(this.browser, locator)).then(function(els) {
+    return co(findFields(this.browser, locator)).then(function (els) {
       if (!els.length) {
         throw new Error(`Field ${locator} was not located by name|label|CSS|XPath`);
       }
@@ -844,12 +856,12 @@ I.saveScreenshot('debug.png');
   saveScreenshot(fileName) {
     let outputFile = path.join(global.output_dir, fileName);
     this.debug('Screenshot has been saved to ' + outputFile);
-    return this.browser.takeScreenshot().then(function(png) {
+    return this.browser.takeScreenshot().then(function (png) {
       let fs = require('fs');
       var stream = fs.createWriteStream(outputFile);
       stream.write(new Buffer(png, 'base64'));
       stream.end();
-      return new Promise(function(resolve) {
+      return new Promise(function (resolve) {
         return stream.on('finish', resolve);
       });
     });
@@ -977,7 +989,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
    */
   waitForElement(locator, sec) {
     sec = sec || this.options.waitforTimeout;
-    return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || by.css(locator)), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || by.css(locator)), sec * 1000);
   }
 
   /**
@@ -994,7 +1006,7 @@ I.waitForVisible('#popup');
   waitForVisible(locator, sec) {
     sec = sec || this.options.waitforTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec * 1000);
   }
 
   /**
@@ -1012,7 +1024,7 @@ I.waitForInvisible('#popup');
   waitForInvisible(locator, sec) {
     sec = sec || this.options.waitforTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), sec * 1000);
   }
 
   /**
@@ -1030,7 +1042,7 @@ I.waitForStalenessOf('#popup');
   waitForStalenessOf(locator, sec) {
     sec = sec || this.options.waitforTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.stalenessOf(el), sec*1000);
+    return this.browser.wait(this.webdriver.until.stalenessOf(el), sec * 1000);
   }
 
   /**
@@ -1053,7 +1065,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     }
     let el = this.browser.findElement(guessLocator(context) || by.css(context));
     sec = sec || this.options.waitforTimeout;
-    return this.browser.wait(this.webdriver.until.elementTextIs(el, text), sec*1000);
+    return this.browser.wait(this.webdriver.until.elementTextIs(el, text), sec * 1000);
   }
 
 }
@@ -1131,7 +1143,7 @@ function proceedSee(assertType, text, context) {
   return this.browser.findElements(locator).then(co.wrap(function*(els) {
     let promises = [];
     let source = '';
-    els.forEach(el => promises.push(el.getText().then((elText) => source+= '| ' + elText)));
+    els.forEach(el => promises.push(el.getText().then((elText) => source += '| ' + elText)));
     yield Promise.all(promises);
     return stringIncludes(description)[assertType](text, source);
   }));
@@ -1162,8 +1174,8 @@ function *proceedIsChecked(assertType, option) {
     els.forEach(function (el) {
       elsSelected.push(el.isSelected());
     });
-    return Promise.all(elsSelected).then(function(values) {
-      let selected = values.reduce((prev, cur) => prev || cur)
+    return Promise.all(elsSelected).then(function (values) {
+      let selected = values.reduce((prev, cur) => prev || cur);
       return truth(`checkable ${option}`, 'to be checked')[assertType](selected);
     });
   });
@@ -1212,7 +1224,7 @@ function guessLocator(locator) {
   if (!locator) {
     return;
   }
-  if (typeof (locator) === 'object') {
+  if (typeof locator === 'object') {
     let key = Object.keys(locator)[0];
     let value = locator[key];
     locator.toString = () => `{${key}: '${value}'}`;
@@ -1231,5 +1243,5 @@ function isCSS(locator) {
 }
 
 function isXPath(locator) {
-  return locator.substr(0, 2) === '//' || locator.substr(0, 3) === './/'
+  return locator.substr(0, 2) === '//' || locator.substr(0, 3) === './/';
 }

@@ -216,7 +216,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#0413">0.4.13</a></li>
+        <li class="main active"><a href="#0414">0.4.14</a></li>
+        
+    
+        <li class="main "><a href="#0413">0.4.13</a></li>
         
     
         <li class="main "><a href="#0412">0.4.12</a></li>
@@ -304,11 +307,55 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="0414">0.4.14</h2>
+<ul>
+<li><code>_beforeStep</code> and <code>_afterStep</code> hooks in helpers are synchronized. Allows to perform additional actions between steps.</li>
+</ul>
+<p>Example: fail if JS error occur in custom helper using WebdriverIO:</p>
+<pre><code class="js">_before() {
+  this.err = null;
+  this.helpers['WebDriverIO'].browser.on('error', (e) =&gt; this.err = e);
+}
+
+_afterStep() {
+ if (this.err) throw new Error('Browser JS error '+this.err);
+}
+</code></pre>
+
+<p>Example: fail if JS error occur in custom helper using Nightmare:</p>
+<pre><code class="js">_before() {
+  this.err = null;
+  this.helpers['Nightmare'].browser.on('page', (type, message, stack) =&gt; {
+    this.err = `${message} ${stack}`;
+  });
+}
+
+_afterStep() {
+ if (this.err) throw new Error('Browser JS error '+this.err);
+}
+</code></pre>
+
+<ul>
+<li>Fixed <code>codecept list</code> and <code>codecept def</code> commands.</li>
+<li>Added <code>I.say</code> method to print arbitrary comments.</li>
+</ul>
+<pre><code class="js">I.say('I am going to publish post');
+I.say('I enter title and body');
+I.say('I expect post is visible on site');
+</code></pre>
+
+<ul>
+<li>[Nightmare] <code>restart</code> option added. <code>restart: false</code> allows to run all tests in a single window, disabled by default. By @nairvijays99</li>
+<li>[Nightmare] Fixed <code>resizeWindow</code> command.</li>
+<li>[Protractor][SeleniumWebdriver] added <code>windowSize</code> config option to resize window on start.</li>
+<li>Fixed "Scenario.skip causes 'Cannot read property retries of undefined'" by @MasterOfPoppets</li>
+<li>Fixed providing absolute paths for tests in config by @lennym</li>
+</ul>
 <h2 id="0413">0.4.13</h2>
 <ul>
 <li>Added <strong>retries</strong> option <code>Feature</code> and <code>Scenario</code> to rerun fragile tests:</li>
 </ul>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
+<pre><code class="js">Feature('Complex JS Stuff', {retries: 3});
 
 Scenario('Not that complex', {retries: 1}, (I) =&gt; {
   // test goes here
@@ -318,7 +365,7 @@ Scenario('Not that complex', {retries: 1}, (I) =&gt; {
 <ul>
 <li>Added <strong>timeout</strong> option <code>Feature</code> and <code>Scenario</code> to specify timeout.</li>
 </ul>
-<pre><code class="js">Feature('Complex JS Stuff', {timeout: 5000})
+<pre><code class="js">Feature('Complex JS Stuff', {timeout: 5000});
 
 Scenario('Not that complex', {timeout: 1000}, (I) =&gt; {
   // test goes here
