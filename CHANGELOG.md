@@ -1,3 +1,10 @@
+## 0.4.16
+
+* Fixed steps output synchronization (regression since 0.4.14).
+* [WebDriverIO][Protractor][SeleniumWebdriver][Nightmare] added `keepCookies` option to keep cookies between tests with `restart: false`.
+* [Protractor] added `waitForTimeout` config option to set default waiting time for all wait* functions.
+* Fixed `_test` hook for helpers by @cjhille.
+
 ## 0.4.15
 
 * Fixed regression in recorder sessions: `oldpromise is not defined`.

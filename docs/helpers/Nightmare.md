@@ -12,6 +12,8 @@ Requires `nightmare` and `nigthmare-upload` packages to be installed.
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
+-   `restart` (optional, default: true) - restart browser between tests.
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
 -   `waitForTimeout`: (optional) default wait* timeout
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
