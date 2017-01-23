@@ -22,10 +22,11 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
--   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
+-   `restart` (optional, default: true) - restart browser between tests.
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
--   `desiredCapabilities`: Selenium capabilities
+-   `desiredCapabilities`: Selenium's [desired capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 -   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `timeouts`: [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) defined as hash.
 
@@ -48,7 +49,7 @@ Example:
 }
 ```
 
-Additional configuration params can be used from <http://webdriver.io/guide/getstarted/configuration.html>
+Additional configuration params can be used from [webdriverio website](http://webdriver.io/guide/getstarted/configuration.html).
 
 ### Connect through proxy
 
@@ -102,10 +103,10 @@ Please refer to [Selenium - Proxy Object](https://github.com/SeleniumHQ/selenium
 ### Cloud Providers
 
 WebDriverIO makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
-Check out their documentation on [available parameters](http://webdriver.io/guide/testrunner/cloudservices.html)
+Check out their documentation on [available parameters](http://webdriver.io/guide/usage/cloudservices.html)
 
 Connecting to `BrowserStack` and `Sauce Labs` is simple. All you need to do
-is set the `user` and `key` parameters. WebDriverIO authomatically know which
+is set the `user` and `key` parameters. WebDriverIO automatically know which
 service provider to connect to.
 
 ```js

@@ -23,7 +23,8 @@ This helper should be configured in codecept.json
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
--   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
+-   `restart` - restart browser between tests (default: true).
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `scriptTimeout`: (optional) sets default timeout for scripts in `executeAsync`. 1000 by default.
