@@ -24,4 +24,50 @@ describe('CodeceptJS Interface', () => {
       done();
     });
   });
+
+  it('should execute expected promise chain', (done) => {
+    exec(codecept_run + ' --verbose', (err, stdout, stderr) => {
+      var queue1 = stdout.match(/\[1\] .+/g);
+      queue1.should.eql([
+        "[1] Starting recording promises",
+        "[1] Queued | hook FileSystem._beforeSuite()"
+      ]);
+
+      var queue2 = stdout.match(/\[2\] .+/g);
+      queue2.should.eql([
+        `[2] Starting recording promises`,
+        `[2] Queued | hook FileSystem._before()`,
+        `[2] Queued | amInPath: "."`,
+        `[2] Queued | return step result`,
+        `[2] Queued | seeFile: "codecept.json"`,
+        `[2] Queued | return step result`,
+        `[2] Queued | fire test.passed`,
+        `[2] Queued | finish test`,
+        `[2] Queued | hook FileSystem._after()`
+      ]);
+
+      var queue3 = stdout.match(/\[3\] .+/g);
+      queue3.should.eql([
+        `[3] Starting recording promises`,
+        `[3] Queued | hook FileSystem._afterSuite()`
+      ]);
+
+      let lines = stdout.match(/\S.+/g);
+
+      let beforeStep = [
+        `Emitted | step.before (I am in path ".")`,
+        `[2] Queued | amInPath: "."`,
+        `Emitted | step.after (I am in path ".")`,
+        `Emitted | step.start (I am in path ".")`,
+        `• I am in path "."`
+      ];
+
+      lines.filter((l) => beforeStep.indexOf(l) > -1)
+        .should.eql(beforeStep, 'steps execution order should be equal');
+
+      assert(!err);
+      done();
+    });
+  });
+
 });
