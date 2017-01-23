@@ -39,6 +39,7 @@ describe('CodeceptJS Interface', () => {
         `[2] Queued | hook FileSystem._before()`,
         `[2] Queued | amInPath: "."`,
         `[2] Queued | return step result`,
+        `[2] Queued | say hello world`,
         `[2] Queued | seeFile: "codecept.json"`,
         `[2] Queued | return step result`,
         `[2] Queued | fire test.passed`,
@@ -54,6 +55,7 @@ describe('CodeceptJS Interface', () => {
 
       let lines = stdout.match(/\S.+/g);
 
+      // before hooks
       let beforeStep = [
         `Emitted | step.before (I am in path ".")`,
         `[2] Queued | amInPath: "."`,
@@ -63,7 +65,17 @@ describe('CodeceptJS Interface', () => {
       ];
 
       lines.filter((l) => beforeStep.indexOf(l) > -1)
-        .should.eql(beforeStep, 'steps execution order should be equal');
+        .should.eql(beforeStep, 'check step hooks execution order');
+
+      // steps order
+      let step = [
+        `• I am in path "."`,
+        `hello world`,
+        `• I see file "codecept.json"`
+      ];
+
+      lines.filter((l) => step.indexOf(l) > -1)
+        .should.eql(step, 'check steps execution order');
 
       assert(!err);
       done();
