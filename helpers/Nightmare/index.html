@@ -333,6 +333,8 @@ less trusted.</p>
 <p>This helper should be configured in codecept.json</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
+<li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
+<li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500</li>
 <li><code>waitForTimeout</code>: (optional) default wait* timeout</li>
 <li>

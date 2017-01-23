@@ -387,10 +387,11 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
-<li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
+<li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
+<li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
-<li><code>desiredCapabilities</code>: Selenium capabilities</li>
+<li><code>desiredCapabilities</code>: Selenium's <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">desired capabilities</a></li>
 <li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
 <li><code>timeouts</code>: <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> defined as hash.</li>
 </ul>
@@ -411,7 +412,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 }
 </code></pre>
 
-<p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">http://webdriver.io/guide/getstarted/configuration.html</a></p>
+<p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">webdriverio website</a>.</p>
 <h3 id="connect-through-proxy">Connect through proxy</h3>
 <p>CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
 need to update the <code>helpers.WebDriverIO.desiredCapabilities.proxy</code> key.</p>
@@ -457,9 +458,9 @@ need to update the <code>helpers.WebDriverIO.desiredCapabilities.proxy</code> ke
 <p>Please refer to <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Selenium - Proxy Object</a> for more information.</p>
 <h3 id="cloud-providers">Cloud Providers</h3>
 <p>WebDriverIO makes it possible to execute tests against services like <code>Sauce Labs</code> <code>BrowserStack</code> <code>TestingBot</code>
-Check out their documentation on <a href="http://webdriver.io/guide/testrunner/cloudservices.html">available parameters</a></p>
+Check out their documentation on <a href="http://webdriver.io/guide/usage/cloudservices.html">available parameters</a></p>
 <p>Connecting to <code>BrowserStack</code> and <code>Sauce Labs</code> is simple. All you need to do
-is set the <code>user</code> and <code>key</code> parameters. WebDriverIO authomatically know which
+is set the <code>user</code> and <code>key</code> parameters. WebDriverIO automatically know which
 service provider to connect to.</p>
 <pre><code class="js">{
     &quot;helpers&quot;:{

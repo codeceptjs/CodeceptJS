@@ -30,6 +30,8 @@ let specialKeys = {
  * This helper should be configured in codecept.json
  *
  * * `url` - base url of website to be tested
+ * * `restart` (optional, default: true) - restart browser between tests.
+ * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
  * * `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
  * * `waitForTimeout`: (optional) default wait* timeout
  * * `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -48,6 +50,7 @@ class Nightmare extends Helper {
       waitForTimeout: 1000,
       rootElement: 'body',
       restart: true,
+      keepCookies: false,
       js_errors: null
     };
 
@@ -173,9 +176,9 @@ class Nightmare extends Helper {
   _after() {
     if (this.options.restart) {
       return this._stopBrowser();
-    } else {
-      return this.browser.cookies.clearAll();
     }
+    if (this.options.keepCookies) return;
+    return this.browser.cookies.clearAll();
   }
 
   _afterSuite() {

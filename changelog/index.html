@@ -216,7 +216,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#0415">0.4.15</a></li>
+        <li class="main active"><a href="#0416">0.4.16</a></li>
+        
+    
+        <li class="main "><a href="#0415">0.4.15</a></li>
         
     
         <li class="main "><a href="#0414">0.4.14</a></li>
@@ -310,6 +313,13 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="0416">0.4.16</h2>
+<ul>
+<li>Fixed steps output synchronization (regression since 0.4.14).</li>
+<li>[WebDriverIO][Protractor][SeleniumWebdriver][Nightmare] added <code>keepCookies</code> option to keep cookies between tests with <code>restart: false</code>.</li>
+<li>[Protractor] added <code>waitForTimeout</code> config option to set default waiting time for all wait* functions.</li>
+<li>Fixed <code>_test</code> hook for helpers by @cjhille.</li>
+</ul>
 <h2 id="0415">0.4.15</h2>
 <ul>
 <li>Fixed regression in recorder sessions: <code>oldpromise is not defined</code>.</li>

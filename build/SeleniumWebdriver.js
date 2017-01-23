@@ -41,7 +41,8 @@ let withinStore = {};
  * * `url` - base url of website to be tested
  * * `browser` - browser in which perform testing
  * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
- * * `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
+ * * `restart` - restart browser between tests (default: true).
+ * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
  * * `scriptTimeout`: (optional) sets default timeout for scripts in `executeAsync`. 1000 by default.
@@ -68,14 +69,19 @@ class SeleniumWebdriver extends Helper {
       url: 'http://localhost',
       seleniumAddress: 'http://localhost:4444/wd/hub',
       restart: true,
+      keepCookies: false,
       windowSize: null,
-      waitforTimeout: 1000, // ms
+      waitForTimeout: 1000, // ms
       scriptTimeout: 1000, // ms
       manualStart: false,
       capabilities: {}
     };
+    if (this.options.waitforTimeout) {
+      console.log(`waitforTimeout is deprecated in favor of waitForTimeout, please update config`);
+      this.options.waitForTimeout = this.options.waitforTimeout;
+    }
     this.options = Object.assign(this.options, config);
-    this.options.waitforTimeout /= 1000; // convert to seconds
+    this.options.waitForTimeout /= 1000; // convert to seconds
   }
 
   _init() {
@@ -138,6 +144,7 @@ class SeleniumWebdriver extends Helper {
 
   _after() {
     if (this.options.restart) return this.browser.quit();
+    if (this.options.keepCookies) return;
     // if browser should not be restarted
     this.debugSection('Session', 'cleaning cookies and localStorage');
     return this.browser.executeScript('localStorage.clear();').then(() => {
@@ -988,7 +995,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param sec time seconds to wait, 1 by default
    */
   waitForElement(locator, sec) {
-    sec = sec || this.options.waitforTimeout;
+    sec = sec || this.options.waitForTimeout;
     return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || by.css(locator)), sec * 1000);
   }
 
@@ -1004,7 +1011,7 @@ I.waitForVisible('#popup');
 @param sec time seconds to wait, 1 by default
    */
   waitForVisible(locator, sec) {
-    sec = sec || this.options.waitforTimeout;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec * 1000);
   }
@@ -1022,7 +1029,7 @@ I.waitForInvisible('#popup');
 
    */
   waitForInvisible(locator, sec) {
-    sec = sec || this.options.waitforTimeout;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), sec * 1000);
   }
@@ -1040,7 +1047,7 @@ I.waitForStalenessOf('#popup');
 
    */
   waitForStalenessOf(locator, sec) {
-    sec = sec || this.options.waitforTimeout;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.stalenessOf(el), sec * 1000);
   }
@@ -1064,7 +1071,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
       context = this.context;
     }
     let el = this.browser.findElement(guessLocator(context) || by.css(context));
-    sec = sec || this.options.waitforTimeout;
+    sec = sec || this.options.waitForTimeout;
     return this.browser.wait(this.webdriver.until.elementTextIs(el, text), sec * 1000);
   }
 

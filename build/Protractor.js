@@ -39,9 +39,11 @@ let withinStore = {};
  * * `url` - base url of website to be tested
  * * `browser` - browser in which perform testing
  * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
- * * `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
+ * * `restart` (optional, default: true) - restart browser between tests.
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `rootElement` - Root element of AngularJS application (default: body)
+ * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
+ * * `scriptsTimeout`: (optional) timeout in milliseconds for each script run on the browser, 10000 by default.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
  * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
@@ -67,6 +69,7 @@ class Protractor extends SeleniumWebdriver {
       seleniumAddress: 'http://localhost:4444/wd/hub',
       rootElement: 'body',
       scriptsTimeout: 10000,
+      waitForTimeout: 1000, // ms
       windowSize: null,
       driver: 'hosted',
       capabilities: {}
@@ -75,6 +78,7 @@ class Protractor extends SeleniumWebdriver {
     this.options = Object.assign(this.options, config);
     if (this.options.proxy) this.options.capabilities.proxy = this.options.proxy;
     if (this.options.browser) this.options.capabilities.browserName = this.options.browser;
+    this.options.waitForTimeout /= 1000; // convert to seconds
   }
 
   _init() {
@@ -220,7 +224,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param sec time seconds to wait, 1 by default
    */
   waitForElement(locator, sec) {
-    sec = sec || 1;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.presenceOf(el), sec * 1000);
   }
@@ -229,7 +233,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
    * Waits for element to become clickable for number of seconds.
    */
   waitForClickable(locator, sec) {
-    sec = sec || 1;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.elementToBeClickable(el), sec * 1000);
   }
@@ -246,7 +250,7 @@ I.waitForVisible('#popup');
 @param sec time seconds to wait, 1 by default
    */
   waitForVisible(locator, sec) {
-    sec = sec || 1;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.visibilityOf(el), sec * 1000);
   }
@@ -264,7 +268,7 @@ I.waitForInvisible('#popup');
 
    */
   waitForInvisible(locator, sec) {
-    sec = sec || 1;
+    sec = sec || this.options.waitForTimeout;
     let el = this.browser.element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.invisibilityOf(el), sec * 1000);
   }
@@ -304,7 +308,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
       context = this.context;
     }
     let el = this.browser.element(guessLocator(context) || by.css(context));
-    sec = sec || 1;
+    sec = sec || this.options.waitForTimeout;
     return this.browser.wait(EC.textToBePresentInElement(el, text), sec * 1000);
   }
 

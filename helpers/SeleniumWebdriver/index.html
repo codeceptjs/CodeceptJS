@@ -350,7 +350,8 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
-<li><code>restart</code> - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.</li>
+<li><code>restart</code> - restart browser between tests (default: true).</li>
+<li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.*</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
 <li><code>scriptTimeout</code>: (optional) sets default timeout for scripts in <code>executeAsync</code>. 1000 by default.</li>
