@@ -1,19 +1,27 @@
 # Translation
 
 Test output and the way tests are written can be localized.
+This way scenarios can be written in almost native language using UTF support of JavaScript.
+If you have non-English team and you work on non-English project consider enabling translation
+by setting translation to [one of available languages](https://github.com/Codeception/CodeceptJS/blob/master/translations).
 
-CodeceptJS provides built in translations to:
+Please refer to translated steps inside translation files and send Pull Requests to add missing.
 
-* `ru-RU`
-* `pt-BR`
+To get autocompletion for localized method names generate definitions by running
 
-They can be enabled in config file like:
+```
+codeceptjs def
+```
+
+## Russian
+
+Add to config:
 
 ```json
   "translation": "ru-RU"
 ```
 
-By enabling this feature and running with `--steps` option steps will be translated:
+when running with `--steps` option steps output will be translated:
 
 ![](http://codecept.io/images/translate-ru1.png)
 
@@ -31,13 +39,15 @@ Scenario('пробую написать реферат', (Я) => {
 });
 ```
 
-For write your steps in portuguese you can enable the portuguese translation in config file like:
+## Portuguese
+
+To write your tests in portuguese you can enable the portuguese translation in config file like:
 
 ```json
   "translation": "pt-BR"
 ```
 
-Your test will be like this:
+Now you can write test like this:
 
 ```js
 Scenario('Efetuar login', (Eu) => {
@@ -49,9 +59,22 @@ Scenario('Efetuar login', (Eu) => {
 });
 ```
 
+## Italian
 
-To get autocompletion for localized method names generate definitions by running
+Add to config
 
+```json
+  "translation": "it-IT"
 ```
-codeceptjs def
+
+Now you can write test like this:
+
+```js
+Scenario('Effettuare il Login su GitHub', (io) => {
+    io.sono_sulla_pagina('https://github.com/login');
+    io.compilo_il_campo("Username or email address", "giuseppe-santoro");
+    io.compilo_il_campo("Password", "*********");
+    io.faccio_click_su("Sign in");
+    io.vedo("Learn Git and GitHub without any code!");
+});
 ```

@@ -17,14 +17,17 @@ addons:
     packages:
       - php5-cli
 
+services:
+  - docker
+
 before_install:
-  - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
+  - docker pull selenium/standalone-chrome:2.53.0
 
 before_script:
-  - chmod -R 777 test/data
+  - docker run -d --net=host selenium/standalone-chrome:2.53.0
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - "java -jar selenium-server-standalone-2.53.0.jar -port 4444 >/dev/null 2>&1 &"
+  - chmod -R 777 test/data
   - "php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &"
   - sleep 10
 
