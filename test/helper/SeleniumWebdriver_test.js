@@ -24,7 +24,8 @@ describe('SeleniumWebdriver', function () {
 
     I = new SeleniumWebdriver({
       url: site_url,
-      browser: 'firefox'
+      browser: 'chrome',
+      windowSize: '500x400'
     });
     I._init();
     browser = I._before();

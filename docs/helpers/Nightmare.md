@@ -12,6 +12,8 @@ Requires `nightmare` and `nigthmare-upload` packages to be installed.
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
+-   `restart` (optional, default: true) - restart browser between tests.
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
 -   `waitForTimeout`: (optional) default wait* timeout
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -93,7 +95,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 **Parameters**
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
--   `pathToFile`  local file path relative to codecept.json config fileDue to technical limitation this **works only with CSS selectors**
+-   `pathToFile`  local file path relative to codecept.json config file##### Limitations:-   works only with CSS selectors.
+    -   doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. [See more](https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs))
 
 ## checkOption
 
@@ -126,6 +129,20 @@ I.clearCookie('test');
 **Parameters**
 
 -   `cookie`  (optional)
+
+## clearField
+
+Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
 
 ## click
 

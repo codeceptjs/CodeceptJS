@@ -113,7 +113,8 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
   "helpers": {
     "Nightmare": {
       "url": "http://localhost",
-      "show": false
+      "show": false,
+      "restart": false
     }
   }
   // ..
@@ -121,6 +122,8 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
 ```
 Turn on the `show` option if you want to follow test progress in a window. This is very useful for debugging.
 All other options can be taken from [NightmareJS API](https://github.com/segmentio/nightmare#api).
+
+Turn off the `restart` option if you want to run your suite in a single browser instance.
 
 Option `waitForAction` defines how long to wait after a click, doubleClick or pressKey action is performed.
 Test execution may happen much faster than the response is rendered, so make sure you set a proper delay value.
@@ -213,5 +216,9 @@ I.seeAttributeContains('#main img', 'src', '/cat.jpg');
 This sample assertion used `_locate` helper method which searched for elements
 by CSS/XPath or a strict locator. Then `browser.evaluate` method was called to
 use locate found elements on a page and return attribute from the first of them.
+
+## Additional Links
+
+* [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
 
 ## done()

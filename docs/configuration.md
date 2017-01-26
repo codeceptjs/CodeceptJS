@@ -22,9 +22,9 @@ Here is an overview of available options with their defaults:
 
  By default `codecept.json` is used for configuration. You can override its values in runtime by using `--override` or `-o` option in command line, passing valid JSON as a value:
 
- ```
- codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'
- ```
+```
+codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'
+```
 
  You can also switch to JS configuration format for more dynamic options.
  Create `codecept.conf.js` file and make it export `config` property.
