@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+# Start Xvfb
+Xvfb -ac -screen scrn 1280x1024x24 :9.0 &
+export DISPLAY=:9.0
+
+exec "$@"

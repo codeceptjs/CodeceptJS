@@ -1,0 +1,35 @@
+# Codeceptjs Base
+
+_This image is not meant to be run directly!_ It serves as the base image used for CodeceptJS and various drivers.
+
+## How to use this image
+
+This image is used as the base for the Nightmare & WebDriverIO base images. It comes with Node, and scripts necessary to run CodeceptJS.
+
+### Build
+
+To build this image:
+
+```sh
+$ docker build -t codeceptjs/base
+```
+
+## What is CodeceptJS?
+
+CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others). It abstracts browser interaction to simple steps which is written from a user perspective. 
+
+Codeception tests are:
+
+- **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be too.
+- Written from **user's perspective**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
+- Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
+
+See the [CodeceptJS site](http://codecept.io/) for documentation and usage.
+
+## License
+
+MIT © [DavertMik](http://codegyre.com/)
+
+## Contributing
+
+CodeceptJS is in its early days. Any feedback, issues, and pull requests are welcome. Try it, and if you like it - help us make it better!
