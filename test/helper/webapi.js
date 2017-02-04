@@ -502,6 +502,13 @@ module.exports.tests = function() {
         .then(() => I.waitForText('Dynamic text', 2, '#text'))
         .then(() => I.see('Dynamic text'));
     });
+
+    it('should wait for text after timeout', () => {
+      return I.amOnPage('/timeout')
+        .then(() => I.dontSee('Timeout text'))
+        .then(() => I.waitForText('Timeout text', 31, '#text'))
+        .then(() => I.see('Timeout text'));
+    });
   });
 
   describe('window size #resizeWindow', () => {
