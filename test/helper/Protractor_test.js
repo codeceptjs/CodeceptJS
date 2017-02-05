@@ -461,6 +461,7 @@ describe('Protractor', function() {
     });
 
     it('should return error if not present', function*() {
+      if (I.isProtractor5) return;
       return I.waitForText('Nothing here', 0, '#hello')
         .then(expectError)
         .thenCatch((e) => {
@@ -469,6 +470,7 @@ describe('Protractor', function() {
     });
 
     it('should return error if waiting is too small', function*() {
+      if (I.isProtractor5) return;
       return I.waitForText('Boom!', 0.5)
         .then(expectError)
         .thenCatch((e) => {
