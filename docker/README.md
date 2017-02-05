@@ -2,10 +2,50 @@
 
 CodeceptJS with the Nightmare, Protractor, and WebDriverIO drivers.
 
-## How to use this image
+## How to Use
 
 This image comes with the necessary dependencies and packages to execute CodeceptJS tests.
-Mount in your CodeceptJS tests directory into the `/tests/` directory in the docker container.
+Mount in your CodeceptJS config directory into the `/tests` directory in the docker container.
+
+Sample mount: `-v path/to/codecept.json:/tests`
+
+### Locally
+
+
+You can execute CodeceptJS with Nightmare locally with no extra configuration.
+
+```
+docker run --net=host -v $PWD:/tests codeception/codeceptjs
+```
+
+Nightmare helper must be enabled in codecept.json config.
+
+### Docker Compose
+
+```yaml
+
+version: '2'
+services:
+  codeceptjs:
+    image: codeception/codeceptjs
+    depends_on:
+      - firefox
+      - web
+    volumes:
+      - .:/tests
+  web:
+    image: node
+    command: node app/server.js
+    volumes:
+      - .:/app
+  firefox:
+    image: selenium/standalone-firefox-debug:2.53.0
+    ports:
+      - '4444'
+      - '5900'
+```
+
+### Linking Containers
 
 If using the Protractor or WebDriverIO drivers, link the container with a Selenium Standalone docker container with an alias of `selenium`. Additionally, make sure your `codeceptjs.conf.js` contains the following to allow CodeceptJS to identify where Selenium is running.
 
@@ -40,7 +80,7 @@ _Note: If running with the Nightmare driver, it is not necessary to run a seleni
 To build this image:
 
 ```sh
-$ docker build -t codeception/codeceptjs docker/
+$ docker build -t codeception/codeceptjs .
 ```
 
 ## What is CodeceptJS?
@@ -54,11 +94,3 @@ Codeception tests are:
 - Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
 
 See the [CodeceptJS site](http://codecept.io/) for documentation and usage.
-
-## License
-
-MIT © [DavertMik](http://codegyre.com/)
-
-## Contributing
-
-CodeceptJS is in its early days. Any feedback, issues, and pull requests are welcome. Try it, and if you like it - help us make it better!
