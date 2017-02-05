@@ -1,3 +1,10 @@
+## 0.5.0
+
+* Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)
+* Fix 'fullTitle() is not a function' in exit.js by @hubidu. See [#388](https://github.com/Codeception/CodeceptJS/pull/388).
+* [Nightmare] Fix for `waitTimeout` by @HughZurname. See [#391](https://github.com/Codeception/CodeceptJS/pull/391). Resolves [#236](https://github.com/Codeception/CodeceptJS/issues/236)
+* Dockerized CodeceptJS setup by @artiomnist. [See reference](https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md)
+
 ## 0.4.16
 
 * Fixed steps output synchronization (regression since 0.4.14).

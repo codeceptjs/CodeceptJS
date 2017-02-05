@@ -1,6 +1,6 @@
 # Codeceptjs Docker
 
-CodeceptJS with the Nightmare, Protractor, and WebDriverIO drivers.
+CodeceptJS packed into container with the Nightmare, Protractor, and WebDriverIO drivers.
 
 ## How to Use
 
@@ -23,7 +23,6 @@ Nightmare helper must be enabled in codecept.json config.
 ### Docker Compose
 
 ```yaml
-
 version: '2'
 services:
   codeceptjs:
@@ -61,8 +60,6 @@ If using the Protractor or WebDriverIO drivers, link the container with a Seleni
   ...
 ```
 
-### Run
-
 ```sh
 $ docker run -d -P --name selenium-chrome selenium/standalone-chrome
 
@@ -82,15 +79,3 @@ To build this image:
 ```sh
 $ docker build -t codeception/codeceptjs .
 ```
-
-## What is CodeceptJS?
-
-CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others). It abstracts browser interaction to simple steps which is written from a user perspective.
-
-Codeception tests are:
-
-- **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be too.
-- Written from **user's perspective**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
-- Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
-
-See the [CodeceptJS site](http://codecept.io/) for documentation and usage.
