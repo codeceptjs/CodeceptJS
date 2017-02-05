@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### 
+###
 # This script contains appropriate functions to display help messages to the user.
 ###
 
@@ -10,7 +10,7 @@ function display_usage {
 	echo "Codeceptjs Tests could not be found"
 	echo " "
 	echo "Please make sure you're mounting your codeceptjs directory correctly."
-	echo "    Usage: -v /path_to_codeceptjs_test_dir/:/tests/ "
+	echo "    Usage: -v /path_to_codeceptjs_dir/:/tests/ "
 	echo " "
 	exit 1
 }
