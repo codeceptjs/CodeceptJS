@@ -14,6 +14,7 @@ require('co-mocha')(require('mocha'));
 let webApiTests = require('./webapi');
 
 describe('SeleniumWebdriver', function () {
+  this.retries(4);
   this.timeout(35000);
 
   before(function() {

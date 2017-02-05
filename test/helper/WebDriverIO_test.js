@@ -15,6 +15,7 @@ let webApiTests = require('./webapi');
 
 
 describe('WebDriverIO', function () {
+  this.retries(4);
   this.timeout(35000);
 
   before(() => {
