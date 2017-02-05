@@ -14,7 +14,8 @@ require('co-mocha')(require('mocha'));
 let webApiTests = require('./webapi');
 
 describe('SeleniumWebdriver', function () {
-  this.timeout(10000);
+  this.retries(4);
+  this.timeout(35000);
 
   before(function() {
     global.codecept_dir = path.join(__dirname, '/../data');
