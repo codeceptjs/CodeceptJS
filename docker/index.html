@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Quickstart - CodeceptJS</title>
+	<title>Docker - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -78,8 +78,8 @@
                         
             
                 
-                <li class="active">
-                    <a href="./">Quickstart</a>
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
                 </li>
                 
             
@@ -147,7 +147,7 @@
             
                         
             
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
@@ -167,8 +167,8 @@
                             <a href="../translation/">Translation</a>
                         </li>
                     
-                        <li >
-                            <a href="../docker/">Docker</a>
+                        <li class="active">
+                            <a href="./">Docker</a>
                         </li>
                     
                     </ul>
@@ -188,12 +188,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="..">
+                    <a rel="next" href="../translation/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../basics/">
+                    <a rel="prev" href="../changelog/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -220,117 +220,76 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#quickstart">QuickStart</a></li>
+        <li class="main active"><a href="#codeceptjs-docker">Codeceptjs Docker</a></li>
         
-            <li><a href="#setup">Setup</a></li>
-        
-            <li><a href="#creating-first-test">Creating First Test</a></li>
-        
-            <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running.</a></li>
+            <li><a href="#how-to-use">How to Use</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="quickstart">QuickStart</h1>
-<p><strong>NodeJS v 4.2.0</strong> and higher required to start.
-Install <strong>CodeceptJS</strong> with NPM:</p>
-<p>You can install it globally:</p>
-<pre><code>[sudo] npm install -g codeceptjs
+<h1 id="codeceptjs-docker">Codeceptjs Docker</h1>
+<p>CodeceptJS packed into container with the Nightmare, Protractor, and WebDriverIO drivers.</p>
+<h2 id="how-to-use">How to Use</h2>
+<p>This image comes with the necessary dependencies and packages to execute CodeceptJS tests.
+Mount in your CodeceptJS config directory into the <code>/tests</code> directory in the docker container.</p>
+<p>Sample mount: <code>-v path/to/codecept.json:/tests</code></p>
+<h3 id="locally">Locally</h3>
+<p>You can execute CodeceptJS with Nightmare locally with no extra configuration.</p>
+<pre><code>docker run --net=host -v $PWD:/tests codeception/codeceptjs
 </code></pre>
 
-<p>or locally</p>
-<pre><code>npm install --save-dev codeceptjs
+<p>Nightmare helper must be enabled in codecept.json config.</p>
+<h3 id="docker-compose">Docker Compose</h3>
+<pre><code class="yaml">version: '2'
+services:
+  codeceptjs:
+    image: codeception/codeceptjs
+    depends_on:
+      - firefox
+      - web
+    volumes:
+      - .:/tests
+  web:
+    image: node
+    command: node app/server.js
+    volumes:
+      - .:/app
+  firefox:
+    image: selenium/standalone-firefox-debug:2.53.0
+    ports:
+      - '4444'
+      - '5900'
 </code></pre>
 
-<h2 id="setup">Setup</h2>
-<p>Initialize CodeceptJS running:</p>
-<pre><code>codeceptjs init
+<h3 id="linking-containers">Linking Containers</h3>
+<p>If using the Protractor or WebDriverIO drivers, link the container with a Selenium Standalone docker container with an alias of <code>selenium</code>. Additionally, make sure your <code>codeceptjs.conf.js</code> contains the following to allow CodeceptJS to identify where Selenium is running.</p>
+<pre><code class="javascript">  ...
+  helpers: {
+    WebDriverIO: {
+      ...
+      host: process.env.HOST
+      ...
+    }
+  }
+  ...
 </code></pre>
 
-<p>It will create <code>codecept.json</code> config in current directory (or provide path in the first argument).</p>
-<p>You will be asked for tests location (they will be searched in current dir by default).</p>
-<p>On next step you are asked to select <strong>Helpers</strong>. Helpers include actions which can be used in tests.
-We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.
-If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
-No matter what helper you've chosen they will be similar in use.</p>
-<pre><code>? What helpers do you want to use?
-❯◉ WebDriverIO
- ◯ Protractor
- ◯ SeleniumWebdriver
- ◯ Nightmare
- ◯ FileSystem
+<pre><code class="sh">$ docker run -d -P --name selenium-chrome selenium/standalone-chrome
+
+# Alternatively, selenium/standalone-firefox can be used
+
+$ docker run -it --rm -v /&lt;path_to_codeceptjs_test_dir&gt;/:/tests/ --link selenium-chrome:selenium codeception/codeceptjs
 </code></pre>
 
-<p>Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.</p>
-<pre><code>? Where should logs, screenshots, and reports to be stored? ./output
-</code></pre>
-
-<p>If you are going to extend test suite by writing custom steps you should probably agree to create <code>steps_file.js</code></p>
-<pre><code>? Would you like to extend I object with custom steps? Yes
-? Where would you like to place custom steps? ./steps_file.js
-</code></pre>
-
-<p>WebDriverIO helper will ask for additional configuration as well:</p>
-<pre><code>? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed firefox
-</code></pre>
-
-<p>If you agree with defaults, finish the installation.</p>
-<p>Depending on a helper you've chosen you will be asked to install corresponding package manually in the end of init.
-In case of webdriver you will need to run</p>
-<pre><code>[sudo] npm install -g webdriverio
-</code></pre>
-
-<p>for global installation. In case CodeceptJS is installed locally, webdriverio can be installed locally as well.
-In a similar way you may install <code>protractor</code> or <code>selenium-webdriver</code>.</p>
-<h2 id="creating-first-test">Creating First Test</h2>
-<p>Tests can be easily created by running</p>
-<pre><code class="bash">codeceptjs gt
-</code></pre>
-
-<p><em>(or <code>generate test</code>)</em></p>
-<p>Provide a test name and open generated file in your favorite JavaScript editor (with ES6 support).</p>
-<pre><code class="js">Feature('My First Test');
-
-Scenario('test something', (I) =&gt; {
-
-});
-</code></pre>
-
-<p>Inside the scenario block you can write your first test scenario by using <a href="http://codecept.io/helpers/WebDriverIO/">actions from WebDriverIO helper</a>. Let's assume we have a web server on <code>localhost</code> is running and there is a <strong>Welcome</strong> text on the first page. The simplest test will look like this:</p>
-<pre><code class="js">Feature('My First Test');
-
-Scenario('test something', (I) =&gt; {
-  I.amOnPage('/');
-  I.see('Welcome');
-});
-</code></pre>
-
-<p>Before running this test we should ensure that <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Web Server is running</a>. Then we can execute tests with</p>
-<pre><code class="bash">codeceptjs run --steps
-</code></pre>
-
-<p><em>steps option will display test execution process in console</em></p>
-<p>If everything is done right, you will see in console:</p>
-<pre><code class="bash">My First Test --
-  test something
-   • I am on page &quot;/&quot;
-   • I see &quot;Welcome&quot;
- ✓ OK
-</code></pre>
-
-<h3 id="configuring-intellisense-optional">Configuring IntelliSense (optional)</h3>
-<p>If you are using Visual Studio Code or other IDE that supports Typescript Definitions,
-you can generate step definitions with</p>
-<pre><code>codeceptjs def
-</code></pre>
-
-<p>Now you should include <code>/// &lt;reference path="./steps.d.ts" /&gt;</code> into your test files to get
-method autocompletion while writing tests.</p>
-<h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running.</h2>
-<p>Wasn't so hard, right?</p></div>
+<p>You may run use <code>-v $(pwd)/:tests/</code> if running this from the root of your CodeceptJS tests directory.
+<em>Note: The output of your test run will appear in your local directory if your output path is <code>./output</code> in the CodeceptJS config</em>
+<em>Note: If running with the Nightmare driver, it is not necessary to run a selenium docker container and link it. So <code>--link selenium-chrome:selenium</code> may be omitted</em></p>
+<h3 id="build">Build</h3>
+<p>To build this image:</p>
+<pre><code class="sh">$ docker build -t codeception/codeceptjs .
+</code></pre></div>
             <div class="clearfix"></div>
         </div>
         

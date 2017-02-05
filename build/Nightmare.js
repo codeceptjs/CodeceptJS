@@ -58,7 +58,7 @@ class Nightmare extends Helper {
     Object.assign(this.options, config);
 
     this.context = this.options.rootElement;
-    this.options.waitForTimeout /= 1000; // convert to seconds
+    this.options.waitForTimeout;
   }
 
   static _config() {
@@ -1080,7 +1080,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
       context = this.context;
     }
     let locator = guessLocator(context) || { css: context};
-    this.browser.optionWaitTimeout = sec * 1000 || this.options.waitForTimeout;
+    this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
 
     return this.browser.wait(function (by, locator, text) {
       return codeceptjs.findElement(by, locator).innerText.indexOf(text) > -1;
@@ -1099,7 +1099,7 @@ I.waitForVisible('#popup');
 @param sec time seconds to wait, 1 by default
    */
   waitForVisible(locator, sec) {
-    this.browser.optionWaitTimeout = sec * 1000 || this.options.waitForTimeout;
+    this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
     locator = guessLocator(locator) || { css: locator};
 
     return this.browser.wait(function (by, locator) {
@@ -1122,7 +1122,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param sec time seconds to wait, 1 by default
    */
   waitForElement(locator, sec) {
-    this.browser.optionWaitTimeout = sec * 1000 || this.options.waitForTimeout;
+    this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
     locator = guessLocator(locator) || { css: locator};
 
     return this.browser.wait(function (by, locator) {

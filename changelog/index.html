@@ -167,6 +167,10 @@
                             <a href="../translation/">Translation</a>
                         </li>
                     
+                        <li >
+                            <a href="../docker/">Docker</a>
+                        </li>
+                    
                     </ul>
                 </li>
             
@@ -184,7 +188,7 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../translation/">
+                    <a rel="next" href="../docker/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
@@ -216,7 +220,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#0416">0.4.16</a></li>
+        <li class="main active"><a href="#050">0.5.0</a></li>
+        
+    
+        <li class="main "><a href="#0416">0.4.16</a></li>
         
     
         <li class="main "><a href="#0415">0.4.15</a></li>
@@ -313,6 +320,13 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="050">0.5.0</h2>
+<ul>
+<li>Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)</li>
+<li>Fix 'fullTitle() is not a function' in exit.js by @hubidu. See <a href="https://github.com/Codeception/CodeceptJS/pull/388">#388</a>.</li>
+<li>[Nightmare] Fix for <code>waitTimeout</code> by @HughZurname. See <a href="https://github.com/Codeception/CodeceptJS/pull/391">#391</a>. Resolves <a href="https://github.com/Codeception/CodeceptJS/issues/236">#236</a></li>
+<li>Dockerized CodeceptJS setup by @artiomnist. <a href="https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md">See reference</a></li>
+</ul>
 <h2 id="0416">0.4.16</h2>
 <ul>
 <li>Fixed steps output synchronization (regression since 0.4.14).</li>
