@@ -1,5 +1,5 @@
 module.exports = {
-    I: 'io',
+    I: 'Ja',
     actions: {
         'amOutsideAngularApp': 'jestem_poza_aplikacją_angular',
         'amInsideAngularApp': 'jestem_w_aplikacji_angular',
@@ -38,10 +38,10 @@ module.exports = {
         'dontSeeInSource': 'nie_widzę_w_źródle',
         'executeScript': 'wykonuję_skrypt',
         'executeAsyncScript': 'wykonuję_skrypt_asynchronicznie',
-        'seeInCurrentUrl': 'widzę_w_URLu',
-        'dontSeeInCurrentUrl': 'nie_widzę_w_URLu',
-        'seeCurrentUrlEquals': 'widzę_jednakowe_URLe',
-        'dontSeeCurrentUrlEquals': 'nie_widzę_jednakowych_URLi',
+        'seeInCurrentUrl': 'widzę_w_adresie_url',
+        'dontSeeInCurrentUrl': 'nie_widzę_w_adresie_url',
+        'seeCurrentUrlEquals': 'widzę_jednakowe_adresy_url',
+        'dontSeeCurrentUrlEquals': 'nie_widzę_jednakowych_adresów_url',
         'saveScreenshot': 'zapisuję_zrzut_ekranu',
         'setCookie': 'ustawiam_cookie',
         'clearCookie': 'usuwam_cookie',
@@ -53,7 +53,7 @@ module.exports = {
         'haveHeader': 'mam_nagłówek',
         'clearField': 'czyszczę_pole',
         'dontSeeElementInDOM': 'nie_widzę_elementu_w_drzewie_DOM',
-        'moveCursorTo': 'przesuwam kursor do',
-        'scrollTo': 'skroluję do'
+        'moveCursorTo': 'przesuwam_kursor_do',
+        'scrollTo': 'skroluję_do'
     }
 }
