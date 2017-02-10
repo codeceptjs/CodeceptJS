@@ -78,3 +78,24 @@ Scenario('Effettuare il Login su GitHub', (io) => {
     io.vedo("Learn Git and GitHub without any code!");
 });
 ```
+
+## Polish
+
+Add to config
+
+```json
+  "translation": "pl-PL"
+```
+
+Now you can write test like this:
+
+```js
+Scenario('Zakładanie konta free trial na stronie głównej GetResponse', (Ja) => {
+    Ja.jestem_na_stronie('https://getresponse.com');
+    Ja.wypełniam_pole("Email address", "sjakubowski@getresponse.com");
+    Ja.wypełniam_pole("Password", "digital-marketing-systems");
+    Ja.klikam('Sign up');
+    Ja.czekam(1);
+    Ja.widzę_w_adresie_url('/account_free_created.html');
+});
+```

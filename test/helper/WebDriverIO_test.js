@@ -15,7 +15,8 @@ let webApiTests = require('./webapi');
 
 
 describe('WebDriverIO', function () {
-  this.timeout(10000);
+  this.retries(4);
+  this.timeout(35000);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
