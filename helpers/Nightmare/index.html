@@ -332,7 +332,7 @@
 fastest headless testing using Electron engine. Unlike Selenium-based drivers this uses
 Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
 less trusted.</p>
-<p>Requires <code>nightmare</code> and <code>nigthmare-upload</code> packages to be installed.</p>
+<p>Requires <code>nightmare</code> and <code>nightmare-upload</code> packages to be installed.</p>
 <h3 id="configuration">Configuration</h3>
 <p>This helper should be configured in codecept.json</p>
 <ul>
@@ -360,8 +360,8 @@ Actual elements can be accessed inside <code>evaulate</code> by using <code>code
 client-side function:</p>
 <pre><code class="js">// get an inner text of an element
 
-let browser = this.helpers['Nigthmare'].browser;
-let value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {
+let browser = this.helpers['Nightmare'].browser;
+let value = this.helpers['Nightmare']._locate({name: 'password'}).then(function(els) {
   return browser.evaluate(function(el) {
     return codeceptjs.fetchElement(el).value;
   }, els[0]);
