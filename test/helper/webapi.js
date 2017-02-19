@@ -222,9 +222,7 @@ module.exports.tests = function() {
     it('should select option by label and option text - should break', function*() {
       yield I.amOnPage('/form/select_new');
       yield I.selectOption('Select a value', 'Option 2');
-      // yield I.selectOption('Select a value', 'Option 1');
       yield I.click('Submit');
-      yield I.waitForText('Welcome to test app!');
       return assert.equal(formContents('select'), 'option2');
     });
 
