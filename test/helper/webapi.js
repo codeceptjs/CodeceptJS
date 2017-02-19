@@ -219,8 +219,8 @@ module.exports.tests = function() {
       return assert.equal(formContents('age'), 'adult');
     });
 
-    it('should select option by label and option text - should break', function*() {
-      yield I.amOnPage('/form/select_new');
+    it('should select option by label and option text - with an onchange callback', function*() {
+      yield I.amOnPage('/form/select_onchange');
       yield I.selectOption('Select a value', 'Option 2');
       yield I.click('Submit');
       return assert.equal(formContents('select'), 'option2');
