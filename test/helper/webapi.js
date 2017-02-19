@@ -219,6 +219,15 @@ module.exports.tests = function() {
       return assert.equal(formContents('age'), 'adult');
     });
 
+    it('should select option by label and option text - should break', function*() {
+      yield I.amOnPage('/form/select_new');
+      yield I.selectOption('Select a value', 'Option 2');
+      // yield I.selectOption('Select a value', 'Option 1');
+      yield I.click('Submit');
+      yield I.waitForText('Welcome to test app!');
+      return assert.equal(formContents('select'), 'option2');
+    });
+
     it('should select multiple options', function*() {
       yield I.amOnPage('/form/select_multiple');
       yield I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
