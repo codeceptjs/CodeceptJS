@@ -406,6 +406,12 @@ module.exports.tests = function() {
       let val = yield I.grabAttributeFrom({css: 'form'}, 'method');
       return assert.equal(val, "get");
     });
+
+    it('should grab custom attribute from element', function*() {
+      yield I.amOnPage('/form/example4');
+      let val = yield I.grabAttributeFrom({css: '.navbar-toggle'}, 'data-toggle');
+      return assert.equal(val, "collapse");
+    });
   });
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
