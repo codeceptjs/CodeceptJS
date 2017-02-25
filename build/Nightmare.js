@@ -23,7 +23,7 @@ let specialKeys = {
  * Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
  * less trusted.
  *
- * Requires `nightmare` and `nigthmare-upload` packages to be installed.
+ * Requires `nightmare` and `nightmare-upload` packages to be installed.
  *
  * ### Configuration
  *
@@ -228,14 +228,14 @@ class Nightmare extends Helper {
    * Should be used in custom helpers.
    *
    * This method return promise with array of IDs of found elements.
-   * Actual elements can be accessed inside `evaulate` by using `codeceptjs.fetchElement()`
+   * Actual elements can be accessed inside `evaluate` by using `codeceptjs.fetchElement()`
    * client-side function:
    *
    * ```js
    * // get an inner text of an element
    *
-   * let browser = this.helpers['Nigthmare'].browser;
-   * let value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {
+   * let browser = this.helpers['Nightmare'].browser;
+   * let value = this.helpers['Nightmare']._locate({name: 'password'}).then(function(els) {
    *   return browser.evaluate(function(el) {
    *     return codeceptjs.fetchElement(el).value;
    *   }, els[0]);
@@ -891,7 +891,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
   grabAttributeFrom(locator, attr) {
     return this.browser.findElement(guessLocator(locator) || { css: locator}).then((el) => {
       return this.browser.evaluate(function (el, attr) {
-        return codeceptjs.fetchElement(el)[attr];
+        return codeceptjs.fetchElement(el).getAttribute(attr);
       }, el, attr);
     });
   }
@@ -929,7 +929,12 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
       el = codeceptjs.fetchElement(el);
       let found = document.evaluate(locator, el, null, 5);
       var current = null;
+      var items = [];
       while (current = found.iterateNext()) {
+        items.push(current);
+      }
+      for (var i = 0; i < items.length; items++) {
+        current = items[i];
         current.selected = true;
         var event = document.createEvent('HTMLEvents');
         if (!el.multiple) el.value = current.value;

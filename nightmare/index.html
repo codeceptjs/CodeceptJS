@@ -378,7 +378,7 @@ this.helpers['Nightmare'].browser;
 <p>It is important to understand that Nightmare executes JavaScript on client and on server side.
 If you need to find an element you should search for it using client side script, but if you want
 to do an assertion you should return a data to server side.</p>
-<p>Nightmare provides <code>evaulate</code> method to execute client-side JavaScript. CodeceptJS registers <code>codeceptjs</code>
+<p>Nightmare provides <code>evaluate</code> method to execute client-side JavaScript. CodeceptJS registers <code>codeceptjs</code>
 object globally on client side with <code>findElement</code> and <code>findElements</code> methods in it. They return IDs of matched elements
 so you can access them in next calls to <code>evaluate</code>:</p>
 <pre><code class="js">// inside a custom helper class
@@ -398,7 +398,7 @@ seeAttributeContains(locator, attribute, expectedValue) {
   }).then(function(attributeValue) {
     // get attribute value and back to server side
     // execute an assertion
-    assert.include(attributeValye, expectedValue);
+    assert.include(attributeValue, expectedValue);
   });
 }
 </code></pre>

@@ -296,8 +296,8 @@ it should be added to list of test arguments to be included in test:</p>
 
 <h2 id="page-fragments">Page Fragments</h2>
 <p>In a similar manner CodeceptJS allows you to generate <strong>PageFragments</strong> and any other are abstraction
-by running <code>go</code> command with <code>--kind</code> (or <code>-t</code>) option:</p>
-<pre><code>codeceptjs go --kind fragment
+by running <code>go</code> command with <code>--type</code> (or <code>-t</code>) option:</p>
+<pre><code>codeceptjs go --type fragment
 </code></pre>
 
 <p>Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
@@ -326,7 +326,7 @@ module.exports = {
 <h2 id="stepobjects">StepObjects</h2>
 <p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:</p>
-<pre><code>codeceptjs go --kind step
+<pre><code>codeceptjs go --type step
 </code></pre>
 
 <p>Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:</p>

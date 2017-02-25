@@ -228,6 +228,8 @@
         
             <li><a href="#italian">Italian</a></li>
         
+            <li><a href="#polish">Polish</a></li>
+        
     
     </ul>
 </div></div>
@@ -288,6 +290,22 @@ by setting translation to <a href="https://github.com/Codeception/CodeceptJS/blo
     io.compilo_il_campo(&quot;Password&quot;, &quot;*********&quot;);
     io.faccio_click_su(&quot;Sign in&quot;);
     io.vedo(&quot;Learn Git and GitHub without any code!&quot;);
+});
+</code></pre>
+
+<h2 id="polish">Polish</h2>
+<p>Add to config</p>
+<pre><code class="json">  &quot;translation&quot;: &quot;pl-PL&quot;
+</code></pre>
+
+<p>Now you can write test like this:</p>
+<pre><code class="js">Scenario('Zakładanie konta free trial na stronie głównej GetResponse', (Ja) =&gt; {
+    Ja.jestem_na_stronie('https://getresponse.com');
+    Ja.wypełniam_pole(&quot;Email address&quot;, &quot;sjakubowski@getresponse.com&quot;);
+    Ja.wypełniam_pole(&quot;Password&quot;, &quot;digital-marketing-systems&quot;);
+    Ja.klikam('Sign up');
+    Ja.czekam(1);
+    Ja.widzę_w_adresie_url('/account_free_created.html');
 });
 </code></pre></div>
             <div class="clearfix"></div>
