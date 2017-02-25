@@ -219,6 +219,13 @@ module.exports.tests = function() {
       return assert.equal(formContents('age'), 'adult');
     });
 
+    it('should select option by label and option text - with an onchange callback', function*() {
+      yield I.amOnPage('/form/select_onchange');
+      yield I.selectOption('Select a value', 'Option 2');
+      yield I.click('Submit');
+      return assert.equal(formContents('select'), 'option2');
+    });
+
     it('should select multiple options', function*() {
       yield I.amOnPage('/form/select_multiple');
       yield I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
