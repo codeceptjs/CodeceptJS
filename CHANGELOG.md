@@ -1,3 +1,11 @@
+## 0.5.1
+
+* [Polish translation](http://codecept.io/translation/#polish) added by @limes.
+* Update process exit code so that mocha saves reports before exit by @romanovma.
+* [Nightmare] fixed `getAttributeFrom` for custom attributes by @robrkerr
+* [Nightmare] Fixed *UnhandledPromiseRejectionWarning error* when selecting the dropdown using `selectOption` by @robrkerr. [See PR](https://github.com/Codeception/CodeceptJS/pull/408).
+* [Protractor] fixed `pressKey` method by @romanovma
+
 ## 0.5.0
 
 * Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)
