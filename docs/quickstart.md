@@ -124,7 +124,7 @@ My First Test --
 
 ### Configuring IntelliSense (optional)
 
-If you are using Visual Studio Code or other IDE that supports Typescript Definitions,
+If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with
 
 ```
