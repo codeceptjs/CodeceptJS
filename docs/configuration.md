@@ -12,6 +12,7 @@ Here is an overview of available options with their defaults:
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
+* **multiple**: `{}` - multiple options, see [#PR439](https://github.com/Codeception/CodeceptJS/pull/439) for more details
 * **name**: `"tests"` - test suite name (not used)
 * **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](#hooks)).
 * **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks)).
