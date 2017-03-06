@@ -179,7 +179,7 @@ It is important to understand that Nightmare executes JavaScript on client and o
 If you need to find an element you should search for it using client side script, but if you want
 to do an assertion you should return a data to server side.
 
-Nightmare provides `evaulate` method to execute client-side JavaScript. CodeceptJS registers `codeceptjs`
+Nightmare provides `evaluate` method to execute client-side JavaScript. CodeceptJS registers `codeceptjs`
 object globally on client side with `findElement` and `findElements` methods in it. They return IDs of matched elements
 so you can access them in next calls to `evaluate`:
 
@@ -202,7 +202,7 @@ seeAttributeContains(locator, attribute, expectedValue) {
   }).then(function(attributeValue) {
     // get attribute value and back to server side
     // execute an assertion
-    assert.include(attributeValye, expectedValue);
+    assert.include(attributeValue, expectedValue);
   });
 }
 ```
