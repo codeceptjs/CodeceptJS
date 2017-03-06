@@ -68,6 +68,12 @@ codeceptjs run --reporter xunit
 
 Use any of [Mocha reporters](https://github.com/mochajs/mocha/tree/master/lib/reporters) used.
 
+Run multiple suites. For more details see [#PR439](https://github.com/Codeception/CodeceptJS/pull/439):
+
+```
+codeceptjs run --multiple 'chrome: smoke; firefox: regression
+```
+
 ## Init
 
 Creates `codecept.json` file in current directory:
