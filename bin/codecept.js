@@ -80,10 +80,23 @@ program.command('run [suite] [test]')
   .option('--no-exit', 'require a clean shutdown of the event loop: mocha will not call process.exit')
   .option('--recursive', 'include sub directories')
   .option('--trace', 'trace function calls')
-  .option('--multiple <string>', 'run several instanses of codeceptjs to parallel test execution')
   .option('--child <string>', 'option for child processes')
 
   .action(require('../lib/command/run'));
+
+program.command('run:multiple [suite] [test]')
+  .description('Executes tests multiple')
+  .option('--steps', 'show step-by-step execution')
+  .option('--debug', 'output additional information')
+  .option('--verbose', 'output internal logging information')
+  .option('-o, --override [value]', 'override current config options')
+  .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
+  .option('-R, --reporter <name>', 'specify the reporter to use')
+  .option('--recursive', 'include sub directories')
+
+  .option('--multiple <string>', 'run several instanses of codeceptjs to parallel test execution')
+
+  .action(require('../lib/command/run-multiple'));
 
 if (process.argv.length <= 2) {
   console.log('CodeceptJS v' + Codecept.version());
