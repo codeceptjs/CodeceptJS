@@ -112,9 +112,7 @@ AfterSuite((I) => {
 To specify the exact area on a page where actions can be performed you can use `within` function.
 Everything executed in its context will be narrowed to context specified by locator: 
 
-iFramesPath is optional, to be used for elements inside iframe or nested iframes. 
-
-Usage: within('section', ()=>{} , [iFrame_ID_1 , iFrame_ID_2.....] )
+Usage: within('section', ()=>{} )
 ```js
 I.amOnPage('https://github.com');
 within('.form-signup-home', function () {
@@ -122,8 +120,15 @@ within('.form-signup-home', function () {
   I.fillField('user[email]', 'user@user.com');
   I.fillField('user[password]', 'user@user.com');
   I.click('button');
-}, [iFrames] );
+});
 I.see('There were problems creating your account.');
+```
+
+iframe example
+```js
+within({"frame":["#editor"]},function(){
+  I.see('Page');
+});
 ```
 
 When running steps inside a within block will be shown with a shift:
