@@ -84,7 +84,7 @@ program.command('run [suite] [test]')
 
   .action(require('../lib/command/run'));
 
-program.command('run:multiple [suite] [test]')
+program.command('run:multiple [suites...]')
   .description('Executes tests multiple')
   .option('--steps', 'show step-by-step execution')
   .option('--debug', 'output additional information')
