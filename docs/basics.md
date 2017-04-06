@@ -126,7 +126,7 @@ I.see('There were problems creating your account.');
 
 iframe example
 ```js
-within({"frame":["#editor"]},function(){
+within({frame:["#editor"]},function(){
   I.see('Page');
 });
 ```
