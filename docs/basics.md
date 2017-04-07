@@ -110,8 +110,9 @@ AfterSuite((I) => {
 ## Within
 
 To specify the exact area on a page where actions can be performed you can use `within` function.
-Everything executed in its context will be narrowed to context specified by locator:
+Everything executed in its context will be narrowed to context specified by locator: 
 
+Usage: within('section', ()=>{} )
 ```js
 I.amOnPage('https://github.com');
 within('.form-signup-home', function () {
@@ -121,6 +122,13 @@ within('.form-signup-home', function () {
   I.click('button');
 });
 I.see('There were problems creating your account.');
+```
+
+iframe example
+```js
+within({frame:["#editor"]},function(){
+  I.see('Page');
+});
 ```
 
 When running steps inside a within block will be shown with a shift:
