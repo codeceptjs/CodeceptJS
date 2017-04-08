@@ -63,8 +63,18 @@ describe('CodeceptJS Runner', () => {
     });
   });
 
+  it('should run hooks', (done) => {
+    exec(config_run_config('codecept.hooks.js'), (err, stdout, stderr) => {
+      stdout.should.include('Filesystem'); // feature
+      stdout.should.include('I am bootstrap');
+      stdout.should.include('I am function hook');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run bootstrap/teardown as object', (done) => {
-    exec(config_run_config('codecept.hooks.obj.json'), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.bootstrap.obj.json'), (err, stdout, stderr) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am teardown');
