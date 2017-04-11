@@ -76,7 +76,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run hooks', (done) => {
-    exec(config_run_config('codecept.hooks.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.hooks.js'), (err, stdout, stderr) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am function hook');
