@@ -16,11 +16,11 @@ describe('CodeceptJS Multiple Runner', function() {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox');
   });
 
-  it('should execute one suite', (done) => {
-    exec(codecept_run+'default', (err, stdout, stderr) => {
+  it('should execute one suite with browser', (done) => {
+    exec(codecept_run+'default:firefox', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[default:firefox] print browser ');
-      stdout.should.include('[default:chrome] print browser ');
+      stdout.should.not.include('[default:chrome] print browser ');
       assert(!err);
       done();
     });
@@ -38,6 +38,18 @@ describe('CodeceptJS Multiple Runner', function() {
 
   it('should execute all suites', (done) => {
     exec(codecept_run+'--all', (err, stdout, stderr) => {
+      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('[default:firefox] print browser ');
+      stdout.should.include('[default:chrome] print browser ');
+      stdout.should.include('[mobile:safari] print browser ');
+      stdout.should.include('[mobile:android] print browser ');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should execute mutiple suites', (done) => {
+    exec(codecept_run+'default mobile', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[default:firefox] print browser ');
       stdout.should.include('[default:chrome] print browser ');
