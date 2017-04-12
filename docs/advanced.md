@@ -13,6 +13,13 @@ Scenario('update user profile @slow')
 codeceptjs run --grep @slow
 ```
 
+Use regex for more flexible filtering:
+
+* `--grep (?=.*@smoke2)(?=.*@smoke3)` - run tests with @smoke2 and @smoke3 in Scenario or Feature name
+* `--grep @smoke2|@smoke3` - run tests with @smoke2 or @smoke3 in Scenario or Feature name
+* `--grep ((?=.*@smoke2)(?=.*@smoke3))|@smoke4` - run tests with (@smoke2 and @smoke3) or @smoke4 in Scenario or Feature name
+* `--grep (?=.*@smoke2)^(?!.*@smoke3)` - run tests with @smoke2 but without @smoke3 in Scenario or Feature name
+
 ## Debug
 
 CodeceptJS provides a debug mode in which additional information is printed.
