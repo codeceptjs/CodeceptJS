@@ -240,7 +240,7 @@
         
             <li><a href="#meta-packages">Meta Packages</a></li>
         
-            <li><a href="#additional-tools">Additional Tools</a></li>
+            <li><a href="#webdriver">WebDriver</a></li>
         
     
     </ul>
@@ -274,14 +274,12 @@
 <li><a href="https://www.npmjs.com/package/codecept-nightmare">codecept-nightmare</a> - installs CodeceptJS + Nightmare</li>
 </ul>
 <p>They can be installed either globally or locally</p>
-<h2 id="additional-tools">Additional Tools</h2>
+<h2 id="webdriver">WebDriver</h2>
 <p>WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> or <a href="http://codecept.io/helpers/WebDriverIO/#phantomjs-installation">PhantomJS</a> installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.</p>
-<p>We recommend to install them manually or use 3rd-party NPM packages:</p>
+<p>We recommend to install them manually or use NPM packages:</p>
 <ul>
-<li><code>webdriver-manager</code>: to install and execute Selenium server</li>
-<li><code>chromedriver</code>: to install ChromeDriver (add <code>require('chromedriver')</code> to bootstrap file)</li>
-<li><code>geckodriver</code>: to install GeckoDriver for Firefox browser (add <code>require('geckodriver')</code> to bootstrap file)</li>
-<li><code>phantomjs-prebuilt</code>: to install and execute Phantomjs</li>
+<li><a href="https://www.npmjs.com/package/selenium-standalone">Selenium Standalone</a> to install and run Selenium, ChromeDriver, Firefox Driver with one package.</li>
+<li><a href="https://www.npmjs.com/package/phantomjs-prebuilt">Phantomjs</a>: to install and execute Phantomjs</li>
 </ul>
 <p>or use <a href="https://github.com/SeleniumHQ/docker-selenium">Docker</a> for headless browser testing.</p>
 <p>Launch Selenium with Chrome browser inside a Docker container:</p>
