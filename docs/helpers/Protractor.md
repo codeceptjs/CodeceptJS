@@ -6,7 +6,7 @@ Protractor helper is based on [Protractor library](http://www.protractortest.org
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
 2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
-3.  Launch the daemon: `java -jar selenium-server-standalone-3.xx.xxx.jar`
+3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
 #### PhantomJS Installation
 
