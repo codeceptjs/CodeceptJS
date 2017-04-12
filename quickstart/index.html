@@ -238,6 +238,10 @@
         
             <li><a href="#creating-first-test">Creating First Test</a></li>
         
+            <li><a href="#prepare-selenium-server">Prepare Selenium Server</a></li>
+        
+            <li><a href="#run">Run</a></li>
+        
             <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running.</a></li>
         
     
@@ -315,8 +319,16 @@ Scenario('test something', (I) =&gt; {
 });
 </code></pre>
 
-<p>Start <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> or <a href="http://codecept.io/helpers/WebDriverIO/#phantomjs-installation">PhantomJS</a>.
-To run tests with Selenium inside Chrome browser you will need <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> installed.</p>
+<h2 id="prepare-selenium-server">Prepare Selenium Server</h2>
+<p>To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.</p>
+<p>Use <code>selenium-standalone</code> from NPM to install and run them:</p>
+<pre><code>npm i selenium-standalone -g
+selenium-standalone install
+selenium-standalone start
+</code></pre>
+
+<p><a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can also be installed and executed manually.</p>
+<h2 id="run">Run</h2>
 <p>Execute tests:</p>
 <pre><code class="bash">codeceptjs run --steps
 </code></pre>
