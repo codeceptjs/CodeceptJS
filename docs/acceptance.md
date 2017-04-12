@@ -4,13 +4,20 @@ How does your client, manager, or tester, or any other non-technical person, kno
 
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
-By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
+<<<<<<< HEAD
+By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser.
 However, you can also choose [SeleniumWebdriver](/helpers/SeleniumWebdriver) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
+=======
+By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
+However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
+>>>>>>> master
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
+In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
+
+Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
 That is what a test look like.
 
-In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
 
 ```js
 I.amOnPage('/login');
@@ -200,6 +207,24 @@ I.click('#agree_button');
 ```
 
 More wait actions can be found in helper's reference.
+
+## IFrames
+
+[within](/basics/#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
+
+See example:
+
+```js
+within({frame: "#editor"}, () => {
+  I.see('Page');
+});
+```
+
+Nested IFrames can be set by passing array *(Nightmare only)*:
+
+```js
+within({frame: [".content", "#editor"]);
+```
 
 ---
 

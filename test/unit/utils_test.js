@@ -13,6 +13,7 @@ describe('utils', () => {
   describe('#getParamNames', () => {
     it('fn#1', () => utils.getParamNames(function (a, b) {}).should.eql(['a', 'b']));
     it('fn#2', () => utils.getParamNames((I, userPage) => { }).should.eql(['I', 'userPage']));
+    it('should handle single-param arrow functions with omitted parens', () => utils.getParamNames(I => {}).should.eql(['I']));
   });
 
   describe('#methodsOfObject', () => {

@@ -1,3 +1,39 @@
+## 0.6.0
+
+Major release with extension API and parallel execution.
+
+* **Breaking** Removed path argument from `run`. To specify path other than current directory use `--config` or `-c` option:
+
+Instead of: `codeceptjs run tests` use:
+
+```
+# load config and run from tests directory
+codeceptjs run -c tests/
+
+# or load codecept.json from tests directory
+codeceptjs run -c tests/codecept.json
+
+# run users_test.js inside tests directory
+codeceptjs run users_test.js -c tests
+```
+
+* **Command `multiple-run` added**, to execute tests in several browsers in parallel by @APshenkin and @davertmik. [See documentation](http://codecept.io/advanced/#multiple-execution).
+* **Hooks API added to extend CodeceptJS** with custom listeners and plugins. [See documentation](http://codecept.io/hooks/#hooks_1).
+* [Nightmare][WebDriverIO] `within` can work with iframes by @imvetri. [See documentation](http://codecept.io/acceptance/#iframes).
+* [WebDriverIO][SeleniumWebdriver][Protractor] Default browser changed to `chrome`
+* [Nightmare] Fixed globally locating `nightmare-upload`.
+* [WebDriverIO] added `seeNumberOfVisibleElements` method by @elarouche.
+* Exit with non-zero code if init throws an error by @rincedd
+* New guides published:
+    * [Installation](http://codecept.io/installation/)
+    * [Hooks](http://codecept.io/hooks/)
+    * [Advanced Usage](http://codecept.io/advanced/)
+* Meta packages published:
+    * [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio)
+    * [codecept-protractor](https://www.npmjs.com/package/codecept-protractor)
+    * [codecept-nightmare](https://www.npmjs.com/package/codecept-nightmare)
+
+
 ## 0.5.1
 
 * [Polish translation](http://codecept.io/translation/#polish) added by @limes.

@@ -14,6 +14,12 @@
       "mochaFile": "./output/result.xml"
     }
   },
+  "multiple": {
+    "default": {
+      "grep": "signin",
+      "browsers": ["chrome", "firefox"]
+    }
+  },
   "name": "tests",
   "bootstrap": "./bootstrap.js",
   "include": {

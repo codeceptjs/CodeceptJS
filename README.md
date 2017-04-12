@@ -14,7 +14,7 @@ Feature('CodeceptJS demo');
 Scenario('check Welcome page on site', (I) => {
   I.amOnPage('/');
   I.see('Welcome');
-}
+});
 ```
 
 Codeception tests are:
