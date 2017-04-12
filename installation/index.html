@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Basics - CodeceptJS</title>
+	<title>Installation - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -89,12 +89,12 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
-                        <li >
-                            <a href="../installation/">Installation</a>
+                        <li class="active">
+                            <a href="./">Installation</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Basics</a>
+                        <li >
+                            <a href="../basics/">Basics</a>
                         </li>
                     
                         <li >
@@ -200,12 +200,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../installation/">
+                    <a rel="next" href="../quickstart/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../acceptance/">
+                    <a rel="prev" href="../basics/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -232,195 +232,61 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#basics">Basics</a></li>
+        <li class="main active"><a href="#installation">Installation</a></li>
         
-            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#global">Global</a></li>
         
-            <li><a href="#pause">Pause</a></li>
+            <li><a href="#local">Local</a></li>
         
-            <li><a href="#before">Before</a></li>
+            <li><a href="#meta-packages">Meta Packages</a></li>
         
-            <li><a href="#beforesuite">BeforeSuite</a></li>
-        
-            <li><a href="#within">Within</a></li>
-        
-            <li><a href="#comments">Comments</a></li>
-        
-            <li><a href="#skipping">Skipping</a></li>
-        
-            <li><a href="#reporters">Reporters</a></li>
-        
-            <li><a href="#test-options">Test Options</a></li>
+            <li><a href="#additional-tools">Additional Tools</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="basics">Basics</h1>
-<p>CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.</p>
-<pre><code class="js">Feature('CodeceptJS demo');
-
-Scenario('check Welcome page on site', (I) =&gt; {
-  I.amOnPage('/');
-  I.see('Welcome');
-})
+<h1 id="installation">Installation</h1>
+<h3 id="global">Global</h3>
+<p>CodeceptJS can be installed via NPM globally</p>
+<pre><code>[sudo] npm install -g codeceptjs
 </code></pre>
 
-<p>Tests are expected to be written in ECMAScript 6.
-Each test is described inside a <code>Scenario</code> function with <code>I</code> object passed into it.
-I object is an <strong>actor</strong>, an abstraction for a testing user. I is a proxy object for currently enabled <strong>Helpers</strong>.</p>
-<pre><code class="json">  &quot;helpers&quot;: {
-    &quot;WebDriverIO&quot;: {
-      &quot;url&quot;: &quot;http://localhost&quot;,
-      &quot;browser&quot;: &quot;firefox&quot;
-    }
-  }
+<p>then it can be started as</p>
+<pre><code>codeceptjs
 </code></pre>
 
-<p>For current config all methods of <code>I</code> will be taken from <code>WebDriverIO</code> helper.
-This is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.</p>
-<h2 id="how-it-works">How It Works</h2>
-<p>Tests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.
-However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
-<a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
-<p>If you want to get information from a running test you can use <code>yield</code> inside a <strong>generator function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
-<pre><code class="js">Scenario('try grabbers', function* (I) {
-  var title = yield I.grabTitle();
-});
+<h3 id="local">Local</h3>
+<p>CodeceptJS can also be installed locally</p>
+<pre><code>npm install --save-dev codeceptjs
 </code></pre>
 
-<p>then you can use those variables in assertions:</p>
-<pre><code class="js">var title = yield I.grabTitle();
-var assert = require('assert');
-assert.equal(title, 'CodeceptJS');
+<p>and started as</p>
+<pre><code>./node_modules/.bin/codeceptjs
 </code></pre>
 
-<h2 id="pause">Pause</h2>
-<p>Test execution can be paused in any place of a test with <code>pause()</code> call.
-This also launches interactive console where you can call actions of <code>I</code> object.</p>
-<p><img alt="shell" src="../images/shell.png" /></p>
-<p>You can also use <code>pause()</code> to check the web application in a browser. Press <code>ENTER</code> to resume test execution.</p>
-<p>Interactive shell can be started outside test context by running</p>
-<pre><code class="bash">codeceptjs shell
-</code></pre>
-
-<h2 id="before">Before</h2>
-<p>Common preparation steps like opening a web page, logging in a user, can be placed in <code>Before</code> or <code>Background</code> hook:</p>
-<pre><code class="js">Feature('CodeceptJS Demonstration');
-
-Before((I) =&gt; { // or Background
-  I.amOnPage('/documentation');
-});
-
-Scenario('test some forms', (I) =&gt; {
-  I.click('Create User');
-  I.see('User is valid');
-  I.dontSeeInCurrentUrl('/documentation');
-});
-
-Scenario('test title', (I) =&gt; {
-  I.seeInTitle('Example application');
-});
-</code></pre>
-
-<p>Same as <code>Before</code> you can use <code>After</code> to run teardown for each scenario.</p>
-<h2 id="beforesuite">BeforeSuite</h2>
-<p>If you need to run complex setup before all tests and teardown this afterwards you can use <code>BeforeSuite</code> and <code>AfterSuite</code>
-functions. <code>BeforeSuite</code> and <code>AfterSuite</code> have access to <code>I</code> object, but <code>BeforeSuite/AfterSuite</code> don't have an access to the browser because it's not running at this moment.
-You can use them to execute handlers that will setup your environment. <code>BeforeSuite/AfterSuite</code> will work  only for a file where it was declared (so you can declare different setups for files)</p>
-<pre><code class="js">BeforeSuite((I) =&gt; {
-  I.syncDown('testfolder');
-});
-
-AfterSuite((I) =&gt; {
-  I.syncUp('testfolder');
-  I.clearDir('testfolder');
-});
-</code></pre>
-
-<p><a href="https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933">Here are some ideas</a> where to use BeforeSuite hooks.</p>
-<h2 id="within">Within</h2>
-<p>To specify the exact area on a page where actions can be performed you can use <code>within</code> function.
-Everything executed in its context will be narrowed to context specified by locator:</p>
-<p>Usage: <code>within('section', ()=&gt;{})</code></p>
-<pre><code class="js">I.amOnPage('https://github.com');
-within('.form-signup-home', () =&gt; {
-  I.fillField('user[login]', 'User');
-  I.fillField('user[email]', 'user@user.com');
-  I.fillField('user[password]', 'user@user.com');
-  I.click('button');
-});
-I.see('There were problems creating your account.');
-</code></pre>
-
-<p><code>within</code> can also work with <a href="../acceptance/#iframes">iframes</a></p>
-<p>When running steps inside a within block will be shown with a shift:</p>
-<p><img alt="within" src="http://codecept.io/images/within.png" /></p>
-<h2 id="comments">Comments</h2>
-<p>There is a simple way to add additional comments to your test scenario.
-Use <code>say</code> command to print information to screen:</p>
-<pre><code class="js">I.say('I am going to publish post');
-I.say('I enter title and body');
-I.say('I expect post is visible on site');
-</code></pre>
-
-<h2 id="skipping">Skipping</h2>
-<p>Like in Mocha you can use <code>x</code> and <code>only</code> to skip tests or making a single test to run.</p>
+<h2 id="meta-packages">Meta Packages</h2>
+<p>By default it doesn't install any backends like Webdriverio, Protracor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:</p>
 <ul>
-<li><code>xScenario</code> - skips current test</li>
-<li><code>Scenario.only</code> - executes only the current test</li>
+<li><code>codeceptjs-webdriverio</code> - installs CodeceptJS + WebDriverIO</li>
+<li><code>codeceptjs-protractor</code> - installs CodeceptJS + Protractor</li>
+<li><code>codeceptjs-nightmare</code> - installs CodeceptJS + Nightmare</li>
 </ul>
-<h2 id="reporters">Reporters</h2>
-<p>CodeceptJS supports <a href="https://mochajs.org/#reporters">Mocha Reporters</a>.
-They can be used with <code>--reporter</code> options.
-By default a custom console reporter is enabled.</p>
-<p>We are currently working on improving reporters support.</p>
-<h2 id="test-options">Test Options</h2>
-<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
-<pre><code class="js">Feature('My feature', {key: val});
-
-Scenario('My scenario', {key: val}, (I) =&gt; {});
-</code></pre>
-
-<h3 id="timeout">Timeout</h3>
-<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
-<pre><code class="js">Feature('Stop me', {timeout: 5000}); // set timeout to 5s
-</code></pre>
-
-<p>or for the test:</p>
-<pre><code class="js">// set timeout to 1s
-Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
-
-// disable timeout for this scenario
-Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
-</code></pre>
-
-<h3 id="retries">Retries</h3>
-<p>Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
-This can be done with <code>retries</code> option added to <code>Feature</code> declaration.</p>
-<p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
-You can set number of a retries for a feature:</p>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-</code></pre>
-
-<p>Every Scenario inside this feature will be rerun 3 times.
-You can make an exception for a specific scenario by passing <code>retries</code> option to it:</p>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-
-Scenario('Not that complex', {retries: 1}, (I) =&gt; {
-  // test goes here
-});
-
-Scenario('Really complex', (I) =&gt; {
-  // test goes here
-});
-</code></pre>
-
-<p>"Really complex" test will be restarted 3 times,
-while "Not that complex" test will be rerun only once.</p>
-<hr />
-<h3 id="done">done()</h3></div>
+<p>They can be installed either globally or locally</p>
+<h2 id="additional-tools">Additional Tools</h2>
+<p>WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> or <a href="http://codecept.io/helpers/WebDriverIO/#phantomjs-installation">PhantomJS</a> installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.</p>
+<p>We recommend to install them manually or use 3rd-party NPM packages:</p>
+<ul>
+<li><code>webdriver-manager</code>: to install and execute Selenium server</li>
+<li><code>chromedriver</code>: to install ChromeDriver (add <code>require('chromedriver')</code> to bootstrap file)</li>
+<li><code>geckodriver</code>: to install GeckoDriver for Firefox browser (add <code>require('geckodriver')</code> to bootstrap file)</li>
+<li><code>phantomjs-prebuilt</code>: to install and execute Phantomjs</li>
+</ul>
+<p>or use <a href="https://github.com/SeleniumHQ/docker-selenium">Docker</a> for headless browser testing.</p>
+<p>Launch Selenium with Chrome browser inside a Docker container:</p>
+<pre><code>docker run --net=host selenium/standalone-chrome
+</code></pre></div>
             <div class="clearfix"></div>
         </div>
         

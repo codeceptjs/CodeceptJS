@@ -90,6 +90,10 @@
                     <ul class="dropdown-menu">
                     
                         <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
                             <a href="../basics/">Basics</a>
                         </li>
                     
@@ -111,6 +115,14 @@
                     
                         <li >
                             <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../hooks/">Hooks</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -224,8 +236,6 @@
         
             <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
         
-            <li><a href="#hooks">Hooks</a></li>
-        
             <li><a href="#profile">Profile</a></li>
         
     
@@ -244,6 +254,7 @@
 <li><strong>output</strong>: <code>"./output"</code> - where to store failure screenshots, etc</li>
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
+<li><strong>multiple</strong>: <code>{}</code> - multiple options, see <a href="https://github.com/Codeception/CodeceptJS/pull/439">#PR439</a> for more details</li>
 <li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
 <li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
 <li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
@@ -280,72 +291,6 @@
 </code></pre>
 
 <p>(Don't copy-paste this config, it's just demo)</p>
-<h2 id="hooks">Hooks</h2>
-<p>Hooks are implemented as <code>bootstrap</code> and <code>teardown</code> options in config. You can use them to prepare test environment before execution and cleanup after.
-They can be used to launch stop webserver, selenium server, etc. There are different sync and async ways to define bootstrap and teardown functions.</p>
-<p><code>bootstrap</code> and <code>teardown</code> options can be:</p>
-<ul>
-<li>JS file, executed as is (synchronously).</li>
-<li>JS file exporting a function; If function accepts a callback is executed asynchronously. See example:</li>
-</ul>
-<p>Config (<code>codecept.json</code>):</p>
-<pre><code class="js">  &quot;bootstrap&quot;: &quot;./bootstrap.js&quot;
-</code></pre>
-
-<p>Bootstrap file (<code>bootstrap.js</code>):</p>
-<pre><code class="js">// bootstrap.js
-var server = require('./app_server');
-module.exports = function(done) {
-  // on error call done('error description') to stop
-  if (!server.validateConfig()) {
-    done(&quot;Can't execute server with invalid config, tests stopped&quot;);
-  }
-  // call done() to continue execution
-  server.launch(done);
-}
-</code></pre>
-
-<p>Pass error description inside a callback (<code>done('error')</code>) to prevent test execution on bootstrap.</p>
-<ul>
-<li>JS file exporting an object with <code>bootstrap</code> and (or) <code>teardown</code> methods for corresponding hooks.</li>
-</ul>
-<p>Config (<code>codecept.json</code>):</p>
-<pre><code class="js">  &quot;bootstrap&quot;: &quot;./bootstrap.js&quot;
-  &quot;teardown&quot;: &quot;./bootstrap.js&quot;
-</code></pre>
-
-<p>Bootstrap file (<code>bootstrap.js</code>):</p>
-<pre><code class="js">// bootstrap.js
-var server = require('./app_server');
-module.exports = {
-  bootstrap: function(done) {
-    server.launch(done);
-  },
-  teardown: function(done) {
-    server.stop(done);
-  }
-}
-</code></pre>
-
-<ul>
-<li>JS function in case of dynamic config. If function accepts a callback is executed asynchronously. See example:</li>
-</ul>
-<p>Config JS (<code>codecept.conf.js</code>):</p>
-<pre><code class="js">var server = require('./app_server');
-
-exports.config = {
-  bootstrap: function(done) {
-    server.launch(done);
-  },
-  teardown: function(done) {
-    server.stop(done);
-  }
-  // ...
-  // other config options
-}
-
-</code></pre>
-
 <h2 id="profile">Profile</h2>
 <p>Using values from <code>process.profile</code> you can change the config dynamically.
 It provides value of <code>--profile</code> option passed to runner.

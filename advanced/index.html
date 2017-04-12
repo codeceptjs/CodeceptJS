@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Basics - CodeceptJS</title>
+	<title>Advanced Usage - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -93,8 +93,8 @@
                             <a href="../installation/">Installation</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Basics</a>
+                        <li >
+                            <a href="../basics/">Basics</a>
                         </li>
                     
                         <li >
@@ -121,8 +121,8 @@
                             <a href="../hooks/">Hooks</a>
                         </li>
                     
-                        <li >
-                            <a href="../advanced/">Advanced Usage</a>
+                        <li class="active">
+                            <a href="./">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -200,12 +200,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../installation/">
+                    <a rel="next" href="../hooks/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../acceptance/">
+                    <a rel="prev" href="../helpers/WebDriverIO/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -232,195 +232,106 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#basics">Basics</a></li>
+        <li class="main active"><a href="#advanced-usage">Advanced Usage</a></li>
         
-            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#groups">Groups</a></li>
         
-            <li><a href="#pause">Pause</a></li>
+            <li><a href="#debug">Debug</a></li>
         
-            <li><a href="#before">Before</a></li>
+            <li><a href="#multiple-execution">Multiple Execution</a></li>
         
-            <li><a href="#beforesuite">BeforeSuite</a></li>
-        
-            <li><a href="#within">Within</a></li>
-        
-            <li><a href="#comments">Comments</a></li>
-        
-            <li><a href="#skipping">Skipping</a></li>
-        
-            <li><a href="#reporters">Reporters</a></li>
-        
-            <li><a href="#test-options">Test Options</a></li>
+            <li><a href="#done">done()</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="basics">Basics</h1>
-<p>CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.</p>
-<pre><code class="js">Feature('CodeceptJS demo');
-
-Scenario('check Welcome page on site', (I) =&gt; {
-  I.amOnPage('/');
-  I.see('Welcome');
-})
+<h1 id="advanced-usage">Advanced Usage</h1>
+<h2 id="groups">Groups</h2>
+<p>Currently CodeceptJS doesn't support groups or tags. However, you can append <code>@tag</code> to your test name, so
+all tests with <code>@tag</code> could be executed with <code>--grep @tag</code> option.</p>
+<pre><code class="js">Scenario('update user profile @slow')
 </code></pre>
 
-<p>Tests are expected to be written in ECMAScript 6.
-Each test is described inside a <code>Scenario</code> function with <code>I</code> object passed into it.
-I object is an <strong>actor</strong>, an abstraction for a testing user. I is a proxy object for currently enabled <strong>Helpers</strong>.</p>
-<pre><code class="json">  &quot;helpers&quot;: {
-    &quot;WebDriverIO&quot;: {
-      &quot;url&quot;: &quot;http://localhost&quot;,
-      &quot;browser&quot;: &quot;firefox&quot;
-    }
+<pre><code>codeceptjs run --grep @slow
+</code></pre>
+
+<h2 id="debug">Debug</h2>
+<p>CodeceptJS provides a debug mode in which additional information is printed.
+It can be turned on with <code>--debug</code> flag.</p>
+<pre><code>codeceptjs run --debug
+</code></pre>
+
+<p>While running in debug mode you can pause execution and enter interactive console mode by using <code>pause()</code> function.</p>
+<p>For advanced debugging use NodeJS debugger. In WebStorm IDE:</p>
+<pre><code>node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
+</code></pre>
+
+<h2 id="multiple-execution">Multiple Execution</h2>
+<p>CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations. Before using this feature you need to add <code>multiple</code> option to the config:</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;basic&quot;: {
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  },
+
+&quot;smoke&quot;: {
+  // run only tests containing &quot;@smoke&quot; in name
+  &quot;grep&quot;: '@smoke',
+
+  // use firefox and different chrome configurations
+  &quot;browsers&quot;: [
+    'firefox',
+    {browser: 'chrome', windowSize: 'maximize'},
+    // replace any config values from WebDriverIO helper
+    {browser: 'chrome', windowSize: '1200x840'}
+    ]
   }
+}
 </code></pre>
 
-<p>For current config all methods of <code>I</code> will be taken from <code>WebDriverIO</code> helper.
-This is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.</p>
-<h2 id="how-it-works">How It Works</h2>
-<p>Tests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.
-However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
-<a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
-<p>If you want to get information from a running test you can use <code>yield</code> inside a <strong>generator function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
-<pre><code class="js">Scenario('try grabbers', function* (I) {
-  var title = yield I.grabTitle();
-});
+<p>Then tests can be executed using <code>run-multiple</code> command.</p>
+<p>Run <code>basic</code> suite for all browsers</p>
+<pre><code>codeceptjs run-multiple basic
 </code></pre>
 
-<p>then you can use those variables in assertions:</p>
-<pre><code class="js">var title = yield I.grabTitle();
-var assert = require('assert');
-assert.equal(title, 'CodeceptJS');
+<p>Run <code>basic</code> suite for chrome only:</p>
+<pre><code>codeceptjs run-multiple basic:chrome
 </code></pre>
 
-<h2 id="pause">Pause</h2>
-<p>Test execution can be paused in any place of a test with <code>pause()</code> call.
-This also launches interactive console where you can call actions of <code>I</code> object.</p>
-<p><img alt="shell" src="../images/shell.png" /></p>
-<p>You can also use <code>pause()</code> to check the web application in a browser. Press <code>ENTER</code> to resume test execution.</p>
-<p>Interactive shell can be started outside test context by running</p>
-<pre><code class="bash">codeceptjs shell
+<p>Run <code>basic</code> suite for chrome and <code>smoke</code> for firefox</p>
+<pre><code>codeceptjs run-multiple basic:chrome somke:firefox
 </code></pre>
 
-<h2 id="before">Before</h2>
-<p>Common preparation steps like opening a web page, logging in a user, can be placed in <code>Before</code> or <code>Background</code> hook:</p>
-<pre><code class="js">Feature('CodeceptJS Demonstration');
-
-Before((I) =&gt; { // or Background
-  I.amOnPage('/documentation');
-});
-
-Scenario('test some forms', (I) =&gt; {
-  I.click('Create User');
-  I.see('User is valid');
-  I.dontSeeInCurrentUrl('/documentation');
-});
-
-Scenario('test title', (I) =&gt; {
-  I.seeInTitle('Example application');
-});
+<p>Run basic tests with grep and junit reporter</p>
+<pre><code>codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
 </code></pre>
 
-<p>Same as <code>Before</code> you can use <code>After</code> to run teardown for each scenario.</p>
-<h2 id="beforesuite">BeforeSuite</h2>
-<p>If you need to run complex setup before all tests and teardown this afterwards you can use <code>BeforeSuite</code> and <code>AfterSuite</code>
-functions. <code>BeforeSuite</code> and <code>AfterSuite</code> have access to <code>I</code> object, but <code>BeforeSuite/AfterSuite</code> don't have an access to the browser because it's not running at this moment.
-You can use them to execute handlers that will setup your environment. <code>BeforeSuite/AfterSuite</code> will work  only for a file where it was declared (so you can declare different setups for files)</p>
-<pre><code class="js">BeforeSuite((I) =&gt; {
-  I.syncDown('testfolder');
-});
-
-AfterSuite((I) =&gt; {
-  I.syncUp('testfolder');
-  I.clearDir('testfolder');
-});
+<p>Run regression tests specifying different config path:</p>
+<pre><code>codeceptjs run-multiple regression -c path/to/config
 </code></pre>
 
-<p><a href="https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933">Here are some ideas</a> where to use BeforeSuite hooks.</p>
-<h2 id="within">Within</h2>
-<p>To specify the exact area on a page where actions can be performed you can use <code>within</code> function.
-Everything executed in its context will be narrowed to context specified by locator:</p>
-<p>Usage: <code>within('section', ()=&gt;{})</code></p>
-<pre><code class="js">I.amOnPage('https://github.com');
-within('.form-signup-home', () =&gt; {
-  I.fillField('user[login]', 'User');
-  I.fillField('user[email]', 'user@user.com');
-  I.fillField('user[password]', 'user@user.com');
-  I.click('button');
-});
-I.see('There were problems creating your account.');
+<p>Run all suites for all browsers:</p>
+<pre><code>codeceptjs run-multiple --all
 </code></pre>
 
-<p><code>within</code> can also work with <a href="../acceptance/#iframes">iframes</a></p>
-<p>When running steps inside a within block will be shown with a shift:</p>
-<p><img alt="within" src="http://codecept.io/images/within.png" /></p>
-<h2 id="comments">Comments</h2>
-<p>There is a simple way to add additional comments to your test scenario.
-Use <code>say</code> command to print information to screen:</p>
-<pre><code class="js">I.say('I am going to publish post');
-I.say('I enter title and body');
-I.say('I expect post is visible on site');
+<p>Each executed process uses custom folder for reports and output. It is stored in subfolder inside an output directory. Subfolders will be named in <code>suite_browser</code> format.</p>
+<p>Output is printed for all running processes. Each line is tagged with a suite and browser name:</p>
+<pre><code>[basic:firefox] GitHub --
+[basic:chrome] GitHub --
+[basic:chrome]    it should not enter
+[basic:chrome]  ✓ signin in 2869ms
+
+[basic:chrome]   OK  | 1 passed   // 30s
+[basic:firefox]    it should not enter
+[basic:firefox]  ✖ signin in 2743ms
+
+[basic:firefox] -- FAILURES:
+
 </code></pre>
 
-<h2 id="skipping">Skipping</h2>
-<p>Like in Mocha you can use <code>x</code> and <code>only</code> to skip tests or making a single test to run.</p>
-<ul>
-<li><code>xScenario</code> - skips current test</li>
-<li><code>Scenario.only</code> - executes only the current test</li>
-</ul>
-<h2 id="reporters">Reporters</h2>
-<p>CodeceptJS supports <a href="https://mochajs.org/#reporters">Mocha Reporters</a>.
-They can be used with <code>--reporter</code> options.
-By default a custom console reporter is enabled.</p>
-<p>We are currently working on improving reporters support.</p>
-<h2 id="test-options">Test Options</h2>
-<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
-<pre><code class="js">Feature('My feature', {key: val});
-
-Scenario('My scenario', {key: val}, (I) =&gt; {});
-</code></pre>
-
-<h3 id="timeout">Timeout</h3>
-<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
-<pre><code class="js">Feature('Stop me', {timeout: 5000}); // set timeout to 5s
-</code></pre>
-
-<p>or for the test:</p>
-<pre><code class="js">// set timeout to 1s
-Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
-
-// disable timeout for this scenario
-Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
-</code></pre>
-
-<h3 id="retries">Retries</h3>
-<p>Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
-This can be done with <code>retries</code> option added to <code>Feature</code> declaration.</p>
-<p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
-You can set number of a retries for a feature:</p>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-</code></pre>
-
-<p>Every Scenario inside this feature will be rerun 3 times.
-You can make an exception for a specific scenario by passing <code>retries</code> option to it:</p>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-
-Scenario('Not that complex', {retries: 1}, (I) =&gt; {
-  // test goes here
-});
-
-Scenario('Really complex', (I) =&gt; {
-  // test goes here
-});
-</code></pre>
-
-<p>"Really complex" test will be restarted 3 times,
-while "Not that complex" test will be rerun only once.</p>
-<hr />
-<h3 id="done">done()</h3></div>
+<h2 id="done">done()</h2></div>
             <div class="clearfix"></div>
         </div>
         

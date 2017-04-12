@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>Hooks - CodeceptJS</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-30075781-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-sm hidden-xs hidden-md" style="margin-left: 10px; margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+                        
+            
+                
+                <li >
+                    <a href="..">Index</a>
+                </li>
+                
+            
+                        
+            
+                
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
+                </li>
+                
+            
+                        
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../angular/">AngularJS Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../nightmare/">Nightmare Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Hooks</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Protractor/">Protractor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Nightmare/">Nightmare</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../commands/">Commands</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../configuration/">Configuration</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../translation/">Translation</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../docker/">Docker</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+                        
+            
+                
+                <li >
+                    <a href="../changelog/">Releases</a>
+                </li>
+                
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="../pageobjects/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../advanced/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#hooks">Hooks</a></li>
+        
+            <li><a href="#bootstrap-teardown">Bootstrap &amp; Teardown</a></li>
+        
+            <li><a href="#example-async-teardown-in-a-function">Example: Async Teardown in a Function</a></li>
+        
+            <li><a href="#example-bootstrap-teardown-inside-an-object">Example: Bootstrap &amp; Teardown Inside an Object</a></li>
+        
+            <li><a href="#example-bootstrap-teardown-inside-config">Example: Bootstrap &amp; Teardown Inside Config</a></li>
+        
+            <li><a href="#hooks_1">Hooks</a></li>
+        
+            <li><a href="#api">API</a></li>
+        
+            <li><a href="#done">done()</a></li>
+        
+            <li><a href="#done_1">done()</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h1 id="hooks">Hooks</h1>
+<p>CodeceptJS provides API to run custom code before and after the test and inject custom listeners into the event system.</p>
+<h2 id="bootstrap-teardown">Bootstrap &amp; Teardown</h2>
+<p>In case you need to execute arbitrary code before or after the tests,
+you can use <code>bootstrap</code> and <code>teardown</code> config. Use it to start and stop webserver, Selenium, etc.</p>
+<p>There are different ways to define bootstrap and teardown functions:</p>
+<ul>
+<li>JS file executed as is (synchronously).</li>
+<li>JS file exporting function with optional callback for async execution.</li>
+<li>JS file exporting an object with <code>bootstrap</code> and <code>teardown</code> methods.</li>
+<li>Inside JS config file</li>
+</ul>
+<p>Corresponding examples provided in next sections.</p>
+<h3 id="example-async-bootstrap-in-a-function">Example: Async Bootstrap in a Function</h3>
+<p>Add to <code>codecept.json</code>:</p>
+<pre><code class="json">&quot;bootstrap&quot;: &quot;./run_server.js&quot;
+</code></pre>
+
+<p>Export a function in your bootstrap file:</p>
+<pre><code class="js">// bootstrap.js
+var server = require('./app_server');
+module.exports = function(done) {
+  // on error call done('error description') to stop
+  if (!server.validateConfig()) {
+    done(&quot;Can't execute server with invalid config, tests stopped&quot;);
+  }
+  // call done() to continue execution
+  server.run(done);
+}
+</code></pre>
+
+<h2 id="example-async-teardown-in-a-function">Example: Async Teardown in a Function</h2>
+<p>Stopping a server from a previous example can be done in a similar manner.
+Create a teardown file and add it to <code>codecept.json</code>:</p>
+<pre><code class="json">&quot;teardown&quot;: &quot;./stop_server.js&quot;
+</code></pre>
+
+<p>Inside <code>stop_server.js</code>:</p>
+<pre><code class="js">var server = require('./app_server');
+module.exports = function(done) {
+  server.stop(done);
+}
+</code></pre>
+
+<h2 id="example-bootstrap-teardown-inside-an-object">Example: Bootstrap &amp; Teardown Inside an Object</h2>
+<p>Examples above can be combined into one file.</p>
+<p>Add to config (<code>codecept.json</code>):</p>
+<pre><code class="js">  &quot;bootstrap&quot;: &quot;./server.js&quot;
+  &quot;teardown&quot;: &quot;./server.js&quot;
+</code></pre>
+
+<p><code>server.js</code> should export object with <code>bootstrap</code> and <code>teardown</code> functions:</p>
+<pre><code class="js">// bootstrap.js
+var server = require('./app_server');
+module.exports = {
+  bootstrap: function(done) {
+    server.start(done);
+  },
+  teardown: function(done) {
+    server.stop(done);
+  }
+}
+</code></pre>
+
+<h2 id="example-bootstrap-teardown-inside-config">Example: Bootstrap &amp; Teardown Inside Config</h2>
+<p>If you are using JavaScript-style config <code>codecept.conf.js</code>, bootstrap and teardown functions can be placed inside of it:</p>
+<pre><code class="js">var server = require('./app_server');
+
+exports.config = {
+  tests: &quot;./*_test.js&quot;,
+  helpers: {},
+
+  // adding bootstrap/teardown
+  bootstrap: function(done) {
+    server.launch(done);
+  },
+  teardown: function(done) {
+    server.stop(done);
+  }
+  // ...
+  // other config options
+}
+
+</code></pre>
+
+<h2 id="hooks_1">Hooks</h2>
+<p>To extend internal CodeceptJS functionality you can use hooks.
+CodeceptJS provides API to connect to its internal event dispatcher, container, output, promise recorder, so you could hook into it to create your own reporters, test listeners, etc.</p>
+<p>Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside <code>hooks</code> section of config. Unlike <code>bootstrap</code> you can have multiple hooks registered:</p>
+<pre><code class="json">&quot;hooks&quot;: [
+  &quot;./server.js&quot;,
+  &quot;./data_builder.js&quot;,
+  &quot;./report_notification.js&quot;
+]
+</code></pre>
+
+<p>Inside those JS files you can use CodeceptJS API to access its internals.</p>
+<h2 id="api">API</h2>
+<p>CodeceptJS provides an API which can be loaded via <code>require('codeceptjs')</code> when CodeceptJS is installed locally.
+These internal objects are available:</p>
+<ul>
+<li><code>Codecept</code>: test runner class</li>
+<li><code>event</code>: event listener</li>
+<li><code>recorder</code>: global promise chain</li>
+<li><code>output</code>: internal printer</li>
+<li><code>container</code>: dependency injection container for tests, includes current helpers and support objects</li>
+</ul>
+<h3 id="event-listeners">Event Listeners</h3>
+<p>CodeceptJS provides a module with <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js">event dispatcher and set of predefined events</a>.</p>
+<p>It can be required from codeceptjs package if it is installed locally.</p>
+<pre><code class="js">const event = require('codeceptjs').event;
+
+module.exports = function() {
+
+  event.dispatcher.on(event.test.before, function (test) {
+
+    console.log('--- I am before test --');
+
+  });
+}
+</code></pre>
+
+<p>Available events:</p>
+<ul>
+<li><code>event.test.started(test)</code> - at the very beginning of a test</li>
+<li><code>event.test.before(test)</code> - when <code>Before</code> hooks from helpers and from test is executed</li>
+<li><code>event.test.after(test)</code> - after each test</li>
+<li><code>event.test.passed(test)</code> - when test passed</li>
+<li><code>event.test.failed(test, error)</code> - when test failed</li>
+<li><code>event.suite.before(suite)</code> - before a suite</li>
+<li><code>event.suite.after(suite)</code> - after a suite</li>
+<li><code>event.step.before(step)</code> - at the very beginning of a step</li>
+<li><code>event.step.started(step)</code> - when step hooks from helpers executed</li>
+<li><code>event.step.after(step)</code>- after a step</li>
+<li><code>event.all.before</code> - before running tests</li>
+<li><code>event.all.after</code> - after running tests</li>
+<li><code>event.all.result</code> - when results are printed</li>
+</ul>
+<p>For further reference look for <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/listener">currently available listeners</a> using event system.</p>
+<h3 id="recorder">Recorder</h3>
+<p>To inject asynchronous functions in a test or before/after a test you can subscribe to corresponding event and register a function inside a recorder object. <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Recorder</a> represents a global promises chain.</p>
+<p>Provide a function description as a first parameter, function should return a promise:</p>
+<pre><code class="js">const event = require('codeceptjs').event;
+const recorder = require('codeceptjs').recorder;
+module.exports = function() {
+
+  event.dispatcher.on(event.test.before, function (test) {
+
+    const request = require('request');
+
+    recorder.add('create fixture data via API', function() {
+      return new Promise(doneFn, errFn) =&gt; {
+        request({
+          baseUrl: 'http://api.site.com/',
+          method: 'POST',
+          url: '/users',
+          json: { name: 'john', email: 'john@john.com' }
+        }), (err, httpResponse, body) =&gt; {
+          if (err) return errFn(err);
+          doneFn();
+        }
+      });
+    }
+  });
+}
+
+</code></pre>
+
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Whenever you execute tests with <code>--verbose</code> option you will see registered events and promises executed by recorder.
+=======
+Whenever you execute tests with <code>--verbose</code> option you will see registered events and promises executed by a recorder.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>hook-docs</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="output">Output</h3>
+<p>Output module provides 4 verbosity levels. Depending on the mode you can have different information printed using corresponding functions.</p>
+<ul>
+<li><code>default</code>: prints basic information using <code>output.print</code></li>
+<li><code>steps</code>: toggled by <code>--steps</code> option, prints step execution</li>
+<li><code>debug</code>: toggled by <code>--debug</code> option, prints steps, and debug information with <code>output.debug</code></li>
+<li><code>verbose</code>: toggled by <code>--verbose</code> prints debug information and internal logs with <code>output.log</code></li>
+</ul>
+<p>It is recommended to avoid <code>console.log</code> and use output.* methods for printing.</p>
+<pre><code class="js">const output = require('codeceptjs').output;
+
+output.print('This is basic information');
+output.debug('This is debug information');
+output.log('This is verbose logging information');
+</code></pre>
+
+<h3 id="container">Container</h3>
+<p>CodeceptJS has a dependency injection container with Helpers and Support objects.
+They can be retrieved from the container:</p>
+<pre><code class="js">let container = require('codeceptjs').container;
+
+// get object with all helpers
+let helpers = container.helpers();
+
+// get helper by name
+let WebDriverIO = container.helpers('WebDriverIO');
+
+// get support objects
+let support = container.support();
+
+// get support object by name
+let UserPage = container.support('UserPage');
+</code></pre>
+
+<p>New objects can also be added to container in runtime:</p>
+<pre><code class="js">let container = require('codeceptjs').container;
+
+container.append({
+  helpers: { // add helper
+    MyHelper: new MyHelper({ config1: 'val1' });
+  },
+  support: { // add page object
+    UserPage: require('./pages/user');
+  }
+})
+</code></pre>
+
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h2 id="done">done()</h2>
+<p>=======</p>
+<h2 id="done_1">done()</h2>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>hook-docs</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote></div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+    <footer>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+                
+            <h4>Sponsored by</h4>
+
+            <a href="https://rebilly.com" target="_blank">
+            <img class="rebilly" src="/images/Rebilly.png" alt="" >
+            </a>
+            <p><em>Uncover your revenue potential with<br>
+                our recurring billing software.</em></p>
+            </div>
+    
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                </ul>
+
+</div>
+
+            <div class="col-md-4">
+                
+      
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+</div>
+
+    </footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>        
+        <script src="../js/base.js"></script>
+        <script src="../build/FileSystem.js"></script>
+        <script src="../build/Nightmare.js"></script>
+        <script src="../build/Protractor.js"></script>
+        <script src="../build/SeleniumWebdriver.js"></script>
+        <script src="../build/WebDriverIO.js"></script>
+    </body>
+</html>

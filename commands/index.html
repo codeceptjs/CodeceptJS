@@ -90,6 +90,10 @@
                     <ul class="dropdown-menu">
                     
                         <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
                             <a href="../basics/">Basics</a>
                         </li>
                     
@@ -111,6 +115,14 @@
                     
                         <li >
                             <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../hooks/">Hooks</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -224,6 +236,8 @@
         
             <li><a href="#run">Run</a></li>
         
+            <li><a href="#run-multiple">Run multiple</a></li>
+        
             <li><a href="#init">Init</a></li>
         
             <li><a href="#shell">Shell</a></li>
@@ -247,8 +261,8 @@
 <pre><code>codeceptjs run
 </code></pre>
 
-<p>Run tests from <code>test</code> dir</p>
-<pre><code>codeceptjs run test
+<p>Load config and run tests from <code>test</code> dir</p>
+<pre><code>codeceptjs run -c test
 </code></pre>
 
 <p>Run only tests with "signin" word in name</p>
@@ -256,23 +270,24 @@
 </code></pre>
 
 <p>Run single test [path to codecept.js] [test filename]</p>
-<pre><code>codeceptjs run . github_test.js
+<pre><code>codeceptjs run github_test.js
 </code></pre>
 
 <p>Run single test with steps printed</p>
-<pre><code>codeceptjs run . github_test.js --steps
+<pre><code>codeceptjs run github_test.js --steps
 </code></pre>
 
 <p>Run single test in debug mode</p>
-<pre><code>codeceptjs run . github_test.js --debug
+<pre><code>codeceptjs run github_test.js --debug
 </code></pre>
 
 <p>Run test with internal logs printed (global promises, and events).</p>
-<pre><code>codeceptjs run . github_test.js --verbose
+<pre><code>codeceptjs run github_test.js --verbose
 </code></pre>
 
-<p>Select config file manually</p>
-<pre><code>codeceptjs run --config my.codecept.conf.js`
+<p>Select config file manually (<code>-c</code> or <code>--config</code> option)</p>
+<pre><code>codeceptjs run -c my.codecept.conf.js
+codeceptjs run --config path/to/codecept.json
 </code></pre>
 
 <p>Override config on the fly. Provide valid JSON which will be merged into current config:</p>
@@ -284,6 +299,11 @@
 </code></pre>
 
 <p>Use any of <a href="https://github.com/mochajs/mocha/tree/master/lib/reporters">Mocha reporters</a> used.</p>
+<h2 id="run-multiple">Run multiple</h2>
+<p>Run multiple suites.</p>
+<pre><code>codeceptjs run-multiple smoke:chrome regression:firefox
+</code></pre>
+
 <h2 id="init">Init</h2>
 <p>Creates <code>codecept.json</code> file in current directory:</p>
 <pre><code>codeceptjs init
@@ -316,7 +336,7 @@
 <pre><code>codeceptjs def
 </code></pre>
 
-<p>Produces <code>steps.d.ts</code> file, which refrerenced in the very beginning of a test file.</p>
+<p>Produces <code>steps.d.ts</code> file, which referenced in the very beginning of a test file.</p>
 <pre><code class="js">/// &lt;reference path=&quot;./steps.d.ts&quot; /&gt;
 Feature('My new test');
 </code></pre>

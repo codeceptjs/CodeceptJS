@@ -90,6 +90,10 @@
                     <ul class="dropdown-menu">
                     
                         <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
                             <a href="../basics/">Basics</a>
                         </li>
                     
@@ -111,6 +115,14 @@
                     
                         <li >
                             <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../hooks/">Hooks</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -234,6 +246,8 @@
         
             <li><a href="#waiting">Waiting</a></li>
         
+            <li><a href="#iframes">IFrames</a></li>
+        
     
     </ul>
 </div></div>
@@ -242,9 +256,28 @@
 <h1 id="acceptance-testing">Acceptance Testing</h1>
 <p>How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.</p>
 <p>Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check <strong>not just functionality of application but a user interface</strong> (UI) as well.</p>
-<p>By default CodeceptJS uses <a href="../helpers/WebDriverIO/">WebDriverIO</a> helper and <strong>Selenium</strong> to automate browser.
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+By default CodeceptJS uses <a href="../helpers/WebDriverIO/">WebDriverIO</a> helper and <strong>Selenium</strong> to automate browser.
 However, you can also choose <a href="../helpers/SeleniumWebdriver">SeleniumWebdriver</a> or <a href="../helpers/Protractor">Protractor</a> helpers, driven by corresponding libraries.
+=======
+By default CodeceptJS uses <a href="../helpers/WebDriverIO/">WebDriverIO</a> helper and <strong>Selenium</strong> to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
+However, you can also choose <a href="../helpers/Nightmare">Nightmare</a> or <a href="../helpers/Protractor">Protractor</a> helpers, driven by corresponding libraries.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>master
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.</p>
 <p>Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
 That is what a test look like.</p>
@@ -392,6 +425,18 @@ I.click('#agree_button');
 </code></pre>
 
 <p>More wait actions can be found in helper's reference.</p>
+<h2 id="iframes">IFrames</h2>
+<p><a href="../basics/#within">within</a> operator can be used to work inside IFrames. Special <code>frame</code> locator is required to locate the iframe and get into its context.</p>
+<p>See example:</p>
+<pre><code class="js">within({frame: &quot;#editor&quot;}, () =&gt; {
+  I.see('Page');
+});
+</code></pre>
+
+<p>Nested IFrames can be set by passing array <em>(Nightmare only)</em>:</p>
+<pre><code class="js">within({frame: [&quot;.content&quot;, &quot;#editor&quot;]);
+</code></pre>
+
 <hr />
 <h3 id="done">done()</h3>
 <p>CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.</p></div>

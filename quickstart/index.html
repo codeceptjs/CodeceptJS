@@ -90,6 +90,10 @@
                     <ul class="dropdown-menu">
                     
                         <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
                             <a href="../basics/">Basics</a>
                         </li>
                     
@@ -111,6 +115,14 @@
                     
                         <li >
                             <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../hooks/">Hooks</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -193,7 +205,7 @@
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../basics/">
+                    <a rel="prev" href="../installation/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -235,15 +247,17 @@
 
 <h1 id="quickstart">QuickStart</h1>
 <p><strong>NodeJS v 4.2.0</strong> and higher required to start.
-Install <strong>CodeceptJS</strong> with NPM:</p>
+CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.</p>
+<p>Install <strong>CodeceptJS</strong> with WebDriverio using <code>codeceptjs-webdriverio</code> meta package from NPM.</p>
 <p>You can install it globally:</p>
-<pre><code>[sudo] npm install -g codeceptjs
+<pre><code>[sudo] npm install -g codeceptjs-webdriverio
 </code></pre>
 
 <p>or locally</p>
-<pre><code>npm install --save-dev codeceptjs
+<pre><code>npm install --save-dev codeceptjs-webdriverio
 </code></pre>
 
+<p>To install CodeceptJS without any backends use <code>codeceptjs</code> package.</p>
 <h2 id="setup">Setup</h2>
 <p>Initialize CodeceptJS running:</p>
 <pre><code>codeceptjs init
@@ -274,17 +288,10 @@ No matter what helper you've chosen they will be similar in use.</p>
 
 <p>WebDriverIO helper will ask for additional configuration as well:</p>
 <pre><code>? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed firefox
+? [WebDriverIO] Browser in which testing will be performed (chrome)
 </code></pre>
 
 <p>If you agree with defaults, finish the installation.</p>
-<p>Depending on a helper you've chosen you will be asked to install corresponding package manually in the end of init.
-In case of webdriver you will need to run</p>
-<pre><code>[sudo] npm install -g webdriverio
-</code></pre>
-
-<p>for global installation. In case CodeceptJS is installed locally, webdriverio can be installed locally as well.
-In a similar way you may install <code>protractor</code> or <code>selenium-webdriver</code>.</p>
 <h2 id="creating-first-test">Creating First Test</h2>
 <p>Tests can be easily created by running</p>
 <pre><code class="bash">codeceptjs gt
@@ -308,7 +315,9 @@ Scenario('test something', (I) =&gt; {
 });
 </code></pre>
 
-<p>Before running this test we should ensure that <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Web Server is running</a>. Then we can execute tests with</p>
+<p>Start <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> or <a href="http://codecept.io/helpers/WebDriverIO/#phantomjs-installation">PhantomJS</a>.
+To run tests with Selenium inside Chrome browser you will need <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> installed.</p>
+<p>Execute tests:</p>
 <pre><code class="bash">codeceptjs run --steps
 </code></pre>
 
@@ -322,7 +331,7 @@ Scenario('test something', (I) =&gt; {
 </code></pre>
 
 <h3 id="configuring-intellisense-optional">Configuring IntelliSense (optional)</h3>
-<p>If you are using Visual Studio Code or other IDE that supports Typescript Definitions,
+<p>If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with</p>
 <pre><code>codeceptjs def
 </code></pre>

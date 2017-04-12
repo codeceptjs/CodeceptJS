@@ -90,6 +90,10 @@
                     <ul class="dropdown-menu">
                     
                         <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
                             <a href="../basics/">Basics</a>
                         </li>
                     
@@ -111,6 +115,14 @@
                     
                         <li >
                             <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../hooks/">Hooks</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -220,7 +232,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#051">0.5.1</a></li>
+        <li class="main active"><a href="#060">0.6.0</a></li>
+        
+    
+        <li class="main "><a href="#051">0.5.1</a></li>
         
     
         <li class="main "><a href="#050">0.5.0</a></li>
@@ -323,6 +338,33 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="060">0.6.0</h2>
+<ul>
+<li><strong>Breaking</strong> Run command doesn't require path as first parameter. To specify path other than current directory use <code>--config</code> or <code>-c</code> option:</li>
+</ul>
+<p>Instead of: <code>codeceptjs run tests</code> use:</p>
+<pre><code>// load config and run from tests directory
+codeceptjs run -c tests/
+// or load codecept.json from tests directory
+codeceptjs run -c tests/codecept.json
+</code></pre>
+
+<ul>
+<li>Command <code>multiple-run</code> added, to execute tests in several browsers in parallel by @APshenkin and @davertmik. <a href="">See documentation</a>.</li>
+<li>Hooks API added to extend CodeceptJS with custom listeners and plugins. <a href="">See documentation</a>.</li>
+<li>[Nightmare][WebDriverIO] <code>within</code> can work with iframes by @imvetri. <a href="">See documentation</a>.</li>
+<li>[Nightmare] Fixed globally locating <code>nightmare-upload</code>.</li>
+<li>[WebDriverIO] added <code>seeNumberOfVisibleElements</code> method by @elarouche.</li>
+<li>Exit with non-zero code if init throws an error by @rincedd</li>
+<li>New guides published</li>
+<li>[Installation]</li>
+<li>[Advanced Usage]</li>
+<li>[Hooks]</li>
+<li>Meta packages published:</li>
+<li><a href="https://www.npmjs.com/package/codecept-webdriverio">codecept-webdriverio</a></li>
+<li><a href="https://www.npmjs.com/package/codecept-protractor">codecept-protractor</a></li>
+<li><a href="https://www.npmjs.com/package/codecept-nightmare">codecept-nightmare</a></li>
+</ul>
 <h2 id="051">0.5.1</h2>
 <ul>
 <li><a href="http://codecept.io/translation/#polish">Polish translation</a> added by @limes.</li>
