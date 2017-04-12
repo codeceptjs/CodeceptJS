@@ -102,7 +102,6 @@ BeforeSuite((I) => {
 AfterSuite((I) => {
   I.syncUp('testfolder');
   I.clearDir('testfolder');
-})
 ```
 
 [Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
@@ -112,10 +111,11 @@ AfterSuite((I) => {
 To specify the exact area on a page where actions can be performed you can use `within` function.
 Everything executed in its context will be narrowed to context specified by locator:
 
-Usage: within('section', ()=>{} )
+Usage: `within('section', ()=>{})`
+
 ```js
 I.amOnPage('https://github.com');
-within('.form-signup-home', function () {
+within('.form-signup-home', () => {
   I.fillField('user[login]', 'User');
   I.fillField('user[email]', 'user@user.com');
   I.fillField('user[password]', 'user@user.com');
@@ -124,12 +124,7 @@ within('.form-signup-home', function () {
 I.see('There were problems creating your account.');
 ```
 
-iframe example
-```js
-within({frame:["#editor"]},function(){
-  I.see('Page');
-});
-```
+`within` can also work with [iframes](/acceptance/#iframes)
 
 When running steps inside a within block will be shown with a shift:
 

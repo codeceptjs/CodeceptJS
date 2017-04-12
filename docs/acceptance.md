@@ -201,6 +201,24 @@ I.click('#agree_button');
 
 More wait actions can be found in helper's reference.
 
+## IFrames
+
+[within](/basics/#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
+
+See example:
+
+```js
+within({frame: "#editor"}, () => {
+  I.see('Page');
+});
+```
+
+Nested IFrames can be set by passing array *(Nightmare only)*:
+
+```js
+within({frame: [".content", "#editor"]);
+```
+
 ---
 
 ### done()

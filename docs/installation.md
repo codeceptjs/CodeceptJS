@@ -54,5 +54,5 @@ or use [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless brow
 Launch Selenium with Chrome browser inside a Docker container:
 
 ```
-docker run -d -p 4444:4444 selenium/standalone-chrome
+docker run --net=host selenium/standalone-chrome
 ```
