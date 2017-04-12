@@ -1,3 +1,32 @@
+## 0.6.0
+
+* **Breaking** Run command doesn't require path as first parameter. To specify path other than current directory use `--config` or `-c` option:
+
+Instead of: `codeceptjs run tests` use:
+
+```
+// load config and run from tests directory
+codeceptjs run -c tests/
+// or load codecept.json from tests directory
+codeceptjs run -c tests/codecept.json
+```
+
+* Command `multiple-run` added, to execute tests in several browsers in parallel by @APshenkin and @davertmik. [See documentation]().
+* Hooks API added to extend CodeceptJS with custom listeners and plugins. [See documentation]().
+* [Nightmare][WebDriverIO] `within` can work with iframes by @imvetri. [See documentation]().
+* [Nightmare] Fixed globally locating `nightmare-upload`.
+* [WebDriverIO] added `seeNumberOfVisibleElements` method by @elarouche.
+* Exit with non-zero code if init throws an error by @rincedd
+* New guides published
+  * [Installation]
+  * [Advanced Usage]
+  * [Hooks]
+* Meta packages published:
+  * [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio)
+  * [codecept-protractor](https://www.npmjs.com/package/codecept-protractor)
+  * [codecept-nightmare](https://www.npmjs.com/package/codecept-nightmare)
+
+
 ## 0.5.1
 
 * [Polish translation](http://codecept.io/translation/#polish) added by @limes.

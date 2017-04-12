@@ -24,7 +24,7 @@ codeceptjs run --debug
 
 While running in debug mode you can pause execution and enter interactive console mode by using `pause()` function.
 
-NodeJS debugger can also be enabled so you could use debug by using breakpoints:
+For advanced debugging use NodeJS debugger. In WebStorm IDE:
 
 ```
 node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
