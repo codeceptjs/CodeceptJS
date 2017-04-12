@@ -142,6 +142,18 @@ I.say('I enter title and body');
 I.say('I expect post is visible on site');
 ```
 
+### Configuring IntelliSense (optional)
+
+If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
+you can generate step definitions with
+
+```
+codeceptjs def
+```
+
+Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
+method autocompletion while writing tests.
+
 ## Skipping
 
 Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
