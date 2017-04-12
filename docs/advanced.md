@@ -1,5 +1,18 @@
 # Advanced Usage
 
+## Groups
+
+Currently CodeceptJS doesn't support groups or tags. However, you can append `@tag` to your test name, so
+all tests with `@tag` could be executed with `--grep @tag` option.
+
+```js
+Scenario('update user profile @slow')
+```
+
+```
+codeceptjs run --grep @slow
+```
+
 ## Debug
 
 CodeceptJS provides a debug mode in which additional information is printed.

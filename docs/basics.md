@@ -102,6 +102,7 @@ BeforeSuite((I) => {
 AfterSuite((I) => {
   I.syncUp('testfolder');
   I.clearDir('testfolder');
+});
 ```
 
 [Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
