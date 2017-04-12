@@ -339,6 +339,7 @@
             <div class="col-md-7" role="main">
 
 <h2 id="060">0.6.0</h2>
+<p>Major release with extension API and parallel execution.</p>
 <ul>
 <li><strong>Breaking</strong> Run command doesn't require path as first parameter. To specify path other than current directory use <code>--config</code> or <code>-c</code> option:</li>
 </ul>
@@ -350,16 +351,17 @@ codeceptjs run -c tests/codecept.json
 </code></pre>
 
 <ul>
-<li>Command <code>multiple-run</code> added, to execute tests in several browsers in parallel by @APshenkin and @davertmik. <a href="">See documentation</a>.</li>
-<li>Hooks API added to extend CodeceptJS with custom listeners and plugins. <a href="">See documentation</a>.</li>
-<li>[Nightmare][WebDriverIO] <code>within</code> can work with iframes by @imvetri. <a href="">See documentation</a>.</li>
+<li>Command <code>multiple-run</code> added, to execute tests in several browsers in parallel by @APshenkin and @davertmik. <a href="http://codecept.io/advanced/#multiple-execution">See documentation</a>.</li>
+<li>Hooks API added to extend CodeceptJS with custom listeners and plugins. <a href="http://codecept.io/hooks/#hooks_1">See documentation</a>.</li>
+<li>[Nightmare][WebDriverIO] <code>within</code> can work with iframes by @imvetri. <a href="http://codecept.io/acceptance/#iframes">See documentation</a>.</li>
+<li>[WebDriverIO][SeleniumWebdriver][Protractor] Default browser changed to <code>chrome</code></li>
 <li>[Nightmare] Fixed globally locating <code>nightmare-upload</code>.</li>
 <li>[WebDriverIO] added <code>seeNumberOfVisibleElements</code> method by @elarouche.</li>
 <li>Exit with non-zero code if init throws an error by @rincedd</li>
-<li>New guides published</li>
-<li>[Installation]</li>
-<li>[Advanced Usage]</li>
-<li>[Hooks]</li>
+<li>New guides published:</li>
+<li><a href="http://codecept.io/installation/">Installation</a></li>
+<li><a href="http://codecept.io/hooks/">Hooks</a></li>
+<li><a href="http://codecept.io/advanced/">Advanced Usage</a></li>
 <li>Meta packages published:</li>
 <li><a href="https://www.npmjs.com/package/codecept-webdriverio">codecept-webdriverio</a></li>
 <li><a href="https://www.npmjs.com/package/codecept-protractor">codecept-protractor</a></li>
