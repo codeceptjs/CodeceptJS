@@ -110,7 +110,7 @@ AfterSuite((I) => {
 ## Within
 
 To specify the exact area on a page where actions can be performed you can use `within` function.
-Everything executed in its context will be narrowed to context specified by locator: 
+Everything executed in its context will be narrowed to context specified by locator:
 
 Usage: within('section', ()=>{} )
 ```js
@@ -160,34 +160,6 @@ They can be used with `--reporter` options.
 By default a custom console reporter is enabled.
 
 We are currently working on improving reporters support.
-
-## Bootstrap
-
-In case you need to execute arbitrary code before the tests,
-you can place it into your bootstrap file and provide a relative path to it in `codecept.json`
-
-```json
-"bootstrap": "./run_server.js"
-```
-
-To run `bootstrap` async, just export a function in your bootstrap file
-
-```js
-module.exports = function(done) {
-  // async instructions
-  // call done() to continue execution
-  // otherwise call done('error description')
-}
-```
-
-## Teardown
-
-In case you need to execute arbitrary code after the tests have run,
-you can place it into your teardown file and provide a relative path to it in `codecept.json`
-
-```json
-"teardown": "./stop_server.js"
-```
 
 ## Test Options
 

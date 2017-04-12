@@ -204,7 +204,11 @@ module.exports = function() {
 
 ```
 
+<<<<<<< HEAD
 Whenever you execute tests with `--verbose` option you will see registered events and promises executed by recorder.
+=======
+Whenever you execute tests with `--verbose` option you will see registered events and promises executed by a recorder.
+>>>>>>> hook-docs
 
 ### Output
 
@@ -261,4 +265,12 @@ container.append({
 })
 ```
 
+<<<<<<< HEAD
 ## done()
+=======
+## done()
+
+
+
+
+>>>>>>> hook-docs
