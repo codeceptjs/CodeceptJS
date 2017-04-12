@@ -1,19 +1,25 @@
 # QuickStart
 
 **NodeJS v 4.2.0** and higher required to start.
-Install **CodeceptJS** with NPM:
+CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
+
+Install **CodeceptJS** with WebDriverio using `codeceptjs-webdriverio` meta package from NPM.
+
 
 You can install it globally:
 
 ```
-[sudo] npm install -g codeceptjs
+[sudo] npm install -g codeceptjs-webdriverio
 ```
 
 or locally
 
 ```
-npm install --save-dev codeceptjs
+npm install --save-dev codeceptjs-webdriverio
 ```
+
+To install CodeceptJS without any backends use `codeceptjs` package.
+
 
 ## Setup
 
@@ -58,20 +64,10 @@ WebDriverIO helper will ask for additional configuration as well:
 
 ```
 ? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed firefox
+? [WebDriverIO] Browser in which testing will be performed (chrome)
 ```
 
 If you agree with defaults, finish the installation.
-
-Depending on a helper you've chosen you will be asked to install corresponding package manually in the end of init.
-In case of webdriver you will need to run
-
-```
-[sudo] npm install -g webdriverio
-```
-
-for global installation. In case CodeceptJS is installed locally, webdriverio can be installed locally as well.
-In a similar way you may install `protractor` or `selenium-webdriver`.
 
 ## Creating First Test
 
@@ -104,7 +100,10 @@ Scenario('test something', (I) => {
 });
 ```
 
-Before running this test we should ensure that [Selenium Web Server is running](http://codecept.io/helpers/WebDriverIO/#selenium-installation). Then we can execute tests with
+Start [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation).
+To run tests with Selenium inside Chrome browser you will need [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) installed.
+
+Execute tests:
 
 ```bash
 codeceptjs run --steps

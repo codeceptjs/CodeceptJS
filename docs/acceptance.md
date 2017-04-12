@@ -5,7 +5,7 @@ How does your client, manager, or tester, or any other non-technical person, kno
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
 By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
-However, you can also choose [SeleniumWebdriver](/helpers/SeleniumWebdriver) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
+However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
 That is what a test look like.
