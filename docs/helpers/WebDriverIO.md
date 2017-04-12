@@ -6,7 +6,9 @@ manipulate browser using Selenium WebDriver or PhantomJS.
 #### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-2.  Launch the daemon: `java -jar selenium-server-standalone-2.xx.xxx.jar`
+    2.1. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started)
+    2.2. For Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver) (optionally)
+2.  Launch the daemon: `java -jar selenium-server-standalone-3.xx.xxx.jar`
 
 #### PhantomJS Installation
 
@@ -25,7 +27,7 @@ This helper should be configured in codecept.json
 -   `restart` (optional, default: true) - restart browser between tests.
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
+-   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `desiredCapabilities`: Selenium's [desired capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 -   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `timeouts`: [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) defined as hash.
@@ -865,6 +867,20 @@ Element is located by label or name or CSS or XPath.
 
 ```js
 I.seeNumberOfElements('#submitBtn', 1);
+```
+
+**Parameters**
+
+-   `selector`  
+-   `num`  
+
+## seeNumberOfVisibleElements
+
+asserts that an element is visible a given number of times
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
 ```
 
 **Parameters**

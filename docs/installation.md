@@ -38,16 +38,14 @@ By default it doesn't install any backends like Webdriverio, Protracor, or Night
 
 They can be installed either globally or locally
 
-## Additional Tools
+## WebDriver
 
 WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
 
-We recommend to install them manually or use 3rd-party NPM packages:
+We recommend to install them manually or use NPM packages:
 
-* `webdriver-manager`: to install and execute Selenium server
-* `chromedriver`: to install ChromeDriver (add `require('chromedriver')` to bootstrap file)
-* `geckodriver`: to install GeckoDriver for Firefox browser (add `require('geckodriver')` to bootstrap file)
-* `phantomjs-prebuilt`: to install and execute Phantomjs
+* [Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
+* [Phantomjs](https://www.npmjs.com/package/phantomjs-prebuilt): to install and execute Phantomjs
 
 or use [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless browser testing.
 
