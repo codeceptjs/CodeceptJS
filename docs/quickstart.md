@@ -15,11 +15,12 @@ You can install it globally:
 or locally
 
 ```
-npm install --save-dev codeceptjs-webdriverio
+npm install codeceptjs-webdriverio --save-dev
 ```
 
-To install CodeceptJS without any backends use `codeceptjs` package.
-
+* To test with Nightmare install `codeceptjs-nightmare` package
+* To test with Protractor install `codeceptjs-protractor` package
+* For additional options see [Installation guide](http://codecept.io/installation/).
 
 ## Setup
 
@@ -100,8 +101,22 @@ Scenario('test something', (I) => {
 });
 ```
 
-Start [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation).
-To run tests with Selenium inside Chrome browser you will need [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) installed.
+## Prepare Selenium Server
+
+To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.
+
+Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) from NPM to install and run them:
+
+```
+[sudo] npm install -g selenium-standalone
+selenium-standalone install
+selenium-standalone start
+```
+
+
+Alternatively [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) can be installed and started manually.
+
+## Run
 
 Execute tests:
 
@@ -120,18 +135,6 @@ My First Test --
    • I see "Welcome"
  ✓ OK
 ```
-
-### Configuring IntelliSense (optional)
-
-If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
-you can generate step definitions with
-
-```
-codeceptjs def
-```
-
-Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
-method autocompletion while writing tests.
 
 ## Congrats! Your first test is running.
 

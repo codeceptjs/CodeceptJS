@@ -5,7 +5,6 @@ pages:
 - Index: 'index.md'
 - Quickstart: 'quickstart.md'
 - Guides:
-    - 'Installation': 'installation.md'
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
     - 'AngularJS Testing': 'angular.md'
@@ -21,6 +20,7 @@ pages:
     - 'Nightmare': 'helpers/Nightmare.md'
     - 'FileSystem': 'helpers/FileSystem.md'
 - Reference:
+    - 'Installation': 'installation.md'
     - 'Commands': 'commands.md'
     - 'Configuration': 'configuration.md'
     - 'Reports': 'reports.md'
