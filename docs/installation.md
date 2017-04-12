@@ -14,38 +14,6 @@ then it can be started as
 codeceptjs
 ```
 
-To use it with WebDriverIO install webdriverio package:
-
-```
-npm install -g webdriverio --save-dev
-```
-
-To use it with Protractor install protractor package:
-
-```
-npm install -g protractor --save-dev
-```
-
-To use it with Nightmare install nightmare and nightmare-upload packages:
-
-```
-npm install -g nightmare nightmare-upload --save-dev
-```
-
-### Local
-
-CodeceptJS can also be installed locally
-
-```
-npm install --save-dev codeceptjs
-```
-
-and started as
-
-```
-./node_modules/.bin/codeceptjs
-```
-
 To use it with WebDriverIO install webdriverio package globally:
 
 ```
@@ -65,6 +33,39 @@ To use it with Nightmare install nightmare and nightmare-upload packages globall
 ```
 
 
+### Local
+
+CodeceptJS can also be installed locally
+
+```
+npm install --save-dev codeceptjs
+```
+
+and started as
+
+```
+./node_modules/.bin/codeceptjs
+```
+
+To use it with WebDriverIO install webdriverio package:
+
+```
+npm install webdriverio --save-dev
+```
+
+To use it with Protractor install protractor package:
+
+```
+npm install protractor --save-dev
+```
+
+To use it with Nightmare install nightmare and nightmare-upload packages:
+
+```
+npm install nightmare nightmare-upload --save-dev
+```
+
+
 ## Meta Packages
 
 By default it doesn't install any backends like Webdriverio, Protracor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:
@@ -75,7 +76,7 @@ By default it doesn't install any backends like Webdriverio, Protracor, or Night
 
 They can be installed either globally or locally
 
-## Selenium
+## WebDriver
 
 WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
 
