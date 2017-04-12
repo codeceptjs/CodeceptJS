@@ -973,7 +973,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
    */
   seeNumberOfVisibleElements(selector, num) {
     return this.browser.isVisible(withStrictLocator(selector))
-      .then(function(res) {
+      .then(function (res) {
         if(!Array.isArray(res)) res = [res];
         res = res.filter((val) => val == true);
         return truth(`elements of ${locator}`, 'to be seen').assert.equal(res.length, num);
