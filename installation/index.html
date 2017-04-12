@@ -240,7 +240,7 @@
         
             <li><a href="#meta-packages">Meta Packages</a></li>
         
-            <li><a href="#selenium">Selenium</a></li>
+            <li><a href="#webdriver">WebDriver</a></li>
         
     
     </ul>
@@ -257,27 +257,6 @@
 <pre><code>codeceptjs
 </code></pre>
 
-<p>To use it with WebDriverIO install webdriverio package:</p>
-<pre><code>npm install -g webdriverio --save-dev
-</code></pre>
-
-<p>To use it with Protractor install protractor package:</p>
-<pre><code>npm install -g protractor --save-dev
-</code></pre>
-
-<p>To use it with Nightmare install nightmare and nightmare-upload packages:</p>
-<pre><code>npm install -g nightmare nightmare-upload --save-dev
-</code></pre>
-
-<h3 id="local">Local</h3>
-<p>CodeceptJS can also be installed locally</p>
-<pre><code>npm install --save-dev codeceptjs
-</code></pre>
-
-<p>and started as</p>
-<pre><code>./node_modules/.bin/codeceptjs
-</code></pre>
-
 <p>To use it with WebDriverIO install webdriverio package globally:</p>
 <pre><code>[sudo] npm install -g webdriverio
 </code></pre>
@@ -290,6 +269,27 @@
 <pre><code>[sudo] npm install -g nightmare nightmare-upload
 </code></pre>
 
+<h3 id="local">Local</h3>
+<p>CodeceptJS can also be installed locally</p>
+<pre><code>npm install --save-dev codeceptjs
+</code></pre>
+
+<p>and started as</p>
+<pre><code>./node_modules/.bin/codeceptjs
+</code></pre>
+
+<p>To use it with WebDriverIO install webdriverio package:</p>
+<pre><code>npm install webdriverio --save-dev
+</code></pre>
+
+<p>To use it with Protractor install protractor package:</p>
+<pre><code>npm install protractor --save-dev
+</code></pre>
+
+<p>To use it with Nightmare install nightmare and nightmare-upload packages:</p>
+<pre><code>npm install nightmare nightmare-upload --save-dev
+</code></pre>
+
 <h2 id="meta-packages">Meta Packages</h2>
 <p>By default it doesn't install any backends like Webdriverio, Protracor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:</p>
 <ul>
@@ -298,7 +298,7 @@
 <li><a href="https://www.npmjs.com/package/codecept-nightmare">codecept-nightmare</a> - installs CodeceptJS + Nightmare</li>
 </ul>
 <p>They can be installed either globally or locally</p>
-<h2 id="selenium">Selenium</h2>
+<h2 id="webdriver">WebDriver</h2>
 <p>WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> or <a href="http://codecept.io/helpers/WebDriverIO/#phantomjs-installation">PhantomJS</a> installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.</p>
 <p>We recommend to install them manually or use NPM packages:</p>
 <ul>
