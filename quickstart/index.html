@@ -321,13 +321,13 @@ Scenario('test something', (I) =&gt; {
 
 <h2 id="prepare-selenium-server">Prepare Selenium Server</h2>
 <p>To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.</p>
-<p>Use <code>selenium-standalone</code> from NPM to install and run them:</p>
+<p>Use <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a> from NPM to install and run them:</p>
 <pre><code>npm i selenium-standalone -g
 selenium-standalone install
 selenium-standalone start
 </code></pre>
 
-<p><a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can also be installed and executed manually.</p>
+<p>Alternatively <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can also be installed and started manually.</p>
 <h2 id="run">Run</h2>
 <p>Execute tests:</p>
 <pre><code class="bash">codeceptjs run --steps
