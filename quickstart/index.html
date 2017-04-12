@@ -258,10 +258,10 @@ CodeceptJS is multi-backend testing framework. In this guide we will use webdriv
 </code></pre>
 
 <p>or locally</p>
-<pre><code>npm install --save-dev codeceptjs-webdriverio
+<pre><code>npm install codeceptjs-webdriverio --save-dev
 </code></pre>
 
-<p>To install CodeceptJS without any backends use <code>codeceptjs</code> package.</p>
+<p><em>To install without webdriverio see <a href="http://codecept.io/installation/">installation guide</a>.</em></p>
 <h2 id="setup">Setup</h2>
 <p>Initialize CodeceptJS running:</p>
 <pre><code>codeceptjs init
@@ -322,12 +322,12 @@ Scenario('test something', (I) =&gt; {
 <h2 id="prepare-selenium-server">Prepare Selenium Server</h2>
 <p>To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.</p>
 <p>Use <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a> from NPM to install and run them:</p>
-<pre><code>npm i selenium-standalone -g
+<pre><code>[sudo] npm install -g selenium-standalone
 selenium-standalone install
 selenium-standalone start
 </code></pre>
 
-<p>Alternatively <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can also be installed and started manually.</p>
+<p>Alternatively <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can be installed and started manually.</p>
 <h2 id="run">Run</h2>
 <p>Execute tests:</p>
 <pre><code class="bash">codeceptjs run --steps
