@@ -259,10 +259,10 @@ all tests with <code>@tag</code> could be executed with <code>--grep @tag</code>
 
 <p>Use regex for more flexible filtering:</p>
 <ul>
-<li><code>--grep (?=.*@smoke2)(?=.*@smoke3)</code> - run tests with @smoke2 and @smoke3 in Scenario or Feature name</li>
-<li><code>--grep @smoke2|@smoke3</code> - run tests with @smoke2 or @smoke3 in Scenario or Feature name</li>
-<li><code>--grep ((?=.*@smoke2)(?=.*@smoke3))|@smoke4</code> - run tests with (@smoke2 and @smoke3) or @smoke4 in Scenario or Feature name</li>
-<li><code>--grep (?=.*@smoke2)^(?!.*@smoke3)</code> - run tests with @smoke2 but without @smoke3 in Scenario or Feature name</li>
+<li><code>--grep (?=.*@smoke2)(?=.*@smoke3)</code> - run tests with @smoke2 and @smoke3 in name</li>
+<li><code>--grep @smoke2|@smoke3</code> - run tests with @smoke2 or @smoke3 in name</li>
+<li><code>--grep ((?=.*@smoke2)(?=.*@smoke3))|@smoke4</code> - run tests with (@smoke2 and @smoke3) or @smoke4 in name</li>
+<li><code>--grep (?=.*@smoke2)^(?!.*@smoke3)</code> - run tests with @smoke2 but without @smoke3 in name</li>
 </ul>
 <h2 id="debug">Debug</h2>
 <p>CodeceptJS provides a debug mode in which additional information is printed.
