@@ -354,6 +354,8 @@
         
             <li><a href="#seenumberofelements">seeNumberOfElements</a></li>
         
+            <li><a href="#seenumberofvisibleelements">seeNumberOfVisibleElements</a></li>
+        
             <li><a href="#selectoption">selectOption</a></li>
         
             <li><a href="#setcookie">setCookie</a></li>
@@ -388,8 +390,10 @@
 manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <h4 id="selenium-installation">Selenium Installation</h4>
 <ol>
-<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
-<li>Launch the daemon: <code>java -jar selenium-server-standalone-2.xx.xxx.jar</code></li>
+<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a>
+    2.1. For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>
+    2.2. For Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a> (optionally)</li>
+<li>Launch the daemon: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code></li>
 </ol>
 <h4 id="phantomjs-installation">PhantomJS Installation</h4>
 <p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
@@ -406,7 +410,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
-<li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
+<li><code>waitForTimeout</code>: (option) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
 <li><code>desiredCapabilities</code>: Selenium's <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">desired capabilities</a></li>
 <li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
 <li><code>timeouts</code>: <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> defined as hash.</li>
@@ -1085,6 +1089,17 @@ I.seeInField('#searchform input','Search');
 <p>asserts that an element appears a given number of times in the DOM
 Element is located by label or name or CSS or XPath.</p>
 <pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>num</code>  </li>
+</ul>
+<h2 id="seenumberofvisibleelements">seeNumberOfVisibleElements</h2>
+<p>asserts that an element is visible a given number of times
+Element is located by CSS or XPath.</p>
+<pre><code class="js">I.seeNumberOfVisibleElements('.buttons', 3);
 </code></pre>
 
 <p><strong>Parameters</strong></p>

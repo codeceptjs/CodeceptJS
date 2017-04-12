@@ -22,7 +22,9 @@ let withinStore = {};
  * #### Selenium Installation
  *
  * 1. Download [Selenium Server](http://docs.seleniumhq.org/download/)
- * 2. Launch the daemon: `java -jar selenium-server-standalone-2.xx.xxx.jar`
+ * 2.1. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started)
+ * 2.2. For Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver) (optionally)
+ * 3. Launch the daemon: `java -jar selenium-server-standalone-3.xx.xxx.jar`
  *
  * #### PhantomJS Installation
  *
@@ -64,7 +66,7 @@ class Protractor extends SeleniumWebdriver {
   constructor(config) {
     super(config);
     this.options = {
-      browser: 'firefox',
+      browser: 'chrome',
       url: 'http://localhost',
       seleniumAddress: 'http://localhost:4444/wd/hub',
       rootElement: 'body',
@@ -110,7 +112,7 @@ class Protractor extends SeleniumWebdriver {
     return [
       { name: 'url', message: "Base url of site to be tested", default: 'http://localhost' },
       { name: 'driver', message: "Protractor driver (local, direct, session, hosted, sauce, browserstack)", default: 'hosted' },
-      { name: 'browser', message: 'Browser in which testing will be performed', default: 'firefox' },
+      { name: 'browser', message: 'Browser in which testing will be performed', default: 'chrome' },
       { name: 'rootElement', message: "Root element of AngularJS application", default: 'body' },
     ];
   }
