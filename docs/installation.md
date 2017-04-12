@@ -32,9 +32,9 @@ and started as
 
 By default it doesn't install any backends like Webdriverio, Protracor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:
 
-* `codeceptjs-webdriverio` - installs CodeceptJS + WebDriverIO
-* `codeceptjs-protractor` - installs CodeceptJS + Protractor
-* `codeceptjs-nightmare` - installs CodeceptJS + Nightmare
+* [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio) - installs CodeceptJS + WebDriverIO
+* [codecept-protractor](https://www.npmjs.com/package/codecept-protractor) - installs CodeceptJS + Protractor
+* [codecept-nightmare](https://www.npmjs.com/package/codecept-nightmare) - installs CodeceptJS + Nightmare
 
 They can be installed either globally or locally
 
