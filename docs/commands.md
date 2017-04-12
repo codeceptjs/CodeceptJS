@@ -12,10 +12,10 @@ Run all tests from current dir
 codeceptjs run
 ```
 
-Run tests from `test` dir
+Load config and run tests from `test` dir
 
 ```
-codeceptjs run test
+codeceptjs run -c test
 ```
 
 Run only tests with "signin" word in name
@@ -27,31 +27,32 @@ codeceptjs run --grep "signin"
 Run single test [path to codecept.js] [test filename]
 
 ```
-codeceptjs run . github_test.js
+codeceptjs run github_test.js
 ```
 
 Run single test with steps printed
 
 ```
-codeceptjs run . github_test.js --steps
+codeceptjs run github_test.js --steps
 ```
 
 Run single test in debug mode
 
 ```
-codeceptjs run . github_test.js --debug
+codeceptjs run github_test.js --debug
 ```
 
 Run test with internal logs printed (global promises, and events).
 
 ```
-codeceptjs run . github_test.js --verbose
+codeceptjs run github_test.js --verbose
 ```
 
-Select config file manually
+Select config file manually (`-c` or `--config` option)
 
 ```
-codeceptjs run --config my.codecept.conf.js`
+codeceptjs run -c my.codecept.conf.js
+codeceptjs run --config path/to/codecept.json
 ```
 
 Override config on the fly. Provide valid JSON which will be merged into current config:
@@ -71,10 +72,10 @@ Use any of [Mocha reporters](https://github.com/mochajs/mocha/tree/master/lib/re
 
 ## Run multiple
 
-Run multiple suites. For more details see [#PR439](https://github.com/Codeception/CodeceptJS/pull/439):
+Run multiple suites.
 
 ```
-codeceptjs run:multiple --multiple 'chrome: smoke; firefox: regression
+codeceptjs run-multiple smoke:chrome regression:firefox
 ```
 
 ## Init
@@ -127,7 +128,7 @@ TypeScript Definitions allows IDEs to provide autocompletion when writing tests.
 codeceptjs def
 ```
 
-Produces `steps.d.ts` file, which refrerenced in the very beginning of a test file.
+Produces `steps.d.ts` file, which referenced in the very beginning of a test file.
 
 ```js
 /// <reference path="./steps.d.ts" />

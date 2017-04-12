@@ -18,7 +18,7 @@
     "lib",
     "translations"
   ],
-  "main": "lib/codecept.js",
+  "main": "lib/index.js",
   "keywords": [
     "tdd",
     "bdd",
