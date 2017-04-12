@@ -341,18 +341,22 @@
 <h2 id="060">0.6.0</h2>
 <p>Major release with extension API and parallel execution.</p>
 <ul>
-<li><strong>Breaking</strong> Run command doesn't require path as first parameter. To specify path other than current directory use <code>--config</code> or <code>-c</code> option:</li>
+<li><strong>Breaking</strong> Removed path argument from <code>run</code>. To specify path other than current directory use <code>--config</code> or <code>-c</code> option:</li>
 </ul>
 <p>Instead of: <code>codeceptjs run tests</code> use:</p>
-<pre><code>// load config and run from tests directory
+<pre><code># load config and run from tests directory
 codeceptjs run -c tests/
-// or load codecept.json from tests directory
+
+# or load codecept.json from tests directory
 codeceptjs run -c tests/codecept.json
+
+# run users_test.js inside tests directory
+codeceptjs run users_test.js -c tests
 </code></pre>
 
 <ul>
-<li>Command <code>multiple-run</code> added, to execute tests in several browsers in parallel by @APshenkin and @davertmik. <a href="http://codecept.io/advanced/#multiple-execution">See documentation</a>.</li>
-<li>Hooks API added to extend CodeceptJS with custom listeners and plugins. <a href="http://codecept.io/hooks/#hooks_1">See documentation</a>.</li>
+<li><strong>Command <code>multiple-run</code> added</strong>, to execute tests in several browsers in parallel by @APshenkin and @davertmik. <a href="http://codecept.io/advanced/#multiple-execution">See documentation</a>.</li>
+<li><strong>Hooks API added to extend CodeceptJS</strong> with custom listeners and plugins. <a href="http://codecept.io/hooks/#hooks_1">See documentation</a>.</li>
 <li>[Nightmare][WebDriverIO] <code>within</code> can work with iframes by @imvetri. <a href="http://codecept.io/acceptance/#iframes">See documentation</a>.</li>
 <li>[WebDriverIO][SeleniumWebdriver][Protractor] Default browser changed to <code>chrome</code></li>
 <li>[Nightmare] Fixed globally locating <code>nightmare-upload</code>.</li>
