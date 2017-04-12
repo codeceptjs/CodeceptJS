@@ -246,9 +246,13 @@
         
             <li><a href="#comments">Comments</a></li>
         
+            <li><a href="#intellisense">IntelliSense</a></li>
+        
             <li><a href="#skipping">Skipping</a></li>
         
             <li><a href="#reporters">Reporters</a></li>
+        
+            <li><a href="#translation">Translation</a></li>
         
             <li><a href="#test-options">Test Options</a></li>
         
@@ -365,7 +369,7 @@ I.say('I enter title and body');
 I.say('I expect post is visible on site');
 </code></pre>
 
-<h3 id="intellisense">IntelliSense</h3>
+<h2 id="intellisense">IntelliSense</h2>
 <p>If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with</p>
 <pre><code>codeceptjs def
@@ -384,6 +388,9 @@ method autocompletion while writing tests.</p>
 They can be used with <code>--reporter</code> options.
 By default a custom console reporter is enabled.</p>
 <p>We are currently working on improving reporters support.</p>
+<h2 id="translation">Translation</h2>
+<p>Because CodeceptJS tests use high level DSL it is possible to write tests using different languages.
+Tests can be written in Portuguese, Russian, Italian, Polish languages using predefined <a href="http://codecept.io/translation/">translations</a>.</p>
 <h2 id="test-options">Test Options</h2>
 <p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
 <pre><code class="js">Feature('My feature', {key: val});
