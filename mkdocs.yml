@@ -5,12 +5,15 @@ pages:
 - Index: 'index.md'
 - Quickstart: 'quickstart.md'
 - Guides:
+    - 'Installation': 'installation.md'
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
     - 'AngularJS Testing': 'angular.md'
     - 'Nightmare Testing': 'nightmare.md'
     - 'Helpers': 'helpers.md'
     - 'Page Objects': 'pageobjects.md'
+    - 'Hooks': 'hooks.md'
+    - 'Advanced Usage': 'advanced.md'
 - Helpers:
     - 'WebDriverIO': 'helpers/WebDriverIO.md'
     - 'Protractor': 'helpers/Protractor.md'
