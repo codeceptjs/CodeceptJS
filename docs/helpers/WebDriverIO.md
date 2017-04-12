@@ -6,9 +6,8 @@ manipulate browser using Selenium WebDriver or PhantomJS.
 #### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-    2.1. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started)
-    2.2. For Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver) (optionally)
-2.  Launch the daemon: `java -jar selenium-server-standalone-3.xx.xxx.jar`
+2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
+3.  Launch the daemon: `java -jar selenium-server-standalone-3.xx.xxx.jar`
 
 #### PhantomJS Installation
 
