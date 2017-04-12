@@ -1,4 +1,5 @@
 'use strict';
+
 let should = require('chai').should();
 let assert = require('assert');
 let path = require('path');
@@ -18,7 +19,6 @@ describe('list/def commands', () => {
       done();
     });
   });
-
 
   it('def should create definition file', (done) => {
     try {
