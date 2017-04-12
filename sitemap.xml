@@ -20,6 +20,12 @@
     
         
     <url>
+     <loc>None/installation/</loc>
+     <lastmod>2017-04-12</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>None/basics/</loc>
      <lastmod>2017-04-12</lastmod>
      <changefreq>daily</changefreq>
@@ -104,12 +110,6 @@
     
 
     
-        
-    <url>
-     <loc>None/installation/</loc>
-     <lastmod>2017-04-12</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
         
     <url>
      <loc>None/commands/</loc>
