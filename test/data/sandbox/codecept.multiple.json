@@ -5,7 +5,8 @@
   "helpers": {
     "FakeDriver": {
       "require": "../fake_driver",
-      "browser": "dummy"
+      "browser": "dummy",
+      "windowSize": "1200x234"
     }
   },
   "multiple": {
