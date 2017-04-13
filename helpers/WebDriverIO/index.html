@@ -392,7 +392,7 @@ manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <ol>
 <li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
 <li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>, for Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a>.</li>
-<li>Launch the daemon: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code></li>
+<li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
 </ol>
 <h4 id="phantomjs-installation">PhantomJS Installation</h4>
 <p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
