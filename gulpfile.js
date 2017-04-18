@@ -30,6 +30,13 @@ gulp.task('docs', function () {
       .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md'}))
       .pipe(gulp.dest('docs/helpers'));
   });
+  let api = ['container', 'config', 'recorder', 'output', 'helper', 'codecept'];
+
+  api.forEach((baseName) => {
+    gulp.src(`./lib/${baseName}.js`)
+      .pipe(documentation({ filename: baseName + '.md', shallow: true, format: 'md'}))
+      .pipe(gulp.dest('docs/api'));
+  });
 });
 
 gulp.task('static', function () {
