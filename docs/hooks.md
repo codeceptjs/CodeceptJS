@@ -128,11 +128,27 @@ Inside those JS files you can use CodeceptJS API to access its internals.
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
 These internal objects are available:
 
-* `Codecept`: test runner class
+* `codecept`: test runner class
+* `config`: current codecept config
 * `event`: event listener
 * `recorder`: global promise chain
 * `output`: internal printer
 * `container`: dependency injection container for tests, includes current helpers and support objects
+* `helper`: basic helper class
+* `actor`: basic actor (I) class.
+
+### Config
+
+CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
+
+```js
+
+let config = require('codeceptjs').config.get();
+
+if (config.myKey == 'value') {
+  // run hook
+}
+```
 
 ### Event Listeners
 
@@ -260,5 +276,31 @@ container.append({
   }
 })
 ```
+
+Container also contains current Mocha instance:
+
+```js
+let mocha = container.mocha();
+```
+
+## Custom Runner
+
+CodeceptJS can be imported and used in custom runners.
+To initialize Codecept you need to create Config and Container objects.
+
+```js
+let Container = require('codeceptjs').container;
+let Config = require('codeceptjs').config;
+let Codecept = require('codeceptjs').codecept;
+
+let config = Config.create({ helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } });
+Container.create(config);
+let codecept = new Codecept(config);
+codecept.bootstrap();
+codecept.loadTests();
+codecept.run();
+```
+
+In this way Codecept runner class can be extended.
 
 ## done()
