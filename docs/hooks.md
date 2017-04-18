@@ -171,16 +171,16 @@ module.exports = function() {
 
 Available events:
 
-* `event.test.started(test)` - at the very beginning of a test
-* `event.test.before(test)` - when `Before` hooks from helpers and from test is executed
-* `event.test.after(test)` - after each test
+* `event.test.started(test)` - at the very beginning of a test. Passes a current test object.
+* `event.test.before` - when `Before` hooks from helpers and from test is executed
+* `event.test.after` - after each test
 * `event.test.passed(test)` - when test passed
 * `event.test.failed(test, error)` - when test failed
 * `event.suite.before(suite)` - before a suite
 * `event.suite.after(suite)` - after a suite
-* `event.step.before(step)` - at the very beginning of a step
-* `event.step.started(step)` - when step hooks from helpers executed
-* `event.step.after(step)`- after a step
+* `event.step.started(step)` - when step hooks from helpers executed. Passes current step object.
+* `event.step.before` - at the very beginning of a step
+* `event.step.after`- after a step
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed
