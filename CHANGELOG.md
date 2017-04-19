@@ -1,3 +1,7 @@
+## 0.6.1
+
+* Fixed loading hooks
+
 ## 0.6.0
 
 Major release with extension API and parallel execution.
