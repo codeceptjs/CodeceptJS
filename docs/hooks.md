@@ -128,14 +128,17 @@ Inside those JS files you can use CodeceptJS API to access its internals.
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
 These internal objects are available:
 
-* `codecept`: test runner class
-* `config`: current codecept config
-* `event`: event listener
-* `recorder`: global promise chain
-* `output`: internal printer
-* `container`: dependency injection container for tests, includes current helpers and support objects
-* `helper`: basic helper class
-* `actor`: basic actor (I) class
+* [`codecept`](https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js): test runner class
+* [`config`](https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js): current codecept config
+* [`event`](https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js): event listener
+* [`recorder`](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js): global promise chain
+* [`output`](https://github.com/Codeception/CodeceptJS/blob/master/lib/output.js): internal printer
+* [`container`](https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
+* [`helper`](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js): basic helper class
+* [`actor`](https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
+
+[API reference](https://github.com/Codeception/CodeceptJS/tree/master/docs/api) is available on GitHub.
+Also please check the source code of corresponding modules.
 
 ### Config
 
