@@ -135,7 +135,7 @@ These internal objects are available:
 * `output`: internal printer
 * `container`: dependency injection container for tests, includes current helpers and support objects
 * `helper`: basic helper class
-* `actor`: basic actor (I) class.
+* `actor`: basic actor (I) class
 
 ### Config
 
@@ -290,14 +290,16 @@ To initialize Codecept you need to create Config and Container objects.
 
 ```js
 let Container = require('codeceptjs').container;
-let Config = require('codeceptjs').config;
 let Codecept = require('codeceptjs').codecept;
 
-let config = Config.create({ helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } });
-Container.create(config);
-let codecept = new Codecept(config);
+let codecept = new Codecept(
+  // config file
+  { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } },
+  // options
+  {steps: true}
+);
 codecept.bootstrap();
-codecept.loadTests();
+codecept.loadTests('*_test.js');
 codecept.run();
 ```
 
