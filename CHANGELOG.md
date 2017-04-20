@@ -1,3 +1,19 @@
+## 0.6.2
+
+* Added `config` object to [public API](http://codecept.io/hooks/#api)
+* Extended `index.js` to include `actor` and `helpers`, so they could be required:
+
+```js
+const actor = require('codeceptjs').actor;
+```
+
+* Added [example for creating custom runner](http://codecept.io/hooks/#custom-runner) with public API.
+* run command to create `output` directory if it doesn't exist
+* [Protractor] fixed loading globally installed Protractor
+* run-multiple command improvements:
+     * create output directories for each process
+     * print process ids in output
+
 ## 0.6.1
 
 * Fixed loading hooks
