@@ -232,7 +232,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#061">0.6.1</a></li>
+        <li class="main active"><a href="#062">0.6.2</a></li>
+        
+    
+        <li class="main "><a href="#061">0.6.1</a></li>
         
     
         <li class="main "><a href="#060">0.6.0</a></li>
@@ -341,6 +344,24 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="062">0.6.2</h2>
+<ul>
+<li>Added <code>config</code> object to <a href="http://codecept.io/hooks/#api">public API</a></li>
+<li>Extended <code>index.js</code> to include <code>actor</code> and <code>helpers</code>, so they could be required:</li>
+</ul>
+<pre><code class="js">const actor = require('codeceptjs').actor;
+</code></pre>
+
+<ul>
+<li>Added <a href="http://codecept.io/hooks/#custom-runner">example for creating custom runner</a> with public API.</li>
+<li>run command to create <code>output</code> directory if it doesn't exist</li>
+<li>[Protractor] fixed loading globally installed Protractor</li>
+<li>run-multiple command improvements:<ul>
+<li>create output directories for each process</li>
+<li>print process ids in output</li>
+</ul>
+</li>
+</ul>
 <h2 id="061">0.6.1</h2>
 <ul>
 <li>Fixed loading hooks</li>

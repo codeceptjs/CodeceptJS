@@ -240,6 +240,8 @@
         
             <li><a href="#api">API</a></li>
         
+            <li><a href="#custom-runner">Custom Runner</a></li>
+        
             <li><a href="#done">done()</a></li>
         
     
@@ -348,12 +350,27 @@ CodeceptJS provides API to connect to its internal event dispatcher, container, 
 <p>CodeceptJS provides an API which can be loaded via <code>require('codeceptjs')</code> when CodeceptJS is installed locally.
 These internal objects are available:</p>
 <ul>
-<li><code>Codecept</code>: test runner class</li>
-<li><code>event</code>: event listener</li>
-<li><code>recorder</code>: global promise chain</li>
-<li><code>output</code>: internal printer</li>
-<li><code>container</code>: dependency injection container for tests, includes current helpers and support objects</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js"><code>codecept</code></a>: test runner class</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js"><code>config</code></a>: current codecept config</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js"><code>event</code></a>: event listener</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js"><code>recorder</code></a>: global promise chain</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/output.js"><code>output</code></a>: internal printer</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js"><code>container</code></a>: dependency injection container for tests, includes current helpers and support objects</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js"><code>helper</code></a>: basic helper class</li>
+<li><a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js"><code>actor</code></a>: basic actor (I) class</li>
 </ul>
+<p><a href="https://github.com/Codeception/CodeceptJS/tree/master/docs/api">API reference</a> is available on GitHub.
+Also please check the source code of corresponding modules.</p>
+<h3 id="config">Config</h3>
+<p>CodeceptJS config can be accessed from <code>require('codeceptjs').config.get()</code>:</p>
+<pre><code class="js">
+let config = require('codeceptjs').config.get();
+
+if (config.myKey == 'value') {
+  // run hook
+}
+</code></pre>
+
 <h3 id="event-listeners">Event Listeners</h3>
 <p>CodeceptJS provides a module with <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js">event dispatcher and set of predefined events</a>.</p>
 <p>It can be required from codeceptjs package if it is installed locally.</p>
@@ -371,16 +388,16 @@ module.exports = function() {
 
 <p>Available events:</p>
 <ul>
-<li><code>event.test.started(test)</code> - at the very beginning of a test</li>
-<li><code>event.test.before(test)</code> - when <code>Before</code> hooks from helpers and from test is executed</li>
-<li><code>event.test.after(test)</code> - after each test</li>
+<li><code>event.test.started(test)</code> - at the very beginning of a test. Passes a current test object.</li>
+<li><code>event.test.before</code> - when <code>Before</code> hooks from helpers and from test is executed</li>
+<li><code>event.test.after</code> - after each test</li>
 <li><code>event.test.passed(test)</code> - when test passed</li>
 <li><code>event.test.failed(test, error)</code> - when test failed</li>
 <li><code>event.suite.before(suite)</code> - before a suite</li>
 <li><code>event.suite.after(suite)</code> - after a suite</li>
-<li><code>event.step.before(step)</code> - at the very beginning of a step</li>
-<li><code>event.step.started(step)</code> - when step hooks from helpers executed</li>
-<li><code>event.step.after(step)</code>- after a step</li>
+<li><code>event.step.started(step)</code> - when step hooks from helpers executed. Passes current step object.</li>
+<li><code>event.step.before</code> - at the very beginning of a step</li>
+<li><code>event.step.after</code>- after a step</li>
 <li><code>event.all.before</code> - before running tests</li>
 <li><code>event.all.after</code> - after running tests</li>
 <li><code>event.all.result</code> - when results are printed</li>
@@ -463,6 +480,28 @@ container.append({
 })
 </code></pre>
 
+<p>Container also contains current Mocha instance:</p>
+<pre><code class="js">let mocha = container.mocha();
+</code></pre>
+
+<h2 id="custom-runner">Custom Runner</h2>
+<p>CodeceptJS can be imported and used in custom runners.
+To initialize Codecept you need to create Config and Container objects.</p>
+<pre><code class="js">let Container = require('codeceptjs').container;
+let Codecept = require('codeceptjs').codecept;
+
+let codecept = new Codecept(
+  // config file
+  { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } },
+  // options
+  {steps: true}
+);
+codecept.bootstrap();
+codecept.loadTests('*_test.js');
+codecept.run();
+</code></pre>
+
+<p>In this way Codecept runner class can be extended.</p>
 <h2 id="done">done()</h2></div>
             <div class="clearfix"></div>
         </div>
