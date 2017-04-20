@@ -96,7 +96,6 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run dynamic config', (done) => {
-    console.log(codecept_run_config('config.js'));
     exec(codecept_run_config('config.js'), (err, stdout, stderr) => {
       stdout.should.include('Filesystem'); // feature
       assert(!err);

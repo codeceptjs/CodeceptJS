@@ -19,8 +19,8 @@ describe('CodeceptJS Multiple Runner', function() {
   it('should execute one suite with browser', (done) => {
     exec(codecept_run+'default:firefox', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[default:firefox] print browser ');
-      stdout.should.not.include('[default:chrome] print browser ');
+      stdout.should.include('.default:firefox] print browser ');
+      stdout.should.not.include('.default:chrome] print browser ');
       assert(!err);
       done();
     });
@@ -29,8 +29,8 @@ describe('CodeceptJS Multiple Runner', function() {
   it('should execute one suite with browser', (done) => {
     exec(codecept_run+'default:firefox', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[default:firefox] print browser ');
-      stdout.should.not.include('[default:chrome] print browser ');
+      stdout.should.include('.default:firefox] print browser ');
+      stdout.should.not.include('.default:chrome] print browser ');
       assert(!err);
       done();
     });
@@ -39,22 +39,22 @@ describe('CodeceptJS Multiple Runner', function() {
   it('should execute all suites', (done) => {
     exec(codecept_run+'--all', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[default:firefox] print browser ');
-      stdout.should.include('[default:chrome] print browser ');
-      stdout.should.include('[mobile:safari] print browser ');
-      stdout.should.include('[mobile:android] print browser ');
+      stdout.should.include('[1.default:chrome] print browser ');
+      stdout.should.include('[2.default:firefox] print browser ');
+      stdout.should.include('[3.mobile:android] print browser ');
+      stdout.should.include('[4.mobile:safari] print browser ');
       assert(!err);
       done();
     });
   });
 
-  it('should execute mutiple suites', (done) => {
-    exec(codecept_run+'default mobile', (err, stdout, stderr) => {
+  it('should execute multiple suites', (done) => {
+    exec(codecept_run+'mobile default ', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[default:firefox] print browser ');
-      stdout.should.include('[default:chrome] print browser ');
-      stdout.should.include('[mobile:safari] print browser ');
-      stdout.should.include('[mobile:android] print browser ');
+      stdout.should.include('[1.mobile:android] print browser ');
+      stdout.should.include('[2.mobile:safari] print browser ');
+      stdout.should.include('[3.default:chrome] print browser ');
+      stdout.should.include('[4.default:firefox] print browser ');
       assert(!err);
       done();
     });
@@ -63,15 +63,13 @@ describe('CodeceptJS Multiple Runner', function() {
   it('should print steps', (done) => {
     exec(codecept_run+'default --steps', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[default:firefox] print browser ');
-      stdout.should.include('[default:firefox]  • I print browser');
-      stdout.should.include('[default:chrome] print browser ');
-      stdout.should.include('[default:chrome]  • I print browser');
+      stdout.should.include('[2.default:firefox] print browser ');
+      stdout.should.include('[2.default:firefox]  • I print browser');
+      stdout.should.include('[1.default:chrome] print browser ');
+      stdout.should.include('[1.default:chrome]  • I print browser');
       assert(!err);
       done();
     });
   });
-
-
 
 });
