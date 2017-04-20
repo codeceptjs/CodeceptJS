@@ -128,11 +128,30 @@ Inside those JS files you can use CodeceptJS API to access its internals.
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
 These internal objects are available:
 
-* `Codecept`: test runner class
-* `event`: event listener
-* `recorder`: global promise chain
-* `output`: internal printer
-* `container`: dependency injection container for tests, includes current helpers and support objects
+* [`codecept`](https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js): test runner class
+* [`config`](https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js): current codecept config
+* [`event`](https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js): event listener
+* [`recorder`](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js): global promise chain
+* [`output`](https://github.com/Codeception/CodeceptJS/blob/master/lib/output.js): internal printer
+* [`container`](https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
+* [`helper`](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js): basic helper class
+* [`actor`](https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
+
+[API reference](https://github.com/Codeception/CodeceptJS/tree/master/docs/api) is available on GitHub.
+Also please check the source code of corresponding modules.
+
+### Config
+
+CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
+
+```js
+
+let config = require('codeceptjs').config.get();
+
+if (config.myKey == 'value') {
+  // run hook
+}
+```
 
 ### Event Listeners
 
@@ -155,16 +174,16 @@ module.exports = function() {
 
 Available events:
 
-* `event.test.started(test)` - at the very beginning of a test
-* `event.test.before(test)` - when `Before` hooks from helpers and from test is executed
-* `event.test.after(test)` - after each test
+* `event.test.started(test)` - at the very beginning of a test. Passes a current test object.
+* `event.test.before` - when `Before` hooks from helpers and from test is executed
+* `event.test.after` - after each test
 * `event.test.passed(test)` - when test passed
 * `event.test.failed(test, error)` - when test failed
 * `event.suite.before(suite)` - before a suite
 * `event.suite.after(suite)` - after a suite
-* `event.step.before(step)` - at the very beginning of a step
-* `event.step.started(step)` - when step hooks from helpers executed
-* `event.step.after(step)`- after a step
+* `event.step.started(step)` - when step hooks from helpers executed. Passes current step object.
+* `event.step.before` - at the very beginning of a step
+* `event.step.after`- after a step
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed
@@ -260,5 +279,33 @@ container.append({
   }
 })
 ```
+
+Container also contains current Mocha instance:
+
+```js
+let mocha = container.mocha();
+```
+
+## Custom Runner
+
+CodeceptJS can be imported and used in custom runners.
+To initialize Codecept you need to create Config and Container objects.
+
+```js
+let Container = require('codeceptjs').container;
+let Codecept = require('codeceptjs').codecept;
+
+let codecept = new Codecept(
+  // config file
+  { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } },
+  // options
+  {steps: true}
+);
+codecept.bootstrap();
+codecept.loadTests('*_test.js');
+codecept.run();
+```
+
+In this way Codecept runner class can be extended.
 
 ## done()
