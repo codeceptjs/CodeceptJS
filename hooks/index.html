@@ -490,14 +490,22 @@ To initialize Codecept you need to create Config and Container objects.</p>
 <pre><code class="js">let Container = require('codeceptjs').container;
 let Codecept = require('codeceptjs').codecept;
 
-let codecept = new Codecept(
-  // config file
-  { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } },
-  // options
-  {steps: true}
-);
+let config = { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } };
+let opts = { steps: true };
+
+// create runner
+let codecept = new Codecept(config, opts);
+
+// create helpers, support files, mocha
+Container.create(config, opts);
+
+// initialize listeners
 codecept.bootstrap();
+
+// load tests
 codecept.loadTests('*_test.js');
+
+// run tests
 codecept.run();
 </code></pre>
 
