@@ -31,7 +31,7 @@ in WebDriverIO helper accept them both.
 
 ```js
 I.seeElement('.user'); // element with CSS class user
-I.seeElement('//button(contains(., "press me")]'); // button
+I.seeElement('//button[contains(., "press me")]'); // button
 ```
 
 By default CodeceptJS tries to guess the locator type.
