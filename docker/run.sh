@@ -8,7 +8,7 @@ if [[ -d "/tests/" ]]; then
 
 		# Run the tests
 		cd /tests/
-		node /bin/codecept.js run /tests/ $GREP
+		node /bin/codecept.js run $CODECEPT_ARGS
 	else
 		display_usage
 fi
