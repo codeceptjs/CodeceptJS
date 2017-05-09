@@ -87,6 +87,8 @@ codeceptjs def .
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
+Note that CodeceptJS requires Node.js version 5.12 or later.
+
 ## Usage
 
 Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriverIO helper enabled.
