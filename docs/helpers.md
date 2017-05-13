@@ -151,7 +151,7 @@ You can also pass additional config options to your helper from a config:
 
 ```js
 "helpers": {
-  // here goes standard helpers: 
+  // here goes standard helpers:
   // WebDriverIO, Protractor, Nightmare, etc...
   // and their configuration
   "MyHelper": {
@@ -193,5 +193,40 @@ Implement corresponding methods to them.
 
 Each implemented method should return a value as they will be added to global promise chain as well.
 
+### Hook Usage Examples
+
+1) Failing if JS error occur in WebDriverIO:
+
+```js
+class JSFailure extends codecept_helper {
+
+  _before() {
+    this.err = null;
+    this.helpers['WebDriverIO'].browser.on('error', (e) => this.err = e);
+  }
+
+  _afterStep() {
+    if (this.err) throw new Error('Browser JS error '+this.err);
+  }
+}
+
+module.exports = JSFailure;
+```
+
+2) Wait for Ajax requests to complete after `click`:
+
+```js
+class JSWait extends codecept_helper {
+
+  _afterStep(step) {
+    if (step.name == 'click') {
+      var jqueryActive = () => jQuery.active == 0;
+      return this.helpers['WebDriverIO'].waitUntil(jqueryActive);
+    }
+  }
+}
+
+module.exports = JSWait;
+```
 
 ### done()

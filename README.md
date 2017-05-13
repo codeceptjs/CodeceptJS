@@ -1,4 +1,4 @@
-# CodeceptJS [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg)](https://travis-ci.org/Codeception/CodeceptJS) [![Join the chat at https://gitter.im/Codeception/CodeceptJS](https://badges.gitter.im/Codeception/CodeceptJS.svg)](https://gitter.im/Codeception/CodeceptJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# CodeceptJS [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg?branch=master)](https://travis-ci.org/Codeception/CodeceptJS) [![Join the chat at https://gitter.im/Codeception/CodeceptJS](https://badges.gitter.im/Codeception/CodeceptJS.svg)](https://gitter.im/Codeception/CodeceptJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
@@ -14,7 +14,7 @@ Feature('CodeceptJS demo');
 Scenario('check Welcome page on site', (I) => {
   I.amOnPage('/');
   I.see('Welcome');
-}
+});
 ```
 
 Codeception tests are:
@@ -86,6 +86,8 @@ codeceptjs def .
 ```
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
+
+Note that CodeceptJS requires Node.js version 5.12 or later.
 
 ## Usage
 

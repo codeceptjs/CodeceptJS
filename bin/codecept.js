@@ -50,7 +50,7 @@ program.command('generate:helper [path]')
   .description('Generates a new helper')
   .action(require('../lib/command/generate').helper);
 
-program.command('run [suite] [test]')
+program.command('run [test]')
   .description('Executes tests')
 
   // codecept-only options
@@ -59,11 +59,11 @@ program.command('run [suite] [test]')
   .option('--verbose', 'output internal logging information')
   .option('-o, --override [value]', 'override current config options')
   .option('--profile [value]', 'configuration profile to be used')
-  .option('--config [file]', 'configuration file to be used')
+  .option('-c, --config [file]', 'configuration file to be used')
 
   // mocha options
-  .option('-c, --colors', 'force enabling of colors')
-  .option('-C, --no-colors', 'force disabling of colors')
+  .option('--colors', 'force enabling of colors')
+  .option('--no-colors', 'force disabling of colors')
   .option('-G, --growl', 'enable growl notification support')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
@@ -80,8 +80,24 @@ program.command('run [suite] [test]')
   .option('--no-exit', 'require a clean shutdown of the event loop: mocha will not call process.exit')
   .option('--recursive', 'include sub directories')
   .option('--trace', 'trace function calls')
+  .option('--child <string>', 'option for child processes')
 
   .action(require('../lib/command/run'));
+
+program.command('run-multiple [suites...]')
+  .description('Executes tests multiple')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('--all', 'run all suites')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-f, --fgrep <string>', 'only run tests containing <string>')
+  .option('--steps', 'show step-by-step execution')
+  .option('--verbose', 'output internal logging information')
+  .option('-o, --override [value]', 'override current config options')
+  .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
+  .option('-R, --reporter <name>', 'specify the reporter to use')
+  .option('--recursive', 'include sub directories')
+
+  .action(require('../lib/command/run-multiple'));
 
 if (process.argv.length <= 2) {
   console.log('CodeceptJS v' + Codecept.version());

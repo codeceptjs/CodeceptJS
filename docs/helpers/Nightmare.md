@@ -5,13 +5,15 @@ fastest headless testing using Electron engine. Unlike Selenium-based drivers th
 Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
 less trusted.
 
-Requires `nightmare` and `nigthmare-upload` packages to be installed.
+Requires `nightmare` and `nightmare-upload` packages to be installed.
 
 ### Configuration
 
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
+-   `restart` (optional, default: true) - restart browser between tests.
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
 -   `waitForTimeout`: (optional) default wait* timeout
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -29,14 +31,14 @@ Locate elements by different locator types, including strict locator.
 Should be used in custom helpers.
 
 This method return promise with array of IDs of found elements.
-Actual elements can be accessed inside `evaulate` by using `codeceptjs.fetchElement()`
+Actual elements can be accessed inside `evaluate` by using `codeceptjs.fetchElement()`
 client-side function:
 
 ```js
 // get an inner text of an element
 
-let browser = this.helpers['Nigthmare'].browser;
-let value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {
+let browser = this.helpers['Nightmare'].browser;
+let value = this.helpers['Nightmare']._locate({name: 'password'}).then(function(els) {
   return browser.evaluate(function(el) {
     return codeceptjs.fetchElement(el).value;
   }, els[0]);
@@ -93,7 +95,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 **Parameters**
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
--   `pathToFile`  local file path relative to codecept.json config fileDue to technical limitation this **works only with CSS selectors**
+-   `pathToFile`  local file path relative to codecept.json config file##### Limitations:-   works only with CSS selectors.
+    -   doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. [See more](https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs))
 
 ## checkOption
 
@@ -126,6 +129,20 @@ I.clearCookie('test');
 **Parameters**
 
 -   `cookie`  (optional)
+
+## clearField
+
+Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
 
 ## click
 

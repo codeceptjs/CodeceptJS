@@ -14,7 +14,8 @@ require('co-mocha')(require('mocha'));
 let webApiTests = require('./webapi');
 
 describe('Nightmare', function () {
-  this.timeout(20000);
+  this.retries(4);
+  this.timeout(35000);
 
   before(function() {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -24,9 +25,11 @@ describe('Nightmare', function () {
 
     I = new Nightmare({
       url: site_url,
+      windowSize: '500x400',
       show: false
     });
     I._init();
+    I._beforeSuite();
   });
 
   beforeEach(function() {

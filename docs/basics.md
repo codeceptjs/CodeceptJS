@@ -102,7 +102,7 @@ BeforeSuite((I) => {
 AfterSuite((I) => {
   I.syncUp('testfolder');
   I.clearDir('testfolder');
-})
+});
 ```
 
 [Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
@@ -112,9 +112,11 @@ AfterSuite((I) => {
 To specify the exact area on a page where actions can be performed you can use `within` function.
 Everything executed in its context will be narrowed to context specified by locator:
 
+Usage: `within('section', ()=>{})`
+
 ```js
 I.amOnPage('https://github.com');
-within('.form-signup-home', function () {
+within('.form-signup-home', () => {
   I.fillField('user[login]', 'User');
   I.fillField('user[email]', 'user@user.com');
   I.fillField('user[password]', 'user@user.com');
@@ -123,9 +125,34 @@ within('.form-signup-home', function () {
 I.see('There were problems creating your account.');
 ```
 
+`within` can also work with [iframes](/acceptance/#iframes)
+
 When running steps inside a within block will be shown with a shift:
 
 ![within](http://codecept.io/images/within.png)
+
+## Comments
+
+There is a simple way to add additional comments to your test scenario.
+Use `say` command to print information to screen:
+
+```js
+I.say('I am going to publish post');
+I.say('I enter title and body');
+I.say('I expect post is visible on site');
+```
+
+## IntelliSense
+
+If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
+you can generate step definitions with
+
+```
+codeceptjs def
+```
+
+Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
+method autocompletion while writing tests.
 
 ## Skipping
 
@@ -142,33 +169,66 @@ By default a custom console reporter is enabled.
 
 We are currently working on improving reporters support.
 
-## Bootstrap
+## Translation
 
-In case you need to execute arbitrary code before the tests,
-you can place it into your bootstrap file and provide a relative path to it in `codecept.json`
+Because CodeceptJS tests use high level DSL it is possible to write tests using different languages.
+Tests can be written in Portuguese, Russian, Italian, Polish languages using predefined [translations](http://codecept.io/translation/).
 
-```json
-"bootstrap": "./run_server.js"
-```
+## Test Options
 
-To run `bootstrap` async, just export a function in your bootstrap file
+Features and Scenarios have their options that can be set by passing a hash after their names:
 
 ```js
-module.exports = function(done) {
-  // async instructions
-  // call done() to continue execution
-  // otherwise call done('error description')
-}
+Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) => {});
 ```
 
-## teardown
+### Timeout
 
-In case you need to execute arbitrary code after the tests have run,
-you can place it into your teardown file and provide a relative path to it in `codecept.json`
+By default there is no timeout for tests, however you can change this value for a specific suite:
 
-```json
-"teardown": "./stop_server.js"
+```js
+Feature('Stop me', {timeout: 5000}); // set timeout to 5s
 ```
+
+or for the test:
+
+```js
+// set timeout to 1s
+Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+
+// disable timeout for this scenario
+Scenario("Don't stop me", {timeout: 0}, (I) => {});
+```
+
+### Retries
+
+Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
+This can be done with `retries` option added to `Feature` declaration.
+
+CodeceptJS implements retries the same way [Mocha do](https://mochajs.org#retry-tests);
+You can set number of a retries for a feature:
+
+```js
+Feature('Complex JS Stuff', {retries: 3})
+```
+Every Scenario inside this feature will be rerun 3 times.
+You can make an exception for a specific scenario by passing `retries` option to it:
+
+```js
+Feature('Complex JS Stuff', {retries: 3})
+
+Scenario('Not that complex', {retries: 1}, (I) => {
+  // test goes here
+});
+
+Scenario('Really complex', (I) => {
+  // test goes here
+});
+```
+"Really complex" test will be restarted 3 times,
+while "Not that complex" test will be rerun only once.
 
 ---
 

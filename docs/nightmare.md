@@ -90,7 +90,7 @@ Sure, this can't be taken as a valuable benchmark but more like a proof of conce
 To start you need CodeceptJS with nightmare and nightmare-upload packages installed.
 
 ```bash
-npm install -g codeceptjs nightmare nightmare-upload
+npm install -g codeceptjs-nightmare
 ```
 
 And a basic project initialized
@@ -113,7 +113,8 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
   "helpers": {
     "Nightmare": {
       "url": "http://localhost",
-      "show": false
+      "show": false,
+      "restart": false
     }
   }
   // ..
@@ -121,6 +122,8 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
 ```
 Turn on the `show` option if you want to follow test progress in a window. This is very useful for debugging.
 All other options can be taken from [NightmareJS API](https://github.com/segmentio/nightmare#api).
+
+Turn off the `restart` option if you want to run your suite in a single browser instance.
 
 Option `waitForAction` defines how long to wait after a click, doubleClick or pressKey action is performed.
 Test execution may happen much faster than the response is rendered, so make sure you set a proper delay value.
@@ -176,7 +179,7 @@ It is important to understand that Nightmare executes JavaScript on client and o
 If you need to find an element you should search for it using client side script, but if you want
 to do an assertion you should return a data to server side.
 
-Nightmare provides `evaulate` method to execute client-side JavaScript. CodeceptJS registers `codeceptjs`
+Nightmare provides `evaluate` method to execute client-side JavaScript. CodeceptJS registers `codeceptjs`
 object globally on client side with `findElement` and `findElements` methods in it. They return IDs of matched elements
 so you can access them in next calls to `evaluate`:
 
@@ -199,7 +202,7 @@ seeAttributeContains(locator, attribute, expectedValue) {
   }).then(function(attributeValue) {
     // get attribute value and back to server side
     // execute an assertion
-    assert.include(attributeValye, expectedValue);
+    assert.include(attributeValue, expectedValue);
   });
 }
 ```
@@ -213,5 +216,9 @@ I.seeAttributeContains('#main img', 'src', '/cat.jpg');
 This sample assertion used `_locate` helper method which searched for elements
 by CSS/XPath or a strict locator. Then `browser.evaluate` method was called to
 use locate found elements on a page and return attribute from the first of them.
+
+## Additional Links
+
+* [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
 
 ## done()

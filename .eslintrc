@@ -7,8 +7,8 @@
   },
   "ecmaFeatures": {
     "jsx": true,
-    "modules": true    
-  },  
+    "modules": true
+  },
   "rules": {
     "array-bracket-spacing": [
       2,
@@ -58,7 +58,7 @@
     ],
     "curly": [
       2,
-      "all"
+      "multi-line"
     ],
     "eol-last": 2,
     "key-spacing": [

@@ -1,19 +1,26 @@
 # QuickStart
 
 **NodeJS v 4.2.0** and higher required to start.
-Install **CodeceptJS** with NPM:
+CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
+
+Install **CodeceptJS** with WebDriverio using `codeceptjs-webdriverio` meta package from NPM.
+
 
 You can install it globally:
 
 ```
-[sudo] npm install -g codeceptjs
+[sudo] npm install -g codeceptjs-webdriverio
 ```
 
 or locally
 
 ```
-npm install --save-dev codeceptjs
+npm install codeceptjs-webdriverio --save-dev
 ```
+
+* To test with Nightmare install `codeceptjs-nightmare` package
+* To test with Protractor install `codeceptjs-protractor` package
+* For additional options see [Installation guide](http://codecept.io/installation/).
 
 ## Setup
 
@@ -58,20 +65,10 @@ WebDriverIO helper will ask for additional configuration as well:
 
 ```
 ? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed firefox
+? [WebDriverIO] Browser in which testing will be performed (chrome)
 ```
 
 If you agree with defaults, finish the installation.
-
-Depending on a helper you've chosen you will be asked to install corresponding package manually in the end of init.
-In case of webdriver you will need to run
-
-```
-[sudo] npm install -g webdriverio
-```
-
-for global installation. In case CodeceptJS is installed locally, webdriverio can be installed locally as well.
-In a similar way you may install `protractor` or `selenium-webdriver`.
 
 ## Creating First Test
 
@@ -93,7 +90,7 @@ Scenario('test something', (I) => {
 });
 ```
 
-Inside the scenario block you can write your first test scenario by using [actions from WebDriverIO helper](/helpers/WebDriverIO/). Let's assume we have a web server on `localhost` is running and there is a **Welcome** text on the first page. The simplest test will look like this:
+Inside the scenario block you can write your first test scenario by using [actions from WebDriverIO helper](http://codecept.io/helpers/WebDriverIO/). Let's assume we have a web server on `localhost` is running and there is a **Welcome** text on the first page. The simplest test will look like this:
 
 ```js
 Feature('My First Test');
@@ -104,7 +101,24 @@ Scenario('test something', (I) => {
 });
 ```
 
-Before running this test we should ensure that [Selenium Web Server is running](./helpers/WebDriverIO.md/#selenium-installation). Then we can execute tests with
+## Prepare Selenium Server
+
+To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.
+
+Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) from NPM to install and run them:
+
+```
+[sudo] npm install -g selenium-standalone
+selenium-standalone install
+selenium-standalone start
+```
+
+
+Alternatively [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) can be installed and started manually.
+
+## Run
+
+Execute tests:
 
 ```bash
 codeceptjs run --steps
@@ -121,18 +135,6 @@ My First Test --
    • I see "Welcome"
  ✓ OK
 ```
-
-### Configuring IntelliSense (optional)
-
-If you are using Visual Studio Code or other IDE that supports Typescript Definitions,
-you can generate step definitions with
-
-```
-codeceptjs def
-```
-
-Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
-method autocompletion while writing tests.
 
 ## Congrats! Your first test is running.
 

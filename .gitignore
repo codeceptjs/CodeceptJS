@@ -5,3 +5,6 @@ coverage
 site
 .idea
 docs/build
+test/data/output
+test/acceptance/output
+examples/output

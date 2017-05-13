@@ -15,7 +15,8 @@ let webApiTests = require('./webapi');
 
 
 describe('WebDriverIO', function () {
-  this.timeout(10000);
+  this.retries(4);
+  this.timeout(35000);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -25,7 +26,8 @@ describe('WebDriverIO', function () {
 
     wd = new WebDriverIO({
       url: site_url,
-      browser: 'firefox'
+      browser: 'chrome',
+      windowSize: '500x400'
     });
   });
 
@@ -156,33 +158,11 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#clearField', () => {
-    it('should clear a given element', () => {
-      return wd.amOnPage('/form/field')
-        .then(() => wd.fillField('#name', 'Nothing special'))
-        .then(() => wd.seeInField('#name', 'Nothing special'))
-        .then(() => wd.clearField('#name'))
-        .then(() => wd.dontSeeInField('#name', 'Nothing special'));
-    });
-  });
-
   describe('#seeInSource', () => {
     it('should check for text to be in HTML source', () => {
       return wd.amOnPage('/')
         .then(() => wd.seeInSource('<title>TestEd Beta 2.0</title>'))
         .then(() => wd.dontSeeInSource('<meta'));
-    });
-  });
-
-  describe('window size : #resizeWindow', () => {
-    it('should change the active window size', () => {
-      return wd.amOnPage('/')
-        .then(() => wd.resizeWindow(640, 480))
-        .then(function () { return this.windowHandleSize((err, size) => {
-          assert.equal(size.value.width, 640);
-          return assert.equal(size.value.height, 480);
-        });
-      });
     });
   });
 
@@ -307,5 +287,4 @@ describe('WebDriverIO', function () {
         .then((res) => res.length.should.be.equal(0))
     });
   });
-
 });

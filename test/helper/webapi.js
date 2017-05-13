@@ -219,6 +219,13 @@ module.exports.tests = function() {
       return assert.equal(formContents('age'), 'adult');
     });
 
+    it('should select option by label and option text - with an onchange callback', function*() {
+      yield I.amOnPage('/form/select_onchange');
+      yield I.selectOption('Select a value', 'Option 2');
+      yield I.click('Submit');
+      return assert.equal(formContents('select'), 'option2');
+    });
+
     it('should select multiple options', function*() {
       yield I.amOnPage('/form/select_multiple');
       yield I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
@@ -306,6 +313,32 @@ module.exports.tests = function() {
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
+
+  });
+
+
+  describe('#clearField', () => {
+    it('should clear a given element', () => {
+      return I.amOnPage('/form/field')
+        .then(() => I.fillField('#name', 'Nothing special'))
+        .then(() => I.seeInField('#name', 'Nothing special'))
+        .then(() => I.clearField('#name'))
+        .then(() => I.dontSeeInField('#name', 'Nothing special'));
+    });
+
+    it('should clear field by name', function*() {
+      yield I.amOnPage('/form/example1');
+      yield I.clearField('LoginForm[username]');
+      yield I.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
+
+    it('should clear field by locator', function*() {
+      yield I.amOnPage('/form/example1');
+      yield I.clearField('#LoginForm_username');
+      yield I.click('Login');
+      return assert.equal(formContents('LoginForm')['username'], '');
+    });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -380,6 +413,12 @@ module.exports.tests = function() {
       let val = yield I.grabAttributeFrom({css: 'form'}, 'method');
       return assert.equal(val, "get");
     });
+
+    it('should grab custom attribute from element', function*() {
+      yield I.amOnPage('/form/example4');
+      let val = yield I.grabAttributeFrom({css: '.navbar-toggle'}, 'data-toggle');
+      return assert.equal(val, "collapse");
+    });
   });
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
@@ -453,6 +492,13 @@ module.exports.tests = function() {
         .then(() => I.clearCookie('auth'))
         .then(() => I.dontSeeCookie('auth'));
     });
+
+    it('should clear all cookies', () => {
+      return I.amOnPage('/')
+        .then(() => I.setCookie({name: 'auth', value: '123456'}))
+        .then(() => I.clearCookie())
+        .then(() => I.dontSeeCookie('auth'));
+    });
   });
 
   describe('#waitForText', () => {
@@ -469,6 +515,61 @@ module.exports.tests = function() {
         .then(() => I.waitForText('Dynamic text', 2, '#text'))
         .then(() => I.see('Dynamic text'));
     });
+
+    it('should wait for text after timeout', () => {
+      return I.amOnPage('/timeout')
+        .then(() => I.dontSee('Timeout text'))
+        .then(() => I.waitForText('Timeout text', 31, '#text'))
+        .then(() => I.see('Timeout text'));
+    });
   });
+
+  describe('window size #resizeWindow', () => {
+    it('should set initial window size', () => {
+      return I.amOnPage('/form/resize')
+        .then(() => I.click('Window Size'))
+        .then(() => I.see('Height 400', '#height'))
+        .then(() => I.see('Width 500', '#width'))
+    });
+
+    it('should resize window to specific dimensions', () => {
+      return I.amOnPage('/form/resize')
+        .then(() => I.resizeWindow(800, 600))
+        .then(() => I.click('Window Size'))
+        .then(() => I.see('Height 600', '#height'))
+        .then(() => I.see('Width 800', '#width'))
+    });
+  });
+
+  describe('#waitForElement', () => {
+    it('should wait for visibile element', () => {
+      return I.amOnPage('/form/wait_visible')
+        .then(() => I.dontSee('Step One Button'))
+        .then(() => I.dontSeeElement('#step_1'))
+        .then(() => I.waitForVisible('#step_1', 2))
+        .then(() => I.seeElement('#step_1'))
+        .then(() => I.click('#step_1'))
+        .then(() => I.waitForVisible('#step_2', 2))
+        .then(() => I.see('Step Two Button'));
+    });
+
+   it('should wait for element in DOM', () => {
+      return I.amOnPage('/form/wait_visible')
+        .then(() => I.waitForElement('#step_2'))
+        .then(() => I.dontSeeElement('#step_2'))
+        .then(() => I.seeElementInDOM('#step_2'))
+    });
+
+
+    it('should wait for element to appear', () => {
+      return I.amOnPage('/form/wait_element')
+        .then(() => I.dontSee('Hello'))
+        .then(() => I.dontSeeElement('h1'))
+        .then(() => I.waitForElement('h1', 2))
+        .then(() => I.see('Hello'))
+    });
+
+
+  })
 
 }

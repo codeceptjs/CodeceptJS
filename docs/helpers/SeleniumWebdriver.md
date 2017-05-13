@@ -6,7 +6,8 @@ library. It implements common web api methods (amOnPage, click, see).
 #### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-2.  Launch the daemon: `java -jar selenium-server-standalone-2.xx.xxx.jar`
+2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
+3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
 #### PhantomJS Installation
 
@@ -23,10 +24,12 @@ This helper should be configured in codecept.json
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
--   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
+-   `restart` - restart browser between tests (default: true).
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `scriptTimeout`: (optional) sets default timeout for scripts in `executeAsync`. 1000 by default.
+-   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 
@@ -131,6 +134,21 @@ I.clearCookie('test');
 **Parameters**
 
 -   `cookie`  (optional)
+
+## clearField
+
+Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  
 
 ## click
 

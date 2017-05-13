@@ -244,3 +244,10 @@ class dynamic {
         include __DIR__.'/view/dynamic.php';
     }
 }
+
+class timeout {
+    public function GET()
+    {
+        include __DIR__.'/view/timeout.php';
+    }
+}
