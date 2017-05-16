@@ -460,6 +460,23 @@ module.exports.tests = function() {
     });
   });
 
+  describe('window size #resizeWindow', () => {
+     it('should set initial window size', () => {
+       return I.amOnPage('/form/resize')
+         .then(() => I.click('Window Size'))
+         .then(() => I.see('Height 400', '#height'))
+         .then(() => I.see('Width 500', '#width'))
+     });
+
+     it('should resize window to specific dimensions', () => {
+       return I.amOnPage('/form/resize')
+         .then(() => I.resizeWindow(800, 600))
+         .then(() => I.click('Window Size'))
+         .then(() => I.see('Height 600', '#height'))
+         .then(() => I.see('Width 800', '#width'))
+     });
+   });
+
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
@@ -528,23 +545,6 @@ module.exports.tests = function() {
         .then(() => I.dontSee('Timeout text'))
         .then(() => I.waitForText('Timeout text', 31, '#text'))
         .then(() => I.see('Timeout text'));
-    });
-  });
-
-  describe('window size #resizeWindow', () => {
-    it('should set initial window size', () => {
-      return I.amOnPage('/form/resize')
-        .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 400', '#height'))
-        .then(() => I.see('Width 500', '#width'))
-    });
-
-    it('should resize window to specific dimensions', () => {
-      return I.amOnPage('/form/resize')
-        .then(() => I.resizeWindow(800, 600))
-        .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 600', '#height'))
-        .then(() => I.see('Width 800', '#width'))
     });
   });
 
