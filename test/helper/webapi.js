@@ -472,6 +472,13 @@ module.exports.tests = function() {
         .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_'+sec)), null, 'file does not exists'));
     });
 
+    it('should create a full page screenshot file in output dir', () => {
+      let sec = (new Date()).getUTCMilliseconds();
+      return I.amOnPage('/')
+        .then(() => I.saveScreenshot(`screenshot_full_${+sec}`,true))
+        .then(() => assert.ok(fileExists(path.join(output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
+    });
+
     it('should create a screenshot on fail', () => {
       let sec = (new Date()).getUTCMilliseconds().toString();
       let test = { title: 'sw should do smth '+sec };
