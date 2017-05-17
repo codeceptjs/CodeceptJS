@@ -288,9 +288,8 @@ class WebDriverIO extends Helper {
     if (this.options.restart) return this.browser.end();
     if (this.options.keepCookies) return;
     this.debugSection('Session', 'cleaning cookies and localStorage');
-    return this.browser.execute('localStorage.clear();').then(() => {
-      return this.browser.deleteCookie();
-    });
+    this.browser.deleteCookie();
+    return this.browser.execute('localStorage.clear();');
   }
 
   _afterSuite() {
@@ -304,7 +303,7 @@ class WebDriverIO extends Helper {
     } else {
       fileName = test.title.replace(/ /g, '_') + '.failed.png';
     }
-    return this.saveScreenshot(fileName);
+    return this.saveScreenshot(fileName, true);
   }
 
   _withinBegin(locator) {
@@ -974,7 +973,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   seeNumberOfVisibleElements(selector, num) {
     return this.browser.isVisible(withStrictLocator(selector))
       .then(function (res) {
-        if(!Array.isArray(res)) res = [res];
+        if (!Array.isArray(res)) res = [res];
         res = res.filter((val) => val == true);
         return truth(`elements of ${locator}`, 'to be seen').assert.equal(res.length, num);
       });
@@ -1046,7 +1045,7 @@ Example with jQuery DatePicker:
 // change date of jQuery DatePicker
 I.executeScript(function() {
   // now we are inside browser context
-  $('date')).datetimepicker('setDate', new Date());
+  $('date').datetimepicker('setDate', new Date());
 });
 ```
 Can return values. Don't forget to use `yield` to get them.
@@ -1060,6 +1059,7 @@ let date = yield I.executeScript(function(el) {
 
 @param fn function to be executed in browser context
 @param ...args args to be passed to function
+
    *
    * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
    */
@@ -1125,18 +1125,36 @@ I.moveCursorTo('#submit', 5,5);
 
   /**
    * Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 @param fileName
+@param fullPage (optional)
    */
-  saveScreenshot(fileName) {
+  saveScreenshot(fileName, fullPage = false) {
     let outputFile = path.join(global.output_dir, fileName);
-    this.debug('Screenshot has been saved to ' + outputFile);
-    return this.browser.saveScreenshot(outputFile);
+
+    if (!fullPage) {
+      this.debug('Screenshot has been saved to ' + outputFile);
+      return this.browser.saveScreenshot(outputFile);
+    }
+    return this.browser.execute(() => ({
+      height: document.body.scrollHeight,
+      width: document.body.scrollWidth
+    })).then(({
+      width,
+      height
+    }) => {
+      this.browser.windowHandleSize(width, height);
+      this.debug('Screenshot has been saved to ' + outputFile);
+      return this.browser.saveScreenshot(outputFile);
+    });
   }
+
 
   /**
    * Sets a cookie

@@ -349,7 +349,18 @@
 
 <h2 id="063">0.6.3</h2>
 <ul>
-<li>Added docs to package.</li>
+<li>Errors are printed in non-verbose mode. Shows "Selenium not started" and other important errors.</li>
+<li>Allowed to set custom test options:</li>
+</ul>
+<pre><code class="js">Scenario('My scenario', { build_id: 123, type: 'slow' }, function (I)
+</code></pre>
+
+<p>those options can be accessed as <code>opts</code> property inside a <code>test</code> object. Can be used in custom listeners.</p>
+<ul>
+<li>Added <code>docs</code> directory to a package.</li>
+<li>[WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when <code>restart: false</code> by @tfiwm <a href="https://github.com/Codeception/CodeceptJS/pull/519">#519</a></li>
+<li>[WebDriverIO][Protractor][Nightmare] Added second parameter to <code>saveScreenshot</code> to allow a full page screenshot. By @HughZurname</li>
+<li>Added suite object to <code>suite.before</code> and <code>suite.after</code> events by @implico. <a href="https://github.com/Codeception/CodeceptJS/pull/496">#496</a></li>
 </ul>
 <h2 id="062">0.6.2</h2>
 <ul>

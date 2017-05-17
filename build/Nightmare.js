@@ -588,7 +588,7 @@ Example with jQuery DatePicker:
 // change date of jQuery DatePicker
 I.executeScript(function() {
   // now we are inside browser context
-  $('date')).datetimepicker('setDate', new Date());
+  $('date').datetimepicker('setDate', new Date());
 });
 ```
 Can return values. Don't forget to use `yield` to get them.
@@ -602,6 +602,7 @@ let date = yield I.executeScript(function(el) {
 
 @param fn function to be executed in browser context
 @param ...args args to be passed to function
+
    *
    * Wrapper for synchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2)
    */
@@ -1135,25 +1136,41 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
     }, lctype(locator), lcval(locator));
   }
 
-  /**
-   * Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+    /**
+     * Saves a screenshot to ouput folder (set in codecept.json).
+Filename is relative to output folder. 
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 @param fileName
-   */
-  saveScreenshot(fileName) {
+@param fullPage (optional)
+     */
+  saveScreenshot(fileName, fullPage = false) {
     let outputFile = path.join(global.output_dir, fileName);
     this.debug('Screenshot is saving to ' + outputFile);
     let recorder = require('../recorder');
-    return this.browser.screenshot(outputFile);
+
+    if (!fullPage) {
+      return this.browser.screenshot(outputFile);
+    }
+    return this.browser.evaluate(() => ({
+      height: document.body.scrollHeight,
+      width: document.body.scrollWidth
+    })).then(({
+        width,
+        height
+      }) => {
+      this.browser.viewport(width, height);
+      return this.browser.screenshot(outputFile);
+    });
   }
 
   _failed(test) {
     let fileName = test.title.replace(/\W/g, '_') + '.failed.png';
-    return this.saveScreenshot(fileName);
+    return this.saveScreenshot(fileName, true);
   }
 
   /**

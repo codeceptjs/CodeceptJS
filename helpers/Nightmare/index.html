@@ -610,7 +610,7 @@ In this case you should use generator and yield to receive results.</p>
 <pre><code class="js">// change date of jQuery DatePicker
 I.executeScript(function() {
 // now we are inside browser context
-$('date')).datetimepicker('setDate', new Date());
+$('date').datetimepicker('setDate', new Date());
 });
 </code></pre>
 
@@ -733,13 +733,16 @@ First parameter can be set to <code>maximize</code></p>
 </ul>
 <h2 id="savescreenshot">saveScreenshot</h2>
 <p>Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.</p>
+Filename is relative to output folder. 
+Optionally resize the window to the full available page <code>scrollHeight</code> and <code>scrollWidth</code> to capture the entire page by passing <code>true</code> in as the second argument.</p>
 <pre><code class="js">I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fileName</code>  </li>
+<li><code>fullPage</code>  (optional)</li>
 </ul>
 <h2 id="scrollto">scrollTo</h2>
 <p>Scrolls to element matched by locator.
