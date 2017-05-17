@@ -206,7 +206,7 @@ module.exports = function() {
     const request = require('request');
 
     recorder.add('create fixture data via API', function() {
-      return new Promise(doneFn, errFn) => {
+      return new Promise((doneFn, errFn) => {
         request({
           baseUrl: 'http://api.site.com/',
           method: 'POST',
