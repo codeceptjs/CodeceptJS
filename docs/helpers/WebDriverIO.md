@@ -522,7 +522,7 @@ Example with jQuery DatePicker:
 // change date of jQuery DatePicker
 I.executeScript(function() {
 // now we are inside browser context
-$('date')).datetimepicker('setDate', new Date());
+$('date').datetimepicker('setDate', new Date());
 });
 ```
 
@@ -693,15 +693,18 @@ Performs right click on an element matched by CSS or XPath.
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 
 **Parameters**
 
 -   `fileName`  
+-   `fullPage`  (optional)
 
 ## scrollTo
 
