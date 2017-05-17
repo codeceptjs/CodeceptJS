@@ -1,3 +1,18 @@
+## 0.6.3
+
+* Errors are printed in non-verbose mode. Shows "Selenium not started" and other important errors.
+* Allowed to set custom test options:
+
+```js
+Scenario('My scenario', { build_id: 123, type: 'slow' }, function (I)
+```
+those options can be accessed as `opts` property inside a `test` object. Can be used in custom listeners.
+
+* Added `docs` directory to a package.
+* [WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when `restart: false` by @tfiwm [#519](https://github.com/Codeception/CodeceptJS/pull/519)
+* [WebDriverIO][Protractor][Nightmare] Added second parameter to `saveScreenshot` to allow a full page screenshot. By @HughZurname
+* Added suite object to `suite.before` and `suite.after` events by @implico. [#496](https://github.com/Codeception/CodeceptJS/pull/496)
+
 ## 0.6.2
 
 * Added `config` object to [public API](http://codecept.io/hooks/#api)

@@ -2,7 +2,7 @@ FROM 	node:6.9.5
 # LTS
 
 		# Set grep as an ENV variable
-ENV 	GREP=" "
+ENV 	CODECEPT_ARGS=""
 
 		# Set HOST ENV variable for Selenium Server
 ENV 	HOST=selenium
