@@ -372,6 +372,12 @@ describe('Protractor', function() {
       return assert.ok(fileExists(path.join(output_dir, 'protractor_user.png')), null, 'file does not exists');
     });
 
+    it('should create full page a screenshot file in output dir', function*() {
+      yield I.amOnPage('/');
+      yield I.saveScreenshot('protractor_user_full.png',true);
+      return assert.ok(fileExists(path.join(output_dir, 'protractor_user_full.png')), null, 'file does not exists');
+    });
+    
     it('should create a screenshot on fail', function*() {
       let test = { title: 'protractor should do smth' };
       yield I.amOnPage('/')

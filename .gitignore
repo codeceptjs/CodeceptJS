@@ -8,3 +8,5 @@ docs/build
 test/data/output
 test/acceptance/output
 examples/output
+test/data/app/db
+test/data/sandbox/steps.d.ts
