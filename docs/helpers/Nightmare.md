@@ -5,7 +5,7 @@ fastest headless testing using Electron engine. Unlike Selenium-based drivers th
 Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
 less trusted.
 
-Requires `nightmare` and `nigthmare-upload` packages to be installed.
+Requires `nightmare` and `nightmare-upload` packages to be installed.
 
 ### Configuration
 
@@ -31,14 +31,14 @@ Locate elements by different locator types, including strict locator.
 Should be used in custom helpers.
 
 This method return promise with array of IDs of found elements.
-Actual elements can be accessed inside `evaulate` by using `codeceptjs.fetchElement()`
+Actual elements can be accessed inside `evaluate` by using `codeceptjs.fetchElement()`
 client-side function:
 
 ```js
 // get an inner text of an element
 
-let browser = this.helpers['Nigthmare'].browser;
-let value = this.helpers['Nigthmare']._locate({name: 'password'}).then(function(els) {
+let browser = this.helpers['Nightmare'].browser;
+let value = this.helpers['Nightmare']._locate({name: 'password'}).then(function(els) {
   return browser.evaluate(function(el) {
     return codeceptjs.fetchElement(el).value;
   }, els[0]);
@@ -319,7 +319,7 @@ Example with jQuery DatePicker:
 // change date of jQuery DatePicker
 I.executeScript(function() {
 // now we are inside browser context
-$('date')).datetimepicker('setDate', new Date());
+$('date').datetimepicker('setDate', new Date());
 });
 ```
 
@@ -474,15 +474,18 @@ First parameter can be set to `maximize`
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 
 **Parameters**
 
 -   `fileName`  
+-   `fullPage`  (optional)
 
 ## scrollTo
 

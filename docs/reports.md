@@ -136,7 +136,7 @@ Configure it to use `output` directory to print HTML reports:
 Execute CodeceptJS with HTML reporter:
 
 ```
-codeceptjs run --reporter mochawesome.
+codeceptjs run --reporter mochawesome
 ```
 
 Result will be located at `output/index.html` file.

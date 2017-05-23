@@ -1,4 +1,5 @@
 'use strict';
+
 let should = require('chai').should();
 let assert = require('assert');
 let path = require('path');
@@ -11,7 +12,6 @@ describe('list/def commands', () => {
 
   it('list should print actions', (done) => {
     exec(`${runner} list ${codecept_dir}`, (err, stdout, stderr) => {
-      console.log(stdout);
       stdout.should.include('FileSystem'); // helper name
       stdout.should.include('FileSystem I.amInPath(openPath)'); // action name
       stdout.should.include('FileSystem I.seeFile(name)');
@@ -19,7 +19,6 @@ describe('list/def commands', () => {
       done();
     });
   });
-
 
   it('def should create definition file', (done) => {
     try {

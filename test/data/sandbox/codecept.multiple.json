@@ -1,0 +1,24 @@
+{
+  "tests": "./*_test.multiple.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "FakeDriver": {
+      "require": "../fake_driver",
+      "browser": "dummy",
+      "windowSize": "1200x234"
+    }
+  },
+  "multiple": {
+    "default": {
+      "browsers": ["chrome", { "browser": "firefox"}]
+    },
+    "mobile": {
+      "browsers": ["android", "safari"]
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}

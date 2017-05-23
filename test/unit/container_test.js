@@ -4,6 +4,7 @@ let should = require('chai').should();
 let assert = require('assert');
 let path = require('path');
 let sinon = require('sinon');
+let FileSystem = require('../../lib/helper/FileSystem');
 
 describe('Container', () => {
 
@@ -78,7 +79,6 @@ describe('Container', () => {
 
   describe('#create', () => {
     it('should create container with helpers', () => {
-      let FileSystem = require('../../lib/helper/FileSystem');
       let config = {
         helpers: {
           MyHelper: {
@@ -114,6 +114,31 @@ describe('Container', () => {
     });
   });
 
+  describe('#append', () => {
+    it('should be able to add new helper', () => {
+      let config = {
+        helpers: {
+          FileSystem: {}
+        }
+      };
+      container.create(config);
+      container.append({helpers: {
+        AnotherHelper: { method: () => 'executed' }
+      }});
+      assert.ok(container.helpers('FileSystem'));
+      container.helpers('FileSystem').should.be.instanceOf(FileSystem);
 
+      assert.ok(container.helpers('AnotherHelper'));
+      container.helpers('AnotherHelper').method().should.eql('executed');
+    });
+
+    it('should be able to add new support object', () => {
+      container.create({});
+      container.append({support: {userPage: { login: '#login' }}})
+      assert.ok(container.support('I'));
+      assert.ok(container.support('userPage'));
+      container.support('userPage').login.should.eql('#login');
+    });
+  });
 
 });

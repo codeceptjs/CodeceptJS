@@ -372,6 +372,12 @@ describe('Protractor', function() {
       return assert.ok(fileExists(path.join(output_dir, 'protractor_user.png')), null, 'file does not exists');
     });
 
+    it('should create full page a screenshot file in output dir', function*() {
+      yield I.amOnPage('/');
+      yield I.saveScreenshot('protractor_user_full.png',true);
+      return assert.ok(fileExists(path.join(output_dir, 'protractor_user_full.png')), null, 'file does not exists');
+    });
+    
     it('should create a screenshot on fail', function*() {
       let test = { title: 'protractor should do smth' };
       yield I.amOnPage('/')
@@ -461,6 +467,7 @@ describe('Protractor', function() {
     });
 
     it('should return error if not present', function*() {
+      if (I.isProtractor5) return;
       return I.waitForText('Nothing here', 0, '#hello')
         .then(expectError)
         .thenCatch((e) => {
@@ -469,6 +476,7 @@ describe('Protractor', function() {
     });
 
     it('should return error if waiting is too small', function*() {
+      if (I.isProtractor5) return;
       return I.waitForText('Boom!', 0.5)
         .then(expectError)
         .thenCatch((e) => {

@@ -219,6 +219,13 @@ module.exports.tests = function() {
       return assert.equal(formContents('age'), 'adult');
     });
 
+    it('should select option by label and option text - with an onchange callback', function*() {
+      yield I.amOnPage('/form/select_onchange');
+      yield I.selectOption('Select a value', 'Option 2');
+      yield I.click('Submit');
+      return assert.equal(formContents('select'), 'option2');
+    });
+
     it('should select multiple options', function*() {
       yield I.amOnPage('/form/select_multiple');
       yield I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
@@ -406,6 +413,12 @@ module.exports.tests = function() {
       let val = yield I.grabAttributeFrom({css: 'form'}, 'method');
       return assert.equal(val, "get");
     });
+
+    it('should grab custom attribute from element', function*() {
+      yield I.amOnPage('/form/example4');
+      let val = yield I.grabAttributeFrom({css: '.navbar-toggle'}, 'data-toggle');
+      return assert.equal(val, "collapse");
+    });
   });
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
@@ -447,6 +460,23 @@ module.exports.tests = function() {
     });
   });
 
+  describe('window size #resizeWindow', () => {
+     it('should set initial window size', () => {
+       return I.amOnPage('/form/resize')
+         .then(() => I.click('Window Size'))
+         .then(() => I.see('Height 400', '#height'))
+         .then(() => I.see('Width 500', '#width'))
+     });
+
+     it('should resize window to specific dimensions', () => {
+       return I.amOnPage('/form/resize')
+         .then(() => I.resizeWindow(800, 600))
+         .then(() => I.click('Window Size'))
+         .then(() => I.see('Height 600', '#height'))
+         .then(() => I.see('Width 800', '#width'))
+     });
+   });
+
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
@@ -457,6 +487,13 @@ module.exports.tests = function() {
       return I.amOnPage('/')
         .then(() => I.saveScreenshot('screenshot_'+sec))
         .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_'+sec)), null, 'file does not exists'));
+    });
+
+    it('should create a full page screenshot file in output dir', () => {
+      let sec = (new Date()).getUTCMilliseconds();
+      return I.amOnPage('/')
+        .then(() => I.saveScreenshot(`screenshot_full_${+sec}`,true))
+        .then(() => assert.ok(fileExists(path.join(output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
     });
 
     it('should create a screenshot on fail', () => {
@@ -502,22 +539,12 @@ module.exports.tests = function() {
         .then(() => I.waitForText('Dynamic text', 2, '#text'))
         .then(() => I.see('Dynamic text'));
     });
-  });
 
-  describe('window size #resizeWindow', () => {
-    it('should set initial window size', () => {
-      return I.amOnPage('/form/resize')
-        .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 400', '#height'))
-        .then(() => I.see('Width 500', '#width'))
-    });
-
-    it('should resize window to specific dimensions', () => {
-      return I.amOnPage('/form/resize')
-        .then(() => I.resizeWindow(800, 600))
-        .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 600', '#height'))
-        .then(() => I.see('Width 800', '#width'))
+    it('should wait for text after timeout', () => {
+      return I.amOnPage('/timeout')
+        .then(() => I.dontSee('Timeout text'))
+        .then(() => I.waitForText('Timeout text', 31, '#text'))
+        .then(() => I.see('Timeout text'));
     });
   });
 

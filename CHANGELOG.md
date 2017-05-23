@@ -1,3 +1,89 @@
+## 0.6.3
+
+* Errors are printed in non-verbose mode. Shows "Selenium not started" and other important errors.
+* Allowed to set custom test options:
+
+```js
+Scenario('My scenario', { build_id: 123, type: 'slow' }, function (I)
+```
+those options can be accessed as `opts` property inside a `test` object. Can be used in custom listeners.
+
+* Added `docs` directory to a package.
+* [WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when `restart: false` by @tfiwm [#519](https://github.com/Codeception/CodeceptJS/pull/519)
+* [WebDriverIO][Protractor][Nightmare] Added second parameter to `saveScreenshot` to allow a full page screenshot. By @HughZurname
+* Added suite object to `suite.before` and `suite.after` events by @implico. [#496](https://github.com/Codeception/CodeceptJS/pull/496)
+
+## 0.6.2
+
+* Added `config` object to [public API](http://codecept.io/hooks/#api)
+* Extended `index.js` to include `actor` and `helpers`, so they could be required:
+
+```js
+const actor = require('codeceptjs').actor;
+```
+
+* Added [example for creating custom runner](http://codecept.io/hooks/#custom-runner) with public API.
+* run command to create `output` directory if it doesn't exist
+* [Protractor] fixed loading globally installed Protractor
+* run-multiple command improvements:
+     * create output directories for each process
+     * print process ids in output
+
+## 0.6.1
+
+* Fixed loading hooks
+
+## 0.6.0
+
+Major release with extension API and parallel execution.
+
+* **Breaking** Removed path argument from `run`. To specify path other than current directory use `--config` or `-c` option:
+
+Instead of: `codeceptjs run tests` use:
+
+```
+# load config and run from tests directory
+codeceptjs run -c tests/
+
+# or load codecept.json from tests directory
+codeceptjs run -c tests/codecept.json
+
+# run users_test.js inside tests directory
+codeceptjs run users_test.js -c tests
+```
+
+* **Command `multiple-run` added**, to execute tests in several browsers in parallel by @APshenkin and @davertmik. [See documentation](http://codecept.io/advanced/#multiple-execution).
+* **Hooks API added to extend CodeceptJS** with custom listeners and plugins. [See documentation](http://codecept.io/hooks/#hooks_1).
+* [Nightmare][WebDriverIO] `within` can work with iframes by @imvetri. [See documentation](http://codecept.io/acceptance/#iframes).
+* [WebDriverIO][SeleniumWebdriver][Protractor] Default browser changed to `chrome`
+* [Nightmare] Fixed globally locating `nightmare-upload`.
+* [WebDriverIO] added `seeNumberOfVisibleElements` method by @elarouche.
+* Exit with non-zero code if init throws an error by @rincedd
+* New guides published:
+    * [Installation](http://codecept.io/installation/)
+    * [Hooks](http://codecept.io/hooks/)
+    * [Advanced Usage](http://codecept.io/advanced/)
+* Meta packages published:
+    * [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio)
+    * [codecept-protractor](https://www.npmjs.com/package/codecept-protractor)
+    * [codecept-nightmare](https://www.npmjs.com/package/codecept-nightmare)
+
+
+## 0.5.1
+
+* [Polish translation](http://codecept.io/translation/#polish) added by @limes.
+* Update process exit code so that mocha saves reports before exit by @romanovma.
+* [Nightmare] fixed `getAttributeFrom` for custom attributes by @robrkerr
+* [Nightmare] Fixed *UnhandledPromiseRejectionWarning error* when selecting the dropdown using `selectOption` by @robrkerr. [See PR](https://github.com/Codeception/CodeceptJS/pull/408).
+* [Protractor] fixed `pressKey` method by @romanovma
+
+## 0.5.0
+
+* Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)
+* Fix 'fullTitle() is not a function' in exit.js by @hubidu. See [#388](https://github.com/Codeception/CodeceptJS/pull/388).
+* [Nightmare] Fix for `waitTimeout` by @HughZurname. See [#391](https://github.com/Codeception/CodeceptJS/pull/391). Resolves [#236](https://github.com/Codeception/CodeceptJS/issues/236)
+* Dockerized CodeceptJS setup by @artiomnist. [See reference](https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md)
+
 ## 0.4.16
 
 * Fixed steps output synchronization (regression since 0.4.14).
