@@ -4,13 +4,8 @@ How does your client, manager, or tester, or any other non-technical person, kno
 
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
-<<<<<<< HEAD
-By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser.
-However, you can also choose [SeleniumWebdriver](/helpers/SeleniumWebdriver) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
-=======
 By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
 However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
->>>>>>> master
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
 In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
@@ -36,7 +31,7 @@ in WebDriverIO helper accept them both.
 
 ```js
 I.seeElement('.user'); // element with CSS class user
-I.seeElement('//button(contains(., "press me")]'); // button
+I.seeElement('//button[contains(., "press me")]'); // button
 ```
 
 By default CodeceptJS tries to guess the locator type.

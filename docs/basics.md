@@ -142,7 +142,7 @@ I.say('I enter title and body');
 I.say('I expect post is visible on site');
 ```
 
-### Configuring IntelliSense (optional)
+## IntelliSense
 
 If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with
@@ -168,6 +168,11 @@ They can be used with `--reporter` options.
 By default a custom console reporter is enabled.
 
 We are currently working on improving reporters support.
+
+## Translation
+
+Because CodeceptJS tests use high level DSL it is possible to write tests using different languages.
+Tests can be written in Portuguese, Russian, Italian, Polish languages using predefined [translations](http://codecept.io/translation/).
 
 ## Test Options
 
