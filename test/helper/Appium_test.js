@@ -45,7 +45,8 @@ describe('Appium', function () {
   });
 
 
-  describe('app instalation : #seeAppIsInstalled, #removeApp, #seeAppIsNotInstalled', () => {
+  describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {
+
     it('should remove App and install it again', () => {
       return app.seeAppIsInstalled("io.selendroid.testapp")
         .then(() => app.removeApp("io.selendroid.testapp"))
@@ -53,9 +54,41 @@ describe('Appium', function () {
         .then(() => app.installApp(apk_path))
         .then(() => app.seeAppIsInstalled("io.selendroid.testapp"))
     });
+
+    it('should assert when app is/is not installed', () => {
+      return app.seeAppIsInstalled("io.super.app")
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('expected app io.super.app to be installed');
+        })
+        .then(() => app.seeAppIsNotInstalled("io.selendroid.testapp"))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('expected app io.selendroid.testapp not to be installed');
+        })
+    });
+  });
+
+  describe('see seeCurrentActivity: #seeCurrentActivityIs', () => {
+
+    it('should return .HomeScreenActivity for default screen', () => {
+      return app.seeCurrentActivityIs(".HomeScreenActivity")
+    });
+
+    it('should assert for wrong screen', () => {
+      return app.seeCurrentActivityIs(".SuperScreen")
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('expected current activity to be .SuperScreen');
+        })
+    });
   });
 
   describe('device lock : #seeDeviceIsLocked, #dontSeeDeviceIsLocked', () => {
+
     it('should return correct status about lock', () => {
       return app.dontSeeDeviceIsLocked()
         .then(() => app.seeDeviceIsLocked())
@@ -67,7 +100,8 @@ describe('Appium', function () {
     });
   });
 
-  describe('device orientation : #seeOrientationIs', () => {
+  describe('device orientation : #seeOrientationIs #setOrientation', () => {
+
     it('should return correct status about lock', () => {
       return app.seeOrientationIs('PORTRAIT')
         .then(() => app.seeOrientationIs('LANDSCAPE'))
@@ -85,53 +119,34 @@ describe('Appium', function () {
 
   });
 
-  describe('app context : #seeOrientationIs', () => {
-    it('should set context', function*() {
-      yield app.click("//android.widget.ImageButton[@content-desc = 'buttonStartWebviewCD']")
-      yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
-      let val = yield app.grabContext();
-      return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
-    });
-
-    it('should set geolocation', function*() {
-      yield app.click("//android.widget.ImageButton[@content-desc = 'buttonStartWebviewCD']")
-      let val = yield app.grabCurrentActivity();
-      yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
-      yield app.setGeoLocation(2,"vdfvdfdv")
-      let geo = yield app.grabGeoLocation();
-      return assert.equal(geo, {accuracy: 100, altitude: 8, latitude: 2, longitude: 2});
-    });
-
-    it('should switch activity', function*() {
-      yield app.startActivity('io.selendroid.testapp', '.RegisterUserActivity')
-      let val = yield app.grabCurrentActivity();
-      assert.equal(val, '.RegisterUserActivity');
-    });
-
-  });
-
-  describe('see seeCurrentActivity: #seeCurrentActivityIs', () => {
-    it('should return .HomeScreenActivity for default screen', () => {
-      return app.seeCurrentActivityIs(".HomeScreenActivity")
-    });
-  });
-
   describe(
     '#grabAllContexts, #grabContext, #grabCurrentActivity, #grabNetworkConnection, #grabOrientation, #grabSettings',
     () => {
-      it('should grab all availible contexts for screen', function*() {
-        yield app.click({acces: 'buttonStartWebviewCD'}) // "//android.widget.ImageButton[@content-desc = 'buttonStartWebviewCD']")
+
+      it('should grab all available contexts for screen', function*() {
+        yield app.click('~buttonStartWebviewCD')
         let val = yield app.grabAllContexts();
         assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']);
       });
+
       it('should grab current context', function*() {
         let val = yield app.grabContext();
         assert.equal(val, 'NATIVE_APP');
       });
+
       it('should grab current activity of app', function*() {
-        yield app.click("//android.widget.ImageButton[@content-desc = 'startUserRegistrationCD']")
         let val = yield app.grabCurrentActivity();
         assert.equal(val, '.HomeScreenActivity');
+      });
+
+      //TODO: don't understand altitude
+      it('should set and grab current geolocation', function*() {
+        yield app.click('~buttonStartWebviewCD')
+        let val = yield app.grabCurrentActivity();
+        yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
+        yield app.setGeoLocation(2, 2, 8)
+        let geo = yield app.grabGeoLocation();
+        return assert.equal(geo, {accuracy: 100, altitude: 8, latitude: 2, longitude: 2});
       });
 
       it('should grab network connection settings', function*() {
@@ -153,5 +168,84 @@ describe('Appium', function () {
       });
 
     });
+
+  describe('app context and activity: #switchToContext', () => {
+
+    it('should switch context', function*() {
+      yield app.click('~buttonStartWebviewCD')
+      yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
+      let val = yield app.grabContext();
+      return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+    });
+
+    it('should switch activity', function*() {
+      yield app.startActivity('io.selendroid.testapp', '.RegisterUserActivity')
+      let val = yield app.grabCurrentActivity();
+      assert.equal(val, '.RegisterUserActivity');
+    });
+
+  });
+
+  describe('#setNetworkConnection, #setSettings', () => {
+
+    it('should set Network Connection (airplane mode on)', function*() {
+      yield app.setNetworkConnection(1)
+      let val = yield app.grabNetworkConnection();
+      return assert.equal(val.value, 1);
+    });
+
+    it('should set custom settings', function*() {
+      yield app.setSettings({ cyberdelia: 'open' })
+      let val = yield app.grabSettings();
+      assert.deepEqual(val, { ignoreUnimportantViews: false, cyberdelia: 'open' });
+    });
+
+  });
+
+  describe('#hideDeviceKeyboard', () => {
+
+    it('should hide device Keyboard', () => {
+      return app.click('~startUserRegistrationCD')
+        .then(() => app.click('android.widget.CheckBox'))
+        .then(expectError)
+        .catch((e) => {
+          e.message.should.include('Clickable element android.widget.CheckBox was not found by text|CSS|XPath');
+        })
+        .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
+        .then(() => app.click('android.widget.CheckBox'))
+    });
+
+    it('should assert if no keyboard', () => {
+      return app.hideDeviceKeyboard('pressKey', 'Done').then(expectError)
+        .catch((e) => {
+          e.message.should.include('An unknown server-side error occurred while processing the command. Original error: Soft keyboard not present, cannot hide keyboard');
+        })
+    });
+
+  });
+
+  describe('#sendDeviceKeyEvent', () => {
+
+    it('should react on pressing keycode', () => {
+      return app.sendDeviceKeyEvent(3)
+        .then(() => app.waitForVisible('~Apps list'))
+    });
+
+  });
+
+  describe('#openNotifications', () => {
+
+    it('should react on notification opening', () => {
+      return app.seeElement('~Do not disturb.')
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('expected elements of ~Do not disturb. to be seen');
+        })
+        .then(() => app.openNotifications())
+        .then(() => app.waitForVisible('~Do not disturb.', 10))
+    });
+
+  });
 
 });
