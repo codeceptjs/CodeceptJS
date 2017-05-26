@@ -47,6 +47,47 @@ describe('Appium', function () {
 
   describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {
 
+    describe(
+      '#grabAllContexts, #grabContext, #grabCurrentActivity, #grabNetworkConnection, #grabOrientation, #grabSettings',
+      () => {
+
+        it('should grab all available contexts for screen', function*() {
+          yield app.click('~buttonStartWebviewCD')
+          let val = yield app.grabAllContexts();
+          assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']);
+        });
+
+        it('should grab current context', function*() {
+          let val = yield app.grabContext();
+          assert.equal(val, 'NATIVE_APP');
+        });
+
+        it('should grab current activity of app', function*() {
+          let val = yield app.grabCurrentActivity();
+          assert.equal(val, '.HomeScreenActivity');
+        });
+
+        it('should grab network connection settings', function*() {
+          yield app.setNetworkConnection(4)
+          let val = yield app.grabNetworkConnection();
+          assert.equal(val.value, 4);
+          assert.equal(val.inAirplaneMode, false);
+          assert.equal(val.hasWifi, false);
+          assert.equal(val.hasData, true);
+        });
+
+        it('should grab orientation', function*() {
+          let val = yield app.grabOrientation();
+          assert.equal(val, 'PORTRAIT');
+        });
+
+        it('should grab custom settings', function*() {
+          let val = yield app.grabSettings();
+          assert.deepEqual(val, {ignoreUnimportantViews: false});
+        });
+
+      });
+
     it('should remove App and install it again', () => {
       return app.seeAppIsInstalled("io.selendroid.testapp")
         .then(() => app.removeApp("io.selendroid.testapp"))
@@ -118,47 +159,6 @@ describe('Appium', function () {
     });
 
   });
-
-  describe(
-    '#grabAllContexts, #grabContext, #grabCurrentActivity, #grabNetworkConnection, #grabOrientation, #grabSettings',
-    () => {
-
-      it('should grab all available contexts for screen', function*() {
-        yield app.click('~buttonStartWebviewCD')
-        let val = yield app.grabAllContexts();
-        assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']);
-      });
-
-      it('should grab current context', function*() {
-        let val = yield app.grabContext();
-        assert.equal(val, 'NATIVE_APP');
-      });
-
-      it('should grab current activity of app', function*() {
-        let val = yield app.grabCurrentActivity();
-        assert.equal(val, '.HomeScreenActivity');
-      });
-
-      it('should grab network connection settings', function*() {
-        yield app.setNetworkConnection(4)
-        let val = yield app.grabNetworkConnection();
-        assert.equal(val.value, 4);
-        assert.equal(val.inAirplaneMode, false);
-        assert.equal(val.hasWifi, false);
-        assert.equal(val.hasData, true);
-      });
-
-      it('should grab orientation', function*() {
-        let val = yield app.grabOrientation();
-        assert.equal(val, 'PORTRAIT');
-      });
-
-      it('should grab custom settings', function*() {
-        let val = yield app.grabSettings();
-        assert.deepEqual(val, {ignoreUnimportantViews: false});
-      });
-
-    });
 
   describe('app context and activity: #switchToContext', () => {
 
@@ -311,9 +311,17 @@ describe('Appium', function () {
       assert.equal(val, '.WebViewActivity');
     });
 
+    it('should assert when you dont scroll the document anymore', () => {
+      return app.click('~startUserRegistrationCD')
+        .then(() => app.swipeTo("android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30, 100, 500))
+        .catch((e) => {
+          e.inspect().should.include('Scroll to the end and element android.widget.CheckBox was not found');
+        })
+    });
+
     it('should react on swipeTo action', function*() {
       yield app.click("~startUserRegistrationCD")
-      yield app.swipeTo("android.widget.CheckBox", "///android.widget.ScrollView/android.widget.LinearLayout", "down", 30, 1000, 1000);
+      yield app.swipeTo("android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30, 100, 700);
     });
 
   });
