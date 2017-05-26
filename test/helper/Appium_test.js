@@ -139,17 +139,8 @@ describe('Appium', function () {
         assert.equal(val, '.HomeScreenActivity');
       });
 
-      //TODO: don't understand altitude
-      it('should set and grab current geolocation', function*() {
-        yield app.click('~buttonStartWebviewCD')
-        let val = yield app.grabCurrentActivity();
-        yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
-        yield app.setGeoLocation(2, 2, 8)
-        let geo = yield app.grabGeoLocation();
-        return assert.equal(geo, {accuracy: 100, altitude: 8, latitude: 2, longitude: 2});
-      });
-
       it('should grab network connection settings', function*() {
+        yield app.setNetworkConnection(4)
         let val = yield app.grabNetworkConnection();
         assert.equal(val.value, 4);
         assert.equal(val.inAirplaneMode, false);
@@ -244,6 +235,80 @@ describe('Appium', function () {
         })
         .then(() => app.openNotifications())
         .then(() => app.waitForVisible('~Do not disturb.', 10))
+    });
+
+  });
+
+  describe('#makeTouchAction', () => {
+
+    it('should react on touch actions', function*() {
+      yield app.makeTouchAction("~buttonStartWebviewCD", 'tap')
+      let val = yield app.grabCurrentActivity();
+      assert.equal(val, '.WebViewActivity');
+    });
+
+    it('should react on swipe action', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipe("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800, 1200, 1000);
+      let type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vx = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
+      assert.equal(type, 'FLICK');
+      assert.equal(vx, 'vx: 28000.0 pps');
+      assert.equal(vy, 'vy: 28000.0 pps');
+    });
+
+    it('should react on swipeDown action', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipeDown("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000);
+      let type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
+      assert.equal(type, 'FLICK');
+      assert.equal(vy, 'vy: 28000.0 pps');
+    });
+
+    it('should react on swipeUp action', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipeUp("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", -1200, 1000);
+      let type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
+      assert.equal(type, 'FLICK');
+      assert.equal(vy, 'vy: -28000.0 pps');
+    });
+
+    it('should react on swipeRight action', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipeRight("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800, 1000);
+      let type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
+      assert.equal(type, 'FLICK');
+      assert.equal(vy, 'vx: 28000.0 pps');
+    });
+
+    it('should react on swipeLeft action', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipeLeft("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", -800, 1000);
+      let type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
+      assert.equal(type, 'FLICK');
+      assert.equal(vy, 'vx: -28000.0 pps');
+    });
+
+    it('should react on touchPerform action', function*() {
+      yield app.touchPerform([{
+        action: 'press',
+        options: {
+          x: 100,
+          y: 420
+        }
+      }, { action: 'release' }])
+      let val = yield app.grabCurrentActivity();
+      assert.equal(val, '.WebViewActivity');
     });
 
   });
