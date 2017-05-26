@@ -62,7 +62,8 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
+-   `url`  url path or global urlIn a second argument a list of request headers can be passed:
+    ```js
     I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
     ```
 -   `headers`  
@@ -383,9 +384,11 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:```js
+-   `name`  Returns cookie in JSON format. If name not passed, returns all cookies for this domain. Multiple cookies can be received by passing query object:
+    ```js
     I.grabCookie({ secure: true});
-    ```If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+    ```
+    If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ## grabTextFrom
 
@@ -474,7 +477,7 @@ First parameter can be set to `maximize`
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -722,9 +725,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
-
-    I.waitForVisible('#popup');
-
+```js
+I.waitForVisible('#popup');
+```
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
