@@ -311,6 +311,19 @@ describe('Appium', function () {
       assert.equal(val, '.WebViewActivity');
     });
 
+    it('should react on swipeTo action', function*() {
+      yield app.click("~startUserRegistrationCD")
+      yield app.swipeTo("android.widget.CheckBox", "///android.widget.ScrollView/android.widget.LinearLayout", "down", 30, 1000, 1000);
+    });
+
+  });
+
+  describe('#pullFile', () => {
+    it('should pull file to local machine', function*() {
+      let savepath = path.join(__dirname, '/../data/mobile/testpullfilecache' + new Date().getTime() + '.m')
+      yield app.pullFile('/storage/emulated/0/Android/data/com.google.android.apps.maps/cache/cache_r.m', savepath)
+      assert.ok(fs.existsSync(savepath))
+    });
   });
 
 });

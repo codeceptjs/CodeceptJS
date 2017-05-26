@@ -30,7 +30,7 @@ Example:
 ```js
  {
    helpers: {
-       WebDriverIO: {
+       Appium: {
            desiredCapabilities: {
                platformName: "Android",
                appPackage: "com.example.android.myApp",
@@ -65,7 +65,7 @@ Get elements by different locator types, including strict locator
 Should be used in custom helpers:
 
 ```js
-this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
+this.helpers['Appium']._locate({name: 'password'}).then //...
 ```
 
 **Parameters**
@@ -77,7 +77,7 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 Find a checkbox by providing human readable text:
 
 ```js
-this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+this.helpers['Appium']._locateCheckable('I agree with terms and conditions').then // ...
 ```
 
 **Parameters**
@@ -89,7 +89,7 @@ this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions'
 Find a clickable element by providing human readable text:
 
 ```js
-this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+this.helpers['Appium']._locateClickable('Next page').then // ...
 ```
 
 **Parameters**
@@ -101,7 +101,7 @@ this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
 Find field elements by providing human readable text:
 
 ```js
-this.helpers['WebDriverIO']._locateFields('Your email').then // ...
+this.helpers['Appium']._locateFields('Your email').then // ...
 ```
 
 **Parameters**
@@ -1035,76 +1035,76 @@ Appium: support
 
 # Appium extra methods
 
-## checkAppIsInstalled
+## seeAppIsInstalled
 
 Check if an app is installed.
 
 Appium: support only Android
 
 ```js
-I.checkAppIsInstalled("com.MainApp");
+I.seeAppIsInstalled("com.MainApp");
 ```
 
 **Parameters**
 
 -   `bundleId` -	ID of bundled app
 
-## checkAppIsNotInstalled
+## seeAppIsNotInstalled
 
 Check if an app is not installed.
 
 Appium: support only Android
 
 ```js
-I.checkAppIsNotInstalled("com.MainApp");
+I.seeAppIsNotInstalled("com.MainApp");
 ```
 
 **Parameters**
 
 -   `bundleId` -	ID of bundled app
 
-## checkCurrentActivityIs
+## seeCurrentActivityIs
 
 check current activity on an Android device.
 
 Appium: support only Android
 
 ```js
-I.checkCurrentActivityIs(".MainActivity");
+I.seeCurrentActivityIs(".MainActivity");
 ```
 
 **Parameters**
 
 -   `currentActivity` -	expected current activity
 
-## checkDeviceIsLocked
+## seeDeviceIsLocked
 
 Check whether the device is locked.
 
 Appium: support only Android
 
 ```js
-I.checkDeviceIsLocked()
+I.seeDeviceIsLocked()
 ```
 
-## checkDeviceIsNotLocked
+## dontSeeDeviceIsLocked
 
 Check whether the device is not locked.
 
 Appium: support only Android
 
 ```js
-I.checkDeviceIsNotLocked()
+I.dontSeeDeviceIsLocked()
 ```
 
-## checkOrientationIs
+## seeOrientationIs
 
 Check the device orientation
 
 Appium: support Android and iOS
 
 ```js
-I.checkOrientationIs("landscape");
+I.seeOrientationIs("landscape");
 ```
 
 **Parameters**
@@ -1130,9 +1130,7 @@ Appium: support Android and iOS
 ```js
 let contexts = yield I.grabAllContexts()
 /*
-{ status: 0,
-value: 'NATIVE_APP',
-sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
+['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']
 */
 ```
 
@@ -1145,9 +1143,7 @@ Appium: support Android and iOS
 ```js
 let context = yield I.grabContext()
 /*
-{ status: 0,
-value: 'NATIVE_APP',
-sessionId: '4238eb4c-0737-4c74-8d7f-e9e69be087e9' }
+'NATIVE_APP'
 */
 ```
 
@@ -1161,20 +1157,6 @@ Appium: support only Android
 let currentActivity = yield I.grabCurrentActivity()
 /*
 .ui.WalkthroughActivity
-*/
-```
-
-## grabGeoLocation
-
-Get the current geolocation.
-Only for browser, firstly you sould setGeoLocation
-
-Appium: support Android and iOS
-
-```js
-let geoLocation = yield I.grabGeoLocation()
-/*
-{ accuracy: 100, altitude: 0, latitude: 2, longitude: 6 }
 */
 ```
 
@@ -1218,9 +1200,7 @@ Appium: support only Android
 ```js
 let settings = yield I.grabSettings()
 /*
-{ status: 0,
-value: { ignoreUnimportantViews: false },
-sessionId: 'ef9e1a42-0f1c-48dc-a5d3-ebc127e7952f' }
+{ ignoreUnimportantViews: false }
 */
 ```
 
@@ -1253,27 +1233,6 @@ I.installApp('/path/to/my/App.apk');
 **Parameters**
 
 -   `path` - path to Android application
-
-
-## lockDevice
-
-Lock the device.
-
-Appium: support only Android
-
-```js
-I.lockDevice()
-```
-
-## longPressKeycode
-
-Press a particular key code on the device.
-
-Appium: support only Android
-
-```js
-I.longPressKeycode(3)
-```
 
 ## makeTouchAction
 
@@ -1361,16 +1320,6 @@ I.rotate(114, 198);
 -   `rotation` -  The length of rotation in radians. (default pi (π))
 -   `touchCount` -  The number of touches to use in the specified gesture. (Effectively, the number of fingers a user would use to make the specified gesture.) Valid values are 1 to 5. (default 2)
 
-## sendAppToBackground
-
-Send the currently active app to the background and return it back.
-
-Appium: support only Android
-
-```js
-I.sendAppToBackground(5);
-```
-
 **Parameters**
 
 -   `seconds` -  number of seconds after the app will open again
@@ -1419,22 +1368,6 @@ I.setOrientation('landscape')
 **Parameters**
 
 -   `orientation` - orientation (landscape/portrait)
-
-## setGeoLocation
-
-Set the current geolocation. Only for browser. (don't know usage).
-
-Appium: support only Android
-
-```js
-I.setGeoLocation(30, 50.33, 551)
-```
-
-**Parameters**
-
--   `latitude`
--   `longitude`
--   `altitude`
 
 ## setNetworkConnection
 
@@ -1611,36 +1544,6 @@ I.switchToContext('NATIVE_APP')
 -   `value` - name of context
 
 
-## toggleAirplaneMode
-
-Switch the state (enabled/disabled) of airplane mode.
-
-Appium: support only Android
-
-```js
-I.toggleAirplaneMode();
-```
-
-## toggleLocationServices
-
-Switch the state (enabled/disabled) of the location service.
-
-Appium: support only Android
-
-```js
-I.toggleLocationServices();
-```
-
-## toggleWiFi
-
-Switch the state (enabled/disabled) of the wifi service.
-
-Appium: support only Android
-
-```js
-I.toggleWiFi();
-```
-
 ## touchPerform
 
 Performs a specific touch action. The action object need to contain the action name, x/y coordinates
@@ -1660,13 +1563,3 @@ I.touchPerform([{
 **Parameters**
 
 -   `actions` - touch action as object or object[] with attributes like touchCount, x, y, duration
-
-## unlockDevice
-
-Unlock the device. Works only with slide and unlock. Performs wery slow
-
-Appium: support only Android
-
-```js
-I.unlockDevice();
-```
