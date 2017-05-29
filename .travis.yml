@@ -1,9 +1,8 @@
-language: node_js
+language: android
 node_js:
   - '4.3'
   - '6.9.5'
   - '7'
-
 
 sudo: required
 dist: trusty
