@@ -11,7 +11,7 @@ let AssertionFailedError = require('../../lib/assert/error');
 let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 let expectError = require('../../lib/utils').test.expectError;
 let webApiTests = require('./webapi');
-let apk_path = path.join(__dirname, '/../data/mobile/selendroid-test-app-0.17.0.apk')
+let apk_path = 'https://github.com/APshenkin/CodeceptJS/raw/appium-integration/test/data/mobile/selendroid-test-app-0.17.0.apk' //path.join(__dirname, '/../data/mobile/selendroid-test-app-0.17.0.apk')
 
 
 describe('Appium', function () {
