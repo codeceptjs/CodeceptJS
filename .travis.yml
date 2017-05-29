@@ -8,11 +8,20 @@ node_js:
 sudo: required
 dist: trusty
 
+android:
+  components:
+    - tools
+    - platform-tools
+    - tools
+    - build-tools-25.0.0
+    - android-25
+
 env:
   - HELPER=Protractor
   - HELPER=Nightmare
   - HELPER=SeleniumWebdriver
   - HELPER=WebDriverIO
+  - HELPER=Appium
 
 addons:
   apt:
@@ -26,8 +35,8 @@ before_install:
   - docker pull selenium/standalone-chrome:2.53.0
 
 before_script:
-  - npm install -g appium
-  - npm install -g appium-doctor
+  - npm i -g appium
+  - npm i -g appium-doctor
   - appium-doctor
   - docker run -d --net=host selenium/standalone-chrome:2.53.0
   - export DISPLAY=:99.0
