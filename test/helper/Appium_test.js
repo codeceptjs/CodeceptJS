@@ -36,8 +36,8 @@ describe('Appium', function () {
       },
       host: 'ondemand.saucelabs.com',
       port: 80,
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
+      user: 'hajikidosu',
+      key: "73eb74cd-2b3e-4b98-b8fc-233cd0e1f54f",
     });
   });
 
