@@ -16,7 +16,7 @@ let apk_path = 'https://github.com/APshenkin/CodeceptJS/raw/appium-integration/t
 
 describe('Appium', function () {
   this.retries(0);
-  this.timeout(35000);
+  this.timeout(120000);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -26,13 +26,18 @@ describe('Appium', function () {
     }
 
     app = new Appium({
-      port: 4723,
       desiredCapabilities: {
         app: apk_path,
+        appiumVersion: "1.6.4",
+        browserName: "",
         platformName: "Android",
-        platformVersion: "7.1",
+        platformVersion: "6.0",
         deviceName: "Android Emulator"
-      }
+      },
+      host: 'ondemand.saucelabs.com',
+      port: 80,
+      user: process.env.SAUCE_USERNAME,
+      key: process.env.SAUCE_ACCESS_KEY,
     });
   });
 
