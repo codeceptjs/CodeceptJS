@@ -24,12 +24,12 @@ services:
   - docker
 
 before_install:
-  - docker pull selenium/standalone-chrome:2.53.0
-  - docker pull butomo1989/docker-android-x86-7.1.1
+  - '[[ "$HELPER" == "Appium" ]] || docker pull selenium/standalone-chrome:2.53.0'
+  - '[[ "$HELPER" != "Appium" ]] || docker pull butomo1989/docker-android-x86-7.1.1'
 
 before_script:
-  - docker run -d --net=host selenium/standalone-chrome:2.53.0
-  - docker run --privileged -d -p 6080:6080 -p 5554:5554 -p 5555:5555 -p 4723:4723 -e DEVICE="Samsung Galaxy S6" -e APPIUM=True butomo1989/docker-android-x86-7.1.1
+  - '[[ "$HELPER" == "Appium" ]] || docker run -d --net=host selenium/standalone-chrome:2.53.0'
+  - '[[ "$HELPER" != "Appium" ]] || docker run --privileged -d -p 6080:6080 -p 5554:5554 -p 5555:5555 -p 4723:4723 -e DEVICE="Samsung Galaxy S6" -e APPIUM=True butomo1989/docker-android-x86-7.1.1'
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - chmod -R 777 test/data
