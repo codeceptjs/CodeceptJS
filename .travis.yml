@@ -9,10 +9,15 @@ sudo: required
 dist: trusty
 
 env:
-  - HELPER=Protractor
-  - HELPER=Nightmare
-  - HELPER=SeleniumWebdriver
-  - HELPER=WebDriverIO
+  global:
+    secure: "FYVp2F/bMdzd/0SIhEHieR25iY4fHT7cDRRqZ5h3dPnv1u2yvqEHtd2pVqGNq5zv8b29xh8ebnd9os21XU4GihGCibyBVPkQ1E7WDn2mGUk5nxvQMlGr+gcZCaL9BCmvZdgv/vpxssS0RzzpIL70xNYjwDrrO/bXHTws76Eobzu8vXJae295AgZQvno7gpzhPwRsLVcOYzgvJvYigT2xiaoEBrCeO5BLc0VhkvItGxHAO8qZsxVIbGOzmyEGlO2EOp8gej7fDpAZFjqD1gZqXSQPB583tMpiQl6MWvCzKq1zLbmS/V+38Vg8veY6E3rgvl4dnpfNsx5ckXfV6DNOjozrU4H5OOGLwNxKUgPZTBCCgroyEsd/Zk0NNiY4/JpfQtpvNyFhsfZkbAHuEmuxr8alkuk0qlsp7yCng2hXfZqoiPJbYlyAD5aHEYiK1+nSStfR5Zb4nLOSvDMtExhdZb/+srhQKkcoDTXnWjc2wK6ZBYAfcwxY2S7Z0uws19pn8TBX8pThXQC4NmM4tLzaWuG66EWhk0GGsM5ghG2nimXLQjDNvxC2xqGVRVvE3uZoVs6WR4nExjNW7CLby7fXCve1N+9mOyJrSBD6ZQaSJ4+Uq734BCK3io+FUyy5sJTGlEIbZafQvV7CrpLJl/n3+2WXabH7kTdW5aEN1jYfKQM="
+    secure: "nPozScNnApMz84z/RA9ROlXFRajC4Z/+oljoNR8DdedMVWiof3/6B6h/t+BCSCvhg0TAq9xPoLyiEoeZ3Zz69fol7nKToGmcs7yVBnSNe9hDJBEpwdu6B+C8omk0zxnFLVHqAl6psiFGQLNuS0UGgCYmPPCWdxcp3InR2GUEBDSt5toBF1t0tm/zE7c+MSiWpeBU5qWzKoTm1fiuL3iskAARTzSHXeMSC20rWjrWFcalZnh8z0GR65lrXeb9EsMHuO6JcugrtoGWMLPZxX6EZ4mYZte5n5BQFMbO/useDiahhElqvIvtL9XHkIRCmDr2pUGCrr4lvBNnNPVtBIZhztbKlPIr93Cm3HVyC0ke2yTz/FbEOaL+Xmm2Eqf2eCi9jYnws3vNQTNVkRQHmCF1RfZVM9j/rPJpm3eJXA55vTpOESeZl9QBZckPK1HWoIkCGgTiIF3bWytEIUtHKrKyh3bPMsrNDuvO67yFfnIdg/UqXNAfwccAoER/SQIbJ40w/L+DKIF0+HQOE64w2xbNA60n1IobXDKfmK4weMIb2FIcYUVYagkKLUrHFQIoWKVSFHvK6rzJXpdwGuf9RCju24S6aeZ4c/cBiNPZcL/Qrrc5LKt0hzOMhQGwUnM4IM8IKm9G1xURZ7o8+j8kNb6FUiPX7uvAqJ7EKTqp5q5GTrA="
+  matrix:
+    - HELPER=Protractor
+    - HELPER=Nightmare
+    - HELPER=SeleniumWebdriver
+    - HELPER=WebDriverIO
+    - HELPER=Appium
 
 addons:
   apt:
