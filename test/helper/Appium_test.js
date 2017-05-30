@@ -36,8 +36,8 @@ describe('Appium', function () {
       },
       host: 'ondemand.saucelabs.com',
       port: 80,
-      user: 'KronosJS', //process.env.SAUCE_USERNAME,
-      key: '3c554723-e4e7-4207-a9a4-3998fb1ab5e1' //process.env.SAUCE_ACCESS_KEY,
+      user: process.env.SAUCE_USERNAME,
+      key: process.env.SAUCE_ACCESS_KEY,
     });
   });
 
@@ -354,9 +354,11 @@ describe('Appium', function () {
   // describe('#pullFile', () => {
   //
   //   it('should pull file to local machine', function*() {
-  //     yield app.sendDeviceKeyEvent(3)
-  //     yield app.click('~Apps')
-  //     yield app.seeInSource('blabla')
+  //     yield app.click('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.RelativeLayout[2]/android.widget.RelativeLayout')
+  //
+  //     // yield app.sendDeviceKeyEvent(3)
+  //     // yield app.click('~Apps')
+  //     // yield app.seeInSource('blabla')
   //
   //   })
   //     // let savepath = path.join(__dirname, '/../data/mobile/testpullfilecache' + new Date().getTime() + '.m')
