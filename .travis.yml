@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-- '4.3'
 - 6.9.5
 - '7'
 sudo: required
@@ -32,4 +31,4 @@ before_script:
 - sleep 10
 script:
 - gulp test
-- '[[ "$TRAVIS_NODE_VERSION" == "4.3" ]] || ./node_modules/.bin/mocha test/helper/${HELPER}_test.js'
+- './node_modules/.bin/mocha test/helper/${HELPER}_test.js'
