@@ -28,16 +28,16 @@ describe('Appium', function () {
     app = new Appium({
       desiredCapabilities: {
         app: apk_path,
-        appiumVersion: "1.6.4",
+        //appiumVersion: "1.6.4",
         browserName: "",
         platformName: "Android",
-        platformVersion: "6.0",
+        platformVersion: "7.1.1",
         deviceName: "Android Emulator"
       },
-      host: 'ondemand.saucelabs.com',
-      port: 80,
-      user: 'hajikidosu',
-      key: "73eb74cd-2b3e-4b98-b8fc-233cd0e1f54f",
+      //host: 'ondemand.saucelabs.com',
+      port: 4723,
+      //user: 'hajikidosu',
+      //key: "73eb74cd-2b3e-4b98-b8fc-233cd0e1f54f",
     });
   });
 
