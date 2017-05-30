@@ -1,43 +1,35 @@
 language: node_js
 node_js:
-  - '4.3'
-  - '6.9.5'
-  - '7'
-
-
+- '4.3'
+- 6.9.5
+- '7'
 sudo: required
 dist: trusty
-
 env:
   global:
-    secure: "FYVp2F/bMdzd/0SIhEHieR25iY4fHT7cDRRqZ5h3dPnv1u2yvqEHtd2pVqGNq5zv8b29xh8ebnd9os21XU4GihGCibyBVPkQ1E7WDn2mGUk5nxvQMlGr+gcZCaL9BCmvZdgv/vpxssS0RzzpIL70xNYjwDrrO/bXHTws76Eobzu8vXJae295AgZQvno7gpzhPwRsLVcOYzgvJvYigT2xiaoEBrCeO5BLc0VhkvItGxHAO8qZsxVIbGOzmyEGlO2EOp8gej7fDpAZFjqD1gZqXSQPB583tMpiQl6MWvCzKq1zLbmS/V+38Vg8veY6E3rgvl4dnpfNsx5ckXfV6DNOjozrU4H5OOGLwNxKUgPZTBCCgroyEsd/Zk0NNiY4/JpfQtpvNyFhsfZkbAHuEmuxr8alkuk0qlsp7yCng2hXfZqoiPJbYlyAD5aHEYiK1+nSStfR5Zb4nLOSvDMtExhdZb/+srhQKkcoDTXnWjc2wK6ZBYAfcwxY2S7Z0uws19pn8TBX8pThXQC4NmM4tLzaWuG66EWhk0GGsM5ghG2nimXLQjDNvxC2xqGVRVvE3uZoVs6WR4nExjNW7CLby7fXCve1N+9mOyJrSBD6ZQaSJ4+Uq734BCK3io+FUyy5sJTGlEIbZafQvV7CrpLJl/n3+2WXabH7kTdW5aEN1jYfKQM="
-    secure: "nPozScNnApMz84z/RA9ROlXFRajC4Z/+oljoNR8DdedMVWiof3/6B6h/t+BCSCvhg0TAq9xPoLyiEoeZ3Zz69fol7nKToGmcs7yVBnSNe9hDJBEpwdu6B+C8omk0zxnFLVHqAl6psiFGQLNuS0UGgCYmPPCWdxcp3InR2GUEBDSt5toBF1t0tm/zE7c+MSiWpeBU5qWzKoTm1fiuL3iskAARTzSHXeMSC20rWjrWFcalZnh8z0GR65lrXeb9EsMHuO6JcugrtoGWMLPZxX6EZ4mYZte5n5BQFMbO/useDiahhElqvIvtL9XHkIRCmDr2pUGCrr4lvBNnNPVtBIZhztbKlPIr93Cm3HVyC0ke2yTz/FbEOaL+Xmm2Eqf2eCi9jYnws3vNQTNVkRQHmCF1RfZVM9j/rPJpm3eJXA55vTpOESeZl9QBZckPK1HWoIkCGgTiIF3bWytEIUtHKrKyh3bPMsrNDuvO67yFfnIdg/UqXNAfwccAoER/SQIbJ40w/L+DKIF0+HQOE64w2xbNA60n1IobXDKfmK4weMIb2FIcYUVYagkKLUrHFQIoWKVSFHvK6rzJXpdwGuf9RCju24S6aeZ4c/cBiNPZcL/Qrrc5LKt0hzOMhQGwUnM4IM8IKm9G1xURZ7o8+j8kNb6FUiPX7uvAqJ7EKTqp5q5GTrA="
+  - secure: vLPyF/U+KhmWAXMkcrYFben6Qo5Tsk9nExbb/YTxCCqtpu5FlCcKZ0h/7OXJT9sXR7t8dmz564VbAtbhazPU+2FdpxIoR/D6OUeZa1WhyB5GGfpfHmfIe1hQTsZg0B0zGrrpcLBeaTA1E7+0lBhIKj9S1FoApa6xfP21bju+IddpD881m0bdF/2gEiBrabWHoQieWLNgS4EzUI5IcOknz4bk3nx6ztldJOokwTqUy2RgtVbMkJf0v6LbBOxT5uCwlLYxllDwY6fIatPP7Gol5V2fxMYhp4k/QSeULy81EJBpVhW0Bw5FfGBBVnqk495fhCjRNbjwzcs2zz2dD1i99KeIFhfKYQsfto7odHbt0kasYgaQQUZEZsbY6ScYMDXnzprTCotolmPXJmqu0rHnUfa2ZZxl9/jNis1IoCdwsvJ+cemL13fw9llFvnMGtmqDc9ltjzKoRfi8rpUH5x6EbnUE6vdr0RDA+D3mUbFr2kxlMwQPTpujnxOghpuDnDc/2CGe17uklssw2g2vMxdIuiqxXvKkeN0xBddtlbUx2PwRrecjCmv7RE13j+ERsIysDQUkTMnXTWBumtVGmdxZpFhxD7wwmVFi3qjq4FGyO3f8alnfYOBspPhLgC2PTJGS/X23C9LC08tFl6MpeHD97HUaW6bx+ObI2/0jBsDXB3k=
+  - secure: OlLkzBUwlRFIa5xDWEs/It6ofSfC+pXRVt17kTyox8beH5qu5Ks3/Zwa48YMqHKnbNHI7hiRBO2YfsJgjYJoQ5/ovKPa3rvffNXdKeDZpt+lQqlhjJYpgp0pNgck45RKnFj1pKpQCVG6dWWcT59Gi8NoI8AsAVCVgFtO8McfV8qbks6G2UP0GdFR5s6tRyZTjfCVmMNtJX9veYuibwoiwRyFhh1FY+sw5BvAONSBdOWmcK7RdDm7IE+Oitzn3bRZnC6sgLNpy6qhncED/pbn4GFD5MRlu0UkDGDfXldsOyjOtqdaN5WbOGdhevaYgr/5VvSeMbO7fITlDXbhz9pViogl6fnxj0zELZvG6b6H7nAVV29uzHP4jofocP41h33rvYnQUTfNHN8HIRN4LVfekN2I27GDO+J1QFiWNN/36nhsRH9tWPwSNC2f9QLIf6OrD60FVUIMlQrFHqyrO4KZBZkRsGMgYzsa5XmGOGUATUBrmQVTynNQc+yhniJd4Q8LwwmXMDWNeoeg5eh0TFgERVDlkQ8tPaWOXmpHi6BL4JZlGz275SDWgZH4bnH2B1RzO1qcGN905vIo5snX8LwZbxSfXrt+4WP3jOi+1i8ZrFwACk7jlovJiJquQuZQ5dL7C9rBwpAWB8YjgOKNikDWvUrVnYGS/gLwrdN7+pRiims=
   matrix:
-    - HELPER=Protractor
-    - HELPER=Nightmare
-    - HELPER=SeleniumWebdriver
-    - HELPER=WebDriverIO
-    - HELPER=Appium
-
+  - HELPER=Protractor
+  - HELPER=Nightmare
+  - HELPER=SeleniumWebdriver
+  - HELPER=WebDriverIO
+  - HELPER=Appium
 addons:
   apt:
     packages:
-      - php5-cli
-
+    - php5-cli
 services:
-  - docker
-
+- docker
 before_install:
-  - docker pull selenium/standalone-chrome:2.53.0
-
+- docker pull selenium/standalone-chrome:2.53.0
 before_script:
-  - docker run -d --net=host selenium/standalone-chrome:2.53.0
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - chmod -R 777 test/data
-  - "php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &"
-  - sleep 10
-
+- docker run -d --net=host selenium/standalone-chrome:2.53.0
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- chmod -R 777 test/data
+- php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &
+- sleep 10
 script:
-  - gulp test
-  - '[[ "$TRAVIS_NODE_VERSION" == "4.3" ]] || ./node_modules/.bin/mocha test/helper/${HELPER}_test.js'
+- gulp test
+- '[[ "$TRAVIS_NODE_VERSION" == "4.3" ]] || ./node_modules/.bin/mocha test/helper/${HELPER}_test.js'

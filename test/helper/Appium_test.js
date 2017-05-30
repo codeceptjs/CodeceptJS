@@ -31,7 +31,7 @@ describe('Appium', function () {
         appiumVersion: "1.6.4",
         browserName: "",
         platformName: "Android",
-        platformVersion: "6.0.1.1",
+        platformVersion: "6.0",
         deviceName: "Android Emulator"
       },
       host: 'ondemand.saucelabs.com',
