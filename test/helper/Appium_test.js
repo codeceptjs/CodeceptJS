@@ -8,14 +8,12 @@ let path = require('path');
 let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
-let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 let expectError = require('../../lib/utils').test.expectError;
-let webApiTests = require('./webapi');
-let apk_path = 'https://github.com/APshenkin/CodeceptJS/raw/appium-integration/test/data/mobile/selendroid-test-app-0.17.0.apk' //path.join(__dirname, '/../data/mobile/selendroid-test-app-0.17.0.apk')
+let apk_path =  'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk'
 
 
 describe('Appium', function () {
-  this.retries(0);
+  this.retries(1);
   this.timeout(120000);
 
   before(() => {
@@ -30,6 +28,8 @@ describe('Appium', function () {
         app: apk_path,
         appiumVersion: "1.6.4",
         browserName: "",
+        recordVideo: "false",
+        recordScreenshots: "false",
         platformName: "Android",
         platformVersion: "6.0",
         deviceName: "Android Emulator"
@@ -322,11 +322,12 @@ describe('Appium', function () {
     });
 
     it('should react on touchPerform action', function*() {
+      //yield app.seeInSource('blabla')
       yield app.touchPerform([{
         action: 'press',
         options: {
           x: 100,
-          y: 420
+          y: 200
         }
       }, {action: 'release'}])
       let val = yield app.grabCurrentActivity();
@@ -351,20 +352,14 @@ describe('Appium', function () {
 
   });
 
-  // describe('#pullFile', () => {
-  //
-  //   it('should pull file to local machine', function*() {
-  //     yield app.click('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.RelativeLayout[2]/android.widget.RelativeLayout')
-  //
-  //     // yield app.sendDeviceKeyEvent(3)
-  //     // yield app.click('~Apps')
-  //     // yield app.seeInSource('blabla')
-  //
-  //   })
-  //     // let savepath = path.join(__dirname, '/../data/mobile/testpullfilecache' + new Date().getTime() + '.m')
-  //     // return app.pullFile('/storage/emulated/0/Android/data/com.google.android.apps.maps/cache/cache_r.m', savepath)
-  //     //   .then(() => assert.ok(fileExists(savepath), null, 'file does not exists'));
-  // });
+  describe('#pullFile', () => {
+
+    it('should pull file to local machine', function*() {
+      let savepath = path.join(__dirname, '/../data/output/testpullfile' + new Date().getTime() + '.png')
+      return app.pullFile('/storage/emulated/0/DCIM/sauce_logo.png', savepath)
+        .then(() => assert.ok(fileExists(savepath), null, 'file does not exists'));
+    });
+  });
 
 
   describe('see text : #see', () => {
@@ -380,6 +375,8 @@ describe('Appium', function () {
       yield app.click('~email of the customer')
       yield app.pressKey('1');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
+      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+        100, 700);
       yield app.click('android.widget.Button');
       return app.see('1',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
@@ -427,7 +424,7 @@ describe('Appium', function () {
     });
 
     it('should click by xpath', function*() {
-      return app.click('//android.widget.Button[@content-desc = "startUserRegistrationCD"]')
+      return app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
         .then(() => app.seeElement('~label_usernameCD'))
     });
   });
@@ -437,6 +434,8 @@ describe('Appium', function () {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
+        .then(() => app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+        100, 700))
         .then(() => app.click('android.widget.Button'))
         .then(() => app.see('Nothing special',
           '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]'))
@@ -446,6 +445,8 @@ describe('Appium', function () {
       yield app.click('~startUserRegistrationCD')
       yield app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
+      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+        100, 700);
       yield app.click('android.widget.Button');
       yield app.see('Nothing special',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
@@ -456,6 +457,8 @@ describe('Appium', function () {
       yield app.fillField('~email of the customer', 'Nothing special');
       yield app.appendField('~email of the customer', 'blabla');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
+      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+        100, 700);
       yield app.click('android.widget.Button');
       yield app.see('Nothing specialblabla',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
