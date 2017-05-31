@@ -6,7 +6,53 @@ Appium is an open source test automation framework for use with native, hybrid a
 It allows you to run Selenium tests on mobile devices and also test native, hybrid and mobile web apps.
 
 1.  Download and install [Appium](http://appium.io/)
-2.  Launch the daemon: `appium`
+
+    ```
+    npm i -g appium
+    ```
+2. Download and install Android SDK or Android Studio to manage emulators from [Android Studio site](https://developer.android.com/studio/index.html#downloads)
+3. Set the $ANDROID_HOME env variable to your Android SDK path
+
+    Example:
+    ```
+     export ANDROID_HOME=/Users/bestUser/Library/Android/sdk
+    ```
+4. Add Android SDK tools to $PATH
+
+    Example:
+    ```
+    export PATH="${ANDROID_HOME}/tools:$PATH"
+    export PATH="${ANDROID_HOME}/tools/bin:$PATH"
+    ```
+5. Add Java Home bin directory to $PATH
+
+    Example:
+    ```
+    export PATH="${JAVA_HOME}/bin:$PATH"
+    ```
+6. Create and launch emulator:
+    
+    From Android Studio:
+    * Create any empty android application
+    * Create emulator using this [documentation](https://developer.android.com/studio/run/managing-avds.html)
+   * Note that x86 emulators works much faster as ARM emulators, but you can use them only on Mac and Linux.
+   * Launch emulator from interface
+   
+    From Command line:
+   * Create emulator using [avdmanager commandline tool](https://developer.android.com/studio/command-line/avdmanager.html)
+   * Launch emulator using [emulator commandline tool](https://developer.android.com/studio/run/emulator-commandline.html)
+7. Test that Appium is installed correctly using `appium-doctor`
+
+    ```
+    npm i -g appium-doctor
+    appium-doctor
+    ```
+    If there are any issues, you have to fix them before Appium launch
+
+8.  Launch the daemon: `appium`
+9. Also on Mac you can launch tests for iOS devices. For this, install xcode from App store. You can get detailed information [here](http://appium.io/slate/en/master/?ruby#running-appium-on-mac-os-x)
+
+
 
 ### Configuration
 
@@ -14,7 +60,7 @@ This helper should be configured in codecept.conf.js
 
 #### Appium configuration
 
--   `port`: Appium serverport
+-   `port`: Appium server port
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
 -   `desiredCapabilities`: Appium capabilities
 --   `platformName` - Which mobile OS platform to use
@@ -290,7 +336,7 @@ I.dontSee('Login'); // assume we are already logged in
 
 Verifies that the specified checkbox is not checked.
 
-Appium: not tested
+Appium: support only web testing
 
 **Parameters**
 
@@ -331,7 +377,7 @@ Appium: support
 
 Opposite to `seeElementInDOM`. Checks that element is not on page.
 
-Appium: support
+Appium: support only web testing
 
 **Parameters**
 
@@ -696,7 +742,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 Verifies that the specified checkbox is checked.
 
-Appium: not tested
+Appium: support only web testing
 
 ```js
 I.seeCheckboxIsChecked('Agree');
@@ -760,7 +806,7 @@ I.seeElement('#modal');
 Checks that a given Element is present in the DOM
 Element is located by CSS or XPath.
 
-Appium: support
+Appium: support only web testing
 
 ```js
 I.seeElementInDOM('#modal');
@@ -941,7 +987,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-Appium: support
+Appium: support only web testing
 
 **Parameters**
 
@@ -967,7 +1013,7 @@ Appium: support
 Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-Appium: support
+Appium: support only web testing
 
     I.waitForStalenessOf('#popup');
 
