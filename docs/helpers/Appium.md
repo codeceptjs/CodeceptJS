@@ -1,8 +1,8 @@
 # Appium
 
 Appium helper extends [WebriverIO](http://codecept.io/helpers/WebDriverIO/) helper.
-It supports all browser methods and also includes special methods for mobile apps testing.
-You can use this helper to test Web on desktop and mobile devices and mobile apps.
+ It supports all browser methods and also includes special methods for mobile apps testing.
+ You can use this helper to test Web on desktop and mobile devices and mobile apps.
 
 #### Appium Installation
 
@@ -17,38 +17,38 @@ Launch the daemon: `appium`
 
 ### Configuration
 
-This helper should be configured in codecept.conf.js
+This helper should be configured in codecept.json or codecept.conf.js
 
 #### Appium configuration
 
--   `port`: Appium serverport
+-   `port`: Appium port
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
--   `desiredCapabilities`: Appium capabilities
-    --   `platformName` - Which mobile OS platform to use
-    --   `appPackage` - Java package of the Android app you want to run
-    --   `appActivity` - Activity name for the Android activity you want to launch from your package.
-    --   `deviceName`: The kind of mobile device or emulator to use
-    --   `platformVersion`: Mobile OS version
-    --   `app` - The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.
-    --   `browserName`: Name of mobile web browser to automate. Should be an empty string if automating an app instead.
+-   `desiredCapabilities`: [], Appium capabilities, see below
+    -   `platformName` - Which mobile OS platform to use
+    -   `appPackage` - Java package of the Android app you want to run
+    -   `appActivity` - Activity name for the Android activity you want to launch from your package.
+    -   `deviceName`: The kind of mobile device or emulator to use
+    -   `platformVersion`: Mobile OS version
+    -   `app` - The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.
+    -   `browserName`: Name of mobile web browser to automate. Should be an empty string if automating an app instead.
 
 Example:
 
 ```js
 {
-helpers: {
-WebDriverIO: {
-desiredCapabilities: {
-platformName: "Android",
-appPackage: "com.example.android.myApp",
-appActivity: "MainActivity",
-deviceName: "OnePlus3",
-platformVersion: "6.0.1"
-},
-port: 4723,
-restart: false
-}
-}
+  helpers: {
+      WebDriverIO: {
+          desiredCapabilities: {
+              platformName: "Android",
+              appPackage: "com.example.android.myApp",
+              appActivity: "MainActivity",
+              deviceName: "OnePlus3",
+              platformVersion: "6.0.1"
+          },
+          port: 4723,
+          restart: false
+      }
+    }
 }
 ```
 
@@ -586,3 +586,237 @@ Appium: support Android and iOS
 **Parameters**
 
 -   `actions`  
+
+## appendField
+
+Appends text to a input field or textarea.
+Field is located by name, label, CSS or XPath
+
+```js
+I.appendField('#myTextField', 'appended');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  text value
+
+## checkOption
+
+Selects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.checkOption('#agree');
+I.checkOption('I Agree to Terms and Conditions');
+I.checkOption('agree', '//form');
+```
+
+**Parameters**
+
+-   `field`  checkbox located by label | name | CSS | XPath | strict locator
+-   `context`  (optional) element located by CSS | XPath | strict locator
+
+## click
+
+Perform a click on a link or a button, given by a locator.
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.click('Logout');
+// button of form
+I.click('Submit');
+// CSS button
+I.click('#form input[type=submit]');
+// XPath
+I.click('//form/*[@type=submit]');
+// link in context
+I.click('Logout', '#nav');
+// using strict locator
+I.click({css: 'nav a.login'});
+```
+
+**Parameters**
+
+-   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
+-   `context`  (optional) element to search in CSS|XPath|Strict locator
+
+## dontSee
+
+Opposite to `see`. Checks that a text is not present on a page.
+Use context parameter to narrow down the search.
+
+```js
+I.dontSee('Login'); // assume we are already logged in
+```
+
+**Parameters**
+
+-   `text`  is not present
+-   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search
+
+## dontSeeCheckboxIsChecked
+
+Verifies that the specified checkbox is not checked.
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+
+## dontSeeElement
+
+Opposite to `seeElement`. Checks that element is not visible
+
+**Parameters**
+
+-   `locator`  located by CSS|XPath|Strict locator
+
+## dontSeeInField
+
+Checks that value of input field or textare doesn't equal to given value
+Opposite to `seeInField`.
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  is not expected to be a field value
+
+## fillField
+
+Fills a text field or textarea, after clearing its value, with the given string.
+Field is located by name, label, CSS, or XPath.
+
+```js
+// by label
+I.fillField('Email', 'hello@world.com');
+// by name
+I.fillField('password', '123456');
+// by CSS
+I.fillField('form#login input[name=username]', 'John');
+// or by strict locator
+I.fillField({css: 'form#login input[name=username]'}, 'John');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  
+
+## grabTextFrom
+
+Retrieves a text from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let pin = yield I.grabTextFrom('#pin');
+```
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+
+## grabValueFrom
+
+Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let email = yield I.grabValueFrom('input[name=email]');
+```
+
+**Parameters**
+
+-   `locator`  field located by label|name|CSS|XPath|strict locator
+
+## see
+
+Checks that a page contains a visible text.
+Use context parameter to narrow down the search.
+
+```js
+I.see('Welcome'); // text welcome on a page
+I.see('Welcome', '.content'); // text inside .content div
+I.see('Register', {css: 'form.register'}); // use strict locator
+```
+
+**Parameters**
+
+-   `text`  expected on page
+-   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
+
+## seeCheckboxIsChecked
+
+Verifies that the specified checkbox is checked.
+
+```js
+I.seeCheckboxIsChecked('Agree');
+I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
+I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+
+## seeElement
+
+Checks that a given Element is visible
+Element is located by CSS or XPath.
+
+```js
+I.seeElement('#modal');
+```
+
+**Parameters**
+
+-   `locator`  located by CSS|XPath|strict locator
+
+## seeInField
+
+Checks that the given input field or textarea equals to given value.
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+
+```js
+I.seeInField('Username', 'davert');
+I.seeInField({css: 'form textarea'},'Type your comment here');
+I.seeInField('form input[type=hidden]','hidden_value');
+I.seeInField('#searchform input','Search');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  
+
+# selectOption
+
+Selects an option in a drop-down select.
+Field is searched by label | name | CSS | XPath.
+Option is selected by visible text or by value.
+
+```js
+I.selectOption('Choose Plan', 'Monthly'); // select by label
+I.selectOption('subscription', 'Monthly'); // match option by text
+I.selectOption('subscription', '0'); // or by value
+I.selectOption('//form/select[@name=account]','Premium');
+I.selectOption('form select[name=account]', 'Premium');
+I.selectOption({css: 'form select[name=account]'}, 'Premium');
+```
+
+Provide an array for the second argument to select multiple options.
+
+```js
+I.selectOption('Which OS do you use?', ['Android', 'iOS']);
+```
+
+**Parameters**
+
+-   `select`  field located by label|name|CSS|XPath|strict locator
+-   `option`  
