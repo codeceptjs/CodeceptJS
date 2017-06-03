@@ -133,10 +133,10 @@ describe('Appium', function () {
     });
   });
 
-  describe('device lock : #seeDeviceIsLocked, #dontSeeDeviceIsLocked', () => {
+  describe('device lock : #seeDeviceIsLocked, #seeDeviceIsUnlocked', () => {
 
     it('should return correct status about lock', () => {
-      return app.dontSeeDeviceIsLocked()
+      return app.seeDeviceIsUnlocked()
         .then(() => app.seeDeviceIsLocked())
         .then(expectError)
         .catch((e) => {
