@@ -7,7 +7,8 @@ if [[ -d "/tests/" ]]; then
 		echo "CodeceptJS directory has been found."
 
 		# Run the tests
-		node bin/codecept.js run /tests/ $GREP
+		cd /tests/
+		node /bin/codecept.js run $CODECEPT_ARGS
 	else
 		display_usage
 fi

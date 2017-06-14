@@ -190,6 +190,31 @@ Available events:
 
 For further reference look for [currently available listeners](https://github.com/Codeception/CodeceptJS/tree/master/lib/listener) using event system.
 
+#### Test Object
+
+Test events provide a test object with following fields:
+
+* `title` title of a test
+* `body` test function as a string
+* `opts` additional test options like retries, and others
+* `pending` true if test is scheduled for execution and false if a test has finished
+* `file` path to a file with a test.
+* `steps` array of executed steps (available only in `test.passed` or `test.failed` event)
+
+and others
+
+#### Step Object
+
+Step events provide step objects with following fields:
+
+* `name` name of a step, like 'see', 'click', and others
+* `actor` current actor, in most cases it `I`
+* `helper` current helper instance used to execute this step
+* `helperMethod` corresponding helper method, in most cases is the same as `name`
+* `status` status of a step (passed or failed)
+* `prefix` if a step is executed inside `within` block contain within text, like: 'Within .js-signup-form'.
+* `args` passed arguments
+
 ### Recorder
 
 To inject asynchronous functions in a test or before/after a test you can subscribe to corresponding event and register a function inside a recorder object. [Recorder](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) represents a global promises chain.
@@ -206,7 +231,7 @@ module.exports = function() {
     const request = require('request');
 
     recorder.add('create fixture data via API', function() {
-      return new Promise(doneFn, errFn) => {
+      return new Promise((doneFn, errFn) => {
         request({
           baseUrl: 'http://api.site.com/',
           method: 'POST',
@@ -295,14 +320,22 @@ To initialize Codecept you need to create Config and Container objects.
 let Container = require('codeceptjs').container;
 let Codecept = require('codeceptjs').codecept;
 
-let codecept = new Codecept(
-  // config file
-  { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } },
-  // options
-  {steps: true}
-);
+let config = { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } };
+let opts = { steps: true };
+
+// create runner
+let codecept = new Codecept(config, opts);
+
+// create helpers, support files, mocha
+Container.create(config, opts);
+
+// initialize listeners
 codecept.bootstrap();
+
+// load tests
 codecept.loadTests('*_test.js');
+
+// run tests
 codecept.run();
 ```
 
