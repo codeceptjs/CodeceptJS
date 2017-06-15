@@ -19,6 +19,7 @@ module.exports = {
         'selectOption': 'seleziono_la_opzione',
         'fillField': 'compilo_il_campo',
         'pressKey': 'premo_il_tasto',
+        'triggerMouseEvent': 'attivare_levento_del_mouse',
         'attachFile': 'allego_il_file',
         'seeInField': 'vedo_nel_campo',
         'dontSeeInField': 'non_vedo_nel_campo',

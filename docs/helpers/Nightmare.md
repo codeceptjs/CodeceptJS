@@ -461,6 +461,14 @@ Can submit special keys like 'Enter', 'Backspace', etc
 
 -   `key`  
 
+## triggerMouseEvent
+
+Sends [input event](http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent) on a page.
+
+**Parameters**
+
+-   `event` event object, must contain `x` and `y` keys, others as needed from above link  
+
 ## resizeWindow
 
 Resize the current window to provided width and height.
