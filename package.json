@@ -66,7 +66,8 @@
   },
   "scripts": {
     "prepublish": "gulp prepublish",
-    "test": "gulp"
+    "test": "gulp",
+    "docs":"gulp docs"
   },
   "license": "MIT"
 }
