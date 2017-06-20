@@ -13,7 +13,6 @@ env:
   - HELPER=Nightmare
   - HELPER=SeleniumWebdriver
   - HELPER=WebDriverIO
-  - HELPER=Appium
 addons:
   apt:
     packages:
