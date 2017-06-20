@@ -61,7 +61,9 @@
     "protractor": ">4.0.9 <6.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
-    "webdriverio": ">3.4.0 <4.7.1"
+    "unirest": "^0.5.1",
+    "webdriverio": ">3.4.0 <5.0.0"
+
   },
   "scripts": {
     "prepublish": "gulp prepublish",
