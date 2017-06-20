@@ -471,7 +471,7 @@ First parameter can be set to `maximize`
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -686,7 +686,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForInvisible('#popup');
+```js
+I.waitForInvisible('#popup');
+```
 
 **Parameters**
 
@@ -698,7 +700,9 @@ Element can be located by CSS or XPath.
 Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForStalenessOf('#popup');
+```js
+I.waitForStalenessOf('#popup');
+```
 
 **Parameters**
 
@@ -727,7 +731,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForVisible('#popup');
+```js
+I.waitForVisible('#popup');
+```
 
 **Parameters**
 
