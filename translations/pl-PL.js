@@ -19,6 +19,7 @@ module.exports = {
         'selectOption': 'wybieram_opcję',
         'fillField': 'wypełniam_pole',
         'pressKey': 'naciskam_przycisk',
+        'triggerMouseEvent': 'wywołaj_wydarzenie_myszki',
         'attachFile': 'załączam_plik',
         'seeInField': 'widzę_w_polu',
         'dontSeeInField': 'nie_widzę_w_polu',

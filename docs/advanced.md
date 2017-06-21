@@ -49,63 +49,64 @@ CodeceptJS can execute multiple suites in parallel. This is useful if you want t
     "browsers": ["chrome", "firefox"]
   },
 
-"smoke": {
-  // run only tests containing "@smoke" in name
-  "grep": '@smoke',
+  "smoke": {
+    // run only tests containing "@smoke" in name
+    "grep": "@smoke",
 
-  // use firefox and different chrome configurations
-  "browsers": [
-    'firefox',
-    {browser: 'chrome', windowSize: 'maximize'},
-    // replace any config values from WebDriverIO helper
-    {browser: 'chrome', windowSize: '1200x840'}
+    // use firefox and different chrome configurations
+    "browsers": [
+      "firefox",
+      {"browser": "chrome", "windowSize": "maximize"},
+      // replace any config values from WebDriverIO helper
+      {"browser": "chrome", "windowSize": "1200x840"}
     ]
   }
 }
 ```
+
 Then tests can be executed using `run-multiple` command.
+
+Run all suites for all browsers:
+
+```sh
+codeceptjs run-multiple --all
+```
 
 Run `basic` suite for all browsers
 
-```
+```sh
 codeceptjs run-multiple basic
 ```
 
 Run `basic` suite for chrome only:
 
-```
+```sh
 codeceptjs run-multiple basic:chrome
 ```
 
 Run `basic` suite for chrome and `smoke` for firefox
 
-```
-codeceptjs run-multiple basic:chrome somke:firefox
+```sh
+codeceptjs run-multiple basic:chrome smoke:firefox
 ```
 
 Run basic tests with grep and junit reporter
 
-```
+```sh
 codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
 ```
 
 Run regression tests specifying different config path:
 
-```
+```sh
 codeceptjs run-multiple regression -c path/to/config
-```
-
-Run all suites for all browsers:
-
-```
-codeceptjs run-multiple --all
 ```
 
 Each executed process uses custom folder for reports and output. It is stored in subfolder inside an output directory. Subfolders will be named in `suite_browser` format.
 
 Output is printed for all running processes. Each line is tagged with a suite and browser name:
 
-```
+```sh
 [basic:firefox] GitHub --
 [basic:chrome] GitHub --
 [basic:chrome]    it should not enter
@@ -116,7 +117,6 @@ Output is printed for all running processes. Each line is tagged with a suite an
 [basic:firefox]  ✖ signin in 2743ms
 
 [basic:firefox] -- FAILURES:
-
 ```
 
 ## done()

@@ -21,6 +21,7 @@ module.exports = {
         'selectOption': 'selecionoAOpcao',
         'fillField': 'preenchoOCampo',
         'pressKey': 'pressioneATecla',
+        'triggerMouseEvent': 'lançarEventoDoMouse',
         'attachFile': 'anexaOArquivo',
         'seeInField': 'vejoNoCampo',
         'dontSeeInField': 'naoVejoNoCampo',
