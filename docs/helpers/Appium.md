@@ -718,6 +718,12 @@ Resumes test execution, so **should be used inside a generator with `yield`** op
 let pin = yield I.grabTextFrom('#pin');
 ```
 
+## setImmediateValue
+
+Set immediate value in app.
+Appium: support only iOS
+TODO: not tested
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
@@ -730,6 +736,13 @@ Resumes test execution, so **should be used inside a generator with `yield`** op
 ```js
 let email = yield I.grabValueFrom('input[name=email]');
 ```
+
+-   `value`  
+
+## setOrientation
+
+Set a device orientation. Will fail, if app will not set orientation
+Appium: support Android and iOS
 
 **Parameters**
 
