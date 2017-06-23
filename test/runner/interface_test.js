@@ -43,14 +43,19 @@ describe('CodeceptJS Interface', () => {
         `[2] Queued | seeFile: "codecept.json"`,
         `[2] Queued | return step result`,
         `[2] Queued | fire test.passed`,
-        `[2] Queued | finish test`,
-        `[2] Queued | hook FileSystem._after()`
+        `[2] Queued | finish test`
       ]);
 
       var queue3 = stdout.match(/\[3\] .+/g);
       queue3.should.eql([
         `[3] Starting recording promises`,
-        `[3] Queued | hook FileSystem._afterSuite()`
+        `[3] Queued | hook FileSystem._after()`
+      ]);
+
+      var queue4 = stdout.match(/\[4\] .+/g);
+      queue4.should.eql([
+        `[4] Starting recording promises`,
+        `[4] Queued | hook FileSystem._afterSuite()`
       ]);
 
       let lines = stdout.match(/\S.+/g);
