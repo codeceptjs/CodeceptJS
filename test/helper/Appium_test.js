@@ -36,6 +36,7 @@ describe('Appium', function () {
       },
       host: 'ondemand.saucelabs.com',
       port: 80,
+      // port: 4723,
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
@@ -367,6 +368,17 @@ describe('Appium', function () {
       return app.see('EN Button', '~buttonTestCD')
         .then(() => app.dontSee('Welcome', '~buttonTestCD'));
     });
+
+    it('should work with webview', function*() {
+      yield app.click('~buttonStartWebviewCD');
+      return app.see('Hello', 'android.webkit.WebView');
+    });
+
+    it.only('should work inside web view as normally', function*() {
+      yield app.click('~buttonStartWebviewCD');
+      yield app.switchToContext('WEBVIEW_io.selendroid.testapp');
+      return app.see('Preferred car');
+    })
   });
 
   describe('#pressKey', () => {
@@ -379,7 +391,7 @@ describe('Appium', function () {
         100, 700);
       yield app.click('android.widget.Button');
       return app.see('1',
-        '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
+        '#io.selendroid.testapp:id/label_email_data');
     });
   });
 
