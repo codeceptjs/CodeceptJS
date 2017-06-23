@@ -38,6 +38,7 @@ $urls = array(
     '/external_url' => 'external_url',
     '/iframe' => 'iframe',
     '/dynamic' => 'dynamic',
+    '/timeout' => 'timeout',
 );
 
 glue::stick($urls);

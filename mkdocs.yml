@@ -1,0 +1,31 @@
+site_name: CodeceptJS
+theme_dir: layout
+repo_url: https://github.com/codeception/codeceptjs/
+pages:
+- Index: 'index.md'
+- Quickstart: 'quickstart.md'
+- Guides:
+    - 'Installation': 'installation.md'
+    - 'Basics': 'basics.md'
+    - 'Acceptance Testing': 'acceptance.md'
+    - 'AngularJS Testing': 'angular.md'
+    - 'Nightmare Testing': 'nightmare.md'
+    - 'Helpers': 'helpers.md'
+    - 'Page Objects': 'pageobjects.md'
+    - 'Hooks': 'hooks.md'
+    - 'Advanced Usage': 'advanced.md'
+- Helpers:
+    - 'WebDriverIO': 'helpers/WebDriverIO.md'
+    - 'Protractor': 'helpers/Protractor.md'
+    - 'SeleniumWebdriver': 'helpers/SeleniumWebdriver.md'
+    - 'Nightmare': 'helpers/Nightmare.md'
+    - 'FileSystem': 'helpers/FileSystem.md'
+- Reference:
+    - 'Commands': 'commands.md'
+    - 'Configuration': 'configuration.md'
+    - 'Reports': 'reports.md'
+    - 'Translation': 'translation.md'
+    - 'Docker': 'docker.md'
+- Releases: 'changelog.md'
+copyright: Created by CodeceptJS Team
+google_analytics: ['UA-30075781-3','auto']

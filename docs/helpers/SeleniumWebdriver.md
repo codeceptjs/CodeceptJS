@@ -6,7 +6,8 @@ library. It implements common web api methods (amOnPage, click, see).
 #### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-2.  Launch the daemon: `java -jar selenium-server-standalone-2.xx.xxx.jar`
+2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
+3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
 #### PhantomJS Installation
 
@@ -23,10 +24,12 @@ This helper should be configured in codecept.json
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
--   `restart` - restart browser between tests (default: true), if set to false cookies will be cleaned but browser window will be kept.
+-   `restart` - restart browser between tests (default: true).
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `scriptTimeout`: (optional) sets default timeout for scripts in `executeAsync`. 1000 by default.
+-   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 
@@ -131,6 +134,21 @@ I.clearCookie('test');
 **Parameters**
 
 -   `cookie`  (optional)
+
+## clearField
+
+Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  
 
 ## click
 
@@ -307,7 +325,7 @@ Example with jQuery DatePicker:
 // change date of jQuery DatePicker
 I.executeScript(function() {
 // now we are inside browser context
-$('date')).datetimepicker('setDate', new Date());
+$('date').datetimepicker('setDate', new Date());
 });
 ```
 
@@ -454,14 +472,17 @@ First parameter can be set to `maximize`
 
 Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder.
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 
 **Parameters**
 
 -   `fileName`  
+-   `fullPage`  (optional)
 
 ## see
 
@@ -665,7 +686,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForInvisible('#popup');
+```js
+I.waitForInvisible('#popup');
+```
 
 **Parameters**
 
@@ -677,7 +700,9 @@ Element can be located by CSS or XPath.
 Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForStalenessOf('#popup');
+```js
+I.waitForStalenessOf('#popup');
+```
 
 **Parameters**
 
@@ -706,7 +731,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForVisible('#popup');
+```js
+I.waitForVisible('#popup');
+```
 
 **Parameters**
 

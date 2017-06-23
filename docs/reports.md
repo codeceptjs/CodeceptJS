@@ -84,7 +84,7 @@ Please use verbose output when reporting issues to GitHub.
 
 Use default xunit reporter of Mocha to print xml reports. Provide `--reporter xunit` to get the report to screen.
 It is recommended to use more powerful [`mocha-junit-reporter`](https://www.npmjs.com/package/mocha-junit-reporter) package
-ot get better support for Jenkins CI.
+to get better support for Jenkins CI.
 
 Install it via NPM (locally or globally, depending on CodeceptJS installation type):
 
@@ -136,7 +136,7 @@ Configure it to use `output` directory to print HTML reports:
 Execute CodeceptJS with HTML reporter:
 
 ```
-codeceptjs run --reporter mochawesome.
+codeceptjs run --reporter mochawesome
 ```
 
 Result will be located at `output/index.html` file.

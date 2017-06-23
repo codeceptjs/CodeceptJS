@@ -71,10 +71,10 @@ Scenario('login', (I, loginPage) => {
 ## Page Fragments
 
 In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
-by running `go` command with `--kind` (or `-t`) option:
+by running `go` command with `--type` (or `-t`) option:
 
 ```
-codeceptjs go --kind fragment
+codeceptjs go --type fragment
 ```
 
 Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
@@ -108,7 +108,7 @@ StepObjects represent complex actions which involve usage of multiple web pages.
 StepObject can be created similarly to PageObjects or PageFragments:
 
 ```
-codeceptjs go --kind step
+codeceptjs go --type step
 ```
 
 Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:

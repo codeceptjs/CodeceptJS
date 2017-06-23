@@ -54,14 +54,6 @@ describe('Step', () => {
       assert.equal(step.status, 'success');
     });
 
-    it('should fire events on run', () => {
-      event.dispatcher.on(event.step.before, before = sinon.spy());
-      event.dispatcher.on(event.step.after, after = sinon.spy());
-      step.run();
-      assert(before.called);
-      assert(after.called);
-    });
-
   });
 
 });

@@ -24,6 +24,7 @@ class RoboFile extends \Robo\Tasks
             ->run();
         $this->stopOnFail();
         $this->_copy('CHANGELOG.md', 'docs/changelog.md');
+        $this->_copy('docker/README.md', 'docs/docker.md');
         $this->_exec('mkdocs gh-deploy');
         $this->_remove('docs/changelog.md');
         $this->taskGitStack()
@@ -33,6 +34,11 @@ class RoboFile extends \Robo\Tasks
 
     function testServer()
     {
+        $this->taskServer(8010)
+            ->background()
+            ->dir('test/data/rest')
+            ->run();
+
         $this->taskServer(8000)
             ->dir('test/data/app')
             ->run();

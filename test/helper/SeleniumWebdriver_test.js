@@ -1,20 +1,12 @@
 'use strict';
-let SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
-let should = require('chai').should();
-let I, browser;
-let site_url = 'http://127.0.0.1:8000';
-let assert = require('assert');
-let path = require('path');
-let fs = require('fs');
-let fileExists = require('../../lib/utils').fileExists;
-let AssertionFailedError = require('../../lib/assert/error');
-let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-let expectError = require('../../lib/utils').test.expectError;
-require('co-mocha')(require('mocha'));
-let webApiTests = require('./webapi');
+        $this->taskServer(8010)
+            ->background()
+            ->dir('test/data/app')
+            ->run();
 
 describe('SeleniumWebdriver', function () {
-  this.timeout(10000);
+  this.retries(4);
+  this.timeout(35000);
 
   before(function() {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -24,7 +16,8 @@ describe('SeleniumWebdriver', function () {
 
     I = new SeleniumWebdriver({
       url: site_url,
-      browser: 'firefox'
+      browser: 'chrome',
+      windowSize: '500x400'
     });
     I._init();
     browser = I._before();
