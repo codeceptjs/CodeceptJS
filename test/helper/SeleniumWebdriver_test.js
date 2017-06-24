@@ -1,8 +1,17 @@
 'use strict';
-        $this->taskServer(8010)
-            ->background()
-            ->dir('test/data/app')
-            ->run();
+let SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
+let should = require('chai').should();
+let I, browser;
+let site_url = 'http://127.0.0.1:8000';
+let assert = require('assert');
+let path = require('path');
+let fs = require('fs');
+let fileExists = require('../../lib/utils').fileExists;
+let AssertionFailedError = require('../../lib/assert/error');
+let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
+let expectError = require('../../lib/utils').test.expectError;
+require('co-mocha')(require('mocha'));
+let webApiTests = require('./webapi');
 
 describe('SeleniumWebdriver', function () {
   this.retries(4);
