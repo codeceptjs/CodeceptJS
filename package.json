@@ -43,6 +43,7 @@
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.1.2",
     "documentation": "^4.0.0-beta1",
+    "faker": "^4.1.0",
     "git-guppy": "^1.0.1",
     "gulp": "^3.6.0",
     "gulp-coveralls": "^0.1.0",
@@ -56,18 +57,20 @@
     "gulp-mustache": "^2.2.0",
     "gulp-plumber": "^1.0.0",
     "guppy-pre-commit": "^0.4.0",
+    "json-server": "^0.10.1",
     "nightmare": "^2.5.2",
     "nightmare-upload": "^0.1.1",
     "protractor": ">4.0.9 <6.0",
+    "rosie": "^1.6.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
     "unirest": "^0.5.1",
     "webdriverio": ">3.4.0 <5.0.0"
-
   },
   "scripts": {
     "prepublish": "gulp prepublish",
-    "test": "gulp"
+    "test": "gulp",
+    "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch"
   },
   "license": "MIT"
 }

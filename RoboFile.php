@@ -34,9 +34,8 @@ class RoboFile extends \Robo\Tasks
 
     function testServer()
     {
-        $this->taskServer(8010)
+        $this->taskExec('npm run json-server')
             ->background()
-            ->dir('test/data/rest')
             ->run();
 
         $this->taskServer(8000)

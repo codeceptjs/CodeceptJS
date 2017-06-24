@@ -1,0 +1,17 @@
+{
+  "comments": [
+    {
+      "author": "Pierre Vandervort",
+      "title": "Dolore quas labore.",
+      "body": "Error sed quis facere maxime praesentium. Reiciendis reprehenderit quae earum qui omnis alias temporibus. Temporibus dolorum aliquid aut qui iure ratione ratione. Repellat laboriosam pariatur maxime accusamus quia asperiores necessitatibus.",
+      "id": 1
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "davert"
+    }
+  ]
+}
