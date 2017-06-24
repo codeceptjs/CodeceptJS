@@ -23,6 +23,8 @@ const data = {
   ],
 }
 
+let getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
+
 describe('ApiDataFactory', function () {
 
   before(function() {
@@ -45,7 +47,7 @@ describe('ApiDataFactory', function () {
     setTimeout(done, 500);
   });
 
-  beforeEach(() => {
+  afterEach(() => {
     return I._after();
   });
 
@@ -83,6 +85,7 @@ describe('ApiDataFactory', function () {
       yield I.haveMultiple('post', 3);
       yield new Promise((done) => setTimeout(done, 500));
       resp = yield I.restHelper.sendGetRequest('/posts');
+      resp.body.length.should.eql(4);
       yield I._after();
       yield new Promise((done) => setTimeout(done, 500));
       resp = yield I.restHelper.sendGetRequest('/posts');

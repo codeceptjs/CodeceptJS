@@ -37,7 +37,7 @@ describe('REST', function () {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data));
     } catch (err) {}
-    setTimeout(done, 500);
+    setTimeout(done, 700);
   })
 
   describe('basic requests', function() {

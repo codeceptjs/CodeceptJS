@@ -31,4 +31,5 @@ before_script:
 - sleep 10
 script:
 - gulp test
+- './node_modules/.bin/mocha test/rest'
 - './node_modules/.bin/mocha test/helper/${HELPER}_test.js'
