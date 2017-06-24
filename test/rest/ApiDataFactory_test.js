@@ -110,8 +110,26 @@ describe('ApiDataFactory', function () {
       resp.body.length.should.eql(1);
       resp = yield I.restHelper.sendGetRequest('/comments');
       resp.body.length.should.eql(1);
+    });
 
-
+    it('should not remove records if cleanup:false', function*() {
+      I = new ApiDataFactory({
+        endpoint: api_url,
+        cleanup: false,
+        factories: {
+          post: {
+            factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
+            uri: "/posts"
+          }
+        }
+      });
+      yield I.have('post');
+      let resp = yield I.restHelper.sendGetRequest('/posts');
+      resp.body.length.should.eql(2);
+      I._after();
+      yield new Promise((done) => setTimeout(done, 500));
+      resp = yield I.restHelper.sendGetRequest('/posts');
+      resp.body.length.should.eql(2);
     });
   });
 });
