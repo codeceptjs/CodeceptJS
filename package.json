@@ -70,7 +70,7 @@
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp",
-    "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch"
+    "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js"
   },
   "license": "MIT"
 }
