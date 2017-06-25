@@ -1,4 +1,4 @@
-## 0.6.3
+ ## 0.6.3
 
 * Errors are printed in non-verbose mode. Shows "Selenium not started" and other important errors.
 * Allowed to set custom test options:
