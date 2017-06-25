@@ -3,10 +3,10 @@
 CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.
 Such tests are executed using [Appium](http://appium.io) on emulated or physical devices.
 
-Here is the sample test for a native mobile application written in CodeceptJS using Appium helper:
+What makes CodeceptJS better for mobile testing?
+Take a look. Here is the sample test for a native mobile application written in CodeceptJS:
 
 ```js
-I.seeAppIsInstalled("io.super.app")
 I.click('~startUserRegistrationCD')
 I.fillField('~email of the customer', 'Nothing special'))
 I.see('Nothing special', '~email of the customer'))
@@ -14,9 +14,11 @@ I.clearField('~email of the customer'))
 I.dontSee('Nothing special', '~email of the customer'));
 I.seeElement({
   android: 'android.widget.Button',
-  ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'}
-);
+  ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'
+});
 ```
+This test is easy to read and write. Also it will work both on iOS and Android devices.
+Doesn't it sound cool?
 
 ## Setting Up
 
@@ -60,10 +62,27 @@ You will also be asked for the platform and the application package.
 ? [Appium] Application package. Path to file or url
 ```
 
-Once `codecept.json` configuration file is created you can edit its settings and
-include additional testing options in [desiredCapabilities](https://appium.io/slate/en/master/?javascript#appium-server-capabilities)
+Check the newly created `codecept.json` configuration file.
+You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/slate/en/master/?javascript#appium-server-capabilities)
 
-## Android Testing
+
+```js
+"helpers": {
+  "Appium": {
+    "app": "my_app.apk",
+    "platform": "Android",
+    "desiredCapabilities: {}
+  }
+}
+```
+
+Once you configured Appium, create the first test by running
+
+```
+codeceptjs gt
+```
+
+## Writing a Test
 
 
 
