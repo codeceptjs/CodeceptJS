@@ -29,7 +29,10 @@ describe('REST', function () {
 
   before(function() {
     I = new REST({
-      endpoint: api_url
+      endpoint: api_url,
+      defaultHeaders: {
+        'X-Test': 'test'
+      }
     });
   });
 
@@ -70,6 +73,34 @@ describe('REST', function () {
       });
     });
 
+  });
+
+  describe('headers', function() {
+    it ('should send request headers', () => {
+      return I.sendGetRequest('/headers', { 'Content-Type': 'application/json'}).then((resp) => {
+        resp.body.should.have.property('content-type');
+        resp.body['content-type'].should.eql('application/json');
+
+        resp.body.should.have.property('x-test');
+        resp.body['x-test'].should.eql('test');
+      });
+    });
+
+    it ('should set request headers', function*() {
+      I.haveRequestHeaders({HTTP_X_REQUESTED_WITH: 'xmlhttprequest'});
+      yield I.sendGetRequest('/headers', { 'Content-Type': 'application/json'}).then((resp) => {
+        resp.body.should.have.property('content-type');
+        resp.body['content-type'].should.eql('application/json');
+
+        resp.body.should.have.property('x-test');
+        resp.body['x-test'].should.eql('test');
+
+        resp.body.should.have.property('http_x_requested_with');
+        resp.body['http_x_requested_with'].should.eql('xmlhttprequest');
+      });
+
+
+    });
   });
 
 });

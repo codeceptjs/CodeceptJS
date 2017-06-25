@@ -126,10 +126,32 @@ describe('ApiDataFactory', function () {
       yield I.have('post');
       let resp = yield I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(2);
-      I._after();
+      yield I._after();
       yield new Promise((done) => setTimeout(done, 500));
       resp = yield I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(2);
+    });
+
+    it ('should send default headers', function*() {
+      I = new ApiDataFactory({
+        endpoint: api_url,
+        REST: {
+          defaultHeaders: {
+            'auth': '111'
+          }
+        },
+        factories: {
+          post: {
+            factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
+            create: { post: '/headers' }
+          }
+        }
+      });
+      let resp = yield I.have('post');
+      resp.should.have.property('authorization');
+      resp.should.have.property('auth');
+      resp.auth.should.eql('111');
+
     });
   });
 });
