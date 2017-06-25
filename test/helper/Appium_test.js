@@ -34,11 +34,12 @@ describe('Appium', function () {
         platformVersion: "6.0",
         deviceName: "Android Emulator"
       },
-      host: 'ondemand.saucelabs.com',
-      port: 80,
-      // port: 4723,
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
+      // host: 'ondemand.saucelabs.com',
+      // port: 80,
+      port: 4723,
+      host: 'localhost'
+      // user: process.env.SAUCE_USERNAME,
+      // key: process.env.SAUCE_ACCESS_KEY,
     });
   });
 
@@ -374,7 +375,7 @@ describe('Appium', function () {
       return app.see('Hello', 'android.webkit.WebView');
     });
 
-    it.only('should work inside web view as normally', function*() {
+    it('should work inside web view as normally', function*() {
       yield app.click('~buttonStartWebviewCD');
       yield app.switchToContext('WEBVIEW_io.selendroid.testapp');
       return app.see('Preferred car');
@@ -510,6 +511,30 @@ describe('Appium', function () {
       let sec = (new Date()).getUTCMilliseconds();
       return app.saveScreenshot('screenshot_' + sec)
         .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_' + sec)), null, 'file does not exists'));
+    });
+  });
+
+  describe('#runOnIOS, #runOnAndroid', () => {
+
+    it('should use Android locators', () => {
+      app.click({android: "~startUserRegistrationCD", ios: 'fake-element'}).then(() => {
+        app.see('Welcome to register a new User');
+      });
+    });
+
+    it('should execute only on Android', () => {
+      let platform = null;
+      app.runOnIOS(() => {
+        platform = 'ios';
+      });
+      app.runOnAndroid(() => {
+        platform = 'android';
+      });
+      app.runOnAndroid({platformVersion: '7.0'}, () => {
+        platform = 'android7';
+      });
+
+      assert.equal('android', platform);
     });
   });
 
