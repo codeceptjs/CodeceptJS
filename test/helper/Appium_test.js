@@ -24,8 +24,8 @@ describe('Appium', function () {
     }
 
     app = new Appium({
+      app: apk_path,
       desiredCapabilities: {
-        app: apk_path,
         appiumVersion: "1.6.4",
         browserName: "",
         recordVideo: "false",
