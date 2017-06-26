@@ -34,12 +34,12 @@ describe('Appium', function () {
         platformVersion: "6.0",
         deviceName: "Android Emulator"
       },
-      host: 'ondemand.saucelabs.com',
-      port: 80,
-      // port: 4723,
-      // host: 'localhost'
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
+      // host: 'ondemand.saucelabs.com',
+      // port: 80,
+      port: 4723,
+      host: 'localhost'
+      // user: process.env.SAUCE_USERNAME,
+      // key: process.env.SAUCE_ACCESS_KEY,
     });
   });
 
@@ -168,13 +168,25 @@ describe('Appium', function () {
 
   });
 
-  describe('app context and activity: #switchToContext', () => {
+  describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
 
     it('should switch context', function*() {
       yield app.click('~buttonStartWebviewCD')
-      yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
+      yield app._switchToContext('WEBVIEW_io.selendroid.testapp')
       let val = yield app.grabContext();
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+    });
+
+    it('should switch to native and web contexts', function*() {
+      yield app.click('~buttonStartWebviewCD')
+      yield app.switchToWeb();
+      let val = yield app.grabContext();
+      assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+      yield app.switchToNative();
+      assert.ok(app.isWeb);
+      val = yield app.grabContext();
+      assert.equal(val, 'NATIVE_APP');
+      return assert.ok(!app.isWeb);
     });
 
     it('should switch activity', function*() {
