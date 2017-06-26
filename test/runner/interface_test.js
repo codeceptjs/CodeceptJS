@@ -39,13 +39,9 @@ describe('CodeceptJS Interface', () => {
         `[1] Queued | return step result`,
         `[1] Queued | fire test.passed`,
         `[1] Queued | finish test`,
-        `[1] Queued | hook FileSystem._after()`
-      ]);
-
-      var queue2 = stdout.match(/\[2\] .+/g);
-      queue2.should.eql([
-        `[2] Starting recording promises`,
-        `[2] Queued | hook FileSystem._afterSuite()`,
+        `[1] Queued | hook FileSystem._after()`,
+        `[1] Queued | hook FileSystem._afterSuite()`,
+        `[1] Queued | hook FileSystem._finishTest()`,
       ]);
 
       let lines = stdout.match(/\S.+/g);
