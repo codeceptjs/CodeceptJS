@@ -36,10 +36,10 @@ describe('Appium', function () {
         platformVersion: "6.0",
         deviceName: "Android Emulator"
       },
-      host: 'ondemand.saucelabs.com',
-      port: 80,
-      // port: 4723,
-      // host: 'localhost',
+      // host: 'ondemand.saucelabs.com',
+      // port: 80,
+      port: 4723,
+      host: 'localhost',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
@@ -186,8 +186,8 @@ describe('Appium', function () {
       let val = yield app.grabContext();
       assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
       yield app.see('Prefered Car');
-      yield app.switchToNative();
       assert.ok(app.isWeb);
+      yield app.switchToNative();
       val = yield app.grabContext();
       assert.equal(val, 'NATIVE_APP');
       return assert.ok(!app.isWeb);
@@ -219,15 +219,15 @@ describe('Appium', function () {
 
   describe('#hideDeviceKeyboard', () => {
 
-    it('should hide device Keyboard', () => {
+    it('should hide device Keyboard @quick', () => {
       return app.click('~startUserRegistrationCD')
-        .then(() => app.click('android.widget.CheckBox'))
+        .then(() => app.click('//android.widget.CheckBox'))
         .then(expectError)
         .catch((e) => {
           e.message.should.include('Clickable element android.widget.CheckBox was not found by text|CSS|XPath');
         })
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
-        .then(() => app.click('android.widget.CheckBox'))
+        .then(() => app.click('//android.widget.CheckBox'))
     });
 
     it('should assert if no keyboard', () => {
@@ -400,7 +400,7 @@ describe('Appium', function () {
     it('should work inside web view as normally @quick', function*() {
       yield app.click('~buttonStartWebviewCD');
       yield app.switchToWeb();
-      return app.see('Preferred car');
+      return app.see('Prefered Car:');
     })
   });
 
@@ -410,9 +410,9 @@ describe('Appium', function () {
       yield app.click('~email of the customer')
       yield app.pressKey('1');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
-      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
-      yield app.click('android.widget.Button');
+      yield app.click('//android.widget.Button');
       return app.see('1',
         '#io.selendroid.testapp:id/label_email_data');
     });
@@ -471,7 +471,7 @@ describe('Appium', function () {
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
         .then(() => app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700))
-        .then(() => app.click('android.widget.Button'))
+        .then(() => app.click('//android.widget.Button'))
         .then(() => app.see('Nothing special',
           '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]'))
     });
@@ -480,21 +480,21 @@ describe('Appium', function () {
       yield app.click('~startUserRegistrationCD')
       yield app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
-      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
-      yield app.click('android.widget.Button');
+      yield app.click('//android.widget.Button');
       yield app.see('Nothing special',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
     });
 
-    it('should append field value', function*() {
+    it('should append field value @second', function*() {
       yield app.click('~startUserRegistrationCD')
       yield app.fillField('~email of the customer', 'Nothing special');
       yield app.appendField('~email of the customer', 'blabla');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
       yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
-      yield app.click('android.widget.Button');
+      yield app.click('//android.widget.Button');
       yield app.see('Nothing specialblabla',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
     });

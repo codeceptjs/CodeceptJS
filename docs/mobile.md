@@ -149,12 +149,6 @@ On Android it it is important to keep full package name in id locator:
 I.seeElement('#io.selendroid.testapp:id/inputUsername');
 ```
 
-Elements can also be located by their class name. (For iOS they should start with `UIA`)
-
-```js
-I.fillField({ios: 'UIATextField', android: 'android.widget.EditText'}, '123456');
-```
-
 Buttons can be matched by their visible text:
 
 ```js
