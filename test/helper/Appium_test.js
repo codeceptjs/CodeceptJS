@@ -16,6 +16,7 @@ let apk_path =  'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/
 
 describe('Appium', function () {
   this.retries(1);
+  this.timeout(0);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
