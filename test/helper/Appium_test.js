@@ -36,10 +36,10 @@ describe('Appium', function () {
         platformVersion: "6.0",
         deviceName: "Android Emulator"
       },
-      // host: 'ondemand.saucelabs.com',
-      // port: 80,
-      port: 4723,
-      host: 'localhost',
+      host: 'ondemand.saucelabs.com',
+      port: 80,
+      // port: 4723,
+      // host: 'localhost',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
