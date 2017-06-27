@@ -210,7 +210,7 @@ let contexts = yield I.grabAllContexts();
 
 ## Cross-Platform Testing
 
-It is often happen that mobile applications behave similarly on different platforms. Can we build on test for them? Yes!
+It is often happen that mobile applications behave similarly on different platforms. Can we build one test for them? Yes!
 CodeceptJS provides a way to specify different locators for Android and iOS platforms:
 
 ```js
@@ -228,4 +228,4 @@ I.runOnIOS(() => {
 });
 ```
 
-### done()
+## done()

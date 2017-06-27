@@ -39,7 +39,7 @@ describe('Appium', function () {
       host: 'ondemand.saucelabs.com',
       port: 80,
       // port: 4723,
-      // host: 'localhost'
+      // host: 'localhost',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
@@ -97,7 +97,7 @@ describe('Appium', function () {
 
       });
 
-    it('should remove App and install it again', () => {
+    it('should remove App and install it again @quick', () => {
       return app.seeAppIsInstalled("io.selendroid.testapp")
         .then(() => app.removeApp("io.selendroid.testapp"))
         .then(() => app.seeAppIsNotInstalled("io.selendroid.testapp"))
@@ -179,7 +179,7 @@ describe('Appium', function () {
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
     });
 
-    it('should switch to native and web contexts', function*() {
+    it('should switch to native and web contexts @quick', function*() {
       yield app.click('~buttonStartWebviewCD')
       yield app.see('WebView location');
       yield app.switchToWeb();
@@ -283,8 +283,8 @@ describe('Appium', function () {
       let vx = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vx, 'vx: 21000.0 pps');
-      assert.equal(vy, 'vy: 21000.0 pps');
+      assert.ok(vx.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
+      assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeDown action', function*() {
@@ -297,10 +297,10 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vy: 21000.0 pps');
+      assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
-    it('run simplified swipeDown', function*() {
+    it('run simplified swipeDown @quick', function*() {
       yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       yield app.waitForText("Gesture Type", 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -322,7 +322,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vy: -21000.0 pps');
+      assert.ok(vy.match(/vy: -\d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeRight action', function*() {
@@ -335,7 +335,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vx: 21000.0 pps');
+      assert.ok(vy.match(/vx: \d\d000.\0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeLeft action', function*() {
@@ -348,11 +348,10 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vx: -21000.0 pps');
+      assert.ok(vy.match(/vx: -\d\d000\.0 pps/), 'to be like 21000.0 pps');
     });
 
-    it('should react on touchPerform action', function*() {
-      //yield app.seeInSource('blabla')
+    it('should react on touchPerform action @quick', function*() {
       yield app.touchPerform([{
         action: 'press',
         options: {
@@ -361,7 +360,7 @@ describe('Appium', function () {
         }
       }, {action: 'release'}])
       let val = yield app.grabCurrentActivity();
-      assert.equal(val, '.WebViewActivity');
+      assert.equal(val, '.HomeScreenActivity');
     });
 
     it('should assert when you dont scroll the document anymore', () => {
@@ -398,7 +397,7 @@ describe('Appium', function () {
         .then(() => app.dontSee('Welcome', '~buttonTestCD'));
     });
 
-    it('should work inside web view as normally', function*() {
+    it('should work inside web view as normally @quick', function*() {
       yield app.click('~buttonStartWebviewCD');
       yield app.switchToWeb();
       return app.see('Preferred car');
@@ -406,7 +405,7 @@ describe('Appium', function () {
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element', function*() {
+    it('should be able to send special keys to element @quick', function*() {
       yield app.click('~startUserRegistrationCD')
       yield app.click('~email of the customer')
       yield app.pressKey('1');
@@ -438,14 +437,14 @@ describe('Appium', function () {
     });
   });
 
-  describe('#seeNumberOfElements', () => {
+  describe('#seeNumberOfElements @quick', () => {
     it('should return 1 as count', () => {
       return app.seeNumberOfElements('~buttonTestCD', 1);
     });
   });
 
   describe('see element : #seeElement, #dontSeeElement', () => {
-    it('should check visible elements on page', function*() {
+    it('should check visible elements on page @quick', function*() {
       yield app.seeElement('~buttonTestCD');
       yield app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
       yield app.dontSeeElement('#something-beyond');
@@ -466,7 +465,7 @@ describe('Appium', function () {
   });
 
   describe('#fillField, #appendField', () => {
-    it('should fill field by accessibility id', function*() {
+    it('should fill field by accessibility id @quick', function*() {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
