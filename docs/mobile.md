@@ -75,7 +75,7 @@ You may want to set some additional Appium settings via [desiredCapabilities](ht
   "Appium": {
     "app": "my_app.apk",
     "platform": "Android",
-    "desiredCapabilities: {}
+    "desiredCapabilities": {}
   }
 }
 ```
