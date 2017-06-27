@@ -9,6 +9,8 @@ let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
 let expectError = require('../../lib/utils').test.expectError;
+require('co-mocha')(require('mocha'));
+
 let apk_path =  'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk'
 
 
@@ -179,9 +181,11 @@ describe('Appium', function () {
 
     it('should switch to native and web contexts', function*() {
       yield app.click('~buttonStartWebviewCD')
+      yield app.see('WebView location');
       yield app.switchToWeb();
       let val = yield app.grabContext();
       assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+      yield app.see('Preferred car');
       yield app.switchToNative();
       assert.ok(app.isWeb);
       val = yield app.grabContext();
@@ -279,8 +283,8 @@ describe('Appium', function () {
       let vx = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vx, 'vx: 12000.0 pps');
-      assert.equal(vy, 'vy: 12000.0 pps');
+      assert.equal(vx, 'vx: 21000.0 pps');
+      assert.equal(vy, 'vy: 21000.0 pps');
     });
 
     it('should react on swipeDown action', function*() {
@@ -293,8 +297,20 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vy: 12000.0 pps');
+      assert.equal(vy, 'vy: 21000.0 pps');
     });
+
+    it('run simplified swipeDown', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10,
+        "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipeDown("#io.selendroid.testapp:id/LinearLayout1");
+      let type = yield app.grabTextFrom(
+        "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
+      assert.equal(type, 'FLICK');
+    });
+
 
     it('should react on swipeUp action', function*() {
       yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
@@ -306,7 +322,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vy: -12000.0 pps');
+      assert.equal(vy, 'vy: -21000.0 pps');
     });
 
     it('should react on swipeRight action', function*() {
@@ -319,7 +335,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vx: 12000.0 pps');
+      assert.equal(vy, 'vx: 21000.0 pps');
     });
 
     it('should react on swipeLeft action', function*() {
@@ -332,7 +348,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vx: -12000.0 pps');
+      assert.equal(vy, 'vx: -21000.0 pps');
     });
 
     it('should react on touchPerform action', function*() {
@@ -382,14 +398,9 @@ describe('Appium', function () {
         .then(() => app.dontSee('Welcome', '~buttonTestCD'));
     });
 
-    it('should work with webview', function*() {
-      yield app.click('~buttonStartWebviewCD');
-      return app.see('Hello', 'android.webkit.WebView');
-    });
-
     it('should work inside web view as normally', function*() {
       yield app.click('~buttonStartWebviewCD');
-      yield app.switchToContext('WEBVIEW_io.selendroid.testapp');
+      yield app.switchToWeb();
       return app.see('Preferred car');
     })
   });
