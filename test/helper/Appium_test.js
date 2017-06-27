@@ -16,7 +16,6 @@ let apk_path =  'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/
 
 describe('Appium', function () {
   this.retries(1);
-  this.timeout(120000);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -185,7 +184,7 @@ describe('Appium', function () {
       yield app.switchToWeb();
       let val = yield app.grabContext();
       assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
-      yield app.see('Preferred car');
+      yield app.see('Prefered Car');
       yield app.switchToNative();
       assert.ok(app.isWeb);
       val = yield app.grabContext();
