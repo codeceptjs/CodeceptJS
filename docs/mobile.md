@@ -1,7 +1,7 @@
 # Mobile Testing
 
 CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.
-Such tests are executed using [Appium](http://appium.io) on emulated or physical devices.
+Such tests are executed using [Appium](http://appium.io) on emulated or physical devices. Also, Appium allows to test web application on mobile devices.
 
 What makes CodeceptJS better for mobile testing?
 Take a look. Here is the sample test for a native mobile application written in CodeceptJS:
