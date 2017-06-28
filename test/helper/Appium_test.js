@@ -36,16 +36,17 @@ describe('Appium', function () {
         platformVersion: "6.0",
         deviceName: "Android Emulator"
       },
-      host: 'ondemand.saucelabs.com',
-      port: 80,
-      // port: 4723,
-      // host: 'localhost',
+      // host: 'ondemand.saucelabs.com',
+      // port: 80,
+      port: 4723,
+      host: 'localhost',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
   });
 
   beforeEach(() => {
+    app.isWeb = false;
     return app._before();
   });
 
@@ -76,7 +77,7 @@ describe('Appium', function () {
           assert.equal(val, '.HomeScreenActivity');
         });
 
-        it('should grab network connection settings', function*() {
+        it('should grab network connection settings @second', function*() {
           yield app.setNetworkConnection(4)
           let val = yield app.grabNetworkConnection();
           assert.equal(val.value, 4);
@@ -123,7 +124,7 @@ describe('Appium', function () {
 
   describe('see seeCurrentActivity: #seeCurrentActivityIs', () => {
 
-    it('should return .HomeScreenActivity for default screen', () => {
+    it('should return .HomeScreenActivity for default screen @second', () => {
       return app.seeCurrentActivityIs(".HomeScreenActivity")
     });
 
@@ -139,7 +140,7 @@ describe('Appium', function () {
 
   describe('device lock : #seeDeviceIsLocked, #seeDeviceIsUnlocked', () => {
 
-    it('should return correct status about lock', () => {
+    it('should return correct status about lock @second', () => {
       return app.seeDeviceIsUnlocked()
         .then(() => app.seeDeviceIsLocked())
         .then(expectError)
@@ -266,8 +267,8 @@ describe('Appium', function () {
 
   describe('#makeTouchAction', () => {
 
-    it('should react on touch actions', function*() {
-      yield app.makeTouchAction("~buttonStartWebviewCD", 'tap')
+    it('should react on touch actions @second', function*() {
+      yield app.tap("~buttonStartWebviewCD")
       let val = yield app.grabCurrentActivity();
       assert.equal(val, '.WebViewActivity');
     });
@@ -366,7 +367,7 @@ describe('Appium', function () {
     it('should assert when you dont scroll the document anymore', () => {
       return app.click('~startUserRegistrationCD')
         .then(
-          () => app.swipeTo("android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up",
+          () => app.swipeTo("//android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up",
             30, 100, 500))
         .catch((e) => {
           e.inspect().should.include('Scroll to the end and element android.widget.CheckBox was not found');
@@ -375,7 +376,7 @@ describe('Appium', function () {
 
     it('should react on swipeTo action', function*() {
       yield app.click("~startUserRegistrationCD")
-      yield app.swipeTo("android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
     });
 
@@ -392,8 +393,9 @@ describe('Appium', function () {
 
 
   describe('see text : #see', () => {
-    it('should fail when text is not on site', () => {
+    it('should work inside elements @second', () => {
       return app.see('EN Button', '~buttonTestCD')
+        .then(() => app.see('Hello'))
         .then(() => app.dontSee('Welcome', '~buttonTestCD'));
     });
 
@@ -409,7 +411,7 @@ describe('Appium', function () {
       yield app.click('~startUserRegistrationCD')
       yield app.click('~email of the customer')
       yield app.pressKey('1');
-      yield app.hideDeviceKeyboard('pressKey', 'Done')
+      yield app.hideDeviceKeyboard('pressKey', 'Done');
       yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
       yield app.click('//android.widget.Button');
@@ -421,7 +423,7 @@ describe('Appium', function () {
   describe('#seeInSource', () => {
     it('should check for text to be in HTML source', () => {
       return app.seeInSource(
-        'class="android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
+        'class="//android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
         .then(() => app.dontSeeInSource('<meta'));
     });
   });
@@ -465,11 +467,11 @@ describe('Appium', function () {
   });
 
   describe('#fillField, #appendField', () => {
-    it('should fill field by accessibility id @quick', function*() {
+    it('should fill field by accessibility id', function*() {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
-        .then(() => app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+        .then(() => app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700))
         .then(() => app.click('//android.widget.Button'))
         .then(() => app.see('Nothing special',
@@ -492,7 +494,7 @@ describe('Appium', function () {
       yield app.fillField('~email of the customer', 'Nothing special');
       yield app.appendField('~email of the customer', 'blabla');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
-      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
       yield app.click('//android.widget.Button');
       yield app.see('Nothing specialblabla',
