@@ -24,7 +24,16 @@ Doesn't it sound cool?
 ## Setting Up
 
 Ensure that you have [CodeceptJS installed](http://codecept.io/installation/).
-You will also need to install [Appium](http://appium.io/). This can be done via npm:
+You will also need to install [Appium](http://appium.io/).
+We suggest to use [appium-doctor](https://www.npmjs.com/package/appium-doctor) to check if your system is ready for mobile testing.
+
+```
+npm i -g appium-doctor
+```
+
+If everything is OK, continue with installing Appium. If not, consider using cloud based alternatives like [SauceLabs](https://saucelabs.com) or [BrowserStack](http://browserstack.com). Cloud services provide hosted appium with real and emulated mobile devices.
+
+To install Appium use npm:
 
 ```
 npm i -g appium
@@ -34,13 +43,13 @@ Then you need to prepare application for execution.
 It should be packed into apk (for Android) or .ipa (for iOS) or zip.
 
 Next, is to launch the emulator or connect physical device.
-Once they are prepared launch appium:
+Once they are prepared, launch Appium:
 
 ```
 appium
 ```
 
-To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected, or use cloud service (like [SauceLabs](https://saucelabs.com)) for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.
+To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.
 
 ## Configuring
 
