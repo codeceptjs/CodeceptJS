@@ -152,6 +152,7 @@ I.seeElement('#io.selendroid.testapp:id/inputUsername');
 Buttons can be matched by their visible text:
 
 ```js
+I.tap('Click me!');
 I.click('Click me!');
 ```
 
