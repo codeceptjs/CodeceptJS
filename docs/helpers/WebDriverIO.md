@@ -27,6 +27,8 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `restart` (optional, default: true) - restart browser between tests.
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+-   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `desiredCapabilities`: Selenium's [desired
