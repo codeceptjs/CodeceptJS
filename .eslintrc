@@ -104,7 +104,6 @@
     "no-sequences": 2,
     "no-unused-expressions": 2,
     "yoda": 2,
-    "no-shadow": 2,
     "no-shadow-restricted-names": 2,
     "no-undef-init": 2,
     "camelcase": 2,
@@ -116,7 +115,6 @@
     "no-new-object": 2,
     "no-spaced-func": 2,
     "no-trailing-spaces": 2,
-    "no-underscore-dangle": 2,
     "semi": 2,
     "semi-spacing": [
       2,
