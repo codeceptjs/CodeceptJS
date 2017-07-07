@@ -12,6 +12,7 @@ let AssertionFailedError = require('../../lib/assert/error');
 let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 let expectError = require('../../lib/utils').test.expectError;
 let webApiTests = require('./webapi');
+let within = require('../../lib/within')
 
 
 describe('WebDriverIO', function () {

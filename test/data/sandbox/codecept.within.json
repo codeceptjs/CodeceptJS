@@ -1,0 +1,14 @@
+{
+  "tests": "./*within_test.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "FakeDriver": {
+      "require": "../within_helper"
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}
