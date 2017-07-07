@@ -66,10 +66,10 @@ describe('CodeceptJS Multiple Runner', function () {
         "• oh! I am within end("
       ], 'check steps execution order');
 
-      let withGeneratorList2 = getlines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test after within');
-      testStatus = withGeneratorList2.pop();
+      let withGeneratorListOtherOrder = getlines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test after within');
+      testStatus = withGeneratorListOtherOrder.pop();
       testStatus.should.include('OK');
-      withGeneratorList2.should.eql([
+      withGeneratorListOtherOrder.should.eql([
         "• I small promise ",
         "• small Promise was finished",
         "• I small yield ",
@@ -83,10 +83,10 @@ describe('CodeceptJS Multiple Runner', function () {
         "• oh! I am within end("
       ], 'check steps execution order');
 
-      let withGeneratorList3 = getlines(lines, 'Check within with generator. Should complete test after within', 'Check within with generator. Should stop test execution after fail in within');
-      testStatus = withGeneratorList3.pop();
+      let withGeneratorListWithContinued = getlines(lines, 'Check within with generator. Should complete test after within', 'Check within with generator. Should stop test execution after fail in within');
+      testStatus = withGeneratorListWithContinued.pop();
       testStatus.should.include('OK');
-      withGeneratorList3.should.eql([
+      withGeneratorListWithContinued.should.eql([
         "• I small yield ",
         "I am small yield string",
         "Within blabla:",
@@ -100,10 +100,10 @@ describe('CodeceptJS Multiple Runner', function () {
         "• small Promise was finished"
       ], 'check steps execution order');
 
-      let withGeneratorList4 = getlines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
-      testStatus = withGeneratorList4.pop();
+      let errorInWithinList = getlines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
+      testStatus = errorInWithinList.pop();
       testStatus.should.include('FAILED');
-      withGeneratorList4.should.eql([
+      errorInWithinList.should.eql([
         "• I small yield ",
         "I am small yield string",
         "Within blabla:",
@@ -112,10 +112,10 @@ describe('CodeceptJS Multiple Runner', function () {
         "• oh! I am within end("
       ], 'check steps execution order');
 
-      let withGeneratorList5 = getlines(lines, 'Check within with generator. Should stop test execution after fail in main block', '-- FAILURES:');
-      testStatus = withGeneratorList5.pop();
+      let errorInTestList = getlines(lines, 'Check within with generator. Should stop test execution after fail in main block', '-- FAILURES:');
+      testStatus = errorInTestList.pop();
       testStatus.should.include('FAILED');
-      withGeneratorList5.should.eql([
+      errorInTestList.should.eql([
         "• I error step ",
         "• oh! I am within end("
       ], 'check steps execution order');
