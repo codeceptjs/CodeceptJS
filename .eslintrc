@@ -35,20 +35,16 @@
     ],
     "one-var": [
       2,
-      {
-        "uninitialized": "always",
-        "initialized": "never"
-      }
+      "never"
     ],
     "quote-props": [
       2,
       "as-needed"
     ],
-    "keyword-spacing": [2, {"after": true, "overrides": {
-      "return": {"after": true},
-      "throw": {"after": true},
-      "case": {"after": true}
-    }}],
+    "space-after-keywords": [
+      2,
+      "always"
+    ],
     "space-before-function-paren": [
       2,
       {
@@ -83,12 +79,13 @@
     "eqeqeq": 2,
     "no-alert": 2,
     "no-caller": 2,
+    "no-empty-label": 2,
     "no-extend-native": 2,
     "no-extra-bind": 2,
     "no-implied-eval": 2,
     "no-iterator": 2,
     "no-label-var": 2,
-    "no-labels": [2, {"allowLoop": false, "allowSwitch": false}],
+    "no-labels": 2,
     "no-lone-blocks": 2,
     "no-loop-func": 2,
     "no-multi-spaces": 2,
@@ -104,6 +101,7 @@
     "no-sequences": 2,
     "no-unused-expressions": 2,
     "yoda": 2,
+    "no-shadow": 2,
     "no-shadow-restricted-names": 2,
     "no-undef-init": 2,
     "camelcase": 2,
@@ -115,6 +113,7 @@
     "no-new-object": 2,
     "no-spaced-func": 2,
     "no-trailing-spaces": 2,
+    "no-underscore-dangle": 2,
     "semi": 2,
     "semi-spacing": [
       2,
@@ -122,6 +121,7 @@
         "before": false,
         "after": true
       }
-    ]
+    ],
+    "space-return-throw-case": 2
   }
 }
