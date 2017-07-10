@@ -33,7 +33,7 @@ describe('SeleniumWebdriver', function () {
   });
 
   after(function() {
-    I._afterSuite();
+    return I._finishTest();
   });
 
   beforeEach(function() {

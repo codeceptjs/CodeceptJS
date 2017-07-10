@@ -496,7 +496,7 @@ module.exports.tests = function() {
         .then(() => assert.ok(fileExists(path.join(output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
     });
 
-    it('should create a screenshot on fail', () => {
+    it('should create a screenshot on fail  @ups', () => {
       let sec = (new Date()).getUTCMilliseconds().toString();
       let test = { title: 'sw should do smth '+sec };
       return I.amOnPage('/')
@@ -526,7 +526,7 @@ module.exports.tests = function() {
   });
 
   describe('#waitForText', () => {
-    it('should wait for text', () => {
+    it('should wait for text @ups', () => {
       return I.amOnPage('/dynamic')
         .then(() => I.dontSee('Dynamic text'))
         .then(() => I.waitForText('Dynamic text', 2))
