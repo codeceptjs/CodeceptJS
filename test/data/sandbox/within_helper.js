@@ -1,13 +1,8 @@
 'use strict';
-let Helper = require('../../lib/helper');
-let output = require('../../lib/output');
+let Helper = require('../../../lib/helper');
+let output = require('../../../lib/output');
 
 class Whithin extends Helper {
-
-
-  printBrowser() {
-    this.debug(this.config.browser);
-  }
 
   _withinBegin(testStr) {
     output.step(`Hey! I am within Begin. I get ${testStr}`);
@@ -18,7 +13,7 @@ class Whithin extends Helper {
   }
 
   _failed() {
-    this._withinEnd()
+    this._withinEnd();
   }
 
   smallYield() {

@@ -1,10 +1,10 @@
 {
-  "tests": "./*within_test.js",
+  "tests": "./*test_within.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {
     "Within": {
-      "require": "../within_helper"
+      "require": "./within_helper"
     }
   },
   "include": {},
