@@ -19,12 +19,6 @@ describe('Appium', function () {
   this.timeout(0);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data');
-    try {
-      fs.unlinkSync(dataFile);
-    } catch (err) {
-    }
-
     app = new Appium({
       app: apk_path,
       desiredCapabilities: {

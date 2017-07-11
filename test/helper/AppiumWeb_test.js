@@ -20,19 +20,12 @@ require('co-mocha')(require('mocha'));
 
 describe('Appium Web', function () {
   this.retries(4);
-  this.timeout(35000);
+  this.timeout(70000);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data');
-    try {
-      fs.unlinkSync(dataFile);
-    } catch (err) {}
-
     I = new Appium({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400',
-      restart: false,
       desiredCapabilities: {
         appiumVersion: "1.6.4",
         recordVideo: "false",
@@ -48,20 +41,15 @@ describe('Appium Web', function () {
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY
     });
-    webApiTests.init({I, site_url});
-    return I._beforeSuite();
   });
 
   beforeEach(() => {
+    I.isWeb = true;
     return I._before();
   });
 
   afterEach(() => {
     return I._after();
-  });
-
-  after(() => {
-    return I._finishTest();
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, ...', () => {
