@@ -34,7 +34,13 @@ describe('Appium Web', function () {
       windowSize: '500x400',
       restart: false,
       platform: 'Android',
-      device: 'Android Emulator'
+      device: 'Android Emulator',
+      host: 'ondemand.saucelabs.com',
+      port: 80,
+      // port: 4723,
+      // host: 'localhost',
+      user: process.env.SAUCE_USERNAME,
+      key: process.env.SAUCE_ACCESS_KEY
     });
     webApiTests.init({I, site_url});
     return I._beforeSuite();
@@ -164,8 +170,8 @@ describe('Appium Web', function () {
     afterEach(() => I._withinEnd());
 
     it('should work using within operator', function*() {
-      yield I.amOnPage('/#/info');
       yield I.see('This is a very simple event creating app built with AngularJS');
+      yield I.amOnPage('/#/info');
       // yield I.wait(2);
       yield I._withinBegin({ css: 'p.jumbotron'});
       yield I.see('Welcome to event app');
