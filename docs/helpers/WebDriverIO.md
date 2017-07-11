@@ -612,6 +612,7 @@ assert(cookie.value, '123456');
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
+In `within` block will search element on page, not in `within` element
 Appium: support only web testing
 
 ```js
