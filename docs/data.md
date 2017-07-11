@@ -15,7 +15,7 @@ API supposed to be a stable interface and it can be used by acceptance tests. Co
 
 ## REST
 
-REST helper uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
+[REST helper](http://codecept.io/helpers/REST/) uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
 However, it doesn't provide tools for testing APIs, so it should be paired with WebDriverIO, Nightmare or Protractor helpers for browser testing.
 
 Enable REST helper in global config. It is recommended to set `endpoint`, a base URL for all API requests.
@@ -71,7 +71,7 @@ I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest
 
 ## Data Generation with Factories
 
-This concept is extended by `ApiDataFactory` helper.
+This concept is extended by [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
 It builds data according to defined rules and uses API to store them and automatically clean them up after a test,
 This way setting data for a test is as simple as writing:
 
@@ -80,7 +80,7 @@ let post = yield I.have('post');
 I.haveMultiple('comment', 5, { postId: post.id});
 ```
 Just define how many items of any kind you need and ApiDataFactory will create them for you.
-However, to make this work some preperations required.
+However, to make this work some preparations required.
 
 At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker). Faker can generate random names, emails, texts, and Rosie uses them
 to generate objects using factories.

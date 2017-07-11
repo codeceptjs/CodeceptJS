@@ -9,23 +9,19 @@ let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
 let expectError = require('../../lib/utils').test.expectError;
+require('co-mocha')(require('mocha'));
+
 let apk_path =  'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk'
 
 
 describe('Appium', function () {
   this.retries(1);
-  this.timeout(120000);
+  this.timeout(0);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data');
-    try {
-      fs.unlinkSync(dataFile);
-    } catch (err) {
-    }
-
     app = new Appium({
+      app: apk_path,
       desiredCapabilities: {
-        app: apk_path,
         appiumVersion: "1.6.4",
         browserName: "",
         recordVideo: "false",
@@ -37,12 +33,14 @@ describe('Appium', function () {
       host: 'ondemand.saucelabs.com',
       port: 80,
       // port: 4723,
+      // host: 'localhost',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
   });
 
   beforeEach(() => {
+    app.isWeb = false;
     return app._before();
   });
 
@@ -73,7 +71,7 @@ describe('Appium', function () {
           assert.equal(val, '.HomeScreenActivity');
         });
 
-        it('should grab network connection settings', function*() {
+        it('should grab network connection settings @second', function*() {
           yield app.setNetworkConnection(4)
           let val = yield app.grabNetworkConnection();
           assert.equal(val.value, 4);
@@ -94,7 +92,7 @@ describe('Appium', function () {
 
       });
 
-    it('should remove App and install it again', () => {
+    it('should remove App and install it again @quick', () => {
       return app.seeAppIsInstalled("io.selendroid.testapp")
         .then(() => app.removeApp("io.selendroid.testapp"))
         .then(() => app.seeAppIsNotInstalled("io.selendroid.testapp"))
@@ -120,7 +118,7 @@ describe('Appium', function () {
 
   describe('see seeCurrentActivity: #seeCurrentActivityIs', () => {
 
-    it('should return .HomeScreenActivity for default screen', () => {
+    it('should return .HomeScreenActivity for default screen @second', () => {
       return app.seeCurrentActivityIs(".HomeScreenActivity")
     });
 
@@ -136,7 +134,7 @@ describe('Appium', function () {
 
   describe('device lock : #seeDeviceIsLocked, #seeDeviceIsUnlocked', () => {
 
-    it('should return correct status about lock', () => {
+    it('should return correct status about lock @second', () => {
       return app.seeDeviceIsUnlocked()
         .then(() => app.seeDeviceIsLocked())
         .then(expectError)
@@ -167,13 +165,27 @@ describe('Appium', function () {
 
   });
 
-  describe('app context and activity: #switchToContext', () => {
+  describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
 
     it('should switch context', function*() {
       yield app.click('~buttonStartWebviewCD')
-      yield app.switchToContext('WEBVIEW_io.selendroid.testapp')
+      yield app._switchToContext('WEBVIEW_io.selendroid.testapp')
       let val = yield app.grabContext();
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+    });
+
+    it('should switch to native and web contexts @quick', function*() {
+      yield app.click('~buttonStartWebviewCD')
+      yield app.see('WebView location');
+      yield app.switchToWeb();
+      let val = yield app.grabContext();
+      assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+      yield app.see('Prefered Car');
+      assert.ok(app.isWeb);
+      yield app.switchToNative();
+      val = yield app.grabContext();
+      assert.equal(val, 'NATIVE_APP');
+      return assert.ok(!app.isWeb);
     });
 
     it('should switch activity', function*() {
@@ -202,15 +214,15 @@ describe('Appium', function () {
 
   describe('#hideDeviceKeyboard', () => {
 
-    it('should hide device Keyboard', () => {
+    it('should hide device Keyboard @quick', () => {
       return app.click('~startUserRegistrationCD')
-        .then(() => app.click('android.widget.CheckBox'))
+        .then(() => app.click('//android.widget.CheckBox'))
         .then(expectError)
         .catch((e) => {
           e.message.should.include('Clickable element android.widget.CheckBox was not found by text|CSS|XPath');
         })
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
-        .then(() => app.click('android.widget.CheckBox'))
+        .then(() => app.click('//android.widget.CheckBox'))
     });
 
     it('should assert if no keyboard', () => {
@@ -249,8 +261,8 @@ describe('Appium', function () {
 
   describe('#makeTouchAction', () => {
 
-    it('should react on touch actions', function*() {
-      yield app.makeTouchAction("~buttonStartWebviewCD", 'tap')
+    it('should react on touch actions @second', function*() {
+      yield app.tap("~buttonStartWebviewCD")
       let val = yield app.grabCurrentActivity();
       assert.equal(val, '.WebViewActivity');
     });
@@ -266,8 +278,8 @@ describe('Appium', function () {
       let vx = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vx, 'vx: 12000.0 pps');
-      assert.equal(vy, 'vy: 12000.0 pps');
+      assert.ok(vx.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
+      assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeDown action', function*() {
@@ -280,8 +292,20 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vy: 12000.0 pps');
+      assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
+
+    it('run simplified swipeDown @quick', function*() {
+      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      yield app.waitForText("Gesture Type", 10,
+        "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      yield app.swipeDown("#io.selendroid.testapp:id/LinearLayout1");
+      let type = yield app.grabTextFrom(
+        "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+      let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
+      assert.equal(type, 'FLICK');
+    });
+
 
     it('should react on swipeUp action', function*() {
       yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
@@ -293,7 +317,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vy: -12000.0 pps');
+      assert.ok(vy.match(/vy: -\d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeRight action', function*() {
@@ -306,7 +330,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vx: 12000.0 pps');
+      assert.ok(vy.match(/vx: \d\d000.\0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeLeft action', function*() {
@@ -319,11 +343,10 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       let vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']")
       assert.equal(type, 'FLICK');
-      assert.equal(vy, 'vx: -12000.0 pps');
+      assert.ok(vy.match(/vx: -\d\d000\.0 pps/), 'to be like 21000.0 pps');
     });
 
-    it('should react on touchPerform action', function*() {
-      //yield app.seeInSource('blabla')
+    it('should react on touchPerform action @quick', function*() {
       yield app.touchPerform([{
         action: 'press',
         options: {
@@ -332,13 +355,13 @@ describe('Appium', function () {
         }
       }, {action: 'release'}])
       let val = yield app.grabCurrentActivity();
-      assert.equal(val, '.WebViewActivity');
+      assert.equal(val, '.HomeScreenActivity');
     });
 
     it('should assert when you dont scroll the document anymore', () => {
       return app.click('~startUserRegistrationCD')
         .then(
-          () => app.swipeTo("android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up",
+          () => app.swipeTo("//android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up",
             30, 100, 500))
         .catch((e) => {
           e.inspect().should.include('Scroll to the end and element android.widget.CheckBox was not found');
@@ -347,7 +370,7 @@ describe('Appium', function () {
 
     it('should react on swipeTo action', function*() {
       yield app.click("~startUserRegistrationCD")
-      yield app.swipeTo("android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.CheckBox", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
     });
 
@@ -364,32 +387,28 @@ describe('Appium', function () {
 
 
   describe('see text : #see', () => {
-    it('should fail when text is not on site', () => {
+    it('should work inside elements @second', () => {
       return app.see('EN Button', '~buttonTestCD')
+        .then(() => app.see('Hello'))
         .then(() => app.dontSee('Welcome', '~buttonTestCD'));
     });
 
-    it('should work with webview', function*() {
+    it('should work inside web view as normally @quick', function*() {
       yield app.click('~buttonStartWebviewCD');
-      return app.see('Hello', 'android.webkit.WebView');
-    });
-
-    it.only('should work inside web view as normally', function*() {
-      yield app.click('~buttonStartWebviewCD');
-      yield app.switchToContext('WEBVIEW_io.selendroid.testapp');
-      return app.see('Preferred car');
+      yield app.switchToWeb();
+      return app.see('Prefered Car:');
     })
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element', function*() {
+    it('should be able to send special keys to element @quick', function*() {
       yield app.click('~startUserRegistrationCD')
       yield app.click('~email of the customer')
       yield app.pressKey('1');
-      yield app.hideDeviceKeyboard('pressKey', 'Done')
-      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.hideDeviceKeyboard('pressKey', 'Done');
+      yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
-      yield app.click('android.widget.Button');
+      yield app.click('//android.widget.Button');
       return app.see('1',
         '#io.selendroid.testapp:id/label_email_data');
     });
@@ -398,7 +417,7 @@ describe('Appium', function () {
   describe('#seeInSource', () => {
     it('should check for text to be in HTML source', () => {
       return app.seeInSource(
-        'class="android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
+        'class="//android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
         .then(() => app.dontSeeInSource('<meta'));
     });
   });
@@ -414,14 +433,14 @@ describe('Appium', function () {
     });
   });
 
-  describe('#seeNumberOfElements', () => {
+  describe('#seeNumberOfElements @quick', () => {
     it('should return 1 as count', () => {
       return app.seeNumberOfElements('~buttonTestCD', 1);
     });
   });
 
   describe('see element : #seeElement, #dontSeeElement', () => {
-    it('should check visible elements on page', function*() {
+    it('should check visible elements on page @quick', function*() {
       yield app.seeElement('~buttonTestCD');
       yield app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
       yield app.dontSeeElement('#something-beyond');
@@ -446,9 +465,9 @@ describe('Appium', function () {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
-        .then(() => app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+        .then(() => app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700))
-        .then(() => app.click('android.widget.Button'))
+        .then(() => app.click('//android.widget.Button'))
         .then(() => app.see('Nothing special',
           '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]'))
     });
@@ -457,21 +476,21 @@ describe('Appium', function () {
       yield app.click('~startUserRegistrationCD')
       yield app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
-      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
-      yield app.click('android.widget.Button');
+      yield app.click('//android.widget.Button');
       yield app.see('Nothing special',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
     });
 
-    it('should append field value', function*() {
+    it('should append field value @second', function*() {
       yield app.click('~startUserRegistrationCD')
       yield app.fillField('~email of the customer', 'Nothing special');
       yield app.appendField('~email of the customer', 'blabla');
       yield app.hideDeviceKeyboard('pressKey', 'Done')
-      yield app.swipeTo("android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
+      yield app.swipeTo("//android.widget.Button", "//android.widget.ScrollView/android.widget.LinearLayout", "up", 30,
         100, 700);
-      yield app.click('android.widget.Button');
+      yield app.click('//android.widget.Button');
       yield app.see('Nothing specialblabla',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]');
     });
@@ -510,6 +529,30 @@ describe('Appium', function () {
       let sec = (new Date()).getUTCMilliseconds();
       return app.saveScreenshot('screenshot_' + sec)
         .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_' + sec)), null, 'file does not exists'));
+    });
+  });
+
+  describe('#runOnIOS, #runOnAndroid', () => {
+
+    it('should use Android locators', () => {
+      app.click({android: "~startUserRegistrationCD", ios: 'fake-element'}).then(() => {
+        app.see('Welcome to register a new User');
+      });
+    });
+
+    it('should execute only on Android', () => {
+      let platform = null;
+      app.runOnIOS(() => {
+        platform = 'ios';
+      });
+      app.runOnAndroid(() => {
+        platform = 'android';
+      });
+      app.runOnAndroid({platformVersion: '7.0'}, () => {
+        platform = 'android7';
+      });
+
+      assert.equal('android', platform);
     });
   });
 

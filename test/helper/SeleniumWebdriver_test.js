@@ -26,14 +26,16 @@ describe('SeleniumWebdriver', function () {
     I = new SeleniumWebdriver({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400'
+      windowSize: '500x400',
+      restart: false
+
     });
     I._init();
-    browser = I._before();
+    return browser = I._beforeSuite();
   });
 
   after(function() {
-    I._afterSuite();
+    return I._finishTest();
   });
 
   beforeEach(function() {

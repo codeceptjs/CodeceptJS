@@ -12,6 +12,7 @@ let AssertionFailedError = require('../../lib/assert/error');
 let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 let expectError = require('../../lib/utils').test.expectError;
 let webApiTests = require('./webapi');
+let within = require('../../lib/within')
 
 
 describe('WebDriverIO', function () {
@@ -79,7 +80,7 @@ describe('WebDriverIO', function () {
           e.inspect().should.include('web page');
       });
     });
-  });
+      });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should throw error if field is not empty', () => {
@@ -195,8 +196,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .then(expectError)
         .catch((e) => {
-          e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected element #text to include "Nothing here"');
+          e.message.should.be.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec');
         });
     });
 
@@ -205,8 +205,7 @@ describe('WebDriverIO', function () {
         .then(() => wd.waitForText('Dynamic text', 0.1))
         .then(expectError)
         .catch((e) => {
-          e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected element body to include "Dynamic text"');
+          e.message.should.be.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec');
         });
     });
   });
@@ -221,7 +220,7 @@ describe('WebDriverIO', function () {
   describe('#switchTo', () => {
       it('should switch reference to iframe content', () => {
           return wd.amOnPage('/iframe')
-            .then(() => wd.switchTo('content'))
+            .then(() => wd.switchTo('[name="content"]'))
             .then(() => wd.see('Information\nLots of valuable data here'));
       });
 
@@ -231,13 +230,23 @@ describe('WebDriverIO', function () {
             .then(expectError)
             .catch((e) => {
                 e.should.be.instanceOf(Error);
-                e.seleniumStack.type.should.be.equal('NoSuchFrame');
+                e.message.should.be.equal('Element #invalidIframeSelector not found by name|text|CSS|XPath');
             });
       });
 
+    it('should return error if iframe selector is not iframe', () => {
+      return wd.amOnPage('/iframe')
+        .then(() => wd.switchTo('h1'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(Error);
+          e.seleniumStack.type.should.be.equal('NoSuchFrame');
+        });
+    });
+
       it('should return to parent frame given a null locator', () => {
         return wd.amOnPage('/iframe')
-          .then(() => wd.switchTo('content'))
+          .then(() => wd.switchTo('[name="content"]'))
           .then(() => wd.see('Information\nLots of valuable data here'))
           .then(() => wd.switchTo(null))
           .then(() => wd.see('Iframe test'));

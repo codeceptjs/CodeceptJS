@@ -30,27 +30,20 @@ describe('CodeceptJS Interface', () => {
       var queue1 = stdout.match(/\[1\] .+/g);
       queue1.should.eql([
         "[1] Starting recording promises",
-        "[1] Queued | hook FileSystem._beforeSuite()"
-      ]);
-
-      var queue2 = stdout.match(/\[2\] .+/g);
-      queue2.should.eql([
-        `[2] Starting recording promises`,
-        `[2] Queued | hook FileSystem._before()`,
-        `[2] Queued | amInPath: "."`,
-        `[2] Queued | return step result`,
-        `[2] Queued | say hello world`,
-        `[2] Queued | seeFile: "codecept.json"`,
-        `[2] Queued | return step result`,
-        `[2] Queued | fire test.passed`,
-        `[2] Queued | finish test`,
-        `[2] Queued | hook FileSystem._after()`
-      ]);
-
-      var queue3 = stdout.match(/\[3\] .+/g);
-      queue3.should.eql([
-        `[3] Starting recording promises`,
-        `[3] Queued | hook FileSystem._afterSuite()`
+        "[1] Queued | hook FileSystem._beforeSuite()",
+        `[1] Queued | hook FileSystem._before()`,
+        `[1] Queued | amInPath: "."`,
+        `[1] Queued | step passed`,
+        `[1] Queued | return result`,
+        `[1] Queued | say hello world`,
+        `[1] Queued | seeFile: "codecept.json"`,
+        `[1] Queued | step passed`,
+        `[1] Queued | return result`,
+        `[1] Queued | fire test.passed`,
+        `[1] Queued | finish test`,
+        `[1] Queued | hook FileSystem._after()`,
+        `[1] Queued | hook FileSystem._afterSuite()`,
+        `[1] Queued | hook FileSystem._finishTest()`,
       ]);
 
       let lines = stdout.match(/\S.+/g);
@@ -58,7 +51,6 @@ describe('CodeceptJS Interface', () => {
       // before hooks
       let beforeStep = [
         `Emitted | step.before (I am in path ".")`,
-        `[2] Queued | amInPath: "."`,
         `Emitted | step.after (I am in path ".")`,
         `Emitted | step.start (I am in path ".")`,
         `• I am in path "."`
