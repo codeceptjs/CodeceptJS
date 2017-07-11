@@ -33,8 +33,14 @@ describe('Appium Web', function () {
       browser: 'chrome',
       windowSize: '500x400',
       restart: false,
-      platform: 'Android',
-      device: 'Android Emulator',
+      desiredCapabilities: {
+        appiumVersion: "1.6.4",
+        recordVideo: "false",
+        recordScreenshots: "false",
+        platformName: "Android",
+        platformVersion: "6.0",
+        deviceName: "Android Emulator"
+      },
       host: 'ondemand.saucelabs.com',
       port: 80,
       // port: 4723,
