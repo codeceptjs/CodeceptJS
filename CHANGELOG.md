@@ -39,6 +39,7 @@ I.see('Hello, davert');
 
 #### Changelog
 
+* Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
 * Print execution time per step in `--debug` mode. [#591](https://github.com/Codeception/CodeceptJS/pull/591) by @APshenkin
 * [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov [#574](https://github.com/Codeception/CodeceptJS/pull/574)
