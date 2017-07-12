@@ -19,7 +19,7 @@ let within = require('../../lib/within')
 require('co-mocha')(require('mocha'));
 
 describe('Appium Web', function () {
-  this.retries(0);
+  this.retries(4);
   this.timeout(70000);
 
   before(() => {
