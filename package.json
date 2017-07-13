@@ -31,7 +31,7 @@
     "co": "^4.6.0",
     "commander": "^2.9.0",
     "escape-string-regexp": "^1.0.3",
-    "get-parameter-names": "^0.3.0",
+    "get-function-params": "^2.0.0",
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
     "mkdirp": "^0.5.1",
@@ -67,7 +67,9 @@
     "unirest": "^0.5.1",
     "webdriverio": ">3.4.0 <5.0.0"
   },
-  "engines" : { "node" : ">=6.11" },
+  "engines": {
+    "node": ">=6.11"
+  },
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp",
