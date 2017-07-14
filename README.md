@@ -269,9 +269,6 @@ Scenario('test some forms', (I, docsPage) => {
 });
 ```
 
-## Current State
-
-CodeceptJS is in its early days. Any feedback, issues, and pull requests are welcome. Try it, and if you like it - help us make it better!
 
 ## License
 
