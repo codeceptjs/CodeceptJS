@@ -31,9 +31,9 @@
     "co": "^4.6.0",
     "commander": "^2.9.0",
     "escape-string-regexp": "^1.0.3",
-    "get-function-params": "^2.0.0",
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
+    "js-function-reflector": "^1.3.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.1.2",
     "requireg": "^0.1.5"
