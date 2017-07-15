@@ -11,9 +11,8 @@ Then use `Data().Scenario` to include this data and generate multiple scenarios:
 ```js
 // define data table inside a test or load from another module
 let accounts = new DataTable(['login', 'password']); //
-accounts.add(['davert', '123456']); <- adding  records to table
+accounts.add(['davert', '123456']); // adding records to a table
 accounts.add(['admin', '123456']);
-
 
 // Pass dataTable to Data()
 // Use special param `current` to get current data set
