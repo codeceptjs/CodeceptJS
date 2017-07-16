@@ -196,7 +196,7 @@ The same way you can grab text, attributes, or form values and use them in next 
 
 ### Before/After
 
-Common preperation steps like opening a web page, logging in a user, can be placed in `Before` or `Background`:
+Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background`:
 
 ```js
 Feature('CodeceptJS Demonstration');
