@@ -24,6 +24,8 @@ Data(accounts).Scenario('Test Login', (I, current) => {
 });
 ```
 
+*Important: you can't use name `current` for pageObjects or helpers in data scenarios*
+
 This will produce 2 tests with different data sets.
 Current data set is appended to a test name in output:
 
