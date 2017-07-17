@@ -41,5 +41,9 @@
     <a id="third-link">Third</a>
 </div>
 
+<div id="new-tab">
+<a href="/login" target="_blank">New tab</a>
+</div>
+
 </body>
 </html>

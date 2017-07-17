@@ -167,6 +167,173 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#grabTextFromRandomElement', () => {
+    it('should grab text for random element if there is several elements with expected locator', () => {
+      let expectedArray = ['Is that interesting?', 'Текст на русском', 'Lots of valuable data here']
+      return wd.amOnPage('/info')
+        .then(() => wd.grabTextFromRandomElement('p'))
+        .then((label) => assert.ok(expectedArray.includes(label)));
+    });
+    it('should grab text for random element if there is only one element with expected locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabTextFromRandomElement('h3'))
+        .then((label) => assert.equal(label, "Don't do that at home!"));
+    });
+  });
+
+  describe('#grabAttributeFromRandomElement', () => {
+    it('should grab attribute for random element if there is several elements with expected locator', () => {
+      let expectedArray = ['first-link', 'second-link', 'third-link']
+      return wd.amOnPage('/info')
+        .then(() => wd.grabAttributeFromRandomElement('//div[@id = "grab-multiple"]//a', 'id'))
+        .then((label) => assert.ok(expectedArray.includes(label)));
+    });
+    it('should grab attribute for random element if there is only one element with expected locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabAttributeFromRandomElement('//form', 'method'))
+        .then((label) => assert.equal(label, "post"));
+    });
+  });
+
+  describe('#seeAtributeOnElement', () => {
+    it('should check attribute value for given element', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.seeAttributeOnElement('//form', 'method', "post"))
+        .then(() => wd.seeAttributeOnElement('//div[@id = "grab-multiple"]//a', 'id', 'first-link'))
+        .then(() => wd.seeAttributeOnElement('//form', 'method', "get"))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `Element //form hasn't attribute method with value get`);
+        });
+    });
+  });
+
+  describe('#seeTitleEquals', () => {
+    it('should check that title is equal to provided one', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeTitleEquals('TestEd Beta 2.0'))
+        .then(() => wd.seeTitleEquals('TestEd Beta 2.'))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `expected web page title to be TestEd Beta 2., but found TestEd Beta 2.0`);
+        });
+    });
+  });
+
+  describe('#seeTextEquals', () => {
+    it('should check text is equal to provided one', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeTextEquals('Welcome to test app!', 'h1'))
+        .then(() => wd.seeTextEquals('Welcome to test app', 'h1'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
+        });
+    });
+  });
+
+  describe('#grabCssPropertyFrom', () => {
+    it('should grab css property for given element', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabCssPropertyFrom('h3', 'font-weight'))
+        .then((css) => assert.equal(css, "bold"));
+    });
+  });
+
+  describe('#seeCssPropertyOnElement', () => {
+    it('should check css property for given element', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.seeCssPropertyOnElement('h3', 'font-weight', "bold"))
+        .then(() => wd.seeCssPropertyOnElement('//div', 'display', 'none'))
+        .then(() => wd.seeCssPropertyOnElement('h3', 'font-weight', "notbold"))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `Element h3 hasn't CSS property font-weight with value notbold`);
+        });
+    });
+  });
+
+  describe('#grabNumberOfVisibleElements', () => {
+    it('should grab number of visible elements for given locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
+        .then((num) => assert.equal(num, 3));
+    });
+  });
+
+  describe('#waitInUrl, #waitUrlEquals', () => {
+    it('should wait part of the URL to match the expected', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitInUrl('/info'))
+        .then(() => wd.waitInUrl('/info2', 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `expected url to include /info2, but found http://127.0.0.1:8000/info`);
+        });
+    });
+    it('should wait for the entire URL to match the expected', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitUrlEquals('/info'))
+        .then(() => wd.waitUrlEquals('http://127.0.0.1:8000/info'))
+        .then(() => wd.waitUrlEquals('/info2', 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `expected url to be http://127.0.0.1:8000/info2, but found http://127.0.0.1:8000/info`);
+        });
+    });
+  });
+
+  describe('#waitForValue', () => {
+    it('should wait for expected value for given locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitForValue("Верно", '//input[@name= "rus"]'))
+        .then(() => wd.waitForValue("Верно3", '//input[@name= "rus"]', 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec`);
+        });
+    });
+  });
+
+  describe('#waitNumberOfVisibleElements', () => {
+    it('should wait for a specified number of elements on the page', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
+        .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `The number of elements //div[@id = "grab-multiple"]//a is not 2 after 0.1 sec`);
+        });
+    });
+  });
+
+  describe('#changeTab, #closeCurrentTab', () => {
+    it('should change active tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.click('New tab'))
+        .then(() => wd.changeTab(2))
+        .then(() => wd.waitInUrl('/login'));
+    });
+    it('should assert when amount of tabs is not the same as expected', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.click('More info'))
+        .then(() => wd.changeTab(1, 2))
+        .then(expectError)
+        .catch((e) => {
+        assert.equal(e.message, "The number of tabs hasn't changed to 2")
+        });
+    });
+    it('should close current tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.click('New tab'))
+        .then(() => wd.changeTab(2))
+        .then(() => wd.waitInUrl('/login'))
+        .then(() => wd.closeCurrentTab())
+        .then(() => wd.waitInUrl('/info'));
+    });
+  });
+
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
     it('should accept popup window', () => {
       return wd.amOnPage('/form/popup')
