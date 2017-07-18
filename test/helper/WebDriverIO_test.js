@@ -167,34 +167,6 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#grabTextFromRandomElement', () => {
-    it('should grab text for random element if there is several elements with expected locator', () => {
-      let expectedArray = ['Is that interesting?', 'Текст на русском', 'Lots of valuable data here']
-      return wd.amOnPage('/info')
-        .then(() => wd.grabTextFromRandomElement('p'))
-        .then((label) => assert.ok(expectedArray.includes(label)));
-    });
-    it('should grab text for random element if there is only one element with expected locator', () => {
-      return wd.amOnPage('/info')
-        .then(() => wd.grabTextFromRandomElement('h3'))
-        .then((label) => assert.equal(label, "Don't do that at home!"));
-    });
-  });
-
-  describe('#grabAttributeFromRandomElement', () => {
-    it('should grab attribute for random element if there is several elements with expected locator', () => {
-      let expectedArray = ['first-link', 'second-link', 'third-link']
-      return wd.amOnPage('/info')
-        .then(() => wd.grabAttributeFromRandomElement('//div[@id = "grab-multiple"]//a', 'id'))
-        .then((label) => assert.ok(expectedArray.includes(label)));
-    });
-    it('should grab attribute for random element if there is only one element with expected locator', () => {
-      return wd.amOnPage('/info')
-        .then(() => wd.grabAttributeFromRandomElement('//form', 'method'))
-        .then((label) => assert.equal(label, "post"));
-    });
-  });
-
   describe('#seeAtributeOnElement', () => {
     it('should check attribute value for given element', () => {
       return wd.amOnPage('/info')
@@ -308,29 +280,52 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#changeTab, #closeCurrentTab', () => {
-    it('should change active tab', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+    it('should switch to next tab', () => {
       return wd.amOnPage('/info')
         .then(() => wd.click('New tab'))
-        .then(() => wd.changeTab(2))
+        .then(() => wd.switchToNextTab())
         .then(() => wd.waitInUrl('/login'));
     });
-    it('should assert when amount of tabs is not the same as expected', () => {
+    it('should assert when there is no ability to switch to next tab', () => {
       return wd.amOnPage('/')
         .then(() => wd.click('More info'))
-        .then(() => wd.changeTab(1, 2))
+        .then(() => wd.switchToNextTab(2))
         .then(expectError)
         .catch((e) => {
-        assert.equal(e.message, "The number of tabs hasn't changed to 2")
+        assert.equal(e.message, "There is no ability to switch to next tab with offset 2");
         });
     });
     it('should close current tab', () => {
       return wd.amOnPage('/info')
         .then(() => wd.click('New tab'))
-        .then(() => wd.changeTab(2))
+        .then(() => wd.switchToNextTab())
         .then(() => wd.waitInUrl('/login'))
         .then(() => wd.closeCurrentTab())
         .then(() => wd.waitInUrl('/info'));
+    });
+    it('should open new tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.openNewTab())
+        .then(() => wd.waitInUrl('about:blank'));
+    });
+    it('should switch to previous tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.openNewTab())
+        .then(() => wd.waitInUrl('about:blank'))
+        .then(() => wd.switchToPreviousTab())
+        .then(() => wd.waitInUrl('/info'));
+    });
+    it('should assert when there is no ability to switch to previous tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.openNewTab())
+        .then(() => wd.waitInUrl('about:blank'))
+        .then(() => wd.switchToPreviousTab(2))
+        .then(() => wd.waitInUrl('/info'))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, "There is no ability to switch to previous tab with offset 2");
+        });
     });
   });
 
