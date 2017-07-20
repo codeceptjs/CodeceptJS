@@ -167,15 +167,26 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#seeAtributeOnElement', () => {
-    it('should check attribute value for given element', () => {
+  describe('#seeAttributesOnElements', () => {
+    it('should check attributes values for given element', () => {
       return wd.amOnPage('/info')
-        .then(() => wd.seeAttributeOnElement('//form', 'method', "post"))
-        .then(() => wd.seeAttributeOnElement('//div[@id = "grab-multiple"]//a', 'id', 'first-link'))
-        .then(() => wd.seeAttributeOnElement('//form', 'method', "get"))
+        .then(() => wd.seeAttributesOnElements('//form', { method: "post"}))
+        .then(() => wd.seeAttributesOnElements('//form', { method: "post", action: "http://127.0.0.1:8000/"}))
+        .then(() => wd.seeAttributesOnElements('//form', { method: "get"}))
         .then(expectError)
         .catch((e) => {
-          assert.equal(e.message, `Element //form hasn't attribute method with value get`);
+          assert.equal(e.message, `Not all elements (//form) have attributes {"method":"get"}`);
+        });
+    });
+
+    it('should check attributes values for several elements', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeAttributesOnElements('a', { 'qa-id': "test", 'qa-link': 'test'}))
+        .then(() => wd.seeAttributesOnElements('//div', { 'qa-id': 'test'}))
+        .then(() => wd.seeAttributesOnElements('a', { 'qa-id': "test", href: '/info'}))
+        .then(expectError)
+        .catch((e) => {
+          e.message.should.include(`Not all elements (a) have attributes {"qa-id":"test","href":"/info"}`);
         });
     });
   });
@@ -213,15 +224,26 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#seeCssPropertyOnElement', () => {
+  describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', () => {
       return wd.amOnPage('/info')
-        .then(() => wd.seeCssPropertyOnElement('h3', 'font-weight', "bold"))
-        .then(() => wd.seeCssPropertyOnElement('//div', 'display', 'none'))
-        .then(() => wd.seeCssPropertyOnElement('h3', 'font-weight', "notbold"))
+        .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"}))
+        .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "bold", display: 'block'}))
+        .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "non-bold"}))
         .then(expectError)
         .catch((e) => {
-          assert.equal(e.message, `Element h3 hasn't CSS property font-weight with value notbold`);
+          e.message.should.include(`Not all elements (h3) have CSS property {"font-weight":"non-bold"}`);
+        });
+    });
+
+    it('should check css property for several elements', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeCssPropertiesOnElements('a', { color: "rgba(0, 0, 238, 1)", cursor: 'auto'}))
+        .then(() => wd.seeCssPropertiesOnElements('//div', { display: 'block'}))
+        .then(() => wd.seeCssPropertiesOnElements('a', { 'margin-top': "0em", cursor: 'auto'}))
+        .then(expectError)
+        .catch((e) => {
+          e.message.should.include(`Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}`);
         });
     });
   });
