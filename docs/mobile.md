@@ -218,7 +218,7 @@ It is often happen that mobile applications behave similarly on different platfo
 CodeceptJS provides a way to specify different locators for Android and iOS platforms:
 
 ```js
-I.click({android: 'android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
+I.click({android: '//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
 
 In case some code should be executed on one platform and ignored on others use `runOnAndroid` and `runOnIOS` methods:
@@ -230,6 +230,23 @@ I.runOnAndroid(() => {
 I.runOnIOS(() => {
   I.click('Hello iOS');
 });
+```
+
+The same code can be shared for web applications as well. To execute some code in web browser only, use `I.runInWeb`:
+
+```js
+I.runInWeb(() => {
+  I.amOnPage('/login'); // not available for mobile
+  I.fillField('name', 'jon');
+  I.fillField('password', '123456');
+  I.click('Login');
+  I.waitForElement('#success'); // no available for mobile
+});
+```
+Just as you can specify android, and ios-specific locators, you can do so for web:
+
+```js
+I.click({web: '#login', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
 
 ## done()
