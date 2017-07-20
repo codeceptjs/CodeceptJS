@@ -532,7 +532,7 @@ describe('Appium', function () {
     });
   });
 
-  describe('#runOnIOS, #runOnAndroid', () => {
+  describe('#runOnIOS, #runOnAndroid, #runInWeb', () => {
 
     it('should use Android locators', () => {
       app.click({android: "~startUserRegistrationCD", ios: 'fake-element'}).then(() => {
@@ -553,6 +553,16 @@ describe('Appium', function () {
       });
 
       assert.equal('android', platform);
+    });
+
+
+    it('should execute only in Web', () => {
+      app.isWeb = true;
+      let executed = false;
+      app.runOnIOS(() => {
+        executed = true;
+      });
+      assert.ok(executed);
     });
   });
 

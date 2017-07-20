@@ -1,8 +1,53 @@
 # Advanced Usage
 
+## Data Driven Tests
+
+Execute the same scenario on a different data set.
+
+Let's say you want to test login for different user accounts.
+In this case, you need to create a datatable and fill it in with credentials.
+Then use `Data().Scenario` to include this data and generate multiple scenarios:
+
+```js
+// define data table inside a test or load from another module
+let accounts = new DataTable(['login', 'password']); //
+accounts.add(['davert', '123456']); // adding records to a table
+accounts.add(['admin', '123456']);
+
+// Pass dataTable to Data()
+// Use special param `current` to get current data set
+Data(accounts).Scenario('Test Login', (I, current) => {
+  I.fillField('Username', current.login); // current is reserved!
+  I.fillField('Password', current.password);
+  I.click('Sign In');
+  I.see('Welcome '+ current.login);
+});
+```
+
+*Important: you can't use name `current` for pageObjects or helpers in data scenarios*
+
+This will produce 2 tests with different data sets.
+Current data set is appended to a test name in output:
+
+```
+✓ Test Login | {"login":"davert","password":"123456"}
+✓ Test Login | {"login":"admin","password":"123456"}
+```
+
+Data sets can also be defined with array, generator, or a function.
+
+```js
+Data(function*() {
+  yield { user: 'davert'};
+  yield { user: 'andrey'};
+}).Scenario() // ...
+```
+
+*HINT: If you don't use DataTable. add `toString()` method to each object added to data set, so the data could be pretty printed in a test name*
+
 ## Groups
 
-Currently CodeceptJS doesn't support groups or tags. However, you can append `@tag` to your test name, so
+Append `@tag` to your test name, so
 all tests with `@tag` could be executed with `--grep @tag` option.
 
 ```js

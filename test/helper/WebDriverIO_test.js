@@ -168,6 +168,190 @@ describe('WebDriverIO', function () {
     });
   });
 
+  describe('#seeAttributesOnElements', () => {
+    it('should check attributes values for given element', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.seeAttributesOnElements('//form', { method: "post"}))
+        .then(() => wd.seeAttributesOnElements('//form', { method: "post", action: "http://127.0.0.1:8000/"}))
+        .then(() => wd.seeAttributesOnElements('//form', { method: "get"}))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `Not all elements (//form) have attributes {"method":"get"}`);
+        });
+    });
+
+    it('should check attributes values for several elements', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeAttributesOnElements('a', { 'qa-id': "test", 'qa-link': 'test'}))
+        .then(() => wd.seeAttributesOnElements('//div', { 'qa-id': 'test'}))
+        .then(() => wd.seeAttributesOnElements('a', { 'qa-id': "test", href: '/info'}))
+        .then(expectError)
+        .catch((e) => {
+          e.message.should.include(`Not all elements (a) have attributes {"qa-id":"test","href":"/info"}`);
+        });
+    });
+  });
+
+  describe('#seeTitleEquals', () => {
+    it('should check that title is equal to provided one', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeTitleEquals('TestEd Beta 2.0'))
+        .then(() => wd.seeTitleEquals('TestEd Beta 2.'))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `expected web page title to be TestEd Beta 2., but found TestEd Beta 2.0`);
+        });
+    });
+  });
+
+  describe('#seeTextEquals', () => {
+    it('should check text is equal to provided one', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeTextEquals('Welcome to test app!', 'h1'))
+        .then(() => wd.seeTextEquals('Welcome to test app', 'h1'))
+        .then(expectError)
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
+        });
+    });
+  });
+
+  describe('#grabCssPropertyFrom', () => {
+    it('should grab css property for given element', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabCssPropertyFrom('h3', 'font-weight'))
+        .then((css) => assert.equal(css, "bold"));
+    });
+  });
+
+  describe('#seeCssPropertiesOnElements', () => {
+    it('should check css property for given element', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"}))
+        .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "bold", display: 'block'}))
+        .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "non-bold"}))
+        .then(expectError)
+        .catch((e) => {
+          e.message.should.include(`Not all elements (h3) have CSS property {"font-weight":"non-bold"}`);
+        });
+    });
+
+    it('should check css property for several elements', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.seeCssPropertiesOnElements('a', { color: "rgba(0, 0, 238, 1)", cursor: 'auto'}))
+        .then(() => wd.seeCssPropertiesOnElements('//div', { display: 'block'}))
+        .then(() => wd.seeCssPropertiesOnElements('a', { 'margin-top': "0em", cursor: 'auto'}))
+        .then(expectError)
+        .catch((e) => {
+          e.message.should.include(`Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}`);
+        });
+    });
+  });
+
+  describe('#grabNumberOfVisibleElements', () => {
+    it('should grab number of visible elements for given locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
+        .then((num) => assert.equal(num, 3));
+    });
+  });
+
+  describe('#waitInUrl, #waitUrlEquals', () => {
+    it('should wait part of the URL to match the expected', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitInUrl('/info'))
+        .then(() => wd.waitInUrl('/info2', 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `expected url to include /info2, but found http://127.0.0.1:8000/info`);
+        });
+    });
+    it('should wait for the entire URL to match the expected', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitUrlEquals('/info'))
+        .then(() => wd.waitUrlEquals('http://127.0.0.1:8000/info'))
+        .then(() => wd.waitUrlEquals('/info2', 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `expected url to be http://127.0.0.1:8000/info2, but found http://127.0.0.1:8000/info`);
+        });
+    });
+  });
+
+  describe('#waitForValue', () => {
+    it('should wait for expected value for given locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitForValue('//input[@name= "rus"]', "Верно"))
+        .then(() => wd.waitForValue('//input[@name= "rus"]', "Верно3", 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec`);
+        });
+    });
+  });
+
+  describe('#waitNumberOfVisibleElements', () => {
+    it('should wait for a specified number of elements on the page', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
+        .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, `The number of elements //div[@id = "grab-multiple"]//a is not 2 after 0.1 sec`);
+        });
+    });
+  });
+
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+    it('should switch to next tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.click('New tab'))
+        .then(() => wd.switchToNextTab())
+        .then(() => wd.waitInUrl('/login'));
+    });
+    it('should assert when there is no ability to switch to next tab', () => {
+      return wd.amOnPage('/')
+        .then(() => wd.click('More info'))
+        .then(() => wd.switchToNextTab(2))
+        .then(expectError)
+        .catch((e) => {
+        assert.equal(e.message, "There is no ability to switch to next tab with offset 2");
+        });
+    });
+    it('should close current tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.click('New tab'))
+        .then(() => wd.switchToNextTab())
+        .then(() => wd.waitInUrl('/login'))
+        .then(() => wd.closeCurrentTab())
+        .then(() => wd.waitInUrl('/info'));
+    });
+    it('should open new tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.openNewTab())
+        .then(() => wd.waitInUrl('about:blank'));
+    });
+    it('should switch to previous tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.openNewTab())
+        .then(() => wd.waitInUrl('about:blank'))
+        .then(() => wd.switchToPreviousTab())
+        .then(() => wd.waitInUrl('/info'));
+    });
+    it('should assert when there is no ability to switch to previous tab', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.openNewTab())
+        .then(() => wd.waitInUrl('about:blank'))
+        .then(() => wd.switchToPreviousTab(2))
+        .then(() => wd.waitInUrl('/info'))
+        .then(expectError)
+        .catch((e) => {
+          assert.equal(e.message, "There is no ability to switch to previous tab with offset 2");
+        });
+    });
+  });
+
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
     it('should accept popup window', () => {
       return wd.amOnPage('/form/popup')
