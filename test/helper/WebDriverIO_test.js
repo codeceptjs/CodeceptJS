@@ -255,8 +255,8 @@ describe('WebDriverIO', function () {
 
 
   describe('SmartWait', () => {
-    before(() => wd.options.wait = 3000);
-    after(() => wd.options.wait = 0);
+    before(() => wd.options.smartWait = 3000);
+    after(() => wd.options.smartWait = 0);
 
     it('should wait for element to appear', () => {
       return wd.amOnPage('/form/wait_element')
