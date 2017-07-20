@@ -4,21 +4,21 @@
 
 <h1>Welcome to test app!</h1>
 
-<div class="notice"><?php if (isset($notice)) echo $notice; ?></div>
+<div class="notice" qa-id = "test"><?php if (isset($notice)) echo $notice; ?></div>
 
 <p>
-    <a href="/info" id="link">More info</a>
+    <a href="/info" id="link" qa-id = "test" qa-link = "test">More info</a>
 </p>
 
 
-<div id="area1">
-    <a href="/form/file"> Test Link </a>
+<div id="area1" qa-id = "test" qa-id = "test">
+    <a href="/form/file" qa-id = "test" qa-link = "test"> Test Link </a>
 </div>
-<div id="area2">
-    <a href="/form/hidden">Test</a>
+<div id="area2" qa-id = "test">
+    <a href="/form/hidden" qa-id = "test" qa-link = "test">Test</a>
 </div>
-<div id="area3">
-    <a href="info">Document-Relative Link</a>
+<div id="area3" qa-id = "test">
+    <a href="info" qa-id = "test" qa-link = "test">Document-Relative Link</a>
 </div>
 
 A wise man said: "debug!"
