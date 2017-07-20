@@ -253,6 +253,46 @@ describe('WebDriverIO', function () {
       });
   });
 
+
+  describe('SmartWait', () => {
+    before(() => wd.options.wait = 3000);
+    after(() => wd.options.wait = 0);
+
+    it('should wait for element to appear', () => {
+      return wd.amOnPage('/form/wait_element')
+        .then(() => wd.dontSeeElement('h1'))
+        .then(() => wd.seeElement('h1'))
+    });
+
+    it('should wait for clickable element appear', () => {
+      return wd.amOnPage('/form/wait_clickable')
+        .then(() => wd.dontSeeElement('#click'))
+        .then(() => wd.click('#click'))
+        .then(() => wd.see('Hi!'))
+    });
+
+    it('should wait for clickable context to appear', () => {
+      return wd.amOnPage('/form/wait_clickable')
+        .then(() => wd.dontSeeElement('#linkContext'))
+        .then(() => wd.click('Hello world', '#linkContext'))
+        .then(() => wd.see('Hi!'))
+    });
+
+    it('should wait for text context to appear', () => {
+      return wd.amOnPage('/form/wait_clickable')
+        .then(() => wd.dontSee('Hello world'))
+        .then(() => wd.see('Hello world', '#linkContext'))
+    });
+
+    it('should work with grabbers', () => {
+      return wd.amOnPage('/form/wait_clickable')
+        .then(() => wd.dontSee('Hello world'))
+        .then(() => wd.grabAttributeFrom('#click', 'id'))
+        .then((res) => assert.equal(res, 'click'))
+    });
+
+  });
+
   describe('#_locateClickable', () => {
     it('should locate a button to click', () => {
       return wd.amOnPage('/form/checkbox')
@@ -268,6 +308,7 @@ describe('WebDriverIO', function () {
         .then((res) => res.length.should.be.equal(0))
     });
   });
+
 
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => {
