@@ -259,8 +259,8 @@ describe('WebDriverIO', function () {
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => {
       return wd.amOnPage('/info')
-        .then(() => wd.waitForValue("Верно", '//input[@name= "rus"]'))
-        .then(() => wd.waitForValue("Верно3", '//input[@name= "rus"]', 0.1))
+        .then(() => wd.waitForValue('//input[@name= "rus"]', "Верно"))
+        .then(() => wd.waitForValue('//input[@name= "rus"]', "Верно3", 0.1))
         .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec`);
