@@ -16,7 +16,7 @@ let within = require('../../lib/within')
 
 
 describe('WebDriverIO', function () {
-  this.retries(4);
+  // this.retries(4);
   this.timeout(35000);
 
   before(() => {
@@ -28,7 +28,8 @@ describe('WebDriverIO', function () {
     wd = new WebDriverIO({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400'
+      windowSize: '500x400',
+      smartWait: 10 // just to try
     });
   });
 
