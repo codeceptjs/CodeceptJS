@@ -1,5 +1,7 @@
 # Data Management
 
+*This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
+
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
 
@@ -21,7 +23,7 @@ However, it doesn't provide tools for testing APIs, so it should be paired with 
 Enable REST helper in global config. It is recommended to set `endpoint`, a base URL for all API requests.
 If you need some authorization you can optionally set default headers too.
 
-See sample config.
+See the sample config:
 
 ```js
 "helpers": {
@@ -30,7 +32,7 @@ See sample config.
     "defaultHeaders": {
       "Auth": "11111"
     }
-  }
+  },
 
   "WebDriverIO" : {
     "browser": "chrome"
@@ -53,14 +55,24 @@ As well as a method for setting headers: `haveRequestHeaders`.
 Here is a usage example:
 
 ```js
-// valid access token
-I.haveRequestHeaders({auth: '1111111'});
-// get the first user
-let user = yield I.sendGetRequest('/api/users/1');
-// create a post
-I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' });
-// open browser page of new post
-I.amOnPage('/posts/2.html');
+let postId = null;
+
+Scenario('check post page', function*(I) {
+  // valid access token
+  I.haveRequestHeaders({auth: '1111111'});
+  // get the first user
+  let user = yield I.sendGetRequest('/api/users/1');
+  // create a post and save its Id
+  postId = yield I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' });
+  // open browser page of new post
+  I.amOnPage('/posts/2.html');
+  I.see('some text', 'p.body');
+});
+
+// cleanup created data
+After((I) => {
+  I.sendDeleteRequest('/api/posts/'+postId);
+});
 ```
 
 This can also be used to emulate Ajax requests:
@@ -68,6 +80,7 @@ This can also be used to emulate Ajax requests:
 ```js
 I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
 ```
+
 
 ## Data Generation with Factories
 
