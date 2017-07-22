@@ -249,6 +249,14 @@ describe('WebDriverIO', function () {
     });
   });
 
+
+  describe('#seeNumberOfVisibleElements', () => {
+    it('should check number of visible elements for given locator', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3));
+    });
+  });
+
   describe('#grabNumberOfVisibleElements', () => {
     it('should grab number of visible elements for given locator', () => {
       return wd.amOnPage('/info')
