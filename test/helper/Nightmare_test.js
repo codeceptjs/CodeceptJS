@@ -118,4 +118,25 @@ describe('Nightmare', function () {
     });
   });
 
+  describe('#locate', () => {
+    it('should use locate to check element', () => {
+      let attribute = 'qa-id';
+      return I.amOnPage('/')
+        .then(() => {
+          return I._locate({css: '.notice'}).then(function(els) {
+            // we received an array with IDs of matched elements
+            // now let's execute client-side script to get attribute for the first element
+            return browser.evaluate(function(el, attribute) {
+              // this is executed inside a web page!
+              return codeceptjs.fetchElement(el).getAttribute(attribute);
+            }, els[0], attribute); // function + its params
+          }).then(function(attributeValue) {
+            // get attribute value and back to server side
+            // execute an assertion
+            assert.equal(attributeValue, 'test');
+          });
+      });
+    })
+  })
+
 });
