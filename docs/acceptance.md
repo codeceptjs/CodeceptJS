@@ -172,10 +172,10 @@ Imagine, application generates a password and you want to ensure that user can l
 ```js
 I.fillField('email', 'miles@davis.com')
 I.click('Generate Password');
-$password = yield I.grabTextFrom('#password');
+let password = yield I.grabTextFrom('#password');
 I.click('Login');
 I.fillField('email', 'miles@davis.com');
-I.fillField('password', $password);
+I.fillField('password', password);
 I.click('Log in!');
 ```
 
@@ -200,8 +200,39 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-
 More wait actions can be found in helper's reference.
+
+## SmartWait
+
+It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
+
+SmartWait can be enabled by setting wait option in WebDriverIO config.
+Add `"smartWait": 5000` to wait for additional 5s.
+
+SmartWait works with a CSS/XPath locators in `click`, `seeElement` and other methods. See where it is enabled and where is not:
+
+```js
+I.click('Login'); // DISABLED, not a locator
+I.fillField('user', 'davert'); // DISABLED, not a specific locator
+I.fillField({name: 'password'}, '123456'); // ENABLED, strict locator
+I.click('#login'); // ENABLED, locator is CSS ID
+I.see('Hello, Davert'); // DISABLED, Not a locator
+I.seeElement('#userbar'); // ENABLED
+I.dontSeeElement('#login'); // DISABLED, can't wait for element to hide
+I.seeNumberOfElements('button.link', 5); // DISABLED, can wait only for one element
+
+```
+
+SmartWait doesn't check element for visibility, so tests may fail even element is on a page.
+
+Usage example:
+
+```js
+// we use smartWait: 5000 instead of
+// I.waitForElement('#click-me', 5);
+// to wait for element on page
+I.click('#click-me');
+```
 
 ## IFrames
 

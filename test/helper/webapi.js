@@ -137,6 +137,14 @@ module.exports.tests = function() {
       return I.seeInCurrentUrl('/info');
     });
 
+    it('should not click wrong context', function*() {
+      let err = false;
+      yield I.amOnPage('/');
+      return I.click('More info', '#area1')
+        .catch((e) => err = true)
+        .then(() => assert.ok(err))
+    });
+
     it('should click link with inner span', function*() {
       yield I.amOnPage('/form/example7');
       yield I.click('Buy Chocolate Bar');

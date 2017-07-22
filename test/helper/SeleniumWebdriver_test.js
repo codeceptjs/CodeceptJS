@@ -110,4 +110,37 @@ describe('SeleniumWebdriver', function () {
     });
   });
 
+  describe('SmartWait', () => {
+    before(() => I.options.smartWait = 3000);
+    after(() => I.options.smartWait = 0);
+
+    it('should wait for element to appear', () => {
+      return I.amOnPage('/form/wait_element')
+        .then(() => I.dontSeeElement('h1'))
+        .then(() => I.seeElement('h1'))
+    });
+
+    it('should wait for clickable element appear', () => {
+      return I.amOnPage('/form/wait_clickable')
+        .then(() => I.dontSeeElement('#click'))
+        .then(() => I.click('#click'))
+        .then(() => I.see('Hi!'))
+    });
+
+    it('should wait for clickable context to appear', () => {
+      return I.amOnPage('/form/wait_clickable')
+        .then(() => I.dontSeeElement('#linkContext'))
+        .then(() => I.click('Hello world', '#linkContext'))
+        .then(() => I.see('Hi!'))
+    });
+
+    it('should wait for text context to appear', () => {
+      return I.amOnPage('/form/wait_clickable')
+        .then(() => I.dontSee('Hello world'))
+        .then(() => I.see('Hello world', '#linkContext'))
+    });
+
+
+  });
+
 });
