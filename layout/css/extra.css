@@ -295,11 +295,20 @@ body .bs-sidebar {
 
 .reference h1 {
   padding-bottom: 0.5em;
-  background: #533978 url('/images/scr01.jpg');
-  margin-top: 1em;
+  background: #533978 url(/images/scr01.jpg);
+  margin-top: 1.5em;
   padding-left: 0.5em;
   color: #e5e5e5;
   letter-spacing: 5px;
   font-size: 3em;
   text-shadow: 0px 2px 1px #333;
+}
+
+.banner {
+  background: #f1c40f;
+  color: #666;
+  font-size: 90%;
+  text-align: center;
+  padding: 5px  ;
+  margin-top: 10px;
 }
