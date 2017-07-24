@@ -12,7 +12,7 @@
 	<title>Releases - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
-        
+
         <link rel="stylesheet" href="../css/highlight.css">
         <link href="../css/base.css" rel="stylesheet">
         <link href="../css/extra.css" rel="stylesheet">
@@ -244,6 +244,13 @@
         </div>
     </div>
 </div>
+        <div style="background: #f1c40f; color: #666; font-size: 90%; text-align: center; padding: 5px">
+  CodeceptJS 1.0 released. Includes:
+  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
+  <a href="http://codecept.io/data/" class="">Data Management</a> |
+  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
+  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+</div>
 
 
         
@@ -413,8 +420,8 @@ I.see('Hello, davert');
 <ul>
 <li>Minimal NodeJS version is 6.11.1 LTS</li>
 <li>Use <code>within</code> command with generators.</li>
+<li><a href="http://codecept.io/advanced/#data-driven-tests">Data Driven Tests</a> introduced.</li>
 <li>Print execution time per step in <code>--debug</code> mode. <a href="https://github.com/Codeception/CodeceptJS/pull/591">#591</a> by @APshenkin</li>
-<li>[WebDriverIO] Fixed <code>seeNumberOfVisibleElements</code> by @BorisOsipov <a href="https://github.com/Codeception/CodeceptJS/pull/574">#574</a></li>
 <li>[WebDriverIO][Protractor][Nightmare] Added <code>disableScreenshots</code> option to disable screenshots on fail by @Apshenkin</li>
 <li>[WebDriverIO][Protractor][Nightmare] Added <code>uniqueScreenshotNames</code> option to generate unique names for screenshots on failure by @Apshenkin</li>
 <li>[WebDriverIO][Nightmare] Fixed click on context; <code>click('text', '#el')</code> will throw exception if text is not found inside <code>#el</code>.</li>
@@ -445,7 +452,25 @@ I.see('Hello, davert');
 <li><a href="http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs">grabBrowserLogs</a></li>
 </ul>
 </li>
-<li>Use mkdirp to create output directory. <a href="https://github.com/Codeception/CodeceptJS/pull/592">#592</a> by @vkramskikh</li>
+<li>Use mkdirp to create output directory. <a href="https://github.com/Codeception/CodeceptJS/pull/592">#592</a> by @vkramskikh
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+=======</li>
+<li>[WebDriverIO] Fixed <code>seeNumberOfVisibleElements</code> by @BorisOsipov <a href="https://github.com/Codeception/CodeceptJS/pull/574">#574</a><blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>master</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</li>
 <li>Lots of fixes for promise chain by @APshenkin <a href="https://github.com/Codeception/CodeceptJS/pull/568">#568</a><ul>
 <li>Fix <a href="https://github.com/Codeception/CodeceptJS/issues/543">#543</a> - After block not properly executed if Scenario fails</li>
 <li>Expected behavior in promise chains: <code>_beforeSuite</code> hooks from helpers -&gt; <code>BeforeSuite</code> from test -&gt; <code>_before</code> hooks from helpers -&gt; <code>Before</code> from test - &gt; Test steps -&gt; <code>_failed</code> hooks from helpers (if test failed) -&gt; <code>After</code> from test -&gt; <code>_after</code> hooks from helpers -&gt; <code>AfterSuite</code> from test -&gt; <code>_afterSuite</code> hook from helpers.</li>
@@ -859,7 +884,7 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
         <div class="container">
           <div class="row">
             <div class="col-md-4">
-                
+
             <h4>Sponsored by</h4>
 
             <a href="https://rebilly.com" target="_blank">
@@ -868,7 +893,7 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
             <p><em>Uncover your revenue potential with<br>
                 our recurring billing software.</em></p>
             </div>
-    
+
 <div class="col-md-4">
           <ul class="imglist">
                     <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
@@ -882,8 +907,8 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
 </div>
 
             <div class="col-md-4">
-                
-      
+
+
 
 
                 <h4>Our Contributors</h4>
@@ -902,7 +927,7 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
 
         <script src="../js/jquery-1.10.2.min.js"></script>
         <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script>        
+        <script src="../js/highlight.pack.js"></script>
         <script src="../js/base.js"></script>
         <script src="../build/ApiDataFactory.js"></script>
         <script src="../build/Appium.js"></script>
