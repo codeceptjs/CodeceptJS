@@ -37,16 +37,14 @@ Example:
 ```js
 {
   helpers: {
-      WebDriverIO: {
+      Appium: {
+          platform: "Android",
           desiredCapabilities: {
-              platformName: "Android",
               appPackage: "com.example.android.myApp",
               appActivity: "MainActivity",
               deviceName: "OnePlus3",
               platformVersion: "6.0.1"
-          },
-          port: 4723,
-          restart: false
+          }
       }
     }
 }
@@ -66,6 +64,77 @@ let browser = this.helpers['Appium'].browser
 
 -   `config`  
 
+## _switchToContext
+
+Switch to the specified context.
+
+**Parameters**
+
+-   `context`  the context to switch to
+
+## appendField
+
+Appends text to a input field or textarea.
+Field is located by name, label, CSS or XPath
+
+```js
+I.appendField('#myTextField', 'appended');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  text value
+
+## checkOption
+
+Selects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.checkOption('#agree');
+I.checkOption('I Agree to Terms and Conditions');
+I.checkOption('agree', '//form');
+```
+
+**Parameters**
+
+-   `field`  checkbox located by label | name | CSS | XPath | strict locator
+-   `context`  (optional) element located by CSS | XPath | strict locator
+-   `checkbox`  
+
+## click
+
+Perform a click on a link or a button, given by a locator.
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.click('Logout');
+// button of form
+I.click('Submit');
+// CSS button
+I.click('#form input[type=submit]');
+// XPath
+I.click('//form/*[@type=submit]');
+// link in context
+I.click('Logout', '#nav');
+// using strict locator
+I.click({css: 'nav a.login'});
+```
+
+**Parameters**
+
+-   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
+-   `button`  
+-   `context`  (optional) element to search in CSS|XPath|Strict locator
+
 ## closeApp
 
 Close the given application.
@@ -83,6 +152,70 @@ Appium Special Methods for Mobile only
 **Parameters**
 
 -   `config`  
+
+## dontSee
+
+Opposite to `see`. Checks that a text is not present on a page.
+Use context parameter to narrow down the search.
+
+```js
+I.dontSee('Login'); // assume we are already logged in
+```
+
+**Parameters**
+
+-   `text`  is not present
+-   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search
+
+## dontSeeCheckboxIsChecked
+
+Verifies that the specified checkbox is not checked.
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `checkbox`  
+
+## dontSeeElement
+
+Opposite to `seeElement`. Checks that element is not visible
+
+**Parameters**
+
+-   `locator`  located by CSS|XPath|Strict locator
+-   `el`  
+-   `context`  
+
+## dontSeeInField
+
+Checks that value of input field or textare doesn't equal to given value
+Opposite to `seeInField`.
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  is not expected to be a field value
+
+## fillField
+
+Fills a text field or textarea, after clearing its value, with the given string.
+Field is located by name, label, CSS, or XPath.
+
+```js
+// by label
+I.fillField('Email', 'hello@world.com');
+// by name
+I.fillField('password', '123456');
+// by CSS
+I.fillField('form#login input[name=username]', 'John');
+// or by strict locator
+I.fillField({css: 'form#login input[name=username]'}, 'John');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  
 
 ## grabAllContexts
 
@@ -143,6 +276,34 @@ let settings = yield I.grabSettings();
 ```
 
 Appium: support Android and iOS
+
+## grabTextFrom
+
+Retrieves a text from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let pin = yield I.grabTextFrom('#pin');
+```
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `el`  
+
+## grabValueFrom
+
+Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+
+```js
+let email = yield I.grabValueFrom('input[name=email]');
+```
+
+**Parameters**
+
+-   `locator`  field located by label|name|CSS|XPath|strict locator
+-   `el`  
 
 ## hideDeviceKeyboard
 
@@ -253,6 +414,86 @@ Appium: support only iOS
 -   `rotation`  
 -   `touchCount`  
 
+## runInWeb
+
+Execute code only in Web mode.
+
+```js
+I.runInWeb(() => {
+   I.waitForElement('#data');
+   I.seeInCurrentUrl('/data');
+});
+```
+
+**Parameters**
+
+-   `fn` **Any** 
+
+## runOnAndroid
+
+Execute code only on iOS
+
+```js
+I.runOnAndroid(() => {
+   I.click('io.selendroid.testapp:id/buttonTest');
+});
+```
+
+Additional filter can be applied by checking for capabilities.
+For instance, this code will be executed only on Android 6.0:
+
+```js
+I.runOnAndroid({platformVersion: '6.0'},() => {
+   // ...
+});
+```
+
+**Parameters**
+
+-   `caps` **Any** 
+-   `fn` **Any** 
+
+## runOnIOS
+
+Execute code only on iOS
+
+```js
+I.runOnIOS(() => {
+   I.click('//UIAApplication[1]/UIAWindow[1]/UIAButton[1]');
+   I.see('Hi, IOS', '~welcome');
+});
+```
+
+Additional filter can be applied by checking for capabilities.
+For instance, this code will be executed only on iPhone 5s:
+
+```js
+I.runOnIOS({deviceName: 'iPhone 5s'},() => {
+   // ...
+});
+```
+
+**Parameters**
+
+-   `caps` **Any** 
+-   `fn` **Any** 
+
+## see
+
+Checks that a page contains a visible text.
+Use context parameter to narrow down the search.
+
+```js
+I.see('Welcome'); // text welcome on a page
+I.see('Welcome', '.content'); // text inside .content div
+I.see('Register', {css: 'form.register'}); // use strict locator
+```
+
+**Parameters**
+
+-   `text`  expected on page
+-   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
+
 ## seeAppIsInstalled
 
 Check if an app is installed.
@@ -276,6 +517,21 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 **Parameters**
 
 -   `bundleId`  String	ID of bundled appAppium: support only Android
+
+## seeCheckboxIsChecked
+
+Verifies that the specified checkbox is checked.
+
+```js
+I.seeCheckboxIsChecked('Agree');
+I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
+I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `checkbox`  
 
 ## seeCurrentActivityIs
 
@@ -311,6 +567,37 @@ I.seeDeviceIsUnlocked();
 
 Appium: support only Android
 
+## seeElement
+
+Checks that a given Element is visible
+Element is located by CSS or XPath.
+
+```js
+I.seeElement('#modal');
+```
+
+**Parameters**
+
+-   `locator`  located by CSS|XPath|strict locator
+-   `el`  
+
+## seeInField
+
+Checks that the given input field or textarea equals to given value.
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+
+```js
+I.seeInField('Username', 'davert');
+I.seeInField({css: 'form textarea'},'Type your comment here');
+I.seeInField('form input[type=hidden]','hidden_value');
+I.seeInField('#searchform input','Search');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+-   `value`  
+
 ## seeOrientationIs
 
 Check the device orientation
@@ -323,6 +610,32 @@ I.seeOrientationIs('LANDSCAPE')
 **Parameters**
 
 -   `orientation`  LANDSCAPE or PORTRAITAppium: support Android and iOS
+
+## selectOption
+
+Selects an option in a drop-down select.
+Field is searched by label | name | CSS | XPath.
+Option is selected by visible text or by value.
+
+```js
+I.selectOption('Choose Plan', 'Monthly'); // select by label
+I.selectOption('subscription', 'Monthly'); // match option by text
+I.selectOption('subscription', '0'); // or by value
+I.selectOption('//form/select[@name=account]','Premium');
+I.selectOption('form select[name=account]', 'Premium');
+I.selectOption({css: 'form select[name=account]'}, 'Premium');
+```
+
+Provide an array for the second argument to select multiple options.
+
+```js
+I.selectOption('Which OS do you use?', ['Android', 'iOS']);
+```
+
+**Parameters**
+
+-   `select`  field located by label|name|CSS|XPath|strict locator
+-   `option`  Support only web testing!
 
 ## sendDeviceKeyEvent
 
@@ -446,7 +759,7 @@ Appium: support only Android
 Perform a swipe on the screen or an element.
 
 ```js
-let locator = "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']";
+let locator = "#io.selendroid.testapp:id/LinearLayout1";
 I.swipe(locator, 800, 1200, 1000);
 ```
 
@@ -457,53 +770,58 @@ I.swipe(locator, 800, 1200, 1000);
 -   `locator`  
 -   `xoffset`  
 -   `yoffset`  
--   `speed`  Appium: support Android and iOS
+-   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
 ## swipeDown
 
 Perform a swipe down on an element.
 
 ```js
-let locator = "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']";
-I.swipeDown(locator, 1200, 1000);
+let locator = "#io.selendroid.testapp:id/LinearLayout1";
+I.swipeDown(locator); // simple swipe
+I.swipeDown(locator, 500); // set speed
+I.swipeDown(locator, 1200, 1000); // set offset and speed
 ```
 
 **Parameters**
 
 -   `locator`  
 -   `yoffset`  (optional)
--   `yOffset`  
--   `speed`  Appium: support Android and iOS
+-   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
 ## swipeLeft
 
 Perform a swipe left on an element.
 
 ```js
-let locator = "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']";
-I.swipeLeft(locator, 800, 1000);
+let locator = "#io.selendroid.testapp:id/LinearLayout1";
+I.swipeLeft(locator); // simple swipe
+I.swipeLeft(locator, 500); // set speed
+I.swipeLeft(locator, 1200, 1000); // set offset and speed
 ```
 
 **Parameters**
 
 -   `locator`  
 -   `xoffset`  (optional)
--   `speed`  Appium: support Android and iOS
+-   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
 ## swipeRight
 
-Perform a swipe left on an element.
+Perform a swipe right on an element.
 
 ```js
-let locator = "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']";
-I.swipeRight(locator, 800, 1000);
+let locator = "#io.selendroid.testapp:id/LinearLayout1";
+I.swipeRight(locator); // simple swipe
+I.swipeRight(locator, 500); // set speed
+I.swipeRight(locator, 1200, 1000); // set offset and speed
 ```
 
 **Parameters**
 
 -   `locator`  
 -   `xoffset`  (optional)
--   `speed`  Appium: support Android and iOS
+-   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
 ## swipeTo
 
@@ -530,31 +848,67 @@ I.swipeTo(
 
 ## swipeUp
 
-Perform a swipe down on an element.
+Perform a swipe up on an element.
 
 ```js
-let locator = "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']";
-I.swipeUp(locator, 1200, 1000);
+let locator = "#io.selendroid.testapp:id/LinearLayout1";
+I.swipeUp(locator); // simple swipe
+I.swipeUp(locator, 500); // set speed
+I.swipeUp(locator, 1200, 1000); // set offset and speed
 ```
 
 **Parameters**
 
 -   `locator`  
 -   `yoffset`  (optional)
--   `yOffset`  
--   `speed`  Appium: support Android and iOS
+-   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
-## switchToContext
+## switchToNative
 
-Switch to the specified context.
+Switches to native context.
+By default switches to NATIVE_APP context unless other specified.
 
 ```js
-I.switchToContext('WEBVIEW_io.selendroid.testapp');
+I.switchToNative();
+
+// or set context explicitly
+I.switchToNative('SOME_OTHER_CONTEXT');
 ```
 
 **Parameters**
 
--   `context`  the context to switch toAppium: support only Android
+-   `context` **Any** 
+
+## switchToWeb
+
+Switches to web context.
+If no context is provided switches to the first detected web context
+
+```js
+// switch to first web context
+I.switchToWeb();
+
+// or set the context explicitly
+I.switchToWeb('WEBVIEW_io.selendroid.testapp');
+```
+
+**Parameters**
+
+-   `context` **string** (optional)
+
+## tap
+
+Taps on element.
+
+```js
+I.tap("~buttonStartWebviewCD");
+```
+
+Shortcut for `makeTouchAction`
+
+**Parameters**
+
+-   `locator` **Any** 
 
 ## touchPerform
 
@@ -586,237 +940,3 @@ Appium: support Android and iOS
 **Parameters**
 
 -   `actions`  
-
-## appendField
-
-Appends text to a input field or textarea.
-Field is located by name, label, CSS or XPath
-
-```js
-I.appendField('#myTextField', 'appended');
-```
-
-**Parameters**
-
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  text value
-
-## checkOption
-
-Selects a checkbox or radio button.
-Element is located by label or name or CSS or XPath.
-
-The second parameter is a context (CSS or XPath locator) to narrow the search.
-
-```js
-I.checkOption('#agree');
-I.checkOption('I Agree to Terms and Conditions');
-I.checkOption('agree', '//form');
-```
-
-**Parameters**
-
--   `field`  checkbox located by label | name | CSS | XPath | strict locator
--   `context`  (optional) element located by CSS | XPath | strict locator
-
-## click
-
-Perform a click on a link or a button, given by a locator.
-If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
-For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
-For images, the "alt" attribute and inner text of any parent links are searched.
-
-The second parameter is a context (CSS or XPath locator) to narrow the search.
-
-```js
-// simple link
-I.click('Logout');
-// button of form
-I.click('Submit');
-// CSS button
-I.click('#form input[type=submit]');
-// XPath
-I.click('//form/*[@type=submit]');
-// link in context
-I.click('Logout', '#nav');
-// using strict locator
-I.click({css: 'nav a.login'});
-```
-
-**Parameters**
-
--   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
--   `context`  (optional) element to search in CSS|XPath|Strict locator
-
-## dontSee
-
-Opposite to `see`. Checks that a text is not present on a page.
-Use context parameter to narrow down the search.
-
-```js
-I.dontSee('Login'); // assume we are already logged in
-```
-
-**Parameters**
-
--   `text`  is not present
--   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search
-
-## dontSeeCheckboxIsChecked
-
-Verifies that the specified checkbox is not checked.
-
-**Parameters**
-
--   `field`  located by label|name|CSS|XPath|strict locator
-
-## dontSeeElement
-
-Opposite to `seeElement`. Checks that element is not visible
-
-**Parameters**
-
--   `locator`  located by CSS|XPath|Strict locator
-
-## dontSeeInField
-
-Checks that value of input field or textare doesn't equal to given value
-Opposite to `seeInField`.
-
-**Parameters**
-
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  is not expected to be a field value
-
-## fillField
-
-Fills a text field or textarea, after clearing its value, with the given string.
-Field is located by name, label, CSS, or XPath.
-
-```js
-// by label
-I.fillField('Email', 'hello@world.com');
-// by name
-I.fillField('password', '123456');
-// by CSS
-I.fillField('form#login input[name=username]', 'John');
-// or by strict locator
-I.fillField({css: 'form#login input[name=username]'}, 'John');
-```
-
-**Parameters**
-
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
-
-## grabTextFrom
-
-Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
-
-```js
-let pin = yield I.grabTextFrom('#pin');
-```
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
-
-## grabValueFrom
-
-Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
-
-```js
-let email = yield I.grabValueFrom('input[name=email]');
-```
-
-**Parameters**
-
--   `locator`  field located by label|name|CSS|XPath|strict locator
-
-## see
-
-Checks that a page contains a visible text.
-Use context parameter to narrow down the search.
-
-```js
-I.see('Welcome'); // text welcome on a page
-I.see('Welcome', '.content'); // text inside .content div
-I.see('Register', {css: 'form.register'}); // use strict locator
-```
-
-**Parameters**
-
--   `text`  expected on page
--   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
-
-## seeCheckboxIsChecked
-
-Verifies that the specified checkbox is checked.
-
-```js
-I.seeCheckboxIsChecked('Agree');
-I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
-I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
-```
-
-**Parameters**
-
--   `field`  located by label|name|CSS|XPath|strict locator
-
-## seeElement
-
-Checks that a given Element is visible
-Element is located by CSS or XPath.
-
-```js
-I.seeElement('#modal');
-```
-
-**Parameters**
-
--   `locator`  located by CSS|XPath|strict locator
-
-## seeInField
-
-Checks that the given input field or textarea equals to given value.
-For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
-
-```js
-I.seeInField('Username', 'davert');
-I.seeInField({css: 'form textarea'},'Type your comment here');
-I.seeInField('form input[type=hidden]','hidden_value');
-I.seeInField('#searchform input','Search');
-```
-
-**Parameters**
-
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
-
-# selectOption
-
-Selects an option in a drop-down select.
-Field is searched by label | name | CSS | XPath.
-Option is selected by visible text or by value.
-
-```js
-I.selectOption('Choose Plan', 'Monthly'); // select by label
-I.selectOption('subscription', 'Monthly'); // match option by text
-I.selectOption('subscription', '0'); // or by value
-I.selectOption('//form/select[@name=account]','Premium');
-I.selectOption('form select[name=account]', 'Premium');
-I.selectOption({css: 'form select[name=account]'}, 'Premium');
-```
-
-Provide an array for the second argument to select multiple options.
-
-```js
-I.selectOption('Which OS do you use?', ['Android', 'iOS']);
-```
-
-**Parameters**
-
--   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  

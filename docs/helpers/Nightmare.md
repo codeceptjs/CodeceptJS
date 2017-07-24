@@ -13,8 +13,6 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `restart` (optional, default: true) - restart browser between tests.
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
 -   `waitForTimeout`: (optional) default wait* timeout
@@ -64,11 +62,10 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`  url path or global urlIn a second argument a list of request headers can be passed:
-    ```js
+-   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
     I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
     ```
--   `headers`  
+-   `headers`   (optional, default `null`)
 
 ## appendField
 
@@ -386,11 +383,9 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  Returns cookie in JSON format. If name not passed, returns all cookies for this domain. Multiple cookies can be received by passing query object:
-    ```js
+-   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:```js
     I.grabCookie({ secure: true});
-    ```
-    If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+    ```If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ## grabTextFrom
 
@@ -454,8 +449,8 @@ I.moveCursorTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## pressKey
 
@@ -465,14 +460,6 @@ Can submit special keys like 'Enter', 'Backspace', etc
 **Parameters**
 
 -   `key`  
-
-## triggerMouseEvent
-
-Sends [input event](http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent) on a page.
-
-**Parameters**
-
--   `event` event object, must contain `x` and `y` keys, others as needed from above link  
 
 ## resizeWindow
 
@@ -487,7 +474,7 @@ First parameter can be set to `maximize`
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -513,8 +500,8 @@ I.scrollTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## see
 
@@ -687,6 +674,21 @@ I.setCookie({name: 'auth', value: true});
 -   `cookie`  Wrapper for `.cookies.set(cookie)`.
     [See more](https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie)
 
+## triggerMouseEvent
+
+Sends [input event](http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent) on a page.
+Should be a mouse event like:
+ {
+type: 'mouseDown',
+x: args.x,
+y: args.y,
+button: "left"
+}
+
+**Parameters**
+
+-   `event`  
+
 ## wait
 
 Pauses execution for a number of seconds.
@@ -735,9 +737,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
-```js
-I.waitForVisible('#popup');
-```
+
+    I.waitForVisible('#popup');
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator

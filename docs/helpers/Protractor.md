@@ -24,8 +24,7 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `restart` (optional, default: true) - restart browser between tests.
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+-   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `rootElement` - Root element of AngularJS application (default: body)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
@@ -36,6 +35,21 @@ This helper should be configured in codecept.json
 -   `proxy`: set proxy settings
 
 other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+
+Example:
+
+```json
+{
+   "helpers": {
+     "Protractor" : {
+       "url": "http://localhost",
+       "browser": "chrome",
+       "smartWait": 5000,
+       "restart": false
+     }
+   }
+}
+```
 
 ## Access From Helpers
 
@@ -119,7 +133,7 @@ Waits for element to become clickable for number of seconds.
 **Parameters**
 
 -   `locator`  
--   `sec`  
+-   `sec`   (optional, default `null`)
 
 ## waitForElement
 
@@ -188,6 +202,18 @@ Element can be located by CSS or XPath.
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
+
+## _locate
+
+```js
+this.helpers['Protractor']._locate({name: 'password'}).then //...
+```
+
+To use SmartWait and wait for element to appear on a page, add `true` as second arg:
+
+```js
+this.helpers['Protractor']._locate({name: 'password'}, true).then //...
+```
 
 ## amOnPage
 

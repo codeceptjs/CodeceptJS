@@ -26,9 +26,8 @@ This helper should be configured in codecept.json
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
 -   `restart` (optional, default: true) - restart browser between tests.
+-   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
 -   `desiredCapabilities`: Selenium's [desired
@@ -43,13 +42,13 @@ Example:
 {
    "helpers": {
      "WebDriverIO" : {
+       "smartWait": 5000,
        "browser": "chrome",
        "restart": false,
        "windowSize": "maximize",
        "timeouts": {
          "script": 60000,
-         "page load": 10000,
-         "implicit" : 5000
+         "page load": 10000
        }
      }
    }
@@ -191,6 +190,7 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 **Parameters**
 
 -   `locator`  
+-   `smartWait`   (optional, default `false`)
 
 ## _locateCheckable
 
@@ -365,6 +365,23 @@ I.click({css: 'nav a.login'});
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
     Appium: support
 
+## closeCurrentTab
+
+Close current tab
+
+```js
+I.closeCurrentTab();
+```
+
+## closeOtherTabs
+
+Close all tabs expect for one.
+Appium: support web test
+
+```js
+I.closeOtherTabs();
+```
+
 ## defineTimeout
 
 Set [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) in realtime.
@@ -373,7 +390,7 @@ Timeouts are expected to be passed as object:
 
 ```js
 I.defineTimeout({ script: 5000 });
-I.defineTimeout({ implicit: 10000, "page load": 10000, script: 5000 });
+I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
 ```
 
 **Parameters**
@@ -596,6 +613,15 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 -   `locator`  element located by CSS|XPath|strict locator
 -   `attr`  Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
 
+## grabBrowserLogs
+
+Get JS log from browser. Log buffer is reset after each request.
+
+```js
+let logs = yield I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+```
+
 ## grabCookie
 
 Gets a cookie object by name
@@ -610,15 +636,39 @@ assert(cookie.value, '123456');
 
 -   `name`  Appium: support only web testing
 
+## grabCssPropertyFrom
+
+Grab CSS property for given locator
+
+```js
+I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
+**Parameters**
+
+-   `locator`  
+-   `cssProperty`  
+
 ## grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
-In `within` block will search element on page, not in `within` element
 Appium: support only web testing
 
 ```js
 let postHTML = yield I.grabHTMLFrom('#post');
+```
+
+**Parameters**
+
+-   `locator`  
+
+## grabNumberOfVisibleElements
+
+Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
 ```
 
 **Parameters**
@@ -691,8 +741,16 @@ Appium: support only web testing
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
+
+## openNewTab
+
+Open new tab and switch to it
+
+```js
+I.openNewTab();
+```
 
 ## pressKey
 
@@ -714,6 +772,14 @@ I.pressKey(['Control','a']);
     I.click('#someelement');
     I.pressKey('Control');
     ```
+
+## refreshPage
+
+Refresh the current page.
+
+```js
+I.refreshPage();
+```
 
 ## resizeWindow
 
@@ -751,6 +817,22 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 -   `fullPage`  (optional)
     Appium: support
 
+## scrollPageToBottom
+
+Scroll page to the bottom
+
+```js
+I.scrollPageToBottom();
+```
+
+## scrollPageToTop
+
+Scroll page to the top
+
+```js
+I.scrollPageToTop();
+```
+
 ## scrollTo
 
 Scrolls to element matched by locator.
@@ -765,8 +847,8 @@ I.scrollTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## see
 
@@ -784,6 +866,19 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 -   `text`  expected on page
 -   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
     Appium: support with context in apps
+
+## seeAttributesOnElements
+
+Checks that all elements with given locator have given attributes.
+
+```js
+I.seeAttributesOnElements('//form', {'method': "post"});
+```
+
+**Parameters**
+
+-   `locator`  
+-   `attributes`  
 
 ## seeCheckboxIsChecked
 
@@ -811,6 +906,19 @@ I.seeCookie('Auth');
 **Parameters**
 
 -   `name`  Appium: support only web testing
+
+## seeCssPropertiesOnElements
+
+Checks that all elements with given locator have given CSS properties.
+
+```js
+I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+```
+
+**Parameters**
+
+-   `locator`  
+-   `cssProperties`  
 
 ## seeCurrentUrlEquals
 
@@ -939,8 +1047,33 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 **Parameters**
 
--   `selector`  
+-   `locator`  
 -   `num`  
+
+## seeTextEquals
+
+Checks that text is equal to provided one.
+
+```js
+I.seeTextEquals('text', 'h1');
+```
+
+**Parameters**
+
+-   `text`  
+-   `context`   (optional, default `null`)
+
+## seeTitleEquals
+
+Checks that title is equal to provided one.
+
+```js
+I.seeTitleEquals('Test title.');
+```
+
+**Parameters**
+
+-   `text`  
 
 ## selectOption
 
@@ -966,7 +1099,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 **Parameters**
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  Appium: support only web testing
+-   `option`  
 
 ## setCookie
 
@@ -978,7 +1111,8 @@ I.setCookie({name: 'auth', value: true});
 
 **Parameters**
 
--   `cookie`  Appium: support only web testingUses Selenium's JSON [cookie format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
+-   `cookie`  Appium: support only web testingUses Selenium's JSON [cookie
+    format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
 ## switchTo
 
@@ -987,7 +1121,35 @@ Appium: support only web testing
 
 **Parameters**
 
--   `locator`  
+-   `locator`   (optional, default `null`)
+
+## switchToNextTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToNextTab();
+I.switchToNextTab(2);
+```
+
+**Parameters**
+
+-   `num`   (optional, default `1`)
+-   `sec`   (optional, default `null`)
+
+## switchToPreviousTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToPreviousTab();
+I.switchToPreviousTab(2);
+```
+
+**Parameters**
+
+-   `num`   (optional, default `1`)
+-   `sec`   (optional, default `null`)
 
 ## wait
 
@@ -1070,6 +1232,20 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `context`  element located by CSS|XPath|strict locator
     Appium: support
 
+## waitForValue
+
+Waits for the specified value to be in value attribute
+
+```js
+I.waitForValue('//input', "GoodValue");
+```
+
+**Parameters**
+
+-   `field`  input field
+-   `value`  expected value
+-   `sec`  seconds to wait, 1 sec by default
+
 ## waitForVisible
 
 Waits for an element to become visible on a page (by default waits for 1sec).
@@ -1083,6 +1259,33 @@ Element can be located by CSS or XPath.
 -   `sec`  time seconds to wait, 1 by default
     Appium: support
 
+## waitInUrl
+
+Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+
+```js
+I.waitInUrl('/info', 2);
+```
+
+**Parameters**
+
+-   `urlPart`  
+-   `sec`   (optional, default `null`)
+
+## waitNumberOfVisibleElements
+
+Waits for a specified number of elements on the page
+
+```js
+I.waitNumberOfVisibleElements('a', 3);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `num`  
+-   `sec`  
+
 ## waitToHide
 
 Waits for an element to become invisible on a page (by default waits for 1sec).
@@ -1092,7 +1295,7 @@ Appium: support
 **Parameters**
 
 -   `locator`  
--   `sec`  
+-   `sec`   (optional, default `null`)
 
 ## waitUntil
 
@@ -1102,4 +1305,23 @@ Appium: support
 **Parameters**
 
 -   `fn`  
--   `sec`  
+-   `sec`   (optional, default `null`)
+-   `timeoutMsg`   (optional, default `null`)
+
+## waitUrlEquals
+
+Waits for the entire URL to match the expected
+
+```js
+I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+```
+
+**Parameters**
+
+-   `urlPart`  
+-   `sec`   (optional, default `null`)
+
+# locator
+
+just press button if no selector is given

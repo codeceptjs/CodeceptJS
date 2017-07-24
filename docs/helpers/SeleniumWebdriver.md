@@ -25,8 +25,7 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `restart` - restart browser between tests (default: true).
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+-   `smartWait`: (optional) **enables SmartWait**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
@@ -34,6 +33,21 @@ This helper should be configured in codecept.json
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
+
+Example:
+
+```json
+{
+   "helpers": {
+     "SeleniumWebdriver" : {
+       "url": "http://localhost",
+       "browser": "chrome",
+       "smartWait": 5000,
+       "restart": false
+     }
+   }
+}
+```
 
 ## Access From Helpers
 
@@ -56,9 +70,16 @@ Should be used in custom helpers:
 this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
 ```
 
+To use SmartWait and wait for element to appear on a page, add `true` as second arg:
+
+```js
+this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
+```
+
 **Parameters**
 
 -   `locator`  
+-   `smartWait`   (optional, default `false`)
 
 ## amOnPage
 
@@ -180,6 +201,14 @@ I.click({css: 'nav a.login'});
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
+
+## closeOtherTabs
+
+Close all tabs expect for one.
+
+```js
+I.closeOtherTabs();
+```
 
 ## dontSee
 
@@ -441,8 +470,8 @@ I.moveCursorTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `null`)
+-   `offsetY`   (optional, default `null`)
 
 ## pressKey
 
@@ -473,7 +502,7 @@ First parameter can be set to `maximize`
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -688,9 +717,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```js
-I.waitForInvisible('#popup');
-```
+    I.waitForInvisible('#popup');
 
 **Parameters**
 
@@ -702,9 +729,7 @@ I.waitForInvisible('#popup');
 Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```js
-I.waitForStalenessOf('#popup');
-```
+    I.waitForStalenessOf('#popup');
 
 **Parameters**
 
@@ -733,9 +758,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```js
-I.waitForVisible('#popup');
-```
+    I.waitForVisible('#popup');
 
 **Parameters**
 
