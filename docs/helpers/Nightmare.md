@@ -13,6 +13,8 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `restart` (optional, default: true) - restart browser between tests.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+-   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
 -   `waitForTimeout`: (optional) default wait* timeout

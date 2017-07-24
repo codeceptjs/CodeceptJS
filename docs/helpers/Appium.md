@@ -23,6 +23,8 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 -   `port`: Appium port
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+-   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
 -   `desiredCapabilities`: [], Appium capabilities, see below
     -   `platformName` - Which mobile OS platform to use
     -   `appPackage` - Java package of the Android app you want to run

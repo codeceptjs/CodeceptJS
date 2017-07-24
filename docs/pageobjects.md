@@ -68,6 +68,44 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
+Also you can create generators in pageobject:
+```js
+'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = actor();
+  },
+
+  // setting locators
+  fields: {
+    email: '#user_basic_email',
+    password: '#user_basic_password'
+  },
+  submitButton: {css: '#new_user_basic input[type=submit]'},
+  result: '//h1'
+
+  // introducing methods
+  grabLoginResult: function* (email, password) {
+    I.fillField(this.fields.email, email);
+    I.fillField(this.fields.password, password);
+    I.click(this.submitButton);
+    let result = yield I.grabTextFrom(this.result)
+    return result
+  }
+}
+```
+
+and use them in your tests:
+```js
+Scenario('login2', (I, loginPage) => {
+  let result = yield* reloginPage.grabLoginResult('john@doe.com','123456');
+  console.log(result)
+});
+```
+
 ## Page Fragments
 
 In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
