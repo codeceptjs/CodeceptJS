@@ -1,4 +1,4 @@
-# CodeceptJS 1.0
+# 1.0.0
 
 CodeceptJS hits first stable release. CodeceptJS provides a unified API for [web testing for Webdriverio](http://codecept.io/acceptance/), [Protractor](http://codecept.io/angular/), and [NightmareJS](http://codecept.io/nightmare/). Since 1.0 you can also **test mobile applications** in the similar manner with Appium.
 
@@ -41,7 +41,7 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 
 * Read more about [SmartWait](http://codecept.io/acceptance/#smartwait)
 
-#### Changelog
+**Changelog**
 
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
