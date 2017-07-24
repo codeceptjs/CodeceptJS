@@ -268,6 +268,8 @@
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
         
+            <li><a href="#_locate_1">_locate</a></li>
+        
             <li><a href="#amonpage">amOnPage</a></li>
         
             <li><a href="#appendfield">appendField</a></li>
@@ -369,6 +371,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
+<li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>rootElement</code> - Root element of AngularJS application (default: body)</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default.</li>
@@ -379,6 +382,19 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>proxy</code>: set proxy settings</li>
 </ul>
 <p>other options are the same as in <a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">Protractor config</a>.</p>
+<p>Example:</p>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;Protractor&quot; : {
+       &quot;url&quot;: &quot;http://localhost&quot;,
+       &quot;browser&quot;: &quot;chrome&quot;,
+       &quot;smartWait&quot;: 5000,
+       &quot;restart&quot;: false
+     }
+   }
+}
+</code></pre>
+
 <h2 id="access-from-helpers">Access From Helpers</h2>
 <p>Receive a WebDriverIO client from a custom helper by accessing <code>browser</code> property:</p>
 <pre><code class="js">this.helpers['Protractor'].browser
@@ -439,7 +455,7 @@ I.resetModule('modName');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>sec</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="waitforelement">waitForElement</h2>
 <p>Waits for element to be present on page (by default waits for 1sec).
@@ -497,6 +513,14 @@ Element can be located by CSS or XPath.</p>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
+<h2 id="_locate_1">_locate</h2>
+<pre><code class="js">this.helpers['Protractor']._locate({name: 'password'}).then //...
+</code></pre>
+
+<p>To use SmartWait and wait for element to appear on a page, add <code>true</code> as second arg:</p>
+<pre><code class="js">this.helpers['Protractor']._locate({name: 'password'}, true).then //...
+</code></pre>
+
 <h2 id="amonpage">amOnPage</h2>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
@@ -979,9 +1003,12 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
         <script src="../../js/bootstrap-3.0.3.min.js"></script>
         <script src="../../js/highlight.pack.js"></script>        
         <script src="../../js/base.js"></script>
+        <script src="../../build/ApiDataFactory.js"></script>
+        <script src="../../build/Appium.js"></script>
         <script src="../../build/FileSystem.js"></script>
         <script src="../../build/Nightmare.js"></script>
         <script src="../../build/Protractor.js"></script>
+        <script src="../../build/REST.js"></script>
         <script src="../../build/SeleniumWebdriver.js"></script>
         <script src="../../build/WebDriverIO.js"></script>
     </body>

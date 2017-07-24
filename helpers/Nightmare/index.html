@@ -326,6 +326,8 @@
         
             <li><a href="#setcookie">setCookie</a></li>
         
+            <li><a href="#triggermouseevent">triggerMouseEvent</a></li>
+        
             <li><a href="#wait">wait</a></li>
         
             <li><a href="#waitforelement">waitForElement</a></li>
@@ -396,7 +398,7 @@ I.amOnPage('/login'); // opens a login page
 <ul>
 <li><code>url</code>  url path or global urlIn a second argument a list of request headers can be passed:<code>js
     I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])</code></li>
-<li><code>headers</code>  </li>
+<li><code>headers</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="appendfield">appendField</h2>
 <p>Appends text to a input field or textarea.
@@ -713,8 +715,8 @@ I.moveCursorTo('#submit', 5,5);
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>offsetX</code>  </li>
-<li><code>offsetY</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
 </ul>
 <h2 id="presskey">pressKey</h2>
 <p>Sends <a href="http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent">input event</a> on a page.
@@ -754,8 +756,8 @@ I.scrollTo('#submit', 5,5);
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>offsetX</code>  </li>
-<li><code>offsetY</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
 </ul>
 <h2 id="see">see</h2>
 <p>Checks that a page contains a visible text.
@@ -891,6 +893,19 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <li><code>cookie</code>  Wrapper for <code>.cookies.set(cookie)</code>.
     <a href="https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie">See more</a></li>
 </ul>
+<h2 id="triggermouseevent">triggerMouseEvent</h2>
+<p>Sends <a href="http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent">input event</a> on a page.
+Should be a mouse event like:
+ {
+type: 'mouseDown',
+x: args.x,
+y: args.y,
+button: "left"
+}</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>event</code>  </li>
+</ul>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>
 <pre><code class="js">I.wait(2); // wait 2 secs
@@ -990,9 +1005,12 @@ Element can be located by CSS or XPath.</p>
         <script src="../../js/bootstrap-3.0.3.min.js"></script>
         <script src="../../js/highlight.pack.js"></script>        
         <script src="../../js/base.js"></script>
+        <script src="../../build/ApiDataFactory.js"></script>
+        <script src="../../build/Appium.js"></script>
         <script src="../../build/FileSystem.js"></script>
         <script src="../../build/Nightmare.js"></script>
         <script src="../../build/Protractor.js"></script>
+        <script src="../../build/REST.js"></script>
         <script src="../../build/SeleniumWebdriver.js"></script>
         <script src="../../build/WebDriverIO.js"></script>
     </body>

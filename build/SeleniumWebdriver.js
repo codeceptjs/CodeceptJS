@@ -8,8 +8,10 @@ const urlEquals = require('../assert/equal').urlEquals;
 const equals = require('../assert/equal').equals;
 const empty = require('../assert/empty').empty;
 const truth = require('../assert/truth').truth;
+const hashCode = require('../utils').hashCode;
 const xpathLocator = require('../utils').xpathLocator;
 const fileExists = require('../utils').fileExists;
+const clearString = require('../utils').clearString;
 const co = require('co');
 const path = require('path');
 const recorder = require('../recorder');
@@ -43,6 +45,7 @@ let withinStore = {};
  * * `browser` - browser in which perform testing
  * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
  * * `restart` - restart browser between tests (default: true).
+ * * `smartWait`: (optional) **enables SmartWait**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
  * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
@@ -50,6 +53,21 @@ let withinStore = {};
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
  * * `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
+ *
+ * Example:
+ *
+ * ```json
+ * {
+ *    "helpers": {
+ *      "SeleniumWebdriver" : {
+ *        "url": "http://localhost",
+ *        "browser": "chrome",
+ *        "smartWait": 5000,
+ *        "restart": false
+ *      }
+ *    }
+ * }
+ * ```
  *
  * ## Access From Helpers
  *
@@ -71,12 +89,19 @@ class SeleniumWebdriver extends Helper {
       seleniumAddress: 'http://localhost:4444/wd/hub',
       restart: true,
       keepCookies: false,
+      disableScreenshots: false,
+      uniqueScreenshotNames: false,
       windowSize: null,
+      fullPageScreenshots: true,
       waitForTimeout: 1000, // ms
       scriptTimeout: 1000, // ms
       manualStart: false,
+      smartWait: 0,
       capabilities: {}
     };
+
+    this.isRunning = false;
+
     if (this.options.waitforTimeout) {
       console.log(`waitforTimeout is deprecated in favor of waitForTimeout, please update config`);
       this.options.waitForTimeout = this.options.waitforTimeout;
@@ -120,19 +145,18 @@ class SeleniumWebdriver extends Helper {
 
     if (this.options.windowSize == 'maximize') {
       this.resizeWindow(this.options.windowSize);
-    }
-
-    if (this.options.windowSize) {
+    } else if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
       var size = this.options.windowSize.split('x');
-      this.resizeWindow(parseInt(size[0]), parseInt(size[1]));
+      this.resizeWindow(size[0], size[1]);
     }
 
     return this.browser;
   }
 
   _beforeSuite() {
-    if (!this.options.restart && !this.options.manualStart) {
+    if (!this.options.restart && !this.options.manualStart && !this.isRunning) {
       this.debugSection('Session', 'Starting singleton browser session');
+      this.isRunning = true;
       return this._startBrowser();
     }
   }
@@ -145,20 +169,30 @@ class SeleniumWebdriver extends Helper {
 
   _after() {
     if (this.options.restart) return this.browser.quit();
-    if (this.options.keepCookies) return;
+    if (this.options.keepCookies) return Promise.all([this.browser.executeScript('localStorage.clear();'), this.closeOtherTabs()]);
     // if browser should not be restarted
     this.debugSection('Session', 'cleaning cookies and localStorage');
-    this.browser.manage().deleteAllCookies();
-    return this.browser.executeScript('localStorage.clear();');
+    return Promise.all([this.browser.manage().deleteAllCookies(), this.browser.executeScript('localStorage.clear();'), this.closeOtherTabs()]);
   }
 
   _afterSuite() {
+  }
+
+  _finishTest() {
     if (!this.options.restart) return this.browser.quit();
   }
 
   _failed(test) {
-    let fileName = test.title.replace(/ /g, '_') + '.failed.png';
-    return this.saveScreenshot(fileName, true);
+    let promisesList = [];
+    if (Object.keys(withinStore).length != 0) promisesList.push(this._withinEnd());
+    if (!this.options.disableScreenshots) {
+      let fileName = clearString(test.title) + '.failed.png';
+      if (this.options.uniqueScreenshotNames) {
+        fileName = clearString(test.title.substring(0, 10)) + '-' + hashCode(test.title) + '-' + hashCode(test.file) + '.failed.png';
+      }
+      promisesList.push(this.saveScreenshot(fileName, true));
+    }
+    return Promise.all(promisesList);
   }
 
   _withinBegin(locator) {
@@ -166,16 +200,17 @@ class SeleniumWebdriver extends Helper {
     withinStore.elsFn = this.browser.findElements;
 
     this.context = locator;
-    let context = this.browser.findElement(guessLocator(locator) || by.css(locator));
-
-    this.browser.findElement = (l) => context.findElement(l);
-    this.browser.findElements = (l) => context.findElements(l);
-    return context;
+    return this.browser.findElement(guessLocator(locator) || by.css(locator)).then((context) => {
+      this.browser.findElement = (l) => context.findElement(l);
+      this.browser.findElements = (l) => context.findElements(l);
+      return context;
+    });
   }
 
   _withinEnd() {
     this.browser.findElement = withinStore.elFn;
     this.browser.findElements = withinStore.elsFn;
+    withinStore = {};
     this.context = this.options.rootElement;
   }
 
@@ -186,9 +221,24 @@ class SeleniumWebdriver extends Helper {
    * ```js
    * this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
    * ```
+   * To use SmartWait and wait for element to appear on a page, add `true` as second arg:
+   *
+   * ```js
+   * this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
+   * ```
+   *
    */
-  _locate(locator) {
-    return this.browser.findElements(guessLocator(locator));
+  _locate(locator, smartWait = false) {
+    return this._smartWait(() => this.browser.findElements(guessLocator(locator)), smartWait);
+  }
+
+  _smartWait(fn, enabled = true) {
+    if (!this.options.smartWait || !enabled) return fn();
+    this.debugSection('SmartWait', 'Enabled for ' + fn.toString());
+    this.browser.manage().timeouts().implicitlyWait(this.options.smartWait);
+    let res = fn();
+    this.browser.manage().timeouts().implicitlyWait(0);
+    return res;
   }
 
   /**
@@ -235,12 +285,12 @@ I.click({css: 'nav a.login'});
 @param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
    */
-  click(locator, context) {
+  click(locator, context = null) {
     let matcher = this.browser;
     if (context) {
-      matcher = matcher.findElement(guessLocator(context) || by.css(context));
+      matcher = this._smartWait(() => matcher.findElement(guessLocator(context) || by.css(context)));
     }
-    return co(findClickable(matcher, locator)).then((el) => el.click());
+    return co(findClickable.call(this, matcher, locator)).then((el) => el.click());
   }
 
   /**
@@ -257,12 +307,12 @@ I.doubleClick('.btn.edit');
 @param locator
 @param context
    */
-  doubleClick(locator, context) {
+  doubleClick(locator, context = null) {
     let matcher = this.browser;
     if (context) {
-      matcher = matcher.findElement(guessLocator(context) || by.css(context));
+      matcher = this._smartWait(() => matcher.findElement(guessLocator(context) || by.css(context)));
     }
-    return co(findClickable(matcher, locator)).then((el) => this.browser.actions().doubleClick(el).perform());
+    return co(findClickable.call(this, matcher, locator)).then((el) => this.browser.actions().doubleClick(el).perform());
   }
 
   /**
@@ -275,7 +325,7 @@ I.moveCursorTo('#submit', 5,5);
 ```
 
    */
-  moveCursorTo(locator, offsetX, offsetY) {
+  moveCursorTo(locator, offsetX = null, offsetY = null) {
     let offset = null;
     if (offsetX !== null || offsetY !== null) {
       offset = {x: offsetX, y: offsetY};
@@ -297,7 +347,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 @param text expected on page
 @param context (optional) element located by CSS|Xpath|strict locator in which to search for text
    */
-  see(text, context) {
+  see(text, context = null) {
     return proceedSee.call(this, 'assert', text, context);
   }
 
@@ -311,7 +361,7 @@ I.dontSee('Login'); // assume we are already logged in
 @param text is not present
 @param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
    */
-  dontSee(text, context) {
+  dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
   }
 
@@ -534,7 +584,7 @@ I.checkOption('agree', '//form');
 @param field checkbox located by label | name | CSS | XPath | strict locator
 @param context (optional) element located by CSS | XPath | strict locator
    */
-  checkOption(field, context) {
+  checkOption(field, context = null) {
     let matcher = this.browser;
     if (context) {
       matcher = matcher.findElement(guessLocator(context) || by.css(context));
@@ -665,7 +715,7 @@ I.seeElement('#modal');
 @param locator located by CSS|XPath|strict locator
    */
   seeElement(locator) {
-    return this.browser.findElements(guessLocator(locator) || by.css(locator)).then((els) => {
+    return this._smartWait(() => this.browser.findElements(guessLocator(locator) || by.css(locator))).then((els) => {
       return Promise.all(els.map((el) => el.isDisplayed())).then((els) => {
         return empty('elements').negate(els.filter((v) => v).fill('ELEMENT'));
       });
@@ -929,7 +979,7 @@ I.clearCookie('test');
 ```
 @param cookie (optional)
    */
-  clearCookie(cookie) {
+  clearCookie(cookie = null) {
     if (!cookie) {
       return this.browser.manage().deleteAllCookies();
     }
@@ -985,11 +1035,38 @@ First parameter can be set to `maximize`
 @param height
    */
   resizeWindow(width, height) {
+    let client = this.browser;
     if (width === 'maximize') {
-      return this.browser.manage().window().maximize();
-    }
-    return this.browser.manage().window().setSize(width, height);
+      return client.executeScript('return [screen.width, screen.height]').then(function (res) {
+        return client.manage().window().setSize(parseInt(res[0]), parseInt(res[1]));
+      });
+    } else return client.manage().window().setSize(parseInt(width), parseInt(height));
   }
+
+  /**
+   * Close all tabs expect for one.
+   *
+   * ```js
+   * I.closeOtherTabs();
+   * ```
+   */
+  closeOtherTabs() {
+    let client = this.browser;
+
+    return client.getAllWindowHandles().then(function (handles){
+      let mainHandle = handles[0];
+      let p = Promise.resolve();
+      handles.shift();
+      handles.forEach(function (handle) {
+        p = p.then(() => {
+          return client.switchTo().window(handle).then(() => client.close());
+        });
+      });
+      p = p.then(() => client.switchTo().window(mainHandle));
+      return p;
+    });
+  }
+
 
   /**
    * Pauses execution for a number of seconds.
@@ -1016,7 +1093,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForElement(locator, sec) {
+  waitForElement(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || by.css(locator)), sec * 1000);
   }
@@ -1032,7 +1109,7 @@ I.waitForVisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForVisible(locator, sec) {
+  waitForVisible(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec * 1000);
@@ -1050,7 +1127,7 @@ I.waitForInvisible('#popup');
 @param sec time seconds to wait, 1 by default
 
    */
-  waitForInvisible(locator, sec) {
+  waitForInvisible(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), sec * 1000);
@@ -1068,7 +1145,7 @@ I.waitForStalenessOf('#popup');
 @param sec time seconds to wait, 1 by default
 
    */
-  waitForStalenessOf(locator, sec) {
+  waitForStalenessOf(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
     return this.browser.wait(this.webdriver.until.stalenessOf(el), sec * 1000);
@@ -1088,7 +1165,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param sec seconds to wait
 @param context element located by CSS|XPath|strict locator
    */
-  waitForText(text, sec, context) {
+  waitForText(text, sec = null, context = null) {
     if (!context) {
       context = this.context;
     }
@@ -1162,14 +1239,16 @@ function proceedSee(assertType, text, context) {
       locator = guessLocator(this.context) || by.css(this.context);
       description = 'web application';
     } else {
-      locator = null;
+      // inside within block
+      locator = by.xpath('.//*');
       description = 'current context ' + this.context;
     }
   } else {
     locator = guessLocator(context) || by.css(context);
     description = 'element ' + context;
   }
-  return this.browser.findElements(locator).then(co.wrap(function*(els) {
+  let enableSmartWait = !!this.context && assertType == 'assert';
+  return this._smartWait(() => this.browser.findElements(locator), enableSmartWait).then(co.wrap(function*(els) {
     let promises = [];
     let source = '';
     els.forEach(el => promises.push(el.getText().then((elText) => source += '| ' + elText)));
@@ -1213,7 +1292,7 @@ function *proceedIsChecked(assertType, option) {
 function *findClickable(matcher, locator) {
   let l = guessLocator(locator);
   if (guessLocator(locator)) {
-    return matcher.findElement(l);
+    return this._smartWait(() => matcher.findElement(l));
   }
 
   let literal = xpathLocator.literal(locator);

@@ -8,6 +8,7 @@ const empty = require('../assert/empty').empty;
 const truth = require('../assert/truth').truth;
 const xpathLocator = require('../utils').xpathLocator;
 const fileExists = require('../utils').fileExists;
+const clearString = require('../utils').clearString;
 const co = require('co');
 const path = require('path');
 
@@ -16,6 +17,8 @@ let specialKeys = {
   Enter: '\u000d',
   Delete: '\u007f'
 };
+
+let withinStatus = false;
 
 /**
  * Nightmare helper wraps [Nightmare](https://github.com/segmentio/nightmare) library to provide
@@ -48,11 +51,16 @@ class Nightmare extends Helper {
     this.options = {
       waitForAction: 500,
       waitForTimeout: 1000,
+      fullPageScreenshots: true,
+      disableScreenshots: false,
+      uniqueScreenshotNames: false,
       rootElement: 'body',
       restart: true,
       keepCookies: false,
       js_errors: null
     };
+
+    this.isRunning = false;
 
     // override defaults with config
     Object.assign(this.options, config);
@@ -92,7 +100,7 @@ class Nightmare extends Helper {
       let value = locator[by];
 
       this.evaluate_now(function (by, locator, contextEl) {
-        return window.codeceptjs.findAndStoreElements(by, locator);
+        return window.codeceptjs.findAndStoreElements(by, locator, contextEl);
       }, done, by, value, contextEl);
     });
 
@@ -106,7 +114,7 @@ class Nightmare extends Helper {
       let value = locator[by];
 
       this.evaluate_now(function (by, locator, contextEl) {
-        let res = window.codeceptjs.findAndStoreElement(by, locator);
+        let res = window.codeceptjs.findAndStoreElement(by, locator, contextEl);
         if (res === null) {
           throw new Error(`Element ${locator} couldn't be located by ${by}`);
         }
@@ -158,10 +166,21 @@ class Nightmare extends Helper {
     }, function (key, done) {
       this.child.call('pressKey', key, done);
     });
+
+    this.Nightmare.action('triggerMouseEvent', function (ns, options, parent, win, renderer, done) {
+      parent.respondTo('triggerMouseEvent', function (evt, done) {
+        win.webContents.sendInputEvent(evt);
+        done();
+      });
+      done();
+    }, function (event, done) {
+      this.child.call('triggerMouseEvent', event, done);
+    });
   }
 
   _beforeSuite() {
-    if (!this.options.restart) {
+    if (!this.options.restart && !this.isRunning) {
+      this.isRunning = true;
       return this._startBrowser();
     }
   }
@@ -178,10 +197,15 @@ class Nightmare extends Helper {
       return this._stopBrowser();
     }
     if (this.options.keepCookies) return;
-    return this.browser.cookies.clearAll();
+    return Promise.all([this.browser.cookies.clearAll(), this.executeScript(function () {
+      return localStorage.clear();
+    })]);
   }
 
   _afterSuite() {
+  }
+
+  _finishTest() {
     if (!this.options.restart) {
       this._stopBrowser();
     }
@@ -209,7 +233,8 @@ class Nightmare extends Helper {
   _withinBegin(locator) {
     this.context = locator;
     locator = guessLocator(locator) || {css: locator};
-    this.browser.evaluate(function (by, locator) {
+    withinStatus = true;
+    return this.browser.evaluate(function (by, locator) {
       var el = codeceptjs.findElement(by, locator);
       if (!el) throw new Error(`Element by ${by}: ${locator} not found`);
       window.codeceptjs.within = el;
@@ -218,6 +243,7 @@ class Nightmare extends Helper {
 
   _withinEnd() {
     this.context = this.options.rootElement;
+    withinStatus = false;
     return this.browser.evaluate(function () {
       codeceptjs.within = null;
     });
@@ -245,7 +271,7 @@ class Nightmare extends Helper {
   _locate(locator) {
     locator = guessLocator(locator) || { css: locator};
     return this.browser.evaluate(function (by, locator) {
-      return codeceptjs.findElements(by, locator);
+      return codeceptjs.findAndStoreElements(by, locator);
     }, lctype(locator), lcval(locator));
   }
 
@@ -280,7 +306,7 @@ I.amOnPage('/login'); // opens a login page
    * I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
    * ```
    */
-  amOnPage(url, headers) {
+  amOnPage(url, headers = null) {
     if (url.indexOf('http') !== 0) {
       url = this.options.url + url;
     }
@@ -387,7 +413,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 @param text expected on page
 @param context (optional) element located by CSS|Xpath|strict locator in which to search for text
    */
-  see(text, context) {
+  see(text, context = null) {
     return proceedSee.call(this, 'assert', text, context);
   }
 
@@ -401,7 +427,7 @@ I.dontSee('Login'); // assume we are already logged in
 @param text is not present
 @param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
    */
-  dontSee(text, context) {
+  dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
   }
 
@@ -518,7 +544,7 @@ I.click({css: 'nav a.login'});
 @param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
    */
-  click(locator, context) {
+  click(locator, context = null) {
     if (context) {
       context = guessLocator(context) || {css: context};
     }
@@ -544,7 +570,7 @@ I.doubleClick('.btn.edit');
 @param locator
 @param context
    */
-  doubleClick(locator, context) {
+  doubleClick(locator, context = null) {
     if (context) {
       context = guessLocator(context) || {css: context};
     }
@@ -566,7 +592,7 @@ I.moveCursorTo('#submit', 5,5);
 ```
 
    */
-  moveCursorTo(locator, offsetX, offsetY) {
+  moveCursorTo(locator, offsetX = 0, offsetY = 0) {
     return this.browser.findElement(guessLocator(locator) || { css: locator}).then((el) => {
       if (el === null) throw new Error(`Element ${locator} not found`);
       return this.browser.evaluate(function (el, x, y) {
@@ -671,7 +697,7 @@ I.checkOption('agree', '//form');
 @param field checkbox located by label | name | CSS | XPath | strict locator
 @param context (optional) element located by CSS | XPath | strict locator
    */
-  checkOption(field, context) {
+  checkOption(field, context = null) {
     if (context) {
       context = guessLocator(context) || {css: context};
     }
@@ -785,6 +811,20 @@ Opposite to `seeInField`.
       key = specialKeys[key];
     }
     return this.browser.pressKey(key).wait(this.options.waitForAction);
+  }
+
+  /**
+   * Sends [input event](http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent) on a page.
+   * Should be a mouse event like:
+   *  {
+        type: 'mouseDown',
+        x: args.x,
+        y: args.y,
+        button: "left"
+      }
+   */
+  triggerMouseEvent(event) {
+    return this.browser.triggerMouseEvent(event).wait(this.options.waitForAction);
   }
 
   /**
@@ -1081,7 +1121,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param sec seconds to wait
 @param context element located by CSS|XPath|strict locator
    */
-  waitForText(text, sec, context) {
+  waitForText(text, sec = null, context = null) {
     if (!context) {
       context = this.context;
     }
@@ -1104,7 +1144,7 @@ I.waitForVisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForVisible(locator, sec) {
+  waitForVisible(locator, sec = null) {
     this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
     locator = guessLocator(locator) || { css: locator};
 
@@ -1127,7 +1167,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForElement(locator, sec) {
+  waitForElement(locator, sec = null) {
     this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
     locator = guessLocator(locator) || { css: locator};
 
@@ -1136,8 +1176,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
     }, lctype(locator), lcval(locator));
   }
 
-    /**
-     * Saves a screenshot to ouput folder (set in codecept.json).
+  /**
+   * Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
@@ -1147,8 +1187,8 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 ```
 @param fileName
 @param fullPage (optional)
-     */
-  saveScreenshot(fileName, fullPage = false) {
+   */
+  saveScreenshot(fileName, fullPage = this.options.fullPageScreenshots) {
     let outputFile = path.join(global.output_dir, fileName);
     this.debug('Screenshot is saving to ' + outputFile);
     let recorder = require('../recorder');
@@ -1160,17 +1200,26 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
       height: document.body.scrollHeight,
       width: document.body.scrollWidth
     })).then(({
-        width,
-        height
-      }) => {
+                width,
+                height
+              }) => {
       this.browser.viewport(width, height);
       return this.browser.screenshot(outputFile);
     });
   }
 
   _failed(test) {
-    let fileName = test.title.replace(/\W/g, '_') + '.failed.png';
-    return this.saveScreenshot(fileName, true);
+    let promisesList = [];
+    if (withinStatus !== false) promisesList.push(this._withinEnd());
+    if (!this.options.disableScreenshots) {
+      let fileName = clearString(test.title) + '.failed.png';
+      if (this.options.uniqueScreenshotNames) {
+        fileName = test.title.substring(0, 10).replace(/ /g, '_') + '-' + hashCode(test.title) + '-' + hashCode(test.file) +
+          '.failed.png';
+      }
+      promisesList.push(this.saveScreenshot(fileName, true));
+    }
+    return Promise.all(promisesList);
   }
 
   /**
@@ -1182,7 +1231,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
    * I.scrollTo('#submit', 5,5);
    * ```
    */
-  scrollTo(locator, offsetX, offsetY) {
+  scrollTo(locator, offsetX = 0, offsetY = 0) {
     locator = guessLocator(locator) || {css: locator};
     return this.browser.evaluate(function (by, locator, offsetX, offsetY) {
       let el = codeceptjs.findElement(by, locator);
@@ -1199,11 +1248,12 @@ module.exports = Nightmare;
 function proceedSee(assertType, text, context) {
   let description, locator;
   if (!context) {
-    locator = guessLocator(this.context) || {css: this.context};
     if (this.context === this.options.rootElement) {
+      locator = guessLocator(this.context) || {css: this.context};
       description = 'web application';
     } else {
-      description = 'current context ' + this.context; [];
+      description = 'current context ' + this.context;
+      locator = {xpath: './/*'};
     }
   } else {
     locator = guessLocator(context) || {css: context};
@@ -1230,7 +1280,7 @@ function *proceedSeeInField(assertType, field, value) {
   let fieldVal = yield this.browser.evaluate(function (el) {
     return codeceptjs.fetchElement(el).value;
   }
-  , el);
+    , el);
   if (tag == 'select') {
     // locate option by values and check them
     let text = yield this.browser.evaluate(function (el, val) {

@@ -274,6 +274,10 @@
         
             <li><a href="#click">click</a></li>
         
+            <li><a href="#closecurrenttab">closeCurrentTab</a></li>
+        
+            <li><a href="#closeothertabs">closeOtherTabs</a></li>
+        
             <li><a href="#definetimeout">defineTimeout</a></li>
         
             <li><a href="#dontsee">dontSee</a></li>
@@ -308,9 +312,17 @@
         
             <li><a href="#grabattributefrom">grabAttributeFrom</a></li>
         
+            <li><a href="#grabbrowserlogs">grabBrowserLogs</a></li>
+        
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
+        
             <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
+        
+            <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
+        
+            <li><a href="#grabsource">grabSource</a></li>
         
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
         
@@ -320,7 +332,11 @@
         
             <li><a href="#movecursorto">moveCursorTo</a></li>
         
+            <li><a href="#opennewtab">openNewTab</a></li>
+        
             <li><a href="#presskey">pressKey</a></li>
+        
+            <li><a href="#refreshpage">refreshPage</a></li>
         
             <li><a href="#resizewindow">resizeWindow</a></li>
         
@@ -328,13 +344,21 @@
         
             <li><a href="#savescreenshot">saveScreenshot</a></li>
         
+            <li><a href="#scrollpagetobottom">scrollPageToBottom</a></li>
+        
+            <li><a href="#scrollpagetotop">scrollPageToTop</a></li>
+        
             <li><a href="#scrollto">scrollTo</a></li>
         
             <li><a href="#see">see</a></li>
         
+            <li><a href="#seeattributesonelements">seeAttributesOnElements</a></li>
+        
             <li><a href="#seecheckboxischecked">seeCheckboxIsChecked</a></li>
         
             <li><a href="#seecookie">seeCookie</a></li>
+        
+            <li><a href="#seecsspropertiesonelements">seeCssPropertiesOnElements</a></li>
         
             <li><a href="#seecurrenturlequals">seeCurrentUrlEquals</a></li>
         
@@ -356,11 +380,19 @@
         
             <li><a href="#seenumberofvisibleelements">seeNumberOfVisibleElements</a></li>
         
+            <li><a href="#seetextequals">seeTextEquals</a></li>
+        
+            <li><a href="#seetitleequals">seeTitleEquals</a></li>
+        
             <li><a href="#selectoption">selectOption</a></li>
         
             <li><a href="#setcookie">setCookie</a></li>
         
             <li><a href="#switchto">switchTo</a></li>
+        
+            <li><a href="#switchtonexttab">switchToNextTab</a></li>
+        
+            <li><a href="#switchtoprevioustab">switchToPreviousTab</a></li>
         
             <li><a href="#wait">wait</a></li>
         
@@ -374,11 +406,22 @@
         
             <li><a href="#waitfortext">waitForText</a></li>
         
+            <li><a href="#waitforvalue">waitForValue</a></li>
+        
             <li><a href="#waitforvisible">waitForVisible</a></li>
+        
+            <li><a href="#waitinurl">waitInUrl</a></li>
+        
+            <li><a href="#waitnumberofvisibleelements">waitNumberOfVisibleElements</a></li>
         
             <li><a href="#waittohide">waitToHide</a></li>
         
             <li><a href="#waituntil">waitUntil</a></li>
+        
+            <li><a href="#waiturlequals">waitUrlEquals</a></li>
+        
+    
+        <li class="main "><a href="#locator">locator</a></li>
         
     
     </ul>
@@ -391,8 +434,10 @@ manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <h4 id="selenium-installation">Selenium Installation</h4>
 <ol>
 <li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
-<li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>, for Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a>.</li>
-<li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
+<li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>,
+    for Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a>.</li>
+<li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use
+    <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
 </ol>
 <h4 id="phantomjs-installation">PhantomJS Installation</h4>
 <p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
@@ -407,31 +452,35 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
+<li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
 <li><code>waitForTimeout</code>: (option) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
-<li><code>desiredCapabilities</code>: Selenium's <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">desired capabilities</a></li>
-<li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
+<li><code>desiredCapabilities</code>: Selenium's <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">desired
+    capabilities</a></li>
+<li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper
+    with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
 <li><code>timeouts</code>: <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> defined as hash.</li>
 </ul>
 <p>Example:</p>
 <pre><code class="json">{
    &quot;helpers&quot;: {
      &quot;WebDriverIO&quot; : {
+       &quot;smartWait&quot;: 5000,
        &quot;browser&quot;: &quot;chrome&quot;,
        &quot;restart&quot;: false,
        &quot;windowSize&quot;: &quot;maximize&quot;,
        &quot;timeouts&quot;: {
          &quot;script&quot;: 60000,
-         &quot;page load&quot;: 10000,
-         &quot;implicit&quot; : 5000
+         &quot;page load&quot;: 10000
        }
      }
    }
 }
 </code></pre>
 
-<p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">webdriverio website</a>.</p>
+<p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">webdriverio
+website</a>.</p>
 <h3 id="connect-through-proxy">Connect through proxy</h3>
 <p>CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
 need to update the <code>helpers.WebDriverIO.desiredCapabilities.proxy</code> key.</p>
@@ -474,7 +523,8 @@ need to update the <code>helpers.WebDriverIO.desiredCapabilities.proxy</code> ke
 }
 </code></pre>
 
-<p>Please refer to <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Selenium - Proxy Object</a> for more information.</p>
+<p>Please refer to <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Selenium - Proxy Object</a> for more
+information.</p>
 <h3 id="cloud-providers">Cloud Providers</h3>
 <p>WebDriverIO makes it possible to execute tests against services like <code>Sauce Labs</code> <code>BrowserStack</code> <code>TestingBot</code>
 Check out their documentation on <a href="http://webdriver.io/guide/usage/cloudservices.html">available parameters</a></p>
@@ -543,6 +593,7 @@ Should be used in custom helpers:</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>smartWait</code>   (optional, default <code>false</code>)</li>
 </ul>
 <h2 id="_locatecheckable">_locateCheckable</h2>
 <p>Find a checkbox by providing human readable text:</p>
@@ -573,7 +624,8 @@ Should be used in custom helpers:</p>
 </ul>
 <h2 id="acceptpopup">acceptPopup</h2>
 <p>Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
-Don't confuse popups with modal windows, as created by <a href="http://jster.net/category/windows-modals-popups">various libraries</a>.</p>
+Don't confuse popups with modal windows, as created by <a href="http://jster.net/category/windows-modals-popups">various
+libraries</a>. Appium: support only web testing</p>
 <h2 id="amonpage">amOnPage</h2>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
@@ -584,7 +636,8 @@ I.amOnPage('/login'); // opens a login page
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  url path or global url</li>
+<li><code>url</code>  url path or global url
+    Appium: support only web testing</li>
 </ul>
 <h2 id="appendfield">appendField</h2>
 <p>Appends text to a input field or textarea.
@@ -595,7 +648,8 @@ Field is located by name, label, CSS or XPath</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  text value</li>
+<li><code>value</code>  text value
+    Appium: support, but it's clear a field before insert in apps</li>
 </ul>
 <h2 id="attachfile">attachFile</h2>
 <p>Attaches a file to element located by label, name, CSS or XPath
@@ -608,10 +662,11 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>pathToFile</code>  local file path relative to codecept.json config file</li>
+<li><code>pathToFile</code>  local file path relative to codecept.json config fileAppium: not tested</li>
 </ul>
 <h2 id="cancelpopup">cancelPopup</h2>
-<p>Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.</p>
+<p>Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+Appium: support only web testing</p>
 <h2 id="checkoption">checkOption</h2>
 <p>Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.</p>
@@ -630,7 +685,13 @@ I.checkOption('agree', '//form');
 <th>CSS</th>
 </tr>
 </thead>
-<tbody></tbody>
+<tbody>
+<tr>
+<td>Appium: not tested</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
 </table>
 <h2 id="clearcookie">clearCookie</h2>
 <p>Clears a cookie by name,
@@ -641,7 +702,8 @@ I.clearCookie('test');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  (optional)</li>
+<li><code>cookie</code>  (optional)
+    Appium: support only web testing</li>
 </ul>
 <h2 id="clearfield">clearField</h2>
 <p>Clears a <code>&lt;textarea&gt;</code> or text <code>&lt;input&gt;</code> element's value.</p>
@@ -652,7 +714,8 @@ I.clearField('#email');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator
+    Appium: support</li>
 </ul>
 <h2 id="click">click</h2>
 <p>Perform a click on a link or a button, given by a locator.
@@ -683,13 +746,31 @@ I.click({css: 'nav a.login'});
 <th>strict locator</th>
 </tr>
 </thead>
-<tbody></tbody>
+<tbody>
+<tr>
+<td>Appium: support</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
 </table>
+<h2 id="closecurrenttab">closeCurrentTab</h2>
+<p>Close current tab</p>
+<pre><code class="js">I.closeCurrentTab();
+</code></pre>
+
+<h2 id="closeothertabs">closeOtherTabs</h2>
+<p>Close all tabs expect for one.
+Appium: support web test</p>
+<pre><code class="js">I.closeOtherTabs();
+</code></pre>
+
 <h2 id="definetimeout">defineTimeout</h2>
 <p>Set <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> in realtime.
+Appium: support only web testing
 Timeouts are expected to be passed as object:</p>
 <pre><code class="js">I.defineTimeout({ script: 5000 });
-I.defineTimeout({ implicit: 10000, &quot;page load&quot;: 10000, script: 5000 });
+I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -705,44 +786,47 @@ Use context parameter to narrow down the search.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  is not present</li>
-<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search
+    Appium: support with context in apps</li>
 </ul>
 <h2 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h2>
 <p>Verifies that the specified checkbox is not checked.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locatorAppium: not tested</li>
 </ul>
 <h2 id="dontseecookie">dontSeeCookie</h2>
 <p>Checks that cookie with given name does not exist.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>name</code>  </li>
+<li><code>name</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="dontseecurrenturlequals">dontSeeCurrentUrlEquals</h2>
 <p>Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|Strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|Strict locator
+    Appium: support</li>
 </ul>
 <h2 id="dontseeelementindom">dontSeeElementInDOM</h2>
 <p>Opposite to <code>seeElementInDOM</code>. Checks that element is not on page.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|Strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|Strict locator
+    Appium: support</li>
 </ul>
 <h2 id="dontseeincurrenturl">dontSeeInCurrentUrl</h2>
 <p>Checks that current url does not contain a provided fragment.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="dontseeinfield">dontSeeInField</h2>
 <p>Checks that value of input field or textare doesn't equal to given value
@@ -750,19 +834,20 @@ Opposite to <code>seeInField</code>.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  is not expected to be a field value</li>
+<li><code>value</code>  is not expected to be a field value
+    Appium: support only web testing</li>
 </ul>
 <h2 id="dontseeinsource">dontSeeInSource</h2>
 <p>Checks that the current page contains the given string in its raw source code</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  Appium: support</li>
 </ul>
 <h2 id="dontseeintitle">dontSeeInTitle</h2>
 <p>Checks that title does not contain text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="doubleclick">doubleClick</h2>
 <p>Performs a double-click on an element matched by link|button|label|CSS or XPath.
@@ -776,10 +861,11 @@ I.doubleClick('.btn.edit');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>context</code>  </li>
+<li><code>context</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="draganddrop">dragAndDrop</h2>
-<p>Drag an item to a destination element.</p>
+<p>Drag an item to a destination element.
+Appium: not tested</p>
 <pre><code class="js">I.dragAndDrop('#dragHandle', '#container');
 </code></pre>
 
@@ -849,7 +935,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  </li>
+<li><code>value</code>  Appium: support</li>
 </ul>
 <h2 id="grabattributefrom">grabAttributeFrom</h2>
 <p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -860,8 +946,14 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>attr</code>  </li>
+<li><code>attr</code>  Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")</li>
 </ul>
+<h2 id="grabbrowserlogs">grabBrowserLogs</h2>
+<p>Get JS log from browser. Log buffer is reset after each request.</p>
+<pre><code class="js">let logs = yield I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+</code></pre>
+
 <h2 id="grabcookie">grabCookie</h2>
 <p>Gets a cookie object by name
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -871,17 +963,46 @@ assert(cookie.value, '123456');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>name</code>  </li>
+<li><code>name</code>  Appium: support only web testing</li>
+</ul>
+<h2 id="grabcsspropertyfrom">grabCssPropertyFrom</h2>
+<p>Grab CSS property for given locator</p>
+<pre><code class="js">I.grabCssPropertyFrom('h3', 'font-weight');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>cssProperty</code>  </li>
 </ul>
 <h2 id="grabhtmlfrom">grabHTMLFrom</h2>
 <p>Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.
+Appium: support only web testing</p>
 <pre><code class="js">let postHTML = yield I.grabHTMLFrom('#post');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+</ul>
+<h2 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h2>
+<p>Grab number of visible elements by locator</p>
+<pre><code class="js">I.grabNumberOfVisibleElements('p');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="grabsource">grabSource</h2>
+<p>Checks that the current page contains the given string in its raw source code.</p>
+<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  Appium: support</li>
 </ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -891,7 +1012,8 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator
+    Appium: support</li>
 </ul>
 <h2 id="grabtitle">grabTitle</h2>
 <p>Retrieves a page title and returns it to test.
@@ -899,6 +1021,7 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <pre><code class="js">let title = yield I.grabTitle();
 </code></pre>
 
+<p>Appium: support only web testing</p>
 <h2 id="grabvaluefrom">grabValueFrom</h2>
 <p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -907,7 +1030,8 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
+<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator
+    Appium: support only web testing</li>
 </ul>
 <h2 id="movecursorto">moveCursorTo</h2>
 <p>Moves cursor to element matched by locator.
@@ -916,12 +1040,18 @@ Extra shift can be set with offsetX and offsetY options</p>
 I.moveCursorTo('#submit', 5,5);
 </code></pre>
 
+<p>Appium: support only web testing</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>offsetX</code>  </li>
-<li><code>offsetY</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
 </ul>
+<h2 id="opennewtab">openNewTab</h2>
+<p>Open new tab and switch to it</p>
+<pre><code class="js">I.openNewTab();
+</code></pre>
+
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
@@ -933,21 +1063,28 @@ I.pressKey(['Control','a']);
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>key</code>  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.<code>js
+<li><code>key</code>  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
+    Appium: support, but clear field before pressing in apps<code>js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');</code></li>
 </ul>
+<h2 id="refreshpage">refreshPage</h2>
+<p>Refresh the current page.</p>
+<pre><code class="js">I.refreshPage();
+</code></pre>
+
 <h2 id="resizewindow">resizeWindow</h2>
 <p>Resize the current window to provided width and height.
 First parameter can be set to <code>maximize</code></p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>width</code>  or <code>maximize</code></li>
-<li><code>height</code>  </li>
+<li><code>height</code>  Appium: not tested in web, in apps doesn't work</li>
 </ul>
 <h2 id="rightclick">rightClick</h2>
-<p>Performs right click on an element matched by CSS or XPath.</p>
+<p>Performs right click on an element matched by CSS or XPath.
+Appium: support, but in apps works as usual click</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
@@ -963,11 +1100,23 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fileName</code>  </li>
-<li><code>fullPage</code>  (optional)</li>
+<li><code>fullPage</code>  (optional)
+    Appium: support</li>
 </ul>
+<h2 id="scrollpagetobottom">scrollPageToBottom</h2>
+<p>Scroll page to the bottom</p>
+<pre><code class="js">I.scrollPageToBottom();
+</code></pre>
+
+<h2 id="scrollpagetotop">scrollPageToTop</h2>
+<p>Scroll page to the top</p>
+<pre><code class="js">I.scrollPageToTop();
+</code></pre>
+
 <h2 id="scrollto">scrollTo</h2>
 <p>Scrolls to element matched by locator.
-Extra shift can be set with offsetX and offsetY options</p>
+Extra shift can be set with offsetX and offsetY options
+Appium: support only web testing</p>
 <pre><code class="js">I.scrollTo('footer');
 I.scrollTo('#submit', 5,5);
 </code></pre>
@@ -975,8 +1124,8 @@ I.scrollTo('#submit', 5,5);
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>offsetX</code>  </li>
-<li><code>offsetY</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
 </ul>
 <h2 id="see">see</h2>
 <p>Checks that a page contains a visible text.
@@ -989,7 +1138,18 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  expected on page</li>
-<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text</li>
+<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text
+    Appium: support with context in apps</li>
+</ul>
+<h2 id="seeattributesonelements">seeAttributesOnElements</h2>
+<p>Checks that all elements with given locator have given attributes.</p>
+<pre><code class="js">I.seeAttributesOnElements('//form', {'method': &quot;post&quot;});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>attributes</code>  </li>
 </ul>
 <h2 id="seecheckboxischecked">seeCheckboxIsChecked</h2>
 <p>Verifies that the specified checkbox is checked.</p>
@@ -1000,7 +1160,8 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator
+    Appium: not tested</li>
 </ul>
 <h2 id="seecookie">seeCookie</h2>
 <p>Checks that cookie with given name exists.</p>
@@ -1009,7 +1170,17 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>name</code>  </li>
+<li><code>name</code>  Appium: support only web testing</li>
+</ul>
+<h2 id="seecsspropertiesonelements">seeCssPropertiesOnElements</h2>
+<p>Checks that all elements with given locator have given CSS properties.</p>
+<pre><code class="js">I.seeCssPropertiesOnElements('h3', { 'font-weight': &quot;bold&quot;});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>cssProperties</code>  </li>
 </ul>
 <h2 id="seecurrenturlequals">seeCurrentUrlEquals</h2>
 <p>Checks that current url is equal to provided one.
@@ -1021,7 +1192,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="seeelement">seeElement</h2>
 <p>Checks that a given Element is visible
@@ -1031,7 +1202,8 @@ Element is located by CSS or XPath.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator
+    Appium: support</li>
 </ul>
 <h2 id="seeelementindom">seeElementInDOM</h2>
 <p>Checks that a given Element is present in the DOM
@@ -1041,7 +1213,8 @@ Element is located by CSS or XPath.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator
+    Appium: support</li>
 </ul>
 <h2 id="seeincurrenturl">seeInCurrentUrl</h2>
 <p>Checks that current url contains a provided fragment.</p>
@@ -1050,7 +1223,7 @@ Element is located by CSS or XPath.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="seeinfield">seeInField</h2>
 <p>Checks that the given input field or textarea equals to given value.
@@ -1064,10 +1237,11 @@ I.seeInField('#searchform input','Search');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  </li>
+<li><code>value</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="seeinpopup">seeInPopup</h2>
-<p>Checks that the active JavaScript popup, as created by <code>window.alert|window.confirm|window.prompt</code>, contains the given string.</p>
+<p>Checks that the active JavaScript popup, as created by <code>window.alert|window.confirm|window.prompt</code>, contains the
+given string. Appium: support only web testing</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
@@ -1079,17 +1253,18 @@ I.seeInField('#searchform input','Search');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  Appium: support</li>
 </ul>
 <h2 id="seeintitle">seeInTitle</h2>
 <p>Checks that title contains text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="seenumberofelements">seeNumberOfElements</h2>
 <p>asserts that an element appears a given number of times in the DOM
-Element is located by label or name or CSS or XPath.</p>
+Element is located by label or name or CSS or XPath.
+Appium: support</p>
 <pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
 </code></pre>
 
@@ -1106,8 +1281,27 @@ Element is located by CSS or XPath.</p>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>selector</code>  </li>
+<li><code>locator</code>  </li>
 <li><code>num</code>  </li>
+</ul>
+<h2 id="seetextequals">seeTextEquals</h2>
+<p>Checks that text is equal to provided one.</p>
+<pre><code class="js">I.seeTextEquals('text', 'h1');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>context</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="seetitleequals">seeTitleEquals</h2>
+<p>Checks that title is equal to provided one.</p>
+<pre><code class="js">I.seeTitleEquals('Test title.');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
 </ul>
 <h2 id="selectoption">selectOption</h2>
 <p>Selects an option in a drop-down select.
@@ -1137,13 +1331,37 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  Uses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie format</a>.</li>
+<li><code>cookie</code>  Appium: support only web testingUses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie
+    format</a>.</li>
 </ul>
 <h2 id="switchto">switchTo</h2>
-<p>Switches frame or in case of null locator reverts to parent.</p>
+<p>Switches frame or in case of null locator reverts to parent.
+Appium: support only web testing</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="switchtonexttab">switchToNextTab</h2>
+<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
+<pre><code class="js">I.switchToNextTab();
+I.switchToNextTab(2);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>num</code>   (optional, default <code>1</code>)</li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="switchtoprevioustab">switchToPreviousTab</h2>
+<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
+<pre><code class="js">I.switchToPreviousTab();
+I.switchToPreviousTab(2);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>num</code>   (optional, default <code>1</code>)</li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>
@@ -1152,7 +1370,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>sec</code>  </li>
+<li><code>sec</code>  Appium: support</li>
 </ul>
 <h2 id="waitforelement">waitForElement</h2>
 <p>Waits for element to be present on page (by default waits for 1sec).
@@ -1164,7 +1382,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>sec</code>  time seconds to wait, 1 by default
+    Appium: support</li>
 </ul>
 <h2 id="waitforenabled">waitForEnabled</h2>
 <p>Waits for element to become enabled (by default waits for 1sec).
@@ -1172,7 +1391,8 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>sec</code>  time seconds to wait, 1 by default
+    Appium: support</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
 <p>Waits for an element to become invisible on a page (by default waits for 1sec).
@@ -1182,7 +1402,7 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 </ul>
 <h2 id="waitforstalenessof">waitForStalenessOf</h2>
 <p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
@@ -1192,7 +1412,7 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 </ul>
 <h2 id="waitfortext">waitForText</h2>
 <p>Waits for a text to appear (by default waits for 1sec).
@@ -1206,7 +1426,19 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 <ul>
 <li><code>text</code>  to wait for</li>
 <li><code>sec</code>  seconds to wait</li>
-<li><code>context</code>  element located by CSS|XPath|strict locator</li>
+<li><code>context</code>  element located by CSS|XPath|strict locator
+    Appium: support</li>
+</ul>
+<h2 id="waitforvalue">waitForValue</h2>
+<p>Waits for the specified value to be in value attribute</p>
+<pre><code class="js">I.waitForValue('//input', &quot;GoodValue&quot;);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>field</code>  input field</li>
+<li><code>value</code>  expected value</li>
+<li><code>sec</code>  seconds to wait, 1 sec by default</li>
 </ul>
 <h2 id="waitforvisible">waitForVisible</h2>
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
@@ -1216,23 +1448,61 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>sec</code>  time seconds to wait, 1 by default
+    Appium: support</li>
 </ul>
-<h2 id="waittohide">waitToHide</h2>
-<p>Waits for an element to become invisible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
+<h2 id="waitinurl">waitInUrl</h2>
+<p>Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.</p>
+<pre><code class="js">I.waitInUrl('/info', 2);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlPart</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="waitnumberofvisibleelements">waitNumberOfVisibleElements</h2>
+<p>Waits for a specified number of elements on the page</p>
+<pre><code class="js">I.waitNumberOfVisibleElements('a', 3);
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>num</code>  </li>
 <li><code>sec</code>  </li>
 </ul>
+<h2 id="waittohide">waitToHide</h2>
+<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Appium: support</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
 <h2 id="waituntil">waitUntil</h2>
-<p>Waits for a function to return true (waits for 1sec by default).</p>
+<p>Waits for a function to return true (waits for 1sec by default).
+Appium: support</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>fn</code>  </li>
-<li><code>sec</code>  </li>
-</ul></div>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
+<li><code>timeoutMsg</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="waiturlequals">waitUrlEquals</h2>
+<p>Waits for the entire URL to match the expected</p>
+<pre><code class="js">I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlPart</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h1 id="locator">locator</h1>
+<p>just press button if no selector is given</p></div>
             <div class="clearfix"></div>
         </div>
         
@@ -1287,9 +1557,12 @@ Element can be located by CSS or XPath.</p>
         <script src="../../js/bootstrap-3.0.3.min.js"></script>
         <script src="../../js/highlight.pack.js"></script>        
         <script src="../../js/base.js"></script>
+        <script src="../../build/ApiDataFactory.js"></script>
+        <script src="../../build/Appium.js"></script>
         <script src="../../build/FileSystem.js"></script>
         <script src="../../build/Nightmare.js"></script>
         <script src="../../build/Protractor.js"></script>
+        <script src="../../build/REST.js"></script>
         <script src="../../build/SeleniumWebdriver.js"></script>
         <script src="../../build/WebDriverIO.js"></script>
     </body>

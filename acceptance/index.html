@@ -246,6 +246,8 @@
         
             <li><a href="#waiting">Waiting</a></li>
         
+            <li><a href="#smartwait">SmartWait</a></li>
+        
             <li><a href="#iframes">IFrames</a></li>
         
     
@@ -381,10 +383,10 @@ I.seeInTitle('My Website');
 Imagine, application generates a password and you want to ensure that user can login using this password.</p>
 <pre><code class="js">I.fillField('email', 'miles@davis.com')
 I.click('Generate Password');
-$password = yield I.grabTextFrom('#password');
+let password = yield I.grabTextFrom('#password');
 I.click('Login');
 I.fillField('email', 'miles@davis.com');
-I.fillField('password', $password);
+I.fillField('password', password);
 I.click('Log in!');
 </code></pre>
 
@@ -406,6 +408,30 @@ I.click('#agree_button');
 </code></pre>
 
 <p>More wait actions can be found in helper's reference.</p>
+<h2 id="smartwait">SmartWait</h2>
+<p>It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on <a href="http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits">Implicit Wait</a> of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.</p>
+<p>SmartWait can be enabled by setting wait option in WebDriverIO config.
+Add <code>"smartWait": 5000</code> to wait for additional 5s.</p>
+<p>SmartWait works with a CSS/XPath locators in <code>click</code>, <code>seeElement</code> and other methods. See where it is enabled and where is not:</p>
+<pre><code class="js">I.click('Login'); // DISABLED, not a locator
+I.fillField('user', 'davert'); // DISABLED, not a specific locator
+I.fillField({name: 'password'}, '123456'); // ENABLED, strict locator
+I.click('#login'); // ENABLED, locator is CSS ID
+I.see('Hello, Davert'); // DISABLED, Not a locator
+I.seeElement('#userbar'); // ENABLED
+I.dontSeeElement('#login'); // DISABLED, can't wait for element to hide
+I.seeNumberOfElements('button.link', 5); // DISABLED, can wait only for one element
+
+</code></pre>
+
+<p>SmartWait doesn't check element for visibility, so tests may fail even element is on a page.</p>
+<p>Usage example:</p>
+<pre><code class="js">// we use smartWait: 5000 instead of
+// I.waitForElement('#click-me', 5);
+// to wait for element on page
+I.click('#click-me');
+</code></pre>
+
 <h2 id="iframes">IFrames</h2>
 <p><a href="../basics/#within">within</a> operator can be used to work inside IFrames. Special <code>frame</code> locator is required to locate the iframe and get into its context.</p>
 <p>See example:</p>
@@ -475,9 +501,12 @@ I.click('#agree_button');
         <script src="../js/bootstrap-3.0.3.min.js"></script>
         <script src="../js/highlight.pack.js"></script>        
         <script src="../js/base.js"></script>
+        <script src="../build/ApiDataFactory.js"></script>
+        <script src="../build/Appium.js"></script>
         <script src="../build/FileSystem.js"></script>
         <script src="../build/Nightmare.js"></script>
         <script src="../build/Protractor.js"></script>
+        <script src="../build/REST.js"></script>
         <script src="../build/SeleniumWebdriver.js"></script>
         <script src="../build/WebDriverIO.js"></script>
     </body>

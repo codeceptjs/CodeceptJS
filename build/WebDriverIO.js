@@ -9,9 +9,14 @@ const truth = require('../assert/truth').truth;
 const xpathLocator = require('../utils').xpathLocator;
 const hashCode = require('../utils').hashCode;
 const fileExists = require('../utils').fileExists;
+const clearString = require('../utils').clearString;
+const decodeUrl = require('../utils').decodeUrl;
+const chunkArray = require('../utils').chunkArray;
 const assert = require('assert');
 const path = require('path');
 const requireg = require('requireg');
+const webRoot = 'body';
+
 
 let withinStore = {};
 
@@ -22,8 +27,10 @@ let withinStore = {};
  * #### Selenium Installation
  *
  * 1. Download [Selenium Server](http://docs.seleniumhq.org/download/)
- * 2. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
- * 3. Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
+ * 2. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started),
+ * for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
+ * 3. Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use
+ * `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
  *
  * #### PhantomJS Installation
  *
@@ -40,11 +47,14 @@ let withinStore = {};
  * * `url` - base url of website to be tested
  * * `browser` - browser in which perform testing
  * * `restart` (optional, default: true) - restart browser between tests.
+ * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
  * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `waitForTimeout`: (option) sets default wait time in *ms* for all `wait*` functions. 1000 by default;
- * * `desiredCapabilities`: Selenium's [desired capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
- * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
+ * * `desiredCapabilities`: Selenium's [desired
+ * capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
+ * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper
+ * with `this.helpers["WebDriverIO"]._startBrowser()`
  * * `timeouts`: [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) defined as hash.
  *
  * Example:
@@ -53,21 +63,21 @@ let withinStore = {};
  * {
  *    "helpers": {
  *      "WebDriverIO" : {
+ *        "smartWait": 5000,
  *        "browser": "chrome",
  *        "restart": false,
  *        "windowSize": "maximize",
  *        "timeouts": {
  *          "script": 60000,
- *          "page load": 10000,
- *          "implicit" : 5000
+ *          "page load": 10000
  *        }
  *      }
  *    }
  * }
- *
  * ```
  *
- * Additional configuration params can be used from [webdriverio website](http://webdriver.io/guide/getstarted/configuration.html).
+ * Additional configuration params can be used from [webdriverio
+ * website](http://webdriver.io/guide/getstarted/configuration.html).
  *
  * ### Connect through proxy
  *
@@ -115,7 +125,8 @@ let withinStore = {};
  * }
  * ```
  *
- * Please refer to [Selenium - Proxy Object](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities) for more information.
+ * Please refer to [Selenium - Proxy Object](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities) for more
+ * information.
  *
  * ### Cloud Providers
  *
@@ -189,19 +200,30 @@ class WebDriverIO extends Helper {
   constructor(config) {
     super(config);
     webdriverio = requireg('webdriverio');
+    this._validateConfig(config);
+  }
+
+  _validateConfig(config) {
 
     // set defaults
+    this.root = webRoot;
+
     this.options = {
+      smartWait: 0,
       waitForTimeout: 1000, // ms
       desiredCapabilities: {},
       restart: true,
       uniqueScreenshotNames: false,
+      disableScreenshots: false,
+      fullPageScreenshots: true,
       manualStart: false,
       keepCookies: false,
       timeouts: {
         script: 1000 // ms
       }
     };
+
+    this.isRunning = false;
 
     // override defaults with config
     Object.assign(this.options, config);
@@ -210,9 +232,9 @@ class WebDriverIO extends Helper {
     this.options.desiredCapabilities.browserName = this.options.browser || this.options.desiredCapabilities.browserName;
     this.options.waitForTimeout /= 1000; // convert to seconds
 
-    if (!this.options.url || !this.options.browser) {
+    if (!this.options.desiredCapabilities.platformName && (!this.options.url || !this.options.browser)) {
       throw new Error(`
-        WebDriverIO requires ares.valuet least these parameters
+        WebDriverIO requires at url and browser to be set.
         Check your codeceptjs config file to ensure these are set properly
           {
             "helpers": {
@@ -247,8 +269,9 @@ class WebDriverIO extends Helper {
   }
 
   _beforeSuite() {
-    if (!this.options.restart && !this.options.manualStart) {
+    if (!this.options.restart && !this.options.manualStart && !this.isRunning) {
       this.debugSection('Session', 'Starting singleton browser session');
+      this.isRunning = true;
       return this._startBrowser();
     }
   }
@@ -265,9 +288,13 @@ class WebDriverIO extends Helper {
     }
 
     if (this.options.windowSize === 'maximize') {
-      this.browser.windowHandleMaximize(false);
-    }
-    if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
+      this.browser.execute('return [screen.width, screen.height]').then((res) => {
+        return this.browser.windowHandleSize({
+          width: res.value[0],
+          height: res.value[1]
+        });
+      });
+    } else if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
       let dimensions = this.options.windowSize.split('x');
       this.browser.windowHandleSize({
         width: dimensions[0],
@@ -280,42 +307,58 @@ class WebDriverIO extends Helper {
   _before() {
     if (this.options.restart && !this.options.manualStart) this._startBrowser();
     this.failedTestName = null;
-    this.context = 'body';
+    this.context = this.root;
     return this.browser;
   }
 
   _after() {
     if (this.options.restart) return this.browser.end();
-    if (this.options.keepCookies) return;
-    this.debugSection('Session', 'cleaning cookies and localStorage');
-    this.browser.deleteCookie();
-    return this.browser.execute('localStorage.clear();');
+    if (this.options.keepCookies) {
+      return Promise.all(
+        [this.browser.execute('localStorage.clear();'), this.closeOtherTabs()]);
+    }
+    if (this.options.desiredCapabilities.browserName) {
+      this.debugSection('Session', 'cleaning cookies and localStorage');
+      return Promise.all(
+        [this.browser.deleteCookie(), this.browser.execute('localStorage.clear();'), this.closeOtherTabs()]);
+    }
   }
 
   _afterSuite() {
+  }
+
+  _finishTest() {
     if (!this.options.restart) return this.browser.end();
   }
 
   _failed(test) {
-    let fileName = '';
+    if (this.options.disableScreenshots) return;
+    let fileName = clearString(test.title);
     if (this.options.uniqueScreenshotNames) {
-      fileName = test.title.substring(0, 10).replace(/ /g, '_') + '-' + hashCode(test.title) + '-' + hashCode(test.file) + '.failed.png';
+      fileName =
+        fileName.substring(0, 10) + '-' + hashCode(test.title) + '-' +
+        hashCode(test.file) +
+        '.failed.png';
     } else {
-      fileName = test.title.replace(/ /g, '_') + '.failed.png';
+      fileName = fileName + '.failed.png';
     }
-    return this.saveScreenshot(fileName, true);
+    let promisesList = [];
+    if (Object.keys(withinStore).length != 0) promisesList.push(this._withinEnd());
+    promisesList.push(this.saveScreenshot(fileName, this.options.fullPageScreenshots));
+    return Promise.all(promisesList);
   }
 
   _withinBegin(locator) {
     let frame = isFrameLocator(locator);
+    let client = this.browser;
     if (frame) {
       withinStore.frame = frame;
-      return this.browser.element(frame).then((res) => this.browser.frame(res.value));
+      return this.switchTo(frame);
     }
     withinStore.elFn = this.browser.element;
     withinStore.elsFn = this.browser.elements;
     this.context = locator;
-    return this.browser.element(withStrictLocator(locator)).then((res) => {
+    return client.element(withStrictLocator(locator)).then((res) => {
       this.browser.element = function (l) {
         return this.elementIdElement(res.value.ELEMENT, l);
       };
@@ -328,9 +371,9 @@ class WebDriverIO extends Helper {
   _withinEnd() {
     if (withinStore.frame) {
       withinStore = {};
-      return this.browser.frame(null);
+      return this.switchTo(null);
     }
-    this.context = 'body';
+    this.context = this.root;
     this.browser.element = withinStore.elFn;
     this.browser.elements = withinStore.elsFn;
     withinStore = {};
@@ -344,8 +387,14 @@ class WebDriverIO extends Helper {
    * this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
    * ```
    */
-  _locate(locator) {
-    return this.browser.elements(withStrictLocator(locator));
+  _locate(locator, smartWait = false) {
+
+    if (!this.options.smartWait || !smartWait) return this.browser.elements(withStrictLocator(locator));
+    let els;
+
+    return this.defineTimeout({implicit: this.options.smartWait})
+      .then(() => this.debugSection('SmartWait', `Locating ${locator} in ${this.options.smartWait}`))
+      .then(() => this.browser.elements(withStrictLocator(locator)));
   }
 
   /**
@@ -356,9 +405,7 @@ class WebDriverIO extends Helper {
    * ```
    */
   _locateCheckable(locator) {
-    return findCheckable(this.browser, locator).then(function (res) {
-      return res.value;
-    });
+    return findCheckable(locator, this.browser.elements.bind(this)).then((res) => res.value);
   }
 
   /**
@@ -369,9 +416,7 @@ class WebDriverIO extends Helper {
    * ```
    */
   _locateClickable(locator) {
-    return findClickable(this.browser, locator).then(function (res) {
-      return res.value;
-    });
+    return findClickable(locator, this.browser.elements.bind(this)).then((res) => res.value);
   }
 
   /**
@@ -382,30 +427,36 @@ class WebDriverIO extends Helper {
    * ```
    */
   _locateFields(locator) {
-    return findFields(this.browser, locator).then(function (res) {
-      return res.value;
-    });
+    return findFields.call(this, locator).then((res) => res.value);
   }
 
   /**
    * Set [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) in realtime.
+   * Appium: support only web testing
    * Timeouts are expected to be passed as object:
    *
    * ```js
    * I.defineTimeout({ script: 5000 });
-   * I.defineTimeout({ implicit: 10000, "page load": 10000, script: 5000 });
+   * I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
    * ```
    */
   defineTimeout(timeouts) {
+    let p = [];
     if (timeouts.implicit) {
-      this.browser.timeouts('implicit', timeouts.implicit);
+      p.push(this.browser.timeouts('implicit', timeouts.implicit));
     }
     if (timeouts['page load']) {
-      this.browser.timeouts('page load', timeouts['page load']);
+      p.push(this.browser.timeouts('page load', timeouts['page load']));
+    }
+    // both pageLoad and page load are accepted
+    // see http://webdriver.io/api/protocol/timeouts.html
+    if (timeouts.pageLoad) {
+      p.push(this.browser.timeouts('pageLoad', timeouts.pageLoad));
     }
     if (timeouts.script) {
-      this.browser.timeouts('script', timeouts.script);
+      p.push(this.browser.timeouts('script', timeouts.script));
     }
+    return Promise.all(p); // return the last response
   }
 
   /**
@@ -419,6 +470,7 @@ I.amOnPage('/login'); // opens a login page
 ```
 
 @param url url path or global url
+   * Appium: support only web testing
    */
   amOnPage(url) {
     return this.browser.url(url).url((err, res) => {
@@ -451,20 +503,19 @@ I.click({css: 'nav a.login'});
 ```
 @param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
+   * Appium: support
    */
-  click(locator, context) {
-    let client = this.browser;
+  click(locator, context = null) {
     let clickMethod = this.browser.isMobile ? 'touchClick' : 'elementIdClick';
-    if (context) {
-      client = client.element(context);
-    }
-    return findClickable(client, locator).then(function (res) {
+    let locateFn = prepareLocateFn.call(this, context);
+
+    return findClickable(locator, locateFn).then((res) => {
       if (!res.value || res.value.length === 0) {
         if (typeof locator === "object") locator = JSON.stringify(locator);
-        throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
+        if (context) locator += ` inside ${context}`;
+        throw new Error(`Clickable element ${locator} was not found by text|CSS|XPath`);
       }
-      let elem = res.value[0];
-      return this[clickMethod](elem.ELEMENT);
+      return this.browser[clickMethod](res.value[0].ELEMENT);
     });
   }
 
@@ -481,27 +532,42 @@ I.doubleClick('.btn.edit');
 
 @param locator
 @param context
+   * Appium: support only web testing
    */
-  doubleClick(locator, context) {
-    let client = this.browser;
-    if (context) {
-      client = client.element(context);
-    }
-    return findClickable(client, locator).then(function (res) {
+  doubleClick(locator, context = null) {
+    let clickMethod = this.browser.isMobile ? 'touchClick' : 'elementIdClick';
+    let locateFn = prepareLocateFn.call(this, context);
+
+    return findClickable(locator, locateFn).then((res) => {
       if (!res.value || res.value.length === 0) {
         if (typeof locator === "object") locator = JSON.stringify(locator);
         throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
       }
       let elem = res.value[0];
-      return this.moveTo(elem.ELEMENT).doDoubleClick();
+      return this.browser.moveTo(elem.ELEMENT).doDoubleClick();
     });
   }
 
   /**
    * Performs right click on an element matched by CSS or XPath.
+   * Appium: support, but in apps works as usual click
    */
   rightClick(locator) {
-    return this.browser.rightClick(withStrictLocator(locator));
+    /**
+     * just press button if no selector is given
+     */
+    if (locator === undefined) {
+      return this.browser.buttonPress("right");
+    }
+    return this._locate(locator, true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        if (typeof locator === "object") locator = JSON.stringify(locator);
+        throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
+      }
+      let elem = res.value[0];
+      if (this.browser.isMobile) return this.browser.touchClick(elem.ELEMENT);
+      return this.browser.moveTo(elem.ELEMENT).buttonPress("right");
+    });
   }
 
   /**
@@ -521,14 +587,15 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 @param field located by label|name|CSS|XPath|strict locator
 @param value
 
+   * Appium: support
    */
   fillField(field, value) {
-    return findFields(this.browser, field).then(function (res) {
+    return findFields.call(this, field).then((res) => {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
       }
       let elem = res.value[0];
-      return this.elementIdClear(elem.ELEMENT).elementIdValue(elem.ELEMENT, value);
+      return this.browser.elementIdClear(elem.ELEMENT).elementIdValue(elem.ELEMENT, value);
     });
   }
 
@@ -541,14 +608,15 @@ I.appendField('#myTextField', 'appended');
 ```
 @param field located by label|name|CSS|XPath|strict locator
 @param value text value
+   * Appium: support, but it's clear a field before insert in apps
    */
   appendField(field, value) {
-    return findFields(this.browser, field).then(function (res) {
+    return findFields.call(this, field).then((res) => {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
       }
       let elem = res.value[0];
-      return this.elementIdValue(elem.ELEMENT, value);
+      return this.browser.elementIdValue(elem.ELEMENT, value);
     });
   }
 
@@ -574,10 +642,9 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 @param select field located by label|name|CSS|XPath|strict locator
 @param option
 
-   *
    */
   selectOption(select, option) {
-    return findFields(this.browser, select).then(function (res) {
+    return findFields.call(this, select).then((res) => {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Selectable field ${select} not found by name|text|CSS|XPath`);
       }
@@ -593,30 +660,30 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
       option.forEach((opt) => {
         normalized = `[normalize-space(.) = "${opt.trim() }"]`;
         byVisibleText = `./option${normalized}|./optgroup/option${normalized}`;
-        commands.push(this.elementIdElements(elem.ELEMENT, byVisibleText));
+        commands.push(this.browser.elementIdElements(elem.ELEMENT, byVisibleText));
       });
-      return this.unify(commands, {
+      return this.browser.unify(commands, {
         extractValue: true
       }).then((els) => {
         commands = [];
         let clickOptionFn = (el) => {
           if (el[0]) el = el[0];
-          if (el && el.ELEMENT) commands.push(this.elementIdClick(el.ELEMENT));
+          if (el && el.ELEMENT) commands.push(this.browser.elementIdClick(el.ELEMENT));
         };
 
         if (els.length) {
           els.forEach(clickOptionFn);
-          return this.unify(commands);
+          return this.browser.unify(commands);
         }
         let normalized, byValue;
 
         option.forEach((opt) => {
           normalized = `[normalize-space(@value) = "${opt.trim() }"]`;
           byValue = `./option${normalized}|./optgroup/option${normalized}`;
-          commands.push(this.elementIdElements(elem.ELEMENT, byValue));
+          commands.push(this.browser.elementIdElements(elem.ELEMENT, byValue));
         });
         // try by value
-        return this.unify(commands, {
+        return this.browser.unify(commands, {
           extractValue: true
         }).then((els) => {
           if (els.length === 0) {
@@ -624,7 +691,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
           }
           commands = [];
           els.forEach(clickOptionFn);
-          return this.unify(commands);
+          return this.browser.unify(commands);
         });
       });
     });
@@ -642,13 +709,14 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 @param locator field located by label|name|CSS|XPath|strict locator
 @param pathToFile local file path relative to codecept.json config file
 
+   * Appium: not tested
    */
   attachFile(locator, pathToFile) {
     let file = path.join(global.codecept_dir, pathToFile);
     if (!fileExists(file)) {
       throw new Error(`File at ${file} can not be found on local system`);
     }
-    return findFields(this.browser, locator).then((el) => {
+    return findFields.call(this, locator).then((el) => {
       this.debug("Uploading " + file);
       return this.browser.uploadFile(file).then((res) => {
         if (!el.value || el.value.length === 0) {
@@ -672,19 +740,19 @@ I.checkOption('agree', '//form');
 ```
 @param field checkbox located by label | name | CSS | XPath | strict locator
 @param context (optional) element located by CSS | XPath | strict locator
+   * Appium: not tested
    */
-  checkOption(field, context) {
-    let client = this.browser;
+  checkOption(field, context = null) {
     let clickMethod = this.browser.isMobile ? 'touchClick' : 'elementIdClick';
-    if (context) {
-      client = client.element(withStrictLocator(context));
-    }
-    return findCheckable(client, field).then((res) => {
+
+    let locateFn = prepareLocateFn.call(this, context);
+
+    return findCheckable(field, locateFn).then((res) => {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Checkable ${field} cant be located by name|text|CSS|XPath`);
       }
       let elem = res.value[0];
-      return client.elementIdSelected(elem.ELEMENT).then(function (isSelected) {
+      return this.browser.elementIdSelected(elem.ELEMENT).then(function (isSelected) {
         if (isSelected.value) return true;
         return this[clickMethod](elem.ELEMENT);
       });
@@ -699,16 +767,29 @@ Resumes test execution, so **should be used inside a generator with `yield`** op
 let pin = yield I.grabTextFrom('#pin');
 ```
 @param locator element located by CSS|XPath|strict locator
+   * Appium: support
    */
   grabTextFrom(locator) {
-    return this.browser.getText(withStrictLocator(locator)).then(function (text) {
-      return text;
+    let client = this.browser;
+    return this._locate(locator, true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(client.elementIdText(el.ELEMENT)));
+      return client.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        return selected;
+      });
     });
   }
 
   /**
    * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
    * Resumes test execution, so **should be used inside a generator with `yield`** operator.
+   * Appium: support only web testing
+   *
    *
    * ```js
    * let postHTML = yield I.grabHTMLFrom('#post');
@@ -728,10 +809,44 @@ Resumes test execution, so **should be used inside a generator with `yield`** op
 let email = yield I.grabValueFrom('input[name=email]');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
+   * Appium: support only web testing
    */
   grabValueFrom(locator) {
-    return this.browser.getValue(withStrictLocator(locator)).then(function (text) {
-      return text;
+    let client = this.browser;
+    return this._locate(locator, true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(client.elementIdAttribute(el.ELEMENT, 'value')));
+      return client.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        return selected;
+      });
+    });
+  }
+
+  /**
+   * Grab CSS property for given locator
+   *
+   * ```js
+   * I.grabCssPropertyFrom('h3', 'font-weight');
+   * ```
+   */
+  grabCssPropertyFrom(locator, cssProperty) {
+    let client = this.browser;
+    return this._locate(locator).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(client.elementIdCssProperty(el.ELEMENT, cssProperty)));
+      return client.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        return selected;
+      });
     });
   }
 
@@ -744,10 +859,21 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 ```
 @param locator element located by CSS|XPath|strict locator
 @param attr
+   * Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
    */
   grabAttributeFrom(locator, attr) {
-    return this.browser.getAttribute(withStrictLocator(locator), attr).then(function (text) {
-      return text;
+    let client = this.browser;
+    return this._locate(locator, true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(client.elementIdAttribute(el.ELEMENT, attr)));
+      return client.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        return selected;
+      });
     });
   }
 
@@ -755,6 +881,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
    * Checks that title contains text.
 
 @param text
+   * Appium: support only web testing
    */
   seeInTitle(text) {
     return this.browser.getTitle().then((title) => {
@@ -763,9 +890,23 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
   }
 
   /**
+   * Checks that title is equal to provided one.
+   *
+   * ```js
+   * I.seeTitleEquals('Test title.');
+   * ```
+   */
+  seeTitleEquals(text) {
+    return this.browser.getTitle().then((title) => {
+      return assert.equal(title, text, `expected web page title to be ${text}, but found ${title}`);
+    });
+  }
+
+  /**
    * Checks that title does not contain text.
 
 @param text
+   * Appium: support only web testing
    */
   dontSeeInTitle(text) {
     return this.browser.getTitle().then((title) => {
@@ -780,6 +921,7 @@ Resumes test execution, so **should be used inside a generator with `yield`** op
 ```js
 let title = yield I.grabTitle();
 ```
+   * Appium: support only web testing
    */
   grabTitle() {
     return this.browser.getTitle().then((title) => {
@@ -799,9 +941,21 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 ```
 @param text expected on page
 @param context (optional) element located by CSS|Xpath|strict locator in which to search for text
+   * Appium: support with context in apps
    */
-  see(text, context) {
+  see(text, context = null) {
     return proceedSee.call(this, 'assert', text, context);
+  }
+
+  /**
+   * Checks that text is equal to provided one.
+   *
+   * ```js
+   * I.seeTextEquals('text', 'h1');
+   * ```
+   */
+  seeTextEquals(text, context = null) {
+    return proceedSee.call(this, 'assert', text, context, true);
   }
 
   /**
@@ -813,8 +967,9 @@ I.dontSee('Login'); // assume we are already logged in
 ```
 @param text is not present
 @param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
+   * Appium: support with context in apps
    */
-  dontSee(text, context) {
+  dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
   }
 
@@ -830,6 +985,7 @@ I.seeInField('#searchform input','Search');
 ```
 @param field located by label|name|CSS|XPath|strict locator
 @param value
+   * Appium: support only web testing
    */
   seeInField(field, value) {
     return proceedSeeField.call(this, 'assert', field, value);
@@ -841,6 +997,7 @@ Opposite to `seeInField`.
 
 @param field located by label|name|CSS|XPath|strict locator
 @param value is not expected to be a field value
+   * Appium: support only web testing
    */
   dontSeeInField(field, value) {
     return proceedSeeField.call(this, 'negate', field, value);
@@ -855,6 +1012,7 @@ I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
 I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 ```
 @param field located by label|name|CSS|XPath|strict locator
+   * Appium: not tested
    */
   seeCheckboxIsChecked(field) {
     return proceedSeeCheckbox.call(this, 'assert', field);
@@ -865,6 +1023,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 @param field located by label|name|CSS|XPath|strict locator
 
+   * Appium: not tested
    */
   dontSeeCheckboxIsChecked(field) {
     return proceedSeeCheckbox.call(this, 'negate', field);
@@ -878,10 +1037,20 @@ Element is located by CSS or XPath.
 I.seeElement('#modal');
 ```
 @param locator located by CSS|XPath|strict locator
+   * Appium: support
    */
   seeElement(locator) {
-    return this.browser.isVisible(withStrictLocator(locator)).then(function (res) {
-      return truth(`elements of ${locator}`, 'to be seen').assert(res);
+    return this._locate(locator, true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        return truth(`elements of ${locator}`, 'to be seen').assert(false);
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(this.browser.elementIdDisplayed(el.ELEMENT)));
+      return this.browser.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        return truth(`elements of ${locator}`, 'to be seen').assert(selected);
+      });
     });
   }
 
@@ -889,10 +1058,20 @@ I.seeElement('#modal');
    * Opposite to `seeElement`. Checks that element is not visible
 
 @param locator located by CSS|XPath|Strict locator
+   * Appium: support
    */
   dontSeeElement(locator) {
-    return this.browser.isVisible(withStrictLocator(locator)).then(function (res) {
-      return truth(`elements of ${locator}`, 'to be seen').negate(res);
+    return this.browser.elements(withStrictLocator(locator)).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        return truth(`elements of ${locator}`, 'to be seen').negate(false);
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(this.browser.elementIdDisplayed(el.ELEMENT)));
+      return this.browser.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        return truth(`elements of ${locator}`, 'to be seen').negate(selected);
+      });
     });
   }
 
@@ -904,6 +1083,7 @@ Element is located by CSS or XPath.
 I.seeElementInDOM('#modal');
 ```
 @param locator located by CSS|XPath|strict locator
+   * Appium: support
    */
   seeElementInDOM(locator) {
     return this.browser.elements(withStrictLocator(locator)).then(function (res) {
@@ -915,6 +1095,7 @@ I.seeElementInDOM('#modal');
    * Opposite to `seeElementInDOM`. Checks that element is not on page.
 
 @param locator located by CSS|XPath|Strict locator
+   * Appium: support
    */
   dontSeeElementInDOM(locator) {
     return this.browser.elements(withStrictLocator(locator)).then(function (res) {
@@ -929,6 +1110,7 @@ I.seeElementInDOM('#modal');
 I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 ```
 @param text
+   * Appium: support
    */
   seeInSource(text) {
     return this.browser.getSource().then((source) => {
@@ -937,9 +1119,37 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
+   * Checks that the current page contains the given string in its raw source code.
+
+```js
+I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+@param text
+   * Appium: support
+   */
+  grabSource() {
+    return this.browser.getSource();
+  }
+
+  /**
+   * Get JS log from browser. Log buffer is reset after each request.
+   *
+   * ```js
+   * let logs = yield I.grabBrowserLogs();
+   * console.log(JSON.stringify(logs))
+   * ```
+   */
+  grabBrowserLogs() {
+    return this.browser.log("browser").then((res) => {
+      return res.value;
+    });
+  }
+
+  /**
    * Checks that the current page contains the given string in its raw source code
 
 @param text
+   * Appium: support
    */
   dontSeeInSource(text) {
     return this.browser.getSource().then((source) => {
@@ -950,15 +1160,17 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   /**
    * asserts that an element appears a given number of times in the DOM
    * Element is located by label or name or CSS or XPath.
+   * Appium: support
    *
    * ```js
    * I.seeNumberOfElements('#submitBtn', 1);
    * ```
    */
   seeNumberOfElements(selector, num) {
-    return this.browser.elements(withStrictLocator(selector))
+    return this._locate(withStrictLocator(selector))
       .then(function (res) {
-        return assert.equal(res.value.length, num);
+        return assert.equal(res.value.length, num,
+          `expected number of elements (${selector}) is ${num}, but found ${res.value.length}`);
       });
   }
 
@@ -970,13 +1182,115 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
    * I.seeNumberOfVisibleElements('.buttons', 3);
    * ```
    */
-  seeNumberOfVisibleElements(selector, num) {
-    return this.browser.isVisible(withStrictLocator(selector))
-      .then(function (res) {
-        if (!Array.isArray(res)) res = [res];
-        res = res.filter((val) => val == true);
-        return truth(`elements of ${locator}`, 'to be seen').assert.equal(res.length, num);
+  seeNumberOfVisibleElements(locator, num) {
+    return this.grabNumberOfVisibleElements(locator).then(function (res) {
+      return assert.equal(res, num,
+        `expected number of visible elements (${locator}) is ${num}, but found ${res}`);
+    });
+  }
+
+  /**
+   * Checks that all elements with given locator have given CSS properties.
+   *
+   * ```js
+   * I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+   * ```
+   */
+  seeCssPropertiesOnElements(locator, cssProperties) {
+    let client = this.browser;
+    return this._locate(locator).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+      }
+      let elemAmount = res.value.length;
+      let commands = [];
+      res.value.forEach((el) => {
+        Object.keys(cssProperties).forEach((prop) => {
+          commands.push(client.elementIdCssProperty(el.ELEMENT, prop));
+        });
       });
+      return client.unify(commands, {
+        extractValue: true
+      }).then((props) => {
+        let values = Object.keys(cssProperties).map(function (key){
+          return cssProperties[key];
+        });
+        if (!Array.isArray(props)) props = [props];
+        let chunked = chunkArray(props, values.length);
+        chunked = chunked.filter((val) => {
+          for (var i = 0; i < val.length; ++i) {
+            if (val[i] !== values[i]) return false;
+          }
+          return true;
+        });
+        return assert.ok(chunked.length === elemAmount,
+          `Not all elements (${locator}) have CSS property ${JSON.stringify(cssProperties)}`);
+      });
+    });
+  }
+
+  /**
+   * Checks that all elements with given locator have given attributes.
+   *
+   * ```js
+   * I.seeAttributesOnElements('//form', {'method': "post"});
+   * ```
+   */
+  seeAttributesOnElements(locator, attributes) {
+    let client = this.browser;
+    return this._locate(locator).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+      }
+      let elemAmount = res.value.length;
+      let commands = [];
+      res.value.forEach((el) => {
+        Object.keys(attributes).forEach((attr) => {
+          commands.push(client.elementIdAttribute(el.ELEMENT, attr));
+        });
+      });
+      return client.unify(commands, {
+        extractValue: true
+      }).then((attrs) => {
+        let values = Object.keys(attributes).map(function (key){
+          return attributes[key];
+        });
+        if (!Array.isArray(attrs)) attrs = [attrs];
+        let chunked = chunkArray(attrs, values.length);
+        chunked = chunked.filter((val) => {
+          for (var i = 0; i < val.length; ++i) {
+            if (val[i] !== values[i]) return false;
+          }
+          return true;
+        });
+        return assert.ok(chunked.length === elemAmount,
+          `Not all elements (${locator}) have attributes ${JSON.stringify(attributes)}`);
+      });
+    });
+  }
+
+  /**
+   * Grab number of visible elements by locator
+   *
+   * ```js
+   * I.grabNumberOfVisibleElements('p');
+   * ```
+   */
+  grabNumberOfVisibleElements(locator) {
+    return this.browser.elements(locator).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        return 0;
+      }
+      let commands = [];
+      res.value.forEach((el) => commands.push(this.browser.elementIdDisplayed(el.ELEMENT)));
+      return this.browser.unify(commands, {
+        extractValue: true
+      }).then((selected) => {
+        if (!Array.isArray(selected)) selected = [selected];
+        selected = selected.filter((val) => val === true);
+        return selected.length;
+      });
+    });
   }
 
   /**
@@ -986,10 +1300,11 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 I.seeInCurrentUrl('/register'); // we are on registration page
 ```
 @param url
+   * Appium: support only web testing
    */
   seeInCurrentUrl(url) {
     return this.browser.url().then(function (res) {
-      return stringIncludes('url').assert(url, res.value);
+      return stringIncludes('url').assert(url, decodeUrl(res.value));
     });
   }
 
@@ -997,10 +1312,11 @@ I.seeInCurrentUrl('/register'); // we are on registration page
    * Checks that current url does not contain a provided fragment.
 
 @param url
+   * Appium: support only web testing
    */
   dontSeeInCurrentUrl(url) {
     return this.browser.url().then(function (res) {
-      return stringIncludes('url').negate(url, res.value);
+      return stringIncludes('url').negate(url, decodeUrl(res.value));
     });
   }
 
@@ -1014,10 +1330,11 @@ I.seeCurrentUrlEquals('/register');
 I.seeCurrentUrlEquals('http://my.site.com/register');
 ```
 @param url
+   * Appium: support only web testing
    */
   seeCurrentUrlEquals(url) {
     return this.browser.url().then((res) => {
-      return urlEquals(this.options.url).assert(url, res.value);
+      return urlEquals(this.options.url).assert(url, decodeUrl(res.value));
     });
   }
 
@@ -1026,10 +1343,11 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 If a relative url provided, a configured url will be prepended to it.
 
 @param url
+   * Appium: support only web testing
    */
   dontSeeCurrentUrlEquals(url) {
     return this.browser.url().then((res) => {
-      return urlEquals(this.options.url).negate(url, res.value);
+      return urlEquals(this.options.url).negate(url, decodeUrl(res.value));
     });
   }
 
@@ -1060,6 +1378,7 @@ let date = yield I.executeScript(function(el) {
 @param fn function to be executed in browser context
 @param ...args args to be passed to function
 
+   * Appium: support only web testing
    *
    * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
    */
@@ -1091,6 +1410,7 @@ let val = yield I.executeAsyncScript(function(url, done) {
 
 @param fn function to be executed in browser context
 @param ...args args to be passed to function
+   * Appium: support only web testing
    */
   executeAsyncScript(fn) {
     return this.browser.executeAsync.apply(this.browser, arguments).then((res) => res.value);
@@ -1099,14 +1419,45 @@ let val = yield I.executeAsyncScript(function(url, done) {
   /**
    * Scrolls to element matched by locator.
    * Extra shift can be set with offsetX and offsetY options
+   * Appium: support only web testing
    *
    * ```js
    * I.scrollTo('footer');
    * I.scrollTo('#submit', 5,5);
    * ```
    */
-  scrollTo(locator, offsetX, offsetY) {
-    return this.browser.scroll(withStrictLocator(locator), offsetX, offsetY);
+  scrollTo(locator, offsetX = 0, offsetY = 0) {
+    let client = this.browser;
+
+    if (typeof locator === 'number' && typeof offsetX === 'number') {
+      offsetY = offsetX;
+      offsetX = locator;
+      locator = null;
+    }
+
+    if (locator) {
+      return this._locate(withStrictLocator(locator), true).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return truth(`elements of ${locator}`, 'to be seen').assert(false);
+        }
+        let elem = res.value[0];
+        if (client.isMobile) return this.touchScroll(elem.ELEMENT, offsetX, offsetY);
+        return client.elementIdLocation(elem.ELEMENT).then(function (location) {
+          if (!location.value || location.value.length === 0) {
+            throw new Error(
+            `Failed to receive (${locator}) location`);
+          }
+          return client.execute(function scroll(x, y) {
+            return window.scrollTo(x, y);
+          }, location.value.x + offsetX, location.value.y + offsetY);
+        });
+      });
+    } else {
+      if (client.isMobile) return client.touchScroll(locator, offsetX, offsetY);
+      return client.execute(function scroll(x, y) {
+        return window.scrollTo(x, y);
+      }, offsetX, offsetY);
+    }
   }
 
   /**
@@ -1118,9 +1469,42 @@ I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 ```
 
+   * Appium: support only web testing
    */
-  moveCursorTo(locator, offsetX, offsetY) {
-    return this.browser.moveToObject(withStrictLocator(locator), offsetX, offsetY);
+  moveCursorTo(locator, offsetX = 0, offsetY = 0) {
+    let client = this.browser;
+    var hasOffsetParams = true;
+    if (typeof offsetX !== 'number' && typeof offsetY !== 'number') {
+      hasOffsetParams = false;
+    }
+
+    return this._locate(withStrictLocator(locator), true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        return truth(`elements of ${locator}`, 'to be seen').assert(false);
+      }
+      let elem = res.value[0];
+      if (client.isMobile) {
+        return client.elementIdSize(elem.ELEMENT).then(function (size) {
+          if (!size.value || size.value.length === 0) throw new Error(`Failed to recieve (${locator}) size`);
+          return client.elementIdLocation(elem.ELEMENT).then(function (location) {
+            if (!location.value || location.value.length === 0) {
+              throw new Error(
+                `Failed to recieve (${locator}) location`);
+            }
+            var x = location.value.x + size.value.width / 2;
+            var y = location.value.y + size.value.height / 2;
+
+            if (hasOffsetParams) {
+              x = location.value.x + offsetX;
+              y = location.value.y + offsetY;
+            }
+            return client.touchMove(x, y);
+          });
+        });
+      }
+
+      return client.moveTo(elem.ELEMENT, offsetX, offsetY);
+    });
   }
 
   /**
@@ -1134,6 +1518,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 ```
 @param fileName
 @param fullPage (optional)
+   * Appium: support
    */
   saveScreenshot(fileName, fullPage = false) {
     let outputFile = path.join(global.output_dir, fileName);
@@ -1142,13 +1527,15 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
       this.debug('Screenshot has been saved to ' + outputFile);
       return this.browser.saveScreenshot(outputFile);
     }
-    return this.browser.execute(() => ({
-      height: document.body.scrollHeight,
-      width: document.body.scrollWidth
-    })).then(({
-      width,
-      height
-    }) => {
+    return this.browser.execute(function () {
+      return {
+        height: document.body.scrollHeight,
+        width: document.body.scrollWidth
+      };
+    }).then(({
+               width,
+               height
+             }) => {
       this.browser.windowHandleSize(width, height);
       this.debug('Screenshot has been saved to ' + outputFile);
       return this.browser.saveScreenshot(outputFile);
@@ -1163,8 +1550,10 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 I.setCookie({name: 'auth', value: true});
 ```
 @param cookie
+   * Appium: support only web testing
    *
-   * Uses Selenium's JSON [cookie format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
+   * Uses Selenium's JSON [cookie
+   * format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
    */
   setCookie(cookie) {
     return this.browser.setCookie(cookie);
@@ -1179,6 +1568,7 @@ I.clearCookie();
 I.clearCookie('test');
 ```
 @param cookie (optional)
+   * Appium: support only web testing
    */
   clearCookie(cookie) {
     return this.browser.deleteCookie(cookie);
@@ -1193,14 +1583,15 @@ I.clearField('user[email]');
 I.clearField('#email');
 ```
 @param field located by label|name|CSS|XPath|strict locator
+   * Appium: support
    */
   clearField(field) {
-    return findFields(this.browser, field).then(function (res) {
+    return findFields.call(this, field).then((res) => {
       if (!res.value || res.value.length === 0) {
         throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
       }
       let elem = res.value[0];
-      return this.elementIdClear(elem.ELEMENT);
+      return this.browser.elementIdClear(elem.ELEMENT);
     });
 
   }
@@ -1212,6 +1603,7 @@ I.clearField('#email');
 I.seeCookie('Auth');
 ```
 @param name
+   * Appium: support only web testing
    */
   seeCookie(name) {
     return this.browser.getCookie(name).then(function (res) {
@@ -1223,6 +1615,7 @@ I.seeCookie('Auth');
    * Checks that cookie with given name does not exist.
 
 @param name
+   * Appium: support only web testing
    */
   dontSeeCookie(name) {
     return this.browser.getCookie(name).then(function (res) {
@@ -1239,6 +1632,7 @@ let cookie = I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 @param name
+   * Appium: support only web testing
    */
   grabCookie(name) {
     return this.browser.getCookie(name);
@@ -1246,7 +1640,8 @@ assert(cookie.value, '123456');
 
   /**
    * Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
-   * Don't confuse popups with modal windows, as created by [various libraries](http://jster.net/category/windows-modals-popups).
+   * Don't confuse popups with modal windows, as created by [various
+   * libraries](http://jster.net/category/windows-modals-popups). Appium: support only web testing
    */
   acceptPopup() {
     return this.browser.alertText().then(function (res) {
@@ -1258,6 +1653,7 @@ assert(cookie.value, '123456');
 
   /**
    * Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+   * Appium: support only web testing
    */
   cancelPopup() {
     return this.browser.alertText().then(function (res) {
@@ -1268,7 +1664,8 @@ assert(cookie.value, '123456');
   }
 
   /**
-   * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the given string.
+   * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
+   * given string. Appium: support only web testing
    */
   seeInPopup(text) {
     return this.browser.alertText().then(function (res) {
@@ -1293,6 +1690,7 @@ I.pressKey(['Control','a']);
 
    *
    * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
+   * Appium: support, but clear field before pressing in apps
    *
    * ```js
    * I.pressKey('Control');
@@ -1317,10 +1715,16 @@ First parameter can be set to `maximize`
 
 @param width or `maximize`
 @param height
+   * Appium: not tested in web, in apps doesn't work
    */
   resizeWindow(width, height) {
     if (width === 'maximize') {
-      return this.browser.windowHandleMaximize(false);
+      return this.browser.execute('return [screen.width, screen.height]').then((res) => {
+        return this.browser.windowHandleSize({
+          width: res.value[0],
+          height: res.value[1]
+        });
+      });
     }
     return this.browser.windowHandleSize({
       width,
@@ -1330,16 +1734,84 @@ First parameter can be set to `maximize`
 
   /**
    * Drag an item to a destination element.
+   * Appium: not tested
    *
    * ```js
    * I.dragAndDrop('#dragHandle', '#container');
    * ```
    */
   dragAndDrop(srcElement, destElement) {
-    return this.browser.dragAndDrop(
-      withStrictLocator(srcElement),
-      withStrictLocator(destElement)
-    );
+    let client = this.browser;
+    let this2 = this;
+
+
+    if (client.isMobile) {
+      return client.element(withStrictLocator(srcElement)).then(function (res) {
+        if (!res.value || res.value.length === 0) return truth(`elements of ${srcElement}`, 'to be seen').assert(false);
+        let elem = res.value;
+        return this.elementIdLocation(elem.ELEMENT).then(function (location) {
+          if (!location.value || location.value.length === 0) {
+            throw new Error(
+              `Failed to receive (${srcElement}) location`);
+          }
+          return this.touchDown(location.value.x, location.value.y).then(function (res) {
+            if (res.state !== 'success') throw new Error(`Failed to touch button down on (${srcElement})`);
+            return client.element(withStrictLocator(destElement)).then(function (res) {
+              if (!res.value || res.value.length === 0) {
+                return truth(`elements of ${destElement}`, 'to be seen')
+                  .assert(false);
+              }
+              elem = res.value;
+              return this.elementIdLocation(elem.ELEMENT).then(function (location) {
+                if (!location.value || location.value.length === 0) {
+                  throw new Error(
+                  `Failed to receive (${destElement}) location`);
+                }
+                return this.touchMove(location.value.x, location.value.y).then(function (res) {
+                  if (res.state !== 'success') throw new Error(`Failed to touch move to (${destElement})`);
+                  return this.touchUp(location.value.x, location.value.y);
+                });
+              });
+            });
+          });
+        });
+      });
+    }
+
+    return this2.moveCursorTo(withStrictLocator(srcElement)).then(function (res) {
+      if (res.state !== 'success') throw new Error(`Unable to move cursor to (${srcElement})`);
+      return this.buttonDown().then(function (res) {
+        if (res.state !== 'success') throw new Error(`Failed to press button down on (${srcElement})`);
+        return this2.moveCursorTo(withStrictLocator(destElement)).then(function (res) {
+          if (res.state !== 'success') throw new Error(`Unable to move cursor to (${destElement})`);
+          return this.buttonUp();
+        });
+      });
+    });
+  }
+
+
+  /**
+   * Close all tabs expect for one.
+   * Appium: support web test
+   *
+   * ```js
+   * I.closeOtherTabs();
+   * ```
+   */
+  closeOtherTabs() {
+    let client = this.browser;
+    return client.getTabIds().then(function (handles) {
+      let mainHandle = handles[0];
+      let p = Promise.resolve();
+      handles.shift();
+      handles.forEach(function (handle) {
+        p = p.then(() => {
+          return client.switchTab(handle).then(() => client.close(mainHandle));
+        });
+      });
+      return p;
+    });
   }
 
   /**
@@ -1350,6 +1822,7 @@ I.wait(2); // wait 2 secs
 ```
 
 @param sec
+   * Appium: support
    */
   wait(sec) {
     return this.browser.pause(sec * 1000);
@@ -1361,10 +1834,28 @@ Element can be located by CSS or XPath.
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
+   * Appium: support
    */
-  waitForEnabled(locator, sec) {
+  waitForEnabled(locator, sec = null) {
+    let client = this.browser;
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForEnabled(withStrictLocator(locator), sec * 1000);
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return false;
+        }
+        let commands = [];
+        res.value.forEach((el) => commands.push(client.elementIdEnabled(el.ELEMENT)));
+        return client.unify(commands, {
+          extractValue: true
+        }).then((selected) => {
+          if (Array.isArray(selected)) {
+            return selected.filter((val) => val === true).length > 0;
+          }
+          return selected;
+        });
+      });
+    }, sec * 1000, `element (${locator}) still not enabled after ${sec} sec`);
   }
 
   /**
@@ -1378,10 +1869,76 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
+   * Appium: support
    */
-  waitForElement(locator, sec) {
+  waitForElement(locator, sec = null) {
+    let client = this.browser;
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForExist(withStrictLocator(locator), sec * 1000);
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return false;
+        } else return true;
+      });
+    }, sec * 1000, `element (${locator}) still not present on page after ${sec} sec`);
+  }
+
+
+  /**
+   * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+   *
+   * ```js
+   * I.waitInUrl('/info', 2);
+   * ```
+   */
+  waitInUrl(urlPart, sec = null) {
+    let client = this.browser;
+    sec = sec || this.options.waitForTimeout;
+    let currUrl = "";
+    return client
+      .waitUntil(function () {
+        return this.url().then(function (res) {
+          currUrl = decodeUrl(res.value);
+          return currUrl.indexOf(urlPart) > -1;
+        });
+      }, sec * 1000).catch((e) => {
+        if (e.type === 'WaitUntilTimeoutError') {
+          throw new Error(`expected url to include ${urlPart}, but found ${currUrl}`);
+        } else {
+          throw e;
+        }
+      });
+  }
+
+  /**
+   * Waits for the entire URL to match the expected
+   *
+   * ```js
+   * I.waitUrlEquals('/info', 2);
+   * I.waitUrlEquals('http://127.0.0.1:8000/info');
+   * ```
+   */
+  waitUrlEquals(urlPart, sec = null) {
+    let client = this.browser;
+    sec = sec || this.options.waitForTimeout;
+    let baseUrl = this.options.url;
+    if (urlPart.indexOf('http') < 0) {
+      urlPart = baseUrl + urlPart;
+    }
+    let currUrl = "";
+    return client
+      .waitUntil(function () {
+        return this.url().then(function (res) {
+          currUrl = decodeUrl(res.value);
+          return currUrl === urlPart;
+        });
+      }, sec * 1000).catch((e) => {
+        if (e.type === 'WaitUntilTimeoutError') {
+          throw new Error(`expected url to be ${urlPart}, but found ${currUrl}`);
+        } else {
+          throw e;
+        }
+      });
   }
 
   /**
@@ -1397,25 +1954,64 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param text to wait for
 @param sec seconds to wait
 @param context element located by CSS|XPath|strict locator
+   * Appium: support
    */
-  waitForText(text, sec, context) {
+  waitForText(text, sec = null, context = null) {
+    let client = this.browser;
     sec = sec || this.options.waitForTimeout;
-    context = context || 'body';
-    return this.browser.waitUntil(function () {
-      return this.getText(context).then(function (source) {
-        if (Array.isArray(source)) {
-          return source.filter(part => part.indexOf(text) >= 0).length > 0;
+    context = context || this.root;
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(context)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return false;
         }
-        return source.indexOf(text) >= 0;
+        let commands = [];
+        res.value.forEach((el) => commands.push(client.elementIdText(el.ELEMENT)));
+        return client.unify(commands, {
+          extractValue: true
+        }).then((selected) => {
+          if (Array.isArray(selected)) {
+            return selected.filter(part => part.indexOf(text) >= 0).length > 0;
+          }
+          return selected.indexOf(text) >= 0;
+        });
       });
-    }, sec * 1000)
-      .catch((e) => {
-        if (e.type === 'WaitUntilTimeoutError') {
-          return proceedSee.call(this, 'assert', text, context);
-        } else {
-          throw e;
+    }, sec * 1000,
+      `element (${context}) is not in DOM or there is no element(${context}) with text "${text}" after ${sec} sec`);
+  }
+
+  /**
+   * Waits for the specified value to be in value attribute
+   *
+   * ```js
+   * I.waitForValue('//input', "GoodValue");
+   * ```
+   *
+   * @param field input field
+   * @param value expected value
+   * @param sec seconds to wait, 1 sec by default
+   */
+  waitForValue(field, value, sec = null) {
+    let client = this.browser;
+    sec = sec || this.options.waitForTimeout;
+    return client.waitUntil(() => {
+      return findFields.call(this, field).then((res) => {
+        if (!res.value || res.value.length === 0) {
+          return false;
         }
+        let commands = [];
+        res.value.forEach((el) => commands.push(this.browser.elementIdAttribute(el.ELEMENT, "value")));
+        return this.browser.unify(commands, {
+          extractValue: true
+        }).then((selected) => {
+          if (Array.isArray(selected)) {
+            return selected.filter(part => part.indexOf(value) >= 0).length > 0;
+          }
+          return selected.indexOf(value) >= 0;
+        });
       });
+    }, sec * 1000,
+      `element (${field}) is not in DOM or there is no element(${field}) with value "${value}" after ${sec} sec`);
   }
 
   /**
@@ -1428,10 +2024,55 @@ I.waitForVisible('#popup');
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
+   * Appium: support
    */
-  waitForVisible(locator, sec) {
+  waitForVisible(locator, sec = null) {
+    let client = this.browser;
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForVisible(withStrictLocator(locator), sec * 1000);
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return false;
+        }
+        let commands = [];
+        res.value.forEach((el) => commands.push(client.elementIdDisplayed(el.ELEMENT)));
+        return client.unify(commands, {
+          extractValue: true
+        }).then((selected) => {
+          if (Array.isArray(selected)) {
+            return selected.filter((val) => val === true).length > 0;
+          }
+          return selected;
+        });
+      });
+    }, sec * 1000, `element (${locator}) still not visible after ${sec} sec`);
+  }
+
+  /**
+   * Waits for a specified number of elements on the page
+   *
+   * ```js
+   * I.waitNumberOfVisibleElements('a', 3);
+   * ```
+   */
+  waitNumberOfVisibleElements(locator, num, sec) {
+    let client = this.browser;
+    sec = sec || this.options.waitForTimeout;
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return false;
+        }
+        let commands = [];
+        res.value.forEach((el) => commands.push(this.elementIdDisplayed(el.ELEMENT)));
+        return this.unify(commands, {
+          extractValue: true
+        }).then((selected) => {
+          if (!Array.isArray(selected)) selected = [selected];
+          return selected.length === num;
+        });
+      });
+    }, sec * 1000, `The number of elements ${locator} is not ${num} after ${sec} sec`);
   }
 
   /**
@@ -1445,17 +2086,36 @@ I.waitForInvisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
 
+   * Appium: support
    */
-  waitForInvisible(locator, sec) {
+  waitForInvisible(locator, sec = null) {
+    let client = this.browser;
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForVisible(withStrictLocator(locator), sec * 1000, true);
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return true;
+        }
+        let commands = [];
+        res.value.forEach((el) => commands.push(client.elementIdDisplayed(el.ELEMENT)));
+        return client.unify(commands, {
+          extractValue: true
+        }).then((selected) => {
+          if (Array.isArray(selected)) {
+            return selected.filter((val) => val === false).length > 0;
+          }
+          return !selected;
+        });
+      });
+    }, sec * 1000, `element (${locator}) still visible after ${sec}sec`);
   }
 
   /**
    * Waits for an element to become invisible on a page (by default waits for 1sec).
    * Element can be located by CSS or XPath.
+   * Appium: support
    */
-  waitToHide(locator, sec) {
+  waitToHide(locator, sec = null) {
     return this.waitForInvisible(locator, sec);
   }
 
@@ -1470,49 +2130,193 @@ I.waitForStalenessOf('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
 
+   * Appium: support
    */
-  waitForStalenessOf(locator, sec) {
+  waitForStalenessOf(locator, sec = null) {
+    let client = this.browser;
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitForExist(withStrictLocator(locator), sec * 1000, true);
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return true;
+        } else return false;
+      });
+    }, sec * 1000, `element (${locator}) still attached to the DOM after ${sec}sec`);
   }
 
   /**
    * Waits for a function to return true (waits for 1sec by default).
+   * Appium: support
    */
-  waitUntil(fn, sec) {
+  waitUntil(fn, sec = null, timeoutMsg = null) {
     sec = sec || this.options.waitForTimeout;
-    return this.browser.waitUntil(fn, sec);
+    return this.browser.waitUntil(fn, sec, timeoutMsg);
   }
 
   /**
    * Switches frame or in case of null locator reverts to parent.
+   * Appium: support only web testing
    */
-  switchTo(locator) {
-    locator = locator || null;
-    return this.browser.frame(locator);
+  switchTo(locator = null) {
+    if (Number.isInteger(locator)) return this.browser.frame(locator);
+    if (typeof locator === 'undefined' || locator === null) return this.browser.frame(null);
+    return this.browser.element(withStrictLocator(locator)).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`Element ${locator} not found by name|text|CSS|XPath`);
+      }
+      return this.browser.frame(res.value);
+    });
   }
+
+  /**
+   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+   *
+   * ```js
+   * I.switchToNextTab();
+   * I.switchToNextTab(2);
+   * ```
+   */
+  switchToNextTab(num = 1, sec = null) {
+    sec = sec || this.options.waitForTimeout;
+    let client = this.browser;
+    return client
+      .waitUntil(function () {
+        return this.getTabIds().then(function (handles) {
+          return this.getCurrentTabId().then(function (current) {
+            if (handles.indexOf(current) + num + 1 <= handles.length) {
+              return this.switchTab(
+              handles[handles.indexOf(current) + num]);
+            } else return false;
+          });
+        });
+      }, sec * 1000, `There is no ability to switch to next tab with offset ${num}`);
+  }
+
+  /**
+   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+   *
+   * ```js
+   * I.switchToPreviousTab();
+   * I.switchToPreviousTab(2);
+   * ```
+   */
+  switchToPreviousTab(num = 1, sec = null) {
+    sec = sec || this.options.waitForTimeout;
+    let client = this.browser;
+    return client
+      .waitUntil(function () {
+        return this.getTabIds().then(function (handles) {
+          return this.getCurrentTabId().then(function (current) {
+            if (handles.indexOf(current) - num > -1) return this.switchTab(handles[handles.indexOf(current) - num]);
+            else return false;
+          });
+        });
+      }, sec * 1000, `There is no ability to switch to previous tab with offset ${num}`);
+  }
+
+  /**
+   * Close current tab
+   *
+   * ```js
+   * I.closeCurrentTab();
+   * ```
+   */
+  closeCurrentTab() {
+    let client = this.browser;
+    return client.close();
+  }
+
+  /**
+   * Open new tab and switch to it
+   *
+   * ```js
+   * I.openNewTab();
+   * ```
+   */
+  openNewTab() {
+    let client = this.browser;
+    return client.newWindow('about:blank');
+  }
+
+  /**
+   * Refresh the current page.
+   *
+   * ```js
+   * I.refreshPage();
+   * ```
+   */
+  refreshPage() {
+    let client = this.browser;
+    return client.refresh();
+  }
+
+  /**
+   * Scroll page to the top
+   *
+   * ```js
+   * I.scrollPageToTop();
+   * ```
+   */
+  scrollPageToTop() {
+    let client = this.browser;
+    return client.execute(function () {
+      window.scrollTo(0, 0);
+    });
+  }
+
+  /**
+   * Scroll page to the bottom
+   *
+   * ```js
+   * I.scrollPageToBottom();
+   * ```
+   */
+  scrollPageToBottom() {
+    let client = this.browser;
+    return client.execute(function () {
+      var body = document.body,
+        html = document.documentElement;
+      window.scrollTo(0, Math.max(body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight));
+    });
+  }
+
 }
 
-function proceedSee(assertType, text, context) {
+function proceedSee(assertType, text, context, strict = false) {
   let description;
   if (!context) {
-    context = this.context;
-    if (this.context === 'body') {
+    if (this.context === webRoot) {
+      context = this.context;
       description = 'web page';
     } else {
       description = 'current context ' + this.context;
+      context = './/*';
     }
   } else {
     description = 'element ' + context;
   }
-  return this.browser.getText(withStrictLocator(context)).then(function (source) {
-    return stringIncludes(description)[assertType](text, source);
+
+  let smartWaitEnabled = assertType === 'assert';
+
+  return this._locate(withStrictLocator(context), smartWaitEnabled).then((res) => {
+    if (!res.value || res.value.length === 0) {
+      throw new Error(`${context} can't be located by name|text|CSS|XPath`);
+    }
+    let commands = [];
+    res.value.forEach((el) => commands.push(this.browser.elementIdText(el.ELEMENT)));
+    return this.browser.unify(commands, {
+      extractValue: true
+    }).then((selected) => {
+      if (strict) return equals(description)[assertType](text, selected);
+      return stringIncludes(description)[assertType](text, selected);
+    });
   });
 }
 
-function findClickable(client, locator) {
-  if (typeof locator === 'object') return client.elements(withStrictLocator(locator));
-  if (isCSSorXPathLocator(locator)) return client.elements(locator);
+function findClickable(locator, locateFn) {
+  if (typeof locator === 'object') return locateFn(withStrictLocator(locator), true);
+  if (isCSSorXPathLocator(locator)) return locateFn(locator, true);
 
   let literal = xpathLocator.literal(locator);
 
@@ -1522,7 +2326,7 @@ function findClickable(client, locator) {
     `.//a/img[normalize-space(@alt)=${literal}]/ancestor::a`,
     `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][normalize-space(@value)=${literal}]`
   ]);
-  return client.elements(narrowLocator).then(function (els) {
+  return locateFn(narrowLocator).then(function (els) {
     if (els.value.length) {
       return els;
     }
@@ -1534,50 +2338,54 @@ function findClickable(client, locator) {
       `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][./@name = ${literal}]`,
       `.//button[./@name = ${literal}]`
     ]);
-    return client.elements(wideLocator).then(function (els) {
+    return locateFn(wideLocator).then(function (els) {
       if (els.value.length) {
         return els;
       }
-      return client.elements(locator); // by css or xpath
+      return locateFn(locator); // by css or xpath
     });
   });
 }
 
-function findFields(client, locator) {
-  if (typeof locator === 'object') return client.elements(withStrictLocator(locator));
-  if (isCSSorXPathLocator(locator)) return client.elements(locator);
+function toStrictLocator(locator) {
+  if (locator[0] == '#') return;
+}
+
+function findFields(locator) {
+  if (typeof locator === 'object') return this._locate(withStrictLocator(locator), true);
+  if (isCSSorXPathLocator(locator)) return this._locate(locator, true);
 
   let literal = xpathLocator.literal(locator);
   let byText = xpathLocator.combine([
     `.//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden')][(((./@name = ${literal}) or ./@id = //label[contains(normalize-space(string(.)), ${literal})]/@for) or ./@placeholder = ${literal})]`,
     `.//label[contains(normalize-space(string(.)), ${literal})]//.//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden')]`
   ]);
-  return client.elements(byText).then((els) => {
+  return this._locate(byText).then((els) => {
     if (els.value.length) return els;
     let byName = `.//*[self::input | self::textarea | self::select][@name = ${literal}]`;
-    return client.elements(byName).then((els) => {
+    return this._locate(byName).then((els) => {
       if (els.value.length) return els;
-      return client.elements(locator); // by css or xpath
+      return this._locate(locator); // by css or xpath
     });
   });
 }
 
 function proceedSeeField(assertType, field, value) {
-  return findFields(this.browser, field).then(function (res) {
+  return findFields.call(this, field).then((res) => {
     if (!res.value || res.value.length === 0) {
       throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
     }
 
     var proceedMultiple = (fields) => {
       let commands = [];
-      fields.forEach((el) => commands.push(this.elementIdSelected(el.ELEMENT)));
-      this.unify(commands).then((res) => {
+      fields.forEach((el) => commands.push(this.browser.elementIdSelected(el.ELEMENT)));
+      this.browser.unify(commands).then(() => {
         commands = [];
         fields.forEach((el) => {
           if (el.value === false) return;
-          commands.push(this.elementIdAttribute(el.ELEMENT, 'value'));
+          commands.push(this.browser.elementIdAttribute(el.ELEMENT, 'value'));
         });
-        this.unify(commands, {
+        this.browser.unify(commands, {
           extractValue: true
         }).then((val) => {
           return stringIncludes('fields by ' + field)[assertType](value, val);
@@ -1586,19 +2394,19 @@ function proceedSeeField(assertType, field, value) {
     };
 
     var proceedSingle = (el) => {
-      return this.elementIdAttribute(el.ELEMENT, 'value').then((res) => {
+      return this.browser.elementIdAttribute(el.ELEMENT, 'value').then((res) => {
         return stringIncludes('fields by ' + field)[assertType](value, res.value);
       });
     };
 
-    return this.elementIdName(res.value[0].ELEMENT).then((tag) => {
-      if (tag.value == 'select') {
+    return this.browser.elementIdName(res.value[0].ELEMENT).then((tag) => {
+      if (tag.value === 'select') {
         return proceedMultiple(res.value);
       }
 
-      if (tag.value == 'input') {
-        return this.elementIdAttribute(res.value[0].ELEMENT, 'type').then((type) => {
-          if (type.value == 'checkbox' || type.value == 'radio') {
+      if (tag.value === 'input') {
+        return this.browser.elementIdAttribute(res.value[0].ELEMENT, 'type').then((type) => {
+          if (type.value === 'checkbox' || type.value === 'radio') {
             return proceedMultiple(res.value);
           }
           return proceedSingle(res.value[0]);
@@ -1610,13 +2418,13 @@ function proceedSeeField(assertType, field, value) {
 }
 
 function proceedSeeCheckbox(assertType, field) {
-  return findFields(this.browser, field).then(function (res) {
+  return findFields.call(this, field).then((res) => {
     if (!res.value || res.value.length === 0) {
       throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
     }
     let commands = [];
-    res.value.forEach((el) => commands.push(this.elementIdSelected(el.ELEMENT)));
-    return this.unify(commands, {
+    res.value.forEach((el) => commands.push(this.browser.elementIdSelected(el.ELEMENT)));
+    return this.browser.unify(commands, {
       extractValue: true
     }).then((selected) => {
       return truth(`checkable field ${field}`, 'to be checked')[assertType](selected);
@@ -1624,21 +2432,21 @@ function proceedSeeCheckbox(assertType, field) {
   });
 }
 
-function findCheckable(client, locator) {
-  if (typeof locator === 'object') return client.elements(withStrictLocator(locator));
-  if (isCSSorXPathLocator(locator)) return client.elements(locator);
+function findCheckable(locator, locateFn) {
+  if (typeof locator === 'object') return locateFn(withStrictLocator(locator), true);
+  if (isCSSorXPathLocator(locator)) return locateFn(locator, true);
 
   let literal = xpathLocator.literal(locator);
   let byText = xpathLocator.combine([
     `.//input[@type = 'checkbox' or @type = 'radio'][(@id = //label[contains(normalize-space(string(.)), ${literal})]/@for) or @placeholder = ${literal}]`,
     `.//label[contains(normalize-space(string(.)), ${literal})]//input[@type = 'radio' or @type = 'checkbox']`
   ]);
-  return client.elements(byText).then(function (els) {
+  return locateFn(byText).then(function (els) {
     if (els.value.length) return els;
     let byName = `.//input[@type = 'checkbox' or @type = 'radio'][@name = ${literal}]`;
-    return client.elements(byName).then(function (els) {
+    return locateFn(byName).then(function (els) {
       if (els.value.length) return els;
-      return client.elements(locator); // by css or xpath
+      return locateFn(locator); // by css or xpath
     });
   });
 }
@@ -1664,6 +2472,7 @@ function withStrictLocator(locator) {
   switch (key) {
   case 'by':
   case 'xpath':
+    return value;
   case 'css':
     return value;
   case 'id':
@@ -1678,6 +2487,20 @@ function isFrameLocator(locator) {
   let key = Object.keys(locator)[0];
   if (key !== 'frame') return false;
   return locator[key];
+}
+
+function prepareLocateFn(context) {
+  if (!context) return this._locate.bind(this);
+  let el;
+  return (l) => {
+    if (el) return this.browser.elementIdElements(el, l);
+    return this._locate(context, true).then((res) => {
+      if (!res.value || res.value.length === 0) {
+        throw new Error(`Context element ${context.toString()} was not found by CSS|XPath`);
+      }
+      return this.browser.elementIdElements(el = res.value[0].ELEMENT, l);
+    });
+  };
 }
 
 module.exports = WebDriverIO;

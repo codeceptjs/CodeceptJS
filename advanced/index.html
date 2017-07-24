@@ -234,6 +234,8 @@
     
         <li class="main active"><a href="#advanced-usage">Advanced Usage</a></li>
         
+            <li><a href="#data-driven-tests">Data Driven Tests</a></li>
+        
             <li><a href="#groups">Groups</a></li>
         
             <li><a href="#debug">Debug</a></li>
@@ -248,8 +250,43 @@
             <div class="col-md-7" role="main">
 
 <h1 id="advanced-usage">Advanced Usage</h1>
+<h2 id="data-driven-tests">Data Driven Tests</h2>
+<p>Execute the same scenario on a different data set.</p>
+<p>Let's say you want to test login for different user accounts.
+In this case, you need to create a datatable and fill it in with credentials.
+Then use <code>Data().Scenario</code> to include this data and generate multiple scenarios:</p>
+<pre><code class="js">// define data table inside a test or load from another module
+let accounts = new DataTable(['login', 'password']); //
+accounts.add(['davert', '123456']); // adding records to a table
+accounts.add(['admin', '123456']);
+
+// Pass dataTable to Data()
+// Use special param `current` to get current data set
+Data(accounts).Scenario('Test Login', (I, current) =&gt; {
+  I.fillField('Username', current.login); // current is reserved!
+  I.fillField('Password', current.password);
+  I.click('Sign In');
+  I.see('Welcome '+ current.login);
+});
+</code></pre>
+
+<p><em>Important: you can't use name <code>current</code> for pageObjects or helpers in data scenarios</em></p>
+<p>This will produce 2 tests with different data sets.
+Current data set is appended to a test name in output:</p>
+<pre><code>✓ Test Login | {&quot;login&quot;:&quot;davert&quot;,&quot;password&quot;:&quot;123456&quot;}
+✓ Test Login | {&quot;login&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;}
+</code></pre>
+
+<p>Data sets can also be defined with array, generator, or a function.</p>
+<pre><code class="js">Data(function*() {
+  yield { user: 'davert'};
+  yield { user: 'andrey'};
+}).Scenario() // ...
+</code></pre>
+
+<p><em>HINT: If you don't use DataTable. add <code>toString()</code> method to each object added to data set, so the data could be pretty printed in a test name</em></p>
 <h2 id="groups">Groups</h2>
-<p>Currently CodeceptJS doesn't support groups or tags. However, you can append <code>@tag</code> to your test name, so
+<p>Append <code>@tag</code> to your test name, so
 all tests with <code>@tag</code> could be executed with <code>--grep @tag</code> option.</p>
 <pre><code class="js">Scenario('update user profile @slow')
 </code></pre>
@@ -283,49 +320,49 @@ It can be turned on with <code>--debug</code> flag.</p>
     &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
   },
 
-&quot;smoke&quot;: {
-  // run only tests containing &quot;@smoke&quot; in name
-  &quot;grep&quot;: '@smoke',
+  &quot;smoke&quot;: {
+    // run only tests containing &quot;@smoke&quot; in name
+    &quot;grep&quot;: &quot;@smoke&quot;,
 
-  // use firefox and different chrome configurations
-  &quot;browsers&quot;: [
-    'firefox',
-    {browser: 'chrome', windowSize: 'maximize'},
-    // replace any config values from WebDriverIO helper
-    {browser: 'chrome', windowSize: '1200x840'}
+    // use firefox and different chrome configurations
+    &quot;browsers&quot;: [
+      &quot;firefox&quot;,
+      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;maximize&quot;},
+      // replace any config values from WebDriverIO helper
+      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;1200x840&quot;}
     ]
   }
 }
 </code></pre>
 
 <p>Then tests can be executed using <code>run-multiple</code> command.</p>
+<p>Run all suites for all browsers:</p>
+<pre><code class="sh">codeceptjs run-multiple --all
+</code></pre>
+
 <p>Run <code>basic</code> suite for all browsers</p>
-<pre><code>codeceptjs run-multiple basic
+<pre><code class="sh">codeceptjs run-multiple basic
 </code></pre>
 
 <p>Run <code>basic</code> suite for chrome only:</p>
-<pre><code>codeceptjs run-multiple basic:chrome
+<pre><code class="sh">codeceptjs run-multiple basic:chrome
 </code></pre>
 
 <p>Run <code>basic</code> suite for chrome and <code>smoke</code> for firefox</p>
-<pre><code>codeceptjs run-multiple basic:chrome somke:firefox
+<pre><code class="sh">codeceptjs run-multiple basic:chrome smoke:firefox
 </code></pre>
 
 <p>Run basic tests with grep and junit reporter</p>
-<pre><code>codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
+<pre><code class="sh">codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
 </code></pre>
 
 <p>Run regression tests specifying different config path:</p>
-<pre><code>codeceptjs run-multiple regression -c path/to/config
-</code></pre>
-
-<p>Run all suites for all browsers:</p>
-<pre><code>codeceptjs run-multiple --all
+<pre><code class="sh">codeceptjs run-multiple regression -c path/to/config
 </code></pre>
 
 <p>Each executed process uses custom folder for reports and output. It is stored in subfolder inside an output directory. Subfolders will be named in <code>suite_browser</code> format.</p>
 <p>Output is printed for all running processes. Each line is tagged with a suite and browser name:</p>
-<pre><code>[basic:firefox] GitHub --
+<pre><code class="sh">[basic:firefox] GitHub --
 [basic:chrome] GitHub --
 [basic:chrome]    it should not enter
 [basic:chrome]  ✓ signin in 2869ms
@@ -335,7 +372,6 @@ It can be turned on with <code>--debug</code> flag.</p>
 [basic:firefox]  ✖ signin in 2743ms
 
 [basic:firefox] -- FAILURES:
-
 </code></pre>
 
 <h2 id="done">done()</h2></div>
@@ -393,9 +429,12 @@ It can be turned on with <code>--debug</code> flag.</p>
         <script src="../js/bootstrap-3.0.3.min.js"></script>
         <script src="../js/highlight.pack.js"></script>        
         <script src="../js/base.js"></script>
+        <script src="../build/ApiDataFactory.js"></script>
+        <script src="../build/Appium.js"></script>
         <script src="../build/FileSystem.js"></script>
         <script src="../build/Nightmare.js"></script>
         <script src="../build/Protractor.js"></script>
+        <script src="../build/REST.js"></script>
         <script src="../build/SeleniumWebdriver.js"></script>
         <script src="../build/WebDriverIO.js"></script>
     </body>

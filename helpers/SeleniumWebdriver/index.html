@@ -258,6 +258,8 @@
         
             <li><a href="#click">click</a></li>
         
+            <li><a href="#closeothertabs">closeOtherTabs</a></li>
+        
             <li><a href="#dontsee">dontSee</a></li>
         
             <li><a href="#dontseecheckboxischecked">dontSeeCheckboxIsChecked</a></li>
@@ -368,6 +370,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
 <li><code>restart</code> - restart browser between tests (default: true).</li>
+<li><code>smartWait</code>: (optional) <strong>enables SmartWait</strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.*</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
@@ -376,6 +379,19 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
 <li><code>capabilities</code>: {} - list of <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Desired Capabilities</a></li>
 </ul>
+<p>Example:</p>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;SeleniumWebdriver&quot; : {
+       &quot;url&quot;: &quot;http://localhost&quot;,
+       &quot;browser&quot;: &quot;chrome&quot;,
+       &quot;smartWait&quot;: 5000,
+       &quot;restart&quot;: false
+     }
+   }
+}
+</code></pre>
+
 <h2 id="access-from-helpers">Access From Helpers</h2>
 <p>Receive a WebDriverIO client from a custom helper by accessing <code>browser</code> property:</p>
 <pre><code class="js">this.helpers['SeleniumWebdriver'].browser
@@ -391,9 +407,14 @@ Should be used in custom helpers:</p>
 <pre><code class="js">this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
 </code></pre>
 
+<p>To use SmartWait and wait for element to appear on a page, add <code>true</code> as second arg:</p>
+<pre><code class="js">this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>smartWait</code>   (optional, default <code>false</code>)</li>
 </ul>
 <h2 id="amonpage">amOnPage</h2>
 <p>Opens a web page in a browser. Requires relative or absolute url.
@@ -505,6 +526,11 @@ I.click({css: 'nav a.login'});
 </thead>
 <tbody></tbody>
 </table>
+<h2 id="closeothertabs">closeOtherTabs</h2>
+<p>Close all tabs expect for one.</p>
+<pre><code class="js">I.closeOtherTabs();
+</code></pre>
+
 <h2 id="dontsee">dontSee</h2>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.</p>
@@ -708,8 +734,8 @@ I.moveCursorTo('#submit', 5,5);
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
-<li><code>offsetX</code>  </li>
-<li><code>offsetY</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>null</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
@@ -997,9 +1023,12 @@ Element can be located by CSS or XPath.</p>
         <script src="../../js/bootstrap-3.0.3.min.js"></script>
         <script src="../../js/highlight.pack.js"></script>        
         <script src="../../js/base.js"></script>
+        <script src="../../build/ApiDataFactory.js"></script>
+        <script src="../../build/Appium.js"></script>
         <script src="../../build/FileSystem.js"></script>
         <script src="../../build/Nightmare.js"></script>
         <script src="../../build/Protractor.js"></script>
+        <script src="../../build/REST.js"></script>
         <script src="../../build/SeleniumWebdriver.js"></script>
         <script src="../../build/WebDriverIO.js"></script>
     </body>

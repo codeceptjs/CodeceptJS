@@ -41,6 +41,7 @@ let withinStore = {};
  * * `browser` - browser in which perform testing
  * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
  * * `restart` (optional, default: true) - restart browser between tests.
+ * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `rootElement` - Root element of AngularJS application (default: body)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
@@ -51,6 +52,21 @@ let withinStore = {};
  * * `proxy`: set proxy settings
  *
  * other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+ *
+ * Example:
+ *
+ * ```json
+ * {
+ *    "helpers": {
+ *      "Protractor" : {
+ *        "url": "http://localhost",
+ *        "browser": "chrome",
+ *        "smartWait": 5000,
+ *        "restart": false
+ *      }
+ *    }
+ * }
+ * ```
  *
  * ## Access From Helpers
  *
@@ -68,6 +84,7 @@ class Protractor extends SeleniumWebdriver {
       browser: 'chrome',
       url: 'http://localhost',
       seleniumAddress: 'http://localhost:4444/wd/hub',
+      fullPageScreenshots: true,
       rootElement: 'body',
       scriptsTimeout: 10000,
       waitForTimeout: 1000, // ms
@@ -164,6 +181,7 @@ class Protractor extends SeleniumWebdriver {
   _withinEnd() {
     this.browser.findElement = withinStore.elFn;
     this.browser.findElements = withinStore.elsFn;
+    withinStore = {};
     this.context = this.options.rootElement;
   }
 
@@ -213,7 +231,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForElement(locator, sec) {
+  waitForElement(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.presenceOf(el), sec * 1000);
@@ -222,7 +240,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
   /**
    * Waits for element to become clickable for number of seconds.
    */
-  waitForClickable(locator, sec) {
+  waitForClickable(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.elementToBeClickable(el), sec * 1000);
@@ -257,7 +275,7 @@ I.waitForInvisible('#popup');
 @param sec time seconds to wait, 1 by default
 
    */
-  waitForInvisible(locator, sec) {
+  waitForInvisible(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = element(guessLocator(locator) || by.css(locator));
     return this.browser.wait(EC.invisibilityOf(el), sec * 1000);
@@ -275,7 +293,7 @@ I.waitForStalenessOf('#popup');
 @param sec time seconds to wait, 1 by default
 
    */
-  waitForStalenessOf(locator, sec) {
+  waitForStalenessOf(locator, sec = null) {
     return this.waitForInvisible(locator, sec);
   }
 
@@ -293,7 +311,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param sec seconds to wait
 @param context element located by CSS|XPath|strict locator
    */
-  waitForText(text, sec, context) {
+  waitForText(text, sec = null, context = null) {
     if (!context) {
       context = this.context;
     }
@@ -1043,3 +1061,21 @@ I.setCookie({name: 'auth', value: true});
  * @scope instance
  */
 var _setCookie;
+
+
+/**
+ * ```js
+ * this.helpers['Protractor']._locate({name: 'password'}).then //...
+ * ```
+ * To use SmartWait and wait for element to appear on a page, add `true` as second arg:
+ *
+ * ```js
+ * this.helpers['Protractor']._locate({name: 'password'}, true).then //...
+ * ```
+ *
+ * @name _locate
+ * @kind function
+ * @memberof Protractor
+ * @scope instance
+ */
+var __locate;
