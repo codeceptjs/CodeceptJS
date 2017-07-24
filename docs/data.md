@@ -132,7 +132,7 @@ Next is to configure helper to match factories with API:
  }
 ```
 
-Then, calling `I.have('user')` inside a test will create a new post for you.
+Then, calling `I.have('user')` inside a test will create a new user for you.
 This is done by sending POST request to `/api/users` URL. Response is returned and can be used in tests.
 
 At the end of a test ApiDataFactory will clean up created record for you. This is done by collecting
