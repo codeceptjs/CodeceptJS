@@ -207,11 +207,11 @@ Configure mocha-multi with reports that you want:
           "steps": true,
         }
       },
-      mochawesome: {
-       stdout: "./output/console.log",
-       options: {
-         reportDir: "./output",
-         reportFilename: "report"
+      "mochawesome": {
+       "stdout": "./output/console.log",
+       "options": {
+         "reportDir": "./output",
+         "reportFilename": "report"
       }
     }
   }
