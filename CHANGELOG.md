@@ -49,8 +49,8 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
+* [Data Driven Tests](http://codecept.io/advanced/#data-driven-tests) introduced.
 * Print execution time per step in `--debug` mode. [#591](https://github.com/Codeception/CodeceptJS/pull/591) by @APshenkin
-* [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov [#574](https://github.com/Codeception/CodeceptJS/pull/574)
 * [WebDriverIO][Protractor][Nightmare] Added `disableScreenshots` option to disable screenshots on fail by @Apshenkin
 * [WebDriverIO][Protractor][Nightmare] Added `uniqueScreenshotNames` option to generate unique names for screenshots on failure by @Apshenkin
 * [WebDriverIO][Nightmare] Fixed click on context; `click('text', '#el')` will throw exception if text is not found inside `#el`.
@@ -80,6 +80,7 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
     * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
     * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
 * Use mkdirp to create output directory. [#592](https://github.com/Codeception/CodeceptJS/pull/592) by @vkramskikh
+* [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov [#574](https://github.com/Codeception/CodeceptJS/pull/574)
 * Lots of fixes for promise chain by @APshenkin [#568](https://github.com/Codeception/CodeceptJS/pull/568)
     * Fix [#543](https://github.com/Codeception/CodeceptJS/issues/543) - After block not properly executed if Scenario fails
     * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
