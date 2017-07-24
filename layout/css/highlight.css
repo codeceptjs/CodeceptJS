@@ -77,12 +77,12 @@ vim-hybrid theme by w0ng (https://github.com/w0ng/vim-hybrid)
 /*selection color*/
 .hljs::selection,
 .hljs span::selection {
-  background: #373b41;
+  background: #2c3e50;
 }
 
 .hljs::-moz-selection,
 .hljs span::-moz-selection {
-  background: #373b41;
+  background: #2c3e50;
 }
 
 /*foreground color*/
