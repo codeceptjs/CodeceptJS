@@ -369,7 +369,7 @@ module.exports = new Factory()
  }
 </code></pre>
 
-<p>Then, calling <code>I.have('user')</code> inside a test will create a new post for you.
+<p>Then, calling <code>I.have('user')</code> inside a test will create a new user for you.
 This is done by sending POST request to <code>/api/users</code> URL. Response is returned and can be used in tests.</p>
 <p>At the end of a test ApiDataFactory will clean up created record for you. This is done by collecting
 ids from crated records and running <code>DELETE /api/users/{id}</code> requests at the end of a test.

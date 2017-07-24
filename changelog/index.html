@@ -409,7 +409,7 @@ I.see('Hello, davert');
 <ul>
 <li>Read more about <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></li>
 </ul>
-<h4 id="changelog">Changelog</h4>
+<h5 id="changelog">Changelog</h5>
 <ul>
 <li>Minimal NodeJS version is 6.11.1 LTS</li>
 <li>Use <code>within</code> command with generators.</li>
@@ -417,15 +417,6 @@ I.see('Hello, davert');
 <li>[WebDriverIO] Fixed <code>seeNumberOfVisibleElements</code> by @BorisOsipov <a href="https://github.com/Codeception/CodeceptJS/pull/574">#574</a></li>
 <li>[WebDriverIO][Protractor][Nightmare] Added <code>disableScreenshots</code> option to disable screenshots on fail by @Apshenkin</li>
 <li>[WebDriverIO][Protractor][Nightmare] Added <code>uniqueScreenshotNames</code> option to generate unique names for screenshots on failure by @Apshenkin</li>
-<li>Lots of fixes for promise chain by @APshenkin <a href="https://github.com/Codeception/CodeceptJS/pull/568">#568</a></li>
-<li>Fix <a href="https://github.com/Codeception/CodeceptJS/issues/543">#543</a> - After block not properly executed if Scenario fails</li>
-<li>Expected behavior in promise chains: <code>_beforeSuite</code> hooks from helpers -&gt; <code>BeforeSuite</code> from test -&gt; <code>_before</code> hooks from helpers -&gt; <code>Before</code> from test - &gt; Test steps -&gt; <code>_failed</code> hooks from helpers (if test failed) -&gt; <code>After</code> from test -&gt; <code>_after</code> hooks from helpers -&gt; <code>AfterSuite</code> from test -&gt; <code>_afterSuite</code> hook from helpers.</li>
-<li>if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another</li>
-<li>if during test we got error from Selenium server - stop complete this suite and go to another</li>
-<li>[WebDriverIO][Protractor] if <code>restart</code> option is false - close all tabs expect one in <code>_after</code>.</li>
-<li>Complete <code>_after</code>, <code>_afterSuite</code> hooks even After/AfterSuite from test was failed</li>
-<li>Don't close browser between suites, when <code>restart</code> option is false. We should start browser only one time and close it only after all tests.</li>
-<li>Close tabs and clear local storage, if <code>keepCookies</code> flag is enabled</li>
 <li>[WebDriverIO][Nightmare] Fixed click on context; <code>click('text', '#el')</code> will throw exception if text is not found inside <code>#el</code>.</li>
 <li>[WebDriverIO][Protractor][SeleniumWebdriver] <a href="http://codecept.io/acceptance/#smartwait">SmartWait introduced</a>.</li>
 <li>[WebDriverIO][Protractor][Nightmare]Fixed <code>saveScreenshot</code> for PhantomJS, <code>fullPageScreenshots</code> option introduced by @HughZurname <a href="https://github.com/Codeception/CodeceptJS/pull/549">#549</a></li>
@@ -434,27 +425,38 @@ I.see('Hello, davert');
 <li>[WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version #560 by @APshenkin</li>
 <li>[Nightmare] Fixed restarting by @APshenkin <a href="https://github.com/Codeception/CodeceptJS/pull/581">#581</a></li>
 <li>[WebDriverIO] Methods added by @APshenkin:<ul>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#grabCssPropertyFrom">grabCssPropertyFrom</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#seeTitleEquals">seeTitleEquals</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#seeTextEquals">seeTextEquals</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#seeCssPropertiesOnElements">seeCssPropertiesOnElements</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#seeAttributesOnElements">seeAttributesOnElements</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#grabNumberOfVisibleElements">grabNumberOfVisibleElements</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#waitInUrl">waitInUrl</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#waitUrlEquals">waitUrlEquals</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#waitForValue">waitForValue</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#waitNumberOfVisibleElements">waitNumberOfVisibleElements</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#switchToNextTab">switchToNextTab</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#switchToPreviousTab">switchToPreviousTab</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#closeCurrentTab">closeCurrentTab</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#openNewTab">openNewTab</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#refreshPage">refreshPage</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#scrollPageToBottom">scrollPageToBottom</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#scrollPageToTop">scrollPageToTop</a></li>
-<li><a href="http://codecept.io/helpers/WebDriverIO/#grabBrowserLogs">grabBrowserLogs</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#seetitleequals">seeTitleEquals</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#seetextequals">seeTextEquals</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#seecsspropertiesonelements">seeCssPropertiesOnElements</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#seeattributesonelements">seeAttributesOnElements</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#waitinurl">waitInUrl</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#waiturlequals">waitUrlEquals</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#waitforvalue">waitForValue</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#waitnumberofvisibleelements">waitNumberOfVisibleElements</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#switchtonexttab">switchToNextTab</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#switchtoprevioustab">switchToPreviousTab</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#closecurrenttab">closeCurrentTab</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#opennewtab">openNewTab</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#refreshpage">refreshPage</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom">scrollPageToBottom</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#scrollpagetotop">scrollPageToTop</a></li>
+<li><a href="http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs">grabBrowserLogs</a></li>
 </ul>
 </li>
 <li>Use mkdirp to create output directory. <a href="https://github.com/Codeception/CodeceptJS/pull/592">#592</a> by @vkramskikh</li>
+<li>Lots of fixes for promise chain by @APshenkin <a href="https://github.com/Codeception/CodeceptJS/pull/568">#568</a><ul>
+<li>Fix <a href="https://github.com/Codeception/CodeceptJS/issues/543">#543</a> - After block not properly executed if Scenario fails</li>
+<li>Expected behavior in promise chains: <code>_beforeSuite</code> hooks from helpers -&gt; <code>BeforeSuite</code> from test -&gt; <code>_before</code> hooks from helpers -&gt; <code>Before</code> from test - &gt; Test steps -&gt; <code>_failed</code> hooks from helpers (if test failed) -&gt; <code>After</code> from test -&gt; <code>_after</code> hooks from helpers -&gt; <code>AfterSuite</code> from test -&gt; <code>_afterSuite</code> hook from helpers.</li>
+<li>if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another</li>
+<li>if during test we got error from Selenium server - stop complete this suite and go to another</li>
+<li>[WebDriverIO][Protractor] if <code>restart</code> option is false - close all tabs expect one in <code>_after</code>.</li>
+<li>Complete <code>_after</code>, <code>_afterSuite</code> hooks even After/AfterSuite from test was failed</li>
+<li>Don't close browser between suites, when <code>restart</code> option is false. We should start browser only one time and close it only after all tests.</li>
+<li>Close tabs and clear local storage, if <code>keepCookies</code> flag is enabled</li>
+</ul>
+</li>
 <li>Fix TypeError when using babel-node or ts-node on node.js 7+ <a href="https://github.com/Codeception/CodeceptJS/pull/586">#586</a> by @vkramskikh</li>
 <li>[Nightmare] fixed usage of <code>_locate</code></li>
 </ul>
