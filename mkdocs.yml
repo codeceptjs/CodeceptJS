@@ -8,9 +8,11 @@ pages:
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
     - 'AngularJS Testing': 'angular.md'
+    - 'Mobile Testing': 'mobile.md'
     - 'Nightmare Testing': 'nightmare.md'
     - 'Helpers': 'helpers.md'
     - 'Page Objects': 'pageobjects.md'
+    - 'Data Management': 'data.md'
     - 'Hooks': 'hooks.md'
     - 'Advanced Usage': 'advanced.md'
 - Helpers:
@@ -18,6 +20,9 @@ pages:
     - 'Protractor': 'helpers/Protractor.md'
     - 'SeleniumWebdriver': 'helpers/SeleniumWebdriver.md'
     - 'Nightmare': 'helpers/Nightmare.md'
+    - 'Appium': 'helpers/Appium.md'
+    - 'REST': 'helpers/REST.md'
+    - 'ApiDataFactory': 'helpers/ApiDataFactory.md'
     - 'FileSystem': 'helpers/FileSystem.md'
 - Reference:
     - 'Installation': 'installation.md'
