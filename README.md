@@ -28,9 +28,8 @@ Codeception uses **Helper** modules to provide actions to `I` object. Currently 
 * [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
 * [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper enpowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
 * [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - helper which for testing web applications indi Electron  using NightmareJS.
+* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md)
 * [**SeleniumWebdriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/SeleniumWebdriver.md) - helper which for selenium testing using official Selenium Webdriver JS bindings.
-* [**FileSystem**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/FileSystem.md) - simple helper for testing filesystem.
-
 And more to come...
 
 ## Why CodeceptJS?
@@ -87,7 +86,7 @@ codeceptjs def .
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
-Note that CodeceptJS requires Node.js version 5.12 or later.
+Note that CodeceptJS requires Node.js version 6.11 or later.
 
 ## Usage
 
