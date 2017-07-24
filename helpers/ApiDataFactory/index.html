@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>FileSystem - CodeceptJS</title>
+	<title>ApiDataFactory - CodeceptJS</title>
 
         <link href="../../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -162,12 +162,12 @@
                             <a href="../REST/">REST</a>
                         </li>
                     
-                        <li >
-                            <a href="../ApiDataFactory/">ApiDataFactory</a>
+                        <li class="active">
+                            <a href="./">ApiDataFactory</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">FileSystem</a>
+                        <li >
+                            <a href="../FileSystem/">FileSystem</a>
                         </li>
                     
                     </ul>
@@ -220,12 +220,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../ApiDataFactory/">
+                    <a rel="next" href="../REST/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../../installation/">
+                    <a rel="prev" href="../FileSystem/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -252,83 +252,191 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#filesystem">FileSystem</a></li>
+        <li class="main active"><a href="#apidatafactory">ApiDataFactory</a></li>
         
-            <li><a href="#aminpath">amInPath</a></li>
+            <li><a href="#use-case">Use Case</a></li>
         
-            <li><a href="#dontseefilecontentsequal">dontSeeFileContentsEqual</a></li>
+            <li><a href="#setup">Setup</a></li>
         
-            <li><a href="#dontseeinthisfile">dontSeeInThisFile</a></li>
+            <li><a href="#configuration">Configuration</a></li>
         
-            <li><a href="#seefile">seeFile</a></li>
+            <li><a href="#api-requests">Api Requests</a></li>
         
-            <li><a href="#seefilecontentsequal">seeFileContentsEqual</a></li>
+            <li><a href="#_fetchid">_fetchId</a></li>
         
-            <li><a href="#seeinthisfile">seeInThisFile</a></li>
+            <li><a href="#_requestcreate">_requestCreate</a></li>
         
-            <li><a href="#writetofile">writeToFile</a></li>
+            <li><a href="#_requestdelete">_requestDelete</a></li>
+        
+            <li><a href="#have">have</a></li>
+        
+            <li><a href="#havemultiple">haveMultiple</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="filesystem">FileSystem</h1>
-<p>Helper for testing filesystem.
-Can be easily used to check file structures:</p>
-<pre><code class="js">I.amInPath('test');
-I.seeFile('codecept.json');
-I.seeInThisFile('FileSystem');
-I.dontSeeInThisFile(&quot;WebDriverIO&quot;);
+<h1 id="apidatafactory">ApiDataFactory</h1>
+<p>Helper for managing remote data using REST API.
+Uses data generators like <a href="https://github.com/rosiejs/rosie">rosie</a> or factory girl to create new record.</p>
+<p>By defining a factory you set the rules of how data is generated.
+This data will be saved on server via REST API and deleted in the end of a test.</p>
+<h3 id="use-case">Use Case</h3>
+<p>Acceptance tests interact with a websites using UI and real browser.
+There is no way to create data for a specific test other than from user interface.
+That makes tests slow and fragile. Instead of testing a single feature you need to follow all creation/removal process.</p>
+<p>This helper solves this problem.
+Most of web application have API, and it can be used to create and delete test records.
+By combining REST API with Factories you can easily create records for tests:</p>
+<pre><code class="js">I.have('user', { login: 'davert', email: 'davert@mail.com' });
+let id = yield I.have('post', { title: 'My first post'});
+I.haveMultiple('comment', 3, {post_id: id});
 </code></pre>
 
-<h2 id="aminpath">amInPath</h2>
-<p>Enters a directory In local filesystem.
-Starts from a current directory</p>
-<p><strong>Parameters</strong></p>
+<p>To make this work you need</p>
+<ol>
+<li>REST API endpoint which allows to perform create / delete requests and</li>
+<li>define data generation rules</li>
+</ol>
+<h3 id="setup">Setup</h3>
+<p>Install <a href="https://github.com/rosiejs/rosie">Rosie</a> and <a href="https://www.npmjs.com/package/faker">Faker</a> libraries.</p>
+<pre><code>npm i rosie faker --save-dev`
+</code></pre>
+<p>Create a factory file for a resource.</p>
+<p>See the example for Posts factories:</p>
+<pre><code class="js">// tests/factories/posts.js
+
+var Factory = require('rosie').Factory;
+var faker = require('faker');
+
+module.exports = new Factory()
+   // no need to set id, it will be set by REST API
+   .attr('author', () =&gt; faker.name.findName())
+   .attr('title', () =&gt; faker.lorem.sentence())
+   .attr('body', () =&gt; faker.lorem.paragraph());
+</code></pre>
+
+<p>For more options see <a href="https://github.com/rosiejs/rosie">rosie documentation</a>.</p>
+<p>Then configure ApiDataHelper to match factories and REST API:</p>
+<h3 id="configuration">Configuration</h3>
+<p>ApiDataFactory has following config options:</p>
 <ul>
-<li><code>openPath</code>  </li>
+<li><code>endpoint</code>: base URL for the API to send requests to.</li>
+<li><code>cleanup</code>: should inserted records be deleted up after tests. Default: true</li>
+<li><code>factories</code>: list of defined factories</li>
+<li><code>REST</code>: configuration for REST requests</li>
 </ul>
-<h2 id="dontseefilecontentsequal">dontSeeFileContentsEqual</h2>
-<p>Checks that contents of file found by <code>seeFile</code> doesn't equal to text.</p>
-<p><strong>Parameters</strong></p>
+<p>See the example:</p>
+<pre><code class="js"> &quot;ApiDataFactory&quot;: {
+   &quot;endpoint&quot;: &quot;http://user.com/api&quot;,
+   &quot;cleanup&quot;: true,
+   &quot;factories&quot;: {
+     &quot;post&quot;: {
+        &quot;uri&quot;: &quot;/posts&quot;
+        &quot;factory&quot;: &quot;./factories/post&quot;
+     },
+     &quot;comment&quot;: {
+       &quot;factory&quot;: &quot;./factories/comment&quot;,
+       &quot;create&quot;: { &quot;post&quot;: &quot;/comments/create&quot; },
+       &quot;delete&quot;: { &quot;post&quot;: &quot;/comments/delete&quot; }
+     }
+   }
+}
+</code></pre>
+
+<p>It is required to set REST API <code>endpoint</code> which is the baseUrl for all API requests.
+Factory file is expected to be passed via <code>factory</code> option.</p>
+<p>This Helper uses <a href="http://codecept.io/helpers/REST/">REST</a> helper and accepts its configuration in "REST" section.
+So, in order to set default headers or timeout you should add:</p>
+<pre><code class="js">&quot;ApiDataFactory&quot;: {
+   &quot;REST&quot;: {
+     &quot;timeout&quot;: &quot;100000&quot;,
+     &quot;defaultHeaders&quot;: {
+       &quot;auth&quot;: &quot;111111&quot;
+     }
+  }
+}
+</code></pre>
+
+<h3 id="api-requests">Api Requests</h3>
+<p>By default to create a record ApiDataFactory will use endpoint and plural factory name:</p>
 <ul>
-<li><code>text</code>  </li>
-<li><code>encoding</code>  </li>
+<li>create: <code>POST {endpoint}/{resource} data</code></li>
+<li>delete: <code>DELETE {endpoint}/{resource}/id</code></li>
 </ul>
-<h2 id="dontseeinthisfile">dontSeeInThisFile</h2>
-<p>Checks that file found by <code>seeFile</code> doesn't include text.</p>
-<p><strong>Parameters</strong></p>
+<p>Example (<code>endpoint</code>: <code>http://app.com/api</code>):</p>
 <ul>
-<li><code>text</code>  </li>
-<li><code>encoding</code>  </li>
+<li>create: POST request to <code>http://app.com/api/users</code></li>
+<li>delete: DELETE request to <code>http://app.com/api/users/1</code></li>
 </ul>
-<h2 id="seefile">seeFile</h2>
-<p>Checks that file exists</p>
-<p><strong>Parameters</strong></p>
+<p>However this behavior can be configured with following options:</p>
 <ul>
-<li><code>name</code>  </li>
+<li><code>uri</code>: set different resource uri. Example: <code>uri: account</code> =&gt; <code>http://app.com/api/account</code>.</li>
+<li><code>create</code>: override create options. Expected format: <code>{ method: uri }</code>. Example: <code>{ "post": "/users/create" }</code></li>
+<li><code>delete</code>: override delete options. Expected format: <code>{ method: uri }</code>. Example: <code>{ "post": "/users/delete/{id}" }</code></li>
 </ul>
-<h2 id="seefilecontentsequal">seeFileContentsEqual</h2>
-<p>Checks that contents of file found by <code>seeFile</code> equal to text.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
-<li><code>encoding</code>  </li>
+<li><code>config</code>  </li>
 </ul>
-<h2 id="seeinthisfile">seeInThisFile</h2>
-<p>Checks that file found by <code>seeFile</code> includes a text.</p>
+<h2 id="_fetchid">_fetchId</h2>
+<p>Fetches id of a record after it was created by <code>have</code>.
+By default fetched <code>id</code> attribute from JSON body.</p>
+<p>Customize it from custom Helper file:</p>
+<pre><code class="js">this.helpers['ApiDataFactory']._fetchId = (body, factory) {
+   return body[factory][0].id;
+}
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>text</code>  </li>
-<li><code>encoding</code>  </li>
+<li><code>body</code> <strong>Any</strong> </li>
+<li><code>factory</code> <strong>Any</strong> </li>
 </ul>
-<h2 id="writetofile">writeToFile</h2>
-<p>Writes test to file</p>
+<h2 id="_requestcreate">_requestCreate</h2>
+<p>Executes request to create a record in API.
+Can be replaced from a in custom helper.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>name</code>  </li>
-<li><code>text</code>  </li>
+<li><code>factory</code> <strong>Any</strong> </li>
+<li><code>data</code> <strong>Any</strong> </li>
+</ul>
+<h2 id="_requestdelete">_requestDelete</h2>
+<p>Executes request to delete a record in API
+Can be replaced from a custom helper.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>factory</code> <strong>Any</strong> </li>
+<li><code>id</code> <strong>Any</strong> </li>
+</ul>
+<h2 id="have">have</h2>
+<p>Generates a new record using factory and saves API request to store it.</p>
+<pre><code class="js">// create a user
+I.have('user');
+// create user with defined email
+I.have('user', { email: 'user@user.com'});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>factory</code> <strong>Any</strong> factory to use</li>
+<li><code>params</code> <strong>Any</strong> predefined parameters</li>
+</ul>
+<h2 id="havemultiple">haveMultiple</h2>
+<p>Generates bunch of records and saves multiple API requests to store them.</p>
+<pre><code class="js">// create 3 posts
+I.have('post', 3);
+
+// create 3 posts by one author
+I.have('post', 3, { author: 'davert' });
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>factory</code> <strong>Any</strong> </li>
+<li><code>times</code> <strong>Any</strong> </li>
+<li><code>params</code> <strong>Any</strong> </li>
 </ul></div>
             <div class="clearfix"></div>
         </div>

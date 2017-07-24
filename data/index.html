@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Advanced Usage - CodeceptJS</title>
+	<title>Data Management - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
         
@@ -117,16 +117,16 @@
                             <a href="../pageobjects/">Page Objects</a>
                         </li>
                     
-                        <li >
-                            <a href="../data/">Data Management</a>
+                        <li class="active">
+                            <a href="./">Data Management</a>
                         </li>
                     
                         <li >
                             <a href="../hooks/">Hooks</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Advanced Usage</a>
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
                         </li>
                     
                     </ul>
@@ -220,12 +220,12 @@
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
                 <li >
-                    <a rel="next" href="../hooks/">
+                    <a rel="next" href="../pageobjects/">
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="../helpers/WebDriverIO/">
+                    <a rel="prev" href="../hooks/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -252,149 +252,130 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#advanced-usage">Advanced Usage</a></li>
+        <li class="main active"><a href="#data-management">Data Management</a></li>
         
-            <li><a href="#data-driven-tests">Data Driven Tests</a></li>
+            <li><a href="#rest">REST</a></li>
         
-            <li><a href="#groups">Groups</a></li>
-        
-            <li><a href="#debug">Debug</a></li>
-        
-            <li><a href="#multiple-execution">Multiple Execution</a></li>
-        
-            <li><a href="#done">done()</a></li>
+            <li><a href="#data-generation-with-factories">Data Generation with Factories</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="advanced-usage">Advanced Usage</h1>
-<h2 id="data-driven-tests">Data Driven Tests</h2>
-<p>Execute the same scenario on a different data set.</p>
-<p>Let's say you want to test login for different user accounts.
-In this case, you need to create a datatable and fill it in with credentials.
-Then use <code>Data().Scenario</code> to include this data and generate multiple scenarios:</p>
-<pre><code class="js">// define data table inside a test or load from another module
-let accounts = new DataTable(['login', 'password']); //
-accounts.add(['davert', '123456']); // adding records to a table
-accounts.add(['admin', '123456']);
-
-// Pass dataTable to Data()
-// Use special param `current` to get current data set
-Data(accounts).Scenario('Test Login', (I, current) =&gt; {
-  I.fillField('Username', current.login); // current is reserved!
-  I.fillField('Password', current.password);
-  I.click('Sign In');
-  I.see('Welcome '+ current.login);
-});
-</code></pre>
-
-<p><em>Important: you can't use name <code>current</code> for pageObjects or helpers in data scenarios</em></p>
-<p>This will produce 2 tests with different data sets.
-Current data set is appended to a test name in output:</p>
-<pre><code>✓ Test Login | {&quot;login&quot;:&quot;davert&quot;,&quot;password&quot;:&quot;123456&quot;}
-✓ Test Login | {&quot;login&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;}
-</code></pre>
-
-<p>Data sets can also be defined with array, generator, or a function.</p>
-<pre><code class="js">Data(function*() {
-  yield { user: 'davert'};
-  yield { user: 'andrey'};
-}).Scenario() // ...
-</code></pre>
-
-<p><em>HINT: If you don't use DataTable. add <code>toString()</code> method to each object added to data set, so the data could be pretty printed in a test name</em></p>
-<h2 id="groups">Groups</h2>
-<p>Append <code>@tag</code> to your test name, so
-all tests with <code>@tag</code> could be executed with <code>--grep @tag</code> option.</p>
-<pre><code class="js">Scenario('update user profile @slow')
-</code></pre>
-
-<pre><code>codeceptjs run --grep @slow
-</code></pre>
-
-<p>Use regex for more flexible filtering:</p>
-<ul>
-<li><code>--grep (?=.*@smoke2)(?=.*@smoke3)</code> - run tests with @smoke2 and @smoke3 in name</li>
-<li><code>--grep @smoke2|@smoke3</code> - run tests with @smoke2 or @smoke3 in name</li>
-<li><code>--grep ((?=.*@smoke2)(?=.*@smoke3))|@smoke4</code> - run tests with (@smoke2 and @smoke3) or @smoke4 in name</li>
-<li><code>--grep (?=.*@smoke2)^(?!.*@smoke3)</code> - run tests with @smoke2 but without @smoke3 in name</li>
-</ul>
-<h2 id="debug">Debug</h2>
-<p>CodeceptJS provides a debug mode in which additional information is printed.
-It can be turned on with <code>--debug</code> flag.</p>
-<pre><code>codeceptjs run --debug
-</code></pre>
-
-<p>While running in debug mode you can pause execution and enter interactive console mode by using <code>pause()</code> function.</p>
-<p>For advanced debugging use NodeJS debugger. In WebStorm IDE:</p>
-<pre><code>node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
-</code></pre>
-
-<h2 id="multiple-execution">Multiple Execution</h2>
-<p>CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations. Before using this feature you need to add <code>multiple</code> option to the config:</p>
-<pre><code class="js">&quot;multiple&quot;: {
-  &quot;basic&quot;: {
-    // run all tests in chrome and firefox
-    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+<h1 id="data-management">Data Management</h1>
+<p><em>This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see <a href="http://codecept.io/advanced/#data-drivern-tests">Data Driven Tests</a> section</em></p>
+<p>Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
+There are different approaches to solve it:</p>
+<ol>
+<li>reset database completely between tests</li>
+<li>create unique non-intersecting data sets per each test</li>
+<li>create and delete data for a test</li>
+</ol>
+<p>The most efficient way would be to allow test to control its data, i.e. the 3rd option.
+However, accessing database directly is not a good idea as database vendor, schema and data are used by application internally and are out of scope of acceptance test.</p>
+<p>Today all modern web applications have REST API. So it is a good idea to use it to create data for a test and delete it after.
+API supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 2 helpers for Data Management via REST API.</p>
+<h2 id="rest">REST</h2>
+<p><a href="http://codecept.io/helpers/REST/">REST helper</a> uses <a href="http://unirest.io/nodejs.html">Unirest</a> library to send HTTP requests to application.
+However, it doesn't provide tools for testing APIs, so it should be paired with WebDriverIO, Nightmare or Protractor helpers for browser testing.</p>
+<p>Enable REST helper in global config. It is recommended to set <code>endpoint</code>, a base URL for all API requests.
+If you need some authorization you can optionally set default headers too.</p>
+<p>See the sample config:</p>
+<pre><code class="js">&quot;helpers&quot;: {
+  &quot;REST&quot;: {
+    &quot;endpoint&quot;: &quot;http://localhost/api/v1/&quot;,
+    &quot;defaultHeaders&quot;: {
+      &quot;Auth&quot;: &quot;11111&quot;
+    }
   },
 
-  &quot;smoke&quot;: {
-    // run only tests containing &quot;@smoke&quot; in name
-    &quot;grep&quot;: &quot;@smoke&quot;,
-
-    // use firefox and different chrome configurations
-    &quot;browsers&quot;: [
-      &quot;firefox&quot;,
-      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;maximize&quot;},
-      // replace any config values from WebDriverIO helper
-      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;1200x840&quot;}
-    ]
+  &quot;WebDriverIO&quot; : {
+    &quot;browser&quot;: &quot;chrome&quot;
   }
 }
 </code></pre>
 
-<p>Then tests can be executed using <code>run-multiple</code> command.</p>
-<p>Run all suites for all browsers:</p>
-<pre><code class="sh">codeceptjs run-multiple --all
+<p>REST helper provides basic methods to send requests to application:</p>
+<pre><code class="js">I.sendGetRequest()
+I.sendPostRequest()
+I.sendPutRequest()
+I.sendPatchRequest()
+I.sendDeleteRequest()
 </code></pre>
 
-<p>Run <code>basic</code> suite for all browsers</p>
-<pre><code class="sh">codeceptjs run-multiple basic
+<p>As well as a method for setting headers: <code>haveRequestHeaders</code>.</p>
+<p>Here is a usage example:</p>
+<pre><code class="js">let postId = null;
+
+Scenario('check post page', function*(I) {
+  // valid access token
+  I.haveRequestHeaders({auth: '1111111'});
+  // get the first user
+  let user = yield I.sendGetRequest('/api/users/1');
+  // create a post and save its Id
+  postId = yield I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' });
+  // open browser page of new post
+  I.amOnPage('/posts/2.html');
+  I.see('some text', 'p.body');
+});
+
+// cleanup created data
+After((I) =&gt; {
+  I.sendDeleteRequest('/api/posts/'+postId);
+});
 </code></pre>
 
-<p>Run <code>basic</code> suite for chrome only:</p>
-<pre><code class="sh">codeceptjs run-multiple basic:chrome
+<p>This can also be used to emulate Ajax requests:</p>
+<pre><code class="js">I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
 </code></pre>
 
-<p>Run <code>basic</code> suite for chrome and <code>smoke</code> for firefox</p>
-<pre><code class="sh">codeceptjs run-multiple basic:chrome smoke:firefox
+<h2 id="data-generation-with-factories">Data Generation with Factories</h2>
+<p>This concept is extended by <a href="http://codecept.io/helpers/ApiDataFactory/">ApiDataFactory</a> helper.
+It builds data according to defined rules and uses API to store them and automatically clean them up after a test,
+This way setting data for a test is as simple as writing:</p>
+<pre><code class="js">let post = yield I.have('post');
+I.haveMultiple('comment', 5, { postId: post.id});
 </code></pre>
 
-<p>Run basic tests with grep and junit reporter</p>
-<pre><code class="sh">codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
+<p>Just define how many items of any kind you need and ApiDataFactory will create them for you.
+However, to make this work some preparations required.</p>
+<p>At first, you need data generation libraries which are <a href="https://github.com/rosiejs/rosie">Rosie</a> and <a href="https://www.npmjs.com/package/faker">Faker</a>. Faker can generate random names, emails, texts, and Rosie uses them
+to generate objects using factories.</p>
+<p>Install rosie and faker to create a first factory:</p>
+<pre><code class="js">npm i rosie faker --save-dev
 </code></pre>
 
-<p>Run regression tests specifying different config path:</p>
-<pre><code class="sh">codeceptjs run-multiple regression -c path/to/config
+<p>Then create a module which will export a factory for an entity.</p>
+<p>See the example providing a factory for User generation:</p>
+<pre><code class="js">// factories/post.js
+var Factory = require('rosie').Factory;
+var faker = require('faker');
+
+module.exports = new Factory()
+  .attr('name', () =&gt; faker.name.findName())
+  .attr('email', () =&gt; faker.internet.email());
 </code></pre>
 
-<p>Each executed process uses custom folder for reports and output. It is stored in subfolder inside an output directory. Subfolders will be named in <code>suite_browser</code> format.</p>
-<p>Output is printed for all running processes. Each line is tagged with a suite and browser name:</p>
-<pre><code class="sh">[basic:firefox] GitHub --
-[basic:chrome] GitHub --
-[basic:chrome]    it should not enter
-[basic:chrome]  ✓ signin in 2869ms
-
-[basic:chrome]   OK  | 1 passed   // 30s
-[basic:firefox]    it should not enter
-[basic:firefox]  ✖ signin in 2743ms
-
-[basic:firefox] -- FAILURES:
+<p>Next is to configure helper to match factories with API:</p>
+<pre><code class="js"> &quot;ApiDataFactory&quot;: {
+   &quot;endpoint&quot;: &quot;http://user.com/api&quot;,
+   &quot;factories&quot;: {
+     &quot;user&quot;: {
+        &quot;uri&quot;: &quot;/users&quot;
+        &quot;factory&quot;: &quot;./factories/user&quot;
+     }
+   }
+ }
 </code></pre>
 
-<h2 id="done">done()</h2></div>
+<p>Then, calling <code>I.have('user')</code> inside a test will create a new post for you.
+This is done by sending POST request to <code>/api/users</code> URL. Response is returned and can be used in tests.</p>
+<p>At the end of a test ApiDataFactory will clean up created record for you. This is done by collecting
+ids from crated records and running <code>DELETE /api/users/{id}</code> requests at the end of a test.
+This rules can be customized in helper configuration.</p>
+<hr />
+<h3 id="done">done()</h3></div>
             <div class="clearfix"></div>
         </div>
         

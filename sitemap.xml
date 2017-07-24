@@ -38,6 +38,12 @@
     </url>
         
     <url>
+     <loc>None/mobile/</loc>
+     <lastmod>2017-07-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>None/nightmare/</loc>
      <lastmod>2017-07-24</lastmod>
      <changefreq>daily</changefreq>
@@ -51,6 +57,12 @@
         
     <url>
      <loc>None/pageobjects/</loc>
+     <lastmod>2017-07-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/data/</loc>
      <lastmod>2017-07-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -91,6 +103,24 @@
         
     <url>
      <loc>None/helpers/Nightmare/</loc>
+     <lastmod>2017-07-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/Appium/</loc>
+     <lastmod>2017-07-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/REST/</loc>
+     <lastmod>2017-07-24</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/ApiDataFactory/</loc>
      <lastmod>2017-07-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
