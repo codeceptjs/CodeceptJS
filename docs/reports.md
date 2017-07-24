@@ -157,8 +157,8 @@ Then tests with failure will have screenshots.
 
 This helper should be configured in codecept.json
 
--   `uniqueScreenshotNames` - base url of website to be tested
--   `disableScreenshots` (optional, default: true) - restart browser between tests.
+-   `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
 
 Also if you will add Mochawesome helper, then you will able to add custom context in report:
 #### addMochawesomeContext
