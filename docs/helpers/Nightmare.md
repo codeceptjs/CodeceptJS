@@ -65,7 +65,7 @@ I.amOnPage('/login'); // opens a login page
 -   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
     I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
     ```
--   `headers`  
+-   `headers`   (optional, default `null`)
 
 ## appendField
 
@@ -449,8 +449,8 @@ I.moveCursorTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## pressKey
 
@@ -500,8 +500,8 @@ I.scrollTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## see
 
@@ -673,6 +673,21 @@ I.setCookie({name: 'auth', value: true});
 
 -   `cookie`  Wrapper for `.cookies.set(cookie)`.
     [See more](https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie)
+
+## triggerMouseEvent
+
+Sends [input event](http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent) on a page.
+Should be a mouse event like:
+ {
+type: 'mouseDown',
+x: args.x,
+y: args.y,
+button: "left"
+}
+
+**Parameters**
+
+-   `event`  
 
 ## wait
 

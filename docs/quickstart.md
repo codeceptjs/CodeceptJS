@@ -1,6 +1,6 @@
 # QuickStart
 
-**NodeJS v 4.2.0** and higher required to start.
+**NodeJS v 6.11.1** and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
 
 Install **CodeceptJS** with WebDriverio using `codeceptjs-webdriverio` meta package from NPM.

@@ -137,6 +137,14 @@ module.exports.tests = function() {
       return I.seeInCurrentUrl('/info');
     });
 
+    it('should not click wrong context', function*() {
+      let err = false;
+      yield I.amOnPage('/');
+      return I.click('More info', '#area1')
+        .catch((e) => err = true)
+        .then(() => assert.ok(err))
+    });
+
     it('should click link with inner span', function*() {
       yield I.amOnPage('/form/example7');
       yield I.click('Buy Chocolate Bar');
@@ -496,7 +504,7 @@ module.exports.tests = function() {
         .then(() => assert.ok(fileExists(path.join(output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
     });
 
-    it('should create a screenshot on fail', () => {
+    it('should create a screenshot on fail  @ups', () => {
       let sec = (new Date()).getUTCMilliseconds().toString();
       let test = { title: 'sw should do smth '+sec };
       return I.amOnPage('/')
@@ -526,7 +534,7 @@ module.exports.tests = function() {
   });
 
   describe('#waitForText', () => {
-    it('should wait for text', () => {
+    it('should wait for text @ups', () => {
       return I.amOnPage('/dynamic')
         .then(() => I.dontSee('Dynamic text'))
         .then(() => I.waitForText('Dynamic text', 2))
@@ -577,6 +585,68 @@ module.exports.tests = function() {
     });
 
 
-  })
+  });
+
+  describe('within tests', () => {
+
+    afterEach(() => {
+      return I._withinEnd();
+    });
+
+    it('should execute within block', () => {
+      return I.amOnPage('/form/example4')
+        .then(() => I.seeElement('#navbar-collapse-menu'))
+        .then(() => I._withinBegin('#register'))
+        .then(() => I.see('E-Mail'))
+        .then(() => I.dontSee('Toggle navigation'))
+        .then(() => I.dontSeeElement('#navbar-collapse-menu'))
+    });
+
+
+    it('should respect form fields inside within block ', () => {
+      let rethrow;
+      return I.amOnPage('/form/example4')
+        .then(() => I.seeElement('#navbar-collapse-menu'))
+        .then(() => I.see('E-Mail'))
+        .then(() => I.see('Hasło'))
+        .then(() => I.fillField('Hasło', '12345'))
+        .then(() => I.seeInField('Hasło', '12345'))
+        .then(() => I.checkOption('terms'))
+        .then(() => I.seeCheckboxIsChecked('terms'))
+        .then(() => I._withinBegin({css: '.form-group'}))
+        .then(() => I.see('E-Mail'))
+        .then(() => I.dontSee('Hasło'))
+        .then(() => I.dontSeeElement('#navbar-collapse-menu'))
+        .catch((err) => rethrow = err)
+        .then(() => I.dontSeeCheckboxIsChecked('terms'))
+        .catch((err) => { if (!err) assert.fail('seen checkbox') })
+        .then(() => I.seeInField('Hasło', '12345'))
+        .catch((err) => { if (!err) assert.fail('seen field') })
+        .then(() => { if (rethrow) throw rethrow });
+    });
+
+
+    it('should execute within block ', () => {
+      return I.amOnPage('/form/example4')
+        .then(() => I.fillField('Hasło', '12345'))
+        .then(() => I._withinBegin({xpath: '//div[@class="form-group"][2]'}))
+        .then(() => I.dontSee('E-Mail'))
+        .then(() => I.see('Hasło'))
+        .then(() => I.grabTextFrom('label'))
+        .then((label) => assert.equal(label, 'Hasło'))
+        .then(() => I.grabValueFrom('input'))
+        .then((input) => assert.equal(input, '12345'));
+    });
+
+    it('within should respect context in see', () => {
+      return I.amOnPage('/form/example4')
+        .then(() => I.see('Rejestracja', 'fieldset'))
+        .then(() => I._withinBegin({css: '.navbar-header'}))
+        .then(() => I.see('Rejestracja', '.container fieldset'))
+        .catch((err) => { if (!err) assert.fail('seen fieldset') })
+        .then(() => I.see('Toggle navigation', '.container fieldset'))
+        .catch((err) => { if (!err) assert.fail('seen fieldset') })
+    });
+  });
 
 }

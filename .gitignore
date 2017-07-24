@@ -10,3 +10,5 @@ test/acceptance/output
 examples/output
 test/data/app/db
 test/data/sandbox/steps.d.ts
+testpullfilecache*
+.DS_Store

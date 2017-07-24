@@ -12,6 +12,7 @@ module.exports = {
         'selectOption': 'выбираю_опцию',
         'fillField': 'заполнаю_поле',
         'pressKey': 'нажимаю_кнопку',
+        'triggerMouseEvent': 'триггерное_событие_мыши',
         'attachFile': 'загружаю_файл',
         'seeInField': 'вижу_в_поле',
         'dontSeeInField': 'не_вижу_в_поле',
