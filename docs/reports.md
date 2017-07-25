@@ -191,16 +191,11 @@ Install it via NPM:
 npm i mocha-multi
 ```
 
-Also install `codeceptjs-cli` if you want to use default CLI with other reporters:
-```
-npm i codeceptjs-cli
-```
-
 Configure mocha-multi with reports that you want:
 ```json
   "mocha": {
     "reporterOptions": {
-      "codeceptjs-cli": {
+      "codeceptjs-cli-reporter": {
         "stdout": "-",
         "options": {
           "verbose": true,

@@ -27,6 +27,8 @@ This helper should be configured in codecept.json
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
 -   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
 -   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+-   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
+-   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `rootElement` - Root element of AngularJS application (default: body)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
