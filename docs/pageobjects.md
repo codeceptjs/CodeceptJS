@@ -68,7 +68,7 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
-Also you can create generators in pageobject:
+Also you can use generators inside PageObject:
 ```js
 'use strict';
 let I;
@@ -80,29 +80,33 @@ module.exports = {
   },
 
   // setting locators
-  fields: {
-    email: '#user_basic_email',
-    password: '#user_basic_password'
+  container: "//div[@class = 'numbers']",
+  mainItem: {
+    number: ".//div[contains(@class, 'numbers__main-number')]",
+    title: ".//div[contains(@class, 'numbers__main-title-block')]"
   },
-  submitButton: {css: '#new_user_basic input[type=submit]'},
-  result: '//h1'
 
   // introducing methods
-  grabLoginResult: function* (email, password) {
-    I.fillField(this.fields.email, email);
-    I.fillField(this.fields.password, password);
-    I.click(this.submitButton);
-    let result = yield I.grabTextFrom(this.result)
-    return result
+  openMainArticle: function* () {
+    I.waitForVisible(this.container)
+    let _this = this
+    let title;
+    yield within(this.container, function*(){
+      title = yield I.grabTextFrom(_this.mainItem.number);
+      let subtitle = yield I.grabTextFrom(_this.mainItem.title);
+      title = title + " " + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
+      yield I.click(_this.mainItem.title)
+    })
+    return title;
   }
 }
 ```
 
 and use them in your tests:
 ```js
-Scenario('login2', (I, loginPage) => {
-  let result = yield* reloginPage.grabLoginResult('john@doe.com','123456');
-  console.log(result)
+Scenario('login2', (I, loginPage, basePage) => {
+  let title = yield* mainPage.openMainArticle()
+  basePage.pageShouldBeOpened(title)
 });
 ```
 
