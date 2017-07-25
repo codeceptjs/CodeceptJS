@@ -330,7 +330,7 @@ I.see('Welcome');
     <div class="col-md-6">
     <pre><code class="javascript">Feature('CodeceptJS Demonstration');
 
-Scenario('submit form successfully', (I) =>
+Scenario('submit form successfully', (I) => {
 &nbsp;&nbsp;I.amOnPage('/documentation')
 &nbsp;&nbsp;I.fillField('Email', 'hello@world.com')
 &nbsp;&nbsp;I.fillField('Password', '123456')
