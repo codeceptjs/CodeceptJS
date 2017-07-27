@@ -68,6 +68,48 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
+Also you can use generators inside PageObject:
+```js
+'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = actor();
+  },
+
+  // setting locators
+  container: "//div[@class = 'numbers']",
+  mainItem: {
+    number: ".//div[contains(@class, 'numbers__main-number')]",
+    title: ".//div[contains(@class, 'numbers__main-title-block')]"
+  },
+
+  // introducing methods
+  openMainArticle: function* () {
+    I.waitForVisible(this.container)
+    let _this = this
+    let title;
+    yield within(this.container, function*(){
+      title = yield I.grabTextFrom(_this.mainItem.number);
+      let subtitle = yield I.grabTextFrom(_this.mainItem.title);
+      title = title + " " + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
+      yield I.click(_this.mainItem.title)
+    })
+    return title;
+  }
+}
+```
+
+and use them in your tests:
+```js
+Scenario('login2', (I, loginPage, basePage) => {
+  let title = yield* mainPage.openMainArticle()
+  basePage.pageShouldBeOpened(title)
+});
+```
+
 ## Page Fragments
 
 In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction

@@ -31,7 +31,7 @@ describe('SeleniumWebdriver', function () {
 
     });
     I._init();
-    return browser = I._beforeSuite();
+    return I._beforeSuite().then(() => browser = I.browser);
   });
 
   after(function() {

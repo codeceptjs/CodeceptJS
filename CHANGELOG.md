@@ -41,7 +41,7 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 
 * Read more about [SmartWait](http://codecept.io/acceptance/#smartwait)
 
-#### Changelog
+**Changelog**
 
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.

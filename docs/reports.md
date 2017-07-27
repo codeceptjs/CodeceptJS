@@ -141,3 +141,80 @@ codeceptjs run --reporter mochawesome
 
 Result will be located at `output/index.html` file.
 
+### Advanced usage
+Want to have screenshots for failed tests?
+Then add Mochawesome helper to your config:
+```json
+  "helpers": {
+    "Mochawesome": {
+        "uniqueScreenshotNames": "true"
+    }
+  },
+```
+Then tests with failure will have screenshots.
+
+### Configuration
+
+This helper should be configured in codecept.json
+
+-   `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
+
+Also if you will add Mochawesome helper, then you will able to add custom context in report:
+#### addMochawesomeContext
+
+Adds context to executed test in HTML report:
+
+```js
+I.addMochawesomeContext('simple string');
+I.addMochawesomeContext('http://www.url.com/pathname');
+I.addMochawesomeContext('http://www.url.com/screenshot-maybe.jpg');
+I.addMochawesomeContext({title: 'expected output',
+                         value: {
+                           a: 1,
+                           b: '2',
+                           c: 'd'
+                         }
+});
+```
+
+**Parameters**
+
+-   `context`  string, url, path to screenshot, object. See [this](https://www.npmjs.com/package/mochawesome#adding-test-context)
+
+## Multi Reports
+Want to use several reporters in the same time? Try to use [mocha-multi](https://www.npmjs.com/package/mocha-multi) reporter
+
+Install it via NPM:
+
+```
+npm i mocha-multi
+```
+
+Configure mocha-multi with reports that you want:
+```json
+  "mocha": {
+    "reporterOptions": {
+      "codeceptjs-cli-reporter": {
+        "stdout": "-",
+        "options": {
+          "verbose": true,
+          "steps": true,
+        }
+      },
+      "mochawesome": {
+       "stdout": "./output/console.log",
+       "options": {
+         "reportDir": "./output",
+         "reportFilename": "report"
+      }
+    }
+  }
+```
+Execute CodeceptJS with mocha-multi reporter:
+
+```
+codeceptjs run --reporter mocha-multi
+```
+
+This will give you cli with steps in console and HTML report in `output` directory

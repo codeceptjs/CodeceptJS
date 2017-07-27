@@ -40,7 +40,7 @@ describe('Protractor', function() {
   });
 
   beforeEach(() => {
-    return browser = I._before();
+    return I._before().then(() => browser = I.browser);
   });
 
   afterEach(() => {
