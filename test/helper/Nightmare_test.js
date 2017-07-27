@@ -74,6 +74,14 @@ describe('Nightmare', function () {
     });
   });
 
+  describe('scripts Inject', () => {
+    it('should reinject scripts after navigating to new page', () => {
+      return I.amOnPage('/')
+        .then(() => I.click("//div[@id='area1']/a"))
+        .then(() => I.waitForVisible("//input[@id='avatar']"));
+    });
+  });
+
   describe('see text : #see', () => {
     it('should fail when text is not on site', () => {
       return I.amOnPage('/')
