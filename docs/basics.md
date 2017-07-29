@@ -29,7 +29,7 @@ This is done to allow easy switching of running backends so you could replace We
 
 ## How It Works
 
-Tests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.
+Tests are written in synchronous way. Test scenarios should be linear, so tests by themselves should not include promises or callbacks as well.
 However, behind the scene **all actions are wrapped in promises** inside the `I` object.
 [Global promise](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it as well as setup and teardown.
 
@@ -147,7 +147,7 @@ I.say('I expect post is visible on site');
 If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with
 
-```
+```sh
 codeceptjs def
 ```
 
@@ -213,6 +213,7 @@ You can set number of a retries for a feature:
 ```js
 Feature('Complex JS Stuff', {retries: 3})
 ```
+
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to it:
 
@@ -227,6 +228,7 @@ Scenario('Really complex', (I) => {
   // test goes here
 });
 ```
+
 "Really complex" test will be restarted 3 times,
 while "Not that complex" test will be rerun only once.
 

@@ -26,10 +26,11 @@ Codeception tests are:
 Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
 
 * [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
-* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper enpowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
+* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
 * [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - helper which for testing web applications indi Electron  using NightmareJS.
 * [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md)
 * [**SeleniumWebdriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/SeleniumWebdriver.md) - helper which for selenium testing using official Selenium Webdriver JS bindings.
+
 And more to come...
 
 ## Why CodeceptJS?
@@ -50,7 +51,6 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 * Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
 
-
 ## Install
 
 ```sh
@@ -59,7 +59,7 @@ $ npm install -g codeceptjs
 
 Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run
 
-```
+```sh
 codeceptjs init
 ```
 
@@ -68,19 +68,19 @@ if you need to write Selenium WebDriver tests.
 
 After that create your first test by executing:
 
-```
+```sh
 codeceptjs generate:test
 ```
 
 Now test is created and can be executed with
 
-```
+```sh
 codeceptjs run
 ```
 
 If you want to write your tests using TypeScript just generate standard Type Definitions by executing:
 
-```
+```sh
 codeceptjs def .
 ```
 
@@ -95,7 +95,8 @@ Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebD
 ### Basics
 
 Let's see how we can handle basic form testing:
-```js
+
+```sh
 Feature('CodeceptJS Demonstration');
 
 Scenario('test some forms', (I) => {
@@ -115,13 +116,13 @@ In this examples all methods of `I` are taken from WebDriverIO helper, see [refe
 
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
-```
+```sh
 codeceptjs run --steps
 ```
 
 This will produce an output:
 
-```
+```sh
 CodeceptJS Demonstration --
  test some forms
  • I am on page "http://simple-form-bootstrap.plataformatec.com.br/documentation"
@@ -141,7 +142,7 @@ Just add `pause()` call at any place in a test and run it.
 
 Interactive shell can be started outside test context by running:
 
-```
+```sh
 codeceptjs shell
 ```
 
@@ -220,7 +221,7 @@ Scenario('test title', (I) => {
 CodeceptJS provides the most simple way to create and use page objects in your test.
 You can create one by running
 
-```
+```sh
 codeceptjs generate pageobject
 ```
 
@@ -268,11 +269,9 @@ Scenario('test some forms', (I, docsPage) => {
 });
 ```
 
-
 ## License
 
 MIT © [DavertMik](http://codegyre.com)
-
 
 [npm-image]: https://badge.fury.io/js/codeceptjs.svg
 [npm-url]: https://npmjs.org/package/codeceptjs

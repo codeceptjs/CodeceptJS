@@ -2,61 +2,56 @@
 
 CodeceptJS runner
 
-**Parameters**
+## constructor
 
--   `config`  
--   `opts`  
+Create CodeceptJS runner.
+Config and options should be passed
+
+### constructor parameters
+
+- `config` **Any**
+- `opts` **Any**
 
 ## bootstrap
 
 Executes hooks and bootstrap.
 If bootstrap is async second parameter is required.
 
-**Parameters**
+### bootstrap parameters
 
--   `done` **Any** 
-
-## constructor
-
-Create CodeceptJS runner.
-Config and options should be passed
-
-**Parameters**
-
--   `config` **Any** 
--   `opts` **Any** 
+- `done` **Any**
 
 ## init
 
 Initialize CodeceptJS at specific directory.
-If async initialization is required pass callbacke as second parameter.
+If async initialization is required pass callbacks as second parameter.
 
-**Parameters**
+### init parameters
 
--   `dir` **Any** 
--   `callback` **Any** 
+- `dir` **Any**
+- `callback` **Any**
 
 ## loadTests
 
 Loads tests by pattern or by config.tests
 
-**Parameters**
+### loadTests parameters
 
--   `pattern` **optional** 
+- `pattern` **optional**
 
 ## run
 
 Run a specific test or all loaded tests.
 
-**Parameters**
+### run parameters
 
--   `test` **optional** 
+- `test` **optional**
 
 ## teardown
 
 Executes teardown.
 If teardown is async a parameter is provided.
 
-**Parameters**
+### teardown parameters
 
--   `done` **Any** 
+- `done` **Any**

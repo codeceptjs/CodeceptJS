@@ -3,18 +3,17 @@
 **NodeJS v 6.11.1** and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
 
-Install **CodeceptJS** with WebDriverio using `codeceptjs-webdriverio` meta package from NPM.
-
+Install **CodeceptJS** with WebDriverIO using `codeceptjs-webdriverio` meta package from NPM.
 
 You can install it globally:
 
-```
+```sh
 [sudo] npm install -g codeceptjs-webdriverio
 ```
 
 or locally
 
-```
+```sh
 npm install codeceptjs-webdriverio --save-dev
 ```
 
@@ -26,7 +25,7 @@ npm install codeceptjs-webdriverio --save-dev
 
 Initialize CodeceptJS running:
 
-```
+```sh
 codeceptjs init
 ```
 
@@ -39,7 +38,7 @@ We recommend to start with **WebDriverIO** helper in order to write acceptance t
 If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
 No matter what helper you've chosen they will be similar in use.
 
-```
+```sh
 ? What helpers do you want to use?
 ❯◉ WebDriverIO
  ◯ Protractor
@@ -50,20 +49,20 @@ No matter what helper you've chosen they will be similar in use.
 
 Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.
 
-```
+```sh
 ? Where should logs, screenshots, and reports to be stored? ./output
 ```
 
 If you are going to extend test suite by writing custom steps you should probably agree to create `steps_file.js`
 
-```
+```sh
 ? Would you like to extend I object with custom steps? Yes
 ? Where would you like to place custom steps? ./steps_file.js
 ```
 
 WebDriverIO helper will ask for additional configuration as well:
 
-```
+```sh
 ? [WebDriverIO] Base url of site to be tested http://localhost
 ? [WebDriverIO] Browser in which testing will be performed (chrome)
 ```
@@ -107,12 +106,11 @@ To execute tests in Google Chrome browser running Selenium Server with ChromeDri
 
 Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) from NPM to install and run them:
 
-```
+```sh
 [sudo] npm install -g selenium-standalone
 selenium-standalone install
 selenium-standalone start
 ```
-
 
 Alternatively [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) can be installed and started manually.
 
@@ -124,7 +122,7 @@ Execute tests:
 codeceptjs run --steps
 ```
 
-*steps option will display test execution process in console*
+( *steps option will display test execution process in console.* )
 
 If everything is done right, you will see in console:
 

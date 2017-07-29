@@ -49,14 +49,14 @@ this makes testing less relevant, as they are not native to operating systems.
 
 Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.
 
-```
+```sh
 docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
 codeceptjs run yahoo_test.js --steps
 ```
 
 This provides use with output:
 
-```
+```sh
  Yahoo basic test
  > WebDriverIO._before
  • I am on page "http://yahoo.com"
@@ -70,7 +70,7 @@ This provides use with output:
 
 When we switch helper to Nightmare:
 
-```
+```sh
  Yahoo basic test
  > Nightmare._before
  • I am on page "http://yahoo.com"
@@ -95,7 +95,7 @@ npm install -g codeceptjs-nightmare
 
 And a basic project initialized
 
-```
+```sh
 codeceptjs init
 ```
 
@@ -161,8 +161,8 @@ Assertions start with `see` prefix. You can check text on a page, elements on pa
 CodeceptJS allows you to define and connect own helpers. If some functionality of
 Nightmare helper is missing you can easily create `ExtendedNightmare` helper by running:
 
-```
-codecepjs gh
+```sh
+codeceptjs gh
 ```
 
 Learn more about [Helpers](http://codecept.io/helpers/).
@@ -173,6 +173,7 @@ Nightmare instance can be accessed by custom helper:
 // returns current nightmare instance
 this.helpers['Nightmare'].browser;
 ```
+
 This way you can call [native Nightmare commands](https://github.com/segmentio/nightmare#interact-with-the-page).
 
 It is important to understand that Nightmare executes JavaScript on client and on server side.
@@ -182,7 +183,6 @@ to do an assertion you should return a data to server side.
 Nightmare provides `evaluate` method to execute client-side JavaScript. CodeceptJS registers `codeceptjs`
 object globally on client side with `findElement` and `findElements` methods in it. They return IDs of matched elements
 so you can access them in next calls to `evaluate`:
-
 
 ```js
 // inside a custom helper class

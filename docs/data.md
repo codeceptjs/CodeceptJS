@@ -92,6 +92,7 @@ This way setting data for a test is as simple as writing:
 let post = yield I.have('post');
 I.haveMultiple('comment', 5, { postId: post.id});
 ```
+
 Just define how many items of any kind you need and ApiDataFactory will create them for you.
 However, to make this work some preparations required.
 
@@ -142,4 +143,3 @@ This rules can be customized in helper configuration.
 ---
 
 ### done()
-

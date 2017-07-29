@@ -11,10 +11,9 @@ Sample mount: `-v path/to/codecept.json:/tests`
 
 ### Locally
 
-
 You can execute CodeceptJS with Nightmare locally with no extra configuration.
 
-```
+```sh
 docker run --net=host -v $PWD:/tests codeception/codeceptjs
 ```
 
