@@ -3,13 +3,15 @@
 SeleniumWebdriver helper is based on the official [Selenium Webdriver JS](https://www.npmjs.com/package/selenium-webdriver)
 library. It implements common web api methods (amOnPage, click, see).
 
-#### Selenium Installation
+## Backends
+
+### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
 2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
 3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
-#### PhantomJS Installation
+### PhantomJS Installation
 
 PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
 It allows you to run Selenium tests on a server without a GUI installed.
@@ -17,7 +19,7 @@ It allows you to run Selenium tests on a server without a GUI installed.
 1.  Download [PhantomJS](http://phantomjs.org/download.html)
 2.  Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 
@@ -62,7 +64,7 @@ this.helpers['SeleniumWebdriver'].browser
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _locate
 
@@ -81,7 +83,7 @@ this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `smartWait`   (optional, default `false`)
 
 ## amOnPage
@@ -174,7 +176,7 @@ I.clearField('#email');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## click
 
@@ -241,7 +243,7 @@ Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## dontSeeCurrentUrlEquals
 
@@ -250,7 +252,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## dontSeeElement
 
@@ -274,7 +276,7 @@ Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## dontSeeInField
 
@@ -292,7 +294,7 @@ Checks that the current page contains the given string in its raw source code
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## dontSeeInTitle
 
@@ -300,7 +302,7 @@ Checks that title does not contain text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## doubleClick
 
@@ -316,8 +318,8 @@ I.doubleClick('.btn.edit');
 
 **Parameters**
 
--   `locator`  
--   `context`  
+-   `locator`
+-   `context`
 
 ## executeAsyncScript
 
@@ -395,7 +397,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## grabAttributeFrom
 
@@ -409,7 +411,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
--   `attr`  
+-   `attr`
 
 ## grabCookie
 
@@ -472,7 +474,7 @@ I.moveCursorTo('#submit', 5,5);
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `offsetX`   (optional, default `null`)
 -   `offsetY`   (optional, default `null`)
 
@@ -490,7 +492,7 @@ I.pressKey(['Control','a']);
 
 **Parameters**
 
--   `key`  
+-   `key`
 
 ## resizeWindow
 
@@ -500,12 +502,12 @@ First parameter can be set to `maximize`
 **Parameters**
 
 -   `width`  or `maximize`
--   `height`  
+-   `height`
 
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -515,7 +517,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 **Parameters**
 
--   `fileName`  
+-   `fileName`
 -   `fullPage`  (optional)
 
 ## see
@@ -558,7 +560,7 @@ I.seeCookie('Auth');
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## seeCurrentUrlEquals
 
@@ -573,7 +575,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## seeElement
 
@@ -611,7 +613,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## seeInField
 
@@ -628,7 +630,7 @@ I.seeInField('#searchform input','Search');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## seeInSource
 
@@ -640,7 +642,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInTitle
 
@@ -648,7 +650,7 @@ Checks that title contains text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## selectOption
 
@@ -674,7 +676,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 **Parameters**
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  
+-   `option`
 
 ## setCookie
 
@@ -686,7 +688,7 @@ I.setCookie({name: 'auth', value: true});
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`
 
 ## wait
 
@@ -698,7 +700,7 @@ I.wait(2); // wait 2 secs
 
 **Parameters**
 
--   `sec`  
+-   `sec`
 
 ## waitForElement
 

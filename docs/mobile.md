@@ -124,9 +124,9 @@ However, mobile apps do not have URLs, Cookies, they have other features which m
 
 There are mobile-only methods like:
 
-* `swipeUp`, `swipeLeft`, ...
-* `hideDeviceKeyboard`,
-* `seeAppIsInstalled`, `installApp`, `removeApp`, `seeAppIsNotInstalled` - Android only
+*   `swipeUp`, `swipeLeft`, ...
+*   `hideDeviceKeyboard`,
+*   `seeAppIsInstalled`, `installApp`, `removeApp`, `seeAppIsNotInstalled` - Android only
 
 and [others](http://codecept.io/helpers/Appium/).
 
@@ -144,8 +144,8 @@ CSS locators are not supported in native mobile apps, you need to switch to web 
 Elements can also be located by their accessability id, available both at Android and iOS.
 Accessibility id is recommended to use for locating element, as it rarely changed.
 
-* iOS uses [UIAccessibilityIdentification](https://developer.apple.com/documentation/uikit/uiaccessibilityidentification)
-* Android `accessibility id` matches the content-description
+*   iOS uses [UIAccessibilityIdentification](https://developer.apple.com/documentation/uikit/uiaccessibilityidentification)
+*   Android `accessibility id` matches the content-description
 
 Add `~` prefix to search for element by its accessibility id:
 

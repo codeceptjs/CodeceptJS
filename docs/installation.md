@@ -68,9 +68,9 @@ npm install nightmare nightmare-upload --save-dev
 
 By default it doesn't install any backends like Webdriverio, Protractor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:
 
-* [codeceptjs-webdriverio](https://www.npmjs.com/package/codeceptjs-webdriverio) - installs CodeceptJS + WebDriverIO
-* [codeceptjs-protractor](https://www.npmjs.com/package/codeceptjs-protractor) - installs CodeceptJS + Protractor
-* [codeceptjs-nightmare](https://www.npmjs.com/package/codeceptjs-nightmare) - installs CodeceptJS + Nightmare
+*   [codeceptjs-webdriverio](https://www.npmjs.com/package/codeceptjs-webdriverio) - installs CodeceptJS + WebDriverIO
+*   [codeceptjs-protractor](https://www.npmjs.com/package/codeceptjs-protractor) - installs CodeceptJS + Protractor
+*   [codeceptjs-nightmare](https://www.npmjs.com/package/codeceptjs-nightmare) - installs CodeceptJS + Nightmare
 
 They can be installed either globally or locally
 
@@ -80,8 +80,8 @@ WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will re
 
 We recommend to install them manually or use NPM packages:
 
-* [Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
-* [Phantomjs](https://www.npmjs.com/package/phantomjs-prebuilt): to install and execute Phantomjs
+*   [Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
+*   [Phantomjs](https://www.npmjs.com/package/phantomjs-prebuilt): to install and execute Phantomjs
 
 or use [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless browser testing.
 

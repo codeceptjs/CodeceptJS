@@ -182,18 +182,18 @@ constructor(config) {
 Helpers may contain several hooks you can use to handle events of a test.
 Implement corresponding methods to them.
 
-* `_init` - before all tests
-* `_before` - before a test
-* `_beforeStep` - before each step
-* `_afterStep` - after each step
-* `_beforeSuite` - before each suite
-* `_afterSuite` - after each suite
+*   `_init` - before all tests
+*   `_before` - before a test
+*   `_beforeStep` - before each step
+*   `_afterStep` - after each step
+*   `_beforeSuite` - before each suite
+*   `_afterSuite` - after each suite
 
 Each implemented method should return a value as they will be added to global promise chain as well.
 
 ### Hook Usage Examples
 
-1) Failing if JS error occur in WebDriverIO:
+1)  Failing if JS error occur in WebDriverIO:
 
     ```js
     class JSFailure extends codecept_helper {
@@ -211,7 +211,7 @@ Each implemented method should return a value as they will be added to global pr
     module.exports = JSFailure;
     ```
 
-2) Wait for Ajax requests to complete after `click`:
+2)  Wait for Ajax requests to complete after `click`:
 
     ```js
     class JSWait extends codecept_helper {

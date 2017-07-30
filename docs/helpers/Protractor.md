@@ -2,13 +2,15 @@
 
 Protractor helper is based on [Protractor library](http://www.protractortest.org) and used for testing AngularJS applications.
 
-#### Selenium Installation
+## Backends
+
+### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
 2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
 3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
-#### PhantomJS Installation
+### PhantomJS Installation
 
 PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.
@@ -16,7 +18,7 @@ It allows you to run Selenium tests on a server without a GUI installed.
 1.  Download [PhantomJS](http://phantomjs.org/download.html)
 2.  Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 
@@ -65,7 +67,7 @@ this.helpers['Protractor'].browser
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _locate
 
@@ -76,9 +78,15 @@ Should be used in custom helpers:
 this.helpers['Protractor']._locate({model: 'newTodo'}).then //...
 ```
 
+To use SmartWait and wait for element to appear on a page, add `true` as second arg:
+
+```js
+this.helpers['Protractor']._locate({name: 'password'}, true).then //...
+```
+
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## amInsideAngularApp
 
@@ -102,8 +110,8 @@ I.haveModule('modName', function() {
 
 **Parameters**
 
--   `modName`  
--   `fn`  
+-   `modName`
+-   `fn`
 
 ## moveTo
 
@@ -111,7 +119,7 @@ Moves to url
 
 **Parameters**
 
--   `path`  
+-   `path`
 
 ## refresh
 
@@ -128,7 +136,7 @@ I.resetModule('modName');
 
 **Parameters**
 
--   `modName`  
+-   `modName`
 
 ## waitForClickable
 
@@ -136,7 +144,7 @@ Waits for element to become clickable for number of seconds.
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `sec`   (optional, default `null`)
 
 ## waitForElement
@@ -206,18 +214,6 @@ Element can be located by CSS or XPath.
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
-
-## _locate
-
-```js
-this.helpers['Protractor']._locate({name: 'password'}).then //...
-```
-
-To use SmartWait and wait for element to appear on a page, add `true` as second arg:
-
-```js
-this.helpers['Protractor']._locate({name: 'password'}, true).then //...
-```
 
 ## amOnPage
 
@@ -353,7 +349,7 @@ Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## dontSeeCurrentUrlEquals
 
@@ -362,7 +358,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## dontSeeElement
 
@@ -378,7 +374,7 @@ Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## dontSeeInField
 
@@ -396,7 +392,7 @@ Checks that the current page contains the given string in its raw source code
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## dontSeeInTitle
 
@@ -404,7 +400,7 @@ Checks that title does not contain text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## executeAsyncScript
 
@@ -482,7 +478,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## grabAttributeFrom
 
@@ -496,7 +492,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
--   `attr`  
+-   `attr`
 
 ## grabCookie
 
@@ -510,7 +506,7 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## grabTextFrom
 
@@ -561,7 +557,7 @@ I.pressKey(['Control','a']);
 
 **Parameters**
 
--   `key`  
+-   `key`
 
 ## resizeWindow
 
@@ -571,12 +567,12 @@ First parameter can be set to `maximize`
 **Parameters**
 
 -   `width`  or `maximize`
--   `height`  
+-   `height`
 
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -586,7 +582,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 **Parameters**
 
--   `fileName`  
+-   `fileName`
 -   `fullPage`  (optional)
 
 ## see
@@ -629,7 +625,7 @@ I.seeCookie('Auth');
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## seeCurrentUrlEquals
 
@@ -644,7 +640,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## seeElement
 
@@ -669,7 +665,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## seeInField
 
@@ -686,7 +682,7 @@ I.seeInField('#searchform input','Search');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## seeInSource
 
@@ -698,7 +694,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInTitle
 
@@ -706,7 +702,7 @@ Checks that title contains text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## selectOption
 
@@ -732,7 +728,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 **Parameters**
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  
+-   `option`
 
 ## setCookie
 
@@ -744,4 +740,4 @@ I.setCookie({name: 'auth', value: true});
 
 **Parameters**
 
--   `cookie`  
+-   `cookie`

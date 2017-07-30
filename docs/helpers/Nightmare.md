@@ -7,7 +7,7 @@ less trusted.
 
 Requires `nightmare` and `nightmare-upload` packages to be installed.
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 
@@ -20,13 +20,11 @@ This helper should be configured in codecept.json
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
 -   `waitForTimeout`: (optional) default wait* timeout
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
-
-
 -   options from [Nightmare configuration](https://github.com/segmentio/nightmare#api)
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _locate
 
@@ -50,7 +48,7 @@ let value = this.helpers['Nightmare']._locate({name: 'password'}).then(function(
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## amOnPage
 
@@ -65,9 +63,10 @@ I.amOnPage('/login'); // opens a login page
 
 **Parameters**
 
--   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
+-   `url`  url path or global urlIn a second argument a list of request headers can be passed:
+  ```js
     I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
-    ```
+  ```
 -   `headers`   (optional, default `null`)
 
 ## appendField
@@ -204,7 +203,7 @@ Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## dontSeeCurrentUrlEquals
 
@@ -213,7 +212,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## dontSeeElement
 
@@ -237,7 +236,7 @@ Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## dontSeeInField
 
@@ -255,7 +254,7 @@ Checks that the current page contains the given string in its raw source code
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## dontSeeInTitle
 
@@ -263,7 +262,7 @@ Checks that title does not contain text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## doubleClick
 
@@ -279,8 +278,8 @@ I.doubleClick('.btn.edit');
 
 **Parameters**
 
--   `locator`  
--   `context`  
+-   `locator`
+-   `context`
 
 ## executeAsyncScript
 
@@ -358,7 +357,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## grabAttributeFrom
 
@@ -372,7 +371,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
--   `attr`  
+-   `attr`
 
 ## grabCookie
 
@@ -436,8 +435,8 @@ I.haveHeader(); // clear headers
 
 **Parameters**
 
--   `header`  
--   `value`  
+-   `header`
+-   `value`
 
 ## moveCursorTo
 
@@ -451,7 +450,7 @@ I.moveCursorTo('#submit', 5,5);
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `offsetX`   (optional, default `0`)
 -   `offsetY`   (optional, default `0`)
 
@@ -462,7 +461,7 @@ Can submit special keys like 'Enter', 'Backspace', etc
 
 **Parameters**
 
--   `key`  
+-   `key`
 
 ## resizeWindow
 
@@ -472,12 +471,12 @@ First parameter can be set to `maximize`
 **Parameters**
 
 -   `width`  or `maximize`
--   `height`  
+-   `height`
 
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -487,7 +486,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 **Parameters**
 
--   `fileName`  
+-   `fileName`
 -   `fullPage`  (optional)
 
 ## scrollTo
@@ -502,7 +501,7 @@ I.scrollTo('#submit', 5,5);
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `offsetX`   (optional, default `0`)
 -   `offsetY`   (optional, default `0`)
 
@@ -546,7 +545,7 @@ I.seeCookie('Auth');
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## seeCurrentUrlEquals
 
@@ -561,7 +560,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## seeElement
 
@@ -599,7 +598,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `url`  
+-   `url`
 
 ## seeInField
 
@@ -616,7 +615,7 @@ I.seeInField('#searchform input','Search');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## seeInSource
 
@@ -628,7 +627,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInTitle
 
@@ -636,7 +635,7 @@ Checks that title contains text.
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## selectOption
 
@@ -662,7 +661,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 **Parameters**
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  
+-   `option`
 
 ## setCookie
 
@@ -690,7 +689,7 @@ button: "left"
 
 **Parameters**
 
--   `event`  
+-   `event`
 
 ## wait
 
@@ -702,7 +701,7 @@ I.wait(2); // wait 2 secs
 
 **Parameters**
 
--   `sec`  
+-   `sec`
 
 ## waitForElement
 

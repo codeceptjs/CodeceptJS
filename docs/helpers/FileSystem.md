@@ -17,7 +17,7 @@ Starts from a current directory
 
 **Parameters**
 
--   `openPath`  
+-   `openPath`
 
 ## dontSeeFileContentsEqual
 
@@ -25,8 +25,8 @@ Checks that contents of file found by `seeFile` doesn't equal to text.
 
 **Parameters**
 
--   `text`  
--   `encoding`  
+-   `text`
+-   `encoding`
 
 ## dontSeeInThisFile
 
@@ -34,8 +34,8 @@ Checks that file found by `seeFile` doesn't include text.
 
 **Parameters**
 
--   `text`  
--   `encoding`  
+-   `text`
+-   `encoding`
 
 ## seeFile
 
@@ -43,7 +43,7 @@ Checks that file exists
 
 **Parameters**
 
--   `name`  
+-   `name`
 
 ## seeFileContentsEqual
 
@@ -51,8 +51,8 @@ Checks that contents of file found by `seeFile` equal to text.
 
 **Parameters**
 
--   `text`  
--   `encoding`  
+-   `text`
+-   `encoding`
 
 ## seeInThisFile
 
@@ -60,8 +60,8 @@ Checks that file found by `seeFile` includes a text.
 
 **Parameters**
 
--   `text`  
--   `encoding`  
+-   `text`
+-   `encoding`
 
 ## writeToFile
 
@@ -69,5 +69,5 @@ Writes test to file
 
 **Parameters**
 
--   `name`  
--   `text`  
+-   `name`
+-   `text`

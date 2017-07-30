@@ -9,10 +9,10 @@ you can use `bootstrap` and `teardown` config. Use it to start and stop webserve
 
 There are different ways to define bootstrap and teardown functions:
 
-* JS file executed as is (synchronously).
-* JS file exporting function with optional callback for async execution.
-* JS file exporting an object with `bootstrap` and `teardown` methods.
-* Inside JS config file
+*   JS file executed as is (synchronously).
+*   JS file exporting function with optional callback for async execution.
+*   JS file exporting an object with `bootstrap` and `teardown` methods.
+*   Inside JS config file
 
 Corresponding examples provided in next sections.
 
@@ -129,14 +129,14 @@ Inside those JS files you can use CodeceptJS API to access its internals.
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
 These internal objects are available:
 
-* [`codecept`](https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js): test runner class
-* [`config`](https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js): current codecept config
-* [`event`](https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js): event listener
-* [`recorder`](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js): global promise chain
-* [`output`](https://github.com/Codeception/CodeceptJS/blob/master/lib/output.js): internal printer
-* [`container`](https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
-* [`helper`](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js): basic helper class
-* [`actor`](https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
+*   [`codecept`](https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js): test runner class
+*   [`config`](https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js): current codecept config
+*   [`event`](https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js): event listener
+*   [`recorder`](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js): global promise chain
+*   [`output`](https://github.com/Codeception/CodeceptJS/blob/master/lib/output.js): internal printer
+*   [`container`](https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
+*   [`helper`](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js): basic helper class
+*   [`actor`](https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
 
 [API reference](https://github.com/Codeception/CodeceptJS/tree/master/docs/api) is available on GitHub.
 Also please check the source code of corresponding modules.
@@ -175,19 +175,19 @@ module.exports = function() {
 
 Available events:
 
-* `event.test.started(test)` - at the very beginning of a test. Passes a current test object.
-* `event.test.before` - when `Before` hooks from helpers and from test is executed
-* `event.test.after` - after each test
-* `event.test.passed(test)` - when test passed
-* `event.test.failed(test, error)` - when test failed
-* `event.suite.before(suite)` - before a suite
-* `event.suite.after(suite)` - after a suite
-* `event.step.started(step)` - when step hooks from helpers executed. Passes current step object.
-* `event.step.before` - at the very beginning of a step
-* `event.step.after`- after a step
-* `event.all.before` - before running tests
-* `event.all.after` - after running tests
-* `event.all.result` - when results are printed
+*   `event.test.started(test)` - at the very beginning of a test. Passes a current test object.
+*   `event.test.before` - when `Before` hooks from helpers and from test is executed
+*   `event.test.after` - after each test
+*   `event.test.passed(test)` - when test passed
+*   `event.test.failed(test, error)` - when test failed
+*   `event.suite.before(suite)` - before a suite
+*   `event.suite.after(suite)` - after a suite
+*   `event.step.started(step)` - when step hooks from helpers executed. Passes current step object.
+*   `event.step.before` - at the very beginning of a step
+*   `event.step.after`- after a step
+*   `event.all.before` - before running tests
+*   `event.all.after` - after running tests
+*   `event.all.result` - when results are printed
 
 For further reference look for [currently available listeners](https://github.com/Codeception/CodeceptJS/tree/master/lib/listener) using event system.
 
@@ -195,12 +195,12 @@ For further reference look for [currently available listeners](https://github.co
 
 Test events provide a test object with following fields:
 
-* `title` title of a test
-* `body` test function as a string
-* `opts` additional test options like retries, and others
-* `pending` true if test is scheduled for execution and false if a test has finished
-* `file` path to a file with a test.
-* `steps` array of executed steps (available only in `test.passed` or `test.failed` event)
+*   `title` title of a test
+*   `body` test function as a string
+*   `opts` additional test options like retries, and others
+*   `pending` true if test is scheduled for execution and false if a test has finished
+*   `file` path to a file with a test.
+*   `steps` array of executed steps (available only in `test.passed` or `test.failed` event)
 
 and others
 
@@ -208,13 +208,13 @@ and others
 
 Step events provide step objects with following fields:
 
-* `name` name of a step, like 'see', 'click', and others
-* `actor` current actor, in most cases it `I`
-* `helper` current helper instance used to execute this step
-* `helperMethod` corresponding helper method, in most cases is the same as `name`
-* `status` status of a step (passed or failed)
-* `prefix` if a step is executed inside `within` block contain within text, like: 'Within .js-signup-form'.
-* `args` passed arguments
+*   `name` name of a step, like 'see', 'click', and others
+*   `actor` current actor, in most cases it `I`
+*   `helper` current helper instance used to execute this step
+*   `helperMethod` corresponding helper method, in most cases is the same as `name`
+*   `status` status of a step (passed or failed)
+*   `prefix` if a step is executed inside `within` block contain within text, like: 'Within .js-signup-form'.
+*   `args` passed arguments
 
 ### Recorder
 
@@ -255,10 +255,10 @@ Whenever you execute tests with `--verbose` option you will see registered event
 
 Output module provides 4 verbosity levels. Depending on the mode you can have different information printed using corresponding functions.
 
-* `default`: prints basic information using `output.print`
-* `steps`: toggled by `--steps` option, prints step execution
-* `debug`: toggled by `--debug` option, prints steps, and debug information with `output.debug`
-* `verbose`: toggled by `--verbose` prints debug information and internal logs with `output.log`
+*   `default`: prints basic information using `output.print`
+*   `steps`: toggled by `--steps` option, prints step execution
+*   `debug`: toggled by `--debug` option, prints steps, and debug information with `output.debug`
+*   `verbose`: toggled by `--verbose` prints debug information and internal logs with `output.log`
 
 It is recommended to avoid `console.log` and use output.* methods for printing.
 

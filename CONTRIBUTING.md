@@ -4,12 +4,12 @@ Thanks for getting here. If you have a good will to improve CodeceptJS we are al
 
 To start you need:
 
-1. Fork the repo.
-2. Run `npm install` to install all required libraries
-3. Do the changes.
-4. Add/Update Test (if possible)
-5. Commit and Push to your fork
-6. Make Pull Request
+1.  Fork the repo.
+2.  Run `npm install` to install all required libraries
+3.  Do the changes.
+4.  Add/Update Test (if possible)
+5.  Commit and Push to your fork
+6.  Make Pull Request
 
 Depending on a type of a change you should do the following.
 
@@ -23,8 +23,8 @@ Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium
 
 Working test is highly appreciated. To run the test suite you need:
 
-* selenium server + chromedriver
-* PHP installed
+*   selenium server + chromedriver
+*   PHP installed
 
 To launch PHP demo application run:
 
@@ -63,7 +63,7 @@ Protractor Helper extends SeleniumWebdriver. For non-protractor specific changes
 
 In case you do Protractor-specific change, please add a test:To run the test suite you need:
 
-* selenium server + chromedriver
+*   selenium server + chromedriver
 
 Demo application is located at: [http://davertmik.github.io/angular-demo-app](http://davertmik.github.io/angular-demo-app)
 

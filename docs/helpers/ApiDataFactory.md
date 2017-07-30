@@ -6,7 +6,7 @@ Uses data generators like [rosie](https://github.com/rosiejs/rosie) or factory g
 By defining a factory you set the rules of how data is generated.
 This data will be saved on server via REST API and deleted in the end of a test.
 
-### Use Case
+## Use Case
 
 Acceptance tests interact with a websites using UI and real browser.
 There is no way to create data for a specific test other than from user interface.
@@ -120,7 +120,7 @@ However this behavior can be configured with following options:
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _fetchId
 
@@ -137,8 +137,8 @@ this.helpers['ApiDataFactory']._fetchId = (body, factory) {
 
 **Parameters**
 
--   `body` **Any** 
--   `factory` **Any** 
+-   `body` **Any**
+-   `factory` **Any**
 
 ## _requestCreate
 
@@ -147,8 +147,8 @@ Can be replaced from a in custom helper.
 
 **Parameters**
 
--   `factory` **Any** 
--   `data` **Any** 
+-   `factory` **Any**
+-   `data` **Any**
 
 ## _requestDelete
 
@@ -157,8 +157,8 @@ Can be replaced from a custom helper.
 
 **Parameters**
 
--   `factory` **Any** 
--   `id` **Any** 
+-   `factory` **Any**
+-   `id` **Any**
 
 ## have
 
@@ -190,6 +190,6 @@ I.have('post', 3, { author: 'davert' });
 
 **Parameters**
 
--   `factory` **Any** 
--   `times` **Any** 
--   `params` **Any** 
+-   `factory` **Any**
+-   `times` **Any**
+-   `params` **Any**

@@ -4,7 +4,7 @@ Appium helper extends [WebriverIO](http://codecept.io/helpers/WebDriverIO/) help
  It supports all browser methods and also includes special methods for mobile apps testing.
  You can use this helper to test Web on desktop and mobile devices and mobile apps.
 
-#### Appium Installation
+## Appium Installation
 
 Appium is an open source test automation framework for use with native, hybrid and mobile web apps that implements the WebDriver protocol.
 It allows you to run Selenium tests on mobile devices and also test native, hybrid and mobile web apps.
@@ -15,11 +15,9 @@ Download and install [Appium](http://appium.io/)
 
 Launch the daemon: `appium`
 
-### Configuration
+## Helper Configuration
 
 This helper should be configured in codecept.json or codecept.conf.js
-
-#### Appium configuration
 
 -   `port`: Appium port
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
@@ -64,7 +62,7 @@ let browser = this.helpers['Appium'].browser
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _switchToContext
 
@@ -105,7 +103,7 @@ I.checkOption('agree', '//form');
 
 -   `field`  checkbox located by label | name | CSS | XPath | strict locator
 -   `context`  (optional) element located by CSS | XPath | strict locator
--   `checkbox`  
+-   `checkbox`
 
 ## click
 
@@ -134,7 +132,7 @@ I.click({css: 'nav a.login'});
 **Parameters**
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
--   `button`  
+-   `button`
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
 
 ## closeApp
@@ -153,7 +151,7 @@ Appium Special Methods for Mobile only
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## dontSee
 
@@ -176,7 +174,7 @@ Verifies that the specified checkbox is not checked.
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `checkbox`  
+-   `checkbox`
 
 ## dontSeeElement
 
@@ -185,8 +183,8 @@ Opposite to `seeElement`. Checks that element is not visible
 **Parameters**
 
 -   `locator`  located by CSS|XPath|Strict locator
--   `el`  
--   `context`  
+-   `el`
+-   `context`
 
 ## dontSeeInField
 
@@ -217,7 +215,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## grabAllContexts
 
@@ -291,7 +289,7 @@ let pin = yield I.grabTextFrom('#pin');
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
--   `el`  
+-   `el`
 
 ## grabValueFrom
 
@@ -305,7 +303,7 @@ let email = yield I.grabValueFrom('input[name=email]');
 **Parameters**
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
--   `el`  
+-   `el`
 
 ## hideDeviceKeyboard
 
@@ -323,7 +321,7 @@ I.hideDeviceKeyboard('pressKey', 'Done');
 **Parameters**
 
 -   `strategy`  desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)Appium: support Android and iOS
--   `key`  
+-   `key`
 
 ## installApp
 
@@ -353,8 +351,8 @@ Appium: support Android and iOS
 
 **Parameters**
 
--   `locator`  
--   `action`  
+-   `locator`
+-   `action`
 
 ## openNotifications
 
@@ -380,8 +378,8 @@ Appium: support Android and iOS
 
 **Parameters**
 
--   `path`  
--   `dest`  
+-   `path`
+-   `dest`
 
 ## removeApp
 
@@ -393,7 +391,7 @@ I.removeApp('com.example.android.apis');
 
 **Parameters**
 
--   `bundleId`  String	ID of bundled appAppium: support only Android
+-   `bundleId` - **String** - ID of bundled appAppium: support only Android
 
 ## rotate
 
@@ -409,12 +407,12 @@ Appium: support only iOS
 
 **Parameters**
 
--   `x`  
--   `y`  
--   `duration`  
--   `radius`  
--   `rotation`  
--   `touchCount`  
+-   `x`
+-   `y`
+-   `duration`
+-   `radius`
+-   `rotation`
+-   `touchCount`
 
 ## runInWeb
 
@@ -429,7 +427,7 @@ I.runInWeb(() => {
 
 **Parameters**
 
--   `fn` **Any** 
+-   `fn` **Any**
 
 ## runOnAndroid
 
@@ -452,8 +450,8 @@ I.runOnAndroid({platformVersion: '6.0'},() => {
 
 **Parameters**
 
--   `caps` **Any** 
--   `fn` **Any** 
+-   `caps` **Any**
+-   `fn` **Any**
 
 ## runOnIOS
 
@@ -477,8 +475,8 @@ I.runOnIOS({deviceName: 'iPhone 5s'},() => {
 
 **Parameters**
 
--   `caps` **Any** 
--   `fn` **Any** 
+-   `caps` **Any**
+-   `fn` **Any**
 
 ## see
 
@@ -506,7 +504,7 @@ I.seeAppIsInstalled("com.example.android.apis");
 
 **Parameters**
 
--   `bundleId`  String	ID of bundled appAppium: support only Android
+-   `bundleId` - **String** - ID of bundled appAppium: support only Android
 
 ## seeAppIsNotInstalled
 
@@ -518,7 +516,7 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 
 **Parameters**
 
--   `bundleId`  String	ID of bundled appAppium: support only Android
+-   `bundleId - **String** - ID of bundled appAppium: support only Android
 
 ## seeCheckboxIsChecked
 
@@ -533,7 +531,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `checkbox`  
+-   `checkbox`
 
 ## seeCurrentActivityIs
 
@@ -547,7 +545,7 @@ Appium: support only Android
 
 **Parameters**
 
--   `currentActivity`  
+-   `currentActivity`
 
 ## seeDeviceIsLocked
 
@@ -581,7 +579,7 @@ I.seeElement('#modal');
 **Parameters**
 
 -   `locator`  located by CSS|XPath|strict locator
--   `el`  
+-   `el`
 
 ## seeInField
 
@@ -598,7 +596,7 @@ I.seeInField('#searchform input','Search');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `value`
 
 ## seeOrientationIs
 
@@ -662,8 +660,8 @@ Appium: support only iOS
 
 **Parameters**
 
--   `id`  
--   `value`  
+-   `id`
+-   `value`
 
 ## setNetworkConnection
 
@@ -687,7 +685,7 @@ Appium: support only Android
 
 **Parameters**
 
--   `value`  
+-   `value`
 
 ## setOrientation
 
@@ -739,7 +737,7 @@ TODO: not tested
 
 **Parameters**
 
--   `match`  
+-   `match`
 
 ## startActivity
 
@@ -753,8 +751,8 @@ Appium: support only Android
 
 **Parameters**
 
--   `appPackage`  
--   `appActivity`  
+-   `appPackage`
+-   `appActivity`
 
 ## swipe
 
@@ -769,9 +767,9 @@ I.swipe(locator, 800, 1200, 1000);
 
 **Parameters**
 
--   `locator`  
--   `xoffset`  
--   `yoffset`  
+-   `locator`
+-   `xoffset`
+-   `yoffset`
 -   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
 ## swipeDown
@@ -787,7 +785,7 @@ I.swipeDown(locator, 1200, 1000); // set offset and speed
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `yoffset`  (optional)
 -   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
@@ -804,7 +802,7 @@ I.swipeLeft(locator, 1200, 1000); // set offset and speed
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `xoffset`  (optional)
 -   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
@@ -821,7 +819,7 @@ I.swipeRight(locator, 1200, 1000); // set offset and speed
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `xoffset`  (optional)
 -   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
@@ -841,11 +839,11 @@ I.swipeTo(
 
 **Parameters**
 
--   `searchableLocator`  
--   `scrollLocator`  
--   `direction`  
--   `timeout`  
--   `offset`  
+-   `searchableLocator`
+-   `scrollLocator`
+-   `direction`
+-   `timeout`
+-   `offset`
 -   `speed`  Appium: support Android and iOS
 
 ## swipeUp
@@ -861,7 +859,7 @@ I.swipeUp(locator, 1200, 1000); // set offset and speed
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `yoffset`  (optional)
 -   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
 
@@ -879,7 +877,7 @@ I.switchToNative('SOME_OTHER_CONTEXT');
 
 **Parameters**
 
--   `context` **Any** 
+-   `context` **Any**
 
 ## switchToWeb
 
@@ -910,7 +908,7 @@ Shortcut for `makeTouchAction`
 
 **Parameters**
 
--   `locator` **Any** 
+-   `locator` **Any**
 
 ## touchPerform
 
@@ -941,4 +939,4 @@ Appium: support Android and iOS
 
 **Parameters**
 
--   `actions`  
+-   `actions`

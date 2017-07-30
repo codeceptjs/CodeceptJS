@@ -3,7 +3,9 @@
 WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-#### Selenium Installation
+## Backends
+
+### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
 2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started),
@@ -11,7 +13,7 @@ manipulate browser using Selenium WebDriver or PhantomJS.
 3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use
     `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
-#### PhantomJS Installation
+### PhantomJS Installation
 
 PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.
@@ -19,7 +21,7 @@ It allows you to run Selenium tests on a server without a GUI installed.
 1.  Download [PhantomJS](http://phantomjs.org/download.html)
 2.  Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 
@@ -179,7 +181,7 @@ this.helpers['WebDriverIO'].browser
 
 **Parameters**
 
--   `config`  
+-   `config`
 
 ## _locate
 
@@ -192,7 +194,7 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `smartWait`   (optional, default `false`)
 
 ## _locateCheckable
@@ -205,7 +207,7 @@ this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions'
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## _locateClickable
 
@@ -217,7 +219,7 @@ this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## _locateFields
 
@@ -229,7 +231,7 @@ this.helpers['WebDriverIO']._locateFields('Your email').then // ...
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## acceptPopup
 
@@ -398,7 +400,7 @@ I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
 
 **Parameters**
 
--   `timeouts`  
+-   `timeouts`
 
 ## dontSee
 
@@ -507,7 +509,7 @@ I.doubleClick('.btn.edit');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `context`  Appium: support only web testing
 
 ## dragAndDrop
@@ -521,8 +523,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 **Parameters**
 
--   `srcElement`  
--   `destElement`  
+-   `srcElement`
+-   `destElement`
 
 ## executeAsyncScript
 
@@ -649,8 +651,8 @@ I.grabCssPropertyFrom('h3', 'font-weight');
 
 **Parameters**
 
--   `locator`  
--   `cssProperty`  
+-   `locator`
+-   `cssProperty`
 
 ## grabHTMLFrom
 
@@ -664,7 +666,7 @@ let postHTML = yield I.grabHTMLFrom('#post');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## grabNumberOfVisibleElements
 
@@ -676,7 +678,7 @@ I.grabNumberOfVisibleElements('p');
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## grabSource
 
@@ -743,7 +745,7 @@ Appium: support only web testing
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `offsetX`   (optional, default `0`)
 -   `offsetY`   (optional, default `0`)
 
@@ -770,11 +772,12 @@ I.pressKey(['Control','a']);
 **Parameters**
 
 -   `key`  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps```js
+    Appium: support, but clear field before pressing in apps:
+  ```js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');
-    ```
+  ```
 
 ## refreshPage
 
@@ -801,12 +804,12 @@ Appium: support, but in apps works as usual click
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -816,7 +819,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 **Parameters**
 
--   `fileName`  
+-   `fileName`
 -   `fullPage`  (optional)
     Appium: support
 
@@ -849,7 +852,7 @@ I.scrollTo('#submit', 5,5);
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `offsetX`   (optional, default `0`)
 -   `offsetY`   (optional, default `0`)
 
@@ -880,8 +883,8 @@ I.seeAttributesOnElements('//form', {'method': "post"});
 
 **Parameters**
 
--   `locator`  
--   `attributes`  
+-   `locator`
+-   `attributes`
 
 ## seeCheckboxIsChecked
 
@@ -920,8 +923,8 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 **Parameters**
 
--   `locator`  
--   `cssProperties`  
+-   `locator`
+-   `cssProperties`
 
 ## seeCurrentUrlEquals
 
@@ -1002,7 +1005,7 @@ given string. Appium: support only web testing
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## seeInSource
 
@@ -1036,8 +1039,8 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 **Parameters**
 
--   `selector`  
--   `num`  
+-   `selector`
+-   `num`
 
 ## seeNumberOfVisibleElements
 
@@ -1050,8 +1053,8 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 **Parameters**
 
--   `locator`  
--   `num`  
+-   `locator`
+-   `num`
 
 ## seeTextEquals
 
@@ -1063,7 +1066,7 @@ I.seeTextEquals('text', 'h1');
 
 **Parameters**
 
--   `text`  
+-   `text`
 -   `context`   (optional, default `null`)
 
 ## seeTitleEquals
@@ -1076,7 +1079,7 @@ I.seeTitleEquals('Test title.');
 
 **Parameters**
 
--   `text`  
+-   `text`
 
 ## selectOption
 
@@ -1102,7 +1105,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 **Parameters**
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  
+-   `option`
 
 ## setCookie
 
@@ -1272,7 +1275,7 @@ I.waitInUrl('/info', 2);
 
 **Parameters**
 
--   `urlPart`  
+-   `urlPart`
 -   `sec`   (optional, default `null`)
 
 ## waitNumberOfVisibleElements
@@ -1285,9 +1288,9 @@ I.waitNumberOfVisibleElements('a', 3);
 
 **Parameters**
 
--   `locator`  
--   `num`  
--   `sec`  
+-   `locator`
+-   `num`
+-   `sec`
 
 ## waitToHide
 
@@ -1297,7 +1300,7 @@ Appium: support
 
 **Parameters**
 
--   `locator`  
+-   `locator`
 -   `sec`   (optional, default `null`)
 
 ## waitUntil
@@ -1307,7 +1310,7 @@ Appium: support
 
 **Parameters**
 
--   `fn`  
+-   `fn`
 -   `sec`   (optional, default `null`)
 -   `timeoutMsg`   (optional, default `null`)
 
@@ -1322,9 +1325,9 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 **Parameters**
 
--   `urlPart`  
+-   `urlPart`
 -   `sec`   (optional, default `null`)
 
-# locator
+## locator
 
 just press button if no selector is given

@@ -1,6 +1,6 @@
 # AngularJS E2E Testing with CodeceptJS
 
-### Introduction
+## Introduction
 
 CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
 CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *selenium-webdriver*, or *protractor* depends on you.

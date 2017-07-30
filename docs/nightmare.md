@@ -120,6 +120,7 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
   // ..
 }
 ```
+
 Turn on the `show` option if you want to follow test progress in a window. This is very useful for debugging.
 All other options can be taken from [NightmareJS API](https://github.com/segmentio/nightmare#api).
 
@@ -219,6 +220,6 @@ use locate found elements on a page and return attribute from the first of them.
 
 ## Additional Links
 
-* [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
+*   [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
 
 ## done()

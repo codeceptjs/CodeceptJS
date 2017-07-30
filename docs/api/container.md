@@ -4,8 +4,8 @@ Dependency Injection Container
 
 **Parameters**
 
--   `config`  
--   `opts`  
+-   `config`
+-   `opts`
 
 ## append
 
@@ -13,7 +13,7 @@ Append new services to container
 
 **Parameters**
 
--   `newContainer`  
+-   `newContainer`
 
 ## clear
 
@@ -21,8 +21,8 @@ Clear container
 
 **Parameters**
 
--   `newHelpers` **Any** 
--   `newSupport` **Any** 
+-   `newHelpers` **Any**
+-   `newSupport` **Any**
 
 ## create
 
@@ -30,8 +30,8 @@ Create container with all required helpers and support objects
 
 **Parameters**
 
--   `config` **Any** 
--   `opts` **Any** 
+-   `config` **Any**
+-   `opts` **Any**
 
 ## helpers
 
@@ -39,7 +39,7 @@ Get all helpers or get a helper by name
 
 **Parameters**
 
--   `name` **optional** 
+-   `name` **optional**
 
 ## mocha
 
@@ -51,7 +51,7 @@ Get all support objects or get support object by name
 
 **Parameters**
 
--   `name` **optional** 
+-   `name` **optional**
 
 ## translation
 
