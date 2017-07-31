@@ -17,9 +17,9 @@ or locally
 npm install codeceptjs-webdriverio --save-dev
 ```
 
-*   To test with Nightmare install `codeceptjs-nightmare` package
-*   To test with Protractor install `codeceptjs-protractor` package
-*   For additional options see [Installation guide](http://codecept.io/installation/).
+* To test with Nightmare install `codeceptjs-nightmare` package
+* To test with Protractor install `codeceptjs-protractor` package
+* For additional options see [Installation guide](http://codecept.io/installation/).
 
 ## Setup
 

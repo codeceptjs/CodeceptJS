@@ -23,8 +23,8 @@ Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium
 
 Working test is highly appreciated. To run the test suite you need:
 
-*   selenium server + chromedriver
-*   PHP installed
+* selenium server + chromedriver
+* PHP installed
 
 To launch PHP demo application run:
 
@@ -63,7 +63,7 @@ Protractor Helper extends SeleniumWebdriver. For non-protractor specific changes
 
 In case you do Protractor-specific change, please add a test:To run the test suite you need:
 
-*   selenium server + chromedriver
+* selenium server + chromedriver
 
 Demo application is located at: [http://davertmik.github.io/angular-demo-app](http://davertmik.github.io/angular-demo-app)
 
@@ -91,7 +91,7 @@ Appium tests are executed at **Semaphore CI**.
 
 ## Core Changes
 
-Before applying any Core changes please raise an issue to discucss that change with core team.
+Before applying any Core changes please raise an issue to discuss that change with core team.
 
 Whenever you implemented a feature/bugfix
 

@@ -182,12 +182,12 @@ constructor(config) {
 Helpers may contain several hooks you can use to handle events of a test.
 Implement corresponding methods to them.
 
-*   `_init` - before all tests
-*   `_before` - before a test
-*   `_beforeStep` - before each step
-*   `_afterStep` - after each step
-*   `_beforeSuite` - before each suite
-*   `_afterSuite` - after each suite
+* `_init` - before all tests
+* `_before` - before a test
+* `_beforeStep` - before each step
+* `_afterStep` - after each step
+* `_beforeSuite` - before each suite
+* `_afterSuite` - after each suite
 
 Each implemented method should return a value as they will be added to global promise chain as well.
 

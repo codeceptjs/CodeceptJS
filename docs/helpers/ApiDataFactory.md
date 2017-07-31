@@ -31,7 +31,9 @@ To make this work you need
 
 Install [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker) libraries.
 
-    npm i rosie faker --save-dev`
+```sh
+npm i rosie faker --save-dev`
+```
 
 Create a factory file for a resource.
 
@@ -120,7 +122,7 @@ However this behavior can be configured with following options:
 
 **Parameters**
 
--   `config`
+-   `config`  
 
 ## _fetchId
 
@@ -137,8 +139,8 @@ this.helpers['ApiDataFactory']._fetchId = (body, factory) {
 
 **Parameters**
 
--   `body` **Any**
--   `factory` **Any**
+-   `body` **Any** 
+-   `factory` **Any** 
 
 ## _requestCreate
 
@@ -147,8 +149,8 @@ Can be replaced from a in custom helper.
 
 **Parameters**
 
--   `factory` **Any**
--   `data` **Any**
+-   `factory` **Any** 
+-   `data` **Any** 
 
 ## _requestDelete
 
@@ -157,8 +159,8 @@ Can be replaced from a custom helper.
 
 **Parameters**
 
--   `factory` **Any**
--   `id` **Any**
+-   `factory` **Any** 
+-   `id` **Any** 
 
 ## have
 
@@ -190,6 +192,6 @@ I.have('post', 3, { author: 'davert' });
 
 **Parameters**
 
--   `factory` **Any**
--   `times` **Any**
--   `params` **Any**
+-   `factory` **Any** 
+-   `times` **Any** 
+-   `params` **Any** 

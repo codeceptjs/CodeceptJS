@@ -160,8 +160,8 @@ Then tests with failure will have screenshots.
 
 This helper should be configured in codecept.json
 
--   `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
+- `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
+- `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
 
 Also if you will add Mochawesome helper, then you will able to add custom context in report:
 
@@ -184,7 +184,7 @@ I.addMochawesomeContext({title: 'expected output',
 
 ##### Parameters
 
--   `context`  string, url, path to screenshot, object. See [this](https://www.npmjs.com/package/mochawesome#adding-test-context)
+- `context`  string, url, path to screenshot, object. See [this](https://www.npmjs.com/package/mochawesome#adding-test-context)
 
 ## Multi Reports
 

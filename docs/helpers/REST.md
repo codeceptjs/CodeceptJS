@@ -12,7 +12,7 @@ REST helper allows to send additional requests to the REST API during acceptance
 
 **Parameters**
 
--   `config`
+-   `config`  
 
 ## _executeRequest
 
@@ -20,7 +20,7 @@ Executes unirest request
 
 **Parameters**
 
--   `request` **Any**
+-   `request` **Any** 
 
 ## haveRequestHeaders
 
@@ -35,7 +35,7 @@ I.haveRequestHeaders({
 
 **Parameters**
 
--   `customHeaders` **Any**
+-   `customHeaders` **Any** 
 
 ## sendDeleteRequest
 
@@ -47,8 +47,8 @@ I.sendDeleteRequest('/api/users/1');
 
 **Parameters**
 
--   `url` **Any**
--   `payload` **Any**
+-   `url` **Any** 
+-   `payload` **Any** 
 -   `headers`   (optional, default `{}`)
 
 ## sendGetRequest
@@ -61,7 +61,7 @@ I.sendGetRequest('/api/users.json');
 
 **Parameters**
 
--   `url` **Any**
+-   `url` **Any** 
 -   `object`  headers
 -   `headers`   (optional, default `{}`)
 
@@ -78,7 +78,7 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 -   `string`  url
 -   `object`  payload
 -   `object`  headers
--   `url`
+-   `url`  
 -   `payload`   (optional, default `{}`)
 -   `headers`   (optional, default `{}`)
 
@@ -92,8 +92,8 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 
 **Parameters**
 
--   `url` **Any**
--   `payload` **Any**
+-   `url` **Any** 
+-   `payload` **Any** 
 -   `object`  headers
 -   `headers`   (optional, default `{}`)
 
@@ -110,6 +110,6 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 -   `string`  url
 -   `object`  payload
 -   `object`  headers
--   `url`
+-   `url`  
 -   `payload`   (optional, default `{}`)
 -   `headers`   (optional, default `{}`)

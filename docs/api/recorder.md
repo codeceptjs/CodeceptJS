@@ -9,9 +9,9 @@ Promise description should be passed as first parameter.
 
 **Parameters**
 
--   `taskName` **Any**
--   `fn` **Any**
--   `force` **Any**
+-   `taskName` **Any** 
+-   `fn` **Any** 
+-   `force` **Any** 
 
 ## errHandler
 
@@ -19,7 +19,7 @@ Add error handler to catch rejected promises
 
 **Parameters**
 
--   `fn` **Any**
+-   `fn` **Any** 
 
 ## promise
 
@@ -48,7 +48,7 @@ Adds a promise which throws an error into a chain
 
 **Parameters**
 
--   `err` **Any**
+-   `err` **Any** 
 
 ## toString
 

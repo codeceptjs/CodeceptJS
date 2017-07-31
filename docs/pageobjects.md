@@ -1,9 +1,9 @@
-# PageObjects
+# Page Object
 
 UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.
 
-## PageObject Generation
+## PageObject
 
 In case an application has different pages (login, admin, etc) you should use a page object.
 CodeceptJS can generate a template for it with the command:

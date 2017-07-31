@@ -4,17 +4,17 @@ CodeceptJS runner
 
 **Parameters**
 
--   `config`
--   `opts`
+-   `config`  
+-   `opts`  
 
 ## bootstrap
 
 Executes hooks and bootstrap.
-If bootstrap is async, second parameter is required.
+If bootstrap is async second parameter is required.
 
 **Parameters**
 
--   `done` **Any**
+-   `done` **Any** 
 
 ## constructor
 
@@ -23,8 +23,8 @@ Config and options should be passed
 
 **Parameters**
 
--   `config` **Any**
--   `opts` **Any**
+-   `config` **Any** 
+-   `opts` **Any** 
 
 ## init
 
@@ -33,8 +33,8 @@ If async initialization is required pass callbacke as second parameter.
 
 **Parameters**
 
--   `dir` **Any**
--   `callback` **Any**
+-   `dir` **Any** 
+-   `callback` **Any** 
 
 ## loadTests
 
@@ -42,7 +42,7 @@ Loads tests by pattern or by config.tests
 
 **Parameters**
 
--   `pattern` **optional**
+-   `pattern` **optional** 
 
 ## run
 
@@ -50,7 +50,7 @@ Run a specific test or all loaded tests.
 
 **Parameters**
 
--   `test` **optional**
+-   `test` **optional** 
 
 ## teardown
 
@@ -59,4 +59,4 @@ If teardown is async a parameter is provided.
 
 **Parameters**
 
--   `done` **Any**
+-   `done` **Any** 

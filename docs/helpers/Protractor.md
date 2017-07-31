@@ -24,13 +24,12 @@ This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
--   `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
+-   `driver` - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `restart` (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
 -   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
 -   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
 -   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
--   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `rootElement` - Root element of AngularJS application (default: body)
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
@@ -67,7 +66,7 @@ this.helpers['Protractor'].browser
 
 **Parameters**
 
--   `config`
+-   `config`  
 
 ## _locate
 
@@ -78,15 +77,9 @@ Should be used in custom helpers:
 this.helpers['Protractor']._locate({model: 'newTodo'}).then //...
 ```
 
-To use SmartWait and wait for element to appear on a page, add `true` as second arg:
-
-```js
-this.helpers['Protractor']._locate({name: 'password'}, true).then //...
-```
-
 **Parameters**
 
--   `locator`
+-   `locator`  
 
 ## amInsideAngularApp
 
@@ -110,8 +103,8 @@ I.haveModule('modName', function() {
 
 **Parameters**
 
--   `modName`
--   `fn`
+-   `modName`  
+-   `fn`  
 
 ## moveTo
 
@@ -119,7 +112,7 @@ Moves to url
 
 **Parameters**
 
--   `path`
+-   `path`  
 
 ## refresh
 
@@ -136,7 +129,7 @@ I.resetModule('modName');
 
 **Parameters**
 
--   `modName`
+-   `modName`  
 
 ## waitForClickable
 
@@ -144,7 +137,7 @@ Waits for element to become clickable for number of seconds.
 
 **Parameters**
 
--   `locator`
+-   `locator`  
 -   `sec`   (optional, default `null`)
 
 ## waitForElement
@@ -214,6 +207,18 @@ Element can be located by CSS or XPath.
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
+
+## _locate
+
+```js
+this.helpers['Protractor']._locate({name: 'password'}).then //...
+```
+
+To use SmartWait and wait for element to appear on a page, add `true` as second arg:
+
+```js
+this.helpers['Protractor']._locate({name: 'password'}, true).then //...
+```
 
 ## amOnPage
 
@@ -349,7 +354,7 @@ Checks that cookie with given name does not exist.
 
 **Parameters**
 
--   `name`
+-   `name`  
 
 ## dontSeeCurrentUrlEquals
 
@@ -358,7 +363,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 **Parameters**
 
--   `url`
+-   `url`  
 
 ## dontSeeElement
 
@@ -374,7 +379,7 @@ Checks that current url does not contain a provided fragment.
 
 **Parameters**
 
--   `url`
+-   `url`  
 
 ## dontSeeInField
 
@@ -392,7 +397,7 @@ Checks that the current page contains the given string in its raw source code
 
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## dontSeeInTitle
 
@@ -400,7 +405,7 @@ Checks that title does not contain text.
 
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## executeAsyncScript
 
@@ -478,7 +483,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`
+-   `value`  
 
 ## grabAttributeFrom
 
@@ -492,7 +497,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
--   `attr`
+-   `attr`  
 
 ## grabCookie
 
@@ -506,7 +511,7 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`
+-   `name`  
 
 ## grabTextFrom
 
@@ -557,7 +562,7 @@ I.pressKey(['Control','a']);
 
 **Parameters**
 
--   `key`
+-   `key`  
 
 ## resizeWindow
 
@@ -567,12 +572,12 @@ First parameter can be set to `maximize`
 **Parameters**
 
 -   `width`  or `maximize`
--   `height`
+-   `height`  
 
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -582,7 +587,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 **Parameters**
 
--   `fileName`
+-   `fileName`  
 -   `fullPage`  (optional)
 
 ## see
@@ -625,7 +630,7 @@ I.seeCookie('Auth');
 
 **Parameters**
 
--   `name`
+-   `name`  
 
 ## seeCurrentUrlEquals
 
@@ -640,7 +645,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 **Parameters**
 
--   `url`
+-   `url`  
 
 ## seeElement
 
@@ -665,7 +670,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 **Parameters**
 
--   `url`
+-   `url`  
 
 ## seeInField
 
@@ -682,7 +687,7 @@ I.seeInField('#searchform input','Search');
 **Parameters**
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`
+-   `value`  
 
 ## seeInSource
 
@@ -694,7 +699,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## seeInTitle
 
@@ -702,7 +707,7 @@ Checks that title contains text.
 
 **Parameters**
 
--   `text`
+-   `text`  
 
 ## selectOption
 
@@ -728,7 +733,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 **Parameters**
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`
+-   `option`  
 
 ## setCookie
 
@@ -740,4 +745,4 @@ I.setCookie({name: 'auth', value: true});
 
 **Parameters**
 
--   `cookie`
+-   `cookie`  

@@ -4,7 +4,7 @@ Current configuration
 
 **Parameters**
 
--   `newConfig`
+-   `newConfig`  
 
 ## append
 
@@ -12,7 +12,7 @@ Appends values to current config
 
 **Parameters**
 
--   `additionalConfig` **Any**
+-   `additionalConfig` **Any** 
 
 ## create
 
@@ -20,7 +20,7 @@ Create a config with default options
 
 **Parameters**
 
--   `newConfig` **Any**
+-   `newConfig` **Any** 
 
 ## get
 
@@ -39,7 +39,7 @@ If directory provided:
 
 **Parameters**
 
--   `configFile` **Any**
+-   `configFile` **Any** 
 
 ## reset
 

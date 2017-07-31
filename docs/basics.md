@@ -158,8 +158,8 @@ method autocompletion while writing tests.
 
 Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
 
-*   `xScenario` - skips current test
-*   `Scenario.only` - executes only the current test
+* `xScenario` - skips current test
+* `Scenario.only` - executes only the current test
 
 ## Reporters
 

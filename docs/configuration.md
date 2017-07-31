@@ -6,17 +6,17 @@ After running `codeceptjs init` it should be saved in test root.
 
 Here is an overview of available options with their defaults:
 
-*   **tests**: `"./*_test.js"` - pattern to locate tests
-*   **include**: `{}` - actors and pageobjects to be registered in DI container and i  ncluded in tests.
-*   **timeout**: `10000` - default tests timeout
-*   **output**: `"./output"` - where to store failure screenshots, etc
-*   **helpers**: `{}` - list of enabled helpers
-*   **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-*   **multiple**: `{}` - multiple options, see [#PR439](  https://github.com/Codeception/CodeceptJS/pull/439) for more details
-*   **name**: `"tests"` - test suite name (not used)
-*   **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](#hooks)).
-*   **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks).
-*   **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
+* **tests**: `"./*_test.js"` - pattern to locate tests
+* **include**: `{}` - actors and pageobjects to be registered in DI container and i  ncluded in tests.
+* **timeout**: `10000` - default tests timeout
+* **output**: `"./output"` - where to store failure screenshots, etc
+* **helpers**: `{}` - list of enabled helpers
+* **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
+* **multiple**: `{}` - multiple options, see [#PR439](  https://github.com/Codeception/CodeceptJS/pull/439) for more details
+* **name**: `"tests"` - test suite name (not used)
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](#hooks)).
+* **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks).
+* **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
 
 ## Dynamic Configuration
 

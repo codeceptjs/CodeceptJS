@@ -1,66 +1,64 @@
-# Output
-
-## debug
+# debug
 
 Print information in --debug mode
 
 **Parameters**
 
--   `msg`
+-   `msg`  
 
-## error
+# error
 
 Print error
 
 **Parameters**
 
--   `msg`
+-   `msg`  
 
-## level
+# level
 
 Set or return current verbosity level
 
 **Parameters**
 
--   `level`
+-   `level`  
 
-## log
+# log
 
 Print information in --verbose mode
 
 **Parameters**
 
--   `msg`
+-   `msg`  
 
-## process
+# process
 
 Print information for a process
 Used in multiple-run
 
 **Parameters**
 
--   `process`
+-   `process`  
 
-## step
+# step
 
 Print a step
 
 **Parameters**
 
--   `step`
+-   `step`  
 
-## stepExecutionTime
+# stepExecutionTime
 
 Print a step execution time
 
 **Parameters**
 
--   `step`
+-   `step`  
 
-## success
+# success
 
 Print a successful message
 
 **Parameters**
 
--   `msg`
+-   `msg`  
