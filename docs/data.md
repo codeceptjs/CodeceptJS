@@ -5,9 +5,9 @@
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
 
-1. reset database completely between tests
-2. create unique non-intersecting data sets per each test
-3. create and delete data for a test
+1.  reset database completely between tests
+2.  create unique non-intersecting data sets per each test
+3.  create and delete data for a test
 
 The most efficient way would be to allow test to control its data, i.e. the 3rd option.
 However, accessing database directly is not a good idea as database vendor, schema and data are used by application internally and are out of scope of acceptance test.
@@ -81,7 +81,6 @@ This can also be used to emulate Ajax requests:
 I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
 ```
 
-
 ## Data Generation with Factories
 
 This concept is extended by [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
@@ -92,6 +91,7 @@ This way setting data for a test is as simple as writing:
 let post = yield I.have('post');
 I.haveMultiple('comment', 5, { postId: post.id});
 ```
+
 Just define how many items of any kind you need and ApiDataFactory will create them for you.
 However, to make this work some preparations required.
 
@@ -142,4 +142,3 @@ This rules can be customized in helper configuration.
 ---
 
 ### done()
-

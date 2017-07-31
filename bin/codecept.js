@@ -15,7 +15,7 @@ program.command('init [path]')
 
 program.command('shell [path]')
   .alias('sh')
-  .description('Interative shell')
+  .description('Interactive shell')
   .option('--verbose', 'output internal logging information')
   .option('--profile [value]', 'configuration profile to be used')
   .action(require('../lib/command/interactive'));

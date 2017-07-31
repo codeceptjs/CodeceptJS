@@ -7,7 +7,7 @@ less trusted.
 
 Requires `nightmare` and `nightmare-upload` packages to be installed.
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 

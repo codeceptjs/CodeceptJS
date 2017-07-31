@@ -13,7 +13,6 @@ In case of CodeceptJS you can be sure that in code it will be as easy as it soun
 Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
 That is what a test look like.
 
-
 ```js
 I.amOnPage('/login');
 I.fillField('Username', 'john');
@@ -200,6 +199,7 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
+
 More wait actions can be found in helper's reference.
 
 ## SmartWait
