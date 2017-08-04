@@ -1,6 +1,5 @@
 var path = require('path');
 var gulp = require('gulp');
-const gulpIf = require('gulp-if');
 var eslint = require('gulp-eslint');
 var excludeGitignore = require('gulp-exclude-gitignore');
 var mocha = require('gulp-mocha');
@@ -11,12 +10,12 @@ var documentation = require('gulp-documentation');
 var glob = require('glob');
 var guppy = require('git-guppy')(gulp);
 var gitmodified = require('gulp-gitmodified');
-var mustache = require("gulp-mustache");
+var istanbul = require('gulp-istanbul');
 
 function isFixed(file) {
 	// Has ESLint fixed the file contents?
-  console.log('fixed', file.eslint != null && file.eslint.fixed);
-	return file.eslint != null && file.eslint.fixed;
+  console.log('fixed', file.eslint !== null && file.eslint.fixed);
+  return file.eslint !== null && file.eslint.fixed;
 }
 
 gulp.task('docs', function () {
@@ -49,12 +48,21 @@ gulp.task('static', function () {
 
 gulp.task('pre-commit', ['static']);
 
-gulp.task('test', function (cb) {
+gulp.task('pre-test', function () {
+  return gulp.src(['./lib/**/*.js'])
+    // Covering files
+    .pipe(istanbul())
+    // Force `require` to return covered files
+    .pipe(istanbul.hookRequire());
+});
+
+gulp.task('test', ['pre-test'], function (cb) {
   var mochaErr;
 
   gulp.src(['./test/unit/**/*_test.js', './test/runner/**/*_test.js'])
     .pipe(plumber())
     .pipe(mocha({reporter: 'spec'}))
+    .pipe(istanbul.writeReports())
     .on('error', function (err) {
       mochaErr = err;
     })
