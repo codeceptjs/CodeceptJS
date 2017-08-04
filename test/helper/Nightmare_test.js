@@ -14,7 +14,7 @@ require('co-mocha')(require('mocha'));
 let webApiTests = require('./webapi');
 
 describe('Nightmare', function () {
-  this.retries(4);
+  this.retries(1);
   this.timeout(35000);
 
   before(function() {
@@ -34,7 +34,7 @@ describe('Nightmare', function () {
 
   beforeEach(function() {
     webApiTests.init({ I, site_url});
-    return browser = I._before();
+    return I._before().then(() => browser = I.browser);
   });
 
   afterEach(() => {
