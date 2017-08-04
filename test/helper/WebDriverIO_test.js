@@ -263,6 +263,11 @@ describe('WebDriverIO', function () {
         .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
         .then((num) => assert.equal(num, 3));
     });
+    it('should support locators like {xpath:"//div"}', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabNumberOfVisibleElements({xpath: '//div[@id = "grab-multiple"]//a'}))
+        .then((num) => assert.equal(num, 3));
+    });
   });
 
   describe('#waitInUrl, #waitUrlEquals', () => {
