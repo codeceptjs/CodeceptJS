@@ -2,7 +2,7 @@
 let Nightmare = require('../../lib/helper/Nightmare');
 let should = require('chai').should();
 let I, browser;
-let site_url = 'http://127.0.0.1:8000';
+let site_url = 'http://127.0.0.1:8010';
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -61,7 +61,7 @@ describe('Nightmare', function () {
     });
   });
 
-  webApiTests.tests();
+  //webApiTests.tests();
 
 
   // should work for webdriverio and seleniumwebdriver
@@ -144,7 +144,7 @@ describe('Nightmare', function () {
       I.amOnPage(site_url);
       let url = yield browser.url();
       assert.equal(site_url + '/', url);
-      I.refresh();
+      yield I.refresh();
       let nextUrl = yield browser.url();
       //reloaded the page, check the url is the same
       assert.equal(url, nextUrl);
