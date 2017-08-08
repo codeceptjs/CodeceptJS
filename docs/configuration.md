@@ -56,6 +56,12 @@ exports.config = {
 
 (Don't copy-paste this config, it's just demo)
 
+If you prefer to store your configuration files in a different location, or with a different name, you can do that with `--config` or `-c:
+
+```sh
+codeceptjs run --config=./path/to/my/config.json
+```
+
 ## Profile
 
 Using values from `process.profile` you can change the config dynamically.
