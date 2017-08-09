@@ -446,6 +446,19 @@ describe('WebDriverIO', function () {
       });
   });
 
+  describe('click context', () => {
+    it('should click on inner text', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.click('Submit', '//input[@type = "submit"]'))
+        .then(() => wd.waitInUrl('/form/complex'));
+    });
+    it('should click on input in inner element', () => {
+      return wd.amOnPage('/form/checkbox')
+        .then(() => wd.click('Submit', '//form'))
+        .then(() => wd.waitInUrl('/form/complex'));
+    });
+  })
+
 
   describe('SmartWait', () => {
     before(() => wd.options.smartWait = 3000);
