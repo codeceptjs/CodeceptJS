@@ -261,9 +261,7 @@
     
         <li class="main active"><a href="#protractor">Protractor</a></li>
         
-            <li><a href="#selenium-installation">Selenium Installation</a></li>
-        
-            <li><a href="#phantomjs-installation">PhantomJS Installation</a></li>
+            <li><a href="#backends">Backends</a></li>
         
             <li><a href="#configuration">Configuration</a></li>
         
@@ -378,27 +376,31 @@
 
 <h1 id="protractor">Protractor</h1>
 <p>Protractor helper is based on <a href="http://www.protractortest.org">Protractor library</a> and used for testing AngularJS applications.</p>
-<h4 id="selenium-installation">Selenium Installation</h4>
+<h2 id="backends">Backends</h2>
+<h3 id="selenium-installation">Selenium Installation</h3>
 <ol>
 <li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
 <li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>, for Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a>.</li>
 <li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
 </ol>
-<h4 id="phantomjs-installation">PhantomJS Installation</h4>
+<h3 id="phantomjs-installation">PhantomJS Installation</h3>
 <p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.</p>
 <ol>
 <li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
 <li>Run PhantomJS in WebDriver mode: <code>phantomjs --webdriver=4444</code></li>
 </ol>
-<h3 id="configuration">Configuration</h3>
+<h2 id="configuration">Configuration</h2>
 <p>This helper should be configured in codecept.json</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
-<li><code>driver</code> - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
+<li><code>driver</code> - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
 <li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
+<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure</li>
+<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites</li>
+<li><code>keepBrowserState</code> (optional, default: false)  - keep browser state between tests when <code>restart</code> set to false.</li>
 <li><code>seleniumAddress</code> - Selenium address to connect (default: <a href="http://localhost:4444/wd/hub">http://localhost:4444/wd/hub</a>)</li>
 <li><code>rootElement</code> - Root element of AngularJS application (default: body)</li>
 <li><code>waitForTimeout</code>: (optional) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default.</li>

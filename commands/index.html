@@ -285,82 +285,82 @@
 <p>Executes tests. Requires <code>codecept.json</code> config to be present in provided path.</p>
 <hr />
 <p>Run all tests from current dir</p>
-<pre><code>codeceptjs run
+<pre><code class="sh">codeceptjs run
 </code></pre>
 
 <p>Load config and run tests from <code>test</code> dir</p>
-<pre><code>codeceptjs run -c test
+<pre><code class="sh">codeceptjs run -c test
 </code></pre>
 
 <p>Run only tests with "signin" word in name</p>
-<pre><code>codeceptjs run --grep &quot;signin&quot;
+<pre><code class="sh">codeceptjs run --grep &quot;signin&quot;
 </code></pre>
 
 <p>Run single test [path to codecept.js] [test filename]</p>
-<pre><code>codeceptjs run github_test.js
+<pre><code class="sh">codeceptjs run github_test.js
 </code></pre>
 
 <p>Run single test with steps printed</p>
-<pre><code>codeceptjs run github_test.js --steps
+<pre><code class="sh">codeceptjs run github_test.js --steps
 </code></pre>
 
 <p>Run single test in debug mode</p>
-<pre><code>codeceptjs run github_test.js --debug
+<pre><code class="sh">codeceptjs run github_test.js --debug
 </code></pre>
 
 <p>Run test with internal logs printed (global promises, and events).</p>
-<pre><code>codeceptjs run github_test.js --verbose
+<pre><code class="sh">codeceptjs run github_test.js --verbose
 </code></pre>
 
 <p>Select config file manually (<code>-c</code> or <code>--config</code> option)</p>
-<pre><code>codeceptjs run -c my.codecept.conf.js
+<pre><code class="sh">codeceptjs run -c my.codecept.conf.js
 codeceptjs run --config path/to/codecept.json
 </code></pre>
 
 <p>Override config on the fly. Provide valid JSON which will be merged into current config:</p>
-<pre><code>codeceptjs run --override '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;chrome&quot;}}}'
+<pre><code class="sh">codeceptjs run --override '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;chrome&quot;}}}'
 </code></pre>
 
 <p>Run tests and produce xunit report:</p>
-<pre><code>codeceptjs run --reporter xunit
+<pre><code class="sh">codeceptjs run --reporter xunit
 </code></pre>
 
 <p>Use any of <a href="https://github.com/mochajs/mocha/tree/master/lib/reporters">Mocha reporters</a> used.</p>
 <h2 id="run-multiple">Run multiple</h2>
 <p>Run multiple suites.</p>
-<pre><code>codeceptjs run-multiple smoke:chrome regression:firefox
+<pre><code class="sh">codeceptjs run-multiple smoke:chrome regression:firefox
 </code></pre>
 
 <h2 id="init">Init</h2>
 <p>Creates <code>codecept.json</code> file in current directory:</p>
-<pre><code>codeceptjs init
+<pre><code class="sh">codeceptjs init
 </code></pre>
 
 <p>Or in provided path</p>
-<pre><code>codecept init test
+<pre><code class="sh">codecept init test
 </code></pre>
 
 <h2 id="shell">Shell</h2>
 <p>Interactive shell. Allows to try <code>I.</code> commands in runtime</p>
-<pre><code>codeceptjs shell
+<pre><code class="sh">codeceptjs shell
 </code></pre>
 
 <h2 id="generators">Generators</h2>
 <p>Create new test</p>
-<pre><code>codeceptjs generate test
+<pre><code class="sh">codeceptjs generate test
 </code></pre>
 
 <p>Create new pageobject</p>
-<pre><code>codeceptjs generate pageobject
+<pre><code class="sh">codeceptjs generate pageobject
 </code></pre>
 
 <p>Create new helper</p>
-<pre><code>codeceptjs generate helper
+<pre><code class="sh">codeceptjs generate helper
 </code></pre>
 
 <h2 id="typescript-definitions">TypeScript Definitions</h2>
 <p>TypeScript Definitions allows IDEs to provide autocompletion when writing tests.</p>
-<pre><code>codeceptjs def
+<pre><code class="sh">codeceptjs def
 </code></pre>
 
 <p>Produces <code>steps.d.ts</code> file, which referenced in the very beginning of a test file.</p>
@@ -370,8 +370,8 @@ Feature('My new test');
 
 <p>After doing that IDE should provide autocompletion for <code>I</code> object inside <code>Scenario</code> and <code>within</code> blocks.</p>
 <h2 id="list-commands">List Commands</h2>
-<p>Prints all avialable methods of <code>I</code> to console</p>
-<pre><code>codeceptjs list
+<p>Prints all available methods of <code>I</code> to console</p>
+<pre><code class="sh">codeceptjs list
 </code></pre></div>
             <div class="clearfix"></div>
         </div>

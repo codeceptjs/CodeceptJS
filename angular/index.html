@@ -263,32 +263,18 @@
         
             <li><a href="#introduction">Introduction</a></li>
         
-            <li><a href="#setting-up-codeceptjs-with-protractor">Setting up CodeceptJS with Protractor</a></li>
-        
-            <li><a href="#writing-first-test">Writing First Test</a></li>
-        
-            <li><a href="#running-several-scenarios">Running Several Scenarios</a></li>
-        
-            <li><a href="#locators">Locators</a></li>
-        
-            <li><a href="#refactoring">Refactoring</a></li>
-        
-            <li><a href="#extending">Extending</a></li>
-        
-            <li><a href="#done">done()</a></li>
-        
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h2 id="angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</h2>
-<h3 id="introduction">Introduction</h3>
-<p>CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by differnet backends.
+<h1 id="angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</h1>
+<h2 id="introduction">Introduction</h2>
+<p>CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
 CodeceptJS allows you to write a test and switch in config execution drivers: will it be <em>wedriverio</em>, <em>selenium-webdriver</em>, or <em>protractor</em> depends on you.
 This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.</p>
 <p>As you know, <a href="http://www.protractortest.org/#/">Protractor</a> is an official tool for testing AngularJS applications.
-CodeceptJS should not be considerend as alternative to Protractor but a testing framework utilizing this powerful library.</p>
+CodeceptJS should not be considered as alternative to Protractor but a testing framework utilizing this powerful library.</p>
 <p><img alt="" src="http://codecept.io/images/angular-protractor.png" /></p>
 <p>So there is no magic in testing of AngularJS application in CodeceptJS.
 You just execute regular Protractor commands, packed in a simple high-level API.</p>
@@ -348,7 +334,7 @@ codeceptjs init
 </code></pre>
 
 <p>You will be asked questions about initial configuration, make sure you select Protractor helper.
-If you didn't have Protracotr library it <strong>will be installed</strong>.
+If you didn't have Protractor library it <strong>will be installed</strong>.
 Please agree to extend steps, and use <code>http://todomvc.com/examples/angularjs/</code> as a url for Protractor helper.</p>
 <p>For TodoMVC application you will have following config created in <code>codecept.json</code> file:</p>
 <pre><code class="json">{
@@ -377,7 +363,7 @@ Please agree to extend steps, and use <code>http://todomvc.com/examples/angularj
 </code></pre>
 
 <p>After that you can start writing your first CodeceptJS/Angular tests.
-Please look into the reference of [Protractor helper])(http://codecept.io/helpers/Protractor/) for all available actions.
+Please look into the reference of <a href="http://codecept.io/helpers/Protractor/">Protractor helper</a> for all available actions.
 You can also run <code>list</code> command to see methods of I:</p>
 <pre><code class="bash">codeceptjs list
 </code></pre>
@@ -404,7 +390,7 @@ Scenario('create todo item', (I) =&gt; {
 </code></pre>
 
 <p>A test can be executed with <code>run</code> command, we recommend to use <code>--steps</code> options to follow step-by-step execution:</p>
-<pre><code>$ codeceptjs run --steps
+<pre><code class="sh">$ codeceptjs run --steps
 
 CodeceptJS v0.3.2
 Test root is assumed to be /home/davert/demos/todoangular
@@ -463,7 +449,7 @@ Scenario('check todo item', (I) =&gt; {
 <p>Like you may have noticed, CodeceptJS doesn't use <code>by.*</code> locators similar to Protractor or Selenium Webdriver.
 Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
 you can specify them using so-called strict locators. This is an absolute analogy of <code>by</code>, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:</p>
-<pre><code>{css: 'button'}
+<pre><code class="sh">{css: 'button'}
 {repeater: &quot;todo in todos&quot;}
 {binding: 'latest'}
 </code></pre>

@@ -24,7 +24,9 @@ let withinStore = {};
  * WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to
  * manipulate browser using Selenium WebDriver or PhantomJS.
  *
- * #### Selenium Installation
+ * ## Backends
+ *
+ * ### Selenium Installation
  *
  * 1. Download [Selenium Server](http://docs.seleniumhq.org/download/)
  * 2. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started),
@@ -32,7 +34,7 @@ let withinStore = {};
  * 3. Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use
  * `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
  *
- * #### PhantomJS Installation
+ * ### PhantomJS Installation
  *
  * PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
  * It allows you to run Selenium tests on a server without a GUI installed.
@@ -48,6 +50,9 @@ let withinStore = {};
  * * `browser` - browser in which perform testing
  * * `restart` (optional, default: true) - restart browser between tests.
  * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
+ * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+ * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+ * * `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
  * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
  * * `waitForTimeout`: (option) sets default wait time in *ms* for all `wait*` functions. 1000 by default;
@@ -218,6 +223,7 @@ class WebDriverIO extends Helper {
       fullPageScreenshots: true,
       manualStart: false,
       keepCookies: false,
+      keepBrowserState: false,
       timeouts: {
         script: 1000 // ms
       }
@@ -271,7 +277,6 @@ class WebDriverIO extends Helper {
   _beforeSuite() {
     if (!this.options.restart && !this.options.manualStart && !this.isRunning) {
       this.debugSection('Session', 'Starting singleton browser session');
-      this.isRunning = true;
       return this._startBrowser();
     }
   }
@@ -282,37 +287,44 @@ class WebDriverIO extends Helper {
     } else {
       this.browser = webdriverio.remote(this.options).init();
     }
-
-    if (this.options.timeouts) {
-      this.defineTimeout(this.options.timeouts);
-    }
-
-    if (this.options.windowSize === 'maximize') {
-      this.browser.execute('return [screen.width, screen.height]').then((res) => {
-        return this.browser.windowHandleSize({
-          width: res.value[0],
-          height: res.value[1]
-        });
-      });
-    } else if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
-      let dimensions = this.options.windowSize.split('x');
-      this.browser.windowHandleSize({
-        width: dimensions[0],
-        height: dimensions[1]
-      });
-    }
-    return this.browser;
+    return this.browser.then(() => {
+      this.isRunning = true;
+      let promisesList = [];
+      if (this.options.timeouts) {
+        promisesList.push(this.defineTimeout(this.options.timeouts));
+      }
+      if (this.options.windowSize === 'maximize') {
+        promisesList.push(this.browser.execute('return [screen.width, screen.height]').then((res) => {
+          return this.browser.windowHandleSize({
+            width: res.value[0],
+            height: res.value[1]
+          });
+        }));
+      } else if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
+        let dimensions = this.options.windowSize.split('x');
+        promisesList.push(this.browser.windowHandleSize({
+          width: dimensions[0],
+          height: dimensions[1]
+        }));
+      }
+      return Promise.all(promisesList);
+    });
   }
 
   _before() {
-    if (this.options.restart && !this.options.manualStart) this._startBrowser();
-    this.failedTestName = null;
     this.context = this.root;
+    if (this.options.restart && !this.options.manualStart) return this._startBrowser();
+    if (!this.isRunning && !this.options.manualStart) return this._startBrowser();
     return this.browser;
   }
 
   _after() {
-    if (this.options.restart) return this.browser.end();
+    if (!this.isRunning) return;
+    if (this.options.restart) {
+      this.isRunning = false;
+      return this.browser.end();
+    }
+    if (this.options.keepBrowserState) return;
     if (this.options.keepCookies) {
       return Promise.all(
         [this.browser.execute('localStorage.clear();'), this.closeOtherTabs()]);
@@ -328,24 +340,31 @@ class WebDriverIO extends Helper {
   }
 
   _finishTest() {
-    if (!this.options.restart) return this.browser.end();
+    if (!this.options.restart && this.isRunning) return this.browser.end();
   }
 
   _failed(test) {
-    if (this.options.disableScreenshots) return;
-    let fileName = clearString(test.title);
-    if (this.options.uniqueScreenshotNames) {
-      fileName =
-        fileName.substring(0, 10) + '-' + hashCode(test.title) + '-' +
-        hashCode(test.file) +
-        '.failed.png';
-    } else {
-      fileName = fileName + '.failed.png';
-    }
     let promisesList = [];
     if (Object.keys(withinStore).length != 0) promisesList.push(this._withinEnd());
-    promisesList.push(this.saveScreenshot(fileName, this.options.fullPageScreenshots));
-    return Promise.all(promisesList);
+    if (!this.options.disableScreenshots) {
+      let fileName = clearString(test.title);
+      if (test.ctx && test.ctx.test && test.ctx.test.type == 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
+      if (this.options.uniqueScreenshotNames) {
+        fileName =
+          fileName.substring(0, 10) + '-' + hashCode(fileName) + '-' +
+          hashCode(test.file) +
+          '.failed.png';
+      } else {
+        fileName = fileName + '.failed.png';
+      }
+      promisesList.push(this.saveScreenshot(fileName, this.options.fullPageScreenshots));
+    }
+    return Promise.all(promisesList).catch((err) => {
+      if (err && err.type && err.type == "RuntimeError" && err.message && (err.message.indexOf("was terminated due to") > -1 || err.message.indexOf("no such window: target window already closed" > -1))) {
+        this.isRunning = false;
+        return;
+      }
+    });
   }
 
   _withinBegin(locator) {
@@ -451,7 +470,7 @@ class WebDriverIO extends Helper {
     // both pageLoad and page load are accepted
     // see http://webdriver.io/api/protocol/timeouts.html
     if (timeouts.pageLoad) {
-      p.push(this.browser.timeouts('pageLoad', timeouts.pageLoad));
+      p.push(this.browser.timeouts('page load', timeouts.pageLoad));
     }
     if (timeouts.script) {
       p.push(this.browser.timeouts('script', timeouts.script));
@@ -1277,7 +1296,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
    * ```
    */
   grabNumberOfVisibleElements(locator) {
-    return this.browser.elements(locator).then((res) => {
+    return this.browser.elements(withStrictLocator(locator)).then((res) => {
       if (!res.value || res.value.length === 0) {
         return 0;
       }
@@ -1705,7 +1724,7 @@ I.pressKey(['Control','a']);
     }
     return this.browser.keys(key).then(function () {
       if (!modifier) return true;
-      return this.keys(modifier); // release modifeier
+      return this.keys(modifier); // release modifier
     });
   }
 
@@ -2342,7 +2361,15 @@ function findClickable(locator, locateFn) {
       if (els.value.length) {
         return els;
       }
-      return locateFn(locator); // by css or xpath
+      let selfLocator = xpathLocator.combine([
+        `./self::*[contains(normalize-space(string(.)), ${literal}) or contains(normalize-space(@value), ${literal})]`
+      ]);
+      return locateFn(selfLocator).then(function (els) {
+        if (els.value.length) {
+          return els;
+        }
+        return locateFn(locator); // by css or xpath
+      });
     });
   });
 }

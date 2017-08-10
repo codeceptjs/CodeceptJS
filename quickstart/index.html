@@ -269,7 +269,7 @@
         
             <li><a href="#run">Run</a></li>
         
-            <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running.</a></li>
+            <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running</a></li>
         
     
     </ul>
@@ -279,13 +279,13 @@
 <h1 id="quickstart">QuickStart</h1>
 <p><strong>NodeJS v 6.11.1</strong> and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.</p>
-<p>Install <strong>CodeceptJS</strong> with WebDriverio using <code>codeceptjs-webdriverio</code> meta package from NPM.</p>
+<p>Install <strong>CodeceptJS</strong> with WebDriverIO using <code>codeceptjs-webdriverio</code> meta package from NPM.</p>
 <p>You can install it globally:</p>
-<pre><code>[sudo] npm install -g codeceptjs-webdriverio
+<pre><code class="sh">[sudo] npm install -g codeceptjs-webdriverio
 </code></pre>
 
 <p>or locally</p>
-<pre><code>npm install codeceptjs-webdriverio --save-dev
+<pre><code class="sh">npm install codeceptjs-webdriverio --save-dev
 </code></pre>
 
 <ul>
@@ -295,7 +295,7 @@ CodeceptJS is multi-backend testing framework. In this guide we will use webdriv
 </ul>
 <h2 id="setup">Setup</h2>
 <p>Initialize CodeceptJS running:</p>
-<pre><code>codeceptjs init
+<pre><code class="sh">codeceptjs init
 </code></pre>
 
 <p>It will create <code>codecept.json</code> config in current directory (or provide path in the first argument).</p>
@@ -304,7 +304,7 @@ CodeceptJS is multi-backend testing framework. In this guide we will use webdriv
 We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.
 If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
 No matter what helper you've chosen they will be similar in use.</p>
-<pre><code>? What helpers do you want to use?
+<pre><code class="sh">? What helpers do you want to use?
 ❯◉ WebDriverIO
  ◯ Protractor
  ◯ SeleniumWebdriver
@@ -313,16 +313,16 @@ No matter what helper you've chosen they will be similar in use.</p>
 </code></pre>
 
 <p>Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.</p>
-<pre><code>? Where should logs, screenshots, and reports to be stored? ./output
+<pre><code class="sh">? Where should logs, screenshots, and reports to be stored? ./output
 </code></pre>
 
 <p>If you are going to extend test suite by writing custom steps you should probably agree to create <code>steps_file.js</code></p>
-<pre><code>? Would you like to extend I object with custom steps? Yes
+<pre><code class="sh">? Would you like to extend I object with custom steps? Yes
 ? Where would you like to place custom steps? ./steps_file.js
 </code></pre>
 
 <p>WebDriverIO helper will ask for additional configuration as well:</p>
-<pre><code>? [WebDriverIO] Base url of site to be tested http://localhost
+<pre><code class="sh">? [WebDriverIO] Base url of site to be tested http://localhost
 ? [WebDriverIO] Browser in which testing will be performed (chrome)
 </code></pre>
 
@@ -353,7 +353,7 @@ Scenario('test something', (I) =&gt; {
 <h2 id="prepare-selenium-server">Prepare Selenium Server</h2>
 <p>To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.</p>
 <p>Use <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a> from NPM to install and run them:</p>
-<pre><code>[sudo] npm install -g selenium-standalone
+<pre><code class="sh">[sudo] npm install -g selenium-standalone
 selenium-standalone install
 selenium-standalone start
 </code></pre>
@@ -364,7 +364,7 @@ selenium-standalone start
 <pre><code class="bash">codeceptjs run --steps
 </code></pre>
 
-<p><em>steps option will display test execution process in console</em></p>
+<p>( <em>steps option will display test execution process in console.</em> )</p>
 <p>If everything is done right, you will see in console:</p>
 <pre><code class="bash">My First Test --
   test something
@@ -373,7 +373,7 @@ selenium-standalone start
  ✓ OK
 </code></pre>
 
-<h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running.</h2>
+<h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running</h2>
 <p>Wasn't so hard, right?</p></div>
             <div class="clearfix"></div>
         </div>

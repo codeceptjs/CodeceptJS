@@ -276,7 +276,7 @@ Mount in your CodeceptJS config directory into the <code>/tests</code> directory
 <p>Sample mount: <code>-v path/to/codecept.json:/tests</code></p>
 <h3 id="locally">Locally</h3>
 <p>You can execute CodeceptJS with Nightmare locally with no extra configuration.</p>
-<pre><code>docker run --net=host -v $PWD:/tests codeception/codeceptjs
+<pre><code class="sh">docker run --net=host -v $PWD:/tests codeception/codeceptjs
 </code></pre>
 
 <p>Nightmare helper must be enabled in codecept.json config.</p>
@@ -327,7 +327,7 @@ $ docker run -it --rm -v /&lt;path_to_codeceptjs_test_dir&gt;/:/tests/ --link se
 <em>Note: If running with the Nightmare driver, it is not necessary to run a selenium docker container and link it. So <code>--link selenium-chrome:selenium</code> may be omitted</em></p>
 <h3 id="build">Build</h3>
 <p>To build this image:</p>
-<pre><code class="sh">$ docker build -t codeception/codeceptjs .
+<pre><code class="sh">docker build -t codeception/codeceptjs .
 </code></pre></div>
             <div class="clearfix"></div>
         </div>

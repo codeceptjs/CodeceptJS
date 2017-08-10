@@ -312,7 +312,7 @@ I object is an <strong>actor</strong>, an abstraction for a testing user. I is a
 <p>For current config all methods of <code>I</code> will be taken from <code>WebDriverIO</code> helper.
 This is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.</p>
 <h2 id="how-it-works">How It Works</h2>
-<p>Tests are written in synchronous way. Test scenarios should be linear, so tests by themseleves should not include promises or callbacks as well.
+<p>Tests are written in synchronous way. Test scenarios should be linear, so tests by themselves should not include promises or callbacks as well.
 However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
 <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
 <p>If you want to get information from a running test you can use <code>yield</code> inside a <strong>generator function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
@@ -399,7 +399,7 @@ I.say('I expect post is visible on site');
 <h2 id="intellisense">IntelliSense</h2>
 <p>If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with</p>
-<pre><code>codeceptjs def
+<pre><code class="sh">codeceptjs def
 </code></pre>
 
 <p>Now you should include <code>/// &lt;reference path="./steps.d.ts" /&gt;</code> into your test files to get

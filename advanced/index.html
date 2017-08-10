@@ -300,7 +300,7 @@ Data(accounts).Scenario('Test Login', (I, current) =&gt; {
 <p><em>Important: you can't use name <code>current</code> for pageObjects or helpers in data scenarios</em></p>
 <p>This will produce 2 tests with different data sets.
 Current data set is appended to a test name in output:</p>
-<pre><code>✓ Test Login | {&quot;login&quot;:&quot;davert&quot;,&quot;password&quot;:&quot;123456&quot;}
+<pre><code class="sh">✓ Test Login | {&quot;login&quot;:&quot;davert&quot;,&quot;password&quot;:&quot;123456&quot;}
 ✓ Test Login | {&quot;login&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;}
 </code></pre>
 
@@ -318,7 +318,7 @@ all tests with <code>@tag</code> could be executed with <code>--grep @tag</code>
 <pre><code class="js">Scenario('update user profile @slow')
 </code></pre>
 
-<pre><code>codeceptjs run --grep @slow
+<pre><code class="sh">codeceptjs run --grep @slow
 </code></pre>
 
 <p>Use regex for more flexible filtering:</p>
@@ -331,12 +331,12 @@ all tests with <code>@tag</code> could be executed with <code>--grep @tag</code>
 <h2 id="debug">Debug</h2>
 <p>CodeceptJS provides a debug mode in which additional information is printed.
 It can be turned on with <code>--debug</code> flag.</p>
-<pre><code>codeceptjs run --debug
+<pre><code class="sh">codeceptjs run --debug
 </code></pre>
 
 <p>While running in debug mode you can pause execution and enter interactive console mode by using <code>pause()</code> function.</p>
 <p>For advanced debugging use NodeJS debugger. In WebStorm IDE:</p>
-<pre><code>node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
+<pre><code class="sh">node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 </code></pre>
 
 <h2 id="multiple-execution">Multiple Execution</h2>

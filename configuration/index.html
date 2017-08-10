@@ -276,7 +276,7 @@
 <p>Here is an overview of available options with their defaults:</p>
 <ul>
 <li><strong>tests</strong>: <code>"./*_test.js"</code> - pattern to locate tests</li>
-<li><strong>include</strong>: <code>{}</code> - actors and pageobjects to be registered in DI container and included in tests.</li>
+<li><strong>include</strong>: <code>{}</code> - actors and pageobjects to be registered in DI container and i  ncluded in tests.</li>
 <li><strong>timeout</strong>: <code>10000</code> - default tests timeout</li>
 <li><strong>output</strong>: <code>"./output"</code> - where to store failure screenshots, etc</li>
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
@@ -284,12 +284,12 @@
 <li><strong>multiple</strong>: <code>{}</code> - multiple options, see <a href="https://github.com/Codeception/CodeceptJS/pull/439">#PR439</a> for more details</li>
 <li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
 <li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
-<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
-<li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print steps output, as well as used in source code.</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="#hooks">Hooks</a>.</li>
+<li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print s  teps output, as well as used in source code.</li>
 </ul>
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
 <p>By default <code>codecept.json</code> is used for configuration. You can override its values in runtime by using <code>--override</code> or <code>-o</code> option in command line, passing valid JSON as a value:</p>
-<pre><code>codeceptjs run -o '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;firefox&quot;}}}'
+<pre><code class="sh">codeceptjs run -o '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;firefox&quot;}}}'
 </code></pre>
 
 <p>You can also switch to JS configuration format for more dynamic options.
@@ -318,12 +318,16 @@
 </code></pre>
 
 <p>(Don't copy-paste this config, it's just demo)</p>
+<p>If you prefer to store your configuration files in a different location, or with a different name, you can do that with <code>--config</code> or `-c:</p>
+<pre><code class="sh">codeceptjs run --config=./path/to/my/config.json
+</code></pre>
+
 <h2 id="profile">Profile</h2>
 <p>Using values from <code>process.profile</code> you can change the config dynamically.
 It provides value of <code>--profile</code> option passed to runner.
 Use its value to change config value on the fly.</p>
 <p>For instance, with the config above we can change browser value using <code>profile</code> option</p>
-<pre><code>codeceptjs run --profile firefox
+<pre><code class="sh">codeceptjs run --profile firefox
 </code></pre>
 
 <pre><code class="js">exports.config = {

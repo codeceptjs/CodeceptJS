@@ -263,7 +263,7 @@
         
             <li><a href="#appium-installation">Appium Installation</a></li>
         
-            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#helper-configuration">Helper configuration</a></li>
         
             <li><a href="#access-from-helpers">Access From Helpers</a></li>
         
@@ -392,16 +392,16 @@
 <p>Appium helper extends <a href="http://codecept.io/helpers/WebDriverIO/">WebriverIO</a> helper.
  It supports all browser methods and also includes special methods for mobile apps testing.
  You can use this helper to test Web on desktop and mobile devices and mobile apps.</p>
-<h4 id="appium-installation">Appium Installation</h4>
+<h2 id="appium-installation">Appium Installation</h2>
 <p>Appium is an open source test automation framework for use with native, hybrid and mobile web apps that implements the WebDriver protocol.
 It allows you to run Selenium tests on mobile devices and also test native, hybrid and mobile web apps.</p>
 <p>Download and install <a href="http://appium.io/">Appium</a></p>
-<pre><code>npm install -g appium
+<pre><code class="sh">npm install -g appium
 </code></pre>
+
 <p>Launch the daemon: <code>appium</code></p>
-<h3 id="configuration">Configuration</h3>
+<h2 id="helper-configuration">Helper configuration</h2>
 <p>This helper should be configured in codecept.json or codecept.conf.js</p>
-<h4 id="appium-configuration">Appium configuration</h4>
 <ul>
 <li><code>port</code>: Appium port</li>
 <li><code>restart</code>: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.</li>

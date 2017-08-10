@@ -323,6 +323,8 @@
         
             <li><a href="#presskey">pressKey</a></li>
         
+            <li><a href="#refresh">refresh</a></li>
+        
             <li><a href="#resizewindow">resizeWindow</a></li>
         
             <li><a href="#savescreenshot">saveScreenshot</a></li>
@@ -374,11 +376,14 @@ fastest headless testing using Electron engine. Unlike Selenium-based drivers th
 Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
 less trusted.</p>
 <p>Requires <code>nightmare</code> and <code>nightmare-upload</code> packages to be installed.</p>
-<h3 id="configuration">Configuration</h3>
+<h2 id="configuration">Configuration</h2>
 <p>This helper should be configured in codecept.json</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
+<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure</li>
+<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites</li>
+<li><code>keepBrowserState</code> (optional, default: false)  - keep browser state between tests when <code>restart</code> set to false.</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500</li>
 <li><code>waitForTimeout</code>: (optional) default wait* timeout</li>
@@ -752,6 +757,8 @@ Can submit special keys like 'Enter', 'Backspace', etc</p>
 <ul>
 <li><code>key</code>  </li>
 </ul>
+<h2 id="refresh">refresh</h2>
+<p>Reload the page</p>
 <h2 id="resizewindow">resizeWindow</h2>
 <p>Resize the current window to provided width and height.
 First parameter can be set to <code>maximize</code></p>

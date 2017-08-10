@@ -267,6 +267,8 @@
         
             <li><a href="#html">Html</a></li>
         
+            <li><a href="#multi-reports">Multi Reports</a></li>
+        
     
     </ul>
 </div></div>
@@ -276,7 +278,7 @@
 <h2 id="cli-default">Cli (default)</h2>
 <p>By default CodeceptJS provides cli reporter with console output.
 Test names and failures will be printed to screen.</p>
-<pre><code>GitHub --
+<pre><code class="sh">GitHub --
  ✓ search in 2577ms
  ✓ signin in 2170ms
  ✖ register in 1306ms
@@ -299,7 +301,7 @@ Test names and failures will be printed to screen.</p>
 </code></pre>
 
 <p>For dynamic step-by-step output add <code>--steps</code> option to <code>run</code> command:</p>
-<pre><code>GitHub --
+<pre><code class="sh">GitHub --
  search
  • I am on page &quot;https://github.com&quot;
  • I am on page &quot;https://github.com/search&quot;
@@ -329,9 +331,9 @@ Test names and failures will be printed to screen.</p>
 </code></pre>
 
 <p>To get additional information about test execution use <code>--debug</code> option. This will show execution steps
-as well as notices from test runner. To get even more information with more technical details like error stacktraces,
+as well as notices from test runner. To get even more information with more technical details like error stack traces,
 and global promises, or events use <code>--verbose</code> mode.</p>
-<pre><code>GitHub --
+<pre><code class="sh">GitHub --
  register
    [1] Starting recording promises
    Emitted | test.before
@@ -351,7 +353,7 @@ and global promises, or events use <code>--verbose</code> mode.</p>
 It is recommended to use more powerful <a href="https://www.npmjs.com/package/mocha-junit-reporter"><code>mocha-junit-reporter</code></a> package
 to get better support for Jenkins CI.</p>
 <p>Install it via NPM (locally or globally, depending on CodeceptJS installation type):</p>
-<pre><code>npm i mocha-junit-reporter
+<pre><code class="sh">npm i mocha-junit-reporter
 </code></pre>
 
 <p>Additional configuration should be added to <code>codecept.json</code> to print xml report to <code>output</code> directory:</p>
@@ -363,15 +365,15 @@ to get better support for Jenkins CI.</p>
 </code></pre>
 
 <p>Execute CodeceptJS with JUnit reporter:</p>
-<pre><code>codeceptjs run --reporter mocha-junit-reporter
+<pre><code class="sh">codeceptjs run --reporter mocha-junit-reporter
 </code></pre>
 
 <p>Result will be located at <code>output/result.xml</code> file.</p>
 <h2 id="html">Html</h2>
-<p>Best HTML reports could be prodused with <a href="https://www.npmjs.com/package/mochawesome">mochawesome</a> reporter.</p>
+<p>Best HTML reports could be produced with <a href="https://www.npmjs.com/package/mochawesome">mochawesome</a> reporter.</p>
 <p><img alt="" src="http://codecept.io/images/mochawesome.png" /></p>
 <p>Install it via NPM:</p>
-<pre><code>npm i mochawesome
+<pre><code class="sh">npm i mochawesome
 </code></pre>
 
 <p>Configure it to use <code>output</code> directory to print HTML reports:</p>
@@ -383,10 +385,77 @@ to get better support for Jenkins CI.</p>
 </code></pre>
 
 <p>Execute CodeceptJS with HTML reporter:</p>
-<pre><code>codeceptjs run --reporter mochawesome
+<pre><code class="sh">codeceptjs run --reporter mochawesome
 </code></pre>
 
-<p>Result will be located at <code>output/index.html</code> file.</p></div>
+<p>Result will be located at <code>output/index.html</code> file.</p>
+<h3 id="advanced-usage">Advanced usage</h3>
+<p>Want to have screenshots for failed tests?
+Then add Mochawesome helper to your config:</p>
+<pre><code class="json">  &quot;helpers&quot;: {
+    &quot;Mochawesome&quot;: {
+        &quot;uniqueScreenshotNames&quot;: &quot;true&quot;
+    }
+  },
+</code></pre>
+
+<p>Then tests with failure will have screenshots.</p>
+<h3 id="configuration">Configuration</h3>
+<p>This helper should be configured in codecept.json</p>
+<ul>
+<li><code>uniqueScreenshotNames</code> (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.</li>
+<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.</li>
+</ul>
+<p>Also if you will add Mochawesome helper, then you will able to add custom context in report:</p>
+<h4 id="addmochawesomecontext">addMochawesomeContext</h4>
+<p>Adds context to executed test in HTML report:</p>
+<pre><code class="js">I.addMochawesomeContext('simple string');
+I.addMochawesomeContext('http://www.url.com/pathname');
+I.addMochawesomeContext('http://www.url.com/screenshot-maybe.jpg');
+I.addMochawesomeContext({title: 'expected output',
+                         value: {
+                           a: 1,
+                           b: '2',
+                           c: 'd'
+                         }
+});
+</code></pre>
+
+<h5 id="parameters">Parameters</h5>
+<ul>
+<li><code>context</code>  string, url, path to screenshot, object. See <a href="https://www.npmjs.com/package/mochawesome#adding-test-context">this</a></li>
+</ul>
+<h2 id="multi-reports">Multi Reports</h2>
+<p>Want to use several reporters in the same time? Try to use <a href="https://www.npmjs.com/package/mocha-multi">mocha-multi</a> reporter</p>
+<p>Install it via NPM:</p>
+<pre><code class="sh">npm i mocha-multi
+</code></pre>
+
+<p>Configure mocha-multi with reports that you want:</p>
+<pre><code class="json">  &quot;mocha&quot;: {
+    &quot;reporterOptions&quot;: {
+      &quot;codeceptjs-cli-reporter&quot;: {
+        &quot;stdout&quot;: &quot;-&quot;,
+        &quot;options&quot;: {
+          &quot;verbose&quot;: true,
+          &quot;steps&quot;: true,
+        }
+      },
+      &quot;mochawesome&quot;: {
+       &quot;stdout&quot;: &quot;./output/console.log&quot;,
+       &quot;options&quot;: {
+         &quot;reportDir&quot;: &quot;./output&quot;,
+         &quot;reportFilename&quot;: &quot;report&quot;
+      }
+    }
+  }
+</code></pre>
+
+<p>Execute CodeceptJS with mocha-multi reporter:</p>
+<pre><code class="sh">codeceptjs run --reporter mocha-multi
+</code></pre>
+
+<p>This will give you cli with steps in console and HTML report in <code>output</code> directory.</p></div>
             <div class="clearfix"></div>
         </div>
         

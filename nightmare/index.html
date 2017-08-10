@@ -321,12 +321,12 @@ client-side scrips (for element location) to every loaded page. Also all events 
 this makes testing less relevant, as they are not native to operating systems.</p>
 <h2 id="how-fast-is-nightmare-js">How Fast Is Nightmare JS?</h2>
 <p>Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.</p>
-<pre><code>docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
+<pre><code class="sh">docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
 codeceptjs run yahoo_test.js --steps
 </code></pre>
 
 <p>This provides use with output:</p>
-<pre><code> Yahoo basic test
+<pre><code class="sh"> Yahoo basic test
  &gt; WebDriverIO._before
  • I am on page &quot;http://yahoo.com&quot;
  • I fill field &quot;p&quot;, &quot;github nightmare&quot;
@@ -338,7 +338,7 @@ codeceptjs run yahoo_test.js --steps
 </code></pre>
 
 <p>When we switch helper to Nightmare:</p>
-<pre><code> Yahoo basic test
+<pre><code class="sh"> Yahoo basic test
  &gt; Nightmare._before
  • I am on page &quot;http://yahoo.com&quot;
  • I fill field &quot;p&quot;, &quot;github nightmare&quot;
@@ -357,7 +357,7 @@ Sure, this can't be taken as a valuable benchmark but more like a proof of conce
 </code></pre>
 
 <p>And a basic project initialized</p>
-<pre><code>codeceptjs init
+<pre><code class="sh">codeceptjs init
 </code></pre>
 
 <p>You will be asked for a Helper to use, you should select Nightmare and provide url of a website you are testing.
@@ -404,7 +404,7 @@ They are expressive and flexible to accept CSS, XPath, names, values, or strict 
 <h2 id="extending-nightmare-helper">Extending Nightmare Helper</h2>
 <p>CodeceptJS allows you to define and connect own helpers. If some functionality of
 Nightmare helper is missing you can easily create <code>ExtendedNightmare</code> helper by running:</p>
-<pre><code>codecepjs gh
+<pre><code class="sh">codeceptjs gh
 </code></pre>
 
 <p>Learn more about <a href="http://codecept.io/helpers/">Helpers</a>.</p>

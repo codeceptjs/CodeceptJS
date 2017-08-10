@@ -16,7 +16,7 @@ let unirest = require('unirest');
  * By defining a factory you set the rules of how data is generated.
  * This data will be saved on server via REST API and deleted in the end of a test.
  *
- * ### Use Case
+ * ## Use Case
  *
  * Acceptance tests interact with a websites using UI and real browser.
  * There is no way to create data for a specific test other than from user interface.
@@ -37,12 +37,11 @@ let unirest = require('unirest');
  * 1. REST API endpoint which allows to perform create / delete requests and
  * 2. define data generation rules
  *
- *
  * ### Setup
  *
  * Install [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker) libraries.
  *
- * ```
+ * ```sh
  * npm i rosie faker --save-dev`
  * ```
  *

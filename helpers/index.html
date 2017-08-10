@@ -325,7 +325,7 @@ module.exports = MyHelper;
 <p>All methods except those starting from <code>_</code> will be added to <code>I</code> object and treated as test actions.
 Every method should return a value in order to be appended into promise chain.</p>
 <p>After writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:</p>
-<pre><code>codeceptjs def .
+<pre><code class="sh">codeceptjs def .
 </code></pre>
 
 <p>This way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.</p>
@@ -402,7 +402,7 @@ module.exports = MyHelper;
 <h2 id="configuration">Configuration</h2>
 <p>Helpers should be enabled inside <code>codecept.json</code> or <code>codecept.conf.js</code> files. Command <code>generate helper</code>
 does that for you, however you can enable them manually by placing helper to <code>helpers</code> section inside config file.
-You can also pass additional config options to your helper from a config:</p>
+You can also pass additional config options to your helper from a config - <strong>(please note, this example contains comments, while JSON format doesn't support them)</strong>:</p>
 <pre><code class="js">&quot;helpers&quot;: {
   // here goes standard helpers:
   // WebDriverIO, Protractor, Nightmare, etc...
@@ -415,7 +415,6 @@ You can also pass additional config options to your helper from a config:</p>
 }
 </code></pre>
 
-<p><em>(please note, this example contains comments, while JSON format doesn't support them)</em></p>
 <p>Config values will be stored inside helper in <code>this.config</code>. To get <code>defaultHost</code> value you can use</p>
 <pre><code class="js">this.config.defaultHost
 </code></pre>
@@ -441,8 +440,9 @@ Implement corresponding methods to them.</p>
 </ul>
 <p>Each implemented method should return a value as they will be added to global promise chain as well.</p>
 <h3 id="hook-usage-examples">Hook Usage Examples</h3>
-<p>1) Failing if JS error occur in WebDriverIO:</p>
-<pre><code class="js">class JSFailure extends codecept_helper {
+<p>1)  Failing if JS error occur in WebDriverIO:</p>
+<pre><code>```js
+class JSFailure extends codecept_helper {
 
   _before() {
     this.err = null;
@@ -455,10 +455,11 @@ Implement corresponding methods to them.</p>
 }
 
 module.exports = JSFailure;
+```
 </code></pre>
-
-<p>2) Wait for Ajax requests to complete after <code>click</code>:</p>
-<pre><code class="js">class JSWait extends codecept_helper {
+<p>2)  Wait for Ajax requests to complete after <code>click</code>:</p>
+<pre><code>```js
+class JSWait extends codecept_helper {
 
   _afterStep(step) {
     if (step.name == 'click') {
@@ -469,8 +470,8 @@ module.exports = JSFailure;
 }
 
 module.exports = JSWait;
+```
 </code></pre>
-
 <h3 id="done">done()</h3></div>
             <div class="clearfix"></div>
         </div>

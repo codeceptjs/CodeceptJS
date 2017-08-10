@@ -259,7 +259,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#codeceptjs-10">CodeceptJS 1.0</a></li>
+        <li class="main active"><a href="#101">1.0.1</a></li>
+        
+    
+        <li class="main "><a href="#10">1.0</a></li>
         
             <li><a href="#changelog">Changelog</a></li>
         
@@ -379,7 +382,28 @@
 </div></div>
             <div class="col-md-7" role="main">
 
-<h2 id="codeceptjs-10">CodeceptJS 1.0</h2>
+<h2 id="101">1.0.1</h2>
+<ul>
+<li>Reporters improvements:</li>
+<li>Allows to execute <a href="http://codecept.io/advanced/#Multi-Reports">multiple reporters</a></li>
+<li>Added <a href="http://codecept.io/helpers/Mochawesome/">Mochawesome</a> helper</li>
+<li><code>addMochawesomeContext</code> method to add custom data to mochawesome reports</li>
+<li>Fixed Mochawesome context for failed screenshots.</li>
+<li>[WebDriverIO] improved click on context to match clickable element with a text inside. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/647">#647</a></li>
+<li>[Nightmare] Added <code>refresh</code> function by @awhanks</li>
+<li>fixed <code>Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad</code></li>
+<li>support for tests with retries in html report</li>
+<li>be sure that change window size and timeouts completes before test</li>
+<li>[Nightmare] Fixed <code>[Wrapped Error] "codeceptjs is not defined"</code>; Reinjectiing client scripts to a webpage on changes.</li>
+<li>[Nightmare] Added more detailed error messages for <code>Wait*</code> methods</li>
+<li>[Nightmare] Fixed adding screenshots to Mochawesome</li>
+<li>[Nightmare] Fix unique screenshots names in Nightmare</li>
+<li>Fixed CodeceptJS work with hooks in helpers to finish codeceptJS correctly if errors appears in helpers hooks</li>
+<li>Create a new session for next test If selenium grid error received</li>
+<li>Create screenshots for failed hooks from a Feature file</li>
+<li>Fixed <code>retries</code> option</li>
+</ul>
+<h2 id="10">1.0</h2>
 <p>CodeceptJS hits first stable release. CodeceptJS provides a unified API for <a href="http://codecept.io/acceptance/">web testing for Webdriverio</a>, <a href="http://codecept.io/angular/">Protractor</a>, and <a href="http://codecept.io/nightmare/">NightmareJS</a>. Since 1.0 you can also <strong>test mobile applications</strong> in the similar manner with Appium.</p>
 <p>Sample test:</p>
 <pre><code class="js">I.seeAppIsInstalled(&quot;io.super.app&quot;);

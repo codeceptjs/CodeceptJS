@@ -259,9 +259,9 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#pageobjects">PageObjects</a></li>
+        <li class="main active"><a href="#page-object">Page Object</a></li>
         
-            <li><a href="#pageobjects_1">PageObjects</a></li>
+            <li><a href="#pageobject">PageObject</a></li>
         
             <li><a href="#page-fragments">Page Fragments</a></li>
         
@@ -274,16 +274,15 @@
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="pageobjects">PageObjects</h1>
+<h1 id="page-object">Page Object</h1>
 <p>UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.</p>
-<h2 id="pageobjects_1">PageObjects</h2>
+<h2 id="pageobject">PageObject</h2>
 <p>In case an application has different pages (login, admin, etc) you should use a page object.
-CodeceptJS can generate a template for it with next command</p>
-<pre><code>codeceptjs gpo
+CodeceptJS can generate a template for it with the command:</p>
+<pre><code class="sh">codeceptjs gpo
 </code></pre>
 
-<p><em>(or generate pageobject)</em></p>
 <p>This will create a sample template for a page object and include it into <code>codecept.json</code> config.</p>
 <pre><code class="js">'use strict';
 let I;
@@ -333,10 +332,50 @@ it should be added to list of test arguments to be included in test:</p>
 });
 </code></pre>
 
+<p>Also you can use generators inside a PageObject:</p>
+<pre><code class="js">'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = actor();
+  },
+
+  // setting locators
+  container: &quot;//div[@class = 'numbers']&quot;,
+  mainItem: {
+    number: &quot;.//div[contains(@class, 'numbers__main-number')]&quot;,
+    title: &quot;.//div[contains(@class, 'numbers__main-title-block')]&quot;
+  },
+
+  // introducing methods
+  openMainArticle: function* () {
+    I.waitForVisible(this.container)
+    let _this = this
+    let title;
+    yield within(this.container, function*(){
+      title = yield I.grabTextFrom(_this.mainItem.number);
+      let subtitle = yield I.grabTextFrom(_this.mainItem.title);
+      title = title + &quot; &quot; + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
+      yield I.click(_this.mainItem.title)
+    })
+    return title;
+  }
+}
+</code></pre>
+
+<p>and use them in your tests:</p>
+<pre><code class="js">Scenario('login2', (I, loginPage, basePage) =&gt; {
+  let title = yield* mainPage.openMainArticle()
+  basePage.pageShouldBeOpened(title)
+});
+</code></pre>
+
 <h2 id="page-fragments">Page Fragments</h2>
 <p>In a similar manner CodeceptJS allows you to generate <strong>PageFragments</strong> and any other are abstraction
 by running <code>go</code> command with <code>--type</code> (or <code>-t</code>) option:</p>
-<pre><code>codeceptjs go --type fragment
+<pre><code class="sh">codeceptjs go --type fragment
 </code></pre>
 
 <p>Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
@@ -363,9 +402,9 @@ module.exports = {
 </code></pre>
 
 <h2 id="stepobjects">StepObjects</h2>
-<p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
+<p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, changing permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:</p>
-<pre><code>codeceptjs go --type step
+<pre><code class="sh">codeceptjs go --type step
 </code></pre>
 
 <p>Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:</p>

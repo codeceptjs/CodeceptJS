@@ -303,29 +303,29 @@ Doesn't it sound cool?</p>
 <p>Ensure that you have <a href="http://codecept.io/installation/">CodeceptJS installed</a>.
 You will also need to install <a href="http://appium.io/">Appium</a>.
 We suggest to use <a href="https://www.npmjs.com/package/appium-doctor">appium-doctor</a> to check if your system is ready for mobile testing.</p>
-<pre><code>npm i -g appium-doctor
+<pre><code class="sh">npm i -g appium-doctor
 </code></pre>
 
 <p>If everything is OK, continue with installing Appium. If not, consider using cloud based alternatives like <a href="https://saucelabs.com">SauceLabs</a> or <a href="http://browserstack.com">BrowserStack</a>. Cloud services provide hosted appium with real and emulated mobile devices.</p>
 <p>To install Appium use npm:</p>
-<pre><code>npm i -g appium
+<pre><code class="sh">npm i -g appium
 </code></pre>
 
 <p>Then you need to prepare application for execution.
 It should be packed into apk (for Android) or .ipa (for iOS) or zip.</p>
 <p>Next, is to launch the emulator or connect physical device.
 Once they are prepared, launch Appium:</p>
-<pre><code>appium
+<pre><code class="sh">appium
 </code></pre>
 
 <p>To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.</p>
 <h2 id="configuring">Configuring</h2>
 <p>CodeceptJS should be installed. Initialize it with <code>init</code> command:</p>
-<pre><code>codeceptjs init
+<pre><code class="sh">codeceptjs init
 </code></pre>
 
 <p>Select <a href="http://codecept.io/helpers/Appium/">Appium helper</a> when asked.</p>
-<pre><code>? What helpers do you want to use?
+<pre><code class="sh">? What helpers do you want to use?
  ◯ WebDriverIO
  ◯ Protractor
  ◯ SeleniumWebdriver
@@ -335,7 +335,7 @@ Once they are prepared, launch Appium:</p>
 </code></pre>
 
 <p>You will also be asked for the platform and the application package.</p>
-<pre><code>? [Appium] Application package. Path to file or url
+<pre><code class="sh">? [Appium] Application package. Path to file or url
 </code></pre>
 
 <p>Check the newly created <code>codecept.json</code> configuration file.
@@ -350,7 +350,7 @@ You may want to set some additional Appium settings via <a href="https://appium.
 </code></pre>
 
 <p>Once you configured Appium, create the first test by running</p>
-<pre><code>codeceptjs gt
+<pre><code class="sh">codeceptjs gt
 </code></pre>
 
 <h2 id="writing-a-test">Writing a Test</h2>
@@ -362,7 +362,7 @@ This is the sample test for a native mobile application:</p>
   I.fillField('~inputEmail', 'davert@codecept.io');
   I.fillField('~inputPassword', '123456');
   I.hideDeviceKeyboard();
-  I.click('~input_preferedProgrammingLanguage');
+  I.click('~input_preferredProgrammingLanguage');
   I.click('Javascript');
   I.checkOption('#io.demo.testapp:id/input_adds');
   I.click('Register User (verify)');

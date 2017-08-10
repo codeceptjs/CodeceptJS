@@ -22,14 +22,16 @@ let withinStore = {};
  * SeleniumWebdriver helper is based on the official [Selenium Webdriver JS](https://www.npmjs.com/package/selenium-webdriver)
  * library. It implements common web api methods (amOnPage, click, see).
  *
- * #### Selenium Installation
+ * ## Backends
+ *
+ * ### Selenium Installation
  *
  * 1. Download [Selenium Server](http://docs.seleniumhq.org/download/)
  * 2. For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
  * 3. Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
  *
  *
- * #### PhantomJS Installation
+ * ### PhantomJS Installation
  *
  * PhantomJS is a headless alternative to Selenium Server that implements [the WebDriver protocol](https://code.google.com/p/selenium/wiki/JsonWireProtocol).
  * It allows you to run Selenium tests on a server without a GUI installed.
@@ -37,15 +39,18 @@ let withinStore = {};
  * 1. Download [PhantomJS](http://phantomjs.org/download.html)
  * 2. Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
  *
- * ### Configuration
+ * ## Configuration
  *
  * This helper should be configured in codecept.json
  *
  * * `url` - base url of website to be tested
  * * `browser` - browser in which perform testing
- * * `driver` - which protrator driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
+ * * `driver` - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
  * * `restart` - restart browser between tests (default: true).
  * * `smartWait`: (optional) **enables SmartWait**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
+ * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+ * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+ * * `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
  * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.*
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;
@@ -88,6 +93,7 @@ class SeleniumWebdriver extends Helper {
       url: 'http://localhost',
       seleniumAddress: 'http://localhost:4444/wd/hub',
       restart: true,
+      keepBrowserState: false,
       keepCookies: false,
       disableScreenshots: false,
       uniqueScreenshotNames: false,
@@ -123,6 +129,8 @@ class SeleniumWebdriver extends Helper {
       .usingServer(this.options.seleniumAddress);
 
     if (this.options.proxy) this.browserBuilder.setProxy(this.options.proxy);
+
+    return Promise.resolve(this.browserBuilder);
   }
 
   static _checkRequirements() {
@@ -142,33 +150,35 @@ class SeleniumWebdriver extends Helper {
 
   _startBrowser() {
     this.browser = this.browserBuilder.build();
-
+    let promisesList = [];
     if (this.options.windowSize == 'maximize') {
-      this.resizeWindow(this.options.windowSize);
+      promisesList.push(this.resizeWindow(this.options.windowSize));
     } else if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
       var size = this.options.windowSize.split('x');
-      this.resizeWindow(size[0], size[1]);
+      promisesList.push(this.resizeWindow(size[0], size[1]));
     }
-
-    return this.browser;
+    return Promise.all(promisesList).then(() => this.isRunning = true);
   }
 
   _beforeSuite() {
     if (!this.options.restart && !this.options.manualStart && !this.isRunning) {
       this.debugSection('Session', 'Starting singleton browser session');
-      this.isRunning = true;
       return this._startBrowser();
     }
   }
 
   _before() {
-    if (this.options.restart && !this.options.manualStart) {
-      return this._startBrowser();
-    }
+    if (this.options.restart && !this.options.manualStart) return this._startBrowser();
+    if (!this.isRunning && !this.options.manualStart) return this._startBrowser();
   }
 
   _after() {
-    if (this.options.restart) return this.browser.quit();
+    if (!this.isRunning) return;
+    if (this.options.restart) {
+      this.isRunning = false;
+      return this.browser.quit();
+    }
+    if (this.options.keepBrowserState) return;
     if (this.options.keepCookies) return Promise.all([this.browser.executeScript('localStorage.clear();'), this.closeOtherTabs()]);
     // if browser should not be restarted
     this.debugSection('Session', 'cleaning cookies and localStorage');
@@ -179,20 +189,28 @@ class SeleniumWebdriver extends Helper {
   }
 
   _finishTest() {
-    if (!this.options.restart) return this.browser.quit();
+    if (!this.options.restart && this.isRunning) return this.browser.quit();
   }
 
   _failed(test) {
     let promisesList = [];
     if (Object.keys(withinStore).length != 0) promisesList.push(this._withinEnd());
     if (!this.options.disableScreenshots) {
-      let fileName = clearString(test.title) + '.failed.png';
+      let fileName = clearString(test.title);
+      if (test.ctx && test.ctx.test && test.ctx.test.type == 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
       if (this.options.uniqueScreenshotNames) {
-        fileName = clearString(test.title.substring(0, 10)) + '-' + hashCode(test.title) + '-' + hashCode(test.file) + '.failed.png';
+        fileName = `${fileName.substring(0, 10)}-${hashCode(fileName)}-${hashCode(test.file)}.failed.png`;
+      } else {
+        fileName = fileName + '.failed.png';
       }
       promisesList.push(this.saveScreenshot(fileName, true));
     }
-    return Promise.all(promisesList);
+    return Promise.all(promisesList).catch((err) => {
+      if (err && err.type && err.type == "RuntimeError" && err.message && (err.message.indexOf("was terminated due to") > -1 || err.message.indexOf("no such window: target window already closed" > -1))) {
+        this.isRunning = false;
+        return;
+      }
+    });
   }
 
   _withinBegin(locator) {

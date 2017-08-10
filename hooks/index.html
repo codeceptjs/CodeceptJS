@@ -263,7 +263,7 @@
         
             <li><a href="#bootstrap-teardown">Bootstrap &amp; Teardown</a></li>
         
-            <li><a href="#hooks_1">Hooks</a></li>
+            <li><a href="#custom-hooks">Custom Hooks</a></li>
         
             <li><a href="#api">API</a></li>
         
@@ -289,7 +289,7 @@ you can use <code>bootstrap</code> and <code>teardown</code> config. Use it to s
 <li>Inside JS config file</li>
 </ul>
 <p>Corresponding examples provided in next sections.</p>
-<h5 id="example-async-bootstrap-in-a-function">Example: Async Bootstrap in a Function</h5>
+<h3 id="example-async-bootstrap-in-a-function">Example: Async Bootstrap in a Function</h3>
 <p>Add to <code>codecept.json</code>:</p>
 <pre><code class="json">&quot;bootstrap&quot;: &quot;./run_server.js&quot;
 </code></pre>
@@ -307,7 +307,7 @@ module.exports = function(done) {
 }
 </code></pre>
 
-<h5 id="example-async-teardown-in-a-function">Example: Async Teardown in a Function</h5>
+<h3 id="example-async-teardown-in-a-function">Example: Async Teardown in a Function</h3>
 <p>Stopping a server from a previous example can be done in a similar manner.
 Create a teardown file and add it to <code>codecept.json</code>:</p>
 <pre><code class="json">&quot;teardown&quot;: &quot;./stop_server.js&quot;
@@ -320,7 +320,7 @@ module.exports = function(done) {
 }
 </code></pre>
 
-<h5 id="example-bootstrap-teardown-inside-an-object">Example: Bootstrap &amp; Teardown Inside an Object</h5>
+<h3 id="example-bootstrap-teardown-inside-an-object">Example: Bootstrap &amp; Teardown Inside an Object</h3>
 <p>Examples above can be combined into one file.</p>
 <p>Add to config (<code>codecept.json</code>):</p>
 <pre><code class="js">  &quot;bootstrap&quot;: &quot;./server.js&quot;
@@ -340,7 +340,7 @@ module.exports = {
 }
 </code></pre>
 
-<h5 id="example-bootstrap-teardown-inside-config">Example: Bootstrap &amp; Teardown Inside Config</h5>
+<h3 id="example-bootstrap-teardown-inside-config">Example: Bootstrap &amp; Teardown Inside Config</h3>
 <p>If you are using JavaScript-style config <code>codecept.conf.js</code>, bootstrap and teardown functions can be placed inside of it:</p>
 <pre><code class="js">var server = require('./app_server');
 
@@ -361,7 +361,7 @@ exports.config = {
 
 </code></pre>
 
-<h2 id="hooks_1">Hooks</h2>
+<h2 id="custom-hooks">Custom Hooks</h2>
 <p>To extend internal CodeceptJS functionality you can use hooks.
 CodeceptJS provides API to connect to its internal event dispatcher, container, output, promise recorder, so you could hook into it to create your own reporters, test listeners, etc.</p>
 <p>Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside <code>hooks</code> section of config. Unlike <code>bootstrap</code> you can have multiple hooks registered:</p>

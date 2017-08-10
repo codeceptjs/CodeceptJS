@@ -261,17 +261,7 @@
     
         <li class="main active"><a href="#webdriverio">WebDriverIO</a></li>
         
-            <li><a href="#selenium-installation">Selenium Installation</a></li>
-        
-            <li><a href="#phantomjs-installation">PhantomJS Installation</a></li>
-        
-            <li><a href="#configuration">Configuration</a></li>
-        
-            <li><a href="#connect-through-proxy">Connect through proxy</a></li>
-        
-            <li><a href="#cloud-providers">Cloud Providers</a></li>
-        
-            <li><a href="#multiremote-capabilities">Multiremote Capabilities</a></li>
+            <li><a href="#backends">Backends</a></li>
         
             <li><a href="#access-from-helpers">Access From Helpers</a></li>
         
@@ -458,7 +448,8 @@
 <h1 id="webdriverio">WebDriverIO</h1>
 <p>WebDriverIO helper which wraps <a href="http://webdriver.io/">webdriverio</a> library to
 manipulate browser using Selenium WebDriver or PhantomJS.</p>
-<h4 id="selenium-installation">Selenium Installation</h4>
+<h2 id="backends">Backends</h2>
+<h3 id="selenium-installation">Selenium Installation</h3>
 <ol>
 <li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
 <li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>,
@@ -466,7 +457,7 @@ manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use
     <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
 </ol>
-<h4 id="phantomjs-installation">PhantomJS Installation</h4>
+<h3 id="phantomjs-installation">PhantomJS Installation</h3>
 <p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.</p>
 <ol>
@@ -480,6 +471,9 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>browser</code> - browser in which perform testing</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
 <li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
+<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure</li>
+<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites</li>
+<li><code>keepBrowserState</code> (optional, default: false)  - keep browser state between tests when <code>restart</code> set to false.</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
 <li><code>waitForTimeout</code>: (option) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>

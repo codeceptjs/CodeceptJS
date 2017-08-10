@@ -263,12 +263,6 @@
         
             <li><a href="#use-case">Use Case</a></li>
         
-            <li><a href="#setup">Setup</a></li>
-        
-            <li><a href="#configuration">Configuration</a></li>
-        
-            <li><a href="#api-requests">Api Requests</a></li>
-        
             <li><a href="#_fetchid">_fetchId</a></li>
         
             <li><a href="#_requestcreate">_requestCreate</a></li>
@@ -289,7 +283,7 @@
 Uses data generators like <a href="https://github.com/rosiejs/rosie">rosie</a> or factory girl to create new record.</p>
 <p>By defining a factory you set the rules of how data is generated.
 This data will be saved on server via REST API and deleted in the end of a test.</p>
-<h3 id="use-case">Use Case</h3>
+<h2 id="use-case">Use Case</h2>
 <p>Acceptance tests interact with a websites using UI and real browser.
 There is no way to create data for a specific test other than from user interface.
 That makes tests slow and fragile. Instead of testing a single feature you need to follow all creation/removal process.</p>
@@ -308,8 +302,9 @@ I.haveMultiple('comment', 3, {post_id: id});
 </ol>
 <h3 id="setup">Setup</h3>
 <p>Install <a href="https://github.com/rosiejs/rosie">Rosie</a> and <a href="https://www.npmjs.com/package/faker">Faker</a> libraries.</p>
-<pre><code>npm i rosie faker --save-dev`
+<pre><code class="sh">npm i rosie faker --save-dev`
 </code></pre>
+
 <p>Create a factory file for a resource.</p>
 <p>See the example for Posts factories:</p>
 <pre><code class="js">// tests/factories/posts.js
