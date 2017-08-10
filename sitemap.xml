@@ -68,13 +68,13 @@
     </url>
         
     <url>
-     <loc>None/hooks/</loc>
+     <loc>None/advanced/</loc>
      <lastmod>2017-08-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/advanced/</loc>
+     <loc>None/hooks/</loc>
      <lastmod>2017-08-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -127,6 +127,12 @@
         
     <url>
      <loc>None/helpers/FileSystem/</loc>
+     <lastmod>2017-08-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/Mochawesome/</loc>
      <lastmod>2017-08-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
