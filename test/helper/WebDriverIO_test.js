@@ -263,6 +263,11 @@ describe('WebDriverIO', function () {
         .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
         .then((num) => assert.equal(num, 3));
     });
+    it('should support locators like {xpath:"//div"}', () => {
+      return wd.amOnPage('/info')
+        .then(() => wd.grabNumberOfVisibleElements({xpath: '//div[@id = "grab-multiple"]//a'}))
+        .then((num) => assert.equal(num, 3));
+    });
   });
 
   describe('#waitInUrl, #waitUrlEquals', () => {
@@ -284,6 +289,20 @@ describe('WebDriverIO', function () {
         .catch((e) => {
           assert.equal(e.message, `expected url to be http://127.0.0.1:8000/info2, but found http://127.0.0.1:8000/info`);
         });
+    });
+  });
+
+  describe('#saveScreenshot', () => {
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+
+    it('should create a screenshot on fail  @ups', () => {
+      let sec = (new Date()).getUTCMilliseconds().toString();
+      let test = { title: 'sw should do smth '+sec };
+      return wd.amOnPage('/')
+        .then(() => wd._failed(test))
+        .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
     });
   });
 
