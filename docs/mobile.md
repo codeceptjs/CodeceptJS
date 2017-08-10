@@ -18,6 +18,7 @@ I.seeElement({
   ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'
 });
 ```
+
 This test is easy to read and write. Also it will work both on iOS and Android devices.
 Doesn't it sound cool?
 
@@ -27,7 +28,7 @@ Ensure that you have [CodeceptJS installed](http://codecept.io/installation/).
 You will also need to install [Appium](http://appium.io/).
 We suggest to use [appium-doctor](https://www.npmjs.com/package/appium-doctor) to check if your system is ready for mobile testing.
 
-```
+```sh
 npm i -g appium-doctor
 ```
 
@@ -35,7 +36,7 @@ If everything is OK, continue with installing Appium. If not, consider using clo
 
 To install Appium use npm:
 
-```
+```sh
 npm i -g appium
 ```
 
@@ -45,7 +46,7 @@ It should be packed into apk (for Android) or .ipa (for iOS) or zip.
 Next, is to launch the emulator or connect physical device.
 Once they are prepared, launch Appium:
 
-```
+```sh
 appium
 ```
 
@@ -55,12 +56,13 @@ To run mobile test you need either an device emulator (available with Android SD
 
 CodeceptJS should be installed. Initialize it with `init` command:
 
-```
+```sh
 codeceptjs init
 ```
 
 Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
-```
+
+```sh
 ? What helpers do you want to use?
  ◯ WebDriverIO
  ◯ Protractor
@@ -69,15 +71,15 @@ Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
 ❯◉ Appium
  ◯ REST
 ```
+
 You will also be asked for the platform and the application package.
 
-```
+```sh
 ? [Appium] Application package. Path to file or url
 ```
 
 Check the newly created `codecept.json` configuration file.
 You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/slate/en/master/?javascript#appium-server-capabilities)
-
 
 ```js
 "helpers": {
@@ -91,7 +93,7 @@ You may want to set some additional Appium settings via [desiredCapabilities](ht
 
 Once you configured Appium, create the first test by running
 
-```
+```sh
 codeceptjs gt
 ```
 
@@ -107,7 +109,7 @@ Scenario('test registration', (I) => {
   I.fillField('~inputEmail', 'davert@codecept.io');
   I.fillField('~inputPassword', '123456');
   I.hideDeviceKeyboard();
-  I.click('~input_preferedProgrammingLanguage');
+  I.click('~input_preferredProgrammingLanguage');
   I.click('Javascript');
   I.checkOption('#io.demo.testapp:id/input_adds');
   I.click('Register User (verify)');
@@ -243,6 +245,7 @@ I.runInWeb(() => {
   I.waitForElement('#success'); // no available for mobile
 });
 ```
+
 Just as you can specify android, and ios-specific locators, you can do so for web:
 
 ```js

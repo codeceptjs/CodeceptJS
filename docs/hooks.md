@@ -16,7 +16,7 @@ There are different ways to define bootstrap and teardown functions:
 
 Corresponding examples provided in next sections.
 
-##### Example: Async Bootstrap in a Function
+### Example: Async Bootstrap in a Function
 
 Add to `codecept.json`:
 
@@ -39,7 +39,7 @@ module.exports = function(done) {
 }
 ```
 
-##### Example: Async Teardown in a Function
+### Example: Async Teardown in a Function
 
 Stopping a server from a previous example can be done in a similar manner.
 Create a teardown file and add it to `codecept.json`:
@@ -57,11 +57,12 @@ module.exports = function(done) {
 }
 ```
 
-##### Example: Bootstrap & Teardown Inside an Object
+### Example: Bootstrap & Teardown Inside an Object
 
 Examples above can be combined into one file.
 
 Add to config (`codecept.json`):
+
 ```js
   "bootstrap": "./server.js"
   "teardown": "./server.js"
@@ -82,7 +83,7 @@ module.exports = {
 }
 ```
 
-##### Example: Bootstrap & Teardown Inside Config
+### Example: Bootstrap & Teardown Inside Config
 
 If you are using JavaScript-style config `codecept.conf.js`, bootstrap and teardown functions can be placed inside of it:
 
@@ -106,7 +107,7 @@ exports.config = {
 
 ```
 
-## Hooks
+## Custom Hooks
 
 To extend internal CodeceptJS functionality you can use hooks.
 CodeceptJS provides API to connect to its internal event dispatcher, container, output, promise recorder, so you could hook into it to create your own reporters, test listeners, etc.

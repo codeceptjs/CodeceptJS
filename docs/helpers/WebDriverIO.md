@@ -3,7 +3,9 @@
 WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-#### Selenium Installation
+## Backends
+
+### Selenium Installation
 
 1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
 2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started),
@@ -11,7 +13,7 @@ manipulate browser using Selenium WebDriver or PhantomJS.
 3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use
     `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
 
-#### PhantomJS Installation
+### PhantomJS Installation
 
 PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
 It allows you to run Selenium tests on a server without a GUI installed.
@@ -27,6 +29,9 @@ This helper should be configured in codecept.json
 -   `browser` - browser in which perform testing
 -   `restart` (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+-   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+-   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
 -   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default;

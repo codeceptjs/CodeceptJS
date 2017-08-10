@@ -10,7 +10,7 @@ CodeceptJS runner
 ## bootstrap
 
 Executes hooks and bootstrap.
-If bootstrap is async second parameter is required.
+If bootstrap is async, second parameter is required.
 
 **Parameters**
 

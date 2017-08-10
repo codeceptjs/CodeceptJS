@@ -6,7 +6,7 @@ Uses data generators like [rosie](https://github.com/rosiejs/rosie) or factory g
 By defining a factory you set the rules of how data is generated.
 This data will be saved on server via REST API and deleted in the end of a test.
 
-### Use Case
+## Use Case
 
 Acceptance tests interact with a websites using UI and real browser.
 There is no way to create data for a specific test other than from user interface.
@@ -31,7 +31,9 @@ To make this work you need
 
 Install [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker) libraries.
 
-    npm i rosie faker --save-dev`
+```sh
+npm i rosie faker --save-dev`
+```
 
 Create a factory file for a resource.
 

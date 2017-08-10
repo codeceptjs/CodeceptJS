@@ -1,7 +1,7 @@
 {
   "name": "codeceptjs",
   "version": "1.0.0",
-  "description": "Modern Era Aceptance Testing Framework for NodeJS",
+  "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "homepage": "http://codecept.io",
   "repository": "Codeception/codeceptjs",
   "es6": true,
@@ -53,7 +53,7 @@
     "gulp-exclude-gitignore": "^1.0.0",
     "gulp-gitmodified": "^1.1.0",
     "gulp-if": "^2.0.2",
-    "gulp-istanbul": "^0.9.0",
+    "gulp-istanbul": "^1.1.2",
     "gulp-mocha": "^2.0.0",
     "gulp-mustache": "^2.2.0",
     "gulp-plumber": "^1.0.0",
@@ -61,6 +61,7 @@
     "json-server": "^0.10.1",
     "nightmare": "^2.5.2",
     "nightmare-upload": "^0.1.1",
+    "nyc": "^11.1.0",
     "protractor": ">4.0.9 <6.0",
     "rosie": "^1.6.0",
     "selenium-webdriver": "^2.53.1",
@@ -72,6 +73,7 @@
     "node": ">=6.11"
   },
   "scripts": {
+    "gulp": "gulp",
     "prepublish": "gulp prepublish",
     "test": "gulp",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js"
