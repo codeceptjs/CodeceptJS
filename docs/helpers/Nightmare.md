@@ -464,6 +464,10 @@ Can submit special keys like 'Enter', 'Backspace', etc
 
 -   `key`  
 
+## refresh
+
+Reload the page
+
 ## resizeWindow
 
 Resize the current window to provided width and height.
