@@ -145,6 +145,18 @@ describe('Nightmare', function () {
           });
       });
     })
-  })
+  });
+
+  describe('refresh page', () => {
+    it('should refresh the current page', function*() {
+      I.amOnPage(site_url);
+      let url = yield browser.url();
+      assert.equal(site_url + '/', url);
+      yield I.refresh();
+      let nextUrl = yield browser.url();
+      //reloaded the page, check the url is the same
+      assert.equal(url, nextUrl);
+    });
+  });
 
 });
