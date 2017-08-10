@@ -1,5 +1,24 @@
 ## 1.0.1
 
+* Reporters improvements:
+  * Allows to execute [multiple reporters](http://codecept.io/advanced/#Multi-Reports)
+  * Added [Mochawesome](http://codecept.io/helpers/Mochawesome/) helper
+  * `addMochawesomeContext` method to add custom data to mochawesome reports
+  * Fixed Mochawesome context for failed screenshots.
+* [WebDriverIO] improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/Codeception/CodeceptJS/issues/647)
+* [Nightmare] Added `refresh` function by @awhanks
+* fixed `Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad`
+* support for tests with retries in html report
+* be sure that change window size and timeouts completes before test
+* [Nightmare] Fixed `[Wrapped Error] "codeceptjs is not defined"`; Reinjectiing client scripts to a webpage on changes.
+* [Nightmare] Added more detailed error messages for `Wait*` methods
+* [Nightmare] Fixed adding screenshots to Mochawesome
+* [Nightmare] Fix unique screenshots names in Nightmare
+* Fixed CodeceptJS work with hooks in helpers to finish codeceptJS correctly if errors appears in helpers hooks
+* Create a new session for next test If selenium grid error received
+* Create screenshots for failed hooks from a Feature file
+* Fixed `retries` option
+
 ## 1.0
 
 CodeceptJS hits first stable release. CodeceptJS provides a unified API for [web testing for Webdriverio](http://codecept.io/acceptance/), [Protractor](http://codecept.io/angular/), and [NightmareJS](http://codecept.io/nightmare/). Since 1.0 you can also **test mobile applications** in the similar manner with Appium.
