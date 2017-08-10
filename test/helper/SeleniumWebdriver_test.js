@@ -30,8 +30,11 @@ describe('SeleniumWebdriver', function () {
       restart: false
 
     });
-    I._init();
-    return browser = I._beforeSuite();
+    return I._init().then(() => {
+      return I._beforeSuite().then(() => {
+        browser = I.browser;
+      });
+    });
   });
 
   after(function() {

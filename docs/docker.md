@@ -11,10 +11,9 @@ Sample mount: `-v path/to/codecept.json:/tests`
 
 ### Locally
 
-
 You can execute CodeceptJS with Nightmare locally with no extra configuration.
 
-```
+```sh
 docker run --net=host -v $PWD:/tests codeception/codeceptjs
 ```
 
@@ -77,5 +76,5 @@ _Note: If running with the Nightmare driver, it is not necessary to run a seleni
 To build this image:
 
 ```sh
-$ docker build -t codeception/codeceptjs .
+docker build -t codeception/codeceptjs .
 ```

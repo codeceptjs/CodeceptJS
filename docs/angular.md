@@ -1,13 +1,13 @@
-## AngularJS E2E Testing with CodeceptJS
+# AngularJS E2E Testing with CodeceptJS
 
-### Introduction
+## Introduction
 
-CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by differnet backends.
+CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
 CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *selenium-webdriver*, or *protractor* depends on you.
 This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.
 
 As you know, [Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
-CodeceptJS should not be considerend as alternative to Protractor but a testing framework utilizing this powerful library.
+CodeceptJS should not be considered as alternative to Protractor but a testing framework utilizing this powerful library.
 
 ![](http://codecept.io/images/angular-protractor.png)
 
@@ -82,7 +82,7 @@ codeceptjs init
 ```
 
 You will be asked questions about initial configuration, make sure you select Protractor helper.
-If you didn't have Protracotr library it **will be installed**.
+If you didn't have Protractor library it **will be installed**.
 Please agree to extend steps, and use `http://todomvc.com/examples/angularjs/` as a url for Protractor helper.
 
 For TodoMVC application you will have following config created in `codecept.json` file:
@@ -116,7 +116,7 @@ codeceptjs gt
 ```
 
 After that you can start writing your first CodeceptJS/Angular tests.
-Please look into the reference of [Protractor helper])(http://codecept.io/helpers/Protractor/) for all available actions.
+Please look into the reference of [Protractor helper](http://codecept.io/helpers/Protractor/) for all available actions.
 You can also run `list` command to see methods of I:
 
 ```bash
@@ -151,7 +151,7 @@ Scenario('create todo item', (I) => {
 
 A test can be executed with `run` command, we recommend to use `--steps` options to follow step-by-step execution:
 
-```
+```sh
 $ codeceptjs run --steps
 
 CodeceptJS v0.3.2
@@ -219,11 +219,12 @@ Like you may have noticed, CodeceptJS doesn't use `by.*` locators similar to Pro
 Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
 you can specify them using so-called strict locators. This is an absolute analogy of `by`, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:
 
-```
+```sh
 {css: 'button'}
 {repeater: "todo in todos"}
 {binding: 'latest'}
 ```
+
 When we deal with clicks, CodeceptJS can take a text and search a web page for a valid clickable element with that text.
 So links and buttons can be searched by their text.
 
@@ -249,6 +250,7 @@ module.exports = function() {
   });
 }
 ```
+
 And that's all, method is available to use as `I.createTodo(title)`:
 
 ```js

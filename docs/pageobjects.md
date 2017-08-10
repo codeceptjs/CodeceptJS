@@ -1,17 +1,16 @@
-# PageObjects
+# Page Object
 
 UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.
 
-## PageObjects
+## PageObject
 
 In case an application has different pages (login, admin, etc) you should use a page object.
-CodeceptJS can generate a template for it with next command
+CodeceptJS can generate a template for it with the command:
 
-```
+```sh
 codeceptjs gpo
 ```
-*(or generate pageobject)*
 
 This will create a sample template for a page object and include it into `codecept.json` config.
 
@@ -68,12 +67,56 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
+Also you can use generators inside a PageObject:
+
+```js
+'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = actor();
+  },
+
+  // setting locators
+  container: "//div[@class = 'numbers']",
+  mainItem: {
+    number: ".//div[contains(@class, 'numbers__main-number')]",
+    title: ".//div[contains(@class, 'numbers__main-title-block')]"
+  },
+
+  // introducing methods
+  openMainArticle: function* () {
+    I.waitForVisible(this.container)
+    let _this = this
+    let title;
+    yield within(this.container, function*(){
+      title = yield I.grabTextFrom(_this.mainItem.number);
+      let subtitle = yield I.grabTextFrom(_this.mainItem.title);
+      title = title + " " + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
+      yield I.click(_this.mainItem.title)
+    })
+    return title;
+  }
+}
+```
+
+and use them in your tests:
+
+```js
+Scenario('login2', (I, loginPage, basePage) => {
+  let title = yield* mainPage.openMainArticle()
+  basePage.pageShouldBeOpened(title)
+});
+```
+
 ## Page Fragments
 
 In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
 by running `go` command with `--type` (or `-t`) option:
 
-```
+```sh
 codeceptjs go --type fragment
 ```
 
@@ -104,10 +147,10 @@ module.exports = {
 
 ## StepObjects
 
-StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, chaning permissions, etc.
+StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, changing permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:
 
-```
+```sh
 codeceptjs go --type step
 ```
 
@@ -159,6 +202,7 @@ module.exports = function() {
   });
 }
 ```
+
 Please notice that instead of `I` you should use `this` in current context.
 
 ### done()

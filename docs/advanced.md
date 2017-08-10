@@ -29,7 +29,7 @@ Data(accounts).Scenario('Test Login', (I, current) => {
 This will produce 2 tests with different data sets.
 Current data set is appended to a test name in output:
 
-```
+```sh
 ✓ Test Login | {"login":"davert","password":"123456"}
 ✓ Test Login | {"login":"admin","password":"123456"}
 ```
@@ -54,7 +54,7 @@ all tests with `@tag` could be executed with `--grep @tag` option.
 Scenario('update user profile @slow')
 ```
 
-```
+```sh
 codeceptjs run --grep @slow
 ```
 
@@ -70,7 +70,7 @@ Use regex for more flexible filtering:
 CodeceptJS provides a debug mode in which additional information is printed.
 It can be turned on with `--debug` flag.
 
-```
+```sh
 codeceptjs run --debug
 ```
 
@@ -78,14 +78,13 @@ While running in debug mode you can pause execution and enter interactive consol
 
 For advanced debugging use NodeJS debugger. In WebStorm IDE:
 
-```
+```sh
 node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 ```
 
 ## Multiple Execution
 
 CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations. Before using this feature you need to add `multiple` option to the config:
-
 
 ```js
 "multiple": {

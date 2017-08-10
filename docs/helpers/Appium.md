@@ -4,22 +4,22 @@ Appium helper extends [WebriverIO](http://codecept.io/helpers/WebDriverIO/) help
  It supports all browser methods and also includes special methods for mobile apps testing.
  You can use this helper to test Web on desktop and mobile devices and mobile apps.
 
-#### Appium Installation
+## Appium Installation
 
 Appium is an open source test automation framework for use with native, hybrid and mobile web apps that implements the WebDriver protocol.
 It allows you to run Selenium tests on mobile devices and also test native, hybrid and mobile web apps.
 
 Download and install [Appium](http://appium.io/)
 
-    npm install -g appium
+```sh
+npm install -g appium
+```
 
 Launch the daemon: `appium`
 
-### Configuration
+## Helper configuration
 
 This helper should be configured in codecept.json or codecept.conf.js
-
-#### Appium configuration
 
 -   `port`: Appium port
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
