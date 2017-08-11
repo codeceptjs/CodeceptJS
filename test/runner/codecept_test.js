@@ -1,5 +1,6 @@
 'use strict';
 let should = require('chai').should();
+let expect = require('chai').expect;
 let assert = require('assert');
 let path = require('path');
 const exec = require('child_process').exec;
@@ -80,6 +81,25 @@ describe('CodeceptJS Runner', () => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am function hook');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run hooks from suites', (done) => {
+    exec(codecept_run_config('codecept.testhooks.json'), (err, stdout, stderr) => {
+      let lines = stdout.match(/\S.+/g);
+      expect(lines).to.include.members([
+        `I'm simple BeforeSuite hook`,
+        `I'm generator BeforeSuite hook`,
+        `I'm simple Before hook`,
+        `I'm generator Before hook`,
+        `I'm generator After hook`,
+        `I'm simple After hook`,
+        `I'm generator AfterSuite hook`,
+        `I'm simple AfterSuite hook`,
+      ]);
+      stdout.should.include('OK  | 1 passed');
       assert(!err);
       done();
     });
