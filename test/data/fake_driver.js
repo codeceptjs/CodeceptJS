@@ -10,6 +10,10 @@ class FakeDriver extends Helper {
     this.debug(this.config.browser);
   }
 
+  printWindowSize() {
+    this.debug(this.config.windowSize);
+  }
+
 }
 
 module.exports = FakeDriver;
