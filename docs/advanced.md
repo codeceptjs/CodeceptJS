@@ -82,6 +82,18 @@ For advanced debugging use NodeJS debugger. In WebStorm IDE:
 node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 ```
 
+Also you can use tools like default NodeJS inspector:
+```
+codeceptjs run --inspect
+```
+You will get link in console that you should open in chrome to get access to debugger. Set `debugger;` in your tests to set breakpoints.
+
+For [node-inspector](https://www.npmjs.com/package/node-inspector) use `--debug-brk` option:
+```
+codeceptjs run --debug-brk
+```
+After that run node-inspector and set breakpoints in any place you want.
+
 ## Multiple Execution
 
 CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations. Before using this feature you need to add `multiple` option to the config:
