@@ -15,6 +15,10 @@ class MyHelper extends Helper {
     return 'hello dark side';
   }
 
+  stringWithHook(hookName) {
+    return `I'm generator ${hookName} hook`;
+  }
+
 }
 
 module.exports = MyHelper;

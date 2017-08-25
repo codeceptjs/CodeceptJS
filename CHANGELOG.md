@@ -1,3 +1,14 @@
+## 1.0.2
+
+* Introduced generators support in scenario hooks for `BeforeSuite`/`Before`/`AfterSuite`/`After`
+* [ApiDataFactory] Fixed loading helper; `requireg` package included.
+* Fix [#485](https://github.com/Codeception/CodeceptJS/issues/485) `run-multiple`: the first browser-resolution combination was be used in all configurations
+* Fixed unique test names:
+  * Fixed [#447](https://github.com/Codeception/CodeceptJS/issues/447): tests failed silently if they have the same name as other tests.
+  * Use uuid in screenshot names when `uniqueScreenshotNames: true`
+* [Protractor] Fixed testing non-angular application. `amOutsideAngularApp` is executed before each step. Fixes [#458](https://github.com/Codeception/CodeceptJS/issues/458)
+* Added output for steps in hooks when they fail
+
 ## 1.0.1
 
 * Reporters improvements:
