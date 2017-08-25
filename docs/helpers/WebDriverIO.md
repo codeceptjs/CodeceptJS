@@ -1327,6 +1327,21 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `urlPart`  
 -   `sec`   (optional, default `null`)
 
+## waitWhileElement
+
+Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitWhileElement('.btn.continue');
+I.waitWhileElement('.btn.continue', 5); // wait for 5 secs
+```
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by defaultAppium: support
+
 # locator
 
 just press button if no selector is given
