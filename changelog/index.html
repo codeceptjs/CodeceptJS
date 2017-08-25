@@ -259,7 +259,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#101">1.0.1</a></li>
+        <li class="main active"><a href="#102">1.0.2</a></li>
+        
+    
+        <li class="main "><a href="#101">1.0.1</a></li>
         
     
         <li class="main "><a href="#10">1.0</a></li>
@@ -382,6 +385,17 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="102">1.0.2</h2>
+<ul>
+<li>Introduced generators support in scenario hooks for <code>BeforeSuite</code>/<code>Before</code>/<code>AfterSuite</code>/<code>After</code></li>
+<li>[ApiDataFactory] Fixed loading helper; <code>requireg</code> package included.</li>
+<li>Fix <a href="https://github.com/Codeception/CodeceptJS/issues/485">#485</a> <code>run-multiple</code>: the first browser-resolution combination was be used in all configurations</li>
+<li>Fixed unique test names:</li>
+<li>Fixed <a href="https://github.com/Codeception/CodeceptJS/issues/447">#447</a>: tests failed silently if they have the same name as other tests.</li>
+<li>Use uuid in screenshot names when <code>uniqueScreenshotNames: true</code></li>
+<li>[Protractor] Fixed testing non-angular application. <code>amOutsideAngularApp</code> is executed before each step. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/458">#458</a></li>
+<li>Added output for steps in hooks when they fail</li>
+</ul>
 <h2 id="101">1.0.1</h2>
 <ul>
 <li>Reporters improvements:</li>

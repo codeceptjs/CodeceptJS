@@ -139,6 +139,12 @@ class Protractor extends SeleniumWebdriver {
     ];
   }
 
+  _beforeStep() {
+    if (!this.insideAngular) {
+      return this.amOutsideAngularApp();
+    }
+  }
+
   _startBrowser() {
     let runner = new Runner(this.options);
     this.browser = runner.createBrowser();
