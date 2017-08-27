@@ -461,6 +461,7 @@ module.exports.tests = function() {
       yield I.amOnPage('/form/file');
       yield I.attachFile('Avatar', 'app/avatar.jpg');
       yield I.click('Submit');
+      yield I.amOnPage('/');
       formContents()['files'].should.have.key('avatar');
       formContents()['files']['avatar']['name'].should.eql('avatar.jpg');
       formContents()['files']['avatar']['type'].should.eql('image/jpeg');
