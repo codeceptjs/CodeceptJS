@@ -1,4 +1,36 @@
-# CodeceptJS 1.0
+## 1.0.2
+
+* Introduced generators support in scenario hooks for `BeforeSuite`/`Before`/`AfterSuite`/`After`
+* [ApiDataFactory] Fixed loading helper; `requireg` package included.
+* Fix [#485](https://github.com/Codeception/CodeceptJS/issues/485) `run-multiple`: the first browser-resolution combination was be used in all configurations
+* Fixed unique test names:
+  * Fixed [#447](https://github.com/Codeception/CodeceptJS/issues/447): tests failed silently if they have the same name as other tests.
+  * Use uuid in screenshot names when `uniqueScreenshotNames: true`
+* [Protractor] Fixed testing non-angular application. `amOutsideAngularApp` is executed before each step. Fixes [#458](https://github.com/Codeception/CodeceptJS/issues/458)
+* Added output for steps in hooks when they fail
+
+## 1.0.1
+
+* Reporters improvements:
+  * Allows to execute [multiple reporters](http://codecept.io/advanced/#Multi-Reports)
+  * Added [Mochawesome](http://codecept.io/helpers/Mochawesome/) helper
+  * `addMochawesomeContext` method to add custom data to mochawesome reports
+  * Fixed Mochawesome context for failed screenshots.
+* [WebDriverIO] improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/Codeception/CodeceptJS/issues/647)
+* [Nightmare] Added `refresh` function by @awhanks
+* fixed `Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad`
+* support for tests with retries in html report
+* be sure that change window size and timeouts completes before test
+* [Nightmare] Fixed `[Wrapped Error] "codeceptjs is not defined"`; Reinjectiing client scripts to a webpage on changes.
+* [Nightmare] Added more detailed error messages for `Wait*` methods
+* [Nightmare] Fixed adding screenshots to Mochawesome
+* [Nightmare] Fix unique screenshots names in Nightmare
+* Fixed CodeceptJS work with hooks in helpers to finish codeceptJS correctly if errors appears in helpers hooks
+* Create a new session for next test If selenium grid error received
+* Create screenshots for failed hooks from a Feature file
+* Fixed `retries` option
+
+## 1.0
 
 CodeceptJS hits first stable release. CodeceptJS provides a unified API for [web testing for Webdriverio](http://codecept.io/acceptance/), [Protractor](http://codecept.io/angular/), and [NightmareJS](http://codecept.io/nightmare/). Since 1.0 you can also **test mobile applications** in the similar manner with Appium.
 
@@ -15,6 +47,8 @@ I.dontSee('Nothing special', '~email of the customer'));
 
 * Read [the Mobile Testing guide](http://codecept.io/mobile).
 * Discover [Appium Helper](http://codecept.io/helpers/Appium/)
+
+---
 
 We also introduced two new helpers for data management.
 Using them you can easily prepare and cleanup data for your tests using public REST API.
@@ -37,27 +71,20 @@ I.see('Hello, davert');
 * [REST Helper](http://codecept.io/helpers/REST)
 * [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/)
 
+---
+
 Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)** for WebDriverIO, Protractor, SeleniumWebdriver. When `smartwait` option is set, script will wait for extra milliseconds to locate an element before failing. This feature uses implicit waits of Selenium but turns them on only in applicable pieces. For instance, implicit waits are enabled for `seeElement` but disabled for `dontSeeElement`
 
 * Read more about [SmartWait](http://codecept.io/acceptance/#smartwait)
 
-**Changelog**
+##### Changelog
 
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
+* [Data Driven Tests](http://codecept.io/advanced/#data-driven-tests) introduced.
 * Print execution time per step in `--debug` mode. [#591](https://github.com/Codeception/CodeceptJS/pull/591) by @APshenkin
-* [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov [#574](https://github.com/Codeception/CodeceptJS/pull/574)
 * [WebDriverIO][Protractor][Nightmare] Added `disableScreenshots` option to disable screenshots on fail by @Apshenkin
 * [WebDriverIO][Protractor][Nightmare] Added `uniqueScreenshotNames` option to generate unique names for screenshots on failure by @Apshenkin
-* Lots of fixes for promise chain by @APshenkin [#568](https://github.com/Codeception/CodeceptJS/pull/568)
-  * Fix [#543](https://github.com/Codeception/CodeceptJS/issues/543) - After block not properly executed if Scenario fails
-  * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
-  * if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another
-  * if during test we got error from Selenium server - stop complete this suite and go to another
-  * [WebDriverIO][Protractor] if `restart` option is false - close all tabs expect one in `_after`.
-  * Complete `_after`, `_afterSuite` hooks even After/AfterSuite from test was failed
-  * Don't close browser between suites, when `restart` option is false. We should start browser only one time and close it only after all tests.
-  * Close tabs and clear local storage, if `keepCookies` flag is enabled
 * [WebDriverIO][Nightmare] Fixed click on context; `click('text', '#el')` will throw exception if text is not found inside `#el`.
 * [WebDriverIO][Protractor][SeleniumWebdriver] [SmartWait introduced](http://codecept.io/acceptance/#smartwait).
 * [WebDriverIO][Protractor][Nightmare]Fixed `saveScreenshot` for PhantomJS, `fullPageScreenshots` option introduced by @HughZurname [#549](https://github.com/Codeception/CodeceptJS/pull/549)
@@ -66,25 +93,35 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 * [WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version #560 by @APshenkin
 * [Nightmare] Fixed restarting by @APshenkin [#581](https://github.com/Codeception/CodeceptJS/pull/581)
 * [WebDriverIO] Methods added by @APshenkin:
-    * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabCssPropertyFrom)
-    * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seeTitleEquals)
-    * [seeTextEquals](http://codecept.io/helpers/WebDriverIO/#seeTextEquals)
-    * [seeCssPropertiesOnElements](http://codecept.io/helpers/WebDriverIO/#seeCssPropertiesOnElements)
-    * [seeAttributesOnElements](http://codecept.io/helpers/WebDriverIO/#seeAttributesOnElements)
-    * [grabNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#grabNumberOfVisibleElements)
-    * [waitInUrl](http://codecept.io/helpers/WebDriverIO/#waitInUrl)
-    * [waitUrlEquals](http://codecept.io/helpers/WebDriverIO/#waitUrlEquals)
-    * [waitForValue](http://codecept.io/helpers/WebDriverIO/#waitForValue)
-    * [waitNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#waitNumberOfVisibleElements)
-    * [switchToNextTab](http://codecept.io/helpers/WebDriverIO/#switchToNextTab)
-    * [switchToPreviousTab](http://codecept.io/helpers/WebDriverIO/#switchToPreviousTab)
-    * [closeCurrentTab](http://codecept.io/helpers/WebDriverIO/#closeCurrentTab)
-    * [openNewTab](http://codecept.io/helpers/WebDriverIO/#openNewTab)
-    * [refreshPage](http://codecept.io/helpers/WebDriverIO/#refreshPage)
-    * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollPageToBottom)
-    * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollPageToTop)
-    * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabBrowserLogs)
+    * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
+    * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seetitleequals)
+    * [seeTextEquals](http://codecept.io/helpers/WebDriverIO/#seetextequals)
+    * [seeCssPropertiesOnElements](http://codecept.io/helpers/WebDriverIO/#seecsspropertiesonelements)
+    * [seeAttributesOnElements](http://codecept.io/helpers/WebDriverIO/#seeattributesonelements)
+    * [grabNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#grabnumberofvisibleelements)
+    * [waitInUrl](http://codecept.io/helpers/WebDriverIO/#waitinurl)
+    * [waitUrlEquals](http://codecept.io/helpers/WebDriverIO/#waiturlequals)
+    * [waitForValue](http://codecept.io/helpers/WebDriverIO/#waitforvalue)
+    * [waitNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#waitnumberofvisibleelements)
+    * [switchToNextTab](http://codecept.io/helpers/WebDriverIO/#switchtonexttab)
+    * [switchToPreviousTab](http://codecept.io/helpers/WebDriverIO/#switchtoprevioustab)
+    * [closeCurrentTab](http://codecept.io/helpers/WebDriverIO/#closecurrenttab)
+    * [openNewTab](http://codecept.io/helpers/WebDriverIO/#opennewtab)
+    * [refreshPage](http://codecept.io/helpers/WebDriverIO/#refreshpage)
+    * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
+    * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
+    * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
 * Use mkdirp to create output directory. [#592](https://github.com/Codeception/CodeceptJS/pull/592) by @vkramskikh
+* [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov [#574](https://github.com/Codeception/CodeceptJS/pull/574)
+* Lots of fixes for promise chain by @APshenkin [#568](https://github.com/Codeception/CodeceptJS/pull/568)
+    * Fix [#543](https://github.com/Codeception/CodeceptJS/issues/543) - After block not properly executed if Scenario fails
+    * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
+    * if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another
+    * if during test we got error from Selenium server - stop complete this suite and go to another
+    * [WebDriverIO][Protractor] if `restart` option is false - close all tabs expect one in `_after`.
+    * Complete `_after`, `_afterSuite` hooks even After/AfterSuite from test was failed
+    * Don't close browser between suites, when `restart` option is false. We should start browser only one time and close it only after all tests.
+    * Close tabs and clear local storage, if `keepCookies` flag is enabled
 * Fix TypeError when using babel-node or ts-node on node.js 7+ [#586](https://github.com/Codeception/CodeceptJS/pull/586) by @vkramskikh
 * [Nightmare] fixed usage of `_locate`
 

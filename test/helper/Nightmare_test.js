@@ -34,7 +34,7 @@ describe('Nightmare', function () {
 
   beforeEach(function() {
     webApiTests.init({ I, site_url});
-    return browser = I._before();
+    return I._before().then(() => browser = I.browser);
   });
 
   afterEach(() => {
@@ -71,6 +71,14 @@ describe('Nightmare', function () {
       return I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover'))
         .then(() => I.see('Hovered', '#show'));
+    });
+  });
+
+  describe('scripts Inject', () => {
+    it('should reinject scripts after navigating to new page', () => {
+      return I.amOnPage('/')
+        .then(() => I.click("//div[@id='area1']/a"))
+        .then(() => I.waitForVisible("//input[@id='avatar']"));
     });
   });
 
@@ -137,6 +145,18 @@ describe('Nightmare', function () {
           });
       });
     })
-  })
+  });
+
+  describe('refresh page', () => {
+    it('should refresh the current page', function*() {
+      I.amOnPage(site_url);
+      let url = yield browser.url();
+      assert.equal(site_url + '/', url);
+      yield I.refresh();
+      let nextUrl = yield browser.url();
+      //reloaded the page, check the url is the same
+      assert.equal(url, nextUrl);
+    });
+  });
 
 });
