@@ -40,6 +40,7 @@
     "requireg": "^0.1.5"
   },
   "devDependencies": {
+    "@types/node": "^8.0.26",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.1.2",
@@ -66,6 +67,7 @@
     "rosie": "^1.6.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
+    "typescript": "^2.4.2",
     "unirest": "^0.5.1",
     "webdriverio": ">3.4.0 <5.0.0"
   },
@@ -78,5 +80,6 @@
     "test": "gulp",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "typings": "typings/index.d.ts"
 }

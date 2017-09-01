@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "allowJs": true,
+      "checkJs": true,
+      "lib": [
+          "es6"
+      ],
+      "noImplicitAny": false,
+      "noImplicitThis": false,
+      "noEmit": true,
+      "strictNullChecks": true,
+      "types": [
+          "node"
+      ],
+      "target": "es5"
+  },
+  "include": [
+    "lib",
+    "typings"
+  ]
+}
