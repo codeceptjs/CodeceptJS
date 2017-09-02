@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-      "module": "commonjs",
-      "allowJs": true,
-      "checkJs": true,
-      "noImplicitAny": false,
-      "noImplicitThis": false,
-      "noEmit": true,
-      "strictNullChecks": true,
-      "types": [
-          "node"
-      ],
-      "target": "es2015"
+    "allowJs": true,
+    "checkJs": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "noEmit": true,
+    "strictNullChecks": true,
+    "types": [
+        "node"
+    ],
+    "target": "es2015"
   },
+  "compileOnSave": true,
   "include": [
     "lib",
     "typings"

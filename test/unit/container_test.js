@@ -102,7 +102,7 @@ describe('Container', () => {
       assert.ok(container.support('I'));
     });
 
-    it('should load I from path and excute _init', () => {
+    it('should load I from path and execute _init', () => {
       container.create({
         include: {
           I: './data/I'
