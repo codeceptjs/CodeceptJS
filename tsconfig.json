@@ -3,9 +3,6 @@
       "module": "commonjs",
       "allowJs": true,
       "checkJs": true,
-      "lib": [
-          "es6"
-      ],
       "noImplicitAny": false,
       "noImplicitThis": false,
       "noEmit": true,
@@ -13,7 +10,7 @@
       "types": [
           "node"
       ],
-      "target": "es5"
+      "target": "es2015"
   },
   "include": [
     "lib",

@@ -2,17 +2,28 @@
 // Project: https://github.com/codeception/codeceptjs/
 // Definitions by: Michael Bodnarchuk <http://github.com/DavertMik>, Drew Diamantoukos <https://github.com/KennyRules>
 
-declare module CodeceptJS {
-  class Assertion {
-    comparator: Number;
-    params: {
-      customMessage: String;
-    };
+declare module NodeJS {
+  interface Process {
+    profile: string;
+  }
 
-    constructor(comparator, params);
+  interface Global {
+    codecept_dir: string;
+    output_dir: string;
+    by: any;
+
+    // Used by Protractor helper
+    By: any;
+    ExpectedConditions: any;
+    element: any;
+    $: any;
+    $$: any;
+    browser: any;
   }
 }
 
-declare module "codecept" {
-  export = CodeceptJS
+declare interface Window {
+  codeceptjs: any;
 }
+
+declare var window: Window;
