@@ -40,6 +40,8 @@
     "requireg": "^0.1.5"
   },
   "devDependencies": {
+    "@types/commander": "^2.9.2",
+    "@types/inquirer": "^0.0.35",
     "@types/node": "^8.0.26",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
@@ -67,7 +69,7 @@
     "rosie": "^1.6.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
-    "typescript": "^2.4.2",
+    "typescript": "^2.5.2",
     "unirest": "^0.5.1",
     "webdriverio": ">3.4.0 <5.0.0"
   },

@@ -8,8 +8,16 @@ declare module NodeJS {
   }
 
   interface Global {
+    codecept_actor: any;
     codecept_dir: string;
+    codecept_helper: any;
     output_dir: string;
+
+    actor: any;
+    Helper: any;
+    pause: any;
+    within: any;
+    DataTable: any;
     by: any;
 
     // Used by Protractor helper
@@ -27,3 +35,40 @@ declare interface Window {
 }
 
 declare var window: Window;
+
+/**
+ * Special Mocha definitions for reporter Base and Suite.
+ * The mocha type definitions on DefinitelyTyped are for an older version of Mocha!
+ */
+
+declare module 'mocha/lib/reporters/base' {
+  class base {
+    constructor(runner: any);
+    static cursor: any;
+    static color: any;
+    static list(items: any);
+    static symbols: any;
+    failures: any;
+    stats: any;
+  }
+
+  export = base;
+}
+
+declare interface Suite {
+  addTest: any;
+  afterAll: any;
+  afterEach: any;
+  beforeAll: any;
+  beforeEach: any;
+  pending: any;
+  on: any;
+  timeout: any;
+  title: any;
+
+  create(suite: any, title: any): any;
+}
+
+declare module 'mocha/lib/suite' {
+  export = Suite;
+}
