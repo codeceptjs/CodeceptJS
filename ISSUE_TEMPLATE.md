@@ -10,7 +10,7 @@
 
 > Provide test source code if related
 
-```php
+```js
 // paste test
 ```
 
