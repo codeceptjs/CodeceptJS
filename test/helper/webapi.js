@@ -38,7 +38,7 @@ module.exports.tests = function() {
       return I.dontSeeCurrentUrlEquals('form');
     });
 
-    it('should check for equality in absulute urls', function*() {
+    it('should check for equality in absolute urls', function*() {
       yield I.amOnPage('/info');
       yield I.seeCurrentUrlEquals(site_url + '/info');
       return I.dontSeeCurrentUrlEquals(site_url + '/form');
@@ -561,7 +561,7 @@ module.exports.tests = function() {
   });
 
   describe('#waitForElement', () => {
-    it('should wait for visibile element', () => {
+    it('should wait for visible element', () => {
       return I.amOnPage('/form/wait_visible')
         .then(() => I.dontSee('Step One Button'))
         .then(() => I.dontSeeElement('#step_1'))
