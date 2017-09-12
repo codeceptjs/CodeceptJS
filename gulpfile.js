@@ -11,6 +11,8 @@ var glob = require('glob');
 var guppy = require('git-guppy')(gulp);
 var gitmodified = require('gulp-gitmodified');
 var istanbul = require('gulp-istanbul');
+var ts = require("gulp-typescript");
+var tsProject = ts.createProject("tsconfig.json");
 
 function isFixed(file) {
 	// Has ESLint fixed the file contents?
@@ -44,6 +46,11 @@ gulp.task('static', function () {
     .pipe(eslint({fix: true}))
     // .pipe(eslint.format())
     .pipe(gulp.dest('lib'));
+});
+
+gulp.task('type-check', function () {
+  return tsProject.src()
+    .pipe(tsProject());
 });
 
 gulp.task('pre-commit', ['static']);

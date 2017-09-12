@@ -90,11 +90,11 @@ describe('Nightmare', function () {
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web application');
-        })
+        });
     });
 
 
-    it('should fail when clicable element not found', () => {
+    it('should fail when clickable element not found', () => {
       return I.amOnPage('/')
         .then(() => I.click('Welcome'))
         .then(expectError)
@@ -143,8 +143,8 @@ describe('Nightmare', function () {
             // execute an assertion
             assert.equal(attributeValue, 'test');
           });
-      });
-    })
+        });
+    });
   });
 
   describe('refresh page', () => {

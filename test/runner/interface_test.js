@@ -16,10 +16,10 @@ describe('CodeceptJS Interface', () => {
     process.chdir(codecept_dir);
   });
 
-  it('should rerun flacky tests', (done) => {
-    exec(config_run_config('codecept.flacky.json'), (err, stdout, stderr) => {
-      stdout.should.include('Flacky'); // feature
-      stdout.should.include('Not so flacky test'); // test name
+  it('should rerun flaky tests', (done) => {
+    exec(config_run_config('codecept.flaky.json'), (err, stdout, stderr) => {
+      stdout.should.include('Flaky'); // feature
+      stdout.should.include('Not so flaky test'); // test name
       assert(!err);
       done();
     });

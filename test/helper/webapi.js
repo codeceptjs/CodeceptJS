@@ -11,13 +11,13 @@ let fileExists = require('../../lib/utils').fileExists;
 
 module.exports.init = function(testData) {
   data = testData;
-}
+};
 
 module.exports.tests = function() {
 
   let isHelper = (helperName) => {
-    return I.constructor.name == helperName;
-  }
+    return I.constructor.name === helperName;
+  };
 
   beforeEach(function() {
     I = data.I;
@@ -38,7 +38,7 @@ module.exports.tests = function() {
       return I.dontSeeCurrentUrlEquals('form');
     });
 
-    it('should check for equality in absulute urls', function*() {
+    it('should check for equality in absolute urls', function*() {
       yield I.amOnPage('/info');
       yield I.seeCurrentUrlEquals(site_url + '/info');
       return I.dontSeeCurrentUrlEquals(site_url + '/form');
@@ -47,7 +47,7 @@ module.exports.tests = function() {
 
   describe('see text : #see', () => {
     it('should check text on site', function*() {
-      yield I.amOnPage('/')
+      yield I.amOnPage('/');
       yield I.see('Welcome to test app!');
       yield I.see('A wise man said: "debug!"');
       return I.dontSee('Info');
@@ -142,7 +142,7 @@ module.exports.tests = function() {
       yield I.amOnPage('/');
       return I.click('More info', '#area1')
         .catch((e) => err = true)
-        .then(() => assert.ok(err))
+        .then(() => assert.ok(err));
     });
 
     it('should click link with inner span', function*() {
@@ -163,35 +163,35 @@ module.exports.tests = function() {
 
   describe('#checkOption', () => {
     it('should check option by css', function*() {
-      yield I.amOnPage('/form/checkbox')
+      yield I.amOnPage('/form/checkbox');
       yield I.checkOption('#checkin');
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by strict locator', function*() {
-      yield I.amOnPage('/form/checkbox')
+      yield I.amOnPage('/form/checkbox');
       yield I.checkOption({id: 'checkin'});
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by name', function*() {
-      yield I.amOnPage('/form/checkbox')
+      yield I.amOnPage('/form/checkbox');
       yield I.checkOption('terms');
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by label', function*() {
-      yield I.amOnPage('/form/checkbox')
+      yield I.amOnPage('/form/checkbox');
       yield I.checkOption('I Agree');
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by context', function*() {
-      yield I.amOnPage('/form/example1')
+      yield I.amOnPage('/form/example1');
       yield I.checkOption('Remember me next time', '.rememberMe');
       yield I.click('Login');
       return assert.equal(formContents('LoginForm')['rememberMe'], 1);
@@ -245,13 +245,17 @@ module.exports.tests = function() {
   describe('#executeScript', function() {
     it('should execute synchronous script', function*() {
       yield I.amOnPage('/');
-      yield I.executeScript(function() { document.getElementById('link').innerHTML = 'Appended'; });
+      yield I.executeScript(function() {
+        document.getElementById('link').innerHTML = 'Appended';
+      });
       return I.see('Appended', 'a');
     });
 
     it('should return value from sync script', function*() {
       yield I.amOnPage('/');
-      let val = yield I.executeScript(function(a) { return a + 5 }, 5);
+      let val = yield I.executeScript(function(a) {
+        return a + 5;
+      }, 5);
       assert.equal(val, 10);
     });
 
@@ -351,17 +355,17 @@ module.exports.tests = function() {
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', function*() {
-      yield I.amOnPage('/form/empty')
+      yield I.amOnPage('/form/empty');
       return I.seeInField('#empty_input', '');
     });
 
     it('should check for empty textarea', function*() {
-      yield I.amOnPage('/form/empty')
+      yield I.amOnPage('/form/empty');
       return I.seeInField('#empty_textarea', '');
     });
 
     it('should check field equals', function*() {
-      yield I.amOnPage('/form/field')
+      yield I.amOnPage('/form/field');
       yield I.seeInField('Name', 'OLD_VALUE');
       yield I.seeInField('name', 'OLD_VALUE');
       yield I.seeInField('//input[@id="name"]', 'OLD_VALUE');
@@ -369,7 +373,7 @@ module.exports.tests = function() {
     });
 
     it('should check textarea equals', function*() {
-      yield I.amOnPage('/form/textarea')
+      yield I.amOnPage('/form/textarea');
       yield I.seeInField('Description', 'sunrise');
       yield I.seeInField('textarea', 'sunrise');
       yield I.seeInField('//textarea[@id="description"]', 'sunrise');
@@ -377,20 +381,20 @@ module.exports.tests = function() {
     });
 
     it('should check checkbox is checked :)', function*() {
-      yield I.amOnPage('/info')
+      yield I.amOnPage('/info');
       return I.seeCheckboxIsChecked('input[type=checkbox]');
     });
 
     it('should check checkbox is not checked', function*() {
-      yield I.amOnPage('/form/checkbox')
+      yield I.amOnPage('/form/checkbox');
       return I.dontSeeCheckboxIsChecked('#checkin');
     });
 
     it('should match fields with the same name', function*() {
-      yield I.amOnPage('/form/example20')
-      yield I.seeInField("//input[@name='txtName'][2]", 'emma')
-      return I.seeInField("input[name='txtName']:nth-child(2)", 'emma')
-    })
+      yield I.amOnPage('/form/example20');
+      yield I.seeInField("//input[@name='txtName'][2]", 'emma');
+      return I.seeInField("input[name='txtName']:nth-child(2)", 'emma');
+    });
   });
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
@@ -469,21 +473,21 @@ module.exports.tests = function() {
   });
 
   describe('window size #resizeWindow', () => {
-     it('should set initial window size', () => {
-       return I.amOnPage('/form/resize')
-         .then(() => I.click('Window Size'))
-         .then(() => I.see('Height 400', '#height'))
-         .then(() => I.see('Width 500', '#width'))
-     });
+    it('should set initial window size', () => {
+      return I.amOnPage('/form/resize')
+        .then(() => I.click('Window Size'))
+        .then(() => I.see('Height 400', '#height'))
+        .then(() => I.see('Width 500', '#width'));
+    });
 
-     it('should resize window to specific dimensions', () => {
-       return I.amOnPage('/form/resize')
-         .then(() => I.resizeWindow(800, 600))
-         .then(() => I.click('Window Size'))
-         .then(() => I.see('Height 600', '#height'))
-         .then(() => I.see('Width 800', '#width'))
-     });
-   });
+    it('should resize window to specific dimensions', () => {
+      return I.amOnPage('/form/resize')
+        .then(() => I.resizeWindow(800, 600))
+        .then(() => I.click('Window Size'))
+        .then(() => I.see('Height 600', '#height'))
+        .then(() => I.see('Width 800', '#width'));
+    });
+  });
 
   describe('#saveScreenshot', () => {
     beforeEach(() => {
@@ -493,23 +497,23 @@ module.exports.tests = function() {
     it('should create a screenshot file in output dir', () => {
       let sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
-        .then(() => I.saveScreenshot('screenshot_'+sec))
-        .then(() => assert.ok(fileExists(path.join(output_dir, 'screenshot_'+sec)), null, 'file does not exists'));
+        .then(() => I.saveScreenshot('screenshot_' + sec))
+        .then(() => assert.ok(fileExists(path.join(global.output_dir, 'screenshot_' + sec)), null, 'file does not exists'));
     });
 
     it('should create a full page screenshot file in output dir', () => {
       let sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
-        .then(() => I.saveScreenshot(`screenshot_full_${+sec}`,true))
-        .then(() => assert.ok(fileExists(path.join(output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
+        .then(() => I.saveScreenshot(`screenshot_full_${+sec}`, true))
+        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
     });
 
     it('should create a screenshot on fail  @ups', () => {
       let sec = (new Date()).getUTCMilliseconds().toString();
-      let test = { title: 'sw should do smth '+sec };
+      let test = { title: 'sw should do smth ' + sec };
       return I.amOnPage('/')
         .then(() => I._failed(test))
-        .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
+        .then(() => assert.ok(fileExists(path.join(global.output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
     });
   });
 
@@ -557,7 +561,7 @@ module.exports.tests = function() {
   });
 
   describe('#waitForElement', () => {
-    it('should wait for visibile element', () => {
+    it('should wait for visible element', () => {
       return I.amOnPage('/form/wait_visible')
         .then(() => I.dontSee('Step One Button'))
         .then(() => I.dontSeeElement('#step_1'))
@@ -568,11 +572,11 @@ module.exports.tests = function() {
         .then(() => I.see('Step Two Button'));
     });
 
-   it('should wait for element in DOM', () => {
+    it('should wait for element in DOM', () => {
       return I.amOnPage('/form/wait_visible')
         .then(() => I.waitForElement('#step_2'))
         .then(() => I.dontSeeElement('#step_2'))
-        .then(() => I.seeElementInDOM('#step_2'))
+        .then(() => I.seeElementInDOM('#step_2'));
     });
 
 
@@ -581,7 +585,7 @@ module.exports.tests = function() {
         .then(() => I.dontSee('Hello'))
         .then(() => I.dontSeeElement('h1'))
         .then(() => I.waitForElement('h1', 2))
-        .then(() => I.see('Hello'))
+        .then(() => I.see('Hello'));
     });
 
 
@@ -599,7 +603,7 @@ module.exports.tests = function() {
         .then(() => I._withinBegin('#register'))
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Toggle navigation'))
-        .then(() => I.dontSeeElement('#navbar-collapse-menu'))
+        .then(() => I.dontSeeElement('#navbar-collapse-menu'));
     });
 
 
@@ -619,12 +623,17 @@ module.exports.tests = function() {
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
         .catch((err) => rethrow = err)
         .then(() => I.dontSeeCheckboxIsChecked('terms'))
-        .catch((err) => { if (!err) assert.fail('seen checkbox') })
+        .catch((err) => {
+          if (!err) assert.fail('seen checkbox');
+        })
         .then(() => I.seeInField('Hasło', '12345'))
-        .catch((err) => { if (!err) assert.fail('seen field') })
-        .then(() => { if (rethrow) throw rethrow });
+        .catch((err) => {
+          if (!err) assert.fail('seen field');
+        })
+        .then(() => {
+          if (rethrow) throw rethrow;
+        });
     });
-
 
     it('should execute within block ', () => {
       return I.amOnPage('/form/example4')
@@ -643,10 +652,14 @@ module.exports.tests = function() {
         .then(() => I.see('Rejestracja', 'fieldset'))
         .then(() => I._withinBegin({css: '.navbar-header'}))
         .then(() => I.see('Rejestracja', '.container fieldset'))
-        .catch((err) => { if (!err) assert.fail('seen fieldset') })
+        .catch((err) => {
+          if (!err) assert.fail('seen fieldset');
+        })
         .then(() => I.see('Toggle navigation', '.container fieldset'))
-        .catch((err) => { if (!err) assert.fail('seen fieldset') })
+        .catch((err) => {
+          if (!err) assert.fail('seen fieldset');
+        });
     });
   });
 
-}
+};

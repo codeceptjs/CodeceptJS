@@ -70,7 +70,7 @@ describe('CodeceptJS Multiple Runner', function() {
     });
   });
 
-  it('should execute multiple suites with setted browsers', (done) => {
+  it('should execute multiple suites with selected browsers', (done) => {
     exec(codecept_run+'mobile:safari default:chrome ', (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[1.mobile:safari] print browser ');
