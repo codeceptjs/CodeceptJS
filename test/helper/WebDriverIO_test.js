@@ -442,7 +442,7 @@ describe('WebDriverIO', function () {
             .then(expectError)
             .catch((e) => {
                 e.should.be.instanceOf(Error);
-                e.message.should.be.equal('Element #invalidIframeSelector not found by name|text|CSS|XPath');
+                e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
             });
       });
 
