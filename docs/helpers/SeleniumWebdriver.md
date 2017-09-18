@@ -770,14 +770,14 @@ Element can be located by CSS or XPath.
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
 
-## waitWhileElement
+## waitUntilExists
 
-Waits for element to be present on page (by default waits for 1sec).
+Waits for element not to be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```js
-I.waitForElement('.btn.continue');
-I.waitForElement('.btn.continue', 5); // wait for 5 secs
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
 ```
 
 **Parameters**
