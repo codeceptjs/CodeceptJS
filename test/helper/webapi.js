@@ -590,6 +590,24 @@ module.exports.tests = function() {
 
 
   });
+  
+  describe('#waitUntilExists', () => {
+   
+    it('should wait for an element to be removed from DOM', () => {
+      return I.amOnPage('/spinner')
+        .then(() => I.seeElementInDOM('.loader'))
+        .then(() => I.waitUntilExists('.loader'))
+        .then(() => I.dontSeeElement('.loader'))
+    });
+  
+    it('should wait for a non-exising element to be removed from DOM', () => {
+      return I.amOnPage('/spinner')
+        .then(() => I.dontSeeElement('.non-existing-class'))
+        .then(() => I.waitUntilExists('.non-existing-class'))
+        .then(() => I.dontSeeElement('.non-existing-class'))
+    });
+  
+  });
 
   describe('within tests', () => {
 

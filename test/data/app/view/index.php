@@ -20,6 +20,9 @@
 <div id="area3" qa-id = "test">
     <a href="info" qa-id = "test" qa-link = "test">Document-Relative Link</a>
 </div>
+<div id="area4" qa-id = "test">
+  <a href="/spinner" qa-id = "test" qa-link = "test">Spinner</a>
+</div>
 
 A wise man said: "debug!"
 

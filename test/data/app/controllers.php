@@ -97,6 +97,12 @@ class external_url {
     }
 }
 
+class spinner {
+  function GET() {
+    include __DIR__ . '/view/spinner.php';
+  }
+}
+
 
 class login {
 
