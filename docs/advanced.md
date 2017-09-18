@@ -14,9 +14,21 @@ let accounts = new DataTable(['login', 'password']); //
 accounts.add(['davert', '123456']); // adding records to a table
 accounts.add(['admin', '123456']);
 
+// You can skip some data. But add them to report as skipped (just like with usual scenarios):
+accounts.xadd(['admin', '23456'])
+
 // Pass dataTable to Data()
 // Use special param `current` to get current data set
 Data(accounts).Scenario('Test Login', (I, current) => {
+  I.fillField('Username', current.login); // current is reserved!
+  I.fillField('Password', current.password);
+  I.click('Sign In');
+  I.see('Welcome '+ current.login);
+});
+
+
+// Also you can set only for Data tests. It will launch executes only the current test but with all data options
+Data(accounts).only.Scenario('Test Login', (I, current) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -32,6 +44,7 @@ Current data set is appended to a test name in output:
 ```sh
 ✓ Test Login | {"login":"davert","password":"123456"}
 ✓ Test Login | {"login":"admin","password":"123456"}
+S Test Login | {"login":"admin","password":"23456"}
 ```
 
 Data sets can also be defined with array, generator, or a function.
