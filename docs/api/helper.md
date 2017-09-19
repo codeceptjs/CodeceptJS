@@ -87,4 +87,4 @@ Access another configured helper: `this.helpers['AnotherHelper']`
 
 ## _config
 
-Abstract method to provide requried config options
+Abstract method to provide required config options

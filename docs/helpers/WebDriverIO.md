@@ -126,7 +126,7 @@ service provider to connect to.
 {
     "helpers":{
         "WebDriverIO": {
-            "url": "YOUR_DESIERED_HOST",
+            "url": "YOUR_DESIRED_HOST",
             "user": "YOUR_BROWSERSTACK_USER",
             "key": "YOUR_BROWSERSTACK_KEY",
             "desiredCapabilities": {
@@ -1126,7 +1126,7 @@ Appium: support only web testing
 
 **Parameters**
 
--   `locator`   (optional, default `null`)
+-   `locator`  
 
 ## switchToNextTab
 
@@ -1236,6 +1236,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec`  seconds to wait
 -   `context`  element located by CSS|XPath|strict locator
     Appium: support
+-   `aContext`   (optional, default `null`)
 
 ## waitForValue
 
@@ -1289,7 +1290,7 @@ I.waitNumberOfVisibleElements('a', 3);
 
 -   `locator`  
 -   `num`  
--   `sec`  
+-   `sec`   (optional, default `null`)
 
 ## waitToHide
 

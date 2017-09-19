@@ -39,7 +39,7 @@ Get all helpers or get a helper by name
 
 **Parameters**
 
--   `name` **optional** 
+-   `name` **[string]** 
 
 ## mocha
 
@@ -51,7 +51,7 @@ Get all support objects or get support object by name
 
 **Parameters**
 
--   `name` **optional** 
+-   `name` **[string]** 
 
 ## translation
 
