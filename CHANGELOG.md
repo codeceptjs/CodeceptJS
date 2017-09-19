@@ -1,3 +1,16 @@
+## 1.0.3
+
+* [WebDriverIO][Protractor][Nightmare] method `waitUntilExists` implemented by @sabau
+* Absolute path can be set for `output` dir by @APshenkin. Fix [#571](https://github.com/Codeception/CodeceptJS/issues/571)
+* Data table rows can be ignored by using `xadd`. By @APhenkin
+* Added `Data(table).only.Scenario` to give ability to launch only Data tests. By @APhenkin
+* Implemented `ElementNotFound` error by @BorisOsipov.
+* Added TypeScript compiler / configs to check the JavaScript by @KennyRules
+* [Nightmare] fix executeScript return value by @jploskonka
+* [Nightmare] fixed: err.indexOf not a function when waitForText times out in nightmare by @joeypedicini92
+* Fixed: Retries not working when using .only. By @APhenkin
+
+
 ## 1.0.2
 
 * Introduced generators support in scenario hooks for `BeforeSuite`/`Before`/`AfterSuite`/`After`
