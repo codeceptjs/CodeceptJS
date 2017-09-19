@@ -648,7 +648,7 @@ I.sendDeviceKeyEvent(3);
 
 **Parameters**
 
--   `keyValue`  Device specifc key valueAppium: support only Android
+-   `keyValue`  Device specific key valueAppium: support only Android
 
 ## setImmediateValue
 
@@ -894,7 +894,7 @@ I.switchToWeb('WEBVIEW_io.selendroid.testapp');
 
 **Parameters**
 
--   `context` **string** (optional)
+-   `context` **[string]** 
 
 ## tap
 

@@ -8,7 +8,7 @@ let codecept_dir = path.join(__dirname, '/../data/sandbox')
 let codecept_run = runner +' run --config '+codecept_dir + '/codecept.within.json ';
 let fs;
 
-let getlines = function (array, startString, endString) {
+let getLines = function (array, startString, endString) {
   let startIndex, endIndex;
   array.every(function (elem, index) {
     if (elem === startString) {
@@ -37,7 +37,7 @@ describe('CodeceptJS within', function () {
     exec(codecept_run+ ' --steps', (err, stdout, stderr) => {
       let lines = stdout.match(/\S.+/g);
 
-      let withoutGeneratorList = getlines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
+      let withoutGeneratorList = getLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
       testStatus = withoutGeneratorList.pop();
       testStatus.should.include('OK');
       withoutGeneratorList.should.eql([
@@ -57,7 +57,7 @@ it('should execute with generators. Yield is first in order', (done) => {
   exec(codecept_run+ ' --steps', (err, stdout, stderr) => {
     let lines = stdout.match(/\S.+/g);
 
-    let withGeneratorList = getlines(lines, 'Check within with generator. Yield is first in order', 'Check within with generator. Yield is second in order');
+    let withGeneratorList = getLines(lines, 'Check within with generator. Yield is first in order', 'Check within with generator. Yield is second in order');
     testStatus = withGeneratorList.pop();
     testStatus.should.include('OK');
     withGeneratorList.should.eql([
@@ -82,7 +82,7 @@ it('should execute with generators. Yield is second in order', (done) => {
   exec(codecept_run+ ' --steps', (err, stdout, stderr) => {
     let lines = stdout.match(/\S.+/g);
 
-    let withGeneratorListOtherOrder = getlines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test steps after within');
+    let withGeneratorListOtherOrder = getLines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test steps after within');
     testStatus = withGeneratorListOtherOrder.pop();
     testStatus.should.include('OK');
     withGeneratorListOtherOrder.should.eql([
@@ -107,7 +107,7 @@ it('should complete test steps after within', (done) => {
   exec(codecept_run+ ' --steps', (err, stdout, stderr) => {
     let lines = stdout.match(/\S.+/g);
 
-    let withGeneratorListWithContinued = getlines(lines, 'Check within with generator. Should complete test steps after within', 'Check within with generator. Should stop test execution after fail in within');
+    let withGeneratorListWithContinued = getLines(lines, 'Check within with generator. Should complete test steps after within', 'Check within with generator. Should stop test execution after fail in within');
     testStatus = withGeneratorListWithContinued.pop();
     testStatus.should.include('OK');
     withGeneratorListWithContinued.should.eql([
@@ -127,11 +127,11 @@ it('should complete test steps after within', (done) => {
   });
 });
 
-it('Should stop test execution after fail in within', (done) => {
+it('should stop test execution after fail in within', (done) => {
   exec(codecept_run+ ' --steps', (err, stdout, stderr) => {
     let lines = stdout.match(/\S.+/g);
 
-    let errorInWithinList = getlines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
+    let errorInWithinList = getLines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
     testStatus = errorInWithinList.pop();
     testStatus.should.include('FAILED');
     errorInWithinList.should.eql([
@@ -147,11 +147,11 @@ it('Should stop test execution after fail in within', (done) => {
   });
 });
 
-it('Should stop test execution after fail in main block', (done) => {
+it('should stop test execution after fail in main block', (done) => {
   exec(codecept_run+ ' --steps', (err, stdout, stderr) => {
     let lines = stdout.match(/\S.+/g);
 
-    let errorInTestList = getlines(lines, 'Check within with generator. Should stop test execution after fail in main block', '-- FAILURES:');
+    let errorInTestList = getLines(lines, 'Check within with generator. Should stop test execution after fail in main block', '-- FAILURES:');
     testStatus = errorInTestList.pop();
     testStatus.should.include('FAILED');
     errorInTestList.should.eql([

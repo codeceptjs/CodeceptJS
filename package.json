@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "homepage": "http://codecept.io",
   "repository": "Codeception/codeceptjs",
@@ -40,6 +40,9 @@
     "requireg": "^0.1.5"
   },
   "devDependencies": {
+    "@types/commander": "^2.9.2",
+    "@types/inquirer": "^0.0.35",
+    "@types/node": "^8.0.26",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.1.2",
@@ -57,15 +60,18 @@
     "gulp-mocha": "^2.0.0",
     "gulp-mustache": "^2.2.0",
     "gulp-plumber": "^1.0.0",
+    "gulp-typescript": "^3.2.2",
     "guppy-pre-commit": "^0.4.0",
     "json-server": "^0.10.1",
     "nightmare": "^2.5.2",
     "nightmare-upload": "^0.1.1",
     "nyc": "^11.1.0",
-    "protractor": ">4.0.9 <6.0",
+    "protractor": "^5.0",
     "rosie": "^1.6.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",
+    "sinon-chai": "^2.12.0",
+    "typescript": "^2.5.2",
     "unirest": "^0.5.1",
     "webdriverio": ">3.4.0 <5.0.0"
   },
@@ -78,5 +84,6 @@
     "test": "gulp",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "typings": "typings/index.d.ts"
 }

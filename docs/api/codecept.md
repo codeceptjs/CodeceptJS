@@ -29,7 +29,7 @@ Config and options should be passed
 ## init
 
 Initialize CodeceptJS at specific directory.
-If async initialization is required pass callbacke as second parameter.
+If async initialization is required, pass callback as second parameter.
 
 **Parameters**
 
@@ -42,7 +42,7 @@ Loads tests by pattern or by config.tests
 
 **Parameters**
 
--   `pattern` **optional** 
+-   `pattern` **[string]** 
 
 ## run
 
@@ -50,7 +50,7 @@ Run a specific test or all loaded tests.
 
 **Parameters**
 
--   `test` **optional** 
+-   `test` **[string]** 
 
 ## teardown
 

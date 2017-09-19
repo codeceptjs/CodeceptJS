@@ -12,8 +12,8 @@ Scenario('Check within with generator. Yield is first in order', function* (I){
   let test = yield I.smallYield();
   console.log(test);
   within('blabla', function* () {
-    let testwithin = yield I.smallYield();
-    console.log(testwithin);
+    let testWithin = yield I.smallYield();
+    console.log(testWithin);
     I.smallPromise();
   });
 });
@@ -24,8 +24,8 @@ Scenario('Check within with generator. Yield is second in order', function* (I){
   console.log(test)
   within('blabla', function* () {
     I.smallPromise();
-    let testwithin = yield I.smallYield();
-    console.log(testwithin);
+    let testWithin = yield I.smallYield();
+    console.log(testWithin);
   });
 });
 
@@ -33,8 +33,8 @@ Scenario('Check within with generator. Should complete test steps after within',
   let test = yield I.smallYield();
   console.log(test);
   within('blabla', function* () {
-    let testwithin = yield I.smallYield();
-    console.log(testwithin);
+    let testWithin = yield I.smallYield();
+    console.log(testWithin);
     I.smallPromise();
   });
   I.smallPromise();
@@ -45,8 +45,8 @@ Scenario('Check within with generator. Should stop test execution after fail in 
   console.log(test);
   within('blabla', function* () {
     I.errorStep();
-    let testwithin = yield I.smallYield();
-    console.log(testwithin);
+    let testWithin = yield I.smallYield();
+    console.log(testWithin);
     I.smallPromise();
   });
   I.smallPromise();
@@ -56,8 +56,8 @@ Scenario('Check within with generator. Should stop test execution after fail in 
   I.errorStep();
   within('blabla', function* () {
     I.errorStep();
-    let testwithin = yield I.smallYield();
-    console.log(testwithin);
+    let testWithin = yield I.smallYield();
+    console.log(testWithin);
     I.smallPromise();
   });
   I.smallPromise();
