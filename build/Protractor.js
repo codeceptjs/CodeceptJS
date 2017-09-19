@@ -98,6 +98,7 @@ class Protractor extends SeleniumWebdriver {
       capabilities: {}
     };
 
+    this.isRunning = false;
 
     this.options = Object.assign(this.options, config);
     if (!this.options.allScriptsTimeout) this.options.allScriptsTimeout = this.options.scriptsTimeout;
@@ -177,7 +178,7 @@ class Protractor extends SeleniumWebdriver {
 
     this.context = locator;
     if (this.insideAngular) {
-      let context = element(guessLocator(locator) || by.css(locator));
+      let context = global.element(guessLocator(locator) || global.by.css(locator));
 
       this.browser.findElement = (l) => l ? context.element(l).getWebElement() : context.getWebElement();
       this.browser.findElements = (l) => context.all(l).getWebElements();
@@ -237,18 +238,37 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param sec time seconds to wait, 1 by default
    */
   waitForElement(locator, sec = null) {
+    let aSec = sec || this.options.waitForTimeout;
+    let el = global.element(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(EC.presenceOf(el), aSec * 1000);
+  }
+
+  /**
+   * Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitUntilExists(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
     let el = element(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(EC.presenceOf(el), sec * 1000);
+    return this.browser.wait(!EC.presenceOf(el), sec * 1000);
   }
 
   /**
    * Waits for element to become clickable for number of seconds.
    */
   waitForClickable(locator, sec = null) {
-    sec = sec || this.options.waitForTimeout;
-    let el = element(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(EC.elementToBeClickable(el), sec * 1000);
+    let aSec = sec || this.options.waitForTimeout;
+    let el = global.element(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(EC.elementToBeClickable(el), aSec * 1000);
   }
 
   /**
@@ -262,10 +282,10 @@ I.waitForVisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForVisible(locator, sec) {
-    sec = sec || this.options.waitForTimeout;
-    let el = element(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(EC.visibilityOf(el), sec * 1000);
+  waitForVisible(locator, sec = null) {
+    let aSec = sec || this.options.waitForTimeout;
+    let el = global.element(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(EC.visibilityOf(el), aSec * 1000);
   }
 
   /**
@@ -281,9 +301,9 @@ I.waitForInvisible('#popup');
 
    */
   waitForInvisible(locator, sec = null) {
-    sec = sec || this.options.waitForTimeout;
-    let el = element(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(EC.invisibilityOf(el), sec * 1000);
+    let aSec = sec || this.options.waitForTimeout;
+    let el = global.element(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(EC.invisibilityOf(el), aSec * 1000);
   }
 
   /**
@@ -320,9 +340,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     if (!context) {
       context = this.context;
     }
-    let el = element(guessLocator(context) || by.css(context));
-    sec = sec || this.options.waitForTimeout;
-    return this.browser.wait(EC.textToBePresentInElement(el, text), sec * 1000);
+    let el = global.element(guessLocator(context) || global.by.css(context));
+    let aSec = sec || this.options.waitForTimeout;
+    return this.browser.wait(EC.textToBePresentInElement(el, text), aSec * 1000);
   }
 
   // ANGULAR SPECIFIC
@@ -386,13 +406,13 @@ function guessLocator(locator) {
   if (typeof locator === 'object') {
     let key = Object.keys(locator)[0];
     let value = locator[key];
-    return by[key](value);
+    return global.by[key](value);
   }
   if (isCSS(locator)) {
-    return by.css(locator);
+    return global.by.css(locator);
   }
   if (isXPath(locator)) {
-    return by.xpath(locator);
+    return global.by.xpath(locator);
   }
 }
 

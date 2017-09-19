@@ -11,6 +11,7 @@ const fileExists = require('../utils').fileExists;
 const clearString = require('../utils').clearString;
 const decodeUrl = require('../utils').decodeUrl;
 const chunkArray = require('../utils').chunkArray;
+const ElementNotFound = require('./errors/ElementNotFound');
 const assert = require('assert');
 const path = require('path');
 const requireg = require('requireg');
@@ -145,7 +146,7 @@ let withinStore = {};
  * {
  *     "helpers":{
  *         "WebDriverIO": {
- *             "url": "YOUR_DESIERED_HOST",
+ *             "url": "YOUR_DESIRED_HOST",
  *             "user": "YOUR_BROWSERSTACK_USER",
  *             "key": "YOUR_BROWSERSTACK_KEY",
  *             "desiredCapabilities": {
@@ -204,13 +205,6 @@ class WebDriverIO extends Helper {
   constructor(config) {
     super(config);
     webdriverio = requireg('webdriverio');
-    this._validateConfig(config);
-  }
-
-  _validateConfig(config) {
-
-    // set defaults
-    this.root = webRoot;
 
     this.options = {
       smartWait: 0,
@@ -227,6 +221,14 @@ class WebDriverIO extends Helper {
         script: 1000 // ms
       }
     };
+
+    this._validateConfig(config);
+  }
+
+  _validateConfig(config) {
+
+    // set defaults
+    this.root = webRoot;
 
     this.isRunning = false;
 
@@ -245,7 +247,7 @@ class WebDriverIO extends Helper {
             "helpers": {
               "WebDriverIO": {
                 "url": "YOUR_HOST"
-                "browser": "YOUR_PREFERED_TESTING_BROWSER"
+                "browser": "YOUR_PREFERRED_TESTING_BROWSER"
               }
             }
           }
@@ -326,12 +328,16 @@ class WebDriverIO extends Helper {
     if (this.options.keepBrowserState) return;
     if (this.options.keepCookies) {
       return Promise.all(
-        [this.browser.execute('localStorage.clear();'), this.closeOtherTabs()]);
+        [this.browser.execute('localStorage.clear();').catch((err) => {
+          if (!(err.message.indexOf("Storage is disabled inside 'data:' URLs.") > -1)) throw err;
+        }), this.closeOtherTabs()]);
     }
     if (this.options.desiredCapabilities.browserName) {
       this.debugSection('Session', 'cleaning cookies and localStorage');
       return Promise.all(
-        [this.browser.deleteCookie(), this.browser.execute('localStorage.clear();'), this.closeOtherTabs()]);
+        [this.browser.deleteCookie(), this.browser.execute('localStorage.clear();').catch((err) => {
+          if (!(err.message.indexOf("Storage is disabled inside 'data:' URLs.") > -1)) throw err;
+        }), this.closeOtherTabs()]);
     }
   }
 
@@ -344,10 +350,10 @@ class WebDriverIO extends Helper {
 
   _failed(test) {
     let promisesList = [];
-    if (Object.keys(withinStore).length != 0) promisesList.push(this._withinEnd());
+    if (Object.keys(withinStore).length !== 0) promisesList.push(this._withinEnd());
     if (!this.options.disableScreenshots) {
       let fileName = clearString(test.title);
-      if (test.ctx && test.ctx.test && test.ctx.test.type == 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
+      if (test.ctx && test.ctx.test && test.ctx.test.type === 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
       if (this.options.uniqueScreenshotNames) {
         let uuid = test.uuid || test.ctx.test.uuid;
         fileName = `${fileName.substring(0, 10)}_${uuid}.failed.png`;
@@ -357,7 +363,12 @@ class WebDriverIO extends Helper {
       promisesList.push(this.saveScreenshot(fileName, this.options.fullPageScreenshots));
     }
     return Promise.all(promisesList).catch((err) => {
-      if (err && err.type && err.type == "RuntimeError" && err.message && (err.message.indexOf("was terminated due to") > -1 || err.message.indexOf("no such window: target window already closed" > -1))) {
+      if (err &&
+          err.type &&
+          err.type == "RuntimeError" &&
+          err.message &&
+          (err.message.indexOf("was terminated due to") > -1 || err.message.indexOf("no such window: target window already closed") > -1)
+        ) {
         this.isRunning = false;
         return;
       }
@@ -529,7 +540,7 @@ I.click({css: 'nav a.login'});
       if (!res.value || res.value.length === 0) {
         if (typeof locator === "object") locator = JSON.stringify(locator);
         if (context) locator += ` inside ${context}`;
-        throw new Error(`Clickable element ${locator} was not found by text|CSS|XPath`);
+        throw new ElementNotFound(locator, "Clickable element");
       }
       return this.browser[clickMethod](res.value[0].ELEMENT);
     });
@@ -556,8 +567,7 @@ I.doubleClick('.btn.edit');
 
     return findClickable(locator, locateFn).then((res) => {
       if (!res.value || res.value.length === 0) {
-        if (typeof locator === "object") locator = JSON.stringify(locator);
-        throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
+        throw new ElementNotFound(locator, "Clickable element");
       }
       let elem = res.value[0];
       return this.browser.moveTo(elem.ELEMENT).doDoubleClick();
@@ -577,8 +587,7 @@ I.doubleClick('.btn.edit');
     }
     return this._locate(locator, true).then((res) => {
       if (!res.value || res.value.length === 0) {
-        if (typeof locator === "object") locator = JSON.stringify(locator);
-        throw new Error(`Clickable element ${locator.toString()} was not found by text|CSS|XPath`);
+        throw new ElementNotFound(locator, "Clickable element");
       }
       let elem = res.value[0];
       if (this.browser.isMobile) return this.browser.touchClick(elem.ELEMENT);
@@ -608,7 +617,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
   fillField(field, value) {
     return findFields.call(this, field).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
+        throw new ElementNotFound(field, "Field");
       }
       let elem = res.value[0];
       return this.browser.elementIdClear(elem.ELEMENT).elementIdValue(elem.ELEMENT, value);
@@ -629,7 +638,7 @@ I.appendField('#myTextField', 'appended');
   appendField(field, value) {
     return findFields.call(this, field).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
+        throw new ElementNotFound(field, "Field");
       }
       let elem = res.value[0];
       return this.browser.elementIdValue(elem.ELEMENT, value);
@@ -662,7 +671,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
   selectOption(select, option) {
     return findFields.call(this, select).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Selectable field ${select} not found by name|text|CSS|XPath`);
+        throw new ElementNotFound(select, "Selectable field");
       }
       let elem = res.value[0];
 
@@ -703,7 +712,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
           extractValue: true
         }).then((els) => {
           if (els.length === 0) {
-            throw new Error(`Option ${option} in ${select} was found neither by visible text not by value`);
+            throw new ElementNotFound(select, `Option ${option} in`, "was found neither by visible text not by value");
           }
           commands = [];
           els.forEach(clickOptionFn);
@@ -736,7 +745,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
       this.debug("Uploading " + file);
       return this.browser.uploadFile(file).then((res) => {
         if (!el.value || el.value.length === 0) {
-          throw new Error(`File field ${locator} not found by name|text|CSS|XPath`);
+          throw new ElementNotFound(locator, "File field");
         }
         return this.browser.elementIdValue(el.value[0].ELEMENT, res.value);
       });
@@ -765,7 +774,7 @@ I.checkOption('agree', '//form');
 
     return findCheckable(field, locateFn).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Checkable ${field} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(field, "Checkable");
       }
       let elem = res.value[0];
       return this.browser.elementIdSelected(elem.ELEMENT).then(function (isSelected) {
@@ -789,7 +798,7 @@ let pin = yield I.grabTextFrom('#pin');
     let client = this.browser;
     return this._locate(locator, true).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       let commands = [];
       res.value.forEach((el) => commands.push(client.elementIdText(el.ELEMENT)));
@@ -831,7 +840,7 @@ let email = yield I.grabValueFrom('input[name=email]');
     let client = this.browser;
     return this._locate(locator, true).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       let commands = [];
       res.value.forEach((el) => commands.push(client.elementIdAttribute(el.ELEMENT, 'value')));
@@ -854,7 +863,7 @@ let email = yield I.grabValueFrom('input[name=email]');
     let client = this.browser;
     return this._locate(locator).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       let commands = [];
       res.value.forEach((el) => commands.push(client.elementIdCssProperty(el.ELEMENT, cssProperty)));
@@ -881,7 +890,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
     let client = this.browser;
     return this._locate(locator, true).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       let commands = [];
       res.value.forEach((el) => commands.push(client.elementIdAttribute(el.ELEMENT, attr)));
@@ -1216,7 +1225,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
     let client = this.browser;
     return this._locate(locator).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       let elemAmount = res.value.length;
       let commands = [];
@@ -1256,7 +1265,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
     let client = this.browser;
     return this._locate(locator).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`${locator} cant be located by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       let elemAmount = res.value.length;
       let commands = [];
@@ -1460,8 +1469,7 @@ let val = yield I.executeAsyncScript(function(url, done) {
         if (client.isMobile) return this.touchScroll(elem.ELEMENT, offsetX, offsetY);
         return client.elementIdLocation(elem.ELEMENT).then(function (location) {
           if (!location.value || location.value.length === 0) {
-            throw new Error(
-            `Failed to receive (${locator}) location`);
+            throw new ElementNotFound(locator, "Failed to receive", "location");
           }
           return client.execute(function scroll(x, y) {
             return window.scrollTo(x, y);
@@ -1501,11 +1509,12 @@ I.moveCursorTo('#submit', 5,5);
       let elem = res.value[0];
       if (client.isMobile) {
         return client.elementIdSize(elem.ELEMENT).then(function (size) {
-          if (!size.value || size.value.length === 0) throw new Error(`Failed to recieve (${locator}) size`);
+          if (!size.value || size.value.length === 0) {
+            throw new ElementNotFound(locator, "Failed to receive", "size");
+          }
           return client.elementIdLocation(elem.ELEMENT).then(function (location) {
             if (!location.value || location.value.length === 0) {
-              throw new Error(
-                `Failed to recieve (${locator}) location`);
+              throw new ElementNotFound(locator, "Failed to receive", "location");
             }
             var x = location.value.x + size.value.width / 2;
             var y = location.value.y + size.value.height / 2;
@@ -1604,7 +1613,7 @@ I.clearField('#email');
   clearField(field) {
     return findFields.call(this, field).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
+        throw new ElementNotFound(field, "Field");
       }
       let elem = res.value[0];
       return this.browser.elementIdClear(elem.ELEMENT);
@@ -1854,7 +1863,7 @@ Element can be located by CSS or XPath.
    */
   waitForEnabled(locator, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(locator)).then(function (res) {
         if (!res.value || res.value.length === 0) {
@@ -1871,7 +1880,7 @@ Element can be located by CSS or XPath.
           return selected;
         });
       });
-    }, sec * 1000, `element (${locator}) still not enabled after ${sec} sec`);
+    }, aSec * 1000, `element (${locator}) still not enabled after ${aSec} sec`);
   }
 
   /**
@@ -1889,14 +1898,40 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
    */
   waitForElement(locator, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(locator)).then(function (res) {
         if (!res.value || res.value.length === 0) {
           return false;
         } else return true;
       });
-    }, sec * 1000, `element (${locator}) still not present on page after ${sec} sec`);
+    }, aSec * 1000, `element (${locator}) still not present on page after ${aSec} sec`);
+  }
+
+  /**
+   * Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   * Appium: support
+   */
+  waitUntilExists(locator, sec = null) {
+    let client = this.browser;
+    sec = sec || this.options.waitForTimeout;
+    return client.waitUntil(function () {
+      return client.elements(withStrictLocator(locator)).then(function (res) {
+        if (!res.value || res.value.length === 0) {
+          return true;
+        } else return false;
+      });
+    }, sec * 1000, `element (${locator}) still present on page after ${sec} sec`);
   }
 
 
@@ -1909,7 +1944,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
    */
   waitInUrl(urlPart, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     let currUrl = "";
     return client
       .waitUntil(function () {
@@ -1917,7 +1952,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
           currUrl = decodeUrl(res.value);
           return currUrl.indexOf(urlPart) > -1;
         });
-      }, sec * 1000).catch((e) => {
+      }, aSec * 1000).catch((e) => {
         if (e.type === 'WaitUntilTimeoutError') {
           throw new Error(`expected url to include ${urlPart}, but found ${currUrl}`);
         } else {
@@ -1936,7 +1971,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
    */
   waitUrlEquals(urlPart, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     let baseUrl = this.options.url;
     if (urlPart.indexOf('http') < 0) {
       urlPart = baseUrl + urlPart;
@@ -1948,7 +1983,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
           currUrl = decodeUrl(res.value);
           return currUrl === urlPart;
         });
-      }, sec * 1000).catch((e) => {
+      }, aSec * 1000).catch((e) => {
         if (e.type === 'WaitUntilTimeoutError') {
           throw new Error(`expected url to be ${urlPart}, but found ${currUrl}`);
         } else {
@@ -1972,10 +2007,10 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param context element located by CSS|XPath|strict locator
    * Appium: support
    */
-  waitForText(text, sec = null, context = null) {
+  waitForText(text, sec = null, aContext = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
-    context = context || this.root;
+    let aSec = sec || this.options.waitForTimeout;
+    let context = aContext || this.root;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(context)).then(function (res) {
         if (!res.value || res.value.length === 0) {
@@ -1992,8 +2027,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
           return selected.indexOf(text) >= 0;
         });
       });
-    }, sec * 1000,
-      `element (${context}) is not in DOM or there is no element(${context}) with text "${text}" after ${sec} sec`);
+    }, aSec * 1000,
+      `element (${context}) is not in DOM or there is no element(${context}) with text "${text}" after ${aSec} sec`);
   }
 
   /**
@@ -2009,7 +2044,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
    */
   waitForValue(field, value, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(() => {
       return findFields.call(this, field).then((res) => {
         if (!res.value || res.value.length === 0) {
@@ -2026,8 +2061,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
           return selected.indexOf(value) >= 0;
         });
       });
-    }, sec * 1000,
-      `element (${field}) is not in DOM or there is no element(${field}) with value "${value}" after ${sec} sec`);
+    }, aSec * 1000,
+      `element (${field}) is not in DOM or there is no element(${field}) with value "${value}" after ${aSec} sec`);
   }
 
   /**
@@ -2044,7 +2079,7 @@ I.waitForVisible('#popup');
    */
   waitForVisible(locator, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(locator)).then(function (res) {
         if (!res.value || res.value.length === 0) {
@@ -2061,7 +2096,7 @@ I.waitForVisible('#popup');
           return selected;
         });
       });
-    }, sec * 1000, `element (${locator}) still not visible after ${sec} sec`);
+    }, aSec * 1000, `element (${locator}) still not visible after ${aSec} sec`);
   }
 
   /**
@@ -2071,9 +2106,9 @@ I.waitForVisible('#popup');
    * I.waitNumberOfVisibleElements('a', 3);
    * ```
    */
-  waitNumberOfVisibleElements(locator, num, sec) {
+  waitNumberOfVisibleElements(locator, num, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(locator)).then(function (res) {
         if (!res.value || res.value.length === 0) {
@@ -2088,7 +2123,7 @@ I.waitForVisible('#popup');
           return selected.length === num;
         });
       });
-    }, sec * 1000, `The number of elements ${locator} is not ${num} after ${sec} sec`);
+    }, aSec * 1000, `The number of elements ${locator} is not ${num} after ${aSec} sec`);
   }
 
   /**
@@ -2106,7 +2141,7 @@ I.waitForInvisible('#popup');
    */
   waitForInvisible(locator, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(locator)).then(function (res) {
         if (!res.value || res.value.length === 0) {
@@ -2123,7 +2158,7 @@ I.waitForInvisible('#popup');
           return !selected;
         });
       });
-    }, sec * 1000, `element (${locator}) still visible after ${sec}sec`);
+    }, aSec * 1000, `element (${locator}) still visible after ${aSec}sec`);
   }
 
   /**
@@ -2150,14 +2185,14 @@ I.waitForStalenessOf('#popup');
    */
   waitForStalenessOf(locator, sec = null) {
     let client = this.browser;
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     return client.waitUntil(function () {
       return client.elements(withStrictLocator(locator)).then(function (res) {
         if (!res.value || res.value.length === 0) {
           return true;
         } else return false;
       });
-    }, sec * 1000, `element (${locator}) still attached to the DOM after ${sec}sec`);
+    }, aSec * 1000, `element (${locator}) still attached to the DOM after ${aSec} sec`);
   }
 
   /**
@@ -2165,20 +2200,23 @@ I.waitForStalenessOf('#popup');
    * Appium: support
    */
   waitUntil(fn, sec = null, timeoutMsg = null) {
-    sec = sec || this.options.waitForTimeout;
-    return this.browser.waitUntil(fn, sec, timeoutMsg);
+    let aSec = sec || this.options.waitForTimeout;
+    return this.browser.waitUntil(fn, aSec, timeoutMsg);
   }
 
   /**
    * Switches frame or in case of null locator reverts to parent.
    * Appium: support only web testing
    */
-  switchTo(locator = null) {
-    if (Number.isInteger(locator)) return this.browser.frame(locator);
-    if (typeof locator === 'undefined' || locator === null) return this.browser.frame(null);
+  switchTo(locator) {
+    if (!locator) {
+      return this.browser.frame(null);
+    } else if (Number.isInteger(locator)) {
+      return this.browser.frame(locator);
+    }
     return this.browser.element(withStrictLocator(locator)).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Element ${locator} not found by name|text|CSS|XPath`);
+        throw new ElementNotFound(locator);
       }
       return this.browser.frame(res.value);
     });
@@ -2193,7 +2231,7 @@ I.waitForStalenessOf('#popup');
    * ```
    */
   switchToNextTab(num = 1, sec = null) {
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     let client = this.browser;
     return client
       .waitUntil(function () {
@@ -2205,7 +2243,7 @@ I.waitForStalenessOf('#popup');
             } else return false;
           });
         });
-      }, sec * 1000, `There is no ability to switch to next tab with offset ${num}`);
+      }, aSec * 1000, `There is no ability to switch to next tab with offset ${num}`);
   }
 
   /**
@@ -2217,7 +2255,7 @@ I.waitForStalenessOf('#popup');
    * ```
    */
   switchToPreviousTab(num = 1, sec = null) {
-    sec = sec || this.options.waitForTimeout;
+    let aSec = sec || this.options.waitForTimeout;
     let client = this.browser;
     return client
       .waitUntil(function () {
@@ -2227,7 +2265,7 @@ I.waitForStalenessOf('#popup');
             else return false;
           });
         });
-      }, sec * 1000, `There is no ability to switch to previous tab with offset ${num}`);
+      }, aSec * 1000, `There is no ability to switch to previous tab with offset ${num}`);
   }
 
   /**
@@ -2317,7 +2355,7 @@ function proceedSee(assertType, text, context, strict = false) {
 
   return this._locate(withStrictLocator(context), smartWaitEnabled).then((res) => {
     if (!res.value || res.value.length === 0) {
-      throw new Error(`${context} can't be located by name|text|CSS|XPath`);
+      throw new ElementNotFound(context);
     }
     let commands = [];
     res.value.forEach((el) => commands.push(this.browser.elementIdText(el.ELEMENT)));
@@ -2397,7 +2435,7 @@ function findFields(locator) {
 function proceedSeeField(assertType, field, value) {
   return findFields.call(this, field).then((res) => {
     if (!res.value || res.value.length === 0) {
-      throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
+      throw new ElementNotFound(field, "Field");
     }
 
     var proceedMultiple = (fields) => {
@@ -2444,7 +2482,7 @@ function proceedSeeField(assertType, field, value) {
 function proceedSeeCheckbox(assertType, field) {
   return findFields.call(this, field).then((res) => {
     if (!res.value || res.value.length === 0) {
-      throw new Error(`Field ${field} not found by name|text|CSS|XPath`);
+      throw new ElementNotFound(field, "Field");
     }
     let commands = [];
     res.value.forEach((el) => commands.push(this.browser.elementIdSelected(el.ELEMENT)));
@@ -2520,7 +2558,7 @@ function prepareLocateFn(context) {
     if (el) return this.browser.elementIdElements(el, l);
     return this._locate(context, true).then((res) => {
       if (!res.value || res.value.length === 0) {
-        throw new Error(`Context element ${context.toString()} was not found by CSS|XPath`);
+        throw new ElementNotFound(context, "Context element");
       }
       return this.browser.elementIdElements(el = res.value[0].ELEMENT, l);
     });

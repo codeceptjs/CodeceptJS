@@ -85,6 +85,9 @@ class Appium extends WebdriverIO {
 
   constructor(config) {
     super(config);
+
+    this.isRunning = false;
+
     webdriverio = requireg('webdriverio');
   }
 
@@ -118,8 +121,6 @@ class Appium extends WebdriverIO {
       }
     };
 
-    this.isRunning = false;
-
     // override defaults with config
     this.options = Object.assign(this.options, config);
 
@@ -131,7 +132,7 @@ class Appium extends WebdriverIO {
     this.options.waitForTimeout /= 1000; // convert to seconds
 
 
-    if (!this.app && this.options.desiredCapabilities.browserName) {
+    if (!this.options.app && this.options.desiredCapabilities.browserName) {
       this.isWeb = true;
       this.root = webRoot;
     } else {
@@ -149,11 +150,13 @@ class Appium extends WebdriverIO {
     return [{
       name: 'app',
       message: "Application package. Path to file or url",
+      default: 'http://localhost'
     }, {
       name: 'platform',
       message: 'Mobile Platform',
       type: "list",
-      choices: ['iOS', 'Android']
+      choices: ['iOS', 'Android'],
+      default: 'Android'
     }, {
       name: 'device',
       message: "Device to run tests on",
@@ -206,7 +209,7 @@ class Appium extends WebdriverIO {
     if (this.isWeb) {
       return super._withinBegin(context);
     }
-    if (context == 'webview') {
+    if (context === 'webview') {
       return this.switchToWeb();
     }
     if (typeof context === 'object') {
@@ -248,7 +251,7 @@ class Appium extends WebdriverIO {
    * @param {*} fn
    */
   runOnIOS(caps, fn) {
-    if (this.platform != 'ios') return;
+    if (this.platform !== 'ios') return;
     recorder.session.start('iOS-only actions');
     this._runWithCaps(caps, fn);
     recorder.add('restore from iOS session', () => recorder.session.restore());
@@ -278,7 +281,7 @@ class Appium extends WebdriverIO {
    * @param {*} fn
    */
   runOnAndroid(caps, fn) {
-    if (this.platform != 'android') return;
+    if (this.platform !== 'android') return;
     recorder.session.start('Android-only actions');
     this._runWithCaps(caps, fn);
     recorder.add('restore from Android session', () => recorder.session.restore());
@@ -315,7 +318,7 @@ class Appium extends WebdriverIO {
     if (typeof caps === 'object') {
       for (let key in caps) {
         // skip if capabilities do not match
-        if (this.config.desiredCapabilities[key] != caps[key]) {
+        if (this.config.desiredCapabilities[key] !== caps[key]) {
           return;
         }
       }
@@ -409,7 +412,7 @@ class Appium extends WebdriverIO {
   seeCurrentActivityIs(currentActivity) {
     onlyForApps.call(this, "Android");
     return this.browser.currentActivity().then(function (res) {
-      return truth('current activity', `to be ${currentActivity}`).assert(res.value == currentActivity);
+      return truth('current activity', `to be ${currentActivity}`).assert(res.value === currentActivity);
     });
   }
 
@@ -460,7 +463,7 @@ class Appium extends WebdriverIO {
   seeOrientationIs(orientation) {
     onlyForApps.call(this);
     return this.browser.orientation().then(function (res) {
-      return truth('orientation', `to be ${orientation}`).assert(res.value == orientation);
+      return truth('orientation', `to be ${orientation}`).assert(res.value === orientation);
     });
   }
 
@@ -604,7 +607,7 @@ class Appium extends WebdriverIO {
    * I.switchToWeb('WEBVIEW_io.selendroid.testapp');
    * ```
    *
-   * @param {string} context  (optional)
+   * @param {string} [context]
    */
   switchToWeb(context) {
     this.isWeb = true;
@@ -632,7 +635,7 @@ class Appium extends WebdriverIO {
    * ```
    * @param {*} context
    */
-  switchToNative(context) {
+  switchToNative(context = null) {
     this.isWeb = false;
     this.defaultContext = '//*';
 
@@ -723,7 +726,7 @@ class Appium extends WebdriverIO {
    * I.sendDeviceKeyEvent(3);
    * ```
    *
-   * @param keyValue	Device specifc key value
+   * @param keyValue	Device specific key value
    *
    * Appium: support only Android
    */
@@ -952,8 +955,8 @@ class Appium extends WebdriverIO {
       }
     }, timeout * 1000, errorMsg)
       .catch((e) => {
-        if (e.type === 'WaitUntilTimeoutError' && e.message != 'timeout' && e.type != 'NoSuchElement') {
-          throw new AssertionFailedError({customMessage: 'Scroll to the end and element ' + seachableLocator + ' was not found'}, '');
+        if (e.type === 'WaitUntilTimeoutError' && e.message !== 'timeout' && e.type !== 'NoSuchElement') {
+          throw new AssertionFailedError({customMessage: 'Scroll to the end and element ' + searchableLocator + ' was not found'}, '');
         } else {
           throw e;
         }
@@ -1175,7 +1178,7 @@ I.click({css: 'nav a.login'});
    *
    */
   dontSeeElement(el, context) {
-    if (this.isWeb) return super.dontSeeElement(el, context);
+    if (this.isWeb) return super.dontSeeElement(el);
     return super.dontSeeElement(parseLocator.call(this, el));
   }
 
@@ -1367,13 +1370,13 @@ function parseLocator(locator) {
   if (!locator) return null;
   if (typeof locator === 'string') {
     if (locator.substr(0, 2) === '//') return locator;
-    if (locator[0] == '~') return locator;
+    if (locator[0] === '~') return locator;
 
-    if (locator[0] == '#' && !this.isWeb) {
+    if (locator[0] === '#' && !this.isWeb) {
       // hook before webdriverio supports native # locators
       return parseLocator.call(this, { id: locator.slice(1) });
     }
-    if (this.platform == 'android' && !this.isWeb) {
+    if (this.platform === 'android' && !this.isWeb) {
       return `android=new UiSelector().text("${locator}")`;
     }
   }
@@ -1384,11 +1387,11 @@ function parseLocator(locator) {
     return parseLocator.call(this, locator.web);
   }
 
-  if (locator.android && this.platform == 'android') {
+  if (locator.android && this.platform === 'android') {
     return parseLocator.call(this, locator.android);
   }
 
-  if (locator.ios && this.platform == 'ios') {
+  if (locator.ios && this.platform === 'ios') {
     return parseLocator.call(this, locator.ios);
   }
 
@@ -1409,7 +1412,7 @@ function parseLocator(locator) {
           `Unable to use css locators in apps. Locator strategies for this request: xpath, id, class name or accessibility id`);
     }
   case 'id':
-    if (!this.isWeb && this.platform == 'android') {
+    if (!this.isWeb && this.platform === 'android') {
       return `//*[@resource-id='${value}']`;
     }
     return '#' + value;
@@ -1424,17 +1427,22 @@ function parseLocator(locator) {
 // in the end of a file
 function onlyForApps(expectedPlatform) {
   var callerName;
-  var stack = new Error().stack,
-    re = /Appium.(\w+)/g,
-    caller = stack.split('\n')[2].trim(),
-    m = re.exec(caller);
+  let stack = new Error().stack || '';
+  let re = /Appium.(\w+)/g;
+  let caller = stack.split('\n')[2].trim();
+  let m = re.exec(caller);
+
+  if (!m) {
+    throw new Error(`Invalid caller ${caller}`);
+  }
+
   callerName = m[1] || m[2];
   if (!expectedPlatform) {
     if (!this.platform) {
       throw new Error(`${callerName} method can be used only with apps`);
     }
   } else {
-    if (this.platform != expectedPlatform.toLowerCase()) {
+    if (this.platform !== expectedPlatform.toLowerCase()) {
       throw new Error(`${callerName} method can be used only with ${expectedPlatform} apps`);
     }
   }

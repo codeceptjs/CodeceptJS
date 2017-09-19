@@ -111,6 +111,7 @@ class SeleniumWebdriver extends Helper {
       console.log(`waitforTimeout is deprecated in favor of waitForTimeout, please update config`);
       this.options.waitForTimeout = this.options.waitforTimeout;
     }
+
     this.options = Object.assign(this.options, config);
     this.options.waitForTimeout /= 1000; // convert to seconds
   }
@@ -206,7 +207,12 @@ class SeleniumWebdriver extends Helper {
       promisesList.push(this.saveScreenshot(fileName, true));
     }
     return Promise.all(promisesList).catch((err) => {
-      if (err && err.type && err.type == "RuntimeError" && err.message && (err.message.indexOf("was terminated due to") > -1 || err.message.indexOf("no such window: target window already closed" > -1))) {
+      if (err &&
+          err.type &&
+          err.type == "RuntimeError" &&
+          err.message &&
+          (err.message.indexOf("was terminated due to") > -1 || err.message.indexOf("no such window: target window already closed") > -1)
+        ) {
         this.isRunning = false;
         return;
       }
@@ -218,7 +224,7 @@ class SeleniumWebdriver extends Helper {
     withinStore.elsFn = this.browser.findElements;
 
     this.context = locator;
-    return this.browser.findElement(guessLocator(locator) || by.css(locator)).then((context) => {
+    return this.browser.findElement(guessLocator(locator) || global.by.css(locator)).then((context) => {
       this.browser.findElement = (l) => context.findElement(l);
       this.browser.findElements = (l) => context.findElements(l);
       return context;
@@ -306,7 +312,7 @@ I.click({css: 'nav a.login'});
   click(locator, context = null) {
     let matcher = this.browser;
     if (context) {
-      matcher = this._smartWait(() => matcher.findElement(guessLocator(context) || by.css(context)));
+      matcher = this._smartWait(() => matcher.findElement(guessLocator(context) || global.by.css(context)));
     }
     return co(findClickable.call(this, matcher, locator)).then((el) => el.click());
   }
@@ -328,7 +334,7 @@ I.doubleClick('.btn.edit');
   doubleClick(locator, context = null) {
     let matcher = this.browser;
     if (context) {
-      matcher = this._smartWait(() => matcher.findElement(guessLocator(context) || by.css(context)));
+      matcher = this._smartWait(() => matcher.findElement(guessLocator(context) || global.by.css(context)));
     }
     return co(findClickable.call(this, matcher, locator)).then((el) => this.browser.actions().doubleClick(el).perform());
   }
@@ -348,7 +354,7 @@ I.moveCursorTo('#submit', 5,5);
     if (offsetX !== null || offsetY !== null) {
       offset = {x: offsetX, y: offsetY};
     }
-    return this.browser.findElement(guessLocator(locator) || by.css(locator)).then((el) => {
+    return this.browser.findElement(guessLocator(locator) || global.by.css(locator)).then((el) => {
       return this.browser.actions().mouseMove(el, offset).perform();
     });
   }
@@ -420,11 +426,11 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
         let opt = option[key];
         let normalizedText = `[normalize-space(.) = "${opt.trim() }"]`;
         let byVisibleText = `./option${normalizedText}|./optgroup/option${normalizedText}`;
-        let els = yield field.findElements(by.xpath(byVisibleText));
+        let els = yield field.findElements(global.by.xpath(byVisibleText));
         if (!els.length) {
           let normalizedValue = `[normalize-space(@value) = "${opt.trim() }"]`;
           let byValue = `./option${normalizedValue}|./optgroup/option${normalizedValue}`;
-          els = yield field.findElements(by.xpath(byValue));
+          els = yield field.findElements(global.by.xpath(byValue));
         }
         els.forEach((el) => promises.push(el.click()));
       }
@@ -605,7 +611,7 @@ I.checkOption('agree', '//form');
   checkOption(field, context = null) {
     let matcher = this.browser;
     if (context) {
-      matcher = matcher.findElement(guessLocator(context) || by.css(context));
+      matcher = matcher.findElement(guessLocator(context) || global.by.css(context));
     }
     return co(findCheckable(matcher, field)).then((els) => {
       if (!els.length) {
@@ -651,7 +657,7 @@ let pin = yield I.grabTextFrom('#pin');
 @param locator element located by CSS|XPath|strict locator
    */
   grabTextFrom(locator) {
-    return this.browser.findElement(guessLocator(locator) || by.css(locator)).getText();
+    return this.browser.findElement(guessLocator(locator) || global.by.css(locator)).getText();
   }
 
   /**
@@ -683,7 +689,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 @param attr
    */
   grabAttributeFrom(locator, attr) {
-    return this.browser.findElement(guessLocator(locator) || by.css(locator)).getAttribute(attr);
+    return this.browser.findElement(guessLocator(locator) || global.by.css(locator)).getAttribute(attr);
   }
 
   /**
@@ -733,7 +739,7 @@ I.seeElement('#modal');
 @param locator located by CSS|XPath|strict locator
    */
   seeElement(locator) {
-    return this._smartWait(() => this.browser.findElements(guessLocator(locator) || by.css(locator))).then((els) => {
+    return this._smartWait(() => this.browser.findElements(guessLocator(locator) || global.by.css(locator))).then((els) => {
       return Promise.all(els.map((el) => el.isDisplayed())).then((els) => {
         return empty('elements').negate(els.filter((v) => v).fill('ELEMENT'));
       });
@@ -746,7 +752,7 @@ I.seeElement('#modal');
 @param locator located by CSS|XPath|Strict locator
    */
   dontSeeElement(locator) {
-    return this.browser.findElements(guessLocator(locator) || by.css(locator)).then((els) => {
+    return this.browser.findElements(guessLocator(locator) || global.by.css(locator)).then((els) => {
       return Promise.all(els.map((el) => el.isDisplayed())).then((els) => {
         return empty('elements').assert(els.filter((v) => v).fill('ELEMENT'));
       });
@@ -763,7 +769,7 @@ I.seeElementInDOM('#modal');
 @param locator located by CSS|XPath|strict locator
    */
   seeElementInDOM(locator) {
-    return this.browser.findElements(guessLocator(locator) || by.css(locator)).then((els) => {
+    return this.browser.findElements(guessLocator(locator) || global.by.css(locator)).then((els) => {
       return empty('elements').negate(els.fill('ELEMENT'));
     });
   }
@@ -774,7 +780,7 @@ I.seeElementInDOM('#modal');
 @param locator located by CSS|XPath|Strict locator
    */
   dontSeeElementInDOM(locator) {
-    return this.browser.findElements(guessLocator(locator) || by.css(locator)).then((els) => {
+    return this.browser.findElements(guessLocator(locator) || global.by.css(locator)).then((els) => {
       return empty('elements').assert(els.fill('ELEMENT'));
     });
   }
@@ -1112,8 +1118,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param sec time seconds to wait, 1 by default
    */
   waitForElement(locator, sec = null) {
-    sec = sec || this.options.waitForTimeout;
-    return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || by.css(locator)), sec * 1000);
+    let aSec = sec || this.options.waitForTimeout;
+    return this.browser.wait(this.webdriver.until.elementsLocated(guessLocator(locator) || global.by.css(locator)), aSec * 1000);
   }
 
   /**
@@ -1128,9 +1134,9 @@ I.waitForVisible('#popup');
 @param sec time seconds to wait, 1 by default
    */
   waitForVisible(locator, sec = null) {
-    sec = sec || this.options.waitForTimeout;
-    let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.elementIsVisible(el), sec * 1000);
+    let aSec = sec || this.options.waitForTimeout;
+    let el = this.browser.findElement(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(this.webdriver.until.elementIsVisible(el), aSec * 1000);
   }
 
   /**
@@ -1146,9 +1152,33 @@ I.waitForInvisible('#popup');
 
    */
   waitForInvisible(locator, sec = null) {
+    let aSec = sec || this.options.waitForTimeout;
+    let el = this.browser.findElement(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), aSec * 1000);
+  }
+
+  /**
+   * Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitUntilExists(locator, sec = null) {
     sec = sec || this.options.waitForTimeout;
-    let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.elementIsNotVisible(el), sec * 1000);
+    let _this = this;
+    return this.browser.findElement(guessLocator(locator) || by.css(locator))
+      .then(function (el) {
+        return _this.browser.wait(_this.webdriver.until.stalenessOf(el), sec * 1000);
+      }, function (err) {
+        return err.name === "NoSuchElementError";
+      });
   }
 
   /**
@@ -1164,9 +1194,9 @@ I.waitForStalenessOf('#popup');
 
    */
   waitForStalenessOf(locator, sec = null) {
-    sec = sec || this.options.waitForTimeout;
-    let el = this.browser.findElement(guessLocator(locator) || by.css(locator));
-    return this.browser.wait(this.webdriver.until.stalenessOf(el), sec * 1000);
+    let aSec = sec || this.options.waitForTimeout;
+    let el = this.browser.findElement(guessLocator(locator) || global.by.css(locator));
+    return this.browser.wait(this.webdriver.until.stalenessOf(el), aSec * 1000);
   }
 
   /**
@@ -1187,9 +1217,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     if (!context) {
       context = this.context;
     }
-    let el = this.browser.findElement(guessLocator(context) || by.css(context));
-    sec = sec || this.options.waitForTimeout;
-    return this.browser.wait(this.webdriver.until.elementTextIs(el, text), sec * 1000);
+    let el = this.browser.findElement(guessLocator(context) || global.by.css(context));
+    let aSec = sec || this.options.waitForTimeout;
+    return this.browser.wait(this.webdriver.until.elementTextIs(el, text), aSec * 1000);
   }
 
 }
@@ -1206,16 +1236,16 @@ function *findCheckable(client, locator) {
     `.//input[@type = 'checkbox' or @type = 'radio'][(@id = //label[contains(normalize-space(string(.)), ${literal})]/@for) or @placeholder = ${literal}]`,
     `.//label[contains(normalize-space(string(.)), ${literal})]//input[@type = 'radio' or @type = 'checkbox']`
   ]);
-  let els = yield client.findElements(by.xpath(byText));
+  let els = yield client.findElements(global.by.xpath(byText));
   if (els.length) {
     return els;
   }
   let byName = `.//input[@type = 'checkbox' or @type = 'radio'][@name = ${literal}]`;
-  els = yield client.findElements(by.xpath(byName));
+  els = yield client.findElements(global.by.xpath(byName));
   if (els.length) {
     return els;
   }
-  return yield client.findElements(by.css(locator));
+  return yield client.findElements(global.by.css(locator));
 }
 
 function *findFields(client, locator) {
@@ -1229,7 +1259,7 @@ function *findFields(client, locator) {
     `.//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden')][((./@name = ${literal}) or ./@id = //label[normalize-space(string(.)) = ${literal}]/@for or ./@placeholder = ${literal})]`,
     `.//label[normalize-space(string(.)) = ${literal}]//.//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden')]`
   ]);
-  let els = yield client.findElements(by.xpath(byLabelEquals));
+  let els = yield client.findElements(global.by.xpath(byLabelEquals));
   if (els.length) {
     return els;
   }
@@ -1238,31 +1268,31 @@ function *findFields(client, locator) {
     `.//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden')][(((./@name = ${literal}) or ./@id = //label[contains(normalize-space(string(.)), ${literal})]/@for) or ./@placeholder = ${literal})]`,
     `.//label[contains(normalize-space(string(.)), ${literal})]//.//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden')]`
   ]);
-  els = yield client.findElements(by.xpath(byLabelContains));
+  els = yield client.findElements(global.by.xpath(byLabelContains));
   if (els.length) {
     return els;
   }
   let byName = `.//*[self::input | self::textarea | self::select][@name = ${literal}]`;
-  els = yield client.findElements(by.xpath(byName));
+  els = yield client.findElements(global.by.xpath(byName));
   if (els.length) {
     return els;
   }
-  return yield client.findElements(by.css(locator));
+  return yield client.findElements(global.by.css(locator));
 }
 
 function proceedSee(assertType, text, context) {
   let description, locator;
   if (!context) {
     if (this.context === this.options.rootElement) {
-      locator = guessLocator(this.context) || by.css(this.context);
+      locator = guessLocator(this.context) || global.by.css(this.context);
       description = 'web application';
     } else {
       // inside within block
-      locator = by.xpath('.//*');
+      locator = global.by.xpath('.//*');
       description = 'current context ' + this.context;
     }
   } else {
-    locator = guessLocator(context) || by.css(context);
+    locator = guessLocator(context) || global.by.css(context);
     description = 'element ' + context;
   }
   let enableSmartWait = !!this.context && assertType == 'assert';
@@ -1285,7 +1315,7 @@ function *proceedSeeInField(assertType, field, value) {
   let fieldVal = yield el.getAttribute('value');
   if (tag == 'select') {
     // locate option by values and check them
-    let text = yield el.findElement(by.xpath(`./option[@value=${xpathLocator.literal(fieldVal)}]`)).getText();
+    let text = yield el.findElement(global.by.xpath(`./option[@value=${xpathLocator.literal(fieldVal)}]`)).getText();
     return equals('select option by ' + field)[assertType](value, text);
   }
   return stringIncludes('field by ' + field)[assertType](value, fieldVal);
@@ -1321,7 +1351,7 @@ function *findClickable(matcher, locator) {
     `.//a/img[normalize-space(@alt)=${literal}]/ancestor::a`,
     `.//input[./@type = 'submit' or ./@type = 'image' or ./@type = 'button'][normalize-space(@value)=${literal}]`
   ]);
-  let els = yield matcher.findElements(by.xpath(narrowLocator));
+  let els = yield matcher.findElements(global.by.xpath(narrowLocator));
   if (els.length) {
     return els[0];
   }
@@ -1336,14 +1366,14 @@ function *findClickable(matcher, locator) {
     `.//button[./@name = ${literal}]`
   ]);
 
-  els = yield matcher.findElements(by.xpath(wideLocator));
+  els = yield matcher.findElements(global.by.xpath(wideLocator));
   if (els.length) {
     return els[0];
   }
   if (isXPath(locator)) {
-    return matcher.findElement(by.xpath(locator));
+    return matcher.findElement(global.by.xpath(locator));
   }
-  return matcher.findElement(by.css(locator));
+  return matcher.findElement(global.by.css(locator));
 }
 
 function guessLocator(locator) {
@@ -1354,13 +1384,13 @@ function guessLocator(locator) {
     let key = Object.keys(locator)[0];
     let value = locator[key];
     locator.toString = () => `{${key}: '${value}'}`;
-    return by[key](value);
+    return global.by[key](value);
   }
   if (isCSS(locator)) {
-    return by.css(locator);
+    return global.by.css(locator);
   }
   if (isXPath(locator)) {
-    return by.xpath(locator);
+    return global.by.xpath(locator);
   }
 }
 

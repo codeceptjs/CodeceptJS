@@ -435,6 +435,8 @@
         
             <li><a href="#waituntil">waitUntil</a></li>
         
+            <li><a href="#waituntilexists">waitUntilExists</a></li>
+        
             <li><a href="#waiturlequals">waitUrlEquals</a></li>
         
     
@@ -555,7 +557,7 @@ service provider to connect to.</p>
 <pre><code class="js">{
     &quot;helpers&quot;:{
         &quot;WebDriverIO&quot;: {
-            &quot;url&quot;: &quot;YOUR_DESIERED_HOST&quot;,
+            &quot;url&quot;: &quot;YOUR_DESIRED_HOST&quot;,
             &quot;user&quot;: &quot;YOUR_BROWSERSTACK_USER&quot;,
             &quot;key&quot;: &quot;YOUR_BROWSERSTACK_KEY&quot;,
             &quot;desiredCapabilities&quot;: {
@@ -1360,7 +1362,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 Appium: support only web testing</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>   (optional, default <code>null</code>)</li>
+<li><code>locator</code>  </li>
 </ul>
 <h2 id="switchtonexttab">switchToNextTab</h2>
 <p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
@@ -1449,6 +1451,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 <li><code>sec</code>  seconds to wait</li>
 <li><code>context</code>  element located by CSS|XPath|strict locator
     Appium: support</li>
+<li><code>aContext</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="waitforvalue">waitForValue</h2>
 <p>Waits for the specified value to be in value attribute</p>
@@ -1491,7 +1494,7 @@ Element can be located by CSS or XPath.</p>
 <ul>
 <li><code>locator</code>  </li>
 <li><code>num</code>  </li>
-<li><code>sec</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="waittohide">waitToHide</h2>
 <p>Waits for an element to become invisible on a page (by default waits for 1sec).
@@ -1510,6 +1513,18 @@ Appium: support</p>
 <li><code>fn</code>  </li>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
 <li><code>timeoutMsg</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="waituntilexists">waitUntilExists</h2>
+<p>Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code class="js">I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 </ul>
 <h2 id="waiturlequals">waitUrlEquals</h2>
 <p>Waits for the entire URL to match the expected</p>

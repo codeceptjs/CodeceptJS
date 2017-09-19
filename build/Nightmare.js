@@ -34,12 +34,12 @@ let withinStatus = false;
  *
  * * `url` - base url of website to be tested
  * * `restart` (optional, default: true) - restart browser between tests.
- * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
- * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
+ * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure.
+ * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
  * * `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
  * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
- * * `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
- * * `waitForTimeout`: (optional) default wait* timeout
+ * * `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500.
+ * * `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
  * * `windowSize`: (optional) default window size. Set a dimension like `640x480`.
  *
  * + options from [Nightmare configuration](https://github.com/segmentio/nightmare#api)
@@ -70,7 +70,6 @@ class Nightmare extends Helper {
     Object.assign(this.options, config);
 
     this.context = this.options.rootElement;
-    this.options.waitForTimeout;
   }
 
   static _config() {
@@ -251,7 +250,7 @@ class Nightmare extends Helper {
     locator = guessLocator(locator) || {css: locator};
     withinStatus = true;
     return this.browser.evaluate(function (by, locator) {
-      var el = codeceptjs.findElement(by, locator);
+      var el = window.codeceptjs.findElement(by, locator);
       if (!el) throw new Error(`Element by ${by}: ${locator} not found`);
       window.codeceptjs.within = el;
     }, lctype(locator), lcval(locator));
@@ -261,7 +260,7 @@ class Nightmare extends Helper {
     this.context = this.options.rootElement;
     withinStatus = false;
     return this.browser.evaluate(function () {
-      codeceptjs.within = null;
+      window.codeceptjs.within = null;
     });
   }
 
@@ -287,7 +286,7 @@ class Nightmare extends Helper {
   _locate(locator) {
     locator = guessLocator(locator) || { css: locator};
     return this.browser.evaluate(function (by, locator) {
-      return codeceptjs.findAndStoreElements(by, locator);
+      return window.codeceptjs.findAndStoreElements(by, locator);
     }, lctype(locator), lcval(locator));
   }
 
@@ -459,7 +458,7 @@ I.seeElement('#modal');
   seeElement(locator) {
     locator = guessLocator(locator) || { css: locator};
     return this.browser.evaluate(function (by, locator) {
-      return codeceptjs.findElements(by, locator).filter((e) => e.offsetParent !== null).length;
+      return window.codeceptjs.findElements(by, locator).filter((e) => e.offsetParent !== null).length;
     }, lctype(locator), lcval(locator)).then((num) => {
       return equals('number of elements on a page').negate(0, num);
     });
@@ -473,7 +472,7 @@ I.seeElement('#modal');
   dontSeeElement(locator) {
     locator = guessLocator(locator) || { css: locator};
     return this.browser.evaluate(function (by, locator) {
-      return codeceptjs.findElements(by, locator).filter((e) => e.offsetParent !== null).length;
+      return window.codeceptjs.findElements(by, locator).filter((e) => e.offsetParent !== null).length;
     }, lctype(locator), lcval(locator)).then((num) => {
       return equals('number of elements on a page').assert(0, num);
     });
@@ -649,7 +648,8 @@ let date = yield I.executeScript(function(el) {
    * Wrapper for synchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2)
    */
   executeScript(fn) {
-    return this.browser.evaluate.apply(this.browser, arguments);
+    return this.browser.evaluate.apply(this.browser, arguments)
+      .catch((err) => err); // Nightmare's first argument is error :(
   }
 
   /**
@@ -910,7 +910,7 @@ let pin = yield I.grabTextFrom('#pin');
   grabTextFrom(locator) {
     return this.browser.findElement(guessLocator(locator) || { css: locator}).then((el) => {
       return this.browser.evaluate(function (el) {
-        return codeceptjs.fetchElement(el).innerText;
+        return window.codeceptjs.fetchElement(el).innerText;
       }, el);
     });
   }
@@ -930,7 +930,7 @@ let email = yield I.grabValueFrom('input[name=email]');
         throw new Error(`Field ${locator} was not located by name|label|CSS|XPath`);
       }
       return this.browser.evaluate(function (el) {
-        return codeceptjs.fetchElement(el).value;
+        return window.codeceptjs.fetchElement(el).value;
       }, els[0]);
     });
   }
@@ -948,7 +948,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
   grabAttributeFrom(locator, attr) {
     return this.browser.findElement(guessLocator(locator) || { css: locator}).then((el) => {
       return this.browser.evaluate(function (el, attr) {
-        return codeceptjs.fetchElement(el).getAttribute(attr);
+        return window.codeceptjs.fetchElement(el).getAttribute(attr);
       }, el, attr);
     });
   }
@@ -983,18 +983,20 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
    */
   selectOption(select, option) {
     let fetchAndCheckOption = function (el, locator) {
-      el = codeceptjs.fetchElement(el);
-      let found = document.evaluate(locator, el, null, 5);
+      el = window.codeceptjs.fetchElement(el);
+      let found = document.evaluate(locator, el, null, 5, null);
       var current = null;
       var items = [];
       while (current = found.iterateNext()) {
         items.push(current);
       }
-      for (var i = 0; i < items.length; items++) {
+      for (var i = 0; i < items.length; i++) {
         current = items[i];
-        current.selected = true;
+        if (current instanceof HTMLOptionElement) {
+          current.selected = true;
+          if (!el.multiple) el.value = current.value;
+        }
         var event = document.createEvent('HTMLEvents');
-        if (!el.multiple) el.value = current.value;
         event.initEvent('change', true, true);
         el.dispatchEvent(event);
       }
@@ -1137,18 +1139,16 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param sec seconds to wait
 @param context element located by CSS|XPath|strict locator
    */
-  waitForText(text, sec = null, context = null) {
+  waitForText(text, sec, context = null) {
     if (!context) {
       context = this.context;
     }
     let locator = guessLocator(context) || { css: context};
-    this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
-    sec = this.browser.options.waitForTimeout / 1000;
-
+    this.browser.options.waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     return this.browser.wait(function (by, locator, text) {
-      return codeceptjs.findElement(by, locator).innerText.indexOf(text) > -1;
+      return window.codeceptjs.findElement(by, locator).innerText.indexOf(text) > -1;
     }, lctype(locator), lcval(locator), text).catch((err) => {
-      if (err.indexOf(`Cannot read property`) > -1) {
+      if (err.message.indexOf(`Cannot read property`) > -1) {
         throw new Error(`element (${JSON.stringify(context)}) is not in DOM. Unable to wait text.`);
       } else if (err.message && err.message.indexOf('.wait() timed out after') > -1) {
         throw new Error(`there is no element(${JSON.stringify(context)}) with text "${text}" after ${sec} sec`);
@@ -1167,13 +1167,12 @@ I.waitForVisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForVisible(locator, sec = null) {
-    this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
-    sec = this.browser.options.waitForTimeout / 1000;
+  waitForVisible(locator, sec) {
+    this.browser.options.waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     locator = guessLocator(locator) || { css: locator};
 
     return this.browser.wait(function (by, locator) {
-      var el = codeceptjs.findElement(by, locator);
+      var el = window.codeceptjs.findElement(by, locator);
       if (!el) return false;
       return el.offsetParent !== null;
     }, lctype(locator), lcval(locator)).catch((err) => {
@@ -1195,16 +1194,42 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForElement(locator, sec = null) {
+  waitForElement(locator, sec) {
+    this.browser.options.waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    locator = guessLocator(locator) || { css: locator};
+
+    return this.browser.wait(function (by, locator) {
+      return window.codeceptjs.findElement(by, locator) !== null;
+    }, lctype(locator), lcval(locator)).catch((err) => {
+      if (err.message && err.message.indexOf('.wait() timed out after') > -1) {
+        throw new Error(`element (${JSON.stringify(locator)}) still not present on page after ${sec} sec`);
+      } else throw err;
+    });
+  }
+
+  /**
+   * Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  waitUntilExists(locator, sec = null) {
     this.browser.options.waitTimeout = sec * 1000 || this.options.waitForTimeout;
     sec = this.browser.options.waitForTimeout / 1000;
     locator = guessLocator(locator) || { css: locator};
 
     return this.browser.wait(function (by, locator) {
-      return codeceptjs.findElement(by, locator) !== null;
+      return codeceptjs.findElement(by, locator) === null;
     }, lctype(locator), lcval(locator)).catch((err) => {
       if (err.message && err.message.indexOf('.wait() timed out after') > -1) {
-        throw new Error(`element (${JSON.stringify(locator)}) still not present on page after ${sec} sec`);
+        throw new Error(`element (${JSON.stringify(locator)}) still present on page after ${sec} sec`);
       } else throw err;
     });
   }
@@ -1253,7 +1278,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
     if (withinStatus !== false) promisesList.push(this._withinEnd());
     if (!this.options.disableScreenshots) {
       let fileName = clearString(test.title);
-      if (test.ctx && test.ctx.test && test.ctx.test.type == 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
+      if (test.ctx && test.ctx.test && test.ctx.test.type === 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
       if (this.options.uniqueScreenshotNames) {
         let uuid = test.uuid || test.ctx.test.uuid;
         fileName = `${fileName.substring(0, 10)}_${uuid}.failed.png`;
@@ -1277,7 +1302,7 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
   scrollTo(locator, offsetX = 0, offsetY = 0) {
     locator = guessLocator(locator) || {css: locator};
     return this.browser.evaluate(function (by, locator, offsetX, offsetY) {
-      let el = codeceptjs.findElement(by, locator);
+      let el = window.codeceptjs.findElement(by, locator);
       if (!el) throw new Error(`Element not found ${by}: ${locator}`);
       let rect = el.getBoundingClientRect();
       window.scrollTo(rect.left + offsetX, rect.top + offsetY);
@@ -1304,7 +1329,7 @@ function proceedSee(assertType, text, context) {
   }
 
   return this.browser.evaluate(function (by, locator) {
-    return codeceptjs.findElements(by, locator).map((el) => el.innerText);
+    return window.codeceptjs.findElements(by, locator).map((el) => el.innerText);
   }, lctype(locator), lcval(locator)).then(function (texts) {
     let allText = texts.join(' | ');
     return stringIncludes(description)[assertType](text, allText);
@@ -1318,13 +1343,13 @@ function *proceedSeeInField(assertType, field, value) {
   }
   let el = els[0];
   let tag = yield this.browser.evaluate(function (el) {
-    return codeceptjs.fetchElement(el).tagName;
+    return window.codeceptjs.fetchElement(el).tagName;
   }, el);
   let fieldVal = yield this.browser.evaluate(function (el) {
-    return codeceptjs.fetchElement(el).value;
+    return window.codeceptjs.fetchElement(el).value;
   }
     , el);
-  if (tag == 'select') {
+  if (tag === 'select') {
     // locate option by values and check them
     let text = yield this.browser.evaluate(function (el, val) {
       return el.querySelector(`option[value="${val}"]`).innerText;
@@ -1340,7 +1365,7 @@ function *proceedIsChecked(assertType, option) {
     throw new Error(`Option ${option} not found by name|text|CSS|XPath`);
   }
   let selected = yield this.browser.evaluate(function (els) {
-    return els.map((el) => codeceptjs.fetchElement(el).checked)
+    return els.map((el) => window.codeceptjs.fetchElement(el).checked)
       .reduce((prev, cur) => prev || cur);
   }, els);
 

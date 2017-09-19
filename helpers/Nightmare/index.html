@@ -365,6 +365,8 @@
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
         
+            <li><a href="#waituntilexists">waitUntilExists</a></li>
+        
     
     </ul>
 </div></div>
@@ -381,12 +383,12 @@ less trusted.</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
-<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure</li>
-<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites</li>
+<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure.</li>
+<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.</li>
 <li><code>keepBrowserState</code> (optional, default: false)  - keep browser state between tests when <code>restart</code> set to false.</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
-<li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500</li>
-<li><code>waitForTimeout</code>: (optional) default wait* timeout</li>
+<li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500.</li>
+<li><code>waitForTimeout</code>: (optional) default wait* timeout in ms. Default: 1000.</li>
 <li>
 <p><code>windowSize</code>: (optional) default window size. Set a dimension like <code>640x480</code>.</p>
 </li>
@@ -980,6 +982,18 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
 </code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waituntilexists">waitUntilExists</h2>
+<p>Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code class="js">I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>

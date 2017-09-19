@@ -293,6 +293,8 @@
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
         
+            <li><a href="#waituntilexists">waitUntilExists</a></li>
+        
             <li><a href="#_locate_1">_locate</a></li>
         
             <li><a href="#amonpage">amOnPage</a></li>
@@ -537,6 +539,18 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
 </code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waituntilexists">waitUntilExists</h2>
+<p>Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code class="js">I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
