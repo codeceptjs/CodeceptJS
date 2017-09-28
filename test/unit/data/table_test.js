@@ -21,7 +21,7 @@ describe('DataTable', () => {
       login: 'jon',
       password: 'snow',
     };
-    assert.equal(dataTable.rows[0].toString(), JSON.stringify(expected));
+    assert.equal(dataTable.rows[0].data, JSON.stringify(expected));
   });
 
   it('should not allow an empty array to be added', () => {
