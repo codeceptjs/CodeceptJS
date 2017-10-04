@@ -27,7 +27,7 @@ describe('CodeceptJS Interface', () => {
 
   it('should run tests with different data', (done) => {
     exec(config_run_config('codecept.ddt.json'), (err, stdout, stderr) => {
-      var output = stdout.replace(/in [0-9]ms/g, "").replace(/\r/g, "")
+      var output = stdout.replace(/in [0-9]ms/g, "").replace(/\r/g, "");
       output.should.include(`Got login davert and password 123456
  ✓ Should log accounts1 | {"login":"davert","password":"123456"}`);
 
@@ -40,11 +40,11 @@ describe('CodeceptJS Interface', () => {
       output.should.include(`Got changed login collaborator and password 222222
  ✓ Should log accounts2 | {"login":"collaborator","password":"222222"}`);
 
-     output.should.include(
+      output.should.include(
 `Got changed login nick
  ✓ Should log accounts3 | nick`);
 
-     output.should.include(`Got changed login jack
+      output.should.include(`Got changed login jack
  ✓ Should log accounts3 | jack`);
 
       assert(!err);
