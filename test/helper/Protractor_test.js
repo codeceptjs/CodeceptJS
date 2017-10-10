@@ -2,7 +2,7 @@
 
 let Protractor = require('../../lib/helper/Protractor');
 let site_url = 'http://davertmik.github.io/angular-demo-app';
-const web_app_url = 'http://127.0.0.1:8000'
+const web_app_url = (process.env.SITE_URL || 'http://127.0.0.1:8000');
 let assert = require('assert');
 let I, browser;
 let path = require('path');
@@ -25,12 +25,18 @@ function assertFormContains(key, value) {
   });
 }
 
+const seleniumAddress = `${process.env.SELENIUM_HOST}:4444`
+
 describe('Protractor', function() {
   this.timeout(20000);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '../data');
-    I = new Protractor({url: site_url, browser: 'chrome'});
+    I = new Protractor({
+      url: site_url,
+      browser: 'chrome',
+      seleniumAddress: 'http://selenium.chrome:4444/wd/hub'
+    });
     return I._init().then(() => {
       return I._beforeSuite();
     });

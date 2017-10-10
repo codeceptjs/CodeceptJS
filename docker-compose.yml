@@ -1,0 +1,29 @@
+version: '3'
+services:
+  test:
+    build: .
+    entrypoint: []
+    command: docker/entrypoint node_modules/.bin/mocha test/helper
+    working_dir: /codecept
+    environment:
+      - SITE_URL=http://php:8000
+      - SELENIUM_HOST=selenium.chrome
+    depends_on:
+      - selenium.chrome
+      - php
+    volumes:
+      - .:/codecept
+
+  selenium.chrome:
+    image: selenium/standalone-chrome:3.5.2-antimony
+    ports:
+      - 4444:4444
+
+  php:
+    image: php:7.0
+    command: php -S 0.0.0.0:8000 -t /test/data/app
+    ports:
+      - 8000:8000
+    volumes:
+      - ./test:/test
+

@@ -2,7 +2,7 @@
 let SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
 let should = require('chai').should();
 let I, browser;
-let site_url = 'http://127.0.0.1:8000';
+let site_url = (process.env.SITE_URL || 'http://127.0.0.1:8000');
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -27,8 +27,8 @@ describe('SeleniumWebdriver', function () {
       url: site_url,
       browser: 'chrome',
       windowSize: '500x400',
-      restart: false
-
+      restart: false,
+      seleniumAddress: 'http://selenium.chrome:4444/wd/hub'
     });
     return I._init().then(() => {
       return I._beforeSuite().then(() => {

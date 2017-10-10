@@ -2,7 +2,7 @@
 let Nightmare = require('../../lib/helper/Nightmare');
 let should = require('chai').should();
 let I, browser;
-let site_url = 'http://127.0.0.1:8000';
+let site_url = 'http://php:8000';
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
