@@ -1,9 +1,9 @@
 version: '3'
 services:
-  test:
+  test-helpers:
     build: .
-    entrypoint: []
-    command: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium  test/helper
+    entrypoint: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium
+    command: test/helper
     working_dir: /codecept
     environment:
       - SITE_URL=http://php:8000
