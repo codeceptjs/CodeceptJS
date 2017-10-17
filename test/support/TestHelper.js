@@ -1,6 +1,6 @@
 class TestHelper {
   static siteUrl() {
-    return (process.env.SITE_URL || '127.0.0.1:8000')
+    return (process.env.SITE_URL || 'http://localhost:8000')
   }
 
   static seleniumAddress() {
@@ -8,7 +8,7 @@ class TestHelper {
   }
 
   static seleniumHost() {
-    return (process.env.SELENIUM_HOST || '127.0.0.1')
+    return (process.env.SELENIUM_HOST || 'localhost')
   }
 
   static seleniumPort() {
