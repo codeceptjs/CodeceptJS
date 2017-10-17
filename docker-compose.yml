@@ -3,7 +3,7 @@ services:
   test:
     build: .
     entrypoint: []
-    command: docker/entrypoint node_modules/.bin/mocha test/helper
+    command: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium  test/helper
     working_dir: /codecept
     environment:
       - SITE_URL=http://php:8000
