@@ -1,9 +1,10 @@
 'use strict';
+let TestHelper = require('../support/TestHelper');
 
 let WebDriverIO = require('../../lib/helper/WebDriverIO');
 let should = require('chai').should();
 let wd;
-let site_url = (process.env.SITE_URL || 'http://127.0.0.1:8000');
+let site_url = TestHelper.siteUrl();
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -30,7 +31,8 @@ describe('WebDriverIO', function () {
       browser: 'chrome',
       windowSize: '500x400',
       smartWait: 10, // just to try
-      host: (process.env.SELENIUM_HOST || '127.0.0.1'),
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort()
     });
   });
 

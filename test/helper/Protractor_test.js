@@ -1,8 +1,9 @@
 'use strict';
+let TestHelper = require('../support/TestHelper');
 
 let Protractor = require('../../lib/helper/Protractor');
 let site_url = 'http://davertmik.github.io/angular-demo-app';
-const web_app_url = (process.env.SITE_URL || 'http://127.0.0.1:8000');
+const web_app_url = TestHelper.siteUrl();
 let assert = require('assert');
 let I, browser;
 let path = require('path');
@@ -25,8 +26,6 @@ function assertFormContains(key, value) {
   });
 }
 
-const seleniumAddress = `${process.env.SELENIUM_HOST}:4444`
-
 describe('Protractor', function() {
   this.timeout(20000);
 
@@ -35,7 +34,7 @@ describe('Protractor', function() {
     I = new Protractor({
       url: site_url,
       browser: 'chrome',
-      seleniumAddress: 'http://selenium.chrome:4444/wd/hub'
+      seleniumAddress: TestHelper.seleniumAddress()
     });
     return I._init().then(() => {
       return I._beforeSuite();
