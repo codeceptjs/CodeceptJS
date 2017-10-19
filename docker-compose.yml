@@ -5,11 +5,7 @@ services:
     entrypoint: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium
     command: test/helper
     working_dir: /codecept
-    environment:
-      - SITE_URL=http://php:8000
-      - SELENIUM_HOST=selenium.chrome
-      - SELENIUM_PORT=4444
-      - JSON_SERVER_URL=http://json_server:8010
+    env_file: .env
     depends_on:
       - selenium.chrome
       - php
@@ -19,11 +15,9 @@ services:
 
   test-acceptance.webdriverio:
     build: .
+    env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.WebDriverIO.js --grep @WebDriverIO
-      - SITE_URL=http://php:8000
-      - SELENIUM_HOST=selenium.chrome
-      - SELENIUM_PORT=4444
     depends_on:
       - php
       - selenium.chrome
@@ -32,11 +26,9 @@ services:
 
   test-acceptance.nightmare:
     build: .
+    env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.Nightmare.js --grep @Nightmare
-      - SITE_URL=http://php:8000
-      - SELENIUM_HOST=selenium.chrome
-      - SELENIUM_PORT=4444
     depends_on:
       - php
       - selenium.chrome
