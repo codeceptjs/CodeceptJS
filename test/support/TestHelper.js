@@ -14,6 +14,10 @@ class TestHelper {
   static seleniumPort() {
     return (process.env.SELENIUM_PORT || '4444')
   }
+
+  static jsonServerUrl() {
+    return (process.env.JSON_SERVER_URL || 'http://localhost:8010')
+  }
 }
 
 module.exports = TestHelper;

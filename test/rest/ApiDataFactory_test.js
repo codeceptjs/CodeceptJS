@@ -1,7 +1,9 @@
 'use strict';
+const TestHelper = require('../support/TestHelper');
+
 let ApiDataFactory = require('../../lib/helper/ApiDataFactory');
 let should = require('chai').should();
-let api_url = 'http://127.0.0.1:8010';
+let api_url = TestHelper.jsonServerUrl();
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -52,6 +54,7 @@ describe('ApiDataFactory', function () {
   });
 
   describe('create and cleanup records', function() {
+    this.timeout(20000)
 
     it('should create a new post', function*() {
       yield I.have('post');

@@ -9,9 +9,11 @@ services:
       - SITE_URL=http://php:8000
       - SELENIUM_HOST=selenium.chrome
       - SELENIUM_PORT=4444
+      - JSON_SERVER_URL=http://json_server:8010
     depends_on:
       - selenium.chrome
       - php
+      - json_server
     volumes:
       - .:/codecept
 
@@ -27,4 +29,13 @@ services:
       - 8000:8000
     volumes:
       - ./test:/test
+
+  json_server:
+    image: node:alpine
+    command: npm run json-server
+    working_dir: /codecept
+    expose:
+      - 8010
+    volumes:
+      - .:/codecept
 
