@@ -17,6 +17,32 @@ services:
     volumes:
       - .:/codecept
 
+  test-acceptance.webdriverio:
+    build: .
+    environment:
+      - CODECEPT_ARGS=-c codecept.WebDriverIO.js --grep @WebDriverIO
+      - SITE_URL=http://php:8000
+      - SELENIUM_HOST=selenium.chrome
+      - SELENIUM_PORT=4444
+    depends_on:
+      - php
+      - selenium.chrome
+    volumes:
+      - ./test/acceptance:/tests
+
+  test-acceptance.nightmare:
+    build: .
+    environment:
+      - CODECEPT_ARGS=-c codecept.Nightmare.js --grep @Nightmare
+      - SITE_URL=http://php:8000
+      - SELENIUM_HOST=selenium.chrome
+      - SELENIUM_PORT=4444
+    depends_on:
+      - php
+      - selenium.chrome
+    volumes:
+      - ./test/acceptance:/tests
+
   selenium.chrome:
     image: selenium/standalone-chrome:3.5.2-antimony
     ports:
