@@ -25,7 +25,7 @@
         <div class="navbar-collapse collapse">
             <!-- Main navigation -->
             <ul class="nav navbar-nav">
-            {% for nav_item in nav %}            
+            {% for nav_item in nav %}
             {% if nav_item.children %}
                 <li class="dropdown{% if nav_item.active %} active{% endif %}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ nav_item.title }} <b class="caret"></b></a>
@@ -49,11 +49,19 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-                <li {% if not previous_page %}class="disabled"{% endif %}>
-                    <a rel="next" {% if previous_page %}href="{{ previous_page.url }}"{% endif %}>
-                        <i class="fa fa-arrow-left"></i> Previous
-                    </a>
-                </li>
+
+
+                    <li class="dropdown promo">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Services  <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_1&utm_term=link&utm_campaign=reference">Test Automation &raquo;</a></li>
+                                <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference">Consulting &raquo;</a></li>
+                                <li><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">Trainings &raquo;</a></li>
+                            </ul>
+                        </li>
+
                 <li {% if not next_page %}class="disabled"{% endif %}>
                     <a rel="prev" {% if next_page %}href="{{ next_page.url }}"{% endif %}>
                         Next <i class="fa fa-arrow-right"></i>
