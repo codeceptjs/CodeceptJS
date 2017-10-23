@@ -30,6 +30,10 @@ body .navbar .dropdown-menu {
   background: #333 !important;
 }
 
+body .navbar .promo {
+  background: rgba(0,0,0, 0.3); border-radius: 20px; font-weight: bold;
+}
+
 body .navbar .dropdown-menu>li>a:hover {
   background: #8C16C3;
 }
