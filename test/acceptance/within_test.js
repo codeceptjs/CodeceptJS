@@ -32,3 +32,36 @@ Scenario('within on nested iframe @nightmare', (I) => {
   I.see('Iframe test');
   I.dontSee('Email Address');
 });
+
+Scenario('within on nested iframe with a depth of 2 @WebDriverIO', (I) => {
+  I.amOnPage('/iframe_nested');
+  within({frame: ['[name=wrapper]', '[name=content]']}, () => {
+    I.fillField('rus', 'Updated');
+    I.click('Sign in!');
+    I.see('Email Address');
+  });
+  I.see('Nested Iframe test');
+  I.dontSee('Email Address');
+});
+
+Scenario('within on nested iframe with a depth of 2 using ids @WebDriverIO', (I) => {
+  I.amOnPage('/iframe_nested');
+  within({frame: ['#wrapperId', '[name=content]']}, () => {
+    I.fillField('rus', 'Updated');
+    I.click('Sign in!');
+    I.see('Email Address');
+  });
+  I.see('Nested Iframe test');
+  I.dontSee('Email Address');
+});
+
+Scenario('within on nested iframe with a depth of 2 using class @WebDriverIO', (I) => {
+  I.amOnPage('/iframe_nested');
+  within({frame: ['.wrapperClass', '[name=content]']}, () => {
+    I.fillField('rus', 'Updated');
+    I.click('Sign in!');
+    I.see('Email Address');
+  });
+  I.see('Nested Iframe test');
+  I.dontSee('Email Address');
+});
