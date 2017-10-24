@@ -22,7 +22,7 @@ Scenario('within on iframe @WebDriverIO @Nightmare', (I) => {
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe @nightmare', (I) => {
+Scenario('within on nested iframe @WebDriverIO @nightmare', (I) => {
   I.amOnPage('/iframe');
   within({frame: ['[name=content]']}, () => {
     I.fillField('rus', 'Updated');
@@ -33,7 +33,7 @@ Scenario('within on nested iframe @nightmare', (I) => {
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe with a depth of 2 @WebDriverIO', (I) => {
+Scenario('within on nested iframe with a depth of 2 @WebDriverIO @nightmare', (I) => {
   I.amOnPage('/iframe_nested');
   within({frame: ['[name=wrapper]', '[name=content]']}, () => {
     I.fillField('rus', 'Updated');
@@ -44,7 +44,7 @@ Scenario('within on nested iframe with a depth of 2 @WebDriverIO', (I) => {
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe with a depth of 2 using ids @WebDriverIO', (I) => {
+Scenario('within on nested iframe with a depth of 2 using ids @WebDriverIO @nightmare', (I) => {
   I.amOnPage('/iframe_nested');
   within({frame: ['#wrapperId', '[name=content]']}, () => {
     I.fillField('rus', 'Updated');
@@ -55,7 +55,7 @@ Scenario('within on nested iframe with a depth of 2 using ids @WebDriverIO', (I)
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe with a depth of 2 using class @WebDriverIO', (I) => {
+Scenario('within on nested iframe with a depth of 2 using class @WebDriverIO @nightmare', (I) => {
   I.amOnPage('/iframe_nested');
   within({frame: ['.wrapperClass', '[name=content]']}, () => {
     I.fillField('rus', 'Updated');
