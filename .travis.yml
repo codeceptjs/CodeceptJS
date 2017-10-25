@@ -13,10 +13,6 @@ env:
   - HELPER=Nightmare
   - HELPER=SeleniumWebdriver
   - HELPER=WebDriverIO
-addons:
-  apt:
-    packages:
-    - php5-cli
 services:
 - docker
 script:
