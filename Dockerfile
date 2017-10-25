@@ -1,29 +1,30 @@
-FROM 	node:6.9.5
-# LTS
+ARG NODE_VERSION=6.9.5
+FROM node:${NODE_VERSION}
 
-		# Set grep as an ENV variable
-ENV 	CODECEPT_ARGS=""
+# Add our user and group first to make sure their IDs get assigned consistently,
+# regardless of whatever dependencies get added.
+RUN groupadd --system nightmare && useradd --system --create-home --gid nightmare nightmare
 
-		# Set HOST ENV variable for Selenium Server
-ENV 	HOST=selenium
+# Installing the pre-required packages and libraries for electron & Nightmare
+RUN apt-get update && \
+      apt-get install -y libgtk2.0-0 libgconf-2-4 \
+      libasound2 libxtst6 libxss1 libnss3 xvfb
 
-		# Add our user and group first to make sure their IDs get assigned consistently,
-		# regardless of whatever dependencies get added.
-RUN 	groupadd --system nightmare && useradd --system --create-home --gid nightmare nightmare
+COPY package.json /
 
-		# Installing the pre-required packages and libraries for electron & Nightmare
-RUN 	apt-get update && \
-    	apt-get install -y libgtk2.0-0 libgconf-2-4 \
-    	libasound2 libxtst6 libxss1 libnss3 xvfb
+# Install latest version of Nightmare
+RUN npm install
 
-ADD . /
+COPY . /
 
-    	# Install latest version of Nightmare
-RUN	npm install
+# Allow to pass argument to codecept run via env variable
+ENV CODECEPT_ARGS=""
 
-		# Set the entrypoint for Nightmare
+# Set HOST ENV variable for Selenium Server
+ENV HOST=selenium
+
+# Set the entrypoint for Nightmare
 ENTRYPOINT ["/docker/entrypoint"]
 
-		# Run tests
-CMD 	["bash", "/docker/run.sh"]
-
+# Run tests
+CMD ["bash", "/docker/run.sh"]
