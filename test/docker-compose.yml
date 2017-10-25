@@ -1,5 +1,13 @@
 version: '3'
 services:
+  test-unit:
+    build: ..
+    entrypoint: node_modules/.bin/gulp
+    command: test
+    working_dir: /codecept
+    volumes:
+      - ..:/codecept
+
   test-helpers:
     build: ..
     entrypoint: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium
