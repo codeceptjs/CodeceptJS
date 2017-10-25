@@ -7,6 +7,7 @@ services:
     working_dir: /codecept
     volumes:
       - ..:/codecept
+      - node_modules:/codecept/node_modules
 
   test-helpers:
     build: ..
@@ -20,6 +21,7 @@ services:
       - json_server
     volumes:
       - ..:/codecept
+      - node_modules:/codecept/node_modules
 
   test-acceptance.webdriverio:
     build: ..
@@ -31,6 +33,7 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - node_modules:/codecept/node_modules
 
   test-acceptance.nightmare:
     build: ..
@@ -42,6 +45,7 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - node_modules:/codecept/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:3.5.2-antimony
@@ -57,11 +61,15 @@ services:
       - .:/test
 
   json_server:
-    image: node:alpine
+    build: ..
+    entrypoint: []
     command: npm run json-server
     working_dir: /codecept
     expose:
       - 8010
     volumes:
       - ..:/codecept
+      - node_modules:/codecept/node_modules
 
+volumes:
+  node_modules:

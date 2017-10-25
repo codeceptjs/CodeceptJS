@@ -10,12 +10,18 @@ RUN apt-get update && \
       apt-get install -y libgtk2.0-0 libgconf-2-4 \
       libasound2 libxtst6 libxss1 libnss3 xvfb
 
-COPY package.json /
+WORKDIR /tmp
+COPY package.json /tmp/
 
-# Install latest version of Nightmare
-RUN npm install
+# Install packages
+RUN npm install --loglevel=warn
 
-COPY . /
+RUN mkdir /codecept
+WORKDIR /codecept
+
+COPY . /codecept
+
+RUN cp -a /tmp/node_modules /codecept/
 
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
@@ -24,7 +30,7 @@ ENV CODECEPT_ARGS=""
 ENV HOST=selenium
 
 # Set the entrypoint for Nightmare
-ENTRYPOINT ["/docker/entrypoint"]
+ENTRYPOINT ["docker/entrypoint"]
 
 # Run tests
-CMD ["bash", "/docker/run.sh"]
+CMD ["bash", "docker/run.sh"]
