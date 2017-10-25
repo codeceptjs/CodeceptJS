@@ -25,7 +25,7 @@ describe('Nightmare', function () {
 
     I = new Nightmare({
       url: site_url,
-      windowSize: '500x400',
+      windowSize: '500x700',
       show: false
     });
     I._init();

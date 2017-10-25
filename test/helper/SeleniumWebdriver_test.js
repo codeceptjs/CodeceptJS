@@ -26,7 +26,7 @@ describe('SeleniumWebdriver', function () {
     I = new SeleniumWebdriver({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400',
+      windowSize: '500x700',
       restart: false
 
     });
