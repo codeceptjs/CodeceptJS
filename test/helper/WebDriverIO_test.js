@@ -29,7 +29,7 @@ describe('WebDriverIO', function () {
     wd = new WebDriverIO({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400',
+      windowSize: '500x700',
       smartWait: 10, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort()

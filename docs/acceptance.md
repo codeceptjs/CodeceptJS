@@ -246,10 +246,12 @@ within({frame: "#editor"}, () => {
 });
 ```
 
-Nested IFrames can be set by passing array *(Nightmare only)*:
+Nested IFrames can be set by passing array *(WebDriverIO & Nightmare only)*:
 
 ```js
-within({frame: [".content", "#editor"]);
+within({frame: [".content", "#editor"]}, () => {
+  I.see('Page');
+});
 ```
 
 ---
