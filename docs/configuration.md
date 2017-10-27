@@ -7,7 +7,7 @@ After running `codeceptjs init` it should be saved in test root.
 Here is an overview of available options with their defaults:
 
 * **tests**: `"./*_test.js"` - pattern to locate tests
-* **include**: `{}` - actors and pageobjects to be registered in DI container and i  ncluded in tests.
+* **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require ` paths
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
@@ -48,6 +48,10 @@ exports.config = {
 
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
+  includes: {
+    loginPage: './src/pages/login_page',
+    dashboardPage: new DashboardPage()
+  }
 
   // here goes config as it was in codecept.json
   // ....
