@@ -33,6 +33,7 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - ./support:/support
       - node_modules:/codecept/node_modules
 
   test-acceptance.nightmare:
@@ -45,6 +46,7 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - ./support:/support
       - node_modules:/codecept/node_modules
 
   selenium.chrome:

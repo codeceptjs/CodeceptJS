@@ -1,4 +1,4 @@
-const TestHelper = require('/test/support/TestHelper');
+const TestHelper = require('../support/TestHelper.js');
 
 module.exports.config = {
   tests: "./*_test.js",
