@@ -1,0 +1,13 @@
+box: docker/compose:1.16.0
+
+build:
+  steps:
+    - script:
+      code: |
+        cd test
+        docker-compose build --build-arg NODE_VERSION=6.9.5
+
+test:
+  steps:
+    - script:
+      code: docker-compose run --rm test-unit

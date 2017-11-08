@@ -1,7 +1,8 @@
 'use strict';
+const TestHelper = require('../support/TestHelper');
 let REST = require('../../lib/helper/REST');
 let should = require('chai').should();
-let api_url = 'http://127.0.0.1:8010';
+let api_url = TestHelper.jsonServerUrl();
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');

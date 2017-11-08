@@ -1,6 +1,6 @@
 Feature('within');
 
-Scenario('within on form @WebDriverIO @protractor @nightmare', (I) => {
+Scenario('within on form @WebDriverIO @Protractor @Nightmare', (I) => {
   I.amOnPage('/form/bug1467');
   I.see('TEST TEST');
   within({css: '[name=form2]'}, () => {
@@ -16,7 +16,7 @@ Scenario('within on iframe @WebDriverIO', (I) => {
   within({frame: 'iframe'}, () => {
     I.fillField('rus', 'Updated');
     I.click('Sign in!');
-    I.see('Email Address');
+    I.waitForText('Email Address');
   });
   I.see('Iframe test');
   I.dontSee('Email Address');
@@ -47,7 +47,7 @@ Scenario('within on nested iframe (depth=1) @WebDriverIO', (I) => {
   within({frame: ['[name=content]']}, () => {
     I.fillField('rus', 'Updated');
     I.click('Sign in!');
-    I.see('Email Address');
+    I.waitForText('Email Address');
   });
   I.see('Iframe test');
   I.dontSee('Email Address');
