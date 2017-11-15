@@ -81,6 +81,8 @@ GitHub --
 
 Please use verbose output when reporting issues to GitHub.
 
+Also you can choose should we reverse failed steps output or not. By default it reverses. Use `--noreverse` to turn this off.
+
 ## XML
 
 Use default xunit reporter of Mocha to print xml reports. Provide `--reporter xunit` to get the report to screen.
