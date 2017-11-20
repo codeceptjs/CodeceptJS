@@ -67,6 +67,49 @@ Scenario('login', (I, loginPage) => {
 });
 ```
 
+Also you can use `async/await` inside PageObject:
+```js
+'use strict';
+let I;
+
+module.exports = {
+
+  _init() {
+    I = actor();
+  },
+
+  // setting locators
+  container: "//div[@class = 'numbers']",
+  mainItem: {
+    number: ".//div[contains(@class, 'numbers__main-number')]",
+    title: ".//div[contains(@class, 'numbers__main-title-block')]"
+  },
+
+  // introducing methods
+  openMainArticle() => {
+    I.waitForVisible(this.container)
+    let title;
+    within(this.container, async () => {
+      title = await I.grabTextFrom(this.mainItem.number);
+      let subtitle = await I.grabTextFrom(this.mainItem.title);
+      title = title + " " + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
+      I.click(this.mainItem.title)
+    })
+    return title;
+  }
+}
+```
+
+and use them in your tests:
+
+```js
+Scenario('login2', async (I, loginPage, basePage) => {
+  let title = mainPage.openMainArticle()
+  basePage.pageShouldBeOpened(title)
+});
+```
+
+
 Also you can use generators inside a PageObject:
 
 ```js
@@ -105,7 +148,7 @@ module.exports = {
 and use them in your tests:
 
 ```js
-Scenario('login2', (I, loginPage, basePage) => {
+Scenario('login2', function* (I, loginPage, basePage) {
   let title = yield* mainPage.openMainArticle()
   basePage.pageShouldBeOpened(title)
 });
