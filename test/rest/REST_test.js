@@ -1,16 +1,12 @@
 'use strict';
 const TestHelper = require('../support/TestHelper');
-let REST = require('../../lib/helper/REST');
-let should = require('chai').should();
-let api_url = TestHelper.jsonServerUrl();
-let assert = require('assert');
-let path = require('path');
-let fs = require('fs');
-let fileExists = require('../../lib/utils').fileExists;
-let AssertionFailedError = require('../../lib/assert/error');
-let expectError = require('../../lib/utils').test.expectError;
+const REST = require('../../lib/helper/REST');
+const api_url = TestHelper.jsonServerUrl();
+const path = require('path');
+const fs = require('fs');
+require('chai').should();
 let I;
-let dbFile = path.join(__dirname, '/../data/rest/db.json');
+const dbFile = path.join(__dirname, '/../data/rest/db.json');
 require('co-mocha')(require('mocha'));
 
 const data = {
@@ -24,7 +20,7 @@ const data = {
   "user": {
     "name": "davert"
   }
-}
+};
 
 describe('REST', function () {
 
@@ -42,7 +38,7 @@ describe('REST', function () {
       fs.writeFileSync(dbFile, JSON.stringify(data));
     } catch (err) {}
     setTimeout(done, 700);
-  })
+  });
 
   describe('basic requests', function() {
     it('should send GET requests', () => {
@@ -77,7 +73,7 @@ describe('REST', function () {
   });
 
   describe('headers', function() {
-    it ('should send request headers', () => {
+    it('should send request headers', () => {
       return I.sendGetRequest('/headers', { 'Content-Type': 'application/json'}).then((resp) => {
         resp.body.should.have.property('content-type');
         resp.body['content-type'].should.eql('application/json');
@@ -87,7 +83,7 @@ describe('REST', function () {
       });
     });
 
-    it ('should set request headers', function*() {
+    it('should set request headers', function*() {
       I.haveRequestHeaders({HTTP_X_REQUESTED_WITH: 'xmlhttprequest'});
       yield I.sendGetRequest('/headers', { 'Content-Type': 'application/json'}).then((resp) => {
         resp.body.should.have.property('content-type');
@@ -99,8 +95,29 @@ describe('REST', function () {
         resp.body.should.have.property('http_x_requested_with');
         resp.body['http_x_requested_with'].should.eql('xmlhttprequest');
       });
+    });
 
+    it("should reset headers when flag is set", function*() {
+      const defaultHeaders = {
+        'X-Test': 'test'
+      };
+      const iResetHeaders = new REST({
+        endpoint: api_url,
+        defaultHeaders: Object.assign({}, defaultHeaders),
+        resetHeaders: true
+      });
+      const requestHeaders = {
+        'X-Request-Header': 'header'
+      };
 
+      iResetHeaders.haveRequestHeaders(requestHeaders);
+      yield iResetHeaders.sendGetRequest('/headers');
+
+      const expectedHeaders = Object.assign({}, defaultHeaders, {'content-length': 0});
+
+      const response = yield iResetHeaders.sendGetRequest('/headers');
+
+      response.request.headers.should.eql(expectedHeaders);
     });
   });
 
