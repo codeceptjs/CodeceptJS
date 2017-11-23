@@ -1,0 +1,112 @@
+version: 2
+
+defaults: &defaults
+  machine:
+    image: circleci/classic:201710-02
+
+docker_cache: &docker_cache
+  key: "{{ .Environment.CIRCLE_WORKFLOW_ID }}"
+  paths:
+    - test/docker-cache
+
+load_docker_images: &load_docker_images
+  name: Load docker images
+  command: |
+    cd test
+    docker load -i docker-cache/docker-images.tar
+
+test: &test
+  <<: *defaults
+
+  steps:
+    - checkout
+    - restore_cache: *docker_cache
+    - run: *load_docker_images
+    - run: cd test && eval "$TEST_COMMAND"
+
+
+jobs:
+  build:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - run:
+          name: Build images
+          command: |
+            cd test
+            docker-compose build
+            mkdir -p docker-cache
+            docker save -o docker-cache/docker-images.tar $(docker images | tail -n+2 | awk '{ print $1 }')
+      - save_cache: *docker_cache
+
+  test-unit:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-unit"
+
+  test-helpers-nightmare:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/Nightmare_test.js"
+
+  test-helpers-protractor:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/Protractor_test.js"
+
+  test-helpers-selenium:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/SeleniumWebdriver_test.js"
+
+  test-helpers-webdriverio:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/WebDriverIO_test.js"
+
+  test-helpers-rest:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-helpers test/rest"
+
+  test-acceptance.webdriverio:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-acceptance.webdriverio"
+
+  test-acceptance.nightmare:
+    <<: *test
+    environment:
+      - TEST_COMMAND: "docker-compose run --rm test-acceptance.nightmare"
+
+workflows:
+  version: 2
+
+  build-test:
+    jobs:
+      - build
+      - test-unit:
+          requires:
+            - build
+      - test-helpers-nightmare:
+          requires:
+            - build
+      - test-helpers-protractor:
+          requires:
+            - build
+      - test-helpers-selenium:
+          requires:
+            - build
+      - test-helpers-webdriverio:
+          requires:
+            - build
+      - test-helpers-rest:
+          requires:
+            - build
+      - test-acceptance.webdriverio:
+          requires:
+            - build
+      - test-acceptance.nightmare:
+          requires:
+            - build
