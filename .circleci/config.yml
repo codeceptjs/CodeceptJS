@@ -41,7 +41,7 @@ jobs:
       - save_cache: *docker_cache
 
   test-unit:
-    <<: &test
+    <<: *test
     environment:
       - TEST_COMMAND: "docker-compose run --rm test-unit"
 
