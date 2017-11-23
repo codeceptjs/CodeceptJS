@@ -45,40 +45,40 @@ jobs:
     environment:
       - TEST_COMMAND: "docker-compose run --rm test-unit"
 
-  test-helpers-nightmare:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/Nightmare_test.js"
-
-  test-helpers-protractor:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/Protractor_test.js"
-
-  test-helpers-selenium:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/SeleniumWebdriver_test.js"
-
-  test-helpers-webdriverio:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/WebDriverIO_test.js"
-
-  test-helpers-rest:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-helpers test/rest"
-
-  test-acceptance.webdriverio:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-acceptance.webdriverio"
-
-  test-acceptance.nightmare:
-    <<: &test
-    environment:
-      - TEST_COMMAND: "docker-compose run --rm test-acceptance.nightmare"
+  # test-helpers-nightmare:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/Nightmare_test.js"
+  #
+  # test-helpers-protractor:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/Protractor_test.js"
+  #
+  # test-helpers-selenium:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/SeleniumWebdriver_test.js"
+  #
+  # test-helpers-webdriverio:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-helpers test/helper/WebDriverIO_test.js"
+  #
+  # test-helpers-rest:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-helpers test/rest"
+  #
+  # test-acceptance.webdriverio:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-acceptance.webdriverio"
+  #
+  # test-acceptance.nightmare:
+  #   <<: &test
+  #   environment:
+  #     - TEST_COMMAND: "docker-compose run --rm test-acceptance.nightmare"
 
 workflows:
   version: 2
@@ -89,24 +89,24 @@ workflows:
       - test-unit:
           requires:
             - build
-      - test-helpers-nightmare:
-          requires:
-            - build
-      - test-helpers-protractor:
-          requires:
-            - build
-      - test-helpers-selenium:
-          requires:
-            - build
-      - test-helpers-webdriverio:
-          requires:
-            - build
-      - test-helpers-rest:
-          requires:
-            - build
-      - test-acceptance.webdriverio:
-          requires:
-            - build
-      - test-acceptance.nightmare:
-          requires:
-            - build
+      # - test-helpers-nightmare:
+      #     requires:
+      #       - build
+      # - test-helpers-protractor:
+      #     requires:
+      #       - build
+      # - test-helpers-selenium:
+      #     requires:
+      #       - build
+      # - test-helpers-webdriverio:
+      #     requires:
+      #       - build
+      # - test-helpers-rest:
+      #     requires:
+      #       - build
+      # - test-acceptance.webdriverio:
+      #     requires:
+      #       - build
+      # - test-acceptance.nightmare:
+      #     requires:
+      #       - build
