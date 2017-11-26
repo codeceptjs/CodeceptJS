@@ -476,7 +476,7 @@ module.exports.tests = function() {
     it('should set initial window size', () => {
       return I.amOnPage('/form/resize')
         .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 400', '#height'))
+        .then(() => I.see('Height 700', '#height'))
         .then(() => I.see('Width 500', '#width'));
     });
 
@@ -676,6 +676,23 @@ module.exports.tests = function() {
         .then(() => I.see('Toggle navigation', '.container fieldset'))
         .catch((err) => {
           if (!err) assert.fail('seen fieldset');
+        });
+    });
+
+    it('within should respect context in see when using nested frames', () => {
+      return I.amOnPage('/iframe_nested')
+        .then(() => I._withinBegin({frame: ['#wrapperId', '[name=content]']}))
+        .then(() => I.see('Kill & Destroy'))
+        .catch((err) => {
+          if (!err) assert.fail('seen "Kill & Destroy"');
+        })
+        .then(() => I.dontSee('Nested Iframe test'))
+        .catch((err) => {
+          if (!err) assert.fail('seen "Nested Iframe test"');
+        })
+        .then(() => I.dontSee('Iframe test'))
+        .catch((err) => {
+          if (!err) assert.fail('seen "Iframe test"');
         });
     });
   });

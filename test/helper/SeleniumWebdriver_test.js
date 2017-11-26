@@ -1,8 +1,10 @@
 'use strict';
+let TestHelper = require('../support/TestHelper');
+
 let SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
 let should = require('chai').should();
 let I, browser;
-let site_url = 'http://127.0.0.1:8000';
+let site_url = TestHelper.siteUrl();
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -26,9 +28,9 @@ describe('SeleniumWebdriver', function () {
     I = new SeleniumWebdriver({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400',
-      restart: false
-
+      windowSize: '500x700',
+      restart: false,
+      seleniumAddress: TestHelper.seleniumAddress()
     });
     return I._init().then(() => {
       return I._beforeSuite().then(() => {

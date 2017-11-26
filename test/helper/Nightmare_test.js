@@ -1,8 +1,10 @@
 'use strict';
+let TestHelper = require('../support/TestHelper');
+
 let Nightmare = require('../../lib/helper/Nightmare');
 let should = require('chai').should();
 let I, browser;
-let site_url = 'http://127.0.0.1:8000';
+let site_url = TestHelper.siteUrl();
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -25,7 +27,7 @@ describe('Nightmare', function () {
 
     I = new Nightmare({
       url: site_url,
-      windowSize: '500x400',
+      windowSize: '500x700',
       show: false
     });
     I._init();

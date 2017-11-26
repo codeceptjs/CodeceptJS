@@ -1,8 +1,9 @@
 'use strict';
+let TestHelper = require('../support/TestHelper');
 
 let Protractor = require('../../lib/helper/Protractor');
 let site_url = 'http://davertmik.github.io/angular-demo-app';
-const web_app_url = 'http://127.0.0.1:8000'
+const web_app_url = TestHelper.siteUrl();
 let assert = require('assert');
 let I, browser;
 let path = require('path');
@@ -30,7 +31,11 @@ describe('Protractor', function() {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '../data');
-    I = new Protractor({url: site_url, browser: 'chrome'});
+    I = new Protractor({
+      url: site_url,
+      browser: 'chrome',
+      seleniumAddress: TestHelper.seleniumAddress()
+    });
     return I._init().then(() => {
       return I._beforeSuite();
     });

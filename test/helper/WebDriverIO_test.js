@@ -1,9 +1,10 @@
 'use strict';
+let TestHelper = require('../support/TestHelper');
 
 let WebDriverIO = require('../../lib/helper/WebDriverIO');
 let should = require('chai').should();
 let wd;
-let site_url = 'http://127.0.0.1:8000';
+let site_url = TestHelper.siteUrl();
 let assert = require('assert');
 let path = require('path');
 let fs = require('fs');
@@ -28,8 +29,10 @@ describe('WebDriverIO', function () {
     wd = new WebDriverIO({
       url: site_url,
       browser: 'chrome',
-      windowSize: '500x400',
-      smartWait: 10 // just to try
+      windowSize: '500x700',
+      smartWait: 10, // just to try
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort()
     });
   });
 
@@ -172,7 +175,7 @@ describe('WebDriverIO', function () {
     it('should check attributes values for given element', () => {
       return wd.amOnPage('/info')
         .then(() => wd.seeAttributesOnElements('//form', { method: "post"}))
-        .then(() => wd.seeAttributesOnElements('//form', { method: "post", action: "http://127.0.0.1:8000/"}))
+        .then(() => wd.seeAttributesOnElements('//form', { method: "post", action: `${site_url}/` }))
         .then(() => wd.seeAttributesOnElements('//form', { method: "get"}))
         .then(expectError)
         .catch((e) => {
@@ -277,17 +280,17 @@ describe('WebDriverIO', function () {
         .then(() => wd.waitInUrl('/info2', 0.1))
         .then(expectError)
         .catch((e) => {
-          assert.equal(e.message, `expected url to include /info2, but found http://127.0.0.1:8000/info`);
+          assert.equal(e.message, `expected url to include /info2, but found ${site_url}/info`);
         });
     });
     it('should wait for the entire URL to match the expected', () => {
       return wd.amOnPage('/info')
         .then(() => wd.waitUrlEquals('/info'))
-        .then(() => wd.waitUrlEquals('http://127.0.0.1:8000/info'))
+        .then(() => wd.waitUrlEquals(`${site_url}/info`))
         .then(() => wd.waitUrlEquals('/info2', 0.1))
         .then(expectError)
         .catch((e) => {
-          assert.equal(e.message, `expected url to be http://127.0.0.1:8000/info2, but found http://127.0.0.1:8000/info`);
+          assert.equal(e.message, `expected url to be ${site_url}/info2, but found ${site_url}/info`);
         });
     });
   });

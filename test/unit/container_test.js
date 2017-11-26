@@ -112,6 +112,30 @@ describe('Container', () => {
       container.support('I').should.have.keys('_init', 'doSomething');
       assert(global.I_initialized);
     });
+
+    it('should load DI includes provided as require paths', () => {
+      container.create({
+        include: {
+          dummyPage: './data/dummy_page'
+        }
+      });
+      assert.ok(container.support('dummyPage'))
+      container.support('dummyPage').should.have.keys('openDummyPage');
+    });
+
+    it('should load DI includes provided as objects', () => {
+      container.create({
+        include: {
+          dummyPage: {
+            openDummyPage: () => {
+              return 'dummy page opened';
+            }
+          }
+        }
+      });
+      assert.ok(container.support('dummyPage'))
+      container.support('dummyPage').should.have.keys('openDummyPage');
+    });
   });
 
   describe('#append', () => {
