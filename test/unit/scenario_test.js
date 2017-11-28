@@ -23,7 +23,7 @@ describe('Scenario', () => {
 
   it('should work with generator func', () => {
     let counter = 0;
-    test.fn = function*() {
+    test.fn = function* () {
       yield counter++;
       yield counter++;
       yield counter++;
@@ -31,8 +31,26 @@ describe('Scenario', () => {
     };
     scenario.setup();
     scenario.test(test).fn(() => null);
+    recorder.add('validation', () => assert.equal(counter, 3))
+    return recorder.promise();
+  });
+
+  it('should work with async func', () => {
+    let counter = 0;
+    let error;
+    test.fn = () => {
+      recorder.add('test', async function() {
+        await counter++;
+        await counter++;
+        await counter++;
+        counter++;
+      })
+    }
+
+    scenario.setup();
+    scenario.test(test).fn(() => null);
+    recorder.add('validation', () => assert.equal(counter, 4))
     return recorder.promise()
-      .then(() => assert.equal(counter, 3));
   });
 
   describe('events', () => {

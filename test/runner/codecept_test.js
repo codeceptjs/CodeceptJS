@@ -87,19 +87,38 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run hooks from suites', (done) => {
-    exec(codecept_run_config('codecept.testhooks.json'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
       let lines = stdout.match(/\S.+/g);
       expect(lines).to.include.members([
         `I'm simple BeforeSuite hook`,
         `I'm generator BeforeSuite hook`,
+        `I'm async/await BeforeSuite hook`,
         `I'm simple Before hook`,
         `I'm generator Before hook`,
+        `I'm async/await Before hook`,
         `I'm generator After hook`,
         `I'm simple After hook`,
+        `I'm async/await After hook`,
         `I'm generator AfterSuite hook`,
         `I'm simple AfterSuite hook`,
+        `I'm async/await AfterSuite hook`,
       ]);
       stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run different types of scenario', (done) => {
+    exec(codecept_run_config('codecept.testscenario.json'), (err, stdout) => {
+      let lines = stdout.match(/\S.+/g);
+      expect(lines).to.include.members([
+        `Test scenario types --`,
+        `It's usual test`,
+        `I'm generator test`,
+        `I'm async/await test`
+      ]);
+      stdout.should.include('OK  | 3 passed');
       assert(!err);
       done();
     });

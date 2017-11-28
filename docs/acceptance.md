@@ -168,25 +168,49 @@ To see all possible assertions see the helper's reference.
 Sometimes you need to retrieve a data from a page to use it in next steps of a scenario.
 Imagine, application generates a password and you want to ensure that user can login using this password.
 
-```js
-I.fillField('email', 'miles@davis.com')
-I.click('Generate Password');
-let password = yield I.grabTextFrom('#password');
-I.click('Login');
-I.fillField('email', 'miles@davis.com');
-I.fillField('password', password);
-I.click('Log in!');
-```
-
-`grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `yield` keyword of ES6. To make it work your test should be written inside a generator function (notice `*` in its definition):
-
-```js
-Scenario('use page title', function*(I) {
-  // ...
-  var password = yield I.grabTextFrom('#password');
-  I.fillField('password', password);
-});
-```
+There are two ways to do this:
+1. Generators
+    ```js
+    I.fillField('email', 'miles@davis.com')
+    I.click('Generate Password');
+    const password = yield I.grabTextFrom('#password');
+    I.click('Login');
+    I.fillField('email', 'miles@davis.com');
+    I.fillField('password', password);
+    I.click('Log in!');
+    ```
+    
+    `grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `yield` keyword of ES6. To make it work your test should be written inside a generator function (notice `*` in its definition):
+    
+    ```js
+    Scenario('use page title', function*(I) {
+      // ...
+      const password = yield I.grabTextFrom('#password');
+      I.fillField('password', password);
+    });
+    ```
+    
+ 2. Async/Await
+     ```js
+     I.fillField('email', 'miles@davis.com')
+     I.click('Generate Password');
+     const password = await I.grabTextFrom('#password');
+     I.click('Login');
+     I.fillField('email', 'miles@davis.com');
+     I.fillField('password', password);
+     I.click('Log in!');
+     ```
+     
+     `grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `await` keyword of ES6. To make it work your test should be written inside a async function (notice `async` in its definition). To use `async/await` you have to use node v8.9.1 or higher:
+     
+     ```js
+     Scenario('use page title', async (I) => {
+       // ...
+       const password = await I.grabTextFrom('#password');
+       I.fillField('password', password);
+     });
+     ```
+     
 
 ## Waiting
 

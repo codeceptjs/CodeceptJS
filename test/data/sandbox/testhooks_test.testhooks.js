@@ -36,6 +36,26 @@ AfterSuite(function* (I) {
   console.log(text);
 });
 
+BeforeSuite(async (I) => {
+  let text = await I.asyncStringWithHook('BeforeSuite');
+  console.log(text);
+});
+
+Before(async (I) => {
+  let text = await I.asyncStringWithHook('Before');
+  console.log(text);
+});
+
+After(async (I) => {
+  let text = await I.asyncStringWithHook('After');
+  console.log(text);
+});
+
+AfterSuite(async (I) => {
+  let text = await I.asyncStringWithHook('AfterSuite');
+  console.log(text);
+});
+
 Scenario('Simple test 1', () => {
   console.log(`It's first test`);
 });
