@@ -13,7 +13,6 @@ let path = require('path');
 let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
-let expectError = require('../../lib/utils').test.expectError;
 let webApiTests = require('./webapi');
 let within = require('../../lib/within')
 require('co-mocha')(require('mocha'));
