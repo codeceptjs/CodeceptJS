@@ -11,7 +11,6 @@ let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
 let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-let expectError = require('../../lib/utils').test.expectError;
 let webApiTests = require('./webapi');
 let within = require('../../lib/within')
 
@@ -72,13 +71,11 @@ describe('WebDriverIO', function () {
     it('should fail when text is not on site', () => {
       return wd.amOnPage('/')
         .then(() => wd.see('Something incredible!'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web page');
         })
         .then(() => wd.dontSee('Welcome'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web page');
@@ -90,7 +87,6 @@ describe('WebDriverIO', function () {
     it('should throw error if field is not empty', () => {
       return wd.amOnPage('/form/empty')
         .then(() => wd.seeInField('#empty_input', 'Ayayay'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
@@ -177,7 +173,6 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeAttributesOnElements('//form', { method: "post"}))
         .then(() => wd.seeAttributesOnElements('//form', { method: "post", action: `${site_url}/` }))
         .then(() => wd.seeAttributesOnElements('//form', { method: "get"}))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `Not all elements (//form) have attributes {"method":"get"}`);
         });
@@ -188,7 +183,6 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeAttributesOnElements('a', { 'qa-id': "test", 'qa-link': 'test'}))
         .then(() => wd.seeAttributesOnElements('//div', { 'qa-id': 'test'}))
         .then(() => wd.seeAttributesOnElements('a', { 'qa-id': "test", href: '/info'}))
-        .then(expectError)
         .catch((e) => {
           e.message.should.include(`Not all elements (a) have attributes {"qa-id":"test","href":"/info"}`);
         });
@@ -200,7 +194,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/')
         .then(() => wd.seeTitleEquals('TestEd Beta 2.0'))
         .then(() => wd.seeTitleEquals('TestEd Beta 2.'))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `expected web page title to be TestEd Beta 2., but found TestEd Beta 2.0`);
         });
@@ -212,7 +205,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/')
         .then(() => wd.seeTextEquals('Welcome to test app!', 'h1'))
         .then(() => wd.seeTextEquals('Welcome to test app', 'h1'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
@@ -234,7 +226,6 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"}))
         .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "bold", display: 'block'}))
         .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': "non-bold"}))
-        .then(expectError)
         .catch((e) => {
           e.message.should.include(`Not all elements (h3) have CSS property {"font-weight":"non-bold"}`);
         });
@@ -245,7 +236,6 @@ describe('WebDriverIO', function () {
         .then(() => wd.seeCssPropertiesOnElements('a', { color: "rgba(0, 0, 238, 1)", cursor: 'auto'}))
         .then(() => wd.seeCssPropertiesOnElements('//div', { display: 'block'}))
         .then(() => wd.seeCssPropertiesOnElements('a', { 'margin-top': "0em", cursor: 'auto'}))
-        .then(expectError)
         .catch((e) => {
           e.message.should.include(`Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}`);
         });
@@ -278,7 +268,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/info')
         .then(() => wd.waitInUrl('/info'))
         .then(() => wd.waitInUrl('/info2', 0.1))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `expected url to include /info2, but found ${site_url}/info`);
         });
@@ -288,7 +277,6 @@ describe('WebDriverIO', function () {
         .then(() => wd.waitUrlEquals('/info'))
         .then(() => wd.waitUrlEquals(`${site_url}/info`))
         .then(() => wd.waitUrlEquals('/info2', 0.1))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `expected url to be ${site_url}/info2, but found ${site_url}/info`);
         });
@@ -314,7 +302,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/info')
         .then(() => wd.waitForValue('//input[@name= "rus"]', "Верно"))
         .then(() => wd.waitForValue('//input[@name= "rus"]', "Верно3", 0.1))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec`);
         });
@@ -326,7 +313,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/info')
         .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
         .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, `The number of elements //div[@id = "grab-multiple"]//a is not 2 after 0.1 sec`);
         });
@@ -344,7 +330,6 @@ describe('WebDriverIO', function () {
       return wd.amOnPage('/')
         .then(() => wd.click('More info'))
         .then(() => wd.switchToNextTab(2))
-        .then(expectError)
         .catch((e) => {
         assert.equal(e.message, "There is no ability to switch to next tab with offset 2");
         });
@@ -375,7 +360,6 @@ describe('WebDriverIO', function () {
         .then(() => wd.waitInUrl('about:blank'))
         .then(() => wd.switchToPreviousTab(2))
         .then(() => wd.waitInUrl('/info'))
-        .then(expectError)
         .catch((e) => {
           assert.equal(e.message, "There is no ability to switch to previous tab with offset 2");
         });
@@ -409,7 +393,6 @@ describe('WebDriverIO', function () {
     it('should return error if not present', () => {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 1, '#text'))
-        .then(expectError)
         .catch((e) => {
           e.message.should.be.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec');
         });
@@ -418,7 +401,6 @@ describe('WebDriverIO', function () {
     it('should return error if waiting is too small', () => {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.1))
-        .then(expectError)
         .catch((e) => {
           e.message.should.be.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec');
         });
@@ -442,7 +424,6 @@ describe('WebDriverIO', function () {
       it('should return error if iframe selector is invalid', () => {
           return wd.amOnPage('/iframe')
             .then(() => wd.switchTo('#invalidIframeSelector'))
-            .then(expectError)
             .catch((e) => {
                 e.should.be.instanceOf(Error);
                 e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
@@ -452,7 +433,6 @@ describe('WebDriverIO', function () {
     it('should return error if iframe selector is not iframe', () => {
       return wd.amOnPage('/iframe')
         .then(() => wd.switchTo('h1'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(Error);
           e.seleniumStack.type.should.be.equal('NoSuchFrame');

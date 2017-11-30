@@ -9,7 +9,6 @@ let path = require('path');
 let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
-let expectError = require('../../lib/utils').test.expectError;
 let I;
 let dbFile = path.join(__dirname, '/../data/rest/db.json');
 require('co-mocha')(require('mocha'));

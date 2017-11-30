@@ -8,7 +8,6 @@ let path = require('path');
 let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
-let expectError = require('../../lib/utils').test.expectError;
 require('co-mocha')(require('mocha'));
 
 let apk_path =  'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk'
@@ -102,13 +101,11 @@ describe('Appium', function () {
 
     it('should assert when app is/is not installed', () => {
       return app.seeAppIsInstalled("io.super.app")
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('expected app io.super.app to be installed');
         })
         .then(() => app.seeAppIsNotInstalled("io.selendroid.testapp"))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('expected app io.selendroid.testapp not to be installed');
@@ -124,7 +121,6 @@ describe('Appium', function () {
 
     it('should assert for wrong screen', () => {
       return app.seeCurrentActivityIs(".SuperScreen")
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('expected current activity to be .SuperScreen');
@@ -137,7 +133,6 @@ describe('Appium', function () {
     it('should return correct status about lock @second', () => {
       return app.seeDeviceIsUnlocked()
         .then(() => app.seeDeviceIsLocked())
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('expected device to be locked');
@@ -150,7 +145,6 @@ describe('Appium', function () {
     it('should return correct status about lock', () => {
       return app.seeOrientationIs('PORTRAIT')
         .then(() => app.seeOrientationIs('LANDSCAPE'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('expected orientation to be LANDSCAPE');
@@ -217,7 +211,6 @@ describe('Appium', function () {
     it('should hide device Keyboard @quick', () => {
       return app.click('~startUserRegistrationCD')
         .then(() => app.click('//android.widget.CheckBox'))
-        .then(expectError)
         .catch((e) => {
           e.message.should.include('Clickable element android.widget.CheckBox was not found by text|CSS|XPath');
         })
@@ -226,7 +219,7 @@ describe('Appium', function () {
     });
 
     it('should assert if no keyboard', () => {
-      return app.hideDeviceKeyboard('pressKey', 'Done').then(expectError)
+      return app.hideDeviceKeyboard('pressKey', 'Done')
         .catch((e) => {
           e.message.should.include(
             'An unknown server-side error occurred while processing the command. Original error: Soft keyboard not present, cannot hide keyboard');
@@ -248,7 +241,6 @@ describe('Appium', function () {
 
     it('should react on notification opening', () => {
       return app.seeElement('//android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"]')
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('expected elements of //android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"] to be seen');
@@ -425,7 +417,6 @@ describe('Appium', function () {
   describe('#waitForText', () => {
     it('should return error if not present', () => {
       return app.waitForText('Nothing here', 1, '~buttonTestCD')
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected element ~buttonTestCD to include "Nothing here"');

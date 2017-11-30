@@ -1,0 +1,35 @@
+version: 2
+
+defaults: &defaults
+  machine:
+    image: circleci/classic:201710-02
+    docker_layer_caching: true
+  steps:
+    - checkout
+    - run: .circleci/build.sh
+    - run: .circleci/test.sh
+
+jobs:
+  node 6.9.5:
+    <<: *defaults
+    environment:
+      - NODE_VERSION: 6.9.5
+
+  node 8.9.1:
+    <<: *defaults
+    environment:
+      - NODE_VERSION: 8.9.1
+
+  node 9.2.0:
+    <<: *defaults
+    environment:
+      - NODE_VERSION: 9.2.0
+
+workflows:
+  version: 2
+
+  test_all:
+    jobs:
+      - node 6.9.5
+      - node 8.9.1
+      - node 9.2.0

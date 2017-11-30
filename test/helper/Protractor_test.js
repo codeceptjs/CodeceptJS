@@ -16,7 +16,6 @@ var expect = chai.expect;
 let AssertionFailedError = require('../../lib/assert/error');
 let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 let fileExists = require('../../lib/utils').fileExists;
-let expectError = require('../../lib/utils').test.expectErrors;
 
 require('co-mocha')(require('mocha'));
 
@@ -281,7 +280,6 @@ describe('Protractor', function() {
     it('should throw error if field is not empty', function*() {
       yield I.amOnPage('/#/options');
       return I.seeInField('#ssh', 'something')
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected field by #ssh to include "something"');
@@ -475,7 +473,6 @@ describe('Protractor', function() {
     it('should return error if not present', function*() {
       if (I.isProtractor5) return;
       return I.waitForText('Nothing here', 0, '#hello')
-        .then(expectError)
         .thenCatch((e) => {
           e.message.should.include('Wait timed out');
         });
@@ -484,7 +481,6 @@ describe('Protractor', function() {
     it('should return error if waiting is too small', function*() {
       if (I.isProtractor5) return;
       return I.waitForText('Boom!', 0.5)
-        .then(expectError)
         .thenCatch((e) => {
           e.message.should.include('Wait timed out');
         });

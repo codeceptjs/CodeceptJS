@@ -11,7 +11,6 @@ let fs = require('fs');
 let fileExists = require('../../lib/utils').fileExists;
 let AssertionFailedError = require('../../lib/assert/error');
 let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-let expectError = require('../../lib/utils').test.expectError;
 require('co-mocha')(require('mocha'));
 let webApiTests = require('./webapi');
 
@@ -88,7 +87,6 @@ describe('Nightmare', function () {
     it('should fail when text is not on site', () => {
       return I.amOnPage('/')
         .then(() => I.see('Something incredible!'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web application');
@@ -99,7 +97,6 @@ describe('Nightmare', function () {
     it('should fail when clickable element not found', () => {
       return I.amOnPage('/')
         .then(() => I.click('Welcome'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(Error);
           e.message.should.include('Clickable');
@@ -109,7 +106,6 @@ describe('Nightmare', function () {
     it('should fail when text on site', () => {
       return I.amOnPage('/')
         .then(() => I.dontSee('Welcome'))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.include('web application');
@@ -119,7 +115,6 @@ describe('Nightmare', function () {
     it('should fail when test is not in context', () => {
       return I.amOnPage('/')
         .then(() => I.see('debug', {css: 'a'}))
-        .then(expectError)
         .catch((e) => {
           e.should.be.instanceOf(AssertionFailedError);
           e.toString().should.not.include('web page');
