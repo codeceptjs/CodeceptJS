@@ -29,6 +29,10 @@ describe('Step', () => {
 
     step.args = [{css: '.class'}];
     step.humanizeArgs().should.eql('{"css":".class"}');
+
+    let testUndefined;
+    step.args = [testUndefined, 'undefined'];
+    step.humanizeArgs().should.eql('undefined, "undefined');
   });
 
   it('should provide nice output', () => {
