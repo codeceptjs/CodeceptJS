@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const TestHelper = require('../support/TestHelper');
 
 const SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
@@ -11,6 +12,21 @@ const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
+=======
+'use strict';
+let TestHelper = require('../support/TestHelper');
+
+let Protractor = require('../../lib/helper/Protractor');
+let should = require('chai').should();
+let I, browser;
+let site_url = TestHelper.siteUrl();
+let assert = require('assert');
+let path = require('path');
+let fs = require('fs');
+let fileExists = require('../../lib/utils').fileExists;
+let AssertionFailedError = require('../../lib/assert/error');
+let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
+>>>>>>> updated seleniumwebdriver & protractor
 require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 
@@ -24,12 +40,22 @@ describe('SeleniumWebdriver', function () {
       fs.unlinkSync(dataFile);
     } catch (err) {}
 
-    I = new SeleniumWebdriver({
+    I = new Protractor({
       url: site_url,
       browser: 'chrome',
       windowSize: '500x700',
       restart: false,
+<<<<<<< HEAD
       seleniumAddress: TestHelper.seleniumAddress(),
+=======
+      seleniumAddress: TestHelper.seleniumAddress()
+    });
+    return I._init().then(() => {
+      return I._beforeSuite().then(() => {
+        browser = I.browser;
+        return I.amOutsideAngularApp();
+      });
+>>>>>>> updated seleniumwebdriver & protractor
     });
     return I._init().then(() => I._beforeSuite().then(() => {
       browser = I.browser;
@@ -78,6 +104,7 @@ describe('SeleniumWebdriver', function () {
   webApiTests.tests();
 
   describe('see text : #see', () => {
+<<<<<<< HEAD
     it('should fail when text is not on site', () => I.amOnPage('/')
       .then(() => I.see('Something incredible!'))
       .thenCatch((e) => {
@@ -99,6 +126,35 @@ describe('SeleniumWebdriver', function () {
         e.toString().should.not.include('web page');
         e.inspect().should.include("expected element {css: 'a'}");
       }));
+=======
+    it('should fail when text is not on site', () => {
+      return I.amOnPage('/')
+        .then(() => I.see('Something incredible!'))
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('web application');
+        })
+    });
+
+    it('should fail when text on site', () => {
+      return I.amOnPage('/')
+        .then(() => I.dontSee('Welcome'))
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.inspect().should.include('web application');
+        });
+    });
+
+    it('should fail when test is not in context', () => {
+      return I.amOnPage('/')
+        .then(() => I.see('debug', {css: 'a'}))
+        .catch((e) => {
+          e.should.be.instanceOf(AssertionFailedError);
+          e.toString().should.not.include('web page');
+          e.inspect().should.include("expected element {css: 'a'}");
+        });
+    });
+>>>>>>> updated seleniumwebdriver & protractor
   });
 
   describe('SmartWait', () => {
