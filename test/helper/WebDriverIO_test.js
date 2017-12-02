@@ -12,7 +12,7 @@ const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 
 describe('WebDriverIO', function () {
-  this.retries(4);
+  // this.retries(4);
   this.timeout(35000);
 
   before(() => {
@@ -25,7 +25,7 @@ describe('WebDriverIO', function () {
       url: site_url,
       browser: 'chrome',
       windowSize: '500x700',
-      smartWait: 10, // just to try
+      smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
     });
