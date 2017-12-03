@@ -30,8 +30,8 @@ let formContents = require('../../lib/utils').test.submittedData(path.join(__dir
 require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 
-describe('SeleniumWebdriver', function () {
-  this.retries(4);
+describe('Protractor-NonAngular', function () {
+  // this.retries(4);
   this.timeout(35000);
 
   before(() => {
@@ -44,6 +44,7 @@ describe('SeleniumWebdriver', function () {
       url: site_url,
       browser: 'chrome',
       windowSize: '500x700',
+      angular: false,
       restart: false,
 <<<<<<< HEAD
       seleniumAddress: TestHelper.seleniumAddress(),
@@ -53,7 +54,6 @@ describe('SeleniumWebdriver', function () {
     return I._init().then(() => {
       return I._beforeSuite().then(() => {
         browser = I.browser;
-        return I.amOutsideAngularApp();
       });
 >>>>>>> updated seleniumwebdriver & protractor
     });
@@ -62,6 +62,7 @@ describe('SeleniumWebdriver', function () {
     }));
   });
 
+<<<<<<< HEAD:test/helper/SeleniumWebdriver_test.js
   after(() => I._finishTest());
 
   beforeEach(() => {
@@ -85,6 +86,35 @@ describe('SeleniumWebdriver', function () {
       I.amOnPage(site_url);
       const url = yield browser.getCurrentUrl();
       return url.should.eql(`${site_url}/`);
+=======
+  webApiTests.init({ I, site_url});
+
+  beforeEach(function() {
+    return I._before();
+  });
+
+  after(function() {
+    return I._after();
+  });
+
+  describe('open page : #amOnPage', () => {
+    it('should open main page of configured site', function*() {
+      yield I.amOnPage('/');
+      let url = yield browser.getCurrentUrl();
+      return url.should.eql(site_url + '/');
+    });
+
+    it('should open any page of configured site', function*() {
+      yield I.amOnPage('/info');
+      let url = yield browser.getCurrentUrl();
+      return url.should.eql(site_url + '/info');
+    });
+
+    it('should open absolute url', function*() {
+      yield I.amOnPage(site_url);
+      let url = yield browser.getCurrentUrl();
+      return url.should.eql(site_url + '/');
+>>>>>>> refactored:test/helper/ProtractorWeb_test.js
     });
   });
 
