@@ -62,6 +62,7 @@ describe('Protractor-NonAngular', function () {
     }));
   });
 
+<<<<<<< HEAD
 <<<<<<< HEAD:test/helper/SeleniumWebdriver_test.js
   after(() => I._finishTest());
 
@@ -88,13 +89,20 @@ describe('Protractor-NonAngular', function () {
       return url.should.eql(`${site_url}/`);
 =======
   webApiTests.init({ I, site_url});
+=======
+>>>>>>> refactored Protractor helper
 
   beforeEach(function() {
+    webApiTests.init({ I, site_url});
     return I._before();
   });
 
-  after(function() {
+  afterEach(function() {
     return I._after();
+  });
+
+  after(function() {
+    return I._afterSuite();
   });
 
   describe('open page : #amOnPage', () => {
@@ -188,8 +196,8 @@ describe('Protractor-NonAngular', function () {
   });
 
   describe('SmartWait', () => {
-    before(() => I.options.smartWait = 3000);
-    after(() => I.options.smartWait = 0);
+    beforeEach(() => I.options.smartWait = 3000);
+    afterEach(() => I.options.smartWait = 0);
 
     it('should wait for element to appear', () => I.amOnPage('/form/wait_element')
       .then(() => I.dontSeeElement('h1'))
