@@ -1,4 +1,4 @@
-'use strict';
+
 
 module.exports = {
 
@@ -6,8 +6,6 @@ module.exports = {
     global.I_initialized = true;
   },
 
-  doSomething: () => {
-    return 'done';
-  }
+  doSomething: () => 'done',
 
 };

@@ -1,19 +1,18 @@
-'use strict';
-let utils = require('../../lib/utils');
-let assert = require('assert');
-let should = require('chai').should();
+
+const utils = require('../../lib/utils');
+const assert = require('assert');
+const should = require('chai').should();
 
 describe('utils', () => {
-
   describe('#fileExists', () => {
     it('exists', () => assert(utils.fileExists(__filename)));
     it('not exists', () => assert(!utils.fileExists('not_utils.js')));
   });
 
   describe('#getParamNames', () => {
-    it('fn#1', () => utils.getParamNames(function (a, b) {}).should.eql(['a', 'b']));
+    it('fn#1', () => utils.getParamNames((a, b) => {}).should.eql(['a', 'b']));
     it('fn#2', () => utils.getParamNames((I, userPage) => { }).should.eql(['I', 'userPage']));
-    it('should handle single-param arrow functions with omitted parens', () => utils.getParamNames(I => {}).should.eql(['I']));
+    it('should handle single-param arrow functions with omitted parens', () => utils.getParamNames((I) => {}).should.eql(['I']));
   });
 
   describe('#methodsOfObject', () => {
@@ -40,10 +39,7 @@ describe('utils', () => {
 
     it('converts string to xpath literal', () => {
       utils.xpathLocator.literal("can't find thing")
-        .should.eql(`concat('can',"'",'t find thing')`);
+        .should.eql('concat(\'can\',"\'",\'t find thing\')');
     });
   });
-
-
-
 });

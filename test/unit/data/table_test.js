@@ -1,8 +1,8 @@
-'use strict';
 
-let assert = require('assert');
 
-let DataTable = require('../../../lib/data/table');
+const assert = require('assert');
+
+const DataTable = require('../../../lib/data/table');
 
 describe('DataTable', () => {
   it('should take an array for creation', () => {
