@@ -2,16 +2,18 @@
   "name": "codeceptjs",
   "version": "1.0.3",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
+  "keywords": [
+    "acceptance",
+    "bdd",
+    "tdd",
+    "testing"
+  ],
   "homepage": "http://codecept.io",
-  "repository": "Codeception/codeceptjs",
-  "es6": true,
+  "license": "MIT",
   "author": {
     "name": "DavertMik",
     "email": "davert@codegyre.com",
     "url": "http://codegyre.com"
-  },
-  "bin": {
-    "codeceptjs": "./bin/codecept.js"
   },
   "files": [
     "bin",
@@ -20,12 +22,17 @@
     "translations"
   ],
   "main": "lib/index.js",
-  "keywords": [
-    "tdd",
-    "bdd",
-    "testing",
-    "acceptance"
-  ],
+  "typings": "typings/index.d.ts",
+  "bin": {
+    "codeceptjs": "./bin/codecept.js"
+  },
+  "repository": "Codeception/codeceptjs",
+  "scripts": {
+    "gulp": "gulp",
+    "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
+    "prepublish": "gulp prepublish",
+    "test": "gulp"
+  },
   "dependencies": {
     "chalk": "^1.1.3",
     "co": "^4.6.0",
@@ -47,6 +54,7 @@
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.1.2",
     "documentation": "^4.0.0-beta1",
+    "eslint": "^4.12.1",
     "faker": "^4.1.0",
     "git-guppy": "^1.0.1",
     "gulp": "^3.6.0",
@@ -78,12 +86,5 @@
   "engines": {
     "node": ">=6.11"
   },
-  "scripts": {
-    "gulp": "gulp",
-    "prepublish": "gulp prepublish",
-    "test": "gulp",
-    "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js"
-  },
-  "license": "MIT",
-  "typings": "typings/index.d.ts"
+  "es6": true
 }
