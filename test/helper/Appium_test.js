@@ -1,7 +1,4 @@
-
-
 const Appium = require('../../lib/helper/Appium');
-const should = require('chai').should();
 
 let app;
 const assert = require('assert');

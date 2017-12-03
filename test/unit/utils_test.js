@@ -1,7 +1,5 @@
-
 const utils = require('../../lib/utils');
 const assert = require('assert');
-const should = require('chai').should();
 
 describe('utils', () => {
   describe('#fileExists', () => {

@@ -1,6 +1,4 @@
-
 const FileSystem = require('../../../lib/helper/FileSystem');
-const should = require('chai').should();
 const path = require('path');
 
 let fs;

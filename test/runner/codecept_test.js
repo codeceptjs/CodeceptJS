@@ -1,5 +1,3 @@
-
-const should = require('chai').should();
 const expect = require('chai').expect;
 const assert = require('assert');
 const path = require('path');
@@ -10,7 +8,6 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run`;
 const codecept_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
 const config_run_override = config => `${codecept_run} --config ${codecept_dir} --override '${JSON.stringify(config)}'`;
-let fs;
 
 describe('CodeceptJS Runner', () => {
   before(() => {

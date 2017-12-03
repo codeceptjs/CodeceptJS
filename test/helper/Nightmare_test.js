@@ -1,18 +1,14 @@
-
 const TestHelper = require('../support/TestHelper');
 
 const Nightmare = require('../../lib/helper/Nightmare');
-const should = require('chai').should();
 
-let I,
-  browser;
+let I;
+let browser;
 const site_url = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 

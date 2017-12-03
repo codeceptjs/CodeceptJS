@@ -1,18 +1,17 @@
-
 const scenario = require('../../lib/scenario');
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
 const assert = require('assert');
 const sinon = require('sinon');
 
-let test,
-  fn,
-  before,
-  after,
-  beforeSuite,
-  afterSuite,
-  failed,
-  started;
+let test;
+let fn;
+let before;
+let after;
+let beforeSuite;
+let afterSuite;
+let failed;
+let started;
 
 describe('Scenario', () => {
   beforeEach(() => {

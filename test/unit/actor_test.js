@@ -1,9 +1,6 @@
-
-
 const actor = require('../../lib/actor');
 const container = require('../../lib/container');
 const path = require('path');
-const should = require('chai').should();
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
 

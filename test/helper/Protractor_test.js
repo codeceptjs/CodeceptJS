@@ -1,4 +1,3 @@
-
 const TestHelper = require('../support/TestHelper');
 
 const Protractor = require('../../lib/helper/Protractor');
@@ -7,12 +6,10 @@ const site_url = 'http://davertmik.github.io/angular-demo-app';
 const web_app_url = TestHelper.siteUrl();
 const assert = require('assert');
 
-let I,
-  browser;
+let I;
+let browser;
 const path = require('path');
-const by = require('protractor').Browser.By;
 const chai = require('chai');
-const should = require('chai').should();
 const chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);

@@ -1,8 +1,6 @@
-
 const TestHelper = require('../support/TestHelper');
 
 const WebDriverIO = require('../../lib/helper/WebDriverIO');
-const should = require('chai').should();
 
 let wd;
 const site_url = TestHelper.siteUrl();
@@ -11,10 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 const webApiTests = require('./webapi');
-const within = require('../../lib/within');
-
 
 describe('WebDriverIO', function () {
   this.retries(4);

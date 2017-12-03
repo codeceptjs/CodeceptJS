@@ -1,5 +1,3 @@
-
-
 const Assertion = require('../../lib/assert');
 const AssertionError = require('../../lib/assert/error');
 

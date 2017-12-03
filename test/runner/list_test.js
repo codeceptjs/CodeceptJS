@@ -1,13 +1,9 @@
-
-
-const should = require('chai').should();
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
-const codecept_run = `${runner} run ${codecept_dir} `;
 
 describe('list/def commands', () => {
   it('list should print actions', (done) => {

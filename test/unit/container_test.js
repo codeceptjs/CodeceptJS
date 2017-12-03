@@ -1,9 +1,6 @@
-
 const container = require('../../lib/container');
-const should = require('chai').should();
 const assert = require('assert');
 const path = require('path');
-const sinon = require('sinon');
 const FileSystem = require('../../lib/helper/FileSystem');
 
 describe('Container', () => {

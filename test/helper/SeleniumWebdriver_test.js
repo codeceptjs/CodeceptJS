@@ -1,11 +1,9 @@
-
 const TestHelper = require('../support/TestHelper');
 
 const SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
-const should = require('chai').should();
 
-let I,
-  browser;
+let I;
+let browser;
 const site_url = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');

@@ -1,9 +1,6 @@
-
-
 const Assertion = require('../../../lib/assert/include').Assertion;
 const AssertionError = require('../../../lib/assert/error');
 const chai = require('chai');
-const should = require('chai').should();
 
 let equal;
 

@@ -1,8 +1,5 @@
-
-
 const Appium = require('../../lib/helper/Appium');
 const chai = require('chai');
-const should = require('chai').should();
 const chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);

@@ -1,10 +1,7 @@
-
-
 const ElementNotFound = require('../../../lib/helper/errors/ElementNotFound');
 const expect = require('chai').expect;
 
 const locator = '#invalidSelector';
-
 
 describe('ElementNotFound error', () => {
   it('should throw error', () => {

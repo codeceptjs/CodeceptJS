@@ -1,12 +1,10 @@
-
-
 const assert = require('assert');
 const Step = require('../../lib/step');
 const event = require('../../lib/event');
 const sinon = require('sinon');
 
-let step,
-  action;
+let step;
+let action;
 
 describe('Step', () => {
   beforeEach(() => {
@@ -34,7 +32,7 @@ describe('Step', () => {
 
     let testUndefined;
     step.args = [testUndefined, 'undefined'];
-    step.humanizeArgs().should.eql('undefined, "undefined');
+    step.humanizeArgs().should.eql('undefined, "undefined"');
   });
 
   it('should provide nice output', () => {

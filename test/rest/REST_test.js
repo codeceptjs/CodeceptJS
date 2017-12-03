@@ -1,11 +1,9 @@
-
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
 
 const api_url = TestHelper.jsonServerUrl();
 const path = require('path');
 const fs = require('fs');
-require('chai').should();
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');

@@ -1,5 +1,3 @@
-
-
 const assert = require('assert');
 
 const DataTable = require('../../../lib/data/table');

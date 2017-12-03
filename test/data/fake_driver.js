@@ -1,8 +1,4 @@
-
 const Helper = require('../../lib/helper');
-const output = require('../../lib/output');
-
-let browser;
 
 class FakeDriver extends Helper {
   printBrowser() {

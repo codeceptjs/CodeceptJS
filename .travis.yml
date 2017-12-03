@@ -30,6 +30,6 @@ before_script:
 - npm run json-server &
 - sleep 10
 script:
-- gulp test
+- npm test
 - './node_modules/.bin/mocha test/rest'
 - './node_modules/.bin/mocha test/helper/${HELPER}_test.js'

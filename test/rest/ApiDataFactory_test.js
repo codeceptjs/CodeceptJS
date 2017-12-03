@@ -1,15 +1,10 @@
-
 const TestHelper = require('../support/TestHelper');
 
 const ApiDataFactory = require('../../lib/helper/ApiDataFactory');
-const should = require('chai').should();
 
 const api_url = TestHelper.jsonServerUrl();
-const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
-const AssertionFailedError = require('../../lib/assert/error');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');

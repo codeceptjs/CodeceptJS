@@ -1,15 +1,13 @@
-
 require('co-mocha')(require('mocha'));
 
-let I,
-  data,
-  site_url;
+let I;
+let data;
+let site_url;
 const assert = require('assert');
 const path = require('path');
 
 const dataFile = path.join(__dirname, '/../data/app/db');
 const formContents = require('../../lib/utils').test.submittedData(dataFile);
-const should = require('chai').should();
 const fileExists = require('../../lib/utils').fileExists;
 
 module.exports.init = function (testData) {

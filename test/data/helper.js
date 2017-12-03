@@ -1,4 +1,3 @@
-
 const Helper = require('../../lib/helper');
 
 class MyHelper extends Helper {
