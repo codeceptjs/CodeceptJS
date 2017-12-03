@@ -7,7 +7,7 @@ Scenario('Nightmare basic test', (I) => {
   I.waitForElement('#main', 2);
   I.seeElement('#main .searchCenterMiddle li a');
   // I.seeElement("//a[contains(@href,'github.com/segmentio/nightmare')]");
-  I.see('segmentio/nightmare','li a');
+  I.see('segmentio/nightmare', 'li a');
 });
 
 

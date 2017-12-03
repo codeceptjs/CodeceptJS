@@ -1,9 +1,8 @@
-'use strict';
-let Helper = require('../lib/helper');
-let assert = require('assert');
+
+const Helper = require('../lib/helper');
+const assert = require('assert');
 
 class User extends Helper {
-
   // before/after hooks
   _before() {
     // remove if not used
@@ -17,9 +16,9 @@ class User extends Helper {
   // If you need to access other helpers
   // use: this.helpers['helperName']
   seeAuthentication() {
-    return this.helpers['WebDriverIO'].browser.cookie(function (err, res) {
-      let cookies = res.value;
-      for (let k in cookies) {
+    return this.helpers.WebDriverIO.browser.cookie((err, res) => {
+      const cookies = res.value;
+      for (const k in cookies) {
         if (cookies[k].name !== 'logged_in') continue;
         assert.equal(cookies[k].value, 'yes');
         return;

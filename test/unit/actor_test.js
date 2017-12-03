@@ -1,27 +1,27 @@
-'use strict';
 
-let actor = require('../../lib/actor');
-let container = require('../../lib/container');
-let path = require('path');
-let should = require('chai').should();
+
+const actor = require('../../lib/actor');
+const container = require('../../lib/container');
+const path = require('path');
+const should = require('chai').should();
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
+
 global.codecept_dir = path.join(__dirname, '/..');
 let I;
 
 describe('Actor', () => {
-
   beforeEach(() => {
     container.clear({
       MyHelper: {
         hello: () => 'hello world',
         bye: () => 'bye world',
-        die: () => { throw new Error('ups') },
-        _hidden: () => 'hidden'
+        die: () => { throw new Error('ups'); },
+        _hidden: () => 'hidden',
       },
       MyHelper2: {
-        greeting: () => 'greetings, world'
-      }
+        greeting: () => 'greetings, world',
+      },
     });
     I = actor();
     event.cleanDispatcher();
@@ -33,9 +33,9 @@ describe('Actor', () => {
 
   it('should return promise', () => {
     recorder.start();
-    let promise = I.hello();
+    const promise = I.hello();
     promise.should.be.instanceOf(Promise);
-    return promise.then((val) => val.should.eql('hello world'));
+    return promise.then(val => val.should.eql('hello world'));
   });
 
   it('should produce step events', () => {
@@ -53,7 +53,6 @@ describe('Actor', () => {
     return I.hello().then(() => {
       listeners.should.eql(3);
     });
-
   });
 
   it('should print handle failed steps', () => {
@@ -70,10 +69,9 @@ describe('Actor', () => {
 
     return I.die()
       .then(() => listeners = 0)
-      .catch((err) => null)
+      .catch(err => null)
       .then(() => {
-      listeners.should.eql(3);
-    });
-
+        listeners.should.eql(3);
+      });
   });
 });

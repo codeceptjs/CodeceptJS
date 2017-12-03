@@ -1,15 +1,15 @@
-'use strict';
-let should = require('chai').should();
-let assert = require('assert');
-let path = require('path');
+
+const should = require('chai').should();
+const assert = require('assert');
+const path = require('path');
 const exec = require('child_process').exec;
-let runner = path.join(__dirname, '/../../bin/codecept.js');
-let codecept_dir = path.join(__dirname, '/../data/sandbox')
-let codecept_run = runner +' run-multiple --config '+codecept_dir + '/codecept.multiple.json ';
+
+const runner = path.join(__dirname, '/../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '/../data/sandbox');
+const codecept_run = `${runner} run-multiple --config ${codecept_dir}/codecept.multiple.json `;
 let fs;
 
-describe('CodeceptJS Multiple Runner', function() {
-
+describe('CodeceptJS Multiple Runner', function () {
   this.timeout(40000);
 
   before(() => {
@@ -17,7 +17,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should execute one suite with browser', (done) => {
-    exec(codecept_run+'default:firefox', (err, stdout, stderr) => {
+    exec(`${codecept_run}default:firefox`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('.default:firefox] print browser ');
       stdout.should.not.include('.default:chrome] print browser ');
@@ -27,7 +27,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should execute all suites', (done) => {
-    exec(codecept_run+'--all', (err, stdout, stderr) => {
+    exec(`${codecept_run}--all`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[1.default:chrome] print browser ');
       stdout.should.include('[2.default:firefox] print browser ');
@@ -46,7 +46,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should replace parameters', (done) => {
-    exec(codecept_run+'grep --debug', (err, stdout, stderr) => {
+    exec(`${codecept_run}grep --debug`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[1.grep:chrome]  > maximize');
       stdout.should.include('[2.grep:firefox]  > 1200x840');
@@ -56,7 +56,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should execute multiple suites', (done) => {
-    exec(codecept_run+'mobile default ', (err, stdout, stderr) => {
+    exec(`${codecept_run}mobile default `, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[1.mobile:android] print browser ');
       stdout.should.include('[2.mobile:safari] print browser ');
@@ -71,7 +71,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should execute multiple suites with selected browsers', (done) => {
-    exec(codecept_run+'mobile:safari default:chrome ', (err, stdout, stderr) => {
+    exec(`${codecept_run}mobile:safari default:chrome `, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[1.mobile:safari] print browser ');
       stdout.should.include('[2.mobile:safari] print browser ');
@@ -82,7 +82,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should print steps', (done) => {
-    exec(codecept_run+'default --steps', (err, stdout, stderr) => {
+    exec(`${codecept_run}default --steps`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[2.default:firefox] print browser ');
       stdout.should.include('[2.default:firefox]  • I print browser');
@@ -94,7 +94,7 @@ describe('CodeceptJS Multiple Runner', function() {
   });
 
   it('should pass grep to configuration', (done) => {
-    exec(codecept_run+'default --grep @grep', (err, stdout, stderr) => {
+    exec(`${codecept_run}default --grep @grep`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[1.default:chrome] @grep print browser size');
       stdout.should.include('[2.default:firefox] @grep print browser size');
@@ -104,5 +104,4 @@ describe('CodeceptJS Multiple Runner', function() {
       done();
     });
   });
-
 });

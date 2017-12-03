@@ -1,4 +1,4 @@
-/// <reference path="./steps.d.ts" />
+// / <reference path="./steps.d.ts" />
 Feature('GitHub');
 
 Before((Smth) => {
@@ -23,7 +23,7 @@ Scenario('signin', (I) => {
 });
 
 Scenario('register', (I) => {
-  within('.js-signup-form', function () {
+  within('.js-signup-form', () => {
     I.fillField('user[login]', 'User');
     I.fillField('user[email]', 'user@user.com');
     I.fillField('user[password]', 'user@user.com');

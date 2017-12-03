@@ -1,16 +1,11 @@
 var path = require('path');
 var gulp = require('gulp');
-var eslint = require('gulp-eslint');
-var excludeGitignore = require('gulp-exclude-gitignore');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var plumber = require('gulp-plumber');
 var coveralls = require('gulp-coveralls');
 var documentation = require('gulp-documentation');
 var glob = require('glob');
-var guppy = require('git-guppy')(gulp);
-var gitmodified = require('gulp-gitmodified');
-var istanbul = require('gulp-istanbul');
 var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
 
@@ -40,20 +35,10 @@ gulp.task('docs', function () {
   });
 });
 
-gulp.task('static', function () {
-  return gulp.src('lib/**/*.js')
-    // .pipe(gitmodified(['added', 'modified']))
-    .pipe(eslint({fix: true}))
-    // .pipe(eslint.format())
-    .pipe(gulp.dest('lib'));
-});
-
 gulp.task('type-check', function () {
   return tsProject.src()
     .pipe(tsProject());
 });
-
-gulp.task('pre-commit', ['static']);
 
 gulp.task('pre-test', function () {
   return gulp.src(['./lib/**/*.js'])
@@ -88,4 +73,4 @@ gulp.task('coveralls', ['test'], function () {
 });
 
 gulp.task('prepublish', []);
-gulp.task('default', ['static', 'test', 'coveralls']);
+gulp.task('default', ['test', 'coveralls']);
