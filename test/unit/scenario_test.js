@@ -1,13 +1,20 @@
-'use strict';
-let scenario = require('../../lib/scenario');
-let recorder = require('../../lib/recorder');
-let event = require('../../lib/event');
-let assert = require('assert');
-let sinon = require('sinon');
-let test, fn, before, after, beforeSuite, afterSuite, failed, started;
+
+const scenario = require('../../lib/scenario');
+const recorder = require('../../lib/recorder');
+const event = require('../../lib/event');
+const assert = require('assert');
+const sinon = require('sinon');
+
+let test,
+  fn,
+  before,
+  after,
+  beforeSuite,
+  afterSuite,
+  failed,
+  started;
 
 describe('Scenario', () => {
-
   beforeEach(() => {
     test = {};
     fn = sinon.spy();
@@ -31,7 +38,7 @@ describe('Scenario', () => {
     };
     scenario.setup();
     scenario.test(test).fn(() => null);
-    recorder.add('validation', () => assert.equal(counter, 3))
+    recorder.add('validation', () => assert.equal(counter, 3));
     return recorder.promise();
   });
 
@@ -39,18 +46,18 @@ describe('Scenario', () => {
     let counter = 0;
     let error;
     test.fn = () => {
-      recorder.add('test', async function() {
+      recorder.add('test', async () => {
         await counter++;
         await counter++;
         await counter++;
         counter++;
-      })
-    }
+      });
+    };
 
     scenario.setup();
     scenario.test(test).fn(() => null);
-    recorder.add('validation', () => assert.equal(counter, 4))
-    return recorder.promise()
+    recorder.add('validation', () => assert.equal(counter, 4));
+    return recorder.promise();
   });
 
   describe('events', () => {

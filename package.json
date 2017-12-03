@@ -30,6 +30,8 @@
   "scripts": {
     "gulp": "gulp",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
+    "lint": "eslint lib/ examples/ bin/ test/ translations/ ",
+    "lintFix": "eslint lib/ examples/ bin/ test/ translations/ --fix",
     "prepublish": "gulp prepublish",
     "test": "gulp"
   },
@@ -55,6 +57,8 @@
     "co-mocha": "^1.1.2",
     "documentation": "^4.0.0-beta1",
     "eslint": "^4.12.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "faker": "^4.1.0",
     "git-guppy": "^1.0.1",
     "gulp": "^3.6.0",
@@ -84,7 +88,7 @@
     "webdriverio": ">3.4.0 <5.0.0"
   },
   "engines": {
-    "node": ">=6.11"
+    "node": ">=8.9.1"
   },
   "es6": true
 }

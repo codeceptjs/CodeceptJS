@@ -1,5 +1,5 @@
-var Factory = require('rosie').Factory;
-var faker = require('faker');
+const Factory = require('rosie').Factory;
+const faker = require('faker');
 
 module.exports = new Factory()
   .attr('author', () => faker.name.findName())

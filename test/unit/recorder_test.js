@@ -1,8 +1,8 @@
-'use strict';
 
-let recorder = require('../../lib/recorder');
-let assert = require('assert');
-let chai = require('chai').should();
+
+const recorder = require('../../lib/recorder');
+const assert = require('assert');
+const chai = require('chai').should();
 
 describe('Recorder', () => {
   beforeEach(() => recorder.start());
