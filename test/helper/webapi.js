@@ -2,7 +2,7 @@ require('co-mocha')(require('mocha'));
 
 let I;
 let data;
-let site_url;
+let siteUrl;
 const assert = require('assert');
 const path = require('path');
 
@@ -19,7 +19,7 @@ module.exports.tests = function () {
 
   beforeEach(() => {
     I = data.I;
-    site_url = data.site_url;
+    siteUrl = data.siteUrl;
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
@@ -38,8 +38,8 @@ module.exports.tests = function () {
 
     it('should check for equality in absolute urls', function* () {
       yield I.amOnPage('/info');
-      yield I.seeCurrentUrlEquals(`${site_url}/info`);
-      return I.dontSeeCurrentUrlEquals(`${site_url}/form`);
+      yield I.seeCurrentUrlEquals(`${siteUrl}/info`);
+      return I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
     });
   });
 
@@ -495,15 +495,9 @@ module.exports.tests = function () {
         .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
     });
 
-<<<<<<< HEAD
     it('should create a screenshot on fail  @ups', () => {
       const sec = (new Date()).getUTCMilliseconds().toString();
       const test = { title: `sw should do smth ${sec}` };
-=======
-    it('should create a screenshot on fail @ups', () => {
-      let sec = (new Date()).getUTCMilliseconds().toString();
-      let test = { title: 'sw should do smth ' + sec };
->>>>>>> refactored Protractor helper
       return I.amOnPage('/')
         .then(() => I._failed(test))
         .then(() => assert.ok(fileExists(path.join(global.output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
@@ -543,7 +537,6 @@ module.exports.tests = function () {
       .then(() => I.see('Timeout text')));
   });
 
-<<<<<<< HEAD
   describe('#waitForElement', () => {
     it('should wait for visible element', () => I.amOnPage('/form/wait_visible')
       .then(() => I.dontSee('Step One Button'))
@@ -577,55 +570,6 @@ module.exports.tests = function () {
       .then(() => I.dontSeeElement('.non-existing-class'))
       .then(() => I.waitUntilExists('.non-existing-class'))
       .then(() => I.dontSeeElement('.non-existing-class')));
-=======
-  describe('#waitForElement @ups', () => {
-    it('should wait for visible element', () => {
-      return I.amOnPage('/form/wait_visible')
-        .then(() => I.dontSee('Step One Button'))
-        .then(() => I.dontSeeElement('#step_1'))
-        .then(() => I.waitForVisible('#step_1', 2))
-        .then(() => I.seeElement('#step_1'))
-        .then(() => I.click('#step_1'))
-        .then(() => I.waitForVisible('#step_2', 2))
-        .then(() => I.see('Step Two Button'));
-    });
-
-    it('should wait for element in DOM', () => {
-      return I.amOnPage('/form/wait_visible')
-        .then(() => I.waitForElement('#step_2'))
-        .then(() => I.dontSeeElement('#step_2'))
-        .then(() => I.seeElementInDOM('#step_2'));
-    });
-
-
-    it('should wait for element to appear', () => {
-      return I.amOnPage('/form/wait_element')
-        .then(() => I.dontSee('Hello'))
-        .then(() => I.dontSeeElement('h1'))
-        .then(() => I.waitForElement('h1', 2))
-        .then(() => I.see('Hello'));
-    });
-
-
-  });
-
-  describe('#waitUntilExists', () => {
-
-    it('should wait for an element to be removed from DOM', () => {
-      return I.amOnPage('/spinner')
-        .then(() => I.seeElementInDOM('.loader'))
-        .then(() => I.waitUntilExists('.loader'))
-        .then(() => I.dontSeeElement('.loader'))
-    });
-
-    it('should wait for a non-exising element to be removed from DOM', () => {
-      return I.amOnPage('/spinner')
-        .then(() => I.dontSeeElement('.non-existing-class'))
-        .then(() => I.waitUntilExists('.non-existing-class'))
-        .then(() => I.dontSeeElement('.non-existing-class'))
-    });
-
->>>>>>> refactored Protractor helper
   });
 
   describe('within tests', () => {

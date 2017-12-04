@@ -1,32 +1,16 @@
-<<<<<<< HEAD
-const TestHelper = require('../support/TestHelper');
-
-const SeleniumWebdriver = require('../../lib/helper/SeleniumWebdriver');
+let TestHelper = require('../support/TestHelper');
 
 let I;
 let browser;
-const site_url = TestHelper.siteUrl();
+const Protractor = require('../../lib/helper/Protractor');
+const should = require('chai').should();
+const siteUrl = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-=======
-'use strict';
-let TestHelper = require('../support/TestHelper');
-
-let Protractor = require('../../lib/helper/Protractor');
-let should = require('chai').should();
-let I, browser;
-let site_url = TestHelper.siteUrl();
-let assert = require('assert');
-let path = require('path');
-let fs = require('fs');
-let fileExists = require('../../lib/utils').fileExists;
-let AssertionFailedError = require('../../lib/assert/error');
-let formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
->>>>>>> updated seleniumwebdriver & protractor
 require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 
@@ -41,88 +25,45 @@ describe('Protractor-NonAngular', function () {
     } catch (err) {}
 
     I = new Protractor({
-      url: site_url,
+      url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
       angular: false,
       restart: false,
-<<<<<<< HEAD
       seleniumAddress: TestHelper.seleniumAddress(),
-=======
-      seleniumAddress: TestHelper.seleniumAddress()
-    });
-    return I._init().then(() => {
-      return I._beforeSuite().then(() => {
-        browser = I.browser;
-      });
->>>>>>> updated seleniumwebdriver & protractor
     });
     return I._init().then(() => I._beforeSuite().then(() => {
       browser = I.browser;
     }));
   });
 
-<<<<<<< HEAD
-<<<<<<< HEAD:test/helper/SeleniumWebdriver_test.js
-  after(() => I._finishTest());
-
-  beforeEach(() => {
-    webApiTests.init({ I, site_url });
-  });
-
-  describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', function* () {
-      I.amOnPage('/');
-      const url = yield browser.getCurrentUrl();
-      return url.should.eql(`${site_url}/`);
-    });
-
-    it('should open any page of configured site', function* () {
-      I.amOnPage('/info');
-      const url = yield browser.getCurrentUrl();
-      return url.should.eql(`${site_url}/info`);
-    });
-
-    it('should open absolute url', function* () {
-      I.amOnPage(site_url);
-      const url = yield browser.getCurrentUrl();
-      return url.should.eql(`${site_url}/`);
-=======
-  webApiTests.init({ I, site_url});
-=======
->>>>>>> refactored Protractor helper
 
   beforeEach(function() {
-    webApiTests.init({ I, site_url});
+    webApiTests.init({ I, siteUrl});
     return I._before();
   });
 
-  afterEach(function() {
-    return I._after();
-  });
-
   after(function() {
-    return I._afterSuite();
+    return I._after();
   });
 
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', function*() {
       yield I.amOnPage('/');
       let url = yield browser.getCurrentUrl();
-      return url.should.eql(site_url + '/');
+      return url.should.eql(siteUrl + '/');
     });
 
     it('should open any page of configured site', function*() {
       yield I.amOnPage('/info');
       let url = yield browser.getCurrentUrl();
-      return url.should.eql(site_url + '/info');
+      return url.should.eql(siteUrl + '/info');
     });
 
     it('should open absolute url', function*() {
-      yield I.amOnPage(site_url);
+      yield I.amOnPage(siteUrl);
       let url = yield browser.getCurrentUrl();
-      return url.should.eql(site_url + '/');
->>>>>>> refactored:test/helper/ProtractorWeb_test.js
+      return url.should.eql(siteUrl + '/');
     });
   });
 
@@ -142,29 +83,6 @@ describe('Protractor-NonAngular', function () {
   webApiTests.tests();
 
   describe('see text : #see', () => {
-<<<<<<< HEAD
-    it('should fail when text is not on site', () => I.amOnPage('/')
-      .then(() => I.see('Something incredible!'))
-      .thenCatch((e) => {
-        e.should.be.instanceOf(AssertionFailedError);
-        e.inspect().should.include('web application');
-      }));
-
-    it('should fail when text on site', () => I.amOnPage('/')
-      .then(() => I.dontSee('Welcome'))
-      .thenCatch((e) => {
-        e.should.be.instanceOf(AssertionFailedError);
-        e.inspect().should.include('web application');
-      }));
-
-    it('should fail when test is not in context', () => I.amOnPage('/')
-      .then(() => I.see('debug', { css: 'a' }))
-      .thenCatch((e) => {
-        e.should.be.instanceOf(AssertionFailedError);
-        e.toString().should.not.include('web page');
-        e.inspect().should.include("expected element {css: 'a'}");
-      }));
-=======
     it('should fail when text is not on site', () => {
       return I.amOnPage('/')
         .then(() => I.see('Something incredible!'))
@@ -192,12 +110,11 @@ describe('Protractor-NonAngular', function () {
           e.inspect().should.include("expected element {css: 'a'}");
         });
     });
->>>>>>> updated seleniumwebdriver & protractor
   });
 
   describe('SmartWait', () => {
-    beforeEach(() => I.options.smartWait = 3000);
-    afterEach(() => I.options.smartWait = 0);
+    before(() => I.options.smartWait = 3000);
+    after(() => I.options.smartWait = 0);
 
     it('should wait for element to appear', () => I.amOnPage('/form/wait_element')
       .then(() => I.dontSeeElement('h1'))

@@ -3,7 +3,7 @@ const TestHelper = require('../support/TestHelper');
 const WebDriverIO = require('../../lib/helper/WebDriverIO');
 
 let wd;
-const site_url = TestHelper.siteUrl();
+const siteUrl = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
@@ -22,7 +22,7 @@ describe('WebDriverIO', function () {
     } catch (err) {}
 
     wd = new WebDriverIO({
-      url: site_url,
+      url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
       smartWait: 0, // just to try
@@ -32,7 +32,7 @@ describe('WebDriverIO', function () {
   });
 
   beforeEach(() => {
-    webApiTests.init({ I: wd, site_url });
+    webApiTests.init({ I: wd, siteUrl });
     return wd._before();
   });
 
@@ -42,11 +42,11 @@ describe('WebDriverIO', function () {
   webApiTests.tests();
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', () => wd.amOnPage('/').getUrl().then(url => url.should.eql(`${site_url}/`)));
+    it('should open main page of configured site', () => wd.amOnPage('/').getUrl().then(url => url.should.eql(`${siteUrl}/`)));
 
-    it('should open any page of configured site', () => wd.amOnPage('/info').getUrl().then(url => url.should.eql(`${site_url}/info`)));
+    it('should open any page of configured site', () => wd.amOnPage('/info').getUrl().then(url => url.should.eql(`${siteUrl}/info`)));
 
-    it('should open absolute url', () => wd.amOnPage(site_url).getUrl().then(url => url.should.eql(`${site_url}/`)));
+    it('should open absolute url', () => wd.amOnPage(siteUrl).getUrl().then(url => url.should.eql(`${siteUrl}/`)));
   });
 
   describe('see text : #see', () => {
@@ -146,7 +146,7 @@ describe('WebDriverIO', function () {
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', () => wd.amOnPage('/info')
       .then(() => wd.seeAttributesOnElements('//form', { method: 'post' }))
-      .then(() => wd.seeAttributesOnElements('//form', { method: 'post', action: `${site_url}/` }))
+      .then(() => wd.seeAttributesOnElements('//form', { method: 'post', action: `${siteUrl}/` }))
       .then(() => wd.seeAttributesOnElements('//form', { method: 'get' }))
       .catch((e) => {
         assert.equal(e.message, 'Not all elements (//form) have attributes {"method":"get"}');
@@ -224,14 +224,14 @@ describe('WebDriverIO', function () {
       .then(() => wd.waitInUrl('/info'))
       .then(() => wd.waitInUrl('/info2', 0.1))
       .catch((e) => {
-        assert.equal(e.message, `expected url to include /info2, but found ${site_url}/info`);
+        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
       }));
     it('should wait for the entire URL to match the expected', () => wd.amOnPage('/info')
       .then(() => wd.waitUrlEquals('/info'))
-      .then(() => wd.waitUrlEquals(`${site_url}/info`))
+      .then(() => wd.waitUrlEquals(`${siteUrl}/info`))
       .then(() => wd.waitUrlEquals('/info2', 0.1))
       .catch((e) => {
-        assert.equal(e.message, `expected url to be ${site_url}/info2, but found ${site_url}/info`);
+        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
       }));
   });
 
