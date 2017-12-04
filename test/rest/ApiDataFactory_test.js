@@ -21,8 +21,6 @@ const data = {
   ],
 };
 
-const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
-
 describe('ApiDataFactory', () => {
   before(() => {
     I = new ApiDataFactory({
@@ -40,7 +38,9 @@ describe('ApiDataFactory', () => {
   beforeEach((done) => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data));
-    } catch (err) {}
+    } catch (err) {
+      // continue regardless of error
+    }
     setTimeout(done, 500);
   });
 

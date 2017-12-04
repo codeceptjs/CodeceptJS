@@ -35,7 +35,9 @@ describe('REST', () => {
   beforeEach((done) => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data));
-    } catch (err) {}
+    } catch (err) {
+      // continue regardless of error
+    }
     setTimeout(done, 700);
   });
 
@@ -55,7 +57,7 @@ describe('REST', () => {
       });
     }));
 
-    it('should send DELETE requests', () => I.sendDeleteRequest('/posts/1').then(response => I.sendGetRequest('/posts').then((response) => {
+    it('should send DELETE requests', () => I.sendDeleteRequest('/posts/1').then(() => I.sendGetRequest('/posts').then((response) => {
       response.body.should.be.empty;
     })));
   });

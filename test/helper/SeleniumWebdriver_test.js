@@ -22,7 +22,9 @@ describe('SeleniumWebdriver', function () {
     global.codecept_dir = path.join(__dirname, '/../data');
     try {
       fs.unlinkSync(dataFile);
-    } catch (err) {}
+    } catch (err) {
+      // continue regardless of error
+    }
 
     I = new SeleniumWebdriver({
       url: site_url,
