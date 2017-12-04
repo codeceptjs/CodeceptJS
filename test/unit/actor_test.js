@@ -38,10 +38,10 @@ describe('Actor', () => {
   it('should produce step events', () => {
     recorder.start();
     let listeners = 0;
-    event.dispatcher.addListener(event.step.before, () => listeners++);
-    event.dispatcher.addListener(event.step.after, () => listeners++);
+    event.dispatcher.addListener(event.step.before, () => listeners += 1);
+    event.dispatcher.addListener(event.step.after, () => listeners += 1);
     event.dispatcher.addListener(event.step.passed, (step) => {
-      listeners++;
+      listeners += 1;
       step.endTime.should.not.be.null;
       step.startTime.should.not.be.null;
       step.startTime.should.not.eql(step.endTime);
@@ -55,10 +55,10 @@ describe('Actor', () => {
   it('should print handle failed steps', () => {
     recorder.start();
     let listeners = 0;
-    event.dispatcher.addListener(event.step.before, () => listeners++);
-    event.dispatcher.addListener(event.step.after, () => listeners++);
+    event.dispatcher.addListener(event.step.before, () => listeners += 1);
+    event.dispatcher.addListener(event.step.after, () => listeners += 1);
     event.dispatcher.addListener(event.step.failed, (step) => {
-      listeners++;
+      listeners += 1;
       step.endTime.should.not.be.null;
       step.startTime.should.not.be.null;
       step.startTime.should.not.eql(step.endTime);
