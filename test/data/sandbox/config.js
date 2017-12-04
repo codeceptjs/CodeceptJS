@@ -13,10 +13,10 @@ exports.config = {
   name: 'sandbox',
 };
 
-if (profile == 'failed') {
+if (profile === 'failed') {
   exports.config.tests = './*_test_failed.js';
 }
 
-if (profile == 'bootstrap') {
+if (profile === 'bootstrap') {
   exports.config.bootstrap = 'hooks.js';
 }
