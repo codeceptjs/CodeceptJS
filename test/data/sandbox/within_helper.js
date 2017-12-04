@@ -16,7 +16,7 @@ class Whithin extends Helper {
   }
 
   smallYield() {
-    return `I am small yield string`;
+    return 'I am small yield string';
   }
 
   smallPromise() {

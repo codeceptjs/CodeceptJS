@@ -6,8 +6,8 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.within.json `;
 
 const getLines = function (array, startString, endString) {
-  let startIndex,
-    endIndex;
+  let startIndex;
+  let endIndex;
   array.every((elem, index) => {
     if (elem === startString) {
       startIndex = index;

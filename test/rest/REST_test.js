@@ -35,7 +35,9 @@ describe('REST', () => {
   beforeEach((done) => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data));
-    } catch (err) {}
+    } catch (err) {
+      // continue regardless of error
+    }
     setTimeout(done, 700);
   });
 
