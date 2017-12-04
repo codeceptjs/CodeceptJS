@@ -4,6 +4,7 @@ let I;
 let browser;
 const Protractor = require('../../lib/helper/Protractor');
 const should = require('chai').should();
+
 const siteUrl = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');
@@ -38,32 +39,30 @@ describe('Protractor-NonAngular', function () {
   });
 
 
-  beforeEach(function() {
-    webApiTests.init({ I, siteUrl});
+  beforeEach(() => {
+    webApiTests.init({ I, siteUrl });
     return I._before();
   });
 
-  after(function() {
-    return I._after();
-  });
+  after(() => I._after());
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', function*() {
+    it('should open main page of configured site', function* () {
       yield I.amOnPage('/');
       let url = yield browser.getCurrentUrl();
-      return url.should.eql(siteUrl + '/');
+      return url.should.eql(`${siteUrl}/`);
     });
 
-    it('should open any page of configured site', function*() {
+    it('should open any page of configured site', function* () {
       yield I.amOnPage('/info');
       let url = yield browser.getCurrentUrl();
-      return url.should.eql(siteUrl + '/info');
+      return url.should.eql(`${siteUrl}/info`);
     });
 
-    it('should open absolute url', function*() {
+    it('should open absolute url', function* () {
       yield I.amOnPage(siteUrl);
       let url = yield browser.getCurrentUrl();
-      return url.should.eql(siteUrl + '/');
+      return url.should.eql(`${siteUrl}/`);
     });
   });
 
@@ -83,33 +82,27 @@ describe('Protractor-NonAngular', function () {
   webApiTests.tests();
 
   describe('see text : #see', () => {
-    it('should fail when text is not on site', () => {
-      return I.amOnPage('/')
-        .then(() => I.see('Something incredible!'))
-        .catch((e) => {
-          e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.include('web application');
-        })
-    });
+    it('should fail when text is not on site', () => I.amOnPage('/')
+      .then(() => I.see('Something incredible!'))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.include('web application');
+      }));
 
-    it('should fail when text on site', () => {
-      return I.amOnPage('/')
-        .then(() => I.dontSee('Welcome'))
-        .catch((e) => {
-          e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.include('web application');
-        });
-    });
+    it('should fail when text on site', () => I.amOnPage('/')
+      .then(() => I.dontSee('Welcome'))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.include('web application');
+      }));
 
-    it('should fail when test is not in context', () => {
-      return I.amOnPage('/')
-        .then(() => I.see('debug', {css: 'a'}))
-        .catch((e) => {
-          e.should.be.instanceOf(AssertionFailedError);
-          e.toString().should.not.include('web page');
-          e.inspect().should.include("expected element {css: 'a'}");
-        });
-    });
+    it('should fail when test is not in context', () => I.amOnPage('/')
+      .then(() => I.see('debug', { css: 'a' }))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.toString().should.not.include('web page');
+        e.inspect().should.include("expected element {css: 'a'}");
+      }));
   });
 
   describe('SmartWait', () => {

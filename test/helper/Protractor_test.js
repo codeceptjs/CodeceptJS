@@ -1,5 +1,6 @@
 const Protractor = require('../../lib/helper/Protractor');
 const TestHelper = require('../support/TestHelper');
+
 const siteUrl = 'http://davertmik.github.io/angular-demo-app';
 const web_app_url = TestHelper.siteUrl();
 const assert = require('assert');
@@ -31,7 +32,7 @@ describe('Protractor', function () {
       url: siteUrl,
       browser: 'chrome',
       seleniumAddress: TestHelper.seleniumAddress(),
-      angular: true
+      angular: true,
     });
     return I._init().then(() => I._beforeSuite());
   });
@@ -436,7 +437,7 @@ describe('Protractor', function () {
 
     it('should return error if not present', function* () {
       return I.waitForText('Nothing here', 0, '#hello')
-        .then(() => { throw new Error('😟') })
+        .then(() => { throw new Error('😟'); })
         .catch((e) => {
           e.message.should.include('Wait timed out');
         });
@@ -444,7 +445,7 @@ describe('Protractor', function () {
 
     it('should return error if waiting is too small', function* () {
       return I.waitForText('Boom!', 0.5)
-        .then(() => { throw new Error('😟') })
+        .then(() => { throw new Error('😟'); })
         .catch((e) => {
           e.message.should.include('Wait timed out');
         });

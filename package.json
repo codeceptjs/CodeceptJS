@@ -47,9 +47,9 @@
     "requireg": "^0.1.5"
   },
   "devDependencies": {
-    "@types/commander": "^2.11.0",
+    "@types/commander": "^2.12.2",
     "@types/inquirer": "^0.0.35",
-    "@types/node": "^8.0.53",
+    "@types/node": "^8.0.54",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2.1",
@@ -58,23 +58,6 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "faker": "^4.1.0",
-<<<<<<< HEAD
-=======
-    "git-guppy": "^1.0.1",
-    "gulp": "^3.6.0",
-    "gulp-coveralls": "^0.1.0",
-    "gulp-documentation": "^2.2.0",
-    "gulp-eslint": "^3.0.0",
-    "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-gitmodified": "^1.1.0",
-    "gulp-if": "^2.0.2",
-    "gulp-istanbul": "^1.1.2",
-    "gulp-mocha": "^2.0.0",
-    "gulp-mustache": "^2.2.0",
-    "gulp-plumber": "^1.0.0",
-    "gulp-typescript": "^3.2.3",
-    "guppy-pre-commit": "^0.4.0",
->>>>>>> updated seleniumwebdriver & protractor
     "json-server": "^0.10.1",
     "nightmare": "^2.5.2",
     "nightmare-upload": "^0.1.1",

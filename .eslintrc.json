@@ -51,6 +51,7 @@
     "import/no-unresolved": 0,
     "no-redeclare": 0,
     "function-paren-newline": 0,
-    "no-useless-return": 0
+    "no-useless-return": 0,
+    "no-await-in-loop": 0
   }
 }
