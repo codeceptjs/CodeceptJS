@@ -1,15 +1,12 @@
-'use strict';
+const Assertion = require('../../../lib/assert/include').Assertion;
+const AssertionError = require('../../../lib/assert/error');
+const chai = require('chai');
 
-let Assertion = require('../../../lib/assert/include').Assertion;
-let AssertionError = require('../../../lib/assert/error');
-let chai = require('chai');
-let should = require('chai').should();
 let equal;
 
 describe('equal assertion', () => {
-
   beforeEach(() => {
-    equal = new Assertion({jar: 'contents of webpage'});
+    equal = new Assertion({ jar: 'contents of webpage' });
   });
 
   it('should check for inclusion', () => {
@@ -25,14 +22,14 @@ describe('equal assertion', () => {
   it('should provide nice assert error message', () => {
     equal.params.needle = 'hello';
     equal.params.haystack = 'x';
-    let err = equal.getFailedAssertion();
+    const err = equal.getFailedAssertion();
     err.inspect().should.equal('expected contents of webpage to include "hello"');
   });
 
   it('should provide nice negate error message', () => {
     equal.params.needle = 'hello';
     equal.params.haystack = 'h';
-    let err = equal.getFailedNegation();
+    const err = equal.getFailedNegation();
     err.inspect().should.equal('expected contents of webpage not to include "hello"');
   });
 });

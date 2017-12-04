@@ -1,8 +1,6 @@
-'use strict';
-let Helper = require('../../lib/helper');
+const Helper = require('../../lib/helper');
 
 class MyHelper extends Helper {
-
   method() {
     return 'hello world';
   }
@@ -26,7 +24,6 @@ class MyHelper extends Helper {
   stringWithScenarioType(type) {
     return `I'm ${type} test`;
   }
-
 }
 
 module.exports = MyHelper;
