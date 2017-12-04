@@ -4,7 +4,7 @@ const Nightmare = require('../../lib/helper/Nightmare');
 
 let I;
 let browser;
-const site_url = TestHelper.siteUrl();
+const siteUrl = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
@@ -13,7 +13,7 @@ require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 
 describe('Nightmare', function () {
-  this.retries(4);
+  this.retries(0);
   this.timeout(35000);
 
   before(() => {
@@ -23,7 +23,7 @@ describe('Nightmare', function () {
     } catch (err) {}
 
     I = new Nightmare({
-      url: site_url,
+      url: siteUrl,
       windowSize: '500x700',
       show: false,
     });
@@ -32,7 +32,7 @@ describe('Nightmare', function () {
   });
 
   beforeEach(() => {
-    webApiTests.init({ I, site_url });
+    webApiTests.init({ I, siteUrl });
     return I._before().then(() => browser = I.browser);
   });
 
@@ -42,19 +42,19 @@ describe('Nightmare', function () {
     it('should open main page of configured site', function* () {
       I.amOnPage('/');
       const url = yield browser.url();
-      return url.should.eql(`${site_url}/`);
+      return url.should.eql(`${siteUrl}/`);
     });
 
     it('should open any page of configured site', function* () {
       I.amOnPage('/info');
       const url = yield browser.url();
-      return url.should.eql(`${site_url}/info`);
+      return url.should.eql(`${siteUrl}/info`);
     });
 
     it('should open absolute url', function* () {
-      I.amOnPage(site_url);
+      I.amOnPage(siteUrl);
       const url = yield browser.url();
-      return url.should.eql(`${site_url}/`);
+      return url.should.eql(`${siteUrl}/`);
     });
   });
 
@@ -111,16 +111,12 @@ describe('Nightmare', function () {
     it('should use locate to check element', () => {
       const attribute = 'qa-id';
       return I.amOnPage('/')
-        .then(() => I._locate({ css: '.notice' }).then(els =>
+        .then(() => I._locate({ css: '.notice' }).then((els) => {
           // we received an array with IDs of matched elements
           // now let's execute client-side script to get attribute for the first element
-          browser.evaluate(
-            (el, attribute) =>
-            // this is executed inside a web page!
-              codeceptjs.fetchElement(el).getAttribute(attribute)
-            , els[0], attribute,
-          ), // function + its params
-        ).then((attributeValue) => {
+          assert.ok(!!els);
+          return browser.evaluate((el, attribute) => window.codeceptjs.fetchElement(el).getAttribute(attribute), els[0], attribute);
+        }).then((attributeValue) => {
           // get attribute value and back to server side
           // execute an assertion
           assert.equal(attributeValue, 'test');
@@ -130,9 +126,9 @@ describe('Nightmare', function () {
 
   describe('refresh page', () => {
     it('should refresh the current page', function* () {
-      I.amOnPage(site_url);
+      I.amOnPage(siteUrl);
       const url = yield browser.url();
-      assert.equal(`${site_url}/`, url);
+      assert.equal(`${siteUrl}/`, url);
       yield I.refresh();
       const nextUrl = yield browser.url();
       // reloaded the page, check the url is the same
