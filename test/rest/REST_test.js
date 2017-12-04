@@ -57,7 +57,7 @@ describe('REST', () => {
       });
     }));
 
-    it('should send DELETE requests', () => I.sendDeleteRequest('/posts/1').then(response => I.sendGetRequest('/posts').then((response) => {
+    it('should send DELETE requests', () => I.sendDeleteRequest('/posts/1').then(() => I.sendGetRequest('/posts').then((response) => {
       response.body.should.be.empty;
     })));
   });

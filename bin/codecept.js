@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 const program = require('commander');
-const path = require('path');
-const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
-const print = require('../lib/output');
-const fileExists = require('../lib/utils').fileExists;
-const fs = require('fs');
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')

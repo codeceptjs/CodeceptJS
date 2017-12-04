@@ -43,7 +43,6 @@ describe('Scenario', () => {
 
   it('should work with async func', () => {
     let counter = 0;
-    let error;
     const wait = t => new Promise(r => setTimeout(r, t));
     test.fn = () => {
       recorder.add('test', async () => {

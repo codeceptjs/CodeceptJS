@@ -21,8 +21,6 @@ const data = {
   ],
 };
 
-const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
-
 describe('ApiDataFactory', () => {
   before(() => {
     I = new ApiDataFactory({

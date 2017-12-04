@@ -66,7 +66,7 @@ describe('Actor', () => {
 
     return I.die()
       .then(() => listeners = 0)
-      .catch(err => null)
+      .catch(() => null)
       .then(() => {
         listeners.should.eql(3);
       });
