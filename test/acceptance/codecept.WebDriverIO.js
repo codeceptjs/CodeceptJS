@@ -1,20 +1,20 @@
 const TestHelper = require('../support/TestHelper.js');
 
 module.exports.config = {
-  tests: "./*_test.js",
+  tests: './*_test.js',
   timeout: 10000,
-  output: "./output",
+  output: './output',
   helpers: {
     WebDriverIO: {
       url: TestHelper.siteUrl(),
-      browser: "chrome",
+      browser: 'chrome',
       host: TestHelper.seleniumHost(),
-      port: TestHelper.seleniumPort()
-    }
+      port: TestHelper.seleniumPort(),
+    },
 
   },
   include: {},
   bootstrap: false,
   mocha: {},
-  name: "acceptance"
-}
+  name: 'acceptance',
+};
