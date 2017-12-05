@@ -2,7 +2,7 @@ require('co-mocha')(require('mocha'));
 
 let I;
 let data;
-let site_url;
+let siteUrl;
 const assert = require('assert');
 const path = require('path');
 
@@ -19,7 +19,7 @@ module.exports.tests = function () {
 
   beforeEach(() => {
     I = data.I;
-    site_url = data.site_url;
+    siteUrl = data.siteUrl;
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
@@ -38,8 +38,8 @@ module.exports.tests = function () {
 
     it('should check for equality in absolute urls', function* () {
       yield I.amOnPage('/info');
-      yield I.seeCurrentUrlEquals(`${site_url}/info`);
-      return I.dontSeeCurrentUrlEquals(`${site_url}/form`);
+      yield I.seeCurrentUrlEquals(`${siteUrl}/info`);
+      return I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
     });
   });
 
@@ -164,6 +164,7 @@ module.exports.tests = function () {
       yield I.amOnPage('/form/checkbox');
       yield I.checkOption('#checkin');
       yield I.click('Submit');
+      yield I.wait(1);
       return assert.equal(formContents('terms'), 'agree');
     });
 

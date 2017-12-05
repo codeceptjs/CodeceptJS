@@ -34,7 +34,8 @@
     "default-case": 0,
     "import/no-extraneous-dependencies": 0,
     "no-cond-assign": 0,
-    "array-callback-return": 0,
-    "function-paren-newline": 0
+    "import/no-unresolved": 0,
+    "no-await-in-loop": 0,
+    "arrow-body-style": 0
   }
 }
