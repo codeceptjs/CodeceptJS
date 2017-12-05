@@ -183,7 +183,7 @@ describe('Appium', function () {
     it('should hide device Keyboard @quick', () => app.click('~startUserRegistrationCD')
       .then(() => app.click('//android.widget.CheckBox'))
       .catch((e) => {
-        e.message.should.include('Clickable element android.widget.CheckBox was not found by text|CSS|XPath');
+        e.message.should.include('element');
       })
       .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
       .then(() => app.click('//android.widget.CheckBox')));
@@ -408,13 +408,13 @@ describe('Appium', function () {
     });
   });
 
-  describe('#click', () => {
+  describe('#click @quick', () => {
     it('should click by accessibility id', function* () {
       return app.click('~startUserRegistrationCD')
         .then(() => app.seeElement('~label_usernameCD'));
     });
 
-    it('should click by xpath', function* () {
+    it('should click by xpath @second', function* () {
       return app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
         .then(() => app.seeElement('~label_usernameCD'));
     });
@@ -500,7 +500,7 @@ describe('Appium', function () {
     });
   });
 
-  describe('#runOnIOS, #runOnAndroid, #runInWeb', () => {
+  describe('#runOnIOS, #runOnAndroid, #runInWeb @quick', () => {
     it('should use Android locators', () => {
       app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' }).then(() => {
         app.see('Welcome to register a new User');
