@@ -523,13 +523,13 @@ describe('Appium', function () {
     });
 
 
-    it('should execute only in Web @quick', () => {
+    it('should execute only in Web', () => {
       app.isWeb = true;
       let executed = false;
       app.runOnIOS(() => {
         executed = true;
       });
-      assert.ok(executed);
+      assert.ok(!executed);
     });
   });
 });
