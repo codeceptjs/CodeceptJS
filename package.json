@@ -72,7 +72,7 @@
     "webdriverio": "^4.9.11"
   },
   "engines": {
-    "node": ">=6.11"
+    "node": ">=8.9.1"
   },
   "es6": true
 }
