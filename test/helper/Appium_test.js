@@ -34,6 +34,7 @@ describe('Appium', function () {
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
+    return app._beforeSuite();
   });
 
   beforeEach(() => {
@@ -182,7 +183,7 @@ describe('Appium', function () {
     it('should hide device Keyboard @quick', () => app.click('~startUserRegistrationCD')
       .then(() => app.click('//android.widget.CheckBox'))
       .catch((e) => {
-        e.message.should.include('Clickable element android.widget.CheckBox was not found by text|CSS|XPath');
+        e.message.should.include('element');
       })
       .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
       .then(() => app.click('//android.widget.CheckBox')));
@@ -364,7 +365,7 @@ describe('Appium', function () {
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element @quick', function* () {
+    it('should be able to send special keys to element @second', function* () {
       yield app.click('~startUserRegistrationCD');
       yield app.click('~email of the customer');
       yield app.pressKey('1');
@@ -394,7 +395,7 @@ describe('Appium', function () {
       }));
   });
 
-  describe('#seeNumberOfElements @quick', () => {
+  describe('#seeNumberOfElements @second', () => {
     it('should return 1 as count', () => app.seeNumberOfElements('~buttonTestCD', 1));
   });
 
@@ -407,7 +408,7 @@ describe('Appium', function () {
     });
   });
 
-  describe('#click', () => {
+  describe('#click @quick', () => {
     it('should click by accessibility id', function* () {
       return app.click('~startUserRegistrationCD')
         .then(() => app.seeElement('~label_usernameCD'));
@@ -419,7 +420,7 @@ describe('Appium', function () {
     });
   });
 
-  describe('#fillField, #appendField', () => {
+  describe('#fillField, #appendField @second', () => {
     it('should fill field by accessibility id', function* () {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
@@ -506,7 +507,7 @@ describe('Appium', function () {
       });
     });
 
-    it('should execute only on Android', () => {
+    it('should execute only on Android @quick', () => {
       let platform = null;
       app.runOnIOS(() => {
         platform = 'ios';
@@ -528,7 +529,7 @@ describe('Appium', function () {
       app.runOnIOS(() => {
         executed = true;
       });
-      assert.ok(executed);
+      assert.ok(!executed);
     });
   });
 });

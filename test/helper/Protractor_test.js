@@ -1,22 +1,20 @@
-const TestHelper = require('../support/TestHelper');
-
 const Protractor = require('../../lib/helper/Protractor');
-
-const site_url = 'http://davertmik.github.io/angular-demo-app';
-const web_app_url = TestHelper.siteUrl();
+const TestHelper = require('../support/TestHelper');
 const assert = require('assert');
-
-let I;
-let browser;
 const path = require('path');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
-
-chai.use(chaiAsPromised);
-const expect = chai.expect;
 const AssertionFailedError = require('../../lib/assert/error');
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 const fileExists = require('../../lib/utils').fileExists;
+
+const web_app_url = TestHelper.siteUrl();
+const siteUrl = 'http://davertmik.github.io/angular-demo-app';
+let I;
+let browser;
+
+chai.use(chaiAsPromised);
+const expect = chai.expect;
 
 require('co-mocha')(require('mocha'));
 
@@ -25,14 +23,16 @@ function assertFormContains(key, value) {
 }
 
 describe('Protractor', function () {
+  this.retries(3);
   this.timeout(20000);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '../data');
     I = new Protractor({
-      url: site_url,
+      url: siteUrl,
       browser: 'chrome',
       seleniumAddress: TestHelper.seleniumAddress(),
+      angular: true,
     });
     return I._init().then(() => I._beforeSuite());
   });
@@ -46,18 +46,18 @@ describe('Protractor', function () {
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', () => {
       I.amOnPage('/');
-      return expect(browser.getCurrentUrl()).to.eventually.equal(`${site_url}/#/`);
+      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
     });
 
     it('should open absolute url', () => {
-      I.amOnPage(site_url);
-      return expect(browser.getCurrentUrl()).to.eventually.equal(`${site_url}/#/`);
+      I.amOnPage(siteUrl);
+      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
     });
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, ...', () => {
     it('should check for url fragment', function* () {
-      yield I.amOnPage(`${site_url}/#/info`);
+      yield I.amOnPage(`${siteUrl}/#/info`);
       yield I.seeInCurrentUrl('/info');
       return I.dontSeeInCurrentUrl('/result');
     });
@@ -335,25 +335,6 @@ describe('Protractor', function () {
     });
   });
 
-  describe('#attachFile', () => {
-    beforeEach(() => {
-      I.amOutsideAngularApp(); // switch off angular mode
-      return I.amOnPage(`${web_app_url}/form/file`);
-    });
-
-    it('should upload file located by CSS', function* () {
-      yield I.attachFile('#avatar', 'app/avatar.jpg');
-      yield I.click('Submit');
-      return formContents().files.should.have.key('avatar');
-    });
-
-    it('should upload file located by label', function* () {
-      yield I.attachFile('Avatar', 'app/avatar.jpg');
-      yield I.click('Submit');
-      return formContents().files.should.have.key('avatar');
-    });
-  });
-
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
@@ -423,7 +404,7 @@ describe('Protractor', function () {
       yield I.see('Welcome', 'h1');
       yield I.amInsideAngularApp();
       yield I.amOnPage('/');
-      yield I.seeInCurrentUrl(site_url);
+      yield I.seeInCurrentUrl(siteUrl);
       return I.see('Create Event');
     });
   });
@@ -455,17 +436,17 @@ describe('Protractor', function () {
     });
 
     it('should return error if not present', function* () {
-      if (I.isProtractor5) return;
       return I.waitForText('Nothing here', 0, '#hello')
-        .thenCatch((e) => {
+        .then(() => { throw new Error('😟'); })
+        .catch((e) => {
           e.message.should.include('Wait timed out');
         });
     });
 
     it('should return error if waiting is too small', function* () {
-      if (I.isProtractor5) return;
       return I.waitForText('Boom!', 0.5)
-        .thenCatch((e) => {
+        .then(() => { throw new Error('😟'); })
+        .catch((e) => {
           e.message.should.include('Wait timed out');
         });
     });
