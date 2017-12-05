@@ -1,4 +1,4 @@
-let TestHelper = require('../support/TestHelper');
+const TestHelper = require('../support/TestHelper');
 
 let I;
 let browser;
@@ -23,7 +23,9 @@ describe('Protractor-NonAngular', function () {
     global.codecept_dir = path.join(__dirname, '/../data');
     try {
       fs.unlinkSync(dataFile);
-    } catch (err) {}
+    } catch (err) {
+      // continue regardless of error
+    }
 
     I = new Protractor({
       url: siteUrl,
@@ -49,19 +51,19 @@ describe('Protractor-NonAngular', function () {
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', function* () {
       yield I.amOnPage('/');
-      let url = yield browser.getCurrentUrl();
+      const url = yield browser.getCurrentUrl();
       return url.should.eql(`${siteUrl}/`);
     });
 
     it('should open any page of configured site', function* () {
       yield I.amOnPage('/info');
-      let url = yield browser.getCurrentUrl();
+      const url = yield browser.getCurrentUrl();
       return url.should.eql(`${siteUrl}/info`);
     });
 
     it('should open absolute url', function* () {
       yield I.amOnPage(siteUrl);
-      let url = yield browser.getCurrentUrl();
+      const url = yield browser.getCurrentUrl();
       return url.should.eql(`${siteUrl}/`);
     });
   });

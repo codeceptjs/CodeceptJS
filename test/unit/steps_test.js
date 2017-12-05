@@ -46,11 +46,6 @@ describe('Step', () => {
   });
 
   describe('#run', () => {
-    let init,
-      before,
-      after,
-      failed;
-
     afterEach(() => event.cleanDispatcher());
 
     it('should run step', () => {
