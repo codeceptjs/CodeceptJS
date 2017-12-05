@@ -365,7 +365,7 @@ describe('Appium', function () {
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element @quick', function* () {
+    it('should be able to send special keys to element @second', function* () {
       yield app.click('~startUserRegistrationCD');
       yield app.click('~email of the customer');
       yield app.pressKey('1');
@@ -395,7 +395,7 @@ describe('Appium', function () {
       }));
   });
 
-  describe('#seeNumberOfElements @quick', () => {
+  describe('#seeNumberOfElements @second', () => {
     it('should return 1 as count', () => app.seeNumberOfElements('~buttonTestCD', 1));
   });
 
@@ -500,14 +500,14 @@ describe('Appium', function () {
     });
   });
 
-  describe('#runOnIOS, #runOnAndroid, #runInWeb @quick', () => {
+  describe('#runOnIOS, #runOnAndroid, #runInWeb', () => {
     it('should use Android locators', () => {
       app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' }).then(() => {
         app.see('Welcome to register a new User');
       });
     });
 
-    it('should execute only on Android', () => {
+    it('should execute only on Android @quick', () => {
       let platform = null;
       app.runOnIOS(() => {
         platform = 'ios';
@@ -523,7 +523,7 @@ describe('Appium', function () {
     });
 
 
-    it('should execute only in Web', () => {
+    it('should execute only in Web @quick', () => {
       app.isWeb = true;
       let executed = false;
       app.runOnIOS(() => {
