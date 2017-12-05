@@ -414,13 +414,13 @@ describe('Appium', function () {
         .then(() => app.seeElement('~label_usernameCD'));
     });
 
-    it('should click by xpath @second', function* () {
+    it('should click by xpath', function* () {
       return app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
         .then(() => app.seeElement('~label_usernameCD'));
     });
   });
 
-  describe('#fillField, #appendField', () => {
+  describe('#fillField, #appendField @second', () => {
     it('should fill field by accessibility id', function* () {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
