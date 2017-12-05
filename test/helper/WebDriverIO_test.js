@@ -373,6 +373,10 @@ describe('WebDriverIO', function () {
     it('should click on input in inner element', () => wd.amOnPage('/form/checkbox')
       .then(() => wd.click('Submit', '//form'))
       .then(() => wd.waitInUrl('/form/complex')));
+
+    it('should click by accessibility_id', () => wd.amOnPage('/info')
+      .then(() => wd.click('~index'))
+      .then(() => wd.see('Welcome to test app!')));
   });
 
 
