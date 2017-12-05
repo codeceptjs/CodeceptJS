@@ -9,7 +9,7 @@
 
 <p>Lots of valuable data here
 
-    <a href="/" id="back"><img src="blank.gif" alt="Back"/></a>
+    <a href="/" id="back" aria-label="index"><img src="blank.gif" alt="Back"/></a>
 </p>
 
 <div class="notice"><?php if (isset($notice)) echo $notice; ?></div>

@@ -1,15 +1,17 @@
-'use strict';
+const assert = require('assert');
+const chai = require('chai');
 
-let assert = require('assert');
-let chai = require('chai');
-let expect = chai.expect;
-let sinonChai = require('sinon-chai');
+const expect = chai.expect;
+const sinonChai = require('sinon-chai');
+
 chai.use(sinonChai);
 
-let sinon = require('sinon');
-sinon.assert.expose(chai.assert, { prefix: "" });
+const sinon = require('sinon');
 
-let originalOutput = require('../../lib/output');
+sinon.assert.expose(chai.assert, { prefix: '' });
+
+const originalOutput = require('../../lib/output');
+
 let output;
 
 describe('Output', () => {
@@ -26,7 +28,7 @@ describe('Output', () => {
 
   it('should allow the process to be set', () => {
     const expectedProcess = {
-      profile: 'firefox'
+      profile: 'firefox',
     };
 
     output.process(expectedProcess);

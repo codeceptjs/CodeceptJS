@@ -1,15 +1,12 @@
-'use strict';
+const Assertion = require('../../../lib/assert/equal').Assertion;
+const AssertionError = require('../../../lib/assert/error');
+const chai = require('chai');
 
-let Assertion = require('../../../lib/assert/equal').Assertion;
-let AssertionError = require('../../../lib/assert/error');
-let chai = require('chai');
-let should = require('chai').should();
 let equal;
 
 describe('equal assertion', () => {
-
   beforeEach(() => {
-    equal = new Assertion({jar: 'contents of webpage'});
+    equal = new Assertion({ jar: 'contents of webpage' });
   });
 
   it('should check for equality', () => {
@@ -25,15 +22,14 @@ describe('equal assertion', () => {
   it('should provide nice assert error message', () => {
     equal.params.expected = 'hello';
     equal.params.actual = 'hi';
-    let err = equal.getFailedAssertion();
+    const err = equal.getFailedAssertion();
     err.inspect().should.equal("expected contents of webpage 'hello' to equal 'hi'");
   });
 
   it('should provide nice negate error message', () => {
     equal.params.expected = 'hello';
     equal.params.actual = 'hello';
-    let err = equal.getFailedNegation();
-    err.inspect().should.equal("expected contents of webpage 'hello' not to equal 'hello'"); });
-
-
+    const err = equal.getFailedNegation();
+    err.inspect().should.equal("expected contents of webpage 'hello' not to equal 'hello'");
+  });
 });
