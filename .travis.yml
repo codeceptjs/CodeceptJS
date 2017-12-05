@@ -11,7 +11,7 @@ env:
   matrix:
   - HELPER=Protractor
   - HELPER=Nightmare
-  - HELPER=SeleniumWebdriver
+  - HELPER=ProtractorWeb
   - HELPER=WebDriverIO
 addons:
   apt:

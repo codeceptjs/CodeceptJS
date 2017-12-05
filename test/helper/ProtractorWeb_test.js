@@ -1,22 +1,22 @@
 const TestHelper = require('../support/TestHelper');
-
-let I;
-let browser;
-const Protractor = require('../../lib/helper/Protractor');
-const should = require('chai').should();
-
-const siteUrl = TestHelper.siteUrl();
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
+const Protractor = require('../../lib/helper/Protractor');
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 
+let I;
+let browser;
+const should = require('chai').should();
+
+const siteUrl = TestHelper.siteUrl();
+const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
+require('co-mocha')(require('mocha'));
+
 describe('Protractor-NonAngular', function () {
-  // this.retries(4);
+  this.retries(3);
   this.timeout(35000);
 
   before(() => {
