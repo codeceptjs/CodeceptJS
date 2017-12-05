@@ -183,9 +183,9 @@ describe('WebDriverIO', function () {
   });
 
   describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', () => wd.amOnPage('/info')
-      .then(() => wd.grabCssPropertyFrom('h3', 'font-weight'))
-      .then(css => assert.equal(css, 'bold')));
+    it('should grab css property for given element', () => wd.amOnPage('/form/doubleclick')
+      .then(() => wd.grabCssPropertyFrom('#block', 'height'))
+      .then(css => assert.equal(css, '100px')));
   });
 
   describe('#seeCssPropertiesOnElements', () => {
