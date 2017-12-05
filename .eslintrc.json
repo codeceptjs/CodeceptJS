@@ -18,7 +18,6 @@
     "no-console": 0,
     "global-require": 0,
     "class-methods-use-this": 0,
-    "no-plusplus": 0,
     "no-return-assign": 0,
     "prefer-rest-params": 0,
     "no-useless-escape": 0,
