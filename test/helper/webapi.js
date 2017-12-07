@@ -146,7 +146,8 @@ module.exports.tests = function () {
     it('should click link with inner span', function* () {
       yield I.amOnPage('/form/example7');
       yield I.click('Buy Chocolate Bar');
-      return I.seeInCurrentUrl('/');
+      // yield I.wait(3);
+      return I.seeCurrentUrlEquals('/');
     });
   });
 

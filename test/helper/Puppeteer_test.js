@@ -16,12 +16,14 @@ let browser;
 let page;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Puppeteer', () => {
+describe('Puppeteer', function () {
+  this.timeout(35000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     I = new Puppeteer({
       url: siteUrl,
-      windowSize: '500x400',
+      windowSize: '1000x800',
       show: false,
     });
     I._init();
@@ -29,7 +31,7 @@ describe('Puppeteer', () => {
   });
 
   beforeEach(() => {
-    // webApiTests.init({ I, siteUrl});
+    webApiTests.init({ I, siteUrl });
     return I._before().then(() => {
       page = I.page;
       browser = I.browser;
@@ -58,29 +60,6 @@ describe('Puppeteer', () => {
       return url.should.eql(`${siteUrl}/`);
     });
   });
-  describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
-    it('should check visible elements on page', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeElement('input[name=name]');
-      yield I.seeElement({ name: 'name' });
-      yield I.seeElement('//input[@id="name"]');
-      yield I.dontSeeElement('#something-beyond');
-      return I.dontSeeElement('//input[@id="something-beyond"]');
-    });
 
-    it('should check elements are in the DOM', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeElementInDOM('input[name=name]');
-      yield I.seeElementInDOM('//input[@id="name"]');
-      yield I.dontSeeElementInDOM('#something-beyond');
-      return I.dontSeeElementInDOM('//input[@id="something-beyond"]');
-    });
-
-    it('should check elements are visible on the page', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeElementInDOM('input[name=email]');
-      yield I.dontSeeElement('input[name=email]');
-      return I.dontSeeElement('#something-beyond');
-    });
-  });
+  webApiTests.tests();
 });
