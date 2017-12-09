@@ -1,9 +1,10 @@
-{
+module.exports = {
   "extends": "airbnb-base",
   "env": {
     "node": true
   },
   "rules": {
+    // @todo: Add todo for every rull what we want to validte.
     "func-names": 0,
     "no-use-before-define": 0,
     "no-unused-vars": 0,
@@ -38,4 +39,4 @@
     "no-await-in-loop": 0,
     "arrow-body-style": 0
   }
-}
+};
