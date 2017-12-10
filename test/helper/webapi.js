@@ -146,7 +146,8 @@ module.exports.tests = function () {
     it('should click link with inner span', function* () {
       yield I.amOnPage('/form/example7');
       yield I.click('Buy Chocolate Bar');
-      return I.seeInCurrentUrl('/');
+      // yield I.wait(3);
+      return I.seeCurrentUrlEquals('/');
     });
   });
 
@@ -463,19 +464,6 @@ module.exports.tests = function () {
     });
   });
 
-  describe('window size #resizeWindow', () => {
-    it('should set initial window size', () => I.amOnPage('/form/resize')
-      .then(() => I.click('Window Size'))
-      .then(() => I.see('Height 700', '#height'))
-      .then(() => I.see('Width 500', '#width')));
-
-    it('should resize window to specific dimensions', () => I.amOnPage('/form/resize')
-      .then(() => I.resizeWindow(800, 600))
-      .then(() => I.click('Window Size'))
-      .then(() => I.see('Height 600', '#height'))
-      .then(() => I.see('Width 800', '#width')));
-  });
-
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
@@ -484,15 +472,15 @@ module.exports.tests = function () {
     it('should create a screenshot file in output dir', () => {
       const sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
-        .then(() => I.saveScreenshot(`screenshot_${sec}`))
-        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}`)), null, 'file does not exists'));
+        .then(() => I.saveScreenshot(`screenshot_${sec}.png`))
+        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists'));
     });
 
     it('should create a full page screenshot file in output dir', () => {
       const sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
-        .then(() => I.saveScreenshot(`screenshot_full_${+sec}`, true))
-        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}`)), null, 'file does not exists'));
+        .then(() => I.saveScreenshot(`screenshot_full_${+sec}.png`, true))
+        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists'));
     });
 
     it('should create a screenshot on fail  @ups', () => {
@@ -521,7 +509,7 @@ module.exports.tests = function () {
   });
 
   describe('#waitForText', () => {
-    it('should wait for text @ups', () => I.amOnPage('/dynamic')
+    it('should wait for text', () => I.amOnPage('/dynamic')
       .then(() => I.dontSee('Dynamic text'))
       .then(() => I.waitForText('Dynamic text', 2))
       .then(() => I.see('Dynamic text')));
@@ -530,6 +518,32 @@ module.exports.tests = function () {
       .then(() => I.dontSee('Dynamic text'))
       .then(() => I.waitForText('Dynamic text', 2, '#text'))
       .then(() => I.see('Dynamic text')));
+
+    it('should fail if no context', () => {
+      let failed = false;
+      return I.amOnPage('/dynamic')
+        .then(() => I.dontSee('Dynamic text'))
+        .then(() => I.waitForText('Dynamic text', 1, '#fext'))
+        .catch(err => failed = true)
+        .then(() => assert.ok(failed));
+    });
+
+    it('should fail if text doesn\'t contain', () => {
+      let failed = false;
+      return I.amOnPage('/dynamic')
+        .then(() => I.waitForText('Other text', 1))
+        .catch(err => failed = true)
+        .then(() => assert.ok(failed));
+    });
+
+    it('should fail if text is not in element', () => {
+      let failed = false;
+      return I.amOnPage('/dynamic')
+        .then(() => I.waitForText('Other text', 1, '#text'))
+        .catch(err => failed = true)
+        .then(() => assert.ok(failed));
+    });
+
 
     it('should wait for text after timeout', () => I.amOnPage('/timeout')
       .then(() => I.dontSee('Timeout text'))
@@ -551,6 +565,11 @@ module.exports.tests = function () {
       .then(() => I.waitForElement('#step_2'))
       .then(() => I.dontSeeElement('#step_2'))
       .then(() => I.seeElementInDOM('#step_2')));
+
+    it('should wait for element by XPath', () => I.amOnPage('/form/wait_visible')
+      .then(() => I.waitForElement('//div[@id="step_2"]'))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]'))
+      .then(() => I.seeElementInDOM('//div[@id="step_2"]')));
 
 
     it('should wait for element to appear', () => I.amOnPage('/form/wait_element')
@@ -611,7 +630,7 @@ module.exports.tests = function () {
         });
     });
 
-    it('should execute within block ', () => I.amOnPage('/form/example4')
+    it('should execute within block 2', () => I.amOnPage('/form/example4')
       .then(() => I.fillField('Hasło', '12345'))
       .then(() => I._withinBegin({ xpath: '//div[@class="form-group"][2]' }))
       .then(() => I.dontSee('E-Mail'))

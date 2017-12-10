@@ -379,6 +379,18 @@ describe('WebDriverIO', function () {
       .then(() => wd.see('Welcome to test app!')));
   });
 
+  describe('window size #resizeWindow', () => {
+    it('should set initial window size', () => wd.amOnPage('/form/resize')
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 700', '#height'))
+      .then(() => wd.see('Width 500', '#width')));
+
+    it('should resize window to specific dimensions', () => wd.amOnPage('/form/resize')
+      .then(() => wd.resizeWindow(950, 600))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 600', '#height'))
+      .then(() => wd.see('Width 950', '#width')));
+  });
 
   describe('SmartWait', () => {
     before(() => wd.options.smartWait = 3000);
