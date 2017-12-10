@@ -18,13 +18,13 @@ const siteUrl = TestHelper.siteUrl();
 
 describe('Puppeteer', function () {
   this.timeout(35000);
-  this.retries(1);
+  // this.retries(1);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     I = new Puppeteer({
       url: siteUrl,
-      windowSize: '1000x800',
+      windowSize: '500x700',
       show: false,
     });
     I._init();
@@ -63,4 +63,60 @@ describe('Puppeteer', function () {
   });
 
   webApiTests.tests();
+
+  describe('#waitToHide', () => {
+    it('should wait for hidden element', () => {
+      return I.amOnPage('/form/wait_invisible')
+        .then(() => I.see('Step One Button'))
+        .then(() => I.waitToHide('#step_1', 2))
+        .then(() => I.dontSeeElement('#step_1'))
+        .then(() => I.dontSee('Step One Button'));
+    });
+
+    it('should wait for hidden element by XPath', () => {
+      return I.amOnPage('/form/wait_invisible')
+        .then(() => I.see('Step One Button'))
+        .then(() => I.waitToHide('//div[@id="step_1"]', 2))
+        .then(() => I.dontSeeElement('//div[@id="step_1"]'))
+        .then(() => I.dontSee('Step One Button'));
+    });
+  });
+
+  describe('#moveCursorTo', () => {
+    it('should trigger hover event', () => I.amOnPage('/form/hover')
+      .then(() => I.moveCursorTo('#hover'))
+      .then(() => I.see('Hovered', '#show')));
+  });
+
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+    it('should switch to next tab', () => I.amOnPage('/info')
+      .then(() => I.click('New tab'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.seeCurrentUrlEquals('/login')));
+
+    it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
+      .then(() => I.click('More info'))
+      .then(() => I.switchToNextTab(2))
+      .catch((e) => {
+        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
+      }));
+
+    it('should close current tab', () => I.amOnPage('/info')
+      .then(() => I.click('New tab'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.seeInCurrentUrl('/login'))
+      .then(() => I.closeCurrentTab())
+      .then(() => I.seeInCurrentUrl('/info')));
+
+    it('should open new tab', () => I.amOnPage('/info')
+      .then(() => I.openNewTab())
+      .then(() => I.seeInCurrentUrl('about:blank')));
+
+    it('should switch to previous tab', () => I.amOnPage('/info')
+      .then(() => I.openNewTab())
+      .then(() => I.seeInCurrentUrl('about:blank'))
+      .then(() => I.switchToPreviousTab())
+      .then(() => I.seeInCurrentUrl('/info')));
+  });
+
 });
