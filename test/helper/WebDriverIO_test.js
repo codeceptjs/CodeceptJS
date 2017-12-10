@@ -380,16 +380,16 @@ describe('WebDriverIO', function () {
   });
 
   describe('window size #resizeWindow', () => {
-    it('should set initial window size', () => I.amOnPage('/form/resize')
-      .then(() => I.click('Window Size'))
-      .then(() => I.see('Height 700', '#height'))
-      .then(() => I.see('Width 500', '#width')));
+    it('should set initial window size', () => wd.amOnPage('/form/resize')
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 700', '#height'))
+      .then(() => wd.see('Width 500', '#width')));
 
-    it('should resize window to specific dimensions', () => I.amOnPage('/form/resize')
-      .then(() => I.resizeWindow(950, 600))
-      .then(() => I.click('Window Size'))
-      .then(() => I.see('Height 600', '#height'))
-      .then(() => I.see('Width 950', '#width')));
+    it('should resize window to specific dimensions', () => wd.amOnPage('/form/resize')
+      .then(() => wd.resizeWindow(950, 600))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 600', '#height'))
+      .then(() => wd.see('Width 950', '#width')));
   });
 
   describe('SmartWait', () => {
