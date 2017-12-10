@@ -126,12 +126,26 @@ describe('Nightmare', function () {
     });
   });
 
+  describe('window size #resizeWindow', () => {
+    it('should set initial window size', () => I.amOnPage('/form/resize')
+      .then(() => I.click('Window Size'))
+      .then(() => I.see('Height 700', '#height'))
+      .then(() => I.see('Width 500', '#width')));
+
+    it('should resize window to specific dimensions', () => I.amOnPage('/form/resize')
+      .then(() => I.resizeWindow(950, 600))
+      .then(() => I.click('Window Size'))
+      .then(() => I.see('Height 600', '#height'))
+      .then(() => I.see('Width 950', '#width')));
+  });
+
+
   describe('refresh page', () => {
     it('should refresh the current page', function* () {
       I.amOnPage(siteUrl);
       const url = yield browser.url();
       assert.equal(`${siteUrl}/`, url);
-      yield I.refresh();
+      yield I.refreshPage();
       const nextUrl = yield browser.url();
       // reloaded the page, check the url is the same
       assert.equal(url, nextUrl);

@@ -11,6 +11,7 @@ env:
   matrix:
   - HELPER=Protractor
   - HELPER=Nightmare
+  - HELPER=Puppeteer
   - HELPER=ProtractorWeb
   - HELPER=WebDriverIO
 addons:
