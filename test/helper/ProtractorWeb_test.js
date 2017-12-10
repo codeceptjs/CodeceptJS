@@ -30,7 +30,7 @@ describe('Protractor-NonAngular', function () {
     I = new Protractor({
       url: siteUrl,
       browser: 'chrome',
-      windowSize: '500x700',
+      windowSize: '1000x800',
       angular: false,
       restart: false,
       seleniumAddress: TestHelper.seleniumAddress(),
@@ -45,6 +45,20 @@ describe('Protractor-NonAngular', function () {
     webApiTests.init({ I, siteUrl });
     return I._before();
   });
+
+  describe('window size #resizeWindow', () => {
+    it('should set initial window size', () => I.amOnPage('/form/resize')
+      .then(() => I.click('Window Size'))
+      .then(() => I.see('Height 800', '#height'))
+      .then(() => I.see('Width 1000', '#width')));
+
+    it('should resize window to specific dimensions', () => I.amOnPage('/form/resize')
+      .then(() => I.resizeWindow(950, 600))
+      .then(() => I.click('Window Size'))
+      .then(() => I.see('Height 600', '#height'))
+      .then(() => I.see('Width 950', '#width')));
+  });
+
 
   after(() => I._after());
 
@@ -106,20 +120,6 @@ describe('Protractor-NonAngular', function () {
         e.inspect().should.include("expected element {css: 'a'}");
       }));
   });
-
-  describe('window size #resizeWindow', () => {
-    it('should set initial window size', () => I.amOnPage('/form/resize')
-      .then(() => I.click('Window Size'))
-      .then(() => I.see('Height 700', '#height'))
-      .then(() => I.see('Width 500', '#width')));
-
-    it('should resize window to specific dimensions', () => I.amOnPage('/form/resize')
-      .then(() => I.resizeWindow(950, 600))
-      .then(() => I.click('Window Size'))
-      .then(() => I.see('Height 600', '#height'))
-      .then(() => I.see('Width 950', '#width')));
-  });
-
 
   describe('SmartWait', () => {
     before(() => I.options.smartWait = 3000);
