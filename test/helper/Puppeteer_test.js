@@ -118,5 +118,4 @@ describe('Puppeteer', function () {
       .then(() => I.switchToPreviousTab())
       .then(() => I.seeInCurrentUrl('/info')));
   });
-
 });
