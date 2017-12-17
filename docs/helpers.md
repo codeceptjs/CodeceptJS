@@ -83,23 +83,22 @@ class MyHelper extends Helper {
   /**
    * checks that authentication cookie is set
    */
-  seeAuthentication() {
+  async seeAuthentication() {
     // access current client of WebDriverIO helper
     let client = this.helpers['WebDriverIO'].browser;
 
     // get all cookies according to http://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
-    return client.cookie(function(err, res) {
-      // get values
-      let cookies = res.value;
-      for (let k in cookies) {
-        // check for a cookie
-        if (cookies[k].name != 'logged_in') continue;
-        assert.equal(cookies[k].value, 'yes');
-        return;
-      }
-      assert.fail(cookies, 'logged_in', "Auth cookie not set");
-    });
+    const res = await client.cookie();
+    // get values
+    let cookies = res.value;
+    for (let k in cookies) {
+      // check for a cookie
+      if (cookies[k].name != 'logged_in') continue;
+      assert.equal(cookies[k].value, 'yes');
+      return;
+    }
+    assert.fail(cookies, 'logged_in', "Auth cookie not set");
   }
 }
 

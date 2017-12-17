@@ -1,3 +1,52 @@
+## 1.1.0
+
+Major update to CodeceptJS. **NodeJS v 8.9.1** is now minimal Node version required.
+This brings native async-await support to CodeceptJS. It is recommended to start using await for tests instead of generators:
+
+```js
+async () => {
+  I.amOnPage('/page');
+  const url = await I.grabTextFrom('.nextPage');
+  I.amOnPage(url);
+}
+```
+
+Thanks to [@Apshenkin](https://github.com/apshenkin) for implementation. Also, most helpers were refactored to use async-await. This made our code simpler. We hope that this encourages more users to send pull requests!
+
+We also introduced strict ESLint policies for our codebase. Thanks to **[@Galkin](https://github.com/galkin)** for that.
+
+* **[Puppeteer] Helper introduced**. [Learn how to run tests headlessly with Google Chrome's Puppeteer](http://codecept.io/puppeteer/).
+* **[SeleniumWebdriver] Helper is deprecated**, it is recommended to use Protractor with config option `angular: false` instead.
+* [WebDriverIO] nested iframe support in the within block by @reubenmiller. Example:
+
+```js
+within({frame: ['#wrapperId', '[name=content]']}, () => {
+  I.click('Sign in!');
+  I.see('Email Address');
+});
+I.see('Nested Iframe test');
+I.dontSee('Email Address');
+});
+```
+* [WebDriverIO] Support for `~` locator to find elements by `aria-label`. This behavior is similar as it is in Appium and helps testing cross-platform React apps. Example:
+
+```html
+<Text accessibilityLabel="foobar">
+    CodeceptJS is awesome
+</Text>
+```
+↑ This element can be located with `~foobar` in WebDriverIO and Appium helpers. Thanks to @flyskywhy
+
+* Allow providing arbitrary objects in config includes by @rlewan
+* [REST] Prevent from mutating default headers by @alexashley. See [#789](https://github.com/Codeception/CodeceptJS/pull/789)
+* [REST] Fixed sending empty helpers with `haveRequestHeaders` in `sendPostRequest`. By @petrisorionel
+* Fixed displaying undefined args in output by @APshenkin
+* Fixed NaN instead of seconds in output by @APshenkin
+* Add browser name to report file for `multiple-run` by @trollr
+* Mocha updated to 4.x
+
+
+
 ## 1.0.3
 
 * [WebDriverIO][Protractor][Nightmare] method `waitUntilExists` implemented by @sabau

@@ -1,6 +1,6 @@
 # QuickStart
 
-**NodeJS v 6.11.1** and higher required to start.
+**NodeJS v 8.9** and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
 
 Install **CodeceptJS** with WebDriverIO using `codeceptjs-webdriverio` meta package from NPM.
@@ -17,8 +17,9 @@ or locally
 npm install codeceptjs-webdriverio --save-dev
 ```
 
-* To test with Nightmare install `codeceptjs-nightmare` package
+* To test with Puppeteer install `codeceptjs-puppeteer` package
 * To test with Protractor install `codeceptjs-protractor` package
+* To test with Nightmare install `codeceptjs-nightmare` package
 * For additional options see [Installation guide](http://codecept.io/installation/).
 
 ## Setup
@@ -42,7 +43,7 @@ No matter what helper you've chosen they will be similar in use.
 ? What helpers do you want to use?
 ❯◉ WebDriverIO
  ◯ Protractor
- ◯ SeleniumWebdriver
+ ◯ Puppeteer
  ◯ Nightmare
  ◯ FileSystem
 ```
