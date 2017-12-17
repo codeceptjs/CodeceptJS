@@ -187,24 +187,23 @@ so you can access them in next calls to `evaluate`:
 
 ```js
 // inside a custom helper class
-seeAttributeContains(locator, attribute, expectedValue) {
+async seeAttributeContains(locator, attribute, expectedValue) {
   // let's use chai assertion library
-  let assert = require('chai').assert;
+  const assert = require('chai').assert;
   // get nightmare instance
-  let browser = this.helpers['Nightmare'].browser;
+  const browser = this.helpers['Nightmare'].browser;
   // find an element by CSS or XPath:
-  return this.helpers['Nightmare']._locate(locator).then(function(els) {
+  const els = await this.helpers['Nightmare']._locate(locator);
     // we received an array with IDs of matched elements
     // now let's execute client-side script to get attribute for the first element
-    return browser.evaluate(function(el, attribute) {
+  const attributeValue = await browser.evaluate(function(el, attribute) {
       // this is executed inside a web page!
       return codeceptjs.fetchElement(el).getAttribute(attribute);
-    }, els[0], attribute); // function + its params
-  }).then(function(attributeValue) {
+  }, els[0], attribute); // function + its params
+
     // get attribute value and back to server side
     // execute an assertion
-    assert.include(attributeValue, expectedValue);
-  });
+  assert.include(attributeValue, expectedValue);
 }
 ```
 

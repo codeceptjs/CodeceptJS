@@ -130,15 +130,15 @@ module.exports = {
   },
 
   // introducing methods
-  openMainArticle: function* () {
+  openMainArticle: async () => {
     I.waitForVisible(this.container)
     let _this = this
     let title;
-    yield within(this.container, function*(){
-      title = yield I.grabTextFrom(_this.mainItem.number);
-      let subtitle = yield I.grabTextFrom(_this.mainItem.title);
+    await within(this.container, async () => {
+      title = await I.grabTextFrom(_this.mainItem.number);
+      let subtitle = await I.grabTextFrom(_this.mainItem.title);
       title = title + " " + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
-      yield I.click(_this.mainItem.title)
+      await I.click(_this.mainItem.title)
     })
     return title;
   }
@@ -148,8 +148,8 @@ module.exports = {
 and use them in your tests:
 
 ```js
-Scenario('login2', function* (I, loginPage, basePage) {
-  let title = yield* mainPage.openMainArticle()
+Scenario('login2', async (I, loginPage, basePage) => {
+  let title = await mainPage.openMainArticle()
   basePage.pageShouldBeOpened(title)
 });
 ```
