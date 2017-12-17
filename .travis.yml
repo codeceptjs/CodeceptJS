@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-- 6
 - 8
+- 9
 sudo: required
 dist: trusty
 env:
@@ -11,7 +11,8 @@ env:
   matrix:
   - HELPER=Protractor
   - HELPER=Nightmare
-  - HELPER=SeleniumWebdriver
+  - HELPER=Puppeteer
+  - HELPER=ProtractorWeb
   - HELPER=WebDriverIO
 addons:
   apt:
@@ -20,9 +21,9 @@ addons:
 services:
 - docker
 before_install:
-- docker pull selenium/standalone-chrome:2.53.0
+- docker pull selenium/standalone-chrome:3.8
 before_script:
-- docker run -d --net=host selenium/standalone-chrome:2.53.0
+- docker run -d --net=host selenium/standalone-chrome:3.8
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 - chmod -R 777 test/data
@@ -30,6 +31,6 @@ before_script:
 - npm run json-server &
 - sleep 10
 script:
-- gulp test
+- npm test
 - './node_modules/.bin/mocha test/rest'
 - './node_modules/.bin/mocha test/helper/${HELPER}_test.js'

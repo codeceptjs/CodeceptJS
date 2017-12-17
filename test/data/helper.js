@@ -1,8 +1,6 @@
-'use strict';
-let Helper = require('../../lib/helper');
+const Helper = require('../../lib/helper');
 
 class MyHelper extends Helper {
-
   method() {
     return 'hello world';
   }
@@ -19,6 +17,13 @@ class MyHelper extends Helper {
     return `I'm generator ${hookName} hook`;
   }
 
+  asyncStringWithHook(hookName) {
+    return `I'm async/await ${hookName} hook`;
+  }
+
+  stringWithScenarioType(type) {
+    return `I'm ${type} test`;
+  }
 }
 
 module.exports = MyHelper;

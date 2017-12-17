@@ -1,11 +1,9 @@
-'use strict';
-let FileSystem = require('../../../lib/helper/FileSystem');
-let should = require('chai').should();
-let path = require('path');
+const FileSystem = require('../../../lib/helper/FileSystem');
+const path = require('path');
+
 let fs;
 
 describe('FileSystem', () => {
-
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../..');
   });
@@ -29,10 +27,8 @@ describe('FileSystem', () => {
     fs.seeInThisFile('FileSystem');
     fs.dontSeeInThisFile('WebDriverIO');
     fs.dontSeeFileContentsEqual('123345');
-    fs.seeFileContentsEqual(
-`A simple file
+    fs.seeFileContentsEqual(`A simple file
 for FileSystem helper
 test`);
   });
-
 });

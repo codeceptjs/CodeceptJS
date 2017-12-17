@@ -1,16 +1,16 @@
 const TestHelper = require('../support/TestHelper');
 
 module.exports.config = {
-  tests: "./*_test.js",
+  tests: './*_test.js',
   timeout: 10000,
-  output: "./output",
+  output: './output',
   helpers: {
     Nightmare: {
-      url: TestHelper.siteUrl()
-    }
+      url: TestHelper.siteUrl(),
+    },
   },
   include: {},
   bootstrap: false,
   mocha: {},
-  name: "acceptance"
-}
+  name: 'acceptance',
+};

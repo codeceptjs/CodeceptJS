@@ -1,13 +1,14 @@
 Feature('Yahoo test');
 
 Scenario('Nightmare basic test', (I) => {
-  I.amOnPage('http://yahoo.com');
+  I.amOnPage('http://127.0.0.1:8000');
+  pause();
   I.fillField('p', 'github nightmare');
   I.click('Search Web');
   I.waitForElement('#main', 2);
   I.seeElement('#main .searchCenterMiddle li a');
   // I.seeElement("//a[contains(@href,'github.com/segmentio/nightmare')]");
-  I.see('segmentio/nightmare','li a');
+  I.see('segmentio/nightmare', 'li a');
 });
 
 
