@@ -1,9 +1,9 @@
-# AngularJS E2E Testing with CodeceptJS
+# Protractor Testing with CodeceptJS
 
 ## Introduction
 
 CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
-CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *selenium-webdriver*, or *protractor* depends on you.
+CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *puppeteer*, or *protractor* depends on you.
 This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.
 
 As you know, [Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
@@ -96,7 +96,7 @@ For TodoMVC application you will have following config created in `codecept.json
     "Protractor": {
       "url": "http://todomvc.com/examples/angularjs/",
       "driver": "hosted",
-      "browser": "firefox",
+      "browser": "chrome",
       "rootElement": "body"
     }
   },
@@ -263,6 +263,21 @@ Scenario('create todo item', (I) => {
 ```
 
 To learn more about refactoring options in CodeceptJS read [PageObjects guide](http://codecept.io/pageobjects/).
+
+### Testing non-Angular Applications
+
+Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:
+
+```js
+"helpers": {
+  "Protractor": {
+    "url": "http://todomvc.com/examples/angularjs/",
+    "driver": "hosted",
+    "browser": "firefox",
+    "angular": false
+  }
+}
+```
 
 ### Extending
 

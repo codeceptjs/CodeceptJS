@@ -256,9 +256,9 @@ within({frame: [".content", "#editor"]}, () => {
   I.see('Page');
 });
 ```
-
 ---
 
 ### done()
 
 CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
+
