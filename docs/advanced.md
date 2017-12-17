@@ -58,6 +58,31 @@ Data(function*() {
 
 *HINT: If you don't use DataTable. add `toString()` method to each object added to data set, so the data could be pretty printed in a test name*
 
+## Merge Tests
+Sometimes you have the same tests for different Features and you want to add them to it. Then you can use Merge tests. To do this, create a file that exports Scenarios array, e.g. `common.js`:
+```
+module.exports = [
+  Scenario('Test Login', async (I, market) => {
+    let account = await market.createTestData();
+    I.fillField('Username', account.login);
+    I.fillField('Password', account.password);
+    I.click('Sign In');
+    I.see('Welcome '+ account.login);
+  })
+```
+Then add it to your `Feature` using `Merge`. If you should inject something in test function, that is not provided by steps files, you should add it to `Merge`:
+```
+Feature('test');
+const market = require('../steps/myMarket')
+Merge(require('./common', {market})
+
+Scenario('other one', (I) {
+  I.amOnPage('/');
+  I.see('Hello');
+})
+
+```
+
 ## Groups
 
 Append `@tag` to your test name, so
