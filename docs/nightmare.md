@@ -106,7 +106,7 @@ Setup process is explained on [QuickStart page](http://codecept.io/quickstart/).
 
 ## Configuring Nightmare
 
-To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json` config:
+Enable `Nightmare` helper in `codecept.json` config:
 
 ```js
 { // ..
@@ -151,7 +151,7 @@ As a small bonus: all `console.log` calls on a page will be also shown in `--deb
 
 ## Manipulating Web Page
 
-Nightmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
+Nightmare helper is supposed to work in the same manner as WebDriverIO or Protractor.
 This means that all CodeceptJS actions like `click`, `fillField`, `selectOption` and others are supposed to work in the very same manner.
 They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.
 
