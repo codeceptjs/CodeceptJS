@@ -309,10 +309,18 @@ body .bs-sidebar {
 }
 
 .banner {
-  background: #f1c40f;
-  color: #666;
+  background: #2ecc71;
+  color: #333;
   font-size: 90%;
   text-align: center;
   padding: 5px  ;
   margin-top: 10px;
+}
+
+.banner a {
+  color: #3F055D;
+}
+
+.promo-1 {
+  background: #2ecc71;
 }

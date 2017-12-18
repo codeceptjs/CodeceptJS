@@ -7,8 +7,9 @@ pages:
 - Guides:
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
-    - 'AngularJS Testing': 'angular.md'
+    - 'Protractor Testing': 'angular.md'
     - 'Mobile Testing': 'mobile.md'
+    - 'Puppeteer Testing': 'puppeteer.md'
     - 'Nightmare Testing': 'nightmare.md'
     - 'Helpers': 'helpers.md'
     - 'Page Objects': 'pageobjects.md'
@@ -18,7 +19,7 @@ pages:
 - Helpers:
     - 'WebDriverIO': 'helpers/WebDriverIO.md'
     - 'Protractor': 'helpers/Protractor.md'
-    - 'SeleniumWebdriver': 'helpers/SeleniumWebdriver.md'
+    - 'Puppeteer': 'helpers/Puppeteer.md'
     - 'Nightmare': 'helpers/Nightmare.md'
     - 'Appium': 'helpers/Appium.md'
     - 'REST': 'helpers/REST.md'
