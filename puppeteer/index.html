@@ -259,7 +259,7 @@
         <div class="banner">
   <strong>CodeceptJS 1.1 released</strong>. What's new:
   <strong>NodeJS 8.9+ required</strong> |
-  <a href="http://codecept.io/puppeteer/" class="">Headless tests with Google Chrome's <Puppeteer</a> |
+  <a href="http://codecept.io/puppeteer/" class="">Headless tests with Google Chrome's Puppeteer</a> |
   Async-await support
 </div>
 
@@ -289,8 +289,12 @@
 
 <h1 id="robust-chrome-testing-with-puppeteer">Robust Chrome Testing with Puppeteer</h1>
 <p>Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome <a href="https://chromedevtools.github.io/devtools-protocol/">DevTools Protocol</a>. And the most prominent one is <a href="https://github.com/GoogleChrome/puppeteer">Puppeteer</a>.
-It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If want get faster and simpler to setup tests, Puppeteer would be your choice.</p>
-<p><strong>CodeceptJS uses Puppeteer to improve end to end testing experience. First: you don't need to learn syntax of new tool, as all drivers in CodeceptJS share the same API. Second: CodeceptJS can locate elements by XPath.</strong>.</p>
+It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.</p>
+<p>CodeceptJS uses Puppeteer to improve end to end testing experience.</p>
+<ol>
+<li>No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.</li>
+<li>CodeceptJS can locate elements by XPath.</li>
+</ol>
 <p>Take a look at a sample test:</p>
 <pre><code class="js">I.amOnPage('https://github.com');
 I.click('Sign in', '//html/body/div[1]/header');
@@ -304,16 +308,16 @@ I.see('Incorrect username or password.', '.flash-error');
 <p>It's readable and simple, contains XPath and works using Puppeteer API!</p>
 <h2 id="setup">Setup</h2>
 <p>To start you need CodeceptJS with Puppeteer packages installed</p>
-<pre><code class="bash">npm install codeceptjs-puppeteer
+<pre><code class="bash">npm install -g codeceptjs-puppeteer
 </code></pre>
 
+<p>Or see <a href="http://codecept.io/installation/">alternative installation options</a>
+If you already have CodeceptJS project, just install <code>puppeteer</code> package and enable it in config.</p>
 <p>And a basic project initialized</p>
 <pre><code class="sh">codeceptjs init
 </code></pre>
 
-<p>You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.
-Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStart page</a>.</p>
-<p>(If you already have CodeceptJS project, just install <code>puppeteer</code> package and enable it in config)</p>
+<p>You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.</p>
 <h2 id="configuring">Configuring</h2>
 <p>Make sure <code>Puppeteer</code> helper is enabled in <code>codecept.json</code> config:</p>
 <pre><code class="js">{ // ..
@@ -366,7 +370,9 @@ I.seeElement({xpath: '//body/header'});
 </code></pre>
 
 <p>A complete ToDo-MVC test may look like:</p>
-<pre><code class="js">Scenario('create todo item', (I) =&gt; {
+<pre><code class="js">Feature('ToDo');
+
+Scenario('create todo item', (I) =&gt; {
   I.amOnPage('http://todomvc.com/examples/react/');
   I.dontSeeElement('.todo-count');
   I.fillField('What needs to be done?', 'Write a guide');
