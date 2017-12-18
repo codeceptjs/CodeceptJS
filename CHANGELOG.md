@@ -13,10 +13,10 @@ async () => {
 
 Thanks to [@Apshenkin](https://github.com/apshenkin) for implementation. Also, most helpers were refactored to use async-await. This made our code simpler. We hope that this encourages more users to send pull requests!
 
-We also introduced strict ESLint policies for our codebase. Thanks to **[@Galkin](https://github.com/galkin)** for that.
+We also introduced strict ESLint policies for our codebase. Thanks to [@Galkin](https://github.com/galkin) for that.
 
 * **[Puppeteer] Helper introduced**. [Learn how to run tests headlessly with Google Chrome's Puppeteer](http://codecept.io/puppeteer/).
-* **[SeleniumWebdriver] Helper is deprecated**, it is recommended to use Protractor with config option `angular: false` instead.
+* [SeleniumWebdriver] Helper is deprecated, it is recommended to use Protractor with config option `angular: false` instead.
 * [WebDriverIO] nested iframe support in the within block by @reubenmiller. Example:
 
 ```js
