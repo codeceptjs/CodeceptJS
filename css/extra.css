@@ -319,6 +319,7 @@ body .bs-sidebar {
 
 .banner a {
   color: #3F055D;
+  text-decoration: underline;
 }
 
 .promo-1 {

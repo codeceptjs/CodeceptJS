@@ -258,8 +258,9 @@
 </div>
         <div class="banner">
   <strong>CodeceptJS 1.1 released</strong>. What's new:
-  <strong>upgraded to NodeJS 8.9+</strong> |
-  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
+  <strong>NodeJS 8.9+ required</strong> |
+  <a href="http://codecept.io/puppeteer/" class="">Headless tests with Google Chrome's <Puppeteer</a> |
+  Async-await support
 </div>
 
 
@@ -412,10 +413,10 @@ This brings native async-await support to CodeceptJS. It is recommended to start
 </code></pre>
 
 <p>Thanks to <a href="https://github.com/apshenkin">@Apshenkin</a> for implementation. Also, most helpers were refactored to use async-await. This made our code simpler. We hope that this encourages more users to send pull requests!</p>
-<p>We also introduced strict ESLint policies for our codebase. Thanks to <strong><a href="https://github.com/galkin">@Galkin</a></strong> for that.</p>
+<p>We also introduced strict ESLint policies for our codebase. Thanks to <a href="https://github.com/galkin">@Galkin</a> for that.</p>
 <ul>
 <li><strong>[Puppeteer] Helper introduced</strong>. <a href="http://codecept.io/puppeteer/">Learn how to run tests headlessly with Google Chrome's Puppeteer</a>.</li>
-<li><strong>[SeleniumWebdriver] Helper is deprecated</strong>, it is recommended to use Protractor with config option <code>angular: false</code> instead.</li>
+<li>[SeleniumWebdriver] Helper is deprecated, it is recommended to use Protractor with config option <code>angular: false</code> instead.</li>
 <li>[WebDriverIO] nested iframe support in the within block by @reubenmiller. Example:</li>
 </ul>
 <pre><code class="js">within({frame: ['#wrapperId', '[name=content]']}, () =&gt; {
