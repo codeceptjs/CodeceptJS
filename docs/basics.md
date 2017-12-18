@@ -19,7 +19,7 @@ I object is an **actor**, an abstraction for a testing user. I is a proxy object
   "helpers": {
     "WebDriverIO": {
       "url": "http://localhost",
-      "browser": "firefox"
+      "browser": "chrome"
     }
   }
 ```
@@ -36,15 +36,15 @@ However, behind the scene **all actions are wrapped in promises** inside the `I`
 If you want to get information from a running test you can use `yield` inside a **generator function** and special methods of helpers started with `grab` prefix.
 
 ```js
-Scenario('try grabbers', function* (I) {
-  var title = yield I.grabTitle();
+Scenario('try grabbers', async (I) => {
+  var title = await I.grabTitle();
 });
 ```
 
 then you can use those variables in assertions:
 
 ```js
-var title = yield I.grabTitle();
+var title = await I.grabTitle();
 var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 ```

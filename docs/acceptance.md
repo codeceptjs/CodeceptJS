@@ -169,21 +169,24 @@ Sometimes you need to retrieve a data from a page to use it in next steps of a s
 Imagine, application generates a password and you want to ensure that user can login using this password.
 
 ```js
-I.fillField('email', 'miles@davis.com')
-I.click('Generate Password');
-let password = yield I.grabTextFrom('#password');
-I.click('Login');
-I.fillField('email', 'miles@davis.com');
-I.fillField('password', password);
-I.click('Log in!');
+Scenario('login with generated password', async (I) => {
+  I.fillField('email', 'miles@davis.com');
+  I.click('Generate Password');
+  const password = await I.grabTextFrom('#password');
+  I.click('Login');
+  I.fillField('email', 'miles@davis.com');
+  I.fillField('password', password);
+  I.click('Log in!');
+  I.see('Hello, Miles');
+});
 ```
 
-`grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `yield` keyword of ES6. To make it work your test should be written inside a generator function (notice `*` in its definition):
+`grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `await` keyword of ES6. To make it work your test should be written inside a async function (notice `async` in its definition).
 
 ```js
-Scenario('use page title', function*(I) {
+Scenario('use page title', async (I) => {
   // ...
-  var password = yield I.grabTextFrom('#password');
+  const password = await I.grabTextFrom('#password');
   I.fillField('password', password);
 });
 ```
@@ -246,14 +249,16 @@ within({frame: "#editor"}, () => {
 });
 ```
 
-Nested IFrames can be set by passing array *(Nightmare only)*:
+Nested IFrames can be set by passing array *(WebDriverIO & Nightmare only)*:
 
 ```js
-within({frame: [".content", "#editor"]);
+within({frame: [".content", "#editor"]}, () => {
+  I.see('Page');
+});
 ```
-
 ---
 
 ### done()
 
 CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
+

@@ -3,23 +3,7 @@
 WebDriverIO helper which wraps [webdriverio](http://webdriver.io/) library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-## Backends
-
-### Selenium Installation
-
-1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started),
-    for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
-3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use
-    `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
-
-### PhantomJS Installation
-
-PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
-It allows you to run Selenium tests on a server without a GUI installed.
-
-1.  Download [PhantomJS](http://phantomjs.org/download.html)
-2.  Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
+WebDriverIO requires [Selenium Server and ChromeDriver/GeckoDriver to be installed](http://codecept.io/quickstart/#prepare-selenium-server).
 
 ### Configuration
 
@@ -62,6 +46,24 @@ Example:
 
 Additional configuration params can be used from [webdriverio
 website](http://webdriver.io/guide/getstarted/configuration.html).
+
+### Headless Chrome
+
+```json
+{
+   "helpers": {
+     "WebDriverIO" : {
+       "url": "http://localhost",
+       "browser": "chrome",
+       "desiredCapabilities": {
+         "chromeOptions": {
+           "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+         }
+       }
+     }
+   }
+}
+```
 
 ### Connect through proxy
 
@@ -772,7 +774,7 @@ I.pressKey(['Control','a']);
 **Parameters**
 
 -   `key`  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps```js
+    Appium: support, but clear field before pressing in apps:```js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');
@@ -780,10 +782,10 @@ I.pressKey(['Control','a']);
 
 ## refreshPage
 
-Refresh the current page.
+Reload the current page.
 
 ```js
-I.refreshPage();
+`I.refreshPage();
 ```
 
 ## resizeWindow
@@ -804,6 +806,32 @@ Appium: support, but in apps works as usual click
 **Parameters**
 
 -   `locator`  
+
+## runInWeb
+
+placeholder for ~ locator only test case write once run on both Appium and WebDriverIO
+
+**Parameters**
+
+-   `fn`  
+
+## runOnAndroid
+
+placeholder for ~ locator only test case write once run on both Appium and WebDriverIO
+
+**Parameters**
+
+-   `caps`  
+-   `fn`  
+
+## runOnIOS
+
+placeholder for ~ locator only test case write once run on both Appium and WebDriverIO
+
+**Parameters**
+
+-   `caps`  
+-   `fn`  
 
 ## saveScreenshot
 
@@ -1294,24 +1322,30 @@ I.waitNumberOfVisibleElements('a', 3);
 
 ## waitToHide
 
-Waits for an element to become invisible on a page (by default waits for 1sec).
+Waits for an element to hide (by default waits for 1sec).
 Element can be located by CSS or XPath.
-Appium: support
+
+    I.waitToHide('#popup');
 
 **Parameters**
 
--   `locator`  
--   `sec`   (optional, default `null`)
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by defaultAppium: support
 
 ## waitUntil
 
 Waits for a function to return true (waits for 1sec by default).
-Appium: support
+
+```js
+I.waitUntil(() => window.requests == 0);
+I.waitUntil(() => window.requests == 0, 5);
+```
 
 **Parameters**
 
+-   `function`  function which is executed in browser context.
 -   `fn`  
--   `sec`   (optional, default `null`)
+-   `sec`  time seconds to wait, 1 by defaultAppium: support
 -   `timeoutMsg`   (optional, default `null`)
 
 ## waitUntilExists

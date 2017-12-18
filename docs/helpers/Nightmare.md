@@ -468,6 +468,14 @@ Can submit special keys like 'Enter', 'Backspace', etc
 
 Reload the page
 
+## refreshPage
+
+Reload the current page.
+
+```js
+`I.refreshPage();
+```
+
 ## resizeWindow
 
 Resize the current window to provided width and height.

@@ -1,11 +1,6 @@
-'use strict';
-let Helper = require('../../lib/helper');
-let output = require('../../lib/output');
-
-let browser;
+const Helper = require('../../lib/helper');
 
 class FakeDriver extends Helper {
-
   printBrowser() {
     this.debug(this.config.browser);
   }
@@ -13,7 +8,6 @@ class FakeDriver extends Helper {
   printWindowSize() {
     this.debug(this.config.windowSize);
   }
-
 }
 
 module.exports = FakeDriver;
