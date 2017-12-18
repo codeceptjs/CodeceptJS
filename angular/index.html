@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>AngularJS Testing - CodeceptJS</title>
+	<title>Protractor Testing - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
 
@@ -98,11 +98,15 @@
                         </li>
                     
                         <li class="active">
-                            <a href="./">AngularJS Testing</a>
+                            <a href="./">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../helpers/Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -267,7 +269,7 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</a></li>
+        <li class="main active"><a href="#protractor-testing-with-codeceptjs">Protractor Testing with CodeceptJS</a></li>
         
             <li><a href="#introduction">Introduction</a></li>
         
@@ -276,10 +278,10 @@
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="angularjs-e2e-testing-with-codeceptjs">AngularJS E2E Testing with CodeceptJS</h1>
+<h1 id="protractor-testing-with-codeceptjs">Protractor Testing with CodeceptJS</h1>
 <h2 id="introduction">Introduction</h2>
 <p>CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
-CodeceptJS allows you to write a test and switch in config execution drivers: will it be <em>wedriverio</em>, <em>selenium-webdriver</em>, or <em>protractor</em> depends on you.
+CodeceptJS allows you to write a test and switch in config execution drivers: will it be <em>wedriverio</em>, <em>puppeteer</em>, or <em>protractor</em> depends on you.
 This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.</p>
 <p>As you know, <a href="http://www.protractortest.org/#/">Protractor</a> is an official tool for testing AngularJS applications.
 CodeceptJS should not be considered as alternative to Protractor but a testing framework utilizing this powerful library.</p>
@@ -353,7 +355,7 @@ Please agree to extend steps, and use <code>http://todomvc.com/examples/angularj
     &quot;Protractor&quot;: {
       &quot;url&quot;: &quot;http://todomvc.com/examples/angularjs/&quot;,
       &quot;driver&quot;: &quot;hosted&quot;,
-      &quot;browser&quot;: &quot;firefox&quot;,
+      &quot;browser&quot;: &quot;chrome&quot;,
       &quot;rootElement&quot;: &quot;body&quot;
     }
   },
@@ -492,6 +494,18 @@ module.exports = function() {
 </code></pre>
 
 <p>To learn more about refactoring options in CodeceptJS read <a href="http://codecept.io/pageobjects/">PageObjects guide</a>.</p>
+<h3 id="testing-non-angular-applications">Testing non-Angular Applications</h3>
+<p>Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:</p>
+<pre><code class="js">&quot;helpers&quot;: {
+  &quot;Protractor&quot;: {
+    &quot;url&quot;: &quot;http://todomvc.com/examples/angularjs/&quot;,
+    &quot;driver&quot;: &quot;hosted&quot;,
+    &quot;browser&quot;: &quot;firefox&quot;,
+    &quot;angular&quot;: false
+  }
+}
+</code></pre>
+
 <h3 id="extending">Extending</h3>
 <p>What if CodeceptJS doesn't provide some of Protractor functionality you actually need? Sure its API is to general,
 and this case is possible. If you don't know how to do something with CodeceptJS - revert back to Protractor syntax!</p>
@@ -508,14 +522,14 @@ by accessing Protractor helper:</p>
 Please see an <a href="http://codecept.io/helpers/#protractor-example">example of such helper</a>.</p>
 <h3 id="done">done()</h3>
 <p>Almost ) This example is <a href="https://github.com/DavertMik/codeceptjs-angular-todomvc">available on GitHub</a>.</p></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

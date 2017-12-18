@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">AngularJS Testing</a>
+                            <a href="../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -351,23 +353,22 @@ class MyHelper extends Helper {
   /**
    * checks that authentication cookie is set
    */
-  seeAuthentication() {
+  async seeAuthentication() {
     // access current client of WebDriverIO helper
     let client = this.helpers['WebDriverIO'].browser;
 
     // get all cookies according to http://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
-    return client.cookie(function(err, res) {
-      // get values
-      let cookies = res.value;
-      for (let k in cookies) {
-        // check for a cookie
-        if (cookies[k].name != 'logged_in') continue;
-        assert.equal(cookies[k].value, 'yes');
-        return;
-      }
-      assert.fail(cookies, 'logged_in', &quot;Auth cookie not set&quot;);
-    });
+    const res = await client.cookie();
+    // get values
+    let cookies = res.value;
+    for (let k in cookies) {
+      // check for a cookie
+      if (cookies[k].name != 'logged_in') continue;
+      assert.equal(cookies[k].value, 'yes');
+      return;
+    }
+    assert.fail(cookies, 'logged_in', &quot;Auth cookie not set&quot;);
   }
 }
 
@@ -481,14 +482,14 @@ module.exports = JSWait;
 ```
 </code></pre>
 <h3 id="done">done()</h3></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

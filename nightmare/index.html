@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">AngularJS Testing</a>
+                            <a href="../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li class="active">
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../helpers/Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -372,7 +374,7 @@ Sure, this can't be taken as a valuable benchmark but more like a proof of conce
 Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStart page</a>.</p>
 <p>(If you already have CodeceptJS project, just install nightmare globally or locally and enable it in config)</p>
 <h2 id="configuring-nightmare">Configuring Nightmare</h2>
-<p>To enable Nightmare tests you should enable <code>Nightmare</code> helper in <code>codecept.json</code> config:</p>
+<p>Enable <code>Nightmare</code> helper in <code>codecept.json</code> config:</p>
 <pre><code class="js">{ // ..
   &quot;helpers&quot;: {
     &quot;Nightmare&quot;: {
@@ -405,7 +407,7 @@ I.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);
 
 <p>As a small bonus: all <code>console.log</code> calls on a page will be also shown in <code>--debug</code> mode.</p>
 <h2 id="manipulating-web-page">Manipulating Web Page</h2>
-<p>Nightmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
+<p>Nightmare helper is supposed to work in the same manner as WebDriverIO or Protractor.
 This means that all CodeceptJS actions like <code>click</code>, <code>fillField</code>, <code>selectOption</code> and others are supposed to work in the very same manner.
 They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.</p>
 <p>Assertions start with <code>see</code> prefix. You can check text on a page, elements on page and others.</p>
@@ -429,24 +431,23 @@ to do an assertion you should return a data to server side.</p>
 object globally on client side with <code>findElement</code> and <code>findElements</code> methods in it. They return IDs of matched elements
 so you can access them in next calls to <code>evaluate</code>:</p>
 <pre><code class="js">// inside a custom helper class
-seeAttributeContains(locator, attribute, expectedValue) {
+async seeAttributeContains(locator, attribute, expectedValue) {
   // let's use chai assertion library
-  let assert = require('chai').assert;
+  const assert = require('chai').assert;
   // get nightmare instance
-  let browser = this.helpers['Nightmare'].browser;
+  const browser = this.helpers['Nightmare'].browser;
   // find an element by CSS or XPath:
-  return this.helpers['Nightmare']._locate(locator).then(function(els) {
+  const els = await this.helpers['Nightmare']._locate(locator);
     // we received an array with IDs of matched elements
     // now let's execute client-side script to get attribute for the first element
-    return browser.evaluate(function(el, attribute) {
+  const attributeValue = await browser.evaluate(function(el, attribute) {
       // this is executed inside a web page!
       return codeceptjs.fetchElement(el).getAttribute(attribute);
-    }, els[0], attribute); // function + its params
-  }).then(function(attributeValue) {
+  }, els[0], attribute); // function + its params
+
     // get attribute value and back to server side
     // execute an assertion
-    assert.include(attributeValue, expectedValue);
-  });
+  assert.include(attributeValue, expectedValue);
 }
 </code></pre>
 
@@ -462,14 +463,14 @@ use locate found elements on a page and return attribute from the first of them.
 <li><a href="http://codenroll.it/acceptance-testing-with-codecept-js/">Nightmare Tutorial</a> by jploskonka.</li>
 </ul>
 <h2 id="done">done()</h2></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

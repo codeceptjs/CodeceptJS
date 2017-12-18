@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">AngularJS Testing</a>
+                            <a href="../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../helpers/Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -416,19 +418,22 @@ I.seeInTitle('My Website');
 <h2 id="grabbing">Grabbing</h2>
 <p>Sometimes you need to retrieve a data from a page to use it in next steps of a scenario.
 Imagine, application generates a password and you want to ensure that user can login using this password.</p>
-<pre><code class="js">I.fillField('email', 'miles@davis.com')
-I.click('Generate Password');
-let password = yield I.grabTextFrom('#password');
-I.click('Login');
-I.fillField('email', 'miles@davis.com');
-I.fillField('password', password);
-I.click('Log in!');
+<pre><code class="js">Scenario('login with generated password', async (I) =&gt; {
+  I.fillField('email', 'miles@davis.com');
+  I.click('Generate Password');
+  const password = await I.grabTextFrom('#password');
+  I.click('Login');
+  I.fillField('email', 'miles@davis.com');
+  I.fillField('password', password);
+  I.click('Log in!');
+  I.see('Hello, Miles');
+});
 </code></pre>
 
-<p><code>grabTextFrom</code> action is used here to retrieve text from an element. All actions starting with <code>grab</code> prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with <code>yield</code> keyword of ES6. To make it work your test should be written inside a generator function (notice <code>*</code> in its definition):</p>
-<pre><code class="js">Scenario('use page title', function*(I) {
+<p><code>grabTextFrom</code> action is used here to retrieve text from an element. All actions starting with <code>grab</code> prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with <code>await</code> keyword of ES6. To make it work your test should be written inside a async function (notice <code>async</code> in its definition).</p>
+<pre><code class="js">Scenario('use page title', async (I) =&gt; {
   // ...
-  var password = yield I.grabTextFrom('#password');
+  const password = await I.grabTextFrom('#password');
   I.fillField('password', password);
 });
 </code></pre>
@@ -475,21 +480,23 @@ I.click('#click-me');
 });
 </code></pre>
 
-<p>Nested IFrames can be set by passing array <em>(Nightmare only)</em>:</p>
-<pre><code class="js">within({frame: [&quot;.content&quot;, &quot;#editor&quot;]);
+<p>Nested IFrames can be set by passing array <em>(WebDriverIO &amp; Nightmare only)</em>:</p>
+<pre><code class="js">within({frame: [&quot;.content&quot;, &quot;#editor&quot;]}, () =&gt; {
+  I.see('Page');
+});
 </code></pre>
 
 <hr />
 <h3 id="done">done()</h3>
 <p>CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.</p></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

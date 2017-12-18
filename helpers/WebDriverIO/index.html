@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../../angular/">AngularJS Testing</a>
+                            <a href="../../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -269,7 +271,15 @@
     
         <li class="main active"><a href="#webdriverio">WebDriverIO</a></li>
         
-            <li><a href="#backends">Backends</a></li>
+            <li><a href="#configuration">Configuration</a></li>
+        
+            <li><a href="#headless-chrome">Headless Chrome</a></li>
+        
+            <li><a href="#connect-through-proxy">Connect through proxy</a></li>
+        
+            <li><a href="#cloud-providers">Cloud Providers</a></li>
+        
+            <li><a href="#multiremote-capabilities">Multiremote Capabilities</a></li>
         
             <li><a href="#access-from-helpers">Access From Helpers</a></li>
         
@@ -367,6 +377,12 @@
         
             <li><a href="#rightclick">rightClick</a></li>
         
+            <li><a href="#runinweb">runInWeb</a></li>
+        
+            <li><a href="#runonandroid">runOnAndroid</a></li>
+        
+            <li><a href="#runonios">runOnIOS</a></li>
+        
             <li><a href="#savescreenshot">saveScreenshot</a></li>
         
             <li><a href="#scrollpagetobottom">scrollPageToBottom</a></li>
@@ -458,22 +474,7 @@
 <h1 id="webdriverio">WebDriverIO</h1>
 <p>WebDriverIO helper which wraps <a href="http://webdriver.io/">webdriverio</a> library to
 manipulate browser using Selenium WebDriver or PhantomJS.</p>
-<h2 id="backends">Backends</h2>
-<h3 id="selenium-installation">Selenium Installation</h3>
-<ol>
-<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
-<li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>,
-    for Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a>.</li>
-<li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use
-    <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
-</ol>
-<h3 id="phantomjs-installation">PhantomJS Installation</h3>
-<p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
-It allows you to run Selenium tests on a server without a GUI installed.</p>
-<ol>
-<li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
-<li>Run PhantomJS in WebDriver mode: <code>phantomjs --webdriver=4444</code></li>
-</ol>
+<p>WebDriverIO requires <a href="http://codecept.io/quickstart/#prepare-selenium-server">Selenium Server and ChromeDriver/GeckoDriver to be installed</a>.</p>
 <h3 id="configuration">Configuration</h3>
 <p>This helper should be configured in codecept.json</p>
 <ul>
@@ -512,6 +513,22 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 
 <p>Additional configuration params can be used from <a href="http://webdriver.io/guide/getstarted/configuration.html">webdriverio
 website</a>.</p>
+<h3 id="headless-chrome">Headless Chrome</h3>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;WebDriverIO&quot; : {
+       &quot;url&quot;: &quot;http://localhost&quot;,
+       &quot;browser&quot;: &quot;chrome&quot;,
+       &quot;desiredCapabilities&quot;: {
+         &quot;chromeOptions&quot;: {
+           &quot;args&quot;: [ &quot;--headless&quot;, &quot;--disable-gpu&quot;, &quot;--window-size=800,600&quot; ]
+         }
+       }
+     }
+   }
+}
+</code></pre>
+
 <h3 id="connect-through-proxy">Connect through proxy</h3>
 <p>CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
 need to update the <code>helpers.WebDriverIO.desiredCapabilities.proxy</code> key.</p>
@@ -1095,14 +1112,14 @@ I.pressKey(['Control','a']);
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>key</code>  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps<code>js
+    Appium: support, but clear field before pressing in apps:<code>js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');</code></li>
 </ul>
 <h2 id="refreshpage">refreshPage</h2>
-<p>Refresh the current page.</p>
-<pre><code class="js">I.refreshPage();
+<p>Reload the current page.</p>
+<pre><code class="js">`I.refreshPage();
 </code></pre>
 
 <h2 id="resizewindow">resizeWindow</h2>
@@ -1119,6 +1136,26 @@ Appium: support, but in apps works as usual click</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+</ul>
+<h2 id="runinweb">runInWeb</h2>
+<p>placeholder for ~ locator only test case write once run on both Appium and WebDriverIO</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>fn</code>  </li>
+</ul>
+<h2 id="runonandroid">runOnAndroid</h2>
+<p>placeholder for ~ locator only test case write once run on both Appium and WebDriverIO</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>caps</code>  </li>
+<li><code>fn</code>  </li>
+</ul>
+<h2 id="runonios">runOnIOS</h2>
+<p>placeholder for ~ locator only test case write once run on both Appium and WebDriverIO</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>caps</code>  </li>
+<li><code>fn</code>  </li>
 </ul>
 <h2 id="savescreenshot">saveScreenshot</h2>
 <p>Saves a screenshot to ouput folder (set in codecept.json).
@@ -1505,21 +1542,26 @@ Element can be located by CSS or XPath.</p>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="waittohide">waitToHide</h2>
-<p>Waits for an element to become invisible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-Appium: support</p>
+<p>Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitToHide('#popup');
+</code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 </ul>
 <h2 id="waituntil">waitUntil</h2>
-<p>Waits for a function to return true (waits for 1sec by default).
-Appium: support</p>
+<p>Waits for a function to return true (waits for 1sec by default).</p>
+<pre><code class="js">I.waitUntil(() =&gt; window.requests == 0);
+I.waitUntil(() =&gt; window.requests == 0, 5);
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
+<li><code>function</code>  function which is executed in browser context.</li>
 <li><code>fn</code>  </li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 <li><code>timeoutMsg</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="waituntilexists">waitUntilExists</h2>
@@ -1547,14 +1589,14 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 </ul>
 <h1 id="locator">locator</h1>
 <p>just press button if no selector is given</p></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

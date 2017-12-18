@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">AngularJS Testing</a>
+                            <a href="../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../helpers/Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -285,7 +287,7 @@
             <div class="col-md-7" role="main">
 
 <h1 id="quickstart">QuickStart</h1>
-<p><strong>NodeJS v 6.11.1</strong> and higher required to start.
+<p><strong>NodeJS v 8.9</strong> and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.</p>
 <p>Install <strong>CodeceptJS</strong> with WebDriverIO using <code>codeceptjs-webdriverio</code> meta package from NPM.</p>
 <p>You can install it globally:</p>
@@ -297,8 +299,9 @@ CodeceptJS is multi-backend testing framework. In this guide we will use webdriv
 </code></pre>
 
 <ul>
-<li>To test with Nightmare install <code>codeceptjs-nightmare</code> package</li>
+<li>To test with Puppeteer install <code>codeceptjs-puppeteer</code> package</li>
 <li>To test with Protractor install <code>codeceptjs-protractor</code> package</li>
+<li>To test with Nightmare install <code>codeceptjs-nightmare</code> package</li>
 <li>For additional options see <a href="http://codecept.io/installation/">Installation guide</a>.</li>
 </ul>
 <h2 id="setup">Setup</h2>
@@ -315,7 +318,7 @@ No matter what helper you've chosen they will be similar in use.</p>
 <pre><code class="sh">? What helpers do you want to use?
 ❯◉ WebDriverIO
  ◯ Protractor
- ◯ SeleniumWebdriver
+ ◯ Puppeteer
  ◯ Nightmare
  ◯ FileSystem
 </code></pre>
@@ -383,14 +386,14 @@ selenium-standalone start
 
 <h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running</h2>
 <p>Wasn't so hard, right?</p></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">AngularJS Testing</a>
+                            <a href="../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../helpers/SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../helpers/Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -312,7 +314,7 @@ I object is an <strong>actor</strong>, an abstraction for a testing user. I is a
 <pre><code class="json">  &quot;helpers&quot;: {
     &quot;WebDriverIO&quot;: {
       &quot;url&quot;: &quot;http://localhost&quot;,
-      &quot;browser&quot;: &quot;firefox&quot;
+      &quot;browser&quot;: &quot;chrome&quot;
     }
   }
 </code></pre>
@@ -324,13 +326,13 @@ This is done to allow easy switching of running backends so you could replace We
 However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
 <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
 <p>If you want to get information from a running test you can use <code>yield</code> inside a <strong>generator function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
-<pre><code class="js">Scenario('try grabbers', function* (I) {
-  var title = yield I.grabTitle();
+<pre><code class="js">Scenario('try grabbers', async (I) =&gt; {
+  var title = await I.grabTitle();
 });
 </code></pre>
 
 <p>then you can use those variables in assertions:</p>
-<pre><code class="js">var title = yield I.grabTitle();
+<pre><code class="js">var title = await I.grabTitle();
 var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 </code></pre>
@@ -471,14 +473,14 @@ Scenario('Really complex', (I) =&gt; {
 while "Not that complex" test will be rerun only once.</p>
 <hr />
 <h3 id="done">done()</h3></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

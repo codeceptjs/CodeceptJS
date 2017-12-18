@@ -98,11 +98,15 @@
                         </li>
                     
                         <li >
-                            <a href="../../angular/">AngularJS Testing</a>
+                            <a href="../../angular/">Protractor Testing</a>
                         </li>
                     
                         <li >
                             <a href="../../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../../puppeteer/">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -147,7 +151,7 @@
                         </li>
                     
                         <li >
-                            <a href="../SeleniumWebdriver/">SeleniumWebdriver</a>
+                            <a href="../Puppeteer/">Puppeteer</a>
                         </li>
                     
                         <li >
@@ -233,7 +237,7 @@
                         </li>
 
                 <li >
-                    <a rel="prev" href="../SeleniumWebdriver/">
+                    <a rel="prev" href="../Puppeteer/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -253,11 +257,9 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.0 released</strong>. What's new:
-  <a href="http://codecept.io/mobile/" class="">Mobile Testing</a> |
-  <a href="http://codecept.io/data/" class="">Data Management</a> |
-  <a href="http://codecept.io/acceptance/#smartwait" class="">SmartWait</a> |
-  <a href="http://codecept.io/advanced/#data-driven-tests" class="">Data-Driven Tests</a>
+  <strong>CodeceptJS 1.1 released</strong>. What's new:
+  <strong>upgraded to NodeJS 8.9+</strong> |
+  Headless tests with Google Chrome's <a href="http://codecept.io/puppeteer/" class="">Puppeteer</a>
 </div>
 
 
@@ -269,8 +271,6 @@
     
         <li class="main active"><a href="#protractor">Protractor</a></li>
         
-            <li><a href="#backends">Backends</a></li>
-        
             <li><a href="#configuration">Configuration</a></li>
         
             <li><a href="#access-from-helpers">Access From Helpers</a></li>
@@ -279,33 +279,9 @@
         
             <li><a href="#aminsideangularapp">amInsideAngularApp</a></li>
         
-            <li><a href="#amoutsideangularapp">amOutsideAngularApp</a></li>
-        
-            <li><a href="#havemodule">haveModule</a></li>
-        
-            <li><a href="#moveto">moveTo</a></li>
-        
-            <li><a href="#refresh">refresh</a></li>
-        
-            <li><a href="#resetmodule">resetModule</a></li>
-        
-            <li><a href="#waitforclickable">waitForClickable</a></li>
-        
-            <li><a href="#waitforelement">waitForElement</a></li>
-        
-            <li><a href="#waitforinvisible">waitForInvisible</a></li>
-        
-            <li><a href="#waitforstalenessof">waitForStalenessOf</a></li>
-        
-            <li><a href="#waitfortext">waitForText</a></li>
-        
-            <li><a href="#waitforvisible">waitForVisible</a></li>
-        
-            <li><a href="#waituntilexists">waitUntilExists</a></li>
-        
-            <li><a href="#_locate_1">_locate</a></li>
-        
             <li><a href="#amonpage">amOnPage</a></li>
+        
+            <li><a href="#amoutsideangularapp">amOutsideAngularApp</a></li>
         
             <li><a href="#appendfield">appendField</a></li>
         
@@ -315,7 +291,11 @@
         
             <li><a href="#clearcookie">clearCookie</a></li>
         
+            <li><a href="#clearfield">clearField</a></li>
+        
             <li><a href="#click">click</a></li>
+        
+            <li><a href="#closeothertabs">closeOtherTabs</a></li>
         
             <li><a href="#dontsee">dontSee</a></li>
         
@@ -327,6 +307,8 @@
         
             <li><a href="#dontseeelement">dontSeeElement</a></li>
         
+            <li><a href="#dontseeelementindom">dontSeeElementInDOM</a></li>
+        
             <li><a href="#dontseeincurrenturl">dontSeeInCurrentUrl</a></li>
         
             <li><a href="#dontseeinfield">dontSeeInField</a></li>
@@ -334,6 +316,8 @@
             <li><a href="#dontseeinsource">dontSeeInSource</a></li>
         
             <li><a href="#dontseeintitle">dontSeeInTitle</a></li>
+        
+            <li><a href="#doubleclick">doubleClick</a></li>
         
             <li><a href="#executeasyncscript">executeAsyncScript</a></li>
         
@@ -351,7 +335,19 @@
         
             <li><a href="#grabvaluefrom">grabValueFrom</a></li>
         
+            <li><a href="#havemodule">haveModule</a></li>
+        
+            <li><a href="#movecursorto">moveCursorTo</a></li>
+        
+            <li><a href="#moveto">moveTo</a></li>
+        
             <li><a href="#presskey">pressKey</a></li>
+        
+            <li><a href="#refresh">refresh</a></li>
+        
+            <li><a href="#refreshpage">refreshPage</a></li>
+        
+            <li><a href="#resetmodule">resetModule</a></li>
         
             <li><a href="#resizewindow">resizeWindow</a></li>
         
@@ -367,6 +363,8 @@
         
             <li><a href="#seeelement">seeElement</a></li>
         
+            <li><a href="#seeelementindom">seeElementInDOM</a></li>
+        
             <li><a href="#seeincurrenturl">seeInCurrentUrl</a></li>
         
             <li><a href="#seeinfield">seeInField</a></li>
@@ -377,7 +375,21 @@
         
             <li><a href="#selectoption">selectOption</a></li>
         
-            <li><a href="#setcookie">setCookie</a></li>
+            <li><a href="#wait">wait</a></li>
+        
+            <li><a href="#waitforclickable">waitForClickable</a></li>
+        
+            <li><a href="#waitforelement">waitForElement</a></li>
+        
+            <li><a href="#waitforinvisible">waitForInvisible</a></li>
+        
+            <li><a href="#waitforstalenessof">waitForStalenessOf</a></li>
+        
+            <li><a href="#waitfortext">waitForText</a></li>
+        
+            <li><a href="#waitforvisible">waitForVisible</a></li>
+        
+            <li><a href="#waituntilexists">waitUntilExists</a></li>
         
     
     </ul>
@@ -385,26 +397,15 @@
             <div class="col-md-7" role="main">
 
 <h1 id="protractor">Protractor</h1>
-<p>Protractor helper is based on <a href="http://www.protractortest.org">Protractor library</a> and used for testing AngularJS applications.</p>
-<h2 id="backends">Backends</h2>
-<h3 id="selenium-installation">Selenium Installation</h3>
-<ol>
-<li>Download <a href="http://docs.seleniumhq.org/download/">Selenium Server</a></li>
-<li>For Chrome browser install <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a>, for Firefox browser install <a href="https://github.com/mozilla/geckodriver">GeckoDriver</a>.</li>
-<li>Launch the server: <code>java -jar selenium-server-standalone-3.xx.xxx.jar</code>. To locate Chromedriver binary use <code>-Dwebdriver.chrome.driver=./chromedriver</code> option. For Geckodriver use <code>-Dwebdriver.gecko.driver=</code>.</li>
-</ol>
-<h3 id="phantomjs-installation">PhantomJS Installation</h3>
-<p>PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
-It allows you to run Selenium tests on a server without a GUI installed.</p>
-<ol>
-<li>Download <a href="http://phantomjs.org/download.html">PhantomJS</a></li>
-<li>Run PhantomJS in WebDriver mode: <code>phantomjs --webdriver=4444</code></li>
-</ol>
-<h2 id="configuration">Configuration</h2>
+<p>Protractor helper is based on <a href="http://www.protractortest.org">Protractor library</a> and used for testing web applications.</p>
+<p>Protractor requires <a href="http://codecept.io/quickstart/#prepare-selenium-server">Selenium Server and ChromeDriver/GeckoDriver to be installed</a>.
+To test non-Angular applications please make sure you have <code>angular: false</code> in configuration file.</p>
+<h3 id="configuration">Configuration</h3>
 <p>This helper should be configured in codecept.json</p>
 <ul>
 <li><code>url</code> - base url of website to be tested</li>
 <li><code>browser</code> - browser in which perform testing</li>
+<li><code>angular</code> (optional, default: true): disable this option to run tests for non-Angular applications.</li>
 <li><code>driver</code> - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.</li>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
 <li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
@@ -421,7 +422,7 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <li><code>proxy</code>: set proxy settings</li>
 </ul>
 <p>other options are the same as in <a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">Protractor config</a>.</p>
-<p>Example:</p>
+<h4 id="sample-config">Sample Config</h4>
 <pre><code class="json">{
    &quot;helpers&quot;: {
      &quot;Protractor&quot; : {
@@ -429,6 +430,34 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
        &quot;browser&quot;: &quot;chrome&quot;,
        &quot;smartWait&quot;: 5000,
        &quot;restart&quot;: false
+     }
+   }
+}
+</code></pre>
+
+<h4 id="config-for-non-angular-application">Config for Non-Angular application:</h4>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;Protractor&quot; : {
+       &quot;url&quot;: &quot;http://localhost&quot;,
+       &quot;browser&quot;: &quot;chrome&quot;,
+       &quot;angular&quot;: false
+     }
+   }
+}
+</code></pre>
+
+<h4 id="config-for-headless-chrome">Config for Headless Chrome</h4>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;Protractor&quot; : {
+       &quot;url&quot;: &quot;http://localhost&quot;,
+       &quot;browser&quot;: &quot;chrome&quot;,
+       &quot;capabilities&quot;: {
+         &quot;chromeOptions&quot;: {
+           &quot;args&quot;: [ &quot;--headless&quot;, &quot;--disable-gpu&quot;, &quot;--window-size=800,600&quot; ]
+         }
+       }
      }
    }
 }
@@ -446,132 +475,21 @@ It allows you to run Selenium tests on a server without a GUI installed.</p>
 <h2 id="_locate">_locate</h2>
 <p>Get elements by different locator types, including strict locator
 Should be used in custom helpers:</p>
-<pre><code class="js">this.helpers['Protractor']._locate({model: 'newTodo'}).then //...
+<pre><code class="js">this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+</code></pre>
+
+<p>To use SmartWait and wait for element to appear on a page, add <code>true</code> as second arg:</p>
+<pre><code class="js">this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>smartWait</code>   (optional, default <code>false</code>)</li>
 </ul>
 <h2 id="aminsideangularapp">amInsideAngularApp</h2>
 <p>Enters Angular mode (switched on by default)
 Should be used after "amOutsideAngularApp"</p>
-<h2 id="amoutsideangularapp">amOutsideAngularApp</h2>
-<p>Switch to non-Angular mode,
-start using WebDriver instead of Protractor in this session</p>
-<h2 id="havemodule">haveModule</h2>
-<p>Injects Angular module.</p>
-<pre><code class="js">I.haveModule('modName', function() {
-  angular.module('modName', []).value('foo', 'bar');
-});
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>modName</code>  </li>
-<li><code>fn</code>  </li>
-</ul>
-<h2 id="moveto">moveTo</h2>
-<p>Moves to url</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>path</code>  </li>
-</ul>
-<h2 id="refresh">refresh</h2>
-<p>Reloads page</p>
-<h2 id="resetmodule">resetModule</h2>
-<p>Removes mocked Angular module. If modName not specified - clears all mock modules.</p>
-<pre><code class="js">I.resetModule(); // clears all
-I.resetModule('modName');
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>modName</code>  </li>
-</ul>
-<h2 id="waitforclickable">waitForClickable</h2>
-<p>Waits for element to become clickable for number of seconds.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  </li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
-</ul>
-<h2 id="waitforelement">waitForElement</h2>
-<p>Waits for element to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code class="js">I.waitForElement('.btn.continue');
-I.waitForElement('.btn.continue', 5); // wait for 5 secs
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waitforinvisible">waitForInvisible</h2>
-<p>Waits for an element to become invisible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code>I.waitForInvisible('#popup');
-</code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waitforstalenessof">waitForStalenessOf</h2>
-<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code>I.waitForStalenessOf('#popup');
-</code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waitfortext">waitForText</h2>
-<p>Waits for a text to appear (by default waits for 1sec).
-Element can be located by CSS or XPath.
-Narrow down search results by providing context.</p>
-<pre><code class="js">I.waitForText('Thank you, form has been submitted');
-I.waitForText('Thank you, form has been submitted', 5, '#modal');
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>text</code>  to wait for</li>
-<li><code>sec</code>  seconds to wait</li>
-<li><code>context</code>  element located by CSS|XPath|strict locator</li>
-</ul>
-<h2 id="waitforvisible">waitForVisible</h2>
-<p>Waits for an element to become visible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code>I.waitForVisible('#popup');
-</code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waituntilexists">waitUntilExists</h2>
-<p>Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code class="js">I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="_locate_1">_locate</h2>
-<pre><code class="js">this.helpers['Protractor']._locate({name: 'password'}).then //...
-</code></pre>
-
-<p>To use SmartWait and wait for element to appear on a page, add <code>true</code> as second arg:</p>
-<pre><code class="js">this.helpers['Protractor']._locate({name: 'password'}, true).then //...
-</code></pre>
-
 <h2 id="amonpage">amOnPage</h2>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
@@ -584,6 +502,9 @@ I.amOnPage('/login'); // opens a login page
 <ul>
 <li><code>url</code>  url path or global url</li>
 </ul>
+<h2 id="amoutsideangularapp">amOutsideAngularApp</h2>
+<p>Switch to non-Angular mode,
+start using WebDriver instead of Protractor in this session</p>
 <h2 id="appendfield">appendField</h2>
 <p>Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath</p>
@@ -639,6 +560,17 @@ I.clearCookie('test');
 <ul>
 <li><code>cookie</code>  (optional)</li>
 </ul>
+<h2 id="clearfield">clearField</h2>
+<p>Clears a <code>&lt;textarea&gt;</code> or text <code>&lt;input&gt;</code> element's value.</p>
+<pre><code class="js">I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+</ul>
 <h2 id="click">click</h2>
 <p>Perform a click on a link or a button, given by a locator.
 If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
@@ -670,6 +602,11 @@ I.click({css: 'nav a.login'});
 </thead>
 <tbody></tbody>
 </table>
+<h2 id="closeothertabs">closeOtherTabs</h2>
+<p>Close all tabs expect for one.</p>
+<pre><code class="js">I.closeOtherTabs();
+</code></pre>
+
 <h2 id="dontsee">dontSee</h2>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.</p>
@@ -706,6 +643,12 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|Strict locator</li>
 </ul>
+<h2 id="dontseeelementindom">dontSeeElementInDOM</h2>
+<p>Opposite to <code>seeElementInDOM</code>. Checks that element is not on page.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  located by CSS|XPath|Strict locator</li>
+</ul>
 <h2 id="dontseeincurrenturl">dontSeeInCurrentUrl</h2>
 <p>Checks that current url does not contain a provided fragment.</p>
 <p><strong>Parameters</strong></p>
@@ -731,6 +674,20 @@ Opposite to <code>seeInField</code>.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>text</code>  </li>
+</ul>
+<h2 id="doubleclick">doubleClick</h2>
+<p>Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.</p>
+<pre><code class="js">I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>context</code>  </li>
 </ul>
 <h2 id="executeasyncscript">executeAsyncScript</h2>
 <p>Executes async script on page.
@@ -815,7 +772,7 @@ assert(cookie.value, '123456');
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>name</code>  </li>
+<li><code>name</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
 </ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -843,6 +800,37 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
 </ul>
+<h2 id="havemodule">haveModule</h2>
+<p>Injects Angular module.</p>
+<pre><code class="js">I.haveModule('modName', function() {
+  angular.module('modName', []).value('foo', 'bar');
+});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>modName</code>  </li>
+<li><code>fn</code>  </li>
+</ul>
+<h2 id="movecursorto">moveCursorTo</h2>
+<p>Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options</p>
+<pre><code class="js">I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>null</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="moveto">moveTo</h2>
+<p>Moves to url</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>path</code>  </li>
+</ul>
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
@@ -855,6 +843,23 @@ I.pressKey(['Control','a']);
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>key</code>  </li>
+</ul>
+<h2 id="refresh">refresh</h2>
+<p>Reloads page</p>
+<h2 id="refreshpage">refreshPage</h2>
+<p>Reload the current page.</p>
+<pre><code class="js">`I.refreshPage();
+</code></pre>
+
+<h2 id="resetmodule">resetModule</h2>
+<p>Removes mocked Angular module. If modName not specified - clears all mock modules.</p>
+<pre><code class="js">I.resetModule(); // clears all
+I.resetModule('modName');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>modName</code>  </li>
 </ul>
 <h2 id="resizewindow">resizeWindow</h2>
 <p>Resize the current window to provided width and height.
@@ -932,6 +937,16 @@ Element is located by CSS or XPath.</p>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator</li>
 </ul>
+<h2 id="seeelementindom">seeElementInDOM</h2>
+<p>Checks that a given Element is present in the DOM
+Element is located by CSS or XPath.</p>
+<pre><code class="js">I.seeElementInDOM('#modal');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  located by CSS|XPath|strict locator</li>
+</ul>
 <h2 id="seeincurrenturl">seeInCurrentUrl</h2>
 <p>Checks that current url contains a provided fragment.</p>
 <pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
@@ -991,23 +1006,98 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <li><code>select</code>  field located by label|name|CSS|XPath|strict locator</li>
 <li><code>option</code>  </li>
 </ul>
-<h2 id="setcookie">setCookie</h2>
-<p>Sets a cookie</p>
-<pre><code class="js">I.setCookie({name: 'auth', value: true});
+<h2 id="wait">wait</h2>
+<p>Pauses execution for a number of seconds.</p>
+<pre><code class="js">I.wait(2); // wait 2 secs
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>cookie</code>  </li>
+<li><code>sec</code>  </li>
+</ul>
+<h2 id="waitforclickable">waitForClickable</h2>
+<p>Waits for element to become clickable for number of seconds.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="waitforelement">waitForElement</h2>
+<p>Waits for element to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code class="js">I.waitForElement('.btn.continue');
+I.waitForElement('.btn.continue', 5); // wait for 5 secs
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitforinvisible">waitForInvisible</h2>
+<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForInvisible('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitforstalenessof">waitForStalenessOf</h2>
+<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForStalenessOf('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitfortext">waitForText</h2>
+<p>Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.</p>
+<pre><code class="js">I.waitForText('Thank you, form has been submitted');
+I.waitForText('Thank you, form has been submitted', 5, '#modal');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  to wait for</li>
+<li><code>sec</code>  seconds to wait</li>
+<li><code>context</code>  element located by CSS|XPath|strict locator</li>
+</ul>
+<h2 id="waitforvisible">waitForVisible</h2>
+<p>Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForVisible('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waituntilexists">waitUntilExists</h2>
+<p>Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code class="js">I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul></div>
-            <div class="col-md-2" style="background: #f1c40f">
+            <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
-                    Yey, we provide Trainings!
+                    Enterprise Support
                 </h3>
 
-                <p>Learn how to develop efficient end to end tests
-                    <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
                 </p>
     </div>
 

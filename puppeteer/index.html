@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Page Objects - CodeceptJS</title>
+	<title>Puppeteer Testing - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
 
@@ -105,8 +105,8 @@
                             <a href="../mobile/">Mobile Testing</a>
                         </li>
                     
-                        <li >
-                            <a href="../puppeteer/">Puppeteer Testing</a>
+                        <li class="active">
+                            <a href="./">Puppeteer Testing</a>
                         </li>
                     
                         <li >
@@ -117,8 +117,8 @@
                             <a href="../helpers/">Helpers</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Page Objects</a>
+                        <li >
+                            <a href="../pageobjects/">Page Objects</a>
                         </li>
                     
                         <li >
@@ -237,7 +237,7 @@
                         </li>
 
                 <li >
-                    <a rel="prev" href="../data/">
+                    <a rel="prev" href="../nightmare/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -269,238 +269,154 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#page-object">Page Object</a></li>
+        <li class="main active"><a href="#robust-chrome-testing-with-puppeteer">Robust Chrome Testing with Puppeteer</a></li>
         
-            <li><a href="#pageobject">PageObject</a></li>
+            <li><a href="#setup">Setup</a></li>
         
-            <li><a href="#page-fragments">Page Fragments</a></li>
+            <li><a href="#configuring">Configuring</a></li>
         
-            <li><a href="#stepobjects">StepObjects</a></li>
+            <li><a href="#writing-tests">Writing Tests</a></li>
         
-            <li><a href="#actor">Actor</a></li>
+            <li><a href="#extending">Extending</a></li>
+        
+            <li><a href="#done">done()</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="page-object">Page Object</h1>
-<p>UI of your web application has interaction areas which can be shared across different tests.
-To avoid code duplication you can put common locators and methods into one place.</p>
-<h2 id="pageobject">PageObject</h2>
-<p>In case an application has different pages (login, admin, etc) you should use a page object.
-CodeceptJS can generate a template for it with the command:</p>
-<pre><code class="sh">codeceptjs gpo
+<h1 id="robust-chrome-testing-with-puppeteer">Robust Chrome Testing with Puppeteer</h1>
+<p>Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome <a href="https://chromedevtools.github.io/devtools-protocol/">DevTools Protocol</a>. And the most prominent one is <a href="https://github.com/GoogleChrome/puppeteer">Puppeteer</a>.
+It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If want get faster and simpler to setup tests, Puppeteer would be your choice.</p>
+<p><strong>CodeceptJS uses Puppeteer to improve end to end testing experience. First: you don't need to learn syntax of new tool, as all drivers in CodeceptJS share the same API. Second: CodeceptJS can locate elements by XPath.</strong>.</p>
+<p>Take a look at a sample test:</p>
+<pre><code class="js">I.amOnPage('https://github.com');
+I.click('Sign in', '//html/body/div[1]/header');
+I.see('Sign in to GitHub', 'h1');
+I.fillField('Username or email address', 'something@totest.com');
+I.fillField('Password', '123456');
+I.click('Sign in');
+I.see('Incorrect username or password.', '.flash-error');
 </code></pre>
 
-<p>This will create a sample template for a page object and include it into <code>codecept.json</code> config.</p>
-<pre><code class="js">'use strict';
-let I;
-
-module.exports = {
-
-  _init() {
-    I = actor();
-  }
-
-  // insert your locators and methods here
-}
+<p>It's readable and simple, contains XPath and works using Puppeteer API!</p>
+<h2 id="setup">Setup</h2>
+<p>To start you need CodeceptJS with Puppeteer packages installed</p>
+<pre><code class="bash">npm install codeceptjs-puppeteer
 </code></pre>
 
-<p>As you see, <code>I</code> object is available there so you can use it as you do in tests.
-General page object for a login page may look like this:</p>
-<pre><code class="js">'use strict';
-let I;
-
-module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
-  // setting locators
-  fields: {
-    email: '#user_basic_email',
-    password: '#user_basic_password'
-  },
-  submitButton: {css: '#new_user_basic input[type=submit]'},
-
-  // introducing methods
-  sendForm(email, password) {
-    I.fillField(this.fields.email, email);
-    I.fillField(this.fields.password, password);
-    I.click(this.submitButton);
-  }
-}
+<p>And a basic project initialized</p>
+<pre><code class="sh">codeceptjs init
 </code></pre>
 
-<p>You can include this pageobject in test by its name (defined in <code>codecept.json</code>). In case you created a <code>loginPage</code> object
-it should be added to list of test arguments to be included in test:</p>
-<pre><code class="js">Scenario('login', (I, loginPage) =&gt; {
-  loginPage.sendForm('john@doe.com','123456');
-  I.see('Hello, John');
-});
-</code></pre>
-
-<p>Also you can use <code>async/await</code> inside PageObject:</p>
-<pre><code class="js">'use strict';
-let I;
-
-module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
-  // setting locators
-  container: &quot;//div[@class = 'numbers']&quot;,
-  mainItem: {
-    number: &quot;.//div[contains(@class, 'numbers__main-number')]&quot;,
-    title: &quot;.//div[contains(@class, 'numbers__main-title-block')]&quot;
-  },
-
-  // introducing methods
-  openMainArticle() =&gt; {
-    I.waitForVisible(this.container)
-    let title;
-    within(this.container, async () =&gt; {
-      title = await I.grabTextFrom(this.mainItem.number);
-      let subtitle = await I.grabTextFrom(this.mainItem.title);
-      title = title + &quot; &quot; + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
-      I.click(this.mainItem.title)
-    })
-    return title;
-  }
-}
-</code></pre>
-
-<p>and use them in your tests:</p>
-<pre><code class="js">Scenario('login2', async (I, loginPage, basePage) =&gt; {
-  let title = mainPage.openMainArticle()
-  basePage.pageShouldBeOpened(title)
-});
-</code></pre>
-
-<p>Also you can use generators inside a PageObject:</p>
-<pre><code class="js">'use strict';
-let I;
-
-module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
-  // setting locators
-  container: &quot;//div[@class = 'numbers']&quot;,
-  mainItem: {
-    number: &quot;.//div[contains(@class, 'numbers__main-number')]&quot;,
-    title: &quot;.//div[contains(@class, 'numbers__main-title-block')]&quot;
-  },
-
-  // introducing methods
-  openMainArticle: async () =&gt; {
-    I.waitForVisible(this.container)
-    let _this = this
-    let title;
-    await within(this.container, async () =&gt; {
-      title = await I.grabTextFrom(_this.mainItem.number);
-      let subtitle = await I.grabTextFrom(_this.mainItem.title);
-      title = title + &quot; &quot; + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
-      await I.click(_this.mainItem.title)
-    })
-    return title;
-  }
-}
-</code></pre>
-
-<p>and use them in your tests:</p>
-<pre><code class="js">Scenario('login2', async (I, loginPage, basePage) =&gt; {
-  let title = await mainPage.openMainArticle()
-  basePage.pageShouldBeOpened(title)
-});
-</code></pre>
-
-<h2 id="page-fragments">Page Fragments</h2>
-<p>In a similar manner CodeceptJS allows you to generate <strong>PageFragments</strong> and any other are abstraction
-by running <code>go</code> command with <code>--type</code> (or <code>-t</code>) option:</p>
-<pre><code class="sh">codeceptjs go --type fragment
-</code></pre>
-
-<p>Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
-Technically they are the same as PageObject but conceptually they are a bit different.
-For instance, it is recommended that Page Fragment to include a root locator of a component.
-Methods of page fragment can use <code>within</code> block to narrow scope to a root locator:</p>
-<pre><code class="js">let I;
-// fragments/modal.js
-module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
-  root: '#modal',
-
-  // we are clicking &quot;Accept: inside a popup window
-  accept() {
-    within(this.root, function() {
-      I.click('Accept');
-    });
-  }
-}
-</code></pre>
-
-<h2 id="stepobjects">StepObjects</h2>
-<p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, changing permissions, etc.
-StepObject can be created similarly to PageObjects or PageFragments:</p>
-<pre><code class="sh">codeceptjs go --type step
-</code></pre>
-
-<p>Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:</p>
-<pre><code class="js">let I, userPage, permissionPage;
-module.exports = {
-
-  _init() {
-    I = actor();
-    userPage = require('../pages/user');
-    userPage._init();
-    permissionPage = require('../pages/permissions');
-    permissionPage._init();
-
-  },
-
-  createUser(name) {
-    // action composed from actions of page objects
-    userPage.open();
-    userPage.create(name);
-    permissionPage.activate(name);
-  }
-
-};
-</code></pre>
-
-<h2 id="actor">Actor</h2>
-<p>Login example above can be reworked so the method <code>login</code> would be available in <code>I</code> object itself.
-This is recommended if most of tests require user authentication and for not to require <code>loginPage</code> every time.</p>
-<p>At initialization you were asked to create custom steps file. If you accepted this option you may use <code>custom_steps.js</code> file to extend <code>I</code>.
-See how <code>login</code> method can be added to <code>I</code>:</p>
-<pre><code class="js">'use strict';
-// in this file you can append custom step methods to 'I' object
-
-module.exports = function() {
-  return actor({
-
-    login: function(email, password) {
-      this.fillField('Email', email);
-      this.fillField('Password', password);
-      this.click('Submit');
+<p>You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.
+Setup process is explained on <a href="http://codecept.io/quickstart/">QuickStart page</a>.</p>
+<p>(If you already have CodeceptJS project, just install <code>puppeteer</code> package and enable it in config)</p>
+<h2 id="configuring">Configuring</h2>
+<p>Make sure <code>Puppeteer</code> helper is enabled in <code>codecept.json</code> config:</p>
+<pre><code class="js">{ // ..
+  &quot;helpers&quot;: {
+    &quot;Puppeteer&quot;: {
+      &quot;url&quot;: &quot;http://localhost&quot;,
+      &quot;show&quot;: false
     }
-  });
+  }
+  // ..
 }
 </code></pre>
 
-<p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.</p>
-<h3 id="done">done()</h3></div>
+<p>Turn on the <code>show</code> option if you want to follow test progress in a window. This is very useful for debugging.</p>
+<p>Sometimes test may run faster than application gets rendered. In this case it is <strong>recommended to increase <code>waitForAction</code> config value</strong>. It will wait for a small amount of time (100ms) by default after each user action taken.</p>
+<p><em>More options are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
+<h2 id="writing-tests">Writing Tests</h2>
+<p>CodeceptJS test should be created with <code>gt</code> command:</p>
+<pre><code>codeceptjs gt
+</code></pre>
+
+<p>As an example we will use <code>ToDoMvc</code> app for testing.</p>
+<h3 id="actions">Actions</h3>
+<p>Tests consist with a scenario of user's action taken on a page. The most widely used ones are:</p>
+<ul>
+<li><code>amOnPage</code> - to open a webpage (accepts relative or absolute url)</li>
+<li><code>click</code> - to locate a button or link and click on it</li>
+<li><code>fillField</code> - to enter a text inside a field</li>
+<li><code>selectOption</code>, <code>checkOption</code> - to interact with a form</li>
+<li><code>wait*</code> to wait for some parts of page to be fully rendered (important for testing SPA)</li>
+<li><code>grab*</code> to get values from page sources</li>
+<li><code>see</code>, <code>dontSee</code> - to check for a text on a page</li>
+<li><code>seeElement</code>, <code>dontSeeElement</code> - to check for elements on a page</li>
+</ul>
+<p><em>All actions are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
+<p>All actions whicn interact with elements <strong>support CSS and XPath locators</strong>. Actions like <code>click</code> or <code>fillField</code> by locate elements by their name or value on a page:</p>
+<pre><code class="js">
+// search for link or button
+I.click('Login');
+// locate field by its label
+I.fillField('Name', 'Miles');
+// we can use input name
+I.fillField('user[email]','miles@davis.com');
+</code></pre>
+
+<p>You can also specify the exact locator type with strict locators:</p>
+<pre><code class="js">I.click({css: 'button.red'});
+I.fillField({name: 'user[email]'},'miles@davis.com');
+I.seeElement({xpath: '//body/header'});
+</code></pre>
+
+<p>A complete ToDo-MVC test may look like:</p>
+<pre><code class="js">Scenario('create todo item', (I) =&gt; {
+  I.amOnPage('http://todomvc.com/examples/react/');
+  I.dontSeeElement('.todo-count');
+  I.fillField('What needs to be done?', 'Write a guide');
+  I.pressKey('Enter');
+  I.see('Write a guide', '.todo-list');
+  I.see('1 item left', '.todo-count');
+});
+</code></pre>
+
+<h3 id="grabbers">Grabbers</h3>
+<p>If you need to get element's value inside a test you can use <code>grab*</code> methods. They should be used with <code>await</code> operator inside <code>async</code> function:</p>
+<pre><code class="js">const assert = require('assert');
+Scenario('get value of current tasks', async (I) =&gt; {
+  I.createTodo('do 1');
+  I.createTodo('do 2');
+  let numTodos = await I.grabTextFrom('.todo-count strong');
+  assert.equal(2, numTodos);
+});
+</code></pre>
+
+<h3 id="within">Within</h3>
+<p>In case some actions should be taken inside one element (a container or modal window) you can use <code>within</code> block to narrow the scope.
+Please take a not that you can't use within inside another within in Puppeteer helper:</p>
+<pre><code class="js">within('.todoapp', () =&gt; {
+  I.createTodo('my new item');
+  I.see('1 item left', '.todo-count');
+  I.click('.todo-list input.toggle');
+});
+I.see('0 items left', '.todo-count');
+</code></pre>
+
+<p>CodeceptJS allows you to implement custom actions like <code>I.createTodo</code> or use <strong>PageObjects</strong>. Learn how to improve your tests in <a href="http://codecept.io/pageobjects/">PageObjects</a> guide.</p>
+<h2 id="extending">Extending</h2>
+<p>Puppeteer has a very <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md">rich and flexible API</a>. Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.</p>
+<p>Start with creating an <code>MyPuppeteer</code> helper using <code>generate:helper</code> or <code>gh</code> command:</p>
+<pre><code>codeceptjs gh
+</code></pre>
+
+<p>Then inside a Helper you can access <code>Puppeteer</code> helper of CodeceptJS.
+Let's say you want to create <code>I.renderPageToPdf</code> action. In this case you need to call <code>pdf</code> method of <code>page</code> object</p>
+<pre><code class="js">// inside a MyPuppeteer helper
+async renderPageToPdf() {
+  const page = this.helpers['Puppeteer'].page;
+  await page.emulateMedia('screen');
+  return page.pdf({path: 'page.pdf'});
+}
+</code></pre>
+
+<p>The same way you can also access <code>browser</code> object to implement more actions or handle events. <a href="http://codecept.io/helpers/">Learn more about Helpers</a> in the corresponding guide.</p>
+<h2 id="done">done()</h2>
+<p>Yes, also the <a href="https://github.com/DavertMik/codeceptjs-todomvc-puppeteer">demo project is available on GitHub</a></p></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
