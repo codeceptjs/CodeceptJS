@@ -1,13 +1,9 @@
-'use strict';
-let container = require('../../lib/container');
-let should = require('chai').should();
-let assert = require('assert');
-let path = require('path');
-let sinon = require('sinon');
-let FileSystem = require('../../lib/helper/FileSystem');
+const container = require('../../lib/container');
+const assert = require('assert');
+const path = require('path');
+const FileSystem = require('../../lib/helper/FileSystem');
 
 describe('Container', () => {
-
   before(() => {
     global.codecept_dir = path.join(__dirname, '/..');
   });
@@ -18,7 +14,7 @@ describe('Container', () => {
 
 
   describe('#translation', () => {
-    let Translation = require('../../lib/translation');
+    const Translation = require('../../lib/translation');
 
     it('should create empty translation', () => {
       container.create({});
@@ -34,14 +30,13 @@ describe('Container', () => {
       container.translation().I.should.eql('Я');
       container.translation().actionAliasFor('see').should.eql('вижу');
     });
-
   });
 
   describe('#helpers', () => {
     beforeEach(() => {
       container.clear({
         helper1: { name: 'hello' },
-        helper2: { name: 'world' }
+        helper2: { name: 'world' },
       });
     });
 
@@ -54,15 +49,13 @@ describe('Container', () => {
       container.helpers('helper2').name.should.eql('world');
       assert.ok(!container.helpers('helper3'));
     });
-
   });
 
   describe('#support', () => {
-
     beforeEach(() => {
       container.clear({}, {
         support1: { name: 'hello' },
-        support2: { name: 'world' }
+        support2: { name: 'world' },
       });
     });
 
@@ -79,13 +72,13 @@ describe('Container', () => {
 
   describe('#create', () => {
     it('should create container with helpers', () => {
-      let config = {
+      const config = {
         helpers: {
           MyHelper: {
-            require: './data/helper'
+            require: './data/helper',
           },
-          FileSystem: {}
-        }
+          FileSystem: {},
+        },
       };
       container.create(config);
       // custom helpers
@@ -105,26 +98,50 @@ describe('Container', () => {
     it('should load I from path and execute _init', () => {
       container.create({
         include: {
-          I: './data/I'
-        }
+          I: './data/I',
+        },
       });
       assert.ok(container.support('I'));
       container.support('I').should.have.keys('_init', 'doSomething');
       assert(global.I_initialized);
     });
+
+    it('should load DI includes provided as require paths', () => {
+      container.create({
+        include: {
+          dummyPage: './data/dummy_page',
+        },
+      });
+      assert.ok(container.support('dummyPage'));
+      container.support('dummyPage').should.have.keys('openDummyPage');
+    });
+
+    it('should load DI includes provided as objects', () => {
+      container.create({
+        include: {
+          dummyPage: {
+            openDummyPage: () => 'dummy page opened',
+          },
+        },
+      });
+      assert.ok(container.support('dummyPage'));
+      container.support('dummyPage').should.have.keys('openDummyPage');
+    });
   });
 
   describe('#append', () => {
     it('should be able to add new helper', () => {
-      let config = {
+      const config = {
         helpers: {
-          FileSystem: {}
-        }
+          FileSystem: {},
+        },
       };
       container.create(config);
-      container.append({helpers: {
-        AnotherHelper: { method: () => 'executed' }
-      }});
+      container.append({
+        helpers: {
+          AnotherHelper: { method: () => 'executed' },
+        },
+      });
       assert.ok(container.helpers('FileSystem'));
       container.helpers('FileSystem').should.be.instanceOf(FileSystem);
 
@@ -134,11 +151,10 @@ describe('Container', () => {
 
     it('should be able to add new support object', () => {
       container.create({});
-      container.append({support: {userPage: { login: '#login' }}})
+      container.append({ support: { userPage: { login: '#login' } } });
       assert.ok(container.support('I'));
       assert.ok(container.support('userPage'));
       container.support('userPage').login.should.eql('#login');
     });
   });
-
 });

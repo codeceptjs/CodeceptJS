@@ -52,9 +52,15 @@ appium
 
 To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.
 
+CodeceptJS should be installed with webdriverio support:
+
+```bash
+npm install -g codeceptjs-webdriverio
+```
+
 ## Configuring
 
-CodeceptJS should be installed. Initialize it with `init` command:
+Initialize CodeceptJS with `init` command:
 
 ```sh
 codeceptjs init
@@ -66,7 +72,7 @@ Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
 ? What helpers do you want to use?
  ◯ WebDriverIO
  ◯ Protractor
- ◯ SeleniumWebdriver
+ ◯ Puppeteer
  ◯ Nightmare
 ❯◉ Appium
  ◯ REST

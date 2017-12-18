@@ -1,0 +1,77 @@
+version: '3'
+services:
+  test-unit:
+    build: ..
+    entrypoint: node_modules/.bin/gulp
+    command: test
+    working_dir: /codecept
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
+  test-helpers:
+    build: ..
+    entrypoint: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium
+    command: test/helper
+    working_dir: /codecept
+    env_file: .env
+    depends_on:
+      - selenium.chrome
+      - php
+      - json_server
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
+  test-acceptance.webdriverio:
+    build: ..
+    env_file: .env
+    environment:
+      - CODECEPT_ARGS=-c codecept.WebDriverIO.js --grep @WebDriverIO
+    depends_on:
+      - php
+      - selenium.chrome
+    volumes:
+      - ./acceptance:/tests
+      - ./support:/support
+      - node_modules:/codecept/node_modules
+
+  test-acceptance.nightmare:
+    build: ..
+    env_file: .env
+    environment:
+      - CODECEPT_ARGS=-c codecept.Nightmare.js --grep @Nightmare
+    depends_on:
+      - php
+      - selenium.chrome
+    volumes:
+      - ./acceptance:/tests
+      - ./support:/support
+      - node_modules:/codecept/node_modules
+
+  selenium.chrome:
+    image: selenium/standalone-chrome:3.5.2-antimony
+    ports:
+      - 4444:4444
+
+  php:
+    image: php:7.0
+    command: php -S 0.0.0.0:8000 -t /test/data/app
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/test
+
+  json_server:
+    build: ..
+    entrypoint: []
+    command: npm run json-server
+    working_dir: /codecept
+    expose:
+      - 8010
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
+volumes:
+  node_modules:

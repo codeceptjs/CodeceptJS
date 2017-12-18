@@ -154,6 +154,13 @@ class iframe {
     }
 }
 
+class iframe_nested {
+    public function GET()
+    {
+        include __DIR__.'/view/iframe_nested.php';
+    }
+}
+
 class facebookController {
     function GET($matches) {
         include __DIR__.'/view/facebook.php';

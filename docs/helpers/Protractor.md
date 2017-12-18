@@ -1,29 +1,17 @@
 # Protractor
 
-Protractor helper is based on [Protractor library](http://www.protractortest.org) and used for testing AngularJS applications.
+Protractor helper is based on [Protractor library](http://www.protractortest.org) and used for testing web applications.
 
-## Backends
+Protractor requires [Selenium Server and ChromeDriver/GeckoDriver to be installed](http://codecept.io/quickstart/#prepare-selenium-server).
+To test non-Angular applications please make sure you have `angular: false` in configuration file.
 
-### Selenium Installation
-
-1.  Download [Selenium Server](http://docs.seleniumhq.org/download/)
-2.  For Chrome browser install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started), for Firefox browser install [GeckoDriver](https://github.com/mozilla/geckodriver).
-3.  Launch the server: `java -jar selenium-server-standalone-3.xx.xxx.jar`. To locate Chromedriver binary use `-Dwebdriver.chrome.driver=./chromedriver` option. For Geckodriver use `-Dwebdriver.gecko.driver=`.
-
-### PhantomJS Installation
-
-PhantomJS is a headless alternative to Selenium Server that implements the WebDriver protocol.
-It allows you to run Selenium tests on a server without a GUI installed.
-
-1.  Download [PhantomJS](http://phantomjs.org/download.html)
-2.  Run PhantomJS in WebDriver mode: `phantomjs --webdriver=4444`
-
-## Configuration
+### Configuration
 
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
+-   `angular` (optional, default: true): disable this option to run tests for non-Angular applications.
 -   `driver` - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
 -   `restart` (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
@@ -41,7 +29,7 @@ This helper should be configured in codecept.json
 
 other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
 
-Example:
+#### Sample Config
 
 ```json
 {
@@ -51,6 +39,38 @@ Example:
        "browser": "chrome",
        "smartWait": 5000,
        "restart": false
+     }
+   }
+}
+```
+
+#### Config for Non-Angular application:
+
+```json
+{
+   "helpers": {
+     "Protractor" : {
+       "url": "http://localhost",
+       "browser": "chrome",
+       "angular": false
+     }
+   }
+}
+```
+
+#### Config for Headless Chrome
+
+```json
+{
+   "helpers": {
+     "Protractor" : {
+       "url": "http://localhost",
+       "browser": "chrome",
+       "capabilities": {
+         "chromeOptions": {
+           "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+         }
+       }
      }
    }
 }
@@ -74,166 +94,24 @@ Get elements by different locator types, including strict locator
 Should be used in custom helpers:
 
 ```js
-this.helpers['Protractor']._locate({model: 'newTodo'}).then //...
-```
-
-**Parameters**
-
--   `locator`  
-
-## amInsideAngularApp
-
-Enters Angular mode (switched on by default)
-Should be used after "amOutsideAngularApp"
-
-## amOutsideAngularApp
-
-Switch to non-Angular mode,
-start using WebDriver instead of Protractor in this session
-
-## haveModule
-
-Injects Angular module.
-
-```js
-I.haveModule('modName', function() {
-  angular.module('modName', []).value('foo', 'bar');
-});
-```
-
-**Parameters**
-
--   `modName`  
--   `fn`  
-
-## moveTo
-
-Moves to url
-
-**Parameters**
-
--   `path`  
-
-## refresh
-
-Reloads page
-
-## resetModule
-
-Removes mocked Angular module. If modName not specified - clears all mock modules.
-
-```js
-I.resetModule(); // clears all
-I.resetModule('modName');
-```
-
-**Parameters**
-
--   `modName`  
-
-## waitForClickable
-
-Waits for element to become clickable for number of seconds.
-
-**Parameters**
-
--   `locator`  
--   `sec`   (optional, default `null`)
-
-## waitForElement
-
-Waits for element to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```js
-I.waitForElement('.btn.continue');
-I.waitForElement('.btn.continue', 5); // wait for 5 secs
-```
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitForInvisible
-
-Waits for an element to become invisible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-    I.waitForInvisible('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitForStalenessOf
-
-Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-    I.waitForStalenessOf('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitForText
-
-Waits for a text to appear (by default waits for 1sec).
-Element can be located by CSS or XPath.
-Narrow down search results by providing context.
-
-```js
-I.waitForText('Thank you, form has been submitted');
-I.waitForText('Thank you, form has been submitted', 5, '#modal');
-```
-
-**Parameters**
-
--   `text`  to wait for
--   `sec`  seconds to wait
--   `context`  element located by CSS|XPath|strict locator
-
-## waitForVisible
-
-Waits for an element to become visible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-    I.waitForVisible('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitUntilExists
-
-Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-```
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## _locate
-
-```js
-this.helpers['Protractor']._locate({name: 'password'}).then //...
+this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
 ```
 
 To use SmartWait and wait for element to appear on a page, add `true` as second arg:
 
 ```js
-this.helpers['Protractor']._locate({name: 'password'}, true).then //...
+this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
 ```
+
+**Parameters**
+
+-   `locator`  
+-   `smartWait`   (optional, default `false`)
+
+## amInsideAngularApp
+
+Enters Angular mode (switched on by default)
+Should be used after "amOutsideAngularApp"
 
 ## amOnPage
 
@@ -249,6 +127,11 @@ I.amOnPage('/login'); // opens a login page
 **Parameters**
 
 -   `url`  url path or global url
+
+## amOutsideAngularApp
+
+Switch to non-Angular mode,
+start using WebDriver instead of Protractor in this session
 
 ## appendField
 
@@ -312,6 +195,20 @@ I.clearCookie('test');
 
 -   `cookie`  (optional)
 
+## clearField
+
+Clears a `<textarea>` or text `<input>` element's value.
+
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
+
+**Parameters**
+
+-   `field`  located by label|name|CSS|XPath|strict locator
+
 ## click
 
 Perform a click on a link or a button, given by a locator.
@@ -340,6 +237,14 @@ I.click({css: 'nav a.login'});
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
+
+## closeOtherTabs
+
+Close all tabs expect for one.
+
+```js
+I.closeOtherTabs();
+```
 
 ## dontSee
 
@@ -388,6 +293,14 @@ Opposite to `seeElement`. Checks that element is not visible
 
 -   `locator`  located by CSS|XPath|Strict locator
 
+## dontSeeElementInDOM
+
+Opposite to `seeElementInDOM`. Checks that element is not on page.
+
+**Parameters**
+
+-   `locator`  located by CSS|XPath|Strict locator
+
 ## dontSeeInCurrentUrl
 
 Checks that current url does not contain a provided fragment.
@@ -421,6 +334,23 @@ Checks that title does not contain text.
 **Parameters**
 
 -   `text`  
+
+## doubleClick
+
+Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
+
+```js
+I.doubleClick('Edit');
+I.doubleClick('Edit', '.actions');
+I.doubleClick({css: 'button.accept'});
+I.doubleClick('.btn.edit');
+```
+
+**Parameters**
+
+-   `locator`  
+-   `context`  
 
 ## executeAsyncScript
 
@@ -526,7 +456,7 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  
+-   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
 ## grabTextFrom
 
@@ -563,6 +493,45 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
 
+## haveModule
+
+Injects Angular module.
+
+```js
+I.haveModule('modName', function() {
+  angular.module('modName', []).value('foo', 'bar');
+});
+```
+
+**Parameters**
+
+-   `modName`  
+-   `fn`  
+
+## moveCursorTo
+
+Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`   (optional, default `null`)
+-   `offsetY`   (optional, default `null`)
+
+## moveTo
+
+Moves to url
+
+**Parameters**
+
+-   `path`  
+
 ## pressKey
 
 Presses a key on a focused element.
@@ -578,6 +547,31 @@ I.pressKey(['Control','a']);
 **Parameters**
 
 -   `key`  
+
+## refresh
+
+Reloads page
+
+## refreshPage
+
+Reload the current page.
+
+```js
+`I.refreshPage();
+```
+
+## resetModule
+
+Removes mocked Angular module. If modName not specified - clears all mock modules.
+
+```js
+I.resetModule(); // clears all
+I.resetModule('modName');
+```
+
+**Parameters**
+
+-   `modName`  
 
 ## resizeWindow
 
@@ -675,6 +669,19 @@ I.seeElement('#modal');
 
 -   `locator`  located by CSS|XPath|strict locator
 
+## seeElementInDOM
+
+Checks that a given Element is present in the DOM
+Element is located by CSS or XPath.
+
+```js
+I.seeElementInDOM('#modal');
+```
+
+**Parameters**
+
+-   `locator`  located by CSS|XPath|strict locator
+
 ## seeInCurrentUrl
 
 Checks that current url contains a provided fragment.
@@ -750,14 +757,106 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 -   `select`  field located by label|name|CSS|XPath|strict locator
 -   `option`  
 
-## setCookie
+## wait
 
-Sets a cookie
+Pauses execution for a number of seconds.
 
 ```js
-I.setCookie({name: 'auth', value: true});
+I.wait(2); // wait 2 secs
 ```
 
 **Parameters**
 
--   `cookie`  
+-   `sec`  
+
+## waitForClickable
+
+Waits for element to become clickable for number of seconds.
+
+**Parameters**
+
+-   `locator`  
+-   `sec`   (optional, default `null`)
+
+## waitForElement
+
+Waits for element to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitForElement('.btn.continue');
+I.waitForElement('.btn.continue', 5); // wait for 5 secs
+```
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForInvisible
+
+Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForInvisible('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForStalenessOf
+
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForStalenessOf('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForText
+
+Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.
+
+```js
+I.waitForText('Thank you, form has been submitted');
+I.waitForText('Thank you, form has been submitted', 5, '#modal');
+```
+
+**Parameters**
+
+-   `text`  to wait for
+-   `sec`  seconds to wait
+-   `context`  element located by CSS|XPath|strict locator
+
+## waitForVisible
+
+Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForVisible('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitUntilExists
+
+Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
