@@ -1,87 +1,28 @@
-# Protractor
+# Puppeteer
 
-Protractor helper is based on [Protractor library](http://www.protractortest.org) and used for testing web applications.
+Uses [Google Chrome's Puppeteer](https://github.com/GoogleChrome/puppeteer) library to run tests inside headless Chrome.
+Browser control is executed via DevTools without Selenium.
+This helper works with a browser out of the box with no additional tools required to install.
 
-Protractor requires [Selenium Server and ChromeDriver/GeckoDriver to be installed](http://codecept.io/quickstart/#prepare-selenium-server).
-To test non-Angular applications please make sure you have `angular: false` in configuration file.
+Requires `puppeteer` package to be installed.
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
--   `browser` - browser in which perform testing
--   `angular` (optional, default: true): disable this option to run tests for non-Angular applications.
--   `driver` - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
--   `restart` (optional, default: true) - restart browser between tests.
--   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
--   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
--   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
--   `rootElement` - Root element of AngularJS application (default: body)
--   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
--   `scriptsTimeout`: (optional) timeout in milliseconds for each script run on the browser, 10000 by default.
--   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
--   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
--   `proxy`: set proxy settings
-
-other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
-
-#### Sample Config
-
-```json
-{
-   "helpers": {
-     "Protractor" : {
-       "url": "http://localhost",
-       "browser": "chrome",
-       "smartWait": 5000,
-       "restart": false
-     }
-   }
-}
-```
-
-#### Config for Non-Angular application:
-
-```json
-{
-   "helpers": {
-     "Protractor" : {
-       "url": "http://localhost",
-       "browser": "chrome",
-       "angular": false
-     }
-   }
-}
-```
-
-#### Config for Headless Chrome
-
-```json
-{
-   "helpers": {
-     "Protractor" : {
-       "url": "http://localhost",
-       "browser": "chrome",
-       "capabilities": {
-         "chromeOptions": {
-           "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
-         }
-       }
-     }
-   }
-}
-```
-
-## Access From Helpers
-
-Receive a WebDriverIO client from a custom helper by accessing `browser` property:
+-   `show` (optional, default: false) - show Google Chrome window for debug.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure.
+-   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
+-   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
+-   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
+-   `chrome`: (optional) pass additional [Puppeteer run options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions). Example
 
 ```js
-this.helpers['Protractor'].browser
+"chrome": {
+  "executablePath" : "/path/to/Chrome"
+}
 ```
 
 **Parameters**
@@ -94,24 +35,12 @@ Get elements by different locator types, including strict locator
 Should be used in custom helpers:
 
 ```js
-this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
-```
-
-To use SmartWait and wait for element to appear on a page, add `true` as second arg:
-
-```js
-this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
+const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
 ```
 
 **Parameters**
 
 -   `locator`  
--   `smartWait`   (optional, default `false`)
-
-## amInsideAngularApp
-
-Enters Angular mode (switched on by default)
-Should be used after "amOutsideAngularApp"
 
 ## amOnPage
 
@@ -127,11 +56,6 @@ I.amOnPage('/login'); // opens a login page
 **Parameters**
 
 -   `url`  url path or global url
-
-## amOutsideAngularApp
-
-Switch to non-Angular mode,
-start using WebDriver instead of Protractor in this session
 
 ## appendField
 
@@ -194,6 +118,7 @@ I.clearCookie('test');
 **Parameters**
 
 -   `cookie`  (optional)
+-   `name`  
 
 ## clearField
 
@@ -238,12 +163,12 @@ I.click({css: 'nav a.login'});
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
 
-## closeOtherTabs
+## closeCurrentTab
 
-Close all tabs expect for one.
+Close current tab and switches to previous.
 
 ```js
-I.closeOtherTabs();
+I.closeCurrentTab();
 ```
 
 ## dontSee
@@ -456,7 +381,7 @@ assert(cookie.value, '123456');
 
 **Parameters**
 
--   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
+-   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ## grabTextFrom
 
@@ -493,20 +418,19 @@ let email = yield I.grabValueFrom('input[name=email]');
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
 
-## haveModule
+## haveRequestHeaders
 
-Injects Angular module.
+Set headers for all next requests
 
 ```js
-I.haveModule('modName', function() {
-  angular.module('modName', []).value('foo', 'bar');
+I.haveRequestHeaders({
+   'X-Sent-By': 'CodeceptJS',
 });
 ```
 
 **Parameters**
 
--   `modName`  
--   `fn`  
+-   `customHeaders`  
 
 ## moveCursorTo
 
@@ -518,19 +442,21 @@ I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 ```
 
+For Puppeteer offsetX and offsetY arguments are ignored
+
 **Parameters**
 
 -   `locator`  
--   `offsetX`   (optional, default `null`)
--   `offsetY`   (optional, default `null`)
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
-## moveTo
+## openNewTab
 
-Moves to url
+Open new tab and switch to it
 
-**Parameters**
-
--   `path`  
+```js
+I.openNewTab();
+```
 
 ## pressKey
 
@@ -548,10 +474,6 @@ I.pressKey(['Control','a']);
 
 -   `key`  
 
-## refresh
-
-Reloads page
-
 ## refreshPage
 
 Reload the current page.
@@ -559,19 +481,6 @@ Reload the current page.
 ```js
 `I.refreshPage();
 ```
-
-## resetModule
-
-Removes mocked Angular module. If modName not specified - clears all mock modules.
-
-```js
-I.resetModule(); // clears all
-I.resetModule('modName');
-```
-
-**Parameters**
-
--   `modName`  
 
 ## resizeWindow
 
@@ -581,7 +490,9 @@ First parameter can be set to `maximize`
 **Parameters**
 
 -   `width`  or `maximize`
--   `height`  
+-   `height`  Unlike other drivers Puppeteer changes the size of a viewport, not the window!
+    Puppeteer does not control the window of a browser so it can't adjust its real size.
+    It also can't maximize a window.
 
 ## saveScreenshot
 
@@ -757,6 +668,44 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 -   `select`  field located by label|name|CSS|XPath|strict locator
 -   `option`  
 
+## setCookie
+
+Sets a cookie
+
+```js
+I.setCookie({name: 'auth', value: true});
+```
+
+**Parameters**
+
+-   `cookie`  
+
+## switchToNextTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToNextTab();
+I.switchToNextTab(2);
+```
+
+**Parameters**
+
+-   `num`   (optional, default `1`)
+
+## switchToPreviousTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToPreviousTab();
+I.switchToPreviousTab(2);
+```
+
+**Parameters**
+
+-   `num`   (optional, default `1`)
+
 ## wait
 
 Pauses execution for a number of seconds.
@@ -769,15 +718,6 @@ I.wait(2); // wait 2 secs
 
 -   `sec`  
 
-## waitForClickable
-
-Waits for element to become clickable for number of seconds.
-
-**Parameters**
-
--   `locator`  
--   `sec`   (optional, default `null`)
-
 ## waitForElement
 
 Waits for element to be present on page (by default waits for 1sec).
@@ -787,30 +727,6 @@ Element can be located by CSS or XPath.
 I.waitForElement('.btn.continue');
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 ```
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitForInvisible
-
-Waits for an element to become invisible on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-    I.waitForInvisible('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitForStalenessOf
-
-Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-    I.waitForStalenessOf('#popup');
 
 **Parameters**
 
@@ -844,6 +760,33 @@ Element can be located by CSS or XPath.
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitToHide
+
+Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitToHide('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitUntil
+
+Waits for a function to return true (waits for 1sec by default).
+
+```js
+I.waitUntil(() => window.requests == 0);
+I.waitUntil(() => window.requests == 0, 5);
+```
+
+**Parameters**
+
+-   `function`  function which is executed in browser context.
+-   `fn`  
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitUntilExists

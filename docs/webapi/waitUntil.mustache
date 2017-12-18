@@ -1,0 +1,9 @@
+Waits for a function to return true (waits for 1sec by default).
+
+```js
+I.waitUntil(() => window.requests == 0);
+I.waitUntil(() => window.requests == 0, 5);
+```
+
+@param function function which is executed in browser context.
+@param sec time seconds to wait, 1 by default
