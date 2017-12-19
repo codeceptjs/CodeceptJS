@@ -58,6 +58,7 @@ program.command('run [test]')
   .option('-o, --override [value]', 'override current config options')
   .option('--profile [value]', 'configuration profile to be used')
   .option('-c, --config [file]', 'configuration file to be used')
+  .option('--transpile', 'configure codecept to understand JSX syntax and transpilers')
 
   // mocha options
   .option('--colors', 'force enabling of colors')
@@ -72,7 +73,8 @@ program.command('run [test]')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
   .option('--full-trace', 'display the full stack trace')
-  .option('--compilers <ext>:<module>,...', 'use the given module(s) to compile files')
+  .option('--compilers <ext>:<module>,...', 'use the given module(s) to compile files', list, [])
+  .option('-r, --require <name>,...', 'require the given module', list, [])
   .option('--debug-brk', "enable node's debugger breaking on the first line")
   .option('--inline-diffs', 'display actual/expected differences inline within each string')
   .option('--no-exit', 'require a clean shutdown of the event loop: mocha will not call process.exit')
@@ -103,3 +105,12 @@ if (process.argv.length <= 2) {
   program.outputHelp();
 }
 program.parse(process.argv);
+
+
+/**
+ * Parse list.
+ */
+
+function list(str) {
+  return str.split(/ *, */);
+}
