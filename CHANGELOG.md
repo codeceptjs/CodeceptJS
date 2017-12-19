@@ -1,3 +1,7 @@
+## 1.1.1
+
+* [WebDriverIO] fixed `waitForInvisible` by @Kporal
+
 ## 1.1.0
 
 Major update to CodeceptJS. **NodeJS v 8.9.1** is now minimal Node version required.
