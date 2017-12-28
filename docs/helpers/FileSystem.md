@@ -10,6 +10,18 @@ I.seeInThisFile('FileSystem');
 I.dontSeeInThisFile("WebDriverIO");
 ```
 
+Include the helper in your configuration file helpers section:
+
+```js
+{
+  ...
+  "helpers": {
+    ...
+    "FileSystem": {}
+  },
+
+```
+
 ## amInPath
 
 Enters a directory In local filesystem.
