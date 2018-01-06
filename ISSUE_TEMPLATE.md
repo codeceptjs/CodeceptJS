@@ -7,14 +7,16 @@
 ```bash
 # paste output here
 ```
+
 > Provide test source code if related
 
-```php
+```js
 // paste test
 ```
+
 ### Details
 
-* CodeceptJS version: 
+* CodeceptJS version:
 * NodeJS Version:
 * Operating System:
 * Protractor || WebDriverIO || Nightmare version (if related)

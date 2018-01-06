@@ -60,7 +60,7 @@ Every method should return a value in order to be appended into promise chain.
 
 After writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:
 
-```
+```sh
 codeceptjs def .
 ```
 
@@ -83,23 +83,22 @@ class MyHelper extends Helper {
   /**
    * checks that authentication cookie is set
    */
-  seeAuthentication() {
+  async seeAuthentication() {
     // access current client of WebDriverIO helper
     let client = this.helpers['WebDriverIO'].browser;
 
     // get all cookies according to http://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
-    return client.cookie(function(err, res) {
-      // get values
-      let cookies = res.value;
-      for (let k in cookies) {
-        // check for a cookie
-        if (cookies[k].name != 'logged_in') continue;
-        assert.equal(cookies[k].value, 'yes');
-        return;
-      }
-      assert.fail(cookies, 'logged_in', "Auth cookie not set");
-    });
+    const res = await client.cookie();
+    // get values
+    let cookies = res.value;
+    for (let k in cookies) {
+      // check for a cookie
+      if (cookies[k].name != 'logged_in') continue;
+      assert.equal(cookies[k].value, 'yes');
+      return;
+    }
+    assert.fail(cookies, 'logged_in', "Auth cookie not set");
   }
 }
 
@@ -111,7 +110,6 @@ module.exports = MyHelper;
 Protractor example demonstrates usage of global `element` and `by` objects.
 However `browser` should be accessed from a helper instance via `this.helpers['Protractor']`;
 We also use `chai-as-promised` library to have nice assertions with promises.
-
 
 ```js
 'use strict';
@@ -147,7 +145,7 @@ module.exports = MyHelper;
 
 Helpers should be enabled inside `codecept.json` or `codecept.conf.js` files. Command `generate helper`
 does that for you, however you can enable them manually by placing helper to `helpers` section inside config file.
-You can also pass additional config options to your helper from a config:
+You can also pass additional config options to your helper from a config - **(please note, this example contains comments, while JSON format doesn't support them)**:
 
 ```js
 "helpers": {
@@ -161,7 +159,6 @@ You can also pass additional config options to your helper from a config:
 
 }
 ```
-*(please note, this example contains comments, while JSON format doesn't support them)*
 
 Config values will be stored inside helper in `this.config`. To get `defaultHost` value you can use
 
@@ -195,38 +192,38 @@ Each implemented method should return a value as they will be added to global pr
 
 ### Hook Usage Examples
 
-1) Failing if JS error occur in WebDriverIO:
+1)  Failing if JS error occur in WebDriverIO:
 
-```js
-class JSFailure extends codecept_helper {
+    ```js
+    class JSFailure extends codecept_helper {
 
-  _before() {
-    this.err = null;
-    this.helpers['WebDriverIO'].browser.on('error', (e) => this.err = e);
-  }
+      _before() {
+        this.err = null;
+        this.helpers['WebDriverIO'].browser.on('error', (e) => this.err = e);
+      }
 
-  _afterStep() {
-    if (this.err) throw new Error('Browser JS error '+this.err);
-  }
-}
-
-module.exports = JSFailure;
-```
-
-2) Wait for Ajax requests to complete after `click`:
-
-```js
-class JSWait extends codecept_helper {
-
-  _afterStep(step) {
-    if (step.name == 'click') {
-      var jqueryActive = () => jQuery.active == 0;
-      return this.helpers['WebDriverIO'].waitUntil(jqueryActive);
+      _afterStep() {
+        if (this.err) throw new Error('Browser JS error '+this.err);
+      }
     }
-  }
-}
 
-module.exports = JSWait;
-```
+    module.exports = JSFailure;
+    ```
+
+2)  Wait for Ajax requests to complete after `click`:
+
+    ```js
+    class JSWait extends codecept_helper {
+
+      _afterStep(step) {
+        if (step.name == 'click') {
+          var jqueryActive = () => jQuery.active == 0;
+          return this.helpers['WebDriverIO'].waitUntil(jqueryActive);
+        }
+      }
+    }
+
+    module.exports = JSWait;
+    ```
 
 ### done()

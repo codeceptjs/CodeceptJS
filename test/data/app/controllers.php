@@ -97,6 +97,12 @@ class external_url {
     }
 }
 
+class spinner {
+  function GET() {
+    include __DIR__ . '/view/spinner.php';
+  }
+}
+
 
 class login {
 
@@ -145,6 +151,13 @@ class iframe {
     public function GET()
     {
         include __DIR__.'/view/iframe.php';
+    }
+}
+
+class iframe_nested {
+    public function GET()
+    {
+        include __DIR__.'/view/iframe_nested.php';
     }
 }
 

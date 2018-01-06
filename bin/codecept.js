@@ -1,13 +1,11 @@
 #!/usr/bin/env node
-'use strict';
-
-var program = require('commander');
-var path = require('path');
-var Config = require('../lib/config');
-var Codecept = require('../lib/codecept');
-var print = require('../lib/output');
-var fileExists = require('../lib/utils').fileExists;
-var fs = require('fs');
+const program = require('commander');
+const path = require('path');
+const Config = require('../lib/config');
+const Codecept = require('../lib/codecept');
+const print = require('../lib/output');
+const fileExists = require('../lib/utils').fileExists;
+const fs = require('fs');
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
@@ -15,7 +13,7 @@ program.command('init [path]')
 
 program.command('shell [path]')
   .alias('sh')
-  .description('Interative shell')
+  .description('Interactive shell')
   .option('--verbose', 'output internal logging information')
   .option('--profile [value]', 'configuration profile to be used')
   .action(require('../lib/command/interactive'));
@@ -67,8 +65,8 @@ program.command('run [test]')
   .option('-G, --growl', 'enable growl notification support')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
-  .option('-S, --sort', "sort test files")
-  .option('-b, --bail', "bail after first test failure")
+  .option('-S, --sort', 'sort test files')
+  .option('-b, --bail', 'bail after first test failure')
   .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
@@ -87,11 +85,13 @@ program.command('run [test]')
 program.command('run-multiple [suites...]')
   .description('Executes tests multiple')
   .option('-c, --config [file]', 'configuration file to be used')
+  .option('--profile [value]', 'configuration profile to be used')
   .option('--all', 'run all suites')
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('--steps', 'show step-by-step execution')
   .option('--verbose', 'output internal logging information')
+  .option('--debug', 'output additional information')
   .option('-o, --override [value]', 'override current config options')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
@@ -100,7 +100,7 @@ program.command('run-multiple [suites...]')
   .action(require('../lib/command/run-multiple'));
 
 if (process.argv.length <= 2) {
-  console.log('CodeceptJS v' + Codecept.version());
+  console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
 }
 program.parse(process.argv);

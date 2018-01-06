@@ -7,23 +7,22 @@ After running `codeceptjs init` it should be saved in test root.
 Here is an overview of available options with their defaults:
 
 * **tests**: `"./*_test.js"` - pattern to locate tests
-* **include**: `{}` - actors and pageobjects to be registered in DI container and included in tests.
+* **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require ` paths
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [#PR439](https://github.com/Codeception/CodeceptJS/pull/439) for more details
+* **multiple**: `{}` - multiple options, see [#PR439](  https://github.com/Codeception/CodeceptJS/pull/439) for more details
 * **name**: `"tests"` - test suite name (not used)
 * **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](#hooks)).
-* **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks)).
-* **translation**: - [locale](http://codecept.io/translation/) to be used to print steps output, as well as used in source code.
-
+* **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks).
+* **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
 
 ## Dynamic Configuration
 
  By default `codecept.json` is used for configuration. You can override its values in runtime by using `--override` or `-o` option in command line, passing valid JSON as a value:
 
-```
+```sh
 codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'
 ```
 
@@ -43,12 +42,16 @@ exports.config = {
       key: process.env.CLOUDSERVICE_KEY,
 
       coloredLogs: true,
-      waitforTimeout: 10000
+      waitForTimeout: 10000
     }
   },
 
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
+  includes: {
+    loginPage: './src/pages/login_page',
+    dashboardPage: new DashboardPage()
+  }
 
   // here goes config as it was in codecept.json
   // ....
@@ -56,6 +59,12 @@ exports.config = {
 ```
 
 (Don't copy-paste this config, it's just demo)
+
+If you prefer to store your configuration files in a different location, or with a different name, you can do that with `--config` or `-c:
+
+```sh
+codeceptjs run --config=./path/to/my/config.json
+```
 
 ## Profile
 
@@ -65,7 +74,7 @@ Use its value to change config value on the fly.
 
 For instance, with the config above we can change browser value using `profile` option
 
-```
+```sh
 codeceptjs run --profile firefox
 ```
 

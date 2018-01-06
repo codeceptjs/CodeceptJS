@@ -1,0 +1,14 @@
+{
+  "tests": "./*_test.testhooks.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "FakeDriver": {
+      "require": "../helper"
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}

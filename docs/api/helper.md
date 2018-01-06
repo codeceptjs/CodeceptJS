@@ -30,19 +30,19 @@ Hook executed before each step
 
 ## _beforeSuite
 
-Hook executed after each step
-
-**Parameters**
-
--   `step`  
-
-## _beforeSuite
-
 Hook executed before each suite
 
 **Parameters**
 
 -   `suite`  
+
+## _beforeSuite
+
+Hook executed after each step
+
+**Parameters**
+
+-   `step`  
 
 ## _failed
 
@@ -51,6 +51,14 @@ Hook executed after each failed test
 **Parameters**
 
 -   `test`  
+
+## _finishTest
+
+Hook executed after all tests are executed
+
+**Parameters**
+
+-   `suite`  
 
 ## _init
 
@@ -79,4 +87,4 @@ Access another configured helper: `this.helpers['AnotherHelper']`
 
 ## _config
 
-Abstract method to provide requried config options
+Abstract method to provide required config options

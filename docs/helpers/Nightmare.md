@@ -7,15 +7,18 @@ less trusted.
 
 Requires `nightmare` and `nightmare-upload` packages to be installed.
 
-### Configuration
+## Configuration
 
 This helper should be configured in codecept.json
 
 -   `url` - base url of website to be tested
 -   `restart` (optional, default: true) - restart browser between tests.
+-   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure.
+-   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
 -   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
--   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500
--   `waitForTimeout`: (optional) default wait* timeout
+-   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500.
+-   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
 
 
@@ -65,7 +68,7 @@ I.amOnPage('/login'); // opens a login page
 -   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
     I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
     ```
--   `headers`  
+-   `headers`   (optional, default `null`)
 
 ## appendField
 
@@ -449,8 +452,8 @@ I.moveCursorTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## pressKey
 
@@ -460,6 +463,18 @@ Can submit special keys like 'Enter', 'Backspace', etc
 **Parameters**
 
 -   `key`  
+
+## refresh
+
+Reload the page
+
+## refreshPage
+
+Reload the current page.
+
+```js
+`I.refreshPage();
+```
 
 ## resizeWindow
 
@@ -500,8 +515,8 @@ I.scrollTo('#submit', 5,5);
 **Parameters**
 
 -   `locator`  
--   `offsetX`  
--   `offsetY`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
 
 ## see
 
@@ -674,6 +689,21 @@ I.setCookie({name: 'auth', value: true});
 -   `cookie`  Wrapper for `.cookies.set(cookie)`.
     [See more](https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie)
 
+## triggerMouseEvent
+
+Sends [input event](http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent) on a page.
+Should be a mouse event like:
+ {
+type: 'mouseDown',
+x: args.x,
+y: args.y,
+button: "left"
+}
+
+**Parameters**
+
+-   `event`  
+
 ## wait
 
 Pauses execution for a number of seconds.
@@ -724,6 +754,21 @@ Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForVisible('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitUntilExists
+
+Waits for element not to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitUntilExists('.btn.continue');
+I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
 
 **Parameters**
 

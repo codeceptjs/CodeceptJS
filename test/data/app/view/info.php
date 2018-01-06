@@ -9,7 +9,7 @@
 
 <p>Lots of valuable data here
 
-    <a href="/" id="back"><img src="blank.gif" alt="Back"/></a>
+    <a href="/" id="back" aria-label="index"><img src="blank.gif" alt="Back"/></a>
 </p>
 
 <div class="notice"><?php if (isset($notice)) echo $notice; ?></div>
@@ -39,6 +39,10 @@
     <a id="first-link">First</a>
     <a id="second-link">Second</a>
     <a id="third-link">Third</a>
+</div>
+
+<div id="new-tab">
+<a href="/login" target="_blank">New tab</a>
 </div>
 
 </body>

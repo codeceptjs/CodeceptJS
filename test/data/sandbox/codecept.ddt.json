@@ -1,5 +1,5 @@
 {
-  "tests": "./*_test.flacky.js",
+  "tests": "./*_test.ddt.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {

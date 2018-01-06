@@ -36,7 +36,9 @@ $urls = array(
     '/content-cp1251' => 'contentType2',
     '/unset-cookie' => 'unsetCookie',
     '/external_url' => 'external_url',
+    '/spinner' => 'spinner',
     '/iframe' => 'iframe',
+    '/iframe_nested' => 'iframe_nested',
     '/dynamic' => 'dynamic',
     '/timeout' => 'timeout',
 );

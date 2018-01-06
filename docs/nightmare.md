@@ -49,14 +49,14 @@ this makes testing less relevant, as they are not native to operating systems.
 
 Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.
 
-```
+```sh
 docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
 codeceptjs run yahoo_test.js --steps
 ```
 
 This provides use with output:
 
-```
+```sh
  Yahoo basic test
  > WebDriverIO._before
  • I am on page "http://yahoo.com"
@@ -70,7 +70,7 @@ This provides use with output:
 
 When we switch helper to Nightmare:
 
-```
+```sh
  Yahoo basic test
  > Nightmare._before
  • I am on page "http://yahoo.com"
@@ -95,7 +95,7 @@ npm install -g codeceptjs-nightmare
 
 And a basic project initialized
 
-```
+```sh
 codeceptjs init
 ```
 
@@ -106,7 +106,7 @@ Setup process is explained on [QuickStart page](http://codecept.io/quickstart/).
 
 ## Configuring Nightmare
 
-To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json` config:
+Enable `Nightmare` helper in `codecept.json` config:
 
 ```js
 { // ..
@@ -120,6 +120,7 @@ To enable Nightmare tests you should enable `Nightmare` helper in `codecept.json
   // ..
 }
 ```
+
 Turn on the `show` option if you want to follow test progress in a window. This is very useful for debugging.
 All other options can be taken from [NightmareJS API](https://github.com/segmentio/nightmare#api).
 
@@ -150,7 +151,7 @@ As a small bonus: all `console.log` calls on a page will be also shown in `--deb
 
 ## Manipulating Web Page
 
-Nightmare helper is supposed to work in the same manner as WebDriverIO, SeleniumWebdriverJS or Protractor.
+Nightmare helper is supposed to work in the same manner as WebDriverIO or Protractor.
 This means that all CodeceptJS actions like `click`, `fillField`, `selectOption` and others are supposed to work in the very same manner.
 They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.
 
@@ -161,8 +162,8 @@ Assertions start with `see` prefix. You can check text on a page, elements on pa
 CodeceptJS allows you to define and connect own helpers. If some functionality of
 Nightmare helper is missing you can easily create `ExtendedNightmare` helper by running:
 
-```
-codecepjs gh
+```sh
+codeceptjs gh
 ```
 
 Learn more about [Helpers](http://codecept.io/helpers/).
@@ -173,6 +174,7 @@ Nightmare instance can be accessed by custom helper:
 // returns current nightmare instance
 this.helpers['Nightmare'].browser;
 ```
+
 This way you can call [native Nightmare commands](https://github.com/segmentio/nightmare#interact-with-the-page).
 
 It is important to understand that Nightmare executes JavaScript on client and on server side.
@@ -183,27 +185,25 @@ Nightmare provides `evaluate` method to execute client-side JavaScript. Codecept
 object globally on client side with `findElement` and `findElements` methods in it. They return IDs of matched elements
 so you can access them in next calls to `evaluate`:
 
-
 ```js
 // inside a custom helper class
-seeAttributeContains(locator, attribute, expectedValue) {
+async seeAttributeContains(locator, attribute, expectedValue) {
   // let's use chai assertion library
-  let assert = require('chai').assert;
+  const assert = require('chai').assert;
   // get nightmare instance
-  let browser = this.helpers['Nightmare'].browser;
+  const browser = this.helpers['Nightmare'].browser;
   // find an element by CSS or XPath:
-  return this.helpers['Nightmare']._locate(locator).then(function(els) {
+  const els = await this.helpers['Nightmare']._locate(locator);
     // we received an array with IDs of matched elements
     // now let's execute client-side script to get attribute for the first element
-    return browser.evaluate(function(el, attribute) {
+  const attributeValue = await browser.evaluate(function(el, attribute) {
       // this is executed inside a web page!
       return codeceptjs.fetchElement(el).getAttribute(attribute);
-    }, els[0], attribute); // function + its params
-  }).then(function(attributeValue) {
+  }, els[0], attribute); // function + its params
+
     // get attribute value and back to server side
     // execute an assertion
-    assert.include(attributeValue, expectedValue);
-  });
+  assert.include(attributeValue, expectedValue);
 }
 ```
 

@@ -1,14 +1,11 @@
 {
-  "tests": "./*_test.js",
+  "tests": "./*_test.flaky.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "Nightmare": {
-      "url": "http://127.0.0.1:8000"
-    }
   },
   "include": {},
   "bootstrap": false,
   "mocha": {},
-  "name": "acceptance"
+  "name": "sandbox"
 }

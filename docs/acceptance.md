@@ -13,7 +13,6 @@ In case of CodeceptJS you can be sure that in code it will be as easy as it soun
 Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
 That is what a test look like.
 
-
 ```js
 I.amOnPage('/login');
 I.fillField('Username', 'john');
@@ -170,21 +169,24 @@ Sometimes you need to retrieve a data from a page to use it in next steps of a s
 Imagine, application generates a password and you want to ensure that user can login using this password.
 
 ```js
-I.fillField('email', 'miles@davis.com')
-I.click('Generate Password');
-$password = yield I.grabTextFrom('#password');
-I.click('Login');
-I.fillField('email', 'miles@davis.com');
-I.fillField('password', $password);
-I.click('Log in!');
+Scenario('login with generated password', async (I) => {
+  I.fillField('email', 'miles@davis.com');
+  I.click('Generate Password');
+  const password = await I.grabTextFrom('#password');
+  I.click('Login');
+  I.fillField('email', 'miles@davis.com');
+  I.fillField('password', password);
+  I.click('Log in!');
+  I.see('Hello, Miles');
+});
 ```
 
-`grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `yield` keyword of ES6. To make it work your test should be written inside a generator function (notice `*` in its definition):
+`grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `await` keyword of ES6. To make it work your test should be written inside a async function (notice `async` in its definition).
 
 ```js
-Scenario('use page title', function*(I) {
+Scenario('use page title', async (I) => {
   // ...
-  var password = yield I.grabTextFrom('#password');
+  const password = await I.grabTextFrom('#password');
   I.fillField('password', password);
 });
 ```
@@ -203,6 +205,38 @@ I.click('#agree_button');
 
 More wait actions can be found in helper's reference.
 
+## SmartWait
+
+It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
+
+SmartWait can be enabled by setting wait option in WebDriverIO config.
+Add `"smartWait": 5000` to wait for additional 5s.
+
+SmartWait works with a CSS/XPath locators in `click`, `seeElement` and other methods. See where it is enabled and where is not:
+
+```js
+I.click('Login'); // DISABLED, not a locator
+I.fillField('user', 'davert'); // DISABLED, not a specific locator
+I.fillField({name: 'password'}, '123456'); // ENABLED, strict locator
+I.click('#login'); // ENABLED, locator is CSS ID
+I.see('Hello, Davert'); // DISABLED, Not a locator
+I.seeElement('#userbar'); // ENABLED
+I.dontSeeElement('#login'); // DISABLED, can't wait for element to hide
+I.seeNumberOfElements('button.link', 5); // DISABLED, can wait only for one element
+
+```
+
+SmartWait doesn't check element for visibility, so tests may fail even element is on a page.
+
+Usage example:
+
+```js
+// we use smartWait: 5000 instead of
+// I.waitForElement('#click-me', 5);
+// to wait for element on page
+I.click('#click-me');
+```
+
 ## IFrames
 
 [within](/basics/#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
@@ -215,14 +249,16 @@ within({frame: "#editor"}, () => {
 });
 ```
 
-Nested IFrames can be set by passing array *(Nightmare only)*:
+Nested IFrames can be set by passing array *(WebDriverIO & Nightmare only)*:
 
 ```js
-within({frame: [".content", "#editor"]);
+within({frame: [".content", "#editor"]}, () => {
+  I.see('Page');
+});
 ```
-
 ---
 
 ### done()
 
 CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
+

@@ -5,7 +5,7 @@
 By default CodeceptJS provides cli reporter with console output.
 Test names and failures will be printed to screen.
 
-```
+```sh
 GitHub --
  ✓ search in 2577ms
  ✓ signin in 2170ms
@@ -30,7 +30,7 @@ GitHub --
 
 For dynamic step-by-step output add `--steps` option to `run` command:
 
-```
+```sh
 GitHub --
  search
  • I am on page "https://github.com"
@@ -59,11 +59,12 @@ GitHub --
    • I fill field "q", "aaa"
  ✖ FAILED in 1260ms
 ```
+
 To get additional information about test execution use `--debug` option. This will show execution steps
-as well as notices from test runner. To get even more information with more technical details like error stacktraces,
+as well as notices from test runner. To get even more information with more technical details like error stack traces,
 and global promises, or events use `--verbose` mode.
 
-```
+```sh
 GitHub --
  register
    [1] Starting recording promises
@@ -84,11 +85,11 @@ Please use verbose output when reporting issues to GitHub.
 
 Use default xunit reporter of Mocha to print xml reports. Provide `--reporter xunit` to get the report to screen.
 It is recommended to use more powerful [`mocha-junit-reporter`](https://www.npmjs.com/package/mocha-junit-reporter) package
-ot get better support for Jenkins CI.
+to get better support for Jenkins CI.
 
 Install it via NPM (locally or globally, depending on CodeceptJS installation type):
 
-```
+```sh
 npm i mocha-junit-reporter
 ```
 
@@ -104,22 +105,21 @@ Additional configuration should be added to `codecept.json` to print xml report 
 
 Execute CodeceptJS with JUnit reporter:
 
-```
+```sh
 codeceptjs run --reporter mocha-junit-reporter
 ```
 
 Result will be located at `output/result.xml` file.
 
-
 ## Html
 
-Best HTML reports could be prodused with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
+Best HTML reports could be produced with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
 
 ![](http://codecept.io/images/mochawesome.png)
 
 Install it via NPM:
 
-```
+```sh
 npm i mochawesome
 ```
 
@@ -135,9 +135,93 @@ Configure it to use `output` directory to print HTML reports:
 
 Execute CodeceptJS with HTML reporter:
 
-```
+```sh
 codeceptjs run --reporter mochawesome
 ```
 
 Result will be located at `output/index.html` file.
 
+### Advanced usage
+
+Want to have screenshots for failed tests?
+Then add Mochawesome helper to your config:
+
+```json
+  "helpers": {
+    "Mochawesome": {
+        "uniqueScreenshotNames": "true"
+    }
+  },
+```
+
+Then tests with failure will have screenshots.
+
+### Configuration
+
+This helper should be configured in codecept.json
+
+- `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
+- `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
+
+Also if you will add Mochawesome helper, then you will able to add custom context in report:
+
+#### addMochawesomeContext
+
+Adds context to executed test in HTML report:
+
+```js
+I.addMochawesomeContext('simple string');
+I.addMochawesomeContext('http://www.url.com/pathname');
+I.addMochawesomeContext('http://www.url.com/screenshot-maybe.jpg');
+I.addMochawesomeContext({title: 'expected output',
+                         value: {
+                           a: 1,
+                           b: '2',
+                           c: 'd'
+                         }
+});
+```
+
+##### Parameters
+
+- `context`  string, url, path to screenshot, object. See [this](https://www.npmjs.com/package/mochawesome#adding-test-context)
+
+## Multi Reports
+
+Want to use several reporters in the same time? Try to use [mocha-multi](https://www.npmjs.com/package/mocha-multi) reporter
+
+Install it via NPM:
+
+```sh
+npm i mocha-multi
+```
+
+Configure mocha-multi with reports that you want:
+
+```json
+  "mocha": {
+    "reporterOptions": {
+      "codeceptjs-cli-reporter": {
+        "stdout": "-",
+        "options": {
+          "verbose": true,
+          "steps": true,
+        }
+      },
+      "mochawesome": {
+       "stdout": "./output/console.log",
+       "options": {
+         "reportDir": "./output",
+         "reportFilename": "report"
+      }
+    }
+  }
+```
+
+Execute CodeceptJS with mocha-multi reporter:
+
+```sh
+codeceptjs run --reporter mocha-multi
+```
+
+This will give you cli with steps in console and HTML report in `output` directory.
