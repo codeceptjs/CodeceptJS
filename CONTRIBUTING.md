@@ -110,6 +110,7 @@ mocha test/runner
 Please try to add corresponding testcase to runner or unit.
 
 ## Running tests in Dockerized environment
+
 Instead of manually running php, json_server and selenium for before tests you
 can use `docker-compose` to run those automatically.
 You can find `docker-compose.yml` file in `test` directory and run all commands
@@ -117,12 +118,14 @@ from this directory. Currently we provide following commands to run tests with
 respective dependencies:
 
 ### Run unit tests
-``` shell
+
+```sh
 docker-compose run --rm test-unit
 ```
 
 ### Run helper tests
-``` shell
+
+```sh
 docker-compose run --rm test-helpers
 
 # or pass path to helper test to run specific helper,
@@ -134,21 +137,25 @@ docker-compose run --rm test-helpers test/rest
 ```
 
 ### Run acceptance tests
+
 To that we provide two separate services respectively for WebDriverIO and
 Nightmare tests:
-``` shell
+
+```sh
 docker-compose run --rm test-acceptance.webdriverio
 docker-compose run --rm test-acceptance.nightmare
 ```
 
 ### Running against specific Node version
+
 By default dockerized tests are run against node 6.9.5, you can run it against
 specific version as long as there is Docker container available for such
 version. To do that you need to build codecept's Docker image prior to running
 tests and pass `NODE_VERSION` as build argument.
 
 For example to prepare `test-helpers` containers based on node 8.7.0:
-``` shell
+
+```sh
 docker-compose build --build-arg NODE_VERSION=8.7.0 test-helpers
 ```
 
