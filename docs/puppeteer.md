@@ -5,8 +5,8 @@ It operates over Google Chrome directly without requireing additional tools like
 
 CodeceptJS uses Puppeteer to improve end to end testing experience.
 
-1. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
-2. CodeceptJS can locate elements by XPath.
+1.  No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
+2.  CodeceptJS can locate elements by XPath.
 
 Take a look at a sample test:
 
@@ -32,7 +32,6 @@ npm install -g codeceptjs-puppeteer
 
 Or see [alternative installation options](http://codecept.io/installation/)
 If you already have CodeceptJS project, just install `puppeteer` package and enable it in config.
-
 
 And a basic project initialized
 
@@ -68,7 +67,7 @@ Sometimes test may run faster than application gets rendered. In this case it is
 
 CodeceptJS test should be created with `gt` command:
 
-```
+```sh
 codeceptjs gt
 ```
 
@@ -160,9 +159,10 @@ Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/pup
 
 Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` command:
 
-```
+```sh
 codeceptjs gh
 ```
+
 Then inside a Helper you can access `Puppeteer` helper of CodeceptJS.
 Let's say you want to create `I.renderPageToPdf` action. In this case you need to call `pdf` method of `page` object
 

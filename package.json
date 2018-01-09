@@ -28,6 +28,7 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
+    "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ --fix",
@@ -46,7 +47,6 @@
     "requireg": "^0.1.5"
   },
   "devDependencies": {
-    "@types/commander": "^2.12.2",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.5.1",
     "chai": "^3.4.1",

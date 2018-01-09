@@ -68,6 +68,7 @@ Scenario('login', (I, loginPage) => {
 ```
 
 Also you can use `async/await` inside PageObject:
+
 ```js
 'use strict';
 let I;
@@ -108,7 +109,6 @@ Scenario('login2', async (I, loginPage, basePage) => {
   basePage.pageShouldBeOpened(title)
 });
 ```
-
 
 Also you can use generators inside a PageObject:
 
