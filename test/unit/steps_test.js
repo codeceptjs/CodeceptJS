@@ -25,7 +25,7 @@ describe('Step', () => {
     step.humanizeArgs().should.eql('"word", 1');
 
     step.args = [['some', 'data'], 1];
-    step.humanizeArgs().should.eql('[some,data], 1');
+    step.humanizeArgs().should.eql('["some","data"], 1');
 
     step.args = [{ css: '.class' }];
     step.humanizeArgs().should.eql('{"css":".class"}');

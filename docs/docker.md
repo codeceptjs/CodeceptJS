@@ -80,6 +80,7 @@ docker build -t codeception/codeceptjs .
 ```
 
 ### Debugging
+
 To pass arguments to `codecept run` command inside docker image you can set
 `CODECEPT_ARGS` environment variable. For example to run your tests with debug
 and steps output:

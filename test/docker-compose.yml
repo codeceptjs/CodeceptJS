@@ -2,7 +2,7 @@ version: '3'
 services:
   test-unit:
     build: ..
-    entrypoint: node_modules/.bin/gulp
+    entrypoint: docker/entrypoint node_modules/.bin/mocha
     command: test
     working_dir: /codecept
     volumes:
