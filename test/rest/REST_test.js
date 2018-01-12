@@ -46,14 +46,22 @@ describe('REST', () => {
       response.body.name.should.eql('davert');
     }));
 
+    it('should send PATCH requests', () => I.sendPatchRequest('/user', { email: 'user@user.com' }).then((response) => {
+      const body = JSON.parse(Object.keys(response.body)[1]);
+      body.email.should.eql('user@user.com');
+    }));
+
     it('should send POST requests', () => I.sendPostRequest('/user', { name: 'john' }).then((response) => {
-      response.body.name.should.eql('john');
+      const body = JSON.parse(Object.keys(response.body)[0]);
+      body.name.should.eql('john');
     }));
 
     it('should send PUT requests', () => I.sendPutRequest('/posts/1', { author: 'john' }).then((response) => {
-      response.body.author.should.eql('john');
+      const body = JSON.parse(Object.keys(response.body)[0]);
+      body.author.should.eql('john');
       return I.sendGetRequest('/posts/1').then((response) => {
-        response.body.author.should.eql('john');
+        const body = JSON.parse(Object.keys(response.body)[0]);
+        body.author.should.eql('john');
       });
     }));
 
