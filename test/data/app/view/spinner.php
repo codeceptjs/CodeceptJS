@@ -24,7 +24,7 @@
   setTimeout(function () {
     var spinner = document.querySelector('div.loader');
     spinner.parentNode.removeChild(spinner);
-  }, 1000);
+  }, 750);
 </script>
 </body>
 </html>
