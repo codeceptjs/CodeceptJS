@@ -26,6 +26,8 @@ describe('Puppeteer', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
+      waitForTimeout: 2000,
+      waitForAction: 500,
     });
     I._init();
     return I._beforeSuite();
