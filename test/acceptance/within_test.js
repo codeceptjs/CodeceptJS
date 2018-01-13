@@ -55,17 +55,6 @@ Scenario('within on nested iframe without iframe navigation depth=2 @WebDriverIO
   I.dontSee('Sign in!');
 });
 
-Scenario('within on iframe with selector @WebDriverIO', (I) => {
-  I.amOnPage('/iframe');
-  within({ frame: ['[name=content]'] }, () => {
-    I.fillField('rus', 'Updated');
-    I.click('Sign in!');
-    I.waitForText('Email Address');
-  });
-  I.see('Iframe test');
-  I.dontSee('Email Address');
-});
-
 Scenario('within on nested iframe depth 1 @WebDriverIO', (I) => {
   I.amOnPage('/iframe');
   within({ frame: ['[name=content]'] }, () => {
@@ -99,7 +88,7 @@ Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDr
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe depth=2 and mixed class and xpath selector @WebDriverIO', (I) => {
+Scenario('within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO', (I) => {
   I.amOnPage('/iframe_nested');
   within({ frame: ['.wrapperClass', '[name=content]'] }, () => {
     I.fillField('rus', 'Updated');
