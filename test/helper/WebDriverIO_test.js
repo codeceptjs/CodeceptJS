@@ -27,13 +27,9 @@ describe('WebDriverIO', function () {
       url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
-<<<<<<< HEAD
-      smartWait: 10 // just to try
-=======
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
->>>>>>> upstream/master
     });
   });
 

@@ -25,15 +25,9 @@ describe('Nightmare', function () {
     }
 
     I = new Nightmare({
-<<<<<<< HEAD
-      url: site_url,
-      windowSize: '500x700',
-      show: false
-=======
       url: siteUrl,
       windowSize: '500x700',
       show: false,
->>>>>>> upstream/master
     });
     I._init();
     return I._beforeSuite();
