@@ -7,10 +7,8 @@ module.exports.config = {
   helpers: {
     Puppeteer: {
       url: TestHelper.siteUrl(),
-      show: true,
-      chrome: {
-        // slowMo: 250,
-      },
+      show: false,
+      chrome: {},
     },
   },
   include: {},
