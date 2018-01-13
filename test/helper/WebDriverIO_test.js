@@ -35,10 +35,7 @@ describe('WebDriverIO', function () {
   });
 
   beforeEach(() => {
-    webApiTests.init({
-      I: wd,
-      siteUrl
-    });
+    webApiTests.init({ I: wd, siteUrl });
     return wd._before();
   });
 
@@ -152,14 +149,14 @@ describe('WebDriverIO', function () {
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', () => wd.amOnPage('/info')
       .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'post'
+        method: 'post',
       }))
       .then(() => wd.seeAttributesOnElements('//form', {
         method: 'post',
-        action: `${siteUrl}/`
+        action: `${siteUrl}/`,
       }))
       .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'get'
+        method: 'get',
       }))
       .catch((e) => {
         assert.equal(e.message, 'Not all elements (//form) have attributes {"method":"get"}');
@@ -168,14 +165,14 @@ describe('WebDriverIO', function () {
     it('should check attributes values for several elements', () => wd.amOnPage('/')
       .then(() => wd.seeAttributesOnElements('a', {
         'qa-id': 'test',
-        'qa-link': 'test'
+        'qa-link': 'test',
       }))
       .then(() => wd.seeAttributesOnElements('//div', {
-        'qa-id': 'test'
+        'qa-id': 'test',
       }))
       .then(() => wd.seeAttributesOnElements('a', {
         'qa-id': 'test',
-        href: '/info'
+        href: '/info',
       }))
       .catch((e) => {
         e.message.should.include('Not all elements (a) have attributes {"qa-id":"test","href":"/info"}');
@@ -210,14 +207,14 @@ describe('WebDriverIO', function () {
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', () => wd.amOnPage('/info')
       .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold'
+        'font-weight': 'bold',
       }))
       .then(() => wd.seeCssPropertiesOnElements('h3', {
         'font-weight': 'bold',
-        display: 'block'
+        display: 'block',
       }))
       .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'non-bold'
+        'font-weight': 'non-bold',
       }))
       .catch((e) => {
         e.message.should.include('Not all elements (h3) have CSS property {"font-weight":"non-bold"}');
@@ -226,14 +223,14 @@ describe('WebDriverIO', function () {
     it('should check css property for several elements', () => wd.amOnPage('/')
       .then(() => wd.seeCssPropertiesOnElements('a', {
         color: 'rgba(0, 0, 238, 1)',
-        cursor: 'auto'
+        cursor: 'auto',
       }))
       .then(() => wd.seeCssPropertiesOnElements('//div', {
-        display: 'block'
+        display: 'block',
       }))
       .then(() => wd.seeCssPropertiesOnElements('a', {
         'margin-top': '0em',
-        cursor: 'auto'
+        cursor: 'auto',
       }))
       .catch((e) => {
         e.message.should.include('Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}');
@@ -252,7 +249,7 @@ describe('WebDriverIO', function () {
       .then(num => assert.equal(num, 3)));
     it('should support locators like {xpath:"//div"}', () => wd.amOnPage('/info')
       .then(() => wd.grabNumberOfVisibleElements({
-        xpath: '//div[@id = "grab-multiple"]//a'
+        xpath: '//div[@id = "grab-multiple"]//a',
       }))
       .then(num => assert.equal(num, 3)));
   });
@@ -281,7 +278,7 @@ describe('WebDriverIO', function () {
     it('should create a screenshot on fail  @ups', () => {
       const sec = (new Date()).getUTCMilliseconds().toString();
       const test = {
-        title: `sw should do smth ${sec}`
+        title: `sw should do smth ${sec}`,
       };
       return wd.amOnPage('/')
         .then(() => wd._failed(test))

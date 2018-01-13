@@ -56,7 +56,7 @@ module.exports.tests = function () {
       yield I.see('Welcome to test app!', 'h1');
       yield I.amOnPage('/info');
       yield I.see('valuable', {
-        css: 'p'
+        css: 'p',
       });
       yield I.see('valuable', '//body/p');
       return I.dontSee('valuable', 'h1');
@@ -74,9 +74,7 @@ module.exports.tests = function () {
     it('should check visible elements on page', function* () {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
-      yield I.seeElement({
-        name: 'name'
-      });
+      yield I.seeElement({ name: 'name' });
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');
@@ -175,9 +173,7 @@ module.exports.tests = function () {
 
     it('should check option by strict locator', function* () {
       yield I.amOnPage('/form/checkbox');
-      yield I.checkOption({
-        id: 'checkin'
-      });
+      yield I.checkOption({ id: 'checkin' });
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
@@ -294,7 +290,7 @@ module.exports.tests = function () {
     it('should fill field by strict locator', function* () {
       yield I.amOnPage('/form/field');
       yield I.fillField({
-        id: 'name'
+        id: 'name',
       }, 'Nothing special');
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'Nothing special');
@@ -424,7 +420,7 @@ module.exports.tests = function () {
     it('should grab attribute from element', function* () {
       yield I.amOnPage('/search');
       const val = yield I.grabAttributeFrom({
-        css: 'form'
+        css: 'form',
       }, 'method');
       return assert.equal(val, 'get');
     });
@@ -432,7 +428,7 @@ module.exports.tests = function () {
     it('should grab custom attribute from element', function* () {
       yield I.amOnPage('/form/example4');
       const val = yield I.grabAttributeFrom({
-        css: '.navbar-toggle'
+        css: '.navbar-toggle',
       }, 'data-toggle');
       return assert.equal(val, 'collapse');
     });
@@ -498,7 +494,7 @@ module.exports.tests = function () {
     it('should create a screenshot on fail  @ups', () => {
       const sec = (new Date()).getUTCMilliseconds().toString();
       const test = {
-        title: `sw should do smth ${sec}`
+        title: `sw should do smth ${sec}`,
       };
       return I.amOnPage('/')
         .then(() => I._failed(test))
@@ -510,7 +506,7 @@ module.exports.tests = function () {
     it('should do all cookie stuff', () => I.amOnPage('/')
       .then(() => I.setCookie({
         name: 'auth',
-        value: '123456'
+        value: '123456',
       }))
       .then(() => I.seeCookie('auth'))
       .then(() => I.dontSeeCookie('auuth'))
@@ -522,7 +518,7 @@ module.exports.tests = function () {
     it('should clear all cookies', () => I.amOnPage('/')
       .then(() => I.setCookie({
         name: 'auth',
-        value: '123456'
+        value: '123456',
       }))
       .then(() => I.clearCookie())
       .then(() => I.dontSeeCookie('auth')));
@@ -632,7 +628,7 @@ module.exports.tests = function () {
         .then(() => I.checkOption('terms'))
         .then(() => I.seeCheckboxIsChecked('terms'))
         .then(() => I._withinBegin({
-          css: '.form-group'
+          css: '.form-group',
         }))
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Hasło'))
@@ -654,7 +650,7 @@ module.exports.tests = function () {
     it('should execute within block 2', () => I.amOnPage('/form/example4')
       .then(() => I.fillField('Hasło', '12345'))
       .then(() => I._withinBegin({
-        xpath: '//div[@class="form-group"][2]'
+        xpath: '//div[@class="form-group"][2]',
       }))
       .then(() => I.dontSee('E-Mail'))
       .then(() => I.see('Hasło'))
@@ -666,7 +662,7 @@ module.exports.tests = function () {
     it('within should respect context in see', () => I.amOnPage('/form/example4')
       .then(() => I.see('Rejestracja', 'fieldset'))
       .then(() => I._withinBegin({
-        css: '.navbar-header'
+        css: '.navbar-header',
       }))
       .then(() => I.see('Rejestracja', '.container fieldset'))
       .catch((err) => {
@@ -679,7 +675,7 @@ module.exports.tests = function () {
 
     it('within should respect context in see when using nested frames', () => I.amOnPage('/iframe_nested')
       .then(() => I._withinBegin({
-        frame: ['#wrapperId', '[name=content]']
+        frame: ['#wrapperId', '[name=content]'],
       }))
       .then(() => I.see('Kill & Destroy'))
       .catch((err) => {

@@ -45,7 +45,7 @@ describe('Protractor-NonAngular', function () {
   beforeEach(() => {
     webApiTests.init({
       I,
-      siteUrl
+      siteUrl,
     });
     return I._before();
   });
@@ -118,7 +118,7 @@ describe('Protractor-NonAngular', function () {
 
     it('should fail when test is not in context', () => I.amOnPage('/')
       .then(() => I.see('debug', {
-        css: 'a'
+        css: 'a',
       }))
       .catch((e) => {
         e.should.be.instanceOf(AssertionFailedError);

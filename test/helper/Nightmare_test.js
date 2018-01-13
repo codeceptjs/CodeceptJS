@@ -35,10 +35,7 @@ describe('Nightmare', function () {
   });
 
   beforeEach(() => {
-    webApiTests.init({
-      I,
-      siteUrl
-    });
+    webApiTests.init({ I, siteUrl });
     return I._before().then(() => browser = I.browser);
   });
 
@@ -106,7 +103,7 @@ describe('Nightmare', function () {
 
     it('should fail when test is not in context', () => I.amOnPage('/')
       .then(() => I.see('debug', {
-        css: 'a'
+        css: 'a',
       }))
       .catch((e) => {
         e.should.be.instanceOf(AssertionFailedError);
@@ -120,7 +117,7 @@ describe('Nightmare', function () {
       const attribute = 'qa-id';
       return I.amOnPage('/')
         .then(() => I._locate({
-          css: '.notice'
+          css: '.notice',
         }).then((els) => {
           // we received an array with IDs of matched elements
           // now let's execute client-side script to get attribute for the first element
