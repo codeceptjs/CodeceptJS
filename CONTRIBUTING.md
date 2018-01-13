@@ -13,6 +13,22 @@ To start you need:
 
 Depending on a type of a change you should do the following.
 
+## Acceptance Tests
+
+### Testing Puppeteer Acceptance Tests
+
+Make sure the acceptance tests.
+
+```sh
+node ./bin/codecept.js run -c ./test/acceptance/codecept.Puppeteer.js
+```
+
+You can also the tests by using the `--grep` option.
+
+```sh
+node ./bin/codecept.js run -c ./test/acceptance/codecept.Puppeteer.js --grep "within"
+```
+
 ## Helpers
 
 Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, SeleniumWebdriver, Nightmare. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happen. If, for instance, WebDriverIO have method XXX and SeleniumWebDriver doesn't, you can implement XXX inside SeleniumWebDriver using the same method signature.

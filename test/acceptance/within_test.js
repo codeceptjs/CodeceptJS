@@ -1,6 +1,6 @@
 Feature('within');
 
-Scenario('within on form @WebDriverIO @Protractor @Nightmare', (I) => {
+Scenario('within on form @WebDriverIO @Protractor @Nightmare @Puppeteer', (I) => {
   I.amOnPage('/form/bug1467');
   I.see('TEST TEST');
   within({ css: '[name=form2]' }, () => {
