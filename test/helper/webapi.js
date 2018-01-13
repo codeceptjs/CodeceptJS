@@ -458,33 +458,9 @@ module.exports.tests = function () {
       yield I.amOnPage('/form/file');
       yield I.attachFile('Avatar', 'app/avatar.jpg');
       yield I.click('Submit');
-<<<<<<< HEAD
-      formContents()['files'].should.have.key('avatar');
-      formContents()['files']['avatar']['name'].should.eql('avatar.jpg');
-      formContents()['files']['avatar']['type'].should.eql('image/jpeg');
-
-    });
-  });
-
-  describe('window size #resizeWindow', () => {
-    it('should set initial window size', () => {
-      return I.amOnPage('/form/resize')
-        .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 700', '#height'))
-        .then(() => I.see('Width 500', '#width'));
-    });
-
-    it('should resize window to specific dimensions', () => {
-      return I.amOnPage('/form/resize')
-        .then(() => I.resizeWindow(800, 600))
-        .then(() => I.click('Window Size'))
-        .then(() => I.see('Height 600', '#height'))
-        .then(() => I.see('Width 800', '#width'));
-=======
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
->>>>>>> upstream/master
     });
   });
 
@@ -654,50 +630,6 @@ module.exports.tests = function () {
         });
     });
 
-<<<<<<< HEAD
-    it('should execute within block ', () => {
-      return I.amOnPage('/form/example4')
-        .then(() => I.fillField('Hasło', '12345'))
-        .then(() => I._withinBegin({xpath: '//div[@class="form-group"][2]'}))
-        .then(() => I.dontSee('E-Mail'))
-        .then(() => I.see('Hasło'))
-        .then(() => I.grabTextFrom('label'))
-        .then((label) => assert.equal(label, 'Hasło'))
-        .then(() => I.grabValueFrom('input'))
-        .then((input) => assert.equal(input, '12345'));
-    });
-
-    it('within should respect context in see', () => {
-      return I.amOnPage('/form/example4')
-        .then(() => I.see('Rejestracja', 'fieldset'))
-        .then(() => I._withinBegin({css: '.navbar-header'}))
-        .then(() => I.see('Rejestracja', '.container fieldset'))
-        .catch((err) => {
-          if (!err) assert.fail('seen fieldset');
-        })
-        .then(() => I.see('Toggle navigation', '.container fieldset'))
-        .catch((err) => {
-          if (!err) assert.fail('seen fieldset');
-        });
-    });
-
-    it('within should respect context in see when using nested frames', () => {
-      return I.amOnPage('/iframe_nested')
-        .then(() => I._withinBegin({frame: ['#wrapperId', '[name=content]']}))
-        .then(() => I.see('Kill & Destroy'))
-        .catch((err) => {
-          if (!err) assert.fail('seen "Kill & Destroy"');
-        })
-        .then(() => I.dontSee('Nested Iframe test'))
-        .catch((err) => {
-          if (!err) assert.fail('seen "Nested Iframe test"');
-        })
-        .then(() => I.dontSee('Iframe test'))
-        .catch((err) => {
-          if (!err) assert.fail('seen "Iframe test"');
-        });
-    });
-=======
     it('should execute within block 2', () => I.amOnPage('/form/example4')
       .then(() => I.fillField('Hasło', '12345'))
       .then(() => I._withinBegin({ xpath: '//div[@class="form-group"][2]' }))
@@ -734,6 +666,5 @@ module.exports.tests = function () {
       .catch((err) => {
         if (!err) assert.fail('seen "Iframe test"');
       }));
->>>>>>> upstream/master
   });
 };
