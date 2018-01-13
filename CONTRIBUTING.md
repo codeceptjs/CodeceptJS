@@ -52,7 +52,8 @@ Execute test suite:
 
 ```sh
 mocha test/helper/WebDriverIO_test.js
-mocha test/helper/SeleniumWebdriver_test.js
+mocha test/helper/Puppeteer_test.js
+mocha test/helper/Nightmare_test.js
 ```
 
 Use `--grep` to execute tests only for changed parts.
