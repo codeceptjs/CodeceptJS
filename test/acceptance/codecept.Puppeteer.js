@@ -8,6 +8,9 @@ module.exports.config = {
     Puppeteer: {
       url: TestHelper.siteUrl(),
       show: true,
+      chrome: {
+        // slowMo: 250,
+      },
     },
   },
   include: {},
