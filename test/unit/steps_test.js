@@ -1,10 +1,10 @@
-'use strict';
+const assert = require('assert');
+const Step = require('../../lib/step');
+const event = require('../../lib/event');
+const sinon = require('sinon');
 
-let assert = require('assert');
-let Step = require('../../lib/step');
-let event = require('../../lib/event');
-let sinon = require('sinon');
-let step, action;
+let step;
+let action;
 
 describe('Step', () => {
   beforeEach(() => {
@@ -25,10 +25,14 @@ describe('Step', () => {
     step.humanizeArgs().should.eql('"word", 1');
 
     step.args = [['some', 'data'], 1];
-    step.humanizeArgs().should.eql("[some,data], 1");
+    step.humanizeArgs().should.eql('["some","data"], 1');
 
-    step.args = [{css: '.class'}];
+    step.args = [{ css: '.class' }];
     step.humanizeArgs().should.eql('{"css":".class"}');
+
+    let testUndefined;
+    step.args = [testUndefined, 'undefined'];
+    step.humanizeArgs().should.eql('undefined, "undefined"');
   });
 
   it('should provide nice output', () => {
@@ -42,18 +46,14 @@ describe('Step', () => {
   });
 
   describe('#run', () => {
-    let init, before, after, failed;
-
     afterEach(() => event.cleanDispatcher());
 
     it('should run step', () => {
       assert.equal(step.status, 'pending');
-      let res = step.run();
+      const res = step.run();
       assert.equal(res, 'done');
       assert(action.called);
       assert.equal(step.status, 'success');
     });
-
   });
-
 });

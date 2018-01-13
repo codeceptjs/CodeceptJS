@@ -78,3 +78,20 @@ To build this image:
 ```sh
 docker build -t codeception/codeceptjs .
 ```
+
+### Debugging
+
+To pass arguments to `codecept run` command inside docker image you can set
+`CODECEPT_ARGS` environment variable. For example to run your tests with debug
+and steps output:
+
+```yaml
+version: '2'
+services:
+  codeceptjs:
+    image: codeception/codeceptjs
+    environment:
+      - CODECEPT_ARGS=--debug --steps
+    volumes:
+      - .:/tests
+```

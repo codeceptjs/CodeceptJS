@@ -391,7 +391,7 @@ I.removeApp('com.example.android.apis');
 
 **Parameters**
 
--   `bundleId`  String	ID of bundled appAppium: support only Android
+-   `bundleId`  String  ID of bundled appAppium: support only Android
 
 ## rotate
 
@@ -504,7 +504,7 @@ I.seeAppIsInstalled("com.example.android.apis");
 
 **Parameters**
 
--   `bundleId`  String	ID of bundled appAppium: support only Android
+-   `bundleId`  String  ID of bundled appAppium: support only Android
 
 ## seeAppIsNotInstalled
 
@@ -516,7 +516,7 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 
 **Parameters**
 
--   `bundleId`  String	ID of bundled appAppium: support only Android
+-   `bundleId`  String  ID of bundled appAppium: support only Android
 
 ## seeCheckboxIsChecked
 

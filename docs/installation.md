@@ -1,40 +1,8 @@
 # Installation
 
-## Global
+## Local
 
-CodeceptJS can be installed via NPM globally
-
-```sh
-[sudo] npm install -g codeceptjs
-```
-
-then it can be started as
-
-```sh
-codeceptjs
-```
-
-To use it with WebDriverIO install webdriverio package globally:
-
-```sh
-[sudo] npm install -g webdriverio
-```
-
-To use it with Protractor install protractor package globally:
-
-```sh
-[sudo] npm install -g protractor
-```
-
-To use it with Nightmare install nightmare and nightmare-upload packages globally:
-
-```sh
-[sudo] npm install -g nightmare nightmare-upload
-```
-
-### Local
-
-CodeceptJS can also be installed locally
+Use NPM install CodeceptJS:
 
 ```sh
 npm install --save-dev codeceptjs
@@ -64,13 +32,32 @@ To use it with Nightmare install nightmare and nightmare-upload packages:
 npm install nightmare nightmare-upload --save-dev
 ```
 
+To use it with Puppeteer install puppeteer package:
+
+```sh
+npm install puppeteer --save-dev
+```
+
 ## Meta Packages
 
 By default it doesn't install any backends like Webdriverio, Protractor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:
 
 * [codeceptjs-webdriverio](https://www.npmjs.com/package/codeceptjs-webdriverio) - installs CodeceptJS + WebDriverIO
 * [codeceptjs-protractor](https://www.npmjs.com/package/codeceptjs-protractor) - installs CodeceptJS + Protractor
+* [codeceptjs-puppeteer](https://www.npmjs.com/package/codeceptjs-puppeteer) - installs CodeceptJS + Puppeteer
 * [codeceptjs-nightmare](https://www.npmjs.com/package/codeceptjs-nightmare) - installs CodeceptJS + Nightmare
+
+Install them using NPM:
+
+```sh
+[sudo] npm install codeceptjs-webdriverio
+# or
+[sudo] npm install codeceptjs-protractor
+# or
+[sudo] npm install codeceptjs-puppeteer
+# or
+[sudo] npm install codeceptjs-nightmare
+```
 
 They can be installed either globally or locally
 
@@ -89,4 +76,24 @@ Launch Selenium with Chrome browser inside a Docker container:
 
 ```sh
 docker run --net=host selenium/standalone-chrome
+```
+
+## Global
+
+CodeceptJS can be installed via NPM globally, in this case it is recommended to use meta-packages for installation:
+
+```sh
+[sudo] npm install -g codeceptjs-webdriverio
+# or
+[sudo] npm install -g codeceptjs-protractor
+# or
+[sudo] npm install -g codeceptjs-puppeteer
+# or
+[sudo] npm install -g codeceptjs-nightmare
+```
+
+then it can be started as
+
+```sh
+codeceptjs
 ```
