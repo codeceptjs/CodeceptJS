@@ -28,13 +28,17 @@ describe('Nightmare', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
+      waitForTimeout: 5000,
     });
     I._init();
     return I._beforeSuite();
   });
 
   beforeEach(() => {
-    webApiTests.init({ I, siteUrl });
+    webApiTests.init({
+      I,
+      siteUrl
+    });
     return I._before().then(() => browser = I.browser);
   });
 
@@ -101,7 +105,9 @@ describe('Nightmare', function () {
       }));
 
     it('should fail when test is not in context', () => I.amOnPage('/')
-      .then(() => I.see('debug', { css: 'a' }))
+      .then(() => I.see('debug', {
+        css: 'a'
+      }))
       .catch((e) => {
         e.should.be.instanceOf(AssertionFailedError);
         e.toString().should.not.include('web page');
@@ -113,7 +119,9 @@ describe('Nightmare', function () {
     it('should use locate to check element', () => {
       const attribute = 'qa-id';
       return I.amOnPage('/')
-        .then(() => I._locate({ css: '.notice' }).then((els) => {
+        .then(() => I._locate({
+          css: '.notice'
+        }).then((els) => {
           // we received an array with IDs of matched elements
           // now let's execute client-side script to get attribute for the first element
           assert.ok(!!els);

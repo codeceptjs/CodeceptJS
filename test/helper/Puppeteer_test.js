@@ -1,4 +1,3 @@
-
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 const should = require('chai').should();
@@ -28,13 +27,19 @@ describe('Puppeteer', function () {
       show: false,
       waitForTimeout: 2000,
       waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox'],
+      },
     });
     I._init();
     return I._beforeSuite();
   });
 
   beforeEach(() => {
-    webApiTests.init({ I, siteUrl });
+    webApiTests.init({
+      I,
+      siteUrl
+    });
     return I._before().then(() => {
       page = I.page;
       browser = I.browser;
@@ -46,18 +51,18 @@ describe('Puppeteer', function () {
   });
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', async () => {
+    it('should open main page of configured site', async() => {
       await I.amOnPage('/');
       const url = await page.url();
       await url.should.eql(`${siteUrl}/`);
     });
-    it('should open any page of configured site', async () => {
+    it('should open any page of configured site', async() => {
       await I.amOnPage('/info');
       const url = await page.url();
       return url.should.eql(`${siteUrl}/info`);
     });
 
-    it('should open absolute url', async () => {
+    it('should open absolute url', async() => {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
