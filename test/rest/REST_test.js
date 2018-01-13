@@ -38,7 +38,7 @@ describe('REST', () => {
     } catch (err) {
       // continue regardless of error
     }
-    setTimeout(done, 700);
+    setTimeout(done, 1000);
   });
 
   describe('basic requests', () => {
