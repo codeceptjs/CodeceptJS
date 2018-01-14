@@ -8,7 +8,12 @@ module.exports.config = {
     Puppeteer: {
       url: TestHelper.siteUrl(),
       show: false,
-      chrome: {},
+      chrome: {
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
+      },
     },
   },
   include: {},

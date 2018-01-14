@@ -9,3 +9,4 @@ docker-compose run --rm test-helpers test/helper
 docker-compose run --rm test-helpers test/rest
 docker-compose run --rm test-acceptance.webdriverio
 docker-compose run --rm test-acceptance.nightmare
+docker-compose run --rm test-acceptance.puppeteer

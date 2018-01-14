@@ -45,7 +45,7 @@ Scenario('within on iframe without iframe navigation @WebDriverIO @nightmare @Pu
   I.dontSee('Sign in!');
 });
 
-Scenario('within on nested iframe without iframe navigation depth=2 @WebDriverIO @nightmare', (I) => {
+Scenario('within on nested iframe without iframe navigation depth 2 @WebDriverIO @nightmare @Puppeteer', (I) => {
   I.amOnPage('/iframe_nested');
   within({ frame: ['[name=wrapper]', '[name=content]'] }, () => {
     I.fillField('rus', 'Updated');
@@ -55,7 +55,7 @@ Scenario('within on nested iframe without iframe navigation depth=2 @WebDriverIO
   I.dontSee('Sign in!');
 });
 
-Scenario('within on nested iframe depth 1 @WebDriverIO', (I) => {
+Scenario('within on nested iframe depth 1 @WebDriverIO @Puppeteer', (I) => {
   I.amOnPage('/iframe');
   within({ frame: ['[name=content]'] }, () => {
     I.fillField('rus', 'Updated');
@@ -66,7 +66,7 @@ Scenario('within on nested iframe depth 1 @WebDriverIO', (I) => {
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe depth 2 @WebDriverIO', (I) => {
+Scenario('within on nested iframe depth 2 @WebDriverIO @Puppeteer', (I) => {
   I.amOnPage('/iframe_nested');
   within({ frame: ['[name=wrapper]', '[name=content]'] }, () => {
     I.fillField('rus', 'Updated');
@@ -77,7 +77,7 @@ Scenario('within on nested iframe depth 2 @WebDriverIO', (I) => {
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO', (I) => {
+Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer', (I) => {
   I.amOnPage('/iframe_nested');
   within({ frame: ['#wrapperId', '[name=content]'] }, () => {
     I.fillField('rus', 'Updated');
@@ -88,7 +88,7 @@ Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDr
   I.dontSee('Email Address');
 });
 
-Scenario('within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO', (I) => {
+Scenario('within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer', (I) => {
   I.amOnPage('/iframe_nested');
   within({ frame: ['.wrapperClass', '[name=content]'] }, () => {
     I.fillField('rus', 'Updated');

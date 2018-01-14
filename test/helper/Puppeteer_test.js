@@ -26,6 +26,12 @@ describe('Puppeteer', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
+      chrome: {
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
+      },
     });
     I._init();
     return I._beforeSuite();
@@ -117,5 +123,32 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.switchToPreviousTab())
       .then(() => I.seeInCurrentUrl('/info')));
+  });
+
+  describe('#switchTo', () => {
+    it('should switch reference to iframe content', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('[name="content"]'))
+      .then(() => I.see('Information\nLots of valuable data here')));
+
+    it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('#invalidIframeSelector'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
+      }));
+
+    it('should return error if iframe selector is not iframe', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('h1'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
+        // e.seleniumStack.type.should.be.equal('NoSuchFrame');
+      }));
+
+    it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('[name="content"]'))
+      .then(() => I.see('Information\nLots of valuable data here'))
+      .then(() => I.switchTo(null))
+      .then(() => I.see('Iframe test')));
   });
 });

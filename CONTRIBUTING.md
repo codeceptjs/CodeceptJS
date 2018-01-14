@@ -13,22 +13,6 @@ To start you need:
 
 Depending on a type of a change you should do the following.
 
-## Acceptance Tests
-
-### Testing Puppeteer Acceptance Tests
-
-Make sure the acceptance tests.
-
-```sh
-node ./bin/codecept.js run -c ./test/acceptance/codecept.Puppeteer.js
-```
-
-You can also the tests by using the `--grep` option.
-
-```sh
-node ./bin/codecept.js run -c ./test/acceptance/codecept.Puppeteer.js --grep "within"
-```
-
 ## Helpers
 
 Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, SeleniumWebdriver, Nightmare. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happen. If, for instance, WebDriverIO have method XXX and SeleniumWebDriver doesn't, you can implement XXX inside SeleniumWebDriver using the same method signature.
@@ -155,26 +139,27 @@ docker-compose run --rm test-helpers test/rest
 
 ### Run acceptance tests
 
-To that we provide two separate services respectively for WebDriverIO and
-Nightmare tests:
+To that we provide three separate services respectively for WebDriverIO, Nightmare and
+Puppeteer tests:
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio
 docker-compose run --rm test-acceptance.nightmare
+docker-compose run --rm test-acceptance.puppeteer
 ```
 
 ### Running against specific Node version
 
-By default dockerized tests are run against node 6.9.5, you can run it against
+By default dockerized tests are run against node 8.9.1, you can run it against
 specific version as long as there is Docker container available for such
 version. To do that you need to build codecept's Docker image prior to running
 tests and pass `NODE_VERSION` as build argument.
 
-For example to prepare `test-helpers` containers based on node 8.7.0:
+For example to prepare `test-helpers` containers based on node 9.4.0:
 
 ```sh
-docker-compose build --build-arg NODE_VERSION=8.7.0 test-helpers
+docker-compose build --build-arg NODE_VERSION=9.4.0 test-helpers
 ```
 
-And now every command based on `test-helpers` service will use node 8.7.0. The
+And now every command based on `test-helpers` service will use node 9.4.0. The
 same argument can be passed when building unit and acceptance tests services.
