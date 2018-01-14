@@ -80,7 +80,7 @@ Start JSON server to run tests:
 npm run json-server
 ```
 
-Edit a test at `tests/helper/REST_test.js` or `test/helper/ApiDataFactory_test.js`
+Edit a test at `test/rest/REST_test.js` or `test/rest/ApiDataFactory_test.js`
 
 ## Appium
 
