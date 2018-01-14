@@ -25,7 +25,7 @@ describe('Puppeteer', function () {
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
-      show: false,
+      show: true,
       chrome: {
         args: [
           '--no-sandbox',
@@ -149,5 +149,24 @@ describe('Puppeteer', function () {
       .then(() => I.see('Information\nLots of valuable data here'))
       .then(() => I.switchTo(null))
       .then(() => I.see('Iframe test')));
+  });
+
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
+    it('should accept popup window', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    /* it('should cancel popup', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.cancelPopup())
+      .then(() => I.see('No', '#result')));
+
+     */
+    it('should check text in popup', () => I.amOnPage('/form/popup')
+      .then(() => I.setPopupHandlerAction('accept'))
+      .then(() => I.click('Alert'))
+      .then(() => I.seeInPopup('Really?'))
+      .then(() => I.cancelPopup()));
   });
 });
