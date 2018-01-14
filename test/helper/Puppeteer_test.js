@@ -142,7 +142,6 @@ describe('Puppeteer', function () {
       .catch((e) => {
         e.should.be.instanceOf(Error);
         e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
-        // e.seleniumStack.type.should.be.equal('NoSuchFrame');
       }));
 
     it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
