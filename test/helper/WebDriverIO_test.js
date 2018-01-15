@@ -30,6 +30,7 @@ describe('WebDriverIO', function () {
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
+      waitForTimeout: 5000,
     });
   });
 
@@ -147,17 +148,32 @@ describe('WebDriverIO', function () {
 
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', () => wd.amOnPage('/info')
-      .then(() => wd.seeAttributesOnElements('//form', { method: 'post' }))
-      .then(() => wd.seeAttributesOnElements('//form', { method: 'post', action: `${siteUrl}/` }))
-      .then(() => wd.seeAttributesOnElements('//form', { method: 'get' }))
+      .then(() => wd.seeAttributesOnElements('//form', {
+        method: 'post',
+      }))
+      .then(() => wd.seeAttributesOnElements('//form', {
+        method: 'post',
+        action: `${siteUrl}/`,
+      }))
+      .then(() => wd.seeAttributesOnElements('//form', {
+        method: 'get',
+      }))
       .catch((e) => {
         assert.equal(e.message, 'Not all elements (//form) have attributes {"method":"get"}');
       }));
 
     it('should check attributes values for several elements', () => wd.amOnPage('/')
-      .then(() => wd.seeAttributesOnElements('a', { 'qa-id': 'test', 'qa-link': 'test' }))
-      .then(() => wd.seeAttributesOnElements('//div', { 'qa-id': 'test' }))
-      .then(() => wd.seeAttributesOnElements('a', { 'qa-id': 'test', href: '/info' }))
+      .then(() => wd.seeAttributesOnElements('a', {
+        'qa-id': 'test',
+        'qa-link': 'test',
+      }))
+      .then(() => wd.seeAttributesOnElements('//div', {
+        'qa-id': 'test',
+      }))
+      .then(() => wd.seeAttributesOnElements('a', {
+        'qa-id': 'test',
+        href: '/info',
+      }))
       .catch((e) => {
         e.message.should.include('Not all elements (a) have attributes {"qa-id":"test","href":"/info"}');
       }));
@@ -190,17 +206,32 @@ describe('WebDriverIO', function () {
 
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', () => wd.amOnPage('/info')
-      .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' }))
-      .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold', display: 'block' }))
-      .then(() => wd.seeCssPropertiesOnElements('h3', { 'font-weight': 'non-bold' }))
+      .then(() => wd.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'bold',
+      }))
+      .then(() => wd.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'bold',
+        display: 'block',
+      }))
+      .then(() => wd.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'non-bold',
+      }))
       .catch((e) => {
         e.message.should.include('Not all elements (h3) have CSS property {"font-weight":"non-bold"}');
       }));
 
     it('should check css property for several elements', () => wd.amOnPage('/')
-      .then(() => wd.seeCssPropertiesOnElements('a', { color: 'rgba(0, 0, 238, 1)', cursor: 'auto' }))
-      .then(() => wd.seeCssPropertiesOnElements('//div', { display: 'block' }))
-      .then(() => wd.seeCssPropertiesOnElements('a', { 'margin-top': '0em', cursor: 'auto' }))
+      .then(() => wd.seeCssPropertiesOnElements('a', {
+        color: 'rgba(0, 0, 238, 1)',
+        cursor: 'auto',
+      }))
+      .then(() => wd.seeCssPropertiesOnElements('//div', {
+        display: 'block',
+      }))
+      .then(() => wd.seeCssPropertiesOnElements('a', {
+        'margin-top': '0em',
+        cursor: 'auto',
+      }))
       .catch((e) => {
         e.message.should.include('Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}');
       }));
@@ -217,7 +248,9 @@ describe('WebDriverIO', function () {
       .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
       .then(num => assert.equal(num, 3)));
     it('should support locators like {xpath:"//div"}', () => wd.amOnPage('/info')
-      .then(() => wd.grabNumberOfVisibleElements({ xpath: '//div[@id = "grab-multiple"]//a' }))
+      .then(() => wd.grabNumberOfVisibleElements({
+        xpath: '//div[@id = "grab-multiple"]//a',
+      }))
       .then(num => assert.equal(num, 3)));
   });
 
@@ -244,7 +277,9 @@ describe('WebDriverIO', function () {
 
     it('should create a screenshot on fail  @ups', () => {
       const sec = (new Date()).getUTCMilliseconds().toString();
-      const test = { title: `sw should do smth ${sec}` };
+      const test = {
+        title: `sw should do smth ${sec}`,
+      };
       return wd.amOnPage('/')
         .then(() => wd._failed(test))
         .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));

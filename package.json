@@ -62,7 +62,7 @@
     "nightmare-upload": "^0.1.1",
     "nyc": "^11.4.1",
     "protractor": "^5.2.2",
-    "puppeteer": "^0.13.0",
+    "puppeteer": "^1.0.0",
     "rosie": "^1.6.0",
     "selenium-webdriver": "^2.53.1",
     "sinon": "^1.17.2",

@@ -55,7 +55,9 @@ module.exports.tests = function () {
       yield I.amOnPage('/');
       yield I.see('Welcome to test app!', 'h1');
       yield I.amOnPage('/info');
-      yield I.see('valuable', { css: 'p' });
+      yield I.see('valuable', {
+        css: 'p',
+      });
       yield I.see('valuable', '//body/p');
       return I.dontSee('valuable', 'h1');
     });
@@ -287,7 +289,9 @@ module.exports.tests = function () {
 
     it('should fill field by strict locator', function* () {
       yield I.amOnPage('/form/field');
-      yield I.fillField({ id: 'name' }, 'Nothing special');
+      yield I.fillField({
+        id: 'name',
+      }, 'Nothing special');
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'Nothing special');
     });
@@ -415,13 +419,17 @@ module.exports.tests = function () {
 
     it('should grab attribute from element', function* () {
       yield I.amOnPage('/search');
-      const val = yield I.grabAttributeFrom({ css: 'form' }, 'method');
+      const val = yield I.grabAttributeFrom({
+        css: 'form',
+      }, 'method');
       return assert.equal(val, 'get');
     });
 
     it('should grab custom attribute from element', function* () {
       yield I.amOnPage('/form/example4');
-      const val = yield I.grabAttributeFrom({ css: '.navbar-toggle' }, 'data-toggle');
+      const val = yield I.grabAttributeFrom({
+        css: '.navbar-toggle',
+      }, 'data-toggle');
       return assert.equal(val, 'collapse');
     });
   });
@@ -485,7 +493,9 @@ module.exports.tests = function () {
 
     it('should create a screenshot on fail  @ups', () => {
       const sec = (new Date()).getUTCMilliseconds().toString();
-      const test = { title: `sw should do smth ${sec}` };
+      const test = {
+        title: `sw should do smth ${sec}`,
+      };
       return I.amOnPage('/')
         .then(() => I._failed(test))
         .then(() => assert.ok(fileExists(path.join(global.output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
@@ -494,7 +504,10 @@ module.exports.tests = function () {
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
     it('should do all cookie stuff', () => I.amOnPage('/')
-      .then(() => I.setCookie({ name: 'auth', value: '123456' }))
+      .then(() => I.setCookie({
+        name: 'auth',
+        value: '123456',
+      }))
       .then(() => I.seeCookie('auth'))
       .then(() => I.dontSeeCookie('auuth'))
       .then(() => I.grabCookie('auth'))
@@ -503,7 +516,10 @@ module.exports.tests = function () {
       .then(() => I.dontSeeCookie('auth')));
 
     it('should clear all cookies', () => I.amOnPage('/')
-      .then(() => I.setCookie({ name: 'auth', value: '123456' }))
+      .then(() => I.setCookie({
+        name: 'auth',
+        value: '123456',
+      }))
       .then(() => I.clearCookie())
       .then(() => I.dontSeeCookie('auth')));
   });
@@ -581,11 +597,10 @@ module.exports.tests = function () {
 
   describe('#waitUntilExists', () => {
     it('should wait for an element to be removed from DOM', () => I.amOnPage('/spinner')
-      .then(() => I.seeElementInDOM('.loader'))
       .then(() => I.waitUntilExists('.loader'))
       .then(() => I.dontSeeElement('.loader')));
 
-    it('should wait for a non-exising element to be removed from DOM', () => I.amOnPage('/spinner')
+    it('should wait for a non-existing element to be removed from DOM', () => I.amOnPage('/spinner')
       .then(() => I.dontSeeElement('.non-existing-class'))
       .then(() => I.waitUntilExists('.non-existing-class'))
       .then(() => I.dontSeeElement('.non-existing-class')));
@@ -612,7 +627,9 @@ module.exports.tests = function () {
         .then(() => I.seeInField('Hasło', '12345'))
         .then(() => I.checkOption('terms'))
         .then(() => I.seeCheckboxIsChecked('terms'))
-        .then(() => I._withinBegin({ css: '.form-group' }))
+        .then(() => I._withinBegin({
+          css: '.form-group',
+        }))
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Hasło'))
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
@@ -632,7 +649,9 @@ module.exports.tests = function () {
 
     it('should execute within block 2', () => I.amOnPage('/form/example4')
       .then(() => I.fillField('Hasło', '12345'))
-      .then(() => I._withinBegin({ xpath: '//div[@class="form-group"][2]' }))
+      .then(() => I._withinBegin({
+        xpath: '//div[@class="form-group"][2]',
+      }))
       .then(() => I.dontSee('E-Mail'))
       .then(() => I.see('Hasło'))
       .then(() => I.grabTextFrom('label'))
@@ -642,7 +661,9 @@ module.exports.tests = function () {
 
     it('within should respect context in see', () => I.amOnPage('/form/example4')
       .then(() => I.see('Rejestracja', 'fieldset'))
-      .then(() => I._withinBegin({ css: '.navbar-header' }))
+      .then(() => I._withinBegin({
+        css: '.navbar-header',
+      }))
       .then(() => I.see('Rejestracja', '.container fieldset'))
       .catch((err) => {
         if (!err) assert.fail('seen fieldset');
@@ -653,7 +674,9 @@ module.exports.tests = function () {
       }));
 
     it('within should respect context in see when using nested frames', () => I.amOnPage('/iframe_nested')
-      .then(() => I._withinBegin({ frame: ['#wrapperId', '[name=content]'] }))
+      .then(() => I._withinBegin({
+        frame: ['#wrapperId', '[name=content]'],
+      }))
       .then(() => I.see('Kill & Destroy'))
       .catch((err) => {
         if (!err) assert.fail('seen "Kill & Destroy"');
