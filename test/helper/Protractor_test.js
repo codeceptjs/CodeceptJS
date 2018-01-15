@@ -33,6 +33,7 @@ describe('Protractor', function () {
       browser: 'chrome',
       seleniumAddress: TestHelper.seleniumAddress(),
       angular: true,
+      waitForTimeout: 5000,
     });
     return I._init().then(() => I._beforeSuite());
   });
