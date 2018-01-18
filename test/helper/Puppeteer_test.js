@@ -126,14 +126,14 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('/info')));
   });
 
-  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup, #grabPopupText', () => {
     it('should accept popup window', () => I.amOnPage('/form/popup')
       .then(() => I.amAcceptingPopups())
       .then(() => I.click('Confirm'))
       .then(() => I.acceptPopup())
       .then(() => I.see('Yes', '#result')));
 
-    it('should accept popup window (using default dialog action type)', () => I.amOnPage('/form/popup')
+    it('should accept popup window (using default popup action type)', () => I.amOnPage('/form/popup')
       .then(() => I.click('Confirm'))
       .then(() => I.acceptPopup())
       .then(() => I.see('Yes', '#result')));
@@ -149,6 +149,16 @@ describe('Puppeteer', function () {
       .then(() => I.click('Alert'))
       .then(() => I.seeInPopup('Really?'))
       .then(() => I.cancelPopup()));
+
+    it('should grab text from popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Alert'))
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, 'Really?')));
+
+    it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, null)));
   });
 
   describe('#switchTo', () => {
