@@ -32,6 +32,7 @@ describe('Puppeteer', function () {
           '--disable-setuid-sandbox',
         ],
       },
+      defaultPopupAction: 'accept',
     });
     I._init();
     return I._beforeSuite();
@@ -125,6 +126,31 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('/info')));
   });
 
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
+    it('should accept popup window', () => I.amOnPage('/form/popup')
+      .then(() => I.amAcceptingPopups())
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should accept popup window (using default dialog action type)', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should cancel popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Confirm'))
+      .then(() => I.cancelPopup())
+      .then(() => I.see('No', '#result')));
+
+    it('should check text in popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Alert'))
+      .then(() => I.seeInPopup('Really?'))
+      .then(() => I.cancelPopup()));
+  });
+
   describe('#switchTo', () => {
     it('should switch reference to iframe content', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
@@ -149,24 +175,5 @@ describe('Puppeteer', function () {
       .then(() => I.see('Information\nLots of valuable data here'))
       .then(() => I.switchTo(null))
       .then(() => I.see('Iframe test')));
-  });
-
-  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
-    it('should accept popup window', () => I.amOnPage('/form/popup')
-      .then(() => I.click('Confirm'))
-      .then(() => I.acceptPopup())
-      .then(() => I.see('Yes', '#result')));
-
-    /* it('should cancel popup', () => I.amOnPage('/form/popup')
-      .then(() => I.click('Confirm'))
-      .then(() => I.cancelPopup())
-      .then(() => I.see('No', '#result')));
-
-     */
-    it('should check text in popup', () => I.amOnPage('/form/popup')
-      .then(() => I.setPopupHandlerAction('accept'))
-      .then(() => I.click('Alert'))
-      .then(() => I.seeInPopup('Really?'))
-      .then(() => I.cancelPopup()));
   });
 });
