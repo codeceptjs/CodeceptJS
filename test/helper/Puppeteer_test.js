@@ -1,4 +1,3 @@
-
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 const should = require('chai').should();
@@ -26,11 +25,10 @@ describe('Puppeteer', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
+      waitForTimeout: 2000,
+      waitForAction: 500,
       chrome: {
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
     });
     I._init();
@@ -38,7 +36,9 @@ describe('Puppeteer', function () {
   });
 
   beforeEach(() => {
-    webApiTests.init({ I, siteUrl });
+    webApiTests.init({
+      I, siteUrl,
+    });
     return I._before().then(() => {
       page = I.page;
       browser = I.browser;
