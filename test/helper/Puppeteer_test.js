@@ -24,12 +24,11 @@ describe('Puppeteer', function () {
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
-      show: false,
-      waitForTimeout: 2000,
-      waitForAction: 500,
+      show: true,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
+      defaultPopupAction: 'accept',
     });
     I._init();
     return I._beforeSuite();
@@ -123,6 +122,41 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.switchToPreviousTab())
       .then(() => I.seeInCurrentUrl('/info')));
+  });
+
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup, #grabPopupText', () => {
+    it('should accept popup window', () => I.amOnPage('/form/popup')
+      .then(() => I.amAcceptingPopups())
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should accept popup window (using default popup action type)', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should cancel popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Confirm'))
+      .then(() => I.cancelPopup())
+      .then(() => I.see('No', '#result')));
+
+    it('should check text in popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Alert'))
+      .then(() => I.seeInPopup('Really?'))
+      .then(() => I.cancelPopup()));
+
+    it('should grab text from popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Alert'))
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, 'Really?')));
+
+    it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, null)));
   });
 
   describe('#switchTo', () => {
