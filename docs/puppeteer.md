@@ -153,6 +153,12 @@ I.see('0 items left', '.todo-count');
 
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
+`within` can also work with [iframes](/acceptance/#iframes)
+
+When running steps inside a within block will be shown with a shift:
+
+![within](http://codecept.io/images/within.png)
+
 ## Extending
 
 Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.

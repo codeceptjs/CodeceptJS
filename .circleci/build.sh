@@ -10,6 +10,7 @@ docker-compose build \
   test-helpers \
   test-acceptance.webdriverio \
   test-acceptance.nightmare \
+  test-acceptance.puppeteer \
   json_server
 
 docker-compose pull \
