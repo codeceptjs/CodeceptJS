@@ -23,13 +23,30 @@ RUN apt-get update && apt-get install -y wget --no-install-recommends \
     && apt-get purge --auto-remove -y curl \
     && rm -rf /src/*.deb
 
+# Uncomment to skip the chromium download when installing puppeteer. If you do,
+# you'll need to launch puppeteer with:
+#     browser.launch({executablePath: 'google-chrome-unstable'})
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
+# Install puppeteer so it's available in the container.
+RUN yarn add puppeteer
+
+# Add pptr user.
+RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+    && mkdir -p /home/pptruser/Downloads \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser /node_modules
+
+RUN mkdir /codecept && chown -R pptruser:pptruser /codecept
+
 WORKDIR /tmp
 COPY package.json /tmp/
 
 # Install packages
 RUN npm install --loglevel=warn
 
-RUN mkdir /codecept
+#RUN mkdir /home/codecept
 WORKDIR /codecept
 
 COPY . /codecept
@@ -41,6 +58,9 @@ ENV CODECEPT_ARGS=""
 
 # Set HOST ENV variable for Selenium Server
 ENV HOST=selenium
+
+# Run user as non privileged.
+# USER pptruser
 
 # Set the entrypoint for Nightmare
 ENTRYPOINT ["docker/entrypoint"]
