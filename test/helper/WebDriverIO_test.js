@@ -304,7 +304,7 @@ describe('WebDriverIO', function () {
       }));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
     it('should switch to next tab', () => wd.amOnPage('/info')
       .then(() => wd.click('New tab'))
       .then(() => wd.switchToNextTab())
@@ -321,6 +321,17 @@ describe('WebDriverIO', function () {
       .then(() => wd.waitInUrl('/login'))
       .then(() => wd.closeCurrentTab())
       .then(() => wd.waitInUrl('/info')));
+
+    it('should close other tabs', () => wd.amOnPage('/')
+      .then(() => wd.openNewTab())
+      .then(() => wd.seeInCurrentUrl('about:blank'))
+      .then(() => wd.amOnPage('/info'))
+      .then(() => wd.click('New tab'))
+      .then(() => wd.switchToNextTab())
+      .then(() => wd.seeInCurrentUrl('/login'))
+      .then(() => wd.closeOtherTabs())
+      .then(() => wd.seeInCurrentUrl('/login')));
+
     it('should open new tab', () => wd.amOnPage('/info')
       .then(() => wd.openNewTab())
       .then(() => wd.waitInUrl('about:blank')));

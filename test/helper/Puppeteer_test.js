@@ -95,7 +95,7 @@ describe('Puppeteer', function () {
       .then(() => I.see('Hovered', '#show')));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
     it('should switch to next tab', () => I.amOnPage('/info')
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
@@ -115,6 +115,16 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.closeCurrentTab())
       .then(() => I.seeInCurrentUrl('/info')));
+
+    it('should close other tabs', () => I.amOnPage('/')
+      .then(() => I.openNewTab())
+      .then(() => I.seeInCurrentUrl('about:blank'))
+      .then(() => I.amOnPage('/info'))
+      .then(() => I.click('New tab'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.seeInCurrentUrl('/login'))
+      .then(() => I.closeOtherTabs())
+      .then(() => I.seeInCurrentUrl('/login')));
 
     it('should open new tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
