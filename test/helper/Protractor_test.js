@@ -361,6 +361,73 @@ describe('Protractor', function () {
     });
   });
 
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
+    it('should switch to next tab', () => I.amOnPage('/')
+      .then(() => I.click('Get More Options'))
+      .then(() => I.seeCurrentUrlEquals('/#/options'))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/'))
+      .then(() => I.click('Get more info!'))
+      .then(() => I.seeCurrentUrlEquals('/#/info'))
+      .then(() => I.switchToPreviousTab())
+      .then(() => I.seeCurrentUrlEquals('/#/options'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.seeCurrentUrlEquals('/#/info')));
+
+    it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
+      .then(() => I.click('Get More Options'))
+      .then(() => I.switchToNextTab(2))
+      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+      .catch((e) => {
+        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
+      }));
+
+    it('should assert when there is no ability to switch to previous tab', () => I.amOnPage('/')
+      .then(() => I.click('Get More Options'))
+      .then(() => I.switchToPreviousTab(2))
+      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+      .catch((e) => {
+        assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
+      }));
+
+    it('should close current tab', () => I.amOnPage('/')
+      .then(() => I.click('Get more info!'))
+      .then(() => I.seeInCurrentUrl('#/info'))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/'))
+      .then(() => I.seeInCurrentUrl('#/'))
+      .then(() => I.dontSeeInCurrentUrl('#/info'))
+      .then(() => I.closeCurrentTab())
+      .then(() => I.seeInCurrentUrl('#/info')));
+
+    it('should close other tabs', () => I.amOnPage('/')
+      .then(() => I.click('Get more info!'))
+      .then(() => I.seeCurrentUrlEquals('/#/info'))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/'))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/'))
+      .then(() => I.click('Get More Options'))
+      .then(() => I.seeCurrentUrlEquals('/#/options'))
+      .then(() => I.closeOtherTabs())
+      .then(() => I.seeCurrentUrlEquals('/#/options')));
+
+    it('should open new tab', () => I.amOnPage('/')
+      .then(() => I.openNewTab())
+      .then(() => I.amOutsideAngularApp())
+      .then(() => I.seeInCurrentUrl('about:blank')));
+
+    it('should switch to previous tab', () => I.amOnPage('/')
+      .then(() => I.click('Get more info!'))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/'))
+      .then(() => I.seeInCurrentUrl('/#/'))
+      .then(() => I.switchToPreviousTab())
+      .then(() => I.wait(2))
+
+      .then(() => I.seeInCurrentUrl('/#/info')));
+  });
+
   describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
     it('should do all cookie stuff', function* () {
       yield I.amOnPage('/');
