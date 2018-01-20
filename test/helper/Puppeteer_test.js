@@ -104,6 +104,7 @@ describe('Puppeteer', function () {
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
       .then(() => I.click('More info'))
       .then(() => I.switchToNextTab(2))
+      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
       .catch((e) => {
         assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
       }));
