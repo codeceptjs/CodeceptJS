@@ -172,6 +172,11 @@ describe('Puppeteer', function () {
       .then(text => assert.equal(text, null)));
   });
 
+  describe('#seeNumberOfElements', () => {
+    it('should return 1 as count', () => I.amOnPage('/')
+      .then(() => I.seeNumberOfElements('#area1', 1)));
+  });
+
   describe('#switchTo', () => {
     it('should switch reference to iframe content', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
