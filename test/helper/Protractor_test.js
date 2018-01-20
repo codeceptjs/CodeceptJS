@@ -440,11 +440,17 @@ describe('Protractor', function () {
     });
   });
 
-  describe('#seeInSource', () => {
+  describe('#seeInSource, #grabSource', () => {
     it('should check for text to be in HTML source', function* () {
       yield I.amOnPage('/');
       yield I.seeInSource('<meta charset="utf-8"');
       return I.dontSeeInSource('<article');
+    });
+
+    it('should grab the source', async () => {
+      await I.amOnPage('/');
+      const source = await I.grabSource();
+      assert.notEqual(source.indexOf('<meta charset="utf-8"'), -1, 'Source html should be retrieved');
     });
   });
 

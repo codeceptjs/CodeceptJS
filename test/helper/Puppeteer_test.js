@@ -197,4 +197,14 @@ describe('Puppeteer', function () {
       .then(() => I.switchTo(null))
       .then(() => I.see('Iframe test')));
   });
+
+  describe('#seeInSource, #grabSource', () => {
+    it('should check for text to be in HTML source', () => I.amOnPage('/')
+      .then(() => I.seeInSource('<title>TestEd Beta 2.0</title>'))
+      .then(() => I.dontSeeInSource('<meta')));
+
+    it('should grab the source', () => I.amOnPage('/')
+      .then(() => I.grabSource())
+      .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
+  });
 });
