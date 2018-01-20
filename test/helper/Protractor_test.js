@@ -524,5 +524,10 @@ describe('Protractor', function () {
           e.message.should.include('Wait timed out');
         });
     });
+
+    describe('#seeNumberOfElements', () => {
+      it('should return 1 as count', () => I.amOnPage('/')
+        .then(() => I.seeNumberOfElements('h1', 1)));
+    });
   });
 });
