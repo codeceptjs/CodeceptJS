@@ -324,7 +324,7 @@ describe('Protractor', function () {
     });
   });
 
-  describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
+  describe('page title : #seeTitle, #dontSeeTitle, #grabTitle, #seeTitleEquals', () => {
     it('should check page title', function* () {
       yield I.amOnPage('/');
       return I.seeInTitle('Event App');
@@ -334,6 +334,15 @@ describe('Protractor', function () {
       yield I.amOnPage('/');
       return expect(I.grabTitle()).to.eventually.equal('Event App');
     });
+
+    it('should check that title is equal to provided one', () => I.amOnPage('/')
+      .then(() => I.seeTitleEquals('Event App'))
+      .then(() => I.seeTitleEquals('Event Ap'))
+      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected web page title "Event App" to equal "Event Ap"');
+      }));
   });
 
   describe('#saveScreenshot', () => {

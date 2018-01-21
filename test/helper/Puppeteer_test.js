@@ -212,4 +212,15 @@ describe('Puppeteer', function () {
       .then(() => I.grabSource())
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
+
+  describe('#seeTitleEquals', () => {
+    it('should check that title is equal to provided one', () => I.amOnPage('/')
+      .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
+      .then(() => I.seeTitleEquals('TestEd Beta 2.'))
+      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."');
+      }));
+  });
 });
