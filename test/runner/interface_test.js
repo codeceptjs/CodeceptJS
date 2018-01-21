@@ -22,6 +22,15 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should include grep option tests', (done) => {
+    exec(config_run_config('codecept.grep.json'), (err, stdout, stderr) => {
+      stdout.should.include('Got login davert and password'); // feature
+      stdout.should.not.include('Got changed login'); // test name
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run tests with different data', (done) => {
     exec(config_run_config('codecept.ddt.json'), (err, stdout, stderr) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
@@ -55,11 +64,15 @@ describe('CodeceptJS Interface', () => {
         '[1] Starting recording promises',
         '[1] Queued | hook FileSystem._beforeSuite()',
         '[1] Queued | hook FileSystem._before()',
+        '[1] Queued | hook FileSystem._beforeStep()',
         '[1] Queued | amInPath: "."',
+        '[1] Queued | hook FileSystem._afterStep()',
         '[1] Queued | step passed',
         '[1] Queued | return result',
         '[1] Queued | say hello world',
+        '[1] Queued | hook FileSystem._beforeStep()',
         '[1] Queued | seeFile: "codecept.json"',
+        '[1] Queued | hook FileSystem._afterStep()',
         '[1] Queued | step passed',
         '[1] Queued | return result',
         '[1] Queued | fire test.passed',

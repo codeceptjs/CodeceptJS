@@ -3,10 +3,7 @@
 Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer).
 It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
 
-CodeceptJS uses Puppeteer to improve end to end testing experience.
-
-1. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
-2. CodeceptJS can locate elements by XPath.
+CodeceptJS uses Puppeteer to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
 
 Take a look at a sample test:
 
@@ -20,7 +17,7 @@ I.click('Sign in');
 I.see('Incorrect username or password.', '.flash-error');
 ```
 
-It's readable and simple, contains XPath and works using Puppeteer API!
+It's readable and simple and works using Puppeteer API!
 
 ## Setup
 
@@ -32,7 +29,6 @@ npm install -g codeceptjs-puppeteer
 
 Or see [alternative installation options](http://codecept.io/installation/)
 If you already have CodeceptJS project, just install `puppeteer` package and enable it in config.
-
 
 And a basic project initialized
 
@@ -68,7 +64,7 @@ Sometimes test may run faster than application gets rendered. In this case it is
 
 CodeceptJS test should be created with `gt` command:
 
-```
+```sh
 codeceptjs gt
 ```
 
@@ -154,15 +150,22 @@ I.see('0 items left', '.todo-count');
 
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
+`within` can also work with [iframes](/acceptance/#iframes)
+
+When running steps inside a within block will be shown with a shift:
+
+![within](http://codecept.io/images/within.png)
+
 ## Extending
 
 Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
 
 Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` command:
 
-```
+```sh
 codeceptjs gh
 ```
+
 Then inside a Helper you can access `Puppeteer` helper of CodeceptJS.
 Let's say you want to create `I.renderPageToPdf` action. In this case you need to call `pdf` method of `page` object
 

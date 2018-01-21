@@ -1,4 +1,3 @@
-
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 const should = require('chai').should();
@@ -26,13 +25,21 @@ describe('Puppeteer', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
+      waitForTimeout: 2000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      defaultPopupAction: 'accept',
     });
     I._init();
     return I._beforeSuite();
   });
 
   beforeEach(() => {
-    webApiTests.init({ I, siteUrl });
+    webApiTests.init({
+      I, siteUrl,
+    });
     return I._before().then(() => {
       page = I.page;
       browser = I.browser;
@@ -117,5 +124,66 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.switchToPreviousTab())
       .then(() => I.seeInCurrentUrl('/info')));
+  });
+
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup, #grabPopupText', () => {
+    it('should accept popup window', () => I.amOnPage('/form/popup')
+      .then(() => I.amAcceptingPopups())
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should accept popup window (using default popup action type)', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should cancel popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Confirm'))
+      .then(() => I.cancelPopup())
+      .then(() => I.see('No', '#result')));
+
+    it('should check text in popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Alert'))
+      .then(() => I.seeInPopup('Really?'))
+      .then(() => I.cancelPopup()));
+
+    it('should grab text from popup', () => I.amOnPage('/form/popup')
+      .then(() => I.amCancellingPopups())
+      .then(() => I.click('Alert'))
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, 'Really?')));
+
+    it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, null)));
+  });
+
+  describe('#switchTo', () => {
+    it('should switch reference to iframe content', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('[name="content"]'))
+      .then(() => I.see('Information\nLots of valuable data here')));
+
+    it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('#invalidIframeSelector'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
+      }));
+
+    it('should return error if iframe selector is not iframe', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('h1'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('Element #invalidIframeSelector was not found by text|CSS|XPath');
+      }));
+
+    it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo('[name="content"]'))
+      .then(() => I.see('Information\nLots of valuable data here'))
+      .then(() => I.switchTo(null))
+      .then(() => I.see('Iframe test')));
   });
 });

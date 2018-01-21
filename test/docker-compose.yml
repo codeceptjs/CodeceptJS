@@ -2,7 +2,7 @@ version: '3'
 services:
   test-unit:
     build: ..
-    entrypoint: node_modules/.bin/gulp
+    entrypoint: docker/entrypoint node_modules/.bin/mocha
     command: test
     working_dir: /codecept
     volumes:
@@ -44,6 +44,18 @@ services:
     depends_on:
       - php
       - selenium.chrome
+    volumes:
+      - ./acceptance:/tests
+      - ./support:/support
+      - node_modules:/codecept/node_modules
+
+  test-acceptance.puppeteer:
+    build: ..
+    env_file: .env
+    environment:
+      - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
+    depends_on:
+      - php
     volumes:
       - ./acceptance:/tests
       - ./support:/support
