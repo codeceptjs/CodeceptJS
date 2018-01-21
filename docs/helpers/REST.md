@@ -6,13 +6,18 @@ REST helper allows to send additional requests to the REST API during acceptance
 ## Configuration
 
 -   endpoint: API base URL
--   timeout: timeout for requests in milliseconds. 10000 by default
+-   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 -   resetHeaders: set to true to reset headers  between requests. Disabled by default
+-   followRedirect: set to true to enable automatic redirect. Disabled by default
 
 **Parameters**
 
 -   `config`  
+
+## _cleanRequestHeaders
+
+Changes headers to default if reset headers option is true
 
 ## _executeRequest
 
@@ -21,6 +26,30 @@ Executes unirest request
 **Parameters**
 
 -   `request` **Any** 
+
+## _url
+
+Generates url based on format sent (takes endpoint + url if latter lacks 'http')
+
+**Parameters**
+
+-   `url` **Any** 
+
+## amFollowingRequestRedirects
+
+Set response auto-redirects ON
+
+```js
+I.amFollowingRequestRedirects(); // To enable auto-redirects
+```
+
+## amNotFollowingRequestRedirects
+
+Set response auto-redirects OFF
+
+```js
+I.amNotFollowingRequestRedirects(); // To disable auto-redirects
+```
 
 ## haveRequestHeaders
 
@@ -37,6 +66,14 @@ I.haveRequestHeaders({
 
 -   `customHeaders` **Any** 
 
+## resetRequestHeaders
+
+Reset headers for the request to default state
+
+```js
+I.resetRequestHeaders();
+```
+
 ## sendDeleteRequest
 
 Sends DELETE request to API.
@@ -48,8 +85,7 @@ I.sendDeleteRequest('/api/users/1');
 **Parameters**
 
 -   `url` **Any** 
--   `payload` **Any** 
--   `headers`   (optional, default `{}`)
+-   `headers` **object** 
 
 ## sendGetRequest
 
@@ -62,8 +98,7 @@ I.sendGetRequest('/api/users.json');
 **Parameters**
 
 -   `url` **Any** 
--   `object`  headers
--   `headers`   (optional, default `{}`)
+-   `headers` **object** 
 
 ## sendPatchRequest
 
@@ -75,12 +110,9 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 
 **Parameters**
 
--   `string`  url
--   `object`  payload
--   `object`  headers
--   `url`  
--   `payload`   (optional, default `{}`)
--   `headers`   (optional, default `{}`)
+-   `url` **string** 
+-   `payload` **object** 
+-   `headers` **object** 
 
 ## sendPostRequest
 
@@ -94,8 +126,7 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 
 -   `url` **Any** 
 -   `payload` **Any** 
--   `object`  headers
--   `headers`   (optional, default `{}`)
+-   `headers` **object** 
 
 ## sendPutRequest
 
@@ -107,9 +138,18 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 
 **Parameters**
 
--   `string`  url
--   `object`  payload
--   `object`  headers
--   `url`  
--   `payload`   (optional, default `{}`)
--   `headers`   (optional, default `{}`)
+-   `url` **string** 
+-   `payload` **object** 
+-   `headers` **object** 
+
+## setRequestTimeout
+
+Set timeout for the request
+
+```js
+I.setRequestTimeout(10000); // In milliseconds
+```
+
+**Parameters**
+
+-   `newTimeout`  

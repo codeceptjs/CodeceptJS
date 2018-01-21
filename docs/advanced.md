@@ -110,6 +110,9 @@ CodeceptJS can execute multiple suites in parallel. This is useful if you want t
     // run only tests containing "@smoke" in name
     "grep": "@smoke",
 
+    // store results into `output/smoke` directory
+    "outputName": "smoke",
+
     // use firefox and different chrome configurations
     "browsers": [
       "firefox",

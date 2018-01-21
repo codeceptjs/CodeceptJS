@@ -7,15 +7,17 @@ After running `codeceptjs init` it should be saved in test root.
 Here is an overview of available options with their defaults:
 
 * **tests**: `"./*_test.js"` - pattern to locate tests
+* **grep**: - patern to filter tests by name
 * **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require` paths
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [#PR439](  https://github.com/Codeception/CodeceptJS/pull/439) for more details
-* **name**: `"tests"` - test suite name (not used)
-* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](#hooks)).
-* **teardown**: - an option to run code _after_ tests are run. See [Hooks](#hooks).
+* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/advanced/#multiple-execution)
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
+* **teardown**: - an option to run code _after_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
+* **noGlobals**: `false` - disable registering global variables like `Actor`, `Helper`, `pause`, `within`, `DataTable`
+* **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](http://codecept.io/hooks/#custom-hooks)
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
 
 ## Dynamic Configuration

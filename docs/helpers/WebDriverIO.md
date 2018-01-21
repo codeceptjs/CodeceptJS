@@ -629,6 +629,15 @@ let logs = yield I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
+## grabBrowserUrl
+
+Get current URL from browser.
+
+```js
+let url = yield I.grabBrowserUrl();
+console.log(`Current URL is [${url}]`);
+```
+
 ## grabCookie
 
 Gets a cookie object by name
@@ -681,6 +690,14 @@ I.grabNumberOfVisibleElements('p');
 **Parameters**
 
 -   `locator`  
+
+## grabPopupText
+
+Grab the text within the popup. If no popup is visible then it will return null
+
+```js
+await I.grabPopupText();
+```
 
 ## grabSource
 
@@ -1183,6 +1200,24 @@ I.switchToPreviousTab(2);
 
 -   `num`   (optional, default `1`)
 -   `sec`   (optional, default `null`)
+
+## uncheckOption
+
+Unselects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.uncheckOption('#agree');
+I.uncheckOption('I Agree to Terms and Conditions');
+I.uncheckOption('agree', '//form');
+```
+
+**Parameters**
+
+-   `field`  checkbox located by label | name | CSS | XPath | strict locator
+-   `context`  (optional) element located by CSS | XPath | strict locatorAppium: not tested
 
 ## wait
 
