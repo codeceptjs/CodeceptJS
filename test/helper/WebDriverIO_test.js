@@ -354,6 +354,15 @@ describe('WebDriverIO', function () {
       .then(() => wd.click('Alert'))
       .then(() => wd.seeInPopup('Really?'))
       .then(() => wd.cancelPopup()));
+
+    it('should grab text from popup', () => wd.amOnPage('/form/popup')
+      .then(() => wd.click('Alert'))
+      .then(() => wd.grabPopupText())
+      .then(text => assert.equal(text, 'Really?')));
+
+    it('should return null if no popup is visible (do not throw an error)', () => wd.amOnPage('/form/popup')
+      .then(() => wd.grabPopupText())
+      .then(text => assert.equal(text, null)));
   });
 
   describe('#waitForText', () => {
