@@ -10,6 +10,7 @@
     }
   },
   "mocha": {
+    "grep": "@grop",
     "reporterOptions": {
       "mochaFile": "./output/result.xml"
     }
