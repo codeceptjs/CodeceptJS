@@ -3,10 +3,7 @@
 Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer).
 It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
 
-CodeceptJS uses Puppeteer to improve end to end testing experience.
-
-1.  No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
-2.  CodeceptJS can locate elements by XPath.
+CodeceptJS uses Puppeteer to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
 
 Take a look at a sample test:
 
@@ -20,7 +17,7 @@ I.click('Sign in');
 I.see('Incorrect username or password.', '.flash-error');
 ```
 
-It's readable and simple, contains XPath and works using Puppeteer API!
+It's readable and simple and works using Puppeteer API!
 
 ## Setup
 

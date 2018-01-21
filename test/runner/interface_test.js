@@ -22,6 +22,15 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should include grep option tests', (done) => {
+    exec(config_run_config('codecept.grep.json'), (err, stdout, stderr) => {
+      stdout.should.include('Got login davert and password'); // feature
+      stdout.should.not.include('Got changed login'); // test name
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run tests with different data', (done) => {
     exec(config_run_config('codecept.ddt.json'), (err, stdout, stderr) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
