@@ -11,8 +11,11 @@ const {
 } = require('../utils');
 const path = require('path');
 const ElementNotFound = require('./errors/ElementNotFound');
+const Popup = require('./extras/Popup');
 
 const puppeteer = requireg('puppeteer');
+
+const popupStore = new Popup();
 
 /**
  * Uses [Google Chrome's Puppeteer](https://github.com/GoogleChrome/puppeteer) library to run tests inside headless Chrome.
@@ -53,6 +56,7 @@ class Puppeteer extends Helper {
       uniqueScreenshotNames: false,
       restart: true,
       show: false,
+      defaultPopupAction: 'accept',
     };
 
     this.isRunning = false;
@@ -60,6 +64,7 @@ class Puppeteer extends Helper {
     // override defaults with config
     Object.assign(this.options, config);
     this.puppeteerOptions = Object.assign({ headless: !this.options.show }, this.options.chrome);
+    popupStore.defaultAction = this.options.defaultPopupAction;
   }
 
   static _config() {
@@ -95,6 +100,113 @@ class Puppeteer extends Helper {
     return this._stopBrowser();
   }
 
+  /**
+   * Set the automatic popup response to Accept.
+   * This must be set before a popup is triggered.
+   *
+   * ```js
+   * I.amAcceptingPopups();
+   * I.click('#triggerPopup');
+   * I.acceptPopup();
+   * ```
+   */
+  amAcceptingPopups() {
+    popupStore.actionType = 'accept';
+  }
+
+  /**
+   * Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+   * Don't confuse popups with modal windows, as created by [various
+   * libraries](http://jster.net/category/windows-modals-popups).
+   */
+  acceptPopup() {
+    popupStore.assertPopupActionType('accept');
+  }
+
+  /**
+   * Set the automatic popup response to Cancel/Dismiss.
+   * This must be set before a popup is triggered.
+   *
+   * ```js
+   * I.amCancellingPopups();
+   * I.click('#triggerPopup');
+   * I.cancelPopup();
+   * ```
+   */
+  amCancellingPopups() {
+    popupStore.actionType = 'cancel';
+  }
+
+  /**
+   * Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+   */
+  cancelPopup() {
+    popupStore.assertPopupActionType('cancel');
+  }
+
+  /**
+   * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
+   * given string.
+   */
+  async seeInPopup(text) {
+    popupStore.assertPopupVisible();
+    const popupText = await popupStore.popup.message();
+    stringIncludes('text in popup').assert(text, popupText);
+  }
+
+  /**
+   * Set current page
+   * @param {object} page page to set
+   */
+  _setPage(page) {
+    this._addPopupListener(page);
+    this.page = page;
+  }
+
+  /**
+   * Add the 'dialog' event listener to a page
+   * @page {Puppeteer.Page}
+   *
+   * The popup listener handles the dialog with the predefined action when it appears on the page.
+   * It also saves a reference to the object which is used in seeInPopup.
+   */
+  _addPopupListener(page) {
+    if (!page) {
+      return;
+    }
+    page.on('dialog', async (dialog) => {
+      popupStore.popup = dialog;
+      const action = popupStore.actionType || this.options.defaultPopupAction;
+      await this._waitForAction();
+
+      switch (action) {
+        case 'accept':
+          return dialog.accept();
+
+        case 'cancel':
+          return dialog.dismiss();
+
+        default: {
+          throw new Error('Unknown popup action type. Only "accept" or "cancel" are accepted');
+        }
+      }
+    });
+  }
+
+  /**
+   * Grab the text within the popup. If no popup is visible then it will return null
+   *
+   * ```js
+   * await I.grabPopupText();
+   * ```
+   */
+  async grabPopupText() {
+    if (popupStore.popup) {
+      return popupStore.popup.message();
+    }
+    return null;
+  }
+
   async _startBrowser() {
     this.browser = await puppeteer.launch(this.puppeteerOptions);
     this.browser.on('targetcreated', (target) => {
@@ -110,7 +222,7 @@ class Puppeteer extends Helper {
       this.debugSection('Url', target.url());
     });
 
-    this.page = await this.browser.newPage();
+    this._setPage(await this.browser.newPage());
 
     if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
       const dimensions = this.options.windowSize.split('x');
@@ -120,18 +232,46 @@ class Puppeteer extends Helper {
 
   async _stopBrowser() {
     this.withinLocator = null;
-    this.page = null;
+    this._setPage(null);
     this.context = null;
+    popupStore.clear();
     await this.browser.close();
   }
+
+  async _evaluateHandeInContext(...args) {
+    let context = await this._getContext();
+
+    if (context.constructor.name === 'Frame') {
+      // Currently there is no evalateHandle for the Frame object
+      // https://github.com/GoogleChrome/puppeteer/issues/1051
+      context = await context.executionContext();
+    }
+
+    return context.evaluateHandle(...args);
+  }
+
 
   async _withinBegin(locator) {
     if (this.withinLocator) {
       throw new Error('Can\'t start within block inside another within block');
     }
+
+    const frame = isFrameLocator(locator);
+
+    if (frame) {
+      if (Array.isArray(frame)) {
+        return this.switchTo(null)
+          .then(() => frame.reduce((p, frameLocator) => p.then(() => this.switchTo(frameLocator)), Promise.resolve()));
+      }
+      await this.switchTo(locator);
+      this.withinLocator = new Locator(locator);
+      return;
+    }
+
     const els = await this._locate(locator);
     assertElementExists(els, locator);
     this.context = els[0];
+
     this.withinLocator = new Locator(locator);
   }
 
@@ -285,7 +425,7 @@ let title = yield I.grabTitle();
     const pages = await this.browser.pages();
     const index = pages.indexOf(this.page);
     this.withinLocator = null;
-    this.page = pages[(index + num) % pages.length];
+    this._setPage(pages[(index + num) % pages.length]);
     await this.page.bringToFront();
     return this._waitForAction();
   }
@@ -302,7 +442,7 @@ let title = yield I.grabTitle();
     const pages = await this.browser.pages();
     const index = pages.indexOf(this.page);
     this.withinLocator = null;
-    this.page = pages[(index - num) % pages.length];
+    this._setPage(pages[(index - num) % pages.length]);
     await this.page.bringToFront();
     return this._waitForAction();
   }
@@ -315,7 +455,9 @@ let title = yield I.grabTitle();
    * ```
    */
   async closeCurrentTab() {
-    return Promise.all([this.switchToPreviousTab(), this.page.close()]);
+    const oldPage = this.page;
+    await this.switchToPreviousTab();
+    return oldPage.close();
   }
 
   /**
@@ -326,7 +468,7 @@ let title = yield I.grabTitle();
    * ```
    */
   async openNewTab() {
-    this.page = await this.browser.newPage();
+    this._setPage(await this.browser.newPage());
   }
 
   /**
@@ -525,11 +667,12 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
     // await el.focus();
     const tag = await el.getProperty('tagName').then(el => el.jsonValue());
     const editable = await el.getProperty('contenteditable').then(el => el.jsonValue());
+
     if (tag === 'TEXTAREA' || editable) {
-      await this.page.evaluateHandle(el => el.innerHTML = '', el);
+      await this._evaluateHandeInContext(el => el.innerHTML = '', el);
     }
     if (tag === 'INPUT') {
-      await this.page.evaluateHandle(el => el.value = '', el);
+      await this._evaluateHandeInContext(el => el.value = '', el);
     }
     await el.type(value, { delay: 10 });
     return this._waitForAction();
@@ -659,15 +802,15 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
       const opt = xpathLocator.literal(option[key]);
       let optEl = await findElements.call(this, el, { xpath: Locator.select.byVisibleText(opt) });
       if (optEl.length) {
-        this.page.evaluateHandle(el => el.selected = true, optEl[0]);
+        this._evaluateHandeInContext(el => el.selected = true, optEl[0]);
         continue;
       }
       optEl = await findElements.call(this, el, { xpath: Locator.select.byValue(opt) });
       if (optEl.length) {
-        this.page.evaluateHandle(el => el.selected = true, optEl[0]);
+        this._evaluateHandeInContext(el => el.selected = true, optEl[0]);
       }
     }
-    await this.page.evaluateHandle((element) => {
+    await this._evaluateHandeInContext((element) => {
       element.dispatchEvent(new Event('input', { bubbles: true }));
       element.dispatchEvent(new Event('change', { bubbles: true }));
     }, el);
@@ -721,7 +864,7 @@ If a relative url provided, a configured url will be prepended to it.
 @param url
    */
   async dontSeeCurrentUrlEquals(url) {
-    const currentUrl = this.page.url();
+    const currentUrl = await this.page.url();
     urlEquals(this.options.url).negate(url, currentUrl);
   }
 
@@ -751,7 +894,7 @@ I.dontSee('Login'); // assume we are already logged in
 @param text is not present
 @param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
    */
-  dontSee(text, context = null) {
+  async dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
   }
 
@@ -973,7 +1116,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
   async grabAttributeFrom(locator, attr) {
     const els = await this._locate(locator);
     assertElementExists(els, locator);
-    return this.page.evaluateHandle((el, attr) => el.getAttribute(attr), els[0], attr)
+    return this._evaluateHandeInContext((el, attr) => el.getAttribute(attr), els[0], attr)
       .then(t => t.jsonValue());
   }
 
@@ -1041,16 +1184,16 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
   async waitForElement(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     locator = new Locator(locator, 'css');
-    if (this.withinLocator) this.debug('waitForElement ignores `within` block');
 
     let waiter;
+    const context = await this._getContext();
     if (locator.isCSS()) {
-      waiter = this.page.waitForSelector(locator.simplify(), { timeout: waitTimeout });
+      waiter = context.waitForSelector(locator.simplify(), { timeout: waitTimeout });
     } else {
-      waiter = this.page.waitForFunction($XPath, { timeout: waitTimeout }, null, locator.value);
+      waiter = context.waitForFunction($XPath, { timeout: waitTimeout }, null, locator.value);
     }
     return waiter.catch((err) => {
-      throw new Error(`element (${locator.toString()}) still not present on page after ${sec} sec\n${err.message}`);
+      throw new Error(`element (${locator.toString()}) still not present on page after ${waitTimeout / 1000} sec\n${err.message}`);
     });
   }
 
@@ -1069,19 +1212,19 @@ I.waitForVisible('#popup');
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     locator = new Locator(locator, 'css');
     const matcher = await this.context;
-    if (this.withinLocator) this.debug('waitForVisible ignores `within` block');
     let waiter;
+    const context = await this._getContext();
     if (locator.isCSS()) {
-      waiter = this.page.waitForSelector(locator.simplify(), { timeout: waitTimeout, visible: true });
+      waiter = context.waitForSelector(locator.simplify(), { timeout: waitTimeout, visible: true });
     } else {
       const visibleFn = function (locator, $XPath) {
         eval($XPath); // eslint-disable-line no-eval
         return $XPath(null, locator).filter(el => el.offsetParent !== null).length > 0;
       };
-      waiter = this.page.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
     }
     return waiter.catch((err) => {
-      throw new Error(`element (${locator.toString()}) still not visible on page after ${sec} sec\n${err.message}`);
+      throw new Error(`element (${locator.toString()}) still not visible on page after ${waitTimeout / 1000} sec\n${err.message}`);
     });
   }
 
@@ -1100,22 +1243,28 @@ I.waitToHide('#popup');
   async waitToHide(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     locator = new Locator(locator, 'css');
-    if (this.withinLocator) this.debug('waitToHide ignores `within` block');
     let waiter;
+    const context = await this._getContext();
     if (locator.isCSS()) {
-      waiter = this.page.waitForSelector(locator.simplify(), { timeout: waitTimeout, hidden: true });
+      waiter = context.waitForSelector(locator.simplify(), { timeout: waitTimeout, hidden: true });
     } else {
       const visibleFn = function (locator, $XPath) {
         eval($XPath); // eslint-disable-line no-eval
         return $XPath(null, locator).filter(el => el.offsetParent !== null).length === 0;
       };
-      waiter = this.page.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
     }
     return waiter.catch((err) => {
-      throw new Error(`element (${locator.toString()}) still not hidden after ${sec} sec\n${err.message}`);
+      throw new Error(`element (${locator.toString()}) still not hidden after ${waitTimeout / 1000} sec\n${err.message}`);
     });
   }
 
+  async _getContext() {
+    if (this.context && this.context.constructor.name === 'Frame') {
+      return this.context;
+    }
+    return this.page;
+  }
 
   /**
    * Waits for a text to appear (by default waits for 1sec).
@@ -1132,14 +1281,16 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param context element located by CSS|XPath|strict locator
    */
   async waitForText(text, sec = null, context = null) {
-    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
-    if (this.withinLocator) this.debug('waitForVisible ignores `within` block');
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
     let waiter;
+
+    const contextObject = await this._getContext();
 
     if (context) {
       const locator = new Locator(context, 'css');
       if (locator.isCSS()) {
-        waiter = this.page.waitForFunction((locator, text) => {
+        waiter = contextObject.waitForFunction((locator, text) => {
           const el = document.querySelector(locator);
           if (!el) return false;
           return el.innerText.indexOf(text) > -1;
@@ -1147,19 +1298,57 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
       }
 
       if (locator.isXPath()) {
-        waiter = this.page.waitForFunction((locator, text, $XPath) => {
+        waiter = contextObject.waitForFunction((locator, text, $XPath) => {
           const el = $XPath(null, locator);
           if (!el.length) return false;
           return el[0].innerText.indexOf(text) > -1;
         }, { timeout: waitTimeout }, locator.value, text, $XPath);
       }
     } else {
-      waiter = this.page.waitForFunction(text => document.body.innerText.indexOf(text) > -1, { timeout: waitTimeout }, text);
+      waiter = contextObject.waitForFunction(text => document.body.innerText.indexOf(text) > -1, { timeout: waitTimeout }, text);
     }
 
     return waiter.catch((err) => {
-      throw new Error(`Text "${text}" was not found on page after ${sec} sec`);
+      throw new Error(`Text "${text}" was not found on page after ${waitTimeout / 1000} sec\n${err.message}`);
     });
+  }
+
+  /**
+   * Switches frame or in case of null locator reverts to parent.
+   * Appium: support only web testing
+   */
+  async switchTo(locator) {
+    if (!locator) {
+      this.context = await this.page.mainFrame().$('body');
+      return;
+    } else if (Number.isInteger(locator)) {
+      // Select by frame index of current context
+      const childFrames = this.context ? this.context.childFrames() : this.page.frames();
+
+      if (locator >= 0 && locator < childFrames.length) {
+        this.context = childFrames[locator];
+      } else {
+        throw new Error('Element #invalidIframeSelector was not found by text|CSS|XPath');
+      }
+      return;
+    }
+
+    // iframe by selector
+    const els = await this._locate(locator);
+    assertElementExists(els, locator);
+
+    const iframeName = await els[0].getProperty('name').then(el => el.jsonValue());
+    const iframeId = await els[0].getProperty('id').then(el => el.jsonValue());
+
+    const searchName = iframeName || iframeId; // Name takes precedence over id, because of puppeteer's Frame.name() function
+    const currentContext = await this._getContext();
+    const resFrame = await findFrame.call(this, currentContext, searchName, els[0]);
+
+    if (resFrame) {
+      this.context = resFrame;
+    } else {
+      this.context = els[0];
+    }
   }
 
   /**
@@ -1175,8 +1364,10 @@ I.waitUntil(() => window.requests == 0, 5);
 
    */
   async waitUntil(fn, sec = null) {
-    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
-    return this.page.waitForFunction(fn, { timeout: waitTimeout });
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
+    const context = await this._getContext();
+    return context.waitForFunction(fn, { timeout: waitTimeout });
   }
 
   /**
@@ -1195,23 +1386,23 @@ I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
   async waitUntilExists(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     locator = new Locator(locator, 'css');
-    if (this.withinLocator) this.debug('waitUntilExists ignores `within` block');
 
     let waiter;
+    const context = await this._getContext();
     if (locator.isCSS()) {
       const visibleFn = function (locator) {
         return document.querySelector(locator) === null;
       };
-      waiter = this.page.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value);
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value);
     } else {
       const visibleFn = function (locator, $XPath) {
         eval($XPath); // eslint-disable-line no-eval
         return $XPath(null, locator).length === 0;
       };
-      waiter = this.page.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
     }
     return waiter.catch((err) => {
-      throw new Error(`element (${locator.toString()}) still on page after ${sec} sec\n${err.message}`);
+      throw new Error(`element (${locator.toString()}) still on page after ${waitTimeout / 1000} sec\n${err.message}`);
     });
   }
 
@@ -1222,6 +1413,20 @@ I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
 
 module.exports = Puppeteer;
 
+async function findFrame(context, locator, element) {
+  if (!context) {
+    return;
+  }
+  let frames = [];
+  if (typeof context.childFrames === 'function') {
+    frames = context.childFrames();
+  } else {
+    frames = this.page.frames();
+  }
+
+  return frames.find(frame => frame.name() === locator);
+}
+
 async function findElements(matcher, locator) {
   locator = new Locator(locator, 'css');
   if (!locator.isXPath()) return matcher.$$(locator.simplify());
@@ -1230,15 +1435,11 @@ async function findElements(matcher, locator) {
   if (matcher.constructor.name === 'ElementHandle') {
     context = matcher;
   }
-  const arrayHandle = await matcher.executionContext().evaluateHandle($XPath, context, locator.value);
-  const properties = await arrayHandle.getProperties();
-  await arrayHandle.dispose();
-  const result = [];
-  for (const property of properties.values()) {
-    const elementHandle = property.asElement();
-    if (elementHandle) result.push(elementHandle);
+  if (matcher.constructor.name === 'Frame') {
+    context = matcher;
   }
-  return result;
+
+  return matcher.$x(locator.value, matcher);
 }
 
 async function proceedClick(locator, context = null, options = {}) {
@@ -1281,8 +1482,13 @@ async function proceedSee(assertType, text, context) {
   let description;
   let allText;
   if (!context) {
-    // console.log('con', await this.context);
-    const el = await this.context;
+    let el = await this.context;
+
+    if (el && !el.getProperty) {
+      // Fallback to body
+      el = await this.context.$('body');
+    }
+
     allText = [await el.getProperty('innerText').then(p => p.jsonValue())];
     description = 'web application';
   } else {
@@ -1366,6 +1572,12 @@ async function proceedSeeInField(assertType, field, value) {
     return equals(`select option by ${field}`)[assertType](value, text);
   }
   return stringIncludes(`field by ${field}`)[assertType](value, fieldVal);
+}
+
+function isFrameLocator(locator) {
+  locator = new Locator(locator);
+  if (locator.isFrame()) return locator.value;
+  return false;
 }
 
 

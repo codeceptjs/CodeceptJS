@@ -274,13 +274,25 @@
         
             <li><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#_addpopuplistener">_addPopupListener</a></li>
+        
             <li><a href="#_locate">_locate</a></li>
+        
+            <li><a href="#_setpage">_setPage</a></li>
+        
+            <li><a href="#acceptpopup">acceptPopup</a></li>
+        
+            <li><a href="#amacceptingpopups">amAcceptingPopups</a></li>
+        
+            <li><a href="#amcancellingpopups">amCancellingPopups</a></li>
         
             <li><a href="#amonpage">amOnPage</a></li>
         
             <li><a href="#appendfield">appendField</a></li>
         
             <li><a href="#attachfile">attachFile</a></li>
+        
+            <li><a href="#cancelpopup">cancelPopup</a></li>
         
             <li><a href="#checkoption">checkOption</a></li>
         
@@ -324,6 +336,8 @@
         
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabpopuptext">grabPopupText</a></li>
+        
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
         
             <li><a href="#grabtitle">grabTitle</a></li>
@@ -360,6 +374,8 @@
         
             <li><a href="#seeinfield">seeInField</a></li>
         
+            <li><a href="#seeinpopup">seeInPopup</a></li>
+        
             <li><a href="#seeinsource">seeInSource</a></li>
         
             <li><a href="#seeintitle">seeInTitle</a></li>
@@ -367,6 +383,8 @@
             <li><a href="#selectoption">selectOption</a></li>
         
             <li><a href="#setcookie">setCookie</a></li>
+        
+            <li><a href="#switchto">switchTo</a></li>
         
             <li><a href="#switchtonexttab">switchToNextTab</a></li>
         
@@ -417,6 +435,12 @@ This helper works with a browser out of the box with no additional tools require
 <ul>
 <li><code>config</code>  </li>
 </ul>
+<h2 id="_addpopuplistener">_addPopupListener</h2>
+<p>Add the 'dialog' event listener to a page</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>page</code>  </li>
+</ul>
 <h2 id="_locate">_locate</h2>
 <p>Get elements by different locator types, including strict locator
 Should be used in custom helpers:</p>
@@ -427,6 +451,32 @@ Should be used in custom helpers:</p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
+<h2 id="_setpage">_setPage</h2>
+<p>Set current page</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>page</code> <strong>object</strong> page to set</li>
+</ul>
+<h2 id="acceptpopup">acceptPopup</h2>
+<p>Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+Don't confuse popups with modal windows, as created by <a href="http://jster.net/category/windows-modals-popups">various
+libraries</a>.</p>
+<h2 id="amacceptingpopups">amAcceptingPopups</h2>
+<p>Set the automatic popup response to Accept.
+This must be set before a popup is triggered.</p>
+<pre><code class="js">I.amAcceptingPopups();
+I.click('#triggerPopup');
+I.acceptPopup();
+</code></pre>
+
+<h2 id="amcancellingpopups">amCancellingPopups</h2>
+<p>Set the automatic popup response to Cancel/Dismiss.
+This must be set before a popup is triggered.</p>
+<pre><code class="js">I.amCancellingPopups();
+I.click('#triggerPopup');
+I.cancelPopup();
+</code></pre>
+
 <h2 id="amonpage">amOnPage</h2>
 <p>Opens a web page in a browser. Requires relative or absolute url.
 If url starts with <code>/</code>, opens a web page of a site defined in <code>url</code> config parameter.</p>
@@ -463,6 +513,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
 <li><code>pathToFile</code>  local file path relative to codecept.json config file</li>
 </ul>
+<h2 id="cancelpopup">cancelPopup</h2>
+<p>Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.</p>
 <h2 id="checkoption">checkOption</h2>
 <p>Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.</p>
@@ -709,6 +761,11 @@ assert(cookie.value, '123456');
 <ul>
 <li><code>name</code>  Returns cookie in JSON format. If name not passed returns all cookies for this domain.</li>
 </ul>
+<h2 id="grabpopuptext">grabPopupText</h2>
+<p>Grab the text within the popup. If no popup is visible then it will return null</p>
+<pre><code class="js">await I.grabPopupText();
+</code></pre>
+
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -894,6 +951,13 @@ I.seeInField('#searchform input','Search');
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
 <li><code>value</code>  </li>
 </ul>
+<h2 id="seeinpopup">seeInPopup</h2>
+<p>Checks that the active JavaScript popup, as created by <code>window.alert|window.confirm|window.prompt</code>, contains the
+given string.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+</ul>
 <h2 id="seeinsource">seeInSource</h2>
 <p>Checks that the current page contains the given string in its raw source code.</p>
 <pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
@@ -938,6 +1002,13 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>cookie</code>  </li>
+</ul>
+<h2 id="switchto">switchTo</h2>
+<p>Switches frame or in case of null locator reverts to parent.
+Appium: support only web testing</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
 </ul>
 <h2 id="switchtonexttab">switchToNextTab</h2>
 <p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>

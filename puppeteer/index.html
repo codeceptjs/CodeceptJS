@@ -290,11 +290,7 @@
 <h1 id="robust-chrome-testing-with-puppeteer">Robust Chrome Testing with Puppeteer</h1>
 <p>Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome <a href="https://chromedevtools.github.io/devtools-protocol/">DevTools Protocol</a>. And the most prominent one is <a href="https://github.com/GoogleChrome/puppeteer">Puppeteer</a>.
 It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.</p>
-<p>CodeceptJS uses Puppeteer to improve end to end testing experience.</p>
-<ol>
-<li>No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.</li>
-<li>CodeceptJS can locate elements by XPath.</li>
-</ol>
+<p>CodeceptJS uses Puppeteer to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.</p>
 <p>Take a look at a sample test:</p>
 <pre><code class="js">I.amOnPage('https://github.com');
 I.click('Sign in', '//html/body/div[1]/header');
@@ -305,7 +301,7 @@ I.click('Sign in');
 I.see('Incorrect username or password.', '.flash-error');
 </code></pre>
 
-<p>It's readable and simple, contains XPath and works using Puppeteer API!</p>
+<p>It's readable and simple and works using Puppeteer API!</p>
 <h2 id="setup">Setup</h2>
 <p>To start you need CodeceptJS with Puppeteer packages installed</p>
 <pre><code class="bash">npm install -g codeceptjs-puppeteer
@@ -336,7 +332,7 @@ If you already have CodeceptJS project, just install <code>puppeteer</code> pack
 <p><em>More options are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
 <h2 id="writing-tests">Writing Tests</h2>
 <p>CodeceptJS test should be created with <code>gt</code> command:</p>
-<pre><code>codeceptjs gt
+<pre><code class="sh">codeceptjs gt
 </code></pre>
 
 <p>As an example we will use <code>ToDoMvc</code> app for testing.</p>
@@ -405,10 +401,13 @@ I.see('0 items left', '.todo-count');
 </code></pre>
 
 <p>CodeceptJS allows you to implement custom actions like <code>I.createTodo</code> or use <strong>PageObjects</strong>. Learn how to improve your tests in <a href="http://codecept.io/pageobjects/">PageObjects</a> guide.</p>
+<p><code>within</code> can also work with <a href="../acceptance/#iframes">iframes</a></p>
+<p>When running steps inside a within block will be shown with a shift:</p>
+<p><img alt="within" src="http://codecept.io/images/within.png" /></p>
 <h2 id="extending">Extending</h2>
 <p>Puppeteer has a very <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md">rich and flexible API</a>. Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.</p>
 <p>Start with creating an <code>MyPuppeteer</code> helper using <code>generate:helper</code> or <code>gh</code> command:</p>
-<pre><code>codeceptjs gh
+<pre><code class="sh">codeceptjs gh
 </code></pre>
 
 <p>Then inside a Helper you can access <code>Puppeteer</code> helper of CodeceptJS.

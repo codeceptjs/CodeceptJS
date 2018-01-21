@@ -287,15 +287,17 @@
 <p>Here is an overview of available options with their defaults:</p>
 <ul>
 <li><strong>tests</strong>: <code>"./*_test.js"</code> - pattern to locate tests</li>
+<li><strong>grep</strong>: - patern to filter tests by name</li>
 <li><strong>include</strong>: <code>{}</code> - actors and page objects to be registered in DI container and included in tests. Accepts objects and module <code>require</code> paths</li>
 <li><strong>timeout</strong>: <code>10000</code> - default tests timeout</li>
 <li><strong>output</strong>: <code>"./output"</code> - where to store failure screenshots, etc</li>
 <li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
-<li><strong>multiple</strong>: <code>{}</code> - multiple options, see <a href="https://github.com/Codeception/CodeceptJS/pull/439">#PR439</a> for more details</li>
-<li><strong>name</strong>: <code>"tests"</code> - test suite name (not used)</li>
-<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run. See <a href="#hooks">Hooks</a>).</li>
-<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="#hooks">Hooks</a>.</li>
+<li><strong>multiple</strong>: <code>{}</code> - multiple options, see <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a></li>
+<li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>).</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>.</li>
+<li><strong>noGlobals</strong>: <code>false</code> - disable registering global variables like <code>Actor</code>, <code>Helper</code>, <code>pause</code>, <code>within</code>, <code>DataTable</code></li>
+<li><strong>hooks</strong>: - include custom listeners to plug into execution workflow. See <a href="http://codecept.io/hooks/#custom-hooks">Custom Hooks</a></li>
 <li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print s  teps output, as well as used in source code.</li>
 </ul>
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>

@@ -350,6 +350,8 @@
         
             <li><a href="#grabbrowserlogs">grabBrowserLogs</a></li>
         
+            <li><a href="#grabbrowserurl">grabBrowserUrl</a></li>
+        
             <li><a href="#grabcookie">grabCookie</a></li>
         
             <li><a href="#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
@@ -357,6 +359,8 @@
             <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
         
             <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
+        
+            <li><a href="#grabpopuptext">grabPopupText</a></li>
         
             <li><a href="#grabsource">grabSource</a></li>
         
@@ -435,6 +439,8 @@
             <li><a href="#switchtonexttab">switchToNextTab</a></li>
         
             <li><a href="#switchtoprevioustab">switchToPreviousTab</a></li>
+        
+            <li><a href="#uncheckoption">uncheckOption</a></li>
         
             <li><a href="#wait">wait</a></li>
         
@@ -1003,6 +1009,12 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 console.log(JSON.stringify(logs))
 </code></pre>
 
+<h2 id="grabbrowserurl">grabBrowserUrl</h2>
+<p>Get current URL from browser.</p>
+<pre><code class="js">let url = yield I.grabBrowserUrl();
+console.log(`Current URL is [${url}]`);
+</code></pre>
+
 <h2 id="grabcookie">grabCookie</h2>
 <p>Gets a cookie object by name
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -1044,6 +1056,11 @@ Appium: support only web testing</p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
+<h2 id="grabpopuptext">grabPopupText</h2>
+<p>Grab the text within the popup. If no popup is visible then it will return null</p>
+<pre><code class="js">await I.grabPopupText();
+</code></pre>
+
 <h2 id="grabsource">grabSource</h2>
 <p>Checks that the current page contains the given string in its raw source code.</p>
 <pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
@@ -1432,6 +1449,26 @@ I.switchToPreviousTab(2);
 <li><code>num</code>   (optional, default <code>1</code>)</li>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
+<h2 id="uncheckoption">uncheckOption</h2>
+<p>Unselects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.</p>
+<p>The second parameter is a context (CSS or XPath locator) to narrow the search.</p>
+<pre><code class="js">I.uncheckOption('#agree');
+I.uncheckOption('I Agree to Terms and Conditions');
+I.uncheckOption('agree', '//form');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>-   <code>field</code>  checkbox located by label</th>
+<th>name</th>
+<th>CSS</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>
 <pre><code class="js">I.wait(2); // wait 2 secs

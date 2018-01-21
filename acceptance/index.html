@@ -481,7 +481,7 @@ I.click('#click-me');
 });
 </code></pre>
 
-<p>Nested IFrames can be set by passing array <em>(WebDriverIO &amp; Nightmare only)</em>:</p>
+<p>Nested IFrames can be set by passing array <em>(WebDriverIO, Nightmare &amp; Puppeteer only)</em>:</p>
 <pre><code class="js">within({frame: [&quot;.content&quot;, &quot;#editor&quot;]}, () =&gt; {
   I.see('Page');
 });

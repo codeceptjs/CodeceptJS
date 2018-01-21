@@ -762,6 +762,36 @@ I.checkOption('agree', '//form');
   }
 
   /**
+   * Unselects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.uncheckOption('#agree');
+I.uncheckOption('I Agree to Terms and Conditions');
+I.uncheckOption('agree', '//form');
+```
+@param field checkbox located by label | name | CSS | XPath | strict locator
+@param context (optional) element located by CSS | XPath | strict locator
+
+   * Appium: not tested
+   */
+  async uncheckOption(field, context = null) {
+    const clickMethod = this.browser.isMobile ? 'touchClick' : 'elementIdClick';
+    const locateFn = prepareLocateFn.call(this, context);
+
+    const res = await findCheckable.call(this, field, locateFn);
+
+    assertElementExists(res, field, 'Checkable');
+    const elem = res.value[0];
+
+    const isSelected = await this.browser.elementIdSelected(elem.ELEMENT);
+    if (!isSelected.value) return Promise.resolve(true);
+    return this.browser[clickMethod](elem.ELEMENT);
+  }
+
+  /**
    * Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
@@ -1105,6 +1135,19 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
    */
   async grabBrowserLogs() {
     return this.browser.log('browser').then(res => res.value);
+  }
+
+  /**
+   * Get current URL from browser.
+   *
+   * ```js
+   * let url = yield I.grabBrowserUrl();
+   * console.log(`Current URL is [${url}]`);
+   * ```
+   */
+  async grabBrowserUrl() {
+    const res = await this.browser.url();
+    return res.value;
   }
 
   /**
@@ -1566,6 +1609,18 @@ assert(cookie.value, '123456');
   }
 
   /**
+   * Grab the text within the popup. If no popup is visible then it will return null
+   *
+   * ```js
+   * await I.grabPopupText();
+   * ```
+   */
+  async grabPopupText() {
+    return this.browser.alertText()
+      .catch(() => null); // Don't throw an error
+  }
+
+  /**
    * Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
@@ -1950,7 +2005,7 @@ I.waitForInvisible('#popup');
    */
   async waitForInvisible(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
-    return this.browser.waitUntil(async function () {
+    return this.browser.waitUntil(async () => {
       const res = await this.browser.elements(withStrictLocator.call(this, locator));
       if (!res.value || res.value.length === 0) return false;
       const commands = [];

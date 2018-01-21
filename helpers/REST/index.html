@@ -274,9 +274,19 @@
         
             <li><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#_cleanrequestheaders">_cleanRequestHeaders</a></li>
+        
             <li><a href="#_executerequest">_executeRequest</a></li>
         
+            <li><a href="#_url">_url</a></li>
+        
+            <li><a href="#amfollowingrequestredirects">amFollowingRequestRedirects</a></li>
+        
+            <li><a href="#amnotfollowingrequestredirects">amNotFollowingRequestRedirects</a></li>
+        
             <li><a href="#haverequestheaders">haveRequestHeaders</a></li>
+        
+            <li><a href="#resetrequestheaders">resetRequestHeaders</a></li>
         
             <li><a href="#senddeleterequest">sendDeleteRequest</a></li>
         
@@ -287,6 +297,8 @@
             <li><a href="#sendpostrequest">sendPostRequest</a></li>
         
             <li><a href="#sendputrequest">sendPutRequest</a></li>
+        
+            <li><a href="#setrequesttimeout">setRequestTimeout</a></li>
         
     
     </ul>
@@ -299,20 +311,39 @@
 <h2 id="configuration">Configuration</h2>
 <ul>
 <li>endpoint: API base URL</li>
-<li>timeout: timeout for requests in milliseconds. 10000 by default</li>
+<li>timeout: timeout for requests in milliseconds. 10000ms by default</li>
 <li>defaultHeaders: a list of default headers</li>
 <li>resetHeaders: set to true to reset headers  between requests. Disabled by default</li>
+<li>followRedirect: set to true to enable automatic redirect. Disabled by default</li>
 </ul>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>config</code>  </li>
 </ul>
+<h2 id="_cleanrequestheaders">_cleanRequestHeaders</h2>
+<p>Changes headers to default if reset headers option is true</p>
 <h2 id="_executerequest">_executeRequest</h2>
 <p>Executes unirest request</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>request</code> <strong>Any</strong> </li>
 </ul>
+<h2 id="_url">_url</h2>
+<p>Generates url based on format sent (takes endpoint + url if latter lacks 'http')</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>url</code> <strong>Any</strong> </li>
+</ul>
+<h2 id="amfollowingrequestredirects">amFollowingRequestRedirects</h2>
+<p>Set response auto-redirects ON</p>
+<pre><code class="js">I.amFollowingRequestRedirects(); // To enable auto-redirects
+</code></pre>
+
+<h2 id="amnotfollowingrequestredirects">amNotFollowingRequestRedirects</h2>
+<p>Set response auto-redirects OFF</p>
+<pre><code class="js">I.amNotFollowingRequestRedirects(); // To disable auto-redirects
+</code></pre>
+
 <h2 id="haverequestheaders">haveRequestHeaders</h2>
 <p>Set headers for the request</p>
 <pre><code class="js">I.haveRequestHeaders({
@@ -325,6 +356,11 @@
 <ul>
 <li><code>customHeaders</code> <strong>Any</strong> </li>
 </ul>
+<h2 id="resetrequestheaders">resetRequestHeaders</h2>
+<p>Reset headers for the request to default state</p>
+<pre><code class="js">I.resetRequestHeaders();
+</code></pre>
+
 <h2 id="senddeleterequest">sendDeleteRequest</h2>
 <p>Sends DELETE request to API.</p>
 <pre><code class="js">I.sendDeleteRequest('/api/users/1');
@@ -333,8 +369,7 @@
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code> <strong>Any</strong> </li>
-<li><code>payload</code> <strong>Any</strong> </li>
-<li><code>headers</code>   (optional, default <code>{}</code>)</li>
+<li><code>headers</code> <strong>object</strong> </li>
 </ul>
 <h2 id="sendgetrequest">sendGetRequest</h2>
 <p>Send GET request to REST API</p>
@@ -344,8 +379,7 @@
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code> <strong>Any</strong> </li>
-<li><code>object</code>  headers</li>
-<li><code>headers</code>   (optional, default <code>{}</code>)</li>
+<li><code>headers</code> <strong>object</strong> </li>
 </ul>
 <h2 id="sendpatchrequest">sendPatchRequest</h2>
 <p>Sends PATCH request to API.</p>
@@ -354,12 +388,9 @@
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>string</code>  url</li>
-<li><code>object</code>  payload</li>
-<li><code>object</code>  headers</li>
-<li><code>url</code>  </li>
-<li><code>payload</code>   (optional, default <code>{}</code>)</li>
-<li><code>headers</code>   (optional, default <code>{}</code>)</li>
+<li><code>url</code> <strong>string</strong> </li>
+<li><code>payload</code> <strong>object</strong> </li>
+<li><code>headers</code> <strong>object</strong> </li>
 </ul>
 <h2 id="sendpostrequest">sendPostRequest</h2>
 <p>Sends POST request to API.</p>
@@ -370,8 +401,7 @@
 <ul>
 <li><code>url</code> <strong>Any</strong> </li>
 <li><code>payload</code> <strong>Any</strong> </li>
-<li><code>object</code>  headers</li>
-<li><code>headers</code>   (optional, default <code>{}</code>)</li>
+<li><code>headers</code> <strong>object</strong> </li>
 </ul>
 <h2 id="sendputrequest">sendPutRequest</h2>
 <p>Sends PUT request to API.</p>
@@ -380,12 +410,18 @@
 
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>string</code>  url</li>
-<li><code>object</code>  payload</li>
-<li><code>object</code>  headers</li>
-<li><code>url</code>  </li>
-<li><code>payload</code>   (optional, default <code>{}</code>)</li>
-<li><code>headers</code>   (optional, default <code>{}</code>)</li>
+<li><code>url</code> <strong>string</strong> </li>
+<li><code>payload</code> <strong>object</strong> </li>
+<li><code>headers</code> <strong>object</strong> </li>
+</ul>
+<h2 id="setrequesttimeout">setRequestTimeout</h2>
+<p>Set timeout for the request</p>
+<pre><code class="js">I.setRequestTimeout(10000); // In milliseconds
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>newTimeout</code>  </li>
 </ul></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
