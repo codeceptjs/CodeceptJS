@@ -249,16 +249,16 @@ within({frame: "#editor"}, () => {
 });
 ```
 
-Nested IFrames can be set by passing array *(WebDriverIO & Nightmare only)*:
+Nested IFrames can be set by passing array *(WebDriverIO, Nightmare & Puppeteer only)*:
 
 ```js
 within({frame: [".content", "#editor"]}, () => {
   I.see('Page');
 });
 ```
+
 ---
 
 ### done()
 
 CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
-

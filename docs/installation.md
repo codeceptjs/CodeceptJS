@@ -1,6 +1,6 @@
 # Installation
 
-### Local
+## Local
 
 Use NPM install CodeceptJS:
 
@@ -37,7 +37,6 @@ To use it with Puppeteer install puppeteer package:
 ```sh
 npm install puppeteer --save-dev
 ```
-
 
 ## Meta Packages
 

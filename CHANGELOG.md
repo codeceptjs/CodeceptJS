@@ -1,3 +1,19 @@
+## 1.1.2
+
+* [Puppeteer] Upgraded to Puppeteer 1.0
+* Added `grep` option to config to set default matching pattern for tests.
+* [Puppeteer] Added `acceptPopup`, `cancelPopup`, `seeInPopup` and `grabPopupText` functions by @reubenmiller
+* [Puppeteer] `within` iframe and nested iframe support added by @reubenmiller
+* [REST] Added support for JSON objects since payload (as a JSON) was automatically converted into "URL query" type of parameter by @Kalostrinho
+* [REST] Added `resetRequestHeaders` method by @Kalostrinho
+* [REST] Added `followRedirect` option and `amFollowingRequestRedirects`/`amNotFollowingRequestRedirects` methods by @Kalostrinho
+* [WebDriverIO] `uncheckOption` implemented by @brunobg
+* [WebDriverIO] Added `grabBrowserUrl` by @Kalostrinho
+* Add ability to require helpers from node_modules by @APshenkin
+* Added `--profile` option to `run-multiple` command by @jamie-beck
+* Custom output name for multiple browser run by @tfiwm
+* Fixed passing data to scenarios by @KennyRules
+
 ## 1.1.1
 
 * [WebDriverIO] fixed `waitForInvisible` by @Kporal

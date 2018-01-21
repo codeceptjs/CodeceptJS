@@ -25,6 +25,7 @@ module.exports = {
     dontSeeInField: 'naoVejoNoCampo',
     appendField: 'adicionaCampo',
     checkOption: 'marcoOpcao',
+    uncheckOption: 'desmarcoOpcao',
     seeCheckboxIsChecked: 'vejoCheckboxMarcado',
     dontSeeCheckboxIsChecked: 'naoVejoCheckboxMarcado',
     grabTextFrom: 'pegoTextoDe',
