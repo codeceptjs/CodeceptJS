@@ -223,4 +223,14 @@ describe('Puppeteer', function () {
         e.message.should.be.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."');
       }));
   });
+
+  describe('#seeTextEquals', () => {
+    it('should check text is equal to provided one', () => I.amOnPage('/')
+      .then(() => I.seeTextEquals('Welcome to test app!', 'h1'))
+      .then(() => I.seeTextEquals('Welcome to test app', 'h1'))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
+      }));
+  });
 });

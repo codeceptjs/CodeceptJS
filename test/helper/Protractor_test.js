@@ -345,6 +345,16 @@ describe('Protractor', function () {
       }));
   });
 
+  describe('#seeTextEquals', () => {
+    it('should check text is equal to provided one', () => I.amOnPage('/')
+      .then(() => I.seeTextEquals('Create Event', 'h1'))
+      .then(() => I.seeTextEquals('Create Even', 'h1'))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.include("expected element h1 'Create Event' to equal 'Create Even'");
+      }));
+  });
+
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
