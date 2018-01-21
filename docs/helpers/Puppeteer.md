@@ -29,6 +29,14 @@ This helper should be configured in codecept.json
 
 -   `config`  
 
+## _addPopupListener
+
+Add the 'dialog' event listener to a page
+
+**Parameters**
+
+-   `page`  
+
 ## _locate
 
 Get elements by different locator types, including strict locator
@@ -41,6 +49,42 @@ const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
 **Parameters**
 
 -   `locator`  
+
+## _setPage
+
+Set current page
+
+**Parameters**
+
+-   `page` **object** page to set
+
+## acceptPopup
+
+Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+Don't confuse popups with modal windows, as created by [various
+libraries](http://jster.net/category/windows-modals-popups).
+
+## amAcceptingPopups
+
+Set the automatic popup response to Accept.
+This must be set before a popup is triggered.
+
+```js
+I.amAcceptingPopups();
+I.click('#triggerPopup');
+I.acceptPopup();
+```
+
+## amCancellingPopups
+
+Set the automatic popup response to Cancel/Dismiss.
+This must be set before a popup is triggered.
+
+```js
+I.amCancellingPopups();
+I.click('#triggerPopup');
+I.cancelPopup();
+```
 
 ## amOnPage
 
@@ -86,6 +130,10 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
 -   `pathToFile`  local file path relative to codecept.json config file
+
+## cancelPopup
+
+Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
 
 ## checkOption
 
@@ -383,6 +431,14 @@ assert(cookie.value, '123456');
 
 -   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.
 
+## grabPopupText
+
+Grab the text within the popup. If no popup is visible then it will return null
+
+```js
+await I.grabPopupText();
+```
+
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -622,6 +678,15 @@ I.seeInField('#searchform input','Search');
 -   `field`  located by label|name|CSS|XPath|strict locator
 -   `value`  
 
+## seeInPopup
+
+Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
+given string.
+
+**Parameters**
+
+-   `text`  
+
 ## seeInSource
 
 Checks that the current page contains the given string in its raw source code.
@@ -679,6 +744,15 @@ I.setCookie({name: 'auth', value: true});
 **Parameters**
 
 -   `cookie`  
+
+## switchTo
+
+Switches frame or in case of null locator reverts to parent.
+Appium: support only web testing
+
+**Parameters**
+
+-   `locator`  
 
 ## switchToNextTab
 

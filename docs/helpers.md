@@ -4,6 +4,8 @@ Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libr
 Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends.
 Functionality of CodeceptJS should be extended by writing a custom helpers.
 
+Helpers can also be installed as Node packages and required by corresponding Node modules
+
 You can either access core Helpers (and underlying libraries) or create a new from scratch.
 
 ## Development
