@@ -233,4 +233,76 @@ describe('Puppeteer', function () {
         e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
       }));
   });
+
+  describe('#_locateCheckable', () => {
+    it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateCheckable('I Agree'))
+      .then(res => res.length.should.be.equal(1)));
+
+    it('should not locate a non-existing checkbox', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateCheckable('I disagree'))
+      .then(res => res.length.should.be.equal(0)));
+  });
+
+  describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
+    it('should throw error if field is not empty', () => I.amOnPage('/form/empty')
+      .then(() => I.seeInField('#empty_input', 'Ayayay'))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
+      }));
+
+    it('should check values in checkboxes', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.dontSeeInField('checkbox[]', 'not seen one');
+      await I.seeInField('checkbox[]', 'see test one');
+      await I.dontSeeInField('checkbox[]', 'not seen two');
+      await I.seeInField('checkbox[]', 'see test two');
+      await I.dontSeeInField('checkbox[]', 'not seen three');
+      return I.seeInField('checkbox[]', 'see test three');
+    });
+
+    it('should check values with boolean', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.seeInField('checkbox1', true);
+      yield I.dontSeeInField('checkbox1', false);
+      yield I.seeInField('checkbox2', false);
+      yield I.dontSeeInField('checkbox2', true);
+      yield I.seeInField('radio2', true);
+      yield I.dontSeeInField('radio2', false);
+      yield I.seeInField('radio3', false);
+      return I.dontSeeInField('radio3', true);
+    });
+
+    it('should check values in radio', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.seeInField('radio1', 'see test one');
+      yield I.dontSeeInField('radio1', 'not seen one');
+      yield I.dontSeeInField('radio1', 'not seen two');
+      return I.dontSeeInField('radio1', 'not seen three');
+    });
+
+    it('should check values in select', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.seeInField('select1', 'see test one');
+      yield I.dontSeeInField('select1', 'not seen one');
+      yield I.dontSeeInField('select1', 'not seen two');
+      return I.dontSeeInField('select1', 'not seen three');
+    });
+
+    it('should check for empty select field', function* () {
+      yield I.amOnPage('/form/field_values');
+      return I.seeInField('select3', '');
+    });
+
+    it('should check for select multiple field', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.dontSeeInField('select2', 'not seen one');
+      yield I.seeInField('select2', 'see test one');
+      yield I.dontSeeInField('select2', 'not seen two');
+      yield I.seeInField('select2', 'see test two');
+      yield I.dontSeeInField('select2', 'not seen three');
+      return I.seeInField('select2', 'see test three');
+    });
+  });
 });
