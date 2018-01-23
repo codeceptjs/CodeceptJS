@@ -234,6 +234,18 @@ describe('Puppeteer', function () {
       }));
   });
 
+  describe('#_locateClickable', () => {
+    it('should locate a button to click', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateClickable('Submit'))
+      .then((res) => {
+        res.length.should.be.equal(1);
+      }));
+
+    it('should not locate a non-existing checkbox using _locateClickable', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateClickable('I disagree'))
+      .then(res => res.length.should.be.equal(0)));
+  });
+
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
