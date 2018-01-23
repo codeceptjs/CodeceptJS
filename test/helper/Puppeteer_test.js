@@ -244,6 +244,16 @@ describe('Puppeteer', function () {
       .then(res => res.length.should.be.equal(0)));
   });
 
+  describe('#_locateFields', () => {
+    it('should locate a field', () => I.amOnPage('/form/field')
+      .then(() => I._locateFields('Name'))
+      .then(res => res.length.should.be.equal(1)));
+
+    it('should not locate a non-existing field', () => I.amOnPage('/form/field')
+      .then(() => I._locateFields('Mother-in-law'))
+      .then(res => res.length.should.be.equal(0)));
+  });
+
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should throw error if field is not empty', () => I.amOnPage('/form/empty')
       .then(() => I.seeInField('#empty_input', 'Ayayay'))
