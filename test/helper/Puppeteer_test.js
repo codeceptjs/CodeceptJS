@@ -359,4 +359,10 @@ describe('Puppeteer', function () {
       }))
       .then(num => assert.equal(num, 3)));
   });
+
+  describe('#grabCssPropertyFrom', () => {
+    it('should grab css property for given element', () => I.amOnPage('/form/doubleclick')
+      .then(() => I.grabCssPropertyFrom('#block', 'height'))
+      .then(css => assert.equal(css, '100px')));
+  });
 });
