@@ -28,7 +28,6 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
-    "preinstall": "npm cache clean --force",
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/",
@@ -73,6 +72,7 @@
     "webdriverio": "^4.9.11"
   },
   "engines": {
+    "npm": ">=5.6.0",
     "node": ">=8.9.1"
   },
   "es6": true
