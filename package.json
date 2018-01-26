@@ -28,7 +28,7 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
-    "install": "yarn",
+    "preinstall": "yarn --ignore-scripts",
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/",
