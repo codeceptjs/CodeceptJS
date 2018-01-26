@@ -47,17 +47,17 @@
     "requireg": "^0.1.5"
   },
   "devDependencies": {
-    "@types/inquirer": "^0.0.35",
+    "@types/inquirer": "^0.0.36",
     "@types/node": "^8.5.1",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2.1",
     "documentation": "^4.0.0-beta1",
-    "eslint": "^4.13.1",
+    "eslint": "^4.16.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "faker": "^4.1.0",
-    "json-server": "^0.10.1",
+    "json-server": "^0.12.1",
     "nightmare": "^2.5.2",
     "nightmare-upload": "^0.1.1",
     "nyc": "^11.4.1",
@@ -69,7 +69,7 @@
     "sinon-chai": "^2.14.0",
     "typescript": "^2.6.2",
     "unirest": "^0.5.1",
-    "webdriverio": "^4.9.11"
+    "webdriverio": "^4.10.1"
   },
   "engines": {
     "node": ">=8.9.1"
