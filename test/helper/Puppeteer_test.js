@@ -365,4 +365,18 @@ describe('Puppeteer', function () {
       .then(() => I.grabCssPropertyFrom('#block', 'height'))
       .then(css => assert.equal(css, '100px')));
   });
+
+  describe('#grabHTMLFrom', () => {
+    it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('//title'))
+      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
+
+    it('should grab inner html from an element using id query', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('#area1'))
+      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
+
+    it('should grab inner html from multiple elements', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('//a'))
+      .then(html => assert.equal(html.length, 5)));
+  });
 });
