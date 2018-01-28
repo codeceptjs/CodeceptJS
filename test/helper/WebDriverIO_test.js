@@ -449,6 +449,17 @@ describe('WebDriverIO', function () {
       .then(() => wd.click('Window Size'))
       .then(() => wd.see('Height 600', '#height'))
       .then(() => wd.see('Width 950', '#width')));
+
+    it('should resize window to maximum screen dimensions', () => wd.amOnPage('/form/resize')
+      .then(() => wd.resizeWindow(500, 400))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 400', '#height'))
+      .then(() => wd.see('Width 500', '#width'))
+      .then(() => wd.resizeWindow('maximize'))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.dontSee('Height 400', '#height'))
+      .then(() => wd.dontSee('Width 500', '#width'))
+    );
   });
 
   describe('SmartWait', () => {
