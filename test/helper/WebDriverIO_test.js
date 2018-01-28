@@ -458,8 +458,7 @@ describe('WebDriverIO', function () {
       .then(() => wd.resizeWindow('maximize'))
       .then(() => wd.click('Window Size'))
       .then(() => wd.dontSee('Height 400', '#height'))
-      .then(() => wd.dontSee('Width 500', '#width'))
-    );
+      .then(() => wd.dontSee('Width 500', '#width')));
   });
 
   describe('SmartWait', () => {
