@@ -447,4 +447,31 @@ describe('Puppeteer', function () {
       .then(() => I.grabHTMLFrom('//a'))
       .then(html => assert.equal(html.length, 5)));
   });
+
+  describe('#grabBrowserLogs', () => {
+    it('should grab browser logs', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs across pages', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/info'))
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 2);
+      }));
+  });
 });

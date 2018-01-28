@@ -511,4 +511,31 @@ describe('WebDriverIO', function () {
       .then(() => wd._locateFields('Mother-in-law'))
       .then(res => res.length.should.be.equal(0)));
   });
+
+  describe('#grabBrowserLogs', () => {
+    it('should grab browser logs', () => wd.amOnPage('/')
+      .then(() => wd.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => wd.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs across pages', () => wd.amOnPage('/')
+      .then(() => wd.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => wd.openNewTab())
+      .then(() => wd.amOnPage('/info'))
+      .then(() => wd.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => wd.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 2);
+      }));
+  });
 });
