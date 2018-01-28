@@ -24,6 +24,12 @@ Run only tests with "signin" word in name
 codeceptjs run --grep "signin"
 ```
 
+Run all tests without "@IEOnly" word in name
+
+```sh
+codeceptjs run --grep "@IEOnly" --invert
+```
+
 Run single test [path to codecept.js] [test filename]
 
 ```sh
