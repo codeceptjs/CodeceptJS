@@ -12,7 +12,7 @@ const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 
 describe('WebDriverIO', function () {
-  this.retries(3);
+  this.retries(1);
   this.timeout(35000);
 
   before(() => {
