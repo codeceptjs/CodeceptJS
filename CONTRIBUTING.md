@@ -163,3 +163,28 @@ docker-compose build --build-arg NODE_VERSION=9.4.0 test-helpers
 
 And now every command based on `test-helpers` service will use node 9.4.0. The
 same argument can be passed when building unit and acceptance tests services.
+
+## CI flow
+We're currently using bunch of CI services to build and test codecept in
+different environments. Here's short summary of what are differences between
+separate services
+
+### TravisCI
+Travis CI uses runs tests against Node 8 and Node 9. In total it uses 8 jobs to
+build each helper against both Node versions. For every job it runs unit tests
+first, then  `ApiDataFactory` and `REST` tests present in `test/rest` directory.
+Finally if those pass we run specific helper tests found in `test/helper`
+directory. It doesn't run acceptance tests.
+Config is present in `.travis.yml` file.
+
+### CircleCI
+Here we use CodeceptJS docker image to build and execute tests inside it. We
+start with building Docker container based on Dockerfile present in main project
+directory. Then we run (in this order) unit tests, all helpers present in
+`test/helpers`, then we go with `test/rest` directory and finally if everything
+passed so far it executes acceptance tests. For easier maintenance and local
+debugging CircleCI uses `docker-compose.yml` file from `test` directory.
+You can find Circle config in `.circleci` directory.
+
+### Semaphore
+Currently Semaphore runs only Appium helper tests.
