@@ -10,11 +10,6 @@ defaults: &defaults
     - run: .circleci/test.sh
 
 jobs:
-  node 6.9.5:
-    <<: *defaults
-    environment:
-      - NODE_VERSION: 6.9.5
-
   node 8.9.1:
     <<: *defaults
     environment:
@@ -30,6 +25,5 @@ workflows:
 
   test_all:
     jobs:
-      - node 6.9.5
       - node 8.9.1
       - node 9.2.0
