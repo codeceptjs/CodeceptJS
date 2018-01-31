@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -28,6 +28,7 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
+    "preinstall": "yarn --ignore-scripts",
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/",
@@ -72,7 +73,8 @@
     "webdriverio": "^4.9.11"
   },
   "engines": {
-    "node": ">=8.9.1"
+    "node": ">=8.9.1",
+    "npm": ">=5.6.0"
   },
   "es6": true
 }

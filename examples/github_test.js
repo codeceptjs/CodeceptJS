@@ -5,7 +5,7 @@ Before((Smth) => {
   Smth.openGitHub();
 });
 
-Scenario('search', (I) => {
+Scenario('search @grop', (I) => {
   I.amOnPage('https://github.com/search');
   I.fillField('Search GitHub', 'CodeceptJS');
   I.pressKey('Enter');

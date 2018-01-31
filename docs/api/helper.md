@@ -2,7 +2,7 @@
 
 **Parameters**
 
--   `config`
+-   `config`  
 
 ## _after
 
@@ -14,7 +14,7 @@ Hook executed after each step
 
 **Parameters**
 
--   `step`
+-   `step` **Any** 
 
 ## _afterSuite
 
@@ -22,7 +22,7 @@ Hook executed after each suite
 
 **Parameters**
 
--   `suite`
+-   `suite` **Any** 
 
 ## _before
 
@@ -34,7 +34,7 @@ Hook executed before each step
 
 **Parameters**
 
--   `step`
+-   `step` **Any** 
 
 ## _beforeSuite
 
@@ -42,7 +42,7 @@ Hook executed before each suite
 
 **Parameters**
 
--   `suite`
+-   `suite` **Any** 
 
 ## _failed
 
@@ -50,7 +50,7 @@ Hook executed after each failed test
 
 **Parameters**
 
--   `test`
+-   `test` **Any** 
 
 ## _finishTest
 
@@ -58,7 +58,7 @@ Hook executed after all tests are executed
 
 **Parameters**
 
--   `suite`
+-   `suite` **Any** 
 
 ## _init
 
@@ -71,7 +71,7 @@ Executed in the very beginning of a test
 
 **Parameters**
 
--   `test`
+-   `test` **Any** 
 
 ## debug
 
@@ -79,7 +79,7 @@ Print debug message to console (outputs only in debug mode)
 
 **Parameters**
 
--   `msg`
+-   `msg`  
 
 ## helpers
 
