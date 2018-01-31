@@ -595,6 +595,20 @@ module.exports.tests = function () {
       .then(() => I.see('Hello')));
   });
 
+  describe('#waitForInvisible', () => {
+    it('should wait for element to be invisible', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitForInvisible('#step_1', 2))
+      .then(() => I.dontSeeElement('#step_1')));
+
+    it('should wait for element to be invisible by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement('//div[@id="step_1"]'))
+      .then(() => I.waitForInvisible('//div[@id="step_1"]'))
+      .then(() => I.dontSeeElement('//div[@id="step_1"]'))
+      .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+  });
+
   describe('#waitUntilExists', () => {
     it('should wait for an element to be removed from DOM', () => I.amOnPage('/spinner')
       .then(() => I.waitUntilExists('.loader'))

@@ -12,7 +12,7 @@ const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 
 describe('WebDriverIO', function () {
-  this.retries(3);
+  this.retries(0);
   this.timeout(35000);
 
   before(() => {
@@ -140,10 +140,14 @@ describe('WebDriverIO', function () {
     });
   });
 
-  describe('#seeInSource', () => {
+  describe('#seeInSource, #grabSource', () => {
     it('should check for text to be in HTML source', () => wd.amOnPage('/')
       .then(() => wd.seeInSource('<title>TestEd Beta 2.0</title>'))
       .then(() => wd.dontSeeInSource('<meta')));
+
+    it('should grab the source', () => wd.amOnPage('/')
+      .then(() => wd.grabSource())
+      .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
   describe('#seeAttributesOnElements', () => {
@@ -192,9 +196,12 @@ describe('WebDriverIO', function () {
     it('should check text is equal to provided one', () => wd.amOnPage('/')
       .then(() => wd.seeTextEquals('Welcome to test app!', 'h1'))
       .then(() => wd.seeTextEquals('Welcome to test app', 'h1'))
+      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
       .catch((e) => {
-        e.should.be.instanceOf(AssertionFailedError);
-        e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
+        // e.should.be.instanceOf(AssertionFailedError);
+        // e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
       }));
   });
 
@@ -304,7 +311,7 @@ describe('WebDriverIO', function () {
       }));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
     it('should switch to next tab', () => wd.amOnPage('/info')
       .then(() => wd.click('New tab'))
       .then(() => wd.switchToNextTab())
@@ -321,6 +328,17 @@ describe('WebDriverIO', function () {
       .then(() => wd.waitInUrl('/login'))
       .then(() => wd.closeCurrentTab())
       .then(() => wd.waitInUrl('/info')));
+
+    it('should close other tabs', () => wd.amOnPage('/')
+      .then(() => wd.openNewTab())
+      .then(() => wd.seeInCurrentUrl('about:blank'))
+      .then(() => wd.amOnPage('/info'))
+      .then(() => wd.click('New tab'))
+      .then(() => wd.switchToNextTab())
+      .then(() => wd.seeInCurrentUrl('/login'))
+      .then(() => wd.closeOtherTabs())
+      .then(() => wd.seeInCurrentUrl('/login')));
+
     it('should open new tab', () => wd.amOnPage('/info')
       .then(() => wd.openNewTab())
       .then(() => wd.waitInUrl('about:blank')));
@@ -434,6 +452,16 @@ describe('WebDriverIO', function () {
       .then(() => wd.click('Window Size'))
       .then(() => wd.see('Height 600', '#height'))
       .then(() => wd.see('Width 950', '#width')));
+
+    it('should resize window to maximum screen dimensions', () => wd.amOnPage('/form/resize')
+      .then(() => wd.resizeWindow(500, 400))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 400', '#height'))
+      .then(() => wd.see('Width 500', '#width'))
+      .then(() => wd.resizeWindow('maximize'))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.dontSee('Height 400', '#height'))
+      .then(() => wd.dontSee('Width 500', '#width')));
   });
 
   describe('SmartWait', () => {
@@ -495,5 +523,32 @@ describe('WebDriverIO', function () {
     it('should not locate a non-existing field', () => wd.amOnPage('/form/field')
       .then(() => wd._locateFields('Mother-in-law'))
       .then(res => res.length.should.be.equal(0)));
+  });
+
+  describe('#grabBrowserLogs', () => {
+    it('should grab browser logs', () => wd.amOnPage('/')
+      .then(() => wd.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => wd.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs across pages', () => wd.amOnPage('/')
+      .then(() => wd.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => wd.openNewTab())
+      .then(() => wd.amOnPage('/info'))
+      .then(() => wd.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => wd.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 2);
+      }));
   });
 });
