@@ -311,6 +311,16 @@ describe('WebDriverIO', function () {
       }));
   });
 
+  describe('#moveCursorTo', () => {
+    it('should trigger hover event', () => wd.amOnPage('/form/hover')
+      .then(() => wd.moveCursorTo('#hover'))
+      .then(() => wd.see('Hovered', '#show')));
+
+    it('should not trigger hover event because of the offset is beyond the element', () => wd.amOnPage('/form/hover')
+      .then(() => wd.moveCursorTo('#hover', 100, 100))
+      .then(() => wd.dontSee('Hovered', '#show')));
+  });
+
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
     it('should switch to next tab', () => wd.amOnPage('/info')
       .then(() => wd.click('New tab'))
