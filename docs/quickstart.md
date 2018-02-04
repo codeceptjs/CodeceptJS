@@ -3,24 +3,28 @@
 **NodeJS v 8.9** and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
 
-Install **CodeceptJS** with WebDriverIO using `codeceptjs-webdriverio` meta package from NPM.
-
-You can install it globally:
+### Install Globally:
 
 ```sh
-[sudo] npm install -g codeceptjs-webdriverio
+[sudo] npm install -g codeceptjs
+```
+Execute codeceptjs as:
+
+```
+codeceptjs
 ```
 
-or locally
+### Install Locally
 
 ```sh
-npm install codeceptjs-webdriverio --save-dev
+npm install codeceptjs --save-dev
 ```
 
-* To test with Puppeteer install `codeceptjs-puppeteer` package
-* To test with Protractor install `codeceptjs-protractor` package
-* To test with Nightmare install `codeceptjs-nightmare` package
-* For additional options see [Installation guide](http://codecept.io/installation/).
+Execute codeceptjs as:
+
+```
+./node_modules/.bin/codeceptjs
+```
 
 ## Setup
 
@@ -36,6 +40,7 @@ You will be asked for tests location (they will be searched in current dir by de
 
 On next step you are asked to select **Helpers**. Helpers include actions which can be used in tests.
 We recommend to start with **WebDriverIO** helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.
+
 If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
 No matter what helper you've chosen they will be similar in use.
 
@@ -44,6 +49,7 @@ No matter what helper you've chosen they will be similar in use.
 ❯◉ WebDriverIO
  ◯ Protractor
  ◯ Puppeteer
+ ◯ Appium
  ◯ Nightmare
  ◯ FileSystem
 ```
@@ -69,6 +75,24 @@ WebDriverIO helper will ask for additional configuration as well:
 ```
 
 If you agree with defaults, finish the installation.
+
+## Installing Backends
+
+To run CodeceptJS you will need to install a corresponding backend for the helepr you've choosen. `WebDriverIO` helper requires `webdriverio` package to be installed. The init command will notify you what libraries are missing so you could install it:
+
+* Global installation
+
+```
+Please install dependent packages globally: npm -g install  webdriverio@^4.0.0
+```
+
+* Local installation
+
+```
+Please install dependent packages locally: npm install --save-dev webdriverio@^4.0.0
+```
+
+Please follow this steps and install required package.
 
 ## Creating First Test
 
