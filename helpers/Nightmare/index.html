@@ -322,6 +322,8 @@
         
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabhar">grabHAR</a></li>
+        
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
         
             <li><a href="#grabtitle">grabTitle</a></li>
@@ -373,6 +375,8 @@
             <li><a href="#wait">wait</a></li>
         
             <li><a href="#waitforelement">waitForElement</a></li>
+        
+            <li><a href="#waitforinvisible">waitForInvisible</a></li>
         
             <li><a href="#waitfortext">waitForText</a></li>
         
@@ -715,6 +719,12 @@ assert(cookie.value, '123456');
 <li><code>name</code>  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:<code>js
     I.grabCookie({ secure: true});</code>If you'd like get all cookies for all urls, use: <code>.grabCookie({ url: null }).</code></li>
 </ul>
+<h2 id="grabhar">grabHAR</h2>
+<p>Get HAR</p>
+<pre><code class="js">let har = yield I.grabHAR();
+fs.writeFileSync('sample.har', JSON.stringify({log: har}));
+</code></pre>
+
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -976,6 +986,16 @@ Element can be located by CSS or XPath.</p>
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 </code></pre>
 
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitforinvisible">waitForInvisible</h2>
+<p>Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForVisible('#popup');
+</code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>

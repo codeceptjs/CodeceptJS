@@ -272,7 +272,13 @@
     
         <li class="main active"><a href="#quickstart">QuickStart</a></li>
         
+            <li><a href="#install-globally">Install Globally:</a></li>
+        
+            <li><a href="#install-locally">Install Locally</a></li>
+        
             <li><a href="#setup">Setup</a></li>
+        
+            <li><a href="#installing-backends">Installing Backends</a></li>
         
             <li><a href="#creating-first-test">Creating First Test</a></li>
         
@@ -290,21 +296,22 @@
 <h1 id="quickstart">QuickStart</h1>
 <p><strong>NodeJS v 8.9</strong> and higher required to start.
 CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.</p>
-<p>Install <strong>CodeceptJS</strong> with WebDriverIO using <code>codeceptjs-webdriverio</code> meta package from NPM.</p>
-<p>You can install it globally:</p>
-<pre><code class="sh">[sudo] npm install -g codeceptjs-webdriverio
+<h3 id="install-globally">Install Globally:</h3>
+<pre><code class="sh">[sudo] npm install -g codeceptjs
 </code></pre>
 
-<p>or locally</p>
-<pre><code class="sh">npm install codeceptjs-webdriverio --save-dev
+<p>Execute codeceptjs as:</p>
+<pre><code>codeceptjs
 </code></pre>
 
-<ul>
-<li>To test with Puppeteer install <code>codeceptjs-puppeteer</code> package</li>
-<li>To test with Protractor install <code>codeceptjs-protractor</code> package</li>
-<li>To test with Nightmare install <code>codeceptjs-nightmare</code> package</li>
-<li>For additional options see <a href="http://codecept.io/installation/">Installation guide</a>.</li>
-</ul>
+<h3 id="install-locally">Install Locally</h3>
+<pre><code class="sh">npm install codeceptjs --save-dev
+</code></pre>
+
+<p>Execute codeceptjs as:</p>
+<pre><code>./node_modules/.bin/codeceptjs
+</code></pre>
+
 <h2 id="setup">Setup</h2>
 <p>Initialize CodeceptJS running:</p>
 <pre><code class="sh">codeceptjs init
@@ -313,13 +320,14 @@ CodeceptJS is multi-backend testing framework. In this guide we will use webdriv
 <p>It will create <code>codecept.json</code> config in current directory (or provide path in the first argument).</p>
 <p>You will be asked for tests location (they will be searched in current dir by default).</p>
 <p>On next step you are asked to select <strong>Helpers</strong>. Helpers include actions which can be used in tests.
-We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.
-If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
+We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.</p>
+<p>If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
 No matter what helper you've chosen they will be similar in use.</p>
 <pre><code class="sh">? What helpers do you want to use?
 ❯◉ WebDriverIO
  ◯ Protractor
  ◯ Puppeteer
+ ◯ Appium
  ◯ Nightmare
  ◯ FileSystem
 </code></pre>
@@ -339,6 +347,21 @@ No matter what helper you've chosen they will be similar in use.</p>
 </code></pre>
 
 <p>If you agree with defaults, finish the installation.</p>
+<h2 id="installing-backends">Installing Backends</h2>
+<p>To run CodeceptJS you will need to install a corresponding backend for the helepr you've choosen. <code>WebDriverIO</code> helper requires <code>webdriverio</code> package to be installed. The init command will notify you what libraries are missing so you could install it:</p>
+<ul>
+<li>Global installation</li>
+</ul>
+<pre><code>Please install dependent packages globally: npm -g install  webdriverio@^4.0.0
+</code></pre>
+
+<ul>
+<li>Local installation</li>
+</ul>
+<pre><code>Please install dependent packages locally: npm install --save-dev webdriverio@^4.0.0
+</code></pre>
+
+<p>Please follow this steps and install required package.</p>
 <h2 id="creating-first-test">Creating First Test</h2>
 <p>Tests can be easily created by running</p>
 <pre><code class="bash">codeceptjs gt

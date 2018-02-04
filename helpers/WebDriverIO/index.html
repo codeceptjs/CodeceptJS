@@ -471,7 +471,16 @@
             <li><a href="#waiturlequals">waitUrlEquals</a></li>
         
     
+        <li class="main "><a href="#filterasync">filterAsync</a></li>
+        
+    
+        <li class="main "><a href="#foreachasync">forEachAsync</a></li>
+        
+    
         <li class="main "><a href="#locator">locator</a></li>
+        
+    
+        <li class="main "><a href="#unify">unify</a></li>
         
     
     </ul>
@@ -815,7 +824,7 @@ I.click({css: 'nav a.login'});
 </code></pre>
 
 <h2 id="closeothertabs">closeOtherTabs</h2>
-<p>Close all tabs expect for one.
+<p>Close all tabs except for the current one.
 Appium: support web test</p>
 <pre><code class="js">I.closeOtherTabs();
 </code></pre>
@@ -1625,8 +1634,38 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 <li><code>urlPart</code>  </li>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
+<h1 id="filterasync">filterAsync</h1>
+<p>Mimic Array.filter() API, but with an async callback function.
+Execute each callback on each array item serially. Useful when using WebDriverIO API.</p>
+<p>Added due because of problem with chrome driver when too many requests
+are made simultaneously. <a href="https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9">https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9</a></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>array</code> <strong>Array&lt;object&gt;</strong> Input array items to iterate over</li>
+<li><code>callback</code> <strong>function</strong> Async function to excute on each array item</li>
+<li><code>option</code> <strong>object</strong> Additional options. 'extractValue' will extract the .value object from a WebdriverIO</li>
+</ul>
+<h1 id="foreachasync">forEachAsync</h1>
+<p>Mimic Array.forEach() API, but with an async callback function.
+Execute each callback on each array item serially. Useful when using WebDriverIO API.</p>
+<p>Added due because of problem with chrome driver when too many requests
+are made simultaneously. <a href="https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9">https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9</a></p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>array</code> <strong>Array&lt;object&gt;</strong> Input array items to iterate over</li>
+<li><code>callback</code> <strong>function</strong> Async function to excute on each array item</li>
+<li><code>option</code> <strong>object</strong> Additional options. 'extractValue' will extract the .value object from a WebdriverIO</li>
+</ul>
 <h1 id="locator">locator</h1>
-<p>just press button if no selector is given</p></div>
+<p>just press button if no selector is given</p>
+<h1 id="unify">unify</h1>
+<p>Internal helper method to handle command results (similar behaviour as the unify function from WebDriverIO
+except it does not resolve promises)</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>items</code> <strong>Array&lt;object&gt;</strong> list of items</li>
+<li><code>option</code> <strong>[object]</strong> extractValue: set to try to return the .value property of the input items</li>
+</ul></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>

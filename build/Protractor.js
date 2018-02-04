@@ -210,7 +210,10 @@ class Protractor extends Helper {
     if (!this.options.keepCookies) {
       await this.browser.manage().deleteAllCookies();
     }
-    await this.browser.executeScript('localStorage.clear();');
+    const url = await this.browser.getCurrentUrl();
+    if (!/data:,/i.test(url)) {
+      await this.browser.executeScript('localStorage.clear();');
+    }
     return this.closeOtherTabs();
   }
 
@@ -269,7 +272,7 @@ class Protractor extends Helper {
    */
   async amOutsideAngularApp() {
     if (!this.browser) return;
-    this.browser.ignoreSynchronization = true;
+    this.browser.waitForAngularEnabled(false);
     return Promise.resolve(this.insideAngular = false);
   }
 
@@ -278,7 +281,7 @@ class Protractor extends Helper {
    * Should be used after "amOutsideAngularApp"
    */
   async amInsideAngularApp() {
-    this.browser.ignoreSynchronization = false;
+    this.browser.waitForAngularEnabled(true);
     return Promise.resolve(this.insideAngular = true);
   }
 
@@ -425,6 +428,17 @@ I.see('Register', {css: 'form.register'}); // use strict locator
    */
   async see(text, context = null) {
     return proceedSee.call(this, 'assert', text, context);
+  }
+
+  /**
+   * Checks that text is equal to provided one.
+   *
+   * ```js
+   * I.seeTextEquals('text', 'h1');
+   * ```
+   */
+  async seeTextEquals(text, context = null) {
+    return proceedSee.call(this, 'assert', text, context, true);
   }
 
   /**
@@ -734,6 +748,18 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
   }
 
   /**
+   * Checks that title is equal to provided one.
+   *
+   * ```js
+   * I.seeTitleEquals('Test title.');
+   * ```
+   */
+  async seeTitleEquals(text) {
+    const title = await this.browser.getTitle();
+    return equals('web page title').assert(title, text);
+  }
+
+  /**
    * Checks that title does not contain text.
 
 @param text
@@ -818,12 +844,37 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
+   * Checks that the current page contains the given string in its raw source code.
+
+```js
+I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+@param text
+   */
+  async grabSource() {
+    return this.browser.getPageSource();
+  }
+
+  /**
    * Checks that the current page contains the given string in its raw source code
 
 @param text
    */
   async dontSeeInSource(text) {
     return this.browser.getPageSource().then(source => stringIncludes('HTML source of a page').negate(text, source));
+  }
+
+  /**
+   * asserts that an element appears a given number of times in the DOM
+   * Element is located by label or name or CSS or XPath.
+   *
+   * ```js
+   * I.seeNumberOfElements('#submitBtn', 1);
+   * ```
+   */
+  async seeNumberOfElements(selector, num) {
+    const elements = await this._locate(selector);
+    return equals(`expected number of elements (${selector}) is ${num}, but found ${elements.length}`).assert(elements.length, num);
   }
 
   /**
@@ -1043,7 +1094,7 @@ First parameter can be set to `maximize`
   }
 
   /**
-   * Close all tabs expect for one.
+   * Close all tabs except for the current one.
    *
    * ```js
    * I.closeOtherTabs();
@@ -1053,17 +1104,99 @@ First parameter can be set to `maximize`
     const client = this.browser;
 
     const handles = await client.getAllWindowHandles();
-    if (!handles || !handles.length) return;
-    const mainHandle = handles[0];
+    const currentHandle = await client.getWindowHandle();
+    const otherHandles = handles.filter(handle => handle !== currentHandle);
+
+    if (!otherHandles || !otherHandles.length) return;
     let p = Promise.resolve();
-    handles.shift();
-    handles.forEach((handle) => {
+    otherHandles.forEach((handle) => {
       p = p.then(() => client.switchTo().window(handle).then(() => client.close()));
     });
-    p = p.then(() => client.switchTo().window(mainHandle));
+    p = p.then(() => client.switchTo().window(currentHandle));
     return p;
   }
 
+  /**
+   * Close current tab
+   *
+   * ```js
+   * I.closeCurrentTab();
+   * ```
+   */
+  async closeCurrentTab() {
+    const client = this.browser;
+
+    const currentHandle = await client.getWindowHandle();
+    const nextHandle = await this._getWindowHandle(-1);
+
+    await client.switchTo().window(currentHandle);
+    await client.close();
+    return client.switchTo().window(nextHandle);
+  }
+
+  /**
+   * Get the window handle relative to the current handle. i.e. the next handle or the previous.
+   * @param {Number} offset Offset from current handle index. i.e. offset < 0 will go to the previous handle and positive number will go to the next window handle in sequence.
+   */
+  async _getWindowHandle(offset = 0) {
+    const client = this.browser;
+    const handles = await client.getAllWindowHandles();
+    const index = handles.indexOf(await client.getWindowHandle());
+    const nextIndex = index + offset;
+
+    return handles[nextIndex];
+    // return handles[(index + offset) % handles.length];
+  }
+
+  /**
+   * Open new tab and switch to it
+   *
+   * ```js
+   * I.openNewTab();
+   * ```
+   */
+  async openNewTab() {
+    const client = this.browser;
+    await this.executeScript('window.open("about:blank")');
+    const handles = await client.getAllWindowHandles();
+    await client.switchTo().window(handles[handles.length - 1]);
+  }
+
+  /**
+   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+   *
+   * ```js
+   * I.switchToNextTab();
+   * I.switchToNextTab(2);
+   * ```
+   */
+  async switchToNextTab(num = 1) {
+    const client = this.browser;
+    const newHandle = await this._getWindowHandle(num);
+
+    if (!newHandle) {
+      throw new Error(`There is no ability to switch to next tab with offset ${num}`);
+    }
+    return client.switchTo().window(newHandle);
+  }
+
+  /**
+   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+   *
+   * ```js
+   * I.switchToPreviousTab();
+   * I.switchToPreviousTab(2);
+   * ```
+   */
+  async switchToPreviousTab(num = 1) {
+    const client = this.browser;
+    const newHandle = await this._getWindowHandle(-1 * num);
+
+    if (!newHandle) {
+      throw new Error(`There is no ability to switch to previous tab with offset ${num}`);
+    }
+    return client.switchTo().window(newHandle);
+  }
 
   /**
    * Pauses execution for a number of seconds.

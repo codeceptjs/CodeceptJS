@@ -274,8 +274,6 @@
         
             <li><a href="#local">Local</a></li>
         
-            <li><a href="#meta-packages">Meta Packages</a></li>
-        
             <li><a href="#webdriver">WebDriver</a></li>
         
             <li><a href="#global">Global</a></li>
@@ -311,25 +309,6 @@
 <pre><code class="sh">npm install puppeteer --save-dev
 </code></pre>
 
-<h2 id="meta-packages">Meta Packages</h2>
-<p>By default it doesn't install any backends like Webdriverio, Protractor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:</p>
-<ul>
-<li><a href="https://www.npmjs.com/package/codeceptjs-webdriverio">codeceptjs-webdriverio</a> - installs CodeceptJS + WebDriverIO</li>
-<li><a href="https://www.npmjs.com/package/codeceptjs-protractor">codeceptjs-protractor</a> - installs CodeceptJS + Protractor</li>
-<li><a href="https://www.npmjs.com/package/codeceptjs-puppeteer">codeceptjs-puppeteer</a> - installs CodeceptJS + Puppeteer</li>
-<li><a href="https://www.npmjs.com/package/codeceptjs-nightmare">codeceptjs-nightmare</a> - installs CodeceptJS + Nightmare</li>
-</ul>
-<p>Install them using NPM:</p>
-<pre><code class="sh">[sudo] npm install codeceptjs-webdriverio
-# or
-[sudo] npm install codeceptjs-protractor
-# or
-[sudo] npm install codeceptjs-puppeteer
-# or
-[sudo] npm install codeceptjs-nightmare
-</code></pre>
-
-<p>They can be installed either globally or locally</p>
 <h2 id="webdriver">WebDriver</h2>
 <p>WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> or <a href="http://codecept.io/helpers/WebDriverIO/#phantomjs-installation">PhantomJS</a> installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.</p>
 <p>We recommend to install them manually or use NPM packages:</p>
@@ -343,14 +322,14 @@
 </code></pre>
 
 <h2 id="global">Global</h2>
-<p>CodeceptJS can be installed via NPM globally, in this case it is recommended to use meta-packages for installation:</p>
-<pre><code class="sh">[sudo] npm install -g codeceptjs-webdriverio
+<p>CodeceptJS can be installed via NPM globally:</p>
+<pre><code class="sh">[sudo] npm install -g codeceptjs webdriverio
 # or
-[sudo] npm install -g codeceptjs-protractor
+[sudo] npm install -g codeceptjs protractor
 # or
-[sudo] npm install -g codeceptjs-puppeteer
+[sudo] npm install -g codeceptjs puppeteer
 # or
-[sudo] npm install -g codeceptjs-nightmare
+[sudo] npm install -g codeceptjs nightmare
 </code></pre>
 
 <p>then it can be started as</p>

@@ -7,15 +7,22 @@ const { equals } = require('../assert/equal');
 const { empty } = require('../assert/empty');
 const { truth } = require('../assert/truth');
 const {
-  xpathLocator, fileExists, clearString, decodeUrl, chunkArray,
+  xpathLocator,
+  fileExists,
+  clearString,
+  decodeUrl,
+  chunkArray,
+  convertCssPropertiesToCamelCase,
 } = require('../utils');
 const path = require('path');
 const ElementNotFound = require('./errors/ElementNotFound');
 const Popup = require('./extras/Popup');
+const Console = require('./extras/Console');
 
 const puppeteer = requireg('puppeteer');
 
 const popupStore = new Popup();
+const consoleLogStore = new Console();
 
 /**
  * Uses [Google Chrome's Puppeteer](https://github.com/GoogleChrome/puppeteer) library to run tests inside headless Chrome.
@@ -214,7 +221,10 @@ class Puppeteer extends Helper {
         if (!page) return;
         this.withinLocator = null;
         page.on('load', frame => this.context = page.$('body'));
-        page.on('console', msg => this.debugSection(msg.type, msg.args.join(' ')));
+        page.on('console', (msg) => {
+          this.debugSection(msg.type, Array.isArray(msg.args) ? msg.args.join(' ') : msg.args);
+          consoleLogStore.add(msg);
+        });
       });
     });
 
@@ -345,15 +355,26 @@ I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 ```
 
-   *
-   * For Puppeteer offsetX and offsetY arguments are ignored
    */
   async moveCursorTo(locator, offsetX = 0, offsetY = 0) {
-    if (offsetX || offsetY) console.log('Currently offset is ignored :(');
     const els = await this._locate(locator);
     assertElementExists(els);
-    await els[0].hover();
+
+    // Use manual mouse.move instead of .hover() so the offset can be added to the coordinates
+    const { x, y } = await els[0]._visibleCenter();
+    await this.page.mouse.move(x + offsetX, y + offsetY);
     return this._waitForAction();
+  }
+
+  /**
+   * Drag an item to a destination element.
+   *
+   * ```js
+   * I.dragAndDrop('#dragHandle', '#container');
+   * ```
+   */
+  async dragAndDrop(source, destination) {
+    return proceedDragAndDrop.call(this, source, destination);
   }
 
   /**
@@ -369,6 +390,57 @@ I.moveCursorTo('#submit', 5,5);
   }
 
   /**
+   * Scroll page to the top
+   *
+   * ```js
+   * I.scrollPageToTop();
+   * ```
+   */
+  scrollPageToTop() {
+    return this.page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
+  }
+
+  /**
+   * Scroll page to the bottom
+   *
+   * ```js
+   * I.scrollPageToBottom();
+   * ```
+   */
+  scrollPageToBottom() {
+    return this.page.evaluate(() => {
+      const body = document.body;
+      const html = document.documentElement;
+      window.scrollTo(0, Math.max(
+        body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight,
+      ));
+    });
+  }
+
+  /**
+   * Scrolls to element matched by locator.
+   * Extra shift can be set with offsetX and offsetY options
+   *
+   * ```js
+   * I.scrollTo('footer');
+   * I.scrollTo('#submit', 5,5);
+   * ```
+   */
+  async scrollTo(locator, offsetX = 0, offsetY = 0) {
+    const els = await this._locate(locator);
+    assertElementExists(els, locator, 'Element');
+    const { x, y } = await els[0]._visibleCenter();
+
+    await this.page.evaluate((x, y) => {
+      window.scrollTo(x, y);
+    }, x + offsetX, y + offsetY);
+    return this._waitForAction();
+  }
+
+  /**
    * Checks that title contains text.
 
 @param text
@@ -376,6 +448,18 @@ I.moveCursorTo('#submit', 5,5);
   async seeInTitle(text) {
     const title = await this.page.title();
     stringIncludes('web page title').assert(text, title);
+  }
+
+  /**
+   * Checks that title is equal to provided one.
+   *
+   * ```js
+   * I.seeTitleEquals('Test title.');
+   * ```
+   */
+  async seeTitleEquals(text) {
+    const title = await this.page.title();
+    return equals('web page title').assert(title, text);
   }
 
   /**
@@ -412,6 +496,39 @@ let title = yield I.grabTitle();
     return findElements(await this.context, locator);
   }
 
+  /**
+   * Find a checkbox by providing human readable text:
+   *
+   * ```js
+   * this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').then // ...
+   * ```
+   */
+  async _locateCheckable(locator) {
+    return findCheckable.call(this, locator, this.context);
+  }
+
+  /**
+   * Find a clickable element by providing human readable text:
+   *
+   * ```js
+   * this.helpers['Puppeteer']._locateClickable('Next page').then // ...
+   * ```
+   */
+  async _locateClickable(locator) {
+    const context = await this._getContext();
+    return findClickable.call(this, context, locator);
+  }
+
+  /**
+   * Find field elements by providing human readable text:
+   *
+   * ```js
+   * this.helpers['Puppeteer']._locateFields('Your email').then // ...
+   * ```
+   */
+  async _locateFields(locator) {
+    return findFields.call(this, locator);
+  }
 
   /**
    * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
@@ -425,7 +542,13 @@ let title = yield I.grabTitle();
     const pages = await this.browser.pages();
     const index = pages.indexOf(this.page);
     this.withinLocator = null;
-    this._setPage(pages[(index + num) % pages.length]);
+    const page = pages[index + num];
+
+    if (!page) {
+      throw new Error(`There is no ability to switch to next tab with offset ${num}`);
+    }
+
+    this._setPage(page);
     await this.page.bringToFront();
     return this._waitForAction();
   }
@@ -442,7 +565,13 @@ let title = yield I.grabTitle();
     const pages = await this.browser.pages();
     const index = pages.indexOf(this.page);
     this.withinLocator = null;
-    this._setPage(pages[(index - num) % pages.length]);
+    const page = pages[index - num];
+
+    if (!page) {
+      throw new Error(`There is no ability to switch to previous tab with offset ${num}`);
+    }
+
+    this._setPage(page);
     await this.page.bringToFront();
     return this._waitForAction();
   }
@@ -458,6 +587,24 @@ let title = yield I.grabTitle();
     const oldPage = this.page;
     await this.switchToPreviousTab();
     return oldPage.close();
+  }
+
+  /**
+   * Close all tabs except for the current one.
+   *
+   * ```js
+   * I.closeOtherTabs();
+   * ```
+   */
+  async closeOtherTabs() {
+    const pages = await this.browser.pages();
+    const otherPages = pages.filter(page => page !== this.page);
+
+    let p = Promise.resolve();
+    otherPages.forEach((page) => {
+      p = p.then(() => page.close());
+    });
+    return p;
   }
 
   /**
@@ -569,6 +716,12 @@ I.doubleClick('.btn.edit');
     return proceedClick.call(this, locator, context, { clickCount: 2 });
   }
 
+  /**
+   * Performs right click on an element matched by CSS or XPath.
+   */
+  async rightClick(locator, context = null) {
+    return proceedClick.call(this, locator, context, { button: 'right' });
+  }
 
   /**
    * Selects a checkbox or radio button.
@@ -819,6 +972,20 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
   }
 
   /**
+   * Grab number of visible elements by locator
+   *
+   * ```js
+   * I.grabNumberOfVisibleElements('p');
+   * ```
+   */
+  async grabNumberOfVisibleElements(locator) {
+    let els = await this._locate(locator);
+    assertElementExists(els, locator);
+    els = await Promise.all(els.map(el => el.boundingBox()));
+    return els.filter(v => v).length;
+  }
+
+  /**
    * Checks that current url contains a provided fragment.
 
 ```js
@@ -885,6 +1052,17 @@ I.see('Register', {css: 'form.register'}); // use strict locator
   }
 
   /**
+   * Checks that text is equal to provided one.
+   *
+   * ```js
+   * I.seeTextEquals('text', 'h1');
+   * ```
+   */
+  async seeTextEquals(text, context = null) {
+    return proceedSee.call(this, 'assert', text, context, true);
+  }
+
+  /**
    * Opposite to `see`. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.
 
@@ -896,6 +1074,32 @@ I.dontSee('Login'); // assume we are already logged in
    */
   async dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
+  }
+
+  /**
+   * Checks that the current page contains the given string in its raw source code.
+
+```js
+I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+@param text
+   */
+  async grabSource() {
+    return this.page.content();
+  }
+
+  /**
+   * Get JS log from browser.
+   *
+   * ```js
+   * let logs = yield I.grabBrowserLogs();
+   * console.log(JSON.stringify(logs))
+   * ```
+   */
+  async grabBrowserLogs() {
+    const logs = consoleLogStore.entries;
+    consoleLogStore.clear();
+    return logs;
   }
 
   /**
@@ -919,6 +1123,33 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   async dontSeeInSource(text) {
     const source = await this.page.content();
     stringIncludes('HTML source of a page').negate(text, source);
+  }
+
+
+  /**
+   * asserts that an element appears a given number of times in the DOM
+   * Element is located by label or name or CSS or XPath.
+   *
+   * ```js
+   * I.seeNumberOfElements('#submitBtn', 1);
+   * ```
+   */
+  async seeNumberOfElements(selector, num) {
+    const elements = await this._locate(selector);
+    return equals(`expected number of elements (${selector}) is ${num}, but found ${elements.length}`).assert(elements.length, num);
+  }
+
+  /**
+   * asserts that an element is visible a given number of times
+   * Element is located by CSS or XPath.
+   *
+   * ```js
+   * I.seeNumberOfVisibleElements('.buttons', 3);
+   * ```
+   */
+  async seeNumberOfVisibleElements(locator, num) {
+    const res = await this.grabNumberOfVisibleElements(locator);
+    return equals(`expected number of visible elements (${locator}) is ${num}, but found ${res}`).assert(res, num);
   }
 
   /**
@@ -1104,6 +1335,117 @@ let email = yield I.grabValueFrom('input[name=email]');
   }
 
   /**
+   * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+   * Resumes test execution, so **should be used inside a generator with `yield`** operator.
+   * Appium: support only web testing
+   *
+   *
+   * ```js
+   * let postHTML = yield I.grabHTMLFrom('#post');
+   * ```
+   */
+  async grabHTMLFrom(locator) {
+    const els = await this._locate(locator);
+    assertElementExists(els, locator);
+    const values = await Promise.all(els.map(el => this.page.evaluate(element => element.innerHTML, el)));
+    if (Array.isArray(values) && values.length === 1) {
+      return values[0];
+    }
+    return values;
+  }
+
+  /**
+   * Grab CSS property for given locator
+   *
+   * ```js
+   * I.grabCssPropertyFrom('h3', 'font-weight');
+   * ```
+   */
+  async grabCssPropertyFrom(locator, cssProperty) {
+    const els = await this._locate(locator);
+    const res = await Promise.all(els.map(el => el.executionContext().evaluate(el => JSON.parse(JSON.stringify(getComputedStyle(el))), el)));
+    const cssValues = res.map(props => props[cssProperty]);
+
+    if (res.length > 0) {
+      return cssValues;
+    }
+    return cssValues[0];
+  }
+
+  /**
+   * Checks that all elements with given locator have given CSS properties.
+   *
+   * ```js
+   * I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' });
+   * ```
+   */
+  async seeCssPropertiesOnElements(locator, cssProperties) {
+    const res = await this._locate(locator);
+    assertElementExists(res, locator);
+
+    const cssPropertiesCamelCase = convertCssPropertiesToCamelCase(cssProperties);
+    const elemAmount = res.length;
+    const commands = [];
+    res.forEach((el) => {
+      Object.keys(cssPropertiesCamelCase).forEach((prop) => {
+        commands.push(el.executionContext()
+          .evaluate((el) => {
+            const style = window.getComputedStyle ? getComputedStyle(el) : el.currentStyle;
+            return JSON.parse(JSON.stringify(style));
+          }, el)
+          .then((props) => {
+            return props[prop];
+          }));
+      });
+    });
+    let props = await Promise.all(commands);
+    const values = Object.keys(cssPropertiesCamelCase).map(key => cssPropertiesCamelCase[key]);
+    if (!Array.isArray(props)) props = [props];
+    let chunked = chunkArray(props, values.length);
+    chunked = chunked.filter((val) => {
+      for (let i = 0; i < val.length; ++i) {
+        if (val[i] !== values[i]) return false;
+      }
+      return true;
+    });
+    return equals(`all elements (${locator}) to have CSS property ${JSON.stringify(cssProperties)}`).assert(chunked.length, elemAmount);
+  }
+
+  /**
+   * Checks that all elements with given locator have given attributes.
+   *
+   * ```js
+   * I.seeAttributesOnElements('//form', {'method': "post"});
+   * ```
+   */
+  async seeAttributesOnElements(locator, attributes) {
+    const res = await this._locate(locator);
+    assertElementExists(res, locator);
+
+    const elemAmount = res.length;
+    const commands = [];
+    res.forEach((el) => {
+      Object.keys(attributes).forEach((prop) => {
+        commands.push(el
+          .executionContext()
+          .evaluateHandle((el, attr) => el[attr] || el.getAttribute(attr), el, prop)
+          .then(el => el.jsonValue()));
+      });
+    });
+    let attrs = await Promise.all(commands);
+    const values = Object.keys(attributes).map(key => attributes[key]);
+    if (!Array.isArray(attrs)) attrs = [attrs];
+    let chunked = chunkArray(attrs, values.length);
+    chunked = chunked.filter((val) => {
+      for (let i = 0; i < val.length; ++i) {
+        if (val[i] !== values[i]) return false;
+      }
+      return true;
+    });
+    return equals(`all elements (${locator}) to have attributes ${JSON.stringify(attributes)}`).assert(chunked.length, elemAmount);
+  }
+
+  /**
    * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
@@ -1116,7 +1458,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
   async grabAttributeFrom(locator, attr) {
     const els = await this._locate(locator);
     assertElementExists(els, locator);
-    return this._evaluateHandeInContext((el, attr) => el.getAttribute(attr), els[0], attr)
+    return this._evaluateHandeInContext((el, attr) => el[attr] || el.getAttribute(attr), els[0], attr)
       .then(t => t.jsonValue());
   }
 
@@ -1224,7 +1566,39 @@ I.waitForVisible('#popup');
       waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
     }
     return waiter.catch((err) => {
-      throw new Error(`element (${locator.toString()}) still not visible on page after ${waitTimeout / 1000} sec\n${err.message}`);
+      throw new Error(`element (${locator.toString()}) still not visible after ${waitTimeout / 1000} sec\n${err.message}`);
+    });
+  }
+
+  /**
+   * Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForInvisible('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  async waitForInvisible(locator, sec) {
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    locator = new Locator(locator, 'css');
+    const matcher = await this.context;
+    let waiter;
+    const context = await this._getContext();
+    if (locator.isCSS()) {
+      waiter = context.waitForSelector(locator.simplify(), { timeout: waitTimeout, hidden: true });
+    } else {
+      const visibleFn = function (locator, $XPath) {
+        eval($XPath); // eslint-disable-line no-eval
+        return $XPath(null, locator).filter(el => el.offsetParent === null).length > 0;
+      };
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
+    }
+    return waiter.catch((err) => {
+      throw new Error(`element (${locator.toString()}) still visible after ${waitTimeout / 1000} sec\n${err.message}`);
     });
   }
 
@@ -1264,6 +1638,60 @@ I.waitToHide('#popup');
       return this.context;
     }
     return this.page;
+  }
+
+  /**
+   * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+   *
+   * ```js
+   * I.waitInUrl('/info', 2);
+   * ```
+   */
+  async waitInUrl(urlPart, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
+
+    return this.page.waitForFunction((urlPart) => {
+      const currUrl = decodeURIComponent(decodeURIComponent(decodeURIComponent(window.location.href)));
+      return currUrl.indexOf(urlPart) > -1;
+    }, { timeout: waitTimeout }, urlPart).catch(async (e) => {
+      const currUrl = this.page.url(); // Required because the waitForFunction can't return data.
+      if (/waiting failed: timeout/i.test(e.message)) {
+        throw new Error(`expected url to include ${urlPart}, but found ${currUrl}`);
+      } else {
+        throw e;
+      }
+    });
+  }
+
+  /**
+   * Waits for the entire URL to match the expected
+   *
+   * ```js
+   * I.waitUrlEquals('/info', 2);
+   * I.waitUrlEquals('http://127.0.0.1:8000/info');
+   * ```
+   */
+  async waitUrlEquals(urlPart, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
+
+    const baseUrl = this.options.url;
+    if (urlPart.indexOf('http') < 0) {
+      urlPart = baseUrl + urlPart;
+    }
+
+    return this.page.waitForFunction((urlPart) => {
+      const currUrl = decodeURIComponent(decodeURIComponent(decodeURIComponent(window.location.href)));
+      return currUrl.indexOf(urlPart) > -1;
+    }, { timeout: waitTimeout }, urlPart).catch(async (e) => {
+      const currUrl = this.page.url(); // Required because the waitForFunction can't return data.
+      if (/waiting failed: timeout/i.test(e.message)) {
+        throw new Error(`expected url to be ${urlPart}, but found ${currUrl}`);
+      } else {
+        throw e;
+      }
+    });
   }
 
   /**
@@ -1315,7 +1743,6 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
   /**
    * Switches frame or in case of null locator reverts to parent.
-   * Appium: support only web testing
    */
   async switchTo(locator) {
     if (!locator) {
@@ -1339,10 +1766,11 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
     const iframeName = await els[0].getProperty('name').then(el => el.jsonValue());
     const iframeId = await els[0].getProperty('id').then(el => el.jsonValue());
+    const iframeUrl = await els[0].getProperty('src').then(el => el.jsonValue());
 
     const searchName = iframeName || iframeId; // Name takes precedence over id, because of puppeteer's Frame.name() function
     const currentContext = await this._getContext();
-    const resFrame = await findFrame.call(this, currentContext, searchName, els[0]);
+    const resFrame = await findFrame.call(this, currentContext, searchName, iframeUrl);
 
     if (resFrame) {
       this.context = resFrame;
@@ -1413,7 +1841,7 @@ I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
 
 module.exports = Puppeteer;
 
-async function findFrame(context, locator, element) {
+async function findFrame(context, name, url) {
   if (!context) {
     return;
   }
@@ -1424,7 +1852,12 @@ async function findFrame(context, locator, element) {
     frames = this.page.frames();
   }
 
-  return frames.find(frame => frame.name() === locator);
+  return frames.find((frame) => {
+    if (name || !url) {
+      return frame.name() === name;
+    }
+    return frame.url() === url;
+  });
 }
 
 async function findElements(matcher, locator) {
@@ -1432,10 +1865,10 @@ async function findElements(matcher, locator) {
   if (!locator.isXPath()) return matcher.$$(locator.simplify());
 
   let context = null;
-  if (matcher.constructor.name === 'ElementHandle') {
+  if (matcher && matcher.constructor.name === 'ElementHandle') {
     context = matcher;
   }
-  if (matcher.constructor.name === 'Frame') {
+  if (matcher && matcher.constructor.name === 'Frame') {
     context = matcher;
   }
 
@@ -1472,13 +1905,17 @@ async function findClickable(matcher, locator) {
   els = await findElements.call(this, matcher, Locator.clickable.wide(literal));
   if (els.length) return els;
 
-  els = await findElements.call(this, matcher, Locator.clickable.self(literal));
-  if (els.length) return els;
+  try {
+    els = await findElements.call(this, matcher, Locator.clickable.self(literal));
+    if (els.length) return els;
+  } catch (err) {
+    // Do nothing
+  }
 
   return findElements.call(this, matcher, locator.value); // by css or xpath
 }
 
-async function proceedSee(assertType, text, context) {
+async function proceedSee(assertType, text, context, strict = false) {
   let description;
   let allText;
   if (!context) {
@@ -1499,12 +1936,15 @@ async function proceedSee(assertType, text, context) {
     allText = await Promise.all(els.map(el => el.getProperty('innerText').then(p => p.jsonValue())));
   }
 
+  if (strict) {
+    return allText.map(elText => equals(description)[assertType](text, elText));
+  }
   return stringIncludes(description)[assertType](text, allText.join(' | '));
 }
 
 async function findCheckable(locator, context) {
   let contextEl = await this.context;
-  if (context) {
+  if (typeof context === 'string') {
     contextEl = await findElements.call(this, contextEl, (new Locator(context, 'css')).simplify());
     contextEl = contextEl[0];
   }
@@ -1558,20 +1998,114 @@ async function findFields(locator) {
   return this._locate({ css: locator });
 }
 
+async function proceedDragAndDrop(sourceLocator, destinationLocator, options = {}) {
+  const src = await this._locate(sourceLocator);
+  assertElementExists(src, sourceLocator, 'Source Element');
+
+  const dst = await this._locate(destinationLocator);
+  assertElementExists(dst, destinationLocator, 'Destination Element');
+
+  // Note: Using private api ._visibleCenter becaues the .BoundingBox does not take into account iframe offsets!
+  const dragSource = await src[0]._visibleCenter();
+  const dragDestination = await dst[0]._visibleCenter();
+
+  // Drag start point
+  await this.page.mouse.move(dragSource.x, dragSource.y, { steps: 5 });
+  await this.page.mouse.down();
+
+  // Drag destination
+  await this.page.mouse.move(dragDestination.x, dragDestination.y, { steps: 5 });
+  await this.page.mouse.up();
+
+  await this._waitForAction();
+}
+
 async function proceedSeeInField(assertType, field, value) {
   const els = await findFields.call(this, field);
   assertElementExists(els, field, 'Field');
   const el = els[0];
   const tag = await el.getProperty('tagName').then(el => el.jsonValue());
-  const fieldVal = await el.getProperty('value').then(el => el.jsonValue());
+  const fieldType = await el.getProperty('type').then(el => el.jsonValue());
+
+  const proceedMultiple = async (elements) => {
+    const fields = Array.isArray(elements) ? elements : [elements];
+
+    const elementValues = [];
+    for (const element of fields) {
+      elementValues.push(await element.getProperty('value').then(el => el.jsonValue()));
+    }
+
+    if (typeof value === 'boolean') {
+      equals(`no. of items matching > 0: ${field}`)[assertType](value, !!elementValues.length);
+    } else {
+      if (assertType === 'assert') {
+        equals(`select option by ${field}`)[assertType](true, elementValues.length > 0);
+      }
+      elementValues.forEach(val => stringIncludes(`fields by ${field}`)[assertType](value, val));
+    }
+  };
+
   if (tag === 'SELECT') {
+    const selectedOptions = await el.$$('option:checked');
     // locate option by values and check them
-    const option = await el.$(`option[value="${fieldVal}"]`);
-    assertElementExists(option, `Option with value ${fieldVal}`);
-    const text = await option.getProperty('innerText');
-    return equals(`select option by ${field}`)[assertType](value, text);
+    if (value === '') {
+      return proceedMultiple(selectedOptions);
+    }
+
+    const options = await filterFieldsByValue(selectedOptions, value, true);
+    return proceedMultiple(options);
   }
-  return stringIncludes(`field by ${field}`)[assertType](value, fieldVal);
+
+  if (tag === 'INPUT') {
+    if (fieldType === 'checkbox' || fieldType === 'radio') {
+      if (typeof value === 'boolean') {
+        // Filter by values
+        const options = await filterFieldsBySelectionState(els, true);
+        return proceedMultiple(options);
+      }
+
+      const options = await filterFieldsByValue(els, value, true);
+      return proceedMultiple(options);
+    }
+    return proceedMultiple(els[0]);
+  }
+  const fieldVal = await el.getProperty('value').then(el => el.jsonValue());
+  return stringIncludes(`fields by ${field}`)[assertType](value, fieldVal);
+}
+
+async function filterFieldsByValue(elements, value, onlySelected) {
+  const matches = [];
+  for (const element of elements) {
+    const val = await element.getProperty('value').then(el => el.jsonValue());
+    let isSelected = true;
+    if (onlySelected) {
+      isSelected = await elementSelected(element);
+    }
+    if ((value == null || val.indexOf(value) > -1) && isSelected) {
+      matches.push(element);
+    }
+  }
+  return matches;
+}
+
+async function filterFieldsBySelectionState(elements, state) {
+  const matches = [];
+  for (const element of elements) {
+    const isSelected = await elementSelected(element);
+    if (isSelected === state) {
+      matches.push(element);
+    }
+  }
+  return matches;
+}
+
+async function elementSelected(element) {
+  const type = await element.getProperty('type').then(el => el.jsonValue());
+
+  if (type === 'checkbox' || type === 'radio') {
+    return element.getProperty('checked').then(el => el.jsonValue());
+  }
+  return element.getProperty('selected').then(el => el.jsonValue());
 }
 
 function isFrameLocator(locator) {

@@ -332,6 +332,12 @@ I.seeElement({text: 'press me'});
 I.seeElement({id: 'users'});
 </code></pre>
 
+<p>In <a href="http://codecept.io/mobile/#locating-elements">mobile testing</a> you can use <code>~</code> to specify accessibility id to locate an element. In web application you can locate element by their <code>aria-label</code> value.</p>
+<pre><code class="js">// locate element by [aria-label] attribute in web
+// or by accessibility id in mobile
+I.seeElement('~username');
+</code></pre>
+
 <h2 id="clicking">Clicking</h2>
 <p>CodeceptJS provides a flexible syntax to specify an element to click.</p>
 <p>By default CodeceptJS tries to find button or link with exact text on it</p>

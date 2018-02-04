@@ -278,6 +278,12 @@
         
             <li><a href="#_locate">_locate</a></li>
         
+            <li><a href="#_locatecheckable">_locateCheckable</a></li>
+        
+            <li><a href="#_locateclickable">_locateClickable</a></li>
+        
+            <li><a href="#_locatefields">_locateFields</a></li>
+        
             <li><a href="#_setpage">_setPage</a></li>
         
             <li><a href="#acceptpopup">acceptPopup</a></li>
@@ -304,6 +310,8 @@
         
             <li><a href="#closecurrenttab">closeCurrentTab</a></li>
         
+            <li><a href="#closeothertabs">closeOtherTabs</a></li>
+        
             <li><a href="#dontsee">dontSee</a></li>
         
             <li><a href="#dontseecheckboxischecked">dontSeeCheckboxIsChecked</a></li>
@@ -326,6 +334,8 @@
         
             <li><a href="#doubleclick">doubleClick</a></li>
         
+            <li><a href="#draganddrop">dragAndDrop</a></li>
+        
             <li><a href="#executeasyncscript">executeAsyncScript</a></li>
         
             <li><a href="#executescript">executeScript</a></li>
@@ -334,9 +344,19 @@
         
             <li><a href="#grabattributefrom">grabAttributeFrom</a></li>
         
+            <li><a href="#grabbrowserlogs">grabBrowserLogs</a></li>
+        
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
+        
+            <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
+        
+            <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
+        
             <li><a href="#grabpopuptext">grabPopupText</a></li>
+        
+            <li><a href="#grabsource">grabSource</a></li>
         
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
         
@@ -356,13 +376,25 @@
         
             <li><a href="#resizewindow">resizeWindow</a></li>
         
+            <li><a href="#rightclick">rightClick</a></li>
+        
             <li><a href="#savescreenshot">saveScreenshot</a></li>
         
+            <li><a href="#scrollpagetobottom">scrollPageToBottom</a></li>
+        
+            <li><a href="#scrollpagetotop">scrollPageToTop</a></li>
+        
+            <li><a href="#scrollto">scrollTo</a></li>
+        
             <li><a href="#see">see</a></li>
+        
+            <li><a href="#seeattributesonelements">seeAttributesOnElements</a></li>
         
             <li><a href="#seecheckboxischecked">seeCheckboxIsChecked</a></li>
         
             <li><a href="#seecookie">seeCookie</a></li>
+        
+            <li><a href="#seecsspropertiesonelements">seeCssPropertiesOnElements</a></li>
         
             <li><a href="#seecurrenturlequals">seeCurrentUrlEquals</a></li>
         
@@ -380,6 +412,14 @@
         
             <li><a href="#seeintitle">seeInTitle</a></li>
         
+            <li><a href="#seenumberofelements">seeNumberOfElements</a></li>
+        
+            <li><a href="#seenumberofvisibleelements">seeNumberOfVisibleElements</a></li>
+        
+            <li><a href="#seetextequals">seeTextEquals</a></li>
+        
+            <li><a href="#seetitleequals">seeTitleEquals</a></li>
+        
             <li><a href="#selectoption">selectOption</a></li>
         
             <li><a href="#setcookie">setCookie</a></li>
@@ -394,15 +434,21 @@
         
             <li><a href="#waitforelement">waitForElement</a></li>
         
+            <li><a href="#waitforinvisible">waitForInvisible</a></li>
+        
             <li><a href="#waitfortext">waitForText</a></li>
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
+        
+            <li><a href="#waitinurl">waitInUrl</a></li>
         
             <li><a href="#waittohide">waitToHide</a></li>
         
             <li><a href="#waituntil">waitUntil</a></li>
         
             <li><a href="#waituntilexists">waitUntilExists</a></li>
+        
+            <li><a href="#waiturlequals">waitUrlEquals</a></li>
         
     
     </ul>
@@ -445,6 +491,33 @@ This helper works with a browser out of the box with no additional tools require
 <p>Get elements by different locator types, including strict locator
 Should be used in custom helpers:</p>
 <pre><code class="js">const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="_locatecheckable">_locateCheckable</h2>
+<p>Find a checkbox by providing human readable text:</p>
+<pre><code class="js">this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').then // ...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="_locateclickable">_locateClickable</h2>
+<p>Find a clickable element by providing human readable text:</p>
+<pre><code class="js">this.helpers['Puppeteer']._locateClickable('Next page').then // ...
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="_locatefields">_locateFields</h2>
+<p>Find field elements by providing human readable text:</p>
+<pre><code class="js">this.helpers['Puppeteer']._locateFields('Your email').then // ...
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -594,6 +667,11 @@ I.click({css: 'nav a.login'});
 <pre><code class="js">I.closeCurrentTab();
 </code></pre>
 
+<h2 id="closeothertabs">closeOtherTabs</h2>
+<p>Close all tabs except for the current one.</p>
+<pre><code class="js">I.closeOtherTabs();
+</code></pre>
+
 <h2 id="dontsee">dontSee</h2>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.</p>
@@ -676,6 +754,16 @@ I.doubleClick('.btn.edit');
 <li><code>locator</code>  </li>
 <li><code>context</code>  </li>
 </ul>
+<h2 id="draganddrop">dragAndDrop</h2>
+<p>Drag an item to a destination element.</p>
+<pre><code class="js">I.dragAndDrop('#dragHandle', '#container');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>source</code>  </li>
+<li><code>destination</code>  </li>
+</ul>
 <h2 id="executeasyncscript">executeAsyncScript</h2>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
@@ -750,6 +838,12 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>attr</code>  </li>
 </ul>
+<h2 id="grabbrowserlogs">grabBrowserLogs</h2>
+<p>Get JS log from browser.</p>
+<pre><code class="js">let logs = yield I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+</code></pre>
+
 <h2 id="grabcookie">grabCookie</h2>
 <p>Gets a cookie object by name
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -761,11 +855,50 @@ assert(cookie.value, '123456');
 <ul>
 <li><code>name</code>  Returns cookie in JSON format. If name not passed returns all cookies for this domain.</li>
 </ul>
+<h2 id="grabcsspropertyfrom">grabCssPropertyFrom</h2>
+<p>Grab CSS property for given locator</p>
+<pre><code class="js">I.grabCssPropertyFrom('h3', 'font-weight');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>cssProperty</code>  </li>
+</ul>
+<h2 id="grabhtmlfrom">grabHTMLFrom</h2>
+<p>Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.
+Appium: support only web testing</p>
+<pre><code class="js">let postHTML = yield I.grabHTMLFrom('#post');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h2>
+<p>Grab number of visible elements by locator</p>
+<pre><code class="js">I.grabNumberOfVisibleElements('p');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
 <h2 id="grabpopuptext">grabPopupText</h2>
 <p>Grab the text within the popup. If no popup is visible then it will return null</p>
 <pre><code class="js">await I.grabPopupText();
 </code></pre>
 
+<h2 id="grabsource">grabSource</h2>
+<p>Checks that the current page contains the given string in its raw source code.</p>
+<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+</ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -810,7 +943,6 @@ Extra shift can be set with offsetX and offsetY options</p>
 I.moveCursorTo('#submit', 5,5);
 </code></pre>
 
-<p>For Puppeteer offsetX and offsetY arguments are ignored</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
@@ -850,6 +982,13 @@ First parameter can be set to <code>maximize</code></p>
     Puppeteer does not control the window of a browser so it can't adjust its real size.
     It also can't maximize a window.</li>
 </ul>
+<h2 id="rightclick">rightClick</h2>
+<p>Performs right click on an element matched by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>context</code>   (optional, default <code>null</code>)</li>
+</ul>
 <h2 id="savescreenshot">saveScreenshot</h2>
 <p>Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder. 
@@ -863,6 +1002,29 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 <li><code>fileName</code>  </li>
 <li><code>fullPage</code>  (optional)</li>
 </ul>
+<h2 id="scrollpagetobottom">scrollPageToBottom</h2>
+<p>Scroll page to the bottom</p>
+<pre><code class="js">I.scrollPageToBottom();
+</code></pre>
+
+<h2 id="scrollpagetotop">scrollPageToTop</h2>
+<p>Scroll page to the top</p>
+<pre><code class="js">I.scrollPageToTop();
+</code></pre>
+
+<h2 id="scrollto">scrollTo</h2>
+<p>Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options</p>
+<pre><code class="js">I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
+<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
+</ul>
 <h2 id="see">see</h2>
 <p>Checks that a page contains a visible text.
 Use context parameter to narrow down the search.</p>
@@ -875,6 +1037,16 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 <ul>
 <li><code>text</code>  expected on page</li>
 <li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text</li>
+</ul>
+<h2 id="seeattributesonelements">seeAttributesOnElements</h2>
+<p>Checks that all elements with given locator have given attributes.</p>
+<pre><code class="js">I.seeAttributesOnElements('//form', {'method': &quot;post&quot;});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>attributes</code>  </li>
 </ul>
 <h2 id="seecheckboxischecked">seeCheckboxIsChecked</h2>
 <p>Verifies that the specified checkbox is checked.</p>
@@ -895,6 +1067,16 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>name</code>  </li>
+</ul>
+<h2 id="seecsspropertiesonelements">seeCssPropertiesOnElements</h2>
+<p>Checks that all elements with given locator have given CSS properties.</p>
+<pre><code class="js">I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' });
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>cssProperties</code>  </li>
 </ul>
 <h2 id="seecurrenturlequals">seeCurrentUrlEquals</h2>
 <p>Checks that current url is equal to provided one.
@@ -973,6 +1155,47 @@ given string.</p>
 <ul>
 <li><code>text</code>  </li>
 </ul>
+<h2 id="seenumberofelements">seeNumberOfElements</h2>
+<p>asserts that an element appears a given number of times in the DOM
+Element is located by label or name or CSS or XPath.</p>
+<pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>num</code>  </li>
+</ul>
+<h2 id="seenumberofvisibleelements">seeNumberOfVisibleElements</h2>
+<p>asserts that an element is visible a given number of times
+Element is located by CSS or XPath.</p>
+<pre><code class="js">I.seeNumberOfVisibleElements('.buttons', 3);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>num</code>  </li>
+</ul>
+<h2 id="seetextequals">seeTextEquals</h2>
+<p>Checks that text is equal to provided one.</p>
+<pre><code class="js">I.seeTextEquals('text', 'h1');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>context</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="seetitleequals">seeTitleEquals</h2>
+<p>Checks that title is equal to provided one.</p>
+<pre><code class="js">I.seeTitleEquals('Test title.');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+</ul>
 <h2 id="selectoption">selectOption</h2>
 <p>Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
@@ -1004,8 +1227,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <li><code>cookie</code>  </li>
 </ul>
 <h2 id="switchto">switchTo</h2>
-<p>Switches frame or in case of null locator reverts to parent.
-Appium: support only web testing</p>
+<p>Switches frame or in case of null locator reverts to parent.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
@@ -1051,6 +1273,16 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
+<h2 id="waitforinvisible">waitForInvisible</h2>
+<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForInvisible('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
 <h2 id="waitfortext">waitForText</h2>
 <p>Waits for a text to appear (by default waits for 1sec).
 Element can be located by CSS or XPath.
@@ -1074,6 +1306,16 @@ Element can be located by CSS or XPath.</p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waitinurl">waitInUrl</h2>
+<p>Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.</p>
+<pre><code class="js">I.waitInUrl('/info', 2);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlPart</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="waittohide">waitToHide</h2>
 <p>Waits for an element to hide (by default waits for 1sec).
@@ -1108,6 +1350,17 @@ I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waiturlequals">waitUrlEquals</h2>
+<p>Waits for the entire URL to match the expected</p>
+<pre><code class="js">I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlPart</code>  </li>
+<li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >

@@ -276,6 +276,8 @@
         
             <li><a href="#access-from-helpers">Access From Helpers</a></li>
         
+            <li><a href="#_getwindowhandle">_getWindowHandle</a></li>
+        
             <li><a href="#_locate">_locate</a></li>
         
             <li><a href="#aminsideangularapp">amInsideAngularApp</a></li>
@@ -295,6 +297,8 @@
             <li><a href="#clearfield">clearField</a></li>
         
             <li><a href="#click">click</a></li>
+        
+            <li><a href="#closecurrenttab">closeCurrentTab</a></li>
         
             <li><a href="#closeothertabs">closeOtherTabs</a></li>
         
@@ -330,6 +334,8 @@
         
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabsource">grabSource</a></li>
+        
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
         
             <li><a href="#grabtitle">grabTitle</a></li>
@@ -341,6 +347,8 @@
             <li><a href="#movecursorto">moveCursorTo</a></li>
         
             <li><a href="#moveto">moveTo</a></li>
+        
+            <li><a href="#opennewtab">openNewTab</a></li>
         
             <li><a href="#presskey">pressKey</a></li>
         
@@ -374,7 +382,17 @@
         
             <li><a href="#seeintitle">seeInTitle</a></li>
         
+            <li><a href="#seenumberofelements">seeNumberOfElements</a></li>
+        
+            <li><a href="#seetextequals">seeTextEquals</a></li>
+        
+            <li><a href="#seetitleequals">seeTitleEquals</a></li>
+        
             <li><a href="#selectoption">selectOption</a></li>
+        
+            <li><a href="#switchtonexttab">switchToNextTab</a></li>
+        
+            <li><a href="#switchtoprevioustab">switchToPreviousTab</a></li>
         
             <li><a href="#wait">wait</a></li>
         
@@ -472,6 +490,12 @@ To test non-Angular applications please make sure you have <code>angular: false<
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>config</code>  </li>
+</ul>
+<h2 id="_getwindowhandle">_getWindowHandle</h2>
+<p>Get the window handle relative to the current handle. i.e. the next handle or the previous.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>offset</code> <strong>Number</strong> Offset from current handle index. i.e. offset &lt; 0 will go to the previous handle and positive number will go to the next window handle in sequence.</li>
 </ul>
 <h2 id="_locate">_locate</h2>
 <p>Get elements by different locator types, including strict locator
@@ -603,8 +627,13 @@ I.click({css: 'nav a.login'});
 </thead>
 <tbody></tbody>
 </table>
+<h2 id="closecurrenttab">closeCurrentTab</h2>
+<p>Close current tab</p>
+<pre><code class="js">I.closeCurrentTab();
+</code></pre>
+
 <h2 id="closeothertabs">closeOtherTabs</h2>
-<p>Close all tabs expect for one.</p>
+<p>Close all tabs except for the current one.</p>
 <pre><code class="js">I.closeOtherTabs();
 </code></pre>
 
@@ -775,6 +804,15 @@ assert(cookie.value, '123456');
 <ul>
 <li><code>name</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
 </ul>
+<h2 id="grabsource">grabSource</h2>
+<p>Checks that the current page contains the given string in its raw source code.</p>
+<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+</ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -832,6 +870,11 @@ I.moveCursorTo('#submit', 5,5);
 <ul>
 <li><code>path</code>  </li>
 </ul>
+<h2 id="opennewtab">openNewTab</h2>
+<p>Open new tab and switch to it</p>
+<pre><code class="js">I.openNewTab();
+</code></pre>
+
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
 Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
@@ -986,6 +1029,36 @@ I.seeInField('#searchform input','Search');
 <ul>
 <li><code>text</code>  </li>
 </ul>
+<h2 id="seenumberofelements">seeNumberOfElements</h2>
+<p>asserts that an element appears a given number of times in the DOM
+Element is located by label or name or CSS or XPath.</p>
+<pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>num</code>  </li>
+</ul>
+<h2 id="seetextequals">seeTextEquals</h2>
+<p>Checks that text is equal to provided one.</p>
+<pre><code class="js">I.seeTextEquals('text', 'h1');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+<li><code>context</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="seetitleequals">seeTitleEquals</h2>
+<p>Checks that title is equal to provided one.</p>
+<pre><code class="js">I.seeTitleEquals('Test title.');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>text</code>  </li>
+</ul>
 <h2 id="selectoption">selectOption</h2>
 <p>Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
@@ -1006,6 +1079,26 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <ul>
 <li><code>select</code>  field located by label|name|CSS|XPath|strict locator</li>
 <li><code>option</code>  </li>
+</ul>
+<h2 id="switchtonexttab">switchToNextTab</h2>
+<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
+<pre><code class="js">I.switchToNextTab();
+I.switchToNextTab(2);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>num</code>   (optional, default <code>1</code>)</li>
+</ul>
+<h2 id="switchtoprevioustab">switchToPreviousTab</h2>
+<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
+<pre><code class="js">I.switchToPreviousTab();
+I.switchToPreviousTab(2);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>num</code>   (optional, default <code>1</code>)</li>
 </ul>
 <h2 id="wait">wait</h2>
 <p>Pauses execution for a number of seconds.</p>
