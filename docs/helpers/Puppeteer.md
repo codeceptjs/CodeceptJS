@@ -50,6 +50,42 @@ const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
 
 -   `locator`  
 
+## _locateCheckable
+
+Find a checkbox by providing human readable text:
+
+```js
+this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateClickable
+
+Find a clickable element by providing human readable text:
+
+```js
+this.helpers['Puppeteer']._locateClickable('Next page').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateFields
+
+Find field elements by providing human readable text:
+
+```js
+this.helpers['Puppeteer']._locateFields('Your email').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
 ## _setPage
 
 Set current page
@@ -219,6 +255,14 @@ Close current tab and switches to previous.
 I.closeCurrentTab();
 ```
 
+## closeOtherTabs
+
+Close all tabs except for the current one.
+
+```js
+I.closeOtherTabs();
+```
+
 ## dontSee
 
 Opposite to `see`. Checks that a text is not present on a page.
@@ -325,6 +369,19 @@ I.doubleClick('.btn.edit');
 -   `locator`  
 -   `context`  
 
+## dragAndDrop
+
+Drag an item to a destination element.
+
+```js
+I.dragAndDrop('#dragHandle', '#container');
+```
+
+**Parameters**
+
+-   `source`  
+-   `destination`  
+
 ## executeAsyncScript
 
 Executes async script on page.
@@ -417,6 +474,15 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 -   `locator`  element located by CSS|XPath|strict locator
 -   `attr`  
 
+## grabBrowserLogs
+
+Get JS log from browser.
+
+```js
+let logs = yield I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+```
+
 ## grabCookie
 
 Gets a cookie object by name
@@ -431,6 +497,45 @@ assert(cookie.value, '123456');
 
 -   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.
 
+## grabCssPropertyFrom
+
+Grab CSS property for given locator
+
+```js
+I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
+**Parameters**
+
+-   `locator`  
+-   `cssProperty`  
+
+## grabHTMLFrom
+
+Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Appium: support only web testing
+
+```js
+let postHTML = yield I.grabHTMLFrom('#post');
+```
+
+**Parameters**
+
+-   `locator`  
+
+## grabNumberOfVisibleElements
+
+Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
+
+**Parameters**
+
+-   `locator`  
+
 ## grabPopupText
 
 Grab the text within the popup. If no popup is visible then it will return null
@@ -438,6 +543,18 @@ Grab the text within the popup. If no popup is visible then it will return null
 ```js
 await I.grabPopupText();
 ```
+
+## grabSource
+
+Checks that the current page contains the given string in its raw source code.
+
+```js
+I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+**Parameters**
+
+-   `text`  
 
 ## grabTextFrom
 
@@ -498,8 +615,6 @@ I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 ```
 
-For Puppeteer offsetX and offsetY arguments are ignored
-
 **Parameters**
 
 -   `locator`  
@@ -550,6 +665,15 @@ First parameter can be set to `maximize`
     Puppeteer does not control the window of a browser so it can't adjust its real size.
     It also can't maximize a window.
 
+## rightClick
+
+Performs right click on an element matched by CSS or XPath.
+
+**Parameters**
+
+-   `locator`  
+-   `context`   (optional, default `null`)
+
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
@@ -566,6 +690,38 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 -   `fileName`  
 -   `fullPage`  (optional)
 
+## scrollPageToBottom
+
+Scroll page to the bottom
+
+```js
+I.scrollPageToBottom();
+```
+
+## scrollPageToTop
+
+Scroll page to the top
+
+```js
+I.scrollPageToTop();
+```
+
+## scrollTo
+
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
+
 ## see
 
 Checks that a page contains a visible text.
@@ -581,6 +737,19 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 -   `text`  expected on page
 -   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
+
+## seeAttributesOnElements
+
+Checks that all elements with given locator have given attributes.
+
+```js
+I.seeAttributesOnElements('//form', {'method': "post"});
+```
+
+**Parameters**
+
+-   `locator`  
+-   `attributes`  
 
 ## seeCheckboxIsChecked
 
@@ -607,6 +776,19 @@ I.seeCookie('Auth');
 **Parameters**
 
 -   `name`  
+
+## seeCssPropertiesOnElements
+
+Checks that all elements with given locator have given CSS properties.
+
+```js
+I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' });
+```
+
+**Parameters**
+
+-   `locator`  
+-   `cssProperties`  
 
 ## seeCurrentUrlEquals
 
@@ -707,6 +889,59 @@ Checks that title contains text.
 
 -   `text`  
 
+## seeNumberOfElements
+
+asserts that an element appears a given number of times in the DOM
+Element is located by label or name or CSS or XPath.
+
+```js
+I.seeNumberOfElements('#submitBtn', 1);
+```
+
+**Parameters**
+
+-   `selector`  
+-   `num`  
+
+## seeNumberOfVisibleElements
+
+asserts that an element is visible a given number of times
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `num`  
+
+## seeTextEquals
+
+Checks that text is equal to provided one.
+
+```js
+I.seeTextEquals('text', 'h1');
+```
+
+**Parameters**
+
+-   `text`  
+-   `context`   (optional, default `null`)
+
+## seeTitleEquals
+
+Checks that title is equal to provided one.
+
+```js
+I.seeTitleEquals('Test title.');
+```
+
+**Parameters**
+
+-   `text`  
+
 ## selectOption
 
 Selects an option in a drop-down select.
@@ -748,7 +983,6 @@ I.setCookie({name: 'auth', value: true});
 ## switchTo
 
 Switches frame or in case of null locator reverts to parent.
-Appium: support only web testing
 
 **Parameters**
 
@@ -807,6 +1041,18 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
 
+## waitForInvisible
+
+Waits for an element to become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForInvisible('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
 ## waitForText
 
 Waits for a text to appear (by default waits for 1sec).
@@ -835,6 +1081,19 @@ Element can be located by CSS or XPath.
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
+
+## waitInUrl
+
+Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+
+```js
+I.waitInUrl('/info', 2);
+```
+
+**Parameters**
+
+-   `urlPart`  
+-   `sec`   (optional, default `null`)
 
 ## waitToHide
 
@@ -877,3 +1136,17 @@ I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
+
+## waitUrlEquals
+
+Waits for the entire URL to match the expected
+
+```js
+I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+```
+
+**Parameters**
+
+-   `urlPart`  
+-   `sec`   (optional, default `null`)

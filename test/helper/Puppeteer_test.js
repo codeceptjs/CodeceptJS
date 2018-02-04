@@ -93,9 +93,13 @@ describe('Puppeteer', function () {
     it('should trigger hover event', () => I.amOnPage('/form/hover')
       .then(() => I.moveCursorTo('#hover'))
       .then(() => I.see('Hovered', '#show')));
+
+    it('should not trigger hover event because of the offset is beyond the element', () => I.amOnPage('/form/hover')
+      .then(() => I.moveCursorTo('#hover', 100, 100))
+      .then(() => I.dontSee('Hovered', '#show')));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
     it('should switch to next tab', () => I.amOnPage('/info')
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
@@ -104,6 +108,7 @@ describe('Puppeteer', function () {
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
       .then(() => I.click('More info'))
       .then(() => I.switchToNextTab(2))
+      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
       .catch((e) => {
         assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
       }));
@@ -114,6 +119,16 @@ describe('Puppeteer', function () {
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.closeCurrentTab())
       .then(() => I.seeInCurrentUrl('/info')));
+
+    it('should close other tabs', () => I.amOnPage('/')
+      .then(() => I.openNewTab())
+      .then(() => I.seeInCurrentUrl('about:blank'))
+      .then(() => I.amOnPage('/info'))
+      .then(() => I.click('New tab'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.seeInCurrentUrl('/login'))
+      .then(() => I.closeOtherTabs())
+      .then(() => I.seeInCurrentUrl('/login')));
 
     it('should open new tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
@@ -161,6 +176,11 @@ describe('Puppeteer', function () {
       .then(text => assert.equal(text, null)));
   });
 
+  describe('#seeNumberOfElements', () => {
+    it('should return 1 as count', () => I.amOnPage('/')
+      .then(() => I.seeNumberOfElements('#area1', 1)));
+  });
+
   describe('#switchTo', () => {
     it('should switch reference to iframe content', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
@@ -185,5 +205,292 @@ describe('Puppeteer', function () {
       .then(() => I.see('Information\nLots of valuable data here'))
       .then(() => I.switchTo(null))
       .then(() => I.see('Iframe test')));
+  });
+
+  describe('#seeInSource, #grabSource', () => {
+    it('should check for text to be in HTML source', () => I.amOnPage('/')
+      .then(() => I.seeInSource('<title>TestEd Beta 2.0</title>'))
+      .then(() => I.dontSeeInSource('<meta')));
+
+    it('should grab the source', () => I.amOnPage('/')
+      .then(() => I.grabSource())
+      .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
+  });
+
+  describe('#seeAttributesOnElements', () => {
+    it('should check attributes values for given element', () => I.amOnPage('/info')
+      .then(() => I.seeAttributesOnElements('//form', {
+        method: 'post',
+      }))
+      .then(() => I.seeAttributesOnElements('//form', {
+        method: 'post',
+        // action: '/',
+        action: `${siteUrl}/`,
+      }))
+      .then(() => I.seeAttributesOnElements('//form', {
+        method: 'get',
+      }))
+      .catch((e) => {
+        assert.equal(e.message, 'expected all elements (//form) to have attributes {"method":"get"} "0" to equal "1"');
+      }));
+
+    it('should check attributes values for several elements', () => I.amOnPage('/')
+      .then(() => I.seeAttributesOnElements('a', {
+        'qa-id': 'test',
+        'qa-link': 'test',
+      }))
+      .then(() => I.seeAttributesOnElements('//div', {
+        'qa-id': 'test',
+      }))
+      .then(() => I.seeAttributesOnElements('a', {
+        'qa-id': 'test',
+        href: '/info',
+      }))
+      .catch((e) => {
+        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
+      }));
+  });
+
+  describe('#seeTitleEquals', () => {
+    it('should check that title is equal to provided one', () => I.amOnPage('/')
+      .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
+      .then(() => I.seeTitleEquals('TestEd Beta 2.'))
+      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."');
+      }));
+  });
+
+  describe('#seeTextEquals', () => {
+    it('should check text is equal to provided one', () => I.amOnPage('/')
+      .then(() => I.seeTextEquals('Welcome to test app!', 'h1'))
+      .then(() => I.seeTextEquals('Welcome to test app', 'h1'))
+      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
+      }));
+  });
+
+  describe('#_locateClickable', () => {
+    it('should locate a button to click', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateClickable('Submit'))
+      .then((res) => {
+        res.length.should.be.equal(1);
+      }));
+
+    it('should not locate a non-existing checkbox using _locateClickable', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateClickable('I disagree'))
+      .then(res => res.length.should.be.equal(0)));
+  });
+
+  describe('#_locateCheckable', () => {
+    it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateCheckable('I Agree'))
+      .then(res => res.length.should.be.equal(1)));
+
+    it('should not locate a non-existing checkbox', () => I.amOnPage('/form/checkbox')
+      .then(() => I._locateCheckable('I disagree'))
+      .then(res => res.length.should.be.equal(0)));
+  });
+
+  describe('#_locateFields', () => {
+    it('should locate a field', () => I.amOnPage('/form/field')
+      .then(() => I._locateFields('Name'))
+      .then(res => res.length.should.be.equal(1)));
+
+    it('should not locate a non-existing field', () => I.amOnPage('/form/field')
+      .then(() => I._locateFields('Mother-in-law'))
+      .then(res => res.length.should.be.equal(0)));
+  });
+
+  describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
+    it('should throw error if field is not empty', () => I.amOnPage('/form/empty')
+      .then(() => I.seeInField('#empty_input', 'Ayayay'))
+      .catch((e) => {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
+      }));
+
+    it('should check values in checkboxes', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.dontSeeInField('checkbox[]', 'not seen one');
+      await I.seeInField('checkbox[]', 'see test one');
+      await I.dontSeeInField('checkbox[]', 'not seen two');
+      await I.seeInField('checkbox[]', 'see test two');
+      await I.dontSeeInField('checkbox[]', 'not seen three');
+      return I.seeInField('checkbox[]', 'see test three');
+    });
+
+    it('should check values with boolean', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.seeInField('checkbox1', true);
+      yield I.dontSeeInField('checkbox1', false);
+      yield I.seeInField('checkbox2', false);
+      yield I.dontSeeInField('checkbox2', true);
+      yield I.seeInField('radio2', true);
+      yield I.dontSeeInField('radio2', false);
+      yield I.seeInField('radio3', false);
+      return I.dontSeeInField('radio3', true);
+    });
+
+    it('should check values in radio', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.seeInField('radio1', 'see test one');
+      yield I.dontSeeInField('radio1', 'not seen one');
+      yield I.dontSeeInField('radio1', 'not seen two');
+      return I.dontSeeInField('radio1', 'not seen three');
+    });
+
+    it('should check values in select', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.seeInField('select1', 'see test one');
+      yield I.dontSeeInField('select1', 'not seen one');
+      yield I.dontSeeInField('select1', 'not seen two');
+      return I.dontSeeInField('select1', 'not seen three');
+    });
+
+    it('should check for empty select field', function* () {
+      yield I.amOnPage('/form/field_values');
+      return I.seeInField('select3', '');
+    });
+
+    it('should check for select multiple field', function* () {
+      yield I.amOnPage('/form/field_values');
+      yield I.dontSeeInField('select2', 'not seen one');
+      yield I.seeInField('select2', 'see test one');
+      yield I.dontSeeInField('select2', 'not seen two');
+      yield I.seeInField('select2', 'see test two');
+      yield I.dontSeeInField('select2', 'not seen three');
+      return I.seeInField('select2', 'see test three');
+    });
+  });
+
+  describe('#waitInUrl, #waitUrlEquals', () => {
+    it('should wait part of the URL to match the expected', () => I.amOnPage('/info')
+      .then(() => I.waitInUrl('/info'))
+      .then(() => I.waitInUrl('/info2', 0.1))
+      .catch((e) => {
+        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
+      }));
+    it('should wait for the entire URL to match the expected', () => I.amOnPage('/info')
+      .then(() => I.waitUrlEquals('/info'))
+      .then(() => I.waitUrlEquals(`${siteUrl}/info`))
+      .then(() => I.waitUrlEquals('/info2', 0.1))
+      .catch((e) => {
+        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+      }));
+  });
+
+  describe('#seeCssPropertiesOnElements', () => {
+    it('should check css property for given element', () => I.amOnPage('/info')
+      .then(() => I.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'bold',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'bold',
+        display: 'block',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'non-bold',
+      }))
+      .catch((e) => {
+        console.log('error', e.message);
+        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"} "0" to equal "1"');
+      }));
+
+    it('should check css property for several elements', () => I.amOnPage('/')
+      .then(() => I.seeCssPropertiesOnElements('a', {
+        color: 'rgb(0, 0, 238)', // Note: if alpha is 1, then rgb() should be used instead of rgba()
+        cursor: 'pointer',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('//div', {
+        display: 'block',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('a', {
+        'margin-top': '0em',
+        cursor: 'pointer',
+      }))
+      .catch((e) => {
+        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"} "0" to equal "5"');
+      }));
+  });
+
+  describe('#seeNumberOfVisibleElements', () => {
+    it('should check number of visible elements for given locator', () => I.amOnPage('/info')
+      .then(() => I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
+  });
+
+  describe('#grabNumberOfVisibleElements', () => {
+    it('should grab number of visible elements for given locator', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
+      .then(num => assert.equal(num, 3)));
+    it('should support locators like {xpath:"//div"}', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements({
+        xpath: '//div[@id = "grab-multiple"]//a',
+      }))
+      .then(num => assert.equal(num, 3)));
+  });
+
+  describe('#grabCssPropertyFrom', () => {
+    it('should grab css property for given element', () => I.amOnPage('/form/doubleclick')
+      .then(() => I.grabCssPropertyFrom('#block', 'height'))
+      .then(css => assert.equal(css, '100px')));
+  });
+
+  describe('#grabHTMLFrom', () => {
+    it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('//title'))
+      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
+
+    it('should grab inner html from an element using id query', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('#area1'))
+      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
+
+    it('should grab inner html from multiple elements', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('//a'))
+      .then(html => assert.equal(html.length, 5)));
+  });
+
+  describe('#grabBrowserLogs', () => {
+    it('should grab browser logs', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs across pages', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/info'))
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 2);
+      }));
+  });
+
+  describe('#dragAndDrop', () => {
+    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+      .then(() => I.seeElementInDOM('#draggable'))
+      .then(() => I.dragAndDrop('#draggable', '#droppable'))
+      .then(() => I.see('Dropped')));
+
+    it('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
+      .then(() => I.resizeWindow(700, 700))
+      .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
+      .then(() => I.seeElementInDOM('#draggable'))
+      .then(() => I.dragAndDrop('#draggable', '#droppable'))
+      .then(() => I.see('Dropped')));
   });
 });

@@ -88,6 +88,14 @@ this.helpers['Protractor'].browser
 
 -   `config`  
 
+## _getWindowHandle
+
+Get the window handle relative to the current handle. i.e. the next handle or the previous.
+
+**Parameters**
+
+-   `offset` **Number** Offset from current handle index. i.e. offset < 0 will go to the previous handle and positive number will go to the next window handle in sequence.
+
 ## _locate
 
 Get elements by different locator types, including strict locator
@@ -238,9 +246,17 @@ I.click({css: 'nav a.login'});
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
 
+## closeCurrentTab
+
+Close current tab
+
+```js
+I.closeCurrentTab();
+```
+
 ## closeOtherTabs
 
-Close all tabs expect for one.
+Close all tabs except for the current one.
 
 ```js
 I.closeOtherTabs();
@@ -458,6 +474,18 @@ assert(cookie.value, '123456');
 
 -   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
+## grabSource
+
+Checks that the current page contains the given string in its raw source code.
+
+```js
+I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+```
+
+**Parameters**
+
+-   `text`  
+
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -531,6 +559,14 @@ Moves to url
 **Parameters**
 
 -   `path`  
+
+## openNewTab
+
+Open new tab and switch to it
+
+```js
+I.openNewTab();
+```
 
 ## pressKey
 
@@ -731,6 +767,45 @@ Checks that title contains text.
 
 -   `text`  
 
+## seeNumberOfElements
+
+asserts that an element appears a given number of times in the DOM
+Element is located by label or name or CSS or XPath.
+
+```js
+I.seeNumberOfElements('#submitBtn', 1);
+```
+
+**Parameters**
+
+-   `selector`  
+-   `num`  
+
+## seeTextEquals
+
+Checks that text is equal to provided one.
+
+```js
+I.seeTextEquals('text', 'h1');
+```
+
+**Parameters**
+
+-   `text`  
+-   `context`   (optional, default `null`)
+
+## seeTitleEquals
+
+Checks that title is equal to provided one.
+
+```js
+I.seeTitleEquals('Test title.');
+```
+
+**Parameters**
+
+-   `text`  
+
 ## selectOption
 
 Selects an option in a drop-down select.
@@ -756,6 +831,32 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
 -   `option`  
+
+## switchToNextTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToNextTab();
+I.switchToNextTab(2);
+```
+
+**Parameters**
+
+-   `num`   (optional, default `1`)
+
+## switchToPreviousTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToPreviousTab();
+I.switchToPreviousTab(2);
+```
+
+**Parameters**
+
+-   `num`   (optional, default `1`)
 
 ## wait
 
