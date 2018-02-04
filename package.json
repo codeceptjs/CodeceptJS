@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -8,7 +8,7 @@
     "tdd",
     "testing"
   ],
-  "homepage": "http://codecept.io",
+  "homepage": "https://codecept.io",
   "license": "MIT",
   "author": {
     "name": "DavertMik",
