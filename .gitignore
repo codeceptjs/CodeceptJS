@@ -13,3 +13,4 @@ test/data/sandbox/steps.d.ts
 testpullfilecache*
 .DS_Store
 package-lock.json
+yarn.lock
