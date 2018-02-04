@@ -52,6 +52,14 @@ I.seeElement({text: 'press me'});
 I.seeElement({id: 'users'});
 ```
 
+In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~` to specify accessibility id to locate an element. In web application you can locate element by their `aria-label` value.
+
+```js
+// locate element by [aria-label] attribute in web
+// or by accessibility id in mobile
+I.seeElement('~username');
+```
+
 ## Clicking
 
 CodeceptJS provides a flexible syntax to specify an element to click.
