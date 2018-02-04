@@ -390,6 +390,15 @@ assert(cookie.value, '123456');
     I.grabCookie({ secure: true});
     ```If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
+## grabHAR
+
+Get HAR
+
+```js
+let har = yield I.grabHAR();
+fs.writeFileSync('sample.har', JSON.stringify({log: har}));
+```
+
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -725,6 +734,18 @@ Element can be located by CSS or XPath.
 I.waitForElement('.btn.continue');
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 ```
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForInvisible
+
+Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForVisible('#popup');
 
 **Parameters**
 
