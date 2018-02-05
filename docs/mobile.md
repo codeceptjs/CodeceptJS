@@ -55,7 +55,7 @@ To run mobile test you need either an device emulator (available with Android SD
 CodeceptJS should be installed with webdriverio support:
 
 ```bash
-npm install -g codeceptjs-webdriverio
+npm install -g codeceptjs webdriverio
 ```
 
 ## Configuring
@@ -152,6 +152,7 @@ Accessibility id is recommended to use for locating element, as it rarely change
 
 * iOS uses [UIAccessibilityIdentification](https://developer.apple.com/documentation/uikit/uiaccessibilityidentification)
 * Android `accessibility id` matches the content-description
+* Web view uses `[aria-label]` attribute as accessibility id
 
 Add `~` prefix to search for element by its accessibility id:
 
@@ -217,7 +218,7 @@ I.switchToNative();
 To get a list of all contexts use `grabAllContexts` method:
 
 ```js
-let contexts = yield I.grabAllContexts();
+let contexts = await I.grabAllContexts();
 ```
 
 ## Cross-Platform Testing
