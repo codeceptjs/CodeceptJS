@@ -1,3 +1,8 @@
+## 1.1.4
+
+* Removed `yarn` call in package.json
+* Fixed `console.log` in Puppeteer by @othree
+
 ## 1.1.3
 
 * [Puppeteer] +25 Functions added by @reubenmiller
