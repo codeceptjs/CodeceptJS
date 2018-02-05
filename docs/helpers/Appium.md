@@ -21,7 +21,10 @@ Launch the daemon: `appium`
 
 This helper should be configured in codecept.json or codecept.conf.js
 
--   `port`: Appium port
+-   `app`: Application path. Local path or remote URL to an .ipa or .apk file, or a .zip containing one of these. Alias to desiredCapabilities.appPackage
+-   `host`: (default: 'localhost') Appium host
+-   `port`: (default: '4723') Appium port
+-   `platform`: (Android or IOS), which mobile OS to use; alias to desiredCapabilities.platformName
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
 -   `desiredCapabilities`: [], Appium capabilities, see below
     -   `platformName` - Which mobile OS platform to use
@@ -448,6 +451,18 @@ I.runOnAndroid({platformVersion: '6.0'},() => {
 });
 ```
 
+Also capabilities can be checked by a function.
+In this case, code will be executed only on Android >= 6.
+
+```js
+I.runOnAndroid((caps) => {
+   // caps is current config of desiredCapabiliites
+   return caps.platformVersion >= 6
+},() => {
+   // ...
+});
+```
+
 **Parameters**
 
 -   `caps` **Any** 
@@ -469,6 +484,17 @@ For instance, this code will be executed only on iPhone 5s:
 
 ```js
 I.runOnIOS({deviceName: 'iPhone 5s'},() => {
+   // ...
+});
+```
+
+Also capabilities can be checked by a function.
+
+```js
+I.runOnAndroid((caps) => {
+   // caps is current config of desiredCapabiliites
+   return caps.platformVersion >= 6
+},() => {
    // ...
 });
 ```

@@ -522,6 +522,12 @@ describe('Appium', function () {
       assert.equal('android', platform);
     });
 
+    it('should execute only on Android >= 5.0 @quick', () => {
+      let platform = null;
+      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {
+        platform = 'android';
+      });
+    });
 
     it('should execute only in Web', () => {
       app.isWeb = true;
