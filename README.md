@@ -1,5 +1,5 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1823c38c74e44724b5555e3641f72621)](https://www.codacy.com/app/DavertMik/CodeceptJS?utm_source=github.com&utm_medium=referral&utm_content=Codeception/CodeceptJS&utm_campaign=badger)
-# CodeceptJS [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg?branch=master)](https://travis-ci.org/Codeception/CodeceptJS) [![Join the chat at https://gitter.im/Codeception/CodeceptJS](https://badges.gitter.im/Codeception/CodeceptJS.svg)](https://gitter.im/Codeception/CodeceptJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# CodeceptJS [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg?branch=master)](https://travis-ci.org/Codeception/CodeceptJS) [![Join the chat at https://gitter.im/Codeception/CodeceptJS](https://badges.gitter.im/Codeception/CodeceptJS.svg)](https://gitter.im/Codeception/CodeceptJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1823c38c74e44724b5555e3641f72621)](https://www.codacy.com/app/DavertMik/CodeceptJS?utm_source=github.com&utm_medium=referral&utm_content=Codeception/CodeceptJS&utm_campaign=badger)
+
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
@@ -29,8 +29,8 @@ Codeception uses **Helper** modules to provide actions to `I` object. Currently 
 * [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
 * [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
 * [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - helper which for testing web applications indi Electron  using NightmareJS.
-* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md)
-* [**SeleniumWebdriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/SeleniumWebdriver.md) - helper which for selenium testing using official Selenium Webdriver JS bindings.
+* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
+* [**Puppeteer**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
 
 And more to come...
 
@@ -179,16 +179,16 @@ In this case 'User is valid' string will be searched only inside elements locate
 ### Grabbers
 
 In case you need to return a value from a webpage and use it directly in test, you should use methods with `grab` prefix.
-They are expected to be used inside a generator functions, and their results will be available in test:
+They are expected to be used inside async/await functions, and their results will be available in test:
 
 ```js
 var assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
-Scenario('test page title', function*(I) {
+Scenario('test page title', async (I) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
-  var title = yield I.grabTitle();
+  var title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
 });
 ```
@@ -272,7 +272,7 @@ Scenario('test some forms', (I, docsPage) => {
 
 ## License
 
-MIT © [DavertMik](http://codegyre.com)
+MIT © [CodeceptJS Team](http://codecept.io)
 
 [npm-image]: https://badge.fury.io/js/codeceptjs.svg
 [npm-url]: https://npmjs.org/package/codeceptjs
