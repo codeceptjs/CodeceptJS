@@ -2,6 +2,13 @@
 
 * Removed `yarn` call in package.json
 * Fixed `console.log` in Puppeteer by @othree
+* [Appium] `runOnAndroid` and `runOnIOS` can receive a function to check capabilities dynamically:
+
+```js
+I.runOnAndroid(caps => caps.platformVersion >= 7, () => {
+  // run code only on Android 7+
+});
+```
 
 ## 1.1.3
 
