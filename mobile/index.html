@@ -219,11 +219,22 @@
                 
             
             
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Support  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">CodeceptJS Slack</a></li>
+                    <li><a href="https://twitter.com/codeceptjs">Twitter</a></li>
+                </ul>
+            </li>
+
             </ul>
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-
 
                     <li class="dropdown promo">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -235,6 +246,8 @@
                                 <li><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">Trainings &raquo;</a></li>
                             </ul>
                         </li>
+
+
 
                 <li >
                     <a rel="prev" href="../puppeteer/">
@@ -331,7 +344,7 @@ Once they are prepared, launch Appium:</p>
 
 <p>To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.</p>
 <p>CodeceptJS should be installed with webdriverio support:</p>
-<pre><code class="bash">npm install -g codeceptjs-webdriverio
+<pre><code class="bash">npm install -g codeceptjs webdriverio
 </code></pre>
 
 <h2 id="configuring">Configuring</h2>
@@ -408,6 +421,7 @@ Accessibility id is recommended to use for locating element, as it rarely change
 <ul>
 <li>iOS uses <a href="https://developer.apple.com/documentation/uikit/uiaccessibilityidentification">UIAccessibilityIdentification</a></li>
 <li>Android <code>accessibility id</code> matches the content-description</li>
+<li>Web view uses <code>[aria-label]</code> attribute as accessibility id</li>
 </ul>
 <p>Add <code>~</code> prefix to search for element by its accessibility id:</p>
 <pre><code class="js">I.seeElement('~startUserRegistrationButton');
@@ -452,7 +466,7 @@ I.switchToNative();
 </code></pre>
 
 <p>To get a list of all contexts use <code>grabAllContexts</code> method:</p>
-<pre><code class="js">let contexts = yield I.grabAllContexts();
+<pre><code class="js">let contexts = await I.grabAllContexts();
 </code></pre>
 
 <h2 id="cross-platform-testing">Cross-Platform Testing</h2>
@@ -523,6 +537,10 @@ I.runOnIOS(() =&gt; {
                             <img src="/images/twitter.png" alt="">@CodeceptJS
                         </a>
                     </li>
+                    <li><h4>Support:</h4></li>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Channel</a></li>
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=bottom&utm_term=link&utm_campaign=reference">Commercial Support</a></li>
                 </ul>
 
 </div>

@@ -219,11 +219,22 @@
                 
             
             
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Support  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">CodeceptJS Slack</a></li>
+                    <li><a href="https://twitter.com/codeceptjs">Twitter</a></li>
+                </ul>
+            </li>
+
             </ul>
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-
 
                     <li class="dropdown promo">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -235,6 +246,8 @@
                                 <li><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">Trainings &raquo;</a></li>
                             </ul>
                         </li>
+
+
 
                 <li class="disabled">
                     <a rel="prev" >
@@ -270,7 +283,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#113">1.1.3</a></li>
+        <li class="main active"><a href="#114">1.1.4</a></li>
+        
+    
+        <li class="main "><a href="#113">1.1.3</a></li>
         
     
         <li class="main "><a href="#112">1.1.2</a></li>
@@ -411,9 +427,20 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="114">1.1.4</h2>
+<ul>
+<li>Removed <code>yarn</code> call in package.json</li>
+<li>Fixed <code>console.log</code> in Puppeteer by @othree</li>
+<li>[Appium] <code>runOnAndroid</code> and <code>runOnIOS</code> can receive a function to check capabilities dynamically:</li>
+</ul>
+<pre><code class="js">I.runOnAndroid(caps =&gt; caps.platformVersion &gt;= 7, () =&gt; {
+  // run code only on Android 7+
+});
+</code></pre>
+
 <h2 id="113">1.1.3</h2>
 <ul>
-<li>[Puppeteer] +25 Functions added by @reubenmiller</li>
+<li>[Puppeteer] +25 Functions added by @reubenmiller<ul>
 <li><code>_locateCheckable</code></li>
 <li><code>_locateClickable</code></li>
 <li><code>_locateFields</code></li>
@@ -439,7 +466,9 @@
 <li><code>waitForInvisible</code></li>
 <li><code>waitInUrl</code></li>
 <li><code>waitUrlEquals</code></li>
-<li>[Protractor] +8 functions added by @reubenmiller</li>
+</ul>
+</li>
+<li>[Protractor] +8 functions added by @reubenmiller<ul>
 <li><code>closeCurrentTab</code></li>
 <li><code>grabSource</code></li>
 <li><code>openNewTab</code></li>
@@ -448,12 +477,16 @@
 <li><code>seeTitleEquals</code></li>
 <li><code>switchToNextTab</code></li>
 <li><code>switchToPreviousTab</code></li>
+</ul>
+</li>
 <li>[Nightmare] <code>waitForInvisible</code> added by @reubenmiller</li>
 <li>[Puppeteer] Printing console.log information in debug mode.</li>
-<li>[Nightmare] Integrated with <code>nightmare-har-plugin</code> by mingfang. Added <code>enableHAR</code> option. Added HAR functions:</li>
+<li>[Nightmare] Integrated with <code>nightmare-har-plugin</code> by mingfang. Added <code>enableHAR</code> option. Added HAR functions:<ul>
 <li><code>grabHAR</code></li>
 <li><code>saveHAR</code></li>
 <li><code>resetHAR</code></li>
+</ul>
+</li>
 <li>[WebDriverIO] Fixed execution stability for parallel requests with Chromedriver</li>
 <li>[WebDriverIO] Fixed resizeWindow when resizing to 'maximize' by @reubenmiller</li>
 <li>[WebDriverIO] Fixing resizing window to full screen when taking a screenshot by @reubenmiller</li>
@@ -1086,6 +1119,10 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
                             <img src="/images/twitter.png" alt="">@CodeceptJS
                         </a>
                     </li>
+                    <li><h4>Support:</h4></li>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Channel</a></li>
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=bottom&utm_term=link&utm_campaign=reference">Commercial Support</a></li>
                 </ul>
 
 </div>

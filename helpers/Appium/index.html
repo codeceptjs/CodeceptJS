@@ -219,11 +219,22 @@
                 
             
             
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Support  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">CodeceptJS Slack</a></li>
+                    <li><a href="https://twitter.com/codeceptjs">Twitter</a></li>
+                </ul>
+            </li>
+
             </ul>
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-
 
                     <li class="dropdown promo">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -235,6 +246,8 @@
                                 <li><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">Trainings &raquo;</a></li>
                             </ul>
                         </li>
+
+
 
                 <li >
                     <a rel="prev" href="../REST/">
@@ -414,7 +427,10 @@ It allows you to run Selenium tests on mobile devices and also test native, hybr
 <h2 id="helper-configuration">Helper configuration</h2>
 <p>This helper should be configured in codecept.json or codecept.conf.js</p>
 <ul>
-<li><code>port</code>: Appium port</li>
+<li><code>app</code>: Application path. Local path or remote URL to an .ipa or .apk file, or a .zip containing one of these. Alias to desiredCapabilities.appPackage</li>
+<li><code>host</code>: (default: 'localhost') Appium host</li>
+<li><code>port</code>: (default: '4723') Appium port</li>
+<li><code>platform</code>: (Android or IOS), which mobile OS to use; alias to desiredCapabilities.platformName</li>
 <li><code>restart</code>: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.</li>
 <li><code>desiredCapabilities</code>: [], Appium capabilities, see below<ul>
 <li><code>platformName</code> - Which mobile OS platform to use</li>
@@ -754,6 +770,16 @@ For instance, this code will be executed only on Android 6.0:</p>
 });
 </code></pre>
 
+<p>Also capabilities can be checked by a function.
+In this case, code will be executed only on Android &gt;= 6.</p>
+<pre><code class="js">I.runOnAndroid((caps) =&gt; {
+   // caps is current config of desiredCapabiliites
+   return caps.platformVersion &gt;= 6
+},() =&gt; {
+   // ...
+});
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>caps</code> <strong>Any</strong> </li>
@@ -770,6 +796,15 @@ For instance, this code will be executed only on Android 6.0:</p>
 <p>Additional filter can be applied by checking for capabilities.
 For instance, this code will be executed only on iPhone 5s:</p>
 <pre><code class="js">I.runOnIOS({deviceName: 'iPhone 5s'},() =&gt; {
+   // ...
+});
+</code></pre>
+
+<p>Also capabilities can be checked by a function.</p>
+<pre><code class="js">I.runOnAndroid((caps) =&gt; {
+   // caps is current config of desiredCapabiliites
+   return caps.platformVersion &gt;= 6
+},() =&gt; {
    // ...
 });
 </code></pre>
@@ -1180,6 +1215,10 @@ I.touchPerform([{
                             <img src="/images/twitter.png" alt="">@CodeceptJS
                         </a>
                     </li>
+                    <li><h4>Support:</h4></li>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Channel</a></li>
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=bottom&utm_term=link&utm_campaign=reference">Commercial Support</a></li>
                 </ul>
 
 </div>
