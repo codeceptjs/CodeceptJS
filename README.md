@@ -97,7 +97,7 @@ Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebD
 
 Let's see how we can handle basic form testing:
 
-```sh
+```js
 Feature('CodeceptJS Demonstration');
 
 Scenario('test some forms', (I) => {
