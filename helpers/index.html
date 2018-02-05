@@ -465,8 +465,7 @@ Implement corresponding methods to them.</p>
 <p>Each implemented method should return a value as they will be added to global promise chain as well.</p>
 <h3 id="hook-usage-examples">Hook Usage Examples</h3>
 <p>1)  Failing if JS error occur in WebDriverIO:</p>
-<pre><code>```js
-class JSFailure extends codecept_helper {
+<pre><code class="js">class JSFailure extends codecept_helper {
 
   _before() {
     this.err = null;
@@ -479,11 +478,10 @@ class JSFailure extends codecept_helper {
 }
 
 module.exports = JSFailure;
-```
 </code></pre>
+
 <p>2)  Wait for Ajax requests to complete after <code>click</code>:</p>
-<pre><code>```js
-class JSWait extends codecept_helper {
+<pre><code class="js">class JSWait extends codecept_helper {
 
   _afterStep(step) {
     if (step.name == 'click') {
@@ -494,8 +492,8 @@ class JSWait extends codecept_helper {
 }
 
 module.exports = JSWait;
-```
 </code></pre>
+
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
