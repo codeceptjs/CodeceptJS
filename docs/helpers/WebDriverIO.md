@@ -382,7 +382,7 @@ I.closeCurrentTab();
 
 ## closeOtherTabs
 
-Close all tabs expect for one.
+Close all tabs except for the current one.
 Appium: support web test
 
 ```js
@@ -1412,6 +1412,44 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `urlPart`  
 -   `sec`   (optional, default `null`)
 
+# filterAsync
+
+Mimic Array.filter() API, but with an async callback function.
+Execute each callback on each array item serially. Useful when using WebDriverIO API.
+
+Added due because of problem with chrome driver when too many requests
+are made simultaneously. <https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9>
+
+**Parameters**
+
+-   `array` **Array&lt;object&gt;** Input array items to iterate over
+-   `callback` **function** Async function to excute on each array item
+-   `option` **object** Additional options. 'extractValue' will extract the .value object from a WebdriverIO
+
+# forEachAsync
+
+Mimic Array.forEach() API, but with an async callback function.
+Execute each callback on each array item serially. Useful when using WebDriverIO API.
+
+Added due because of problem with chrome driver when too many requests
+are made simultaneously. <https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9>
+
+**Parameters**
+
+-   `array` **Array&lt;object&gt;** Input array items to iterate over
+-   `callback` **function** Async function to excute on each array item
+-   `option` **object** Additional options. 'extractValue' will extract the .value object from a WebdriverIO
+
 # locator
 
 just press button if no selector is given
+
+# unify
+
+Internal helper method to handle command results (similar behaviour as the unify function from WebDriverIO
+except it does not resolve promises)
+
+**Parameters**
+
+-   `items` **Array&lt;object&gt;** list of items
+-   `option` **[object]** extractValue: set to try to return the .value property of the input items

@@ -1,3 +1,62 @@
+## 1.1.4
+
+* Removed `yarn` call in package.json
+* Fixed `console.log` in Puppeteer by @othree
+* [Appium] `runOnAndroid` and `runOnIOS` can receive a function to check capabilities dynamically:
+
+```js
+I.runOnAndroid(caps => caps.platformVersion >= 7, () => {
+  // run code only on Android 7+
+});
+```
+
+## 1.1.3
+
+* [Puppeteer] +25 Functions added by @reubenmiller
+    * `_locateCheckable`
+    * `_locateClickable`
+    * `_locateFields`
+    * `closeOtherTabs`
+    * `dragAndDrop`
+    * `grabBrowserLogs`
+    * `grabCssPropertyFrom`
+    * `grabHTMLFrom`
+    * `grabNumberOfVisibleElements`
+    * `grabSource`
+    * `rightClick`
+    * `scrollPageToBottom`
+    * `scrollPageToTop`
+    * `scrollTo`
+    * `seeAttributesOnElements`
+    * `seeCssPropertiesOnElements`
+    * `seeInField`
+    * `seeNumberOfElements`
+    * `seeNumberOfVisibleElements`
+    * `seeTextEquals`
+    * `seeTitleEquals`
+    * `switchTo`
+    * `waitForInvisible`
+    * `waitInUrl`
+    * `waitUrlEquals`
+* [Protractor] +8 functions added by @reubenmiller
+    * `closeCurrentTab`
+    * `grabSource`
+    * `openNewTab`
+    * `seeNumberOfElements`
+    * `seeTextEquals`
+    * `seeTitleEquals`
+    * `switchToNextTab`
+    * `switchToPreviousTab`
+* [Nightmare] `waitForInvisible` added by @reubenmiller
+* [Puppeteer] Printing console.log information in debug mode.
+* [Nightmare] Integrated with `nightmare-har-plugin` by mingfang. Added `enableHAR` option. Added HAR functions:
+    * `grabHAR`
+    * `saveHAR`
+    * `resetHAR`
+* [WebDriverIO] Fixed execution stability for parallel requests with Chromedriver
+* [WebDriverIO] Fixed resizeWindow when resizing to 'maximize' by @reubenmiller
+* [WebDriverIO] Fixing resizing window to full screen when taking a screenshot by @reubenmiller
+
 ## 1.1.2
 
 * [Puppeteer] Upgraded to Puppeteer 1.0

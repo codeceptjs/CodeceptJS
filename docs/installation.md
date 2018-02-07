@@ -38,29 +38,6 @@ To use it with Puppeteer install puppeteer package:
 npm install puppeteer --save-dev
 ```
 
-## Meta Packages
-
-By default it doesn't install any backends like Webdriverio, Protractor, or Nightmare, so you need to install corresponding packages manually, or install one of the provided meta-packages:
-
-* [codeceptjs-webdriverio](https://www.npmjs.com/package/codeceptjs-webdriverio) - installs CodeceptJS + WebDriverIO
-* [codeceptjs-protractor](https://www.npmjs.com/package/codeceptjs-protractor) - installs CodeceptJS + Protractor
-* [codeceptjs-puppeteer](https://www.npmjs.com/package/codeceptjs-puppeteer) - installs CodeceptJS + Puppeteer
-* [codeceptjs-nightmare](https://www.npmjs.com/package/codeceptjs-nightmare) - installs CodeceptJS + Nightmare
-
-Install them using NPM:
-
-```sh
-[sudo] npm install codeceptjs-webdriverio
-# or
-[sudo] npm install codeceptjs-protractor
-# or
-[sudo] npm install codeceptjs-puppeteer
-# or
-[sudo] npm install codeceptjs-nightmare
-```
-
-They can be installed either globally or locally
-
 ## WebDriver
 
 WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
@@ -80,16 +57,16 @@ docker run --net=host selenium/standalone-chrome
 
 ## Global
 
-CodeceptJS can be installed via NPM globally, in this case it is recommended to use meta-packages for installation:
+CodeceptJS can be installed via NPM globally:
 
 ```sh
-[sudo] npm install -g codeceptjs-webdriverio
+[sudo] npm install -g codeceptjs webdriverio
 # or
-[sudo] npm install -g codeceptjs-protractor
+[sudo] npm install -g codeceptjs protractor
 # or
-[sudo] npm install -g codeceptjs-puppeteer
+[sudo] npm install -g codeceptjs puppeteer
 # or
-[sudo] npm install -g codeceptjs-nightmare
+[sudo] npm install -g codeceptjs nightmare
 ```
 
 then it can be started as
