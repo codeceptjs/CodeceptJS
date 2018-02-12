@@ -156,4 +156,9 @@ describe('Nightmare', function () {
       assert.equal(url, nextUrl);
     });
   });
+
+  describe('#seeNumberOfElements', () => {
+    it('should return 1 as count', () => I.amOnPage('/')
+      .then(() => I.seeNumberOfElements('#area1', 1)));
+  });
 });
