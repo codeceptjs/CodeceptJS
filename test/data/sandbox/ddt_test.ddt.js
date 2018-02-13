@@ -22,3 +22,7 @@ Data(function* () {
 }).Scenario('Should log accounts3', (I, current) => {
   console.log(`Got changed login ${current[0]}`);
 });
+
+Data(['1', '2', '3']).Scenario('Should log array of strings', (I, current) => {
+  console.log(`Got array item ${current}`);
+});
