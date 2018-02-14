@@ -87,5 +87,4 @@ describe('Actor', () => {
         listeners.should.eql(3);
       });
   });
-
 });
