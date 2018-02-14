@@ -8,7 +8,6 @@ const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
-require('co-mocha')(require('mocha'));
 
 const data = {
   comments: [],
@@ -49,47 +48,49 @@ describe('ApiDataFactory', () => {
   afterEach(() => I._after());
 
   describe('create and cleanup records', function () {
+    this.retries(1);
     this.timeout(20000);
 
-    it('should create a new post', function* () {
-      yield I.have('post');
-      const resp = yield I.restHelper.sendGetRequest('/posts');
+    it('should create a new post', async () => {
+      await I.have('post');
+      const resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(2);
     });
 
-    it('should create a new post with predefined field', function* () {
-      yield I.have('post', { author: 'Tapac' });
-      let resp = yield I.restHelper.sendGetRequest('/posts/1');
+    it('should create a new post with predefined field', async () => {
+      await I.have('post', { author: 'Tapac' });
+      let resp = await I.restHelper.sendGetRequest('/posts/1');
       resp.body.author.should.eql('davert');
-      resp = yield I.restHelper.sendGetRequest('/posts/2');
+      resp = await I.restHelper.sendGetRequest('/posts/2');
       resp.body.author.should.eql('Tapac');
     });
 
-    it('should cleanup created data', function* () {
-      yield I.have('post', { author: 'Tapac' });
-      let resp = yield I.restHelper.sendGetRequest('/posts/2');
+    it('should cleanup created data', async () => {
+      await I.have('post', { author: 'Tapac' });
+      let resp = await I.restHelper.sendGetRequest('/posts/2');
       resp.body.author.should.eql('Tapac');
-      yield I._after();
-      resp = yield I.restHelper.sendGetRequest('/posts/2');
+      await I._after();
+      resp = await I.restHelper.sendGetRequest('/posts/2');
+      console.log('debug response:', resp);
       resp.body.should.be.empty;
-      resp = yield I.restHelper.sendGetRequest('/posts');
+      resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(1);
     });
 
-    it('should create multiple posts and cleanup after', function* () {
-      let resp = yield I.restHelper.sendGetRequest('/posts');
+    it('should create multiple posts and cleanup after', async () => {
+      let resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(1);
-      yield I.haveMultiple('post', 3);
-      yield new Promise(done => setTimeout(done, 500));
-      resp = yield I.restHelper.sendGetRequest('/posts');
+      await I.haveMultiple('post', 3);
+      await new Promise(done => setTimeout(done, 500));
+      resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(4);
-      yield I._after();
-      yield new Promise(done => setTimeout(done, 500));
-      resp = yield I.restHelper.sendGetRequest('/posts');
+      await I._after();
+      await new Promise(done => setTimeout(done, 500));
+      resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(1);
     });
 
-    it('should create with different api', function* () {
+    it('should create with different api', async () => {
       I = new ApiDataFactory({
         endpoint: api_url,
         factories: {
@@ -101,14 +102,14 @@ describe('ApiDataFactory', () => {
           },
         },
       });
-      yield I.have('post');
-      let resp = yield I.restHelper.sendGetRequest('/posts');
+      await I.have('post');
+      let resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(1);
-      resp = yield I.restHelper.sendGetRequest('/comments');
+      resp = await I.restHelper.sendGetRequest('/comments');
       resp.body.length.should.eql(1);
     });
 
-    it('should not remove records if cleanup:false', function* () {
+    it('should not remove records if cleanup:false', async () => {
       I = new ApiDataFactory({
         endpoint: api_url,
         cleanup: false,
@@ -119,16 +120,16 @@ describe('ApiDataFactory', () => {
           },
         },
       });
-      yield I.have('post');
-      let resp = yield I.restHelper.sendGetRequest('/posts');
+      await I.have('post');
+      let resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(2);
-      yield I._after();
-      yield new Promise(done => setTimeout(done, 500));
-      resp = yield I.restHelper.sendGetRequest('/posts');
+      await I._after();
+      await new Promise(done => setTimeout(done, 500));
+      resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(2);
     });
 
-    it('should send default headers', function* () {
+    it('should send default headers', async () => {
       I = new ApiDataFactory({
         endpoint: api_url,
         REST: {
@@ -143,7 +144,7 @@ describe('ApiDataFactory', () => {
           },
         },
       });
-      const resp = yield I.have('post');
+      const resp = await I.have('post');
       resp.should.have.property('authorization');
       resp.should.have.property('auth');
       resp.auth.should.eql('111');
