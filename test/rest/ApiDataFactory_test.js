@@ -71,7 +71,6 @@ describe('ApiDataFactory', () => {
       resp.body.author.should.eql('Tapac');
       await I._after();
       resp = await I.restHelper.sendGetRequest('/posts/2');
-      console.log('debug response:', resp);
       resp.body.should.be.empty;
       resp = await I.restHelper.sendGetRequest('/posts');
       resp.body.length.should.eql(1);
