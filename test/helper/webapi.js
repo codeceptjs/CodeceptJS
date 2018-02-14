@@ -319,6 +319,14 @@ module.exports.tests = function () {
       return assert.equal(formContents('description'), 'Nothing special');
     });
 
+    it('should fill textarea by overwritting the existing value', function* () {
+      yield I.amOnPage('/form/textarea');
+      yield I.fillField('Description', 'Nothing special');
+      yield I.fillField('Description', 'Some other text');
+      yield I.click('Submit');
+      return assert.equal(formContents('description'), 'Some other text');
+    });
+
     it('should append field value', function* () {
       yield I.amOnPage('/form/field');
       yield I.appendField('Name', '_AND_NEW');
