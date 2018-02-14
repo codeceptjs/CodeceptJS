@@ -1,4 +1,4 @@
-Feature('within');
+Feature('within', { retries: 1 });
 
 Scenario('within on form @WebDriverIO @Protractor @Nightmare @Puppeteer', (I) => {
   I.amOnPage('/form/bug1467');
