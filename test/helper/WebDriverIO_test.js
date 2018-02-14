@@ -31,6 +31,11 @@ describe('WebDriverIO', function () {
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
       waitForTimeout: 5000,
+      desiredCapabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
     });
   });
 

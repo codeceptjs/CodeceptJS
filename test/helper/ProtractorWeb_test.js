@@ -35,6 +35,11 @@ describe('Protractor-NonAngular', function () {
       restart: false,
       seleniumAddress: TestHelper.seleniumAddress(),
       waitForTimeout: 5000,
+      desiredCapabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
     });
     return I._init().then(() => I._beforeSuite().then(() => {
       browser = I.browser;
