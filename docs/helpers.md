@@ -228,4 +228,27 @@ class JSWait extends codecept_helper {
 module.exports = JSWait;
 ```
 
+## Conditional Retries
+
+It is possible to execute global conditional retries to handle unforseen errors.
+Lost connections and network issues are good candidates to be retried whenever they appear.
+
+This can be done inside a helper using the global [promise recorder](https://codecept.io/hooks/#api):
+
+Example: Retrying rendering errors in Puppeteer.
+
+```js
+_before() {
+  const recorder = require('codeceptjs').recorder;
+  recorder.retry({
+    retries: 2,
+    when: err => err.message.indexOf('Cannot find context with specified id') > -1,
+  });
+}
+```
+
+`recorder.retry` acts similarly to `I.retry()` and accepts the same parameters. It expects the `when` parameter to be set so it would handle only specific errors and not to retry for every failed step.
+
+Retry rules are available in array `recorder.retries`. The last retry rule can be disabled by running `recorder.retries.pop()`;
+
 ### done()

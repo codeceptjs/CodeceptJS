@@ -8,8 +8,15 @@
 I.retry().see('Hello');
 // retry action 3 times on failure
 I.retry(3).see('Hello');
-// retry action 3 times waiting for 35 seconds
-I.retry({ retries: 3, maxTimeout: 35000 }).see('Hello');
+// retry action 3 times waiting for 0.1 second before next try
+I.retry({ retries: 3, minTimeout: 100 }).see('Hello');
+// retry action 3 times waiting no more than 3 seconds for last retry
+I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello');
+//
+I.retry({
+  retries: 2,
+  when: err => err.message === 'Node not visible'
+}).seeElement('#user');
 ```
 
 ## 1.1.4

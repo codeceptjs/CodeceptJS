@@ -254,9 +254,20 @@ Additional options can be provided to retry so you can set the additional option
 
 
 ```js
-// retry 3 times but no longer than 35 sec
-I.retry({retries: 3, maxTimeout: 35000})
+// retry action 3 times waiting for 0.1 second before next try
+I.retry({ retries: 3, minTimeout: 100 }).see('Hello');
+
+// retry action 3 times waiting no more than 3 seconds for last retry
+I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello');
+
+// retry 2 times if error with message 'Node not visible' happens
+I.retry({
+  retries: 2,
+  when: err => err.message === 'Node not visible'
+}).seeElement('#user');
 ```
+
+Pass a function to `when` option to  retry only when error matches the expected one.
 
 ---
 
