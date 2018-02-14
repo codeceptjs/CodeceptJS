@@ -1,3 +1,17 @@
+## 1.1.5
+
+* [Puppeteer] Rerun steps failed due to "Cannot find context with specified id" Error.
+* Added syntax to retry a single step:
+
+```js
+// retry action once on failure
+I.retry().see('Hello');
+// retry action 3 times on failure
+I.retry(3).see('Hello');
+// retry action 3 times waiting for 35 seconds
+I.retry({ retries: 3, maxTimeout: 35000 }).see('Hello');
+```
+
 ## 1.1.4
 
 * Removed `yarn` call in package.json
