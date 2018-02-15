@@ -116,7 +116,7 @@ Usage: `within('section', ()=>{})`
 
 ```js
 I.amOnPage('https://github.com');
-within('.form-signup-home', () => {
+within('.js-signup-form', () => {
   I.fillField('user[login]', 'User');
   I.fillField('user[email]', 'user@user.com');
   I.fillField('user[password]', 'user@user.com');
