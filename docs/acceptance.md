@@ -46,8 +46,6 @@ Strict locators allow to specify additional locator types:
 ```js
 // locate form element by name
 I.seeElement({name: 'password'});
-// locate element by text
-I.seeElement({text: 'press me'});
 // locate element by id
 I.seeElement({id: 'users'});
 ```
