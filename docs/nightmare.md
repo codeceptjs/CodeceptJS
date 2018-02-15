@@ -144,7 +144,7 @@ When opening a web page you can set headers as well. `amOnPage` methods can take
 
 ```js
 // use basic http auth
-I.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);
+I.amOnPage('/admin', { 'Authorization': 'Basic '+token });
 ```
 
 As a small bonus: all `console.log` calls on a page will be also shown in `--debug` mode.
