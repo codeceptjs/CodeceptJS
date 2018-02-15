@@ -779,7 +779,7 @@ I.openNewTab();
 ## pressKey
 
 Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
