@@ -101,10 +101,12 @@ describe('Puppeteer', function () {
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
+      .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
 
     it('should switch to next tab', () => I.amOnPage('/info')
+      .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1))
       .then(() => I.click('New tab'))
@@ -132,6 +134,7 @@ describe('Puppeteer', function () {
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 2))
       .then(() => I.closeCurrentTab())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/info'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
@@ -146,6 +149,7 @@ describe('Puppeteer', function () {
       .then(() => I.wait(2))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.closeOtherTabs())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
