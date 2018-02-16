@@ -100,6 +100,57 @@ describe('CodeceptJS within', function () {
     });
   });
 
+  it('should execute with async/await. Await is first in order', (done) => {
+    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+      const lines = stdout.match(/\S.+/g);
+
+      const withGeneratorList = getLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
+      testStatus = withGeneratorList.pop();
+      testStatus.should.include('OK');
+      withGeneratorList.should.eql([
+        '• I small promise ',
+        '• small Promise was finished',
+        '• I small yield ',
+        'I am small yield string await',
+        'Within blabla:',
+        '• Hey! I am within Begin. I get blabla',
+        '• Within blabla: I small yield ',
+        'I am small yield string await',
+        '• Within blabla: I small promise ',
+        '• small Promise was finished',
+        '• oh! I am within end(',
+      ], 'check steps execution order');
+
+      done();
+    });
+  });
+
+  it('should execute with async/await. Await is second in order', (done) => {
+    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+      const lines = stdout.match(/\S.+/g);
+
+      const withGeneratorList = getLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');
+      testStatus = withGeneratorList.pop();
+      testStatus.should.include('OK');
+      withGeneratorList.should.eql([
+        '• I small promise ',
+        '• small Promise was finished',
+        '• I small yield ',
+        'I am small yield string await',
+        'Within blabla:',
+        '• Hey! I am within Begin. I get blabla',
+        '• Within blabla: I small promise ',
+        '• small Promise was finished',
+        '• Within blabla: I small yield ',
+        'I am small yield string await',
+        '• oh! I am within end(',
+      ], 'check steps execution order');
+
+      done();
+    });
+  });
+
+
   it('should complete test steps after within', (done) => {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
@@ -148,7 +199,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const errorInTestList = getLines(lines, 'Check within with generator. Should stop test execution after fail in main block', '-- FAILURES:');
+      const errorInTestList = getLines(lines, 'Check within with generator. Should stop test execution after fail in main block', 'Check within with async/await. Await is first in order');
       testStatus = errorInTestList.pop();
       testStatus.should.include('FAILED');
       errorInTestList.should.eql([
@@ -162,7 +213,7 @@ describe('CodeceptJS within', function () {
 
   it('should return correct result after tests', (done) => {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
-      stdout.should.include(' FAIL  | 4 passed, 2 failed');
+      stdout.should.include(' FAIL  | 6 passed, 2 failed');
 
       done();
     });

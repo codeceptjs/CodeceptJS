@@ -22,6 +22,16 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should rerun retried steps', (done) => {
+    exec(config_run_config('codecept.retry.json'), (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.include('Retries: 4'); // test name
+      assert(!err);
+      done();
+    });
+  });
+
+
   it('should include grep option tests', (done) => {
     exec(config_run_config('codecept.grep.json'), (err, stdout, stderr) => {
       stdout.should.include('Got login davert and password'); // feature
