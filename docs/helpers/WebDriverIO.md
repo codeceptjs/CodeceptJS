@@ -1385,7 +1385,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
 ## waitUntilExists
 
-Waits for element not to be present on page (by default waits for 1sec).
+Waits for element be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```js
