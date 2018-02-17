@@ -6,15 +6,21 @@ const event = require('../../lib/event');
 
 global.codecept_dir = path.join(__dirname, '/..');
 let I;
+let counter;
 
 describe('Actor', () => {
   beforeEach(() => {
+    counter = 0;
     container.clear({
       MyHelper: {
         hello: () => 'hello world',
         bye: () => 'bye world',
         die: () => { throw new Error('ups'); },
         _hidden: () => 'hidden',
+        failFirst: () => {
+          counter++;
+          if (counter < 2) throw new Error('ups');
+        },
       },
       MyHelper2: {
         greeting: () => 'greetings, world',
@@ -25,7 +31,7 @@ describe('Actor', () => {
   });
 
   it('should take all methods from helpers and built in', () => {
-    I.should.have.keys(['hello', 'bye', 'die', 'greeting', 'say']);
+    I.should.contain.keys(['hello', 'bye', 'die', 'greeting', 'say', 'failFirst']);
   });
 
   it('should return promise', () => {
@@ -51,6 +57,16 @@ describe('Actor', () => {
       listeners.should.eql(3);
     });
   });
+
+
+  it('should retry failed step with #retry', () => {
+    return I.retry(2).failFirst();
+  });
+
+  it('should retry once step with #retry', () => {
+    return I.retry().failFirst();
+  });
+
 
   it('should print handle failed steps', () => {
     recorder.start();

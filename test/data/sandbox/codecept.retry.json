@@ -1,0 +1,13 @@
+{
+  "tests": "./*_test.retry.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Retry": {
+      "require": "./retry_helper.js"
+    }
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}
