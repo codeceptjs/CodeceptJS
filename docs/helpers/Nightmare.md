@@ -66,7 +66,7 @@ I.amOnPage('/login'); // opens a login page
 **Parameters**
 
 -   `url`  url path or global urlIn a second argument a list of request headers can be passed:```js
-    I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
+    I.amOnPage('/auth', { 'x-my-custom-header': 'some value' })
     ```
 -   `headers`   (optional, default `null`)
 
@@ -659,6 +659,20 @@ Checks that title contains text.
 
 -   `text`  
 
+## seeNumberOfElements
+
+asserts that an element appears a given number of times in the DOM
+Element is located by label or name or CSS or XPath.
+
+```js
+I.seeNumberOfElements('#submitBtn', 1);
+```
+
+**Parameters**
+
+-   `selector`  
+-   `num`  
+
 ## selectOption
 
 Selects an option in a drop-down select.
@@ -725,6 +739,18 @@ I.wait(2); // wait 2 secs
 
 -   `sec`  
 
+## waitForDetached
+
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForDetached('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
 ## waitForElement
 
 Waits for element to be present on page (by default waits for 1sec).
@@ -775,21 +801,6 @@ Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForVisible('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitUntilExists
-
-Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-```
 
 **Parameters**
 

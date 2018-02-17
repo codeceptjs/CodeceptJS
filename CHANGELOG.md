@@ -6,18 +6,39 @@
 ```js
 // retry action once on failure
 I.retry().see('Hello');
+
 // retry action 3 times on failure
 I.retry(3).see('Hello');
+
 // retry action 3 times waiting for 0.1 second before next try
 I.retry({ retries: 3, minTimeout: 100 }).see('Hello');
+
 // retry action 3 times waiting no more than 3 seconds for last retry
 I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello');
-//
+
+// retry 2 times if error with message 'Node not visible' happens
 I.retry({
   retries: 2,
   when: err => err.message === 'Node not visible'
 }).seeElement('#user');
 ```
+
+* `Scenario().injectDependencies` added to dynamically add objects into DI container by @Apshenkin. See [Dependency Injection section in PageObjects](https://codecept.io/pageobjects/#dependency-injection).
+* Fixed using async/await functions inside `within`
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] **`waitUntilExists` deprecated** in favor of `waitForElement`
+* [WebDriverIO][Protractor] **`waitForStalenessOf` deprecated** in favor of `waitForDetached`
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForDetached` added
+* [Nightmare] Added `I.seeNumberOfElements()` by @pmoncadaisla
+* [Nightmare] Load blank page when starting nightmare so that the .evaluate function will work if _failed/saveScreenshot is triggered by @reubenmiller
+* Fixed using plain arrays for data driven tests by @reubenmiller
+* [Puppeteer] Use default tab instead of opening a new tab when starting the browser by @reubenmiller
+* [Puppeteer] Added `grabNumberOfTabs` function by @reubenmiller
+* [Puppeteer] Add ability to set user-agent by @abidhahmed
+* [Puppeteer] Add keepCookies and keepBrowserState @abidhahmed
+* [Puppeteer] Clear value attribute instead of innerhtml for TEXTAREA by @reubenmiller
+* [REST] fixed sending string payload by @Spartans2017
+* Fixed unhandled rejection in async/await tests by @APshenkin
+
 
 ## 1.1.4
 
