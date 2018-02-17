@@ -3,7 +3,6 @@ require('co-mocha')(require('mocha'));
 let I;
 let data;
 let siteUrl;
-let defaultOptions;
 
 const assert = require('assert');
 const path = require('path');
@@ -14,8 +13,6 @@ const fileExists = require('../../lib/utils').fileExists;
 
 module.exports.init = function (testData) {
   data = testData;
-  // store initial options
-  if (!defaultOptions) defaultOptions = testData.I.options;
 };
 
 module.exports.tests = function () {
@@ -23,7 +20,6 @@ module.exports.tests = function () {
 
   beforeEach(() => {
     I = data.I;
-    I.options = JSON.parse(JSON.stringify(defaultOptions));
     siteUrl = data.siteUrl;
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
@@ -609,9 +605,11 @@ module.exports.tests = function () {
   });
 
   describe('#waitForInvisible', () => {
-    beforeEach(() => {
-        assert.equal(I.options.treatNonPresentAsInvisible, false);
-    });
+    // ensure that treatNonPresentAsInvisible is false in the default options
+    beforeEach(() => assert.equal(I.options.treatNonPresentAsInvisible, false));
+    
+    // restore setting to false if it was changed during a test
+    afterEach(() => { I.options.treatNonPresentAsInvisible = false; });
       
     it('should wait for element to be invisible', () => I.amOnPage('/form/wait_invisible')
       .then(() => I.see('Step One Button'))
