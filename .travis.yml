@@ -32,5 +32,5 @@ before_script:
 - npm run json-server &
 - sleep 10
 script:
-- npm build && npm test
+- npm test
 - './node_modules/.bin/mocha test/helper/${HELPER}_test.js'
