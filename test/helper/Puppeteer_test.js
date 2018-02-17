@@ -17,7 +17,7 @@ const siteUrl = TestHelper.siteUrl();
 
 describe('Puppeteer', function () {
   this.timeout(35000);
-  // this.retries(1);
+  this.retries(1);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -101,14 +101,17 @@ describe('Puppeteer', function () {
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
+      .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
 
     it('should switch to next tab', () => I.amOnPage('/info')
+      .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1))
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
+      .then(() => I.wait(2))
       .then(() => I.seeCurrentUrlEquals('/login'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 2)));
@@ -117,6 +120,7 @@ describe('Puppeteer', function () {
       .then(() => I.click('More info'))
       .then(() => I.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
       .then(() => I.switchToNextTab(2))
+      .then(() => I.wait(2))
       .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
       .catch((e) => {
         assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
@@ -125,42 +129,52 @@ describe('Puppeteer', function () {
     it('should close current tab', () => I.amOnPage('/info')
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
+      .then(() => I.wait(2))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 2))
       .then(() => I.closeCurrentTab())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/info'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
 
     it('should close other tabs', () => I.amOnPage('/')
       .then(() => I.openNewTab())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.amOnPage('/info'))
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
+      .then(() => I.wait(2))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.closeOtherTabs())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
 
     it('should open new tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 2)));
 
     it('should switch to previous tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
+      .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.switchToPreviousTab())
+      .then(() => I.wait(2))
       .then(() => I.seeInCurrentUrl('/info')));
 
     it('should assert when there is no ability to switch to previous tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
+      .then(() => I.wait(1))
       .then(() => I.waitInUrl('about:blank'))
       .then(() => I.switchToPreviousTab(2))
+      .then(() => I.wait(2))
       .then(() => I.waitInUrl('/info'))
       .catch((e) => {
         assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
@@ -495,6 +509,7 @@ describe('Puppeteer', function () {
         console.log('Test log entry 1');
       }))
       .then(() => I.openNewTab())
+      .then(() => I.wait(1))
       .then(() => I.amOnPage('/info'))
       .then(() => I.executeScript(() => {
         console.log('Test log entry 2');
