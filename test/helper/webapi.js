@@ -649,7 +649,7 @@ module.exports.tests = function () {
       .then(() => I.waitForInvisible(step2Css, 2))
       .then(
           () => Promise.reject(new Error('waitForInvisible should not succeed here')),
-          e => assert(/^element \(.+\) not invisible after 2 sec$/.test(e.message), `incorrect failure message: ${e.message}`)
+          e => assert(/^element \(.+\) not invisible after 2 sec/.test(e.message), `incorrect failure message: ${e.message}`)
        )
        .then(() => I.dontSeeElement(step2Css)));
 
@@ -658,7 +658,7 @@ module.exports.tests = function () {
       .then(() => I.waitForInvisible(step2XPath, 2))
       .then(
           () => Promise.reject(new Error('waitForInvisible should not succeed here')),
-          e => assert(/^element \(.+\) not invisible after 2 sec$/.test(e.message), `incorrect failure message: ${e.message}`)
+          e => assert(/^element \(.+\) not invisible after 2 sec/.test(e.message), `incorrect failure message: ${e.message}`)
        )
        .then(() => I.dontSeeElement(step2XPath)));
 
