@@ -474,17 +474,22 @@ assert(cookie.value, '123456');
 
 -   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
-## grabSource
+## grabNumberOfOpenTabs
 
-Checks that the current page contains the given string in its raw source code.
+Grab number of open tabs
 
 ```js
-I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+I.grabNumberOfOpenTabs();
 ```
 
-**Parameters**
+## grabSource
 
--   `text`  
+Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let pageSource = await I.grabSource();
+```
 
 ## grabTextFrom
 
@@ -571,7 +576,7 @@ I.openNewTab();
 ## pressKey
 
 Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -874,10 +879,26 @@ I.wait(2); // wait 2 secs
 
 Waits for element to become clickable for number of seconds.
 
+```js
+I.waitForClickable('#link');
+```
+
 **Parameters**
 
 -   `locator`  
 -   `sec`   (optional, default `null`)
+
+## waitForDetached
+
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForDetached('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
 
 ## waitForElement
 
@@ -900,18 +921,6 @@ Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForInvisible('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitForStalenessOf
-
-Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-    I.waitForStalenessOf('#popup');
 
 **Parameters**
 
@@ -941,21 +950,6 @@ Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForVisible('#popup');
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
--   `sec`  time seconds to wait, 1 by default
-
-## waitUntilExists
-
-Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-```
 
 **Parameters**
 

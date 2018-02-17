@@ -231,9 +231,6 @@ At initialization you were asked to create custom steps file. If you accepted th
 See how `login` method can be added to `I`:
 
 ```js
-'use strict';
-// in this file you can append custom step methods to 'I' object
-
 module.exports = function() {
   return actor({
 
@@ -247,5 +244,37 @@ module.exports = function() {
 ```
 
 Please notice that instead of `I` you should use `this` in current context.
+
+## Dependency Injection
+
+### Configuration
+
+All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework.
+If you want an object to be injected in scenario by its name add it to configuration:
+
+```js
+  "include": {
+    "I": "./custom_steps.js",
+    "Smth": "./pages/Smth.js",
+    "loginPage": "./pages/Login.js",
+    "signinFragment": "./fragments/Signin.js"
+  }
+```
+
+Now this objects can be retrieved by the name specified in configuration.
+CodeceptJS generator commands (like `codeceptjs gpo`) will update configuration for you.
+
+### Dynamic Injection
+
+You can inject objects per test by calling `injectDependencies` function on Scenario:
+
+```js
+Scenario('search @grop', (I, Data) => {
+  I.fillField('Username', Data.username);
+  I.pressKey('Enter');
+}).injectDependencies({ Data: require('./data.js') });
+```
+
+This requires `./data.js` module and assigns it to `Data` argument in a test.
 
 ### done()

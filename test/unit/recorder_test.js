@@ -48,4 +48,33 @@ describe('Recorder', () => {
         .then(() => counter.should.eql(1));
     });
   });
+
+  describe('#retry', () => {
+    it('should retry failed steps when asked', () => {
+      let counter = 0;
+      recorder.retry(2);
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error('ups');
+        }
+      });
+      return recorder.promise();
+    });
+
+    it('should create a chain of retries', () => {
+      let counter = 0;
+      const errorText = 'noerror';
+      recorder.retry({ retries: 2, when: (err) => { return err.message === errorText; } });
+      recorder.retry({ retries: 2, when: (err) => { return err.message === 'othererror'; } });
+
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error(errorText);
+        }
+      });
+      return recorder.promise();
+    });
+  });
 });

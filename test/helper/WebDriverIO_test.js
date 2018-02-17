@@ -31,6 +31,11 @@ describe('WebDriverIO', function () {
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
       waitForTimeout: 5000,
+      desiredCapabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
     });
   });
 
@@ -321,23 +326,39 @@ describe('WebDriverIO', function () {
       .then(() => wd.dontSee('Hovered', '#show')));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
+    it('should only have 1 tab open when the browser starts and navigates to the first page', () => wd.amOnPage('/')
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1)));
+
     it('should switch to next tab', () => wd.amOnPage('/info')
-      .then(() => wd.click('New tab'))
-      .then(() => wd.switchToNextTab())
-      .then(() => wd.waitInUrl('/login')));
-    it('should assert when there is no ability to switch to next tab', () => wd.amOnPage('/')
-      .then(() => wd.click('More info'))
-      .then(() => wd.switchToNextTab(2))
-      .catch((e) => {
-        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
-      }));
-    it('should close current tab', () => wd.amOnPage('/info')
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1))
       .then(() => wd.click('New tab'))
       .then(() => wd.switchToNextTab())
       .then(() => wd.waitInUrl('/login'))
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 2)));
+
+    it('should assert when there is no ability to switch to next tab', () => wd.amOnPage('/')
+      .then(() => wd.click('More info'))
+      .then(() => wd.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
+      .then(() => wd.switchToNextTab(2))
+      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+      .catch((e) => {
+        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
+      }));
+
+    it('should close current tab', () => wd.amOnPage('/info')
+      .then(() => wd.click('New tab'))
+      .then(() => wd.switchToNextTab())
+      .then(() => wd.seeInCurrentUrl('/login'))
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 2))
       .then(() => wd.closeCurrentTab())
-      .then(() => wd.waitInUrl('/info')));
+      .then(() => wd.seeInCurrentUrl('/info'))
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1)));
 
     it('should close other tabs', () => wd.amOnPage('/')
       .then(() => wd.openNewTab())
@@ -347,16 +368,22 @@ describe('WebDriverIO', function () {
       .then(() => wd.switchToNextTab())
       .then(() => wd.seeInCurrentUrl('/login'))
       .then(() => wd.closeOtherTabs())
-      .then(() => wd.seeInCurrentUrl('/login')));
+      .then(() => wd.seeInCurrentUrl('/login'))
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1)));
 
     it('should open new tab', () => wd.amOnPage('/info')
       .then(() => wd.openNewTab())
-      .then(() => wd.waitInUrl('about:blank')));
+      .then(() => wd.waitInUrl('about:blank'))
+      .then(() => wd.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 2)));
+
     it('should switch to previous tab', () => wd.amOnPage('/info')
       .then(() => wd.openNewTab())
       .then(() => wd.waitInUrl('about:blank'))
       .then(() => wd.switchToPreviousTab())
       .then(() => wd.waitInUrl('/info')));
+
     it('should assert when there is no ability to switch to previous tab', () => wd.amOnPage('/info')
       .then(() => wd.openNewTab())
       .then(() => wd.waitInUrl('about:blank'))

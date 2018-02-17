@@ -7,6 +7,7 @@ Scenario('Check within without generator', (I) => {
   });
 });
 
+
 Scenario('Check within with generator. Yield is first in order', function* (I) {
   I.smallPromise();
   const test = yield I.smallYield();
@@ -61,5 +62,27 @@ Scenario('Check within with generator. Should stop test execution after fail in 
     I.smallPromise();
   });
   I.smallPromise();
+});
+
+Scenario('Check within with async/await. Await is first in order', async (I) => {
+  I.smallPromise();
+  const test = await I.smallYield();
+  console.log(test, 'await');
+  within('blabla', async () => {
+    const testWithin = await I.smallYield();
+    console.log(testWithin, 'await');
+    I.smallPromise();
+  });
+});
+
+Scenario('Check within with async/await. Await is second in order', async (I) => {
+  I.smallPromise();
+  const test = await I.smallYield();
+  console.log(test, 'await');
+  within('blabla', async () => {
+    I.smallPromise();
+    const testWithin = await I.smallYield();
+    console.log(testWithin, 'await');
+  });
 });
 

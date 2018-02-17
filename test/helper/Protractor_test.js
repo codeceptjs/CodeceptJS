@@ -34,6 +34,11 @@ describe('Protractor', function () {
       seleniumAddress: TestHelper.seleniumAddress(),
       angular: true,
       waitForTimeout: 5000,
+      desiredCapabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
     });
     return I._init().then(() => I._beforeSuite());
   });
@@ -380,8 +385,14 @@ describe('Protractor', function () {
     });
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
+    it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1)));
+
     it('should switch to next tab', () => I.amOnPage('/')
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1))
       .then(() => I.click('Get More Options'))
       .then(() => I.seeCurrentUrlEquals('/#/options'))
       .then(() => I.openNewTab())
@@ -391,7 +402,9 @@ describe('Protractor', function () {
       .then(() => I.switchToPreviousTab())
       .then(() => I.seeCurrentUrlEquals('/#/options'))
       .then(() => I.switchToNextTab())
-      .then(() => I.seeCurrentUrlEquals('/#/info')));
+      .then(() => I.seeCurrentUrlEquals('/#/info'))
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 2)));
 
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
       .then(() => I.click('Get More Options'))
@@ -414,10 +427,14 @@ describe('Protractor', function () {
       .then(() => I.seeInCurrentUrl('#/info'))
       .then(() => I.openNewTab())
       .then(() => I.amOnPage('/'))
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 2))
       .then(() => I.seeInCurrentUrl('#/'))
       .then(() => I.dontSeeInCurrentUrl('#/info'))
       .then(() => I.closeCurrentTab())
-      .then(() => I.seeInCurrentUrl('#/info')));
+      .then(() => I.seeInCurrentUrl('#/info'))
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1)));
 
     it('should close other tabs', () => I.amOnPage('/')
       .then(() => I.click('Get more info!'))
@@ -426,15 +443,23 @@ describe('Protractor', function () {
       .then(() => I.amOnPage('/'))
       .then(() => I.openNewTab())
       .then(() => I.amOnPage('/'))
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 3))
       .then(() => I.click('Get More Options'))
       .then(() => I.seeCurrentUrlEquals('/#/options'))
       .then(() => I.closeOtherTabs())
-      .then(() => I.seeCurrentUrlEquals('/#/options')));
+      .then(() => I.seeCurrentUrlEquals('/#/options'))
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1)));
 
     it('should open new tab', () => I.amOnPage('/')
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 1))
       .then(() => I.openNewTab())
       .then(() => I.amOutsideAngularApp())
-      .then(() => I.seeInCurrentUrl('about:blank')));
+      .then(() => I.seeInCurrentUrl('about:blank'))
+      .then(() => I.grabNumberOfOpenTabs())
+      .then(numPages => assert.equal(numPages, 2)));
 
     it('should switch to previous tab', () => I.amOnPage('/')
       .then(() => I.click('Get more info!'))
@@ -443,7 +468,6 @@ describe('Protractor', function () {
       .then(() => I.seeInCurrentUrl('/#/'))
       .then(() => I.switchToPreviousTab())
       .then(() => I.wait(2))
-
       .then(() => I.seeInCurrentUrl('/#/info')));
   });
 
