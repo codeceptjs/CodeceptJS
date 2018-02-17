@@ -251,6 +251,7 @@ module.exports = function() {
 
 Whenever you execute tests with `--verbose` option you will see registered events and promises executed by a recorder.
 
+
 ### Output
 
 Output module provides 4 verbosity levels. Depending on the mode you can have different information printed using corresponding functions.

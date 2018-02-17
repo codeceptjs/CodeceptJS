@@ -10,13 +10,18 @@ Requires `puppeteer` package to be installed.
 
 This helper should be configured in codecept.json
 
--   `url` - base url of website to be tested
--   `show` (optional, default: false) - show Google Chrome window for debug.
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure.
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `url`: base url of website to be tested
+-   `show`: (optional, default: false) - show Google Chrome window for debug.
+-   `restart`: (optional, default: true) - restart browser between tests.
+-   `disableScreenshots`: (optional, default: false)  - don't save screenshot on failure.
+-   `uniqueScreenshotNames`: (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
+-   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
+-   `userAgent`: (optional) user-agent string.
+-   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `chrome`: (optional) pass additional [Puppeteer run options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions). Example
 
 ```js
@@ -479,7 +484,7 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 Get JS log from browser.
 
 ```js
-let logs = yield I.grabBrowserLogs();
+let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
@@ -524,6 +529,14 @@ let postHTML = yield I.grabHTMLFrom('#post');
 
 -   `locator`  
 
+## grabNumberOfOpenTabs
+
+Grab number of open tabs
+
+```js
+I.grabNumberOfOpenTabs();
+```
+
 ## grabNumberOfVisibleElements
 
 Grab number of visible elements by locator
@@ -546,15 +559,12 @@ await I.grabPopupText();
 
 ## grabSource
 
-Checks that the current page contains the given string in its raw source code.
+Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.
 
 ```js
-I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+let pageSource = await I.grabSource();
 ```
-
-**Parameters**
-
--   `text`  
 
 ## grabTextFrom
 
@@ -632,7 +642,7 @@ I.openNewTab();
 ## pressKey
 
 Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -1026,6 +1036,18 @@ I.wait(2); // wait 2 secs
 
 -   `sec`  
 
+## waitForDetached
+
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitForDetached('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
 ## waitForElement
 
 Waits for element to be present on page (by default waits for 1sec).
@@ -1120,21 +1142,6 @@ I.waitUntil(() => window.requests == 0, 5);
 
 -   `function`  function which is executed in browser context.
 -   `fn`  
--   `sec`  time seconds to wait, 1 by default
-
-## waitUntilExists
-
-Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-```
-
-**Parameters**
-
--   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitUrlEquals
