@@ -3,6 +3,8 @@ require('co-mocha')(require('mocha'));
 let I;
 let data;
 let siteUrl;
+let defaultOptions;
+
 const assert = require('assert');
 const path = require('path');
 
@@ -12,6 +14,8 @@ const fileExists = require('../../lib/utils').fileExists;
 
 module.exports.init = function (testData) {
   data = testData;
+  // store initial options
+  if (!defaultOptions) defaultOptions = testData.I.options;
 };
 
 module.exports.tests = function () {
@@ -19,6 +23,7 @@ module.exports.tests = function () {
 
   beforeEach(() => {
     I = data.I;
+    I.options = JSON.parse(JSON.stringify(defaultOptions));
     siteUrl = data.siteUrl;
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
@@ -604,6 +609,10 @@ module.exports.tests = function () {
   });
 
   describe('#waitForInvisible', () => {
+    beforeEach(() => {
+        assert.equal(I.options.treatNonPresentAsInvisible, false);
+    });
+      
     it('should wait for element to be invisible', () => I.amOnPage('/form/wait_invisible')
       .then(() => I.see('Step One Button'))
       .then(() => I.seeElement('#step_1'))
@@ -615,6 +624,26 @@ module.exports.tests = function () {
       .then(() => I.waitForInvisible('//div[@id="step_1"]'))
       .then(() => I.dontSeeElement('//div[@id="step_1"]'))
       .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+
+    it('should allow specifying treatNonPresentAsInvisible as a config option', () => I.amOnPage('/form/wait_invisible')
+      .then(() => { I.options.treatNonPresentAsInvisible = true })
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForInvisible('#step_2'))
+      .then(() => I.dontSeeElement('#step_2')));
+
+    it('should allow specifying treatNonPresentAsInvisible as a function parameter', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForInvisible('#step_2', null, true))
+      .then(() => I.dontSeeElement('#step_2')));
+      
+    it('should not treat non-present elements as invisible by default', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForInvisible('#step_2', 2))
+      .then(
+          () => { throw new Error('waitForInvisible should not succeed here'); },
+          e => assert.equal(e.message, 'element (#step_2) not invisible after 2 sec')
+       )
+       .then(() => I.dontSeeElement('#step_2')));
   });
 
 
