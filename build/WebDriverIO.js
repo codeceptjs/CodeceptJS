@@ -27,20 +27,20 @@ let withinStore = {};
  *
  * This helper should be configured in codecept.json
  *
- * * `url` - base url of website to be tested
- * * `browser` - browser in which perform testing
- * * `restart` (optional, default: true) - restart browser between tests.
- * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
- * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
- * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
- * * `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
- * * `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
+ * * `url`: base url of website to be tested.
+ * * `browser`: browser in which to perform testing.
+ * * `restart`: (optional, default: true) - restart browser between tests.
+ * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+ * * `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
+ * * `uniqueScreenshotNames`: (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites.
+ * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
+ * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
- * * `waitForTimeout`: (option) sets default wait time in *ms* for all `wait*` functions. 1000 by default;
+ * * `waitForTimeout`: (option) sets default wait time in *ms* for all `wait*` functions. 1000 by default.
  * * `desiredCapabilities`: Selenium's [desired
- * capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
- * * `manualStart` (optional, default: false) - do not start browser before a test, start it manually inside a helper
- * with `this.helpers["WebDriverIO"]._startBrowser()`
+ * capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities).
+ * * `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
+ * with `this.helpers["WebDriverIO"]._startBrowser()`.
  * * `timeouts`: [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) defined as hash.
  *
  * Example:
@@ -1086,12 +1086,12 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
-   * Checks that the current page contains the given string in its raw source code.
+   * Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.
 
 ```js
-I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+let pageSource = await I.grabSource();
 ```
-@param text
    * Appium: support
    */
   async grabSource() {
@@ -1597,7 +1597,7 @@ assert(cookie.value, '123456');
 
   /**
    * Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -1779,21 +1779,10 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
     }, aSec * 1000, `element (${locator}) still not present on page after ${aSec} sec`);
   }
 
-  /**
-   * Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-```
-
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
-   * Appium: support
-   */
   async waitUntilExists(locator, sec = null) {
+    console.log(`waitUntilExists deprecated:
+    * use 'waitForElement' to wait for element to be attached
+    * use 'waitForDetached to wait for element to be removed'`);
     return this.waitForStalenessOf(locator, sec);
   }
 
@@ -2000,12 +1989,17 @@ I.waitToHide('#popup');
     return this.waitForInvisible(locator, sec);
   }
 
+  async waitForStalenessOf(locator, sec = null) {
+    console.log('waitForStalenessOf deprecated. Use waitForDetached instead');
+    return this.waitForDetached(locator, sec);
+  }
+
   /**
    * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```
-I.waitForStalenessOf('#popup');
+I.waitForDetached('#popup');
 ```
 
 @param locator element located by CSS|XPath|strict locator
@@ -2013,7 +2007,7 @@ I.waitForStalenessOf('#popup');
 
    * Appium: support
    */
-  async waitForStalenessOf(locator, sec = null) {
+  async waitForDetached(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
     return this.browser.waitUntil(async () => {
       const res = await this.browser.elements(withStrictLocator.call(this, locator));
@@ -2126,6 +2120,17 @@ I.waitUntil(() => window.requests == 0, 5);
     return client.newWindow('about:blank');
   }
 
+  /**
+   * Grab number of open tabs
+
+```js
+I.grabNumberOfOpenTabs();
+```
+   */
+  async grabNumberOfOpenTabs() {
+    const pages = await this.browser.getTabIds();
+    return pages.length;
+  }
 
   /**
    * Reload the current page.

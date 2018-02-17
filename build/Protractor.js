@@ -524,7 +524,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
   /**
    * Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -844,12 +844,12 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
-   * Checks that the current page contains the given string in its raw source code.
+   * Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.
 
 ```js
-I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+let pageSource = await I.grabSource();
 ```
-@param text
    */
   async grabSource() {
     return this.browser.getPageSource();
@@ -1199,6 +1199,18 @@ First parameter can be set to `maximize`
   }
 
   /**
+   * Grab number of open tabs
+
+```js
+I.grabNumberOfOpenTabs();
+```
+   */
+  async grabNumberOfOpenTabs() {
+    const pages = await this.browser.getAllWindowHandles();
+    return pages.length;
+  }
+
+  /**
    * Pauses execution for a number of seconds.
 
 ```js
@@ -1230,20 +1242,26 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
     return this.browser.wait(EC.presenceOf(el), aSec * 1000);
   }
 
+  async waitUntilExists(locator, sec = null) {
+    console.log(`waitUntilExists deprecated:
+    * use 'waitForElement' to wait for element to be attached
+    * use 'waitForDetached to wait for element to be removed'`);
+    return this.waitForDetached(locator, sec);
+  }
+
   /**
-   * Waits for element not to be present on page (by default waits for 1sec).
+   * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+I.waitForDetached('#popup');
 ```
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
 
    */
-  waitUntilExists(locator, sec = null) {
+  async waitForDetached(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
     const el = global.element(guessLocator(locator) || global.by.css(locator));
     return this.browser.wait(EC.not(EC.presenceOf(el)), aSec * 1000);
@@ -1251,8 +1269,12 @@ I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
 
   /**
    * Waits for element to become clickable for number of seconds.
+   *
+   * ```js
+   * I.waitForClickable('#link');
+   * ```
    */
-  waitForClickable(locator, sec = null) {
+  async waitForClickable(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
     const el = global.element(guessLocator(locator) || global.by.css(locator));
     return this.browser.wait(EC.elementToBeClickable(el), aSec * 1000);
@@ -1269,7 +1291,7 @@ I.waitForVisible('#popup');
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
    */
-  waitForVisible(locator, sec = null) {
+  async waitForVisible(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
     const el = global.element(guessLocator(locator) || global.by.css(locator));
     return this.browser.wait(EC.visibilityOf(el), aSec * 1000);
@@ -1287,25 +1309,16 @@ I.waitForInvisible('#popup');
 @param sec time seconds to wait, 1 by default
 
    */
-  waitForInvisible(locator, sec = null) {
+  async waitForInvisible(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
     const el = global.element(guessLocator(locator) || global.by.css(locator));
     return this.browser.wait(EC.invisibilityOf(el), aSec * 1000);
   }
 
-  /**
-   * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.
-
-```
-I.waitForStalenessOf('#popup');
-```
-
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
-   */
-  waitForStalenessOf(locator, sec = null) {
+  async waitForStalenessOf(locator, sec = null) {
+    console.log(`waitForStalenessOf deprecated.
+    * Use waitForDetached to wait for element to be removed from page
+    * Use waitForInvisible to wait for element to be hidden on page`);
     return this.waitForInvisible(locator, sec);
   }
 
@@ -1323,7 +1336,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param sec seconds to wait
 @param context element located by CSS|XPath|strict locator
    */
-  waitForText(text, sec = null, context = null) {
+  async waitForText(text, sec = null, context = null) {
     if (!context) {
       context = this.context;
     }

@@ -293,6 +293,8 @@
         
             <li><a href="#actor">Actor</a></li>
         
+            <li><a href="#dependency-injection">Dependency Injection</a></li>
+        
     
     </ul>
 </div></div>
@@ -498,10 +500,7 @@ module.exports = {
 This is recommended if most of tests require user authentication and for not to require <code>loginPage</code> every time.</p>
 <p>At initialization you were asked to create custom steps file. If you accepted this option you may use <code>custom_steps.js</code> file to extend <code>I</code>.
 See how <code>login</code> method can be added to <code>I</code>:</p>
-<pre><code class="js">'use strict';
-// in this file you can append custom step methods to 'I' object
-
-module.exports = function() {
+<pre><code class="js">module.exports = function() {
   return actor({
 
     login: function(email, password) {
@@ -514,6 +513,29 @@ module.exports = function() {
 </code></pre>
 
 <p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.</p>
+<h2 id="dependency-injection">Dependency Injection</h2>
+<h3 id="configuration">Configuration</h3>
+<p>All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework.
+If you want an object to be injected in scenario by its name add it to configuration:</p>
+<pre><code class="js">  &quot;include&quot;: {
+    &quot;I&quot;: &quot;./custom_steps.js&quot;,
+    &quot;Smth&quot;: &quot;./pages/Smth.js&quot;,
+    &quot;loginPage&quot;: &quot;./pages/Login.js&quot;,
+    &quot;signinFragment&quot;: &quot;./fragments/Signin.js&quot;
+  }
+</code></pre>
+
+<p>Now this objects can be retrieved by the name specified in configuration.
+CodeceptJS generator commands (like <code>codeceptjs gpo</code>) will update configuration for you.</p>
+<h3 id="dynamic-injection">Dynamic Injection</h3>
+<p>You can inject objects per test by calling <code>injectDependencies</code> function on Scenario:</p>
+<pre><code class="js">Scenario('search @grop', (I, Data) =&gt; {
+  I.fillField('Username', Data.username);
+  I.pressKey('Enter');
+}).injectDependencies({ Data: require('./data.js') });
+</code></pre>
+
+<p>This requires <code>./data.js</code> module and assigns it to <code>Data</code> argument in a test.</p>
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >

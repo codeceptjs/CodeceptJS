@@ -1,6 +1,7 @@
 const requireg = require('requireg');
 const Helper = require('../helper');
 const Locator = require('../locator');
+const recorder = require('../recorder');
 const stringIncludes = require('../assert/include').includes;
 const { urlEquals } = require('../assert/equal');
 const { equals } = require('../assert/equal');
@@ -19,8 +20,8 @@ const ElementNotFound = require('./errors/ElementNotFound');
 const Popup = require('./extras/Popup');
 const Console = require('./extras/Console');
 
-const puppeteer = requireg('puppeteer');
 
+let puppeteer;
 const popupStore = new Popup();
 const consoleLogStore = new Console();
 
@@ -35,13 +36,18 @@ const consoleLogStore = new Console();
  *
  * This helper should be configured in codecept.json
  *
- * * `url` - base url of website to be tested
- * * `show` (optional, default: false) - show Google Chrome window for debug.
- * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure.
- * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
+ * * `url`: base url of website to be tested
+ * * `show`: (optional, default: false) - show Google Chrome window for debug.
+ * * `restart`: (optional, default: true) - restart browser between tests.
+ * * `disableScreenshots`: (optional, default: false)  - don't save screenshot on failure.
+ * * `uniqueScreenshotNames`: (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
+ * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
+ * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
  * * `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
  * * `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
  * * `windowSize`: (optional) default window size. Set a dimension like `640x480`.
+ * * `userAgent`: (optional) user-agent string.
+ * * `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
  * * `chrome`: (optional) pass additional [Puppeteer run options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions). Example
  *
  * ```js
@@ -53,6 +59,7 @@ const consoleLogStore = new Console();
 class Puppeteer extends Helper {
   constructor(config) {
     super(config);
+    puppeteer = requireg('puppeteer');
 
     // set defaults
     this.options = {
@@ -61,7 +68,10 @@ class Puppeteer extends Helper {
       fullPageScreenshots: true,
       disableScreenshots: false,
       uniqueScreenshotNames: false,
+      manualStart: false,
       restart: true,
+      keepCookies: false,
+      keepBrowserState: false,
       show: false,
       defaultPopupAction: 'accept',
     };
@@ -84,7 +94,7 @@ class Puppeteer extends Helper {
     try {
       requireg('puppeteer');
     } catch (e) {
-      return ['puppeteer'];
+      return ['puppeteer@^1.0.0'];
     }
   }
 
@@ -100,11 +110,40 @@ class Puppeteer extends Helper {
 
 
   async _before() {
-    return this._startBrowser();
+    recorder.retry({
+      retries: 2,
+      when: err => err.message.indexOf('Cannot find context with specified id') > -1,
+    });
+    if (this.options.restart && !this.options.manualStart) return this._startBrowser();
+    if (!this.isRunning && !this.options.manualStart) return this._startBrowser();
+    return this.browser;
   }
 
   async _after() {
-    return this._stopBrowser();
+    if (!this.isRunning) return;
+    if (this.options.restart) {
+      this.isRunning = false;
+      return this._stopBrowser();
+    }
+
+    if (this.options.keepBrowserState) return;
+
+    if (!this.options.keepCookies) {
+      this.debugSection('Session', 'cleaning cookies and localStorage');
+      await this.browser.deleteCookie();
+    }
+    await this.browser.execute('localStorage.clear();').catch((err) => {
+      if (!(err.message.indexOf("Storage is disabled inside 'data:' URLs.") > -1)) throw err;
+    });
+    await this.closeOtherTabs();
+    return this.browser;
+  }
+
+  _afterSuite() {
+  }
+
+  _finishTest() {
+    if (!this.options.restart && this.isRunning) return this._stopBrowser();
   }
 
   /**
@@ -216,27 +255,41 @@ class Puppeteer extends Helper {
 
   async _startBrowser() {
     this.browser = await puppeteer.launch(this.puppeteerOptions);
-    this.browser.on('targetcreated', (target) => {
-      target.page().then((page) => {
-        if (!page) return;
-        this.withinLocator = null;
-        page.on('load', frame => this.context = page.$('body'));
-        page.on('console', (msg) => {
-          this.debugSection(msg.type(), msg.args().join(' '));
-          consoleLogStore.add(msg);
-        });
+    const targetCreatedHandler = (page) => {
+      if (!page) return;
+      this.withinLocator = null;
+      page.on('load', frame => this.context = page.$('body'));
+      page.on('console', (msg) => {
+        this.debugSection(msg.type(), msg.args().join(' '));
+        consoleLogStore.add(msg);
       });
+    };
+    this.browser.on('targetcreated', (target) => {
+      target.page().then(page => targetCreatedHandler(page));
     });
 
     this.browser.on('targetchanged', (target) => {
       this.debugSection('Url', target.url());
     });
 
-    this._setPage(await this.browser.newPage());
+    const existingPages = await this.browser.pages();
+    const mainPage = existingPages[0] || await this.browser.newPage();
+
+    if (existingPages.length) {
+      // Run the handler as it will not be triggered if the page already exists
+      targetCreatedHandler(mainPage);
+    }
+    this._setPage(mainPage);
 
     if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
       const dimensions = this.options.windowSize.split('x');
       await this.resizeWindow(parseInt(dimensions[0], 10), parseInt(dimensions[1], 10));
+    }
+
+    this.isRunning = true;
+
+    if (this.options.userAgent) {
+      await this.page.setUserAgent(this.options.userAgent);
     }
   }
 
@@ -586,7 +639,8 @@ let title = yield I.grabTitle();
   async closeCurrentTab() {
     const oldPage = this.page;
     await this.switchToPreviousTab();
-    return oldPage.close();
+    await oldPage.close();
+    return this._waitForAction();
   }
 
   /**
@@ -604,7 +658,8 @@ let title = yield I.grabTitle();
     otherPages.forEach((page) => {
       p = p.then(() => page.close());
     });
-    return p;
+    await p;
+    return this._waitForAction();
   }
 
   /**
@@ -616,6 +671,19 @@ let title = yield I.grabTitle();
    */
   async openNewTab() {
     this._setPage(await this.browser.newPage());
+    return this._waitForAction();
+  }
+
+  /**
+   * Grab number of open tabs
+
+```js
+I.grabNumberOfOpenTabs();
+```
+   */
+  async grabNumberOfOpenTabs() {
+    const pages = await this.browser.pages();
+    return pages.length;
   }
 
   /**
@@ -771,7 +839,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
   /**
    * Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -820,12 +888,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
     // await el.focus();
     const tag = await el.getProperty('tagName').then(el => el.jsonValue());
     const editable = await el.getProperty('contenteditable').then(el => el.jsonValue());
-
-    if (tag === 'TEXTAREA' || editable) {
-      await this._evaluateHandeInContext(el => el.innerHTML = '', el);
-    }
-    if (tag === 'INPUT') {
+    if (tag === 'INPUT' || tag === 'TEXTAREA') {
       await this._evaluateHandeInContext(el => el.value = '', el);
+    } else if (editable) {
+      await this._evaluateHandeInContext(el => el.innerHTML = '', el);
     }
     await el.type(value, { delay: 10 });
     return this._waitForAction();
@@ -1077,12 +1143,12 @@ I.dontSee('Login'); // assume we are already logged in
   }
 
   /**
-   * Checks that the current page contains the given string in its raw source code.
+   * Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.
 
 ```js
-I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+let pageSource = await I.grabSource();
 ```
-@param text
    */
   async grabSource() {
     return this.page.content();
@@ -1092,7 +1158,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
    * Get JS log from browser.
    *
    * ```js
-   * let logs = yield I.grabBrowserLogs();
+   * let logs = await I.grabBrowserLogs();
    * console.log(JSON.stringify(logs))
    * ```
    */
@@ -1474,10 +1540,11 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 @param fileName
 @param fullPage (optional)
    */
-  async saveScreenshot(fileName, fullPage = this.options.fullPageScreenshots) {
+  async saveScreenshot(fileName, fullPage) {
+    const fullPageOption = fullPage || this.options.fullPageScreenshots;
     const outputFile = path.join(global.output_dir, fileName);
     this.debug(`Screenshot is saving to ${outputFile}`);
-    return this.page.screenshot({ path: outputFile, fullPage, type: 'png' });
+    return this.page.screenshot({ path: outputFile, fullPage: fullPageOption, type: 'png' });
   }
 
   async _failed(test) {
@@ -1798,20 +1865,26 @@ I.waitUntil(() => window.requests == 0, 5);
     return context.waitForFunction(fn, { timeout: waitTimeout });
   }
 
+  async waitUntilExists(locator, sec) {
+    console.log(`waitUntilExists deprecated:
+    * use 'waitForElement' to wait for element to be attached
+    * use 'waitForDetached to wait for element to be removed'`);
+    return this.waitForDetached(locator, sec);
+  }
+
   /**
-   * Waits for element not to be present on page (by default waits for 1sec).
+   * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+I.waitForDetached('#popup');
 ```
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
 
    */
-  async waitUntilExists(locator, sec) {
+  async waitForDetached(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     locator = new Locator(locator, 'css');
 
@@ -1889,7 +1962,7 @@ async function proceedClick(locator, context = null, options = {}) {
     assertElementExists(els, locator, 'Clickable element');
   }
   await els[0].click(options);
-  await this._waitForAction();
+  return this._waitForAction();
 }
 
 async function findClickable(matcher, locator) {

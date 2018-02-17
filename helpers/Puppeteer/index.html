@@ -365,6 +365,8 @@
         
             <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
         
+            <li><a href="#grabnumberofopentabs">grabNumberOfOpenTabs</a></li>
+        
             <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
         
             <li><a href="#grabpopuptext">grabPopupText</a></li>
@@ -445,6 +447,8 @@
         
             <li><a href="#wait">wait</a></li>
         
+            <li><a href="#waitfordetached">waitForDetached</a></li>
+        
             <li><a href="#waitforelement">waitForElement</a></li>
         
             <li><a href="#waitforinvisible">waitForInvisible</a></li>
@@ -458,8 +462,6 @@
             <li><a href="#waittohide">waitToHide</a></li>
         
             <li><a href="#waituntil">waitUntil</a></li>
-        
-            <li><a href="#waituntilexists">waitUntilExists</a></li>
         
             <li><a href="#waiturlequals">waitUrlEquals</a></li>
         
@@ -476,13 +478,18 @@ This helper works with a browser out of the box with no additional tools require
 <h2 id="configuration">Configuration</h2>
 <p>This helper should be configured in codecept.json</p>
 <ul>
-<li><code>url</code> - base url of website to be tested</li>
-<li><code>show</code> (optional, default: false) - show Google Chrome window for debug.</li>
-<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure.</li>
-<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.</li>
+<li><code>url</code>: base url of website to be tested</li>
+<li><code>show</code>: (optional, default: false) - show Google Chrome window for debug.</li>
+<li><code>restart</code>: (optional, default: true) - restart browser between tests.</li>
+<li><code>disableScreenshots</code>: (optional, default: false)  - don't save screenshot on failure.</li>
+<li><code>uniqueScreenshotNames</code>: (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.</li>
+<li><code>keepBrowserState</code>: (optional, default: false) - keep browser state between tests when <code>restart</code> is set to false.</li>
+<li><code>keepCookies</code>: (optional, default: false) - keep cookies between tests when <code>restart</code> is set to false.</li>
 <li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.</li>
 <li><code>waitForTimeout</code>: (optional) default wait* timeout in ms. Default: 1000.</li>
 <li><code>windowSize</code>: (optional) default window size. Set a dimension like <code>640x480</code>.</li>
+<li><code>userAgent</code>: (optional) user-agent string.</li>
+<li><code>manualStart</code>: (optional, default: false) - do not start browser before a test, start it manually inside a helper with <code>this.helpers["Puppeteer"]._startBrowser()</code>.</li>
 <li><code>chrome</code>: (optional) pass additional <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions">Puppeteer run options</a>. Example</li>
 </ul>
 <pre><code class="js">&quot;chrome&quot;: {
@@ -853,7 +860,7 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 </ul>
 <h2 id="grabbrowserlogs">grabBrowserLogs</h2>
 <p>Get JS log from browser.</p>
-<pre><code class="js">let logs = yield I.grabBrowserLogs();
+<pre><code class="js">let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 </code></pre>
 
@@ -889,6 +896,11 @@ Appium: support only web testing</p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
+<h2 id="grabnumberofopentabs">grabNumberOfOpenTabs</h2>
+<p>Grab number of open tabs</p>
+<pre><code class="js">I.grabNumberOfOpenTabs();
+</code></pre>
+
 <h2 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h2>
 <p>Grab number of visible elements by locator</p>
 <pre><code class="js">I.grabNumberOfVisibleElements('p');
@@ -904,14 +916,11 @@ Appium: support only web testing</p>
 </code></pre>
 
 <h2 id="grabsource">grabSource</h2>
-<p>Checks that the current page contains the given string in its raw source code.</p>
-<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+<p>Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.</p>
+<pre><code class="js">let pageSource = await I.grabSource();
 </code></pre>
 
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>text</code>  </li>
-</ul>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -969,7 +978,7 @@ I.moveCursorTo('#submit', 5,5);
 
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
+Special keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
 <pre><code class="js">I.pressKey('Enter');
@@ -1274,6 +1283,16 @@ I.switchToPreviousTab(2);
 <ul>
 <li><code>sec</code>  </li>
 </ul>
+<h2 id="waitfordetached">waitForDetached</h2>
+<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForDetached('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
 <h2 id="waitforelement">waitForElement</h2>
 <p>Waits for element to be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
@@ -1350,18 +1369,6 @@ I.waitUntil(() =&gt; window.requests == 0, 5);
 <ul>
 <li><code>function</code>  function which is executed in browser context.</li>
 <li><code>fn</code>  </li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waituntilexists">waitUntilExists</h2>
-<p>Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code class="js">I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waiturlequals">waitUrlEquals</h2>

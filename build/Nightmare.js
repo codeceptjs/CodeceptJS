@@ -231,6 +231,7 @@ class Nightmare extends Helper {
       this.browser = this.Nightmare(this.options);
       await this.browser;
     }
+    await this.browser.goto('about:blank'); // Load a blank page so .saveScreenshot (/evaluate) will work
     this.isRunning = true;
     this.browser.on('dom-ready', () => this._injectClientScripts());
     this.browser.on('did-start-loading', () => this._injectClientScripts());
@@ -349,7 +350,7 @@ I.amOnPage('/login'); // opens a login page
    * In a second argument a list of request headers can be passed:
    *
    * ```js
-   * I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])
+   * I.amOnPage('/auth', { 'x-my-custom-header': 'some value' })
    * ```
    */
   async amOnPage(url, headers = null) {
@@ -553,6 +554,19 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   async dontSeeInSource(text) {
     const source = await this.browser.evaluate(() => document.documentElement.outerHTML);
     stringIncludes('HTML source of a page').negate(text, source);
+  }
+
+  /**
+   * asserts that an element appears a given number of times in the DOM
+   * Element is located by label or name or CSS or XPath.
+   *
+   * ```js
+   * I.seeNumberOfElements('#submitBtn', 1);
+   * ```
+   */
+  async seeNumberOfElements(selector, num) {
+    const elements = await this._locate(selector);
+    return equals(`expected number of elements (${selector}) is ${num}, but found ${elements.length}`).assert(elements.length, num);
   }
 
 
@@ -1216,20 +1230,26 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
     });
   }
 
+  async waitUntilExists(locator, sec) {
+    console.log(`waitUntilExists deprecated:
+    * use 'waitForElement' to wait for element to be attached
+    * use 'waitForDetached to wait for element to be removed'`);
+    return this.waitForDetached(locator, sec);
+  }
+
   /**
-   * Waits for element not to be present on page (by default waits for 1sec).
+   * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```js
-I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
+```
+I.waitForDetached('#popup');
 ```
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
 
    */
-  async waitUntilExists(locator, sec) {
+  async waitForDetached(locator, sec) {
     this.browser.options.waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     sec = this.browser.options.waitForTimeout / 1000;
     locator = new Locator(locator, 'css');

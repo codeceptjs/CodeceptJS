@@ -400,7 +400,7 @@ AfterSuite((I) =&gt; {
 Everything executed in its context will be narrowed to context specified by locator:</p>
 <p>Usage: <code>within('section', ()=&gt;{})</code></p>
 <pre><code class="js">I.amOnPage('https://github.com');
-within('.form-signup-home', () =&gt; {
+within('.js-signup-form', () =&gt; {
   I.fillField('user[login]', 'User');
   I.fillField('user[email]', 'user@user.com');
   I.fillField('user[password]', 'user@user.com');
@@ -463,28 +463,54 @@ Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
 </code></pre>
 
 <h3 id="retries">Retries</h3>
+<h4 id="retry-feature">Retry Feature</h4>
 <p>Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
 This can be done with <code>retries</code> option added to <code>Feature</code> declaration.</p>
 <p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
 You can set number of a retries for a feature:</p>
 <pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-</code></pre>
 
-<p>Every Scenario inside this feature will be rerun 3 times.
-You can make an exception for a specific scenario by passing <code>retries</code> option to it:</p>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-
-Scenario('Not that complex', {retries: 1}, (I) =&gt; {
-  // test goes here
-});
 
 Scenario('Really complex', (I) =&gt; {
   // test goes here
 });
 </code></pre>
 
-<p>"Really complex" test will be restarted 3 times,
-while "Not that complex" test will be rerun only once.</p>
+<p>Every Scenario inside this feature will be rerun 3 times.
+You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
+<h4 id="retry-scenario">Retry Scenario</h4>
+<pre><code class="js">Scenario('Really complex', {retries: 2}, (I) =&gt; {
+  // test goes here
+});
+
+</code></pre>
+
+<p>This scenario will be restarted two times on a failure</p>
+<h4 id="retry-step">Retry Step</h4>
+<p>If you have a step which often fails you can retry execution for this single step.
+Use <code>retry()</code> function before an action to ask CodeceptJS to retry this step on failure:</p>
+<pre><code class="js">I.retry().see('Welcome');
+</code></pre>
+
+<p>If you'd like to retry step more than once pass the amount as parameter:</p>
+<pre><code class="js">I.retry(3).see('Welcome');
+</code></pre>
+
+<p>Additional options can be provided to retry so you can set the additional options (defined in <a href="https://www.npmjs.com/package/promise-retry">promise-retry</a> library).</p>
+<pre><code class="js">// retry action 3 times waiting for 0.1 second before next try
+I.retry({ retries: 3, minTimeout: 100 }).see('Hello');
+
+// retry action 3 times waiting no more than 3 seconds for last retry
+I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello');
+
+// retry 2 times if error with message 'Node not visible' happens
+I.retry({
+  retries: 2,
+  when: err =&gt; err.message === 'Node not visible'
+}).seeElement('#user');
+</code></pre>
+
+<p>Pass a function to <code>when</code> option to  retry only when error matches the expected one.</p>
 <hr />
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">

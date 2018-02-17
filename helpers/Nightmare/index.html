@@ -379,6 +379,8 @@
         
             <li><a href="#seeintitle">seeInTitle</a></li>
         
+            <li><a href="#seenumberofelements">seeNumberOfElements</a></li>
+        
             <li><a href="#selectoption">selectOption</a></li>
         
             <li><a href="#setcookie">setCookie</a></li>
@@ -387,6 +389,8 @@
         
             <li><a href="#wait">wait</a></li>
         
+            <li><a href="#waitfordetached">waitForDetached</a></li>
+        
             <li><a href="#waitforelement">waitForElement</a></li>
         
             <li><a href="#waitforinvisible">waitForInvisible</a></li>
@@ -394,8 +398,6 @@
             <li><a href="#waitfortext">waitForText</a></li>
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
-        
-            <li><a href="#waituntilexists">waitUntilExists</a></li>
         
     
     </ul>
@@ -461,7 +463,7 @@ I.amOnPage('/login'); // opens a login page
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>url</code>  url path or global urlIn a second argument a list of request headers can be passed:<code>js
-    I.amOnPage('/auth', [{'x-my-custom-header': 'some value'}])</code></li>
+    I.amOnPage('/auth', { 'x-my-custom-header': 'some value' })</code></li>
 <li><code>headers</code>   (optional, default <code>null</code>)</li>
 </ul>
 <h2 id="appendfield">appendField</h2>
@@ -939,6 +941,17 @@ I.seeInField('#searchform input','Search');
 <ul>
 <li><code>text</code>  </li>
 </ul>
+<h2 id="seenumberofelements">seeNumberOfElements</h2>
+<p>asserts that an element appears a given number of times in the DOM
+Element is located by label or name or CSS or XPath.</p>
+<pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>selector</code>  </li>
+<li><code>num</code>  </li>
+</ul>
 <h2 id="selectoption">selectOption</h2>
 <p>Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
@@ -992,6 +1005,16 @@ button: "left"
 <ul>
 <li><code>sec</code>  </li>
 </ul>
+<h2 id="waitfordetached">waitForDetached</h2>
+<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForDetached('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
 <h2 id="waitforelement">waitForElement</h2>
 <p>Waits for element to be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
@@ -1033,18 +1056,6 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
 </code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waituntilexists">waitUntilExists</h2>
-<p>Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code class="js">I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-</code></pre>
-
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>

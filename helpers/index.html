@@ -295,6 +295,8 @@
         
             <li><a href="#hooks">Hooks</a></li>
         
+            <li><a href="#conditional-retries">Conditional Retries</a></li>
+        
     
     </ul>
 </div></div>
@@ -494,6 +496,22 @@ module.exports = JSFailure;
 module.exports = JSWait;
 </code></pre>
 
+<h2 id="conditional-retries">Conditional Retries</h2>
+<p>It is possible to execute global conditional retries to handle unforseen errors.
+Lost connections and network issues are good candidates to be retried whenever they appear.</p>
+<p>This can be done inside a helper using the global <a href="https://codecept.io/hooks/#api">promise recorder</a>:</p>
+<p>Example: Retrying rendering errors in Puppeteer.</p>
+<pre><code class="js">_before() {
+  const recorder = require('codeceptjs').recorder;
+  recorder.retry({
+    retries: 2,
+    when: err =&gt; err.message.indexOf('Cannot find context with specified id') &gt; -1,
+  });
+}
+</code></pre>
+
+<p><code>recorder.retry</code> acts similarly to <code>I.retry()</code> and accepts the same parameters. It expects the <code>when</code> parameter to be set so it would handle only specific errors and not to retry for every failed step.</p>
+<p>Retry rules are available in array <code>recorder.retries</code>. The last retry rule can be disabled by running <code>recorder.retries.pop()</code>;</p>
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >

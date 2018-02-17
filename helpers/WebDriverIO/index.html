@@ -371,6 +371,8 @@
         
             <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
         
+            <li><a href="#grabnumberofopentabs">grabNumberOfOpenTabs</a></li>
+        
             <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
         
             <li><a href="#grabpopuptext">grabPopupText</a></li>
@@ -457,13 +459,13 @@
         
             <li><a href="#wait">wait</a></li>
         
+            <li><a href="#waitfordetached">waitForDetached</a></li>
+        
             <li><a href="#waitforelement">waitForElement</a></li>
         
             <li><a href="#waitforenabled">waitForEnabled</a></li>
         
             <li><a href="#waitforinvisible">waitForInvisible</a></li>
-        
-            <li><a href="#waitforstalenessof">waitForStalenessOf</a></li>
         
             <li><a href="#waitfortext">waitForText</a></li>
         
@@ -478,8 +480,6 @@
             <li><a href="#waittohide">waitToHide</a></li>
         
             <li><a href="#waituntil">waitUntil</a></li>
-        
-            <li><a href="#waituntilexists">waitUntilExists</a></li>
         
             <li><a href="#waiturlequals">waitUrlEquals</a></li>
         
@@ -507,20 +507,20 @@ manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <h3 id="configuration">Configuration</h3>
 <p>This helper should be configured in codecept.json</p>
 <ul>
-<li><code>url</code> - base url of website to be tested</li>
-<li><code>browser</code> - browser in which perform testing</li>
-<li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
-<li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000</li>
-<li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure</li>
-<li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites</li>
-<li><code>keepBrowserState</code> (optional, default: false)  - keep browser state between tests when <code>restart</code> set to false.</li>
-<li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
+<li><code>url</code>: base url of website to be tested.</li>
+<li><code>browser</code>: browser in which to perform testing.</li>
+<li><code>restart</code>: (optional, default: true) - restart browser between tests.</li>
+<li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.</li>
+<li><code>disableScreenshots</code>: (optional, default: false) - don't save screenshots on failure.</li>
+<li><code>uniqueScreenshotNames</code>: (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites.</li>
+<li><code>keepBrowserState</code>: (optional, default: false) - keep browser state between tests when <code>restart</code> is set to false.</li>
+<li><code>keepCookies</code>: (optional, default: false) - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>windowSize</code>: (optional) default window size. Set to <code>maximize</code> or a dimension in the format <code>640x480</code>.</li>
-<li><code>waitForTimeout</code>: (option) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default;</li>
+<li><code>waitForTimeout</code>: (option) sets default wait time in <em>ms</em> for all <code>wait*</code> functions. 1000 by default.</li>
 <li><code>desiredCapabilities</code>: Selenium's <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">desired
-    capabilities</a></li>
-<li><code>manualStart</code> (optional, default: false) - do not start browser before a test, start it manually inside a helper
-    with <code>this.helpers["WebDriverIO"]._startBrowser()</code></li>
+    capabilities</a>.</li>
+<li><code>manualStart</code>: (optional, default: false) - do not start browser before a test, start it manually inside a helper
+    with <code>this.helpers["WebDriverIO"]._startBrowser()</code>.</li>
 <li><code>timeouts</code>: <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> defined as hash.</li>
 </ul>
 <p>Example:</p>
@@ -1069,6 +1069,11 @@ Appium: support only web testing</p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
+<h2 id="grabnumberofopentabs">grabNumberOfOpenTabs</h2>
+<p>Grab number of open tabs</p>
+<pre><code class="js">I.grabNumberOfOpenTabs();
+</code></pre>
+
 <h2 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h2>
 <p>Grab number of visible elements by locator</p>
 <pre><code class="js">I.grabNumberOfVisibleElements('p');
@@ -1084,14 +1089,12 @@ Appium: support only web testing</p>
 </code></pre>
 
 <h2 id="grabsource">grabSource</h2>
-<p>Checks that the current page contains the given string in its raw source code.</p>
-<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+<p>Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.</p>
+<pre><code class="js">let pageSource = await I.grabSource();
 </code></pre>
 
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>text</code>  Appium: support</li>
-</ul>
+<p>Appium: support</p>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -1142,7 +1145,7 @@ I.moveCursorTo('#submit', 5,5);
 
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
+Special keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
 <pre><code class="js">I.pressKey('Enter');
@@ -1500,6 +1503,16 @@ I.uncheckOption('agree', '//form');
 <ul>
 <li><code>sec</code>  Appium: support</li>
 </ul>
+<h2 id="waitfordetached">waitForDetached</h2>
+<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForDetached('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
+</ul>
 <h2 id="waitforelement">waitForElement</h2>
 <p>Waits for element to be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
@@ -1526,16 +1539,6 @@ Element can be located by CSS or XPath.</p>
 <p>Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
-</code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
-</ul>
-<h2 id="waitforstalenessof">waitForStalenessOf</h2>
-<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code>I.waitForStalenessOf('#popup');
 </code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -1623,18 +1626,6 @@ I.waitUntil(() =&gt; window.requests == 0, 5);
 <li><code>fn</code>  </li>
 <li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 <li><code>timeoutMsg</code>   (optional, default <code>null</code>)</li>
-</ul>
-<h2 id="waituntilexists">waitUntilExists</h2>
-<p>Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code class="js">I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-</code></pre>
-
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 </ul>
 <h2 id="waiturlequals">waitUrlEquals</h2>
 <p>Waits for the entire URL to match the expected</p>

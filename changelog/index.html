@@ -283,7 +283,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#114">1.1.4</a></li>
+        <li class="main active"><a href="#115">1.1.5</a></li>
+        
+    
+        <li class="main "><a href="#114">1.1.4</a></li>
         
     
         <li class="main "><a href="#113">1.1.3</a></li>
@@ -427,6 +430,47 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="115">1.1.5</h2>
+<ul>
+<li>[Puppeteer] Rerun steps failed due to "Cannot find context with specified id" Error.</li>
+<li>Added syntax to retry a single step:</li>
+</ul>
+<pre><code class="js">// retry action once on failure
+I.retry().see('Hello');
+
+// retry action 3 times on failure
+I.retry(3).see('Hello');
+
+// retry action 3 times waiting for 0.1 second before next try
+I.retry({ retries: 3, minTimeout: 100 }).see('Hello');
+
+// retry action 3 times waiting no more than 3 seconds for last retry
+I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello');
+
+// retry 2 times if error with message 'Node not visible' happens
+I.retry({
+  retries: 2,
+  when: err =&gt; err.message === 'Node not visible'
+}).seeElement('#user');
+</code></pre>
+
+<ul>
+<li><code>Scenario().injectDependencies</code> added to dynamically add objects into DI container by @Apshenkin. See <a href="https://codecept.io/pageobjects/#dependency-injection">Dependency Injection section in PageObjects</a>.</li>
+<li>Fixed using async/await functions inside <code>within</code></li>
+<li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <strong><code>waitUntilExists</code> deprecated</strong> in favor of <code>waitForElement</code></li>
+<li>[WebDriverIO][Protractor] <strong><code>waitForStalenessOf</code> deprecated</strong> in favor of <code>waitForDetached</code></li>
+<li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <code>waitForDetached</code> added</li>
+<li>[Nightmare] Added <code>I.seeNumberOfElements()</code> by @pmoncadaisla</li>
+<li>[Nightmare] Load blank page when starting nightmare so that the .evaluate function will work if _failed/saveScreenshot is triggered by @reubenmiller</li>
+<li>Fixed using plain arrays for data driven tests by @reubenmiller</li>
+<li>[Puppeteer] Use default tab instead of opening a new tab when starting the browser by @reubenmiller</li>
+<li>[Puppeteer] Added <code>grabNumberOfTabs</code> function by @reubenmiller</li>
+<li>[Puppeteer] Add ability to set user-agent by @abidhahmed</li>
+<li>[Puppeteer] Add keepCookies and keepBrowserState @abidhahmed</li>
+<li>[Puppeteer] Clear value attribute instead of innerhtml for TEXTAREA by @reubenmiller</li>
+<li>[REST] fixed sending string payload by @Spartans2017</li>
+<li>Fixed unhandled rejection in async/await tests by @APshenkin</li>
+</ul>
 <h2 id="114">1.1.4</h2>
 <ul>
 <li>Removed <code>yarn</code> call in package.json</li>

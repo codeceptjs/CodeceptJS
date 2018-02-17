@@ -347,6 +347,8 @@
         
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabnumberofopentabs">grabNumberOfOpenTabs</a></li>
+        
             <li><a href="#grabsource">grabSource</a></li>
         
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
@@ -411,17 +413,15 @@
         
             <li><a href="#waitforclickable">waitForClickable</a></li>
         
+            <li><a href="#waitfordetached">waitForDetached</a></li>
+        
             <li><a href="#waitforelement">waitForElement</a></li>
         
             <li><a href="#waitforinvisible">waitForInvisible</a></li>
         
-            <li><a href="#waitforstalenessof">waitForStalenessOf</a></li>
-        
             <li><a href="#waitfortext">waitForText</a></li>
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
-        
-            <li><a href="#waituntilexists">waitUntilExists</a></li>
         
     
     </ul>
@@ -817,15 +817,17 @@ assert(cookie.value, '123456');
 <ul>
 <li><code>name</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
 </ul>
-<h2 id="grabsource">grabSource</h2>
-<p>Checks that the current page contains the given string in its raw source code.</p>
-<pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
+<h2 id="grabnumberofopentabs">grabNumberOfOpenTabs</h2>
+<p>Grab number of open tabs</p>
+<pre><code class="js">I.grabNumberOfOpenTabs();
 </code></pre>
 
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>text</code>  </li>
-</ul>
+<h2 id="grabsource">grabSource</h2>
+<p>Retrieves page source and returns it to test.
+Resumes test execution, so should be used inside an async function.</p>
+<pre><code class="js">let pageSource = await I.grabSource();
+</code></pre>
+
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -890,7 +892,7 @@ I.moveCursorTo('#submit', 5,5);
 
 <h2 id="presskey">pressKey</h2>
 <p>Presses a key on a focused element.
-Speical keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
+Special keys like 'Enter', 'Control', <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value">etc</a>
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.</p>
 <pre><code class="js">I.pressKey('Enter');
@@ -1124,10 +1126,23 @@ I.switchToPreviousTab(2);
 </ul>
 <h2 id="waitforclickable">waitForClickable</h2>
 <p>Waits for element to become clickable for number of seconds.</p>
+<pre><code class="js">I.waitForClickable('#link');
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="waitfordetached">waitForDetached</h2>
+<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitForDetached('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitforelement">waitForElement</h2>
 <p>Waits for element to be present on page (by default waits for 1sec).
@@ -1145,16 +1160,6 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <p>Waits for an element to become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
-</code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waitforstalenessof">waitForStalenessOf</h2>
-<p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code>I.waitForStalenessOf('#popup');
 </code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -1180,18 +1185,6 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
 </code></pre>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-</ul>
-<h2 id="waituntilexists">waitUntilExists</h2>
-<p>Waits for element not to be present on page (by default waits for 1sec).
-Element can be located by CSS or XPath.</p>
-<pre><code class="js">I.waitUntilExists('.btn.continue');
-I.waitUntilExists('.btn.continue', 5); // wait for 5 secs
-</code></pre>
-
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>

@@ -416,7 +416,7 @@ to set default headers for all your HTTP requests:</p>
 
 <p>When opening a web page you can set headers as well. <code>amOnPage</code> methods can take headers as second parameter:</p>
 <pre><code class="js">// use basic http auth
-I.amOnPage('/admin', [{'Authorization': 'Basic '+token}]);
+I.amOnPage('/admin', { 'Authorization': 'Basic '+token });
 </code></pre>
 
 <p>As a small bonus: all <code>console.log</code> calls on a page will be also shown in <code>--debug</code> mode.</p>
