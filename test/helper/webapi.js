@@ -625,26 +625,44 @@ module.exports.tests = function () {
       .then(() => I.dontSeeElement('//div[@id="step_1"]'))
       .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
 
+    const step2Css = '#step_2';
+    const step2XPath = '//div[@id = "step_2"]';
+      
     it('should allow specifying treatNonPresentAsInvisible as a config option', () => I.amOnPage('/form/wait_invisible')
       .then(() => { I.options.treatNonPresentAsInvisible = true })
-      .then(() => I.seeElement('#step_2'))
-      .then(() => I.waitForInvisible('#step_2'))
-      .then(() => I.dontSeeElement('#step_2')));
+      .then(() => I.seeElement(step2Css))
+      .then(() => I.waitForInvisible(step2Css))
+      .then(() => I.dontSeeElement(step2Css)));
 
     it('should allow specifying treatNonPresentAsInvisible as a function parameter', () => I.amOnPage('/form/wait_invisible')
-      .then(() => I.seeElement('#step_2'))
-      .then(() => I.waitForInvisible('#step_2', null, true))
-      .then(() => I.dontSeeElement('#step_2')));
+      .then(() => I.seeElement(step2Css))
+      .then(() => I.waitForInvisible(step2Css, null, true))
+      .then(() => I.dontSeeElement(step2Css)));
       
+    it('should allow specifying treatNonPresentAsInvisible as a function parameter - XPath version', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement(step2XPath))
+      .then(() => I.waitForInvisible(step2XPath, null, true))
+      .then(() => I.dontSeeElement(step2XPath)));
+
     it('should not treat non-present elements as invisible by default', () => I.amOnPage('/form/wait_invisible')
-      .then(() => I.seeElement('#step_2'))
-      .then(() => I.waitForInvisible('#step_2', 2))
+      .then(() => I.seeElement(step2Css))
+      .then(() => I.waitForInvisible(step2Css, 2))
       .then(
           () => Promise.reject(new Error('waitForInvisible should not succeed here')),
           e => assert(/^element \(.+\) not invisible after 2 sec$/.test(e.message), `incorrect failure message: ${e.message}`)
        )
-       .then(() => I.dontSeeElement('#step_2')));
-  });
+       .then(() => I.dontSeeElement(step2Css)));
+
+    it('should not treat non-present elements as invisible by default - XPath version', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement(step2XPath))
+      .then(() => I.waitForInvisible(step2XPath, 2))
+      .then(
+          () => Promise.reject(new Error('waitForInvisible should not succeed here')),
+          e => assert(/^element \(.+\) not invisible after 2 sec$/.test(e.message), `incorrect failure message: ${e.message}`)
+       )
+       .then(() => I.dontSeeElement(step2XPath)));
+
+   });
 
 
   describe('within tests', () => {
