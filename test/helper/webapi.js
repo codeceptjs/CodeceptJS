@@ -640,8 +640,8 @@ module.exports.tests = function () {
       .then(() => I.seeElement('#step_2'))
       .then(() => I.waitForInvisible('#step_2', 2))
       .then(
-          () => { throw new Error('waitForInvisible should not succeed here'); },
-          e => assert.equal(e.message, 'element (#step_2) not invisible after 2 sec')
+          () => Promise.reject(new Error('waitForInvisible should not succeed here')),
+          e => assert(/^element \(.+\) not invisible after 2 sec$/.test(e.message), `incorrect failure message: ${e.message}`)
        )
        .then(() => I.dontSeeElement('#step_2')));
   });
