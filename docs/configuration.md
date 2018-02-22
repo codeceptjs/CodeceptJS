@@ -15,7 +15,9 @@ Here is an overview of available options with their defaults:
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
 * **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/advanced/#multiple-execution)
 * **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
-* **teardown**: - an option to run code _after_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
+* **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
+* **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
+* **teardownAll**: - an option to run code _after_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
 * **noGlobals**: `false` - disable registering global variables like `Actor`, `Helper`, `pause`, `within`, `DataTable`
 * **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](http://codecept.io/hooks/#custom-hooks)
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
