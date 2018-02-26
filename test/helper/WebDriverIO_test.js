@@ -210,6 +210,23 @@ describe('WebDriverIO', function () {
       }));
   });
 
+  describe('#waitForEnabled', () => {
+    it('should wait for input text field to be enabled', () => wd.amOnPage('/form/wait_enabled')
+      .then(() => wd.waitForEnabled('#text', 2))
+      .then(() => wd.fillField('#text', 'hello world'))
+      .then(() => wd.seeInField('#text', 'hello world')));
+
+    it('should wait for input text field to be enabled by xpath', () => wd.amOnPage('/form/wait_enabled')
+      .then(() => wd.waitForEnabled("//*[@name = 'test']", 2))
+      .then(() => wd.fillField('#text', 'hello world'))
+      .then(() => wd.seeInField('#text', 'hello world')));
+
+    it('should wait for a button to be enabled', () => wd.amOnPage('/form/wait_enabled')
+      .then(() => wd.waitForEnabled('#text', 2))
+      .then(() => wd.click('#button'))
+      .then(() => wd.see('button was clicked')));
+  });
+
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', () => wd.amOnPage('/form/doubleclick')
       .then(() => wd.grabCssPropertyFrom('#block', 'height'))
@@ -302,18 +319,59 @@ describe('WebDriverIO', function () {
     it('should wait for expected value for given locator', () => wd.amOnPage('/info')
       .then(() => wd.waitForValue('//input[@name= "rus"]', 'Верно'))
       .then(() => wd.waitForValue('//input[@name= "rus"]', 'Верно3', 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
       .catch((e) => {
-        assert.equal(e.message, 'element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
+        e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
       }));
+
+    it('should wait for expected value for given css locator', () => wd.amOnPage('/form/wait_value')
+      .then(() => wd.seeInField('#text', 'Hamburg'))
+      .then(() => wd.waitForValue('#text', 'Brisbane', 2.5))
+      .then(() => wd.seeInField('#text', 'Brisbane')));
+
+    it('should wait for expected value for given xpath locator', () => wd.amOnPage('/form/wait_value')
+      .then(() => wd.seeInField('#text', 'Hamburg'))
+      .then(() => wd.waitForValue('//input[@value = "Grüße aus Hamburg"]', 'Brisbane', 2.5))
+      .then(() => wd.seeInField('#text', 'Brisbane')));
+
+    it('should only wait for one of the matching elements to contain the value given xpath locator', () => wd.amOnPage('/form/wait_value')
+      .then(() => wd.waitForValue('//input[@type = "text"]', 'Brisbane', 4))
+      .then(() => wd.seeInField('#text', 'Brisbane'))
+      .then(() => wd.seeInField('#text2', 'London')));
+
+    it('should only wait for one of the matching elements to contain the value given css locator', () => wd.amOnPage('/form/wait_value')
+      .then(() => wd.waitForValue('.inputbox', 'Brisbane', 4))
+      .then(() => wd.seeInField('#text', 'Brisbane'))
+      .then(() => wd.seeInField('#text2', 'London')));
   });
 
   describe('#waitNumberOfVisibleElements', () => {
     it('should wait for a specified number of elements on the page', () => wd.amOnPage('/info')
       .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
       .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
       .catch((e) => {
-        assert.equal(e.message, 'The number of elements //div[@id = "grab-multiple"]//a is not 2 after 0.1 sec');
+        e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
       }));
+
+    it('should wait for a specified number of elements on the page using a css selector', () => wd.amOnPage('/info')
+      .then(() => wd.waitNumberOfVisibleElements('#grab-multiple > a', 3))
+      .then(() => wd.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec');
+      }));
+
+    it('should wait for a specified number of elements which are not yet attached to the DOM', () => wd.amOnPage('/form/wait_num_elements')
+      .then(() => wd.waitNumberOfVisibleElements('.title', 2, 3))
+      .then(() => wd.see('Hello'))
+      .then(() => wd.see('World')));
   });
 
   describe('#moveCursorTo', () => {
