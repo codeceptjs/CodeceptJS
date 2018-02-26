@@ -5,6 +5,26 @@ class MyHelper extends Helper {
     return 'hello world';
   }
 
+  _beforeSuite() {
+    console.log('Helper: I\'m simple BeforeSuite hook');
+  }
+
+  _before() {
+    console.log('Helper: I\'m simple Before hook');
+  }
+
+  _after() {
+    console.log('Helper: I\'m simple After hook');
+  }
+
+  _afterSuite() {
+    console.log('Helper: I\'m simple AfterSuite hook');
+  }
+
+  _failed() {
+    console.log('Helper: I\'m simple Failed hook');
+  }
+
   method2() {
     return 'hello another world';
   }
@@ -14,15 +34,15 @@ class MyHelper extends Helper {
   }
 
   stringWithHook(hookName) {
-    return `I'm generator ${hookName} hook`;
+    return `Test: I'm generator ${hookName} hook`;
   }
 
   asyncStringWithHook(hookName) {
-    return `I'm async/await ${hookName} hook`;
+    return `Test: I'm async/await ${hookName} hook`;
   }
 
   stringWithScenarioType(type) {
-    return `I'm ${type} test`;
+    return `Test: I'm ${type} test`;
   }
 }
 
