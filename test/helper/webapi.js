@@ -23,7 +23,7 @@ module.exports.tests = function () {
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
-  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabBrowserUrl, ...', () => {
+  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
     it('should check for url fragment', function* () {
       yield I.amOnPage('/form/checkbox');
       yield I.seeInCurrentUrl('/form');
@@ -44,7 +44,7 @@ module.exports.tests = function () {
 
     it('should grab browser url', function* () {
       yield I.amOnPage('/info');
-      const url = yield I.grabBrowserUrl();
+      const url = yield I.grabCurrentUrl();
       return assert.equal(url, `${siteUrl}/info`);
     });
   });
