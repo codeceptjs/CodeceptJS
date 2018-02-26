@@ -15,6 +15,12 @@
 
 
 </script>
-
+<div id="step_2">Step Two Button</div>
+<script>
+  setTimeout(function () {
+      var step2 = document.getElementById('step_2');
+      step2.parentElement.removeChild(step2);
+  }, 1000);
+</script>
 </body>
 </html>
