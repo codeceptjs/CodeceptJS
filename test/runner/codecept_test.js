@@ -173,6 +173,7 @@ describe('Codeceptjs Events', () => {
         event.test.before,
         event.test.started,
         event.test.passed,
+        `${event.test.passed} (helper)`,
         event.test.after,
         event.suite.after,
         event.all.result,
@@ -197,12 +198,14 @@ describe('Codeceptjs Events', () => {
         event.test.before,
         event.test.started,
         event.test.passed,
+        `${event.test.passed} (helper)`,
         event.test.after,
 
         // Test 2 (should fail)
         event.test.before,
         event.test.started,
         event.test.failed,
+        `${event.test.failed} (helper)`,
         event.test.after,
 
         event.suite.after,
