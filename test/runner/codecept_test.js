@@ -85,19 +85,46 @@ describe('CodeceptJS Runner', () => {
   it('should run hooks from suites', (done) => {
     exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
+      console.log('lines', lines);
+
       expect(lines).to.include.members([
-        'I\'m simple BeforeSuite hook',
-        'I\'m generator BeforeSuite hook',
-        'I\'m async/await BeforeSuite hook',
-        'I\'m simple Before hook',
-        'I\'m generator Before hook',
-        'I\'m async/await Before hook',
-        'I\'m generator After hook',
-        'I\'m simple After hook',
-        'I\'m async/await After hook',
-        'I\'m generator AfterSuite hook',
-        'I\'m simple AfterSuite hook',
-        'I\'m async/await AfterSuite hook',
+        'Helper: I\'m simple BeforeSuite hook',
+        'Test: I\'m simple BeforeSuite hook',
+        'Test: I\'m generator BeforeSuite hook',
+        'Test: I\'m async/await BeforeSuite hook',
+        'Helper: I\'m simple Before hook',
+        'Test: I\'m simple Before hook',
+        'Test: I\'m generator Before hook',
+        'Test: I\'m async/await Before hook',
+        'Test: I\'m generator After hook',
+        'Test: I\'m simple After hook',
+        'Test: I\'m async/await After hook',
+        'Helper: I\'m simple After hook',
+        'Test: I\'m generator AfterSuite hook',
+        'Test: I\'m simple AfterSuite hook',
+        'Test: I\'m async/await AfterSuite hook',
+        'Helper: I\'m simple AfterSuite hook',
+      ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run hooks from suites (in different order)', (done) => {
+    exec(codecept_run_config('codecept.testhooks.different.order.json'), (err, stdout) => {
+      const lines = stdout.match(/\S.+/g);
+      console.log('lines', lines);
+
+      expect(lines).to.include.members([
+        'Helper: I\'m simple BeforeSuite hook',
+        'Test: I\'m async/await BeforeSuite hook',
+        'Helper: I\'m simple Before hook',
+        'Test: I\'m async/await Before hook',
+        'Test: I\'m async/await After hook',
+        'Helper: I\'m simple After hook',
+        'Test: I\'m async/await AfterSuite hook',
+        'Helper: I\'m simple AfterSuite hook',
       ]);
       stdout.should.include('OK  | 1 passed');
       assert(!err);
