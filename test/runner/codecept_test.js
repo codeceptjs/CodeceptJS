@@ -85,7 +85,6 @@ describe('CodeceptJS Runner', () => {
   it('should run hooks from suites', (done) => {
     exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
-      console.log('lines', lines);
 
       expect(lines).to.include.members([
         'Helper: I\'m simple BeforeSuite hook',
@@ -114,7 +113,6 @@ describe('CodeceptJS Runner', () => {
   it('should run hooks from suites (in different order)', (done) => {
     exec(codecept_run_config('codecept.testhooks.different.order.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
-      console.log('lines', lines);
 
       expect(lines).to.include.members([
         'Helper: I\'m simple BeforeSuite hook',
