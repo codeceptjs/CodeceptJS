@@ -14,7 +14,8 @@ Scenario('Simple async/await test', async (I) => {
   console.log(text);
 });
 
-Scenario('Should understand async without brackets', async (I) => {
+// eslint-disable-next-line arrow-parens
+Scenario('Should understand async without brackets', async I => {
   const text = await I.stringWithScenarioType('asyncbrackets');
   console.log(text);
 });
