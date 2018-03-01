@@ -303,7 +303,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 ## dontSeeElement
 
-Opposite to `seeElement`. Checks that element is not visible
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 **Parameters**
 
@@ -473,6 +473,16 @@ assert(cookie.value, '123456');
 **Parameters**
 
 -   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
+
+## grabCurrentUrl
+
+Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
 
 ## grabNumberOfOpenTabs
 
@@ -917,7 +927,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 ## waitForInvisible
 
-Waits for an element to become invisible on a page (by default waits for 1sec).
+Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForInvisible('#popup');

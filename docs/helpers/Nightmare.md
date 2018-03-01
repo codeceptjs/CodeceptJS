@@ -217,7 +217,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 ## dontSeeElement
 
-Opposite to `seeElement`. Checks that element is not visible
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 **Parameters**
 
@@ -389,6 +389,16 @@ assert(cookie.value, '123456');
 -   `name`  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:```js
     I.grabCookie({ secure: true});
     ```If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+
+## grabCurrentUrl
+
+Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
 
 ## grabHAR
 

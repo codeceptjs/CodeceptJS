@@ -64,6 +64,14 @@ Hook executed after all tests are executed
 
 Hook executed before all tests
 
+## _passed
+
+Hook executed after each passed test
+
+**Parameters**
+
+-   `test` **Any** 
+
 ## _test
 
 Hook provides a test details

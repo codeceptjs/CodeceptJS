@@ -30,6 +30,18 @@ This helper should be configured in codecept.json
 }
 ```
 
+## Access From Helpers
+
+Receive Puppeteer client from a custom helper by accessing `browser` for the Browser object or `page` for the current Page object:
+
+```js
+const browser = this.helpers['Puppeteer'].browser;
+await browser.pages(); // List of pages in the browser
+
+const currentPage = this.helpers['Puppeteer'].page;
+await currentPage.url(); // Get the url of the current page
+```
+
 **Parameters**
 
 -   `config`  
@@ -309,7 +321,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 ## dontSeeElement
 
-Opposite to `seeElement`. Checks that element is not visible
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 **Parameters**
 
@@ -514,6 +526,16 @@ I.grabCssPropertyFrom('h3', 'font-weight');
 
 -   `locator`  
 -   `cssProperty`  
+
+## grabCurrentUrl
+
+Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
 
 ## grabHTMLFrom
 
@@ -1063,9 +1085,19 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
 
+## waitForEnabled
+
+Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
 ## waitForInvisible
 
-Waits for an element to become invisible on a page (by default waits for 1sec).
+Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForInvisible('#popup');
@@ -1092,6 +1124,21 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec`  seconds to wait
 -   `context`  element located by CSS|XPath|strict locator
 
+## waitForValue
+
+Waits for the specified value to be in value attribute
+
+```js
+I.waitForValue('//input', "GoodValue");
+```
+
+**Parameters**
+
+-   `field`  input field
+-   `locator`  
+-   `value`  expected value
+-   `sec`  seconds to wait, 1 sec by default
+
 ## waitForVisible
 
 Waits for an element to become visible on a page (by default waits for 1sec).
@@ -1116,6 +1163,21 @@ I.waitInUrl('/info', 2);
 
 -   `urlPart`  
 -   `sec`   (optional, default `null`)
+
+## waitNumberOfVisibleElements
+
+Waits for a specified number of elements on the page
+
+```js
+I.waitNumberOfVisibleElements('a', 3);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `seconds`  
+-   `num`  
+-   `sec`  
 
 ## waitToHide
 
