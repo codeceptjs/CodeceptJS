@@ -2,6 +2,8 @@ const expect = require('chai').expect;
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
+const event = require('../../lib').event;
+const eventHandlers = require('../data/sandbox/eventHandlers');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
@@ -177,6 +179,64 @@ describe('CodeceptJS Runner', () => {
       stdout.should.not.include('FAILURES'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
+      done();
+    });
+  });
+});
+
+describe('Codeceptjs Events', () => {
+  it('should fire events with only passing tests', (done) => {
+    exec(`${codecept_run_config('codecept.testevents.js')} --grep @willpass`, (err, stdout) => {
+      assert(!err);
+      const eventMessages = stdout.split('\n')
+        .filter(text => text.startsWith('Event:'))
+        .map(text => text.replace(/^Event:/i, ''));
+
+      expect(eventMessages).to.deep.equal([
+        event.all.before,
+        event.suite.before,
+        event.test.before,
+        event.test.started,
+        event.test.passed,
+        `${event.test.passed} (helper)`,
+        event.test.after,
+        event.suite.after,
+        event.all.result,
+        event.all.after,
+      ]);
+      done();
+    });
+  });
+
+  it('should fire events with passing and failing tests', (done) => {
+    exec(codecept_run_config('codecept.testevents.js'), (err, stdout) => {
+      assert(err);
+      const eventMessages = stdout.split('\n')
+        .filter(text => text.startsWith('Event:'))
+        .map(text => text.replace(/^Event:/i, ''));
+
+      expect(eventMessages).to.deep.equal([
+        event.all.before,
+        event.suite.before,
+
+        // Test 1 (should pass)
+        event.test.before,
+        event.test.started,
+        event.test.passed,
+        `${event.test.passed} (helper)`,
+        event.test.after,
+
+        // Test 2 (should fail)
+        event.test.before,
+        event.test.started,
+        event.test.failed,
+        `${event.test.failed} (helper)`,
+        event.test.after,
+
+        event.suite.after,
+        event.all.result,
+        event.all.after,
+      ]);
       done();
     });
   });

@@ -21,6 +21,10 @@ class MyHelper extends Helper {
     console.log('Helper: I\'m simple AfterSuite hook');
   }
 
+  _passed() {
+    console.log('Event:test.passed (helper)');
+  }
+
   _failed() {
     console.log('Helper: I\'m simple Failed hook');
   }
