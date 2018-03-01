@@ -11,8 +11,8 @@
 <div id="step_2">Step Two Button</div>
 <script>
   setTimeout(function () {
-    document.getElementById('step_1').style.display = 'none';
-    var step2 = document.getElementById('step_2');
+    document.getElementById('step_1').style.display = 'none'; // Hide button
+    var step2 = document.getElementById('step_2'); // Remove button
     step2.parentElement.removeChild(step2);
   }, 1000);
 

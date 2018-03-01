@@ -7,6 +7,8 @@ CodeceptJS provides API to run custom code before and after the test and inject 
 In case you need to execute arbitrary code before or after the tests,
 you can use `bootstrap` and `teardown` config. Use it to start and stop webserver, Selenium, etc.
 
+When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode , there are two additional hooks available; `bootstrapAll` and `teardownAll`. These hooks are only called once each; before all of the test suites are run (`bootstrapAll`) and after all of the test suites have finished (`teardownAll`).
+
 There are different ways to define bootstrap and teardown functions:
 
 * JS file executed as is (synchronously).
@@ -106,6 +108,64 @@ exports.config = {
 }
 
 ```
+
+### Example: BootstrapAll & TeardownAll Inside Config
+
+Using JavaScript-style config `codecept.conf.js`, bootstrapAll and teardownAll functions can be placed inside of it:
+
+
+```js
+const fs = require('fs');
+const tempFolder = process.cwd() + '/tmpFolder';
+
+exports.config = {
+  tests: "./*_test.js",
+  helpers: {},
+
+  multiple: {
+    suite1: {
+      grep: '@suite1',
+      browsers: [ 'chrome', 'firefox' ],
+    },
+    suite2: {
+      grep: '@suite2',
+      browsers: [ 'chrome' ],
+    },
+  },
+
+  // adding bootstrapAll/teardownAll
+  bootstrapAll: function(done) {
+    fs.mkdir(tempFolder, (err) => {
+      console.log('Create a temp folder before all test suites start', err);
+      done();
+    });
+  },
+
+  bootstrap: function(done) {
+    console.log('Do some pretty suite setup stuff');
+    done(); // Don't forget to call done()
+  },
+
+  teardown: function(done) {
+    console.log('Cool, one of the test suites have finished');
+    done();
+  },
+
+  teardownAll: function(done) {
+    console.log('All suites are now done so we should clean up the temp folder');
+
+    fs.rmdir(tempFolder, (err) => {
+      console.log('Ok, now I am done', err);
+      done();
+    });
+  },
+
+  // ...
+  // other config options
+}
+```
+
+**Note**: The `bootstrapAll` and `teardownAll` hooks are only called when using [Multiple Execution](http://codecept.io/advanced/#multiple-execution).
 
 ## Custom Hooks
 

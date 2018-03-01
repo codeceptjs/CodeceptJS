@@ -59,6 +59,9 @@ describe('Nightmare', function () {
       const url = yield browser.url();
       return url.should.eql(`${siteUrl}/`);
     });
+
+    it('should open same page twice without error', () => I.amOnPage('/')
+      .then(() => I.amOnPage('/')));
   });
 
   webApiTests.tests();
