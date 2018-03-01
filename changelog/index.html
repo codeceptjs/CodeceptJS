@@ -444,14 +444,18 @@
 <li>[Puppeteer] Fixing function calls when clearing the cookies and localstorage. By @reubenmiller</li>
 <li>[Puppeteer] Added <code>waitForEnabled</code>, <code>waitForValue</code> and <code>waitNumberOfVisibleElements</code> methods by @reubenmiller</li>
 <li>[WebDriverIO] Fixed <code>grabNumberOfVisibleElements</code> to return 0 when no visible elements are on page. By @michaltrunek</li>
-<li>Helpers API improvements (by @reubenmiller)</li>
+<li>Helpers API improvements (by @reubenmiller)<ul>
 <li><code>_passed</code> hook runs after a test passed successfully</li>
 <li><code>_failed</code> hook runs on a failed test</li>
-<li>Hooks API. New events added by @reubenmiller:</li>
+</ul>
+</li>
+<li>Hooks API. New events added by @reubenmiller:<ul>
 <li><code>event.all.before</code> - executed before all tests</li>
 <li><code>event.all.after</code> - executed after all tests</li>
 <li><code>event.multiple.before</code> - executed before all processes in run-multiple</li>
 <li><code>event.multiple.after</code> - executed after all processes in run-multiple</li>
+</ul>
+</li>
 <li>Multiple execution</li>
 <li>Allow <code>AfterSuite</code> and <code>After</code> test hooks to be defined after the first Scenario. By @reubenmiller</li>
 <li>[Nightmare] Prevent <code>I.amOnpage</code> navigation if the browser is already at the given url</li>
