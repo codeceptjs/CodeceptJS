@@ -621,8 +621,55 @@ module.exports.tests = function () {
       .then(() => I.waitForInvisible('//div[@id="step_1"]'))
       .then(() => I.dontSeeElement('//div[@id="step_1"]'))
       .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+
+    it('should wait for element to be removed', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForInvisible('#step_2', 2))
+      .then(() => I.dontSeeElement('#step_2')));
+
+    it('should wait for element to be removed by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('//div[@id="step_2"]'))
+      .then(() => I.waitForInvisible('//div[@id="step_2"]', 2))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]')));
   });
 
+  describe('#waitForDetached', () => {
+    it('should throw an error if the element still exists in DOM', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitForDetached('#step_1', 2))
+      .then(() => {
+        throw Error('Should not get this far');
+      })
+      .catch((err) => {
+        err.message.should.include('still on page after');
+      }));
+
+    it('should throw an error if the element still exists in DOM by XPath', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitForDetached('#step_1', 2))
+      .then(() => {
+        throw Error('Should not get this far');
+      })
+      .catch((err) => {
+        err.message.should.include('still on page after');
+      }));
+
+    it('should wait for element to be removed from DOM', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForDetached('#step_2', 2))
+      .then(() => I.dontSeeElementInDOM('#step_2')));
+
+    it('should wait for element to be removed from DOM by XPath', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.seeElement('//div[@id="step_2"]'))
+      .then(() => I.waitForDetached('//div[@id="step_2"]'))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]'))
+      .then(() => I.dontSeeElementInDOM('//div[@id="step_2"]')));
+  });
 
   describe('within tests', () => {
     afterEach(() => I._withinEnd());
