@@ -179,4 +179,9 @@ Output is printed for all running processes. Each line is tagged with a suite an
 [basic:firefox] -- FAILURES:
 ```
 
+### Hooks
+
+Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown) for an example.
+
+
 ## done()
