@@ -26,7 +26,7 @@ class MyHelper extends Helper {
   }
 
   _failed() {
-    console.log('Helper: I\'m simple Failed hook');
+    console.log('Event:test.failed (helper)');
   }
 
   method2() {
