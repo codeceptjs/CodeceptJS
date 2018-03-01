@@ -189,6 +189,8 @@ Implement corresponding methods to them.
 * `_afterStep` - after each step
 * `_beforeSuite` - before each suite
 * `_afterSuite` - after each suite
+* `_passed` - after a test passed
+* `_failed` - after a test failed
 
 Each implemented method should return a value as they will be added to global promise chain as well.
 

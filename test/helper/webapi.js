@@ -23,7 +23,7 @@ module.exports.tests = function () {
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
-  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, ...', () => {
+  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
     it('should check for url fragment', function* () {
       yield I.amOnPage('/form/checkbox');
       yield I.seeInCurrentUrl('/form');
@@ -40,6 +40,12 @@ module.exports.tests = function () {
       yield I.amOnPage('/info');
       yield I.seeCurrentUrlEquals(`${siteUrl}/info`);
       return I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
+    });
+
+    it('should grab browser url', function* () {
+      yield I.amOnPage('/info');
+      const url = yield I.grabCurrentUrl();
+      return assert.equal(url, `${siteUrl}/info`);
     });
   });
 
@@ -615,8 +621,55 @@ module.exports.tests = function () {
       .then(() => I.waitForInvisible('//div[@id="step_1"]'))
       .then(() => I.dontSeeElement('//div[@id="step_1"]'))
       .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+
+    it('should wait for element to be removed', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForInvisible('#step_2', 2))
+      .then(() => I.dontSeeElement('#step_2')));
+
+    it('should wait for element to be removed by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('//div[@id="step_2"]'))
+      .then(() => I.waitForInvisible('//div[@id="step_2"]', 2))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]')));
   });
 
+  describe('#waitForDetached', () => {
+    it('should throw an error if the element still exists in DOM', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitForDetached('#step_1', 2))
+      .then(() => {
+        throw Error('Should not get this far');
+      })
+      .catch((err) => {
+        err.message.should.include('still on page after');
+      }));
+
+    it('should throw an error if the element still exists in DOM by XPath', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitForDetached('#step_1', 2))
+      .then(() => {
+        throw Error('Should not get this far');
+      })
+      .catch((err) => {
+        err.message.should.include('still on page after');
+      }));
+
+    it('should wait for element to be removed from DOM', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitForDetached('#step_2', 2))
+      .then(() => I.dontSeeElementInDOM('#step_2')));
+
+    it('should wait for element to be removed from DOM by XPath', () => I.amOnPage('/form/wait_detached')
+      .then(() => I.seeElement('//div[@id="step_2"]'))
+      .then(() => I.waitForDetached('//div[@id="step_2"]'))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]'))
+      .then(() => I.dontSeeElementInDOM('//div[@id="step_2"]')));
+  });
 
   describe('within tests', () => {
     afterEach(() => I._withinEnd());
