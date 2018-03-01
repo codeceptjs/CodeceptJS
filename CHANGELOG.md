@@ -1,3 +1,27 @@
+## 1.1.6
+
+* Added support for `async I =>` functions syntax in Scenario by @APshenkin
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForInvisible` waits for element to hide or to be removed from page. By @reubenmiller
+* [Protractor][Puppeteer][Nightmare] Added `grabCurrentUrl` function. By @reubenmiller
+* [WebDriverIO] `grabBrowserUrl` deprecated in favor of `grabCurrentUrl` to unify the API.
+* [Nightmare] Improved element visibility detection by @reubenmiller
+* [Puppeteer] Fixing function calls when clearing the cookies and localstorage. By @reubenmiller
+* [Puppeteer] Added `waitForEnabled`, `waitForValue` and `waitNumberOfVisibleElements` methods by @reubenmiller
+* [WebDriverIO] Fixed `grabNumberOfVisibleElements` to return 0 when no visible elements are on page. By @michaltrunek
+* Helpers API improvements (by @reubenmiller)
+  * `_passed` hook runs after a test passed successfully
+  * `_failed` hook runs on a failed test
+* Hooks API. New events added by @reubenmiller:
+  * `event.all.before` - executed before all tests
+  * `event.all.after` - executed after all tests
+  * `event.multiple.before` - executed before all processes in run-multiple
+  * `event.multiple.after` - executed after all processes in run-multiple
+* Multiple execution
+* Allow `AfterSuite` and `After` test hooks to be defined after the first Scenario. By @reubenmiller
+* [Nightmare] Prevent `I.amOnpage` navigation if the browser is already at the given url
+* Multiple-Run: Added new `bootstrapAll` and `teardownAll` hooks to be executed before and after all processes
+* `codeceptjs def` command accepts `--config` option. By @reubenmiller
+
 ## 1.1.5
 
 * [Puppeteer] Rerun steps failed due to "Cannot find context with specified id" Error.

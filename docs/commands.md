@@ -131,6 +131,7 @@ TypeScript Definitions allows IDEs to provide autocompletion when writing tests.
 
 ```sh
 codeceptjs def
+codeceptjs def --config path/to/codecept.json
 ```
 
 Produces `steps.d.ts` file, which referenced in the very beginning of a test file.

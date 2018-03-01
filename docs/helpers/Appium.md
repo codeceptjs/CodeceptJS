@@ -181,7 +181,7 @@ Verifies that the specified checkbox is not checked.
 
 ## dontSeeElement
 
-Opposite to `seeElement`. Checks that element is not visible
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 **Parameters**
 
