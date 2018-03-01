@@ -36,7 +36,7 @@ I.retry({
 * [Puppeteer] Add ability to set user-agent by @abidhahmed
 * [Puppeteer] Add keepCookies and keepBrowserState @abidhahmed
 * [Puppeteer] Clear value attribute instead of innerhtml for TEXTAREA by @reubenmiller
-* [REST] fixed sending string payload by @Spartans2017
+* [REST] fixed sending string payload by @michaltrunek
 * Fixed unhandled rejection in async/await tests by @APshenkin
 
 
