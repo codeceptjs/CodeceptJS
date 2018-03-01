@@ -348,6 +348,8 @@
         
             <li><a href="#grabcookie">grabCookie</a></li>
         
+            <li><a href="#grabcurrenturl">grabCurrentUrl</a></li>
+        
             <li><a href="#grabnumberofopentabs">grabNumberOfOpenTabs</a></li>
         
             <li><a href="#grabsource">grabSource</a></li>
@@ -682,7 +684,7 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <li><code>url</code>  </li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
-<p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
+<p>Opposite to <code>seeElement</code>. Checks that element is not visible (or in DOM)</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|Strict locator</li>
@@ -818,6 +820,13 @@ assert(cookie.value, '123456');
 <ul>
 <li><code>name</code>  Returns cookie in JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">format</a>.</li>
 </ul>
+<h2 id="grabcurrenturl">grabCurrentUrl</h2>
+<p>Get current URL from browser.
+Resumes test execution, so should be used inside an async function.</p>
+<pre><code class="js">let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+</code></pre>
+
 <h2 id="grabnumberofopentabs">grabNumberOfOpenTabs</h2>
 <p>Grab number of open tabs</p>
 <pre><code class="js">I.grabNumberOfOpenTabs();
@@ -1158,7 +1167,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
-<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+<p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
 </code></pre>

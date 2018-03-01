@@ -309,7 +309,9 @@
 <li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
 <li><strong>multiple</strong>: <code>{}</code> - multiple options, see <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a></li>
 <li><strong>bootstrap</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>).</li>
-<li><strong>teardown</strong>: - an option to run code <em>after</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>.</li>
+<li><strong>bootstrapAll</strong>: <code>"./bootstrap.js"</code> - an option to run code <em>before</em> all test suites are run when using the run-multiple mode. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>).</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em>  all test suites are run when using the run-multiple mode. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>.</li>
+<li><strong>teardownAll</strong>: - an option to run code <em>after</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>.</li>
 <li><strong>noGlobals</strong>: <code>false</code> - disable registering global variables like <code>Actor</code>, <code>Helper</code>, <code>pause</code>, <code>within</code>, <code>DataTable</code></li>
 <li><strong>hooks</strong>: - include custom listeners to plug into execution workflow. See <a href="http://codecept.io/hooks/#custom-hooks">Custom Hooks</a></li>
 <li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print s  teps output, as well as used in source code.</li>

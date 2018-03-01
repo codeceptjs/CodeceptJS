@@ -1180,7 +1180,7 @@ I.click({css: 'nav a.login'});
   }
 
   /**
-   * Opposite to `seeElement`. Checks that element is not visible
+   * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 @param locator located by CSS|XPath|Strict locator
    *

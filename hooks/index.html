@@ -306,6 +306,7 @@
 <h2 id="bootstrap-teardown">Bootstrap &amp; Teardown</h2>
 <p>In case you need to execute arbitrary code before or after the tests,
 you can use <code>bootstrap</code> and <code>teardown</code> config. Use it to start and stop webserver, Selenium, etc.</p>
+<p>When using the <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a> mode , there are two additional hooks available; <code>bootstrapAll</code> and <code>teardownAll</code>. These hooks are only called once each; before all of the test suites are run (<code>bootstrapAll</code>) and after all of the test suites have finished (<code>teardownAll</code>).</p>
 <p>There are different ways to define bootstrap and teardown functions:</p>
 <ul>
 <li>JS file executed as is (synchronously).</li>
@@ -386,6 +387,59 @@ exports.config = {
 
 </code></pre>
 
+<h3 id="example-bootstrapall-teardownall-inside-config">Example: BootstrapAll &amp; TeardownAll Inside Config</h3>
+<p>Using JavaScript-style config <code>codecept.conf.js</code>, bootstrapAll and teardownAll functions can be placed inside of it:</p>
+<pre><code class="js">const fs = require('fs');
+const tempFolder = process.cwd() + '/tmpFolder';
+
+exports.config = {
+  tests: &quot;./*_test.js&quot;,
+  helpers: {},
+
+  multiple: {
+    suite1: {
+      grep: '@suite1',
+      browsers: [ 'chrome', 'firefox' ],
+    },
+    suite2: {
+      grep: '@suite2',
+      browsers: [ 'chrome' ],
+    },
+  },
+
+  // adding bootstrapAll/teardownAll
+  bootstrapAll: function(done) {
+    fs.mkdir(tempFolder, (err) =&gt; {
+      console.log('Create a temp folder before all test suites start', err);
+      done();
+    });
+  },
+
+  bootstrap: function(done) {
+    console.log('Do some pretty suite setup stuff');
+    done(); // Don't forget to call done()
+  },
+
+  teardown: function(done) {
+    console.log('Cool, one of the test suites have finished');
+    done();
+  },
+
+  teardownAll: function(done) {
+    console.log('All suites are now done so we should clean up the temp folder');
+
+    fs.rmdir(tempFolder, (err) =&gt; {
+      console.log('Ok, now I am done', err);
+      done();
+    });
+  },
+
+  // ...
+  // other config options
+}
+</code></pre>
+
+<p><strong>Note</strong>: The <code>bootstrapAll</code> and <code>teardownAll</code> hooks are only called when using <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a>.</p>
 <h2 id="custom-hooks">Custom Hooks</h2>
 <p>To extend internal CodeceptJS functionality you can use hooks.
 CodeceptJS provides API to connect to its internal event dispatcher, container, output, promise recorder, so you could hook into it to create your own reporters, test listeners, etc.</p>

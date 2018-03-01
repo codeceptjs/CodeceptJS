@@ -1031,7 +1031,7 @@ I.seeElement('#modal');
   }
 
   /**
-   * Opposite to `seeElement`. Checks that element is not visible
+   * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 @param locator located by CSS|XPath|Strict locator
    * Appium: support
@@ -1112,13 +1112,20 @@ let pageSource = await I.grabSource();
 
   /**
    * Get current URL from browser.
-   *
-   * ```js
-   * let url = yield I.grabBrowserUrl();
-   * console.log(`Current URL is [${url}]`);
-   * ```
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
    */
+  async grabCurrentUrl() {
+    const res = await this.browser.url();
+    return res.value;
+  }
+
   async grabBrowserUrl() {
+    console.log('grabBrowserUrl deprecated. Use grabCurrentUrl instead');
     const res = await this.browser.url();
     return res.value;
   }
@@ -1232,7 +1239,6 @@ let pageSource = await I.grabSource();
    */
   async grabNumberOfVisibleElements(locator) {
     const res = await this._locate(locator);
-    assertElementExists(res, locator);
 
     let selected = await forEachAsync(res.value, async el => this.browser.elementIdDisplayed(el.ELEMENT));
     if (!Array.isArray(selected)) selected = [selected];
@@ -1875,15 +1881,16 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   }
 
   /**
-   * Waits for the specified value to be in value attribute
-   *
-   * ```js
-   * I.waitForValue('//input', "GoodValue");
-   * ```
-   *
-   * @param field input field
-   * @param value expected value
-   * @param sec seconds to wait, 1 sec by default
+   *   Waits for the specified value to be in value attribute
+
+  ```js
+  I.waitForValue('//input', "GoodValue");
+  ```
+
+  @param field input field
+  @param value expected value
+  @param sec seconds to wait, 1 sec by default
+
    */
   async waitForValue(field, value, sec = null) {
     const client = this.browser;
@@ -1929,10 +1936,13 @@ I.waitForVisible('#popup');
 
   /**
    * Waits for a specified number of elements on the page
-   *
-   * ```js
-   * I.waitNumberOfVisibleElements('a', 3);
-   * ```
+
+```js
+I.waitNumberOfVisibleElements('a', 3);
+```
+
+@param locator
+@param seconds
    */
   async waitNumberOfVisibleElements(locator, num, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -1943,11 +1953,11 @@ I.waitForVisible('#popup');
 
       if (!Array.isArray(selected)) selected = [selected];
       return selected.length === num;
-    }, aSec * 1000, `The number of elements ${locator} is not ${num} after ${aSec} sec`);
+    }, aSec * 1000, `The number of elements (${locator}) is not ${num} after ${aSec} sec`);
   }
 
   /**
-   * Waits for an element to become invisible on a page (by default waits for 1sec).
+   * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```
@@ -1963,7 +1973,7 @@ I.waitForInvisible('#popup');
     const aSec = sec || this.options.waitForTimeout;
     return this.browser.waitUntil(async () => {
       const res = await this.browser.elements(withStrictLocator.call(this, locator));
-      if (!res.value || res.value.length === 0) return false;
+      if (!res.value || res.value.length === 0) return true;
       const selected = await forEachAsync(res.value, async el => this.browser.elementIdDisplayed(el.ELEMENT));
       if (Array.isArray(selected)) {
         return selected.filter(val => val === false).length > 0;

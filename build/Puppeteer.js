@@ -55,6 +55,18 @@ const consoleLogStore = new Console();
  *   "executablePath" : "/path/to/Chrome"
  * }
  * ```
+ *
+ * ## Access From Helpers
+ *
+ * Receive Puppeteer client from a custom helper by accessing `browser` for the Browser object or `page` for the current Page object:
+ *
+ * ```js
+ * const browser = this.helpers['Puppeteer'].browser;
+ * await browser.pages(); // List of pages in the browser
+ *
+ * const currentPage = this.helpers['Puppeteer'].page;
+ * await currentPage.url(); // Get the url of the current page
+ * ```
  */
 class Puppeteer extends Helper {
   constructor(config) {
@@ -130,9 +142,9 @@ class Puppeteer extends Helper {
 
     if (!this.options.keepCookies) {
       this.debugSection('Session', 'cleaning cookies and localStorage');
-      await this.browser.deleteCookie();
+      await this.clearCookie();
     }
-    await this.browser.execute('localStorage.clear();').catch((err) => {
+    await this.executeScript('localStorage.clear();').catch((err) => {
       if (!(err.message.indexOf("Storage is disabled inside 'data:' URLs.") > -1)) throw err;
     });
     await this.closeOtherTabs();
@@ -703,7 +715,7 @@ I.seeElement('#modal');
   }
 
   /**
-   * Opposite to `seeElement`. Checks that element is not visible
+   * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 @param locator located by CSS|XPath|Strict locator
    */
@@ -1169,6 +1181,19 @@ let pageSource = await I.grabSource();
   }
 
   /**
+   * Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
+   */
+  async grabCurrentUrl() {
+    return this.page.url();
+  }
+
+  /**
    * Checks that the current page contains the given string in its raw source code.
 
 ```js
@@ -1579,6 +1604,117 @@ I.wait(2); // wait 2 secs
   }
 
   /**
+   * Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+   */
+  async waitForEnabled(locator, sec) {
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    locator = new Locator(locator, 'css');
+    const matcher = await this.context;
+    let waiter;
+    const context = await this._getContext();
+    if (locator.isCSS()) {
+      const enabledFn = function (locator) {
+        const els = document.querySelectorAll(locator);
+        if (!els || els.length === 0) {
+          return false;
+        }
+        return Array.prototype.filter.call(els, el => !el.disabled).length > 0;
+      };
+      waiter = context.waitForFunction(enabledFn, { timeout: waitTimeout }, locator.value);
+    } else {
+      const enabledFn = function (locator, $XPath) {
+        eval($XPath); // eslint-disable-line no-eval
+        return $XPath(null, locator).filter(el => !el.disabled).length > 0;
+      };
+      waiter = context.waitForFunction(enabledFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
+    }
+    return waiter.catch((err) => {
+      throw new Error(`element (${locator.toString()}) still not enabled after ${waitTimeout / 1000} sec\n${err.message}`);
+    });
+  }
+
+  /**
+   *   Waits for the specified value to be in value attribute
+
+  ```js
+  I.waitForValue('//input', "GoodValue");
+  ```
+
+  @param field input field
+  @param value expected value
+  @param sec seconds to wait, 1 sec by default
+
+   */
+  async waitForValue(locator, value, sec) {
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    locator = new Locator(locator, 'css');
+    const matcher = await this.context;
+    let waiter;
+    const context = await this._getContext();
+    if (locator.isCSS()) {
+      const valueFn = function (locator, value) {
+        const els = document.querySelectorAll(locator);
+        if (!els || els.length === 0) {
+          return false;
+        }
+        return Array.prototype.filter.call(els, el => (el.value || '').indexOf(value) !== -1).length > 0;
+      };
+      waiter = context.waitForFunction(valueFn, { timeout: waitTimeout }, locator.value, value);
+    } else {
+      const valueFn = function (locator, $XPath, value) {
+        eval($XPath); // eslint-disable-line no-eval
+        return $XPath(null, locator).filter(el => (el.value || '').indexOf(value) !== -1).length > 0;
+      };
+      waiter = context.waitForFunction(valueFn, { timeout: waitTimeout }, locator.value, $XPath.toString(), value);
+    }
+    return waiter.catch((err) => {
+      const loc = locator.toString();
+      throw new Error(`element (${loc}) is not in DOM or there is no element(${loc}) with value "${value}" after ${waitTimeout / 1000} sec\n${err.message}`);
+    });
+  }
+
+  /**
+   * Waits for a specified number of elements on the page
+
+```js
+I.waitNumberOfVisibleElements('a', 3);
+```
+
+@param locator
+@param seconds
+   */
+  async waitNumberOfVisibleElements(locator, num, sec) {
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    locator = new Locator(locator, 'css');
+    const matcher = await this.context;
+    let waiter;
+    const context = await this._getContext();
+    if (locator.isCSS()) {
+      const visibleFn = function (locator, num) {
+        const els = document.querySelectorAll(locator);
+        if (!els || els.length === 0) {
+          return false;
+        }
+        return Array.prototype.filter.call(els, el => el.offsetParent !== null).length === num;
+      };
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, num);
+    } else {
+      const visibleFn = function (locator, $XPath, num) {
+        eval($XPath); // eslint-disable-line no-eval
+        return $XPath(null, locator).filter(el => el.offsetParent !== null).length === num;
+      };
+      waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString(), num);
+    }
+    return waiter.catch((err) => {
+      throw new Error(`The number of elements (${locator.toString()}) is not ${num} after ${waitTimeout / 1000} sec\n${err.message}`);
+    });
+  }
+
+  /**
    * Waits for element to be present on page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
@@ -1638,7 +1774,7 @@ I.waitForVisible('#popup');
   }
 
   /**
-   * Waits for an element to become invisible on a page (by default waits for 1sec).
+   * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```
@@ -1660,7 +1796,8 @@ I.waitForInvisible('#popup');
     } else {
       const visibleFn = function (locator, $XPath) {
         eval($XPath); // eslint-disable-line no-eval
-        return $XPath(null, locator).filter(el => el.offsetParent === null).length > 0;
+        const matches = $XPath(null, locator);
+        return matches.length === 0 || matches.filter(el => el.offsetParent === null).length > 0;
       };
       waiter = context.waitForFunction(visibleFn, { timeout: waitTimeout }, locator.value, $XPath.toString());
     }
@@ -2203,4 +2340,3 @@ function $XPath(element, selector) {
   }
   return res;
 }
-

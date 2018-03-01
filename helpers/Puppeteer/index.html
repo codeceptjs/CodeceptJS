@@ -288,6 +288,8 @@
         
             <li><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#access-from-helpers">Access From Helpers</a></li>
+        
             <li><a href="#_addpopuplistener">_addPopupListener</a></li>
         
             <li><a href="#_locate">_locate</a></li>
@@ -363,6 +365,8 @@
             <li><a href="#grabcookie">grabCookie</a></li>
         
             <li><a href="#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
+        
+            <li><a href="#grabcurrenturl">grabCurrentUrl</a></li>
         
             <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
         
@@ -452,13 +456,19 @@
         
             <li><a href="#waitforelement">waitForElement</a></li>
         
+            <li><a href="#waitforenabled">waitForEnabled</a></li>
+        
             <li><a href="#waitforinvisible">waitForInvisible</a></li>
         
             <li><a href="#waitfortext">waitForText</a></li>
         
+            <li><a href="#waitforvalue">waitForValue</a></li>
+        
             <li><a href="#waitforvisible">waitForVisible</a></li>
         
             <li><a href="#waitinurl">waitInUrl</a></li>
+        
+            <li><a href="#waitnumberofvisibleelements">waitNumberOfVisibleElements</a></li>
         
             <li><a href="#waittohide">waitToHide</a></li>
         
@@ -496,6 +506,15 @@ This helper works with a browser out of the box with no additional tools require
 <pre><code class="js">&quot;chrome&quot;: {
   &quot;executablePath&quot; : &quot;/path/to/Chrome&quot;
 }
+</code></pre>
+
+<h2 id="access-from-helpers">Access From Helpers</h2>
+<p>Receive Puppeteer client from a custom helper by accessing <code>browser</code> for the Browser object or <code>page</code> for the current Page object:</p>
+<pre><code class="js">const browser = this.helpers['Puppeteer'].browser;
+await browser.pages(); // List of pages in the browser
+
+const currentPage = this.helpers['Puppeteer'].page;
+await currentPage.url(); // Get the url of the current page
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -724,7 +743,7 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <li><code>url</code>  </li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
-<p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
+<p>Opposite to <code>seeElement</code>. Checks that element is not visible (or in DOM)</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|Strict locator</li>
@@ -886,6 +905,13 @@ assert(cookie.value, '123456');
 <li><code>locator</code>  </li>
 <li><code>cssProperty</code>  </li>
 </ul>
+<h2 id="grabcurrenturl">grabCurrentUrl</h2>
+<p>Get current URL from browser.
+Resumes test execution, so should be used inside an async function.</p>
+<pre><code class="js">let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+</code></pre>
+
 <h2 id="grabhtmlfrom">grabHTMLFrom</h2>
 <p>Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.
@@ -1306,8 +1332,16 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <li><code>locator</code>  element located by CSS|XPath|strict locator</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
+<h2 id="waitforenabled">waitForEnabled</h2>
+<p>Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
-<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+<p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
 </code></pre>
@@ -1330,6 +1364,18 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 <li><code>sec</code>  seconds to wait</li>
 <li><code>context</code>  element located by CSS|XPath|strict locator</li>
 </ul>
+<h2 id="waitforvalue">waitForValue</h2>
+<p>Waits for the specified value to be in value attribute</p>
+<pre><code class="js">I.waitForValue('//input', &quot;GoodValue&quot;);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>field</code>  input field</li>
+<li><code>locator</code>  </li>
+<li><code>value</code>  expected value</li>
+<li><code>sec</code>  seconds to wait, 1 sec by default</li>
+</ul>
 <h2 id="waitforvisible">waitForVisible</h2>
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
@@ -1349,6 +1395,18 @@ Element can be located by CSS or XPath.</p>
 <ul>
 <li><code>urlPart</code>  </li>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
+</ul>
+<h2 id="waitnumberofvisibleelements">waitNumberOfVisibleElements</h2>
+<p>Waits for a specified number of elements on the page</p>
+<pre><code class="js">I.waitNumberOfVisibleElements('a', 3);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>seconds</code>  </li>
+<li><code>num</code>  </li>
+<li><code>sec</code>  </li>
 </ul>
 <h2 id="waittohide">waitToHide</h2>
 <p>Waits for an element to hide (by default waits for 1sec).

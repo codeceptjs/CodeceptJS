@@ -284,7 +284,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#115">1.1.5</a></li>
+        <li class="main active"><a href="#116">1.1.6</a></li>
+        
+    
+        <li class="main "><a href="#115">1.1.5</a></li>
         
     
         <li class="main "><a href="#114">1.1.4</a></li>
@@ -431,6 +434,30 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="116">1.1.6</h2>
+<ul>
+<li>Added support for <code>async I =&gt;</code> functions syntax in Scenario by @APshenkin</li>
+<li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <code>waitForInvisible</code> waits for element to hide or to be removed from page. By @reubenmiller</li>
+<li>[Protractor][Puppeteer][Nightmare] Added <code>grabCurrentUrl</code> function. By @reubenmiller</li>
+<li>[WebDriverIO] <code>grabBrowserUrl</code> deprecated in favor of <code>grabCurrentUrl</code> to unify the API.</li>
+<li>[Nightmare] Improved element visibility detection by @reubenmiller</li>
+<li>[Puppeteer] Fixing function calls when clearing the cookies and localstorage. By @reubenmiller</li>
+<li>[Puppeteer] Added <code>waitForEnabled</code>, <code>waitForValue</code> and <code>waitNumberOfVisibleElements</code> methods by @reubenmiller</li>
+<li>[WebDriverIO] Fixed <code>grabNumberOfVisibleElements</code> to return 0 when no visible elements are on page. By @michaltrunek</li>
+<li>Helpers API improvements (by @reubenmiller)</li>
+<li><code>_passed</code> hook runs after a test passed successfully</li>
+<li><code>_failed</code> hook runs on a failed test</li>
+<li>Hooks API. New events added by @reubenmiller:</li>
+<li><code>event.all.before</code> - executed before all tests</li>
+<li><code>event.all.after</code> - executed after all tests</li>
+<li><code>event.multiple.before</code> - executed before all processes in run-multiple</li>
+<li><code>event.multiple.after</code> - executed after all processes in run-multiple</li>
+<li>Multiple execution</li>
+<li>Allow <code>AfterSuite</code> and <code>After</code> test hooks to be defined after the first Scenario. By @reubenmiller</li>
+<li>[Nightmare] Prevent <code>I.amOnpage</code> navigation if the browser is already at the given url</li>
+<li>Multiple-Run: Added new <code>bootstrapAll</code> and <code>teardownAll</code> hooks to be executed before and after all processes</li>
+<li><code>codeceptjs def</code> command accepts <code>--config</code> option. By @reubenmiller</li>
+</ul>
 <h2 id="115">1.1.5</h2>
 <ul>
 <li>[Puppeteer] Rerun steps failed due to "Cannot find context with specified id" Error.</li>

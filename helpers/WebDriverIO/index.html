@@ -364,11 +364,11 @@
         
             <li><a href="#grabbrowserlogs">grabBrowserLogs</a></li>
         
-            <li><a href="#grabbrowserurl">grabBrowserUrl</a></li>
-        
             <li><a href="#grabcookie">grabCookie</a></li>
         
             <li><a href="#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
+        
+            <li><a href="#grabcurrenturl">grabCurrentUrl</a></li>
         
             <li><a href="#grabhtmlfrom">grabHTMLFrom</a></li>
         
@@ -887,7 +887,7 @@ If a relative url provided, a configured url will be prepended to it.</p>
 <li><code>url</code>  Appium: support only web testing</li>
 </ul>
 <h2 id="dontseeelement">dontSeeElement</h2>
-<p>Opposite to <code>seeElement</code>. Checks that element is not visible</p>
+<p>Opposite to <code>seeElement</code>. Checks that element is not visible (or in DOM)</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|Strict locator
@@ -1032,12 +1032,6 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 console.log(JSON.stringify(logs))
 </code></pre>
 
-<h2 id="grabbrowserurl">grabBrowserUrl</h2>
-<p>Get current URL from browser.</p>
-<pre><code class="js">let url = yield I.grabBrowserUrl();
-console.log(`Current URL is [${url}]`);
-</code></pre>
-
 <h2 id="grabcookie">grabCookie</h2>
 <p>Gets a cookie object by name
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -1059,6 +1053,13 @@ assert(cookie.value, '123456');
 <li><code>locator</code>  </li>
 <li><code>cssProperty</code>  </li>
 </ul>
+<h2 id="grabcurrenturl">grabCurrentUrl</h2>
+<p>Get current URL from browser.
+Resumes test execution, so should be used inside an async function.</p>
+<pre><code class="js">let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+</code></pre>
+
 <h2 id="grabhtmlfrom">grabHTMLFrom</h2>
 <p>Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.
@@ -1537,7 +1538,7 @@ Element can be located by CSS or XPath.</p>
     Appium: support</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
-<p>Waits for an element to become invisible on a page (by default waits for 1sec).
+<p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
 </code></pre>
@@ -1602,6 +1603,7 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>seconds</code>  </li>
 <li><code>num</code>  </li>
 <li><code>sec</code>   (optional, default <code>null</code>)</li>
 </ul>

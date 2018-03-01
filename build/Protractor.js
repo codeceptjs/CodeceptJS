@@ -456,6 +456,19 @@ I.dontSee('Login'); // assume we are already logged in
   }
 
   /**
+   * Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
+   */
+  async grabCurrentUrl() {
+    return this.browser.getCurrentUrl();
+  }
+
+  /**
    * Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
@@ -799,7 +812,7 @@ I.seeElement('#modal');
   }
 
   /**
-   * Opposite to `seeElement`. Checks that element is not visible
+   * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 @param locator located by CSS|XPath|Strict locator
    */
@@ -1264,7 +1277,11 @@ I.waitForDetached('#popup');
   async waitForDetached(locator, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
     const el = global.element(guessLocator(locator) || global.by.css(locator));
-    return this.browser.wait(EC.not(EC.presenceOf(el)), aSec * 1000);
+    return this.browser.wait(EC.not(EC.presenceOf(el)), aSec * 1000).catch((err) => {
+      if (err.message && err.message.indexOf('Wait timed out after') > -1) {
+        throw new Error(`element (${JSON.stringify(locator)}) still on page after ${sec} sec`);
+      } else throw err;
+    });
   }
 
   /**
@@ -1298,7 +1315,7 @@ I.waitForVisible('#popup');
   }
 
   /**
-   * Waits for an element to become invisible on a page (by default waits for 1sec).
+   * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```

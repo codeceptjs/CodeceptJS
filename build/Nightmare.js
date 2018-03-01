@@ -12,6 +12,7 @@ const Locator = require('../locator');
 const co = require('co');
 const path = require('path');
 const ElementNotFound = require('./errors/ElementNotFound');
+const urlResolve = require('url').resolve;
 
 const specialKeys = {
   Backspace: '\u0008',
@@ -355,7 +356,12 @@ I.amOnPage('/login'); // opens a login page
    */
   async amOnPage(url, headers = null) {
     if (url.indexOf('http') !== 0) {
-      url = this.options.url + url;
+      url = urlResolve(this.options.url, url);
+    }
+    const currentUrl = await this.browser.url();
+    if (url === currentUrl) {
+      // navigating to the same url will cause an error in nightmare, so don't do it
+      return;
     }
     return this.browser.goto(url, headers).then((res) => {
       this.debugSection('URL', res.url);
@@ -394,6 +400,19 @@ let title = yield I.grabTitle();
    */
   async grabTitle() {
     return this.browser.title();
+  }
+
+  /**
+   * Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
+   */
+  async grabCurrentUrl() {
+    return this.browser.url();
   }
 
   /**
@@ -488,13 +507,13 @@ I.seeElement('#modal');
   async seeElement(locator) {
     locator = new Locator(locator, 'css');
     const num = await this.browser.evaluate((by, locator) => {
-      return window.codeceptjs.findElements(by, locator).filter(e => e.offsetParent !== null).length;
+      return window.codeceptjs.findElements(by, locator).filter(e => e.offsetWidth > 0 && e.offsetHeight > 0).length;
     }, locator.type, locator.value);
     equals('number of elements on a page').negate(0, num);
   }
 
   /**
-   * Opposite to `seeElement`. Checks that element is not visible
+   * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 @param locator located by CSS|XPath|Strict locator
    */
@@ -502,7 +521,7 @@ I.seeElement('#modal');
     locator = new Locator(locator, 'css');
     locator = new Locator(locator, 'css');
     const num = await this.browser.evaluate((by, locator) => {
-      return window.codeceptjs.findElements(by, locator).filter(e => e.offsetParent !== null).length;
+      return window.codeceptjs.findElements(by, locator).filter(e => e.offsetWidth > 0 && e.offsetHeight > 0).length;
     }, locator.type, locator.value);
     equals('number of elements on a page').assert(0, num);
   }
@@ -1173,7 +1192,7 @@ I.waitForVisible('#popup');
     return this.browser.wait((by, locator) => {
       const el = window.codeceptjs.findElement(by, locator);
       if (!el) return false;
-      return el.offsetParent !== null;
+      return el.offsetWidth > 0 && el.offsetHeight > 0;
     }, locator.type, locator.value).catch((err) => {
       if (err.message && err.message.indexOf('.wait() timed out after') > -1) {
         throw new Error(`element (${JSON.stringify(locator)}) still not visible on page after ${sec} sec`);
@@ -1198,8 +1217,8 @@ I.waitForVisible('#popup');
 
     return this.browser.wait((by, locator) => {
       const el = window.codeceptjs.findElement(by, locator);
-      if (!el) return false;
-      return el.offsetParent === null;
+      if (!el) return true;
+      return !(el.offsetWidth > 0 && el.offsetHeight > 0);
     }, locator.type, locator.value).catch((err) => {
       if (err.message && err.message.indexOf('.wait() timed out after') > -1) {
         throw new Error(`element (${JSON.stringify(locator)}) still visible after ${sec} sec`);
@@ -1256,7 +1275,7 @@ I.waitForDetached('#popup');
 
     return this.browser.wait((by, locator) => window.codeceptjs.findElement(by, locator) === null, locator.type, locator.value).catch((err) => {
       if (err.message && err.message.indexOf('.wait() timed out after') > -1) {
-        throw new Error(`element (${JSON.stringify(locator)}) still present on page after ${sec} sec`);
+        throw new Error(`element (${JSON.stringify(locator)}) still on page after ${sec} sec`);
       } else throw err;
     });
   }
