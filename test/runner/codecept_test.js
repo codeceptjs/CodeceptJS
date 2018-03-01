@@ -115,8 +115,9 @@ describe('CodeceptJS Runner', () => {
         'It\'s usual test',
         'I\'m generator test',
         'I\'m async/await test',
+        'I\'m asyncbrackets test',
       ]);
-      stdout.should.include('OK  | 3 passed');
+      stdout.should.include('OK  | 4 passed');
       assert(!err);
       done();
     });
