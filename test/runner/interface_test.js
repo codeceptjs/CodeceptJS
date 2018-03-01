@@ -87,6 +87,7 @@ describe('CodeceptJS Interface', () => {
         '[1] Queued | return result',
         '[1] Queued | fire test.passed',
         '[1] Queued | finish test',
+        '[1] Queued | hook FileSystem._passed()',
         '[1] Queued | hook FileSystem._after()',
         '[1] Queued | hook FileSystem._afterSuite()',
         '[1] Queued | hook FileSystem._finishTest()',

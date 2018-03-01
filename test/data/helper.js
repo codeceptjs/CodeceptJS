@@ -5,6 +5,14 @@ class MyHelper extends Helper {
     return 'hello world';
   }
 
+  _passed() {
+    console.log('Event:test.passed (helper)');
+  }
+
+  _failed() {
+    console.log('Event:test.failed (helper)');
+  }
+
   method2() {
     return 'hello another world';
   }

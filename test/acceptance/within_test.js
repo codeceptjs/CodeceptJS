@@ -35,7 +35,7 @@ Scenario('within on iframe @WebDriverIO @Puppeteer', (I) => {
   I.dontSee('Email Address');
 });
 
-Scenario('within on iframe without iframe navigation @WebDriverIO @nightmare @Puppeteer', (I) => {
+Scenario('within on iframe without iframe navigation @WebDriverIO @Nightmare @Puppeteer', (I) => {
   I.amOnPage('/iframe');
   within({ frame: 'iframe' }, () => {
     I.fillField('rus', 'Updated');
@@ -45,7 +45,7 @@ Scenario('within on iframe without iframe navigation @WebDriverIO @nightmare @Pu
   I.dontSee('Sign in!');
 });
 
-Scenario('within on nested iframe without iframe navigation depth 2 @WebDriverIO @nightmare @Puppeteer', (I) => {
+Scenario('within on nested iframe without iframe navigation depth 2 @WebDriverIO @Nightmare @Puppeteer', (I) => {
   I.amOnPage('/iframe_nested');
   within({ frame: ['[name=wrapper]', '[name=content]'] }, () => {
     I.fillField('rus', 'Updated');
