@@ -25,6 +25,7 @@ program.command('list [path]')
 
 program.command('def [path]')
   .description('List all actions for I.')
+  .option('-c, --config [file]', 'configuration file to be used')
   .action(require('../lib/command/definitions'));
 
 program.command('generate:test [path]')
