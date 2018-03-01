@@ -446,7 +446,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 ## dontSeeElement
 
-Opposite to `seeElement`. Checks that element is not visible
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 **Parameters**
 
@@ -629,15 +629,6 @@ let logs = yield I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-## grabBrowserUrl
-
-Get current URL from browser.
-
-```js
-let url = yield I.grabBrowserUrl();
-console.log(`Current URL is [${url}]`);
-```
-
 ## grabCookie
 
 Gets a cookie object by name
@@ -664,6 +655,16 @@ I.grabCssPropertyFrom('h3', 'font-weight');
 
 -   `locator`  
 -   `cssProperty`  
+
+## grabCurrentUrl
+
+Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
+
+```js
+let url = await I.grabCurrentUrl();
+console.log(`Current URL is [${url}]`);
+```
 
 ## grabHTMLFrom
 
@@ -1279,7 +1280,7 @@ Element can be located by CSS or XPath.
 
 ## waitForInvisible
 
-Waits for an element to become invisible on a page (by default waits for 1sec).
+Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForInvisible('#popup');
@@ -1359,6 +1360,7 @@ I.waitNumberOfVisibleElements('a', 3);
 **Parameters**
 
 -   `locator`  
+-   `seconds`  
 -   `num`  
 -   `sec`   (optional, default `null`)
 

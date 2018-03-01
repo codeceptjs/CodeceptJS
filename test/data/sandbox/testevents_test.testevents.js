@@ -1,19 +1,19 @@
 Feature('Test hooks');
 
 BeforeSuite(() => {
-  console.log('Test: I\'m simple BeforeSuite hook');
+  console.log('I\'m simple BeforeSuite hook');
 });
 
 Before(() => {
-  console.log('Test: I\'m simple Before hook');
+  console.log('I\'m simple Before hook');
 });
 
 After(() => {
-  console.log('Test: I\'m simple After hook');
+  console.log('I\'m simple After hook');
 });
 
 AfterSuite(() => {
-  console.log('Test: I\'m simple AfterSuite hook');
+  console.log('I\'m simple AfterSuite hook');
 });
 
 BeforeSuite(function* (I) {
@@ -56,6 +56,10 @@ AfterSuite(async (I) => {
   console.log(text);
 });
 
-Scenario('Simple test 1', () => {
-  console.log('Scenario: It\'s first test');
+Scenario('Simple test 1 @willpass', () => {
+  console.log('It\'s first test');
+});
+
+Scenario('Simple test 2 with error', () => {
+  assert.ok(false);
 });

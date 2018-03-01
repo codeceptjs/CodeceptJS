@@ -2,6 +2,8 @@ const expect = require('chai').expect;
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
+const event = require('../../lib').event;
+const eventHandlers = require('../data/sandbox/eventHandlers');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
@@ -85,19 +87,44 @@ describe('CodeceptJS Runner', () => {
   it('should run hooks from suites', (done) => {
     exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
+
       expect(lines).to.include.members([
-        'I\'m simple BeforeSuite hook',
-        'I\'m generator BeforeSuite hook',
-        'I\'m async/await BeforeSuite hook',
-        'I\'m simple Before hook',
-        'I\'m generator Before hook',
-        'I\'m async/await Before hook',
-        'I\'m generator After hook',
-        'I\'m simple After hook',
-        'I\'m async/await After hook',
-        'I\'m generator AfterSuite hook',
-        'I\'m simple AfterSuite hook',
-        'I\'m async/await AfterSuite hook',
+        'Helper: I\'m simple BeforeSuite hook',
+        'Test: I\'m simple BeforeSuite hook',
+        'Test: I\'m generator BeforeSuite hook',
+        'Test: I\'m async/await BeforeSuite hook',
+        'Helper: I\'m simple Before hook',
+        'Test: I\'m simple Before hook',
+        'Test: I\'m generator Before hook',
+        'Test: I\'m async/await Before hook',
+        'Test: I\'m generator After hook',
+        'Test: I\'m simple After hook',
+        'Test: I\'m async/await After hook',
+        'Helper: I\'m simple After hook',
+        'Test: I\'m generator AfterSuite hook',
+        'Test: I\'m simple AfterSuite hook',
+        'Test: I\'m async/await AfterSuite hook',
+        'Helper: I\'m simple AfterSuite hook',
+      ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run hooks from suites (in different order)', (done) => {
+    exec(codecept_run_config('codecept.testhooks.different.order.json'), (err, stdout) => {
+      const lines = stdout.match(/\S.+/g);
+
+      expect(lines).to.include.members([
+        'Helper: I\'m simple BeforeSuite hook',
+        'Test: I\'m async/await BeforeSuite hook',
+        'Helper: I\'m simple Before hook',
+        'Test: I\'m async/await Before hook',
+        'Test: I\'m async/await After hook',
+        'Helper: I\'m simple After hook',
+        'Test: I\'m async/await AfterSuite hook',
+        'Helper: I\'m simple AfterSuite hook',
       ]);
       stdout.should.include('OK  | 1 passed');
       assert(!err);
@@ -111,10 +138,11 @@ describe('CodeceptJS Runner', () => {
       expect(lines).to.include.members([
         'Test scenario types --',
         'It\'s usual test',
-        'I\'m generator test',
-        'I\'m async/await test',
+        'Test: I\'m generator test',
+        'Test: I\'m async/await test',
+        'Test: I\'m asyncbrackets test',
       ]);
-      stdout.should.include('OK  | 3 passed');
+      stdout.should.include('OK  | 4 passed');
       assert(!err);
       done();
     });
@@ -152,6 +180,64 @@ describe('CodeceptJS Runner', () => {
       stdout.should.not.include('FAILURES'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
+      done();
+    });
+  });
+});
+
+describe('Codeceptjs Events', () => {
+  it('should fire events with only passing tests', (done) => {
+    exec(`${codecept_run_config('codecept.testevents.js')} --grep @willpass`, (err, stdout) => {
+      assert(!err);
+      const eventMessages = stdout.split('\n')
+        .filter(text => text.startsWith('Event:'))
+        .map(text => text.replace(/^Event:/i, ''));
+
+      expect(eventMessages).to.deep.equal([
+        event.all.before,
+        event.suite.before,
+        event.test.before,
+        event.test.started,
+        event.test.passed,
+        `${event.test.passed} (helper)`,
+        event.test.after,
+        event.suite.after,
+        event.all.result,
+        event.all.after,
+      ]);
+      done();
+    });
+  });
+
+  it('should fire events with passing and failing tests', (done) => {
+    exec(codecept_run_config('codecept.testevents.js'), (err, stdout) => {
+      assert(err);
+      const eventMessages = stdout.split('\n')
+        .filter(text => text.startsWith('Event:'))
+        .map(text => text.replace(/^Event:/i, ''));
+
+      expect(eventMessages).to.deep.equal([
+        event.all.before,
+        event.suite.before,
+
+        // Test 1 (should pass)
+        event.test.before,
+        event.test.started,
+        event.test.passed,
+        `${event.test.passed} (helper)`,
+        event.test.after,
+
+        // Test 2 (should fail)
+        event.test.before,
+        event.test.started,
+        event.test.failed,
+        `${event.test.failed} (helper)`,
+        event.test.after,
+
+        event.suite.after,
+        event.all.result,
+        event.all.after,
+      ]);
       done();
     });
   });

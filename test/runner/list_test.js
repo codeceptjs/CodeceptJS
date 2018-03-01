@@ -30,4 +30,19 @@ describe('list/def commands', () => {
       done();
     });
   });
+
+  it('def should create definition file given a config file', (done) => {
+    try {
+      require('fs').unlinkSync(`${codecept_dir}/steps.d.ts`);
+    } catch (e) {
+      // continue regardless of error
+    }
+    exec(`${runner} def --config ${codecept_dir}/codecept.ddt.json`, (err, stdout, stderr) => {
+      stdout.should.include('Definitions were generated in steps.d.ts');
+      stdout.should.include('<reference path="./steps.d.ts" />');
+      require('fs').existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
+      assert(!err);
+      done();
+    });
+  });
 });
