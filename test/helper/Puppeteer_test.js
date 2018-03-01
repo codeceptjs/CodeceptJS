@@ -89,6 +89,33 @@ describe('Puppeteer', function () {
     });
   });
 
+  describe('#waitNumberOfVisibleElements', () => {
+    it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
+      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
+      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
+      }));
+
+    it('should wait for a specified number of elements on the page using a css selector', () => I.amOnPage('/info')
+      .then(() => I.waitNumberOfVisibleElements('#grab-multiple > a', 3))
+      .then(() => I.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec');
+      }));
+
+    it('should wait for a specified number of elements which are not yet attached to the DOM', () => I.amOnPage('/form/wait_num_elements')
+      .then(() => I.waitNumberOfVisibleElements('.title', 2, 3))
+      .then(() => I.see('Hello'))
+      .then(() => I.see('World')));
+  });
+
   describe('#moveCursorTo', () => {
     it('should trigger hover event', () => I.amOnPage('/form/hover')
       .then(() => I.moveCursorTo('#hover'))
@@ -421,6 +448,55 @@ describe('Puppeteer', function () {
       .catch((e) => {
         assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
       }));
+  });
+
+  describe('#waitForEnabled', () => {
+    it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
+      .then(() => I.waitForEnabled('#text', 2))
+      .then(() => I.fillField('#text', 'hello world'))
+      .then(() => I.seeInField('#text', 'hello world')));
+
+    it('should wait for input text field to be enabled by xpath', () => I.amOnPage('/form/wait_enabled')
+      .then(() => I.waitForEnabled("//*[@name = 'test']", 2))
+      .then(() => I.fillField('#text', 'hello world'))
+      .then(() => I.seeInField('#text', 'hello world')));
+
+    it('should wait for a button to be enabled', () => I.amOnPage('/form/wait_enabled')
+      .then(() => I.waitForEnabled('#text', 2))
+      .then(() => I.click('#button'))
+      .then(() => I.see('button was clicked', '#message')));
+  });
+
+  describe('#waitForValue', () => {
+    it('should wait for expected value for given locator', () => I.amOnPage('/info')
+      .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно'))
+      .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно3', 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
+      }));
+
+    it('should wait for expected value for given css locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.seeInField('#text', 'Hamburg'))
+      .then(() => I.waitForValue('#text', 'Brisbane', 2.5))
+      .then(() => I.seeInField('#text', 'Brisbane')));
+
+    it('should wait for expected value for given xpath locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.seeInField('#text', 'Hamburg'))
+      .then(() => I.waitForValue('//input[@value = "Grüße aus Hamburg"]', 'Brisbane', 2.5))
+      .then(() => I.seeInField('#text', 'Brisbane')));
+
+    it('should only wait for one of the matching elements to contain the value given xpath locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.waitForValue('//input[@type = "text"]', 'Brisbane', 4))
+      .then(() => I.seeInField('#text', 'Brisbane'))
+      .then(() => I.seeInField('#text2', 'London')));
+
+    it('should only wait for one of the matching elements to contain the value given css locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.waitForValue('.inputbox', 'Brisbane', 4))
+      .then(() => I.seeInField('#text', 'Brisbane'))
+      .then(() => I.seeInField('#text2', 'London')));
   });
 
   describe('#seeCssPropertiesOnElements', () => {
