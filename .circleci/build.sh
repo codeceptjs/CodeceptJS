@@ -6,8 +6,6 @@ cd test
 
 docker-compose build \
   --build-arg NODE_VERSION=$NODE_VERSION \
-  test-unit \
-  test-helpers \
   test-acceptance.webdriverio \
   test-acceptance.nightmare \
   test-acceptance.puppeteer \

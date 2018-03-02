@@ -28,30 +28,27 @@ RUN apt-get update && apt-get install -y wget --no-install-recommends \
 #     browser.launch({executablePath: 'google-chrome-unstable'})
 # ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# Install puppeteer so it's available in the container.
-RUN yarn add puppeteer
 
 # Add pptr user.
 RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && mkdir -p /home/pptruser/Downloads \
     && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /node_modules
+    && chown -R pptruser:pptruser /home/pptruser
 
 RUN mkdir /codecept && chown -R pptruser:pptruser /codecept
 
-WORKDIR /tmp
-COPY package.json /tmp/
 
-# Install packages
-RUN npm install --loglevel=warn
 
 #RUN mkdir /home/codecept
-WORKDIR /codecept
 
 COPY . /codecept
 
-RUN cp -a /tmp/node_modules /codecept/
+RUN npm install --loglevel=warn
+RUN npm list --depth 0 || true
+
+RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
+RUN mkdir /tests
+WORKDIR /tests
 
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
@@ -63,7 +60,7 @@ ENV HOST=selenium
 # USER pptruser
 
 # Set the entrypoint for Nightmare
-ENTRYPOINT ["docker/entrypoint"]
+ENTRYPOINT ["/codecept/docker/entrypoint"]
 
 # Run tests
-CMD ["bash", "docker/run.sh"]
+CMD ["bash", "/codecept/docker/run.sh"]
