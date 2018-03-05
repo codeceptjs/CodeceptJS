@@ -11,11 +11,10 @@ const eventHandlers = require('../data/sandbox/eventHandlers');
 
 const expectedEvents = [];
 
-Feature('Events', { retries: 0 });
+Feature('Events');
 
 BeforeSuite((I) => {
   expectedEvents.push(...[
-    event.all.before,
     event.suite.before,
   ]);
   expect(eventHandlers.events).to.deep.equal(expectedEvents);
