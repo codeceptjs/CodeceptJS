@@ -4,6 +4,7 @@ set -e
 
 cd test
 
+docker-compose build
 docker-compose run --rm test-helpers test/helper
 docker-compose run --rm test-helpers test/rest
 docker-compose run --rm test-acceptance.webdriverio
