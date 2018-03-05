@@ -9,15 +9,13 @@ services:
       - ..:/codecept
       - node_modules:/codecept/node_modules
 
-  test-helpers:
+  test-rest:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha --invert --fgrep Appium
-    command: test/helper
+    entrypoint: /codecept/node_modules/.bin/mocha
+    command: test/rest
     working_dir: /codecept
     env_file: .env
     depends_on:
-      - selenium.chrome
-      - php
       - json_server
     volumes:
       - ..:/codecept
