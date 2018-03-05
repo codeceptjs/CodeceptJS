@@ -19,6 +19,7 @@ services:
       - json_server
     volumes:
       - ..:/codecept
+      - ./data:/data
       - node_modules:/codecept/node_modules
 
   test-acceptance.webdriverio:
