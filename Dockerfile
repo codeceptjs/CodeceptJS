@@ -35,14 +35,12 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && chown -R pptruser:pptruser /home/pptruser \
     && chown -R pptruser:pptruser /home/pptruser
 
-RUN mkdir /codecept && chown -R pptruser:pptruser /codecept
-
-
 
 #RUN mkdir /home/codecept
 
 COPY . /codecept
 
+RUN chown -R pptruser:pptruser /codecept
 RUN npm install --loglevel=warn --prefix /codecept
 
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
