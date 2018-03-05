@@ -1,3 +1,5 @@
+npm install
+
 cd test
 
 docker-compose build
