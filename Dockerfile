@@ -43,8 +43,7 @@ RUN mkdir /codecept && chown -R pptruser:pptruser /codecept
 
 COPY . /codecept
 
-RUN npm install --loglevel=warn
-RUN npm list --depth 0 || true
+RUN npm install --loglevel=warn --prefix /codecept
 
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
