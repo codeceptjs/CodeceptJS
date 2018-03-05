@@ -2,7 +2,7 @@ version: '3'
 services:
   test-unit:
     build: ..
-    entrypoint: docker/entrypoint node_modules/.bin/mocha
+    entrypoint: /codecept/node_modules/.bin/mocha
     command: test/unit
     working_dir: /codecept
     volumes:
@@ -11,7 +11,7 @@ services:
 
   test-helpers:
     build: ..
-    entrypoint: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium
+    entrypoint: /codecept/node_modules/.bin/mocha --invert --fgrep Appium
     command: test/helper
     working_dir: /codecept
     env_file: .env
