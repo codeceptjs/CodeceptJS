@@ -646,4 +646,18 @@ describe('WebDriverIO', function () {
         assert.equal(matchingLogs.length, 2);
       }));
   });
+
+  describe('#dragAndDrop', () => {
+    it('Drag item from source to target (no iframe) @dragNdrop', () => wd.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+      .then(() => wd.seeElementInDOM('#draggable'))
+      .then(() => wd.dragAndDrop('#draggable', '#droppable'))
+      .then(() => wd.see('Dropped')));
+
+    it('Drag and drop from within an iframe', () => wd.amOnPage('http://jqueryui.com/droppable')
+      .then(() => wd.resizeWindow(700, 700))
+      .then(() => wd.switchTo('//iframe[@class="demo-frame"]'))
+      .then(() => wd.seeElementInDOM('#draggable'))
+      .then(() => wd.dragAndDrop('#draggable', '#droppable'))
+      .then(() => wd.see('Dropped')));
+  });
 });
