@@ -101,4 +101,16 @@ describe('CodeceptJS Multiple Runner', function () {
       done();
     });
   });
+
+  it('should pass tests to configuration', (done) => {
+    exec(`${codecept_run}test`, (err, stdout, stderr) => {
+      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('[1.test:chrome] print browser size');
+      stdout.should.include('[2.test:firefox] print browser size');
+      stdout.should.include('[1.test:chrome] print browser ');
+      stdout.should.include('[2.test:firefox] print browser ');
+      assert(!err);
+      done();
+    });
+  });
 });

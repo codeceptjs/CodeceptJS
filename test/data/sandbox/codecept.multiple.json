@@ -25,6 +25,11 @@
       "grep": "@grep",
       "browsers": ["chrome",
         { "browser": "firefox", "windowSize": "1200x840"}]
+    },
+    "test": {
+      "tests": "./*_test_override.multiple.js",
+      "browsers": ["chrome",
+        { "browser": "firefox", "windowSize": "1200x840"}]
     }
   },
   "include": {},
