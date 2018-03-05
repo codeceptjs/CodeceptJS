@@ -33,7 +33,7 @@ services:
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/codecept/node_modules
+      - node_modules:/node_modules
 
   test-acceptance.nightmare:
     build: ..
@@ -47,7 +47,7 @@ services:
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/codecept/node_modules
+      - node_modules:/node_modules
 
   test-acceptance.puppeteer:
     build: ..
@@ -60,7 +60,7 @@ services:
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/codecept/node_modules
+      - node_modules:/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:3.9.1-actinium
