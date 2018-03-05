@@ -1,4 +1,8 @@
-const event = require('../../lib').event;
+if (require.resolve('../../lib')) {
+  const event = require('../../lib').event;
+} else {
+  const event = require('/codecept/lib').event; // eslint-disable-line
+}
 const assert = require('assert');
 const expect = require('chai').expect;
 const eventHandlers = require('../data/sandbox/eventHandlers');

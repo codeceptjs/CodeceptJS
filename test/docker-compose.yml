@@ -31,6 +31,7 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - ./data:/data
       - ./support:/support
       - node_modules:/codecept/node_modules
 
@@ -44,6 +45,7 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - ./data:/data
       - ./support:/support
       - node_modules:/codecept/node_modules
 
@@ -56,6 +58,7 @@ services:
       - php
     volumes:
       - ./acceptance:/tests
+      - ./data:/data
       - ./support:/support
       - node_modules:/codecept/node_modules
 
