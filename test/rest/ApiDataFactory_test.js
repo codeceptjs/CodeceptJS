@@ -22,7 +22,7 @@ const data = {
 
 const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
 
-describe('ApiDataFactory', () => {
+describe('ApiDataFactory', function () {
   this.timeout(20000);
 
   before(() => {
