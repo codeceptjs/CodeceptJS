@@ -1,4 +1,10 @@
-const event = require('../../../lib').event;
+let event;
+try {
+  require.resolve('../../../lib');
+  event = require('../../../lib').event;
+} catch (err) {
+  event = require('/codecept/lib').event; // eslint-disable-line
+}
 
 const eventTypes = [
   // All Events
