@@ -22,7 +22,7 @@ const data = {
 
 const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
 
-describe('ApiDataFactory', (done) => {
+describe('ApiDataFactory', () => {
   before(() => {
     I = new ApiDataFactory({
       endpoint: api_url,
@@ -34,7 +34,6 @@ describe('ApiDataFactory', (done) => {
         },
       },
     });
-    setTimeout(done, 1000);
   });
 
   beforeEach((done) => {
@@ -43,7 +42,7 @@ describe('ApiDataFactory', (done) => {
     } catch (err) {
       // continue regardless of error
     }
-    setTimeout(done, 1000);
+    setTimeout(done, 2000);
   });
 
   afterEach(() => I._after());
