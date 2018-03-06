@@ -9,13 +9,13 @@
 * [Puppeteer] Added `waitForEnabled`, `waitForValue` and `waitNumberOfVisibleElements` methods by @reubenmiller
 * [WebDriverIO] Fixed `grabNumberOfVisibleElements` to return 0 when no visible elements are on page. By @michaltrunek
 * Helpers API improvements (by @reubenmiller)
-  * `_passed` hook runs after a test passed successfully
-  * `_failed` hook runs on a failed test
+    * `_passed` hook runs after a test passed successfully
+    * `_failed` hook runs on a failed test
 * Hooks API. New events added by @reubenmiller:
-  * `event.all.before` - executed before all tests
-  * `event.all.after` - executed after all tests
-  * `event.multiple.before` - executed before all processes in run-multiple
-  * `event.multiple.after` - executed after all processes in run-multiple
+    * `event.all.before` - executed before all tests
+    * `event.all.after` - executed after all tests
+    * `event.multiple.before` - executed before all processes in run-multiple
+    * `event.multiple.after` - executed after all processes in run-multiple
 * Multiple execution
 * Allow `AfterSuite` and `After` test hooks to be defined after the first Scenario. By @reubenmiller
 * [Nightmare] Prevent `I.amOnpage` navigation if the browser is already at the given url
