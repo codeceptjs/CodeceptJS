@@ -266,23 +266,6 @@ describe('WebDriverIO', function () {
       }));
   });
 
-
-  describe('#seeNumberOfVisibleElements', () => {
-    it('should check number of visible elements for given locator', () => wd.amOnPage('/info')
-      .then(() => wd.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
-  });
-
-  describe('#grabNumberOfVisibleElements', () => {
-    it('should grab number of visible elements for given locator', () => wd.amOnPage('/info')
-      .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
-      .then(num => assert.equal(num, 3)));
-    it('should support locators like {xpath:"//div"}', () => wd.amOnPage('/info')
-      .then(() => wd.grabNumberOfVisibleElements({
-        xpath: '//div[@id = "grab-multiple"]//a',
-      }))
-      .then(num => assert.equal(num, 3)));
-  });
-
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', () => wd.amOnPage('/info')
       .then(() => wd.waitInUrl('/info'))

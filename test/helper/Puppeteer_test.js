@@ -533,22 +533,6 @@ describe('Puppeteer', function () {
       }));
   });
 
-  describe('#seeNumberOfVisibleElements', () => {
-    it('should check number of visible elements for given locator', () => I.amOnPage('/info')
-      .then(() => I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
-  });
-
-  describe('#grabNumberOfVisibleElements', () => {
-    it('should grab number of visible elements for given locator', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
-      .then(num => assert.equal(num, 3)));
-    it('should support locators like {xpath:"//div"}', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements({
-        xpath: '//div[@id = "grab-multiple"]//a',
-      }))
-      .then(num => assert.equal(num, 3)));
-  });
-
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', () => I.amOnPage('/form/doubleclick')
       .then(() => I.grabCssPropertyFrom('#block', 'height'))

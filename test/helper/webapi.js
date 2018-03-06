@@ -102,6 +102,22 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#seeNumberOfVisibleElements', () => {
+    it('should check number of visible elements for given locator', () => I.amOnPage('/info')
+      .then(() => I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
+  });
+
+  describe('#grabNumberOfVisibleElements', () => {
+    it('should grab number of visible elements for given locator', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
+      .then(num => assert.equal(num, 3)));
+    it('should support locators like {xpath:"//div"}', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements({
+        xpath: '//div[@id = "grab-multiple"]//a',
+      }))
+      .then(num => assert.equal(num, 3)));
+  });
+
   describe('#seeInSource, #dontSeeInSource', () => {
     it('should check meta of a page', function* () {
       yield I.amOnPage('/info');
