@@ -2,31 +2,20 @@ version: '3'
 services:
   test-unit:
     build: ..
-    entrypoint: docker/entrypoint node_modules/.bin/mocha
+    entrypoint: /codecept/node_modules/.bin/mocha
     command: test/unit
     working_dir: /codecept
     volumes:
       - ..:/codecept
       - node_modules:/codecept/node_modules
 
-  test-runner:
+  test-rest:
     build: ..
-    entrypoint: docker/entrypoint node_modules/.bin/mocha
-    command: test/runner
-    working_dir: /codecept
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
-
-  test-helpers:
-    build: ..
-    entrypoint: docker/entrypoint node_modules/.bin/mocha --invert --fgrep Appium
-    command: test/helper
+    entrypoint: /codecept/node_modules/.bin/mocha
+    command: test/rest
     working_dir: /codecept
     env_file: .env
     depends_on:
-      - selenium.chrome
-      - php
       - json_server
     volumes:
       - ..:/codecept
@@ -36,14 +25,15 @@ services:
     build: ..
     env_file: .env
     environment:
-      - CODECEPT_ARGS=-c codecept.WebDriverIO.js --grep @WebDriverIO
+      - CODECEPT_ARGS=-c codecept.WebDriverIO.js --grep @WebDriverIO --verbose
     depends_on:
       - php
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - ./data:/data
       - ./support:/support
-      - node_modules:/codecept/node_modules
+      - node_modules:/node_modules
 
   test-acceptance.nightmare:
     build: ..
@@ -55,8 +45,9 @@ services:
       - selenium.chrome
     volumes:
       - ./acceptance:/tests
+      - ./data:/data
       - ./support:/support
-      - node_modules:/codecept/node_modules
+      - node_modules:/node_modules
 
   test-acceptance.puppeteer:
     build: ..
@@ -67,8 +58,9 @@ services:
       - php
     volumes:
       - ./acceptance:/tests
+      - ./data:/data
       - ./support:/support
-      - node_modules:/codecept/node_modules
+      - node_modules:/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:3.9.1-actinium

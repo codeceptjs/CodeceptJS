@@ -1,5 +1,4 @@
 const TestHelper = require('../support/TestHelper');
-const eventHandlers = require('../data/sandbox/eventHandlers');
 
 module.exports.config = {
   tests: './*_test.js',
