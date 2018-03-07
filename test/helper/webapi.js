@@ -671,6 +671,32 @@ module.exports.tests = function () {
       .then(() => I.dontSeeElement('//div[@id="step_2"]')));
   });
 
+  describe('#waitToHide', () => {
+    it('should wait for element to be invisible', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitToHide('#step_1', 2))
+      .then(() => I.dontSeeElement('#step_1')));
+
+    it('should wait for element to be invisible by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement('//div[@id="step_1"]'))
+      .then(() => I.waitToHide('//div[@id="step_1"]'))
+      .then(() => I.dontSeeElement('//div[@id="step_1"]'))
+      .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+
+    it('should wait for element to be removed', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitToHide('#step_2', 2))
+      .then(() => I.dontSeeElement('#step_2')));
+
+    it('should wait for element to be removed by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('//div[@id="step_2"]'))
+      .then(() => I.waitToHide('//div[@id="step_2"]', 2))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]')));
+  });
+
   describe('#waitForDetached', () => {
     it('should throw an error if the element still exists in DOM', () => I.amOnPage('/form/wait_detached')
       .then(() => I.see('Step One Button'))
