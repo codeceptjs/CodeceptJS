@@ -49,6 +49,22 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#waitInUrl, #waitUrlEquals @-Nightmare', () => {
+    it('should wait part of the URL to match the expected', () => I.amOnPage('/info')
+      .then(() => I.waitInUrl('/info'))
+      .then(() => I.waitInUrl('/info2', 0.1))
+      .catch((e) => {
+        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
+      }));
+    it('should wait for the entire URL to match the expected', () => I.amOnPage('/info')
+      .then(() => I.waitUrlEquals('/info'))
+      .then(() => I.waitUrlEquals(`${siteUrl}/info`))
+      .then(() => I.waitUrlEquals('/info2', 0.1))
+      .catch((e) => {
+        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+      }));
+  });
+
   describe('see text : #see', () => {
     it('should check text on site', function* () {
       yield I.amOnPage('/');
@@ -80,7 +96,9 @@ module.exports.tests = function () {
     it('should check visible elements on page', function* () {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
-      yield I.seeElement({ name: 'name' });
+      yield I.seeElement({
+        name: 'name'
+      });
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');
@@ -195,7 +213,9 @@ module.exports.tests = function () {
 
     it('should check option by strict locator', function* () {
       yield I.amOnPage('/form/checkbox');
-      yield I.checkOption({ id: 'checkin' });
+      yield I.checkOption({
+        id: 'checkin'
+      });
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });

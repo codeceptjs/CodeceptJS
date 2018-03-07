@@ -434,21 +434,6 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#waitInUrl, #waitUrlEquals', () => {
-    it('should wait part of the URL to match the expected', () => I.amOnPage('/info')
-      .then(() => I.waitInUrl('/info'))
-      .then(() => I.waitInUrl('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
-      }));
-    it('should wait for the entire URL to match the expected', () => I.amOnPage('/info')
-      .then(() => I.waitUrlEquals('/info'))
-      .then(() => I.waitUrlEquals(`${siteUrl}/info`))
-      .then(() => I.waitUrlEquals('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
-      }));
-  });
 
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')

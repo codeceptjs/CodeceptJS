@@ -266,22 +266,6 @@ describe('WebDriverIO', function () {
       }));
   });
 
-  describe('#waitInUrl, #waitUrlEquals', () => {
-    it('should wait part of the URL to match the expected', () => wd.amOnPage('/info')
-      .then(() => wd.waitInUrl('/info'))
-      .then(() => wd.waitInUrl('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
-      }));
-    it('should wait for the entire URL to match the expected', () => wd.amOnPage('/info')
-      .then(() => wd.waitUrlEquals('/info'))
-      .then(() => wd.waitUrlEquals(`${siteUrl}/info`))
-      .then(() => wd.waitUrlEquals('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
-      }));
-  });
-
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
