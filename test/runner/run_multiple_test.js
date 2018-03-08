@@ -15,6 +15,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute one suite with browser', (done) => {
     exec(`${codecept_run}default:firefox`, (err, stdout, stderr) => {
+      console.log(stderr);
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('.default:firefox] print browser ');
       stdout.should.not.include('.default:chrome] print browser ');
