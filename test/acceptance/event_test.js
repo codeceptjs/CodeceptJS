@@ -50,7 +50,7 @@ AfterSuite(() => {
   });
 });
 
-Scenario('Event Hooks @WebDriverIO @Protractor @Nightmare @Puppeteer', (I) => {
+Scenario('Event Hooks @WebDriverIO @Nightmare @Puppeteer', (I) => { // TODO: Figure out why Protract fails on this test
   expectedEvents.push(...[
     event.test.started,
   ]);
