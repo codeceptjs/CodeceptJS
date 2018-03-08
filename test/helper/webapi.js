@@ -157,6 +157,14 @@ module.exports.tests = function () {
       // yield I.wait(3);
       return I.seeCurrentUrlEquals('/');
     });
+
+    it('should click link with xpath locator', function* () {
+      yield I.amOnPage('/form/example7');
+      yield I.click({
+        xpath: '(//*[@title = "Chocolate Bar"])[1]',
+      });
+      return I.seeCurrentUrlEquals('/');
+    });
   });
 
   describe('#doubleClick', () => {
