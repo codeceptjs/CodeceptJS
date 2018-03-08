@@ -1,7 +1,7 @@
 const TestHelper = require('../support/TestHelper');
 
 module.exports.config = {
-  tests: './*_test.js', // TODO Change back to ./*_test.js
+  tests: './*_test.js',
   timeout: 10000,
   output: './output',
   helpers: {
