@@ -154,4 +154,29 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.dontSee('Hello world'))
       .then(() => I.see('Hello world', '#linkContext')));
   });
+
+  describe('#switchTo frame', () => {
+    it('should switch to frame using name', () => I.amOnPage('/iframe')
+      .then(() => I.see('Iframe test', 'h1'))
+      .then(() => I.dontSee('Information', 'h1'))
+      .then(() => I.switchTo('iframe'))
+      .then(() => I.see('Information', 'h1'))
+      .then(() => I.dontSee('Iframe test', 'h1')));
+
+    it('should switch to root frame', () => I.amOnPage('/iframe')
+      .then(() => I.see('Iframe test', 'h1'))
+      .then(() => I.dontSee('Information', 'h1'))
+      .then(() => I.switchTo('iframe'))
+      .then(() => I.see('Information', 'h1'))
+      .then(() => I.dontSee('Iframe test', 'h1'))
+      .then(() => I.switchTo())
+      .then(() => I.see('Iframe test', 'h1')));
+
+    it('should switch to frame using frame number', () => I.amOnPage('/iframe')
+      .then(() => I.see('Iframe test', 'h1'))
+      .then(() => I.dontSee('Information', 'h1'))
+      .then(() => I.switchTo(0))
+      .then(() => I.see('Information', 'h1'))
+      .then(() => I.dontSee('Iframe test', 'h1')));
+  });
 });

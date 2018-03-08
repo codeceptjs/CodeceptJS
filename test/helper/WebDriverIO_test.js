@@ -627,4 +627,29 @@ describe('WebDriverIO', function () {
       .then(() => wd.dragAndDrop('#draggable', '#droppable'))
       .then(() => wd.see('Dropped')));
   });
+
+  describe('#switchTo frame', () => {
+    it('should switch to frame using name', () => wd.amOnPage('/iframe')
+      .then(() => wd.see('Iframe test', 'h1'))
+      .then(() => wd.dontSee('Information', 'h1'))
+      .then(() => wd.switchTo('iframe'))
+      .then(() => wd.see('Information', 'h1'))
+      .then(() => wd.dontSee('Iframe test', 'h1')));
+
+    it('should switch to root frame', () => wd.amOnPage('/iframe')
+      .then(() => wd.see('Iframe test', 'h1'))
+      .then(() => wd.dontSee('Information', 'h1'))
+      .then(() => wd.switchTo('iframe'))
+      .then(() => wd.see('Information', 'h1'))
+      .then(() => wd.dontSee('Iframe test', 'h1'))
+      .then(() => wd.switchTo())
+      .then(() => wd.see('Iframe test', 'h1')));
+
+    it('should switch to frame using frame number', () => wd.amOnPage('/iframe')
+      .then(() => wd.see('Iframe test', 'h1'))
+      .then(() => wd.dontSee('Information', 'h1'))
+      .then(() => wd.switchTo(0))
+      .then(() => wd.see('Information', 'h1'))
+      .then(() => wd.dontSee('Iframe test', 'h1')));
+  });
 });
