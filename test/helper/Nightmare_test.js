@@ -10,7 +10,7 @@ const path = require('path');
 const fs = require('fs');
 const AssertionFailedError = require('../../lib/assert/error');
 require('co-mocha')(require('mocha'));
-const webApiTests = require('./webapi');
+const webApiTests = require('./webapi-nightmare');
 
 describe('Nightmare', function () {
   this.retries(3);
