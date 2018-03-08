@@ -97,7 +97,7 @@ module.exports.tests = function () {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
       yield I.seeElement({
-        name: 'name'
+        name: 'name',
       });
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
@@ -214,7 +214,7 @@ module.exports.tests = function () {
     it('should check option by strict locator', function* () {
       yield I.amOnPage('/form/checkbox');
       yield I.checkOption({
-        id: 'checkin'
+        id: 'checkin',
       });
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
