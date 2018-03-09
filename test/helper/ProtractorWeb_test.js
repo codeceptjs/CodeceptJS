@@ -270,6 +270,34 @@ describe('Protractor-NonAngular', function () {
       .then(html => assert.equal(html.length, 5)));
   });
 
+  describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', () => {
+    it('should accept popup window', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.acceptPopup())
+      .then(() => I.see('Yes', '#result')));
+
+    it('should cancel popup', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Confirm'))
+      .then(() => I.cancelPopup())
+      .then(() => I.see('No', '#result')));
+
+    it('should check text in popup', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Alert'))
+      .then(() => I.seeInPopup('Really?'))
+      .then(() => I.cancelPopup()));
+
+    it('should grab text from popup', () => I.amOnPage('/form/popup')
+      .then(() => I.click('Alert'))
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, 'Really?'))
+      .then(() => I.cancelPopup())); // TODO: Remove the cancelPopup line.
+
+
+    it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
+      .then(() => I.grabPopupText())
+      .then(text => assert.equal(text, null)));
+  });
+
   /* describe('#waitUntil predicate', () => {
     it('should wait until the windows requests is equal to 0', () => I.amOnPage('/form/wait_value')
       .then(() => I.waitUntil(function () {
