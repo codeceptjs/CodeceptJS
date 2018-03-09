@@ -223,4 +223,36 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.click('#button'))
       .then(() => I.see('button was clicked')));
   });
+
+  describe('#waitForValue', () => {
+    it('should wait for expected value for given locator', () => I.amOnPage('/info')
+      .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно'))
+      .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно3', 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
+      }));
+
+    it('should wait for expected value for given css locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.seeInField('#text', 'Hamburg'))
+      .then(() => I.waitForValue('#text', 'Brisbane', 2.5))
+      .then(() => I.seeInField('#text', 'Brisbane')));
+
+    it('should wait for expected value for given xpath locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.seeInField('#text', 'Hamburg'))
+      .then(() => I.waitForValue('//input[@value = "Grüße aus Hamburg"]', 'Brisbane', 2.5))
+      .then(() => I.seeInField('#text', 'Brisbane')));
+
+    it('should only wait for one of the matching elements to contain the value given xpath locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.waitForValue('//input[@type = "text"]', 'Brisbane', 4))
+      .then(() => I.seeInField('#text', 'Brisbane'))
+      .then(() => I.seeInField('#text2', 'London')));
+
+    it('should only wait for one of the matching elements to contain the value given css locator', () => I.amOnPage('/form/wait_value')
+      .then(() => I.waitForValue('.inputbox', 'Brisbane', 4))
+      .then(() => I.seeInField('#text', 'Brisbane'))
+      .then(() => I.seeInField('#text2', 'London')));
+  });
 });
