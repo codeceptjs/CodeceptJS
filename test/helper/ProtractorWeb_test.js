@@ -179,4 +179,48 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.see('Information', 'h1'))
       .then(() => I.dontSee('Iframe test', 'h1')));
   });
+
+  describe('#waitNumberOfVisibleElements', () => {
+    it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
+      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
+      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
+      }));
+
+    it('should wait for a specified number of elements on the page using a css selector', () => I.amOnPage('/info')
+      .then(() => I.waitNumberOfVisibleElements('#grab-multiple > a', 3))
+      .then(() => I.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec');
+      }));
+
+    it('should wait for a specified number of elements which are not yet attached to the DOM', () => I.amOnPage('/form/wait_num_elements')
+      .then(() => I.waitNumberOfVisibleElements('.title', 2, 3))
+      .then(() => I.see('Hello'))
+      .then(() => I.see('World')));
+  });
+
+  describe('#waitForEnabled', () => {
+    it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
+      .then(() => I.waitForEnabled('#text', 2))
+      .then(() => I.fillField('#text', 'hello world'))
+      .then(() => I.seeInField('#text', 'hello world')));
+
+    it('should wait for input text field to be enabled by xpath', () => I.amOnPage('/form/wait_enabled')
+      .then(() => I.waitForEnabled("//*[@name = 'test']", 2))
+      .then(() => I.fillField('#text', 'hello world'))
+      .then(() => I.seeInField('#text', 'hello world')));
+
+    it('should wait for a button to be enabled', () => I.amOnPage('/form/wait_enabled')
+      .then(() => I.waitForEnabled('#text', 2))
+      .then(() => I.click('#button'))
+      .then(() => I.see('button was clicked')));
+  });
 });
