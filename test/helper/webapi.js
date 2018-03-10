@@ -49,20 +49,29 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#waitInUrl, #waitUrlEquals @-Nightmare', () => {
-    it('should wait part of the URL to match the expected', () => I.amOnPage('/info')
-      .then(() => I.waitInUrl('/info'))
-      .then(() => I.waitInUrl('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
-      }));
-    it('should wait for the entire URL to match the expected', () => I.amOnPage('/info')
-      .then(() => I.waitUrlEquals('/info'))
-      .then(() => I.waitUrlEquals(`${siteUrl}/info`))
-      .then(() => I.waitUrlEquals('/info2', 0.1))
-      .catch((e) => {
+  describe('#waitInUrl, #waitUrlEquals', () => {
+    it('should wait part of the URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.waitInUrl('/info');
+        await I.waitInUrl('/info2', 0.1);
+      } catch (e) {
         assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
-      }));
+      }
+    });
+
+    it('should wait for the entire URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.waitUrlEquals('/info');
+        await I.waitUrlEquals(`${siteUrl}/info`);
+        await I.waitUrlEquals('/info2', 0.1);
+      } catch (e) {
+        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+      }
+    });
   });
 
   describe('see text : #see', () => {
@@ -820,6 +829,7 @@ module.exports.tests = function () {
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     it('should scroll inside an iframe', async () => {
+      if (isHelper('Nightmare')) return;
       await I.amOnPage('/iframe');
       await I.resizeWindow(500, 700);
       await I.switchTo(0);
@@ -874,74 +884,94 @@ module.exports.tests = function () {
   });
 
   describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', () => I.amOnPage('/form/doubleclick')
-      .then(() => I.grabCssPropertyFrom('#block', 'height'))
-      .then(css => assert.equal(css, '100px')));
+    it('should grab css property for given element', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/form/doubleclick');
+      const css = await I.grabCssPropertyFrom('#block', 'height');
+      assert.equal(css, '100px');
+    });
   });
 
   describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', () => I.amOnPage('/info')
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'post',
-      }))
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'post',
-        action: `${siteUrl}/`,
-      }))
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'get',
-      }))
-      .catch((e) => {
+    it('should check attributes values for given element', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.seeAttributesOnElements('//form', {
+          method: 'post',
+        });
+        await I.seeAttributesOnElements('//form', {
+          method: 'post',
+          action: `${siteUrl}/`,
+        });
+        await I.seeAttributesOnElements('//form', {
+          method: 'get',
+        });
+      } catch (e) {
         e.message.should.include('expected all elements (//form) to have attributes {"method":"get"}');
-      }));
+      }
+    });
 
-    it('should check attributes values for several elements', () => I.amOnPage('/')
-      .then(() => I.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        'qa-link': 'test',
-      }))
-      .then(() => I.seeAttributesOnElements('//div', {
-        'qa-id': 'test',
-      }))
-      .then(() => I.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        href: '/info',
-      }))
-      .catch((e) => {
+    it('should check attributes values for several elements', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/');
+        await I.seeAttributesOnElements('a', {
+          'qa-id': 'test',
+          'qa-link': 'test',
+        });
+        await I.seeAttributesOnElements('//div', {
+          'qa-id': 'test',
+        });
+        await I.seeAttributesOnElements('a', {
+          'qa-id': 'test',
+          href: '/info',
+        });
+      } catch (e) {
         e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
-      }));
+      }
+    });
   });
 
   describe('#seeCssPropertiesOnElements', () => {
-    it('should check css property for given element', () => I.amOnPage('/info')
-      .then(() => I.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-        display: 'block',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'non-bold',
-      }))
-      .catch((e) => {
+    it('should check css property for given element', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.seeCssPropertiesOnElements('h3', {
+          'font-weight': 'bold',
+        });
+        await I.seeCssPropertiesOnElements('h3', {
+          'font-weight': 'bold',
+          display: 'block',
+        });
+        await I.seeCssPropertiesOnElements('h3', {
+          'font-weight': 'non-bold',
+        });
+      } catch (e) {
         e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"} "0" to equal "1"');
-      }));
+      }
+    });
 
-    it('should check css property for several elements', () => I.amOnPage('/')
-      .then(() => I.seeCssPropertiesOnElements('a', {
-        color: 'rgb(0, 0, 238)', // Note: if alpha is 1, then rgb() should be used instead of rgba()
-        cursor: 'pointer',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('//div', {
-        display: 'block',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('a', {
-        'margin-top': '0em',
-        cursor: 'pointer',
-      }))
-      .catch((e) => {
+
+    it('should check css property for several elements', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/');
+        await I.seeCssPropertiesOnElements('a', {
+          color: 'rgb(0, 0, 238)', // Note: if alpha is 1, then rgb() should be used instead of rgba()
+          cursor: 'pointer',
+        });
+        await I.seeCssPropertiesOnElements('//div', {
+          display: 'block',
+        });
+        await I.seeCssPropertiesOnElements('a', {
+          'margin-top': '0em',
+          cursor: 'pointer',
+        });
+      } catch (e) {
         e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"} "0" to equal "5"');
-      }));
+      }
+    });
   });
 };
