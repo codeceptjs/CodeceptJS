@@ -227,12 +227,6 @@ describe('WebDriverIO', function () {
       .then(() => wd.see('button was clicked')));
   });
 
-  describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', () => wd.amOnPage('/form/doubleclick')
-      .then(() => wd.grabCssPropertyFrom('#block', 'height'))
-      .then(css => assert.equal(css, '100px')));
-  });
-
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', () => wd.amOnPage('/info')
       .then(() => wd.seeCssPropertiesOnElements('h3', {
