@@ -817,4 +817,59 @@ module.exports.tests = function () {
         if (!err) assert.fail('seen "Iframe test"');
       }));
   });
+
+  describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
+    it('should scroll inside an iframe', async () => {
+      await I.amOnPage('/iframe');
+      await I.resizeWindow(500, 700);
+      await I.switchTo(0);
+
+      const { x, y } = await I.grabPageScrollPosition();
+      await I.scrollTo('.sign');
+      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+      assert.equal(afterScrollX, x);
+    });
+
+    it('should scroll to an element', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      const { x, y } = await I.grabPageScrollPosition();
+      await I.scrollTo('.section3 input[name="test"]');
+      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+    });
+
+    it('should scroll to coordinates', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      const { x, y } = await I.grabPageScrollPosition();
+      await I.scrollTo(50, 70);
+      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.equal(afterScrollX, 50);
+      assert.equal(afterScrollY, 70);
+    });
+
+    it('should scroll to bottom of page', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      const { y } = await I.grabPageScrollPosition();
+      await I.scrollPageToBottom();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+      assert.notEqual(afterScrollY, 0);
+    });
+
+    it('should scroll to top of page', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      await I.scrollPageToBottom();
+      const { y } = await I.grabPageScrollPosition();
+
+      await I.scrollPageToTop();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+      assert.equal(afterScrollY, 0);
+    });
+  });
 };
