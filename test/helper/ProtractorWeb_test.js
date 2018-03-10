@@ -35,7 +35,11 @@ describe('Protractor-NonAngular', function () {
       restart: false,
       seleniumAddress: TestHelper.seleniumAddress(),
       waitForTimeout: 5000,
-      desiredCapabilities: {
+      capabilities: {
+        loggingPrefs: {
+          driver: 'INFO',
+          browser: 'INFO',
+        },
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
         },
@@ -296,6 +300,33 @@ describe('Protractor-NonAngular', function () {
     it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
       .then(() => I.grabPopupText())
       .then(text => assert.equal(text, null)));
+  });
+
+  describe('#grabBrowserLogs', () => {
+    it('should grab browser logs', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs across pages', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/info'))
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 2);
+      }));
   });
 
   describe('#dragAndDrop', () => {
