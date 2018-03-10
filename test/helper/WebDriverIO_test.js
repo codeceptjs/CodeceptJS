@@ -195,39 +195,7 @@ describe('WebDriverIO', function () {
       .then(() => wd.see('button was clicked')));
   });
 
-  describe('#seeCssPropertiesOnElements', () => {
-    it('should check css property for given element', () => wd.amOnPage('/info')
-      .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-        display: 'block',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'non-bold',
-      }))
-      .catch((e) => {
-        e.message.should.include('Not all elements (h3) have CSS property {"font-weight":"non-bold"}');
-      }));
-
-    it('should check css property for several elements', () => wd.amOnPage('/')
-      .then(() => wd.seeCssPropertiesOnElements('a', {
-        color: 'rgba(0, 0, 238, 1)',
-        cursor: 'auto',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('//div', {
-        display: 'block',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('a', {
-        'margin-top': '0em',
-        cursor: 'auto',
-      }))
-      .catch((e) => {
-        e.message.should.include('Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}');
-      }));
-  });
-
+  
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');

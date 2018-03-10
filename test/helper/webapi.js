@@ -911,4 +911,37 @@ module.exports.tests = function () {
         e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
       }));
   });
+
+  describe('#seeCssPropertiesOnElements', () => {
+    it('should check css property for given element', () => I.amOnPage('/info')
+      .then(() => I.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'bold',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'bold',
+        display: 'block',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('h3', {
+        'font-weight': 'non-bold',
+      }))
+      .catch((e) => {
+        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"} "0" to equal "1"');
+      }));
+
+    it('should check css property for several elements', () => I.amOnPage('/')
+      .then(() => I.seeCssPropertiesOnElements('a', {
+        color: 'rgb(0, 0, 238)', // Note: if alpha is 1, then rgb() should be used instead of rgba()
+        cursor: 'pointer',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('//div', {
+        display: 'block',
+      }))
+      .then(() => I.seeCssPropertiesOnElements('a', {
+        'margin-top': '0em',
+        cursor: 'pointer',
+      }))
+      .catch((e) => {
+        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"} "0" to equal "5"');
+      }));
+  });
 };
