@@ -57,7 +57,7 @@ module.exports.tests = function () {
         await I.waitInUrl('/info');
         await I.waitInUrl('/info2', 0.1);
       } catch (e) {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
       }
     });
 
@@ -949,7 +949,7 @@ module.exports.tests = function () {
           'font-weight': 'non-bold',
         });
       } catch (e) {
-        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"} "0" to equal "1"');
+        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}');
       }
     });
 
@@ -970,7 +970,7 @@ module.exports.tests = function () {
           cursor: 'pointer',
         });
       } catch (e) {
-        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"} "0" to equal "5"');
+        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
       }
     });
   });
