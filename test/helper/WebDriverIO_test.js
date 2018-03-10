@@ -155,38 +155,6 @@ describe('WebDriverIO', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-  describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', () => wd.amOnPage('/info')
-      .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'post',
-      }))
-      .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'post',
-        action: `${siteUrl}/`,
-      }))
-      .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'get',
-      }))
-      .catch((e) => {
-        assert.equal(e.message, 'Not all elements (//form) have attributes {"method":"get"}');
-      }));
-
-    it('should check attributes values for several elements', () => wd.amOnPage('/')
-      .then(() => wd.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        'qa-link': 'test',
-      }))
-      .then(() => wd.seeAttributesOnElements('//div', {
-        'qa-id': 'test',
-      }))
-      .then(() => wd.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        href: '/info',
-      }))
-      .catch((e) => {
-        e.message.should.include('Not all elements (a) have attributes {"qa-id":"test","href":"/info"}');
-      }));
-  });
 
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => wd.amOnPage('/')

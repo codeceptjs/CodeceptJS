@@ -878,4 +878,37 @@ module.exports.tests = function () {
       .then(() => I.grabCssPropertyFrom('#block', 'height'))
       .then(css => assert.equal(css, '100px')));
   });
+
+  describe('#seeAttributesOnElements', () => {
+    it('should check attributes values for given element', () => I.amOnPage('/info')
+      .then(() => I.seeAttributesOnElements('//form', {
+        method: 'post',
+      }))
+      .then(() => I.seeAttributesOnElements('//form', {
+        method: 'post',
+        action: `${siteUrl}/`,
+      }))
+      .then(() => I.seeAttributesOnElements('//form', {
+        method: 'get',
+      }))
+      .catch((e) => {
+        e.message.should.include('expected all elements (//form) to have attributes {"method":"get"}');
+      }));
+
+    it('should check attributes values for several elements', () => I.amOnPage('/')
+      .then(() => I.seeAttributesOnElements('a', {
+        'qa-id': 'test',
+        'qa-link': 'test',
+      }))
+      .then(() => I.seeAttributesOnElements('//div', {
+        'qa-id': 'test',
+      }))
+      .then(() => I.seeAttributesOnElements('a', {
+        'qa-id': 'test',
+        href: '/info',
+      }))
+      .catch((e) => {
+        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
+      }));
+  });
 };

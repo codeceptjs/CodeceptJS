@@ -284,39 +284,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-  describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', () => I.amOnPage('/info')
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'post',
-      }))
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'post',
-        // action: '/',
-        action: `${siteUrl}/`,
-      }))
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'get',
-      }))
-      .catch((e) => {
-        assert.equal(e.message, 'expected all elements (//form) to have attributes {"method":"get"} "0" to equal "1"');
-      }));
-
-    it('should check attributes values for several elements', () => I.amOnPage('/')
-      .then(() => I.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        'qa-link': 'test',
-      }))
-      .then(() => I.seeAttributesOnElements('//div', {
-        'qa-id': 'test',
-      }))
-      .then(() => I.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        href: '/info',
-      }))
-      .catch((e) => {
-        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
-      }));
-  });
 
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
