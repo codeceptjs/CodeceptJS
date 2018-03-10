@@ -343,6 +343,60 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.see('Dropped')));
   });
 
+  describe('#_locateClickable', () => {
+    it('should locate a button to click', async () => {
+      await I.amOnPage('/form/checkbox');
+      const els = await I._locateClickable('Submit');
+      assert.equal(els == null, false);
+    });
+
+    it('should not locate a non-existing checkbox using _locateClickable', async () => {
+      await I.amOnPage('/form/checkbox');
+      try {
+        const els = await I._locateClickable('I disagree');
+        throw Error('Should not get this far');
+      } catch (e) {
+        e.message.should.include = 'No element found using locator:';
+      }
+    });
+  });
+
+  describe('#_locateCheckable', () => {
+    it('should locate a checkbox', async () => {
+      await I.amOnPage('/form/checkbox');
+      const els = await I._locateCheckable('I Agree');
+      assert.equal(els == null, false);
+    });
+
+    it('should not locate a non-existing checkbox', async () => {
+      await I.amOnPage('/form/checkbox');
+      try {
+        const els = await I._locateCheckable('I Agree');
+        throw Error('Should not get this far');
+      } catch (e) {
+        e.message.should.include = 'No element found using locator:';
+      }
+    });
+  });
+
+  describe('#_locateFields', () => {
+    it('should locate a field', async () => {
+      await I.amOnPage('/form/field');
+      const els = await I._locateFields('Name');
+      assert.equal(els == null, false);
+    });
+
+    it('should not locate a non-existing field', async () => {
+      await I.amOnPage('/form/field');
+      try {
+        const els = await I._locateFields('Mother-in-law');
+        throw Error('Should not get this far');
+      } catch (e) {
+        e.message.should.include = 'No element found using locator:';
+      }
+    });
+  });
+
   /* describe('#waitUntil predicate', () => {
     it('should wait until the windows requests is equal to 0', () => I.amOnPage('/form/wait_value')
       .then(() => I.waitUntil(function () {
