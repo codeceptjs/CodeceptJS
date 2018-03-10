@@ -298,6 +298,20 @@ describe('Protractor-NonAngular', function () {
       .then(text => assert.equal(text, null)));
   });
 
+  describe('#dragAndDrop', () => {
+    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+      .then(() => I.seeElementInDOM('#draggable'))
+      .then(() => I.dragAndDrop('#draggable', '#droppable'))
+      .then(() => I.see('Dropped')));
+
+    it('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
+      .then(() => I.resizeWindow(700, 700))
+      .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
+      .then(() => I.seeElementInDOM('#draggable'))
+      .then(() => I.dragAndDrop('#draggable', '#droppable'))
+      .then(() => I.see('Dropped')));
+  });
+
   /* describe('#waitUntil predicate', () => {
     it('should wait until the windows requests is equal to 0', () => I.amOnPage('/form/wait_value')
       .then(() => I.waitUntil(function () {
