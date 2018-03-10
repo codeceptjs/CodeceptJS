@@ -195,7 +195,7 @@ describe('WebDriverIO', function () {
       .then(() => wd.see('button was clicked')));
   });
 
-  
+
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
