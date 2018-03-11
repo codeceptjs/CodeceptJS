@@ -959,7 +959,11 @@ module.exports.tests = function () {
       try {
         await I.amOnPage('/');
         await I.seeCssPropertiesOnElements('a', {
-          color: 'rgb(0, 0, 238)', // Note: if alpha is 1, then rgb() should be used instead of rgba()
+          color: 'rgb(0, 0, 238)',
+          cursor: 'pointer',
+        });
+        await I.seeCssPropertiesOnElements('a', {
+          color: '#0000EE',
           cursor: 'pointer',
         });
         await I.seeCssPropertiesOnElements('//div', {
@@ -972,6 +976,30 @@ module.exports.tests = function () {
       } catch (e) {
         e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
       }
+    });
+
+    it('should normalize css color properties for given element', async () => {
+      if (isHelper('Nightmare')) return;
+
+      await I.amOnPage('/form/css_colors');
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': 'purple',
+        color: 'yellow',
+      });
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': '#800080',
+        color: '#ffff00',
+      });
+
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': 'rgb(128,0,128)',
+        color: 'rgb(255,255,0)',
+      });
+
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': 'rgba(128,0,128,1)',
+        color: 'rgba(255,255,0,1)',
+      });
     });
   });
 };
