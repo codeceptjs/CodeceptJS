@@ -50,7 +50,7 @@ AfterSuite(() => {
   });
 });
 
-Scenario('Event Hooks @WebDriverIO @Protractor @Nightmare @Puppeteer', (I) => {
+Scenario('Event Hooks @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   expectedEvents.push(...[
     event.test.started,
   ]);
