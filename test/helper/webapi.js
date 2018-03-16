@@ -915,8 +915,9 @@ module.exports.tests = function () {
         await I.seeAttributesOnElements('//form', {
           method: 'get',
         });
+        throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include('expected all elements (//form) to have attributes {"method":"get"}');
+        e.message.should.include('all elements (//form) to have attributes {"method":"get"}');
       }
     });
 
@@ -935,6 +936,7 @@ module.exports.tests = function () {
           'qa-id': 'test',
           href: '/info',
         });
+        throw new Error('It should never get this far');
       } catch (e) {
         e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
       }
@@ -956,6 +958,7 @@ module.exports.tests = function () {
         await I.seeCssPropertiesOnElements('h3', {
           'font-weight': 'non-bold',
         });
+        throw Error('It should never get this far');
       } catch (e) {
         e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}');
       }
@@ -981,6 +984,7 @@ module.exports.tests = function () {
           'margin-top': '0em',
           cursor: 'pointer',
         });
+        throw Error('It should never get this far');
       } catch (e) {
         e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
       }
