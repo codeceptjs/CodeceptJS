@@ -155,38 +155,6 @@ describe('WebDriverIO', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-  describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', () => wd.amOnPage('/info')
-      .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'post',
-      }))
-      .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'post',
-        action: `${siteUrl}/`,
-      }))
-      .then(() => wd.seeAttributesOnElements('//form', {
-        method: 'get',
-      }))
-      .catch((e) => {
-        assert.equal(e.message, 'Not all elements (//form) have attributes {"method":"get"}');
-      }));
-
-    it('should check attributes values for several elements', () => wd.amOnPage('/')
-      .then(() => wd.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        'qa-link': 'test',
-      }))
-      .then(() => wd.seeAttributesOnElements('//div', {
-        'qa-id': 'test',
-      }))
-      .then(() => wd.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        href: '/info',
-      }))
-      .catch((e) => {
-        e.message.should.include('Not all elements (a) have attributes {"qa-id":"test","href":"/info"}');
-      }));
-  });
 
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => wd.amOnPage('/')
@@ -227,77 +195,6 @@ describe('WebDriverIO', function () {
       .then(() => wd.see('button was clicked')));
   });
 
-  describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', () => wd.amOnPage('/form/doubleclick')
-      .then(() => wd.grabCssPropertyFrom('#block', 'height'))
-      .then(css => assert.equal(css, '100px')));
-  });
-
-  describe('#seeCssPropertiesOnElements', () => {
-    it('should check css property for given element', () => wd.amOnPage('/info')
-      .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-        display: 'block',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'non-bold',
-      }))
-      .catch((e) => {
-        e.message.should.include('Not all elements (h3) have CSS property {"font-weight":"non-bold"}');
-      }));
-
-    it('should check css property for several elements', () => wd.amOnPage('/')
-      .then(() => wd.seeCssPropertiesOnElements('a', {
-        color: 'rgba(0, 0, 238, 1)',
-        cursor: 'auto',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('//div', {
-        display: 'block',
-      }))
-      .then(() => wd.seeCssPropertiesOnElements('a', {
-        'margin-top': '0em',
-        cursor: 'auto',
-      }))
-      .catch((e) => {
-        e.message.should.include('Not all elements (a) have CSS property {"margin-top":"0em","cursor":"auto"}');
-      }));
-  });
-
-
-  describe('#seeNumberOfVisibleElements', () => {
-    it('should check number of visible elements for given locator', () => wd.amOnPage('/info')
-      .then(() => wd.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
-  });
-
-  describe('#grabNumberOfVisibleElements', () => {
-    it('should grab number of visible elements for given locator', () => wd.amOnPage('/info')
-      .then(() => wd.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
-      .then(num => assert.equal(num, 3)));
-    it('should support locators like {xpath:"//div"}', () => wd.amOnPage('/info')
-      .then(() => wd.grabNumberOfVisibleElements({
-        xpath: '//div[@id = "grab-multiple"]//a',
-      }))
-      .then(num => assert.equal(num, 3)));
-  });
-
-  describe('#waitInUrl, #waitUrlEquals', () => {
-    it('should wait part of the URL to match the expected', () => wd.amOnPage('/info')
-      .then(() => wd.waitInUrl('/info'))
-      .then(() => wd.waitInUrl('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
-      }));
-    it('should wait for the entire URL to match the expected', () => wd.amOnPage('/info')
-      .then(() => wd.waitUrlEquals('/info'))
-      .then(() => wd.waitUrlEquals(`${siteUrl}/info`))
-      .then(() => wd.waitUrlEquals('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
-      }));
-  });
 
   describe('#saveScreenshot', () => {
     beforeEach(() => {
@@ -645,5 +542,44 @@ describe('WebDriverIO', function () {
         const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
         assert.equal(matchingLogs.length, 2);
       }));
+  });
+
+  describe('#dragAndDrop', () => {
+    it('Drag item from source to target (no iframe) @dragNdrop', () => wd.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+      .then(() => wd.seeElementInDOM('#draggable'))
+      .then(() => wd.dragAndDrop('#draggable', '#droppable'))
+      .then(() => wd.see('Dropped')));
+
+    it('Drag and drop from within an iframe', () => wd.amOnPage('http://jqueryui.com/droppable')
+      .then(() => wd.resizeWindow(700, 700))
+      .then(() => wd.switchTo('//iframe[@class="demo-frame"]'))
+      .then(() => wd.seeElementInDOM('#draggable'))
+      .then(() => wd.dragAndDrop('#draggable', '#droppable'))
+      .then(() => wd.see('Dropped')));
+  });
+
+  describe('#switchTo frame', () => {
+    it('should switch to frame using name', () => wd.amOnPage('/iframe')
+      .then(() => wd.see('Iframe test', 'h1'))
+      .then(() => wd.dontSee('Information', 'h1'))
+      .then(() => wd.switchTo('iframe'))
+      .then(() => wd.see('Information', 'h1'))
+      .then(() => wd.dontSee('Iframe test', 'h1')));
+
+    it('should switch to root frame', () => wd.amOnPage('/iframe')
+      .then(() => wd.see('Iframe test', 'h1'))
+      .then(() => wd.dontSee('Information', 'h1'))
+      .then(() => wd.switchTo('iframe'))
+      .then(() => wd.see('Information', 'h1'))
+      .then(() => wd.dontSee('Iframe test', 'h1'))
+      .then(() => wd.switchTo())
+      .then(() => wd.see('Iframe test', 'h1')));
+
+    it('should switch to frame using frame number', () => wd.amOnPage('/iframe')
+      .then(() => wd.see('Iframe test', 'h1'))
+      .then(() => wd.dontSee('Information', 'h1'))
+      .then(() => wd.switchTo(0))
+      .then(() => wd.see('Information', 'h1'))
+      .then(() => wd.dontSee('Iframe test', 'h1')));
   });
 });

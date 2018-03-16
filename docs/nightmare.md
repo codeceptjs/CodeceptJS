@@ -87,10 +87,10 @@ Sure, this can't be taken as a valuable benchmark but more like a proof of conce
 
 ## Setup
 
-To start you need CodeceptJS with nightmare and nightmare-upload packages installed.
+To start you need CodeceptJS with nightmare package installed.
 
 ```bash
-npm install -g codeceptjs-nightmare
+npm install -g nightmare
 ```
 
 And a basic project initialized
