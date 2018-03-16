@@ -139,13 +139,14 @@ docker-compose run --rm test-helpers test/rest
 
 ### Run acceptance tests
 
-To that we provide three separate services respectively for WebDriverIO, Nightmare and
-Puppeteer tests:
+To that we provide three separate services respectively for WebDriverIO, Nightmare, Puppeteer and
+Protractor tests:
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio
 docker-compose run --rm test-acceptance.nightmare
 docker-compose run --rm test-acceptance.puppeteer
+docker-compose run --rm test-acceptance.protractor
 ```
 
 ### Running against specific Node version

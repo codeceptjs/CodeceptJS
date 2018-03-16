@@ -284,39 +284,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-  describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', () => I.amOnPage('/info')
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'post',
-      }))
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'post',
-        // action: '/',
-        action: `${siteUrl}/`,
-      }))
-      .then(() => I.seeAttributesOnElements('//form', {
-        method: 'get',
-      }))
-      .catch((e) => {
-        assert.equal(e.message, 'expected all elements (//form) to have attributes {"method":"get"} "0" to equal "1"');
-      }));
-
-    it('should check attributes values for several elements', () => I.amOnPage('/')
-      .then(() => I.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        'qa-link': 'test',
-      }))
-      .then(() => I.seeAttributesOnElements('//div', {
-        'qa-id': 'test',
-      }))
-      .then(() => I.seeAttributesOnElements('a', {
-        'qa-id': 'test',
-        href: '/info',
-      }))
-      .catch((e) => {
-        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
-      }));
-  });
 
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
@@ -434,21 +401,6 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#waitInUrl, #waitUrlEquals', () => {
-    it('should wait part of the URL to match the expected', () => I.amOnPage('/info')
-      .then(() => I.waitInUrl('/info'))
-      .then(() => I.waitInUrl('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
-      }));
-    it('should wait for the entire URL to match the expected', () => I.amOnPage('/info')
-      .then(() => I.waitUrlEquals('/info'))
-      .then(() => I.waitUrlEquals(`${siteUrl}/info`))
-      .then(() => I.waitUrlEquals('/info2', 0.1))
-      .catch((e) => {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
-      }));
-  });
 
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
@@ -499,61 +451,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#text2', 'London')));
   });
 
-  describe('#seeCssPropertiesOnElements', () => {
-    it('should check css property for given element', () => I.amOnPage('/info')
-      .then(() => I.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'bold',
-        display: 'block',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('h3', {
-        'font-weight': 'non-bold',
-      }))
-      .catch((e) => {
-        console.log('error', e.message);
-        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"} "0" to equal "1"');
-      }));
-
-    it('should check css property for several elements', () => I.amOnPage('/')
-      .then(() => I.seeCssPropertiesOnElements('a', {
-        color: 'rgb(0, 0, 238)', // Note: if alpha is 1, then rgb() should be used instead of rgba()
-        cursor: 'pointer',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('//div', {
-        display: 'block',
-      }))
-      .then(() => I.seeCssPropertiesOnElements('a', {
-        'margin-top': '0em',
-        cursor: 'pointer',
-      }))
-      .catch((e) => {
-        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"} "0" to equal "5"');
-      }));
-  });
-
-  describe('#seeNumberOfVisibleElements', () => {
-    it('should check number of visible elements for given locator', () => I.amOnPage('/info')
-      .then(() => I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
-  });
-
-  describe('#grabNumberOfVisibleElements', () => {
-    it('should grab number of visible elements for given locator', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
-      .then(num => assert.equal(num, 3)));
-    it('should support locators like {xpath:"//div"}', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements({
-        xpath: '//div[@id = "grab-multiple"]//a',
-      }))
-      .then(num => assert.equal(num, 3)));
-  });
-
-  describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', () => I.amOnPage('/form/doubleclick')
-      .then(() => I.grabCssPropertyFrom('#block', 'height'))
-      .then(css => assert.equal(css, '100px')));
-  });
 
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
@@ -609,5 +506,30 @@ describe('Puppeteer', function () {
       .then(() => I.seeElementInDOM('#draggable'))
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
       .then(() => I.see('Dropped')));
+  });
+
+  describe('#switchTo frame', () => {
+    it('should switch to frame using name', () => I.amOnPage('/iframe')
+      .then(() => I.see('Iframe test', 'h1'))
+      .then(() => I.dontSee('Information', 'h1'))
+      .then(() => I.switchTo('iframe'))
+      .then(() => I.see('Information', 'h1'))
+      .then(() => I.dontSee('Iframe test', 'h1')));
+
+    it('should switch to root frame', () => I.amOnPage('/iframe')
+      .then(() => I.see('Iframe test', 'h1'))
+      .then(() => I.dontSee('Information', 'h1'))
+      .then(() => I.switchTo('iframe'))
+      .then(() => I.see('Information', 'h1'))
+      .then(() => I.dontSee('Iframe test', 'h1'))
+      .then(() => I.switchTo())
+      .then(() => I.see('Iframe test', 'h1')));
+
+    it('should switch to frame using frame number', () => I.amOnPage('/iframe')
+      .then(() => I.see('Iframe test', 'h1'))
+      .then(() => I.dontSee('Information', 'h1'))
+      .then(() => I.switchTo(0))
+      .then(() => I.see('Information', 'h1'))
+      .then(() => I.dontSee('Iframe test', 'h1')));
   });
 });
