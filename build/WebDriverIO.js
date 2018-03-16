@@ -6,8 +6,17 @@ const { urlEquals, equals } = require('../assert/equal');
 const empty = require('../assert/empty').empty;
 const truth = require('../assert/truth').truth;
 const {
-  xpathLocator, fileExists, clearString, decodeUrl, chunkArray,
+  xpathLocator,
+  fileExists,
+  clearString,
+  decodeUrl,
+  chunkArray,
+  convertCssPropertiesToCamelCase,
 } = require('../utils');
+const {
+  isColorProperty,
+  convertColorToRGBA,
+} = require('../colorUtils');
 const ElementNotFound = require('./errors/ElementNotFound');
 const assert = require('assert');
 const path = require('path');
@@ -834,10 +843,12 @@ let email = yield I.grabValueFrom('input[name=email]');
 
   /**
    * Grab CSS property for given locator
-   *
-   * ```js
-   * I.grabCssPropertyFrom('h3', 'font-weight');
-   * ```
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const value = await I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
    */
   async grabCssPropertyFrom(locator, cssProperty) {
     const res = await this._locate(locator, true);
@@ -1170,10 +1181,13 @@ console.log(`Current URL is [${url}]`);
 
   /**
    * Checks that all elements with given locator have given CSS properties.
-   *
-   * ```js
-   * I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
-   * ```
+
+```js
+I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+```
+
+@param locator
+@param properties
    */
   async seeCssPropertiesOnElements(locator, cssProperties) {
     const res = await this._locate(locator);
@@ -1181,10 +1195,18 @@ console.log(`Current URL is [${url}]`);
     const elemAmount = res.value.length;
 
     let props = await forEachAsync(res.value, async (el) => {
-      return forEachAsync(Object.keys(cssProperties), async prop => this.browser.elementIdCssProperty(el.ELEMENT, prop));
+      return forEachAsync(Object.keys(cssProperties), async (prop) => {
+        const propValue = await this.browser.elementIdCssProperty(el.ELEMENT, prop);
+        if (isColorProperty(prop) && propValue && propValue.value) {
+          return convertColorToRGBA(propValue.value);
+        }
+        return propValue;
+      });
     });
 
-    const values = Object.keys(cssProperties).map(key => cssProperties[key]);
+    const cssPropertiesCamelCase = convertCssPropertiesToCamelCase(cssProperties);
+
+    const values = Object.keys(cssPropertiesCamelCase).map(key => cssPropertiesCamelCase[key]);
     if (!Array.isArray(props)) props = [props];
     let chunked = chunkArray(props, values.length);
     chunked = chunked.filter((val) => {
@@ -1195,16 +1217,17 @@ console.log(`Current URL is [${url}]`);
     });
     return assert.ok(
       chunked.length === elemAmount,
-      `Not all elements (${locator}) have CSS property ${JSON.stringify(cssProperties)}`,
+      `expected all elements (${locator}) to have CSS property ${JSON.stringify(cssProperties)}`,
     );
   }
 
   /**
    * Checks that all elements with given locator have given attributes.
-   *
-   * ```js
-   * I.seeAttributesOnElements('//form', {'method': "post"});
-   * ```
+
+```js
+I.seeAttributesOnElements('//form', {'method': "post"});
+```
+
    */
   async seeAttributesOnElements(locator, attributes) {
     const res = await this._locate(locator);
@@ -1226,7 +1249,7 @@ console.log(`Current URL is [${url}]`);
     });
     return assert.ok(
       chunked.length === elemAmount,
-      `Not all elements (${locator}) have attributes ${JSON.stringify(attributes)}`,
+      `expected all elements (${locator}) to have attributes ${JSON.stringify(attributes)}`,
     );
   }
 
@@ -1695,13 +1718,10 @@ First parameter can be set to `maximize`
       return this.browser.touchUp(location.value.x, location.value.y);
     }
 
-    let res = await this.moveCursorTo(withStrictLocator.call(this, srcElement));
-    if (res.state !== 'success') throw new Error(`Unable to move cursor to (${srcElement})`);
-    res = await this.browser.buttonDown();
-    if (res.state !== 'success') throw new Error(`Failed to press button down on (${srcElement})`);
-    res = await this.moveCursorTo(withStrictLocator.call(this, destElement));
-    if (res.state !== 'success') throw new Error(`Unable to move cursor to (${destElement})`);
-    return this.browser.buttonUp();
+    return client.dragAndDrop(
+      withStrictLocator.call(this, srcElement),
+      withStrictLocator.call(this, destElement),
+    );
   }
 
 
@@ -1795,10 +1815,10 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
   /**
    * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
-   *
-   * ```js
-   * I.waitInUrl('/info', 2);
-   * ```
+
+```js
+I.waitInUrl('/info', 2);
+```
    */
   async waitInUrl(urlPart, sec = null) {
     const client = this.browser;
@@ -1821,11 +1841,11 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
   /**
    * Waits for the entire URL to match the expected
-   *
-   * ```js
-   * I.waitUrlEquals('/info', 2);
-   * I.waitUrlEquals('http://127.0.0.1:8000/info');
-   * ```
+
+```js
+I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+```
    */
   async waitUrlEquals(urlPart, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -2051,10 +2071,10 @@ I.waitUntil(() => window.requests == 0, 5);
    * Appium: support only web testing
    */
   async switchTo(locator) {
-    if (!locator) {
-      return this.browser.frame(null);
-    } else if (Number.isInteger(locator)) {
+    if (Number.isInteger(locator)) {
       return this.browser.frame(locator);
+    } else if (!locator) {
+      return this.browser.frame(null);
     }
     const res = await this._locate(withStrictLocator.call(this, locator), true);
     assertElementExists(res, locator);
@@ -2190,6 +2210,26 @@ I.grabNumberOfOpenTabs();
       ));
     });
     /* eslint-enable */
+  }
+
+  /**
+   * Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+   */
+  async grabPageScrollPosition() {
+    /* eslint-disable comma-dangle */
+    function getScrollPosition() {
+      return {
+        x: window.pageXOffset,
+        y: window.pageYOffset
+      };
+    }
+    /* eslint-enable comma-dangle */
+    return this.executeScript(getScrollPosition);
   }
 
   /**

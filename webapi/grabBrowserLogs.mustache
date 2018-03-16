@@ -1,0 +1,7 @@
+Get JS log from browser. Log buffer is reset after each request.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let logs = await I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+```

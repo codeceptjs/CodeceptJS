@@ -28,7 +28,7 @@ let withinStatus = false;
  * Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
  * less trusted.
  *
- * Requires `nightmare` and `nightmare-upload` packages to be installed.
+ * Requires `nightmare` package to be installed.
  *
  * ## Configuration
  *
@@ -83,16 +83,14 @@ class Nightmare extends Helper {
   static _checkRequirements() {
     try {
       requireg('nightmare');
-      requireg('nightmare-upload');
     } catch (e) {
-      return ['nightmare', 'nightmare-upload'];
+      return ['nightmare'];
     }
   }
 
   async _init() {
     this.Nightmare = requireg('nightmare');
 
-    require('nightmare-upload')(this.Nightmare);
     if (this.options.enableHAR) {
       require('nightmare-har-plugin').install(this.Nightmare);
     }
@@ -180,6 +178,58 @@ class Nightmare extends Helper {
     }, function (event, done) {
       this.child.call('triggerMouseEvent', event, done);
     });
+
+    this.Nightmare.action(
+      'upload',
+      (ns, options, parent, win, renderer, done) => {
+        parent.respondTo('upload', (selector, pathsToUpload, done) => {
+          parent.emit('log', 'paths', pathsToUpload);
+          try {
+          // attach the debugger
+          // NOTE: this will fail if devtools is open
+            win.webContents.debugger.attach('1.1');
+          } catch (e) {
+            parent.emit('log', 'problem attaching', e);
+            return done(e);
+          }
+
+          win.webContents.debugger.sendCommand('DOM.getDocument', {}, (err, domDocument) => {
+            win.webContents.debugger.sendCommand('DOM.querySelector', {
+              nodeId: domDocument.root.nodeId,
+              selector,
+            }, (err, queryResult) => {
+            // HACK: chromium errors appear to be unpopulated objects?
+              if (Object.keys(err)
+                .length > 0) {
+                parent.emit('log', 'problem selecting', err);
+                return done(err);
+              }
+              win.webContents.debugger.sendCommand('DOM.setFileInputFiles', {
+                nodeId: queryResult.nodeId,
+                files: pathsToUpload,
+              }, (err, setFileResult) => {
+                if (Object.keys(err)
+                  .length > 0) {
+                  parent.emit('log', 'problem setting input', err);
+                  return done(err);
+                }
+                win.webContents.debugger.detach();
+                done(null, pathsToUpload);
+              });
+            });
+          });
+        });
+        done();
+      },
+      function (selector, pathsToUpload, done) {
+        if (!Array.isArray(pathsToUpload)) {
+          pathsToUpload = [pathsToUpload];
+        }
+        this.child.call('upload', selector, pathsToUpload, (err, stuff) => {
+          done(err, stuff);
+        });
+      },
+    );
 
     return Promise.resolve();
   }
@@ -588,6 +638,36 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
     return equals(`expected number of elements (${selector}) is ${num}, but found ${elements.length}`).assert(elements.length, num);
   }
 
+  /**
+   * asserts that an element is visible a given number of times
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+   */
+  async seeNumberOfVisibleElements(locator, num) {
+    const res = await this.grabNumberOfVisibleElements(locator);
+    return equals(`expected number of visible elements (${locator}) is ${num}, but found ${res}`).assert(res, num);
+  }
+
+  /**
+   * Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
+   */
+  async grabNumberOfVisibleElements(locator) {
+    locator = new Locator(locator, 'css');
+
+    const els = await this.executeScript((by, locator) => {
+      return window.codeceptjs.findElements(by, locator)
+        .filter(el => el.offsetWidth > 0 && el.offsetHeight > 0);
+    }, locator.type, locator.value);
+
+    return els.length;
+  }
 
   /**
    * Perform a click on a link or a button, given by a locator.
@@ -1201,15 +1281,32 @@ I.waitForVisible('#popup');
   }
 
   /**
-   * Waits for an element to become visible on a page (by default waits for 1sec).
+   * Waits for an element to hide (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
 ```
-I.waitForVisible('#popup');
+I.waitToHide('#popup');
 ```
 
 @param locator element located by CSS|XPath|strict locator
 @param sec time seconds to wait, 1 by default
+
+   */
+  async waitToHide(locator, sec = null) {
+    return this.waitForInvisible(locator, sec);
+  }
+
+  /**
+   * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitForInvisible('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
    */
   waitForInvisible(locator, sec) {
     this.browser.options.waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1346,21 +1443,81 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
   /**
    * Scrolls to element matched by locator.
-   * Extra shift can be set with offsetX and offsetY options
-   *
-   * ```js
-   * I.scrollTo('footer');
-   * I.scrollTo('#submit', 5,5);
-   * ```
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
    */
   async scrollTo(locator, offsetX = 0, offsetY = 0) {
-    locator = new Locator(locator, 'css');
-    return this.browser.evaluate((by, locator, offsetX, offsetY) => {
-      const el = window.codeceptjs.findElement(by, locator);
-      if (!el) throw new Error(`Element not found ${by}: ${locator}`);
-      const rect = el.getBoundingClientRect();
-      window.scrollTo(rect.left + offsetX, rect.top + offsetY);
-    }, locator.type, locator.value, offsetX, offsetY);
+    if (typeof locator === 'number' && typeof offsetX === 'number') {
+      offsetY = offsetX;
+      offsetX = locator;
+      locator = null;
+    }
+    if (locator) {
+      locator = new Locator(locator, 'css');
+      return this.browser.evaluate((by, locator, offsetX, offsetY) => {
+        const el = window.codeceptjs.findElement(by, locator);
+        if (!el) throw new Error(`Element not found ${by}: ${locator}`);
+        const rect = el.getBoundingClientRect();
+        window.scrollTo(rect.left + offsetX, rect.top + offsetY);
+      }, locator.type, locator.value, offsetX, offsetY);
+    }
+    // eslint-disable-next-line prefer-arrow-callback
+    return this.executeScript(function (x, y) { return window.scrollTo(x, y); }, offsetX, offsetY);
+  }
+
+  /**
+   * Scroll page to the top
+
+```js
+I.scrollPageToTop();
+```
+   */
+  async scrollPageToTop() {
+    return this.executeScript(() => window.scrollTo(0, 0));
+  }
+
+  /**
+   * Scroll page to the bottom
+
+```js
+I.scrollPageToBottom();
+```
+   */
+  async scrollPageToBottom() {
+    /* eslint-disable prefer-arrow-callback, comma-dangle */
+    return this.executeScript(function () {
+      const body = document.body;
+      const html = document.documentElement;
+      window.scrollTo(0, Math.max(
+        body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight
+      ));
+    });
+    /* eslint-enable */
+  }
+
+  /**
+   * Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+   */
+  async grabPageScrollPosition() {
+    /* eslint-disable comma-dangle */
+    function getScrollPosition() {
+      return {
+        x: window.pageXOffset,
+        y: window.pageYOffset
+      };
+    }
+    /* eslint-enable comma-dangle */
+    return this.executeScript(getScrollPosition);
   }
 }
 

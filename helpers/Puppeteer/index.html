@@ -374,6 +374,8 @@
         
             <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
         
+            <li><a href="#grabpagescrollposition">grabPageScrollPosition</a></li>
+        
             <li><a href="#grabpopuptext">grabPopupText</a></li>
         
             <li><a href="#grabsource">grabSource</a></li>
@@ -896,8 +898,9 @@ assert(cookie.value, '123456');
 <li><code>name</code>  Returns cookie in JSON format. If name not passed returns all cookies for this domain.</li>
 </ul>
 <h2 id="grabcsspropertyfrom">grabCssPropertyFrom</h2>
-<p>Grab CSS property for given locator</p>
-<pre><code class="js">I.grabCssPropertyFrom('h3', 'font-weight');
+<p>Grab CSS property for given locator
+Resumes test execution, so <strong>should be used inside an async function with <code>await</code></strong> operator.</p>
+<pre><code class="js">const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -937,6 +940,12 @@ Appium: support only web testing</p>
 <ul>
 <li><code>locator</code>  </li>
 </ul>
+<h2 id="grabpagescrollposition">grabPageScrollPosition</h2>
+<p>Retrieves a page scroll position and returns it to test.
+Resumes test execution, so <strong>should be used inside an async function with <code>await</code></strong> operator.</p>
+<pre><code class="js">let { x, y } = await I.grabPageScrollPosition();
+</code></pre>
+
 <h2 id="grabpopuptext">grabPopupText</h2>
 <p>Grab the text within the popup. If no popup is visible then it will return null</p>
 <pre><code class="js">await I.grabPopupText();
@@ -1119,12 +1128,13 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 </ul>
 <h2 id="seecsspropertiesonelements">seeCssPropertiesOnElements</h2>
 <p>Checks that all elements with given locator have given CSS properties.</p>
-<pre><code class="js">I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' });
+<pre><code class="js">I.seeCssPropertiesOnElements('h3', { 'font-weight': &quot;bold&quot;});
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>locator</code>  </li>
+<li><code>properties</code>  </li>
 <li><code>cssProperties</code>  </li>
 </ul>
 <h2 id="seecurrenturlequals">seeCurrentUrlEquals</h2>

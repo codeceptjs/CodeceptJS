@@ -284,7 +284,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#116">1.1.6</a></li>
+        <li class="main active"><a href="#117">1.1.7</a></li>
+        
+    
+        <li class="main "><a href="#116">1.1.6</a></li>
         
     
         <li class="main "><a href="#115">1.1.5</a></li>
@@ -434,6 +437,67 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="117">1.1.7</h2>
+<ul>
+<li>Docker Image updateed. <a href="https://codecept.io/docker/">See updated reference</a>:<ul>
+<li>codeceptjs package is mounted as <code>/codecept</code> insde container</li>
+<li>tests directory is expected to be mounted as <code>/tests</code></li>
+<li><code>codeceptjs</code> global runner added (symlink to <code>/codecept/bin/codecept.js</code>)</li>
+</ul>
+</li>
+<li>[Protractor] Functions added by @reubenmiller:<ul>
+<li><code>_locateCheckable (only available from other helpers)</code></li>
+<li><code>_locateClickable (only available from other helpers)</code></li>
+<li><code>_locateFields (only available from other helpers)</code></li>
+<li><code>acceptPopup</code></li>
+<li><code>cancelPopup</code></li>
+<li><code>dragAndDrop</code></li>
+<li><code>grabBrowserLogs</code></li>
+<li><code>grabCssPropertyFrom</code></li>
+<li><code>grabHTMLFrom</code></li>
+<li><code>grabNumberOfVisibleElements</code></li>
+<li><code>grabPageScrollPosition (new)</code></li>
+<li><code>rightClick</code></li>
+<li><code>scrollPageToBottom</code></li>
+<li><code>scrollPageToTop</code></li>
+<li><code>scrollTo</code></li>
+<li><code>seeAttributesOnElements</code></li>
+<li><code>seeCssPropertiesOnElements</code></li>
+<li><code>seeInPopup</code></li>
+<li><code>seeNumberOfVisibleElements</code></li>
+<li><code>switchTo</code></li>
+<li><code>waitForEnabled</code></li>
+<li><code>waitForValue</code></li>
+<li><code>waitInUrl</code></li>
+<li><code>waitNumberOfVisibleElements</code></li>
+<li><code>waitToHide</code></li>
+<li><code>waitUntil</code></li>
+<li><code>waitUrlEquals</code></li>
+</ul>
+</li>
+<li>[Nightmare] added:<ul>
+<li><code>grabPageScrollPosition</code> (new)</li>
+<li><code>seeNumberOfVisibleElements</code></li>
+<li><code>waitToHide</code></li>
+</ul>
+</li>
+<li>[Puppeteer] added:<ul>
+<li><code>grabPageScrollPosition</code> (new)</li>
+</ul>
+</li>
+<li>[WebDriverIO] added"<ul>
+<li><code>grabPageScrollPosition</code> (new)</li>
+</ul>
+</li>
+<li>[Puppeteer] Fixed running wait* functions without setting <code>sec</code> parameter.</li>
+<li>[Puppeteer][Protractor] Fixed bug with I.click when using an object selector with the xpath property. By @reubenmiller</li>
+<li>[WebDriverIO][Protractor][Nightmare][Puppeteer] Fixed I.switchTo(0) and I.scrollTo(100, 100) api inconsistencies between helpers.</li>
+<li>[Protractor] Fixing bug when <code>seeAttributesOnElements</code> and <code>seeCssPropertiesOnElement</code> were incorrectly passing when the attributes/properties did not match by @reubenmiller</li>
+<li>[WebDriverIO] Use inbuilt dragAndDrop function (still doesn't work in Firefox). By @reubenmiller</li>
+<li>Support for Nightmare 3.0</li>
+<li>Enable glob patterns in <code>config.test</code> / <code>Codecept.loadTests</code> by @sveneisenschmidt</li>
+<li>Enable overriding of <code>config.tests</code> for <code>run-multiple</code> by @sveneisenschmidt</li>
+</ul>
 <h2 id="116">1.1.6</h2>
 <ul>
 <li>Added support for <code>async I =&gt;</code> functions syntax in Scenario by @APshenkin</li>

@@ -2,6 +2,7 @@ let By;
 let EC;
 let Runner;
 let Key;
+let Button;
 
 const requireg = require('requireg');
 const Helper = require('../helper');
@@ -9,7 +10,16 @@ const stringIncludes = require('../assert/include').includes;
 const { urlEquals, equals } = require('../assert/equal');
 const empty = require('../assert/empty').empty;
 const truth = require('../assert/truth').truth;
-const { xpathLocator, fileExists, clearString } = require('../utils');
+const {
+  xpathLocator,
+  fileExists,
+  clearString,
+  convertCssPropertiesToCamelCase,
+} = require('../utils');
+const {
+  isColorProperty,
+  convertColorToRGBA,
+} = require('../colorUtils');
 const ElementNotFound = require('./errors/ElementNotFound');
 const Locator = require('../locator');
 const path = require('path');
@@ -134,6 +144,7 @@ class Protractor extends Helper {
     Runner = requireg('protractor/built/runner').Runner;
     By = requireg('protractor').ProtractorBy;
     Key = requireg('protractor').Key;
+    Button = requireg('protractor').Button;
 
     this.context = this.options.rootElement;
     return Promise.resolve();
@@ -188,9 +199,9 @@ class Protractor extends Helper {
       await this.resizeWindow(parseInt(size[0], 10), parseInt(size[1], 10));
     }
     if (this.options.angular) {
-      this.amInsideAngularApp();
+      await this.amInsideAngularApp();
     } else {
-      this.amOutsideAngularApp();
+      await this.amOutsideAngularApp();
     }
     this.isRunning = true;
   }
@@ -207,18 +218,28 @@ class Protractor extends Helper {
       return this.browser.quit();
     }
     if (this.options.keepBrowserState) return;
+
+    const dialog = await this.grabPopupText();
+    if (dialog) {
+      await this.cancelPopup();
+    }
     if (!this.options.keepCookies) {
       await this.browser.manage().deleteAllCookies();
     }
-    const url = await this.browser.getCurrentUrl();
-    if (!/data:,/i.test(url)) {
+    let url;
+    try {
+      url = await this.browser.getCurrentUrl();
+    } catch (err) {
+      // Ignore, as above will throw if no webpage has been loaded
+    }
+    if (url && !/data:,/i.test(url)) {
       await this.browser.executeScript('localStorage.clear();');
     }
     return this.closeOtherTabs();
   }
 
   async _failed(test) {
-    this._withinEnd();
+    await this._withinEnd();
     if (this.options.disableScreenshots) return;
     let fileName = clearString(test.title);
     if (test.ctx && test.ctx.test && test.ctx.test.type === 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
@@ -249,6 +270,18 @@ class Protractor extends Helper {
     withinStore.elFn = this.browser.findElement;
     withinStore.elsFn = this.browser.findElements;
 
+    const frame = isFrameLocator(locator);
+
+    if (frame) {
+      if (Array.isArray(frame)) {
+        withinStore.frame = frame.join('>');
+        return this.switchTo(null)
+          .then(() => frame.reduce((p, frameLocator) => p.then(() => this.switchTo(frameLocator)), Promise.resolve()));
+      }
+      withinStore.frame = frame;
+      return this.switchTo(locator);
+    }
+
     this.context = locator;
     const context = global.element(guessLocator(locator) || global.by.css(locator));
 
@@ -257,8 +290,12 @@ class Protractor extends Helper {
     return context;
   }
 
-  _withinEnd() {
+  async _withinEnd() {
     if (!Object.keys(withinStore).length) return;
+    if (withinStore.frame) {
+      withinStore = {};
+      return this.switchTo(null);
+    }
     this.browser.findElement = withinStore.elFn;
     this.browser.findElements = withinStore.elsFn;
     withinStore = {};
@@ -272,7 +309,7 @@ class Protractor extends Helper {
    */
   async amOutsideAngularApp() {
     if (!this.browser) return;
-    this.browser.waitForAngularEnabled(false);
+    await this.browser.waitForAngularEnabled(false);
     return Promise.resolve(this.insideAngular = false);
   }
 
@@ -281,7 +318,7 @@ class Protractor extends Helper {
    * Should be used after "amOutsideAngularApp"
    */
   async amInsideAngularApp() {
-    this.browser.waitForAngularEnabled(true);
+    await this.browser.waitForAngularEnabled(true);
     return Promise.resolve(this.insideAngular = true);
   }
 
@@ -291,12 +328,12 @@ class Protractor extends Helper {
    * Should be used in custom helpers:
    *
    * ```js
-   * this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+   * this.helpers['Protractor']._locate({name: 'password'}).then //...
    * ```
    * To use SmartWait and wait for element to appear on a page, add `true` as second arg:
    *
    * ```js
-   * this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
+   * this.helpers['Protractor']._locate({name: 'password'}, true).then //...
    * ```
    *
    */
@@ -310,6 +347,39 @@ class Protractor extends Helper {
     const res = await fn();
     await this.browser.manage().timeouts().implicitlyWait(0);
     return res;
+  }
+
+  /**
+   * Find a checkbox by providing human readable text:
+   *
+   * ```js
+   * this.helpers['Protractor']._locateCheckable('I agree with terms and conditions').then // ...
+   * ```
+   */
+  async _locateCheckable(locator) {
+    return findCheckable.call(this, this.browser, locator);
+  }
+
+  /**
+   * Find a clickable element by providing human readable text:
+   *
+   * ```js
+   * this.helpers['Protractor']._locateClickable('Next page').then // ...
+   * ```
+   */
+  async _locateClickable(locator) {
+    return findClickable.call(this, this.browser, locator);
+  }
+
+  /**
+   * Find field elements by providing human readable text:
+   *
+   * ```js
+   * this.helpers['Protractor']._locateFields('Your email').then // ...
+   * ```
+   */
+  async _locateFields(locator) {
+    return findFields.call(this, this.browser, locator);
   }
 
   /**
@@ -395,6 +465,25 @@ I.doubleClick('.btn.edit');
   }
 
   /**
+   * Performs right click on an element matched by CSS or XPath.
+   */
+  async rightClick(locator, context = null) {
+    /**
+     * just press button if no selector is given
+     */
+    if (locator === undefined) {
+      return this.browser.actions().click(Button.RIGHT).perform();
+    }
+
+    const els = await this._locate(locator, true);
+    assertElementExists(els);
+    const el = els[0];
+
+    await this.browser.actions().mouseMove(el).perform();
+    return this.browser.actions().click(Button.RIGHT).perform();
+  }
+
+  /**
    * Moves cursor to element matched by locator.
 Extra shift can be set with offsetX and offsetY options
 
@@ -453,6 +542,20 @@ I.dontSee('Login'); // assume we are already logged in
    */
   dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
+  }
+
+  /**
+   * Get JS log from browser. Log buffer is reset after each request.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let logs = await I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+```
+
+   */
+  async grabBrowserLogs() {
+    return this.browser.manage().logs().get('browser');
   }
 
   /**
@@ -721,6 +824,31 @@ let pin = yield I.grabTextFrom('#pin');
   }
 
   /**
+   * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+
+```js
+let postHTML = await I.grabHTMLFrom('#post');
+```
+   */
+  async grabHTMLFrom(locator) {
+    const els = await this._locate(locator);
+    if (!els) {
+      return null;
+    }
+
+    const html = await Promise.all(els.map((el) => {
+      return this.browser.executeScript('return arguments[0].innerHTML;', el);
+    }));
+
+    if (html.length === 1) {
+      return html[0];
+    }
+    return html;
+  }
+
+  /**
    * Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside a generator with `yield`** operator.
 
@@ -733,6 +861,26 @@ let email = yield I.grabValueFrom('input[name=email]');
     const els = await findFields(this.browser, locator);
     assertElementExists(els, locator, 'Field');
     return els[0].getAttribute('value');
+  }
+
+  /**
+   * Grab CSS property for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const value = await I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
+   */
+  async grabCssPropertyFrom(locator, cssProperty) {
+    const els = await this._locate(locator, true);
+    assertElementExists(els, locator);
+    const values = await Promise.all(els.map(el => el.getCssValue(cssProperty)));
+
+    if (Array.isArray(values) && values.length === 1) {
+      return values[0];
+    }
+    return values;
   }
 
   /**
@@ -888,6 +1036,102 @@ let pageSource = await I.grabSource();
   async seeNumberOfElements(selector, num) {
     const elements = await this._locate(selector);
     return equals(`expected number of elements (${selector}) is ${num}, but found ${elements.length}`).assert(elements.length, num);
+  }
+
+  /**
+   * asserts that an element is visible a given number of times
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+   */
+  async seeNumberOfVisibleElements(locator, num) {
+    const res = await this.grabNumberOfVisibleElements(locator);
+    return equals(`expected number of visible elements (${locator}) is ${num}, but found ${res}`).assert(res, num);
+  }
+
+  /**
+   * Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
+   */
+  async grabNumberOfVisibleElements(locator) {
+    let els = await this._locate(locator);
+    els = await Promise.all(els.map(el => el.isDisplayed()));
+    return els.length;
+  }
+
+  /**
+   * Checks that all elements with given locator have given CSS properties.
+
+```js
+I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+```
+
+@param locator
+@param properties
+   */
+  async seeCssPropertiesOnElements(locator, cssProperties) {
+    const els = await this._locate(locator);
+    assertElementExists(els, locator);
+
+    const cssPropertiesCamelCase = convertCssPropertiesToCamelCase(cssProperties);
+
+    const attributeNames = Object.keys(cssPropertiesCamelCase);
+    const expectedValues = attributeNames.map(name => cssPropertiesCamelCase[name]);
+    const missingAttributes = [];
+
+    for (const el of els) {
+      const attributeValues = await Promise.all(attributeNames.map(attr => el.getCssValue(attr)));
+
+      const missing = attributeValues.filter((actual, i) => {
+        const prop = attributeNames[i];
+        let propValue = actual;
+        if (isColorProperty(prop) && propValue) {
+          propValue = convertColorToRGBA(propValue);
+        }
+        return propValue !== expectedValues[i];
+      });
+      if (missing.length) {
+        missingAttributes.push(...missing);
+      }
+    }
+    return equals(`all elements (${locator}) to have CSS property ${JSON.stringify(cssProperties)}`).assert(missingAttributes.length, 0);
+  }
+
+  /**
+   * Checks that all elements with given locator have given attributes.
+
+```js
+I.seeAttributesOnElements('//form', {'method': "post"});
+```
+
+   */
+  async seeAttributesOnElements(locator, attributes) {
+    const els = await this._locate(locator);
+    assertElementExists(els, locator);
+
+    const attributeNames = Object.keys(attributes);
+    const expectedValues = attributeNames.map(name => attributes[name]);
+    const missingAttributes = [];
+
+    for (const el of els) {
+      const attributeValues = await Promise.all(attributeNames.map(attr => el.getAttribute(attr)));
+      const missing = attributeValues.filter((actual, i) => {
+        if (expectedValues[i] instanceof RegExp) {
+          return expectedValues[i].test(actual);
+        }
+        return actual !== expectedValues[i];
+      });
+      if (missing.length) {
+        missingAttributes.push(...missing);
+      }
+    }
+
+    return equals(`all elements (${locator}) to have attributes ${JSON.stringify(attributes)}`).assert(missingAttributes.length, 0);
   }
 
   /**
@@ -1092,6 +1336,58 @@ assert(cookie.value, '123456');
   }
 
   /**
+   * Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+   * Don't confuse popups with modal windows, as created by [various
+   * libraries](http://jster.net/category/windows-modals-popups). Appium: support only web testing
+   */
+  async acceptPopup() {
+    return this.browser.switchTo().alert().accept();
+  }
+
+  /**
+   * Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+   */
+  async cancelPopup() {
+    return this.browser.switchTo().alert().dismiss();
+  }
+
+  /**
+   * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
+   * given string.
+   */
+  async seeInPopup(text) {
+    const popupAlert = await this.browser.switchTo().alert();
+    const res = await popupAlert.getText();
+    if (res === null) {
+      throw new Error('Popup is not opened');
+    }
+    stringIncludes('text in popup').assert(text, res);
+  }
+
+  /**
+   * Grab the text within the popup. If no popup is visible then it will return null
+   *
+   * ```js
+   * await I.grabPopupText();
+   * ```
+   */
+  async grabPopupText() {
+    try {
+      const dialog = await this.browser.switchTo().alert();
+
+      if (dialog) {
+        return dialog.getText();
+      }
+    } catch (e) {
+      if (e.message.indexOf('no alert open') > -1) {
+        // Don't throw an error
+        return null;
+      }
+      throw e;
+    }
+  }
+
+  /**
    * Resize the current window to provided width and height.
 First parameter can be set to `maximize`
 
@@ -1104,6 +1400,24 @@ First parameter can be set to `maximize`
       return this.browser.manage().window().setSize(parseInt(res[0], 10), parseInt(res[1], 10));
     }
     return this.browser.manage().window().setSize(parseInt(width, 10), parseInt(height, 10));
+  }
+
+  /**
+   * Drag an item to a destination element.
+
+```js
+I.dragAndDrop('#dragHandle', '#container');
+```
+   */
+  async dragAndDrop(srcElement, destElement) {
+    const srcEl = await this._locate(srcElement, true);
+    const destEl = await this._locate(destElement, true);
+    assertElementExists(srcEl);
+    assertElementExists(destEl);
+    return this.browser
+      .actions()
+      .dragAndDrop(srcEl[0], destEl[0])
+      .perform();
   }
 
   /**
@@ -1224,6 +1538,21 @@ I.grabNumberOfOpenTabs();
   }
 
   /**
+   * Switches frame or in case of null locator reverts to parent.
+   */
+  async switchTo(locator) {
+    if (Number.isInteger(locator)) {
+      return this.browser.switchTo().frame(locator);
+    } else if (!locator) {
+      return this.browser.switchTo().frame(null);
+    }
+
+    const els = await this._locate(withStrictLocator.call(this, locator), true);
+    assertElementExists(els, locator);
+    return this.browser.switchTo().frame(els[0]);
+  }
+
+  /**
    * Pauses execution for a number of seconds.
 
 ```js
@@ -1315,6 +1644,22 @@ I.waitForVisible('#popup');
   }
 
   /**
+   * Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```
+I.waitToHide('#popup');
+```
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+
+   */
+  async waitToHide(locator, sec = null) {
+    return this.waitForInvisible(locator, sec);
+  }
+
+  /**
    * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
@@ -1337,6 +1682,151 @@ I.waitForInvisible('#popup');
     * Use waitForDetached to wait for element to be removed from page
     * Use waitForInvisible to wait for element to be hidden on page`);
     return this.waitForInvisible(locator, sec);
+  }
+
+  /**
+   * Waits for a specified number of elements on the page
+
+```js
+I.waitNumberOfVisibleElements('a', 3);
+```
+
+@param locator
+@param seconds
+   */
+  async waitNumberOfVisibleElements(locator, num, sec = null) {
+    function visibilityCountOf(loc, expectedCount) {
+      return function () {
+        return global.element.all(loc)
+          .filter(el => el.isDisplayed())
+          .count()
+          .then(count => count === expectedCount);
+      };
+    }
+
+    const aSec = sec || this.options.waitForTimeout;
+    const guessLoc = guessLocator(locator) || global.by.css(locator);
+
+    return this.browser.wait(visibilityCountOf(guessLoc, num), aSec * 1000)
+      .catch((err) => {
+        throw Error(`The number of elements (${locator}) is not ${num} after ${aSec} sec`);
+      });
+  }
+
+  /**
+   * Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+@param locator element located by CSS|XPath|strict locator
+@param sec time seconds to wait, 1 by default
+   */
+  async waitForEnabled(locator, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const el = global.element(guessLocator(locator) || global.by.css(locator));
+
+    return this.browser.wait(EC.elementToBeClickable(el), aSec * 1000)
+      .catch((err) => {
+        throw Error(`element (${locator}) still not enabled after ${aSec} sec`);
+      });
+  }
+
+  /**
+   *   Waits for the specified value to be in value attribute
+
+  ```js
+  I.waitForValue('//input', "GoodValue");
+  ```
+
+  @param field input field
+  @param value expected value
+  @param sec seconds to wait, 1 sec by default
+
+   */
+  async waitForValue(field, value, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+
+    const valueToBeInElementValue = (loc, expectedCount) => {
+      return async () => {
+        const els = await findFields(this.browser, loc);
+
+        if (!els) {
+          return false;
+        }
+        const values = await Promise.all(els.map(el => el.getAttribute('value')));
+        return values.filter(part => part.indexOf(value) >= 0).length > 0;
+      };
+    };
+
+    return this.browser.wait(valueToBeInElementValue(field, value), aSec * 1000)
+      .catch((err) => {
+        throw Error(`element (${field}) is not in DOM or there is no element(${field}) with value "${value}" after ${aSec} sec`);
+      });
+  }
+
+  /**
+   * Waits for a function to return true (waits for 1sec by default).
+
+```js
+I.waitUntil(() => window.requests == 0);
+I.waitUntil(() => window.requests == 0, 5);
+```
+
+@param function function which is executed in browser context.
+@param sec time seconds to wait, 1 by default
+
+   */
+  async waitUntil(fn, sec = null, timeoutMsg = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    return this.browser.wait(fn, aSec, timeoutMsg);
+  }
+
+  /**
+   * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+
+```js
+I.waitInUrl('/info', 2);
+```
+   */
+  async waitInUrl(urlPart, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
+
+    return this.browser.wait(EC.urlContains(urlPart), waitTimeout)
+      .catch(async (e) => {
+        const currUrl = await this.browser.getCurrentUrl();
+        if (/wait timed out after/i.test(e.message)) {
+          throw new Error(`expected url to include ${urlPart}, but found ${currUrl}`);
+        } else {
+          throw e;
+        }
+      });
+  }
+
+  /**
+   * Waits for the entire URL to match the expected
+
+```js
+I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+```
+   */
+  async waitUrlEquals(urlPart, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
+    const baseUrl = this.options.url;
+    if (urlPart.indexOf('http') < 0) {
+      urlPart = baseUrl + urlPart;
+    }
+
+    return this.browser.wait(EC.urlIs(urlPart), waitTimeout)
+      .catch(async (e) => {
+        const currUrl = await this.browser.getCurrentUrl();
+        if (/wait timed out after/i.test(e.message)) {
+          throw new Error(`expected url to be ${urlPart}, but found ${currUrl}`);
+        } else {
+          throw e;
+        }
+      });
   }
 
   /**
@@ -1393,6 +1883,91 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   }
 
   /**
+   * Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
+   */
+  async scrollTo(locator, offsetX = 0, offsetY = 0) {
+    if (typeof locator === 'number' && typeof offsetX === 'number') {
+      offsetY = offsetX;
+      offsetX = locator;
+      locator = null;
+    }
+
+    if (locator) {
+      const res = await this._locate(locator, true);
+      if (!res || res.length === 0) {
+        return truth(`elements of ${locator}`, 'to be seen').assert(false);
+      }
+      const elem = res[0];
+      const location = await elem.getLocation();
+      /* eslint-disable prefer-arrow-callback */
+      return this.executeScript(function (x, y) { return window.scrollTo(x, y); }, location.x + offsetX, location.y + offsetY);
+      /* eslint-enable */
+    }
+
+    /* eslint-disable prefer-arrow-callback, comma-dangle */
+    return this.executeScript(function (x, y) { return window.scrollTo(x, y); }, offsetX, offsetY);
+    /* eslint-enable */
+  }
+
+
+  /**
+   * Scroll page to the top
+
+```js
+I.scrollPageToTop();
+```
+   */
+  async scrollPageToTop() {
+    return this.executeScript('window.scrollTo(0, 0);');
+  }
+
+  /**
+   * Scroll page to the bottom
+
+```js
+I.scrollPageToBottom();
+```
+   */
+  async scrollPageToBottom() {
+    /* eslint-disable prefer-arrow-callback, comma-dangle */
+    return this.executeScript(function () {
+      const body = document.body;
+      const html = document.documentElement;
+      window.scrollTo(0, Math.max(
+        body.scrollHeight, body.offsetHeight,
+        html.clientHeight, html.scrollHeight, html.offsetHeight
+      ));
+    });
+    /* eslint-enable */
+  }
+
+  /**
+   * Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+   */
+  async grabPageScrollPosition() {
+    /* eslint-disable comma-dangle */
+    function getScrollPosition() {
+      return {
+        x: window.pageXOffset,
+        y: window.pageYOffset
+      };
+    }
+    /* eslint-enable comma-dangle */
+    return this.executeScript(getScrollPosition);
+  }
+
+  /**
    * Injects Angular module.
    *
    * ```js
@@ -1420,6 +1995,14 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
     return this.browser.removeMockModule(modName);
   }
 
+  /**
+   * Sets a cookie
+
+```js
+I.setCookie({name: 'auth', value: true});
+```
+@param cookie
+   */
   setCookie(cookie) {
     return this.browser.manage().addCookie(cookie);
   }
@@ -1442,6 +2025,20 @@ async function findCheckable(client, locator) {
     return els;
   }
   return client.findElements(global.by.css(locator));
+}
+
+function withStrictLocator(locator) {
+  locator = new Locator(locator);
+  if (locator.isAccessibilityId()) return withAccessiblitiyLocator.call(this, locator.value);
+  return locator.simplify();
+}
+
+function withAccessiblitiyLocator(locator) {
+  if (this.isWeb === false) {
+    return `accessibility id:${locator.slice(1)}`;
+  }
+  return `[aria-label="${locator.slice(1)}"]`;
+  // hook before webdriverio supports native ~ locators in web
 }
 
 async function findFields(client, locator) {
@@ -1521,7 +2118,7 @@ async function proceedIsChecked(assertType, option) {
 async function findClickable(matcher, locator) {
   locator = new Locator(locator);
   if (!locator.isFuzzy()) {
-    const els = await this._locate(locator.value, true);
+    const els = await this._locate(locator, true);
     assertElementExists(els, locator.value);
     return els[0];
   }
@@ -1550,4 +2147,10 @@ function assertElementExists(res, locator, prefix, suffix) {
   if (!res.length) {
     throw new ElementNotFound(locator, prefix, suffix);
   }
+}
+
+function isFrameLocator(locator) {
+  locator = new Locator(locator);
+  if (locator.isFrame()) return locator.value;
+  return false;
 }

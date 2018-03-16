@@ -340,6 +340,10 @@
         
             <li><a href="#grabhar">grabHAR</a></li>
         
+            <li><a href="#grabnumberofvisibleelements">grabNumberOfVisibleElements</a></li>
+        
+            <li><a href="#grabpagescrollposition">grabPageScrollPosition</a></li>
+        
             <li><a href="#grabtextfrom">grabTextFrom</a></li>
         
             <li><a href="#grabtitle">grabTitle</a></li>
@@ -359,6 +363,10 @@
             <li><a href="#resizewindow">resizeWindow</a></li>
         
             <li><a href="#savescreenshot">saveScreenshot</a></li>
+        
+            <li><a href="#scrollpagetobottom">scrollPageToBottom</a></li>
+        
+            <li><a href="#scrollpagetotop">scrollPageToTop</a></li>
         
             <li><a href="#scrollto">scrollTo</a></li>
         
@@ -384,6 +392,8 @@
         
             <li><a href="#seenumberofelements">seeNumberOfElements</a></li>
         
+            <li><a href="#seenumberofvisibleelements">seeNumberOfVisibleElements</a></li>
+        
             <li><a href="#selectoption">selectOption</a></li>
         
             <li><a href="#setcookie">setCookie</a></li>
@@ -402,6 +412,8 @@
         
             <li><a href="#waitforvisible">waitForVisible</a></li>
         
+            <li><a href="#waittohide">waitToHide</a></li>
+        
     
     </ul>
 </div></div>
@@ -412,7 +424,7 @@
 fastest headless testing using Electron engine. Unlike Selenium-based drivers this uses
 Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
 less trusted.</p>
-<p>Requires <code>nightmare</code> and <code>nightmare-upload</code> packages to be installed.</p>
+<p>Requires <code>nightmare</code> package to be installed.</p>
 <h2 id="configuration">Configuration</h2>
 <p>This helper should be configured in codecept.json</p>
 <ul>
@@ -750,6 +762,21 @@ console.log(`Current URL is [${url}]`);
 fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 </code></pre>
 
+<h2 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h2>
+<p>Grab number of visible elements by locator</p>
+<pre><code class="js">I.grabNumberOfVisibleElements('p');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+</ul>
+<h2 id="grabpagescrollposition">grabPageScrollPosition</h2>
+<p>Retrieves a page scroll position and returns it to test.
+Resumes test execution, so <strong>should be used inside an async function with <code>await</code></strong> operator.</p>
+<pre><code class="js">let { x, y } = await I.grabPageScrollPosition();
+</code></pre>
+
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
@@ -835,6 +862,16 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 <li><code>fileName</code>  </li>
 <li><code>fullPage</code>  (optional)</li>
 </ul>
+<h2 id="scrollpagetobottom">scrollPageToBottom</h2>
+<p>Scroll page to the bottom</p>
+<pre><code class="js">I.scrollPageToBottom();
+</code></pre>
+
+<h2 id="scrollpagetotop">scrollPageToTop</h2>
+<p>Scroll page to the top</p>
+<pre><code class="js">I.scrollPageToTop();
+</code></pre>
+
 <h2 id="scrollto">scrollTo</h2>
 <p>Scrolls to element matched by locator.
 Extra shift can be set with offsetX and offsetY options</p>
@@ -962,6 +999,17 @@ Element is located by label or name or CSS or XPath.</p>
 <li><code>selector</code>  </li>
 <li><code>num</code>  </li>
 </ul>
+<h2 id="seenumberofvisibleelements">seeNumberOfVisibleElements</h2>
+<p>asserts that an element is visible a given number of times
+Element is located by CSS or XPath.</p>
+<pre><code class="js">I.seeNumberOfVisibleElements('.buttons', 3);
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>num</code>  </li>
+</ul>
 <h2 id="selectoption">selectOption</h2>
 <p>Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
@@ -1038,9 +1086,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
-<p>Waits for an element to become visible on a page (by default waits for 1sec).
+<p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
-<pre><code>I.waitForVisible('#popup');
+<pre><code>I.waitForInvisible('#popup');
 </code></pre>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -1065,6 +1113,16 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
+</code></pre>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>sec</code>  time seconds to wait, 1 by default</li>
+</ul>
+<h2 id="waittohide">waitToHide</h2>
+<p>Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.</p>
+<pre><code>I.waitToHide('#popup');
 </code></pre>
 <p><strong>Parameters</strong></p>
 <ul>

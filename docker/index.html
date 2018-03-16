@@ -294,17 +294,25 @@
             <div class="col-md-7" role="main">
 
 <h1 id="codeceptjs-docker">Codeceptjs Docker</h1>
-<p>CodeceptJS packed into container with the Nightmare, Protractor, and WebDriverIO drivers.</p>
+<p>CodeceptJS packed into container with the Nightmare, Protractor, Puppeteer, and WebDriverIO drivers.</p>
 <h2 id="how-to-use">How to Use</h2>
 <p>This image comes with the necessary dependencies and packages to execute CodeceptJS tests.
 Mount in your CodeceptJS config directory into the <code>/tests</code> directory in the docker container.</p>
 <p>Sample mount: <code>-v path/to/codecept.json:/tests</code></p>
+<p>CodeceptJS runner is available inside container as <code>codeceptjs</code>.</p>
 <h3 id="locally">Locally</h3>
-<p>You can execute CodeceptJS with Nightmare locally with no extra configuration.</p>
+<p>You can execute CodeceptJS with Puppeteer or Nightmare locally with no extra configuration.</p>
 <pre><code class="sh">docker run --net=host -v $PWD:/tests codeception/codeceptjs
 </code></pre>
 
-<p>Nightmare helper must be enabled in codecept.json config.</p>
+<p>To customize execution call <code>codeceptjs</code> command:</p>
+<pre><code class="sh"># run tests with steps
+docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --steps
+
+# run tests with @user in a name
+docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --grep &quot;@user&quot;
+</code></pre>
+
 <h3 id="docker-compose">Docker Compose</h3>
 <pre><code class="yaml">version: '2'
 services:
@@ -355,16 +363,24 @@ $ docker run -it --rm -v /&lt;path_to_codeceptjs_test_dir&gt;/:/tests/ --link se
 <pre><code class="sh">docker build -t codeception/codeceptjs .
 </code></pre>
 
-<h3 id="debugging">Debugging</h3>
-<p>To pass arguments to <code>codecept run</code> command inside docker image you can set
-<code>CODECEPT_ARGS</code> environment variable. For example to run your tests with debug
-and steps output:</p>
+<ul>
+<li>this directory will be added as <code>/codecept</code> insde container</li>
+<li>tests directory is expected to be mounted as <code>/tests</code></li>
+<li><code>codeceptjs</code> is a synlink to <code>/codecept/bin/codecept.js</code></li>
+</ul>
+<h3 id="passing-options">Passing Options</h3>
+<p>Options can be passed by calling <code>codeceptjs</code>:</p>
+<pre><code>docker run -v $PWD:/tests codeception/codeceptjs codeceptjs run --debug
+</code></pre>
+
+<p>Alternatively arguments to <code>codecept run</code> command can be passed via <code>CODECEPT_ARGS</code> environment variable. For example to run your tests with debug
+output:</p>
 <pre><code class="yaml">version: '2'
 services:
   codeceptjs:
     image: codeception/codeceptjs
     environment:
-      - CODECEPT_ARGS=--debug --steps
+      - CODECEPT_ARGS=--debug
     volumes:
       - .:/tests
 </code></pre></div>

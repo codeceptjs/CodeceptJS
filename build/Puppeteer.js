@@ -15,6 +15,10 @@ const {
   chunkArray,
   convertCssPropertiesToCamelCase,
 } = require('../utils');
+const {
+  isColorProperty,
+  convertColorToRGBA,
+} = require('../colorUtils');
 const path = require('path');
 const ElementNotFound = require('./errors/ElementNotFound');
 const Popup = require('./extras/Popup');
@@ -456,10 +460,10 @@ I.moveCursorTo('#submit', 5,5);
 
   /**
    * Scroll page to the top
-   *
-   * ```js
-   * I.scrollPageToTop();
-   * ```
+
+```js
+I.scrollPageToTop();
+```
    */
   scrollPageToTop() {
     return this.page.evaluate(() => {
@@ -469,10 +473,10 @@ I.moveCursorTo('#submit', 5,5);
 
   /**
    * Scroll page to the bottom
-   *
-   * ```js
-   * I.scrollPageToBottom();
-   * ```
+
+```js
+I.scrollPageToBottom();
+```
    */
   scrollPageToBottom() {
     return this.page.evaluate(() => {
@@ -487,17 +491,28 @@ I.moveCursorTo('#submit', 5,5);
 
   /**
    * Scrolls to element matched by locator.
-   * Extra shift can be set with offsetX and offsetY options
-   *
-   * ```js
-   * I.scrollTo('footer');
-   * I.scrollTo('#submit', 5,5);
-   * ```
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
    */
   async scrollTo(locator, offsetX = 0, offsetY = 0) {
-    const els = await this._locate(locator);
-    assertElementExists(els, locator, 'Element');
-    const { x, y } = await els[0]._visibleCenter();
+    if (typeof locator === 'number' && typeof offsetX === 'number') {
+      offsetY = offsetX;
+      offsetX = locator;
+      locator = null;
+    }
+    let x = 0;
+    let y = 0;
+    if (locator) {
+      const els = await this._locate(locator);
+      assertElementExists(els, locator, 'Element');
+      const elementCoordinates = await els[0]._visibleCenter();
+      x = elementCoordinates.x;
+      y = elementCoordinates.y;
+    }
 
     await this.page.evaluate((x, y) => {
       window.scrollTo(x, y);
@@ -513,6 +528,26 @@ I.moveCursorTo('#submit', 5,5);
   async seeInTitle(text) {
     const title = await this.page.title();
     stringIncludes('web page title').assert(text, title);
+  }
+
+  /**
+   * Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+   */
+  async grabPageScrollPosition() {
+    /* eslint-disable comma-dangle */
+    function getScrollPosition() {
+      return {
+        x: window.pageXOffset,
+        y: window.pageYOffset
+      };
+    }
+    /* eslint-enable comma-dangle */
+    return this.executeScript(getScrollPosition);
   }
 
   /**
@@ -1349,7 +1384,11 @@ let date = yield I.executeScript(function(el) {
    * If a function returns a Promise It will wait for it resolution.
    */
   async executeScript(fn) {
-    return this.page.evaluate.apply(this.page, arguments);
+    let context = this.page;
+    if (this.context && typeof this.context.evaluate === 'function') {
+      context = this.context;
+    }
+    return context.evaluate.apply(context, arguments);
   }
 
   /**
@@ -1447,10 +1486,12 @@ let email = yield I.grabValueFrom('input[name=email]');
 
   /**
    * Grab CSS property for given locator
-   *
-   * ```js
-   * I.grabCssPropertyFrom('h3', 'font-weight');
-   * ```
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const value = await I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
    */
   async grabCssPropertyFrom(locator, cssProperty) {
     const els = await this._locate(locator);
@@ -1465,10 +1506,13 @@ let email = yield I.grabValueFrom('input[name=email]');
 
   /**
    * Checks that all elements with given locator have given CSS properties.
-   *
-   * ```js
-   * I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' });
-   * ```
+
+```js
+I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+```
+
+@param locator
+@param properties
    */
   async seeCssPropertiesOnElements(locator, cssProperties) {
     const res = await this._locate(locator);
@@ -1485,6 +1529,9 @@ let email = yield I.grabValueFrom('input[name=email]');
             return JSON.parse(JSON.stringify(style));
           }, el)
           .then((props) => {
+            if (isColorProperty(prop)) {
+              return convertColorToRGBA(props[prop]);
+            }
             return props[prop];
           }));
       });
@@ -1504,10 +1551,11 @@ let email = yield I.grabValueFrom('input[name=email]');
 
   /**
    * Checks that all elements with given locator have given attributes.
-   *
-   * ```js
-   * I.seeAttributesOnElements('//form', {'method': "post"});
-   * ```
+
+```js
+I.seeAttributesOnElements('//form', {'method': "post"});
+```
+
    */
   async seeAttributesOnElements(locator, attributes) {
     const res = await this._locate(locator);
@@ -1846,10 +1894,10 @@ I.waitToHide('#popup');
 
   /**
    * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
-   *
-   * ```js
-   * I.waitInUrl('/info', 2);
-   * ```
+
+```js
+I.waitInUrl('/info', 2);
+```
    */
   async waitInUrl(urlPart, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -1870,11 +1918,11 @@ I.waitToHide('#popup');
 
   /**
    * Waits for the entire URL to match the expected
-   *
-   * ```js
-   * I.waitUrlEquals('/info', 2);
-   * I.waitUrlEquals('http://127.0.0.1:8000/info');
-   * ```
+
+```js
+I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+```
    */
   async waitUrlEquals(urlPart, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -1949,18 +1997,24 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
    * Switches frame or in case of null locator reverts to parent.
    */
   async switchTo(locator) {
-    if (!locator) {
-      this.context = await this.page.mainFrame().$('body');
-      return;
-    } else if (Number.isInteger(locator)) {
+    if (Number.isInteger(locator)) {
       // Select by frame index of current context
-      const childFrames = this.context ? this.context.childFrames() : this.page.frames();
+
+      let childFrames = null;
+      if (this.context && typeof this.context.childFrames === 'function') {
+        childFrames = this.context.childFrames();
+      } else {
+        childFrames = this.page.mainFrame().childFrames();
+      }
 
       if (locator >= 0 && locator < childFrames.length) {
         this.context = childFrames[locator];
       } else {
         throw new Error('Element #invalidIframeSelector was not found by text|CSS|XPath');
       }
+      return;
+    } else if (!locator) {
+      this.context = await this.page.mainFrame().$('body');
       return;
     }
 
@@ -2074,15 +2128,7 @@ async function findElements(matcher, locator) {
   locator = new Locator(locator, 'css');
   if (!locator.isXPath()) return matcher.$$(locator.simplify());
 
-  let context = null;
-  if (matcher && matcher.constructor.name === 'ElementHandle') {
-    context = matcher;
-  }
-  if (matcher && matcher.constructor.name === 'Frame') {
-    context = matcher;
-  }
-
-  return matcher.$x(locator.value, matcher);
+  return matcher.$x(locator.value);
 }
 
 async function proceedClick(locator, context = null, options = {}) {
@@ -2104,7 +2150,7 @@ async function proceedClick(locator, context = null, options = {}) {
 
 async function findClickable(matcher, locator) {
   locator = new Locator(locator);
-  if (!locator.isFuzzy()) return findElements.call(this, matcher, locator.simplify());
+  if (!locator.isFuzzy()) return findElements.call(this, matcher, locator);
 
   let els;
   const literal = xpathLocator.literal(locator.value);
