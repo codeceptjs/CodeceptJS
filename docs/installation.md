@@ -29,7 +29,7 @@ npm install protractor --save-dev
 To use it with Nightmare install nightmare and nightmare-upload packages:
 
 ```sh
-npm install nightmare nightmare-upload --save-dev
+npm install nightmare --save-dev
 ```
 
 To use it with Puppeteer install puppeteer package:
