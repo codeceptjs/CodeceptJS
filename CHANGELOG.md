@@ -36,10 +36,11 @@
     * `grabPageScrollPosition` (new)
     * `seeNumberOfVisibleElements`
     * `waitToHide`
-* [Puppeteer]
+* [Puppeteer] added:
     * `grabPageScrollPosition` (new)
-* [WebDriverIO]
+* [WebDriverIO] added"
     * `grabPageScrollPosition` (new)
+* [Puppeteer] Fixed running wait* functions without setting `sec` parameter.
 * [Puppeteer][Protractor] Fixed bug with I.click when using an object selector with the xpath property. By @reubenmiller
 * [WebDriverIO][Protractor][Nightmare][Puppeteer] Fixed I.switchTo(0) and I.scrollTo(100, 100) api inconsistencies between helpers.
 * [Protractor] Fixing bug when `seeAttributesOnElements` and `seeCssPropertiesOnElement` were incorrectly passing when the attributes/properties did not match by @reubenmiller
