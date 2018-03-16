@@ -5,16 +5,19 @@ module.exports.config = {
   timeout: 10000,
   output: './output',
   helpers: {
-    Puppeteer: {
+    Protractor: {
       url: TestHelper.siteUrl(),
-      show: false,
-      chrome: {
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
+      browser: 'chrome',
+      angular: false,
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort(),
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
       },
     },
+
   },
   include: {},
   bootstrap: false,

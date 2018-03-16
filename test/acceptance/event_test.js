@@ -1,15 +1,20 @@
-const event = require('../../lib').event;
+let event;
+try {
+  require.resolve('../../lib');
+  event = require('../../lib').event;
+} catch (err) {
+  event = require('/codecept/lib').event; // eslint-disable-line
+}
 const assert = require('assert');
 const expect = require('chai').expect;
 const eventHandlers = require('../data/sandbox/eventHandlers');
 
 const expectedEvents = [];
 
-Feature('Events', { retries: 0 });
+Feature('Events');
 
 BeforeSuite((I) => {
   expectedEvents.push(...[
-    event.all.before,
     event.suite.before,
   ]);
   expect(eventHandlers.events).to.deep.equal(expectedEvents);
@@ -45,7 +50,7 @@ AfterSuite(() => {
   });
 });
 
-Scenario('Event Hooks @WebDriverIO @Protractor @Nightmare @Puppeteer', (I) => {
+Scenario('Event Hooks @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   expectedEvents.push(...[
     event.test.started,
   ]);

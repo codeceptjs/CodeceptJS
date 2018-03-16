@@ -49,6 +49,31 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#waitInUrl, #waitUrlEquals', () => {
+    it('should wait part of the URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.waitInUrl('/info');
+        await I.waitInUrl('/info2', 0.1);
+      } catch (e) {
+        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
+      }
+    });
+
+    it('should wait for the entire URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.waitUrlEquals('/info');
+        await I.waitUrlEquals(`${siteUrl}/info`);
+        await I.waitUrlEquals('/info2', 0.1);
+      } catch (e) {
+        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+      }
+    });
+  });
+
   describe('see text : #see', () => {
     it('should check text on site', function* () {
       yield I.amOnPage('/');
@@ -80,7 +105,9 @@ module.exports.tests = function () {
     it('should check visible elements on page', function* () {
       yield I.amOnPage('/form/field');
       yield I.seeElement('input[name=name]');
-      yield I.seeElement({ name: 'name' });
+      yield I.seeElement({
+        name: 'name',
+      });
       yield I.seeElement('//input[@id="name"]');
       yield I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');
@@ -100,6 +127,22 @@ module.exports.tests = function () {
       yield I.dontSeeElement('input[name=email]');
       return I.dontSeeElement('#something-beyond');
     });
+  });
+
+  describe('#seeNumberOfVisibleElements', () => {
+    it('should check number of visible elements for given locator', () => I.amOnPage('/info')
+      .then(() => I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
+  });
+
+  describe('#grabNumberOfVisibleElements', () => {
+    it('should grab number of visible elements for given locator', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
+      .then(num => assert.equal(num, 3)));
+    it('should support locators like {xpath:"//div"}', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements({
+        xpath: '//div[@id = "grab-multiple"]//a',
+      }))
+      .then(num => assert.equal(num, 3)));
   });
 
   describe('#seeInSource, #dontSeeInSource', () => {
@@ -157,6 +200,14 @@ module.exports.tests = function () {
       // yield I.wait(3);
       return I.seeCurrentUrlEquals('/');
     });
+
+    it('should click link with xpath locator', function* () {
+      yield I.amOnPage('/form/example7');
+      yield I.click({
+        xpath: '(//*[@title = "Chocolate Bar"])[1]',
+      });
+      return I.seeCurrentUrlEquals('/');
+    });
   });
 
   describe('#doubleClick', () => {
@@ -179,7 +230,9 @@ module.exports.tests = function () {
 
     it('should check option by strict locator', function* () {
       yield I.amOnPage('/form/checkbox');
-      yield I.checkOption({ id: 'checkin' });
+      yield I.checkOption({
+        id: 'checkin',
+      });
       yield I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
@@ -635,6 +688,32 @@ module.exports.tests = function () {
       .then(() => I.dontSeeElement('//div[@id="step_2"]')));
   });
 
+  describe('#waitToHide', () => {
+    it('should wait for element to be invisible', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step One Button'))
+      .then(() => I.seeElement('#step_1'))
+      .then(() => I.waitToHide('#step_1', 2))
+      .then(() => I.dontSeeElement('#step_1')));
+
+    it('should wait for element to be invisible by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.seeElement('//div[@id="step_1"]'))
+      .then(() => I.waitToHide('//div[@id="step_1"]'))
+      .then(() => I.dontSeeElement('//div[@id="step_1"]'))
+      .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+
+    it('should wait for element to be removed', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('#step_2'))
+      .then(() => I.waitToHide('#step_2', 2))
+      .then(() => I.dontSeeElement('#step_2')));
+
+    it('should wait for element to be removed by XPath', () => I.amOnPage('/form/wait_invisible')
+      .then(() => I.see('Step Two Button'))
+      .then(() => I.seeElement('//div[@id="step_2"]'))
+      .then(() => I.waitToHide('//div[@id="step_2"]', 2))
+      .then(() => I.dontSeeElement('//div[@id="step_2"]')));
+  });
+
   describe('#waitForDetached', () => {
     it('should throw an error if the element still exists in DOM', () => I.amOnPage('/form/wait_detached')
       .then(() => I.see('Step One Button'))
@@ -754,5 +833,185 @@ module.exports.tests = function () {
       .catch((err) => {
         if (!err) assert.fail('seen "Iframe test"');
       }));
+  });
+
+  describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
+    it('should scroll inside an iframe', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/iframe');
+      await I.resizeWindow(500, 700);
+      await I.switchTo(0);
+
+      const { x, y } = await I.grabPageScrollPosition();
+      await I.scrollTo('.sign');
+      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+      assert.equal(afterScrollX, x);
+    });
+
+    it('should scroll to an element', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      const { x, y } = await I.grabPageScrollPosition();
+      await I.scrollTo('.section3 input[name="test"]');
+      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+    });
+
+    it('should scroll to coordinates', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      const { x, y } = await I.grabPageScrollPosition();
+      await I.scrollTo(50, 70);
+      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.equal(afterScrollX, 50);
+      assert.equal(afterScrollY, 70);
+    });
+
+    it('should scroll to bottom of page', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      const { y } = await I.grabPageScrollPosition();
+      await I.scrollPageToBottom();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+      assert.notEqual(afterScrollY, 0);
+    });
+
+    it('should scroll to top of page', async () => {
+      await I.amOnPage('/form/scroll');
+      await I.resizeWindow(500, 700);
+      await I.scrollPageToBottom();
+      const { y } = await I.grabPageScrollPosition();
+
+      await I.scrollPageToTop();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
+      assert.notEqual(afterScrollY, y);
+      assert.equal(afterScrollY, 0);
+    });
+  });
+
+  describe('#grabCssPropertyFrom', () => {
+    it('should grab css property for given element', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/form/doubleclick');
+      const css = await I.grabCssPropertyFrom('#block', 'height');
+      assert.equal(css, '100px');
+    });
+  });
+
+  describe('#seeAttributesOnElements', () => {
+    it('should check attributes values for given element', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.seeAttributesOnElements('//form', {
+          method: 'post',
+        });
+        await I.seeAttributesOnElements('//form', {
+          method: 'post',
+          action: `${siteUrl}/`,
+        });
+        await I.seeAttributesOnElements('//form', {
+          method: 'get',
+        });
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('all elements (//form) to have attributes {"method":"get"}');
+      }
+    });
+
+    it('should check attributes values for several elements', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/');
+        await I.seeAttributesOnElements('a', {
+          'qa-id': 'test',
+          'qa-link': 'test',
+        });
+        await I.seeAttributesOnElements('//div', {
+          'qa-id': 'test',
+        });
+        await I.seeAttributesOnElements('a', {
+          'qa-id': 'test',
+          href: '/info',
+        });
+        throw new Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
+      }
+    });
+  });
+
+  describe('#seeCssPropertiesOnElements', () => {
+    it('should check css property for given element', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/info');
+        await I.seeCssPropertiesOnElements('h3', {
+          'font-weight': 'bold',
+        });
+        await I.seeCssPropertiesOnElements('h3', {
+          'font-weight': 'bold',
+          display: 'block',
+        });
+        await I.seeCssPropertiesOnElements('h3', {
+          'font-weight': 'non-bold',
+        });
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}');
+      }
+    });
+
+
+    it('should check css property for several elements', async () => {
+      if (isHelper('Nightmare')) return;
+      try {
+        await I.amOnPage('/');
+        await I.seeCssPropertiesOnElements('a', {
+          color: 'rgb(0, 0, 238)',
+          cursor: 'pointer',
+        });
+        await I.seeCssPropertiesOnElements('a', {
+          color: '#0000EE',
+          cursor: 'pointer',
+        });
+        await I.seeCssPropertiesOnElements('//div', {
+          display: 'block',
+        });
+        await I.seeCssPropertiesOnElements('a', {
+          'margin-top': '0em',
+          cursor: 'pointer',
+        });
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
+      }
+    });
+
+    it('should normalize css color properties for given element', async () => {
+      if (isHelper('Nightmare')) return;
+
+      await I.amOnPage('/form/css_colors');
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': 'purple',
+        color: 'yellow',
+      });
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': '#800080',
+        color: '#ffff00',
+      });
+
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': 'rgb(128,0,128)',
+        color: 'rgb(255,255,0)',
+      });
+
+      await I.seeCssPropertiesOnElements('#namedColor', {
+        'background-color': 'rgba(128,0,128,1)',
+        color: 'rgba(255,255,0,1)',
+      });
+    });
   });
 };

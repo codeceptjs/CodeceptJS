@@ -22,7 +22,9 @@ const data = {
 
 const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
 
-describe('ApiDataFactory', () => {
+describe('ApiDataFactory', function () {
+  this.timeout(20000);
+
   before(() => {
     I = new ApiDataFactory({
       endpoint: api_url,
@@ -42,14 +44,13 @@ describe('ApiDataFactory', () => {
     } catch (err) {
       // continue regardless of error
     }
-    setTimeout(done, 500);
+    setTimeout(done, 5000);
   });
 
   afterEach(() => I._after());
 
   describe('create and cleanup records', function () {
-    this.retries(1);
-    this.timeout(20000);
+    this.retries(2);
 
     it('should create a new post', async () => {
       await I.have('post');
