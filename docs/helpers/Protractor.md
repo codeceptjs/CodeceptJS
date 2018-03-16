@@ -102,19 +102,61 @@ Get elements by different locator types, including strict locator
 Should be used in custom helpers:
 
 ```js
-this.helpers['SeleniumWebdriver']._locate({name: 'password'}).then //...
+this.helpers['Protractor']._locate({name: 'password'}).then //...
 ```
 
 To use SmartWait and wait for element to appear on a page, add `true` as second arg:
 
 ```js
-this.helpers['SeleniumWebdriver']._locate({name: 'password'}, true).then //...
+this.helpers['Protractor']._locate({name: 'password'}, true).then //...
 ```
 
 **Parameters**
 
 -   `locator`  
 -   `smartWait`   (optional, default `false`)
+
+## _locateCheckable
+
+Find a checkbox by providing human readable text:
+
+```js
+this.helpers['Protractor']._locateCheckable('I agree with terms and conditions').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateClickable
+
+Find a clickable element by providing human readable text:
+
+```js
+this.helpers['Protractor']._locateClickable('Next page').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## _locateFields
+
+Find field elements by providing human readable text:
+
+```js
+this.helpers['Protractor']._locateFields('Your email').then // ...
+```
+
+**Parameters**
+
+-   `locator`  
+
+## acceptPopup
+
+Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+Don't confuse popups with modal windows, as created by [various
+libraries](http://jster.net/category/windows-modals-popups). Appium: support only web testing
 
 ## amInsideAngularApp
 
@@ -170,6 +212,10 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 -   `locator`  field located by label|name|CSS|XPath|strict locator
 -   `pathToFile`  local file path relative to codecept.json config file
+
+## cancelPopup
+
+Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
 
 ## checkOption
 
@@ -368,6 +414,19 @@ I.doubleClick('.btn.edit');
 -   `locator`  
 -   `context`  
 
+## dragAndDrop
+
+Drag an item to a destination element.
+
+```js
+I.dragAndDrop('#dragHandle', '#container');
+```
+
+**Parameters**
+
+-   `srcElement`  
+-   `destElement`  
+
 ## executeAsyncScript
 
 Executes async script on page.
@@ -460,6 +519,16 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 -   `locator`  element located by CSS|XPath|strict locator
 -   `attr`  
 
+## grabBrowserLogs
+
+Get JS log from browser. Log buffer is reset after each request.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let logs = await I.grabBrowserLogs();
+console.log(JSON.stringify(logs))
+```
+
 ## grabCookie
 
 Gets a cookie object by name
@@ -474,6 +543,20 @@ assert(cookie.value, '123456');
 
 -   `name`  Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
 
+## grabCssPropertyFrom
+
+Grab CSS property for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const value = await I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
+**Parameters**
+
+-   `locator`  
+-   `cssProperty`  
+
 ## grabCurrentUrl
 
 Get current URL from browser.
@@ -484,12 +567,54 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
+## grabHTMLFrom
+
+Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let postHTML = await I.grabHTMLFrom('#post');
+```
+
+**Parameters**
+
+-   `locator`  
+
 ## grabNumberOfOpenTabs
 
 Grab number of open tabs
 
 ```js
 I.grabNumberOfOpenTabs();
+```
+
+## grabNumberOfVisibleElements
+
+Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
+
+**Parameters**
+
+-   `locator`  
+
+## grabPageScrollPosition
+
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
+## grabPopupText
+
+Grab the text within the popup. If no popup is visible then it will return null
+
+```js
+await I.grabPopupText();
 ```
 
 ## grabSource
@@ -634,6 +759,15 @@ First parameter can be set to `maximize`
 -   `width`  or `maximize`
 -   `height`  
 
+## rightClick
+
+Performs right click on an element matched by CSS or XPath.
+
+**Parameters**
+
+-   `locator`  
+-   `context`   (optional, default `null`)
+
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
@@ -650,6 +784,38 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 -   `fileName`  
 -   `fullPage`  (optional)
 
+## scrollPageToBottom
+
+Scroll page to the bottom
+
+```js
+I.scrollPageToBottom();
+```
+
+## scrollPageToTop
+
+Scroll page to the top
+
+```js
+I.scrollPageToTop();
+```
+
+## scrollTo
+
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5,5);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `offsetX`   (optional, default `0`)
+-   `offsetY`   (optional, default `0`)
+
 ## see
 
 Checks that a page contains a visible text.
@@ -665,6 +831,19 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 -   `text`  expected on page
 -   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
+
+## seeAttributesOnElements
+
+Checks that all elements with given locator have given attributes.
+
+```js
+I.seeAttributesOnElements('//form', {'method': "post"});
+```
+
+**Parameters**
+
+-   `locator`  
+-   `attributes`  
 
 ## seeCheckboxIsChecked
 
@@ -691,6 +870,20 @@ I.seeCookie('Auth');
 **Parameters**
 
 -   `name`  
+
+## seeCssPropertiesOnElements
+
+Checks that all elements with given locator have given CSS properties.
+
+```js
+I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+```
+
+**Parameters**
+
+-   `locator`  
+-   `properties`  
+-   `cssProperties`  
 
 ## seeCurrentUrlEquals
 
@@ -762,6 +955,15 @@ I.seeInField('#searchform input','Search');
 -   `field`  located by label|name|CSS|XPath|strict locator
 -   `value`  
 
+## seeInPopup
+
+Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
+given string.
+
+**Parameters**
+
+-   `text`  
+
 ## seeInSource
 
 Checks that the current page contains the given string in its raw source code.
@@ -794,6 +996,20 @@ I.seeNumberOfElements('#submitBtn', 1);
 **Parameters**
 
 -   `selector`  
+-   `num`  
+
+## seeNumberOfVisibleElements
+
+asserts that an element is visible a given number of times
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+
+**Parameters**
+
+-   `locator`  
 -   `num`  
 
 ## seeTextEquals
@@ -846,6 +1062,26 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 -   `select`  field located by label|name|CSS|XPath|strict locator
 -   `option`  
+
+## setCookie
+
+Sets a cookie
+
+```js
+I.setCookie({name: 'auth', value: true});
+```
+
+**Parameters**
+
+-   `cookie`  
+
+## switchTo
+
+Switches frame or in case of null locator reverts to parent.
+
+**Parameters**
+
+-   `locator`  
 
 ## switchToNextTab
 
@@ -925,6 +1161,16 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
 
+## waitForEnabled
+
+Waits for element to become enabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
 ## waitForInvisible
 
 Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
@@ -954,6 +1200,20 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec`  seconds to wait
 -   `context`  element located by CSS|XPath|strict locator
 
+## waitForValue
+
+Waits for the specified value to be in value attribute
+
+```js
+I.waitForValue('//input', "GoodValue");
+```
+
+**Parameters**
+
+-   `field`  input field
+-   `value`  expected value
+-   `sec`  seconds to wait, 1 sec by default
+
 ## waitForVisible
 
 Waits for an element to become visible on a page (by default waits for 1sec).
@@ -965,3 +1225,77 @@ Element can be located by CSS or XPath.
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
+
+## waitInUrl
+
+Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+
+```js
+I.waitInUrl('/info', 2);
+```
+
+**Parameters**
+
+-   `urlPart`  
+-   `sec`   (optional, default `null`)
+
+## waitNumberOfVisibleElements
+
+Waits for a specified number of elements on the page
+
+```js
+I.waitNumberOfVisibleElements('a', 3);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `seconds`  
+-   `num`  
+-   `sec`   (optional, default `null`)
+
+## waitToHide
+
+Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitToHide('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitUntil
+
+Waits for a function to return true (waits for 1sec by default).
+
+```js
+I.waitUntil(() => window.requests == 0);
+I.waitUntil(() => window.requests == 0, 5);
+```
+
+**Parameters**
+
+-   `function`  function which is executed in browser context.
+-   `fn`  
+-   `sec`  time seconds to wait, 1 by default
+-   `timeoutMsg`   (optional, default `null`)
+
+## waitUrlEquals
+
+Waits for the entire URL to match the expected
+
+```js
+I.waitUrlEquals('/info', 2);
+I.waitUrlEquals('http://127.0.0.1:8000/info');
+```
+
+**Parameters**
+
+-   `urlPart`  
+-   `sec`   (optional, default `null`)
+
+# locator
+
+just press button if no selector is given

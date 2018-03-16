@@ -5,7 +5,7 @@ fastest headless testing using Electron engine. Unlike Selenium-based drivers th
 Chromium-based browser with Electron with lots of client side scripts, thus should be less stable and
 less trusted.
 
-Requires `nightmare` and `nightmare-upload` packages to be installed.
+Requires `nightmare` package to be installed.
 
 ## Configuration
 
@@ -409,6 +409,27 @@ let har = yield I.grabHAR();
 fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 ```
 
+## grabNumberOfVisibleElements
+
+Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
+
+**Parameters**
+
+-   `locator`  
+
+## grabPageScrollPosition
+
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
@@ -520,6 +541,22 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 -   `fileName`  
 -   `fullPage`  (optional)
+
+## scrollPageToBottom
+
+Scroll page to the bottom
+
+```js
+I.scrollPageToBottom();
+```
+
+## scrollPageToTop
+
+Scroll page to the top
+
+```js
+I.scrollPageToTop();
+```
 
 ## scrollTo
 
@@ -683,6 +720,20 @@ I.seeNumberOfElements('#submitBtn', 1);
 -   `selector`  
 -   `num`  
 
+## seeNumberOfVisibleElements
+
+asserts that an element is visible a given number of times
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+
+**Parameters**
+
+-   `locator`  
+-   `num`  
+
 ## selectOption
 
 Selects an option in a drop-down select.
@@ -778,10 +829,10 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 ## waitForInvisible
 
-Waits for an element to become visible on a page (by default waits for 1sec).
+Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-    I.waitForVisible('#popup');
+    I.waitForInvisible('#popup');
 
 **Parameters**
 
@@ -811,6 +862,18 @@ Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
     I.waitForVisible('#popup');
+
+**Parameters**
+
+-   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitToHide
+
+Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+    I.waitToHide('#popup');
 
 **Parameters**
 

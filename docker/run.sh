@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source docker/help.sh
+source /codecept/docker/help.sh
 
 # Check if tests are correctly mounted
 if [[ -d "/tests/" ]]; then
@@ -8,7 +8,7 @@ if [[ -d "/tests/" ]]; then
 
 		# Run the tests
 		cd /tests/
-		node /codecept/bin/codecept.js run $CODECEPT_ARGS
+		codeceptjs run $CODECEPT_ARGS
 	else
 		display_usage
 fi

@@ -34,7 +34,7 @@ describe('Protractor', function () {
       seleniumAddress: TestHelper.seleniumAddress(),
       angular: true,
       waitForTimeout: 5000,
-      desiredCapabilities: {
+      capabilities: {
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
         },
