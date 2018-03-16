@@ -517,9 +517,10 @@ assert(cookie.value, '123456');
 ## grabCssPropertyFrom
 
 Grab CSS property for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
 
 ```js
-I.grabCssPropertyFrom('h3', 'font-weight');
+const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 ```
 
 **Parameters**
@@ -570,6 +571,15 @@ I.grabNumberOfVisibleElements('p');
 **Parameters**
 
 -   `locator`  
+
+## grabPageScrollPosition
+
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
 
 ## grabPopupText
 
@@ -814,12 +824,13 @@ I.seeCookie('Auth');
 Checks that all elements with given locator have given CSS properties.
 
 ```js
-I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold' });
+I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 ```
 
 **Parameters**
 
 -   `locator`  
+-   `properties`  
 -   `cssProperties`  
 
 ## seeCurrentUrlEquals
