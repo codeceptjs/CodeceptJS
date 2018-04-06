@@ -1,6 +1,6 @@
 # Codeceptjs Docker
 
-CodeceptJS packed into container with the Nightmare, Protractor, and WebDriverIO drivers.
+CodeceptJS packed into container with the Nightmare, Protractor, Puppeteer, and WebDriverIO drivers.
 
 ## How to Use
 
@@ -9,15 +9,26 @@ Mount in your CodeceptJS config directory into the `/tests` directory in the doc
 
 Sample mount: `-v path/to/codecept.json:/tests`
 
+CodeceptJS runner is available inside container as `codeceptjs`.
+
 ### Locally
 
-You can execute CodeceptJS with Nightmare locally with no extra configuration.
+You can execute CodeceptJS with Puppeteer or Nightmare locally with no extra configuration.
 
 ```sh
 docker run --net=host -v $PWD:/tests codeception/codeceptjs
 ```
 
-Nightmare helper must be enabled in codecept.json config.
+To customize execution call `codeceptjs` command:
+
+```sh
+# run tests with steps
+docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --steps
+
+# run tests with @user in a name
+docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --grep "@user"
+```
+
 
 ### Docker Compose
 
@@ -79,11 +90,20 @@ To build this image:
 docker build -t codeception/codeceptjs .
 ```
 
-### Debugging
+* this directory will be added as `/codecept` insde container
+* tests directory is expected to be mounted as `/tests`
+* `codeceptjs` is a synlink to `/codecept/bin/codecept.js`
 
-To pass arguments to `codecept run` command inside docker image you can set
-`CODECEPT_ARGS` environment variable. For example to run your tests with debug
-and steps output:
+### Passing Options
+
+Options can be passed by calling `codeceptjs`:
+
+```
+docker run -v $PWD:/tests codeception/codeceptjs codeceptjs run --debug
+```
+
+Alternatively arguments to `codecept run` command can be passed via `CODECEPT_ARGS` environment variable. For example to run your tests with debug
+output:
 
 ```yaml
 version: '2'
@@ -91,7 +111,7 @@ services:
   codeceptjs:
     image: codeception/codeceptjs
     environment:
-      - CODECEPT_ARGS=--debug --steps
+      - CODECEPT_ARGS=--debug
     volumes:
       - .:/tests
 ```

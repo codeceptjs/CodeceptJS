@@ -1,3 +1,55 @@
+## 1.1.7
+
+* Docker Image updateed. [See updated reference](https://codecept.io/docker/):
+    * codeceptjs package is mounted as `/codecept` insde container
+    * tests directory is expected to be mounted as `/tests`
+    * `codeceptjs` global runner added (symlink to `/codecept/bin/codecept.js`)
+* [Protractor] Functions added by @reubenmiller:
+    * `_locateCheckable (only available from other helpers)`
+    * `_locateClickable (only available from other helpers)`
+    * `_locateFields (only available from other helpers)`
+    * `acceptPopup`
+    * `cancelPopup`
+    * `dragAndDrop`
+    * `grabBrowserLogs`
+    * `grabCssPropertyFrom`
+    * `grabHTMLFrom`
+    * `grabNumberOfVisibleElements`
+    * `grabPageScrollPosition (new)`
+    * `rightClick`
+    * `scrollPageToBottom`
+    * `scrollPageToTop`
+    * `scrollTo`
+    * `seeAttributesOnElements`
+    * `seeCssPropertiesOnElements`
+    * `seeInPopup`
+    * `seeNumberOfVisibleElements`
+    * `switchTo`
+    * `waitForEnabled`
+    * `waitForValue`
+    * `waitInUrl`
+    * `waitNumberOfVisibleElements`
+    * `waitToHide`
+    * `waitUntil`
+    * `waitUrlEquals`
+* [Nightmare] added:
+    * `grabPageScrollPosition` (new)
+    * `seeNumberOfVisibleElements`
+    * `waitToHide`
+* [Puppeteer] added:
+    * `grabPageScrollPosition` (new)
+* [WebDriverIO] added"
+    * `grabPageScrollPosition` (new)
+* [Puppeteer] Fixed running wait* functions without setting `sec` parameter.
+* [Puppeteer][Protractor] Fixed bug with I.click when using an object selector with the xpath property. By @reubenmiller
+* [WebDriverIO][Protractor][Nightmare][Puppeteer] Fixed I.switchTo(0) and I.scrollTo(100, 100) api inconsistencies between helpers.
+* [Protractor] Fixing bug when `seeAttributesOnElements` and `seeCssPropertiesOnElement` were incorrectly passing when the attributes/properties did not match by @reubenmiller
+* [WebDriverIO] Use inbuilt dragAndDrop function (still doesn't work in Firefox). By @reubenmiller
+* Support for Nightmare 3.0
+* Enable glob patterns in `config.test` / `Codecept.loadTests` by @sveneisenschmidt
+* Enable overriding of `config.tests` for `run-multiple` by @sveneisenschmidt
+
+
 ## 1.1.6
 
 * Added support for `async I =>` functions syntax in Scenario by @APshenkin

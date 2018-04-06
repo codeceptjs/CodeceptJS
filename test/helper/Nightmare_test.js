@@ -124,7 +124,7 @@ describe('Nightmare', function () {
         }).then((els) => {
           // we received an array with IDs of matched elements
           // now let's execute client-side script to get attribute for the first element
-          assert.ok(!!els);
+          assert.ok(!!els.length);
           return browser.evaluate((el, attribute) => window.codeceptjs.fetchElement(el).getAttribute(attribute), els[0], attribute);
         }).then((attributeValue) => {
           // get attribute value and back to server side

@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -59,8 +59,7 @@
     "eslint-plugin-import": "^2.8.0",
     "faker": "^4.1.0",
     "json-server": "^0.10.1",
-    "nightmare": "^2.5.2",
-    "nightmare-upload": "^0.1.1",
+    "nightmare": "^3.0.0",
     "nyc": "^11.5.0",
     "protractor": "^5.3.0",
     "puppeteer": "^1.0.0",

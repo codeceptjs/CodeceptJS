@@ -71,6 +71,19 @@ services:
       - ./support:/support
       - node_modules:/node_modules
 
+  test-acceptance.protractor:
+    build: ..
+    env_file: .env
+    environment:
+      - CODECEPT_ARGS=-c codecept.Protractor.js --grep @Protractor
+    depends_on:
+      - php
+    volumes:
+      - ./acceptance:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
+
   selenium.chrome:
     image: selenium/standalone-chrome:3.9.1-actinium
     shm_size: 2g
