@@ -27,7 +27,7 @@ module.exports = {
     checkOption: '勾选选项',
     seeCheckboxIsChecked: '看到复选框勾选',
     dontSeeCheckboxIsChecked: '看不到复选框勾选',
-    grabTextFrom: '抓取文字',
+    grabTextFrom: '抓取文本',
     grabValueFrom: '抓取值',
     grabAttributeFrom: '抓取属性',
     seeInTitle: '在标题中看到',
