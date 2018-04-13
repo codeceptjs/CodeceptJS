@@ -32,6 +32,7 @@ describe('CodeceptJS within', function () {
 
   it('should execute if no generators', (done) => {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+      console.log(stdout);
       const lines = stdout.match(/\S.+/g);
 
       const withoutGeneratorList = getLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
