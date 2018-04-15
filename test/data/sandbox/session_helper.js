@@ -28,7 +28,8 @@ class Session extends Helper {
       setTimeout(() => {
         resolve('res');
       }, 100);
-    }).then(() => output.step(`session:${this.sessionId}.${action}`));
+    });
+    // .then(() => output.step(`session:${this.sessionId}.${action}`));
   }
 
   errorStep() {
