@@ -14,7 +14,7 @@ class Session extends Helper {
   }
 
   _session() {
-    let defaultSession = this.sessionId;
+    const defaultSession = this.sessionId;
     return {
       start: () => ++uniqueSessions,
       stop: () => {},
