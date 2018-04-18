@@ -21,7 +21,6 @@ describe('parser', () => {
     it('should get params for async function', () => {
       expect(parser.getParamsToString(obj.method4)).to.eql('locator, context');
     });
-
   });
 
   describe('#toTypeDef', () => {
