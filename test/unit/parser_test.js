@@ -8,7 +8,9 @@ class Obj {
   method1(locator, sec) {}
   method2(locator, value, sec) {}
   method3(locator, context) {}
-  async method4(locator, context) {}
+  async method4(locator, context) {
+    return false;
+  }
 }
 
 describe('parser', () => {
