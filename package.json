@@ -35,14 +35,12 @@
     "test": "npm run lint && mocha test/unit && mocha test/runner"
   },
   "dependencies": {
-    "acorn": "^5.5.3",
     "chalk": "^1.1.3",
     "commander": "^2.14.1",
     "escape-string-regexp": "^1.0.3",
     "fn-args": "^3.0.0",
     "glob": "^6.0.1",
     "inquirer": "^0.11.0",
-    "js-function-reflector": "^1.3.0",
     "mkdirp": "^0.5.1",
     "mocha": "^4.1.0",
     "parse-function": "^5.2.7",
