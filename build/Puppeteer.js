@@ -256,6 +256,13 @@ class Puppeteer extends Helper {
   }
 
   /**
+   * Gets page URL including hash.
+   */
+  async _getPageUrl() {
+    return this.executeScript(() => window.location.href);
+  }
+
+  /**
    * Grab the text within the popup. If no popup is visible then it will return null
    *
    * ```js
@@ -394,6 +401,13 @@ First parameter can be set to `maximize`
     if (width === 'maximize') {
       throw new Error('Puppeteer can\'t control windows, so it can\'t maximize it');
     }
+
+    // Workaround for https://github.com/GoogleChrome/puppeteer/issues/1183
+    await this.browser._connection.send('Browser.setWindowBounds', {
+      bounds: { height, width },
+      windowId: 1, // Use the first window.
+    });
+
     await this.page.setViewport({ width, height });
     return this._waitForAction();
   }
@@ -1107,8 +1121,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 @param url
    */
   async seeInCurrentUrl(url) {
-    const currentUrl = this.page.url();
-    stringIncludes('url').assert(url, currentUrl);
+    stringIncludes('url').assert(url, await this._getPageUrl());
   }
 
   /**
@@ -1117,8 +1130,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 @param url
    */
   async dontSeeInCurrentUrl(url) {
-    const currentUrl = await this.page.url();
-    stringIncludes('url').negate(url, currentUrl);
+    stringIncludes('url').negate(url, await this._getPageUrl());
   }
 
   /**
@@ -1133,8 +1145,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 @param url
    */
   async seeCurrentUrlEquals(url) {
-    const currentUrl = await this.page.url();
-    urlEquals(this.options.url).assert(url, currentUrl);
+    urlEquals(this.options.url).assert(url, await this._getPageUrl());
   }
 
   /**
@@ -1144,8 +1155,7 @@ If a relative url provided, a configured url will be prepended to it.
 @param url
    */
   async dontSeeCurrentUrlEquals(url) {
-    const currentUrl = await this.page.url();
-    urlEquals(this.options.url).negate(url, currentUrl);
+    urlEquals(this.options.url).negate(url, await this._getPageUrl());
   }
 
   /**
@@ -1225,7 +1235,7 @@ console.log(`Current URL is [${url}]`);
 ```
    */
   async grabCurrentUrl() {
-    return this.page.url();
+    return this._getPageUrl();
   }
 
   /**
@@ -1900,15 +1910,14 @@ I.waitInUrl('/info', 2);
 ```
    */
   async waitInUrl(urlPart, sec = null) {
-    const aSec = sec || this.options.waitForTimeout;
-    const waitTimeout = aSec * 1000;
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
 
     return this.page.waitForFunction((urlPart) => {
       const currUrl = decodeURIComponent(decodeURIComponent(decodeURIComponent(window.location.href)));
       return currUrl.indexOf(urlPart) > -1;
     }, { timeout: waitTimeout }, urlPart).catch(async (e) => {
-      const currUrl = this.page.url(); // Required because the waitForFunction can't return data.
-      if (/waiting failed: timeout/i.test(e.message)) {
+      const currUrl = await this._getPageUrl(); // Required because the waitForFunction can't return data.
+      if (/waiting/i.test(e.message)) { // waiting (for function) failed error message
         throw new Error(`expected url to include ${urlPart}, but found ${currUrl}`);
       } else {
         throw e;
@@ -1925,8 +1934,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 ```
    */
   async waitUrlEquals(urlPart, sec = null) {
-    const aSec = sec || this.options.waitForTimeout;
-    const waitTimeout = aSec * 1000;
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
 
     const baseUrl = this.options.url;
     if (urlPart.indexOf('http') < 0) {
@@ -1937,8 +1945,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
       const currUrl = decodeURIComponent(decodeURIComponent(decodeURIComponent(window.location.href)));
       return currUrl.indexOf(urlPart) > -1;
     }, { timeout: waitTimeout }, urlPart).catch(async (e) => {
-      const currUrl = this.page.url(); // Required because the waitForFunction can't return data.
-      if (/waiting failed: timeout/i.test(e.message)) {
+      const currUrl = await this._getPageUrl(); // Required because the waitForFunction can't return data.
+      if (/waiting/i.test(e.message)) {
         throw new Error(`expected url to be ${urlPart}, but found ${currUrl}`);
       } else {
         throw e;
@@ -1961,8 +1969,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param context element located by CSS|XPath|strict locator
    */
   async waitForText(text, sec = null, context = null) {
-    const aSec = sec || this.options.waitForTimeout;
-    const waitTimeout = aSec * 1000;
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     let waiter;
 
     const contextObject = await this._getContext();

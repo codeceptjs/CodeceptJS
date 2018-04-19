@@ -294,6 +294,8 @@
         
             <li><a href="#polish">Polish</a></li>
         
+            <li><a href="#chinese">Chinese</a></li>
+        
     
     </ul>
 </div></div>
@@ -370,6 +372,45 @@ by setting translation to <a href="https://github.com/Codeception/CodeceptJS/blo
     Ja.klikam('Sign up');
     Ja.czekam(1);
     Ja.widzę_w_adresie_url('/account_free_created.html');
+});
+</code></pre>
+
+<h2 id="chinese">Chinese</h2>
+<p>Add to config:</p>
+<pre><code class="JSON">  &quot;translation&quot;: &quot;zh-CN&quot;
+</code></pre>
+
+<p>or</p>
+<pre><code class="JSON">  &quot;translation&quot;: &quot;zh-TW&quot;
+</code></pre>
+
+<p>This way tests can be written in Chinese language while it is still JavaScript:</p>
+<pre><code class="JavaScript">Feature('CodeceptJS 演示');
+
+Scenario('成功提交表单', (我) =&gt; {
+    我.在页面('/documentation')
+    我.填写字段('电邮', 'hello@world.com')
+    我.填写字段('密码', '123456')
+    我.勾选选项('激活')
+    我.勾选选项('男');
+    我.单击('创建用户')
+    我.看到('用户名可用')
+    我.在当前网址中看不到('/documentation')
+});
+</code></pre>
+
+<p>or</p>
+<pre><code class="JavaScript">Feature('CodeceptJS 演示');
+
+Scenario('成功提交表單', (我) =&gt; {
+    我.在頁面('/documentation')
+    我.填寫欄位('電郵', 'hello@world.com')
+    我.填寫欄位('密碼', '123456')
+    我.勾選選項('活化')
+    我.勾選選項('男');
+    我.單擊('建立用戶')
+    我.看到('用戶名可用')
+    我.在當前網址中看不到('/documentation')
 });
 </code></pre></div>
             <div class="col-md-2" class="promo-1">
