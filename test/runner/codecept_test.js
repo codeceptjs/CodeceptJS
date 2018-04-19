@@ -37,6 +37,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should be executed with config path', (done) => {
+    process.chdir(__dirname);
     exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout, stderr) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('check current dir'); // test name
