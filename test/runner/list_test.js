@@ -1,3 +1,4 @@
+const fs = require('fs');
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
@@ -18,14 +19,17 @@ describe('list/def commands', () => {
 
   it('def should create definition file', (done) => {
     try {
-      require('fs').unlinkSync(`${codecept_dir}/steps.d.ts`);
+      fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
     } catch (e) {
       // continue regardless of error
     }
     exec(`${runner} def ${codecept_dir}`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       stdout.should.include('<reference path="./steps.d.ts" />');
-      require('fs').existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
+      fs.existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
+      const def = fs.readFileSync(`${codecept_dir}/steps.d.ts`).toString();
+      def.should.include('amInPath(openPath: string) : void');
+      def.should.include('    seeFile(name: string) : void');
       assert(!err);
       done();
     });
@@ -33,14 +37,14 @@ describe('list/def commands', () => {
 
   it('def should create definition file given a config file', (done) => {
     try {
-      require('fs').unlinkSync(`${codecept_dir}/steps.d.ts`);
+      fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
     } catch (e) {
       // continue regardless of error
     }
     exec(`${runner} def --config ${codecept_dir}/codecept.ddt.json`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       stdout.should.include('<reference path="./steps.d.ts" />');
-      require('fs').existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
+      fs.existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
       assert(!err);
       done();
     });
