@@ -99,3 +99,47 @@ Scenario('Zakładanie konta free trial na stronie głównej GetResponse', (Ja) =
     Ja.widzę_w_adresie_url('/account_free_created.html');
 });
 ```
+
+## Chinese
+
+Add to config:
+
+```JSON
+  "translation": "zh-CN"
+```
+or
+```JSON
+  "translation": "zh-TW"
+```
+
+This way tests can be written in Chinese language while it is still JavaScript:
+
+```JavaScript
+Feature('CodeceptJS 演示');
+
+Scenario('成功提交表单', (我) => {
+    我.在页面('/documentation')
+    我.填写字段('电邮', 'hello@world.com')
+    我.填写字段('密码', '123456')
+    我.勾选选项('激活')
+    我.勾选选项('男');
+    我.单击('创建用户')
+    我.看到('用户名可用')
+    我.在当前网址中看不到('/documentation')
+});
+```
+or
+```JavaScript
+Feature('CodeceptJS 演示');
+
+Scenario('成功提交表單', (我) => {
+    我.在頁面('/documentation')
+    我.填寫欄位('電郵', 'hello@world.com')
+    我.填寫欄位('密碼', '123456')
+    我.勾選選項('活化')
+    我.勾選選項('男');
+    我.單擊('建立用戶')
+    我.看到('用戶名可用')
+    我.在當前網址中看不到('/documentation')
+});
+```

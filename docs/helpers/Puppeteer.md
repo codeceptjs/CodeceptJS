@@ -54,6 +54,10 @@ Add the 'dialog' event listener to a page
 
 -   `page`  
 
+## _getPageUrl
+
+Gets page URL including hash.
+
 ## _locate
 
 Get elements by different locator types, including strict locator

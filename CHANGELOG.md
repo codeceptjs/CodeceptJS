@@ -1,3 +1,12 @@
+## 1.1.8
+
+* Fixed generating TypeScript definitions with `codeceptjs def`.
+* Added Chinese translation ("zh-CN" and "zh-TW") by @TechQuery.
+* Fixed running tests from a different folder specified by `-c` option.
+* [Puppeteer] Added support for hash handling in URL by @gavoja.
+* [Puppeteer] Fixed setting viewport size by @gavoja. See [Puppeteer issue](https://github.com/GoogleChrome/puppeteer/issues/1183)
+
+
 ## 1.1.7
 
 * Docker Image updateed. [See updated reference](https://codecept.io/docker/):
