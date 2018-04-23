@@ -92,7 +92,7 @@ docker build -t codeception/codeceptjs .
 
 * this directory will be added as `/codecept` insde container
 * tests directory is expected to be mounted as `/tests`
-* `codeceptjs` is a synlink to `/codecept/bin/codecept.js`
+* `codeceptjs` is a symlink to `/codecept/bin/codecept.js`
 
 ### Passing Options
 
