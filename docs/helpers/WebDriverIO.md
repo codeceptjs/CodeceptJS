@@ -537,7 +537,7 @@ Example: In Vue.js to make components completely rendered we are waiting for [ne
 
 ```js
 I.executeAsyncScript(function(done) {
-Vue.nextTick(done); // waiting for next tick
+  Vue.nextTick(done); // waiting for next tick
 });
 ```
 
@@ -546,8 +546,10 @@ Additional arguments can be passed as well, while `done` function is always last
 
 ```js
 let val = yield I.executeAsyncScript(function(url, done) {
-// in browser context
-$.ajax(url, { success: (data) => done(data); }
+  // in browser context
+  $.ajax(url, {
+    success: (data) => done(data);
+  }
 }, 'http://ajax.callback.url/');
 ```
 
@@ -567,8 +569,8 @@ Example with jQuery DatePicker:
 ```js
 // change date of jQuery DatePicker
 I.executeScript(function() {
-// now we are inside browser context
-$('date').datetimepicker('setDate', new Date());
+  // now we are inside browser context
+  $('date').datetimepicker('setDate', new Date());
 });
 ```
 
@@ -576,8 +578,8 @@ Can return values. Don't forget to use `yield` to get them.
 
 ```js
 let date = yield I.executeScript(function(el) {
-// only basic types can be returned
-return $(el).datetimepicker('getDate').toString();
+  // only basic types can be returned
+  return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
 ```
 
