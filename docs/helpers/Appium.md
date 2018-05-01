@@ -434,7 +434,7 @@ I.runInWeb(() => {
 
 ## runOnAndroid
 
-Execute code only on Android
+Execute code only on iOS
 
 ```js
 I.runOnAndroid(() => {
