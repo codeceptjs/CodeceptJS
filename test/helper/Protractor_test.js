@@ -54,12 +54,12 @@ describe('Protractor', function () {
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', () => {
       I.amOnPage('/');
-      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/`);
+      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
     });
 
     it('should open absolute url', () => {
       I.amOnPage(siteUrl);
-      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/`);
+      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
     });
   });
 

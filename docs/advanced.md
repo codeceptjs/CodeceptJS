@@ -87,7 +87,13 @@ It can be turned on with `--debug` flag.
 codeceptjs run --debug
 ```
 
-While running in debug mode you can pause execution and enter interactive console mode by using `pause()` function.
+to receive even more information turn on `--verbose` flag:
+
+```sh
+codeceptjs run --verbose
+```
+
+And don't forget that you can pause execution and enter **interactive console** mode by calling `pause()` inside your test.
 
 For advanced debugging use NodeJS debugger. In WebStorm IDE:
 

@@ -196,6 +196,11 @@ or for the test:
 
 ```js
 // set timeout to 1s
+Scenario("Stop me faster", (I) => {
+  // test goes here
+}).timeout(1000);
+
+// alternative
 Scenario("Stop me faster", {timeout: 1000}, (I) => {});
 
 // disable timeout for this scenario
@@ -227,10 +232,13 @@ You can make an exception for a specific scenario by passing `retries` option to
 #### Retry Scenario
 
 ```js
-Scenario('Really complex', {retries: 2}, (I) => {
+Scenario('Really complex', (I) => {
   // test goes here
-});
+}).retry(2);
 
+// alternative
+
+Scenario('Really complex', { retries: 2 }, (I) => {});
 ```
 
 This scenario will be restarted two times on a failure

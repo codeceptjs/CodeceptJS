@@ -263,6 +263,65 @@ within({frame: [".content", "#editor"]}, () => {
 });
 ```
 
+## Multiple Sessions
+
+*Note: Currently multiple sessions works only in WebDriverIO and Protractor*
+
+CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
+
+```js
+Scenario('test app', (I) => {
+  I.amOnPage('/chat');
+  I.fillField('name', 'davert');
+  I.click('Sign In');
+  I.see('Hello, davert');
+  session('john', () => {
+    // another session started
+    I.amOnPage('/chat');
+    I.fillField('name', 'john');
+    I.click('Sign In');
+    I.see('Hello, john');
+  });
+  // switching back to default session
+  I.fillField('message', 'Hi, john');
+  // there is a message from current user
+  I.see('me: Hi, john', '.messages');
+  session('john', () => {
+    // let's check if john received it
+    I.see('davert: Hi, john', '.messages');
+  });
+});
+```
+
+`session` function expects a first parameter to be a name of a session. You can switch back to session by using the same name.
+
+You can override config for session by passing second parameter:
+
+```js
+session('john', { browser: 'firefox' } , () => {
+  // run this steps in firefox
+  I.amOnPage('/');
+});
+```
+
+or just start session without switching to it. Call `session` passing only its name:
+
+```js
+Scenario('test', (I) => {
+  // opens 3 additional browsers
+  session('john');
+  session('mary');
+  session('jane');
+
+  I.amOnPage('/');
+
+  // switch to session by its name
+  session('mary', () => {
+    I.amOnPage('/login');
+  });
+}
+```
+
 ---
 
 ### done()
