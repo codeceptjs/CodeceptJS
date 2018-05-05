@@ -9,7 +9,7 @@ const formContents = require('../../lib/utils').test.submittedData(path.join(__d
 const fileExists = require('../../lib/utils').fileExists;
 
 const web_app_url = TestHelper.siteUrl();
-const siteUrl = 'http://davertmik.github.io/angular-demo-app';
+const siteUrl = TestHelper.angularSiteUrl();
 let I;
 let browser;
 
