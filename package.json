@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "@types/inquirer": "^0.0.35",
-    "@types/node": "^8.10.11",
+    "@types/node": "^8.10.12",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2",
