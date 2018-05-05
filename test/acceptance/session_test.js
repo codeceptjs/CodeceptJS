@@ -47,7 +47,7 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor', as
   expect(cookies.john).to.not.equal(cookies.mary);
 });
 
-Scenario('should throw exception and close correctly', (I) => {
+Scenario('should throw exception and close correctly @WebDriverIO @Protractor', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', () => {
@@ -58,7 +58,7 @@ Scenario('should throw exception and close correctly', (I) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 }).fails();
 
-Scenario('async/await', (I) => {
+Scenario('async/await @WebDriverIO @Protractor', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', async () => {
@@ -69,7 +69,7 @@ Scenario('async/await', (I) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 });
 
-Scenario('exception on async/await', (I) => {
+Scenario('exception on async/await @WebDriverIO @Protractor', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', async () => {
@@ -80,7 +80,7 @@ Scenario('exception on async/await', (I) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 }).throws(/to be checked/);
 
-Scenario('should work with within', (I) => {
+Scenario('should work with within @WebDriverIO @Protractor', (I) => {
   I.amOnPage('/form/bug1467');
   session('john', () => {
     I.amOnPage('/form/bug1467');
@@ -101,7 +101,18 @@ Scenario('should work with within', (I) => {
   });
 });
 
-Scenario('should start firefox', async (I) => {
+Scenario('should use different base URL @WebDriverIO @Protractor', (I) => {
+  I.amOnPage('/');
+  I.see('Welcome to test app');
+  session('john', { url: 'https://github.com' }, () => {
+    I.amOnPage('/');
+    I.dontSee('Welcome to test app');
+    I.see('GitHub');
+  });
+  I.see('Welcome to test app');
+});
+
+Scenario('should start firefox @WebDriverIO', async (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', { browser: 'firefox' }, async () => {
