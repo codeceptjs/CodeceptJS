@@ -17,6 +17,10 @@ describe('CodeceptJS Interface', () => {
     exec(config_run_config('codecept.flaky.json'), (err, stdout, stderr) => {
       stdout.should.include('Flaky'); // feature
       stdout.should.include('Not so flaky test'); // test name
+      stdout.should.include('Old style flaky'); // test name
+      stdout.should.include('[T1] Retries: 2'); // test name
+      stdout.should.include('[T2] Retries: 4'); // test name
+      stdout.should.include('[T3] Retries: 1'); // test name
       assert(!err);
       done();
     });

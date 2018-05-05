@@ -189,7 +189,7 @@ Scenario('My scenario', {key: val}, (I) => {});
 By default there is no timeout for tests, however you can change this value for a specific suite:
 
 ```js
-Feature('Stop me', {timeout: 5000}); // set timeout to 5s
+Feature('Stop me').timeout(5000); // set timeout to 5s
 ```
 
 or for the test:
@@ -218,12 +218,7 @@ CodeceptJS implements retries the same way [Mocha do](https://mochajs.org#retry-
 You can set number of a retries for a feature:
 
 ```js
-Feature('Complex JS Stuff', {retries: 3})
-
-
-Scenario('Really complex', (I) => {
-  // test goes here
-});
+Feature('Complex JS Stuff').retry(3);
 ```
 
 Every Scenario inside this feature will be rerun 3 times.
@@ -237,7 +232,6 @@ Scenario('Really complex', (I) => {
 }).retry(2);
 
 // alternative
-
 Scenario('Really complex', { retries: 2 }, (I) => {});
 ```
 
