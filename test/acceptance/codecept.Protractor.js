@@ -8,15 +8,15 @@ module.exports.config = {
     Protractor: {
       url: TestHelper.siteUrl(),
       browser: 'chrome',
-      restart: true,
+      // restart: true,
       angular: false,
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
-      // capabilities: {
-      //   chromeOptions: {
-      //     args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
-      //   },
-      // },
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
     },
 
   },
