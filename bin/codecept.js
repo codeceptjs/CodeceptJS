@@ -24,7 +24,7 @@ program.command('list [path]')
   .action(require('../lib/command/list'));
 
 program.command('def [path]')
-  .description('List all actions for I.')
+  .description('Generates TypeScript definitions for all I actions.')
   .option('-c, --config [file]', 'configuration file to be used')
   .action(require('../lib/command/definitions'));
 

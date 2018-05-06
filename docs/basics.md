@@ -172,7 +172,7 @@ We are currently working on improving reporters support.
 ## Translation
 
 Because CodeceptJS tests use high level DSL it is possible to write tests using different languages.
-Tests can be written in Portuguese, Russian, Italian, Polish languages using predefined [translations](http://codecept.io/translation/).
+Tests can be written in Portuguese, Russian, Italian, Polish & Chinese languages using predefined [translations](http://codecept.io/translation/).
 
 ## Test Options
 
