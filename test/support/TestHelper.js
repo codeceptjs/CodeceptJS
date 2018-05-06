@@ -3,6 +3,10 @@ class TestHelper {
     return (process.env.SITE_URL || 'http://localhost:8000');
   }
 
+  static angularSiteUrl() {
+    return 'http://davertmik.github.io/angular-demo-app';
+  }
+
   static seleniumAddress() {
     return `http://${this.seleniumHost()}:${this.seleniumPort()}/wd/hub`;
   }

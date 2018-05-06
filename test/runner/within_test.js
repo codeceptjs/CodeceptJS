@@ -1,26 +1,11 @@
 const path = require('path');
 const exec = require('child_process').exec;
+const { grepLines } = require('../../lib/utils').test;
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.within.json `;
 
-const getLines = function (array, startString, endString) {
-  let startIndex;
-  let endIndex;
-  array.every((elem, index) => {
-    if (elem === startString) {
-      startIndex = index;
-      return true;
-    }
-    if (elem === endString) {
-      endIndex = index;
-      return false;
-    }
-    return true;
-  });
-  return array.slice(startIndex + 1, endIndex);
-};
 let testStatus;
 
 describe('CodeceptJS within', function () {
@@ -34,7 +19,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const withoutGeneratorList = getLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
+      const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
       testStatus = withoutGeneratorList.pop();
       testStatus.should.include('OK');
       withoutGeneratorList.should.eql([
@@ -54,7 +39,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const withGeneratorList = getLines(lines, 'Check within with generator. Yield is first in order', 'Check within with generator. Yield is second in order');
+      const withGeneratorList = grepLines(lines, 'Check within with generator. Yield is first in order', 'Check within with generator. Yield is second in order');
       testStatus = withGeneratorList.pop();
       testStatus.should.include('OK');
       withGeneratorList.should.eql([
@@ -79,7 +64,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const withGeneratorListOtherOrder = getLines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test steps after within');
+      const withGeneratorListOtherOrder = grepLines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test steps after within');
       testStatus = withGeneratorListOtherOrder.pop();
       testStatus.should.include('OK');
       withGeneratorListOtherOrder.should.eql([
@@ -104,7 +89,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const withGeneratorList = getLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
+      const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
       testStatus = withGeneratorList.pop();
       testStatus.should.include('OK');
       withGeneratorList.should.eql([
@@ -129,7 +114,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const withGeneratorList = getLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');
+      const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');
       testStatus = withGeneratorList.pop();
       testStatus.should.include('OK');
       withGeneratorList.should.eql([
@@ -155,7 +140,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const withGeneratorListWithContinued = getLines(lines, 'Check within with generator. Should complete test steps after within', 'Check within with generator. Should stop test execution after fail in within');
+      const withGeneratorListWithContinued = grepLines(lines, 'Check within with generator. Should complete test steps after within', 'Check within with generator. Should stop test execution after fail in within');
       testStatus = withGeneratorListWithContinued.pop();
       testStatus.should.include('OK');
       withGeneratorListWithContinued.should.eql([
@@ -179,7 +164,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const errorInWithinList = getLines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
+      const errorInWithinList = grepLines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
       testStatus = errorInWithinList.pop();
       testStatus.should.include('FAILED');
       errorInWithinList.should.eql([
@@ -199,7 +184,7 @@ describe('CodeceptJS within', function () {
     exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
-      const errorInTestList = getLines(lines, 'Check within with generator. Should stop test execution after fail in main block', 'Check within with async/await. Await is first in order');
+      const errorInTestList = grepLines(lines, 'Check within with generator. Should stop test execution after fail in main block', 'Check within with async/await. Await is first in order');
       testStatus = errorInTestList.pop();
       testStatus.should.include('FAILED');
       errorInTestList.should.eql([
