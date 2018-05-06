@@ -9,9 +9,13 @@
       "windowSize": "maximize"
     }
   },
+
   "multiple": {
     "default": {
-      "browsers": ["chrome", { "browser": "firefox"}]
+      "browsers": [
+        "chrome", 
+        { "browser": "firefox"}
+      ]
     },
     "mobile": {
       "browsers": [
@@ -19,17 +23,21 @@
         {"browser": "safari", "windowSize": "maximize"},
         {"browser": "chrome", "windowSize": "maximize"},
         {"browser": "safari", "windowSize": "1200x840"}
-        ]
+      ]
     },
     "grep": {
       "grep": "@grep",
-      "browsers": ["chrome",
-        { "browser": "firefox", "windowSize": "1200x840"}]
+      "browsers": [
+        "chrome",
+        { "browser": "firefox", "windowSize": "1200x840"}
+      ]
     },
     "test": {
       "tests": "./*_test_override.multiple.js",
-      "browsers": ["chrome",
-        { "browser": "firefox", "windowSize": "1200x840"}]
+      "browsers": [
+        "chrome",
+        { "browser": "firefox", "windowSize": "1200x840"}
+      ]
     }
   },
   "include": {},
