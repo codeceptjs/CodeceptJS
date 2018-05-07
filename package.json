@@ -71,7 +71,9 @@
     "sinon-chai": "^2.14.0",
     "typescript": "^2.7.1",
     "unirest": "^0.5.1",
-    "webdriverio": "^4.10.2"
+    "webdriverio": "^4.10.2",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.27"
   },
   "engines": {
     "node": ">=8.9.1",
