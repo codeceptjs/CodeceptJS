@@ -3,9 +3,9 @@
 CodeceptJS provides flexible strategies for locating elements:
 
 * CSS and XPath locators
-* semantic locators: by link text, by buntton text, by field names, etc.
-* id locators: by CSS id, by accessibility id
+* semantic locators: by link text, by button text, by field names, etc.
 * locator builder
+* ID locators: by CSS id or by accessibility id
 
 ## CSS and XPath
 
@@ -45,7 +45,7 @@ Various strategies are used to locate semantic elements. However, they may run s
 
 ## Locator Builder
 
-CodeceptJS provides a flexible builder to compose custom locators in JavaScript. Use `locate` function to start.
+CodeceptJS provides a fluent builder to compose custom locators in JavaScript. Use `locate` function to start.
 
 To locate `a` element inside `label` with test: 'Hello' use:
 
@@ -61,6 +61,17 @@ which will produce following XPath:
 .//a[@href = '#'][ancestor::label[contains(., 'Hello')]]
 ```
 
+Locator builder accepts both XPath and CSS as parameters but converts them to XPath as more feature-rich format.
+Sometimes provided locators can get very long so it's recommended to simplify the output by providing a brief description for generated XPath:
+
+```js
+locate('//table')
+  .find('a')
+  .withText('Edit')
+  .as('edit button')
+// will be printed as 'edit button'
+```
+
 `locate` has following methods:
 
 #### find
@@ -71,8 +82,8 @@ Finds an element inside a located.
 // find td inside a table
 locate('table').find('td');
 ```
-
 Switches current element to found one.
+Can accept another `locate` call or strict locator.
 
 #### withAttr
 
@@ -97,36 +108,68 @@ locate('form').withChild('select');
 Finds element containing a text
 
 ```js
-
+locate('span').withText('Warning');
 ```
-
 
 #### first
 
+Get first element:
 
+```js
+locate('#table td').first();
+```
 
 #### last
 
+Get last element:
 
+```js
+locate('#table td').last();
+```
 
 #### at
 
+Get element at position:
 
+```js
+// first element
+locate('#table td').at(1);
+// second element
+locate('#table td').at(2);
+// second element from end
+locate('#table td').at(-2);
+```
 
 #### inside
 
+Finds an element which contains an provided ancestor:
 
+```js
+// finds `select` element inside #user_profile
+locate('select').inside('form#user_profile');
+```
 
 #### before
 
+Finds element located before the provided one
 
+```js
+// finds `button` before .btn-cancel
+locate('button').before('.btn-cancel');
+```
 
 #### after
 
+Finds element located after the provided one
 
-
-
-
+```js
+// finds `button` after .btn-cancel
+locate('button').after('.btn-cancel');
+```
 
 ## ID Locators
 
+ID locators are best to select the exact semantic element in web and mobile testing:
+
+* `#user` or `{ id: 'user' }` finds element with id="user"
+* `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
