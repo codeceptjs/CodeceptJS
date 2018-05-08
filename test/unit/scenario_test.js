@@ -82,7 +82,7 @@ describe('Scenario', () => {
         .then(() => assert.ok(after.called));
     });
 
-    it('should fire failed event on error', (done) => {
+    it('should fire failed event on error', () => {
       event.dispatcher.on(event.test.failed, failed = sinon.spy());
       scenario.setup();
       test.fn = () => {
