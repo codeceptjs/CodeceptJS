@@ -9,7 +9,8 @@ Scenario('search @grop', (I) => {
   I.amOnPage('https://github.com/search');
   I.fillField('Search GitHub', 'CodeceptJS');
   I.pressKey('Enter');
-  I.see('Codeception/CodeceptJS', 'a');
+  I.wait(1);
+  I.see('Codeception/CodeceptJS', locate('.repo-list .repo-list-item').first());
 });
 
 Scenario('signin', (I) => {
