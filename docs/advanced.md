@@ -21,23 +21,6 @@ Scenario('should create data via v2 version of API', (I) => {
 }).config('REST', { endpoint: 'https://api.mysite.com/v2' })
 ```
 
-<<<<<<< HEAD
-=======
-Config can also be set by a function, in this case you can get a test object and specify config values based on it.
-This is very useful when running tests against cloud providers, like BrowserStack.
-
-```js
-Scenario('should report to BrowserStack', (I) => {
-  // I.amOnPage(..)
-}).config((test) => {
-  return { desiredCapabilities: {
-    project: test.suite.title,
-    name: test.title,
-  }}
-});
-```
-
->>>>>>> dynamic-config
 Config changes can be applied to all tests in suite:
 
 ```js

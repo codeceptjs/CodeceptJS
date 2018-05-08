@@ -10,26 +10,16 @@ Scenario('change config 1 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) =
   I.seeInCurrentUrl('google.com');
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dynamic-config
 Scenario('change config 2 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   I.amOnPage('/');
   I.seeInCurrentUrl('github.com');
 }).config({ url: 'https://github.com' });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dynamic-config
 Scenario('change config 3 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   I.amOnPage('/');
   I.dontSeeInCurrentUrl('github.com');
   I.seeInCurrentUrl('google.com');
 });
-<<<<<<< HEAD
-=======
 
 Scenario('change config 4 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   I.amOnPage('/');
@@ -45,4 +35,3 @@ Scenario('change config 5 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) =
   I.dontSeeInCurrentUrl('github.com');
   I.seeInCurrentUrl('google.com');
 });
->>>>>>> dynamic-config
