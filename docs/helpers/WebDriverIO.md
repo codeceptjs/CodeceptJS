@@ -537,7 +537,7 @@ Example: In Vue.js to make components completely rendered we are waiting for [ne
 
 ```js
 I.executeAsyncScript(function(done) {
-  Vue.nextTick(done); // waiting for next tick
+Vue.nextTick(done); // waiting for next tick
 });
 ```
 
@@ -545,11 +545,9 @@ By passing value to `done()` function you can return values.
 Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
 
 ```js
-let val = yield I.executeAsyncScript(function(url, done) {
-  // in browser context
-  $.ajax(url, {
-    success: (data) => done(data);
-  }
+let val = await I.executeAsyncScript(function(url, done) {
+// in browser context
+$.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
 ```
 
@@ -569,8 +567,8 @@ Example with jQuery DatePicker:
 ```js
 // change date of jQuery DatePicker
 I.executeScript(function() {
-  // now we are inside browser context
-  $('date').datetimepicker('setDate', new Date());
+// now we are inside browser context
+$('date').datetimepicker('setDate', new Date());
 });
 ```
 
@@ -578,8 +576,8 @@ Can return values. Don't forget to use `yield` to get them.
 
 ```js
 let date = yield I.executeScript(function(el) {
-  // only basic types can be returned
-  return $(el).datetimepicker('getDate').toString();
+// only basic types can be returned
+return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
 ```
 
@@ -1419,44 +1417,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `urlPart`  
 -   `sec`   (optional, default `null`)
 
-# filterAsync
-
-Mimic Array.filter() API, but with an async callback function.
-Execute each callback on each array item serially. Useful when using WebDriverIO API.
-
-Added due because of problem with chrome driver when too many requests
-are made simultaneously. <https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9>
-
-**Parameters**
-
--   `array` **Array&lt;object&gt;** Input array items to iterate over
--   `callback` **function** Async function to excute on each array item
--   `option` **object** Additional options. 'extractValue' will extract the .value object from a WebdriverIO
-
-# forEachAsync
-
-Mimic Array.forEach() API, but with an async callback function.
-Execute each callback on each array item serially. Useful when using WebDriverIO API.
-
-Added due because of problem with chrome driver when too many requests
-are made simultaneously. <https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9>
-
-**Parameters**
-
--   `array` **Array&lt;object&gt;** Input array items to iterate over
--   `callback` **function** Async function to excute on each array item
--   `option` **object** Additional options. 'extractValue' will extract the .value object from a WebdriverIO
-
 # locator
 
 just press button if no selector is given
-
-# unify
-
-Internal helper method to handle command results (similar behaviour as the unify function from WebDriverIO
-except it does not resolve promises)
-
-**Parameters**
-
--   `items` **Array&lt;object&gt;** list of items
--   `option` **[object]** extractValue: set to try to return the .value property of the input items
