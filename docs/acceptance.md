@@ -265,7 +265,7 @@ within({frame: [".content", "#editor"]}, () => {
 
 ## Multiple Sessions
 
-*Note: Currently multiple sessions works only in WebDriverIO and Protractor*
+*Note: Currently multiple sessions work only in WebDriverIO and Protractor*
 
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
 

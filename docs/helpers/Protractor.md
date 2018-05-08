@@ -20,6 +20,7 @@ This helper should be configured in codecept.json
 -   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `rootElement` - Root element of AngularJS application (default: body)
+-   `getPageTimeout` (optional) sets default timeout for a page to be loaded. 10000 by default.
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
 -   `scriptsTimeout`: (optional) timeout in milliseconds for each script run on the browser, 10000 by default.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
@@ -444,7 +445,7 @@ By passing value to `done()` function you can return values.
 Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
 
 ```js
-let val = yield I.executeAsyncScript(function(url, done) {
+let val = await I.executeAsyncScript(function(url, done) {
 // in browser context
 $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');

@@ -1,53 +1,5 @@
 # Advanced Usage
 
-## Dynamic Configuration
-
-Helpers can be reconfigured per scenario or per feature.
-This might be useful when some tests should be executed with different settings than others.
-In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
-
-```js
-Scenario('should be executed in firefox', (I) => {
-  // I.amOnPage(..)
-}).config({ browser: 'firefox' })
-```
-
-In this case `config` overrides current config of the first helper.
-To change config of specific helper pass two arguments: helper name and config values:
-
-```js
-Scenario('should create data via v2 version of API', (I) => {
-  // I.amOnPage(..)
-}).config('REST', { endpoint: 'https://api.mysite.com/v2' })
-```
-
-<<<<<<< HEAD
-=======
-Config can also be set by a function, in this case you can get a test object and specify config values based on it.
-This is very useful when running tests against cloud providers, like BrowserStack.
-
-```js
-Scenario('should report to BrowserStack', (I) => {
-  // I.amOnPage(..)
-}).config((test) => {
-  return { desiredCapabilities: {
-    project: test.suite.title,
-    name: test.title,
-  }}
-});
-```
-
->>>>>>> dynamic-config
-Config changes can be applied to all tests in suite:
-
-```js
-Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
-```
-
-Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
-
-Configuration changes will be reverted after a test or a suite.
-
 ## Data Driven Tests
 
 Execute the same scenario on a different data set.
@@ -283,5 +235,50 @@ Passing a function will enable you to provide your own chunking algorithm. The f
 ```
 
 Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.
+
+## Dynamic Configuration
+
+Helpers can be reconfigured per scenario or per feature.
+This might be useful when some tests should be executed with different settings than others.
+In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
+
+```js
+Scenario('should be executed in firefox', (I) => {
+  // I.amOnPage(..)
+}).config({ browser: 'firefox' })
+```
+
+In this case `config` overrides current config of the first helper.
+To change config of specific helper pass two arguments: helper name and config values:
+
+```js
+Scenario('should create data via v2 version of API', (I) => {
+  // I.amOnPage(..)
+}).config('REST', { endpoint: 'https://api.mysite.com/v2' })
+```
+
+Config can also be set by a function, in this case you can get a test object and specify config values based on it.
+This is very useful when running tests against cloud providers, like BrowserStack.
+
+```js
+Scenario('should report to BrowserStack', (I) => {
+  // I.amOnPage(..)
+}).config((test) => {
+  return { desiredCapabilities: {
+    project: test.suite.title,
+    name: test.title,
+  }}
+});
+```
+
+Config changes can be applied to all tests in suite:
+
+```js
+Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
+```
+
+Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
+
+Configuration changes will be reverted after a test or a suite.
 
 ## done()
