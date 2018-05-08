@@ -23,12 +23,10 @@ Scenario('change config 3 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) =
 
 Scenario('change config 4 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   I.amOnPage('/');
-  pause();
   I.seeInCurrentUrl('codecept.io');
 }).config((test) => {
   return { url: 'https://codecept.io/', desiredCapabilities: { title: test.title } };
 });
-
 
 Scenario('change config 5 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
   I.amOnPage('/');
