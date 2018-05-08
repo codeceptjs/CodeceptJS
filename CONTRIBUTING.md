@@ -11,6 +11,12 @@ To start you need:
 5.  Commit and Push to your fork
 6.  Make Pull Request
 
+To run codeceptjs from this repo use:
+
+```
+node bin/codecept.js
+```
+
 Depending on a type of a change you should do the following.
 
 ## Helpers
