@@ -20,6 +20,7 @@ This helper should be configured in codecept.json
 -   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
 -   `seleniumAddress` - Selenium address to connect (default: <http://localhost:4444/wd/hub>)
 -   `rootElement` - Root element of AngularJS application (default: body)
+-   `getPageTimeout` (optional) sets default timeout for a page to be loaded. 10000 by default.
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
 -   `scriptsTimeout`: (optional) timeout in milliseconds for each script run on the browser, 10000 by default.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
