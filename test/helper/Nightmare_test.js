@@ -111,7 +111,7 @@ describe('Nightmare', function () {
       .catch((e) => {
         e.should.be.instanceOf(AssertionFailedError);
         e.toString().should.not.include('web page');
-        e.inspect().should.include("expected element {css: 'a'}");
+        e.inspect().should.include('expected element {css: a}');
       }));
   });
 
