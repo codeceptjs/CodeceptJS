@@ -1,5 +1,34 @@
 # Advanced Usage
 
+## Dynamic Configuration
+
+Helpers can be reconfigured per scenario or per feature.
+This might be useful when some tests should be executed with different settings than others.
+In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
+
+```js
+Scenario('should be executed in firefox', (I) => {
+  // I.amOnPage(..)
+}).config({ browser: firefox })
+```
+
+In this case `config` overrides current config of the first helper.
+To change config of specific helper pass two arguments: helper name and config values:
+
+```js
+Scenario('should create data via v2 version of API', (I) => {
+  // I.amOnPage(..)
+}).config('REST', { endpoint: 'https://api.mysite.com/v2' })
+```
+
+Config changes can be applied to all tests in suite:
+
+```js
+Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
+```
+
+Configuration changes will be reverted after a test or a suite.
+
 ## Data Driven Tests
 
 Execute the same scenario on a different data set.
@@ -199,7 +228,7 @@ Hooks are available when using the `run-multiple` command to perform actions bef
 
 ### Chunks
 
-Chunking is a way to execute multiple tests in parallel. The default chunking collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (`a_test.js`,`b_test.js`,`c_test.js`,`d_test.js` and `e_test.js`), by setting `"chunks": 2` we tell the runner to run two suites in parallel. The first suite will run `a_test.js`,`b_test.js` and `c_test.js`, the second suite will run `d_test.js` and `e_test.js`. 
+Chunking is a way to execute multiple tests in parallel. The default chunking collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (`a_test.js`,`b_test.js`,`c_test.js`,`d_test.js` and `e_test.js`), by setting `"chunks": 2` we tell the runner to run two suites in parallel. The first suite will run `a_test.js`,`b_test.js` and `c_test.js`, the second suite will run `d_test.js` and `e_test.js`.
 
 Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.
 
@@ -210,7 +239,7 @@ Grep and multiple browsers are supported. Passing more than one browser will mul
     // Splits tests into chunks
     "chunks": 2,
     // run all tests in chrome and firefox
-    "browsers": ["chrome", "firefox"] 
+    "browsers": ["chrome", "firefox"]
   },
 }
 ```
@@ -226,7 +255,7 @@ Passing a function will enable you to provide your own chunking algorithm. The f
       return [
         [ files[0] ], // chunk 1
         [ files[files.length-1] ], // chunk 2
-      ]  
+      ]
     },
     // run all tests in chrome and firefox
     "browsers": ["chrome", "firefox"]
