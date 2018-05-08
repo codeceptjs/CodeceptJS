@@ -1,3 +1,63 @@
+## 1.2.0
+
+* [Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
+
+```js
+Scenario('run in different browsers', (I) => {
+  I.amOnPage('/hello');
+  I.see('Hello!');
+  session('john', () => {
+    I.amOnPage('/bye');
+    I.dontSee('Hello');
+    I.see('Bye');
+  });
+  I.see('Hello');
+});
+```
+
+* [Parallel Execution](https://codecept.io/advanced/#chunks) by @sveneisenschmidt. Run tests in parallel specifying number of chunks:
+
+```js
+"multiple": {
+  "parallel": {
+    // run in 2 processes
+    "chunks": 2,
+    // run all tests in chrome
+    "browsers": ["chrome"]
+  },
+}
+```
+
+* [Locator Builder](https://codecept.io/locators). Write complex locators with simplest API combining CSS and XPath:
+
+```js
+// select 'Edit' link inside 2nd row of a table
+locate('//table')
+  .find('tr')
+  .at(2)
+  .find('a')
+  .withText('Edit');
+```
+
+* [Dynamic configuration](https://codecept.io/advanced/#dynamic-configuration) to update helpers config per test or per suite.
+* Added `event.test.finished` which fires synchronously for both failed and passed tests.
+* Added scenario and feature configuration via fluent API
+
+```js
+Feature('checkout')
+  .timeout(3000)
+  .retry(2);
+
+Scenario('user can order in firefox', (I) => {
+  // see dynamic configuration
+}).config({ browser: 'firefox' })
+  .timeout(20000);
+
+Scenario('this test should throw error', (I) => {
+  // I.amOnPage
+}).throws(new Error);
+```
+
 ## 1.1.8
 
 * Fixed generating TypeScript definitions with `codeceptjs def`.
