@@ -9,7 +9,7 @@ In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
 ```js
 Scenario('should be executed in firefox', (I) => {
   // I.amOnPage(..)
-}).config({ browser: firefox })
+}).config({ browser: 'firefox' })
 ```
 
 In this case `config` overrides current config of the first helper.
@@ -26,6 +26,8 @@ Config changes can be applied to all tests in suite:
 ```js
 Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
 ```
+
+Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
 
 Configuration changes will be reverted after a test or a suite.
 
