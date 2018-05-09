@@ -1,8 +1,8 @@
 Gets a cookie object by name
-* Resumes test execution, so **should be used inside a generator with `yield`** operator.
+* Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let cookie = I.grabCookie('auth');
+let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 @param name
