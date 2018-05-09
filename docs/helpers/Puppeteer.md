@@ -435,7 +435,7 @@ $.ajax(url, { success: (data) => done(data); }
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -447,10 +447,10 @@ $('date').datetimepicker('setDate', new Date());
 });
 ```
 
-Can return values. Don't forget to use `yield` to get them.
+Can return values. Don't forget to use `await` to get them.
 
 ```js
-let date = yield I.executeScript(function(el) {
+let date = await I.executeScript(function(el) {
 // only basic types can be returned
 return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
@@ -484,10 +484,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ## grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
 
 **Parameters**
@@ -507,10 +507,10 @@ console.log(JSON.stringify(logs))
 ## grabCookie
 
 Gets a cookie object by name
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let cookie = I.grabCookie('auth');
+let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 
@@ -545,11 +545,11 @@ console.log(`Current URL is [${url}]`);
 ## grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 Appium: support only web testing
 
 ```js
-let postHTML = yield I.grabHTMLFrom('#post');
+let postHTML = await I.grabHTMLFrom('#post');
 ```
 
 **Parameters**
@@ -605,10 +605,10 @@ let pageSource = await I.grabSource();
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 
 **Parameters**
@@ -618,19 +618,19 @@ let pin = yield I.grabTextFrom('#pin');
 ## grabTitle
 
 Retrieves a page title and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let title = yield I.grabTitle();
+let title = await I.grabTitle();
 ```
 
 ## grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 
 **Parameters**
