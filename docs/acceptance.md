@@ -321,9 +321,21 @@ Scenario('test', (I) => {
   });
 }
 ```
+`session` can return value which can be used in scenario:
+
+```js
+// inside async function
+const val = await session('john', () => {
+  I.amOnPage('/info');
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+```
 
 Function passed into session can use `I`, page objects, and any objects declared for the scenario.
-This funtion can also be declared as async (but doesn't work as generator). You can use `within` inside a session but you can't call session from inside `within`.
+This function can also be declared as async (but doesn't work as generator).
+
+Also, you can use `within` inside a session but you can't call session from inside `within`.
 
 ---
 

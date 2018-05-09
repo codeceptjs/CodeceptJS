@@ -131,6 +131,16 @@ When running steps inside a within block will be shown with a shift:
 
 ![within](http://codecept.io/images/within.png)
 
+Within can return a value which can be used in a scenario:
+
+```js
+// inside async function
+const val = await within('#sidebar', () => {
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+```
+
 ## Comments
 
 There is a simple way to add additional comments to your test scenario.
