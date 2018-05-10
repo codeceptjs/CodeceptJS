@@ -98,3 +98,21 @@ Scenario('within on nested iframe depth 2 and mixed class and xpath selector @We
   I.see('Nested Iframe test');
   I.dontSee('Email Address');
 });
+
+Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @Protractor @Nightmare', async (I) => {
+  I.amOnPage('/form/textarea');
+  within('#grab-multiple', () => {
+    return I.grabTextFrom('#first-link');
+  });
+}).throws(/not found/);
+
+Scenario('should return a value @WebDriverIO @Puppeteer @Protractor @Nightmare', async (I) => {
+  I.amOnPage('/info');
+  const val = await within('#grab-multiple', () => {
+    return I.grabTextFrom('#first-link');
+  });
+  I.fillField('rus', val);
+  I.pressKey('Enter');
+  I.see('[rus] => First');
+}).retry(0);
+

@@ -126,3 +126,26 @@ Scenario('should start firefox @WebDriverIO', async (I) => {
   const isChrome = await I.executeScript(() => !!window.chrome);
   expect(isChrome).to.be.ok;
 });
+
+Scenario('should return a value in @WebDriverIO @Protractor', async (I) => {
+  I.amOnPage('/form/textarea');
+  const val = await session('john', () => {
+    I.amOnPage('/info');
+    return I.grabTextFrom({ css: 'h1' });
+  });
+  I.fillField('Description', val);
+  I.click('Submit');
+  I.see('[description] => Information');
+});
+
+
+Scenario('should return a value @WebDriverIO @Protractor in async', async (I) => {
+  I.amOnPage('/form/textarea');
+  const val = await session('john', async () => {
+    I.amOnPage('/info');
+    return I.grabTextFrom({ css: 'h1' });
+  });
+  I.fillField('Description', val);
+  I.click('Submit');
+  I.see('[description] => Information');
+});
