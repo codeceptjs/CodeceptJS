@@ -41,7 +41,8 @@ locate('//table')
 
 * [Dynamic configuration](https://codecept.io/advanced/#dynamic-configuration) to update helpers config per test or per suite.
 * Added `event.test.finished` which fires synchronously for both failed and passed tests.
-* Added scenario and feature configuration via fluent API
+* `within` blocks can return values. See [updated documentation](https://codecept.io/basics/#within).
+* Added scenario and feature configuration via fluent API:
 
 ```js
 Feature('checkout')
