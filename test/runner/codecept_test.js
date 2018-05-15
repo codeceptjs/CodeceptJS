@@ -98,7 +98,12 @@ describe('CodeceptJS Runner', () => {
     exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
+      const uniqueLines = lines.filter((v, i, a) => a.indexOf(v) === i);
+
+      expect(uniqueLines.length).to.eql(lines.length, `No duplicates in output +${lines} \n\n -${uniqueLines}`);
+
       expect(lines).to.include.members([
+        'Helper: I\'m initialized',
         'Helper: I\'m simple BeforeSuite hook',
         'Test: I\'m simple BeforeSuite hook',
         'Test: I\'m generator BeforeSuite hook',
@@ -116,6 +121,7 @@ describe('CodeceptJS Runner', () => {
         'Test: I\'m async/await AfterSuite hook',
         'Helper: I\'m simple AfterSuite hook',
       ]);
+
       stdout.should.include('OK  | 1 passed');
       assert(!err);
       done();
