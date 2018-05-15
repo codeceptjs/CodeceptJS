@@ -2,6 +2,22 @@
 // Project: https://github.com/codeception/codeceptjs/
 // Definitions by: Michael Bodnarchuk <http://github.com/DavertMik>, Drew Diamantoukos <https://github.com/KennyRules>
 
+declare class Locator {
+  or(locator): Locator;
+  find(locator): Locator;
+  withChild(locator): Locator;
+  find(locator): Locator;
+  at(position): Locator;
+  first(): Locator;
+  last(): Locator;
+  inside(locator): Locator;
+  before(locator): Locator;
+  after(locator): Locator;
+  withText(text): Locator;
+  withAttr(attr): Locator;
+  as(output): Locator;
+}
+
 declare module NodeJS {
   interface Process {
     profile: string;
@@ -17,7 +33,9 @@ declare module NodeJS {
     Helper: any;
     pause: any;
     within: any;
+    session: any;
     DataTable: any;
+    locate: Locator,
     by: any;
 
     // Used by Protractor helper
@@ -35,6 +53,7 @@ declare interface Window {
 }
 
 declare var window: Window;
+
 
 /**
  * Special Mocha definitions for reporter Base and Suite.

@@ -123,7 +123,22 @@ You can also run `list` command to see methods of I:
 codeceptjs list
 ```
 
-### Writing First Test
+## Testing non-Angular Applications
+
+Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:
+
+```js
+"helpers": {
+  "Protractor": {
+    "url": "http://todomvc.com/examples/angularjs/",
+    "driver": "hosted",
+    "browser": "firefox",
+    "angular": false
+  }
+}
+```
+
+## Writing First Test
 
 Test scenario should always use `I` object to execute commands.
 This is important as all methods of `I` are running in global promise chain, this way CodeceptJS makes sure everything is executed in right order.
@@ -154,7 +169,7 @@ A test can be executed with `run` command, we recommend to use `--steps` options
 ```sh
 $ codeceptjs run --steps
 
-CodeceptJS v0.3.2
+CodeceptJS 1.2.0
 Test root is assumed to be /home/davert/demos/todoangular
 Using the selenium server at http://localhost:4444/wd/hub
 
@@ -164,7 +179,7 @@ TodoMvc --
  • I dont see element "#todo-count"
 ```
 
-### Running Several Scenarios
+## Running Several Scenarios
 
 By writing a test in similar manner we will have a test shown in the beginning of this guide. Probably we would like not to finish with one test,
 but have more, for testing editing of todo items, checking todo items, and more.
@@ -179,7 +194,7 @@ Before((I) => {
   I.amOnPage('/');
 });
 
-var createTodo = function (I, name) {
+const createTodo = function (I, name) {
   I.fillField({model: 'newTodo'}, name);
   I.pressKey('Enter');
 }
@@ -213,7 +228,7 @@ Scenario('check todo item', (I) => {
 });
 ```
 
-### Locators
+## Locators
 
 Like you may have noticed, CodeceptJS doesn't use `by.*` locators similar to Protractor or Selenium Webdriver.
 Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
@@ -232,13 +247,12 @@ Same thing happens for form fields: they are searched by field names, labels, an
 
 Using such smart locators makes tests easy to write, however, searching an element by text is slower than using CSS|XPath and much slower than using strict locators.
 
-### Refactoring
+## Refactoring
 
 In previous examples, we've moved actions into `createTodo` function. Is there a more elegant way of refactoring?
 Can we have something like `I.createTodo()` to be used in code? Sure, we can do so by editing `steps_file.js` created by init command.
 
 ```js
-'use strict';
 // in this file you can append custom step methods to 'I' object
 
 module.exports = function() {
@@ -264,22 +278,11 @@ Scenario('create todo item', (I) => {
 
 To learn more about refactoring options in CodeceptJS read [PageObjects guide](http://codecept.io/pageobjects/).
 
-### Testing non-Angular Applications
+## Multiple Sessions
 
-Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:
+To run several browsers in one test see [multiple session](https://codecept.io/acceptance/#multiple-sessions) chapter.
 
-```js
-"helpers": {
-  "Protractor": {
-    "url": "http://todomvc.com/examples/angularjs/",
-    "driver": "hosted",
-    "browser": "firefox",
-    "angular": false
-  }
-}
-```
-
-### Extending
+## Extending
 
 What if CodeceptJS doesn't provide some of Protractor functionality you actually need? Sure its API is to general,
 and this case is possible. If you don't know how to do something with CodeceptJS - revert back to Protractor syntax!

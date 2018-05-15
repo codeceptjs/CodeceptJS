@@ -224,7 +224,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 Get list of all available contexts
 
-    let contexts = yield I.grabAllContexts();
+    let contexts = await I.grabAllContexts();
 
 Appium: support Android and iOS
 
@@ -233,7 +233,7 @@ Appium: support Android and iOS
 Retrieve current context
 
 ```js
-let context = yield I.grabContext();
+let context = await I.grabContext();
 ```
 
 Appium: support Android and iOS
@@ -243,7 +243,7 @@ Appium: support Android and iOS
 Get current device activity.
 
 ```js
-let activity = yield I.grabCurrentActivity();
+let activity = await I.grabCurrentActivity();
 ```
 
 Appium: support only Android
@@ -255,7 +255,7 @@ The actual server value will be a number. However WebdriverIO additional
 properties to the response object to allow easier assertions.
 
 ```js
-let con = yield I.grabNetworkConnection();
+let con = await I.grabNetworkConnection();
 ```
 
 Appium: support only Android
@@ -265,7 +265,7 @@ Appium: support only Android
 Get current orientation.
 
 ```js
-let orientation = yield I.grabOrientation();
+let orientation = await I.grabOrientation();
 ```
 
 Appium: support Android and iOS
@@ -275,7 +275,7 @@ Appium: support Android and iOS
 Get all the currently specified settings.
 
 ```js
-let settings = yield I.grabSettings();
+let settings = await I.grabSettings();
 ```
 
 Appium: support Android and iOS
@@ -283,10 +283,10 @@ Appium: support Android and iOS
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 
 **Parameters**
@@ -297,10 +297,10 @@ let pin = yield I.grabTextFrom('#pin');
 ## grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 
 **Parameters**
@@ -434,7 +434,7 @@ I.runInWeb(() => {
 
 ## runOnAndroid
 
-Execute code only on iOS
+Execute code only on Android
 
 ```js
 I.runOnAndroid(() => {

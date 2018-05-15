@@ -17,6 +17,10 @@ describe('CodeceptJS Interface', () => {
     exec(config_run_config('codecept.flaky.json'), (err, stdout, stderr) => {
       stdout.should.include('Flaky'); // feature
       stdout.should.include('Not so flaky test'); // test name
+      stdout.should.include('Old style flaky'); // test name
+      stdout.should.include('[T1] Retries: 2'); // test name
+      stdout.should.include('[T2] Retries: 4'); // test name
+      stdout.should.include('[T3] Retries: 1'); // test name
       assert(!err);
       done();
     });
@@ -69,30 +73,6 @@ describe('CodeceptJS Interface', () => {
 
   it('should execute expected promise chain', (done) => {
     exec(`${codecept_run} --verbose`, (err, stdout, stderr) => {
-      const queue1 = stdout.match(/\[1\] .+/g);
-      queue1.should.eql([
-        '[1] Starting recording promises',
-        '[1] Queued | hook FileSystem._beforeSuite()',
-        '[1] Queued | hook FileSystem._before()',
-        '[1] Queued | hook FileSystem._beforeStep()',
-        '[1] Queued | amInPath: "."',
-        '[1] Queued | hook FileSystem._afterStep()',
-        '[1] Queued | step passed',
-        '[1] Queued | return result',
-        '[1] Queued | say hello world',
-        '[1] Queued | hook FileSystem._beforeStep()',
-        '[1] Queued | seeFile: "codecept.json"',
-        '[1] Queued | hook FileSystem._afterStep()',
-        '[1] Queued | step passed',
-        '[1] Queued | return result',
-        '[1] Queued | fire test.passed',
-        '[1] Queued | finish test',
-        '[1] Queued | hook FileSystem._passed()',
-        '[1] Queued | hook FileSystem._after()',
-        '[1] Queued | hook FileSystem._afterSuite()',
-        '[1] Queued | hook FileSystem._finishTest()',
-      ]);
-
       const lines = stdout.match(/\S.+/g);
 
       // before hooks

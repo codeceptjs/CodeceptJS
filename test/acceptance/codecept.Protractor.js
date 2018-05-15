@@ -8,6 +8,7 @@ module.exports.config = {
     Protractor: {
       url: TestHelper.siteUrl(),
       browser: 'chrome',
+      // restart: true,
       angular: false,
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),

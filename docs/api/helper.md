@@ -72,6 +72,14 @@ Hook executed after each passed test
 
 -   `test` **Any** 
 
+## _setConfig
+
+Sets config for current test
+
+**Parameters**
+
+-   `opts`  
+
 ## _test
 
 Hook provides a test details
@@ -80,6 +88,14 @@ Executed in the very beginning of a test
 **Parameters**
 
 -   `test` **Any** 
+
+## _validateConfig
+
+Abstract method to validate config
+
+**Parameters**
+
+-   `config` **Any** 
 
 ## debug
 

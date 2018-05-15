@@ -11,7 +11,7 @@ const eventHandlers = require('../data/sandbox/eventHandlers');
 
 const expectedEvents = [];
 
-Feature('Events');
+Feature('Events').retry(3).timeout(10000);
 
 BeforeSuite((I) => {
   expectedEvents.push(...[

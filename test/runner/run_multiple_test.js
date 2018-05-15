@@ -61,7 +61,6 @@ describe('CodeceptJS Multiple Runner', function () {
       stdout.should.include('[4.mobile:safari] print browser ');
       stdout.should.include('[5.default:chrome] print browser ');
       stdout.should.include('[6.default:firefox] print browser ');
-
       assert(!err);
       done();
     });

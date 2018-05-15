@@ -18,7 +18,7 @@ By combining REST API with Factories you can easily create records for tests:
 
 ```js
 I.have('user', { login: 'davert', email: 'davert@mail.com' });
-let id = yield I.have('post', { title: 'My first post'});
+let id = await I.have('post', { title: 'My first post'});
 I.haveMultiple('comment', 3, {post_id: id});
 ```
 

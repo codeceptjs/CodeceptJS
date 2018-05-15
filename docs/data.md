@@ -57,13 +57,13 @@ Here is a usage example:
 ```js
 let postId = null;
 
-Scenario('check post page', function*(I) {
+Scenario('check post page', async (I)  => {
   // valid access token
   I.haveRequestHeaders({auth: '1111111'});
   // get the first user
-  let user = yield I.sendGetRequest('/api/users/1');
+  let user = await I.sendGetRequest('/api/users/1');
   // create a post and save its Id
-  postId = yield I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' });
+  postId = await I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' });
   // open browser page of new post
   I.amOnPage('/posts/2.html');
   I.see('some text', 'p.body');
