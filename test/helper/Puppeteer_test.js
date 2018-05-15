@@ -25,7 +25,7 @@ describe('Puppeteer', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
-      waitForTimeout: 2000,
+      waitForTimeout: 5000,
       waitForAction: 500,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],

@@ -14,6 +14,7 @@ This helper should be configured in codecept.json
 -   `restart`: (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
+-   `fullPageScreenshots` (optional, default: false) - make full page screenshots on failure.
 -   `uniqueScreenshotNames`: (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
@@ -545,7 +546,7 @@ By passing value to `done()` function you can return values.
 Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
 
 ```js
-let val = yield I.executeAsyncScript(function(url, done) {
+let val = await I.executeAsyncScript(function(url, done) {
 // in browser context
 $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
@@ -560,7 +561,7 @@ $.ajax(url, { success: (data) => done(data); }
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -572,10 +573,10 @@ $('date').datetimepicker('setDate', new Date());
 });
 ```
 
-Can return values. Don't forget to use `yield` to get them.
+Can return values. Don't forget to use `await` to get them.
 
 ```js
-let date = yield I.executeScript(function(el) {
+let date = await I.executeScript(function(el) {
 // only basic types can be returned
 return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
@@ -609,10 +610,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ## grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
 
 **Parameters**
@@ -625,17 +626,17 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 Get JS log from browser. Log buffer is reset after each request.
 
 ```js
-let logs = yield I.grabBrowserLogs();
+let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
 ## grabCookie
 
 Gets a cookie object by name
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let cookie = I.grabCookie('auth');
+let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 
@@ -670,11 +671,11 @@ console.log(`Current URL is [${url}]`);
 ## grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 Appium: support only web testing
 
 ```js
-let postHTML = yield I.grabHTMLFrom('#post');
+let postHTML = await I.grabHTMLFrom('#post');
 ```
 
 **Parameters**
@@ -732,10 +733,10 @@ Appium: support
 ## grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 
 **Parameters**
@@ -746,10 +747,10 @@ let pin = yield I.grabTextFrom('#pin');
 ## grabTitle
 
 Retrieves a page title and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let title = yield I.grabTitle();
+let title = await I.grabTitle();
 ```
 
 Appium: support only web testing
@@ -757,10 +758,10 @@ Appium: support only web testing
 ## grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 
 **Parameters**
@@ -1417,44 +1418,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `urlPart`  
 -   `sec`   (optional, default `null`)
 
-# filterAsync
-
-Mimic Array.filter() API, but with an async callback function.
-Execute each callback on each array item serially. Useful when using WebDriverIO API.
-
-Added due because of problem with chrome driver when too many requests
-are made simultaneously. <https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9>
-
-**Parameters**
-
--   `array` **Array&lt;object&gt;** Input array items to iterate over
--   `callback` **function** Async function to excute on each array item
--   `option` **object** Additional options. 'extractValue' will extract the .value object from a WebdriverIO
-
-# forEachAsync
-
-Mimic Array.forEach() API, but with an async callback function.
-Execute each callback on each array item serially. Useful when using WebDriverIO API.
-
-Added due because of problem with chrome driver when too many requests
-are made simultaneously. <https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9>
-
-**Parameters**
-
--   `array` **Array&lt;object&gt;** Input array items to iterate over
--   `callback` **function** Async function to excute on each array item
--   `option` **object** Additional options. 'extractValue' will extract the .value object from a WebdriverIO
-
 # locator
 
 just press button if no selector is given
-
-# unify
-
-Internal helper method to handle command results (similar behaviour as the unify function from WebDriverIO
-except it does not resolve promises)
-
-**Parameters**
-
--   `items` **Array&lt;object&gt;** list of items
--   `option` **[object]** extractValue: set to try to return the .value property of the input items
