@@ -15,7 +15,7 @@ Scenario('run in different browsers', (I) => {
 });
 ```
 
-* [Parallel Execution](https://codecept.io/advanced/#chunks) by @sveneisenschmidt. Run tests in parallel specifying number of chunks:
+* [Parallel Execution](https://codecept.io/advanced/#parallel-execution) by @sveneisenschmidt. Run tests in parallel specifying number of chunks:
 
 ```js
 "multiple": {
