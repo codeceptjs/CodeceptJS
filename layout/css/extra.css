@@ -309,7 +309,7 @@ body .bs-sidebar {
 }
 
 .banner {
-  background: #2eb4cc;
+  background: #70eee2;
   color: #333;
   font-size: 90%;
   text-align: center;
@@ -318,7 +318,7 @@ body .bs-sidebar {
 }
 
 .banner a {
-  color: #3F055D;
+  color: #000;
   text-decoration: underline;
 }
 
