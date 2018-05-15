@@ -3,9 +3,17 @@ const program = require('commander');
 const path = require('path');
 const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
-const print = require('../lib/output');
+const { print, error } = require('../lib/output');
 const fileExists = require('../lib/utils').fileExists;
 const fs = require('fs');
+
+if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 8) {
+  error('NodeJS >= 8 is required to run.');
+  print();
+  print('Please upgrade your NodeJS engine');
+  print(`Current NodeJS version: ${process.version}`);
+  process.exit(1);
+}
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
