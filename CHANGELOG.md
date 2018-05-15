@@ -1,6 +1,6 @@
 ## 1.2.0
 
-* [Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
+* [WebDriverIO][Protractor][Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
 
 ```js
 Scenario('run in different browsers', (I) => {
@@ -41,6 +41,7 @@ locate('//table')
 
 * [Dynamic configuration](https://codecept.io/advanced/#dynamic-configuration) to update helpers config per test or per suite.
 * Added `event.test.finished` which fires synchronously for both failed and passed tests.
+* [WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue #1600](https://github.com/Codeception/CodeceptJS/issues/1060). You can enabled them with `fullPageScreenshots: true`, however they may work unstable in Selenium.
 * `within` blocks can return values. See [updated documentation](https://codecept.io/basics/#within).
 * Added scenario and feature configuration via fluent API:
 
