@@ -5,6 +5,10 @@ class MyHelper extends Helper {
     return 'hello world';
   }
 
+  _init() {
+    console.log('Helper: I\'m initialized');
+  }
+
   _beforeSuite() {
     console.log('Helper: I\'m simple BeforeSuite hook');
   }
