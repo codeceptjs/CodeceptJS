@@ -2,10 +2,10 @@
 
 CodeceptJS provides flexible strategies for locating elements:
 
-* CSS and XPath locators
-* semantic locators: by link text, by button text, by field names, etc.
-* locator builder
-* ID locators: by CSS id or by accessibility id
+* [CSS and XPath locators](#css-and-xpath)
+* [Semantic locators](#semantic-locators): by link text, by button text, by field names, etc.
+* [Locator Builder](#locator-builder)
+* [ID locators](#id-locators): by CSS id or by accessibility id
 
 ## CSS and XPath
 
