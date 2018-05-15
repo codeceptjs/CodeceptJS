@@ -14,6 +14,7 @@ This helper should be configured in codecept.json
 -   `restart`: (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
+-   `fullPageScreenshots` (optional, default: false) - make full page screenshots on failure.
 -   `uniqueScreenshotNames`: (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
