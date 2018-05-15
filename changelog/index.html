@@ -488,6 +488,7 @@ locate('//table')
 <li>Added <code>event.test.finished</code> which fires synchronously for both failed and passed tests.</li>
 <li>[WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See <a href="https://github.com/Codeception/CodeceptJS/issues/1060">issue #1600</a>. You can enabled them with <code>fullPageScreenshots: true</code>, however they may work unstable in Selenium.</li>
 <li><code>within</code> blocks can return values. See <a href="https://codecept.io/basics/#within">updated documentation</a>.</li>
+<li>Removed doublt call to <code>_init</code> in helpers. Fixes issue <a href="https://github.com/Codeception/CodeceptJS/issues/1036">#1036</a></li>
 <li>Added scenario and feature configuration via fluent API:</li>
 </ul>
 <pre><code class="js">Feature('checkout')
