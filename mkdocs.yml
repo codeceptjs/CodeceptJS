@@ -4,6 +4,7 @@ repo_url: https://github.com/codeception/codeceptjs/
 pages:
 - Index: 'index.md'
 - Quickstart: 'quickstart.md'
+- Video: 'video.md'
 - Guides:
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
