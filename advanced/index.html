@@ -192,6 +192,10 @@
                         </li>
                     
                         <li >
+                            <a href="../locators/">Locators</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
@@ -271,10 +275,10 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.1 released</strong>. What's new:
-  <strong>NodeJS 8.9+ required</strong> |
-  <a href="http://codecept.io/puppeteer/" class="">Headless tests with Google Chrome's Puppeteer</a> |
-  Async-await support
+  <strong>CodeceptJS 1.2 released</strong>. What's new:
+  <strong>[Multiple browser sessions](https://codecept.io/acceptance/#multiple-sessions)</strong> |
+  <strong>[Parallel execution](https://codecept.io/acceptance/#parallel-execution)</strong> |
+  <strong>[Locator Builder](https://codecept.io/locators)</strong>
 </div>
 
 
@@ -292,7 +296,9 @@
         
             <li><a href="#debug">Debug</a></li>
         
-            <li><a href="#multiple-execution">Multiple Execution</a></li>
+            <li><a href="#parallel-execution">Parallel Execution</a></li>
+        
+            <li><a href="#multiple-browsers-execution">Multiple Browsers Execution</a></li>
         
             <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
         
@@ -383,8 +389,53 @@ It can be turned on with <code>--debug</code> flag.</p>
 <pre><code class="sh">node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 </code></pre>
 
-<h2 id="multiple-execution">Multiple Execution</h2>
-<p>CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel. Before using this feature you need to add <code>multiple</code> option to the config:</p>
+<h2 id="parallel-execution">Parallel Execution</h2>
+<p>CodeceptJS can be configured to run tests in parallel.</p>
+<p>When enabled, it collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (<code>a_test.js</code>,<code>b_test.js</code>,<code>c_test.js</code>,<code>d_test.js</code> and <code>e_test.js</code>), by setting <code>"chunks": 2</code> we tell the runner to run two suites in parallel. The first suite will run <code>a_test.js</code>,<code>b_test.js</code> and <code>c_test.js</code>, the second suite will run <code>d_test.js</code> and <code>e_test.js</code>.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // Splits tests into 2 chunks
+    &quot;chunks&quot;: 2
+  }
+}
+</code></pre>
+
+<p>To execute them use <code>run-multiple</code> command passing configured suite, which is <code>parallel</code> in this example:</p>
+<pre><code>codeceptjs run-multiple parallel
+</code></pre>
+
+<p>Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  // 2x chunks + 2x browsers = 4
+  &quot;parallel&quot;: {
+    // Splits tests into chunks
+    &quot;chunks&quot;: 2,
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  },
+}
+</code></pre>
+
+<p>Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // Splits tests into chunks by passing an anonymous function,
+    // only execute first and last found test file
+    &quot;chunks&quot;: (files) =&gt; {
+      return [
+        [ files[0] ], // chunk 1
+        [ files[files.length-1] ], // chunk 2
+      ]
+    },
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  },
+}
+</code></pre>
+
+<p>Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.</p>
+<h2 id="multiple-browsers-execution">Multiple Browsers Execution</h2>
+<p>This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel.</p>
 <pre><code class="js">&quot;multiple&quot;: {
   &quot;basic&quot;: {
     // run all tests in chrome and firefox
@@ -458,38 +509,6 @@ It can be turned on with <code>--debug</code> flag.</p>
 
 <h3 id="hooks">Hooks</h3>
 <p>Hooks are available when using the <code>run-multiple</code> command to perform actions before the test suites start and after the test suites have finished. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a> for an example.</p>
-<h3 id="chunks">Chunks</h3>
-<p>Chunking is a way to execute multiple tests in parallel. The default chunking collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (<code>a_test.js</code>,<code>b_test.js</code>,<code>c_test.js</code>,<code>d_test.js</code> and <code>e_test.js</code>), by setting <code>"chunks": 2</code> we tell the runner to run two suites in parallel. The first suite will run <code>a_test.js</code>,<code>b_test.js</code> and <code>c_test.js</code>, the second suite will run <code>d_test.js</code> and <code>e_test.js</code>.</p>
-<p>Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.</p>
-<pre><code class="js">&quot;multiple&quot;: {
-  // 2x chunks + 2x browsers = 4
-  &quot;parallel&quot;: {
-    // Splits tests into chunks
-    &quot;chunks&quot;: 2,
-    // run all tests in chrome and firefox
-    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
-  },
-}
-</code></pre>
-
-<p>Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.</p>
-<pre><code class="js">&quot;multiple&quot;: {
-  &quot;parallel&quot;: {
-    // Splits tests into chunks by passing an anonymous function,
-    // only execute first and last found test file
-    &quot;chunks&quot;: (files) =&gt; {
-      return [
-        [ files[0] ], // chunk 1
-        [ files[files.length-1] ], // chunk 2
-      ]
-    },
-    // run all tests in chrome and firefox
-    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
-  },
-}
-</code></pre>
-
-<p>Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.</p>
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
 <p>Helpers can be reconfigured per scenario or per feature.
 This might be useful when some tests should be executed with different settings than others.

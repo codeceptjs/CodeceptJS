@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Translation - CodeceptJS</title>
+	<title>Locators - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
 
@@ -191,8 +191,8 @@
                             <a href="../commands/">Commands</a>
                         </li>
                     
-                        <li >
-                            <a href="../locators/">Locators</a>
+                        <li class="active">
+                            <a href="./">Locators</a>
                         </li>
                     
                         <li >
@@ -203,8 +203,8 @@
                             <a href="../reports/">Reports</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Translation</a>
+                        <li >
+                            <a href="../translation/">Translation</a>
                         </li>
                     
                         <li >
@@ -255,7 +255,7 @@
 
 
                 <li >
-                    <a rel="prev" href="../docker/">
+                    <a rel="prev" href="../configuration/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -288,135 +288,147 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#translation">Translation</a></li>
+        <li class="main active"><a href="#locators">Locators</a></li>
         
-            <li><a href="#russian">Russian</a></li>
+            <li><a href="#css-and-xpath">CSS and XPath</a></li>
         
-            <li><a href="#portuguese">Portuguese</a></li>
+            <li><a href="#semantic-locators">Semantic Locators</a></li>
         
-            <li><a href="#italian">Italian</a></li>
+            <li><a href="#locator-builder">Locator Builder</a></li>
         
-            <li><a href="#polish">Polish</a></li>
-        
-            <li><a href="#chinese">Chinese</a></li>
+            <li><a href="#id-locators">ID Locators</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="translation">Translation</h1>
-<p>Test output and the way tests are written can be localized.
-This way scenarios can be written in almost native language using UTF support of JavaScript.
-If you have non-English team and you work on non-English project consider enabling translation
-by setting translation to <a href="https://github.com/Codeception/CodeceptJS/blob/master/translations">one of available languages</a>.</p>
-<p>Please refer to translated steps inside translation files and send Pull Requests to add missing.</p>
-<p>To get autocompletion for localized method names generate definitions by running</p>
-<pre><code class="sh">codeceptjs def
+<h1 id="locators">Locators</h1>
+<p>CodeceptJS provides flexible strategies for locating elements:</p>
+<ul>
+<li>CSS and XPath locators</li>
+<li>semantic locators: by link text, by button text, by field names, etc.</li>
+<li>locator builder</li>
+<li>ID locators: by CSS id or by accessibility id</li>
+</ul>
+<h2 id="css-and-xpath">CSS and XPath</h2>
+<p>Both CSS and XPath is supported. Usually CodeceptJS can guess locator's type:</p>
+<pre><code class="js">// select by CSS
+I.seeElement('.user .profile');
+I.seeElement('#user-name');
+
+// select by XPath
+I.seeElement('//table/tr/td[position()=3]');
 </code></pre>
 
-<h2 id="russian">Russian</h2>
-<p>Add to config:</p>
-<pre><code class="json">  &quot;translation&quot;: &quot;ru-RU&quot;
+<p>To specify exact locator type use <strong>strict locators</strong>:</p>
+<pre><code class="js">// it's not clear that 'button' is actual CSS locator
+I.seeElement({ css: 'button' });
+
+// it's not clear that 'descendant::table/tr' is actual CSS locator
+I.seeElement({ xpath: 'descendant::table/tr' });
 </code></pre>
 
-<p>when running with <code>--steps</code> option steps output will be translated:</p>
-<p><img alt="" src="http://codecept.io/images/translate-ru1.png" /></p>
-<p>This also enables localized method names for actor object.</p>
-<p>This way tests can be written in native language while it is still JavaScript:</p>
-<pre><code class="js">Scenario('пробую написать реферат', (Я) =&gt; {
-    Я.на_странице('http://yandex.ru/referats');
-    Я.вижу(&quot;Написать реферат по&quot;);
-    Я.выбираю_опцию('Психологии');
-    Я.кликаю(&quot;Написать реферат&quot;);
-    Я.вижу(&quot;Реферат по психологии&quot;);
-});
+<h2 id="semantic-locators">Semantic Locators</h2>
+<p>CodeceptJS can guess an element's locator from context.
+For example, when clicking CodeceptJS will try to find a link or button by their text
+When typing into a field this field can be located by its name, placeholder.</p>
+<pre><code class="js">I.click('Sign In');
+I.fillField('Username', 'davert');
 </code></pre>
 
-<h2 id="portuguese">Portuguese</h2>
-<p>To write your tests in portuguese you can enable the portuguese translation in config file like:</p>
-<pre><code class="json">  &quot;translation&quot;: &quot;pt-BR&quot;
+<p>Various strategies are used to locate semantic elements. However, they may run slower than specifying locator by XPath or CSS.</p>
+<h2 id="locator-builder">Locator Builder</h2>
+<p>CodeceptJS provides a fluent builder to compose custom locators in JavaScript. Use <code>locate</code> function to start.</p>
+<p>To locate <code>a</code> element inside <code>label</code> with test: 'Hello' use:</p>
+<pre><code class="js">locate('a')
+  .withAttr({ href: '#' })
+  .inside(locate('label').withText('Hello'));
 </code></pre>
 
-<p>Now you can write test like this:</p>
-<pre><code class="js">Scenario('Efetuar login', (Eu) =&gt; {
-    Eu.estouNaPagina('http://minhaAplicacao.com.br');
-    Eu.preenchoOCampo(&quot;login&quot;, &quot;usuario@minhaAplicacao.com.br&quot;);
-    Eu.preenchoOCampo(&quot;senha&quot;, &quot;123456&quot;);
-    Eu.clico(&quot;Entrar&quot;);
-    Eu.vejo(&quot;Seja bem vindo usuário!&quot;);
-});
+<p>which will produce following XPath:</p>
+<pre><code>.//a[@href = '#'][ancestor::label[contains(., 'Hello')]]
 </code></pre>
 
-<h2 id="italian">Italian</h2>
-<p>Add to config</p>
-<pre><code class="json">  &quot;translation&quot;: &quot;it-IT&quot;
+<p>Locator builder accepts both XPath and CSS as parameters but converts them to XPath as more feature-rich format.
+Sometimes provided locators can get very long so it's recommended to simplify the output by providing a brief description for generated XPath:</p>
+<pre><code class="js">locate('//table')
+  .find('a')
+  .withText('Edit')
+  .as('edit button')
+// will be printed as 'edit button'
 </code></pre>
 
-<p>Now you can write test like this:</p>
-<pre><code class="js">Scenario('Effettuare il Login su GitHub', (io) =&gt; {
-    io.sono_sulla_pagina('https://github.com/login');
-    io.compilo_il_campo(&quot;Username or email address&quot;, &quot;giuseppe-santoro&quot;);
-    io.compilo_il_campo(&quot;Password&quot;, &quot;*********&quot;);
-    io.faccio_click_su(&quot;Sign in&quot;);
-    io.vedo(&quot;Learn Git and GitHub without any code!&quot;);
-});
+<p><code>locate</code> has following methods:</p>
+<h4 id="find">find</h4>
+<p>Finds an element inside a located.</p>
+<pre><code class="js">// find td inside a table
+locate('table').find('td');
 </code></pre>
 
-<h2 id="polish">Polish</h2>
-<p>Add to config</p>
-<pre><code class="json">  &quot;translation&quot;: &quot;pl-PL&quot;
+<p>Switches current element to found one.
+Can accept another <code>locate</code> call or strict locator.</p>
+<h4 id="withattr">withAttr</h4>
+<p>Find an element with provided attributes</p>
+<pre><code class="js">// find input with placeholder 'Type in name'
+locate('input').withAttr({ placeholder: 'Type in name' });
 </code></pre>
 
-<p>Now you can write test like this:</p>
-<pre><code class="js">Scenario('Zakładanie konta free trial na stronie głównej GetResponse', (Ja) =&gt; {
-    Ja.jestem_na_stronie('https://getresponse.com');
-    Ja.wypełniam_pole(&quot;Email address&quot;, &quot;sjakubowski@getresponse.com&quot;);
-    Ja.wypełniam_pole(&quot;Password&quot;, &quot;digital-marketing-systems&quot;);
-    Ja.klikam('Sign up');
-    Ja.czekam(1);
-    Ja.widzę_w_adresie_url('/account_free_created.html');
-});
+<h4 id="withchild">withChild</h4>
+<p>Finds an element which contains a child element provided:</p>
+<pre><code class="js">// finds form with &lt;select&gt; inside it
+locate('form').withChild('select');
 </code></pre>
 
-<h2 id="chinese">Chinese</h2>
-<p>Add to config:</p>
-<pre><code class="JSON">  &quot;translation&quot;: &quot;zh-CN&quot;
+<h4 id="withtext">withText</h4>
+<p>Finds element containing a text</p>
+<pre><code class="js">locate('span').withText('Warning');
 </code></pre>
 
-<p>or</p>
-<pre><code class="JSON">  &quot;translation&quot;: &quot;zh-TW&quot;
+<h4 id="first">first</h4>
+<p>Get first element:</p>
+<pre><code class="js">locate('#table td').first();
 </code></pre>
 
-<p>This way tests can be written in Chinese language while it is still JavaScript:</p>
-<pre><code class="JavaScript">Feature('CodeceptJS 演示');
-
-Scenario('成功提交表单', (我) =&gt; {
-    我.在页面('/documentation')
-    我.填写字段('电邮', 'hello@world.com')
-    我.填写字段('密码', '123456')
-    我.勾选选项('激活')
-    我.勾选选项('男');
-    我.单击('创建用户')
-    我.看到('用户名可用')
-    我.在当前网址中看不到('/documentation')
-});
+<h4 id="last">last</h4>
+<p>Get last element:</p>
+<pre><code class="js">locate('#table td').last();
 </code></pre>
 
-<p>or</p>
-<pre><code class="JavaScript">Feature('CodeceptJS 演示');
+<h4 id="at">at</h4>
+<p>Get element at position:</p>
+<pre><code class="js">// first element
+locate('#table td').at(1);
+// second element
+locate('#table td').at(2);
+// second element from end
+locate('#table td').at(-2);
+</code></pre>
 
-Scenario('成功提交表單', (我) =&gt; {
-    我.在頁面('/documentation')
-    我.填寫欄位('電郵', 'hello@world.com')
-    我.填寫欄位('密碼', '123456')
-    我.勾選選項('活化')
-    我.勾選選項('男');
-    我.單擊('建立用戶')
-    我.看到('用戶名可用')
-    我.在當前網址中看不到('/documentation')
-});
-</code></pre></div>
+<h4 id="inside">inside</h4>
+<p>Finds an element which contains an provided ancestor:</p>
+<pre><code class="js">// finds `select` element inside #user_profile
+locate('select').inside('form#user_profile');
+</code></pre>
+
+<h4 id="before">before</h4>
+<p>Finds element located before the provided one</p>
+<pre><code class="js">// finds `button` before .btn-cancel
+locate('button').before('.btn-cancel');
+</code></pre>
+
+<h4 id="after">after</h4>
+<p>Finds element located after the provided one</p>
+<pre><code class="js">// finds `button` after .btn-cancel
+locate('button').after('.btn-cancel');
+</code></pre>
+
+<h2 id="id-locators">ID Locators</h2>
+<p>ID locators are best to select the exact semantic element in web and mobile testing:</p>
+<ul>
+<li><code>#user</code> or <code>{ id: 'user' }</code> finds element with id="user"</li>
+<li><code>~user</code> finds element with accessibility id "user" (in Mobile testing) or with <code>aria-label=user</code>.</li>
+</ul></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>

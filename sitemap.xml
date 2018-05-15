@@ -154,6 +154,12 @@
     </url>
         
     <url>
+     <loc>None/locators/</loc>
+     <lastmod>2018-05-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
      <loc>None/configuration/</loc>
      <lastmod>2018-05-16</lastmod>
      <changefreq>daily</changefreq>
