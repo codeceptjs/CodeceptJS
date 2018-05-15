@@ -44,6 +44,7 @@ const consoleLogStore = new Console();
  * * `show`: (optional, default: false) - show Google Chrome window for debug.
  * * `restart`: (optional, default: true) - restart browser between tests.
  * * `disableScreenshots`: (optional, default: false)  - don't save screenshot on failure.
+ * * `fullPageScreenshots` (optional, default: false) - make full page screenshots on failure.
  * * `uniqueScreenshotNames`: (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
  * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
  * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
@@ -78,10 +79,18 @@ class Puppeteer extends Helper {
     puppeteer = requireg('puppeteer');
 
     // set defaults
-    this.options = {
+
+    this.isRunning = false;
+
+    // override defaults with config
+    this._setConfig(config);
+  }
+
+  _validateConfig(config) {
+    const defaults = {
       waitForAction: 100,
       waitForTimeout: 1000,
-      fullPageScreenshots: true,
+      fullPageScreenshots: false,
       disableScreenshots: false,
       uniqueScreenshotNames: false,
       manualStart: false,
@@ -92,10 +101,11 @@ class Puppeteer extends Helper {
       defaultPopupAction: 'accept',
     };
 
-    this.isRunning = false;
+    return Object.assign(defaults, config);
+  }
 
-    // override defaults with config
-    Object.assign(this.options, config);
+  _setConfig(config) {
+    this.options = this._validateConfig(config);
     this.puppeteerOptions = Object.assign({ headless: !this.options.show }, this.options.chrome);
     popupStore.defaultAction = this.options.defaultPopupAction;
   }
@@ -588,10 +598,10 @@ let { x, y } = await I.grabPageScrollPosition();
 
   /**
    * Retrieves a page title and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let title = yield I.grabTitle();
+let title = await I.grabTitle();
 ```
    */
   async grabTitle() {
@@ -1326,10 +1336,10 @@ I.seeCookie('Auth');
 
   /**
    * Gets a cookie object by name
-* Resumes test execution, so **should be used inside a generator with `yield`** operator.
+* Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let cookie = I.grabCookie('auth');
+let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 @param name
@@ -1367,7 +1377,7 @@ I.clearCookie('test');
    * Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -1378,10 +1388,10 @@ I.executeScript(function() {
   $('date').datetimepicker('setDate', new Date());
 });
 ```
-Can return values. Don't forget to use `yield` to get them.
+Can return values. Don't forget to use `await` to get them.
 
 ```js
-let date = yield I.executeScript(function(el) {
+let date = await I.executeScript(function(el) {
   // only basic types can be returned
   return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
@@ -1417,9 +1427,9 @@ By passing value to `done()` function you can return values.
 Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
 
 ```js
-let val = yield I.executeAsyncScript(function(url, done) {
- // in browser context
- $.ajax(url, { success: (data) => done(data); }
+let val = await I.executeAsyncScript(function(url, done) {
+  // in browser context
+  $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
 ```
 
@@ -1446,10 +1456,10 @@ let val = yield I.executeAsyncScript(function(url, done) {
 
   /**
    * Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 @param locator element located by CSS|XPath|strict locator
    */
@@ -1461,10 +1471,10 @@ let pin = yield I.grabTextFrom('#pin');
 
   /**
    * Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
    */
@@ -1476,12 +1486,12 @@ let email = yield I.grabValueFrom('input[name=email]');
 
   /**
    * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-   * Resumes test execution, so **should be used inside a generator with `yield`** operator.
+   * Resumes test execution, so **should be used inside async function with `await`** operator.
    * Appium: support only web testing
    *
    *
    * ```js
-   * let postHTML = yield I.grabHTMLFrom('#post');
+   * let postHTML = await I.grabHTMLFrom('#post');
    * ```
    */
   async grabHTMLFrom(locator) {
@@ -1596,10 +1606,10 @@ I.seeAttributesOnElements('//form', {'method': "post"});
 
   /**
    * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
 @param locator element located by CSS|XPath|strict locator
 @param attr
@@ -1917,7 +1927,7 @@ I.waitInUrl('/info', 2);
       return currUrl.indexOf(urlPart) > -1;
     }, { timeout: waitTimeout }, urlPart).catch(async (e) => {
       const currUrl = await this._getPageUrl(); // Required because the waitForFunction can't return data.
-      if (/waiting/i.test(e.message)) { // waiting (for function) failed error message
+      if (/failed: timeout/i.test(e.message)) {
         throw new Error(`expected url to include ${urlPart}, but found ${currUrl}`);
       } else {
         throw e;
@@ -1946,7 +1956,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
       return currUrl.indexOf(urlPart) > -1;
     }, { timeout: waitTimeout }, urlPart).catch(async (e) => {
       const currUrl = await this._getPageUrl(); // Required because the waitForFunction can't return data.
-      if (/waiting/i.test(e.message)) {
+      if (/failed: timeout/i.test(e.message)) {
         throw new Error(`expected url to be ${urlPart}, but found ${currUrl}`);
       } else {
         throw e;

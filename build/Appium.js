@@ -8,6 +8,7 @@ const recorder = require('../recorder');
 const isGenerator = require('../utils').isGenerator;
 const resumeTest = require('../scenario').resumeTest;
 const Locator = require('../locator');
+const ConnectionRefused = require('./errors/ConnectionRefused');
 
 const mobileRoot = '//*';
 const webRoot = 'body';
@@ -106,7 +107,7 @@ class Appium extends WebdriverIO {
     }
 
     // set defaults
-    this.options = {
+    const defaults = {
       waitForTimeout: 1000, // ms
       port: 4723,
       host: 'localhost',
@@ -120,17 +121,17 @@ class Appium extends WebdriverIO {
     };
 
     // override defaults with config
-    this.options = Object.assign(this.options, config);
+    config = Object.assign(defaults, config);
 
-    this.options.baseUrl = this.options.url || this.options.baseUrl;
-    this.options.desiredCapabilities.deviceName = this.options.device || this.options.desiredCapabilities.deviceName;
-    this.options.desiredCapabilities.browserName = this.options.browser || this.options.desiredCapabilities.browserName;
-    this.options.desiredCapabilities.app = this.options.app || this.options.desiredCapabilities.app;
-    this.options.desiredCapabilities.platformName = this.options.platform || this.options.desiredCapabilities.platformName;
-    this.options.waitForTimeout /= 1000; // convert to seconds
+    config.baseUrl = config.url || config.baseUrl;
+    config.desiredCapabilities.deviceName = config.device || config.desiredCapabilities.deviceName;
+    config.desiredCapabilities.browserName = config.browser || config.desiredCapabilities.browserName;
+    config.desiredCapabilities.app = config.app || config.desiredCapabilities.app;
+    config.desiredCapabilities.platformName = config.platform || config.desiredCapabilities.platformName;
+    config.waitForTimeout /= 1000; // convert to seconds
 
 
-    if (!this.options.app && this.options.desiredCapabilities.browserName) {
+    if (!config.app && config.desiredCapabilities.browserName) {
       this.isWeb = true;
       this.root = webRoot;
     } else {
@@ -139,9 +140,11 @@ class Appium extends WebdriverIO {
     }
 
     this.platform = null;
-    if (this.options.desiredCapabilities.platformName) {
-      this.platform = this.options.desiredCapabilities.platformName.toLowerCase();
+    if (config.desiredCapabilities.platformName) {
+      this.platform = config.desiredCapabilities.platformName.toLowerCase();
     }
+
+    return config;
   }
 
   static _config() {
@@ -168,8 +171,16 @@ class Appium extends WebdriverIO {
     } else {
       this.browser = webdriverio.remote(this.options).init();
     }
+    try {
+      await this.browser;
+    } catch (err) {
+      if (err.toString().indexOf('ECONNREFUSED')) {
+        throw new ConnectionRefused(err);
+      }
+      throw err;
+    }
+
     this.isRunning = true;
-    await this.browser;
     const promisesList = [];
     if (this.options.timeouts && this.isWeb) {
       await this.defineTimeout(this.options.timeouts);
@@ -265,7 +276,7 @@ class Appium extends WebdriverIO {
   }
 
   /**
-   * Execute code only on iOS
+   * Execute code only on Android
    *
    * ```js
    * I.runOnAndroid(() => {
@@ -507,7 +518,7 @@ class Appium extends WebdriverIO {
    * Get list of all available contexts
    *
    * ```
-   * let contexts = yield I.grabAllContexts();
+   * let contexts = await I.grabAllContexts();
    * ```
    *
    * Appium: support Android and iOS
@@ -522,7 +533,7 @@ class Appium extends WebdriverIO {
    * Retrieve current context
    *
    * ```js
-   * let context = yield I.grabContext();
+   * let context = await I.grabContext();
    * ```
    *
    * Appium: support Android and iOS
@@ -537,7 +548,7 @@ class Appium extends WebdriverIO {
    * Get current device activity.
    *
    * ```js
-   * let activity = yield I.grabCurrentActivity();
+   * let activity = await I.grabCurrentActivity();
    * ```
    *
    * Appium: support only Android
@@ -553,7 +564,7 @@ class Appium extends WebdriverIO {
    * properties to the response object to allow easier assertions.
    *
    * ```js
-   * let con = yield I.grabNetworkConnection();
+   * let con = await I.grabNetworkConnection();
    * ```
    *
    * Appium: support only Android
@@ -573,7 +584,7 @@ class Appium extends WebdriverIO {
    * Get current orientation.
    *
    * ```js
-   * let orientation = yield I.grabOrientation();
+   * let orientation = await I.grabOrientation();
    * ```
    *
    * Appium: support Android and iOS
@@ -588,7 +599,7 @@ class Appium extends WebdriverIO {
    * Get all the currently specified settings.
    *
    * ```js
-   * let settings = yield I.grabSettings();
+   * let settings = await I.grabSettings();
    * ```
    *
    * Appium: support Android and iOS
@@ -1246,10 +1257,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
   /**
    * Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 @param locator element located by CSS|XPath|strict locator
    *
@@ -1261,10 +1272,10 @@ let pin = yield I.grabTextFrom('#pin');
 
   /**
    * Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
    *

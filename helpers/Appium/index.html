@@ -605,18 +605,18 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 </ul>
 <h2 id="graballcontexts">grabAllContexts</h2>
 <p>Get list of all available contexts</p>
-<pre><code>let contexts = yield I.grabAllContexts();
+<pre><code>let contexts = await I.grabAllContexts();
 </code></pre>
 <p>Appium: support Android and iOS</p>
 <h2 id="grabcontext">grabContext</h2>
 <p>Retrieve current context</p>
-<pre><code class="js">let context = yield I.grabContext();
+<pre><code class="js">let context = await I.grabContext();
 </code></pre>
 
 <p>Appium: support Android and iOS</p>
 <h2 id="grabcurrentactivity">grabCurrentActivity</h2>
 <p>Get current device activity.</p>
-<pre><code class="js">let activity = yield I.grabCurrentActivity();
+<pre><code class="js">let activity = await I.grabCurrentActivity();
 </code></pre>
 
 <p>Appium: support only Android</p>
@@ -624,26 +624,26 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 <p>Get information about the current network connection (Data/WIFI/Airplane).
 The actual server value will be a number. However WebdriverIO additional
 properties to the response object to allow easier assertions.</p>
-<pre><code class="js">let con = yield I.grabNetworkConnection();
+<pre><code class="js">let con = await I.grabNetworkConnection();
 </code></pre>
 
 <p>Appium: support only Android</p>
 <h2 id="graborientation">grabOrientation</h2>
 <p>Get current orientation.</p>
-<pre><code class="js">let orientation = yield I.grabOrientation();
+<pre><code class="js">let orientation = await I.grabOrientation();
 </code></pre>
 
 <p>Appium: support Android and iOS</p>
 <h2 id="grabsettings">grabSettings</h2>
 <p>Get all the currently specified settings.</p>
-<pre><code class="js">let settings = yield I.grabSettings();
+<pre><code class="js">let settings = await I.grabSettings();
 </code></pre>
 
 <p>Appium: support Android and iOS</p>
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let pin = yield I.grabTextFrom('#pin');
+Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
+<pre><code class="js">let pin = await I.grabTextFrom('#pin');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -653,8 +653,8 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 </ul>
 <h2 id="grabvaluefrom">grabValueFrom</h2>
 <p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let email = yield I.grabValueFrom('input[name=email]');
+Resumes test execution, so <strong>should be used inside async function with <code>await</code></strong> operator.</p>
+<pre><code class="js">let email = await I.grabValueFrom('input[name=email]');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -758,7 +758,7 @@ I.pullFile('/storage/emulated/0/DCIM/logo.png', output_dir);
 <li><code>fn</code> <strong>Any</strong> </li>
 </ul>
 <h2 id="runonandroid">runOnAndroid</h2>
-<p>Execute code only on iOS</p>
+<p>Execute code only on Android</p>
 <pre><code class="js">I.runOnAndroid(() =&gt; {
    I.click('io.selendroid.testapp:id/buttonTest');
 });

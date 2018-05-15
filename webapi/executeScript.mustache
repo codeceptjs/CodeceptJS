@@ -1,7 +1,7 @@
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -12,10 +12,10 @@ I.executeScript(function() {
   $('date').datetimepicker('setDate', new Date());
 });
 ```
-Can return values. Don't forget to use `yield` to get them.
+Can return values. Don't forget to use `await` to get them.
 
 ```js
-let date = yield I.executeScript(function(el) {
+let date = await I.executeScript(function(el) {
   // only basic types can be returned
   return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector

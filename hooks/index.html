@@ -494,19 +494,29 @@ module.exports = function() {
 
 <p>Available events:</p>
 <ul>
-<li><code>event.test.started(test)</code> - at the very beginning of a test. Passes a current test object.</li>
-<li><code>event.test.before</code> - when <code>Before</code> hooks from helpers and from test is executed</li>
-<li><code>event.test.after</code> - after each test</li>
-<li><code>event.test.passed(test)</code> - when test passed</li>
-<li><code>event.test.failed(test, error)</code> - when test failed</li>
-<li><code>event.suite.before(suite)</code> - before a suite</li>
-<li><code>event.suite.after(suite)</code> - after a suite</li>
-<li><code>event.step.started(step)</code> - when step hooks from helpers executed. Passes current step object.</li>
-<li><code>event.step.before</code> - at the very beginning of a step</li>
-<li><code>event.step.after</code>- after a step</li>
+<li><code>event.test.before(test)</code> - <em>async</em> when <code>Before</code> hooks from helpers and from test is executed</li>
+<li><code>event.test.after(test)</code> - <em>async</em> after each test</li>
+<li><code>event.test.started(test)</code> - <em>sync</em> at the very beginning of a test. Passes a current test object.</li>
+<li><code>event.test.passed(test)</code> - <em>sync</em> when test passed</li>
+<li><code>event.test.failed(test, error)</code> - <em>sync</em> when test failed</li>
+<li><code>event.test.finished(test)</code> - <em>sync</em> when test finished</li>
+<li><code>event.suite.before(suite)</code> - <em>async</em> before a suite</li>
+<li><code>event.suite.after(suite)</code> - <em>async</em> after a suite</li>
+<li><code>event.step.before(step)</code> - <em>async</em> when the step is scheduled for execution</li>
+<li><code>event.step.after(step)</code>- <em>async</em> after a step</li>
+<li><code>event.step.started(step)</code> - <em>sync</em> when step starts.</li>
+<li><code>event.step.passed(step)</code> - <em>sync</em> when step passed.</li>
+<li><code>event.step.failed(step, err)</code> - <em>sync</em> when step failed.</li>
+<li><code>event.step.finished(step)</code> - <em>sync</em> when step finishes.</li>
 <li><code>event.all.before</code> - before running tests</li>
 <li><code>event.all.after</code> - after running tests</li>
-<li><code>event.all.result</code> - when results are printed</li>
+<li>
+<p><code>event.all.result</code> - when results are printed</p>
+</li>
+<li>
+<p><em>sync</em> - means that event is fired in the moment of action happens.</p>
+</li>
+<li><em>async</em> - means that event is fired when an actions is scheduled. Use <code>recorder</code> to schedule your actions.</li>
 </ul>
 <p>For further reference look for <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/listener">currently available listeners</a> using event system.</p>
 <h4 id="test-object">Test Object</h4>
@@ -517,7 +527,7 @@ module.exports = function() {
 <li><code>opts</code> additional test options like retries, and others</li>
 <li><code>pending</code> true if test is scheduled for execution and false if a test has finished</li>
 <li><code>file</code> path to a file with a test.</li>
-<li><code>steps</code> array of executed steps (available only in <code>test.passed</code> or <code>test.failed</code> event)</li>
+<li><code>steps</code> array of executed steps (available only in <code>test.passed</code>, <code>test.failed</code>, <code>test.finished</code> event)</li>
 </ul>
 <p>and others</p>
 <h4 id="step-object">Step Object</h4>

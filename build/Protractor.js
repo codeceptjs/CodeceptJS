@@ -1,6 +1,5 @@
 let By;
 let EC;
-let Runner;
 let Key;
 let Button;
 
@@ -21,11 +20,13 @@ const {
   convertColorToRGBA,
 } = require('../colorUtils');
 const ElementNotFound = require('./errors/ElementNotFound');
+const ConnectionRefused = require('./errors/ConnectionRefused');
 const Locator = require('../locator');
 const path = require('path');
 const recorder = require('../recorder');
 
 let withinStore = {};
+let Runner;
 
 /**
  * Protractor helper is based on [Protractor library](http://www.protractortest.org) and used for testing web applications.
@@ -44,10 +45,12 @@ let withinStore = {};
  * * `restart` (optional, default: true) - restart browser between tests.
  * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
  * * `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
+ * * `fullPageScreenshots` (optional, default: false) - make full page screenshots on failure.
  * * `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites
  * * `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
  * * `seleniumAddress` - Selenium address to connect (default: http://localhost:4444/wd/hub)
  * * `rootElement` - Root element of AngularJS application (default: body)
+ * * `getPageTimeout` (optional) sets default timeout for a page to be loaded. 10000 by default.
  * * `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
  * * `scriptsTimeout`: (optional) timeout in milliseconds for each script run on the browser, 10000 by default.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
@@ -114,39 +117,51 @@ let withinStore = {};
  */
 class Protractor extends Helper {
   constructor(config) {
+    // process.env.SELENIUM_PROMISE_MANAGER = false; // eslint-disable-line
     super(config);
-    this.options = {
+
+    this.isRunning = false;
+    this._setConfig(config);
+  }
+
+  _validateConfig(config) {
+    const defaults = {
       browser: 'chrome',
       url: 'http://localhost',
       seleniumAddress: 'http://localhost:4444/wd/hub',
-      fullPageScreenshots: true,
+      fullPageScreenshots: false,
       rootElement: 'body',
       allScriptsTimeout: 10000,
       scriptTimeout: 10000,
       waitForTimeout: 1000, // ms
       windowSize: null,
+      getPageTimeout: 10000,
       driver: 'hosted',
       capabilities: {},
       angular: true,
     };
 
-    this.isRunning = false;
+    config = Object.assign(defaults, config);
 
-    this.options = Object.assign(this.options, config);
-    if (!this.options.allScriptsTimeout) this.options.allScriptsTimeout = this.options.scriptsTimeout;
-    if (!this.options.scriptTimeout) this.options.scriptTimeout = this.options.scriptsTimeout;
-    if (this.options.proxy) this.options.capabilities.proxy = this.options.proxy;
-    if (this.options.browser) this.options.capabilities.browserName = this.options.browser;
-    this.options.waitForTimeout /= 1000; // convert to seconds
+    if (!config.allScriptsTimeout) config.allScriptsTimeout = config.scriptsTimeout;
+    if (!config.scriptTimeout) config.scriptTimeout = config.scriptsTimeout;
+    if (config.proxy) config.capabilities.proxy = config.proxy;
+    if (config.browser) config.capabilities.browserName = config.browser;
+    config.waitForTimeout /= 1000; // convert to seconds
+    return config;
   }
 
   async _init() {
+    process.on('unhandledRejection', (reason) => {
+      if (reason.message.indexOf('ECONNREFUSED') > 0) {
+        this.browser = null;
+      }
+    });
     Runner = requireg('protractor/built/runner').Runner;
     By = requireg('protractor').ProtractorBy;
     Key = requireg('protractor').Key;
     Button = requireg('protractor').Button;
 
-    this.context = this.options.rootElement;
     return Promise.resolve();
   }
 
@@ -185,33 +200,43 @@ class Protractor extends Helper {
   async _startBrowser() {
     const runner = new Runner(this.options);
     this.browser = runner.createBrowser();
-    global.browser = this.browser;
-    global.$ = this.browser.$;
-    global.$$ = this.browser.$$;
-    global.element = this.browser.element;
-    global.by = global.By = new By();
-    global.ExpectedConditions = EC = this.browser.ExpectedConditions;
-    const promisesList = [];
-    if (this.options.windowSize === 'maximize') {
-      await this.resizeWindow(this.options.windowSize);
-    } else if (this.options.windowSize) {
-      const size = this.options.windowSize.split('x');
-      await this.resizeWindow(parseInt(size[0], 10), parseInt(size[1], 10));
+    try {
+      await this.browser.ready;
+    } catch (err) {
+      if (err.toString().indexOf('ECONNREFUSED')) {
+        throw new ConnectionRefused(err);
+      }
+      throw err;
     }
     if (this.options.angular) {
       await this.amInsideAngularApp();
     } else {
       await this.amOutsideAngularApp();
     }
+    global.browser = this.browser;
+    global.$ = this.browser.$;
+    global.$$ = this.browser.$$;
+    global.element = this.browser.element;
+    global.by = global.By = new By();
+    global.ExpectedConditions = EC = this.browser.ExpectedConditions;
+    if (this.options.windowSize === 'maximize') {
+      await this.resizeWindow(this.options.windowSize);
+    } else if (this.options.windowSize) {
+      const size = this.options.windowSize.split('x');
+      await this.resizeWindow(parseInt(size[0], 10), parseInt(size[1], 10));
+    }
+    this.context = this.options.rootElement;
     this.isRunning = true;
+    return this.browser.ready;
   }
 
   async _before() {
-    if (this.options.restart && !this.options.manualStart) await this._startBrowser();
-    if (!this.isRunning && !this.options.manualStart) await this._startBrowser();
+    if (this.options.restart && !this.options.manualStart) return this._startBrowser();
+    if (!this.isRunning && !this.options.manualStart) return this._startBrowser();
   }
 
   async _after() {
+    if (!this.browser) return;
     if (!this.isRunning) return;
     if (this.options.restart) {
       this.isRunning = false;
@@ -238,7 +263,7 @@ class Protractor extends Helper {
     return this.closeOtherTabs();
   }
 
-  async _failed(test) {
+  async _failed(test, err) {
     await this._withinEnd();
     if (this.options.disableScreenshots) return;
     let fileName = clearString(test.title);
@@ -283,7 +308,8 @@ class Protractor extends Helper {
     }
 
     this.context = locator;
-    const context = global.element(guessLocator(locator) || global.by.css(locator));
+    const context = await global.element(guessLocator(locator) || global.by.css(locator));
+    if (!context) throw new ElementNotFound(locator);
 
     this.browser.findElement = l => (l ? context.element(l).getWebElement() : context.getWebElement());
     this.browser.findElements = l => context.all(l).getWebElements();
@@ -291,7 +317,7 @@ class Protractor extends Helper {
   }
 
   async _withinEnd() {
-    if (!Object.keys(withinStore).length) return;
+    if (!isWithin()) return;
     if (withinStore.frame) {
       withinStore = {};
       return this.switchTo(null);
@@ -302,6 +328,33 @@ class Protractor extends Helper {
     this.context = this.options.rootElement;
   }
 
+  _session() {
+    const defaultSession = this.browser;
+    return {
+      start: async (opts) => {
+        opts = this._validateConfig(Object.assign(this.options, opts));
+        this.debugSection('New Browser', JSON.stringify(opts));
+        const runner = new Runner(opts);
+        const res = await this.browser.executeScript('return [window.outerWidth, window.outerHeight]');
+        const browser = runner.createBrowser(null, this.browser);
+        await browser.ready;
+        await browser.waitForAngularEnabled(this.insideAngular);
+        await browser.manage().window().setSize(parseInt(res[0], 10), parseInt(res[1], 10));
+        return browser.ready;
+      },
+      stop: async (browser) => {
+        return browser.close();
+      },
+      loadVars: async (browser) => {
+        if (isWithin()) throw new Error('Can\'t start session inside within block');
+        this.browser = browser;
+      },
+      restoreVars: async () => {
+        if (isWithin()) await this._withinEnd();
+        this.browser = defaultSession;
+      },
+    };
+  }
 
   /**
    * Switch to non-Angular mode,
@@ -810,10 +863,10 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
   /**
    * Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 @param locator element located by CSS|XPath|strict locator
    */
@@ -850,10 +903,10 @@ let postHTML = await I.grabHTMLFrom('#post');
 
   /**
    * Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
    */
@@ -885,10 +938,10 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
   /**
    * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
 @param locator element located by CSS|XPath|strict locator
 @param attr
@@ -931,10 +984,10 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 
   /**
    * Retrieves a page title and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let title = yield I.grabTitle();
+let title = await I.grabTitle();
 ```
    */
   async grabTitle() {
@@ -1138,7 +1191,7 @@ I.seeAttributesOnElements('//form', {'method': "post"});
    * Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -1149,10 +1202,10 @@ I.executeScript(function() {
   $('date').datetimepicker('setDate', new Date());
 });
 ```
-Can return values. Don't forget to use `yield` to get them.
+Can return values. Don't forget to use `await` to get them.
 
 ```js
-let date = yield I.executeScript(function(el) {
+let date = await I.executeScript(function(el) {
   // only basic types can be returned
   return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
@@ -1182,9 +1235,9 @@ By passing value to `done()` function you can return values.
 Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
 
 ```js
-let val = yield I.executeAsyncScript(function(url, done) {
- // in browser context
- $.ajax(url, { success: (data) => done(data); }
+let val = await I.executeAsyncScript(function(url, done) {
+  // in browser context
+  $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
 ```
 
@@ -1197,7 +1250,7 @@ let val = yield I.executeAsyncScript(function(url, done) {
   }
 
   /**
-   * Checks that current url contains a provided fragment.
+     * Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
@@ -1256,7 +1309,6 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
    */
   async saveScreenshot(fileName, fullPage = false) {
     const outputFile = path.join(global.output_dir, fileName);
-    this.debug(`Screenshot has been saved to ${outputFile}`);
 
     const writeFile = (png, outputFile) => {
       const fs = require('fs');
@@ -1267,16 +1319,20 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
     };
 
     if (!fullPage) {
+      this.debug(`Screenshot has been saved to ${outputFile}`);
       const png = await this.browser.takeScreenshot();
       return writeFile(png, outputFile);
     }
 
-    const { width, height } = await this.browser.executeScript(() => ({
+    let { width, height } = await this.browser.executeScript(() => ({ // eslint-disable-line
       height: document.body.scrollHeight,
       width: document.body.scrollWidth,
     }));
 
+    if (height < 100) height = 500;
+
     await this.browser.manage().window().setSize(width, height);
+    this.debug(`Screenshot has been saved to ${outputFile}, size: ${width}x${height}`);
     const png = await this.browser.takeScreenshot();
     return writeFile(png, outputFile);
   }
@@ -1321,10 +1377,10 @@ I.seeCookie('Auth');
 
   /**
    * Gets a cookie object by name
-* Resumes test execution, so **should be used inside a generator with `yield`** operator.
+* Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let cookie = I.grabCookie('auth');
+let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 @param name
@@ -2153,4 +2209,8 @@ function isFrameLocator(locator) {
   locator = new Locator(locator);
   if (locator.isFrame()) return locator.value;
   return false;
+}
+
+function isWithin() {
+  return Object.keys(withinStore).length !== 0;
 }

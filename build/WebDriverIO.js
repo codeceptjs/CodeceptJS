@@ -18,6 +18,8 @@ const {
   convertColorToRGBA,
 } = require('../colorUtils');
 const ElementNotFound = require('./errors/ElementNotFound');
+const ConnectionRefused = require('./errors/ConnectionRefused');
+
 const assert = require('assert');
 const path = require('path');
 
@@ -41,6 +43,7 @@ let withinStore = {};
  * * `restart`: (optional, default: true) - restart browser between tests.
  * * `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
  * * `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
+ * * `fullPageScreenshots` (optional, default: false) - make full page screenshots on failure.
  * * `uniqueScreenshotNames`: (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites.
  * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
  * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
@@ -212,15 +215,23 @@ class WebDriverIO extends Helper {
   constructor(config) {
     super(config);
     webdriverio = requireg('webdriverio');
+    // set defaults
+    this.root = webRoot;
 
-    this.options = {
+    this.isRunning = false;
+
+    this._setConfig(config);
+  }
+
+  _validateConfig(config) {
+    const defaults = {
       smartWait: 0,
       waitForTimeout: 1000, // ms
       desiredCapabilities: {},
       restart: true,
       uniqueScreenshotNames: false,
       disableScreenshots: false,
-      fullPageScreenshots: true,
+      fullPageScreenshots: false,
       manualStart: false,
       keepCookies: false,
       keepBrowserState: false,
@@ -230,23 +241,14 @@ class WebDriverIO extends Helper {
       },
     };
 
-    this._validateConfig(config);
-  }
-
-  _validateConfig(config) {
-    // set defaults
-    this.root = webRoot;
-
-    this.isRunning = false;
-
     // override defaults with config
-    Object.assign(this.options, config);
+    config = Object.assign(defaults, config);
 
-    this.options.baseUrl = this.options.url || this.options.baseUrl;
-    this.options.desiredCapabilities.browserName = this.options.browser || this.options.desiredCapabilities.browserName;
-    this.options.waitForTimeout /= 1000; // convert to seconds
+    config.baseUrl = config.url || config.baseUrl;
+    config.desiredCapabilities.browserName = config.browser || config.desiredCapabilities.browserName;
+    config.waitForTimeout /= 1000; // convert to seconds
 
-    if (!this.options.desiredCapabilities.platformName && (!this.options.url || !this.options.browser)) {
+    if (!config.desiredCapabilities.platformName && (!config.url || !config.browser)) {
       throw new Error(`
         WebDriverIO requires at url and browser to be set.
         Check your codeceptjs config file to ensure these are set properly
@@ -260,6 +262,8 @@ class WebDriverIO extends Helper {
           }
       `);
     }
+
+    return config;
   }
 
   static _checkRequirements() {
@@ -295,7 +299,15 @@ class WebDriverIO extends Helper {
     } else {
       this.browser = webdriverio.remote(this.options).init();
     }
-    await this.browser;
+    try {
+      await this.browser;
+    } catch (err) {
+      if (err.toString().indexOf('ECONNREFUSED')) {
+        throw new ConnectionRefused(err);
+      }
+      throw err;
+    }
+
     this.isRunning = true;
     if (this.options.timeouts) {
       await this.defineTimeout(this.options.timeouts);
@@ -308,6 +320,10 @@ class WebDriverIO extends Helper {
       await this.resizeWindow(dimensions[0], dimensions[1]);
     }
     return this.browser;
+  }
+
+  async _stopBrowser() {
+    if (this.browser && this.isRunning) await this.browser.end();
   }
 
   async _before() {
@@ -341,11 +357,36 @@ class WebDriverIO extends Helper {
   }
 
   _finishTest() {
-    if (!this.options.restart && this.isRunning) return this.browser.end();
+    if (!this.options.restart) return this._startBrowser();
+  }
+
+  _session() {
+    const defaultSession = this.browser.requestHandler.sessionID;
+    return {
+      start: async (opts) => {
+        // opts.disableScreenshots = true; // screenshots cant be saved as session will be already closed
+        opts = this._validateConfig(Object.assign(this.options, opts));
+        this.debugSection('New Browser', JSON.stringify(opts));
+        const browser = webdriverio.remote(opts).init();
+        await browser;
+        return browser.requestHandler.sessionID;
+      },
+      stop: async (sessionId) => {
+        return this.browser.session('DELETE', sessionId);
+      },
+      loadVars: async (sessionId) => {
+        if (isWithin()) throw new Error('Can\'t start session inside within block');
+        this.browser.requestHandler.sessionID = sessionId;
+      },
+      restoreVars: async () => {
+        if (isWithin()) await this._withinEnd();
+        this.browser.requestHandler.sessionID = defaultSession;
+      },
+    };
   }
 
   async _failed(test) {
-    if (Object.keys(withinStore).length !== 0) await this._withinEnd();
+    if (isWithin()) await this._withinEnd();
     if (!this.options.disableScreenshots) {
       let fileName = clearString(test.title);
       if (test.ctx && test.ctx.test && test.ctx.test.type === 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
@@ -355,7 +396,7 @@ class WebDriverIO extends Helper {
       } else {
         fileName += '.failed.png';
       }
-      await this.saveScreenshot(fileName, this.options.fullPageScreenshots).catch((err) => {
+      return this.saveScreenshot(fileName, this.options.fullPageScreenshots).catch((err) => {
         if (err &&
             err.type &&
             err.type === 'RuntimeError' &&
@@ -386,6 +427,7 @@ class WebDriverIO extends Helper {
     this.context = locator;
 
     const res = await client.element(withStrictLocator.call(this, locator));
+    assertElementExists(res, locator);
     this.browser.element = function (l) {
       return this.elementIdElement(res.value.ELEMENT, l);
     };
@@ -796,10 +838,10 @@ I.uncheckOption('agree', '//form');
 
   /**
    * Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let pin = yield I.grabTextFrom('#pin');
+let pin = await I.grabTextFrom('#pin');
 ```
 @param locator element located by CSS|XPath|strict locator
    * Appium: support
@@ -807,29 +849,33 @@ let pin = yield I.grabTextFrom('#pin');
   async grabTextFrom(locator) {
     const res = await this._locate(locator, true);
     assertElementExists(res, locator);
-    return forEachAsync(res.value, async el => this.browser.elementIdText(el.ELEMENT));
+    const val = await forEachAsync(res.value, async el => this.browser.elementIdText(el.ELEMENT));
+    this.debugSection('Grab', val);
+    return val;
   }
 
   /**
    * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-   * Resumes test execution, so **should be used inside a generator with `yield`** operator.
+   * Resumes test execution, so **should be used inside async function with `await`** operator.
    * Appium: support only web testing
    *
    *
    * ```js
-   * let postHTML = yield I.grabHTMLFrom('#post');
+   * let postHTML = await I.grabHTMLFrom('#post');
    * ```
    */
   async grabHTMLFrom(locator) {
-    return this.browser.getHTML(withStrictLocator.call(this, locator)).then(html => html);
+    const html = await this.browser.getHTML(withStrictLocator.call(this, locator));
+    this.debugSection('Grab', html);
+    return html;
   }
 
   /**
    * Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator
    * Appium: support only web testing
@@ -858,10 +904,10 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
   /**
    * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
 @param locator element located by CSS|XPath|strict locator
 @param attr
@@ -909,10 +955,10 @@ let hint = yield I.grabAttributeFrom('#tooltip', 'title');
 
   /**
    * Retrieves a page title and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let title = yield I.grabTitle();
+let title = await I.grabTitle();
 ```
    * Appium: support only web testing
    */
@@ -1113,7 +1159,7 @@ let pageSource = await I.grabSource();
    * Get JS log from browser. Log buffer is reset after each request.
    *
    * ```js
-   * let logs = yield I.grabBrowserLogs();
+   * let logs = await I.grabBrowserLogs();
    * console.log(JSON.stringify(logs))
    * ```
    */
@@ -1327,7 +1373,7 @@ If a relative url provided, a configured url will be prepended to it.
    * Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -1338,10 +1384,10 @@ I.executeScript(function() {
   $('date').datetimepicker('setDate', new Date());
 });
 ```
-Can return values. Don't forget to use `yield` to get them.
+Can return values. Don't forget to use `await` to get them.
 
 ```js
-let date = yield I.executeScript(function(el) {
+let date = await I.executeScript(function(el) {
   // only basic types can be returned
   return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
@@ -1374,9 +1420,9 @@ By passing value to `done()` function you can return values.
 Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
 
 ```js
-let val = yield I.executeAsyncScript(function(url, done) {
- // in browser context
- $.ajax(url, { success: (data) => done(data); }
+let val = await I.executeAsyncScript(function(url, done) {
+  // in browser context
+  $.ajax(url, { success: (data) => done(data); }
 }, 'http://ajax.callback.url/');
 ```
 
@@ -1488,17 +1534,19 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
       return this.browser.saveScreenshot(outputFile);
     }
 
-    /* eslint-disable prefer-arrow-callback, comma-dangle */
-    const { width, height } = await this.browser.execute(function () {
+    /* eslint-disable prefer-arrow-callback, comma-dangle, prefer-const */
+    let { width, height } = await this.browser.execute(function () {
       return {
         height: document.body.scrollHeight,
         width: document.body.scrollWidth
       };
     }).then(res => res.value);
+
+    if (height < 100) height = 500; // errors for very small height
     /* eslint-enable */
 
     await this.browser.windowHandleSize({ width, height });
-    this.debug(`Screenshot has been saved to ${outputFile}`);
+    this.debug(`Screenshot has been saved to ${outputFile}, size: ${width}x${height}`);
     return this.browser.saveScreenshot(outputFile);
   }
 
@@ -1561,10 +1609,10 @@ I.seeCookie('Auth');
 
   /**
    * Gets a cookie object by name
-* Resumes test execution, so **should be used inside a generator with `yield`** operator.
+* Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
-let cookie = I.grabCookie('auth');
+let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 @param name
@@ -2282,17 +2330,15 @@ async function proceedSee(assertType, text, context, strict = false) {
   return stringIncludes(description)[assertType](text, selected);
 }
 
-/**
- * Mimic Array.forEach() API, but with an async callback function.
- * Execute each callback on each array item serially. Useful when using WebDriverIO API.
- *
- * Added due because of problem with chrome driver when too many requests
- * are made simultaneously. https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9
- *
- * @param {object[]} array Input array items to iterate over
- * @param {function} callback Async function to excute on each array item
- * @param {object} option Additional options. 'extractValue' will extract the .value object from a WebdriverIO
- */
+// Mimic Array.forEach() API, but with an async callback function.
+// Execute each callback on each array item serially. Useful when using WebDriverIO API.
+//
+// Added due because of problem with chrome driver when too many requests
+// are made simultaneously. https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9
+//
+// @param {object[]} array Input array items to iterate over
+// @param {function} callback Async function to excute on each array item
+// @param {object} option Additional options. 'extractValue' will extract the .value object from a WebdriverIO
 async function forEachAsync(array, callback, option = {}) {
   const {
     extractValue = true,
@@ -2320,17 +2366,14 @@ async function forEachAsync(array, callback, option = {}) {
   return values;
 }
 
-/**
- * Mimic Array.filter() API, but with an async callback function.
- * Execute each callback on each array item serially. Useful when using WebDriverIO API.
- *
- * Added due because of problem with chrome driver when too many requests
- * are made simultaneously. https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9
- *
- * @param {object[]} array Input array items to iterate over
- * @param {function} callback Async function to excute on each array item
- * @param {object} option Additional options. 'extractValue' will extract the .value object from a WebdriverIO
- */
+//  Mimic Array.filter() API, but with an async callback function.
+//  Execute each callback on each array item serially. Useful when using WebDriverIO API.
+//  Added due because of problem with chrome driver when too many requests
+//  are made simultaneously. https://bugs.chromium.org/p/chromedriver/issues/detail?id=2152#c9
+//  @param {object[]} array Input array items to iterate over
+//  @param {function} callback Async function to excute on each array item
+//  @param {object} option Additional options. 'extractValue' will extract the .value object from a WebdriverIO
+//
 async function filterAsync(array, callback, option = {}) {
   const {
     extractValue = true,
@@ -2353,13 +2396,11 @@ async function filterAsync(array, callback, option = {}) {
 }
 
 
-/**
- * Internal helper method to handle command results (similar behaviour as the unify function from WebDriverIO
- * except it does not resolve promises)
- *
- * @param  {object[]} items  list of items
- * @param  {object} [option]  extractValue: set to try to return the .value property of the input items
- */
+// Internal helper method to handle command results (similar behaviour as the unify function from WebDriverIO
+// except it does not resolve promises)
+//
+// @param  {object[]} items  list of items
+// @param  {object} [option]  extractValue: set to try to return the .value property of the input items
 function unify(items, option = {}) {
   const { extractValue = false } = option;
 
@@ -2544,6 +2585,10 @@ function prepareLocateFn(context) {
       return this.browser.elementIdElements(el = res.value[0].ELEMENT, l);
     });
   };
+}
+
+function isWithin() {
+  return Object.keys(withinStore).length !== 0;
 }
 
 module.exports = WebDriverIO;

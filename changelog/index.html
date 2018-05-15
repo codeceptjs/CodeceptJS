@@ -284,7 +284,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#118">1.1.8</a></li>
+        <li class="main active"><a href="#120">1.2.0</a></li>
+        
+    
+        <li class="main "><a href="#118">1.1.8</a></li>
         
     
         <li class="main "><a href="#117">1.1.7</a></li>
@@ -439,6 +442,67 @@
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
+
+<h2 id="120">1.2.0</h2>
+<ul>
+<li>[WebDriverIO][Protractor]<a href="https://codecept.io/acceptance/#multiple-sessions">Multiple Sessions</a>. Run several browser sessions in one test. Introduced <code>session</code> command, which opens additional browser window and closes it after a test.</li>
+</ul>
+<pre><code class="js">Scenario('run in different browsers', (I) =&gt; {
+  I.amOnPage('/hello');
+  I.see('Hello!');
+  session('john', () =&gt; {
+    I.amOnPage('/bye');
+    I.dontSee('Hello');
+    I.see('Bye');
+  });
+  I.see('Hello');
+});
+</code></pre>
+
+<ul>
+<li><a href="https://codecept.io/advanced/#chunks">Parallel Execution</a> by @sveneisenschmidt. Run tests in parallel specifying number of chunks:</li>
+</ul>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // run in 2 processes
+    &quot;chunks&quot;: 2,
+    // run all tests in chrome
+    &quot;browsers&quot;: [&quot;chrome&quot;]
+  },
+}
+</code></pre>
+
+<ul>
+<li><a href="https://codecept.io/locators">Locator Builder</a>. Write complex locators with simplest API combining CSS and XPath:</li>
+</ul>
+<pre><code class="js">// select 'Edit' link inside 2nd row of a table
+locate('//table')
+  .find('tr')
+  .at(2)
+  .find('a')
+  .withText('Edit');
+</code></pre>
+
+<ul>
+<li><a href="https://codecept.io/advanced/#dynamic-configuration">Dynamic configuration</a> to update helpers config per test or per suite.</li>
+<li>Added <code>event.test.finished</code> which fires synchronously for both failed and passed tests.</li>
+<li>[WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See <a href="https://github.com/Codeception/CodeceptJS/issues/1060">issue #1600</a>. You can enabled them with <code>fullPageScreenshots: true</code>, however they may work unstable in Selenium.</li>
+<li><code>within</code> blocks can return values. See <a href="https://codecept.io/basics/#within">updated documentation</a>.</li>
+<li>Added scenario and feature configuration via fluent API:</li>
+</ul>
+<pre><code class="js">Feature('checkout')
+  .timeout(3000)
+  .retry(2);
+
+Scenario('user can order in firefox', (I) =&gt; {
+  // see dynamic configuration
+}).config({ browser: 'firefox' })
+  .timeout(20000);
+
+Scenario('this test should throw error', (I) =&gt; {
+  // I.amOnPage
+}).throws(new Error);
+</code></pre>
 
 <h2 id="118">1.1.8</h2>
 <ul>

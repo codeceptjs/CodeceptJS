@@ -288,6 +288,20 @@
         
             <li><a href="#introduction">Introduction</a></li>
         
+            <li><a href="#testing-non-angular-applications">Testing non-Angular Applications</a></li>
+        
+            <li><a href="#writing-first-test">Writing First Test</a></li>
+        
+            <li><a href="#running-several-scenarios">Running Several Scenarios</a></li>
+        
+            <li><a href="#locators">Locators</a></li>
+        
+            <li><a href="#refactoring">Refactoring</a></li>
+        
+            <li><a href="#multiple-sessions">Multiple Sessions</a></li>
+        
+            <li><a href="#extending">Extending</a></li>
+        
     
     </ul>
 </div></div>
@@ -393,7 +407,19 @@ You can also run <code>list</code> command to see methods of I:</p>
 <pre><code class="bash">codeceptjs list
 </code></pre>
 
-<h3 id="writing-first-test">Writing First Test</h3>
+<h2 id="testing-non-angular-applications">Testing non-Angular Applications</h2>
+<p>Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:</p>
+<pre><code class="js">&quot;helpers&quot;: {
+  &quot;Protractor&quot;: {
+    &quot;url&quot;: &quot;http://todomvc.com/examples/angularjs/&quot;,
+    &quot;driver&quot;: &quot;hosted&quot;,
+    &quot;browser&quot;: &quot;firefox&quot;,
+    &quot;angular&quot;: false
+  }
+}
+</code></pre>
+
+<h2 id="writing-first-test">Writing First Test</h2>
 <p>Test scenario should always use <code>I</code> object to execute commands.
 This is important as all methods of <code>I</code> are running in global promise chain, this way CodeceptJS makes sure everything is executed in right order.
 At first a page should be opened to proceed, we use <code>amOnPage</code> command for that. As we already specified full URL to TodoMVC app,
@@ -417,7 +443,7 @@ Scenario('create todo item', (I) =&gt; {
 <p>A test can be executed with <code>run</code> command, we recommend to use <code>--steps</code> options to follow step-by-step execution:</p>
 <pre><code class="sh">$ codeceptjs run --steps
 
-CodeceptJS v0.3.2
+CodeceptJS 1.2.0
 Test root is assumed to be /home/davert/demos/todoangular
 Using the selenium server at http://localhost:4444/wd/hub
 
@@ -427,7 +453,7 @@ TodoMvc --
  • I dont see element &quot;#todo-count&quot;
 </code></pre>
 
-<h3 id="running-several-scenarios">Running Several Scenarios</h3>
+<h2 id="running-several-scenarios">Running Several Scenarios</h2>
 <p>By writing a test in similar manner we will have a test shown in the beginning of this guide. Probably we would like not to finish with one test,
 but have more, for testing editing of todo items, checking todo items, and more.</p>
 <p>Let's prepare our test for multiple scenarios. All test scenarios will need to open main page of application, so <code>amOnPage</code> can be moved into the <code>Before</code> hook:
@@ -438,7 +464,7 @@ Before((I) =&gt; {
   I.amOnPage('/');
 });
 
-var createTodo = function (I, name) {
+const createTodo = function (I, name) {
   I.fillField({model: 'newTodo'}, name);
   I.pressKey('Enter');
 }
@@ -470,7 +496,7 @@ Scenario('check todo item', (I) =&gt; {
 });
 </code></pre>
 
-<h3 id="locators">Locators</h3>
+<h2 id="locators">Locators</h2>
 <p>Like you may have noticed, CodeceptJS doesn't use <code>by.*</code> locators similar to Protractor or Selenium Webdriver.
 Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
 you can specify them using so-called strict locators. This is an absolute analogy of <code>by</code>, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:</p>
@@ -483,11 +509,10 @@ you can specify them using so-called strict locators. This is an absolute analog
 So links and buttons can be searched by their text.</p>
 <p>Same thing happens for form fields: they are searched by field names, labels, and so on.</p>
 <p>Using such smart locators makes tests easy to write, however, searching an element by text is slower than using CSS|XPath and much slower than using strict locators.</p>
-<h3 id="refactoring">Refactoring</h3>
+<h2 id="refactoring">Refactoring</h2>
 <p>In previous examples, we've moved actions into <code>createTodo</code> function. Is there a more elegant way of refactoring?
 Can we have something like <code>I.createTodo()</code> to be used in code? Sure, we can do so by editing <code>steps_file.js</code> created by init command.</p>
-<pre><code class="js">'use strict';
-// in this file you can append custom step methods to 'I' object
+<pre><code class="js">// in this file you can append custom step methods to 'I' object
 
 module.exports = function() {
   return actor({
@@ -509,19 +534,9 @@ module.exports = function() {
 </code></pre>
 
 <p>To learn more about refactoring options in CodeceptJS read <a href="http://codecept.io/pageobjects/">PageObjects guide</a>.</p>
-<h3 id="testing-non-angular-applications">Testing non-Angular Applications</h3>
-<p>Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:</p>
-<pre><code class="js">&quot;helpers&quot;: {
-  &quot;Protractor&quot;: {
-    &quot;url&quot;: &quot;http://todomvc.com/examples/angularjs/&quot;,
-    &quot;driver&quot;: &quot;hosted&quot;,
-    &quot;browser&quot;: &quot;firefox&quot;,
-    &quot;angular&quot;: false
-  }
-}
-</code></pre>
-
-<h3 id="extending">Extending</h3>
+<h2 id="multiple-sessions">Multiple Sessions</h2>
+<p>To run several browsers in one test see <a href="https://codecept.io/acceptance/#multiple-sessions">multiple session</a> chapter.</p>
+<h2 id="extending">Extending</h2>
 <p>What if CodeceptJS doesn't provide some of Protractor functionality you actually need? Sure its API is to general,
 and this case is possible. If you don't know how to do something with CodeceptJS - revert back to Protractor syntax!</p>
 <p>Create custom helper, define methods for it, and use it inside the I object. Your Helper can access <code>browser</code> from Protractor

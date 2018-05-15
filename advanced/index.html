@@ -294,6 +294,8 @@
         
             <li><a href="#multiple-execution">Multiple Execution</a></li>
         
+            <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
+        
             <li><a href="#done">done()</a></li>
         
     
@@ -372,13 +374,17 @@ It can be turned on with <code>--debug</code> flag.</p>
 <pre><code class="sh">codeceptjs run --debug
 </code></pre>
 
-<p>While running in debug mode you can pause execution and enter interactive console mode by using <code>pause()</code> function.</p>
+<p>to receive even more information turn on <code>--verbose</code> flag:</p>
+<pre><code class="sh">codeceptjs run --verbose
+</code></pre>
+
+<p>And don't forget that you can pause execution and enter <strong>interactive console</strong> mode by calling <code>pause()</code> inside your test.</p>
 <p>For advanced debugging use NodeJS debugger. In WebStorm IDE:</p>
 <pre><code class="sh">node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 </code></pre>
 
 <h2 id="multiple-execution">Multiple Execution</h2>
-<p>CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations. Before using this feature you need to add <code>multiple</code> option to the config:</p>
+<p>CodeceptJS can execute multiple suites in parallel. This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel. Before using this feature you need to add <code>multiple</code> option to the config:</p>
 <pre><code class="js">&quot;multiple&quot;: {
   &quot;basic&quot;: {
     // run all tests in chrome and firefox
@@ -399,7 +405,15 @@ It can be turned on with <code>--debug</code> flag.</p>
       // replace any config values from WebDriverIO helper
       {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;1200x840&quot;}
     ]
-  }
+  },
+
+  &quot;parallel&quot;: {
+    // Splits tests into chunks
+    &quot;chunks&quot;: 2,
+    // run all tests in chrome
+    &quot;browsers&quot;: [&quot;chrome&quot;]
+  },
+
 }
 </code></pre>
 
@@ -444,6 +458,72 @@ It can be turned on with <code>--debug</code> flag.</p>
 
 <h3 id="hooks">Hooks</h3>
 <p>Hooks are available when using the <code>run-multiple</code> command to perform actions before the test suites start and after the test suites have finished. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a> for an example.</p>
+<h3 id="chunks">Chunks</h3>
+<p>Chunking is a way to execute multiple tests in parallel. The default chunking collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (<code>a_test.js</code>,<code>b_test.js</code>,<code>c_test.js</code>,<code>d_test.js</code> and <code>e_test.js</code>), by setting <code>"chunks": 2</code> we tell the runner to run two suites in parallel. The first suite will run <code>a_test.js</code>,<code>b_test.js</code> and <code>c_test.js</code>, the second suite will run <code>d_test.js</code> and <code>e_test.js</code>.</p>
+<p>Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  // 2x chunks + 2x browsers = 4
+  &quot;parallel&quot;: {
+    // Splits tests into chunks
+    &quot;chunks&quot;: 2,
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  },
+}
+</code></pre>
+
+<p>Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // Splits tests into chunks by passing an anonymous function,
+    // only execute first and last found test file
+    &quot;chunks&quot;: (files) =&gt; {
+      return [
+        [ files[0] ], // chunk 1
+        [ files[files.length-1] ], // chunk 2
+      ]
+    },
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  },
+}
+</code></pre>
+
+<p>Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.</p>
+<h2 id="dynamic-configuration">Dynamic Configuration</h2>
+<p>Helpers can be reconfigured per scenario or per feature.
+This might be useful when some tests should be executed with different settings than others.
+In order to reconfigure tests use <code>.config()</code> method of <code>Scenario</code> or <code>Feature</code>.</p>
+<pre><code class="js">Scenario('should be executed in firefox', (I) =&gt; {
+  // I.amOnPage(..)
+}).config({ browser: 'firefox' })
+</code></pre>
+
+<p>In this case <code>config</code> overrides current config of the first helper.
+To change config of specific helper pass two arguments: helper name and config values:</p>
+<pre><code class="js">Scenario('should create data via v2 version of API', (I) =&gt; {
+  // I.amOnPage(..)
+}).config('REST', { endpoint: 'https://api.mysite.com/v2' })
+</code></pre>
+
+<p>Config can also be set by a function, in this case you can get a test object and specify config values based on it.
+This is very useful when running tests against cloud providers, like BrowserStack.</p>
+<pre><code class="js">Scenario('should report to BrowserStack', (I) =&gt; {
+  // I.amOnPage(..)
+}).config((test) =&gt; {
+  return { desiredCapabilities: {
+    project: test.suite.title,
+    name: test.title,
+  }}
+});
+</code></pre>
+
+<p>Config changes can be applied to all tests in suite:</p>
+<pre><code class="js">Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
+</code></pre>
+
+<p>Please note that some config changes can't be applied on the fly. For instance, if you set <code>restart: false</code> in your config and then changing value <code>browser</code> won't take an effect as browser is already started and won't be closed untill all tests finish.</p>
+<p>Configuration changes will be reverted after a test or a suite.</p>
 <h2 id="done">done()</h2></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >

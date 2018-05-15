@@ -340,7 +340,7 @@ This is done to allow easy switching of running backends so you could replace We
 <p>Tests are written in synchronous way. Test scenarios should be linear, so tests by themselves should not include promises or callbacks as well.
 However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
 <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
-<p>If you want to get information from a running test you can use <code>yield</code> inside a <strong>generator function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
+<p>If you want to get information from a running test you can use <code>await</code> inside <strong>async function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
 <pre><code class="js">Scenario('try grabbers', async (I) =&gt; {
   var title = await I.grabTitle();
 });
@@ -413,6 +413,14 @@ I.see('There were problems creating your account.');
 <p><code>within</code> can also work with <a href="../acceptance/#iframes">iframes</a></p>
 <p>When running steps inside a within block will be shown with a shift:</p>
 <p><img alt="within" src="http://codecept.io/images/within.png" /></p>
+<p>Within can return a value which can be used in a scenario:</p>
+<pre><code class="js">// inside async function
+const val = await within('#sidebar', () =&gt; {
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+</code></pre>
+
 <h2 id="comments">Comments</h2>
 <p>There is a simple way to add additional comments to your test scenario.
 Use <code>say</code> command to print information to screen:</p>
@@ -452,11 +460,16 @@ Scenario('My scenario', {key: val}, (I) =&gt; {});
 
 <h3 id="timeout">Timeout</h3>
 <p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
-<pre><code class="js">Feature('Stop me', {timeout: 5000}); // set timeout to 5s
+<pre><code class="js">Feature('Stop me').timeout(5000); // set timeout to 5s
 </code></pre>
 
 <p>or for the test:</p>
 <pre><code class="js">// set timeout to 1s
+Scenario(&quot;Stop me faster&quot;, (I) =&gt; {
+  // test goes here
+}).timeout(1000);
+
+// alternative
 Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
 
 // disable timeout for this scenario
@@ -469,21 +482,18 @@ Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
 This can be done with <code>retries</code> option added to <code>Feature</code> declaration.</p>
 <p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
 You can set number of a retries for a feature:</p>
-<pre><code class="js">Feature('Complex JS Stuff', {retries: 3})
-
-
-Scenario('Really complex', (I) =&gt; {
-  // test goes here
-});
+<pre><code class="js">Feature('Complex JS Stuff').retry(3);
 </code></pre>
 
 <p>Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
 <h4 id="retry-scenario">Retry Scenario</h4>
-<pre><code class="js">Scenario('Really complex', {retries: 2}, (I) =&gt; {
+<pre><code class="js">Scenario('Really complex', (I) =&gt; {
   // test goes here
-});
+}).retry(2);
 
+// alternative
+Scenario('Really complex', { retries: 2 }, (I) =&gt; {});
 </code></pre>
 
 <p>This scenario will be restarted two times on a failure</p>

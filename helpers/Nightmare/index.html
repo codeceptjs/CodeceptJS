@@ -432,6 +432,7 @@ less trusted.</p>
 <li><code>restart</code> (optional, default: true) - restart browser between tests.</li>
 <li><code>disableScreenshots</code> (optional, default: false)  - don't save screenshot on failure.</li>
 <li><code>uniqueScreenshotNames</code> (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.</li>
+<li><code>fullPageScreenshots</code> (optional, default: false) - make full page screenshots on failure.</li>
 <li><code>keepBrowserState</code> (optional, default: false)  - keep browser state between tests when <code>restart</code> set to false.</li>
 <li><code>keepCookies</code> (optional, default: false)  - keep cookies between tests when <code>restart</code> set to false.</li>
 <li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500.</li>
@@ -674,7 +675,7 @@ Vue.nextTick(done); // waiting for next tick
 
 <p>By passing value to <code>done()</code> function you can return values.
 Additional arguments can be passed as well, while <code>done</code> function is always last parameter in arguments list.</p>
-<pre><code class="js">let val = yield I.executeAsyncScript(function(url, done) {
+<pre><code class="js">let val = await I.executeAsyncScript(function(url, done) {
 // in browser context
 $.ajax(url, { success: (data) =&gt; done(data); }
 }, 'http://ajax.callback.url/');
@@ -688,7 +689,7 @@ $.ajax(url, { success: (data) =&gt; done(data); }
 <p>Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
-In this case you should use generator and yield to receive results.</p>
+In this case you should use async function and await to receive results.</p>
 <p>Example with jQuery DatePicker:</p>
 <pre><code class="js">// change date of jQuery DatePicker
 I.executeScript(function() {
@@ -697,8 +698,8 @@ $('date').datetimepicker('setDate', new Date());
 });
 </code></pre>
 
-<p>Can return values. Don't forget to use <code>yield</code> to get them.</p>
-<pre><code class="js">let date = yield I.executeScript(function(el) {
+<p>Can return values. Don't forget to use <code>await</code> to get them.</p>
+<pre><code class="js">let date = await I.executeScript(function(el) {
 // only basic types can be returned
 return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
@@ -728,8 +729,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 </ul>
 <h2 id="grabattributefrom">grabAttributeFrom</h2>
 <p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let hint = yield I.grabAttributeFrom('#tooltip', 'title');
+Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
+<pre><code class="js">let hint = await I.grabAttributeFrom('#tooltip', 'title');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -739,8 +740,8 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 </ul>
 <h2 id="grabcookie">grabCookie</h2>
 <p>Gets a cookie object by name
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let cookie = I.grabCookie('auth');
+Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
+<pre><code class="js">let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 </code></pre>
 
@@ -758,7 +759,7 @@ console.log(`Current URL is [${url}]`);
 
 <h2 id="grabhar">grabHAR</h2>
 <p>Get HAR</p>
-<pre><code class="js">let har = yield I.grabHAR();
+<pre><code class="js">let har = await I.grabHAR();
 fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 </code></pre>
 
@@ -779,8 +780,8 @@ Resumes test execution, so <strong>should be used inside an async function with 
 
 <h2 id="grabtextfrom">grabTextFrom</h2>
 <p>Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let pin = yield I.grabTextFrom('#pin');
+Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
+<pre><code class="js">let pin = await I.grabTextFrom('#pin');
 </code></pre>
 
 <p><strong>Parameters</strong></p>
@@ -789,14 +790,14 @@ Resumes test execution, so <strong>should be used inside a generator with <code>
 </ul>
 <h2 id="grabtitle">grabTitle</h2>
 <p>Retrieves a page title and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let title = yield I.grabTitle();
+Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
+<pre><code class="js">let title = await I.grabTitle();
 </code></pre>
 
 <h2 id="grabvaluefrom">grabValueFrom</h2>
 <p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside a generator with <code>yield</code></strong> operator.</p>
-<pre><code class="js">let email = yield I.grabValueFrom('input[name=email]');
+Resumes test execution, so <strong>should be used inside async function with <code>await</code></strong> operator.</p>
+<pre><code class="js">let email = await I.grabValueFrom('input[name=email]');
 </code></pre>
 
 <p><strong>Parameters</strong></p>

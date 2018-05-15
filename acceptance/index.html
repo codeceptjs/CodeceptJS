@@ -302,6 +302,8 @@
         
             <li><a href="#iframes">IFrames</a></li>
         
+            <li><a href="#multiple-sessions">Multiple Sessions</a></li>
+        
     
     </ul>
 </div></div>
@@ -505,6 +507,68 @@ I.click('#click-me');
 });
 </code></pre>
 
+<h2 id="multiple-sessions">Multiple Sessions</h2>
+<p><em>Note: Currently multiple sessions work only in WebDriverIO and Protractor</em></p>
+<p>CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use <code>session()</code> function as shown in example:</p>
+<pre><code class="js">Scenario('test app', (I) =&gt; {
+  I.amOnPage('/chat');
+  I.fillField('name', 'davert');
+  I.click('Sign In');
+  I.see('Hello, davert');
+  session('john', () =&gt; {
+    // another session started
+    I.amOnPage('/chat');
+    I.fillField('name', 'john');
+    I.click('Sign In');
+    I.see('Hello, john');
+  });
+  // switching back to default session
+  I.fillField('message', 'Hi, john');
+  // there is a message from current user
+  I.see('me: Hi, john', '.messages');
+  session('john', () =&gt; {
+    // let's check if john received it
+    I.see('davert: Hi, john', '.messages');
+  });
+});
+</code></pre>
+
+<p><code>session</code> function expects a first parameter to be a name of a session. You can switch back to session by using the same name.</p>
+<p>You can override config for session by passing second parameter:</p>
+<pre><code class="js">session('john', { browser: 'firefox' } , () =&gt; {
+  // run this steps in firefox
+  I.amOnPage('/');
+});
+</code></pre>
+
+<p>or just start session without switching to it. Call <code>session</code> passing only its name:</p>
+<pre><code class="js">Scenario('test', (I) =&gt; {
+  // opens 3 additional browsers
+  session('john');
+  session('mary');
+  session('jane');
+
+  I.amOnPage('/');
+
+  // switch to session by its name
+  session('mary', () =&gt; {
+    I.amOnPage('/login');
+  });
+}
+</code></pre>
+
+<p><code>session</code> can return value which can be used in scenario:</p>
+<pre><code class="js">// inside async function
+const val = await session('john', () =&gt; {
+  I.amOnPage('/info');
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+</code></pre>
+
+<p>Function passed into session can use <code>I</code>, page objects, and any objects declared for the scenario.
+This function can also be declared as async (but doesn't work as generator).</p>
+<p>Also, you can use <code>within</code> inside a session but you can't call session from inside <code>within</code>.</p>
 <hr />
 <h3 id="done">done()</h3>
 <p>CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.</p></div>
