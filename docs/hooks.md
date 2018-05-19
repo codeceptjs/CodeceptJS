@@ -235,19 +235,26 @@ module.exports = function() {
 
 Available events:
 
-* `event.test.started(test)` - at the very beginning of a test. Passes a current test object.
-* `event.test.before` - when `Before` hooks from helpers and from test is executed
-* `event.test.after` - after each test
-* `event.test.passed(test)` - when test passed
-* `event.test.failed(test, error)` - when test failed
-* `event.suite.before(suite)` - before a suite
-* `event.suite.after(suite)` - after a suite
-* `event.step.started(step)` - when step hooks from helpers executed. Passes current step object.
-* `event.step.before` - at the very beginning of a step
-* `event.step.after`- after a step
+* `event.test.before(test)` - *async* when `Before` hooks from helpers and from test is executed
+* `event.test.after(test)` - *async* after each test
+* `event.test.started(test)` - *sync* at the very beginning of a test. Passes a current test object.
+* `event.test.passed(test)` - *sync* when test passed
+* `event.test.failed(test, error)` - *sync* when test failed
+* `event.test.finished(test)` - *sync* when test finished
+* `event.suite.before(suite)` - *async* before a suite
+* `event.suite.after(suite)` - *async* after a suite
+* `event.step.before(step)` - *async* when the step is scheduled for execution
+* `event.step.after(step)`- *async* after a step
+* `event.step.started(step)` - *sync* when step starts.
+* `event.step.passed(step)` - *sync* when step passed.
+* `event.step.failed(step, err)` - *sync* when step failed.
+* `event.step.finished(step)` - *sync* when step finishes.
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed
+
+* *sync* - means that event is fired in the moment of action happens.
+* *async* - means that event is fired when an actions is scheduled. Use `recorder` to schedule your actions.
 
 For further reference look for [currently available listeners](https://github.com/Codeception/CodeceptJS/tree/master/lib/listener) using event system.
 
@@ -260,7 +267,7 @@ Test events provide a test object with following fields:
 * `opts` additional test options like retries, and others
 * `pending` true if test is scheduled for execution and false if a test has finished
 * `file` path to a file with a test.
-* `steps` array of executed steps (available only in `test.passed` or `test.failed` event)
+* `steps` array of executed steps (available only in `test.passed`, `test.failed`, `test.finished` event)
 
 and others
 

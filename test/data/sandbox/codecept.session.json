@@ -1,0 +1,14 @@
+{
+  "tests": "./*test_session.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Session": {
+      "require": "./session_helper"
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}

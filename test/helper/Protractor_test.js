@@ -9,7 +9,7 @@ const formContents = require('../../lib/utils').test.submittedData(path.join(__d
 const fileExists = require('../../lib/utils').fileExists;
 
 const web_app_url = TestHelper.siteUrl();
-const siteUrl = 'http://davertmik.github.io/angular-demo-app';
+const siteUrl = TestHelper.angularSiteUrl();
 let I;
 let browser;
 
@@ -34,6 +34,8 @@ describe('Protractor', function () {
       seleniumAddress: TestHelper.seleniumAddress(),
       angular: true,
       waitForTimeout: 5000,
+      getPageTimeout: 120000,
+      allScriptsTimeout: 30000,
       capabilities: {
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
