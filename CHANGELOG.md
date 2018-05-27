@@ -1,3 +1,9 @@
+## 1.2.1
+
+* Fixed running `I.retry()` on multiple steps.
+* Fixed parallel execution wih chunks.
+* [Puppeteer] Fixed `grabNumberOfVisibleElements` to return `0` instead of throwing error if no elements are found.
+
 ## 1.2.0
 
 * [WebDriverIO][Protractor][Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
