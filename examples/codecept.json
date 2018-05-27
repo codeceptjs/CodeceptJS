@@ -3,9 +3,8 @@
   "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "WebDriverIO": {
+    "Puppeteer": {
       "url": "http://localhost",
-      "browser": "chrome",
       "restart": true
     }
   },
@@ -15,6 +14,9 @@
     }
   },
   "multiple": {
+    "parallel": {
+      "chunks": 2
+    },
     "default": {
       "grep": "signin",
       "browsers": ["chrome", "firefox"]
