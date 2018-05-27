@@ -24,7 +24,7 @@ It's readable and simple and works using Puppeteer API!
 To start you need CodeceptJS with Puppeteer packages installed
 
 ```bash
-npm install -g codeceptjs-puppeteer
+npm install -g codeceptjs puppeteer
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
