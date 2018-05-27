@@ -297,7 +297,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#120">1.2.0</a></li>
+        <li class="main active"><a href="#121">1.2.1</a></li>
+        
+    
+        <li class="main "><a href="#120">1.2.0</a></li>
         
     
         <li class="main "><a href="#118">1.1.8</a></li>
@@ -456,6 +459,12 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="121">1.2.1</h2>
+<ul>
+<li>Fixed running <code>I.retry()</code> on multiple steps.</li>
+<li>Fixed parallel execution wih chunks.</li>
+<li>[Puppeteer] Fixed <code>grabNumberOfVisibleElements</code> to return <code>0</code> instead of throwing error if no elements are found.</li>
+</ul>
 <h2 id="120">1.2.0</h2>
 <ul>
 <li>[WebDriverIO][Protractor]<a href="https://codecept.io/acceptance/#multiple-sessions">Multiple Sessions</a>. Run several browser sessions in one test. Introduced <code>session</code> command, which opens additional browser window and closes it after a test.</li>

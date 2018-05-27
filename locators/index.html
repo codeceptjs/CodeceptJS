@@ -320,6 +320,31 @@
 <li><a href="#locator-builder">Locator Builder</a></li>
 <li><a href="#id-locators">ID locators</a>: by CSS id or by accessibility id</li>
 </ul>
+<p>Most methods in CodeceptJS use locators which can be either a string or an object.</p>
+<p>If the locator is an object, it should have a single element, with the key signifying the locator type (<code>id</code>, <code>name</code>, <code>css</code>, <code>xpath</code>, <code>link</code>, or <code>class</code>) and the value being the locator itself. This is called a "strict" locator.</p>
+<p>Examples:</p>
+<ul>
+<li>{id: 'foo'} matches <code>&lt;div id="foo"&gt;</code></li>
+<li>{name: 'foo'} matches <code>&lt;div name="foo"&gt;</code></li>
+<li>{css: 'input[type=input][value=foo]'} matches <code>&lt;input type="input" value="foo"&gt;</code></li>
+<li>{xpath: "//input[@type='submit'][contains(@value, 'foo')]"} matches <code>&lt;input type="submit" value="foobar"&gt;</code></li>
+<li>{class: 'foo'} matches <code>&lt;div class="foo"&gt;</code></li>
+</ul>
+<p>Writing good locators can be tricky.
+The Mozilla team has written an excellent guide titled <a href="https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/">Writing reliable locators for Selenium and WebDriver tests</a>.</p>
+<p>If you prefer, you may also pass a string for the locator. This is called a "fuzzy" locator.
+In this case, CodeceptJS uses a variety of heuristics (depending on the exact method called) to determine what element you're referring to. If you are locating a clickable element or an input element, CodeceptJS will use <a href="#semantic-locators">semantic locators</a>.</p>
+<p>For example, here's the heuristic used for the <code>fillField</code> method:</p>
+<ol>
+<li>Does the locator look like an ID selector (e.g. "#foo")? If so, try to find an input element matching that ID.</li>
+<li>If nothing found, check if locator looks like a CSS selector. If so, run it.</li>
+<li>If nothing found, check if locator looks like an XPath expression. If so, run it.</li>
+<li>If nothing found, check if there is an input element with a corresponding name.</li>
+<li>If nothing found, check if there is a label with specified text for input element.</li>
+<li>If nothing found, throw an <code>ElementNotFound</code> exception.</li>
+</ol>
+<p>Be warned that fuzzy locators can be significantly slower than strict locators.
+If speed is a concern, it's recommended you stick with explicitly specifying the locator type via object syntax.</p>
 <h2 id="css-and-xpath">CSS and XPath</h2>
 <p>Both CSS and XPath is supported. Usually CodeceptJS can guess locator's type:</p>
 <pre><code class="js">// select by CSS
@@ -334,7 +359,7 @@ I.seeElement('//table/tr/td[position()=3]');
 <pre><code class="js">// it's not clear that 'button' is actual CSS locator
 I.seeElement({ css: 'button' });
 
-// it's not clear that 'descendant::table/tr' is actual CSS locator
+// it's not clear that 'descendant::table/tr' is actual XPath locator
 I.seeElement({ xpath: 'descendant::table/tr' });
 </code></pre>
 
@@ -349,7 +374,7 @@ I.fillField('Username', 'davert');
 <p>Various strategies are used to locate semantic elements. However, they may run slower than specifying locator by XPath or CSS.</p>
 <h2 id="locator-builder">Locator Builder</h2>
 <p>CodeceptJS provides a fluent builder to compose custom locators in JavaScript. Use <code>locate</code> function to start.</p>
-<p>To locate <code>a</code> element inside <code>label</code> with test: 'Hello' use:</p>
+<p>To locate <code>a</code> element inside <code>label</code> with text: 'Hello' use:</p>
 <pre><code class="js">locate('a')
   .withAttr({ href: '#' })
   .inside(locate('label').withText('Hello'));
@@ -437,7 +462,8 @@ locate('button').after('.btn-cancel');
 <ul>
 <li><code>#user</code> or <code>{ id: 'user' }</code> finds element with id="user"</li>
 <li><code>~user</code> finds element with accessibility id "user" (in Mobile testing) or with <code>aria-label=user</code>.</li>
-</ul></div>
+</ul>
+<h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
