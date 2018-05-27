@@ -5,6 +5,13 @@ Before((Smth) => {
   Smth.openGitHub();
 });
 
+Scenario('Visit Home Page @retry', (I) => {
+  // .retry({ retries: 3, minTimeout: 1000 })
+  I.retry(2).see('GitHub');
+  I.retry(3).see('ALL');
+  I.retry(2).see('IMAGES');
+});
+
 Scenario('search @grop', (I) => {
   I.amOnPage('https://github.com/search');
   I.fillField('Search GitHub', 'CodeceptJS');
