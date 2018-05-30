@@ -19,7 +19,7 @@ This helper should be configured in codecept.json
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
+-   `waitForTimeout`: (optional, default: 1000) sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities`: Selenium's [desired
     capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities).
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
