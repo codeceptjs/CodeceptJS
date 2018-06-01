@@ -143,6 +143,15 @@ module.exports.tests = function () {
         xpath: '//div[@id = "grab-multiple"]//a',
       }))
       .then(num => assert.equal(num, 3)));
+    it('should grab number of visible elements for given css locator', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('[id=grab-multiple] a'))
+      .then(num => assert.equal(num, 3)));
+    it('should return 0 for non-existing elements', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('button[type=submit]'))
+      .then(num => assert.equal(num, 0)));
+    it('should return 0 for non-visible elements', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('div.hidden'))
+      .then(num => assert.equal(num, 0)));
   });
 
   describe('#seeInSource, #dontSeeInSource', () => {
