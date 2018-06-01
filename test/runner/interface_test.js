@@ -100,4 +100,25 @@ describe('CodeceptJS Interface', () => {
       done();
     });
   });
+
+
+  it('should display meta steps and substeps', (done) => {
+    exec(`${config_run_config('codecept.po.json')} --steps`, (err, stdout) => {
+      const lines = stdout.match(/\S.+/g);
+      lines.should.include.members([
+        'check current dir',
+        '• I open dir ',
+        '•   I am in path "."',
+        '• I see file "codecept.json"',
+        '• MyPage has file ',
+        '•   I see file "codecept.json"',
+        '•   I see file "codecept.po.json"',
+        '• I see file "codecept.po.json"',
+      ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
 });
