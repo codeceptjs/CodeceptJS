@@ -149,9 +149,6 @@ module.exports.tests = function () {
     it('should return 0 for non-existing elements', () => I.amOnPage('/info')
       .then(() => I.grabNumberOfVisibleElements('button[type=submit]'))
       .then(num => assert.equal(num, 0)));
-    it('should return 0 for non-visible elements', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements('div.hidden'))
-      .then(num => assert.equal(num, 0)));
   });
 
   describe('#seeInSource, #dontSeeInSource', () => {
