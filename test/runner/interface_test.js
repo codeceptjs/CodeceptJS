@@ -120,5 +120,4 @@ describe('CodeceptJS Interface', () => {
       done();
     });
   });
-
 });
