@@ -123,6 +123,13 @@ Install it via NPM:
 npm i mochawesome
 ```
 
+If you get an error like this
+```sh
+"mochawesome" reporter not found
+
+invalid reporter "mochawesome"
+```
+
 Make sure to have mocha installed or install it:
 
 ```sh
