@@ -80,7 +80,7 @@ describe('CodeceptJS Interface', () => {
         'Emitted | step.before (I am in path ".")',
         'Emitted | step.after (I am in path ".")',
         'Emitted | step.start (I am in path ".")',
-        '• I am in path "."',
+        'I am in path "."',
       ];
 
       lines.filter(l => beforeStep.indexOf(l) > -1)
@@ -88,14 +88,34 @@ describe('CodeceptJS Interface', () => {
 
       // steps order
       const step = [
-        '• I am in path "."',
+        'I am in path "."',
         'hello world',
-        '• I see file "codecept.json"',
+        'I see file "codecept.json"',
       ];
 
       lines.filter(l => step.indexOf(l) > -1)
         .should.eql(step, 'check steps execution order');
 
+      assert(!err);
+      done();
+    });
+  });
+
+
+  it('should display meta steps and substeps', (done) => {
+    exec(`${config_run_config('codecept.po.json')} --steps`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      lines.should.include.members([
+        ' check current dir',
+        '   I open dir ',
+        '     I am in path "."',
+        '   I see file "codecept.json"',
+        '   MyPage has file ',
+        '     I see file "codecept.json"',
+        '     I see file "codecept.po.json"',
+        '   I see file "codecept.po.json"',
+      ]);
+      stdout.should.include('OK  | 1 passed');
       assert(!err);
       done();
     });
