@@ -197,7 +197,7 @@ StepObject can be created similarly to PageObjects or PageFragments:
 codeceptjs go --type step
 ```
 
-Technically they are the same as PageObjects but with no locators inside them. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:
+Technically they are the same as PageObjects. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:
 
 ```js
 let I, userPage, permissionPage;

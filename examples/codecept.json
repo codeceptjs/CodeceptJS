@@ -3,19 +3,20 @@
   "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "WebDriverIO": {
+    "Puppeteer": {
       "url": "http://localhost",
-      "browser": "chrome",
       "restart": true
     }
   },
   "mocha": {
-    "grep": "@grop",
     "reporterOptions": {
       "mochaFile": "./output/result.xml"
     }
   },
   "multiple": {
+    "parallel": {
+      "chunks": 2
+    },
     "default": {
       "grep": "signin",
       "browsers": ["chrome", "firefox"]

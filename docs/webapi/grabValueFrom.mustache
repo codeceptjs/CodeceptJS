@@ -1,7 +1,7 @@
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside a generator with `yield`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
-let email = yield I.grabValueFrom('input[name=email]');
+let email = await I.grabValueFrom('input[name=email]');
 ```
 @param locator field located by label|name|CSS|XPath|strict locator

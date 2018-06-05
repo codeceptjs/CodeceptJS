@@ -13,7 +13,7 @@
   "multiple": {
     "default": {
       "browsers": [
-        "chrome", 
+        "chrome",
         { "browser": "firefox"}
       ]
     },
@@ -38,6 +38,9 @@
         "chrome",
         { "browser": "firefox", "windowSize": "1200x840"}
       ]
+    },
+    "chunks": {
+      "chunks": 2
     }
   },
   "include": {},

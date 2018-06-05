@@ -33,7 +33,7 @@ Tests are written in synchronous way. Test scenarios should be linear, so tests 
 However, behind the scene **all actions are wrapped in promises** inside the `I` object.
 [Global promise](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it as well as setup and teardown.
 
-If you want to get information from a running test you can use `yield` inside a **generator function** and special methods of helpers started with `grab` prefix.
+If you want to get information from a running test you can use `await` inside **async function** and special methods of helpers started with `grab` prefix.
 
 ```js
 Scenario('try grabbers', async (I) => {
@@ -130,6 +130,16 @@ I.see('There were problems creating your account.');
 When running steps inside a within block will be shown with a shift:
 
 ![within](http://codecept.io/images/within.png)
+
+Within can return a value which can be used in a scenario:
+
+```js
+// inside async function
+const val = await within('#sidebar', () => {
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+```
 
 ## Comments
 

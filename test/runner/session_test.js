@@ -22,15 +22,15 @@ describe('CodeceptJS session', function () {
       testStatus = list.pop();
       testStatus.should.include('OK');
       list.should.eql([
-        '• I do "writing"',
-        '• davert: I do "reading"',
-        '• I do "playing"',
-        '• john: I do "crying"',
-        '• davert: I do "smiling"',
-        '• I do "laughing"',
-        '• mike: I do "spying"',
-        '• john: I do "lying"',
-        '• I do "waving"',
+        'I do "writing"',
+        'davert: I do "reading"',
+        'I do "playing"',
+        'john: I do "crying"',
+        'davert: I do "smiling"',
+        'I do "laughing"',
+        'mike: I do "spying"',
+        'john: I do "lying"',
+        'I do "waving"',
       ], 'check steps execution order');
       done();
     });
@@ -46,13 +46,13 @@ describe('CodeceptJS session', function () {
       testStatus.should.include('OK');
 
       list.should.eql([
-        '• I do "writing"',
-        '• I do "playing"',
-        '• john: I do "crying"',
-        '• davert: I do "smiling"',
-        '• I do "laughing"',
-        '• davert: I do "singing"',
-        '• I do "waving"',
+        'I do "writing"',
+        'I do "playing"',
+        'john: I do "crying"',
+        'davert: I do "smiling"',
+        'I do "laughing"',
+        'davert: I do "singing"',
+        'I do "waving"',
       ], 'check steps execution order');
       done();
     });
