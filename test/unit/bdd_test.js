@@ -59,45 +59,13 @@ describe('BDD', () => {
 
   it('should load step definitions', () => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, params => sum += parseInt(params[0], 10));
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
     const suite = run(text);
     assert.equal('checkout process', suite.title);
     suite.tests[0].fn(() => {});
     assert.ok(suite.tests[0].steps);
     assert.equal(1610, sum);
-  });
-
-  it('should inject objects into definitions', () => {
-    container.append({
-      support: {
-        VAT: 0.2,
-      },
-    });
-    let sum = 0;
-    Given(/I have product with (\d+) price/, params => sum += parseInt(params[0], 10));
-    When('I go to checkout process', VAT => sum += 10 + sum * VAT);
-    const suite = run(text);
-    assert.equal('checkout process', suite.title);
-    suite.tests[0].fn(() => {});
-    assert.ok(suite.tests[0].steps);
-    assert.equal(1930, sum);
-  });
-
-  it('should inject objects into definitions', () => {
-    container.append({
-      support: {
-        VAT: 0.2,
-      },
-    });
-    let sum = 0;
-    Given(/I have product with (\d+) price/, params => sum += parseInt(params[0], 10));
-    When('I go to checkout process', VAT => sum += 10 + sum * VAT);
-    const suite = run(text);
-    assert.equal('checkout process', suite.title);
-    suite.tests[0].fn(() => {});
-    assert.ok(suite.tests[0].steps);
-    assert.equal(1930, sum);
   });
 
   it('should execute scenarios step-by-step ', () => {
@@ -111,16 +79,12 @@ describe('BDD', () => {
         },
       },
     });
-    container.append({
-      support: {
-        I: actor(),
-      },
-    });
+    I = actor();
     let sum = 0;
-    Given(/I have product with (\d+) price/, (I, params) => {
-      I.do('add', sum += parseInt(params[0], 10));
+    Given(/I have product with (\d+) price/, (price) => {
+      I.do('add', sum += parseInt(price, 10));
     });
-    When('I go to checkout process', (I) => {
+    When('I go to checkout process', () => {
       I.do('add finish checkout');
     });
     const suite = run(text);
@@ -149,7 +113,7 @@ describe('BDD', () => {
   });
 
   it('should match step with params', () => {
-    Given('I am a {word}', params => params[0]);
+    Given('I am a {word}', param => param);
     const fn = matchStep('I am a bird');
     assert.equal('bird', fn.params[0]);
   });
