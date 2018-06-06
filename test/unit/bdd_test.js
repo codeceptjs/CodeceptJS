@@ -59,45 +59,13 @@ describe('BDD', () => {
 
   it('should load step definitions', () => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, params => sum += parseInt(params[0], 10));
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
     const suite = run(text);
     assert.equal('checkout process', suite.title);
     suite.tests[0].fn(() => {});
     assert.ok(suite.tests[0].steps);
     assert.equal(1610, sum);
-  });
-
-  it('should inject objects into definitions', () => {
-    container.append({
-      support: {
-        VAT: 0.2,
-      },
-    });
-    let sum = 0;
-    Given(/I have product with (\d+) price/, params => sum += parseInt(params[0], 10));
-    When('I go to checkout process', VAT => sum += 10 + sum * VAT);
-    const suite = run(text);
-    assert.equal('checkout process', suite.title);
-    suite.tests[0].fn(() => {});
-    assert.ok(suite.tests[0].steps);
-    assert.equal(1930, sum);
-  });
-
-  it('should inject objects into definitions', () => {
-    container.append({
-      support: {
-        VAT: 0.2,
-      },
-    });
-    let sum = 0;
-    Given(/I have product with (\d+) price/, params => sum += parseInt(params[0], 10));
-    When('I go to checkout process', VAT => sum += 10 + sum * VAT);
-    const suite = run(text);
-    assert.equal('checkout process', suite.title);
-    suite.tests[0].fn(() => {});
-    assert.ok(suite.tests[0].steps);
-    assert.equal(1930, sum);
   });
 
   it('should execute scenarios step-by-step ', () => {
@@ -111,16 +79,12 @@ describe('BDD', () => {
         },
       },
     });
-    container.append({
-      support: {
-        I: actor(),
-      },
-    });
+    I = actor();
     let sum = 0;
-    Given(/I have product with (\d+) price/, (I, params) => {
-      I.do('add', sum += parseInt(params[0], 10));
+    Given(/I have product with (\d+) price/, (price) => {
+      I.do('add', sum += parseInt(price, 10));
     });
-    When('I go to checkout process', (I) => {
+    When('I go to checkout process', () => {
       I.do('add finish checkout');
     });
     const suite = run(text);
@@ -149,7 +113,7 @@ describe('BDD', () => {
   });
 
   it('should match step with params', () => {
-    Given('I am a {word}', params => params[0]);
+    Given('I am a {word}', param => param);
     const fn = matchStep('I am a bird');
     assert.equal('bird', fn.params[0]);
   });
@@ -158,8 +122,8 @@ describe('BDD', () => {
     let fn;
     Given('I am a {word}', params => params[0]);
     When('I have {int} wings and {int} eyes', params => params[0] + params[1]);
-    Given('I have ${int} in my pocket', params => params[0]); // eslint-disable no-template-curly-in-string
-    Given('I have also ${float} in my pocket', params => params[0]); // eslint-disable no-template-curly-in-string
+    Given('I have ${int} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
+    Given('I have also ${float} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
     fn = matchStep('I am a bird');
     assert.equal('bird', fn(fn.params));
     fn = matchStep('I have 2 wings and 2 eyes');
@@ -170,7 +134,56 @@ describe('BDD', () => {
     assert.equal(500.30, fn(fn.params));
   });
 
-  it('should execute scenario outlines', () => {
+  it('should attach before hook for Background', () => {
+    const text = `
+    Feature: checkout process
 
+      Background:
+        Given I am logged in as customer
+
+      Scenario:
+        Then I am shopping
+    `;
+    let sum = 0;
+    Given('I am logged in as customer', () => sum++);
+    Then('I am shopping', () => sum++);
+    const suite = run(text);
+    const done = () => {};
+    suite._beforeEach.forEach(hook => hook.run(done));
+    suite.tests[0].fn(done);
+    assert.equal(2, sum);
+  });
+
+  it('should execute scenario outlines', () => {
+    const text = `
+    Feature: checkout process
+
+    Scenario Outline: order discount
+      Given I have product with price <price>$ in my cart
+      And discount is 10 %
+      Then I should see price is "<total>" $
+
+      Examples:
+        | price | total |
+        | 10    | 9     |
+        | 20    | 18    |
+    `;
+    let cart = 0;
+    let executed = 0;
+    Given('I have product with price {int}$ in my cart', (price) => {
+      cart = price;
+    });
+    Given('discount is {int} %', (discount) => {
+      cart = cart * discount / 100;
+    });
+    Then('I should see price is {string} $', (total) => {
+      executed++;
+      assert.equal(cart, parseInt(total, 10));
+    });
+
+    const suite = run(text);
+    const done = () => {};
+    suite.tests.forEach(t => t.fn(done));
+    assert.equal(executed, 2);
   });
 });
