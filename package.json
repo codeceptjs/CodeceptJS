@@ -38,6 +38,7 @@
     "chalk": "^1.1.3",
     "commander": "^2.14.1",
     "css-to-xpath": "^0.1.0",
+    "cucumber-expressions": "^6.0.0",
     "escape-string-regexp": "^1.0.3",
     "fn-args": "^3.0.0",
     "gherkin": "^5.1.0",
