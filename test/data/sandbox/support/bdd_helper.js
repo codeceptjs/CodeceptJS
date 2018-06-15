@@ -2,7 +2,7 @@ const assert = require('assert');
 const Helper = require('../../../../lib/helper');
 
 class CheckoutHelper extends Helper {
-  _init() {
+  _before() {
     this.num = 0;
     this.sum = 0;
   }

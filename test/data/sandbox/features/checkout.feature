@@ -1,4 +1,4 @@
-Feature: checkout process
+Feature: Checkout process
   In order to buy products
   As a customer
   I want to be able to buy several products

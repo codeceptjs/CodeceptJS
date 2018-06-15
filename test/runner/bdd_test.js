@@ -14,11 +14,13 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should run feature files', (done) => {
-    exec(config_run_config('codecept.bdd.json'), (err, stdout, stderr) => {
-      stdout.should.include('BDD'); // feature
-      stdout.should.include('checkout process'); // test name
-      stdout.should.include('In order to buy products'); // test name
-      stdout.should.include('Given I have product with 600 price'); // test name
+    exec(config_run_config('codecept.bdd.json') + ' --steps', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Checkout process'); // feature
+      // stdout.should.include('In order to buy products'); // test name
+      stdout.should.include('Given I have product with $600 price');
+      stdout.should.include('And I have product with $1000 price');
+      stdout.should.include('Then I should see that total number of products is 2');
+      stdout.should.include('And my order amount is $1600');
       assert(!err);
       done();
     });
