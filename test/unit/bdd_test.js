@@ -6,7 +6,7 @@ const {
   Then,
   matchStep,
   clearSteps,
-} = require('../../lib/interfaces/context');
+} = require('../../lib/interfaces/bdd');
 const run = require('../../lib/interfaces/gherkin');
 const recorder = require('../../lib/recorder');
 const container = require('../../lib/container');
