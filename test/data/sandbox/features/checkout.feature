@@ -3,7 +3,7 @@ Feature: Checkout process
   As a customer
   I want to be able to buy several products
 
-  Scenario:
+  Scenario: checkout
     Given I have product with $600 price in my cart
     And I have product with $1000 price
     When I go to checkout process
