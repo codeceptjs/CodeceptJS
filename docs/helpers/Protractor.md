@@ -1280,6 +1280,7 @@ I.waitForFunction(() => window.requests == 0, 5);
 
 ## waitUntil
 
+Deprecated. Use `waitFor` instead.
 Waits for a function to return true (waits for 1sec by default).
 Running in Node context.
 
