@@ -872,7 +872,7 @@ placeholder for ~ locator only test case write once run on both Appium and WebDr
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -1388,13 +1388,24 @@ Element can be located by CSS or XPath.
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by defaultAppium: support
 
+## waitForFunction
+
+Waits for a function to return true (waits for 1sec by default).
+Running in browser context.
+
+```js
+I.waitUntil(() => window.requests == 5);
+I.waitUntil(() => window.requests == 5, 5);
+```
+
 ## waitUntil
 
 Waits for a function to return true (waits for 1sec by default).
+Running in Node context.
 
 ```js
-I.waitUntil(() => window.requests == 0);
-I.waitUntil(() => window.requests == 0, 5);
+I.waitUntil(() => results.length == 5);
+I.waitUntil(() => results.length == 5, 5);
 ```
 
 **Parameters**

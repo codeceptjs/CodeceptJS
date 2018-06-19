@@ -71,6 +71,13 @@ describe('Puppeteer', function () {
 
   webApiTests.tests();
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(() => window.__waitJs, 3));
+    });
+  });
+
   describe('#waitToHide', () => {
     it('should wait for hidden element', () => {
       return I.amOnPage('/form/wait_invisible')
