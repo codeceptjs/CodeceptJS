@@ -66,6 +66,10 @@ describe('Nightmare', function () {
 
   webApiTests.tests();
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => I.amOnPage('/form/wait_js')
+      .then(() => I.waitForFunction(() => window.__waitJs, 3)));
+  });
 
   // should work for webdriverio and seleniumwebdriver
   // but somehow fails on Travis CI :(
