@@ -103,7 +103,7 @@ describe('CodeceptJS Interface', () => {
 
 
   it('should display meta steps and substeps', (done) => {
-    exec(`${config_run_config('codecept.po.json')} --steps`, (err, stdout) => {
+    exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       lines.should.include.members([
         ' check current dir',

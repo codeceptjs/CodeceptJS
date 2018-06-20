@@ -28,6 +28,10 @@ class CheckoutHelper extends Helper {
     };
   }
 
+  addProduct(name, price) {
+    this.sum += price;
+  }
+
   checkout() {
     if (this.discountCalc) {
       this.discountCalc();
