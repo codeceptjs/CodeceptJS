@@ -36,6 +36,12 @@ program.command('def [path]')
   .option('-c, --config [file]', 'configuration file to be used')
   .action(require('../lib/command/definitions'));
 
+program.command('gherkin:init [path]')
+  .alias('bdd:init')
+  .description('Prepare CodeceptJS to run feature files.')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .action(require('../lib/command/gherkin/init'));
+
 program.command('gherkin:steps [path]')
   .alias('bdd:steps')
   .description('Prints all defined gherkin steps.')
