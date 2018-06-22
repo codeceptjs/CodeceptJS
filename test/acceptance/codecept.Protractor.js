@@ -12,16 +12,21 @@ module.exports.config = {
       angular: false,
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
-      capabilities: {
-        chromeOptions: {
-          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
-        },
-      },
+      // capabilities: {
+      //   chromeOptions: {
+      //     args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+      //   },
+      // },
     },
 
   },
   include: {},
-  bootstrap: done => setTimeout(done, 10000), // let's wait for selenium
+  bootstrap: done => setTimeout(done, 5000), // let's wait for selenium
   mocha: {},
   name: 'acceptance',
+  gherkin: {
+    features: './gherkin/*.feature',
+    steps: ['./gherkin/steps.js'],
+  },
+
 };

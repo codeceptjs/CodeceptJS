@@ -170,7 +170,7 @@ Then('my order amount is ${int}', (sum) => { // eslint-disable-line
 });
 ```
 
-Steps can be either strings or regular expressions. Parameters from string are passed as function arguments. To define parameters in a string we use [Cucumber expresions](https://docs.cucumber.io/cucumber/cucumber-expressions/)
+Steps can be either strings or regular expressions. Parameters from string are passed as function arguments. To define parameters in a string we use [Cucumber expressions](https://docs.cucumber.io/cucumber/cucumber-expressions/)
 
 To list all defined steps run `gherkin:steps` command:
 
@@ -311,8 +311,20 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
 
 It is common to think that BDD scenario is equal to test. But it's actually not. Not every test should be described as a feature. Not every test is written to test real business value. For instance, regression tests or negative scenario tests are not bringing any value to business. Business analysts don't care about scenario reproducing bug #13, or what error message is displayed when user tries to enter wrong password on login screen. Writing all the tests inside a feature files creates informational overflow.
 
-In CodeceptJS you can combine tests written in Gherkin format with classical acceptance tests. This way you can keep your feature files compact with minimal set of scenarios, and write regular tests to cover all cases.
+In CodeceptJS you can combine tests written in Gherkin format with classical acceptance tests. This way you can keep your feature files compact with minimal set of scenarios, and write regular tests to cover all cases. Please note, feature files will be executed before tests.
 
-Feature files will be executed before tests. You can run specific feature file by its filename or by grepping by name or tag.
+To run only features use `--features` option:
+
+```
+codeceptjs run --features
+```
+
+You can run a specific feature file by its filename or by grepping by name or tag.
+
+To run only tests without features use `--tests` option:
+
+```
+codeceptjs run --tests
+```
 
 ## done()
