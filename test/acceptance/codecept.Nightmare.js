@@ -13,4 +13,8 @@ module.exports.config = {
   bootstrap: false,
   mocha: {},
   name: 'acceptance',
+  gherkin: {
+    features: './gherkin/*.feature',
+    steps: ['./gherkin/steps.js'],
+  },
 };
