@@ -1,6 +1,4 @@
-const chai = require('chai');
-
-const expect = chai.expect;
+const assert = require('assert');
 
 Feature('Session');
 
@@ -39,12 +37,12 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor', as
     I.say(`${cookieName}: ${cookies.mary}`);
   });
   await I.seeInCurrentUrl('en-au');
-  expect(cookies.default).to.be.ok;
-  expect(cookies.john).to.be.ok;
-  expect(cookies.mary).to.be.ok;
-  expect(cookies.default).to.not.equal(cookies.john);
-  expect(cookies.default).to.not.equal(cookies.mary);
-  expect(cookies.john).to.not.equal(cookies.mary);
+  assert(cookies.default);
+  assert(cookies.john);
+  assert(cookies.mary);
+  assert.notEqual(cookies.default, cookies.john);
+  assert.notEqual(cookies.default, cookies.mary);
+  assert.notEqual(cookies.john, cookies.mary);
 });
 
 Scenario('should throw exception and close correctly @WebDriverIO @Protractor', (I) => {
@@ -101,7 +99,7 @@ Scenario('should work with within @WebDriverIO @Protractor', (I) => {
   });
 });
 
-Scenario('should use different base URL @WebDriverIO @Protractor', (I) => {
+Scenario('should use different base URL @Protractor', (I) => {
   I.amOnPage('/');
   I.see('Welcome to test app');
   session('john', { url: 'https://github.com' }, () => {
@@ -112,7 +110,7 @@ Scenario('should use different base URL @WebDriverIO @Protractor', (I) => {
   I.see('Welcome to test app');
 });
 
-Scenario('should start firefox @WebDriverIO', async (I) => {
+xScenario('should start firefox', async (I) => { // requires firefox :)
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', { browser: 'firefox' }, async () => {
@@ -120,11 +118,11 @@ Scenario('should start firefox @WebDriverIO', async (I) => {
     I.checkOption('No');
     I.seeCheckboxIsChecked({ css: 'input[value=No]' });
     const isChrome = await I.executeScript(() => !!window.chrome);
-    expect(isChrome).not.to.be.ok;
+    assert(!isChrome);
   });
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
   const isChrome = await I.executeScript(() => !!window.chrome);
-  expect(isChrome).to.be.ok;
+  assert(isChrome);
 });
 
 Scenario('should return a value in @WebDriverIO @Protractor', async (I) => {
