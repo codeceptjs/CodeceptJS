@@ -87,6 +87,8 @@ program.command('run [test]')
   .option('-o, --override [value]', 'override current config options')
   .option('--profile [value]', 'configuration profile to be used')
   .option('-c, --config [file]', 'configuration file to be used')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
 
   // mocha options
   .option('--colors', 'force enabling of colors')

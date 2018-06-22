@@ -8,7 +8,7 @@ module.exports.config = {
     Protractor: {
       url: TestHelper.siteUrl(),
       browser: 'chrome',
-      // restart: true,
+      restart: true,
       angular: false,
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
@@ -21,7 +21,7 @@ module.exports.config = {
 
   },
   include: {},
-  bootstrap: done => setTimeout(done, 5000), // let's wait for selenium
+  bootstrap: done => setTimeout(done, 10000), // let's wait for selenium
   mocha: {},
   name: 'acceptance',
 };
