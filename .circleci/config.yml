@@ -7,28 +7,28 @@ defaults: &defaults
   steps:
     - checkout
     - run: .circleci/build.sh
-    - step:
-        run: docker-compose run --rm test-unit
+    - run:
+        command: docker-compose run --rm test-unit
         working_directory: test
         when: always
-    - step:
-        run: docker-compose run --rm test-rest
+    - run:
+        command: docker-compose run --rm test-rest
         working_directory: test
         when: always
-    - step:
-        run: docker-compose run --rm test-acceptance.webdriverio
+    - run:
+        command: docker-compose run --rm test-acceptance.webdriverio
         working_directory: test
         when: always
-    - step:
-        run: docker-compose run --rm test-acceptance.nightmare
+    - run:
+        command: docker-compose run --rm test-acceptance.nightmare
         working_directory: test
         when: always
-    - step:
-        run: docker-compose run --rm test-acceptance.puppeteer
+    - run:
+        command: docker-compose run --rm test-acceptance.puppeteer
         working_directory: test
         when: always
-    - step:
-        run: docker-compose run --rm test-acceptance.protractor
+    - run:
+        command: docker-compose run --rm test-acceptance.protractor
         working_directory: test
         when: always
 
