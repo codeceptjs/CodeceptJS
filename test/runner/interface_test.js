@@ -49,22 +49,22 @@ describe('CodeceptJS Interface', () => {
     exec(config_run_config('codecept.ddt.json'), (err, stdout, stderr) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       output.should.include(`Got login davert and password 123456
- ✓ Should log accounts1 | {"login":"davert","password":"123456"}`);
+  ✓ Should log accounts1 | {"login":"davert","password":"123456"}`);
 
       output.should.include(`Got login admin and password 666666
- ✓ Should log accounts1 | {"login":"admin","password":"666666"}`);
+  ✓ Should log accounts1 | {"login":"admin","password":"666666"}`);
 
       output.should.include(`Got changed login andrey and password 555555
- ✓ Should log accounts2 | {"login":"andrey","password":"555555"}`);
+  ✓ Should log accounts2 | {"login":"andrey","password":"555555"}`);
 
       output.should.include(`Got changed login collaborator and password 222222
- ✓ Should log accounts2 | {"login":"collaborator","password":"222222"}`);
+  ✓ Should log accounts2 | {"login":"collaborator","password":"222222"}`);
 
       output.should.include(`Got changed login nick
- ✓ Should log accounts3 | nick`);
+  ✓ Should log accounts3 | nick`);
 
       output.should.include(`Got changed login jack
- ✓ Should log accounts3 | jack`);
+  ✓ Should log accounts3 | jack`);
 
       assert(!err);
       done();
@@ -103,10 +103,10 @@ describe('CodeceptJS Interface', () => {
 
 
   it('should display meta steps and substeps', (done) => {
-    exec(`${config_run_config('codecept.po.json')} --steps`, (err, stdout) => {
+    exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       lines.should.include.members([
-        ' check current dir',
+        '  check current dir',
         '   I open dir ',
         '     I am in path "."',
         '   I see file "codecept.json"',
