@@ -36,6 +36,26 @@ program.command('def [path]')
   .option('-c, --config [file]', 'configuration file to be used')
   .action(require('../lib/command/definitions'));
 
+program.command('gherkin:init [path]')
+  .alias('bdd:init')
+  .description('Prepare CodeceptJS to run feature files.')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .action(require('../lib/command/gherkin/init'));
+
+program.command('gherkin:steps [path]')
+  .alias('bdd:steps')
+  .description('Prints all defined gherkin steps.')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .action(require('../lib/command/gherkin/steps'));
+
+program.command('gherkin:snippets [path]')
+  .alias('bdd:snippets')
+  .description('Generate step defintions from steps.')
+  .option('--dry-run', "don't save snippets to file")
+  .option('-c, --config [file]', 'configuration file to be used')
+  .action(require('../lib/command/gherkin/snippets'));
+
+
 program.command('generate:test [path]')
   .alias('gt')
   .description('Generates an empty test')
@@ -67,6 +87,8 @@ program.command('run [test]')
   .option('-o, --override [value]', 'override current config options')
   .option('--profile [value]', 'configuration profile to be used')
   .option('-c, --config [file]', 'configuration file to be used')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
 
   // mocha options
   .option('--colors', 'force enabling of colors')
