@@ -2,6 +2,9 @@
 
 * Cucumber-style BDD Introduced. [Gherkin support](https://codecept.io/bdd).
 * [Puppeteer] [Multiple sessions]((https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
+* [Puppeteer] Stability improvement. Waits for for `load` event on page load. This strategy can be changed in config:
+  * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+  * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
 
 ## 1.2.1
 
