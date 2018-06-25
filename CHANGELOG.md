@@ -1,3 +1,8 @@
+## 1.3.0
+
+* Cucumber-style BDD Introduced. [Gherkin support](https://codecept.io/bdd).
+* [Puppeteer] [Multiple sessions]((https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
+
 ## 1.2.1
 
 * Fixed running `I.retry()` on multiple steps.
