@@ -476,6 +476,14 @@ module.exports.tests = function () {
       return assert.equal(val, 'Welcome to test app!');
     });
 
+    it('should grab multiple texts from page', function* () {
+      yield I.amOnPage('/info');
+      const vals = yield I.grabTextFrom('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+    });
+
     it('should grab value from field', function* () {
       yield I.amOnPage('/form/hidden');
       let val = yield I.grabValueFrom('#action');
