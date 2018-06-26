@@ -10,8 +10,8 @@ module.exports.config = {
       browser: 'chrome',
       restart: true,
       angular: false,
-      host: TestHelper.seleniumHost(),
-      port: TestHelper.seleniumPort(),
+      driver: 'hosted',
+      seleniumAddress: TestHelper.seleniumAddress(),
       // capabilities: {
       //   chromeOptions: {
       //     args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
