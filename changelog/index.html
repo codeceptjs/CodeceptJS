@@ -492,16 +492,20 @@ Given('I need to open Google', () =&gt; {
 </code></pre>
 
 <ul>
-<li>Nested steps output enabled for page objects.</li>
+<li>Nested steps output enabled for page objects.<ul>
 <li>to see high-level steps only run tests with <code>--steps</code> flag.</li>
 <li>to see PageObjects implementation run tests with <code>--debug</code>.</li>
+</ul>
+</li>
 <li>PageObjects simplified to remove <code>_init()</code> extra method. Try updated generators and see <a href="https://codecept.io/pageobjects/#pageobject">updated guide</a>.</li>
 <li>[Puppeteer] <a href="https://codecept.io/acceptance/#multiple-sessions">Multiple sessions</a> enabled. Requires Puppeteer &gt;= 1.5</li>
-<li>[Puppeteer] Stability improvement. Waits for for <code>load</code> event on page load. This strategy can be changed in config:</li>
+<li>[Puppeteer] Stability improvement. Waits for for <code>load</code> event on page load. This strategy can be changed in config:<ul>
 <li><code>waitForNavigation</code> config option introduced. Possible options: <code>load</code>, <code>domcontentloaded</code>, <code>networkidle0</code>, <code>networkidle2</code>. See <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions">Puppeteer API</a></li>
 <li><code>getPageTimeout</code> config option to set maximum navigation time in milliseconds. Default is 30 seconds.</li>
 <li><code>waitForNavigation</code> method added. Explicitly waits for navigation to be finished.
 Fixed <code>resizeWindow</code> by @sergejkaravajnij</li>
+</ul>
+</li>
 <li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <strong>Possible BC</strong> <code>grabTextFrom</code> unified. Return a text for single matched element and an array of texts for multiple elements.</li>
 <li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <code>waitForFunction</code> added. Waits for client-side JavaScript function to return true by @GREENpoint.</li>
 <li>[Puppeteer] <code>waitUntil</code> deprecated in favor of <code>waitForFunction</code>.</li>
