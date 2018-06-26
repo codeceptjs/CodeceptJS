@@ -1,6 +1,6 @@
 ## 1.3.0
 
-* **Cucumber-style BDD Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
+* **Cucumber-style BDD. Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
 
 Basic feature file:
 
@@ -53,8 +53,8 @@ This change allows using auto-completion when running a specific test.
     * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
     * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
     * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
-Fixed `resizeWindow` by @sergejkaravajnij
 * [WebDriverIO][Protractor][Puppeteer][Nightmare] **Possible BC** `grabTextFrom` unified. Return a text for single matched element and an array of texts for multiple elements.
+* [Puppeteer]Fixed `resizeWindow` by @sergejkaravajnij
 * [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by @GREENpoint.
 * [Puppeteer] `waitUntil` deprecated in favor of `waitForFunction`.
 * Added `filter` function to DataTable.
