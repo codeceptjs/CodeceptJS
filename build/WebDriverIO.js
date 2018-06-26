@@ -48,7 +48,7 @@ let withinStore = {};
  * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
  * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
  * * `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
- * * `waitForTimeout`: (option) sets default wait time in *ms* for all `wait*` functions. 1000 by default.
+ * * `waitForTimeout`: (optional, default: 1000) sets default wait time in *ms* for all `wait*` functions.
  * * `desiredCapabilities`: Selenium's [desired
  * capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities).
  * * `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
@@ -357,7 +357,7 @@ class WebDriverIO extends Helper {
   }
 
   _finishTest() {
-    if (!this.options.restart) return this._startBrowser();
+    if (!this.options.restart && this.isRunning) return this._stopBrowser();
   }
 
   _session() {
@@ -541,10 +541,7 @@ I.amOnPage('/login'); // opens a login page
    * Appium: support only web testing
    */
   amOnPage(url) {
-    return this.browser.url(url).url((err, res) => {
-      if (err) throw err;
-      this.debugSection('Url', res.value);
-    });
+    return this.browser.url(url);
   }
 
   /**
@@ -843,6 +840,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
+If multiple elements found returns an array of texts.
+
 @param locator element located by CSS|XPath|strict locator
    * Appium: support
    */
@@ -2097,6 +2096,25 @@ I.waitForDetached('#popup');
   }
 
   /**
+   * Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+@param function to be executed in browser context
+@param sec time seconds to wait, 1 by default
+   * Appium: support
+   */
+  async waitForFunction(fn, sec = null, timeoutMsg = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const client = this.browser;
+    return client.waitUntil(async () => (await client.execute(fn)).value, aSec * 1000, timeoutMsg);
+  }
+
+  /**
    * Waits for a function to return true (waits for 1sec by default).
 
 ```js
@@ -2111,7 +2129,7 @@ I.waitUntil(() => window.requests == 0, 5);
    */
   async waitUntil(fn, sec = null, timeoutMsg = null) {
     const aSec = sec || this.options.waitForTimeout;
-    return this.browser.waitUntil(fn, aSec, timeoutMsg);
+    return this.browser.waitUntil(fn, aSec * 1000, timeoutMsg);
   }
 
   /**

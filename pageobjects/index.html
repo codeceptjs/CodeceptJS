@@ -105,12 +105,8 @@
                             <a href="../acceptance/">Acceptance Testing</a>
                         </li>
                     
-                        <li >
-                            <a href="../angular/">Protractor Testing</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../mobile/">Mobile Testing</a>
+                        <li class="active">
+                            <a href="./">Page Objects</a>
                         </li>
                     
                         <li >
@@ -122,15 +118,23 @@
                         </li>
                     
                         <li >
-                            <a href="../helpers/">Helpers</a>
+                            <a href="../angular/">Protractor Testing</a>
                         </li>
                     
-                        <li class="active">
-                            <a href="./">Page Objects</a>
+                        <li >
+                            <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/">Helpers</a>
                         </li>
                     
                         <li >
                             <a href="../data/">Data Management</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../bdd/">Behavior Driven Development</a>
                         </li>
                     
                         <li >
@@ -263,7 +267,7 @@
 
 
                 <li >
-                    <a rel="prev" href="../data/">
+                    <a rel="prev" href="../puppeteer/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -283,11 +287,10 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.2 released</strong>. What's new:
-  <a href="https://codecept.io/acceptance/#multiple-sessions">Multiple browser sessions</a> |
-  <a href="https://codecept.io/advanced/#parallel-execution">Parallel execution</a> |
-  <a href="https://codecept.io/locators">Locator Builder</a> |
-  <a href="https://codecept.io/changelog/#120">Full changelog &raquo;</a>
+  <strong>CodeceptJS 1.3 released</strong>. What's new:
+  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
+  Multiple sessions for Puppeteer |
+  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
 </div>
 
 
@@ -299,13 +302,13 @@
     
         <li class="main active"><a href="#page-object">Page Object</a></li>
         
+            <li><a href="#actor">Actor</a></li>
+        
             <li><a href="#pageobject">PageObject</a></li>
         
             <li><a href="#page-fragments">Page Fragments</a></li>
         
             <li><a href="#stepobjects">StepObjects</a></li>
-        
-            <li><a href="#actor">Actor</a></li>
         
             <li><a href="#dependency-injection">Dependency Injection</a></li>
         
@@ -317,6 +320,21 @@
 <h1 id="page-object">Page Object</h1>
 <p>UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.</p>
+<h2 id="actor">Actor</h2>
+<p>At initialization you were asked to create custom steps file. If you accepted this option you may use <code>custom_steps.js</code> file to extend <code>I</code>. See how <code>login</code> method can be added to <code>I</code>:</p>
+<pre><code class="js">module.exports = function() {
+  return actor({
+
+    login: function(email, password) {
+      this.fillField('Email', email);
+      this.fillField('Password', password);
+      this.click('Submit');
+    }
+  });
+}
+</code></pre>
+
+<p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.</p>
 <h2 id="pageobject">PageObject</h2>
 <p>In case an application has different pages (login, admin, etc) you should use a page object.
 CodeceptJS can generate a template for it with the command:</p>
@@ -324,14 +342,9 @@ CodeceptJS can generate a template for it with the command:</p>
 </code></pre>
 
 <p>This will create a sample template for a page object and include it into <code>codecept.json</code> config.</p>
-<pre><code class="js">'use strict';
-let I;
+<pre><code class="js">const I = actor();
 
 module.exports = {
-
-  _init() {
-    I = actor();
-  }
 
   // insert your locators and methods here
 }
@@ -339,14 +352,9 @@ module.exports = {
 
 <p>As you see, <code>I</code> object is available there so you can use it as you do in tests.
 General page object for a login page may look like this:</p>
-<pre><code class="js">'use strict';
-let I;
+<pre><code class="js">const I = actor();
 
 module.exports = {
-
-  _init() {
-    I = actor();
-  },
 
   // setting locators
   fields: {
@@ -373,53 +381,9 @@ it should be added to list of test arguments to be included in test:</p>
 </code></pre>
 
 <p>Also you can use <code>async/await</code> inside PageObject:</p>
-<pre><code class="js">'use strict';
-let I;
+<pre><code class="js">const I = actor();
 
 module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
-  // setting locators
-  container: &quot;//div[@class = 'numbers']&quot;,
-  mainItem: {
-    number: &quot;.//div[contains(@class, 'numbers__main-number')]&quot;,
-    title: &quot;.//div[contains(@class, 'numbers__main-title-block')]&quot;
-  },
-
-  // introducing methods
-  openMainArticle() =&gt; {
-    I.waitForVisible(this.container)
-    let title;
-    within(this.container, async () =&gt; {
-      title = await I.grabTextFrom(this.mainItem.number);
-      let subtitle = await I.grabTextFrom(this.mainItem.title);
-      title = title + &quot; &quot; + subtitle.charAt(0).toLowerCase() + subtitle.slice(1);
-      I.click(this.mainItem.title)
-    })
-    return title;
-  }
-}
-</code></pre>
-
-<p>and use them in your tests:</p>
-<pre><code class="js">Scenario('login2', async (I, loginPage, basePage) =&gt; {
-  let title = mainPage.openMainArticle()
-  basePage.pageShouldBeOpened(title)
-});
-</code></pre>
-
-<p>Also you can use generators inside a PageObject:</p>
-<pre><code class="js">'use strict';
-let I;
-
-module.exports = {
-
-  _init() {
-    I = actor();
-  },
 
   // setting locators
   container: &quot;//div[@class = 'numbers']&quot;,
@@ -461,13 +425,9 @@ by running <code>go</code> command with <code>--type</code> (or <code>-t</code>)
 Technically they are the same as PageObject but conceptually they are a bit different.
 For instance, it is recommended that Page Fragment to include a root locator of a component.
 Methods of page fragment can use <code>within</code> block to narrow scope to a root locator:</p>
-<pre><code class="js">let I;
+<pre><code class="js">const I = actor();
 // fragments/modal.js
 module.exports = {
-
-  _init() {
-    I = actor();
-  },
 
   root: '#modal',
 
@@ -487,17 +447,11 @@ StepObject can be created similarly to PageObjects or PageFragments:</p>
 </code></pre>
 
 <p>Technically they are the same as PageObjects. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:</p>
-<pre><code class="js">let I, userPage, permissionPage;
+<pre><code class="js">const I = actor();
+const userPage = require('../pages/user');
+const permissionPage = require('../pages/permissions');
+
 module.exports = {
-
-  _init() {
-    I = actor();
-    userPage = require('../pages/user');
-    userPage._init();
-    permissionPage = require('../pages/permissions');
-    permissionPage._init();
-
-  },
 
   createUser(name) {
     // action composed from actions of page objects
@@ -509,24 +463,6 @@ module.exports = {
 };
 </code></pre>
 
-<h2 id="actor">Actor</h2>
-<p>Login example above can be reworked so the method <code>login</code> would be available in <code>I</code> object itself.
-This is recommended if most of tests require user authentication and for not to require <code>loginPage</code> every time.</p>
-<p>At initialization you were asked to create custom steps file. If you accepted this option you may use <code>custom_steps.js</code> file to extend <code>I</code>.
-See how <code>login</code> method can be added to <code>I</code>:</p>
-<pre><code class="js">module.exports = function() {
-  return actor({
-
-    login: function(email, password) {
-      this.fillField('Email', email);
-      this.fillField('Password', password);
-      this.click('Submit');
-    }
-  });
-}
-</code></pre>
-
-<p>Please notice that instead of <code>I</code> you should use <code>this</code> in current context.</p>
 <h2 id="dependency-injection">Dependency Injection</h2>
 <h3 id="configuration">Configuration</h3>
 <p>All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework.

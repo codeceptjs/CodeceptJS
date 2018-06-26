@@ -102,11 +102,7 @@
                         </li>
                     
                         <li >
-                            <a href="angular/">Protractor Testing</a>
-                        </li>
-                    
-                        <li >
-                            <a href="mobile/">Mobile Testing</a>
+                            <a href="pageobjects/">Page Objects</a>
                         </li>
                     
                         <li >
@@ -118,15 +114,23 @@
                         </li>
                     
                         <li >
+                            <a href="angular/">Protractor Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
                             <a href="helpers/">Helpers</a>
                         </li>
                     
                         <li >
-                            <a href="pageobjects/">Page Objects</a>
+                            <a href="data/">Data Management</a>
                         </li>
                     
                         <li >
-                            <a href="data/">Data Management</a>
+                            <a href="bdd/">Behavior Driven Development</a>
                         </li>
                     
                         <li >
@@ -279,11 +283,10 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.2 released</strong>. What's new:
-  <a href="https://codecept.io/acceptance/#multiple-sessions">Multiple browser sessions</a> |
-  <a href="https://codecept.io/advanced/#parallel-execution">Parallel execution</a> |
-  <a href="https://codecept.io/locators">Locator Builder</a> |
-  <a href="https://codecept.io/changelog/#120">Full changelog &raquo;</a>
+  <strong>CodeceptJS 1.3 released</strong>. What's new:
+  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
+  Multiple sessions for Puppeteer |
+  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
 </div>
 
 
@@ -336,6 +339,7 @@ I.see('Welcome');
       <div class="sample">
       <ul>
         <li><a href="http://webdriver.io" target="_blank">WebDriverIO</a></li>
+        <li><a href="https://developers.google.com/web/tools/puppeteer/" target="_blank">Puppeteer</a></li>
         <li><a href="http://www.protractortest.org/" target="_blank">Protractor</a></li>
         <li><a href="http://www.nightmarejs.org" target="_blank">NightmareJS</a></li>
         <li><a href="http://appium.io" target="_blank">Appium</a></li>
@@ -429,15 +433,21 @@ Written from <strong>user's perspective</strong>. Every action is a method of I.
     <p>
       CodeceptJS is based on Mocha and uses WebDriverIO library behind the scene. However, complexity of WebDriver libraries are hidden inside DSL for you to <strong>concentrate on test scenarios</strong>. That also makes CodeceptJS easy to maintain and read.
     </p>
+
+    <h3>vs Puppeteer</h3>
+
+    <p>CodeceptJS has built-in <a href="/puppeteer">Puppeteer support</a>. However, if you face limitation of Puppeteer library you can easily switch back to Selenium with one config change.</p>
+
     <h3>vs Protractor</h3>
 
-    <p>CodeceptJS is a high-level testing system which incorporates Protractor as a test execution backend. You can write tests in a simple and readable DSL and make them be <strong>executed with Protractor for your AngularJS</strong> application</p>
+    <p>CodeceptJS is a high-level testing system which incorporates <a href="/protractor">Protractor as a test execution backend</a. You can write tests in a simple and readable DSL and make them be <strong>executed with Protractor for your AngularJS</strong> application</p>
 
     <h3>vs CucumberJS</h3>
 
     <p>
-      Like CucumberJS our framework uses scenarios and steps. Unlike CucumberJS, common <strong>steps are predefined</strong>. That allows you to concentrate on testing and not on building a test framework. We use <strong>JavaScript DSL</strong> instead of Gherkin, to provide better flexibility in testing.
-
+      CodeceptJS has <a href="/bdd">built in support for Cucumber-style feature files</a>.
+      You can use full power of CodeceptJS (multiple backends, flexible DSL) to write step definitions for your feature files.
+      However, if a real BDD is an overhead for you and you need just testing - CodeceptJS has nice JavaScript DSL with predefined steps so you can focus on testing.
     </p>
 
 
@@ -452,7 +462,6 @@ Written from <strong>user's perspective</strong>. Every action is a method of I.
         <a target="_blank" href="http://webdriver.io/">
         <img src="/images/webdriverio.png" alt="WebDriverIO Selenium Bindings">
         </a>
-        </a>
       </li>
       <li>
         <a target="_blank" href="http://www.seleniumhq.org/">
@@ -464,6 +473,11 @@ Written from <strong>user's perspective</strong>. Every action is a method of I.
           <img src="/images/protractor.png" alt="Protractor end to end testing for AngularJS">
         </a>
       </li>
+      <li>
+          <a target="_blank" href="https://developers.google.com/web/tools/puppeteer/">
+            <img src="/images/puppeteer.png" alt="Puppeteer - high-level API to control headless Chrome or Chromium over the DevTools">
+          </a>
+        </li>
     </ul>
 
     </div>

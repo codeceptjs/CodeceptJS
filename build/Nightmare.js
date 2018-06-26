@@ -663,12 +663,12 @@ I.grabNumberOfVisibleElements('p');
   async grabNumberOfVisibleElements(locator) {
     locator = new Locator(locator, 'css');
 
-    const els = await this.executeScript((by, locator) => {
+    const num = await this.browser.evaluate((by, locator) => {
       return window.codeceptjs.findElements(by, locator)
-        .filter(el => el.offsetWidth > 0 && el.offsetHeight > 0);
+        .filter(e => e.offsetWidth > 0 && e.offsetHeight > 0).length;
     }, locator.type, locator.value);
 
-    return els.length;
+    return num;
   }
 
   /**
@@ -1021,13 +1021,21 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
+If multiple elements found returns an array of texts.
+
 @param locator element located by CSS|XPath|strict locator
    */
   async grabTextFrom(locator) {
     locator = new Locator(locator, 'css');
-    const el = await this.browser.findElement(locator.toStrict());
-    assertElementExists(el, locator);
-    return this.browser.evaluate(el => window.codeceptjs.fetchElement(el).innerText, el);
+    const els = await this.browser.findElements(locator.toStrict());
+    assertElementExists(els[0], locator);
+    const texts = [];
+    const getText = el => window.codeceptjs.fetchElement(el).innerText;
+    for (const el of els) {
+      texts.push(await this.browser.evaluate(getText, el));
+    }
+    if (texts.length === 1) return texts[0];
+    return texts;
   }
 
   /**
@@ -1208,6 +1216,23 @@ I.clearCookie('test');
       return this.browser.cookies.clearAll();
     }
     return this.browser.cookies.clear(cookie);
+  }
+
+  /**
+   * Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+@param function to be executed in browser context
+@param sec time seconds to wait, 1 by default
+   */
+  async waitForFunction(fn, sec = null) {
+    this.browser.options.waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    return this.browser.wait(fn);
   }
 
   /**

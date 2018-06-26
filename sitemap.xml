@@ -4,7 +4,7 @@
     
     <url>
      <loc>None/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>None/quickstart/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +20,7 @@
     
     <url>
      <loc>None/video/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -29,67 +29,73 @@
         
     <url>
      <loc>None/basics/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/acceptance/</loc>
-     <lastmod>2018-05-27</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/angular/</loc>
-     <lastmod>2018-05-27</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/mobile/</loc>
-     <lastmod>2018-05-27</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/puppeteer/</loc>
-     <lastmod>2018-05-27</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/nightmare/</loc>
-     <lastmod>2018-05-27</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>None/helpers/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/pageobjects/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/puppeteer/</loc>
+     <lastmod>2018-06-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/nightmare/</loc>
+     <lastmod>2018-06-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/angular/</loc>
+     <lastmod>2018-06-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/mobile/</loc>
+     <lastmod>2018-06-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/helpers/</loc>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/data/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/bdd/</loc>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/advanced/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/hooks/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -99,49 +105,49 @@
         
     <url>
      <loc>None/helpers/WebDriverIO/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/Protractor/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/Puppeteer/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/Nightmare/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/Appium/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/REST/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/ApiDataFactory/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/helpers/FileSystem/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -151,43 +157,43 @@
         
     <url>
      <loc>None/installation/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/commands/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/locators/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/configuration/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/reports/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/translation/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/docker/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -196,7 +202,7 @@
     
     <url>
      <loc>None/changelog/</loc>
-     <lastmod>2018-05-27</lastmod>
+     <lastmod>2018-06-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="/images/cjs-favicon.png">
+
+	<title>Behavior Driven Development - CodeceptJS</title>
+
+        <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-30075781-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+        
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700' rel='stylesheet' type='text/css'>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+
+        <div class="right hidden-sm hidden-xs hidden-md" style="margin-left: 10px; margin-top: 10px; margin-right: 5px; float:right; text-align: right">
+            <a href="https://twitter.com/CodeceptJS" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @CodeceptJS</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
+
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">CodeceptJS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                
+                <li >
+                    <a href="..">Index</a>
+                </li>
+                
+            
+            
+            
+                
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
+                </li>
+                
+            
+            
+            
+                
+                <li >
+                    <a href="../video/">Video</a>
+                </li>
+                
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Guides <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../basics/">Basics</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../acceptance/">Acceptance Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../pageobjects/">Page Objects</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../puppeteer/">Puppeteer Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../nightmare/">Nightmare Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../angular/">Protractor Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/">Helpers</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../data/">Data Management</a>
+                        </li>
+                    
+                        <li class="active">
+                            <a href="./">Behavior Driven Development</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../advanced/">Advanced Usage</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../hooks/">Plugins & Hooks</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Helpers <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../helpers/WebDriverIO/">WebDriverIO</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Protractor/">Protractor</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Puppeteer/">Puppeteer</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Nightmare/">Nightmare</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/Appium/">Appium</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/REST/">REST</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/ApiDataFactory/">ApiDataFactory</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../helpers/FileSystem/">FileSystem</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        <li >
+                            <a href="../installation/">Installation</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../commands/">Commands</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../locators/">Locators</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../configuration/">Configuration</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../translation/">Translation</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../docker/">Docker</a>
+                        </li>
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                
+                <li >
+                    <a href="../changelog/">Releases</a>
+                </li>
+                
+            
+            
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Support  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack</a></li>
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="https://twitter.com/codeceptjs">Twitter</a></li>
+                    <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference">Enterprise Support</a></li>
+                </ul>
+            </li>
+
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+
+                    <li class="dropdown promo">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                Services  <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference">Consulting &raquo;</a></li>
+                                <li><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">Trainings &raquo;</a></li>
+                                <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_1&utm_term=link&utm_campaign=reference">Test Automation &raquo;</a></li>
+                            </ul>
+                        </li>
+
+
+
+                <li >
+                    <a rel="prev" href="../advanced/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/codeception/codeceptjs/">
+                        
+                            <img src="/images/github.png" style="height: 1.2em;" alt="">
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+        <div class="banner">
+  <strong>CodeceptJS 1.3 released</strong>. What's new:
+  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
+  Multiple sessions for Puppeteer |
+  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
+</div>
+
+
+        
+
+        <div class="reference">
+            <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#behavior-driven-development">Behavior Driven Development</a></li>
+        
+            <li><a href="#what-is-behavior-driven-development">What is Behavior Driven Development</a></li>
+        
+            <li><a href="#gherkin">Gherkin</a></li>
+        
+            <li><a href="#advanced-gherkin">Advanced Gherkin</a></li>
+        
+            <li><a href="#configuration">Configuration</a></li>
+        
+            <li><a href="#tests-vs-features">Tests vs Features</a></li>
+        
+            <li><a href="#done">done()</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-7" role="main">
+
+<h1 id="behavior-driven-development">Behavior Driven Development</h1>
+<p>Behavior Driven Development (BDD) is a popular software development methodology. BDD is considered an extension of TDD, and is greatly inspired by <a href="http://agilemanifesto.org/">Agile</a> practices. The primary reason to choose BDD as your development process is to break down communication barriers between business and technical teams. BDD encourages the use of automated testing to verify all documented features of a project from the very beginning. This is why it is common to talk about BDD in the context of test frameworks (like CodeceptJS). The BDD approach, however, is about much more than testing - it is a common language for all team members to use during the development process.</p>
+<h2 id="what-is-behavior-driven-development">What is Behavior Driven Development</h2>
+<p>BDD was introduced by <a href="https://dannorth.net/introducing-bdd/">Dan North</a>. He described it as:</p>
+<blockquote>
+<p>outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.</p>
+</blockquote>
+<p>BDD has its own evolution from the days it was born, started by replacing "test" to "should" in unit tests, and moving towards powerful tools like Cucumber and Behat, which made user stories (human readable text) to be executed as an acceptance test.</p>
+<p>The idea of story BDD can be narrowed to:</p>
+<ul>
+<li>describe features in a scenario with a formal text</li>
+<li>use examples to make abstract things concrete</li>
+<li>implement each step of a scenario for testing</li>
+<li>write actual code implementing the feature</li>
+</ul>
+<p>By writing every feature in User Story format that is automatically executable as a test we ensure that: business, developers, QAs and managers are in the same boat.</p>
+<p>BDD encourages exploration and debate in order to formalize the requirements and the features that needs to be implemented by requesting to write the User Stories in a way that everyone can understand.</p>
+<p>By making tests to be a part of User Story, BDD allows non-technical personnel to write (or edit) Acceptance tests.</p>
+<p>With this procedure we also ensure that everyone in a team knows what has been developed, what has not, what has been tested and what has not.</p>
+<h3 id="ubiquitous-language">Ubiquitous Language</h3>
+<p>The ubiquitous language is always referred as <em>common</em> language. That is it's main benefit. It is not a couple of our business specification's words, and not a couple of developer's technical terms. It is a common words and terms that can be understood by people for whom we are building the software and should be understood by developers. Establishing correct communication between this two groups people is vital for building successful project that will fit the domain and fulfill all business needs.</p>
+<p>Each feature of a product should be born from a talk between</p>
+<ul>
+<li>business (analysts, product owner)</li>
+<li>developers</li>
+<li>QAs</li>
+</ul>
+<p>which are known in BDD as "three amigos".</p>
+<p>Such talks should produce written stories. There should be an actor that doing some things, the feature that should be fulfilled within the story and the result achieved.</p>
+<p>We can try to write such simple story:</p>
+<pre><code>As a customer I want to buy several products
+I put first product with $600 price to my cart
+And then another one with $1000 price
+When I go to checkout process
+I should see that total number of products I want to buy is 2
+And my order amount is $1600
+</code></pre>
+
+<p>As we can see this simple story highlights core concepts that are called <em>contracts</em>. We should fulfill those contracts to model software correctly. But how we can verify that those contracts are being satisfied? <a href="http://cucumber.io">Cucumber</a> introduced a special language for such stories called <strong>Gherkin</strong>. Same story transformed to Gherkin will look like this:</p>
+<pre><code class="gherkin">Feature: checkout process
+  In order to buy products
+  As a customer
+  I want to be able to buy several products
+
+  Scenario:
+    Given I have product with $600 price in my cart
+    And I have product with $1000 price
+    When I go to checkout process
+    Then I should see that total number of products is 2
+    And my order amount is $1600
+</code></pre>
+
+<p><strong>CodeceptJS can execute this scenario step by step as an automated test</strong>.
+Every step in this scenario requires a code which defines it.</p>
+<h2 id="gherkin">Gherkin</h2>
+<p>Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running <code>gherkin:init</code> command:</p>
+<pre><code>codeceptjs gherkin:init
+</code></pre>
+
+<p>It will add <code>gherkin</code> section to config. It will also prepare directories for features and step definition. And it will create the first feature file for you.</p>
+<h3 id="features">Features</h3>
+<p>Whenever you start writing a story you are describing a specific feature of an application, with a set of scenarios and examples describing this feature. Let's open a feature file created by <code>gherkin:init</code> command, which is <code>feature/basic.feature</code>.</p>
+<pre><code class="gherkin">Feature: Business rules
+  In order to achieve my goals
+  As a persona
+  I want to be able to interact with a system
+
+  Scenario: do something
+    Given I have a defined step
+</code></pre>
+
+<p>This text should be rewritten to follow your buisness rules. Don't think about a web interface for a while.
+Think about how user interacts with your system and what goals they want to achieve. Then write interaction scenarios.</p>
+<h4 id="scenarios">Scenarios</h4>
+<p>Scenarios are live examples of feature usage. Inside a feature file it should be written inside a <em>Feature</em> block. Each scenario should contain its title:</p>
+<pre><code class="gherkin">Feature: checkout
+  In order to buy product
+  As a customer
+  I need to be able to checkout the selected products
+
+Scenario: order several products
+</code></pre>
+
+<p>Scenarios are written in step-by-step manner using Given-When-Then approach. At start, scenario should describe its context with <strong>Given</strong> keyword:</p>
+<pre><code class="gherkin">  Given I have product with $600 price in my cart
+  And I have product with $1000 price in my cart
+</code></pre>
+
+<p>Here we also use word <strong>And</strong> to extend the Given and not to repeat it in each line.</p>
+<p>This is how we described the initial conditions. Next, we perform some action. We use <strong>When</strong> keyword for it:</p>
+<pre><code class="gherkin">  When I go to checkout process
+</code></pre>
+
+<p>And in the end we are verifying our expectation using <strong>Then</strong> keyword. The action changed the initial given state, and produced some results. Let's check that those results are what we actually expect.</p>
+<pre><code class="gherkin">  Then I should see that total number of products is 2
+  And my order amount is $1600
+</code></pre>
+
+<p>This scenarios are nice as live documentation but they do not test anything yet. What we need next is to define how to run those steps.
+Steps can be defined by executing <code>gherkin:snippets</code> command:</p>
+<pre><code class="bash">codeceptjs gherkin:snippets
+</code></pre>
+
+<p>This will produce code templates for all undefined steps in all feature files of this suite.
+It will also place stub definitions into <code>step_definitions/steps.js</code> file.
+Our next step will be to define those steps and transforming feature-file into a valid test.</p>
+<h3 id="step-definitions">Step Definitions</h3>
+<p>Step definitions are placed in JavaScript file with Given/When/Then functions that map strings from feature file to functions:</p>
+<pre><code class="js">const I = actor();
+
+// you can provide RegEx to match corresponding steps
+Given(/I have product with \$(\d+) price/, (price) =&gt; {
+  I.amOnPage('/products');
+  I.click(`.product[data-price=${price}]`);
+  I.click('Add to cart');
+});
+
+// or a simple string
+When('I go to checkout process', () =&gt; {
+  I.click('Checkout');
+});
+
+// parameters are passed in via Cucumber expressions
+Then('I should see that total number of products is {int}', (num) =&gt; {
+  I.see(num, '.cart');
+});
+Then('my order amount is ${int}', (sum) =&gt; { // eslint-disable-line
+  I.see('Total: ' + sum);
+});
+</code></pre>
+
+<p>Steps can be either strings or regular expressions. Parameters from string are passed as function arguments. To define parameters in a string we use <a href="https://docs.cucumber.io/cucumber/cucumber-expressions/">Cucumber expressions</a></p>
+<p>To list all defined steps run <code>gherkin:steps</code> command:</p>
+<pre><code class="bash">codeceptjs gherkin:steps
+</code></pre>
+
+<p>To run tests and see step-by step output use <code>--steps</code> optoin:</p>
+<pre><code>codeceptjs run --steps
+</code></pre>
+
+<p>To see not only business steps but an actual performed steps use <code>--debug</code> flag:</p>
+<pre><code>codeceptjs run --debug
+</code></pre>
+
+<h2 id="advanced-gherkin">Advanced Gherkin</h2>
+<p>Let's improve our BDD suite by using the advanced features of Gherkin language.</p>
+<h3 id="background">Background</h3>
+<p>If a group of scenarios have the same initial steps, let's that for dashboard we need always need to be logged in as administrator. We can use <em>Background</em> section to do the required preparations and not to repeat same steps across scenarios.</p>
+<pre><code class="gherkin">Feature: Dashboard
+  In order to view current state of business
+  As an owner
+  I need to be able to see reports on dashboard
+
+  Background:
+    Given I am logged in as administrator
+    And I open dashboard page
+</code></pre>
+
+<p>Steps in background are defined the same way as in scenarios.</p>
+<h3 id="tables">Tables</h3>
+<p>Scenarios can become more descriptive when you represent repeating data as tables. Instead of writing several steps "I have product with :num1 $ price in my cart" we can have one step with multiple values in it.</p>
+<pre><code class="gherkin">  Given i have products in my cart
+    | name         | category    | price  |
+    | Harry Potter | Books       | 5      |
+    | iPhone 5     | Smartphones | 1200   |
+    | Nuclear Bomb | Weapons     | 100000 |
+</code></pre>
+
+<p>Tables is a recommended ways to pass arrays into test scenarios.
+Inside a step definition data is stored in argument passed as <code>DataTable</code> JavaScript object.
+You can iterate on it like this:</p>
+<pre><code class="js">Given('I have products in my cart', (table) =&gt; { // eslint-disable-line
+  for (const id in table.rows) {
+    if (id &lt; 1) {
+      continue; // skip a header of a table
+    }
+
+    // go by row cells
+    const cells = table.rows[id].cells;
+
+    // take values
+    const name = cells[0].value;
+    const category = cells[1].value;
+    const price = cells[1].value;
+    // ...
+  }
+});
+</code></pre>
+
+<h3 id="examples">Examples</h3>
+<p>In case scenarios represent the same logic but differ on data, we can use <em>Scenario Outline</em> to provide different examples for the same behavior. Scenario outline is just like a basic scenario with some values replaced with placeholders, which are filled from a table. Each set of values is executed as a different test.</p>
+<pre><code class="gherkin">  Scenario Outline: order discount
+    Given I have product with price &lt;price&gt;$ in my cart
+    And discount for orders greater than $20 is 10 %
+    When I go to checkout
+    Then I should see overall price is &quot;&lt;total&gt;&quot; $
+
+    Examples:
+      | price | total |
+      | 10    | 10    |
+      | 20    | 20    |
+      | 21    | 18.9  |
+      | 30    | 27    |
+      | 50    | 45    |
+</code></pre>
+
+<h3 id="long-strings">Long Strings</h3>
+<p>Text values inside a scenarios can be set inside a <code>"""</code> block:</p>
+<pre><code class="gherkin">  Then i see in file &quot;codecept.json&quot;
+&quot;&quot;&quot;
+{
+  &quot;output&quot;: &quot;./output&quot;,
+  &quot;helpers&quot;: {
+    &quot;Puppeteer&quot;: {
+      &quot;url&quot;: &quot;http://localhost&quot;,
+      &quot;restart&quot;: true,
+      &quot;windowSize&quot;: &quot;1600x1200&quot;
+    }
+&quot;&quot;&quot;
+</code></pre>
+
+<p>This string can be accessed inside a <code>content</code> property of a last argument:</p>
+<pre><code class="js">Then('Then i see in file {string}', (file, text) =&gt; {
+  // file is a value of {string} from a title
+  const fileContent = fs.readFileSync(file).toString();
+  fileContent.should.include(text.content); // text.content is a value
+});
+</code></pre>
+
+<h3 id="tags">Tags</h3>
+<p>Gherkin scenarios and features can contain tags marked with <code>@</code>. Tags are appended to feature titles so you can easily filter by them when running tests:</p>
+<pre><code class="bash">codeceptjs run --grep &quot;@important&quot;
+</code></pre>
+
+<p>Tag should be placed before <em>Scenario:</em> or before <em>Feature:</em> keyword. In the last case all scenarios of that feature will be added to corresponding group.</p>
+<h2 id="configuration">Configuration</h2>
+<ul>
+<li><code>gherkin</code></li>
+<li><code>features</code> - path to feature files</li>
+<li><code>steps</code> - array of files with step definitions</li>
+</ul>
+<pre><code class="js">&quot;gherkin&quot;: {
+  &quot;features&quot;: &quot;./features/*.feature&quot;,
+  &quot;steps&quot;: [
+    &quot;./step_definitions/steps.js&quot;
+  ]
+}
+</code></pre>
+
+<h2 id="tests-vs-features">Tests vs Features</h2>
+<p>It is common to think that BDD scenario is equal to test. But it's actually not. Not every test should be described as a feature. Not every test is written to test real business value. For instance, regression tests or negative scenario tests are not bringing any value to business. Business analysts don't care about scenario reproducing bug #13, or what error message is displayed when user tries to enter wrong password on login screen. Writing all the tests inside a feature files creates informational overflow.</p>
+<p>In CodeceptJS you can combine tests written in Gherkin format with classical acceptance tests. This way you can keep your feature files compact with minimal set of scenarios, and write regular tests to cover all cases. Please note, feature files will be executed before tests.</p>
+<p>To run only features use <code>--features</code> option:</p>
+<pre><code>codeceptjs run --features
+</code></pre>
+
+<p>You can run a specific feature file by its filename or by grepping by name or tag.</p>
+<p>To run only tests without features use <code>--tests</code> option:</p>
+<pre><code>codeceptjs run --tests
+</code></pre>
+
+<h2 id="done">done()</h2></div>
+            <div class="col-md-2" class="promo-1">
+    <div class="promo-banner"  >
+                <h3>
+                    Enterprise Support
+                </h3>
+
+                <p>We help you to develop efficient end to end tests
+                    <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference">Learn More &raquo;</a>
+                </p>
+    </div>
+
+</div>
+            <div class="clearfix"></div>
+        </div>
+        
+
+     <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+                <h5>Support:</h5>
+                <ul>
+                    <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Channel</a></li>
+                    <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
+                    <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=bottom&utm_term=link&utm_campaign=reference">Commercial Support</a></li>
+                </ul>
+
+            </div>
+
+<div class="col-md-4">
+          <ul class="imglist">
+                    <li class="github"><a href="https://github.com/codeception/codeceptjs"><img src="/images/github.png" alt="GitHub">Codeception/CodeceptJS</a></li>
+                    <li class="twitter">
+                        <a  href="https://twitter.com/codeceptjs">
+                            <img src="/images/twitter.png" alt="">@CodeceptJS
+                        </a>
+                    </li>
+                    </ul>
+
+</div>
+
+            <div class="col-md-4">
+
+
+
+
+                <h4>Our Contributors</h4>
+                <div id="contributors"></div>
+            </div>
+
+        </div>
+
+
+        <center>Created by <strong>CodeceptJS Team</strong></center>
+
+</div>
+
+    </footer>
+
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+
+    </body>
+</html>

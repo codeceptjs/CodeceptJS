@@ -1262,6 +1262,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
+If multiple elements found returns an array of texts.
+
 @param locator element located by CSS|XPath|strict locator
    *
    */

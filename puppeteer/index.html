@@ -106,11 +106,7 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">Protractor Testing</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../mobile/">Mobile Testing</a>
+                            <a href="../pageobjects/">Page Objects</a>
                         </li>
                     
                         <li class="active">
@@ -122,15 +118,23 @@
                         </li>
                     
                         <li >
+                            <a href="../angular/">Protractor Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
                             <a href="../helpers/">Helpers</a>
                         </li>
                     
                         <li >
-                            <a href="../pageobjects/">Page Objects</a>
+                            <a href="../data/">Data Management</a>
                         </li>
                     
                         <li >
-                            <a href="../data/">Data Management</a>
+                            <a href="../bdd/">Behavior Driven Development</a>
                         </li>
                     
                         <li >
@@ -283,11 +287,10 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.2 released</strong>. What's new:
-  <a href="https://codecept.io/acceptance/#multiple-sessions">Multiple browser sessions</a> |
-  <a href="https://codecept.io/advanced/#parallel-execution">Parallel execution</a> |
-  <a href="https://codecept.io/locators">Locator Builder</a> |
-  <a href="https://codecept.io/changelog/#120">Full changelog &raquo;</a>
+  <strong>CodeceptJS 1.3 released</strong>. What's new:
+  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
+  Multiple sessions for Puppeteer |
+  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
 </div>
 
 
@@ -355,7 +358,18 @@ If you already have CodeceptJS project, just install <code>puppeteer</code> pack
 </code></pre>
 
 <p>Turn on the <code>show</code> option if you want to follow test progress in a window. This is very useful for debugging.</p>
-<p>Sometimes test may run faster than application gets rendered. In this case it is <strong>recommended to increase <code>waitForAction</code> config value</strong>. It will wait for a small amount of time (100ms) by default after each user action taken.</p>
+<p>Puppeteer uses different strategies to detect if a page is loaded. In configuration use <code>waitForNavigation</code> option for that:</p>
+<p>By default it is set to <code>domcontentloaded</code> which waits for <code>DOMContentLoaded</code> event being fired. However, for Single Page Applications it's more useful to set this value to <code>networkidle0</code> which waits for all network connections to be finished.</p>
+<pre><code class="js">  &quot;helpers&quot;: {
+    &quot;Puppeteer&quot;: {
+      &quot;url&quot;: &quot;http://localhost&quot;,
+      &quot;waitForNavigation&quot;: &quot;networkidle0&quot;
+    }
+  }
+</code></pre>
+
+<p>WHen a test runs faster than application it is recommended to increase <code>waitForAction</code> config value.
+It will wait for a small amount of time (100ms) by default after each user action is taken.</p>
 <p><em>More options are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
 <h2 id="writing-tests">Writing Tests</h2>
 <p>CodeceptJS test should be created with <code>gt</code> command:</p>

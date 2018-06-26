@@ -106,11 +106,7 @@
                         </li>
                     
                         <li >
-                            <a href="../angular/">Protractor Testing</a>
-                        </li>
-                    
-                        <li >
-                            <a href="../mobile/">Mobile Testing</a>
+                            <a href="../pageobjects/">Page Objects</a>
                         </li>
                     
                         <li >
@@ -122,15 +118,23 @@
                         </li>
                     
                         <li >
+                            <a href="../angular/">Protractor Testing</a>
+                        </li>
+                    
+                        <li >
+                            <a href="../mobile/">Mobile Testing</a>
+                        </li>
+                    
+                        <li >
                             <a href="../helpers/">Helpers</a>
                         </li>
                     
                         <li >
-                            <a href="../pageobjects/">Page Objects</a>
+                            <a href="../data/">Data Management</a>
                         </li>
                     
                         <li >
-                            <a href="../data/">Data Management</a>
+                            <a href="../bdd/">Behavior Driven Development</a>
                         </li>
                     
                         <li >
@@ -283,11 +287,10 @@
     </div>
 </div>
         <div class="banner">
-  <strong>CodeceptJS 1.2 released</strong>. What's new:
-  <a href="https://codecept.io/acceptance/#multiple-sessions">Multiple browser sessions</a> |
-  <a href="https://codecept.io/advanced/#parallel-execution">Parallel execution</a> |
-  <a href="https://codecept.io/locators">Locator Builder</a> |
-  <a href="https://codecept.io/changelog/#120">Full changelog &raquo;</a>
+  <strong>CodeceptJS 1.3 released</strong>. What's new:
+  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
+  Multiple sessions for Puppeteer |
+  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
 </div>
 
 
@@ -297,7 +300,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#121">1.2.1</a></li>
+        <li class="main active"><a href="#130">1.3.0</a></li>
+        
+    
+        <li class="main "><a href="#121">1.2.1</a></li>
         
     
         <li class="main "><a href="#120">1.2.0</a></li>
@@ -459,6 +465,53 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="130">1.3.0</h2>
+<ul>
+<li><strong>Cucumber-style BDD Introduced <a href="https://codecept.io/bdd">Gherkin support</a>. Thanks to <a href="https://github.com/dvins">David Vins</a> and Omedym (https://www.omedym.com) for sponsoring this feature</strong>.</li>
+</ul>
+<p>Basic feature file:</p>
+<pre><code class="gherkin">Feature: Business rules
+  In order to achieve my goals
+  As a persona
+  I want to be able to interact with a system
+
+  Scenario: do anything in my life
+    Given I need to open Google
+</code></pre>
+
+<p>Step definition:</p>
+<pre><code class="js">const I = actor();
+
+Given('I need to open Google', () =&gt; {
+  I.amOnPage('https://google.com');
+});
+</code></pre>
+
+<p>Run it with <code>--features --steps</code> flag:</p>
+<pre><code>codeceptjs run --steps --features
+</code></pre>
+
+<ul>
+<li>Nested steps output enabled for page objects.</li>
+<li>to see high-level steps only run tests with <code>--steps</code> flag.</li>
+<li>to see PageObjects implementation run tests with <code>--debug</code>.</li>
+<li>PageObjects simplified to remove <code>_init()</code> extra method. Try updated generators and see <a href="https://codecept.io/pageobjects/#pageobject">updated guide</a>.</li>
+<li>[Puppeteer] <a href="https://codecept.io/acceptance/#multiple-sessions">Multiple sessions</a> enabled. Requires Puppeteer &gt;= 1.5</li>
+<li>[Puppeteer] Stability improvement. Waits for for <code>load</code> event on page load. This strategy can be changed in config:</li>
+<li><code>waitForNavigation</code> config option introduced. Possible options: <code>load</code>, <code>domcontentloaded</code>, <code>networkidle0</code>, <code>networkidle2</code>. See <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions">Puppeteer API</a></li>
+<li><code>getPageTimeout</code> config option to set maximum navigation time in milliseconds. Default is 30 seconds.</li>
+<li><code>waitForNavigation</code> method added. Explicitly waits for navigation to be finished.
+Fixed <code>resizeWindow</code> by @sergejkaravajnij</li>
+<li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <strong>Possible BC</strong> <code>grabTextFrom</code> unified. Return a text for single matched element and an array of texts for multiple elements.</li>
+<li>[WebDriverIO][Protractor][Puppeteer][Nightmare] <code>waitForFunction</code> added. Waits for client-side JavaScript function to return true by @GREENpoint.</li>
+<li>[Puppeteer] <code>waitUntil</code> deprecated in favor of <code>waitForFunction</code>.</li>
+<li>Added <code>filter</code> function to DataTable.</li>
+<li>Send non-nested array of files to custom parallel execution chunking by @mikecbrant.</li>
+<li>Fixed invalid output directory path for run-multiple by @mikecbrant.</li>
+<li>[WebDriverIO] <code>waitUntil</code> timeout accepts time in seconds (as all other wait* functions). Fix by @truesrc.</li>
+<li>[Nightmare] Fixed <code>grabNumberOfVisibleElements</code> to work similarly to <code>seeElement</code>. Thx to @stefanschenk and Jinbo Jinboson.</li>
+<li>[Protractor] Fixed alert handling error with message 'no such alert' by @truesrc.</li>
+</ul>
 <h2 id="121">1.2.1</h2>
 <ul>
 <li>Fixed running <code>I.retry()</code> on multiple steps.</li>

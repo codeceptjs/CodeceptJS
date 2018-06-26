@@ -1,7 +1,8 @@
-let By;
 let EC;
 let Key;
 let Button;
+let ProtractorBy;
+let ProtractorExpectedConditions;
 
 const requireg = require('requireg');
 const Helper = require('../helper');
@@ -139,6 +140,7 @@ class Protractor extends Helper {
       driver: 'hosted',
       capabilities: {},
       angular: true,
+      restart: true,
     };
 
     config = Object.assign(defaults, config);
@@ -147,6 +149,7 @@ class Protractor extends Helper {
     if (!config.scriptTimeout) config.scriptTimeout = config.scriptsTimeout;
     if (config.proxy) config.capabilities.proxy = config.proxy;
     if (config.browser) config.capabilities.browserName = config.browser;
+
     config.waitForTimeout /= 1000; // convert to seconds
     return config;
   }
@@ -157,10 +160,12 @@ class Protractor extends Helper {
         this.browser = null;
       }
     });
+
     Runner = requireg('protractor/built/runner').Runner;
-    By = requireg('protractor').ProtractorBy;
+    ProtractorBy = requireg('protractor').ProtractorBy;
     Key = requireg('protractor').Key;
     Button = requireg('protractor').Button;
+    ProtractorExpectedConditions = requireg('protractor').ProtractorExpectedConditions;
 
     return Promise.resolve();
   }
@@ -170,7 +175,7 @@ class Protractor extends Helper {
       requireg('protractor');
       require('assert').ok(requireg('protractor/built/runner').Runner);
     } catch (e) {
-      return ['protractor@^5.0.0'];
+      return ['protractor@^5.3.0'];
     }
   }
 
@@ -198,9 +203,9 @@ class Protractor extends Helper {
 
 
   async _startBrowser() {
-    const runner = new Runner(this.options);
-    this.browser = runner.createBrowser();
     try {
+      const runner = new Runner(this.options);
+      this.browser = runner.createBrowser();
       await this.browser.ready;
     } catch (err) {
       if (err.toString().indexOf('ECONNREFUSED')) {
@@ -213,12 +218,9 @@ class Protractor extends Helper {
     } else {
       await this.amOutsideAngularApp();
     }
-    global.browser = this.browser;
-    global.$ = this.browser.$;
-    global.$$ = this.browser.$$;
-    global.element = this.browser.element;
-    global.by = global.By = new By();
-    global.ExpectedConditions = EC = this.browser.ExpectedConditions;
+
+    loadGlobals(this.browser);
+
     if (this.options.windowSize === 'maximize') {
       await this.resizeWindow(this.options.windowSize);
     } else if (this.options.windowSize) {
@@ -348,10 +350,12 @@ class Protractor extends Helper {
       loadVars: async (browser) => {
         if (isWithin()) throw new Error('Can\'t start session inside within block');
         this.browser = browser;
+        loadGlobals(this.browser);
       },
       restoreVars: async () => {
         if (isWithin()) await this._withinEnd();
         this.browser = defaultSession;
+        loadGlobals(this.browser);
       },
     };
   }
@@ -868,12 +872,19 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
+If multiple elements found returns an array of texts.
+
 @param locator element located by CSS|XPath|strict locator
    */
   async grabTextFrom(locator) {
     const els = await this._locate(locator);
     assertElementExists(els);
-    return els[0].getText();
+    const texts = [];
+    for (const el of els) {
+      texts.push(await el.getText());
+    }
+    if (texts.length === 1) return texts[0];
+    return texts;
   }
 
   /**
@@ -887,9 +898,7 @@ let postHTML = await I.grabHTMLFrom('#post');
    */
   async grabHTMLFrom(locator) {
     const els = await this._locate(locator);
-    if (!els) {
-      return null;
-    }
+    assertElementExists(els);
 
     const html = await Promise.all(els.map((el) => {
       return this.browser.executeScript('return arguments[0].innerHTML;', el);
@@ -1435,7 +1444,7 @@ assert(cookie.value, '123456');
         return dialog.getText();
       }
     } catch (e) {
-      if (e.message.indexOf('no alert open') > -1) {
+      if (e.message.indexOf('no alert open') || e.message.indexOf('no such alert')) {
         // Don't throw an error
         return null;
       }
@@ -1820,6 +1829,23 @@ Element can be located by CSS or XPath.
   }
 
   /**
+   * Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+@param function to be executed in browser context
+@param sec time seconds to wait, 1 by default
+   */
+  async waitForFunction(fn, sec = null, timeoutMsg = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    return this.browser.wait(() => this.browser.executeScript.call(this.browser, fn), aSec * 1000, timeoutMsg);
+  }
+
+  /**
    * Waits for a function to return true (waits for 1sec by default).
 
 ```js
@@ -1833,7 +1859,7 @@ I.waitUntil(() => window.requests == 0, 5);
    */
   async waitUntil(fn, sec = null, timeoutMsg = null) {
     const aSec = sec || this.options.waitForTimeout;
-    return this.browser.wait(fn, aSec, timeoutMsg);
+    return this.browser.wait(fn, aSec * 1000, timeoutMsg);
   }
 
   /**
@@ -2213,4 +2239,13 @@ function isFrameLocator(locator) {
 
 function isWithin() {
   return Object.keys(withinStore).length !== 0;
+}
+
+function loadGlobals(browser) {
+  global.browser = browser;
+  global.$ = browser.$;
+  global.$$ = browser.$$;
+  global.element = browser.element;
+  global.by = global.By = new ProtractorBy();
+  global.ExpectedConditions = EC = new ProtractorExpectedConditions(browser);
 }

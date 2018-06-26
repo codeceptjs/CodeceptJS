@@ -49,6 +49,8 @@ const consoleLogStore = new Console();
  * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
  * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
  * * `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
+ * * `waitForNavigation`: (optional, default: 'load'). When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+ * * `getPageTimeout` (optional, default: '30000') config option to set maximum navigation time in milliseconds. Default is 30 seconds. Pass 0 to disable timeout.
  * * `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
  * * `windowSize`: (optional) default window size. Set a dimension like `640x480`.
  * * `userAgent`: (optional) user-agent string.
@@ -58,6 +60,34 @@ const consoleLogStore = new Console();
  * ```js
  * "chrome": {
  *   "executablePath" : "/path/to/Chrome"
+ * }
+ * ```
+ *
+ * #### Sample Config
+ *
+ * ```json
+ * {
+ *    "helpers": {
+ *      "Puppeteer" : {
+ *        "url": "http://localhost",
+ *        "restart": false,
+ *        "waitForNavigation": "networkidle0",
+ *        "waitForAction": 500
+ *      }
+ *    }
+ * }
+ * ```
+ *
+ * #### Sample Config
+ *
+ * ```json
+ * {
+ *    "helpers": {
+ *      "Puppeteer" : {
+ *        "url": "http://localhost",
+ *        "show": true
+ *      }
+ *    }
  * }
  * ```
  *
@@ -94,6 +124,8 @@ class Puppeteer extends Helper {
       disableScreenshots: false,
       uniqueScreenshotNames: false,
       manualStart: false,
+      getPageTimeout: 30000,
+      waitForNavigation: 'load',
       restart: true,
       keepCookies: false,
       keepBrowserState: false,
@@ -120,7 +152,7 @@ class Puppeteer extends Helper {
     try {
       requireg('puppeteer');
     } catch (e) {
-      return ['puppeteer@^1.0.0'];
+      return ['puppeteer@^1.5.0'];
     }
   }
 
@@ -137,7 +169,7 @@ class Puppeteer extends Helper {
 
   async _before() {
     recorder.retry({
-      retries: 2,
+      retries: 3,
       when: err => err.message.indexOf('Cannot find context with specified id') > -1,
     });
     if (this.options.restart && !this.options.manualStart) return this._startBrowser();
@@ -162,6 +194,9 @@ class Puppeteer extends Helper {
       if (!(err.message.indexOf("Storage is disabled inside 'data:' URLs.") > -1)) throw err;
     });
     await this.closeOtherTabs();
+    const contexts = this.browser.browserContexts();
+    contexts.shift();
+    await Promise.all(contexts.map(c => c.close()));
     return this.browser;
   }
 
@@ -171,6 +206,37 @@ class Puppeteer extends Helper {
   _finishTest() {
     if (!this.options.restart && this.isRunning) return this._stopBrowser();
   }
+
+  _session() {
+    const page = this.page;
+    return {
+      start: async () => {
+        this.debugSection('Incognito Tab', 'opened');
+
+        const bc = await this.browser.createIncognitoBrowserContext();
+        await bc.newPage();
+        // Create a new page inside context.
+        return bc;
+      },
+      stop: async (context) => {
+        // is closed by _after
+      },
+      loadVars: async (context) => {
+        // if (this.withinLocator)
+        const existingPages = context.targets().filter(t => t.type() === 'page');
+        // this.page = await existingPages[0].page();
+        // this.context = await page.$('body');
+        return this._setPage(await existingPages[0].page());
+      },
+      restoreVars: async () => {
+        this.withinLocator = null;
+        this.page = page;
+        if (!page) return;
+        this.context = await page.$('body');
+      },
+    };
+  }
+
 
   /**
    * Set the automatic popup response to Accept.
@@ -230,9 +296,13 @@ class Puppeteer extends Helper {
    * Set current page
    * @param {object} page page to set
    */
-  _setPage(page) {
+  async _setPage(page) {
+    page = await page;
     this._addPopupListener(page);
     this.page = page;
+    if (!page) return;
+    this.context = await page.$('body');
+    await page.bringToFront();
   }
 
   /**
@@ -288,19 +358,7 @@ class Puppeteer extends Helper {
 
   async _startBrowser() {
     this.browser = await puppeteer.launch(this.puppeteerOptions);
-    const targetCreatedHandler = (page) => {
-      if (!page) return;
-      this.withinLocator = null;
-      page.on('load', frame => this.context = page.$('body'));
-      page.on('console', (msg) => {
-        this.debugSection(msg.type(), msg.args().join(' '));
-        consoleLogStore.add(msg);
-      });
-    };
-    this.browser.on('targetcreated', (target) => {
-      target.page().then(page => targetCreatedHandler(page));
-    });
-
+    this.browser.on('targetcreated', target => target.page().then(page => targetCreatedHandler.call(this, page)));
     this.browser.on('targetchanged', (target) => {
       this.debugSection('Url', target.url());
     });
@@ -310,9 +368,9 @@ class Puppeteer extends Helper {
 
     if (existingPages.length) {
       // Run the handler as it will not be triggered if the page already exists
-      targetCreatedHandler(mainPage);
+      targetCreatedHandler.call(this, mainPage);
     }
-    this._setPage(mainPage);
+    await this._setPage(mainPage);
 
     if (this.options.windowSize && this.options.windowSize.indexOf('x') > 0) {
       const dimensions = this.options.windowSize.split('x');
@@ -392,7 +450,7 @@ I.amOnPage('/login'); // opens a login page
     if (url.indexOf('http') !== 0) {
       url = this.options.url + url;
     }
-    await this.page.goto(url);
+    await this.page.goto(url, { timeout: this.options.getPageTimeout, waitUntil: this.options.waitForNavigation });
     return this._waitForAction();
   }
 
@@ -411,12 +469,6 @@ First parameter can be set to `maximize`
     if (width === 'maximize') {
       throw new Error('Puppeteer can\'t control windows, so it can\'t maximize it');
     }
-
-    // Workaround for https://github.com/GoogleChrome/puppeteer/issues/1183
-    await this.browser._connection.send('Browser.setWindowBounds', {
-      bounds: { height, width },
-      windowId: 1, // Use the first window.
-    });
 
     await this.page.setViewport({ width, height });
     return this._waitForAction();
@@ -479,7 +531,7 @@ I.moveCursorTo('#submit', 5,5);
 
    */
   async refreshPage() {
-    return this.page.reload();
+    return this.page.reload({ timeout: this.options.getPageTimeout, waitUntil: this.options.waitForNavigation });
   }
 
   /**
@@ -672,8 +724,7 @@ let title = await I.grabTitle();
       throw new Error(`There is no ability to switch to next tab with offset ${num}`);
     }
 
-    this._setPage(page);
-    await this.page.bringToFront();
+    await this._setPage(page);
     return this._waitForAction();
   }
 
@@ -695,8 +746,7 @@ let title = await I.grabTitle();
       throw new Error(`There is no ability to switch to previous tab with offset ${num}`);
     }
 
-    this._setPage(page);
-    await this.page.bringToFront();
+    await this._setPage(page);
     return this._waitForAction();
   }
 
@@ -741,7 +791,7 @@ let title = await I.grabTitle();
    * ```
    */
   async openNewTab() {
-    this._setPage(await this.browser.newPage());
+    await this._setPage(await this.browser.newPage());
     return this._waitForAction();
   }
 
@@ -1109,15 +1159,14 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
   }
 
   /**
-   * Grab number of visible elements by locator
-   *
-   * ```js
-   * I.grabNumberOfVisibleElements('p');
-   * ```
+   * * Grab number of visible elements by locator
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
    */
   async grabNumberOfVisibleElements(locator) {
     let els = await this._locate(locator);
-    assertElementExists(els, locator);
     els = await Promise.all(els.map(el => el.boundingBox()));
     return els.filter(v => v).length;
   }
@@ -1461,12 +1510,19 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
+If multiple elements found returns an array of texts.
+
 @param locator element located by CSS|XPath|strict locator
    */
   async grabTextFrom(locator) {
     const els = await this._locate(locator);
     assertElementExists(els, locator);
-    return els[0].getProperty('innerText').then(t => t.jsonValue());
+    const texts = [];
+    for (const el of els) {
+      texts.push(await (await el.getProperty('innerText')).jsonValue());
+    }
+    if (texts.length === 1) return texts[0];
+    return texts;
   }
 
   /**
@@ -2055,6 +2111,37 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   }
 
   /**
+   * Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+@param function to be executed in browser context
+@param sec time seconds to wait, 1 by default
+   */
+  async waitForFunction(fn, sec = null) {
+    const aSec = sec || this.options.waitForTimeout;
+    const waitTimeout = aSec * 1000;
+    const context = await this._getContext();
+    return context.waitForFunction(fn, { timeout: waitTimeout });
+  }
+
+  /**
+   * Waits for navigation to finish. By default takes configured `waitForNavigation` option.
+   *
+   * See [Pupeteer's reference](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+   *
+   * @param {*} opts
+   */
+  async waitForNavigation(opts = {}) {
+    opts = Object.assign({ timeout: this.options.getPageTimeout, waitUntil: this.options.waitForNavigation }, opts);
+    return this.page.waitForNavigation(opts);
+  }
+
+  /**
    * Waits for a function to return true (waits for 1sec by default).
 
 ```js
@@ -2067,6 +2154,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
    */
   async waitUntil(fn, sec = null) {
+    console.log('This method will remove in CodeceptJS 1.4; use `waitForFunction` instead!');
     const aSec = sec || this.options.waitForTimeout;
     const waitTimeout = aSec * 1000;
     const context = await this._getContext();
@@ -2162,7 +2250,7 @@ async function proceedClick(locator, context = null, options = {}) {
     assertElementExists(els, locator, 'Clickable element');
   }
   await els[0].click(options);
-  return this._waitForAction();
+  return this.waitForNavigation() && this._waitForAction();
 }
 
 async function findClickable(matcher, locator) {
@@ -2403,3 +2491,14 @@ function $XPath(element, selector) {
   }
   return res;
 }
+
+function targetCreatedHandler(page) {
+  if (!page) return;
+  this.withinLocator = null;
+  page.on('load', frame => this.context = page.$('body'));
+  page.on('console', (msg) => {
+    this.debugSection(msg.type(), msg.args().join(' '));
+    consoleLogStore.add(msg);
+  });
+}
+
