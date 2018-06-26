@@ -80,10 +80,10 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should print steps', (done) => {
     exec(`${codecept_run}default --steps`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[2.default:firefox] print browser ');
-      stdout.should.include('[2.default:firefox]  • I print browser');
-      stdout.should.include('[1.default:chrome] print browser ');
-      stdout.should.include('[1.default:chrome]  • I print browser');
+      stdout.should.include('[2.default:firefox]   print browser ');
+      stdout.should.include('[2.default:firefox]    I print browser');
+      stdout.should.include('[1.default:chrome]   print browser ');
+      stdout.should.include('[1.default:chrome]    I print browser');
       assert(!err);
       done();
     });

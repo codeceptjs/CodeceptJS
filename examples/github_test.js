@@ -20,13 +20,14 @@ Scenario('search @grop', (I) => {
   I.see('Codeception/CodeceptJS', locate('.repo-list .repo-list-item').first());
 });
 
-Scenario('signin', (I) => {
-  I.click('Sign in');
+Scenario('signin', (I, loginPage) => {
   I.say('it should not enter');
-  I.see('Sign in to GitHub');
-  I.fillField('Username or email address', 'something@totest.com');
-  I.fillField('Password', '123456');
-  I.click('Sign in');
+  loginPage.login('something@totest.com', '123456');
+  I.see('Incorrect username or password.', '.flash-error');
+});
+
+Scenario('signin2', (I, Smth) => {
+  Smth.openAndLogin();
   I.see('Incorrect username or password.', '.flash-error');
 });
 

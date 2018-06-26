@@ -1,10 +1,10 @@
-let I;
+const I = actor();
 
 module.exports = {
-
-  _init() {
-    I = actor();
+  login(email, password) {
+    I.click('Sign in');
+    I.fillField('Username or email address', 'something@totest.com');
+    I.fillField('Password', '123456');
+    I.click('Sign in');
   },
-
-  // insert your locators and methods here
 };

@@ -7,7 +7,7 @@ module.exports.config = {
   helpers: {
     Puppeteer: {
       url: TestHelper.siteUrl(),
-      show: false,
+      show: true,
       chrome: {
         args: [
           '--no-sandbox',
@@ -20,4 +20,8 @@ module.exports.config = {
   bootstrap: false,
   mocha: {},
   name: 'acceptance',
+  gherkin: {
+    features: './gherkin/*.feature',
+    steps: ['./gherkin/steps.js'],
+  },
 };
