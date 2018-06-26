@@ -31,14 +31,14 @@ codeceptjs run --steps --features
 ```
 
 * Nested steps output enabled for page objects.
-  * to see high-level steps only run tests with `--steps` flag.
-  * to see PageObjects implementation run tests with `--debug`.
+    * to see high-level steps only run tests with `--steps` flag.
+    * to see PageObjects implementation run tests with `--debug`.
 * PageObjects simplified to remove `_init()` extra method. Try updated generators and see [updated guide](https://codecept.io/pageobjects/#pageobject).
 * [Puppeteer] [Multiple sessions](https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
 * [Puppeteer] Stability improvement. Waits for for `load` event on page load. This strategy can be changed in config:
-  * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
-  * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
-  * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
+    * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+    * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
+    * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
 Fixed `resizeWindow` by @sergejkaravajnij
 * [WebDriverIO][Protractor][Puppeteer][Nightmare] **Possible BC** `grabTextFrom` unified. Return a text for single matched element and an array of texts for multiple elements.
 * [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by @GREENpoint.
