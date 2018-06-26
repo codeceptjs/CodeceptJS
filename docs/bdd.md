@@ -178,6 +178,18 @@ To list all defined steps run `gherkin:steps` command:
 codeceptjs gherkin:steps
 ```
 
+To run tests and see step-by step output use `--steps` optoin:
+
+```
+codeceptjs run --steps
+```
+
+To see not only business steps but an actual performed steps use `--debug` flag:
+
+```
+codeceptjs run --debug
+```
+
 ## Advanced Gherkin
 
 Let's improve our BDD suite by using the advanced features of Gherkin language.
