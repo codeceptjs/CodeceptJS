@@ -30,6 +30,20 @@ Run it with `--features --steps` flag:
 codeceptjs run --steps --features
 ```
 
+* **Brekaing Chnage** `run` command now uses relative path + test name to run exactly one test file.
+
+Previous behavior (removed):
+```
+codeceptjs run basic_test.js
+```
+Current behavior (relative path to config + a test name)
+
+```
+codeceptjs run tests/basic_test.js
+```
+This change allows using auto-completion when running a specific test.
+
+
 * Nested steps output enabled for page objects.
     * to see high-level steps only run tests with `--steps` flag.
     * to see PageObjects implementation run tests with `--debug`.
