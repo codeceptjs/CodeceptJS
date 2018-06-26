@@ -8,13 +8,14 @@ pages:
 - Guides:
     - 'Basics': 'basics.md'
     - 'Acceptance Testing': 'acceptance.md'
-    - 'Protractor Testing': 'angular.md'
-    - 'Mobile Testing': 'mobile.md'
+    - 'Page Objects': 'pageobjects.md'
     - 'Puppeteer Testing': 'puppeteer.md'
     - 'Nightmare Testing': 'nightmare.md'
+    - 'Protractor Testing': 'angular.md'
+    - 'Mobile Testing': 'mobile.md'
     - 'Helpers': 'helpers.md'
-    - 'Page Objects': 'pageobjects.md'
     - 'Data Management': 'data.md'
+    - 'Behavior Driven Development': 'bdd.md'
     - 'Advanced Usage': 'advanced.md'
     - 'Plugins & Hooks': 'hooks.md'
 - Helpers:
