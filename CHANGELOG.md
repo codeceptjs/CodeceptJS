@@ -1,6 +1,6 @@
 ## 1.3.0
 
-* **Cucumber-style BDD Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and Omedym (https://www.omedym.com) for sponsoring this feature**.
+* **Cucumber-style BDD Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
 
 Basic feature file:
 
