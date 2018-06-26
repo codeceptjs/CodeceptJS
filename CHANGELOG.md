@@ -8,12 +8,16 @@
   * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
   * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
 * [Puppeteer] Fixed `resizeWindow` by @sergejkaravajnij
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] `grabTextFrom` unified. Return a text for single matched element and an array of texts for multiple elements.
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by @GREENpoint.
+* [Puppeteer] `waitUntil` deprecated in favor of `waitForFunction`.
 * Added `filter` function to DataTable.
 * Send non-nested array of files to custom parallel execution chunking by @mikecbrant.
 * Fixed invalid output directory path for run-multiple by @mikecbrant.
-* [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by @GREENpoint.
-* [Puppeteer] `waitUntil` deprecated in favor of `waitUntil`.
+* [WebDriverIO] `waitUntil` timeout accepts time in seconds (as all other wait* functions). Fix by @truesrc.
 * [Nightmare] Fixed grabNumberOfVisibleElements to work similarly to `seeElement`. Thx to @stefanschenk and Jinbo Jinboson.
+* [Protractor] Fixed alert handling error with message 'no such alert' by @truesrc.
+
 
 
 ## 1.2.1
