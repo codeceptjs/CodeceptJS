@@ -19,7 +19,7 @@ This helper should be configured in codecept.json
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
+-   `waitForTimeout`: (optional, default: 1000) sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities`: Selenium's [desired
     capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities).
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
@@ -739,6 +739,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
+If multiple elements found returns an array of texts.
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
@@ -872,7 +874,7 @@ placeholder for ~ locator only test case write once run on both Appium and WebDr
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -1290,6 +1292,24 @@ Element can be located by CSS or XPath.
 -   `sec`  time seconds to wait, 1 by default
     Appium: support
 
+## waitForFunction
+
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+**Parameters**
+
+-   `function`  to be executed in browser context
+-   `fn`  
+-   `sec`  time seconds to wait, 1 by default
+    Appium: support
+-   `timeoutMsg`   (optional, default `null`)
+
 ## waitForInvisible
 
 Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
@@ -1388,24 +1408,13 @@ Element can be located by CSS or XPath.
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by defaultAppium: support
 
-## waitForFunction
-
-Waits for a function to return true (waits for 1sec by default).
-Running in browser context.
-
-```js
-I.waitUntil(() => window.requests == 5);
-I.waitUntil(() => window.requests == 5, 5);
-```
-
 ## waitUntil
 
 Waits for a function to return true (waits for 1sec by default).
-Running in Node context.
 
 ```js
-I.waitUntil(() => results.length == 5);
-I.waitUntil(() => results.length == 5, 5);
+I.waitUntil(() => window.requests == 0);
+I.waitUntil(() => window.requests == 0, 5);
 ```
 
 **Parameters**

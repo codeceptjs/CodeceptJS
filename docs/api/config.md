@@ -26,6 +26,11 @@ Create a config with default options
 
 Get current config.
 
+**Parameters**
+
+-   `key`  
+-   `val`  
+
 ## load
 
 Load config from a file.
