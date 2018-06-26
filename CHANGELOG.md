@@ -6,6 +6,9 @@
   * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
   * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
   * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
+* [Protractor] Fixed alert handling error with message 'no such alert' by @truesrc.
+* [WebDriverIO] `waitUntil` timeout to accept time in seconds (as all other wait* functions). Fix by @truesrc.
+
 
 ## 1.2.1
 
