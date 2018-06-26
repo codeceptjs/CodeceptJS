@@ -374,11 +374,11 @@ And my order amount is $1600
 <p><strong>CodeceptJS can execute this scenario step by step as an automated test</strong>.
 Every step in this scenario requires a code which defines it.</p>
 <h2 id="gherkin">Gherkin</h2>
-<p>Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running <code>gherkin:init</code> command:</p>
+<p>Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running <code>gherkin:init</code> command on <strong>already initialized project</strong>:</p>
 <pre><code>codeceptjs gherkin:init
 </code></pre>
 
-<p>It will add <code>gherkin</code> section to config. It will also prepare directories for features and step definition. And it will create the first feature file for you.</p>
+<p>It will add <code>gherkin</code> section to the current config. It will also prepare directories for features and step definition. And it will create the first feature file for you.</p>
 <h3 id="features">Features</h3>
 <p>Whenever you start writing a story you are describing a specific feature of an application, with a set of scenarios and examples describing this feature. Let's open a feature file created by <code>gherkin:init</code> command, which is <code>feature/basic.feature</code>.</p>
 <pre><code class="gherkin">Feature: Business rules
