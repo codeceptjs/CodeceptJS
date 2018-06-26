@@ -71,13 +71,13 @@ Every step in this scenario requires a code which defines it.
 
 ## Gherkin
 
-Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running `gherkin:init` command:
+Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running `gherkin:init` command on **already initialized project**:
 
 ```
 codeceptjs gherkin:init
 ```
 
-It will add `gherkin` section to config. It will also prepare directories for features and step definition. And it will create the first feature file for you.
+It will add `gherkin` section to the current config. It will also prepare directories for features and step definition. And it will create the first feature file for you.
 
 ### Features
 
