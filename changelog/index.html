@@ -492,6 +492,18 @@ Given('I need to open Google', () =&gt; {
 </code></pre>
 
 <ul>
+<li><strong>Brekaing Chnage</strong> <code>run</code> command now uses relative path + test name to run exactly one test file.</li>
+</ul>
+<p>Previous behavior (removed):</p>
+<pre><code>codeceptjs run basic_test.js
+</code></pre>
+
+<p>Current behavior (relative path to config + a test name)</p>
+<pre><code>codeceptjs run tests/basic_test.js
+</code></pre>
+
+<p>This change allows using auto-completion when running a specific test.</p>
+<ul>
 <li>Nested steps output enabled for page objects.<ul>
 <li>to see high-level steps only run tests with <code>--steps</code> flag.</li>
 <li>to see PageObjects implementation run tests with <code>--debug</code>.</li>
