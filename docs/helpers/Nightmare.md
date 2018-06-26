@@ -440,6 +440,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
+If multiple elements found returns an array of texts.
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
@@ -826,6 +828,22 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForFunction
+
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+**Parameters**
+
+-   `function`  to be executed in browser context
+-   `fn`  
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitForInvisible

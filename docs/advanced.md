@@ -9,7 +9,7 @@ In this case, you need to create a datatable and fill it in with credentials.
 Then use `Data().Scenario` to include this data and generate multiple scenarios:
 
 ```js
-// define data table inside a test or load from another module
+// Define data table inside a test or load from another module
 let accounts = new DataTable(['login', 'password']); //
 accounts.add(['davert', '123456']); // adding records to a table
 accounts.add(['admin', '123456']);
@@ -47,6 +47,24 @@ Current data set is appended to a test name in output:
 S Test Login | {"login":"admin","password":"23456"}
 ```
 
+```js
+// You can filter your data table
+Data(accounts.filter(account => account.login == 'admin')
+.Scenario('Test Login', (I, current) => {
+  I.fillField('Username', current.login);
+  I.fillField('Password', current.password);
+  I.click('Sign In');
+  I.see('Welcome '+ current.login);
+});
+```
+
+This will limit data sets accoring passed function:
+
+```sh
+✓ Test Login | {"login":"admin","password":"123456"}
+S Test Login | {"login":"admin","password":"23456"}
+```
+
 Data sets can also be defined with array, generator, or a function.
 
 ```js
@@ -73,10 +91,11 @@ codeceptjs run --grep @slow
 
 Use regex for more flexible filtering:
 
-* `--grep (?=.*@smoke2)(?=.*@smoke3)` - run tests with @smoke2 and @smoke3 in name
-* `--grep @smoke2|@smoke3` - run tests with @smoke2 or @smoke3 in name
-* `--grep ((?=.*@smoke2)(?=.*@smoke3))|@smoke4` - run tests with (@smoke2 and @smoke3) or @smoke4 in name
-* `--grep (?=.*@smoke2)^(?!.*@smoke3)` - run tests with @smoke2 but without @smoke3 in name
+* `--grep '(?=.*@smoke2)(?=.*@smoke3)'` - run tests with @smoke2 and @smoke3 in name
+* `--grep '@smoke2|@smoke3'` - run tests with @smoke2 or @smoke3 in name
+* `--grep '((?=.*@smoke2)(?=.*@smoke3))|@smoke4'` - run tests with (@smoke2 and @smoke3) or @smoke4 in name
+* `--grep '(?=.*@smoke2)^(?!.*@smoke3)'` - run tests with @smoke2 but without @smoke3 in name
+* `--grep '(?=.*)^(?!.*@smoke4)'` - run all tests except @smoke4
 
 ## Debug
 

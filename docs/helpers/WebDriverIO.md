@@ -19,7 +19,7 @@ This helper should be configured in codecept.json
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
+-   `waitForTimeout`: (optional, default: 1000) sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities`: Selenium's [desired
     capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities).
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
@@ -739,6 +739,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
+If multiple elements found returns an array of texts.
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
@@ -1289,6 +1291,24 @@ Element can be located by CSS or XPath.
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
     Appium: support
+
+## waitForFunction
+
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+```
+
+**Parameters**
+
+-   `function`  to be executed in browser context
+-   `fn`  
+-   `sec`  time seconds to wait, 1 by default
+    Appium: support
+-   `timeoutMsg`   (optional, default `null`)
 
 ## waitForInvisible
 
