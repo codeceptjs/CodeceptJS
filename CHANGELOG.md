@@ -1,11 +1,20 @@
 ## 1.3.0
 
 * Cucumber-style BDD Introduced. [Gherkin support](https://codecept.io/bdd).
+* Nested steps output enabled for page objects.
 * [Puppeteer] [Multiple sessions]((https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
 * [Puppeteer] Stability improvement. Waits for for `load` event on page load. This strategy can be changed in config:
   * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
   * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
   * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
+* [Puppeteer] Fixed `resizeWindow` by @sergejkaravajnij
+* Added `filter` function to DataTable.
+* Send non-nested array of files to custom parallel execution chunking by @mikecbrant.
+* Fixed invalid output directory path for run-multiple by @mikecbrant.
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by @GREENpoint.
+* [Puppeteer] `waitUntil` deprecated in favor of `waitUntil`.
+* [Nightmare] Fixed grabNumberOfVisibleElements to work similarly to `seeElement`. Thx to @stefanschenk and Jinbo Jinboson.
+
 
 ## 1.2.1
 
