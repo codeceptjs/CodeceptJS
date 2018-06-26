@@ -324,6 +324,8 @@
         
             <li><a href="#test-options">Test Options</a></li>
         
+            <li><a href="#retries">Retries</a></li>
+        
     
     </ul>
 </div></div>
@@ -492,28 +494,8 @@ Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
 Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
 </code></pre>
 
-<h3 id="retries">Retries</h3>
-<h4 id="retry-feature">Retry Feature</h4>
-<p>Browser tests can be very fragile and some time you need to re run the few times just to make them pass.
-This can be done with <code>retries</code> option added to <code>Feature</code> declaration.</p>
-<p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
-You can set number of a retries for a feature:</p>
-<pre><code class="js">Feature('Complex JS Stuff').retry(3);
-</code></pre>
-
-<p>Every Scenario inside this feature will be rerun 3 times.
-You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
-<h4 id="retry-scenario">Retry Scenario</h4>
-<pre><code class="js">Scenario('Really complex', (I) =&gt; {
-  // test goes here
-}).retry(2);
-
-// alternative
-Scenario('Really complex', { retries: 2 }, (I) =&gt; {});
-</code></pre>
-
-<p>This scenario will be restarted two times on a failure</p>
-<h4 id="retry-step">Retry Step</h4>
+<h2 id="retries">Retries</h2>
+<h3 id="retry-step">Retry Step</h3>
 <p>If you have a step which often fails you can retry execution for this single step.
 Use <code>retry()</code> function before an action to ask CodeceptJS to retry this step on failure:</p>
 <pre><code class="js">I.retry().see('Welcome');
@@ -538,6 +520,26 @@ I.retry({
 </code></pre>
 
 <p>Pass a function to <code>when</code> option to  retry only when error matches the expected one.</p>
+<h3 id="retry-scenario">Retry Scenario</h3>
+<p>When you need to rerun scenarios few times just add <code>retries</code> option added to <code>Scenario</code> declaration.</p>
+<p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
+You can set number of a retries for a feature:</p>
+<pre><code class="js">Scenario('Really complex', (I) =&gt; {
+  // test goes here
+}).retry(2);
+
+// alternative
+Scenario('Really complex', { retries: 2 }, (I) =&gt; {});
+</code></pre>
+
+<p>This scenario will be restarted two times on a failure.</p>
+<h3 id="retry-feature">Retry Feature</h3>
+<p>To set this option for all scenarios in a file, add retry to a feature:</p>
+<pre><code class="js">Feature('Complex JS Stuff').retry(3);
+</code></pre>
+
+<p>Every Scenario inside this feature will be rerun 3 times.
+You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
 <hr />
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">
