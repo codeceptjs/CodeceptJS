@@ -12,7 +12,7 @@ This helper should be configured in codecept.json
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
 -   `angular` (optional, default: true): disable this option to run tests for non-Angular applications.
--   `driver` - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started.
+-   `driver` - which protractor driver to use (local, direct, session, hosted, sauce, browserstack). By default set to 'hosted' which requires selenium server to be started. To use 'direct', you must also add Protractor directive `"directConnect": true` to the config.
 -   `restart` (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000
 -   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure
@@ -29,7 +29,7 @@ This helper should be configured in codecept.json
 -   `capabilities`: {} - list of [Desired Capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities)
 -   `proxy`: set proxy settings
 
-other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/docs/referenceConf.js).
+other options are the same as in [Protractor config](https://github.com/angular/protractor/blob/master/lib/config.ts).
 
 #### Sample Config
 
@@ -38,6 +38,8 @@ other options are the same as in [Protractor config](https://github.com/angular/
    "helpers": {
      "Protractor" : {
        "url": "http://localhost",
+       "driver": "direct",
+       "directConnect": true, 
        "browser": "chrome",
        "smartWait": 5000,
        "restart": false
