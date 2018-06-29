@@ -1,6 +1,35 @@
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
-will be replaced with corresponding unicode.
+Special keys like 'Enter', 'Control', [etc](https://github.com/webdriverio/webdriverio/blob/master/lib/helpers/constants.js)
+will be replaced with corresponding unicode. Valid key names are 
+`'Add'`,
+`'Alt'`,
+`'ArrowDown'` or `'Down arrow'`,
+`'ArrowLeft'` or `'Left arrow'`,
+`'ArrowRight'` or `'Right arrow'`,
+`'ArrowUp'` or `'Up arrow'`,
+`'Backspace'`,
+`'Command'`,
+`'Control'`,
+`'Del'`,
+`'Divide'`,
+`'End'`,
+`'Enter'`,
+`'Equals'`,
+`'Escape'`,
+`'F1 to F12'`,
+`'Home'`,
+`'Insert'`,
+`'Meta'`,
+`'Multiply'`,
+`'Numpad 0'` to `'Numpad 9'`,
+`'Pagedown'` or `'PageDown'`,
+`'Pageup'` or `'PageUp'`,
+`'Pause'`,
+`'Semicolon'`,
+`'Shift'`,
+`'Space'`,
+`'Subtract'`,
+`'Tab'`.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
 ```js
@@ -8,3 +37,4 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 @param key
+
