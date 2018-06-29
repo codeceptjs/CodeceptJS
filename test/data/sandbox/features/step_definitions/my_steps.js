@@ -30,3 +30,28 @@ When('I go to checkout', () => {
 Then('I should see overall price is "{float}" $', (price) => {
   I.seeSum(price);
 });
+
+Given('I open a browser on a site', () => {
+  // From "support/dummy.feature" {"line":4,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When('I click login button at {float}', () => {
+  // From "support/dummy.feature" {"line":5,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When('I enter username {string} and password {string}', () => {
+  // From "support/dummy.feature" {"line":6,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When('I submit {int} form', () => {
+  // From "support/dummy.feature" {"line":7,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+Then('I should log in', () => {
+  // From "support/dummy.feature" {"line":8,"column":5}
+  throw new Error('Not implemented yet');
+});
