@@ -15,7 +15,7 @@ Given('Open google', () => {
 
 Then('check link', async () => {
   // From "features\lawPage.feature" {"line":73,"column":7}
-  const link = await I.grabAttributeFrom({css:'#gbw > div > div > div.gb_qe.gb_R.gb_Pg.gb_Fg > div:nth-child(2) > a'}, 'href');
+  const link = await I.grabAttributeFrom({ css: '#gbw > div > div > div.gb_qe.gb_R.gb_Pg.gb_Fg > div:nth-child(2) > a' }, 'href');
   const response = await I.sendGetRequest(link);
   assert(response.statusCode === 200);
   I.see('Google');
