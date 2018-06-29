@@ -1,3 +1,9 @@
+## 1.3.1
+
+* [Puppeteer] Fixed process hanging for 30 seconds. Page loading timeout default via `getPageTimeout` set 0 seconds.
+* [Puppeteer] Improved displaying client-side console messages in debug mode.
+* [Puppeteer] Fixed closing sessions in `restart:false` mode for multi-session mode.
+
 ## 1.3.0
 
 * **Cucumber-style BDD Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
@@ -30,6 +36,8 @@ Run it with `--features --steps` flag:
 codeceptjs run --steps --features
 ```
 
+---
+
 * **Brekaing Chnage** `run` command now uses relative path + test name to run exactly one test file.
 
 Previous behavior (removed):
@@ -43,6 +51,7 @@ codeceptjs run tests/basic_test.js
 ```
 This change allows using auto-completion when running a specific test.
 
+---
 
 * Nested steps output enabled for page objects.
     * to see high-level steps only run tests with `--steps` flag.
