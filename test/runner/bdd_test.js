@@ -153,7 +153,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should generate snippets for missing steps', (done) => {
-    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:snippets --config ${codecept_dir}/codecept.dummy.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(`Given('I open a browser on a site', () => {
   // From "support/dummy.feature" {"line":4,"column":5}
   throw new Error('Not implemented yet');
