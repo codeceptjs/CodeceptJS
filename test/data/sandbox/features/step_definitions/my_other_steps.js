@@ -13,3 +13,10 @@ Given('I have products in my cart', (table) => { // eslint-disable-line
 Given(/I have product described as/, (text) => {
   I.addItem(text.content.length);
 });
+
+Given(/I have simple product/, async () => {
+  return new Promise((resolve) => {
+    I.addItem(10);
+    setTimeout(resolve, 0);
+  });
+});

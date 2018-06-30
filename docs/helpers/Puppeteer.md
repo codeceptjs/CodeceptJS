@@ -19,8 +19,8 @@ This helper should be configured in codecept.json
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation`: (optional, default: 'load'). When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
--   `getPageTimeout` (optional, default: '30000') config option to set maximum navigation time in milliseconds. Default is 30 seconds. Pass 0 to disable timeout.
+-   `waitForNavigation`: (optional, default: 'load'). When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions). Array values are accepted as well.
+-   `getPageTimeout` (optional, default: '0') config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
 -   `userAgent`: (optional) user-agent string.
@@ -33,7 +33,7 @@ This helper should be configured in codecept.json
 }
 ```
 
-#### Sample Config
+#### Example #1: Wait for 0 network connections.
 
 ```json
 {
@@ -48,7 +48,22 @@ This helper should be configured in codecept.json
 }
 ```
 
-#### Sample Config
+#### Example #2: Wait for DOMContentLoaded event and 0 netowrk connections
+
+```json
+{
+   "helpers": {
+     "Puppeteer" : {
+       "url": "http://localhost",
+       "restart": false,
+       "waitForNavigation": "networkidle0",
+       "waitForAction": 500
+     }
+   }
+}
+```
+
+#### Example #3: Debug in window mode
 
 ```json
 {

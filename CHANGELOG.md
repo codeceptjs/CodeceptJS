@@ -1,3 +1,14 @@
+## 1.3.1
+
+* BDD-Gherkin: Fixed running async steps.
+* [Puppeteer] Fixed process hanging for 30 seconds. Page loading timeout default via `getPageTimeout` set 0 seconds.
+* [Puppeteer] Improved displaying client-side console messages in debug mode.
+* [Puppeteer] Fixed closing sessions in `restart:false` mode for multi-session mode.
+* [Protractor] Fixed `grabPopupText` to not throw error popup is not opened.
+* [Protractor] Added info on using 'direct' Protractor driver to helper documentation by @xt1.
+* [WebDriverIO] Added a list of all special keys to WebDriverIO helper by @davertmik and @xt1.
+* Improved TypeScript definitions generator by @xt1
+
 ## 1.3.0
 
 * **Cucumber-style BDD. Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.

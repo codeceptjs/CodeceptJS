@@ -57,7 +57,7 @@ describe('BDD', () => {
     assert.equal(3, matchStep('I see world')());
   });
 
-  it('should load step definitions', () => {
+  it('should load step definitions', async () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
@@ -67,6 +67,38 @@ describe('BDD', () => {
     assert.ok(suite.tests[0].steps);
     assert.equal(1610, sum);
   });
+
+
+  it('should allow failed steps', (done) => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', () => assert(false));
+    const suite = run(text);
+    assert.equal('checkout process', suite.title);
+    let errored = false;
+    suite.tests[0].fn((err) => {
+      errored = !!err;
+      assert(errored);
+      done();
+    });
+  });
+
+  it('should work with async functions', async () => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', async () => {
+      return new Promise((done) => {
+        sum += 10;
+        setTimeout(done, 0);
+      });
+    });
+    const suite = run(text);
+    assert.equal('checkout process', suite.title);
+    await suite.tests[0].fn(() => {});
+    assert.ok(suite.tests[0].steps);
+    assert.equal(1610, sum);
+  });
+
 
   it('should execute scenarios step-by-step ', () => {
     printed = [];
@@ -170,20 +202,23 @@ describe('BDD', () => {
     `;
     let cart = 0;
     let executed = 0;
+    let sum = 0;
     Given('I have product with price {int}$ in my cart', (price) => {
       cart = price;
     });
     Given('discount is {int} %', (discount) => {
-      cart = cart * discount / 100;
+      cart -= cart * discount / 100;
     });
-    Then('I should see price is {string} $', (total) => {
+    Then('I should see price is {string} $', async (total) => {
       executed++;
-      assert.equal(cart, parseInt(total, 10));
+      sum = parseInt(total, 10);
     });
 
     const suite = run(text);
     const done = () => {};
     suite.tests.forEach(t => t.fn(done));
     assert.equal(executed, 2);
+    assert.equal(18, cart);
+    assert.equal(18, sum);
   });
 });
