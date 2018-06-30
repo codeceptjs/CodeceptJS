@@ -30,3 +30,4 @@ When('I go to checkout', () => {
 Then('I should see overall price is "{float}" $', (price) => {
   I.seeSum(price);
 });
+

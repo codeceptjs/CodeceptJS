@@ -5,7 +5,8 @@
       "url": "http://localhost",
       "restart": true,
       "windowSize": "1600x1200"
-    }
+    },
+    "REST": {}
   },
   "include": {
     "I": "./custom_steps.js",
