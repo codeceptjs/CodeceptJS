@@ -522,8 +522,8 @@ This helper works with a browser out of the box with no additional tools require
 <li><code>keepBrowserState</code>: (optional, default: false) - keep browser state between tests when <code>restart</code> is set to false.</li>
 <li><code>keepCookies</code>: (optional, default: false) - keep cookies between tests when <code>restart</code> is set to false.</li>
 <li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.</li>
-<li><code>waitForNavigation</code>: (optional, default: 'load'). When to consider navigation succeeded. Possible options: <code>load</code>, <code>domcontentloaded</code>, <code>networkidle0</code>, <code>networkidle2</code>. See <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions">Puppeteer API</a></li>
-<li><code>getPageTimeout</code> (optional, default: '30000') config option to set maximum navigation time in milliseconds. Default is 30 seconds. Pass 0 to disable timeout.</li>
+<li><code>waitForNavigation</code>: (optional, default: 'load'). When to consider navigation succeeded. Possible options: <code>load</code>, <code>domcontentloaded</code>, <code>networkidle0</code>, <code>networkidle2</code>. See <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions">Puppeteer API</a>. Array values are accepted as well.</li>
+<li><code>getPageTimeout</code> (optional, default: '0') config option to set maximum navigation time in milliseconds.</li>
 <li><code>waitForTimeout</code>: (optional) default wait* timeout in ms. Default: 1000.</li>
 <li><code>windowSize</code>: (optional) default window size. Set a dimension like <code>640x480</code>.</li>
 <li><code>userAgent</code>: (optional) user-agent string.</li>
@@ -535,7 +535,7 @@ This helper works with a browser out of the box with no additional tools require
 }
 </code></pre>
 
-<h4 id="sample-config">Sample Config</h4>
+<h4 id="example-1-wait-for-0-network-connections">Example #1: Wait for 0 network connections.</h4>
 <pre><code class="json">{
    &quot;helpers&quot;: {
      &quot;Puppeteer&quot; : {
@@ -548,7 +548,20 @@ This helper works with a browser out of the box with no additional tools require
 }
 </code></pre>
 
-<h4 id="sample-config_1">Sample Config</h4>
+<h4 id="example-2-wait-for-domcontentloaded-event-and-0-netowrk-connections">Example #2: Wait for DOMContentLoaded event and 0 netowrk connections</h4>
+<pre><code class="json">{
+   &quot;helpers&quot;: {
+     &quot;Puppeteer&quot; : {
+       &quot;url&quot;: &quot;http://localhost&quot;,
+       &quot;restart&quot;: false,
+       &quot;waitForNavigation&quot;: &quot;networkidle0&quot;,
+       &quot;waitForAction&quot;: 500
+     }
+   }
+}
+</code></pre>
+
+<h4 id="example-3-debug-in-window-mode">Example #3: Debug in window mode</h4>
 <pre><code class="json">{
    &quot;helpers&quot;: {
      &quot;Puppeteer&quot; : {

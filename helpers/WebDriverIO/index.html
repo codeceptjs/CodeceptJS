@@ -1174,13 +1174,16 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey(['Control','a']);
 </code></pre>
 
+<p>To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
+Appium: support, but clear field before pressing in apps:</p>
+<pre><code class="js">I.pressKey('Control');
+I.click('#someelement');
+I.pressKey('Control');
+</code></pre>
+
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>key</code>  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps:<code>js
-    I.pressKey('Control');
-    I.click('#someelement');
-    I.pressKey('Control');</code></li>
+<li><code>key</code>  </li>
 </ul>
 <h2 id="refreshpage">refreshPage</h2>
 <p>Reload the current page.</p>

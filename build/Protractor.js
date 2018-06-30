@@ -705,7 +705,6 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
-@param key
 
    */
   async pressKey(key) {
@@ -1444,7 +1443,7 @@ assert(cookie.value, '123456');
         return dialog.getText();
       }
     } catch (e) {
-      if (e.message.indexOf('no alert open') || e.message.indexOf('no such alert')) {
+      if (e.message.match(/no.*?(alert|modal)/i)) {
         // Don't throw an error
         return null;
       }

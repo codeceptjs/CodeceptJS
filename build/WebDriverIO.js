@@ -1681,7 +1681,6 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
-@param key
 
    *
    * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.

@@ -9,9 +9,9 @@ const { empty } = require('../assert/empty');
 const { truth } = require('../assert/truth');
 const {
   xpathLocator,
+  ucfirst,
   fileExists,
   clearString,
-  decodeUrl,
   chunkArray,
   convertCssPropertiesToCamelCase,
 } = require('../utils');
@@ -49,8 +49,8 @@ const consoleLogStore = new Console();
  * * `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
  * * `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
  * * `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
- * * `waitForNavigation`: (optional, default: 'load'). When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
- * * `getPageTimeout` (optional, default: '30000') config option to set maximum navigation time in milliseconds. Default is 30 seconds. Pass 0 to disable timeout.
+ * * `waitForNavigation`: (optional, default: 'load'). When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions). Array values are accepted as well.
+ * * `getPageTimeout` (optional, default: '0') config option to set maximum navigation time in milliseconds.
  * * `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
  * * `windowSize`: (optional) default window size. Set a dimension like `640x480`.
  * * `userAgent`: (optional) user-agent string.
@@ -63,7 +63,7 @@ const consoleLogStore = new Console();
  * }
  * ```
  *
- * #### Sample Config
+ * #### Example #1: Wait for 0 network connections.
  *
  * ```json
  * {
@@ -78,7 +78,22 @@ const consoleLogStore = new Console();
  * }
  * ```
  *
- * #### Sample Config
+ * #### Example #2: Wait for DOMContentLoaded event and 0 netowrk connections
+ *
+ * ```json
+ * {
+ *    "helpers": {
+ *      "Puppeteer" : {
+ *        "url": "http://localhost",
+ *        "restart": false,
+ *        "waitForNavigation": "networkidle0",
+ *        "waitForAction": 500
+ *      }
+ *    }
+ * }
+ * ```
+ *
+ * #### Example #3: Debug in window mode
  *
  * ```json
  * {
@@ -124,7 +139,7 @@ class Puppeteer extends Helper {
       disableScreenshots: false,
       uniqueScreenshotNames: false,
       manualStart: false,
-      getPageTimeout: 30000,
+      getPageTimeout: 0,
       waitForNavigation: 'load',
       restart: true,
       keepCookies: false,
@@ -179,6 +194,12 @@ class Puppeteer extends Helper {
 
   async _after() {
     if (!this.isRunning) return;
+
+    // close other sessions
+    const contexts = this.browser.browserContexts();
+    contexts.shift();
+    await Promise.all(contexts.map(c => c.close()));
+
     if (this.options.restart) {
       this.isRunning = false;
       return this._stopBrowser();
@@ -194,9 +215,6 @@ class Puppeteer extends Helper {
       if (!(err.message.indexOf("Storage is disabled inside 'data:' URLs.") > -1)) throw err;
     });
     await this.closeOtherTabs();
-    const contexts = this.browser.browserContexts();
-    contexts.shift();
-    await Promise.all(contexts.map(c => c.close()));
     return this.browser;
   }
 
@@ -301,6 +319,7 @@ class Puppeteer extends Helper {
     this._addPopupListener(page);
     this.page = page;
     if (!page) return;
+    page.setDefaultNavigationTimeout(this.options.getPageTimeout);
     this.context = await page.$('body');
     await page.bringToFront();
   }
@@ -450,7 +469,7 @@ I.amOnPage('/login'); // opens a login page
     if (url.indexOf('http') !== 0) {
       url = this.options.url + url;
     }
-    await this.page.goto(url, { timeout: this.options.getPageTimeout, waitUntil: this.options.waitForNavigation });
+    await this.page.goto(url, { waitUntil: this.options.waitForNavigation });
     return this._waitForAction();
   }
 
@@ -968,7 +987,6 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
-@param key
 
    */
   async pressKey(key) {
@@ -2497,7 +2515,7 @@ function targetCreatedHandler(page) {
   this.withinLocator = null;
   page.on('load', frame => this.context = page.$('body'));
   page.on('console', (msg) => {
-    this.debugSection(msg.type(), msg.args().join(' '));
+    this.debugSection(`Browser:${ucfirst(msg.type())}`, (msg._text || '') + msg.args().join(' '));
     consoleLogStore.add(msg);
   });
 }
