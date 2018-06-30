@@ -809,14 +809,18 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 
+To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
+Appium: support, but clear field before pressing in apps:
+
+```js
+I.pressKey('Control');
+I.click('#someelement');
+I.pressKey('Control');
+```
+
 **Parameters**
 
--   `key`  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps:```js
-    I.pressKey('Control');
-    I.click('#someelement');
-    I.pressKey('Control');
-    ```
+-   `key`  
 
 ## refreshPage
 
