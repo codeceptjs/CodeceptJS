@@ -145,6 +145,34 @@ module.exports = {
 }
 ```
 
+To use a Page Fragment within a Test Scenario just inject it into your Scenario:
+
+```js
+Scenario('failed_login', async (I, loginPage, modal) => {
+  loginPage.sendForm('john@doe.com','wrong password');
+  I.waitForVisible(modal.root);
+  within(modal.root, function () {
+    I.see('Login failed');
+  })
+});
+```
+
+To use a Page Fragment within a Page Object, you need to `require` it on top of the Page Object file:
+
+```js
+const I = actor()
+const modal = require('../fragments/modal')
+
+module.exports = { 
+  doStuff() {
+    ...
+    modal.accept()
+    ...
+  }
+}
+
+```
+
 ## StepObjects
 
 StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, changing permissions, etc.
