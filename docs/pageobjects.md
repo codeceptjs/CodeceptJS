@@ -160,13 +160,13 @@ Scenario('failed_login', async (I, loginPage, modal) => {
 To use a Page Fragment within a Page Object, you need to `require` it on top of the Page Object file:
 
 ```js
-const I = actor()
-const modal = require('../fragments/modal')
+const I = actor();
+const modal = require('../fragments/modal');
 
 module.exports = { 
   doStuff() {
     ...
-    modal.accept()
+    modal.accept();
     ...
   }
 }
