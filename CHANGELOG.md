@@ -1,7 +1,9 @@
 ## 1.3.2
 
-* Added `next` command for **step-by-step debug** when using `pause()`.
-* Documentation on `pause()` updated. Use `After(pause)` to launch interactive console after last step.
+* Interactve Shell improvements for `pause()`
+    * Added `next` command for **step-by-step debug** when using `pause()`.
+    * Use `After(pause);` in a to start interactive console after last step.
+
 
 ## 1.3.1
 

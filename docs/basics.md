@@ -62,7 +62,7 @@ To **debug test step-by-step** type `next` and press Enter. The next step will b
 
 To see all available commands press TAB two times to see list of all actions included in I.
 
-If a test is failing you can prevent browser from closing by putting `pause()` command into `After()` hook:
+If a test is failing you can prevent browser from closing by putting `pause()` command into `After()` hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.
 
 ```js
 After(pause);
