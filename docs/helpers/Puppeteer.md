@@ -771,7 +771,7 @@ Performs right click on an element matched by CSS or XPath.
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -1164,8 +1164,13 @@ Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.
 
 ```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
 I.waitForFunction(() => window.requests == 0);
 I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 **Parameters**
@@ -1194,7 +1199,7 @@ See [Pupeteer's reference](https://github.com/GoogleChrome/puppeteer/blob/master
 
 **Parameters**
 
--   `opts` **Any** 
+-   `opts` **Any**
 
 ## waitForText
 
