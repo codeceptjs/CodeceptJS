@@ -1,3 +1,8 @@
+## 1.3.2
+
+* Added `next` command for **step-by-step debug** when using `pause()`.
+* Documentation on `pause()` updated. Use `After(pause)` to launch interactive console after last step.
+
 ## 1.3.1
 
 * BDD-Gherkin: Fixed running async steps.

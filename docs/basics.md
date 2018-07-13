@@ -58,7 +58,17 @@ This also launches interactive console where you can call actions of `I` object.
 
 You can also use `pause()` to check the web application in a browser. Press `ENTER` to resume test execution.
 
-Interactive shell can be started outside test context by running
+To **debug test step-by-step** type `next` and press Enter. The next step will be executed and interactive shell will be shown again.
+
+To see all available commands press TAB two times to see list of all actions included in I.
+
+If a test is failing you can prevent browser from closing by putting `pause()` command into `After()` hook:
+
+```js
+After(pause);
+```
+
+Interactive shell can be started outside the test context by running
 
 ```bash
 codeceptjs shell
