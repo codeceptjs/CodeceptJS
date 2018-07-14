@@ -6,7 +6,8 @@
 * [Puppeteer] Updated to Puppeteer 1.6.0
     * Added `waitForRequest` to wait for network request.
     * Added `waitForResponse` to wait for network response.
-
+* Improved TypeScript definitions to support custom steps and page objects. By @xt1
+* Fixed XPath detection to accept XPath which starts with `./` by @BenoitZugmeyer
 
 ## 1.3.1
 

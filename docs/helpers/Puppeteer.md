@@ -771,7 +771,7 @@ Performs right click on an element matched by CSS or XPath.
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -1176,7 +1176,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 **Parameters**
 
 -   `function`  to be executed in browser context
+-   `args`  arguments for function
 -   `fn`  
+-   `argsOrSec`   (optional, default `null`)
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitForInvisible
@@ -1199,7 +1201,35 @@ See [Pupeteer's reference](https://github.com/GoogleChrome/puppeteer/blob/master
 
 **Parameters**
 
--   `opts` **Any**
+-   `opts` **Any** 
+
+## waitForRequest
+
+Waits for a network request.
+
+```js
+I.waitForRequest('http://example.com/resource');
+I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET');
+```
+
+**Parameters**
+
+-   `urlOrPredicate` **Any** 
+-   `sec` **Any** 
+
+## waitForResponse
+
+Waits for a network request.
+
+```js
+I.waitForResponse('http://example.com/resource');
+I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+```
+
+**Parameters**
+
+-   `urlOrPredicate` **Any** 
+-   `sec` **Any** 
 
 ## waitForText
 
