@@ -1,3 +1,14 @@
+## 1.3.2
+
+* Interactve Shell improvements for `pause()`
+    * Added `next` command for **step-by-step debug** when using `pause()`.
+    * Use `After(pause);` in a to start interactive console after last step.
+* [Puppeteer] Updated to Puppeteer 1.6.0
+    * Added `waitForRequest` to wait for network request.
+    * Added `waitForResponse` to wait for network response.
+* Improved TypeScript definitions to support custom steps and page objects. By @xt1
+* Fixed XPath detection to accept XPath which starts with `./` by @BenoitZugmeyer
+
 ## 1.3.1
 
 * BDD-Gherkin: Fixed running async steps.

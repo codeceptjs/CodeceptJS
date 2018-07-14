@@ -1164,14 +1164,21 @@ Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.
 
 ```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
 I.waitForFunction(() => window.requests == 0);
 I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 **Parameters**
 
 -   `function`  to be executed in browser context
+-   `args`  arguments for function
 -   `fn`  
+-   `argsOrSec`   (optional, default `null`)
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitForInvisible
@@ -1195,6 +1202,34 @@ See [Pupeteer's reference](https://github.com/GoogleChrome/puppeteer/blob/master
 **Parameters**
 
 -   `opts` **Any** 
+
+## waitForRequest
+
+Waits for a network request.
+
+```js
+I.waitForRequest('http://example.com/resource');
+I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET');
+```
+
+**Parameters**
+
+-   `urlOrPredicate` **Any** 
+-   `sec` **Any** 
+
+## waitForResponse
+
+Waits for a network request.
+
+```js
+I.waitForResponse('http://example.com/resource');
+I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+```
+
+**Parameters**
+
+-   `urlOrPredicate` **Any** 
+-   `sec` **Any** 
 
 ## waitForText
 
