@@ -3,6 +3,9 @@
 * Interactve Shell improvements for `pause()`
     * Added `next` command for **step-by-step debug** when using `pause()`.
     * Use `After(pause);` in a to start interactive console after last step.
+* [Puppeteer] Updated to Puppeteer 1.6.0
+    * Added `waitForRequest` to wait for network request.
+    * Added `waitForResponse` to wait for network response.
 
 
 ## 1.3.1
