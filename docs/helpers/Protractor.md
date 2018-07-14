@@ -637,6 +637,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
+If multiple elements found returns an array of texts.
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
@@ -721,6 +723,38 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
+
+[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+
+-   `'Add'`,
+-   `'Alt'`,
+-   `'ArrowDown'` or `'Down arrow'`,
+-   `'ArrowLeft'` or `'Left arrow'`,
+-   `'ArrowRight'` or `'Right arrow'`,
+-   `'ArrowUp'` or `'Up arrow'`,
+-   `'Backspace'`,
+-   `'Command'`,
+-   `'Control'`,
+-   `'Del'`,
+-   `'Divide'`,
+-   `'End'`,
+-   `'Enter'`,
+-   `'Equals'`,
+-   `'Escape'`,
+-   `'F1 to F12'`,
+-   `'Home'`,
+-   `'Insert'`,
+-   `'Meta'`,
+-   `'Multiply'`,
+-   `'Numpad 0'` to `'Numpad 9'`,
+-   `'Pagedown'` or `'PageDown'`,
+-   `'Pageup'` or `'PageUp'`,
+-   `'Pause'`,
+-   `'Semicolon'`,
+-   `'Shift'`,
+-   `'Space'`,
+-   `'Subtract'`,
+-   `'Tab'`.
 
 **Parameters**
 
@@ -1171,6 +1205,29 @@ Element can be located by CSS or XPath.
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
+-   `sec`  time seconds to wait, 1 by default
+
+## waitForFunction
+
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+```
+
+**Parameters**
+
+-   `function`  to be executed in browser context
+-   `args`  arguments for function
+-   `fn`  
+-   `argsOrSec`   (optional, default `null`)
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitForInvisible

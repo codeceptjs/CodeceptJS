@@ -2,10 +2,41 @@
 
 CodeceptJS provides flexible strategies for locating elements:
 
-* CSS and XPath locators
-* semantic locators: by link text, by button text, by field names, etc.
-* locator builder
-* ID locators: by CSS id or by accessibility id
+* [CSS and XPath locators](#css-and-xpath)
+* [Semantic locators](#semantic-locators): by link text, by button text, by field names, etc.
+* [Locator Builder](#locator-builder)
+* [ID locators](#id-locators): by CSS id or by accessibility id
+
+
+Most methods in CodeceptJS use locators which can be either a string or an object.
+
+If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, or `class`) and the value being the locator itself. This is called a "strict" locator.
+
+Examples:
+
+* {id: 'foo'} matches `<div id="foo">`
+* {name: 'foo'} matches `<div name="foo">`
+* {css: 'input[type=input][value=foo]'} matches `<input type="input" value="foo">`
+* {xpath: "//input[@type='submit'][contains(@value, 'foo')]"} matches `<input type="submit" value="foobar">`
+* {class: 'foo'} matches `<div class="foo">`
+
+Writing good locators can be tricky.
+The Mozilla team has written an excellent guide titled [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/).
+
+If you prefer, you may also pass a string for the locator. This is called a "fuzzy" locator.
+In this case, CodeceptJS uses a variety of heuristics (depending on the exact method called) to determine what element you're referring to. If you are locating a clickable element or an input element, CodeceptJS will use [semantic locators](#semantic-locators).
+
+For example, here's the heuristic used for the `fillField` method:
+
+1. Does the locator look like an ID selector (e.g. "#foo")? If so, try to find an input element matching that ID.
+2. If nothing found, check if locator looks like a CSS selector. If so, run it.
+3. If nothing found, check if locator looks like an XPath expression. If so, run it.
+4. If nothing found, check if there is an input element with a corresponding name.
+5. If nothing found, check if there is a label with specified text for input element.
+6. If nothing found, throw an `ElementNotFound` exception.
+
+Be warned that fuzzy locators can be significantly slower than strict locators.
+If speed is a concern, it's recommended you stick with explicitly specifying the locator type via object syntax.
 
 ## CSS and XPath
 
@@ -26,7 +57,7 @@ To specify exact locator type use **strict locators**:
 // it's not clear that 'button' is actual CSS locator
 I.seeElement({ css: 'button' });
 
-// it's not clear that 'descendant::table/tr' is actual CSS locator
+// it's not clear that 'descendant::table/tr' is actual XPath locator
 I.seeElement({ xpath: 'descendant::table/tr' });
 ```
 
@@ -47,7 +78,7 @@ Various strategies are used to locate semantic elements. However, they may run s
 
 CodeceptJS provides a fluent builder to compose custom locators in JavaScript. Use `locate` function to start.
 
-To locate `a` element inside `label` with test: 'Hello' use:
+To locate `a` element inside `label` with text: 'Hello' use:
 
 ```js
 locate('a')
@@ -173,3 +204,5 @@ ID locators are best to select the exact semantic element in web and mobile test
 
 * `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
+
+### done()

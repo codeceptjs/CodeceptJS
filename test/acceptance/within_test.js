@@ -104,7 +104,7 @@ Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @P
   within('#grab-multiple', () => {
     return I.grabTextFrom('#first-link');
   });
-}).throws(/not found/);
+}).throws(/found/);
 
 Scenario('should return a value @WebDriverIO @Puppeteer @Protractor @Nightmare', async (I) => {
   I.amOnPage('/info');

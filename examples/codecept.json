@@ -1,31 +1,46 @@
 {
-  "tests": "./*_test.js",
-  "timeout": 10000,
   "output": "./output",
   "helpers": {
-    "WebDriverIO": {
+    "Puppeteer": {
       "url": "http://localhost",
-      "browser": "chrome",
-      "restart": true
-    }
+      "restart": true,
+      "windowSize": "1600x1200"
+    },
+    "REST": {}
+  },
+  "include": {
+    "I": "./custom_steps.js",
+    "Smth": "./pages/Smth.js",
+    "loginPage": "./pages/Login.js",
+    "signinFragment": "./fragments/Signin.js"
   },
   "mocha": {
     "reporterOptions": {
       "mochaFile": "./output/result.xml"
     }
   },
+  "bootstrap": "./bootstrap.js",
+  "teardown": null,
+  "hooks": [],
+  "gherkin": {
+    "features": "./features/*.feature",
+    "steps": [
+      "./step_definitions/steps.js"
+    ]
+  },
+  "tests": "./*_test.js",
+  "timeout": 10000,
   "multiple": {
+    "parallel": {
+      "chunks": 2
+    },
     "default": {
       "grep": "signin",
-      "browsers": ["chrome", "firefox"]
+      "browsers": [
+        "chrome",
+        "firefox"
+      ]
     }
   },
-  "name": "tests",
-  "bootstrap": "./bootstrap.js",
-  "include": {
-    "I": "./custom_steps.js",
-    "Smth": "./pages/Smth.js",
-    "loginPage": "./pages/Login.js",
-    "signinFragment": "./fragments/Signin.js"
-  }
+  "name": "tests"
 }

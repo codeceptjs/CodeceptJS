@@ -184,6 +184,14 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.dontSee('Iframe test', 'h1')));
   });
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => I.amOnPage('/form/wait_js')
+      .then(() => I.waitForFunction(() => window.__waitJs, 3)));
+
+    it('should pass arguments and wait for function returns true', () => I.amOnPage('/form/wait_js')
+      .then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3)));
+  });
+
   describe('#waitNumberOfVisibleElements', () => {
     it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
       .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))

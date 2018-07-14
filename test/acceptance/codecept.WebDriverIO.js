@@ -20,7 +20,11 @@ module.exports.config = {
 
   },
   include: {},
-  bootstrap: false,
+  bootstrap: done => setTimeout(done, 5000), // let's wait for selenium
   mocha: {},
   name: 'acceptance',
+  gherkin: {
+    features: './gherkin/*.feature',
+    steps: ['./gherkin/steps.js'],
+  },
 };

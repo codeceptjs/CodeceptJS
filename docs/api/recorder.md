@@ -30,6 +30,8 @@ Get latest promise in chain.
 Stops current promise chain, calls `catch`.
 Resets recorder to initial state.
 
+## retries
+
 ## scheduled
 
 Get a list of all chained tasks

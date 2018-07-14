@@ -178,6 +178,14 @@ describe('WebDriverIO', function () {
       }));
   });
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => wd.amOnPage('/form/wait_js')
+      .then(() => wd.waitForFunction(() => window.__waitJs, 3)));
+
+    it('should pass arguments and wait for function returns true', () => wd.amOnPage('/form/wait_js')
+      .then(() => wd.waitForFunction(varName => window[varName], ['__waitJs'], 3)));
+  });
+
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => wd.amOnPage('/form/wait_enabled')
       .then(() => wd.waitForEnabled('#text', 2))

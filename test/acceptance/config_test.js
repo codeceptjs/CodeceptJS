@@ -1,7 +1,3 @@
-const chai = require('chai');
-
-const expect = chai.expect;
-
 Feature('Dynamic Config').config({ url: 'https://google.com' });
 
 Scenario('change config 1 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {

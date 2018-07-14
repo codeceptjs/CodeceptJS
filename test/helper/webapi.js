@@ -143,6 +143,12 @@ module.exports.tests = function () {
         xpath: '//div[@id = "grab-multiple"]//a',
       }))
       .then(num => assert.equal(num, 3)));
+    it('should grab number of visible elements for given css locator', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('[id=grab-multiple] a'))
+      .then(num => assert.equal(num, 3)));
+    it('should return 0 for non-existing elements', () => I.amOnPage('/info')
+      .then(() => I.grabNumberOfVisibleElements('button[type=submit]'))
+      .then(num => assert.equal(num, 0)));
   });
 
   describe('#seeInSource, #dontSeeInSource', () => {
@@ -468,6 +474,14 @@ module.exports.tests = function () {
       assert.equal(val, 'Welcome to test app!');
       val = yield I.grabTextFrom('//h1');
       return assert.equal(val, 'Welcome to test app!');
+    });
+
+    it('should grab multiple texts from page', function* () {
+      yield I.amOnPage('/info');
+      const vals = yield I.grabTextFrom('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
     });
 
     it('should grab value from field', function* () {

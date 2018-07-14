@@ -1,3 +1,101 @@
+## 1.3.2
+
+* Interactve Shell improvements for `pause()`
+    * Added `next` command for **step-by-step debug** when using `pause()`.
+    * Use `After(pause);` in a to start interactive console after last step.
+* [Puppeteer] Updated to Puppeteer 1.6.0
+    * Added `waitForRequest` to wait for network request.
+    * Added `waitForResponse` to wait for network response.
+* Improved TypeScript definitions to support custom steps and page objects. By @xt1
+* Fixed XPath detection to accept XPath which starts with `./` by @BenoitZugmeyer
+
+## 1.3.1
+
+* BDD-Gherkin: Fixed running async steps.
+* [Puppeteer] Fixed process hanging for 30 seconds. Page loading timeout default via `getPageTimeout` set 0 seconds.
+* [Puppeteer] Improved displaying client-side console messages in debug mode.
+* [Puppeteer] Fixed closing sessions in `restart:false` mode for multi-session mode.
+* [Protractor] Fixed `grabPopupText` to not throw error popup is not opened.
+* [Protractor] Added info on using 'direct' Protractor driver to helper documentation by @xt1.
+* [WebDriverIO] Added a list of all special keys to WebDriverIO helper by @davertmik and @xt1.
+* Improved TypeScript definitions generator by @xt1
+
+## 1.3.0
+
+* **Cucumber-style BDD Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
+
+Basic feature file:
+
+```gherkin
+Feature: Business rules
+  In order to achieve my goals
+  As a persona
+  I want to be able to interact with a system
+
+  Scenario: do anything in my life
+    Given I need to open Google
+```
+
+Step definition:
+
+```js
+const I = actor();
+
+Given('I need to open Google', () => {
+  I.amOnPage('https://google.com');
+});
+```
+
+Run it with `--features --steps` flag:
+
+```
+codeceptjs run --steps --features
+```
+
+---
+
+* **Brekaing Chnage** `run` command now uses relative path + test name to run exactly one test file.
+
+Previous behavior (removed):
+```
+codeceptjs run basic_test.js
+```
+Current behavior (relative path to config + a test name)
+
+```
+codeceptjs run tests/basic_test.js
+```
+This change allows using auto-completion when running a specific test.
+
+---
+
+* Nested steps output enabled for page objects.
+    * to see high-level steps only run tests with `--steps` flag.
+    * to see PageObjects implementation run tests with `--debug`.
+* PageObjects simplified to remove `_init()` extra method. Try updated generators and see [updated guide](https://codecept.io/pageobjects/#pageobject).
+* [Puppeteer] [Multiple sessions](https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
+* [Puppeteer] Stability improvement. Waits for for `load` event on page load. This strategy can be changed in config:
+    * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+    * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
+    * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] **Possible BC** `grabTextFrom` unified. Return a text for single matched element and an array of texts for multiple elements.
+* [Puppeteer]Fixed `resizeWindow` by @sergejkaravajnij
+* [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by @GREENpoint.
+* [Puppeteer] `waitUntil` deprecated in favor of `waitForFunction`.
+* Added `filter` function to DataTable.
+* Send non-nested array of files to custom parallel execution chunking by @mikecbrant.
+* Fixed invalid output directory path for run-multiple by @mikecbrant.
+* [WebDriverIO] `waitUntil` timeout accepts time in seconds (as all other wait* functions). Fix by @truesrc.
+* [Nightmare] Fixed `grabNumberOfVisibleElements` to work similarly to `seeElement`. Thx to @stefanschenk and Jinbo Jinboson.
+* [Protractor] Fixed alert handling error with message 'no such alert' by @truesrc.
+
+
+## 1.2.1
+
+* Fixed running `I.retry()` on multiple steps.
+* Fixed parallel execution wih chunks.
+* [Puppeteer] Fixed `grabNumberOfVisibleElements` to return `0` instead of throwing error if no elements are found.
+
 ## 1.2.0
 
 * [WebDriverIO][Protractor][Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
@@ -15,7 +113,7 @@ Scenario('run in different browsers', (I) => {
 });
 ```
 
-* [Parallel Execution](https://codecept.io/advanced/#chunks) by @sveneisenschmidt. Run tests in parallel specifying number of chunks:
+* [Parallel Execution](https://codecept.io/advanced/#parallel-execution) by @sveneisenschmidt. Run tests in parallel specifying number of chunks:
 
 ```js
 "multiple": {
