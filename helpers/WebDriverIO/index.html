@@ -521,6 +521,10 @@ manipulate browser using Selenium WebDriver or PhantomJS.</p>
 <ul>
 <li><code>url</code>: base url of website to be tested.</li>
 <li><code>browser</code>: browser in which to perform testing.</li>
+<li><code>host</code>: (optional, default: localhost) - WebDriver host to connect.</li>
+<li><code>port</code>: (optional, default: 4444) - WebDriver port to connect.</li>
+<li><code>protocol</code>: (optional, default: http) - protocol for WebDriver server.</li>
+<li><code>path</code>: (optional, default: /wd/hub) - path to WebDriver server,</li>
 <li><code>restart</code>: (optional, default: true) - restart browser between tests.</li>
 <li><code>smartWait</code>: (optional) <strong>enables <a href="http://codecept.io/acceptance/#smartwait">SmartWait</a></strong>; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.</li>
 <li><code>disableScreenshots</code>: (optional, default: false) - don't save screenshots on failure.</li>
@@ -1564,17 +1568,21 @@ Element can be located by CSS or XPath.</p>
 <h2 id="waitforfunction">waitForFunction</h2>
 <p>Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.</p>
+<pre><code class="js">I.waitForFunction(fn[, [args[, timeout]])
+</code></pre>
+
 <pre><code class="js">I.waitForFunction(() =&gt; window.requests == 0);
 I.waitForFunction(() =&gt; window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args and wait for 5 sec
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>function</code>  to be executed in browser context</li>
+<li><code>args</code>  arguments for function</li>
 <li><code>fn</code>  </li>
-<li><code>sec</code>  time seconds to wait, 1 by default
-    Appium: support</li>
-<li><code>timeoutMsg</code>   (optional, default <code>null</code>)</li>
+<li><code>argsOrSec</code>   (optional, default <code>null</code>)</li>
+<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
 <p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).

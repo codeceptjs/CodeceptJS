@@ -484,6 +484,10 @@
         
             <li><a href="#waitfornavigation">waitForNavigation</a></li>
         
+            <li><a href="#waitforrequest">waitForRequest</a></li>
+        
+            <li><a href="#waitforresponse">waitForResponse</a></li>
+        
             <li><a href="#waitfortext">waitForText</a></li>
         
             <li><a href="#waitforvalue">waitForValue</a></li>
@@ -1420,14 +1424,20 @@ Element can be located by CSS or XPath.</p>
 <h2 id="waitforfunction">waitForFunction</h2>
 <p>Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.</p>
+<pre><code class="js">I.waitForFunction(fn[, [args[, timeout]])
+</code></pre>
+
 <pre><code class="js">I.waitForFunction(() =&gt; window.requests == 0);
 I.waitForFunction(() =&gt; window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args and wait for 5 sec
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>function</code>  to be executed in browser context</li>
+<li><code>args</code>  arguments for function</li>
 <li><code>fn</code>  </li>
+<li><code>argsOrSec</code>   (optional, default <code>null</code>)</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>
@@ -1446,6 +1456,28 @@ Element can be located by CSS or XPath.</p>
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>opts</code> <strong>Any</strong> </li>
+</ul>
+<h2 id="waitforrequest">waitForRequest</h2>
+<p>Waits for a network request.</p>
+<pre><code class="js">I.waitForRequest('http://example.com/resource');
+I.waitForRequest(request =&gt; request.url() === 'http://example.com' &amp;&amp; request.method() === 'GET');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlOrPredicate</code> <strong>Any</strong> </li>
+<li><code>sec</code> <strong>Any</strong> </li>
+</ul>
+<h2 id="waitforresponse">waitForResponse</h2>
+<p>Waits for a network request.</p>
+<pre><code class="js">I.waitForResponse('http://example.com/resource');
+I.waitForResponse(request =&gt; request.url() === 'http://example.com' &amp;&amp; request.method() === 'GET');
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>urlOrPredicate</code> <strong>Any</strong> </li>
+<li><code>sec</code> <strong>Any</strong> </li>
 </ul>
 <h2 id="waitfortext">waitForText</h2>
 <p>Waits for a text to appear (by default waits for 1sec).

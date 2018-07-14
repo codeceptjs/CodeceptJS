@@ -167,7 +167,7 @@ class Puppeteer extends Helper {
     try {
       requireg('puppeteer');
     } catch (e) {
-      return ['puppeteer@^1.5.0'];
+      return ['puppeteer@^1.6.0'];
     }
   }
 
@@ -525,7 +525,7 @@ I.moveCursorTo('#submit', 5,5);
     assertElementExists(els);
 
     // Use manual mouse.move instead of .hover() so the offset can be added to the coordinates
-    const { x, y } = await els[0]._visibleCenter();
+    const { x, y } = await els[0]._clickablePoint();
     await this.page.mouse.move(x + offsetX, y + offsetY);
     return this._waitForAction();
   }
@@ -604,7 +604,8 @@ I.scrollTo('#submit', 5,5);
     if (locator) {
       const els = await this._locate(locator);
       assertElementExists(els, locator, 'Element');
-      const elementCoordinates = await els[0]._visibleCenter();
+      await els[0]._scrollIntoViewIfNeeded();
+      const elementCoordinates = await els[0]._clickablePoint();
       x = elementCoordinates.x;
       y = elementCoordinates.y;
     }
@@ -2085,6 +2086,38 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
   }
 
   /**
+   * Waits for a network request.
+   *
+   * ```js
+   * I.waitForRequest('http://example.com/resource');
+   * I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET');
+   * ```
+   *
+   * @param {*} urlOrPredicate
+   * @param {*} sec
+   */
+  async waitForRequest(urlOrPredicate, sec = null) {
+    const timeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    return this.page.waitForRequest(urlOrPredicate, { timeout });
+  }
+
+  /**
+   * Waits for a network request.
+   *
+   * ```js
+   * I.waitForResponse('http://example.com/resource');
+   * I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+   * ```
+   *
+   * @param {*} urlOrPredicate
+   * @param {*} sec
+   */
+  async waitForResponse(urlOrPredicate, sec = null) {
+    const timeout = sec ? sec * 1000 : this.options.waitForTimeout;
+    return this.page.waitForResponse(urlOrPredicate, { timeout });
+  }
+
+  /**
    * Switches frame or in case of null locator reverts to parent.
    */
   async switchTo(locator) {
@@ -2133,18 +2166,32 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Running in browser context.
 
 ```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
 I.waitForFunction(() => window.requests == 0);
 I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 @param function to be executed in browser context
+@param args arguments for function
 @param sec time seconds to wait, 1 by default
+
    */
-  async waitForFunction(fn, sec = null) {
-    const aSec = sec || this.options.waitForTimeout;
-    const waitTimeout = aSec * 1000;
+  async waitForFunction(fn, argsOrSec = null, sec = null) {
+    let args = [];
+    if (argsOrSec) {
+      if (Array.isArray(argsOrSec)) {
+        args = argsOrSec;
+      } else if (typeof argsOrSec === 'number') {
+        sec = argsOrSec;
+      }
+    }
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     const context = await this._getContext();
-    return context.waitForFunction(fn, { timeout: waitTimeout });
+    return context.waitForFunction(fn, { timeout: waitTimeout }, ...args);
   }
 
   /**
@@ -2173,8 +2220,7 @@ I.waitUntil(() => window.requests == 0, 5);
    */
   async waitUntil(fn, sec = null) {
     console.log('This method will remove in CodeceptJS 1.4; use `waitForFunction` instead!');
-    const aSec = sec || this.options.waitForTimeout;
-    const waitTimeout = aSec * 1000;
+    const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
     const context = await this._getContext();
     return context.waitForFunction(fn, { timeout: waitTimeout });
   }
@@ -2384,9 +2430,9 @@ async function proceedDragAndDrop(sourceLocator, destinationLocator, options = {
   const dst = await this._locate(destinationLocator);
   assertElementExists(dst, destinationLocator, 'Destination Element');
 
-  // Note: Using private api ._visibleCenter becaues the .BoundingBox does not take into account iframe offsets!
-  const dragSource = await src[0]._visibleCenter();
-  const dragDestination = await dst[0]._visibleCenter();
+  // Note: Using private api ._clickablePoint becaues the .BoundingBox does not take into account iframe offsets!
+  const dragSource = await src[0]._clickablePoint();
+  const dragDestination = await dst[0]._clickablePoint();
 
   // Drag start point
   await this.page.mouse.move(dragSource.x, dragSource.y, { steps: 5 });
@@ -2519,4 +2565,3 @@ function targetCreatedHandler(page) {
     consoleLogStore.add(msg);
   });
 }
-

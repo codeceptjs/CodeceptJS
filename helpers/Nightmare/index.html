@@ -1108,14 +1108,20 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <h2 id="waitforfunction">waitForFunction</h2>
 <p>Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.</p>
+<pre><code class="js">I.waitForFunction(fn[, [args[, timeout]])
+</code></pre>
+
 <pre><code class="js">I.waitForFunction(() =&gt; window.requests == 0);
 I.waitForFunction(() =&gt; window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args and wait for 5 sec
 </code></pre>
 
 <p><strong>Parameters</strong></p>
 <ul>
 <li><code>function</code>  to be executed in browser context</li>
+<li><code>args</code>  arguments for function</li>
 <li><code>fn</code>  </li>
+<li><code>argsOrSec</code>   (optional, default <code>null</code>)</li>
 <li><code>sec</code>  time seconds to wait, 1 by default</li>
 </ul>
 <h2 id="waitforinvisible">waitForInvisible</h2>

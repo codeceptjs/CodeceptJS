@@ -375,7 +375,13 @@ assert.equal(title, 'CodeceptJS');
 This also launches interactive console where you can call actions of <code>I</code> object.</p>
 <p><img alt="shell" src="../images/shell.png" /></p>
 <p>You can also use <code>pause()</code> to check the web application in a browser. Press <code>ENTER</code> to resume test execution.</p>
-<p>Interactive shell can be started outside test context by running</p>
+<p>To <strong>debug test step-by-step</strong> type <code>next</code> and press Enter. The next step will be executed and interactive shell will be shown again.</p>
+<p>To see all available commands press TAB two times to see list of all actions included in I.</p>
+<p>If a test is failing you can prevent browser from closing by putting <code>pause()</code> command into <code>After()</code> hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.</p>
+<pre><code class="js">After(pause);
+</code></pre>
+
+<p>Interactive shell can be started outside the test context by running</p>
 <pre><code class="bash">codeceptjs shell
 </code></pre>
 

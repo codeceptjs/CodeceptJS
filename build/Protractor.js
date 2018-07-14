@@ -1832,16 +1832,32 @@ Element can be located by CSS or XPath.
 Running in browser context.
 
 ```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
 I.waitForFunction(() => window.requests == 0);
 I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 @param function to be executed in browser context
+@param args arguments for function
 @param sec time seconds to wait, 1 by default
+
    */
-  async waitForFunction(fn, sec = null, timeoutMsg = null) {
+  async waitForFunction(fn, argsOrSec = null, sec = null) {
+    let args = [];
+    if (argsOrSec) {
+      if (Array.isArray(argsOrSec)) {
+        args = argsOrSec;
+      } else if (typeof argsOrSec === 'number') {
+        sec = argsOrSec;
+      }
+    }
+
     const aSec = sec || this.options.waitForTimeout;
-    return this.browser.wait(() => this.browser.executeScript.call(this.browser, fn), aSec * 1000, timeoutMsg);
+    return this.browser.wait(() => this.browser.executeScript.call(this.browser, fn, ...args), aSec * 1000);
   }
 
   /**

@@ -356,7 +356,8 @@
 
   // don't build monolithic configs
   mocha: require('./mocha.conf.js') || {},
-  includes: {
+  include: {
+    I: './src/steps_file.js',
     loginPage: './src/pages/login_page',
     dashboardPage: new DashboardPage()
   }
