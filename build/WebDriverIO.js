@@ -1686,6 +1686,37 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 
+   * [Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+
+- `'Add'`,
+- `'Alt'`,
+- `'ArrowDown'` or `'Down arrow'`,
+- `'ArrowLeft'` or `'Left arrow'`,
+- `'ArrowRight'` or `'Right arrow'`,
+- `'ArrowUp'` or `'Up arrow'`,
+- `'Backspace'`,
+- `'Command'`,
+- `'Control'`,
+- `'Del'`,
+- `'Divide'`,
+- `'End'`,
+- `'Enter'`,
+- `'Equals'`,
+- `'Escape'`,
+- `'F1 to F12'`,
+- `'Home'`,
+- `'Insert'`,
+- `'Meta'`,
+- `'Multiply'`,
+- `'Numpad 0'` to `'Numpad 9'`,
+- `'Pagedown'` or `'PageDown'`,
+- `'Pageup'` or `'PageUp'`,
+- `'Pause'`,
+- `'Semicolon'`,
+- `'Shift'`,
+- `'Space'`,
+- `'Subtract'`,
+- `'Tab'`.
    *
    * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
    * Appium: support, but clear field before pressing in apps:
@@ -1695,6 +1726,7 @@ I.pressKey(['Control','a']);
    * I.click('#someelement');
    * I.pressKey('Control');
    * ```
+   *
    *
    */
   async pressKey(key) {
