@@ -11,6 +11,10 @@ This helper should be configured in codecept.json
 
 -   `url`: base url of website to be tested.
 -   `browser`: browser in which to perform testing.
+-   `host`: (optional, default: localhost) - WebDriver host to connect.
+-   `port`: (optional, default: 4444) - WebDriver port to connect.
+-   `protocol`: (optional, default: http) - protocol for WebDriver server.
+-   `path`: (optional, default: /wd/hub) - path to WebDriver server,
 -   `restart`: (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
@@ -1302,17 +1306,22 @@ Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.
 
 ```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
 I.waitForFunction(() => window.requests == 0);
 I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 **Parameters**
 
 -   `function`  to be executed in browser context
+-   `args`  arguments for function
 -   `fn`  
--   `sec`  time seconds to wait, 1 by default
-    Appium: support
--   `timeoutMsg`   (optional, default `null`)
+-   `argsOrSec`   (optional, default `null`)
+-   `sec`  time seconds to wait, 1 by defaultAppium: support
 
 ## waitForInvisible
 

@@ -1181,16 +1181,22 @@ Waits for a function to return true (waits for 1 sec by default).
 Running in browser context.
 
 ```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
 I.waitForFunction(() => window.requests == 0);
 I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 **Parameters**
 
 -   `function`  to be executed in browser context
+-   `args`  arguments for function
 -   `fn`  
+-   `argsOrSec`   (optional, default `null`)
 -   `sec`  time seconds to wait, 1 by default
--   `timeoutMsg`   (optional, default `null`)
 
 ## waitForInvisible
 
