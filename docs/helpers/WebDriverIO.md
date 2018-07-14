@@ -11,6 +11,10 @@ This helper should be configured in codecept.json
 
 -   `url`: base url of website to be tested.
 -   `browser`: browser in which to perform testing.
+-   `host`: (optional, default: localhost) - WebDriver host to connect.
+-   `port`: (optional, default: 4444) - WebDriver port to connect.
+-   `protocol`: (optional, default: http) - protocol for WebDriver server.
+-   `path`: (optional, default: /wd/hub) - path to WebDriver server,
 -   `restart`: (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
@@ -878,7 +882,7 @@ placeholder for ~ locator only test case write once run on both Appium and WebDr
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -1314,10 +1318,10 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 **Parameters**
 
 -   `function`  to be executed in browser context
+-   `args`  arguments for function
 -   `fn`  
--   `sec`  time seconds to wait, 1 by default
-    Appium: support
--   `timeoutMsg`   (optional, default `null`)
+-   `argsOrSec`   (optional, default `null`)
+-   `sec`  time seconds to wait, 1 by defaultAppium: support
 
 ## waitForInvisible
 

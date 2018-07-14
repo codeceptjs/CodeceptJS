@@ -532,7 +532,7 @@ First parameter can be set to `maximize`
 ## saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json).
-Filename is relative to output folder.
+Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -848,7 +848,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 **Parameters**
 
 -   `function`  to be executed in browser context
+-   `args`  arguments for function
 -   `fn`  
+-   `argsOrSec`   (optional, default `null`)
 -   `sec`  time seconds to wait, 1 by default
 
 ## waitForInvisible
