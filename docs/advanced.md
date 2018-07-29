@@ -120,6 +120,18 @@ For advanced debugging use NodeJS debugger. In WebStorm IDE:
 node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 ```
 
+For Visual Studio Code, add the following configuration in launch.json:
+
+```json
+{
+  "type": "node",
+  "request": "launch",
+  "name": "codeceptjs",
+  "args": ["run", "--grep", "@your_test_tag"],
+  "program": "${workspaceFolder}/node_modules/.bin/codeceptjs"
+}
+```
+
 ## Parallel Execution
 
 CodeceptJS can be configured to run tests in parallel.
