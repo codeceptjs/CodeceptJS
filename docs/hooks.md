@@ -398,6 +398,9 @@ let codecept = new Codecept(config, opts);
 // create helpers, support files, mocha
 Container.create(config, opts);
 
+// initialize codeceptjs in current dir
+codecept.initGlobals(__dirname);
+
 // initialize listeners
 codecept.bootstrap();
 
