@@ -1,3 +1,7 @@
+## 1.3.3
+
+* Added `initGLobals()` function to API of [custom runner](https://codecept.io/hooks/#custom-runner).
+
 ## 1.3.2
 
 * Interactve Shell improvements for `pause()`
