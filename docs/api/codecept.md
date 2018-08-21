@@ -36,6 +36,14 @@ If async initialization is required, pass callback as second parameter.
 -   `dir` **Any** 
 -   `callback` **Any** 
 
+## initGlobals
+
+Creates global variables
+
+**Parameters**
+
+-   `dir` **Any** 
+
 ## loadTests
 
 Loads tests by pattern or by config.tests
