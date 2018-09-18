@@ -22,7 +22,7 @@ Add this plugin to config file:
 
 Run tests with allure plugin enabled:
 
-    codeceptjs run --plugin allure
+    codeceptjs run --plugins allure
 
 By default, allure reports are saved to `output` directory.
 Launch Allure server and see the report like on a screenshot above:
@@ -50,6 +50,10 @@ Add this plugin to config file:
     }
 }
 ```
+
+Run tests with plugin enabled:
+
+    codeceptjs run --plugins retryFailedStep
 
 ## Configuration:
 
@@ -102,6 +106,10 @@ Possible config options:
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
 By default, reports are generated only for failed tests.
+
+Run tests with plugin enabled:
+
+    codeceptjs run --plugins stepByStepReport
 
 ## Configuration
 
