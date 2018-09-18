@@ -251,6 +251,10 @@ h2, .page h2, .page h3 {
   margin-bottom: 2em;
 }
 
+.page p img {
+  width: 100%;
+}
+
 .light {
   background: #FFEB3B;
   padding: 0.5em;
