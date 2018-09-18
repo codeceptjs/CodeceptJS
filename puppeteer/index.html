@@ -208,11 +208,15 @@
                         </li>
                     
                         <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
                         <li >
-                            <a href="../reports/">Reports</a>
+                            <a href="../plugins/">Plugins</a>
                         </li>
                     
                         <li >
@@ -286,11 +290,15 @@
         </div>
     </div>
 </div>
-        <div class="banner" style="background: #c3ee70;">
-  <strong>CodeceptJS 1.3 released</strong>. What's new:
-  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
-  Multiple sessions for Puppeteer |
-  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
+        <div class="banner" style="background: #eed070;">
+  <strong>CodeceptJS 1.4 released</strong>. What's new:
+  <a href="https://codecept.io/reports/#allure">Allure Reporter support</a> |
+   |
+  <a href="https://codecept.io/plugins/#stepByStepReport">Step-by-step reports</a>
+  |
+  <a href="https://codecept.io/plugins">and other plugins</a>
+  |
+  <a href="https://codecept.io/changelog#140">Full changelog »</a>
 </div>
 
 
@@ -368,7 +376,7 @@ If you already have CodeceptJS project, just install <code>puppeteer</code> pack
   }
 </code></pre>
 
-<p>WHen a test runs faster than application it is recommended to increase <code>waitForAction</code> config value.
+<p>When a test runs faster than application it is recommended to increase <code>waitForAction</code> config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.</p>
 <p><em>More options are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
 <h2 id="writing-tests">Writing Tests</h2>
@@ -432,7 +440,7 @@ Scenario('get value of current tasks', async (I) =&gt; {
 
 <h3 id="within">Within</h3>
 <p>In case some actions should be taken inside one element (a container or modal window) you can use <code>within</code> block to narrow the scope.
-Please take a not that you can't use within inside another within in Puppeteer helper:</p>
+Please take a note that you can't use within inside another within in Puppeteer helper:</p>
 <pre><code class="js">within('.todoapp', () =&gt; {
   I.createTodo('my new item');
   I.see('1 item left', '.todo-count');

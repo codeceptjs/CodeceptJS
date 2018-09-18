@@ -208,11 +208,15 @@
                         </li>
                     
                         <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
                         <li >
-                            <a href="../reports/">Reports</a>
+                            <a href="../plugins/">Plugins</a>
                         </li>
                     
                         <li >
@@ -286,11 +290,15 @@
         </div>
     </div>
 </div>
-        <div class="banner" style="background: #c3ee70;">
-  <strong>CodeceptJS 1.3 released</strong>. What's new:
-  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
-  Multiple sessions for Puppeteer |
-  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
+        <div class="banner" style="background: #eed070;">
+  <strong>CodeceptJS 1.4 released</strong>. What's new:
+  <a href="https://codecept.io/reports/#allure">Allure Reporter support</a> |
+   |
+  <a href="https://codecept.io/plugins/#stepByStepReport">Step-by-step reports</a>
+  |
+  <a href="https://codecept.io/plugins">and other plugins</a>
+  |
+  <a href="https://codecept.io/changelog#140">Full changelog »</a>
 </div>
 
 
@@ -305,6 +313,8 @@
             <li><a href="#setting-up">Setting Up</a></li>
         
             <li><a href="#configuring">Configuring</a></li>
+        
+            <li><a href="#browserstack-configuration">BrowserStack Configuration</a></li>
         
             <li><a href="#writing-a-test">Writing a Test</a></li>
         
@@ -396,6 +406,26 @@ You may want to set some additional Appium settings via <a href="https://appium.
 
 <p>Once you configured Appium, create the first test by running</p>
 <pre><code class="sh">codeceptjs gt
+</code></pre>
+
+<h2 id="browserstack-configuration">BrowserStack Configuration</h2>
+<p>If you wish to use BrowserStack's <a href="https://www.browserstack.com/app-automate">Automated Mobile App Testing</a> platform. Configure the Appium helper like this:</p>
+<pre><code class="js">&quot;helpers&quot;: {
+  &quot;Appium&quot;:
+    &quot;app&quot;: &quot;bs://&lt;hashed app-id&gt;&quot;,
+    &quot;host&quot;: &quot;hub-cloud.browserstack.com&quot;,
+    &quot;port&quot;: 4444,
+    &quot;user&quot;: &quot;BROWSERSTACK_USER&quot;,
+    &quot;key&quot;: &quot;BROWSERSTACK_KEY&quot;,
+    &quot;device&quot;: &quot;iPhone 7&quot;
+}
+</code></pre>
+
+<p>Here is the full list of <a href="https://www.browserstack.com/app-automate/capabilities">capabilities</a>.</p>
+<p>You need to upload your Android app (.apk) or iOS app (.ipa) to the BrowserStack servers using the REST API before running your tests. The App URL (<code>bs://hashed appid</code>) is returned in the response of this call.</p>
+<pre><code class="sh">curl -u &quot;USERNAME:ACCESS_KEY&quot; \
+-X POST &quot;https://api-cloud.browserstack.com/app-automate/upload&quot; \
+-F &quot;file=@/path/to/app/file/Application-debug.apk&quot;
 </code></pre>
 
 <h2 id="writing-a-test">Writing a Test</h2>

@@ -208,11 +208,15 @@
                         </li>
                     
                         <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
                         <li >
-                            <a href="../reports/">Reports</a>
+                            <a href="../plugins/">Plugins</a>
                         </li>
                     
                         <li >
@@ -286,11 +290,15 @@
         </div>
     </div>
 </div>
-        <div class="banner" style="background: #c3ee70;">
-  <strong>CodeceptJS 1.3 released</strong>. What's new:
-  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
-  Multiple sessions for Puppeteer |
-  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
+        <div class="banner" style="background: #eed070;">
+  <strong>CodeceptJS 1.4 released</strong>. What's new:
+  <a href="https://codecept.io/reports/#allure">Allure Reporter support</a> |
+   |
+  <a href="https://codecept.io/plugins/#stepByStepReport">Step-by-step reports</a>
+  |
+  <a href="https://codecept.io/plugins">and other plugins</a>
+  |
+  <a href="https://codecept.io/changelog#140">Full changelog »</a>
 </div>
 
 
@@ -300,7 +308,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#133">1.3.3</a></li>
+        <li class="main active"><a href="#140">1.4.0</a></li>
+        
+    
+        <li class="main "><a href="#133">1.3.3</a></li>
         
     
         <li class="main "><a href="#132">1.3.2</a></li>
@@ -474,6 +485,20 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="140">1.4.0</h2>
+<ul>
+<li><a href="https://codecept.io/reports/#allure"><strong>Allure Reporter Integration</strong></a>. Full inegration with Allure Server. Get nicely looking UI for tests,including steps, nested steps, and screenshots. Thanks <strong>Natarajan Krishnamurthy @krish</strong> for sponsoring this feature.</li>
+<li><a href="https://codecept.io/hooks/#plugins">Plugins API introduced</a>. Create custom plugins for CodeceptJS by hooking into event dispatcher, and using promise recorder.</li>
+<li><strong>Official <a href="https://codecept.io/plugins">CodeceptJS plugins</a> added</strong>:<ul>
+<li><strong><code>stepByStepReport</code> - creates nicely looking report to see test execution as a slideshow</strong>. Use this plugin to debug tests in headless environment without recording a video.</li>
+<li><code>allure</code> - Allure reporter added as plugin.</li>
+<li><code>screenshotOnFail</code> - saves screenshot on fail. Replaces similar functionality from helpers.</li>
+<li><code>retryFailedStep</code> - to rerun each failed step.</li>
+</ul>
+</li>
+<li>[Puppeteer] Fix <code>executeAsyncScript</code> unexpected token by @jonathanz</li>
+<li>Added <code>override</code> option to <code>run-multiple</code> command by @svarlet</li>
+</ul>
 <h2 id="133">1.3.3</h2>
 <ul>
 <li>Added <code>initGlobals()</code> function to API of <a href="https://codecept.io/hooks/#custom-runner">custom runner</a>.</li>

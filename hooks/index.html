@@ -208,11 +208,15 @@
                         </li>
                     
                         <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
                         <li >
-                            <a href="../reports/">Reports</a>
+                            <a href="../plugins/">Plugins</a>
                         </li>
                     
                         <li >
@@ -286,11 +290,15 @@
         </div>
     </div>
 </div>
-        <div class="banner" style="background: #c3ee70;">
-  <strong>CodeceptJS 1.3 released</strong>. What's new:
-  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
-  Multiple sessions for Puppeteer |
-  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
+        <div class="banner" style="background: #eed070;">
+  <strong>CodeceptJS 1.4 released</strong>. What's new:
+  <a href="https://codecept.io/reports/#allure">Allure Reporter support</a> |
+   |
+  <a href="https://codecept.io/plugins/#stepByStepReport">Step-by-step reports</a>
+  |
+  <a href="https://codecept.io/plugins">and other plugins</a>
+  |
+  <a href="https://codecept.io/changelog#140">Full changelog »</a>
 </div>
 
 
@@ -303,6 +311,8 @@
         <li class="main active"><a href="#hooks">Hooks</a></li>
         
             <li><a href="#bootstrap-teardown">Bootstrap &amp; Teardown</a></li>
+        
+            <li><a href="#plugins">Plugins</a></li>
         
             <li><a href="#custom-hooks">Custom Hooks</a></li>
         
@@ -456,9 +466,44 @@ exports.config = {
 </code></pre>
 
 <p><strong>Note</strong>: The <code>bootstrapAll</code> and <code>teardownAll</code> hooks are only called when using <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a>.</p>
+<h2 id="plugins">Plugins</h2>
+<p>Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.</p>
+<p>CodeceptJS includes <a href="https://codecept.io/plugins/">built-in plugins</a> which extend basic functionality and can be turned on and off on purpose. Taking them as <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin">examples</a> you can develop your custom plugins.</p>
+<p>A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:</p>
+<pre><code class="js">const defaultConfig = {
+  someDefaultOption: true
+}
+
+module.exports = function(config) {
+  config = Object.assign(defaultConfig, config);
+  // do stuff
+}
+</code></pre>
+
+<p>Plugin can register event listeners or hook into promise chain with recorder. See <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/helper">API reference</a>.</p>
+<p>To enable your custom plugin in config add it to <code>plugins</code> section. Specify path to node module using <code>require</code>.</p>
+<pre><code class="js">&quot;plugins&quot;: {
+  &quot;myPlugin&quot;: {
+    &quot;require&quot;: &quot;./path/to/my/module&quot;,
+    &quot;enabled&quot;: true
+  }
+}
+</code></pre>
+
+<ul>
+<li><code>require</code> - specifies relative path to a plugin file. Path is relative to config file.</li>
+<li><code>enabled</code> - to enable this plugin.</li>
+</ul>
+<p>If a plugin is disabled (<code>enabled</code> is not set or false) this plugin can be enabled from command line:</p>
+<pre><code>./node_modules/.bin/codeceptjs run --plugin myPlugin
+</code></pre>
+
+<p>Several plugins can be enabled as well:</p>
+<pre><code>./node_modules/.bin/codeceptjs run --plugin myPlugin,allure
+</code></pre>
+
 <h2 id="custom-hooks">Custom Hooks</h2>
-<p>To extend internal CodeceptJS functionality you can use hooks.
-CodeceptJS provides API to connect to its internal event dispatcher, container, output, promise recorder, so you could hook into it to create your own reporters, test listeners, etc.</p>
+<p><em>(deprecated, use <a href="#plugins">plugins</a>)</em></p>
 <p>Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside <code>hooks</code> section of config. Unlike <code>bootstrap</code> you can have multiple hooks registered:</p>
 <pre><code class="json">&quot;hooks&quot;: [
   &quot;./server.js&quot;,
@@ -467,8 +512,9 @@ CodeceptJS provides API to connect to its internal event dispatcher, container, 
 ]
 </code></pre>
 
-<p>Inside those JS files you can use CodeceptJS API to access its internals.</p>
+<p>Inside those JS files you can use CodeceptJS API (see below) to access its internals.</p>
 <h2 id="api">API</h2>
+<p><strong>Use local CodeceptJS installation to get access to <code>codeceptjs</code> module</strong></p>
 <p>CodeceptJS provides an API which can be loaded via <code>require('codeceptjs')</code> when CodeceptJS is installed locally.
 These internal objects are available:</p>
 <ul>
@@ -483,16 +529,6 @@ These internal objects are available:</p>
 </ul>
 <p><a href="https://github.com/Codeception/CodeceptJS/tree/master/docs/api">API reference</a> is available on GitHub.
 Also please check the source code of corresponding modules.</p>
-<h3 id="config">Config</h3>
-<p>CodeceptJS config can be accessed from <code>require('codeceptjs').config.get()</code>:</p>
-<pre><code class="js">
-let config = require('codeceptjs').config.get();
-
-if (config.myKey == 'value') {
-  // run hook
-}
-</code></pre>
-
 <h3 id="event-listeners">Event Listeners</h3>
 <p>CodeceptJS provides a module with <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js">event dispatcher and set of predefined events</a>.</p>
 <p>It can be required from codeceptjs package if it is installed locally.</p>
@@ -619,6 +655,9 @@ let support = container.support();
 
 // get support object by name
 let UserPage = container.support('UserPage');
+
+// get all registered plugins
+let plugins = container.plugins();
 </code></pre>
 
 <p>New objects can also be added to container in runtime:</p>
@@ -636,6 +675,16 @@ container.append({
 
 <p>Container also contains current Mocha instance:</p>
 <pre><code class="js">let mocha = container.mocha();
+</code></pre>
+
+<h3 id="config">Config</h3>
+<p>CodeceptJS config can be accessed from <code>require('codeceptjs').config.get()</code>:</p>
+<pre><code class="js">
+let config = require('codeceptjs').config.get();
+
+if (config.myKey == 'value') {
+  // run hook
+}
 </code></pre>
 
 <h2 id="custom-runner">Custom Runner</h2>

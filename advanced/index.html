@@ -208,11 +208,15 @@
                         </li>
                     
                         <li >
+                            <a href="../reports/">Reports</a>
+                        </li>
+                    
+                        <li >
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
                         <li >
-                            <a href="../reports/">Reports</a>
+                            <a href="../plugins/">Plugins</a>
                         </li>
                     
                         <li >
@@ -286,11 +290,15 @@
         </div>
     </div>
 </div>
-        <div class="banner" style="background: #c3ee70;">
-  <strong>CodeceptJS 1.3 released</strong>. What's new:
-  <a href="https://codecept.io/bdd">Cucumber-style BDD</a> introduced |
-  Multiple sessions for Puppeteer |
-  <a href="https://codecept.io/changelog/#130">Full changelog &raquo;</a>
+        <div class="banner" style="background: #eed070;">
+  <strong>CodeceptJS 1.4 released</strong>. What's new:
+  <a href="https://codecept.io/reports/#allure">Allure Reporter support</a> |
+   |
+  <a href="https://codecept.io/plugins/#stepByStepReport">Step-by-step reports</a>
+  |
+  <a href="https://codecept.io/plugins">and other plugins</a>
+  |
+  <a href="https://codecept.io/changelog#140">Full changelog »</a>
 </div>
 
 
@@ -415,6 +423,16 @@ It can be turned on with <code>--debug</code> flag.</p>
 <p>And don't forget that you can pause execution and enter <strong>interactive console</strong> mode by calling <code>pause()</code> inside your test.</p>
 <p>For advanced debugging use NodeJS debugger. In WebStorm IDE:</p>
 <pre><code class="sh">node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
+</code></pre>
+
+<p>For Visual Studio Code, add the following configuration in launch.json:</p>
+<pre><code class="json">{
+  &quot;type&quot;: &quot;node&quot;,
+  &quot;request&quot;: &quot;launch&quot;,
+  &quot;name&quot;: &quot;codeceptjs&quot;,
+  &quot;args&quot;: [&quot;run&quot;, &quot;--grep&quot;, &quot;@your_test_tag&quot;],
+  &quot;program&quot;: &quot;${workspaceFolder}/node_modules/.bin/codeceptjs&quot;
+}
 </code></pre>
 
 <h2 id="parallel-execution">Parallel Execution</h2>

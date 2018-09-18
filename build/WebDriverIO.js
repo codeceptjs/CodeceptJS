@@ -391,26 +391,6 @@ class WebDriverIO extends Helper {
 
   async _failed(test) {
     if (isWithin()) await this._withinEnd();
-    if (!this.options.disableScreenshots) {
-      let fileName = clearString(test.title);
-      if (test.ctx && test.ctx.test && test.ctx.test.type === 'hook') fileName = clearString(`${test.title}_${test.ctx.test.title}`);
-      if (this.options.uniqueScreenshotNames) {
-        const uuid = test.uuid || test.ctx.test.uuid;
-        fileName = `${fileName.substring(0, 10)}_${uuid}.failed.png`;
-      } else {
-        fileName += '.failed.png';
-      }
-      return this.saveScreenshot(fileName, this.options.fullPageScreenshots).catch((err) => {
-        if (err &&
-            err.type &&
-            err.type === 'RuntimeError' &&
-            err.message &&
-            (err.message.indexOf('was terminated due to') > -1 || err.message.indexOf('no such window: target window already closed') > -1)
-        ) {
-          this.isRunning = false;
-        }
-      });
-    }
   }
 
   async _withinBegin(locator) {

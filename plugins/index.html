@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Quickstart - CodeceptJS</title>
+	<title>Plugins - CodeceptJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
 
@@ -78,8 +78,8 @@
             
             
                 
-                <li class="active">
-                    <a href="./">Quickstart</a>
+                <li >
+                    <a href="../quickstart/">Quickstart</a>
                 </li>
                 
             
@@ -191,7 +191,7 @@
             
             
             
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     
@@ -215,8 +215,8 @@
                             <a href="../configuration/">Configuration</a>
                         </li>
                     
-                        <li >
-                            <a href="../plugins/">Plugins</a>
+                        <li class="active">
+                            <a href="./">Plugins</a>
                         </li>
                     
                         <li >
@@ -271,7 +271,7 @@
 
 
                 <li >
-                    <a rel="prev" href="../video/">
+                    <a rel="prev" href="../translation/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -308,146 +308,135 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#quickstart">QuickStart</a></li>
+        <li class="main active"><a href="#allure">allure</a></li>
         
-            <li><a href="#install-globally">Install Globally:</a></li>
+            <li><a href="#usage">Usage</a></li>
         
-            <li><a href="#install-locally">Install Locally</a></li>
+            <li><a href="#configuration">Configuration</a></li>
         
-            <li><a href="#setup">Setup</a></li>
+    
+        <li class="main "><a href="#retryfailedstep">retryFailedStep</a></li>
         
-            <li><a href="#installing-backends">Installing Backends</a></li>
+            <li><a href="#configuration_1">Configuration:</a></li>
         
-            <li><a href="#creating-first-test">Creating First Test</a></li>
+    
+        <li class="main "><a href="#screenshotonfail">screenshotOnFail</a></li>
         
-            <li><a href="#prepare-selenium-server">Prepare Selenium Server</a></li>
+            <li><a href="#configuration_2">Configuration</a></li>
         
-            <li><a href="#run">Run</a></li>
+    
+        <li class="main "><a href="#stepbystepreport">stepByStepReport</a></li>
         
-            <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running</a></li>
+            <li><a href="#configuration_3">Configuration</a></li>
+        
+            <li><a href="#allure-reports">Allure Reports</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-7" role="main">
 
-<h1 id="quickstart">QuickStart</h1>
-<p><strong>NodeJS v 8.9</strong> and higher required to start.
-CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.</p>
-<h3 id="install-globally">Install Globally:</h3>
-<pre><code class="sh">[sudo] npm install -g codeceptjs
+<h1 id="allure">allure</h1>
+<p>Allure reporter</p>
+<p><img alt="" src="https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png" /></p>
+<p>Enables Allure reporter.</p>
+<h3 id="usage">Usage</h3>
+<p>To start please install <code>allure-commandline</code> package (which requires Java 8)</p>
+<pre><code>npm install -g allure-commandline --save-dev
+</code></pre>
+<p>Add this plugin to config file:</p>
+<pre><code class="js">&quot;plugins&quot;: {
+    &quot;allure&quot;: {}
+}
 </code></pre>
 
-<p>Execute codeceptjs as:</p>
-<pre><code>codeceptjs
+<p>Run tests with allure plugin enabled:</p>
+<pre><code>codeceptjs run --plugin allure
 </code></pre>
-
-<h3 id="install-locally">Install Locally</h3>
-<pre><code class="sh">npm install codeceptjs --save-dev
+<p>By default, allure reports are saved to <code>output</code> directory.
+Launch Allure server and see the report like on a screenshot above:</p>
+<pre><code>allure serve output
 </code></pre>
-
-<p>Execute codeceptjs as:</p>
-<pre><code>./node_modules/.bin/codeceptjs
-</code></pre>
-
-<h2 id="setup">Setup</h2>
-<p>Initialize CodeceptJS running:</p>
-<pre><code class="sh">codeceptjs init
-</code></pre>
-
-<p>It will create <code>codecept.json</code> config in current directory (or provide path in the first argument).</p>
-<p>You will be asked for tests location (they will be searched in current dir by default).</p>
-<p>On next step you are asked to select <strong>Helpers</strong>. Helpers include actions which can be used in tests.
-We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.</p>
-<p>If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
-No matter what helper you've chosen they will be similar in use.</p>
-<pre><code class="sh">? What helpers do you want to use?
-❯◉ WebDriverIO
- ◯ Protractor
- ◯ Puppeteer
- ◯ Appium
- ◯ Nightmare
- ◯ FileSystem
-</code></pre>
-
-<p>Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.</p>
-<pre><code class="sh">? Where should logs, screenshots, and reports to be stored? ./output
-</code></pre>
-
-<p>If you are going to extend test suite by writing custom steps you should probably agree to create <code>steps_file.js</code></p>
-<pre><code class="sh">? Would you like to extend I object with custom steps? Yes
-? Where would you like to place custom steps? ./steps_file.js
-</code></pre>
-
-<p>WebDriverIO helper will ask for additional configuration as well:</p>
-<pre><code class="sh">? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed (chrome)
-</code></pre>
-
-<p>If you agree with defaults, finish the installation.</p>
-<h2 id="installing-backends">Installing Backends</h2>
-<p>To run CodeceptJS you will need to install a corresponding backend for the helepr you've choosen. <code>WebDriverIO</code> helper requires <code>webdriverio</code> package to be installed. The init command will notify you what libraries are missing so you could install it:</p>
+<h3 id="configuration">Configuration</h3>
 <ul>
-<li>Global installation</li>
+<li><code>targetDir</code> - a directory where allure reports should be stored. Standard output directory is set by default.</li>
 </ul>
-<pre><code>Please install dependent packages globally: npm -g install  webdriverio@^4.0.0
-</code></pre>
-
+<p><strong>Parameters</strong></p>
 <ul>
-<li>Local installation</li>
+<li><code>config</code> <strong>Any</strong> </li>
 </ul>
-<pre><code>Please install dependent packages locally: npm install --save-dev webdriverio@^4.0.0
+<h1 id="retryfailedstep">retryFailedStep</h1>
+<p>Retries each failed step in a test.</p>
+<p>Add this plugin to config file:</p>
+<pre><code class="js">&quot;plugins&quot;: {
+    &quot;runFailedStep&quot;: {
+       &quot;enabled&quot;: true
+    }
+}
 </code></pre>
 
-<p>Please follow this steps and install required package.</p>
-<h2 id="creating-first-test">Creating First Test</h2>
-<p>Tests can be easily created by running</p>
-<pre><code class="bash">codeceptjs gt
+<h2 id="configuration_1">Configuration:</h2>
+<ul>
+<li><code>retries</code> - number of retries (by default 5),</li>
+<li><code>when</code> - function, when to perform a retry (accepts error as parameter)</li>
+<li><code>factor</code> - The exponential factor to use. Default is 2.</li>
+<li><code>minTimeout</code> - The number of milliseconds before starting the first retry. Default is 1000.</li>
+<li><code>maxTimeout</code> - The maximum number of milliseconds between two retries. Default is Infinity.</li>
+<li><code>randomize</code> - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.</li>
+</ul>
+<p>This plugin is very basic so it's recommended to improve it to match your custom needs.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
+<h1 id="screenshotonfail">screenshotOnFail</h1>
+<p>Creates screenshot on failure. Screenshot is saved into <code>output</code> directory.</p>
+<p>Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4</p>
+<p>This plugin is <strong>enabled by default</strong>.</p>
+<h2 id="configuration_2">Configuration</h2>
+<p>Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).</p>
+<pre><code class="js">&quot;plugins&quot;: {
+   &quot;screenshotOnFail&quot;: {
+     &quot;enabled&quot;: true
+   }
+}
 </code></pre>
 
-<p><em>(or <code>generate test</code>)</em></p>
-<p>Provide a test name and open generated file in your favorite JavaScript editor (with ES6 support).</p>
-<pre><code class="js">Feature('My First Test');
-
-Scenario('test something', (I) =&gt; {
-
-});
+<p>Possible config options:</p>
+<ul>
+<li><code>uniqueScreenshotNames</code>: use unique names for screenshot. Default: false.</li>
+<li><code>fullPageScreenshots</code>: make full page screenshots. Default: false.</li>
+</ul>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
+<h1 id="stepbystepreport">stepByStepReport</h1>
+<p><img alt="" src="https://user-images.githubusercontent.com/220264/45696671-c58cc800-bb6c-11e8-9bd9-28396805de2b.png" /></p>
+<p>Generates step by step report for a test.
+After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
+By default, reports are generated only for failed tests.</p>
+<h2 id="configuration_3">Configuration</h2>
+<pre><code class="js">&quot;plugins&quot;: {
+   &quot;stepByStepReport&quot;: {
+     &quot;enabled&quot;: true
+   }
+}
 </code></pre>
 
-<p>Inside the scenario block you can write your first test scenario by using <a href="http://codecept.io/helpers/WebDriverIO/">actions from WebDriverIO helper</a>. Let's assume we have a web server on <code>localhost</code> is running and there is a <strong>Welcome</strong> text on the first page. The simplest test will look like this:</p>
-<pre><code class="js">Feature('My First Test');
-
-Scenario('test something', (I) =&gt; {
-  I.amOnPage('/');
-  I.see('Welcome');
-});
-</code></pre>
-
-<h2 id="prepare-selenium-server">Prepare Selenium Server</h2>
-<p>To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.</p>
-<p>Use <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a> from NPM to install and run them:</p>
-<pre><code class="sh">[sudo] npm install -g selenium-standalone
-selenium-standalone install
-selenium-standalone start
-</code></pre>
-
-<p>Alternatively <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can be installed and started manually.</p>
-<h2 id="run">Run</h2>
-<p>Execute tests:</p>
-<pre><code class="bash">codeceptjs run --steps
-</code></pre>
-
-<p>( <em>steps option will display test execution process in console.</em> )</p>
-<p>If everything is done right, you will see in console:</p>
-<pre><code class="bash">My First Test --
-  test something
-   • I am on page &quot;/&quot;
-   • I see &quot;Welcome&quot;
- ✓ OK
-</code></pre>
-
-<h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running</h2>
-<p>Wasn't so hard, right?</p></div>
+<p>Possible config options:</p>
+<ul>
+<li><code>deleteSuccessful</code>: do not save screenshots for successfully executed tests. Default: true.</li>
+<li><code>animateSlides</code>: should animation for slides to be used. Default: true.</li>
+<li><code>ignoreSteps</code>: steps to ignore in report. Array of RegExps is expected. Recommended to skip <code>grab*</code> and <code>wait*</code> steps.</li>
+<li><code>fullPageScreenshots</code>: should full page screenshots be used. Default: false.</li>
+</ul>
+<h2 id="allure-reports">Allure Reports</h2>
+<p>If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code> <strong>Any</strong> </li>
+</ul></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
