@@ -70,6 +70,25 @@ describe('Container', () => {
     });
   });
 
+  describe('#plugins', () => {
+    beforeEach(() => {
+      container.clear({}, {}, {
+        plugin1: { name: 'hello' },
+        plugin2: { name: 'world' },
+      });
+    });
+
+    it('should return all plugins', () => container.plugins().should.have.keys('plugin1', 'plugin2'));
+
+    it('should get plugin by name', () => {
+      container.plugins('plugin1').should.be.ok;
+      container.plugins('plugin1').name.should.eql('hello');
+      container.plugins('plugin2').should.be.ok;
+      container.plugins('plugin2').name.should.eql('world');
+      assert.ok(!container.plugins('plugin3'));
+    });
+  });
+
   describe('#create', () => {
     it('should create container with helpers', () => {
       const config = {

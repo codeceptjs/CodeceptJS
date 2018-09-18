@@ -5,3 +5,4 @@ Feature: Business rules
 
   Scenario: do something
     Given I have a defined step
+    When I open GitHub

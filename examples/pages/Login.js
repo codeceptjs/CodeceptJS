@@ -8,3 +8,5 @@ module.exports = {
     I.click('Sign in');
   },
 };
+
+Object.setPrototypeOf(module.exports, class Login {}.prototype);

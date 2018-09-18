@@ -45,8 +45,8 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should replace parameters', (done) => {
     exec(`${codecept_run}grep --debug`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.grep:chrome]  > maximize');
-      stdout.should.include('[2.grep:firefox]  > 1200x840');
+      stdout.should.include('[1.grep:chrome]     › maximize');
+      stdout.should.include('[2.grep:firefox]     › 1200x840');
       assert(!err);
       done();
     });
@@ -81,9 +81,9 @@ describe('CodeceptJS Multiple Runner', function () {
     exec(`${codecept_run}default --steps`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('[2.default:firefox]   print browser ');
-      stdout.should.include('[2.default:firefox]    I print browser');
+      stdout.should.include('[2.default:firefox]     I print browser ');
       stdout.should.include('[1.default:chrome]   print browser ');
-      stdout.should.include('[1.default:chrome]    I print browser');
+      stdout.should.include('[1.default:chrome]     I print browser ');
       assert(!err);
       done();
     });

@@ -23,7 +23,7 @@ describe('Scenario', () => {
   afterEach(() => event.cleanDispatcher());
 
   it('should wrap test function', () => {
-    scenario.test(test).fn();
+    scenario.test(test).fn(() => {});
     assert.ok(fn.called);
   });
 
@@ -88,7 +88,7 @@ describe('Scenario', () => {
       test.fn = () => {
         throw new Error('ups');
       };
-      scenario.test(test).fn();
+      scenario.test(test).fn(() => {});
       return recorder.promise()
         .then(() => assert.ok(failed.called))
         .catch(() => null);
@@ -98,7 +98,7 @@ describe('Scenario', () => {
       test.fn = () => {
         recorder.throw(new Error('ups'));
       };
-      scenario.test(test).fn();
+      scenario.test(test).fn(() => {});
       return recorder.promise()
         .then(() => assert.ok(failed.called))
         .catch(() => null);

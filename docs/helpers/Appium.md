@@ -1,6 +1,6 @@
 # Appium
 
-Appium helper extends [WebDriverIO](http://codecept.io/helpers/WebDriverIO/) helper.
+Appium helper extends [WebriverIO](http://codecept.io/helpers/WebDriverIO/) helper.
  It supports all browser methods and also includes special methods for mobile apps testing.
  You can use this helper to test Web on desktop and mobile devices and mobile apps.
 

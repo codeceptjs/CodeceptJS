@@ -203,23 +203,6 @@ describe('WebDriverIO', function () {
       .then(() => wd.see('button was clicked')));
   });
 
-
-  describe('#saveScreenshot', () => {
-    beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output');
-    });
-
-    it('should create a screenshot on fail  @ups', () => {
-      const sec = (new Date()).getUTCMilliseconds().toString();
-      const test = {
-        title: `sw should do smth ${sec}`,
-      };
-      return wd.amOnPage('/')
-        .then(() => wd._failed(test))
-        .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
-    });
-  });
-
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => wd.amOnPage('/info')
       .then(() => wd.waitForValue('//input[@name= "rus"]', 'Верно'))
