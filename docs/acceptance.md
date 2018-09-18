@@ -243,6 +243,8 @@ Usage example:
 I.click('#click-me');
 ```
 
+If it's hard to define what to wait, it is recommended to use [retries](https://codecept.io/basics/#retries) to rerun flaky steps.
+
 ## IFrames
 
 [within](/basics/#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
