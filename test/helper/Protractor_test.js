@@ -378,13 +378,6 @@ describe('Protractor', function () {
       yield I.saveScreenshot('protractor_user_full.png', true);
       return assert.ok(fileExists(path.join(output_dir, 'protractor_user_full.png')), null, 'file does not exists');
     });
-
-    it('should create a screenshot on fail', function* () {
-      const test = { title: 'protractor should do smth' };
-      yield I.amOnPage('/');
-      yield I._failed(test);
-      return assert.ok(fileExists(path.join(output_dir, 'protractor_should_do_smth.failed.png')), null, 'file does not exists');
-    });
   });
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {

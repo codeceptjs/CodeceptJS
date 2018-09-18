@@ -23,7 +23,7 @@ describe('Scenario', () => {
   afterEach(() => event.cleanDispatcher());
 
   it('should wrap test function', () => {
-    scenario.test(test).fn();
+    scenario.test(test).fn(() => {});
     assert.ok(fn.called);
   });
 
@@ -35,7 +35,7 @@ describe('Scenario', () => {
       yield counter++;
       counter++;
     };
-    scenario.setup();
+    scenario.setup(() => {});
     scenario.test(test).fn(() => null);
     recorder.add('validation', () => assert.equal(counter, 3));
     return recorder.promise();
@@ -70,6 +70,16 @@ describe('Scenario', () => {
       scenario.setup();
     });
 
+    afterEach(() => {
+      event.dispatcher.removeListener(event.test.before, before);
+      event.dispatcher.removeListener(event.test.after, after);
+      event.dispatcher.removeListener(event.test.started, started);
+      event.dispatcher.removeListener(event.suite.before, beforeSuite);
+      event.dispatcher.removeListener(event.suite.after, afterSuite);
+      scenario.suiteSetup();
+      scenario.setup();
+    });
+
     it('should fire events', () => {
       scenario.test(test).fn(() => null);
       assert.ok(started.called);
@@ -88,7 +98,7 @@ describe('Scenario', () => {
       test.fn = () => {
         throw new Error('ups');
       };
-      scenario.test(test).fn();
+      scenario.test(test).fn(() => {});
       return recorder.promise()
         .then(() => assert.ok(failed.called))
         .catch(() => null);
@@ -98,7 +108,7 @@ describe('Scenario', () => {
       test.fn = () => {
         recorder.throw(new Error('ups'));
       };
-      scenario.test(test).fn();
+      scenario.test(test).fn(() => {});
       return recorder.promise()
         .then(() => assert.ok(failed.called))
         .catch(() => null);
