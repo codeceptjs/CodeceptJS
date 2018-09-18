@@ -103,6 +103,31 @@ Once you configured Appium, create the first test by running
 codeceptjs gt
 ```
 
+## BrowserStack Configuration
+
+If you wish to use BrowserStack's [Automated Mobile App Testing](https://www.browserstack.com/app-automate) platform. Configure the Appium helper like this:
+
+```js
+"helpers": {
+  "Appium":
+    "app": "bs://<hashed app-id>",
+    "host": "hub-cloud.browserstack.com",
+    "port": 4444,
+    "user": "BROWSERSTACK_USER",
+    "key": "BROWSERSTACK_KEY",
+    "device": "iPhone 7"
+}
+```
+Here is the full list of [capabilities](https://www.browserstack.com/app-automate/capabilities).
+
+You need to upload your Android app (.apk) or iOS app (.ipa) to the BrowserStack servers using the REST API before running your tests. The App URL (`bs://hashed appid`) is returned in the response of this call.
+
+```sh
+curl -u "USERNAME:ACCESS_KEY" \
+-X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+-F "file=@/path/to/app/file/Application-debug.apk"
+```
+
 ## Writing a Test
 
 A test is written in a scenario-driven manner, listing an actions taken by a user.

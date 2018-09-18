@@ -571,16 +571,6 @@ module.exports.tests = function () {
         .then(() => I.saveScreenshot(`screenshot_full_${+sec}.png`, true))
         .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists'));
     });
-
-    it('should create a screenshot on fail  @ups', () => {
-      const sec = (new Date()).getUTCMilliseconds().toString();
-      const test = {
-        title: `sw should do smth ${sec}`,
-      };
-      return I.amOnPage('/')
-        .then(() => I._failed(test))
-        .then(() => assert.ok(fileExists(path.join(global.output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
-    });
   });
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {

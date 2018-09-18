@@ -1,4 +1,6 @@
 const assert = require('assert');
+const Smth = require('../pages/Smth');
+
 
 const I = actor();
 // Add in your custom step files
@@ -11,6 +13,11 @@ Given('I have a defined step', () => {
 Given('Open google', () => {
   // From "features\lawPage.feature" {"line":72,"column":7}
   I.amOnPage('https://www.google.ru/webhp?hl=ru&sa=X&ved=0ahUKEwjY7rWfrPjbAhUHFiwKHas5DCMQPAgD');
+});
+
+Given('I open GitHub', () => {
+  Smth.openGitHub();
+  I.dontSee('Ups');
 });
 
 Then('check link', async () => {

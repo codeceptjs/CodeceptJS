@@ -3,6 +3,7 @@
   "helpers": {
     "Puppeteer": {
       "url": "http://localhost",
+      "browser": "chrome",
       "restart": true,
       "windowSize": "1600x1200"
     },
@@ -27,6 +28,12 @@
     "steps": [
       "./step_definitions/steps.js"
     ]
+  },
+  "plugins": {
+    "allure": {
+      "enabled": false
+    },
+    "stepByStepReport": {}
   },
   "tests": "./*_test.js",
   "timeout": 10000,
