@@ -23,6 +23,10 @@ gulp.task('docs', () => {
       .pipe(documentation({ filename: baseName + '.md', shallow: true, format: 'md'}))
       .pipe(gulp.dest(path.join(cpath, 'docs/api')));
   });
+
+  gulp.src(path.join(cpath, 'lib/plugin/*.js'))
+    .pipe(documentation({ shallow: true, filename: 'plugins.md', format: 'md' }))
+    .pipe(gulp.dest(path.join(cpath, 'docs')));
 });
 
 

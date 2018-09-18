@@ -23,6 +23,7 @@ Clear container
 
 -   `newHelpers` **Any** 
 -   `newSupport` **Any** 
+-   `newPlugins`  
 
 ## create
 
@@ -44,6 +45,14 @@ Get all helpers or get a helper by name
 ## mocha
 
 Get Mocha instance
+
+## plugins
+
+Get all plugins
+
+**Parameters**
+
+-   `name` **[string]** 
 
 ## support
 
