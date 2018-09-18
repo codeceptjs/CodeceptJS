@@ -82,7 +82,7 @@ codeceptjs shell
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/#screenshotonfail)
 
-## Step By Step Report
+### Step By Step Report
 
 To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
