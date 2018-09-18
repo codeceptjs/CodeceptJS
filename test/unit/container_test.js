@@ -87,7 +87,6 @@ describe('Container', () => {
       container.plugins('plugin2').name.should.eql('world');
       assert.ok(!container.plugins('plugin3'));
     });
-
   });
 
   describe('#create', () => {

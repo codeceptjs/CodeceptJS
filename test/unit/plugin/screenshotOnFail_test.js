@@ -7,15 +7,15 @@ const assert = require('assert');
 
 let screenshotSaved;
 
-describe('screenshotOnFail', function () {
+describe('screenshotOnFail', () => {
   beforeEach(() => {
     recorder.reset();
     screenshotSaved = sinon.spy();
     container.clear({
       WebDriverIO: {
         options: {},
-        saveScreenshot: screenshotSaved
-      }
+        saveScreenshot: screenshotSaved,
+      },
     });
   });
 
@@ -36,5 +36,4 @@ describe('screenshotOnFail', function () {
   });
 
   // TODO: write more tests for different options
-
 });
