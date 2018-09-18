@@ -35,7 +35,7 @@ describe('Scenario', () => {
       yield counter++;
       counter++;
     };
-    scenario.setup(() => {});
+    scenario.setup();
     scenario.test(test).fn(() => null);
     recorder.add('validation', () => assert.equal(counter, 3));
     return recorder.promise();
@@ -66,16 +66,6 @@ describe('Scenario', () => {
       event.dispatcher.on(event.test.started, started = sinon.spy());
       event.dispatcher.on(event.suite.before, beforeSuite = sinon.spy());
       event.dispatcher.on(event.suite.after, afterSuite = sinon.spy());
-      scenario.suiteSetup();
-      scenario.setup();
-    });
-
-    afterEach(() => {
-      event.dispatcher.removeListener(event.test.before, before);
-      event.dispatcher.removeListener(event.test.after, after);
-      event.dispatcher.removeListener(event.test.started, started);
-      event.dispatcher.removeListener(event.suite.before, beforeSuite);
-      event.dispatcher.removeListener(event.suite.after, afterSuite);
       scenario.suiteSetup();
       scenario.setup();
     });
