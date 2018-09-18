@@ -39,12 +39,26 @@ body .navbar .dropdown-menu>li>a:hover {
 }
 
 footer {
-  background: #8C16C3 url(/images/img01.jpg) repeat;
+  background: #430461;
   padding: 2em;
   color: #f5f5f5;
   font-size: 1.2em;
 }
 
+.sample.backends ul {
+  margin-top: 50px;
+  list-style-type: none;
+}
+
+.sample.backends li {
+  float: left;
+}
+
+.backends li img {
+  width: auto;
+  height: 80px;
+  list-style-type: none;
+}
 
 footer .imglist li {
   padding-left: 5px;
@@ -79,9 +93,19 @@ footer .rebilly {
   margin: 0;
   padding-top: 5em;
   padding-bottom: 2em;
-  background: #8C16C3 url(/images/img01.jpg) repeat;
+  background: #430461;
   color: #fff;
   text-align: center;
+}
+
+.jumbotron .video h2 {
+  color: #fff;
+  font-size: 140%;
+  margin-top: 50px;
+}
+
+.jumbotron video {
+  box-shadow: -30px 30px 100px #333;
 }
 
 .jumbotron p {
@@ -158,11 +182,12 @@ footer .rebilly {
   background: #6D2491;
   border-top: 3px solid #3F055D;
   overflow: hidden;
+  height: 200px;
 }
 
 .install-label {
   color: #999;
-  font-size: 1.5em;
+  font-size: 150%;
   display: inline-block;
   text-transform: uppercase;;
   margin-right: 10px;
@@ -182,6 +207,26 @@ footer .rebilly {
   border-radius: 10px;
   border: 1px solid #E1BEE7;
   border-left: 3px solid #6D2491;
+}
+
+.features h5 {
+  font-size: 100%;
+  line-height: 1.5;
+}
+
+.features {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  line-height: 1.5;
+  font-size: 100%;
+}
+
+.features img {
+  width: 120px;
+  float: left;
+  display: flex;
+  margin-right: 20px;
+  margin-top: 20px;
 }
 
 body pre {
@@ -251,7 +296,7 @@ h2, .page h2, .page h3 {
   margin-bottom: 2em;
 }
 
-.page p img {
+.page p img, .reference p img {
   width: 100%;
 }
 
