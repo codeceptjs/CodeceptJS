@@ -48,7 +48,7 @@ This helper should be configured in codecept.json
 }
 ```
 
-#### Example #2: Wait for DOMContentLoaded event and 0 netowrk connections
+#### Example #2: Wait for DOMContentLoaded event and 0 network connections
 
 ```json
 {
@@ -56,7 +56,7 @@ This helper should be configured in codecept.json
      "Puppeteer" : {
        "url": "http://localhost",
        "restart": false,
-       "waitForNavigation": "networkidle0",
+       "waitForNavigation": [ "domcontentloaded", "networkidle0" ],
        "waitForAction": 500
      }
    }
