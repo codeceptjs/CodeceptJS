@@ -351,7 +351,7 @@
 </code></pre>
 
 <p>Run tests with allure plugin enabled:</p>
-<pre><code>codeceptjs run --plugin allure
+<pre><code>codeceptjs run --plugins allure
 </code></pre>
 <p>By default, allure reports are saved to <code>output</code> directory.
 Launch Allure server and see the report like on a screenshot above:</p>
@@ -375,6 +375,9 @@ Launch Allure server and see the report like on a screenshot above:</p>
 }
 </code></pre>
 
+<p>Run tests with plugin enabled:</p>
+<pre><code>codeceptjs run --plugins retryFailedStep
+</code></pre>
 <h2 id="configuration_1">Configuration:</h2>
 <ul>
 <li><code>retries</code> - number of retries (by default 5),</li>
@@ -416,6 +419,9 @@ Launch Allure server and see the report like on a screenshot above:</p>
 <p>Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
 By default, reports are generated only for failed tests.</p>
+<p>Run tests with plugin enabled:</p>
+<pre><code>codeceptjs run --plugins stepByStepReport
+</code></pre>
 <h2 id="configuration_3">Configuration</h2>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;stepByStepReport&quot;: {
