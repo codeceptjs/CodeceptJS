@@ -2,7 +2,7 @@
   <div class="container">
     <img src="/images/cjs-base.png" style="width: 150px" alt="">
     <h1>CodeceptJS</h1>
-    <div class="motto">Modern Era Acceptance Testing for NodeJS</div>
+    <div class="motto">Awesome End 2 End Testing for NodeJS</div>
   </div>
   <div class="row" >
     <div class="col-md-4">
@@ -17,7 +17,8 @@
       <img src="/images/Mind-Map-Paper.svg" alt="">
       <h3>Backend Agnostic</h3>
       <p>
-      CodeceptJS provides a general high-level API which can easily be executed using one of popular test runner libraries:
+        Use your favorite testing tool! Write test once and execute it differently.
+        Should this be Selenium or Headless Chrome? Whatever you choose, the code is the same!
       </p>
     </div>
     <div class="col-md-4">
@@ -43,14 +44,33 @@ I.see('Welcome');
 </div>
     </div>
     <div class="col-md-4">
-      <div class="sample">
+      <div class="sample backends">
       <ul>
-        <li><a href="http://webdriver.io" target="_blank">WebDriverIO</a></li>
-        <li><a href="https://developers.google.com/web/tools/puppeteer/" target="_blank">Puppeteer</a></li>
-        <li><a href="http://www.protractortest.org/" target="_blank">Protractor</a></li>
-        <li><a href="http://www.nightmarejs.org" target="_blank">NightmareJS</a></li>
-        <li><a href="http://appium.io" target="_blank">Appium</a></li>
-        <li>or others...</li>
+          <li>
+              <a target="_blank" href="http://webdriver.io/">
+              <img src="/images/webdriverio.png" alt="WebDriverIO Selenium Bindings">
+              </a>
+            </li>
+            <li>
+              <a target="_blank" href="http://www.seleniumhq.org/">
+                <img src="/images/selenium.png" alt="Selenium">
+              </a>
+            </li>
+            <li>
+              <a target="_blank" href="http://www.protractortest.org/">
+                <img src="/images/protractor.png" alt="Protractor end to end testing for AngularJS">
+              </a>
+            </li>
+            <li>
+                <a target="_blank" href="https://developers.google.com/web/tools/puppeteer/">
+                  <img src="/images/puppeteer.png" alt="Puppeteer - high-level API to control headless Chrome or Chromium over the DevTools">
+                </a>
+              </li>
+              <li>
+                  <a target="_blank" href="http://appium.io">
+                    <img src="/images/appium.png" alt="Appium is an open source test automation framework for use with native, hybrid and mobile web apps. ">
+                  </a>
+                </li>
       </ul>
     </div>
     </div>
@@ -59,6 +79,14 @@ I.see('Welcome');
               <img src="/images/shell.png" alt="">
     </div>
     </div>
+  </div>
+  <div>
+    <div class="container video">
+      <div class="row text-center">
+        <h2>In Action</h2>
+          <video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs_demo.mp4" style="width: 70%" controls></video>
+        </div>
+      </div>
   </div>
 </div>
 
@@ -73,121 +101,87 @@ I.see('Welcome');
 </div>
 
 <div class="container page">
-  <div class="row">
-  <div class="text-center"><h2>In Action</h2></div>
 
-    <div class="col-md-6">
-    <pre><code class="javascript">Feature('CodeceptJS Demonstration');
-
-Scenario('submit form successfully', (I) => {
-&nbsp;&nbsp;I.amOnPage('/documentation')
-&nbsp;&nbsp;I.fillField('Email', 'hello@world.com')
-&nbsp;&nbsp;I.fillField('Password', '123456')
-&nbsp;&nbsp;I.checkOption('Active')
-&nbsp;&nbsp;I.checkOption('Male');
-&nbsp;&nbsp;I.click('Create User')
-&nbsp;&nbsp;I.see('User is valid')
-&nbsp;&nbsp;I.dontSeeInCurrentUrl('/documentation')
-});</code></pre>
-  </div>
-  <div class="col-md-6">
-    <img src="/images/demo.gif" alt="" style="width: 100%;">
-  </div>
-</div>
-<div class="row">
-<div class="col-md-6">
-  <h2>Features</h2>
-
-<p>
-  <ul>
-    <li><strong>Synchronous Tests API</strong>. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be to.</li>
-    <li>
-Written from <strong>user's perspective</strong>. Every action is a method of I. That makes test easy to read, write and maintain even for non-tech persons.
-    </li>
-    <li>
-<strong>Backend agnostic</strong>. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
-
-    </li>
-    <li><strong>PageObjects</strong> and StepObjects are supported out of the box. They can be generated and used in tests through dependency injection.</li>
-
-    <li><strong>Web & Mobile Testing</strong> supported .</li>
-
-    <li>Written in <strong>ES6</strong> without transpilers. This allows to use latest features of ES6 and NodeJS natively and makes source code modern and easy to extend.</li>
-  </ul>
-</p>
-
-  <h3>Voice of Developers</h3>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Implementing acceptance tests for the massive codebase at <a href="https://twitter.com/KingdomAdvisors">@KingdomAdvisors</a> has been a joy, thanks to <a href="https://twitter.com/CodeceptJS">@CodeceptJS</a> <a href="https://twitter.com/hashtag/craftcms?src=hash">#craftcms</a></p>&mdash; Selvin Ortiz (@selvinortiz) <a href="https://twitter.com/selvinortiz/status/691730160593141760">January 25, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Starting playing around with <a href="https://twitter.com/CodeceptJS">@CodeceptJS</a> today. Very easy to set-up and loving the interactive shell - very useful <a href="https://twitter.com/hashtag/testing?src=hash">#testing</a></p>&mdash; David Wardlaw (@DaveyBoyWardlaw) <a href="https://twitter.com/DaveyBoyWardlaw/status/699344024499572736">February 15, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-</div>
-
-    <div class="col-md-6">
-
-
-
-
-    <h2>Comparisons</h2>
-
-    <p>Learn what makes CodeceptJS different from current solutions</p>
-
-    <h3>vs Mocha + WebDriver</h3>
-
-    <p>
-      CodeceptJS is based on Mocha and uses WebDriverIO library behind the scene. However, complexity of WebDriver libraries are hidden inside DSL for you to <strong>concentrate on test scenarios</strong>. That also makes CodeceptJS easy to maintain and read.
-    </p>
-
-    <h3>vs Puppeteer</h3>
-
-    <p>CodeceptJS has built-in <a href="/puppeteer">Puppeteer support</a>. However, if you face limitation of Puppeteer library you can easily switch back to Selenium with one config change.</p>
-
-    <h3>vs Protractor</h3>
-
-    <p>CodeceptJS is a high-level testing system which incorporates <a href="/angular">Protractor as a test execution backend</a>. You can write tests in a simple and readable DSL and make them be <strong>executed with Protractor for your AngularJS</strong> application</p>
-
-    <h3>vs CucumberJS</h3>
-
-    <p>
-      CodeceptJS has <a href="/bdd">built in support for Cucumber-style feature files</a>.
-      You can use full power of CodeceptJS (multiple backends, flexible DSL) to write step definitions for your feature files.
-      However, if a real BDD is an overhead for you and you need just testing - CodeceptJS has nice JavaScript DSL with predefined steps so you can focus on testing.
-    </p>
-
-
-    <h2>Powered By</h2>
-
-    <ul class="imglist powered">
-      <li><a target="_blank" href="https://mochajs.org">
-        <img src="/images/mocha.png" alt="Mocha JS Framework">
-        </a>
-      </li>
-      <li>
-        <a target="_blank" href="http://webdriver.io/">
-        <img src="/images/webdriverio.png" alt="WebDriverIO Selenium Bindings">
-        </a>
-      </li>
-      <li>
-        <a target="_blank" href="http://www.seleniumhq.org/">
-          <img src="/images/selenium.png" alt="Selenium">
-        </a>
-      </li>
-      <li>
-        <a target="_blank" href="http://www.protractortest.org/">
-          <img src="/images/protractor.png" alt="Protractor end to end testing for AngularJS">
-        </a>
-      </li>
-      <li>
-          <a target="_blank" href="https://developers.google.com/web/tools/puppeteer/">
-            <img src="/images/puppeteer.png" alt="Puppeteer - high-level API to control headless Chrome or Chromium over the DevTools">
-          </a>
-        </li>
-    </ul>
-
+<div class="row features">
+    <div class="col-md-4">
+      <img src="/images/Prism-3.svg" alt="">
+      <h5>Synchronous tests with async/await</h5>
+      Your test scenarios are linear, your test should be to.
     </div>
 
+    <div class="col-md-4">
+        <img src="/images/Prism-3.svg" style="filter: hue-rotate(45deg); transform: rotate(225deg); " alt="">
+        <h5>PageObjects</h5>
+        PageObjects are essential to write stable and reusable code!
+      </div>
+
+      <div class="col-md-4">
+          <img src="/images/Prism-3.svg" style="filter: hue-rotate(90deg); transform: rotate(180deg);" alt="">
+          <h5>Web & Mobile Testing</h5>
+          Write your tests for web and and mobile applications using same API.
+        </div>
 </div>
+
+<div class="row features">
+    <div class="col-md-4">
+      <img src="/images/Prism-3.svg" style="filter: hue-rotate(135deg); transform: rotate(45deg);" alt="">
+      <h5>Cucumber-like BDD</h5>
+      Automate business scenarios as you do in CucumberJS
+    </div>
+
+    <div class="col-md-4">
+        <img src="/images/Prism-3.svg" style="filter: hue-rotate(180deg); transform: rotate(90deg);" alt="">
+        <h5>Beautiful Reports</h5>
+        Integrated with Allure reporter
+      </div>
+
+      <div class="col-md-4">
+          <img src="/images/Prism-3.svg" style="filter: hue-rotate(225deg); transform: rotate(135deg);" alt="">
+          <h5>Simplified Debug</h5>
+          Pause test at any point and use interactive shell.
+        </div>
+</div>
+
+<div class="row features">
+    <div class="col-md-4">
+      <img src="/images/Prism-3.svg" style="transform: rotate(90deg); filter: hue-rotate(60deg) saturate(20%);" alt="">
+      <h5>Headless Tests</h5>
+      Run tests headlessly without Selenium using Puppeteer or NightmareJS
+    </div>
+
+    <div class="col-md-4">
+        <img src="/images/Prism-3.svg" style="filter: hue-rotate(105deg) saturate(20%); transform: rotate(45deg);" alt="">
+        <h5>No Flaky Steps</h5>
+        Flaky steps to be retried automatcically
+      </div>
+
+      <div class="col-md-4">
+          <img src="/images/Prism-3.svg" style="filter: hue-rotate(135deg) saturate(20%); transform: rotate(0deg);" alt="">
+          <h5>Multi-Session Testing</h5>
+          Run a test using several browser windows
+        </div>
+</div>
+
+<div class="row features">
+  <div class="col-md-3">
+    <h5>CSS/XPath Locators</h5>
+    <p>Locate elements by semantic values, CSS or XPath. Generate locators using Locator Builder</p>
+  </div>
+
+  <div class="col-md-3">
+    <h5>Translations</h5>
+    <p>Write tests in your language (Portugeese, Chineese, Russian, Polish, etc)</p>
+  </div>
+
+  <div class="col-md-3">
+      <h5>Parallel Testing</h5>
+      <p>Tests are split into chunks and executed in multiple processes.</p>
+  </div>
+
+  <div class="col-md-3">
+      <h5>Data Management</h5>
+      <p>Create and delete tests data using REST API. Generate seed data using rosie and faker libraries</p>
+  </div>
+</div>
+
 </div>
