@@ -312,7 +312,9 @@
         
             <li><a href="#how-it-works">How It Works</a></li>
         
-            <li><a href="#pause">Pause</a></li>
+            <li><a href="#debug">Debug</a></li>
+        
+            <li><a href="#step-by-step-report">Step By Step Report</a></li>
         
             <li><a href="#before">Before</a></li>
         
@@ -326,13 +328,9 @@
         
             <li><a href="#skipping">Skipping</a></li>
         
-            <li><a href="#reporters">Reporters</a></li>
-        
-            <li><a href="#translation">Translation</a></li>
+            <li><a href="#retries">Retries</a></li>
         
             <li><a href="#test-options">Test Options</a></li>
-        
-            <li><a href="#retries">Retries</a></li>
         
     
     </ul>
@@ -378,7 +376,8 @@ var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 </code></pre>
 
-<h2 id="pause">Pause</h2>
+<h2 id="debug">Debug</h2>
+<h3 id="pause">Pause</h3>
 <p>Test execution can be paused in any place of a test with <code>pause()</code> call.
 This also launches interactive console where you can call actions of <code>I</code> object.</p>
 <p><img alt="shell" src="../images/shell.png" /></p>
@@ -393,6 +392,11 @@ This also launches interactive console where you can call actions of <code>I</co
 <pre><code class="bash">codeceptjs shell
 </code></pre>
 
+<h3 id="screenshot-on-failure">Screenshot on failure</h3>
+<p>By default CodeceptJS saves a screenshot of a failed test.
+This can be configured in <a href="https://codecept.io/plugins/#screenshotonfail">screenshotOnFail Plugin</a></p>
+<h2 id="step-by-step-report">Step By Step Report</h2>
+<p>To see how the test was executed, use <a href="https://codecept.io/plugins/#stepbystepreport">stepByStepReport Plugin</a>. It saves a screenshot of each passed step and shows them in a nice slideshow.</p>
 <h2 id="before">Before</h2>
 <p>Common preparation steps like opening a web page, logging in a user, can be placed in <code>Before</code> or <code>Background</code> hook:</p>
 <pre><code class="js">Feature('CodeceptJS Demonstration');
@@ -475,39 +479,6 @@ method autocompletion while writing tests.</p>
 <li><code>xScenario</code> - skips current test</li>
 <li><code>Scenario.only</code> - executes only the current test</li>
 </ul>
-<h2 id="reporters">Reporters</h2>
-<p>CodeceptJS supports <a href="https://mochajs.org/#reporters">Mocha Reporters</a>.
-They can be used with <code>--reporter</code> options.
-By default a custom console reporter is enabled.</p>
-<p>We are currently working on improving reporters support.</p>
-<h2 id="translation">Translation</h2>
-<p>Because CodeceptJS tests use high level DSL it is possible to write tests using different languages.
-Tests can be written in Portuguese, Russian, Italian, Polish &amp; Chinese languages using predefined <a href="http://codecept.io/translation/">translations</a>.</p>
-<h2 id="test-options">Test Options</h2>
-<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
-<pre><code class="js">Feature('My feature', {key: val});
-
-Scenario('My scenario', {key: val}, (I) =&gt; {});
-</code></pre>
-
-<h3 id="timeout">Timeout</h3>
-<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
-<pre><code class="js">Feature('Stop me').timeout(5000); // set timeout to 5s
-</code></pre>
-
-<p>or for the test:</p>
-<pre><code class="js">// set timeout to 1s
-Scenario(&quot;Stop me faster&quot;, (I) =&gt; {
-  // test goes here
-}).timeout(1000);
-
-// alternative
-Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
-
-// disable timeout for this scenario
-Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
-</code></pre>
-
 <h2 id="retries">Retries</h2>
 <h3 id="retry-step">Retry Step</h3>
 <p>If you have a step which often fails you can retry execution for this single step.
@@ -554,6 +525,31 @@ Scenario('Really complex', { retries: 2 }, (I) =&gt; {});
 
 <p>Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
+<h2 id="test-options">Test Options</h2>
+<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
+<pre><code class="js">Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) =&gt; {});
+</code></pre>
+
+<h3 id="timeout">Timeout</h3>
+<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
+<pre><code class="js">Feature('Stop me').timeout(5000); // set timeout to 5s
+</code></pre>
+
+<p>or for the test:</p>
+<pre><code class="js">// set timeout to 1s
+Scenario(&quot;Stop me faster&quot;, (I) =&gt; {
+  // test goes here
+}).timeout(1000);
+
+// alternative
+Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
+
+// disable timeout for this scenario
+Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
+</code></pre>
+
 <hr />
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">
