@@ -36,11 +36,13 @@
     "test": "mocha test/unit --recursive && mocha test/runner --recursive"
   },
   "dependencies": {
+    "allure-js-commons": "^1.3.2",
     "chalk": "^1.1.3",
     "commander": "^2.16.0",
     "css-to-xpath": "^0.1.0",
     "cucumber-expressions": "^6.0.1",
     "escape-string-regexp": "^1.0.3",
+    "figures": "^2.0.0",
     "fn-args": "^3.0.0",
     "gherkin": "^5.1.0",
     "glob": "^6.0.1",

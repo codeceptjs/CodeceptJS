@@ -1,6 +1,8 @@
 const I = actor();
 const loginPage = require('./Login');
 
+class Smth {};
+
 module.exports = {
 
   openGitHub() {
@@ -10,6 +12,7 @@ module.exports = {
   openAndLogin() {
     this.openGitHub();
     loginPage.login('something@totest.com', '1234356');
-  },
-
+  }
 };
+
+Object.setPrototypeOf(module.exports, Smth.prototype);
