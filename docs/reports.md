@@ -115,7 +115,7 @@ Add [Allure plugin](https://codecept.io/plugins/#allure) in config under `plugin
 Run tests with allure plugin enabled:
 
 ```
-codeceptjs run --plugin allure
+codeceptjs run --plugins allure
 ```
 
 (optionally) To enable allure plugin permanently include `"enabled": true` into plugin config:
