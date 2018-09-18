@@ -9,4 +9,4 @@ module.exports = {
   },
 };
 
-Object.setPrototypeOf(module.exports, class Login{}.prototype);
+Object.setPrototypeOf(module.exports, class Login {}.prototype);
