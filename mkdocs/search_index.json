@@ -72,13 +72,8 @@
         }, 
         {
             "location": "/basics/#debug", 
-            "text": "Pause  Test execution can be paused in any place of a test with  pause()  call.\nThis also launches interactive console where you can call actions of  I  object.   You can also use  pause()  to check the web application in a browser. Press  ENTER  to resume test execution.  To  debug test step-by-step  type  next  and press Enter. The next step will be executed and interactive shell will be shown again.  To see all available commands press TAB two times to see list of all actions included in I.  If a test is failing you can prevent browser from closing by putting  pause()  command into  After()  hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.  After(pause);  Interactive shell can be started outside the test context by running  codeceptjs shell  Screenshot on failure  By default CodeceptJS saves a screenshot of a failed test.\nThis can be configured in  screenshotOnFail Plugin", 
+            "text": "Pause  Test execution can be paused in any place of a test with  pause()  call.\nThis also launches interactive console where you can call actions of  I  object.   You can also use  pause()  to check the web application in a browser. Press  ENTER  to resume test execution.  To  debug test step-by-step  type  next  and press Enter. The next step will be executed and interactive shell will be shown again.  To see all available commands press TAB two times to see list of all actions included in I.  If a test is failing you can prevent browser from closing by putting  pause()  command into  After()  hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.  After(pause);  Interactive shell can be started outside the test context by running  codeceptjs shell  Screenshot on failure  By default CodeceptJS saves a screenshot of a failed test.\nThis can be configured in  screenshotOnFail Plugin  Step By Step Report  To see how the test was executed, use  stepByStepReport Plugin . It saves a screenshot of each passed step and shows them in a nice slideshow.", 
             "title": "Debug"
-        }, 
-        {
-            "location": "/basics/#step-by-step-report", 
-            "text": "To see how the test was executed, use  stepByStepReport Plugin . It saves a screenshot of each passed step and shows them in a nice slideshow.", 
-            "title": "Step By Step Report"
         }, 
         {
             "location": "/basics/#before", 
