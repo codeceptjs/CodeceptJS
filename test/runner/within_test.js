@@ -16,7 +16,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute if no generators', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
@@ -25,8 +25,8 @@ describe('CodeceptJS within', function () {
       withoutGeneratorList.should.eql([
         'I small promise ',
         'small Promise was finished',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I small promise ',
         'small Promise was finished',
         'oh! I am within end(',
@@ -36,7 +36,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute with generators. Yield is first in order', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorList = grepLines(lines, 'Check within with generator. Yield is first in order', 'Check within with generator. Yield is second in order');
@@ -47,8 +47,8 @@ describe('CodeceptJS within', function () {
         'small Promise was finished',
         'I small yield ',
         'I am small yield string',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I small yield ',
         'I am small yield string',
         'I small promise ',
@@ -61,7 +61,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute with generators. Yield is second in order', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorListOtherOrder = grepLines(lines, 'Check within with generator. Yield is second in order', 'Check within with generator. Should complete test steps after within');
@@ -72,8 +72,8 @@ describe('CodeceptJS within', function () {
         'small Promise was finished',
         'I small yield ',
         'I am small yield string',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I small promise ',
         'small Promise was finished',
         'I small yield ',
@@ -86,7 +86,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute with async/await. Await is first in order', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
@@ -97,8 +97,8 @@ describe('CodeceptJS within', function () {
         'small Promise was finished',
         'I small yield ',
         'I am small yield string await',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I small yield ',
         'I am small yield string await',
         'I small promise ',
@@ -111,7 +111,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute with async/await. Await is second in order', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');
@@ -122,8 +122,8 @@ describe('CodeceptJS within', function () {
         'small Promise was finished',
         'I small yield ',
         'I am small yield string await',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I small promise ',
         'small Promise was finished',
         'I small yield ',
@@ -137,7 +137,7 @@ describe('CodeceptJS within', function () {
 
 
   it('should complete test steps after within', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorListWithContinued = grepLines(lines, 'Check within with generator. Should complete test steps after within', 'Check within with generator. Should stop test execution after fail in within');
@@ -146,8 +146,8 @@ describe('CodeceptJS within', function () {
       withGeneratorListWithContinued.should.eql([
         'I small yield ',
         'I am small yield string',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I small yield ',
         'I am small yield string',
         'I small promise ',
@@ -161,7 +161,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should stop test execution after fail in within', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const errorInWithinList = grepLines(lines, 'Check within with generator. Should stop test execution after fail in within', 'Check within with generator. Should stop test execution after fail in main block');
@@ -170,8 +170,8 @@ describe('CodeceptJS within', function () {
       errorInWithinList.should.eql([
         'I small yield ',
         'I am small yield string',
-        'Within blabla:',
         'Hey! I am within Begin. I get blabla',
+        'Within "blabla" ',
         'I error step ',
         'oh! I am within end(',
       ], 'check steps execution order');
@@ -181,7 +181,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should stop test execution after fail in main block', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
 
       const errorInTestList = grepLines(lines, 'Check within with generator. Should stop test execution after fail in main block', 'Check within with async/await. Await is first in order');

@@ -69,7 +69,7 @@ By default it is set to `domcontentloaded` which waits for `DOMContentLoaded` ev
   }
 ```
 
-WHen a test runs faster than application it is recommended to increase `waitForAction` config value.
+When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
 *More options are listed in [helper reference](http://codecept.io/helpers/Puppeteer/).*
@@ -151,7 +151,7 @@ Scenario('get value of current tasks', async (I) => {
 ### Within
 
 In case some actions should be taken inside one element (a container or modal window) you can use `within` block to narrow the scope.
-Please take a not that you can't use within inside another within in Puppeteer helper:
+Please take a note that you can't use within inside another within in Puppeteer helper:
 
 ```js
 within('.todoapp', () => {

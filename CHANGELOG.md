@@ -1,3 +1,15 @@
+## 1.4.0
+
+* [**Allure Reporter Integration**](https://codecept.io/reports/#allure). Full inegration with Allure Server. Get nicely looking UI for tests,including steps, nested steps, and screenshots. Thanks **Natarajan Krishnamurthy @krish** for sponsoring this feature.
+* [Plugins API introduced](https://codecept.io/hooks/#plugins). Create custom plugins for CodeceptJS by hooking into event dispatcher, and using promise recorder.
+* **Official [CodeceptJS plugins](https://codecept.io/plugins) added**:
+    * **`stepByStepReport` - creates nicely looking report to see test execution as a slideshow**. Use this plugin to debug tests in headless environment without recording a video.
+    * `allure` - Allure reporter added as plugin.
+    * `screenshotOnFail` - saves screenshot on fail. Replaces similar functionality from helpers.
+    * `retryFailedStep` - to rerun each failed step.
+* [Puppeteer] Fix `executeAsyncScript` unexpected token by @jonathanz
+* Added `override` option to `run-multiple` command by @svarlet
+
 ## 1.3.3
 
 * Added `initGlobals()` function to API of [custom runner](https://codecept.io/hooks/#custom-runner).
