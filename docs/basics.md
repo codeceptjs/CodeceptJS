@@ -49,7 +49,9 @@ var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 ```
 
-## Pause
+## Debug
+
+### Pause
 
 Test execution can be paused in any place of a test with `pause()` call.
 This also launches interactive console where you can call actions of `I` object.
@@ -73,6 +75,17 @@ Interactive shell can be started outside the test context by running
 ```bash
 codeceptjs shell
 ```
+
+
+### Screenshot on failure
+
+By default CodeceptJS saves a screenshot of a failed test.
+This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/#screenshotonfail)
+
+### Step By Step Report
+
+To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
+
 
 ## Before
 
@@ -181,51 +194,6 @@ Like in Mocha you can use `x` and `only` to skip tests or making a single test t
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
 
-## Reporters
-
-CodeceptJS supports [Mocha Reporters](https://mochajs.org/#reporters).
-They can be used with `--reporter` options.
-By default a custom console reporter is enabled.
-
-We are currently working on improving reporters support.
-
-## Translation
-
-Because CodeceptJS tests use high level DSL it is possible to write tests using different languages.
-Tests can be written in Portuguese, Russian, Italian, Polish & Chinese languages using predefined [translations](http://codecept.io/translation/).
-
-## Test Options
-
-Features and Scenarios have their options that can be set by passing a hash after their names:
-
-```js
-Feature('My feature', {key: val});
-
-Scenario('My scenario', {key: val}, (I) => {});
-```
-
-### Timeout
-
-By default there is no timeout for tests, however you can change this value for a specific suite:
-
-```js
-Feature('Stop me').timeout(5000); // set timeout to 5s
-```
-
-or for the test:
-
-```js
-// set timeout to 1s
-Scenario("Stop me faster", (I) => {
-  // test goes here
-}).timeout(1000);
-
-// alternative
-Scenario("Stop me faster", {timeout: 1000}, (I) => {});
-
-// disable timeout for this scenario
-Scenario("Don't stop me", {timeout: 0}, (I) => {});
-```
 
 ## Retries
 
@@ -292,6 +260,41 @@ Feature('Complex JS Stuff').retry(3);
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
+
+## Test Options
+
+Features and Scenarios have their options that can be set by passing a hash after their names:
+
+```js
+Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) => {});
+```
+
+### Timeout
+
+By default there is no timeout for tests, however you can change this value for a specific suite:
+
+```js
+Feature('Stop me').timeout(5000); // set timeout to 5s
+```
+
+or for the test:
+
+```js
+// set timeout to 1s
+Scenario("Stop me faster", (I) => {
+  // test goes here
+}).timeout(1000);
+
+// alternative
+Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+
+// disable timeout for this scenario
+Scenario("Don't stop me", {timeout: 0}, (I) => {});
+```
+
+
 
 ---
 
