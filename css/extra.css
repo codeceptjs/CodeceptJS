@@ -186,10 +186,10 @@ footer .rebilly {
 }
 
 .install-label {
-  color: #999;
-  font-size: 150%;
+  /* color: #999; */
+  font-size: 200%;
   display: inline-block;
-  text-transform: uppercase;;
+  /* text-transform: uppercase;; */
   margin-right: 10px;
   font-family: 'Montserrat'
 }
