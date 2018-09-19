@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="/images/cjs-favicon.png">
 
-	<title>Quickstart - CodeceptJS</title>
+	<title>Quickstart - CodeceptJS - End 2 End Testing Framework for NodeJS</title>
 
         <link href="../css/bootstrap-3.0.3.min.css" rel="stylesheet">
 
@@ -310,21 +310,15 @@
     
         <li class="main active"><a href="#quickstart">QuickStart</a></li>
         
-            <li><a href="#install-globally">Install Globally:</a></li>
+            <li><a href="#using-puppeteer">Using Puppeteer</a></li>
         
-            <li><a href="#install-locally">Install Locally</a></li>
+            <li><a href="#using-selenium-webdriver">Using Selenium WebDriver</a></li>
         
-            <li><a href="#setup">Setup</a></li>
+            <li><a href="#using-protractor">Using Protractor</a></li>
         
-            <li><a href="#installing-backends">Installing Backends</a></li>
+            <li><a href="#using-appium">Using Appium</a></li>
         
-            <li><a href="#creating-first-test">Creating First Test</a></li>
-        
-            <li><a href="#prepare-selenium-server">Prepare Selenium Server</a></li>
-        
-            <li><a href="#run">Run</a></li>
-        
-            <li><a href="#congrats-your-first-test-is-running">Congrats! Your first test is running</a></li>
+            <li><a href="#using-nightmarejs">Using NightmareJS</a></li>
         
     
     </ul>
@@ -333,34 +327,87 @@
 
 <h1 id="quickstart">QuickStart</h1>
 <p><strong>NodeJS v 8.9</strong> and higher required to start.
-CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.</p>
-<h3 id="install-globally">Install Globally:</h3>
-<pre><code class="sh">[sudo] npm install -g codeceptjs
+CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.</p>
+<p>In this guide we will use <a href="https://github.com/GoogleChrome/puppeteer">Google Chrome <strong>Puppeteer</strong></a> as a driver for browsers. This allows us to start in a minutes with no extra tools installed.</p>
+<p>If you are familiar with Selenium, you can choose classical <a href="#using-selenium"><strong>Selenium WebDriver</strong> setup</a>.</p>
+<h2 id="using-puppeteer">Using Puppeteer</h2>
+<p>1) Install CodeceptJS with Puppeteer</p>
+<pre><code>[sudo] npm install -g codeceptjs puppeteer
 </code></pre>
 
-<p>Execute codeceptjs as:</p>
-<pre><code>codeceptjs
-</code></pre>
-
-<h3 id="install-locally">Install Locally</h3>
-<pre><code class="sh">npm install codeceptjs --save-dev
-</code></pre>
-
-<p>Execute codeceptjs as:</p>
-<pre><code>./node_modules/.bin/codeceptjs
-</code></pre>
-
-<h2 id="setup">Setup</h2>
-<p>Initialize CodeceptJS running:</p>
+<p>2) Initialize CodeceptJS in current directory by running:</p>
 <pre><code class="sh">codeceptjs init
 </code></pre>
 
-<p>It will create <code>codecept.json</code> config in current directory (or provide path in the first argument).</p>
-<p>You will be asked for tests location (they will be searched in current dir by default).</p>
-<p>On next step you are asked to select <strong>Helpers</strong>. Helpers include actions which can be used in tests.
-We recommend to start with <strong>WebDriverIO</strong> helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.</p>
-<p>If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
-No matter what helper you've chosen they will be similar in use.</p>
+<p>3) Answer questions. Agree on defaults, when asked to select helpers choose <strong>Puppeteer</strong>.</p>
+<pre><code class="sh">? What helpers do you want to use?
+ ◯ WebDriverIO
+ ◯ Protractor
+❯◉ Puppeteer
+ ◯ Appium
+ ◯ Nightmare
+ ◯ FileSystem
+</code></pre>
+
+<p>4) Create First Test.</p>
+<pre><code class="bash">codeceptjs gt
+</code></pre>
+
+<p>5) Enter a test name. Open a generated file in your favorite JavaScript editor.</p>
+<pre><code class="js">Feature('My First Test');
+
+Scenario('test something', (I) =&gt; {
+
+});
+</code></pre>
+
+<p>6) Write a simple scenario</p>
+<pre><code class="js">Feature('My First Test');
+
+Scenario('test something', (I) =&gt; {
+  I.amOnPage('https://github.com');
+  I.see('GitHub');
+});
+</code></pre>
+
+<p>7) Run a test:</p>
+<pre><code>codeceptjs run --steps
+</code></pre>
+
+<p>The output should be similar to this:</p>
+<pre><code class="bash">My First Test --
+  test something
+   • I am on page &quot;https://github.com&quot;
+   • I see &quot;GitHub&quot;
+ ✓ OK
+</code></pre>
+
+<p>Puppeteer starts a browser without showing its window. To see the browser, edit <code>codecept.json</code> config and set <code>show: true</code> for Puppeteer:</p>
+<pre><code class="js">{
+  &quot;helpers&quot;: {
+    &quot;Puppeteer&quot;: {
+      &quot;url&quot;: &quot;http://localhost&quot;,
+      &quot;show&quot;: true,
+    }
+  }
+}
+</code></pre>
+
+<p>Rerun the test to see the browser.</p>
+<hr />
+<h3 id="next-codeceptjs-with-puppeteer">Next: <a href="https://codecept.io/puppeteer/">CodeceptJS with Puppeteer &gt;&gt;&gt;</a></h3>
+<h3 id="next-codeceptjs-basics">Next: <a href="https://codecept.io/basics/">CodeceptJS Basics &gt;&gt;&gt;</a></h3>
+<hr />
+<h2 id="using-selenium-webdriver">Using Selenium WebDriver</h2>
+<p>1) Install CodeceptJS with webdriverio library</p>
+<pre><code>[sudo] npm install -g codeceptjs webdriverio
+</code></pre>
+
+<p>2) Initialize CodeceptJS in current directory by running:</p>
+<pre><code class="sh">codeceptjs init
+</code></pre>
+
+<p>3) Answer questions. Agree on defaults, when asked to select helpers choose <strong>Puppeteer</strong>.</p>
 <pre><code class="sh">? What helpers do you want to use?
 ❯◉ WebDriverIO
  ◯ Protractor
@@ -370,43 +417,11 @@ No matter what helper you've chosen they will be similar in use.</p>
  ◯ FileSystem
 </code></pre>
 
-<p>Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.</p>
-<pre><code class="sh">? Where should logs, screenshots, and reports to be stored? ./output
-</code></pre>
-
-<p>If you are going to extend test suite by writing custom steps you should probably agree to create <code>steps_file.js</code></p>
-<pre><code class="sh">? Would you like to extend I object with custom steps? Yes
-? Where would you like to place custom steps? ./steps_file.js
-</code></pre>
-
-<p>WebDriverIO helper will ask for additional configuration as well:</p>
-<pre><code class="sh">? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed (chrome)
-</code></pre>
-
-<p>If you agree with defaults, finish the installation.</p>
-<h2 id="installing-backends">Installing Backends</h2>
-<p>To run CodeceptJS you will need to install a corresponding backend for the helepr you've choosen. <code>WebDriverIO</code> helper requires <code>webdriverio</code> package to be installed. The init command will notify you what libraries are missing so you could install it:</p>
-<ul>
-<li>Global installation</li>
-</ul>
-<pre><code>Please install dependent packages globally: npm -g install  webdriverio@^4.0.0
-</code></pre>
-
-<ul>
-<li>Local installation</li>
-</ul>
-<pre><code>Please install dependent packages locally: npm install --save-dev webdriverio@^4.0.0
-</code></pre>
-
-<p>Please follow this steps and install required package.</p>
-<h2 id="creating-first-test">Creating First Test</h2>
-<p>Tests can be easily created by running</p>
+<p>4) Create First Test.</p>
 <pre><code class="bash">codeceptjs gt
 </code></pre>
 
-<p><em>(or <code>generate test</code>)</em></p>
-<p>Provide a test name and open generated file in your favorite JavaScript editor (with ES6 support).</p>
+<p>5) Enter a test name. Open a generated file in your favorite JavaScript editor.</p>
 <pre><code class="js">Feature('My First Test');
 
 Scenario('test something', (I) =&gt; {
@@ -414,16 +429,16 @@ Scenario('test something', (I) =&gt; {
 });
 </code></pre>
 
-<p>Inside the scenario block you can write your first test scenario by using <a href="http://codecept.io/helpers/WebDriverIO/">actions from WebDriverIO helper</a>. Let's assume we have a web server on <code>localhost</code> is running and there is a <strong>Welcome</strong> text on the first page. The simplest test will look like this:</p>
+<p>6) Write a simple scenario</p>
 <pre><code class="js">Feature('My First Test');
 
 Scenario('test something', (I) =&gt; {
-  I.amOnPage('/');
-  I.see('Welcome');
+  I.amOnPage('https://github.com');
+  I.see('GitHub');
 });
 </code></pre>
 
-<h2 id="prepare-selenium-server">Prepare Selenium Server</h2>
+<p>7) Prepare Selenium Server</p>
 <p>To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.</p>
 <p>Use <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a> from NPM to install and run them:</p>
 <pre><code class="sh">[sudo] npm install -g selenium-standalone
@@ -431,23 +446,28 @@ selenium-standalone install
 selenium-standalone start
 </code></pre>
 
-<p>Alternatively <a href="http://codecept.io/helpers/WebDriverIO/#selenium-installation">Selenium Server</a> with <a href="https://sites.google.com/a/chromium.org/chromedriver/getting-started">ChromeDriver</a> can be installed and started manually.</p>
-<h2 id="run">Run</h2>
-<p>Execute tests:</p>
-<pre><code class="bash">codeceptjs run --steps
+<p>8) Run a test:</p>
+<pre><code>codeceptjs run --steps
 </code></pre>
 
-<p>( <em>steps option will display test execution process in console.</em> )</p>
 <p>If everything is done right, you will see in console:</p>
 <pre><code class="bash">My First Test --
   test something
-   • I am on page &quot;/&quot;
-   • I see &quot;Welcome&quot;
+   • I am on page &quot;https://github.com&quot;
+   • I see &quot;GitHub&quot;
  ✓ OK
 </code></pre>
 
-<h2 id="congrats-your-first-test-is-running">Congrats! Your first test is running</h2>
-<p>Wasn't so hard, right?</p></div>
+<hr />
+<h3 id="next-codeceptjs-basics_1">Next: <a href="https://codecept.io/basics/">CodeceptJS Basics &gt;&gt;&gt;</a></h3>
+<h3 id="next-acceptance-testing-in-codeceptjs">Next: <a href="https://codecept.io/puppeteer/">Acceptance Testing in CodeceptJS &gt;&gt;&gt;</a></h3>
+<hr />
+<h2 id="using-protractor">Using Protractor</h2>
+<p><a href="https://codecept.io/angular/"><strong>Follow corresponding guide &gt;&gt;</strong></a></p>
+<h2 id="using-appium">Using Appium</h2>
+<p><a href="https://codecept.io/mobile/"><strong>Follow corresponding guide &gt;&gt;</strong></a></p>
+<h2 id="using-nightmarejs">Using NightmareJS</h2>
+<p><a href="https://codecept.io/nightmare/"><strong>Follow corresponding guide &gt;&gt;</strong></a></p></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
