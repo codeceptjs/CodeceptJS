@@ -11,7 +11,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 ## Using Puppeteer
 
 
-<video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs_install.mp4" style="width: 70%" controls></video>
+<video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs-install.mp4" style="width: 100%" controls></video>
 
 
 1) Install CodeceptJS with Puppeteer
@@ -20,7 +20,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 npm install codeceptjs puppeteer --save-dev
 ```
 
-(due to [this issue in Pupppeteer](https://github.com/GoogleChrome/puppeteer/issues/375), we install it locally)
+(due to [this issue in Puppeteer](https://github.com/GoogleChrome/puppeteer/issues/375), we install it locally)
 
 
 2) Initialize CodeceptJS in current directory by running:
