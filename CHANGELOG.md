@@ -1,3 +1,10 @@
+## 1.4.1
+
+* Added `plugins` option to `run-multiple`
+* Minor output fixes
+* Added Type Definition for Helper class by @Akxe
+* Fixed extracing devault extension in generators by @Akxe
+
 ## 1.4.0
 
 * [**Allure Reporter Integration**](https://codecept.io/reports/#allure). Full inegration with Allure Server. Get nicely looking UI for tests,including steps, nested steps, and screenshots. Thanks **Natarajan Krishnamurthy @krish** for sponsoring this feature.
