@@ -3,23 +3,33 @@
 **NodeJS v 8.9** and higher required to start.
 CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.
 
-In this guide we will use [Google Chrome **Puppeteer**](https://github.com/GoogleChrome/puppeteer) as a driver for browsers. This allows us to start in a minutes with no extra tools installed.
+* In this guide we will use [Google Chrome **Puppeteer**](https://github.com/GoogleChrome/puppeteer) as a driver for browsers. This allows us to start in a minutes with no extra tools installed.
+* If you are familiar with Selenium, you can choose classical [**Selenium WebDriver** setup](#using-selenium-webdriver).
+* Also, look at [complete installation reference](https://codecept.io/installation/).
 
-If you are familiar with Selenium, you can choose classical [**Selenium WebDriver** setup](#using-selenium).
 
 ## Using Puppeteer
+
+
+<video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs_install.mp4" style="width: 70%" controls></video>
+
 
 1) Install CodeceptJS with Puppeteer
 
 ```
-[sudo] npm install -g codeceptjs puppeteer
+npm install codeceptjs puppeteer --save-dev
 ```
+
+(due to [this issue in Pupppeteer](https://github.com/GoogleChrome/puppeteer/issues/375), we install it locally)
+
 
 2) Initialize CodeceptJS in current directory by running:
 
 ```sh
-codeceptjs init
+./node_modules/.bin/codeceptjs init
 ```
+
+(use `node node_modules/.bin/codeceptjs` on Windows)
 
 3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
 
@@ -36,7 +46,7 @@ codeceptjs init
 4) Create First Test.
 
 ```bash
-codeceptjs gt
+./node_modules/.bin/codeceptjs gt
 ```
 
 5) Enter a test name. Open a generated file in your favorite JavaScript editor.
@@ -63,7 +73,7 @@ Scenario('test something', (I) => {
 7) Run a test:
 
 ```
-codeceptjs run --steps
+./node_modules/.bin/codeceptjs run --steps
 ```
 
 The output should be similar to this:
