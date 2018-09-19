@@ -328,17 +328,24 @@
 <h1 id="quickstart">QuickStart</h1>
 <p><strong>NodeJS v 8.9</strong> and higher required to start.
 CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.</p>
-<p>In this guide we will use <a href="https://github.com/GoogleChrome/puppeteer">Google Chrome <strong>Puppeteer</strong></a> as a driver for browsers. This allows us to start in a minutes with no extra tools installed.</p>
-<p>If you are familiar with Selenium, you can choose classical <a href="#using-selenium"><strong>Selenium WebDriver</strong> setup</a>.</p>
+<ul>
+<li>In this guide we will use <a href="https://github.com/GoogleChrome/puppeteer">Google Chrome <strong>Puppeteer</strong></a> as a driver for browsers. This allows us to start in a minutes with no extra tools installed.</li>
+<li>If you are familiar with Selenium, you can choose classical <a href="#using-selenium-webdriver"><strong>Selenium WebDriver</strong> setup</a>.</li>
+<li>Also, look at <a href="https://codecept.io/installation/">complete installation reference</a>.</li>
+</ul>
 <h2 id="using-puppeteer">Using Puppeteer</h2>
+<video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs_install.mp4" style="width: 70%" controls></video>
+
 <p>1) Install CodeceptJS with Puppeteer</p>
-<pre><code>[sudo] npm install -g codeceptjs puppeteer
+<pre><code>npm install codeceptjs puppeteer --save-dev
 </code></pre>
 
+<p>(due to <a href="https://github.com/GoogleChrome/puppeteer/issues/375">this issue in Pupppeteer</a>, we install it locally)</p>
 <p>2) Initialize CodeceptJS in current directory by running:</p>
-<pre><code class="sh">codeceptjs init
+<pre><code class="sh">./node_modules/.bin/codeceptjs init
 </code></pre>
 
+<p>(use <code>node node_modules/.bin/codeceptjs</code> on Windows)</p>
 <p>3) Answer questions. Agree on defaults, when asked to select helpers choose <strong>Puppeteer</strong>.</p>
 <pre><code class="sh">? What helpers do you want to use?
  ◯ WebDriverIO
@@ -350,7 +357,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 </code></pre>
 
 <p>4) Create First Test.</p>
-<pre><code class="bash">codeceptjs gt
+<pre><code class="bash">./node_modules/.bin/codeceptjs gt
 </code></pre>
 
 <p>5) Enter a test name. Open a generated file in your favorite JavaScript editor.</p>
@@ -371,7 +378,7 @@ Scenario('test something', (I) =&gt; {
 </code></pre>
 
 <p>7) Run a test:</p>
-<pre><code>codeceptjs run --steps
+<pre><code>./node_modules/.bin/codeceptjs run --steps
 </code></pre>
 
 <p>The output should be similar to this:</p>
