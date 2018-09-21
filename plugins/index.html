@@ -340,7 +340,7 @@
 <p>Allure reporter</p>
 <p><img alt="" src="https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png" /></p>
 <p>Enables Allure reporter.</p>
-<h3 id="usage">Usage</h3>
+<h4 id="usage">Usage</h4>
 <p>To start please install <code>allure-commandline</code> package (which requires Java 8)</p>
 <pre><code>npm install -g allure-commandline --save-dev
 </code></pre>
@@ -357,9 +357,9 @@
 Launch Allure server and see the report like on a screenshot above:</p>
 <pre><code>allure serve output
 </code></pre>
-<h3 id="configuration">Configuration</h3>
+<h4 id="configuration">Configuration</h4>
 <ul>
-<li><code>targetDir</code> - a directory where allure reports should be stored. Standard output directory is set by default.</li>
+<li><code>outputDir</code> - a directory where allure reports should be stored. Standard output directory is set by default.</li>
 </ul>
 <p><strong>Parameters</strong></p>
 <ul>
@@ -396,7 +396,7 @@ Launch Allure server and see the report like on a screenshot above:</p>
 <p>Creates screenshot on failure. Screenshot is saved into <code>output</code> directory.</p>
 <p>Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4</p>
 <p>This plugin is <strong>enabled by default</strong>.</p>
-<h2 id="configuration_2">Configuration</h2>
+<h4 id="configuration_2">Configuration</h4>
 <p>Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).</p>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;screenshotOnFail&quot;: {
@@ -422,7 +422,7 @@ By default, reports are generated only for failed tests.</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code>codeceptjs run --plugins stepByStepReport
 </code></pre>
-<h2 id="configuration_3">Configuration</h2>
+<h4 id="configuration_3">Configuration</h4>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;stepByStepReport&quot;: {
      &quot;enabled&quot;: true
@@ -437,7 +437,7 @@ By default, reports are generated only for failed tests.</p>
 <li><code>ignoreSteps</code>: steps to ignore in report. Array of RegExps is expected. Recommended to skip <code>grab*</code> and <code>wait*</code> steps.</li>
 <li><code>fullPageScreenshots</code>: should full page screenshots be used. Default: false.</li>
 </ul>
-<h2 id="allure-reports">Allure Reports</h2>
+<h4 id="allure-reports">Allure Reports</h4>
 <p>If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.</p>
 <p><strong>Parameters</strong></p>
 <ul>
