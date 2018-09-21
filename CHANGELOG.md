@@ -1,3 +1,7 @@
+## 1.4.2
+
+* Fixed setting config for plugins (inclunding setting `outputDir` for allure) by @jplegoff
+
 ## 1.4.1
 
 * Added `plugins` option to `run-multiple`
