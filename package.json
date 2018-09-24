@@ -41,6 +41,7 @@
     "commander": "^2.18.0",
     "css-to-xpath": "^0.1.0",
     "cucumber-expressions": "^6.0.1",
+    "deepmerge": "^2.1.1",
     "escape-string-regexp": "^1.0.3",
     "figures": "^2.0.0",
     "fn-args": "^3.0.0",
@@ -52,7 +53,8 @@
     "parse-function": "^5.2.10",
     "promise-retry": "^1.1.1",
     "requireg": "^0.1.8",
-    "sprintf-js": "^1.1.1"
+    "sprintf-js": "^1.1.1",
+    "stacktrace-js": "^2.0.0"
   },
   "devDependencies": {
     "@types/inquirer": "^0.0.35",
