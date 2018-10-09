@@ -264,8 +264,7 @@ describe('Puppeteer', function () {
     it('should switch reference to iframe content', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
       .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here'))
-    );
+      .then(() => I.see('Lots of valuable data here')));
 
     it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('#invalidIframeSelector'))

@@ -18,6 +18,7 @@ const text = `
   As a customer
   I want to be able to buy several products
 
+  @super
   Scenario:
     Given I have product with 600 price
     And I have product with 1000 price
@@ -56,6 +57,17 @@ describe('BDD', () => {
     assert.equal(3, matchStep('I see ocean')());
     assert.equal(3, matchStep('I see world')());
   });
+
+  it('should contain tags', async () => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', () => sum += 10);
+    const suite = run(text);
+    suite.tests[0].fn(() => {});
+    assert.ok(suite.tests[0].tags);
+    assert.equal('@super', suite.tests[0].tags[0]);
+  });
+
 
   it('should load step definitions', async () => {
     let sum = 0;
@@ -188,8 +200,10 @@ describe('BDD', () => {
 
   it('should execute scenario outlines', () => {
     const text = `
+    @awesome @cool
     Feature: checkout process
 
+    @super
     Scenario Outline: order discount
       Given I have product with price <price>$ in my cart
       And discount is 10 %
@@ -217,6 +231,10 @@ describe('BDD', () => {
     const suite = run(text);
     const done = () => {};
     suite.tests.forEach(t => t.fn(done));
+    assert.ok(suite.tests[0].tags);
+    assert.equal('@awesome', suite.tests[0].tags[0]);
+    assert.equal('@cool', suite.tests[0].tags[1]);
+    assert.equal('@super', suite.tests[0].tags[2]);
     assert.equal(executed, 2);
     assert.equal(18, cart);
     assert.equal(18, sum);
