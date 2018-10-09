@@ -312,11 +312,11 @@
         
             <li><a href="#bootstrap-teardown">Bootstrap &amp; Teardown</a></li>
         
+            <li><a href="#api">API</a></li>
+        
             <li><a href="#plugins">Plugins</a></li>
         
             <li><a href="#custom-hooks">Custom Hooks</a></li>
-        
-            <li><a href="#api">API</a></li>
         
             <li><a href="#custom-runner">Custom Runner</a></li>
         
@@ -466,53 +466,6 @@ exports.config = {
 </code></pre>
 
 <p><strong>Note</strong>: The <code>bootstrapAll</code> and <code>teardownAll</code> hooks are only called when using <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a>.</p>
-<h2 id="plugins">Plugins</h2>
-<p>Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.</p>
-<p>CodeceptJS includes <a href="https://codecept.io/plugins/">built-in plugins</a> which extend basic functionality and can be turned on and off on purpose. Taking them as <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin">examples</a> you can develop your custom plugins.</p>
-<p>A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:</p>
-<pre><code class="js">const defaultConfig = {
-  someDefaultOption: true
-}
-
-module.exports = function(config) {
-  config = Object.assign(defaultConfig, config);
-  // do stuff
-}
-</code></pre>
-
-<p>Plugin can register event listeners or hook into promise chain with recorder. See <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/helper">API reference</a>.</p>
-<p>To enable your custom plugin in config add it to <code>plugins</code> section. Specify path to node module using <code>require</code>.</p>
-<pre><code class="js">&quot;plugins&quot;: {
-  &quot;myPlugin&quot;: {
-    &quot;require&quot;: &quot;./path/to/my/module&quot;,
-    &quot;enabled&quot;: true
-  }
-}
-</code></pre>
-
-<ul>
-<li><code>require</code> - specifies relative path to a plugin file. Path is relative to config file.</li>
-<li><code>enabled</code> - to enable this plugin.</li>
-</ul>
-<p>If a plugin is disabled (<code>enabled</code> is not set or false) this plugin can be enabled from command line:</p>
-<pre><code>./node_modules/.bin/codeceptjs run --plugin myPlugin
-</code></pre>
-
-<p>Several plugins can be enabled as well:</p>
-<pre><code>./node_modules/.bin/codeceptjs run --plugin myPlugin,allure
-</code></pre>
-
-<h2 id="custom-hooks">Custom Hooks</h2>
-<p><em>(deprecated, use <a href="#plugins">plugins</a>)</em></p>
-<p>Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside <code>hooks</code> section of config. Unlike <code>bootstrap</code> you can have multiple hooks registered:</p>
-<pre><code class="json">&quot;hooks&quot;: [
-  &quot;./server.js&quot;,
-  &quot;./data_builder.js&quot;,
-  &quot;./report_notification.js&quot;
-]
-</code></pre>
-
-<p>Inside those JS files you can use CodeceptJS API (see below) to access its internals.</p>
 <h2 id="api">API</h2>
 <p><strong>Use local CodeceptJS installation to get access to <code>codeceptjs</code> module</strong></p>
 <p>CodeceptJS provides an API which can be loaded via <code>require('codeceptjs')</code> when CodeceptJS is installed locally.
@@ -578,6 +531,7 @@ module.exports = function() {
 <li><code>body</code> test function as a string</li>
 <li><code>opts</code> additional test options like retries, and others</li>
 <li><code>pending</code> true if test is scheduled for execution and false if a test has finished</li>
+<li><code>tags</code> array of tags for this test</li>
 <li><code>file</code> path to a file with a test.</li>
 <li><code>steps</code> array of executed steps (available only in <code>test.passed</code>, <code>test.failed</code>, <code>test.finished</code> event)</li>
 </ul>
@@ -687,6 +641,72 @@ if (config.myKey == 'value') {
 }
 </code></pre>
 
+<h2 id="plugins">Plugins</h2>
+<p>Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.</p>
+<p>CodeceptJS includes <a href="https://codecept.io/plugins/">built-in plugins</a> which extend basic functionality and can be turned on and off on purpose. Taking them as <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin">examples</a> you can develop your custom plugins.</p>
+<p>A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:</p>
+<pre><code class="js">const defaultConfig = {
+  someDefaultOption: true
+}
+
+module.exports = function(config) {
+  config = Object.assign(defaultConfig, config);
+  // do stuff
+}
+</code></pre>
+
+<p>Plugin can register event listeners or hook into promise chain with recorder. See <a href="https://github.com/Codeception/CodeceptJS/tree/master/lib/helper">API reference</a>.</p>
+<p>To enable your custom plugin in config add it to <code>plugins</code> section. Specify path to node module using <code>require</code>.</p>
+<pre><code class="js">&quot;plugins&quot;: {
+  &quot;myPlugin&quot;: {
+    &quot;require&quot;: &quot;./path/to/my/module&quot;,
+    &quot;enabled&quot;: true
+  }
+}
+</code></pre>
+
+<ul>
+<li><code>require</code> - specifies relative path to a plugin file. Path is relative to config file.</li>
+<li><code>enabled</code> - to enable this plugin.</li>
+</ul>
+<p>If a plugin is disabled (<code>enabled</code> is not set or false) this plugin can be enabled from command line:</p>
+<pre><code>./node_modules/.bin/codeceptjs run --plugin myPlugin
+</code></pre>
+
+<p>Several plugins can be enabled as well:</p>
+<pre><code>./node_modules/.bin/codeceptjs run --plugin myPlugin,allure
+</code></pre>
+
+<h3 id="example-execute-code-for-a-specific-group-of-tests">Example: Execute code for a specific group of tests</h3>
+<p>If you need to execute some code before a group of tests, you can <a href="https://codecept.io/advanced/#tags">mark these tests with a same tag</a>. Then to listen for tests where this tag is included (see <a href="#test-object">test object api</a>).</p>
+<p>Let's say we need to populate database for a group of tests.</p>
+<pre><code class="js">// populate database for slow tests
+const event = require('codeceptjs').event;
+
+module.exports = function() {
+
+  event.dispatcher.on(event.test.before, function (test) {
+
+    if (test.tags.indexOf('@populate') &gt;= 0) {
+      recorder.add('populate database', async () =&gt; {
+        // populate database for this test
+      })
+    }
+  });
+}
+</code></pre>
+
+<h2 id="custom-hooks">Custom Hooks</h2>
+<p><em>(deprecated, use <a href="#plugins">plugins</a>)</em></p>
+<p>Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside <code>hooks</code> section of config. Unlike <code>bootstrap</code> you can have multiple hooks registered:</p>
+<pre><code class="json">&quot;hooks&quot;: [
+  &quot;./server.js&quot;,
+  &quot;./data_builder.js&quot;,
+  &quot;./report_notification.js&quot;
+]
+</code></pre>
+
+<p>Inside those JS files you can use CodeceptJS API (see below) to access its internals.</p>
 <h2 id="custom-runner">Custom Runner</h2>
 <p>CodeceptJS can be imported and used in custom runners.
 To initialize Codecept you need to create Config and Container objects.</p>

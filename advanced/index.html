@@ -312,7 +312,7 @@
         
             <li><a href="#data-driven-tests">Data Driven Tests</a></li>
         
-            <li><a href="#groups">Groups</a></li>
+            <li><a href="#tags">Tags</a></li>
         
             <li><a href="#debug">Debug</a></li>
         
@@ -393,19 +393,25 @@ S Test Login | {&quot;login&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;2
 </code></pre>
 
 <p><em>HINT: If you don't use DataTable. add <code>toString()</code> method to each object added to data set, so the data could be pretty printed in a test name</em></p>
-<h2 id="groups">Groups</h2>
-<p>Append <code>@tag</code> to your test name, so
-all tests with <code>@tag</code> could be executed with <code>--grep @tag</code> option.</p>
+<h2 id="tags">Tags</h2>
+<p>Append <code>@tag</code> to your test name, so</p>
 <pre><code class="js">Scenario('update user profile @slow')
 </code></pre>
 
+<p>Alternativly, use <code>tag</code> method of Scenario to set additional tags:</p>
+<pre><code class="js">Scenario('update user profile', () =&gt; {
+  // test goes here
+}).tag('@slow').tag('important');
+</code></pre>
+
+<p>All tests with <code>@tag</code> could be executed with <code>--grep @tag</code> option.</p>
 <pre><code class="sh">codeceptjs run --grep @slow
 </code></pre>
 
 <p>Use regex for more flexible filtering:</p>
 <ul>
 <li><code>--grep '(?=.*@smoke2)(?=.*@smoke3)'</code> - run tests with @smoke2 and @smoke3 in name</li>
-<li><code>--grep '@smoke2|@smoke3'</code> - run tests with @smoke2 or @smoke3 in name</li>
+<li><code>--grep "\@smoke2|\@smoke3"</code> - run tests with @smoke2 or @smoke3 in name</li>
 <li><code>--grep '((?=.*@smoke2)(?=.*@smoke3))|@smoke4'</code> - run tests with (@smoke2 and @smoke3) or @smoke4 in name</li>
 <li><code>--grep '(?=.*@smoke2)^(?!.*@smoke3)'</code> - run tests with @smoke2 but without @smoke3 in name</li>
 <li><code>--grep '(?=.*)^(?!.*@smoke4)'</code> - run all tests except @smoke4</li>

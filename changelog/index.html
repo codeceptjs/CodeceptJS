@@ -308,7 +308,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#142">1.4.2</a></li>
+        <li class="main active"><a href="#143">1.4.3</a></li>
+        
+    
+        <li class="main "><a href="#142">1.4.2</a></li>
         
     
         <li class="main "><a href="#141">1.4.1</a></li>
@@ -491,6 +494,23 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="143">1.4.3</h2>
+<ul>
+<li>Groups renamed to Tags for compatibility with BDD layer</li>
+<li>Test and suite objects to contain tags property which can be accessed from internal API</li>
+<li>Fixed adding tags for Scenario Outline in BDD</li>
+<li>Added <code>tag()</code> method to ScenarioConfig and FeatureConfig:</li>
+</ul>
+<pre><code class="js">Scenario('update user profile', () =&gt; {
+  // test goes here
+}).tag('@slow');
+</code></pre>
+
+<ul>
+<li>Fixed attaching Allure screenshot on exception. Fix by @DevinWatson</li>
+<li>Improved type definitions for custom steps. By @Akxe</li>
+<li>Fixed setting <code>multiple.parallel.chunks</code> as environment variable in config. See <a href="https://github.com/Codeception/CodeceptJS/pull/1238">#1238</a> by @ngadiyak</li>
+</ul>
 <h2 id="142">1.4.2</h2>
 <ul>
 <li>Fixed setting config for plugins (inclunding setting <code>outputDir</code> for allure) by @jplegoff</li>
