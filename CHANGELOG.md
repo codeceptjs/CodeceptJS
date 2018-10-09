@@ -1,3 +1,20 @@
+## 1.4.3
+
+* Groups renamed to Tags for compatibility with BDD layer
+* Test and suite objects to contain tags property which can be accessed from internal API
+* Fixed adding tags for Scenario Outline in BDD
+* Added `tag()` method to ScenarioConfig and FeatureConfig:
+
+```js
+Scenario('update user profile', () => {
+  // test goes here
+}).tag('@slow');
+```
+
+* Fixed attaching Allure screenshot on exception. Fix by @DevinWatson
+* Improved type definitions for custom steps. By @Akxe
+* Fixed setting `multiple.parallel.chunks` as environment variable in config. See [#1238](https://github.com/Codeception/CodeceptJS/pull/1238) by @ngadiyak
+
 ## 1.4.2
 
 * Fixed setting config for plugins (inclunding setting `outputDir` for allure) by @jplegoff
