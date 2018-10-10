@@ -863,7 +863,7 @@ I.pressKey('Control');
 Reload the current page.
 
 ```js
-`I.refreshPage();
+I.refreshPage();
 ```
 
 ## resizeWindow

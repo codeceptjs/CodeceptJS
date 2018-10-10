@@ -769,7 +769,7 @@ Reloads page
 Reload the current page.
 
 ```js
-`I.refreshPage();
+I.refreshPage();
 ```
 
 ## resetModule
