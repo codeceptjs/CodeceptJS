@@ -45,7 +45,7 @@ Add this plugin to config file:
 
 ```js
 "plugins": {
-    "runFailedStep": {
+    "retryFailedStep": {
        "enabled": true
     }
 }
