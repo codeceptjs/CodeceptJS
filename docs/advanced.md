@@ -76,14 +76,23 @@ Data(function*() {
 
 *HINT: If you don't use DataTable. add `toString()` method to each object added to data set, so the data could be pretty printed in a test name*
 
-## Groups
+## Tags
 
 Append `@tag` to your test name, so
-all tests with `@tag` could be executed with `--grep @tag` option.
 
 ```js
 Scenario('update user profile @slow')
 ```
+
+Alternativly, use `tag` method of Scenario to set additional tags:
+
+```js
+Scenario('update user profile', () => {
+  // test goes here
+}).tag('@slow').tag('important');
+```
+
+All tests with `@tag` could be executed with `--grep @tag` option.
 
 ```sh
 codeceptjs run --grep @slow
@@ -92,10 +101,12 @@ codeceptjs run --grep @slow
 Use regex for more flexible filtering:
 
 * `--grep '(?=.*@smoke2)(?=.*@smoke3)'` - run tests with @smoke2 and @smoke3 in name
-* `--grep '@smoke2|@smoke3'` - run tests with @smoke2 or @smoke3 in name
+* `--grep "\@smoke2|\@smoke3"` - run tests with @smoke2 or @smoke3 in name
 * `--grep '((?=.*@smoke2)(?=.*@smoke3))|@smoke4'` - run tests with (@smoke2 and @smoke3) or @smoke4 in name
 * `--grep '(?=.*@smoke2)^(?!.*@smoke3)'` - run tests with @smoke2 but without @smoke3 in name
 * `--grep '(?=.*)^(?!.*@smoke4)'` - run all tests except @smoke4
+
+
 
 ## Debug
 
@@ -118,6 +129,18 @@ For advanced debugging use NodeJS debugger. In WebStorm IDE:
 
 ```sh
 node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
+```
+
+For Visual Studio Code, add the following configuration in launch.json:
+
+```json
+{
+  "type": "node",
+  "request": "launch",
+  "name": "codeceptjs",
+  "args": ["run", "--grep", "@your_test_tag"],
+  "program": "${workspaceFolder}/node_modules/.bin/codeceptjs"
+}
 ```
 
 ## Parallel Execution

@@ -71,6 +71,18 @@ describe('Puppeteer', function () {
 
   webApiTests.tests();
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(() => window.__waitJs, 3));
+    });
+
+    it('should pass arguments and wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3));
+    });
+  });
+
   describe('#waitToHide', () => {
     it('should wait for hidden element', () => {
       return I.amOnPage('/form/wait_invisible')
@@ -248,10 +260,11 @@ describe('Puppeteer', function () {
       .then(() => I.seeNumberOfElements('#area1', 1)));
   });
 
-  describe('#switchTo', () => {
+  describe.only('#switchTo', () => {
     it('should switch reference to iframe content', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information\nLots of valuable data here')));
+      .then(() => I.see('Information'))
+      .then(() => I.see('Lots of valuable data here')));
 
     it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('#invalidIframeSelector'))
@@ -269,7 +282,8 @@ describe('Puppeteer', function () {
 
     it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information\nLots of valuable data here'))
+      .then(() => I.see('Information'))
+      .then(() => I.see('Lots of valuable data here'))
       .then(() => I.switchTo(null))
       .then(() => I.see('Iframe test')));
   });

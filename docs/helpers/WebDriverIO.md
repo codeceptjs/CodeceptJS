@@ -11,6 +11,10 @@ This helper should be configured in codecept.json
 
 -   `url`: base url of website to be tested.
 -   `browser`: browser in which to perform testing.
+-   `host`: (optional, default: localhost) - WebDriver host to connect.
+-   `port`: (optional, default: 4444) - WebDriver port to connect.
+-   `protocol`: (optional, default: http) - protocol for WebDriver server.
+-   `path`: (optional, default: /wd/hub) - path to WebDriver server,
 -   `restart`: (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait](http://codecept.io/acceptance/#smartwait)**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
@@ -19,7 +23,7 @@ This helper should be configured in codecept.json
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout`: (option) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
+-   `waitForTimeout`: (optional, default: 1000) sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities`: Selenium's [desired
     capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities).
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
@@ -739,6 +743,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
+If multiple elements found returns an array of texts.
+
 **Parameters**
 
 -   `locator`  element located by CSS|XPath|strict locator
@@ -807,14 +813,50 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 
+[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+
+-   `'Add'`,
+-   `'Alt'`,
+-   `'ArrowDown'` or `'Down arrow'`,
+-   `'ArrowLeft'` or `'Left arrow'`,
+-   `'ArrowRight'` or `'Right arrow'`,
+-   `'ArrowUp'` or `'Up arrow'`,
+-   `'Backspace'`,
+-   `'Command'`,
+-   `'Control'`,
+-   `'Del'`,
+-   `'Divide'`,
+-   `'End'`,
+-   `'Enter'`,
+-   `'Equals'`,
+-   `'Escape'`,
+-   `'F1 to F12'`,
+-   `'Home'`,
+-   `'Insert'`,
+-   `'Meta'`,
+-   `'Multiply'`,
+-   `'Numpad 0'` to `'Numpad 9'`,
+-   `'Pagedown'` or `'PageDown'`,
+-   `'Pageup'` or `'PageUp'`,
+-   `'Pause'`,
+-   `'Semicolon'`,
+-   `'Shift'`,
+-   `'Space'`,
+-   `'Subtract'`,
+-   `'Tab'`.
+
+To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
+Appium: support, but clear field before pressing in apps:
+
+```js
+I.pressKey('Control');
+I.click('#someelement');
+I.pressKey('Control');
+```
+
 **Parameters**
 
--   `key`  To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps:```js
-    I.pressKey('Control');
-    I.click('#someelement');
-    I.pressKey('Control');
-    ```
+-   `key`  
 
 ## refreshPage
 
@@ -1289,6 +1331,29 @@ Element can be located by CSS or XPath.
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
     Appium: support
+
+## waitForFunction
+
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+```
+
+**Parameters**
+
+-   `function`  to be executed in browser context
+-   `args`  arguments for function
+-   `fn`  
+-   `argsOrSec`   (optional, default `null`)
+-   `sec`  time seconds to wait, 1 by defaultAppium: support
 
 ## waitForInvisible
 

@@ -243,6 +243,8 @@ Usage example:
 I.click('#click-me');
 ```
 
+If it's hard to define what to wait, it is recommended to use [retries](https://codecept.io/basics/#retries) to rerun flaky steps.
+
 ## IFrames
 
 [within](/basics/#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
@@ -264,8 +266,6 @@ within({frame: [".content", "#editor"]}, () => {
 ```
 
 ## Multiple Sessions
-
-*Note: Currently multiple sessions work only in WebDriverIO and Protractor*
 
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
 

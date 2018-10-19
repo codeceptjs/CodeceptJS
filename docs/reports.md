@@ -1,6 +1,8 @@
 # Reporters
 
-## Cli (default)
+## Cli
+
+(default)
 
 By default CodeceptJS provides cli reporter with console output.
 Test names and failures will be printed to screen.
@@ -80,6 +82,61 @@ GitHub --
 ```
 
 Please use verbose output when reporting issues to GitHub.
+
+
+## Allure
+
+(recommended)
+
+
+[Allure reporter](http://allure.qatools.ru/#) is a tool to store and display test reports.
+It provides nice web UI which contains all important information on test execution.
+CodeceptJS has built-in support for Allure reports. Inside reports you will have all steps, substeps and screenshots.
+
+![](https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png)
+
+*Disclaimer: Allure is a standalone tool. Please refer to [Allure documentation](https://docs.qameta.io/allure/) to learn more about using Allure reports.*
+
+Allure requires **Java 8** to work. Then Allure can be installed via NPM:
+
+```
+npm install -g allure-commandline --save-dev
+```
+
+Add [Allure plugin](https://codecept.io/plugins/#allure) in config under `plugins` section.
+
+```js
+"plugins": {
+    "allure": {
+    }
+}
+```
+
+Run tests with allure plugin enabled:
+
+```
+codeceptjs run --plugins allure
+```
+
+(optionally) To enable allure plugin permanently include `"enabled": true` into plugin config:
+
+
+```js
+"plugins": {
+    "allure": {
+      "enabled": true
+    }
+}
+```
+
+Launch Allure server and see the report like on a screenshot above:
+
+```
+allure serve output
+```
+
+Allure reporter aggregates data from other plugins like [*stepByStepReport*](https://codecept.io/plugins/#stepByStepReport) and [*screenshotOnFail*](https://codecept.io/plugins/#screenshotOnFail)
+
 
 ## XML
 

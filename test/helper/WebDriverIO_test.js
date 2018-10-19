@@ -178,6 +178,14 @@ describe('WebDriverIO', function () {
       }));
   });
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => wd.amOnPage('/form/wait_js')
+      .then(() => wd.waitForFunction(() => window.__waitJs, 3)));
+
+    it('should pass arguments and wait for function returns true', () => wd.amOnPage('/form/wait_js')
+      .then(() => wd.waitForFunction(varName => window[varName], ['__waitJs'], 3)));
+  });
+
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => wd.amOnPage('/form/wait_enabled')
       .then(() => wd.waitForEnabled('#text', 2))
@@ -193,23 +201,6 @@ describe('WebDriverIO', function () {
       .then(() => wd.waitForEnabled('#text', 2))
       .then(() => wd.click('#button'))
       .then(() => wd.see('button was clicked')));
-  });
-
-
-  describe('#saveScreenshot', () => {
-    beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output');
-    });
-
-    it('should create a screenshot on fail  @ups', () => {
-      const sec = (new Date()).getUTCMilliseconds().toString();
-      const test = {
-        title: `sw should do smth ${sec}`,
-      };
-      return wd.amOnPage('/')
-        .then(() => wd._failed(test))
-        .then(() => assert.ok(fileExists(path.join(output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
-    });
   });
 
   describe('#waitForValue', () => {

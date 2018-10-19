@@ -167,24 +167,10 @@ exports.config = {
 
 **Note**: The `bootstrapAll` and `teardownAll` hooks are only called when using [Multiple Execution](http://codecept.io/advanced/#multiple-execution).
 
-## Custom Hooks
-
-To extend internal CodeceptJS functionality you can use hooks.
-CodeceptJS provides API to connect to its internal event dispatcher, container, output, promise recorder, so you could hook into it to create your own reporters, test listeners, etc.
-
-Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside `hooks` section of config. Unlike `bootstrap` you can have multiple hooks registered:
-
-```json
-"hooks": [
-  "./server.js",
-  "./data_builder.js",
-  "./report_notification.js"
-]
-```
-
-Inside those JS files you can use CodeceptJS API to access its internals.
 
 ## API
+
+**Use local CodeceptJS installation to get access to `codeceptjs` module**
 
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
 These internal objects are available:
@@ -200,19 +186,6 @@ These internal objects are available:
 
 [API reference](https://github.com/Codeception/CodeceptJS/tree/master/docs/api) is available on GitHub.
 Also please check the source code of corresponding modules.
-
-### Config
-
-CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
-
-```js
-
-let config = require('codeceptjs').config.get();
-
-if (config.myKey == 'value') {
-  // run hook
-}
-```
 
 ### Event Listeners
 
@@ -266,6 +239,7 @@ Test events provide a test object with following fields:
 * `body` test function as a string
 * `opts` additional test options like retries, and others
 * `pending` true if test is scheduled for execution and false if a test has finished
+* `tags` array of tags for this test
 * `file` path to a file with a test.
 * `steps` array of executed steps (available only in `test.passed`, `test.failed`, `test.finished` event)
 
@@ -357,6 +331,9 @@ let support = container.support();
 
 // get support object by name
 let UserPage = container.support('UserPage');
+
+// get all registered plugins
+let plugins = container.plugins();
 ```
 
 New objects can also be added to container in runtime:
@@ -380,6 +357,106 @@ Container also contains current Mocha instance:
 let mocha = container.mocha();
 ```
 
+### Config
+
+CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
+
+```js
+
+let config = require('codeceptjs').config.get();
+
+if (config.myKey == 'value') {
+  // run hook
+}
+```
+
+## Plugins
+
+Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.
+
+CodeceptJS includes [built-in plugins](https://codecept.io/plugins/) which extend basic functionality and can be turned on and off on purpose. Taking them as [examples](https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin) you can develop your custom plugins.
+
+A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:
+
+```js
+const defaultConfig = {
+  someDefaultOption: true
+}
+
+module.exports = function(config) {
+  config = Object.assign(defaultConfig, config);
+  // do stuff
+}
+```
+
+Plugin can register event listeners or hook into promise chain with recorder. See [API reference](https://github.com/Codeception/CodeceptJS/tree/master/lib/helper).
+
+To enable your custom plugin in config add it to `plugins` section. Specify path to node module using `require`.
+
+```js
+"plugins": {
+  "myPlugin": {
+    "require": "./path/to/my/module",
+    "enabled": true
+  }
+}
+```
+
+* `require` - specifies relative path to a plugin file. Path is relative to config file.
+* `enabled` - to enable this plugin.
+
+If a plugin is disabled (`enabled` is not set or false) this plugin can be enabled from command line:
+
+```
+./node_modules/.bin/codeceptjs run --plugin myPlugin
+```
+
+Several plugins can be enabled as well:
+
+```
+./node_modules/.bin/codeceptjs run --plugin myPlugin,allure
+```
+
+### Example: Execute code for a specific group of tests
+
+If you need to execute some code before a group of tests, you can [mark these tests with a same tag](https://codecept.io/advanced/#tags). Then to listen for tests where this tag is included (see [test object api](#test-object)).
+
+Let's say we need to populate database for a group of tests.
+
+```js
+// populate database for slow tests
+const event = require('codeceptjs').event;
+
+module.exports = function() {
+
+  event.dispatcher.on(event.test.before, function (test) {
+
+    if (test.tags.indexOf('@populate') >= 0) {
+      recorder.add('populate database', async () => {
+        // populate database for this test
+      })
+    }
+  });
+}
+```
+
+## Custom Hooks
+
+*(deprecated, use [plugins](#plugins))*
+
+Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside `hooks` section of config. Unlike `bootstrap` you can have multiple hooks registered:
+
+```json
+"hooks": [
+  "./server.js",
+  "./data_builder.js",
+  "./report_notification.js"
+]
+```
+
+Inside those JS files you can use CodeceptJS API (see below) to access its internals.
+
+
 ## Custom Runner
 
 CodeceptJS can be imported and used in custom runners.
@@ -394,6 +471,9 @@ let opts = { steps: true };
 
 // create runner
 let codecept = new Codecept(config, opts);
+
+// initialize codeceptjs in current dir
+codecept.initGlobals(__dirname);
 
 // create helpers, support files, mocha
 Container.create(config, opts);

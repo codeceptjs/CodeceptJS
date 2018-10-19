@@ -19,6 +19,8 @@ This helper should be configured in codecept.json
 -   `keepBrowserState`: (optional, default: false) - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`: (optional, default: false) - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
+-   `waitForNavigation`: (optional, default: 'load'). When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions). Array values are accepted as well.
+-   `getPageTimeout` (optional, default: '0') config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
 -   `userAgent`: (optional) user-agent string.
@@ -28,6 +30,49 @@ This helper should be configured in codecept.json
 ```js
 "chrome": {
   "executablePath" : "/path/to/Chrome"
+}
+```
+
+#### Example #1: Wait for 0 network connections.
+
+```json
+{
+   "helpers": {
+     "Puppeteer" : {
+       "url": "http://localhost",
+       "restart": false,
+       "waitForNavigation": "networkidle0",
+       "waitForAction": 500
+     }
+   }
+}
+```
+
+#### Example #2: Wait for DOMContentLoaded event and 0 network connections
+
+```json
+{
+   "helpers": {
+     "Puppeteer" : {
+       "url": "http://localhost",
+       "restart": false,
+       "waitForNavigation": [ "domcontentloaded", "networkidle0" ],
+       "waitForAction": 500
+     }
+   }
+}
+```
+
+#### Example #3: Debug in window mode
+
+```json
+{
+   "helpers": {
+     "Puppeteer" : {
+       "url": "http://localhost",
+       "show": true
+     }
+   }
 }
 ```
 
@@ -567,7 +612,7 @@ I.grabNumberOfOpenTabs();
 
 ## grabNumberOfVisibleElements
 
-Grab number of visible elements by locator
+-   Grab number of visible elements by locator
 
 ```js
 I.grabNumberOfVisibleElements('p');
@@ -611,6 +656,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
+
+If multiple elements found returns an array of texts.
 
 **Parameters**
 
@@ -1111,6 +1158,29 @@ Element can be located by CSS or XPath.
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
 
+## waitForFunction
+
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
+
+```js
+I.waitForFunction(fn[, [args[, timeout]])
+```
+
+```js
+I.waitForFunction(() => window.requests == 0);
+I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+```
+
+**Parameters**
+
+-   `function`  to be executed in browser context
+-   `args`  arguments for function
+-   `fn`  
+-   `argsOrSec`   (optional, default `null`)
+-   `sec`  time seconds to wait, 1 by default
+
 ## waitForInvisible
 
 Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
@@ -1122,6 +1192,44 @@ Element can be located by CSS or XPath.
 
 -   `locator`  element located by CSS|XPath|strict locator
 -   `sec`  time seconds to wait, 1 by default
+
+## waitForNavigation
+
+Waits for navigation to finish. By default takes configured `waitForNavigation` option.
+
+See [Pupeteer's reference](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+
+**Parameters**
+
+-   `opts` **Any** 
+
+## waitForRequest
+
+Waits for a network request.
+
+```js
+I.waitForRequest('http://example.com/resource');
+I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET');
+```
+
+**Parameters**
+
+-   `urlOrPredicate` **Any** 
+-   `sec` **Any** 
+
+## waitForResponse
+
+Waits for a network request.
+
+```js
+I.waitForResponse('http://example.com/resource');
+I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+```
+
+**Parameters**
+
+-   `urlOrPredicate` **Any** 
+-   `sec` **Any** 
 
 ## waitForText
 

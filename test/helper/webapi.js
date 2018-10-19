@@ -476,6 +476,14 @@ module.exports.tests = function () {
       return assert.equal(val, 'Welcome to test app!');
     });
 
+    it('should grab multiple texts from page', function* () {
+      yield I.amOnPage('/info');
+      const vals = yield I.grabTextFrom('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+    });
+
     it('should grab value from field', function* () {
       yield I.amOnPage('/form/hidden');
       let val = yield I.grabValueFrom('#action');
@@ -562,16 +570,6 @@ module.exports.tests = function () {
       return I.amOnPage('/')
         .then(() => I.saveScreenshot(`screenshot_full_${+sec}.png`, true))
         .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists'));
-    });
-
-    it('should create a screenshot on fail  @ups', () => {
-      const sec = (new Date()).getUTCMilliseconds().toString();
-      const test = {
-        title: `sw should do smth ${sec}`,
-      };
-      return I.amOnPage('/')
-        .then(() => I._failed(test))
-        .then(() => assert.ok(fileExists(path.join(global.output_dir, `sw_should_do_smth_${sec}.failed.png`)), null, 'file does not exists'));
     });
   });
 

@@ -47,14 +47,6 @@ Print a step
 
 -   `step`  
 
-# stepExecutionTime
-
-Print a step execution time
-
-**Parameters**
-
--   `step`  
-
 # success
 
 Print a successful message

@@ -1,14 +1,18 @@
-let I;
+const I = actor();
+const loginPage = require('./Login');
+
+class Smth {}
 
 module.exports = {
-
-  _init() {
-    I = actor();
-  },
 
   openGitHub() {
     I.amOnPage('https://github.com');
   },
 
-  // insert your locators and methods here
+  openAndLogin() {
+    this.openGitHub();
+    loginPage.login('something@totest.com', '1234356');
+  },
 };
+
+Object.setPrototypeOf(module.exports, Smth.prototype);

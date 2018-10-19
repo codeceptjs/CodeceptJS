@@ -1,48 +1,128 @@
 # QuickStart
 
 **NodeJS v 8.9** and higher required to start.
-CodeceptJS is multi-backend testing framework. In this guide we will use webdriverio as backend but the same rules applies to other backends like Protractor or Nightmare.
+CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.
 
-### Install Globally:
+* In this guide we will use [Google Chrome **Puppeteer**](https://github.com/GoogleChrome/puppeteer) as a driver for browsers. This allows us to start in a minutes with no extra tools installed.
+* If you are familiar with Selenium, you can choose classical [**Selenium WebDriver** setup](#using-selenium-webdriver).
+* Also, look at [complete installation reference](https://codecept.io/installation/).
+
+
+## Using Puppeteer
+
+
+<video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs-install.mp4" style="width: 100%" controls></video>
+
+
+1) Install CodeceptJS with Puppeteer
+
+```
+npm install codeceptjs puppeteer --save-dev
+```
+
+(due to [this issue in Puppeteer](https://github.com/GoogleChrome/puppeteer/issues/375), we install it locally)
+
+
+2) Initialize CodeceptJS in current directory by running:
 
 ```sh
-[sudo] npm install -g codeceptjs
-```
-Execute codeceptjs as:
-
-```
-codeceptjs
+./node_modules/.bin/codeceptjs init
 ```
 
-### Install Locally
+(use `node node_modules/.bin/codeceptjs` on Windows)
+
+3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
 
 ```sh
-npm install codeceptjs --save-dev
+? What helpers do you want to use?
+ ◯ WebDriverIO
+ ◯ Protractor
+❯◉ Puppeteer
+ ◯ Appium
+ ◯ Nightmare
+ ◯ FileSystem
 ```
 
-Execute codeceptjs as:
+4) Create First Test.
+
+```bash
+./node_modules/.bin/codeceptjs gt
+```
+
+5) Enter a test name. Open a generated file in your favorite JavaScript editor.
+
+```js
+Feature('My First Test');
+
+Scenario('test something', (I) => {
+
+});
+```
+
+6) Write a simple scenario
+
+```js
+Feature('My First Test');
+
+Scenario('test something', (I) => {
+  I.amOnPage('https://github.com');
+  I.see('GitHub');
+});
+```
+
+7) Run a test:
 
 ```
-./node_modules/.bin/codeceptjs
+./node_modules/.bin/codeceptjs run --steps
 ```
 
-## Setup
+The output should be similar to this:
 
-Initialize CodeceptJS running:
+```bash
+My First Test --
+  test something
+   • I am on page "https://github.com"
+   • I see "GitHub"
+ ✓ OK
+```
+
+Puppeteer starts a browser without showing its window. To see the browser, edit `codecept.json` config and set `show: true` for Puppeteer:
+
+```js
+{
+  "helpers": {
+    "Puppeteer": {
+      "url": "http://localhost",
+      "show": true,
+    }
+  }
+}
+```
+
+Rerun the test to see the browser.
+
+---
+
+### Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
+### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+
+---
+
+## Using Selenium WebDriver
+
+1) Install CodeceptJS with webdriverio library
+
+```
+[sudo] npm install -g codeceptjs webdriverio
+```
+
+2) Initialize CodeceptJS in current directory by running:
 
 ```sh
 codeceptjs init
 ```
 
-It will create `codecept.json` config in current directory (or provide path in the first argument).
-
-You will be asked for tests location (they will be searched in current dir by default).
-
-On next step you are asked to select **Helpers**. Helpers include actions which can be used in tests.
-We recommend to start with **WebDriverIO** helper in order to write acceptance tests using webdriverio library and Selenium Server as test runner.
-
-If you want to test AngularJS application, use Protractor helper, or if you are more familiar with official Selenium Webdriver JS library, choose it.
-No matter what helper you've chosen they will be similar in use.
+3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriverIO**.
 
 ```sh
 ? What helpers do you want to use?
@@ -54,57 +134,13 @@ No matter what helper you've chosen they will be similar in use.
  ◯ FileSystem
 ```
 
-Then you will be asked for an output directory. Logs, reports, and failure screenshots will be placed there.
-
-```sh
-? Where should logs, screenshots, and reports to be stored? ./output
-```
-
-If you are going to extend test suite by writing custom steps you should probably agree to create `steps_file.js`
-
-```sh
-? Would you like to extend I object with custom steps? Yes
-? Where would you like to place custom steps? ./steps_file.js
-```
-
-WebDriverIO helper will ask for additional configuration as well:
-
-```sh
-? [WebDriverIO] Base url of site to be tested http://localhost
-? [WebDriverIO] Browser in which testing will be performed (chrome)
-```
-
-If you agree with defaults, finish the installation.
-
-## Installing Backends
-
-To run CodeceptJS you will need to install a corresponding backend for the helepr you've choosen. `WebDriverIO` helper requires `webdriverio` package to be installed. The init command will notify you what libraries are missing so you could install it:
-
-* Global installation
-
-```
-Please install dependent packages globally: npm -g install  webdriverio@^4.0.0
-```
-
-* Local installation
-
-```
-Please install dependent packages locally: npm install --save-dev webdriverio@^4.0.0
-```
-
-Please follow this steps and install required package.
-
-## Creating First Test
-
-Tests can be easily created by running
+4) Create First Test.
 
 ```bash
 codeceptjs gt
 ```
 
-*(or `generate test`)*
-
-Provide a test name and open generated file in your favorite JavaScript editor (with ES6 support).
+5) Enter a test name. Open a generated file in your favorite JavaScript editor.
 
 ```js
 Feature('My First Test');
@@ -114,18 +150,18 @@ Scenario('test something', (I) => {
 });
 ```
 
-Inside the scenario block you can write your first test scenario by using [actions from WebDriverIO helper](http://codecept.io/helpers/WebDriverIO/). Let's assume we have a web server on `localhost` is running and there is a **Welcome** text on the first page. The simplest test will look like this:
+6) Write a simple scenario
 
 ```js
 Feature('My First Test');
 
 Scenario('test something', (I) => {
-  I.amOnPage('/');
-  I.see('Welcome');
+  I.amOnPage('https://github.com');
+  I.see('GitHub');
 });
 ```
 
-## Prepare Selenium Server
+7) Prepare Selenium Server
 
 To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.
 
@@ -137,28 +173,38 @@ selenium-standalone install
 selenium-standalone start
 ```
 
-Alternatively [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) can be installed and started manually.
 
-## Run
+8) Run a test:
 
-Execute tests:
-
-```bash
+```
 codeceptjs run --steps
 ```
-
-( *steps option will display test execution process in console.* )
 
 If everything is done right, you will see in console:
 
 ```bash
 My First Test --
   test something
-   • I am on page "/"
-   • I see "Welcome"
+   • I am on page "https://github.com"
+   • I see "GitHub"
  ✓ OK
 ```
 
-## Congrats! Your first test is running
+---
 
-Wasn't so hard, right?
+### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+### Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/puppeteer/)
+
+---
+
+## Using Protractor
+
+[**Follow corresponding guide >>**](https://codecept.io/angular/)
+
+## Using Appium
+
+[**Follow corresponding guide >>**](https://codecept.io/mobile/)
+
+## Using NightmareJS
+
+[**Follow corresponding guide >>**](https://codecept.io/nightmare/)
