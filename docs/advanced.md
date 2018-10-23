@@ -144,6 +144,7 @@ For Visual Studio Code, add the following configuration in launch.json:
 ```
 
 
+
 ## Multiple Browsers Execution
 
 This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel.
@@ -306,6 +307,39 @@ Passing a function will enable you to provide your own chunking algorithm. The f
 ```
 
 Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.
+
+## Test Options
+
+Features and Scenarios have their options that can be set by passing a hash after their names:
+
+```js
+Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) => {});
+```
+
+### Timeout
+
+By default there is no timeout for tests, however you can change this value for a specific suite:
+
+```js
+Feature('Stop me').timeout(5000); // set timeout to 5s
+```
+
+or for the test:
+
+```js
+// set timeout to 1s
+Scenario("Stop me faster", (I) => {
+  // test goes here
+}).timeout(1000);
+
+// alternative
+Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+
+// disable timeout for this scenario
+Scenario("Don't stop me", {timeout: 0}, (I) => {});
+```
 
 
 ## Dynamic Configuration
