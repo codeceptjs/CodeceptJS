@@ -304,7 +304,13 @@
     
         <li class="main active"><a href="#basics">Basics</a></li>
         
+            <li><a href="#architecture">Architecture</a></li>
+        
+            <li><a href="#writing-tests">Writing Tests</a></li>
+        
             <li><a href="#how-it-works">How It Works</a></li>
+        
+            <li><a href="#running-tests">Running Tests</a></li>
         
             <li><a href="#debug">Debug</a></li>
         
@@ -322,8 +328,6 @@
         
             <li><a href="#retries">Retries</a></li>
         
-            <li><a href="#test-options">Test Options</a></li>
-        
     
     </ul>
 </div></div>
@@ -336,12 +340,20 @@
 Scenario('check Welcome page on site', (I) =&gt; {
   I.amOnPage('/');
   I.see('Welcome');
-})
+});
 </code></pre>
 
-<p>Tests are expected to be written in ECMAScript 6.
-Each test is described inside a <code>Scenario</code> function with <code>I</code> object passed into it.
+<p>Tests are expected to be written in <strong>ECMAScript 7</strong>.</p>
+<p>Each test is described inside a <code>Scenario</code> function with <code>I</code> object passed into it.
 I object is an <strong>actor</strong>, an abstraction for a testing user. I is a proxy object for currently enabled <strong>Helpers</strong>.</p>
+<h2 id="architecture">Architecture</h2>
+<p>CodeceptJS bypasses execution commands to helpers. Depending on helper enabled your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriverIO or Protractor, if you are interested in speed - use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.</p>
+<p>Here is the diagram of CodeceptJS architecture</p>
+<p><img alt="" src="https://codecept.io/images/architecture.svg" /></p>
+<p>All helpers share the same API so it's easy to migrate tests from one backend to other.
+However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriverIO or Protractor, but you can do so in Puppteer or Nigthmare.</p>
+<p>Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriverIO and some from Nightmare. You should <strong>pick one helper, as it definses how tests are executed.</strong> If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.</p>
+<p>A helper should be enabled in main config. Configuration (like base url) should be provided as well:</p>
 <pre><code class="json">  &quot;helpers&quot;: {
     &quot;WebDriverIO&quot;: {
       &quot;url&quot;: &quot;http://localhost&quot;,
@@ -350,15 +362,29 @@ I object is an <strong>actor</strong>, an abstraction for a testing user. I is a
   }
 </code></pre>
 
-<p>For current config all methods of <code>I</code> will be taken from <code>WebDriverIO</code> helper.
-This is done to allow easy switching of running backends so you could replace WebDriverIO with Protractor or Nightmare helpers.</p>
+<p>In this config config all methods of <code>I</code> will be taken from <code>WebDriverIO</code> helper.</p>
+<h2 id="writing-tests">Writing Tests</h2>
+<p>Tests are written from user's perspective. There is an actor (represented as <code>I</code>) which contains actions taken from helpers. A test is written as a sequence of actions performed y actor:</p>
+<pre><code class="js">I.amOnPage('/');
+I.click('Login');
+I.see('Please Login', 'h1');
+// ...
+</code></pre>
+
+<p>To list all available commands for current configuration run <code>codeceptjs list</code>
+or enable <a href="#intellisense">auto-completion by generating TypeScript definitions</a>.</p>
+<blockquote>
+<p>For most helpers basic actions like <code>amOnPage</code>, <code>fillField</code>, <code>click</code> are the same.
+Proceed to <a href="https://codecept.io/acceptance/">Acceptance Testing Chapter</a> to learn how to use them.</p>
+</blockquote>
 <h2 id="how-it-works">How It Works</h2>
-<p>Tests are written in synchronous way. Test scenarios should be linear, so tests by themselves should not include promises or callbacks as well.
-However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
+<p>Tests are written in synchronous way. This improves readability and maintainability of tests.
+While writing tests you should not think about promises. You should focus on test scenario.</p>
+<p>However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
 <a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
 <p>If you want to get information from a running test you can use <code>await</code> inside <strong>async function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
 <pre><code class="js">Scenario('try grabbers', async (I) =&gt; {
-  var title = await I.grabTitle();
+  let title = await I.grabTitle();
 });
 </code></pre>
 
@@ -368,12 +394,62 @@ var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 </code></pre>
 
+<h2 id="running-tests">Running Tests</h2>
+<p>To launch tests use <code>run</code> command. To execute tests in <a href="https://codecept.io/advanced/#multiple-browsers-execution">multiple browsers</a> or <a href="https://codecept.io/advanced/#parallel-execution">multiple threads</a> use <code>run-multiple</code>.</p>
+<h3 id="level-of-detail">Level of Detail</h3>
+<p>To see step-by-step output of running tests, add <code>--steps</code> flag:</p>
+<pre><code>codeceptjs run --steps
+</code></pre>
+
+<p>To see more detailed output add <code>--debug</code> flag:</p>
+<pre><code>codeceptjs run --debug
+</code></pre>
+
+<p>To see very detailed output system use <code>--verbose</code> flag:</p>
+<pre><code>codeceptjs run --verbose
+</code></pre>
+
+<h3 id="filter">Filter</h3>
+<p>A single test file can be executed if you provide a relative path to such file:</p>
+<pre><code>codeceptjs run github_test.js
+
+# or
+
+codeceptjs run admin/login_test.js
+</code></pre>
+
+<p>To filter a test by name use <code>--grep</code> parameter. Which will execute all tests with names matching the regex pattern.</p>
+<p>To run all tests with <code>slow</code> word in it</p>
+<pre><code>codeceptjs run --grep &quot;slow&quot;
+</code></pre>
+
+<p>It is recommended to <a href="https://codecept.io/advanced/#tags">filter tests by tags</a>.</p>
+<blockquote>
+<p>For more options see <a href="https://codecept.io/commands/#run">full reference of <code>run</code> command</a>.</p>
+</blockquote>
 <h2 id="debug">Debug</h2>
+<p>CodeceptJS allows to write and debug tests on the fly while keeping your browser opened.
+By using interactive shell you can stop execution at any point and type in CodeceptJS commands.</p>
+<p>This is especially useful while writing a new scratch. After opening a page call <code>pause()</code> to start interacting with a page:</p>
+<pre><code class="js">I.amOnPage('/');
+pause();
+</code></pre>
+
+<p>Try to perform your scenario step by step. Then copy succesful commands and insert them into a test.</p>
 <h3 id="pause">Pause</h3>
-<p>Test execution can be paused in any place of a test with <code>pause()</code> call.
-This also launches interactive console where you can call actions of <code>I</code> object.</p>
-<p><img alt="shell" src="../images/shell.png" /></p>
-<p>You can also use <code>pause()</code> to check the web application in a browser. Press <code>ENTER</code> to resume test execution.</p>
+<p>Test execution can be paused in any place of a test with <code>pause()</code> call.</p>
+<p>This launches interactive console where you can call actions of <code>I</code> object.</p>
+<pre><code> Interactive shell started
+ Press ENTER to resume test
+ - Use JavaScript syntax to try steps in action
+ - Press TAB twice to see all available commands
+ - Enter next to run the next step
+ I.click
+
+</code></pre>
+
+<p>Type in different actions to try them, copy valid successful ones to test, update the test file.</p>
+<p>Press <code>ENTER</code> to resume test execution.</p>
 <p>To <strong>debug test step-by-step</strong> type <code>next</code> and press Enter. The next step will be executed and interactive shell will be shown again.</p>
 <p>To see all available commands press TAB two times to see list of all actions included in I.</p>
 <p>If a test is failing you can prevent browser from closing by putting <code>pause()</code> command into <code>After()</code> hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.</p>
@@ -496,7 +572,9 @@ I.retry({
 }).seeElement('#user');
 </code></pre>
 
-<p>Pass a function to <code>when</code> option to  retry only when error matches the expected one.</p>
+<p>Pass a function to <code>when</code> option to retry only when error matches the expected one.</p>
+<h3 id="auto-retry">Auto Retry</h3>
+<p>You can auto-retry a failed step by enabling <a href="https://codecept.io/plugins/#retryfailedstep">retryFailedStep Plugin</a>.</p>
 <h3 id="retry-scenario">Retry Scenario</h3>
 <p>When you need to rerun scenarios few times just add <code>retries</code> option added to <code>Scenario</code> declaration.</p>
 <p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
@@ -517,31 +595,6 @@ Scenario('Really complex', { retries: 2 }, (I) =&gt; {});
 
 <p>Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
-<h2 id="test-options">Test Options</h2>
-<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
-<pre><code class="js">Feature('My feature', {key: val});
-
-Scenario('My scenario', {key: val}, (I) =&gt; {});
-</code></pre>
-
-<h3 id="timeout">Timeout</h3>
-<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
-<pre><code class="js">Feature('Stop me').timeout(5000); // set timeout to 5s
-</code></pre>
-
-<p>or for the test:</p>
-<pre><code class="js">// set timeout to 1s
-Scenario(&quot;Stop me faster&quot;, (I) =&gt; {
-  // test goes here
-}).timeout(1000);
-
-// alternative
-Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
-
-// disable timeout for this scenario
-Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
-</code></pre>
-
 <hr />
 <h3 id="done">done()</h3></div>
             <div class="col-md-2" class="promo-1">

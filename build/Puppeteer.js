@@ -908,6 +908,20 @@ I.click({css: 'nav a.login'});
   }
 
   /**
+   * Performs a click on a link and waits for navigation before moving on.
+
+```js
+I.click('Logout', '#nav');
+```
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
+@param context (optional) element to search in CSS|XPath|Strict locator
+
+   */
+  async clickLink(locator, context = null) {
+    return proceedClick.call(this, locator, context, { waitForNavigation: true });
+  }
+
+  /**
    * Performs a double-click on an element matched by link|button|label|CSS or XPath.
 Context can be specified as second parameter to narrow search.
 
@@ -2302,7 +2316,12 @@ async function proceedClick(locator, context = null, options = {}) {
     assertElementExists(els, locator, 'Clickable element');
   }
   await els[0].click(options);
-  return this.waitForNavigation() && this._waitForAction();
+  const promises = [];
+  if (options.waitForNavigation) {
+    promises.push(this.waitForNavigation());
+  }
+  promises.push(this._waitForAction());
+  return Promise.all(promises);
 }
 
 async function findClickable(matcher, locator) {

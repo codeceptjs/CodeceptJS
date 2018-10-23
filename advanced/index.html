@@ -310,9 +310,11 @@
         
             <li><a href="#debug">Debug</a></li>
         
+            <li><a href="#multiple-browsers-execution">Multiple Browsers Execution</a></li>
+        
             <li><a href="#parallel-execution">Parallel Execution</a></li>
         
-            <li><a href="#multiple-browsers-execution">Multiple Browsers Execution</a></li>
+            <li><a href="#test-options">Test Options</a></li>
         
             <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
         
@@ -435,53 +437,9 @@ It can be turned on with <code>--debug</code> flag.</p>
 }
 </code></pre>
 
-<h2 id="parallel-execution">Parallel Execution</h2>
-<p>CodeceptJS can be configured to run tests in parallel.</p>
-<p>When enabled, it collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (<code>a_test.js</code>,<code>b_test.js</code>,<code>c_test.js</code>,<code>d_test.js</code> and <code>e_test.js</code>), by setting <code>"chunks": 2</code> we tell the runner to run two suites in parallel. The first suite will run <code>a_test.js</code>,<code>b_test.js</code> and <code>c_test.js</code>, the second suite will run <code>d_test.js</code> and <code>e_test.js</code>.</p>
-<pre><code class="js">&quot;multiple&quot;: {
-  &quot;parallel&quot;: {
-    // Splits tests into 2 chunks
-    &quot;chunks&quot;: 2
-  }
-}
-</code></pre>
-
-<p>To execute them use <code>run-multiple</code> command passing configured suite, which is <code>parallel</code> in this example:</p>
-<pre><code>codeceptjs run-multiple parallel
-</code></pre>
-
-<p>Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.</p>
-<pre><code class="js">&quot;multiple&quot;: {
-  // 2x chunks + 2x browsers = 4
-  &quot;parallel&quot;: {
-    // Splits tests into chunks
-    &quot;chunks&quot;: 2,
-    // run all tests in chrome and firefox
-    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
-  },
-}
-</code></pre>
-
-<p>Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.</p>
-<pre><code class="js">&quot;multiple&quot;: {
-  &quot;parallel&quot;: {
-    // Splits tests into chunks by passing an anonymous function,
-    // only execute first and last found test file
-    &quot;chunks&quot;: (files) =&gt; {
-      return [
-        [ files[0] ], // chunk 1
-        [ files[files.length-1] ], // chunk 2
-      ]
-    },
-    // run all tests in chrome and firefox
-    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
-  },
-}
-</code></pre>
-
-<p>Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.</p>
 <h2 id="multiple-browsers-execution">Multiple Browsers Execution</h2>
 <p>This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel.</p>
+<p>Create <code>multiple</code> section in configuration file, and fill it with run suites. Each suite should have <code>browser</code> array with browser names or driver helper's configuration:</p>
 <pre><code class="js">&quot;multiple&quot;: {
   &quot;basic&quot;: {
     // run all tests in chrome and firefox
@@ -489,28 +447,35 @@ It can be turned on with <code>--debug</code> flag.</p>
   },
 
   &quot;smoke&quot;: {
+    &quot;browsers&quot;: [
+      &quot;firefox&quot;,
+      // replace any config values from WebDriverIO helper
+      {
+        &quot;browser&quot;: &quot;chrome&quot;,
+        &quot;windowSize&quot;: &quot;maximize&quot;,
+        &quot;desiredCapabilities&quot;: {
+          &quot;acceptSslCerts&quot;: true
+        }
+      },
+    ]
+  },
+}
+</code></pre>
+
+<p>You can use <code>grep</code> and <code>outputName</code> params to filter tests and output directory for suite:</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;smoke&quot;: {
     // run only tests containing &quot;@smoke&quot; in name
     &quot;grep&quot;: &quot;@smoke&quot;,
 
     // store results into `output/smoke` directory
     &quot;outputName&quot;: &quot;smoke&quot;,
 
-    // use firefox and different chrome configurations
     &quot;browsers&quot;: [
       &quot;firefox&quot;,
-      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;maximize&quot;},
-      // replace any config values from WebDriverIO helper
-      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;1200x840&quot;}
+      {&quot;browser&quot;: &quot;chrome&quot;, &quot;windowSize&quot;: &quot;maximize&quot;}
     ]
-  },
-
-  &quot;parallel&quot;: {
-    // Splits tests into chunks
-    &quot;chunks&quot;: 2,
-    // run all tests in chrome
-    &quot;browsers&quot;: [&quot;chrome&quot;]
-  },
-
+  }
 }
 </code></pre>
 
@@ -554,7 +519,77 @@ It can be turned on with <code>--debug</code> flag.</p>
 </code></pre>
 
 <h3 id="hooks">Hooks</h3>
-<p>Hooks are available when using the <code>run-multiple</code> command to perform actions before the test suites start and after the test suites have finished. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a> for an example.</p>
+<p>Hooks are available when using the <code>run-multiple</code> command to perform actions before the test suites start and after the test suites have finished. See <a href="https://codecept.io/hooks/#bootstrap-teardown">Hooks</a> for an example.</p>
+<h2 id="parallel-execution">Parallel Execution</h2>
+<p>CodeceptJS can be configured to run tests in parallel.</p>
+<p>When enabled, it collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (<code>a_test.js</code>,<code>b_test.js</code>,<code>c_test.js</code>,<code>d_test.js</code> and <code>e_test.js</code>), by setting <code>"chunks": 2</code> we tell the runner to run two suites in parallel. The first suite will run <code>a_test.js</code>,<code>b_test.js</code> and <code>c_test.js</code>, the second suite will run <code>d_test.js</code> and <code>e_test.js</code>.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // Splits tests into 2 chunks
+    &quot;chunks&quot;: 2
+  }
+}
+</code></pre>
+
+<p>To execute them use <code>run-multiple</code> command passing configured suite, which is <code>parallel</code> in this example:</p>
+<pre><code>codeceptjs run-multiple parallel
+</code></pre>
+
+<p>Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  // 2x chunks + 2x browsers = 4
+  &quot;parallel&quot;: {
+    // Splits tests into chunks
+    &quot;chunks&quot;: 2,
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  },
+}
+</code></pre>
+
+<p>Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.</p>
+<pre><code class="js">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // Splits tests into chunks by passing an anonymous function,
+    // only execute first and last found test file
+    &quot;chunks&quot;: (files) =&gt; {
+      return [
+        [ files[0] ], // chunk 1
+        [ files[files.length-1] ], // chunk 2
+      ]
+    },
+    // run all tests in chrome and firefox
+    &quot;browsers&quot;: [&quot;chrome&quot;, &quot;firefox&quot;]
+  }
+}
+</code></pre>
+
+<p>Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.</p>
+<h2 id="test-options">Test Options</h2>
+<p>Features and Scenarios have their options that can be set by passing a hash after their names:</p>
+<pre><code class="js">Feature('My feature', {key: val});
+
+Scenario('My scenario', {key: val}, (I) =&gt; {});
+</code></pre>
+
+<h3 id="timeout">Timeout</h3>
+<p>By default there is no timeout for tests, however you can change this value for a specific suite:</p>
+<pre><code class="js">Feature('Stop me').timeout(5000); // set timeout to 5s
+</code></pre>
+
+<p>or for the test:</p>
+<pre><code class="js">// set timeout to 1s
+Scenario(&quot;Stop me faster&quot;, (I) =&gt; {
+  // test goes here
+}).timeout(1000);
+
+// alternative
+Scenario(&quot;Stop me faster&quot;, {timeout: 1000}, (I) =&gt; {});
+
+// disable timeout for this scenario
+Scenario(&quot;Don't stop me&quot;, {timeout: 0}, (I) =&gt; {});
+</code></pre>
+
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
 <p>Helpers can be reconfigured per scenario or per feature.
 This might be useful when some tests should be executed with different settings than others.

@@ -344,6 +344,8 @@
         
             <li><a href="#click">click</a></li>
         
+            <li><a href="#clicklink">clickLink</a></li>
+        
             <li><a href="#closecurrenttab">closeCurrentTab</a></li>
         
             <li><a href="#closeothertabs">closeOtherTabs</a></li>
@@ -761,6 +763,22 @@ I.click('//form/*[@type=submit]');
 I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
+</code></pre>
+
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
+<th>XPath</th>
+<th>strict locator</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<h2 id="clicklink">clickLink</h2>
+<p>Performs a click on a link and waits for navigation before moving on.</p>
+<pre><code class="js">I.click('Logout', '#nav');
 </code></pre>
 
 <p><strong>Parameters</strong></p>

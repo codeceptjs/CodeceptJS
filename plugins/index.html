@@ -309,19 +309,24 @@
             <li><a href="#configuration">Configuration</a></li>
         
     
+        <li class="main "><a href="#autodelay">autoDelay</a></li>
+        
+            <li><a href="#configuration_1">Configuration</a></li>
+        
+    
         <li class="main "><a href="#retryfailedstep">retryFailedStep</a></li>
         
-            <li><a href="#configuration_1">Configuration:</a></li>
+            <li><a href="#configuration_2">Configuration:</a></li>
         
     
         <li class="main "><a href="#screenshotonfail">screenshotOnFail</a></li>
         
-            <li><a href="#configuration_2">Configuration</a></li>
+            <li><a href="#configuration_3">Configuration</a></li>
         
     
         <li class="main "><a href="#stepbystepreport">stepByStepReport</a></li>
         
-            <li><a href="#configuration_3">Configuration</a></li>
+            <li><a href="#configuration_4">Configuration</a></li>
         
             <li><a href="#allure-reports">Allure Reports</a></li>
         
@@ -359,11 +364,45 @@ Launch Allure server and see the report like on a screenshot above:</p>
 <ul>
 <li><code>config</code> <strong>Any</strong> </li>
 </ul>
+<h1 id="autodelay">autoDelay</h1>
+<p>Sometimes it takes some time for a page to respond to user's actions.
+Depending on app's perfromance this can be either slow or fast.</p>
+<p>For instance, if you click a button and nothing happens - probably JS event is not attached to this button yet
+Also, if you fill field and input validation doesn't accept your input - maybe because you typed value too fast.</p>
+<p>This plugin allows to slow down tests execution when a test running too fast.
+It puts a tiny delay for before and after action commands.</p>
+<p>Commands affected (by default):</p>
+<ul>
+<li><code>click</code></li>
+<li><code>fillField</code></li>
+<li><code>checkOption</code></li>
+<li><code>pressKey</code></li>
+<li><code>doubleClick</code></li>
+<li><code>rightClick</code></li>
+</ul>
+<h4 id="configuration_1">Configuration</h4>
+<pre><code class="js">&quot;plugins&quot;: {
+   &quot;autoDelay&quot;: {
+     &quot;enabled&quot;: true
+   }
+}
+</code></pre>
+
+<p>Possible config options:</p>
+<ul>
+<li><code>methods</code>: list of affected commands. Can be overridden</li>
+<li><code>delayBefore</code>: put a delay before a command. 100ms by default</li>
+<li><code>delayAfter</code>: put a delay after a command. 200ms by default</li>
+</ul>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>config</code>  </li>
+</ul>
 <h1 id="retryfailedstep">retryFailedStep</h1>
 <p>Retries each failed step in a test.</p>
 <p>Add this plugin to config file:</p>
 <pre><code class="js">&quot;plugins&quot;: {
-    &quot;runFailedStep&quot;: {
+    &quot;retryFailedStep&quot;: {
        &quot;enabled&quot;: true
     }
 }
@@ -372,7 +411,7 @@ Launch Allure server and see the report like on a screenshot above:</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code>codeceptjs run --plugins retryFailedStep
 </code></pre>
-<h2 id="configuration_1">Configuration:</h2>
+<h2 id="configuration_2">Configuration:</h2>
 <ul>
 <li><code>retries</code> - number of retries (by default 5),</li>
 <li><code>when</code> - function, when to perform a retry (accepts error as parameter)</li>
@@ -390,7 +429,7 @@ Launch Allure server and see the report like on a screenshot above:</p>
 <p>Creates screenshot on failure. Screenshot is saved into <code>output</code> directory.</p>
 <p>Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4</p>
 <p>This plugin is <strong>enabled by default</strong>.</p>
-<h4 id="configuration_2">Configuration</h4>
+<h4 id="configuration_3">Configuration</h4>
 <p>Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).</p>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;screenshotOnFail&quot;: {
@@ -416,7 +455,7 @@ By default, reports are generated only for failed tests.</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code>codeceptjs run --plugins stepByStepReport
 </code></pre>
-<h4 id="configuration_3">Configuration</h4>
+<h4 id="configuration_4">Configuration</h4>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;stepByStepReport&quot;: {
      &quot;enabled&quot;: true
