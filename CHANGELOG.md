@@ -1,3 +1,12 @@
+## 1.4.4
+
+* [autoDelay plugin](https://codecept.io/plugins/#autoDelay) added. Adds tiny delay before and after an action so the page could react to actions performed.
+* [Puppeteer] improvements by @luismanuel001
+  * `click` no longer waits for navigation
+  * `clickLink` method added. Performs a click and waits for navigation.
+* Bootstrap scripts to be started only for `run` command and ignored on `list`, `def`, etc. Fix by @LukoyanovE
+
+
 ## 1.4.3
 
 * Groups renamed to Tags for compatibility with BDD layer
