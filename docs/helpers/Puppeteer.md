@@ -316,7 +316,7 @@ I.click({css: 'nav a.login'});
 
 ## clickLink
 
-Performs a click and waits for navigation before moving on.
+Performs a click on a link and waits for navigation before moving on.
 
 ```js
 I.click('Logout', '#nav');
