@@ -7,15 +7,6 @@ CodeceptJS runner
 -   `config`  
 -   `opts`  
 
-## bootstrap
-
-Executes hooks and bootstrap.
-If bootstrap is async, second parameter is required.
-
-**Parameters**
-
--   `done` **Any** 
-
 ## constructor
 
 Create CodeceptJS runner.
@@ -33,8 +24,7 @@ If async initialization is required, pass callback as second parameter.
 
 **Parameters**
 
--   `dir` **Any** 
--   `callback` **Any** 
+-   `dir` **string** 
 
 ## initGlobals
 
@@ -42,7 +32,7 @@ Creates global variables
 
 **Parameters**
 
--   `dir` **Any** 
+-   `dir` **string** 
 
 ## loadTests
 
@@ -59,6 +49,19 @@ Run a specific test or all loaded tests.
 **Parameters**
 
 -   `test` **[string]** 
+
+## runBootstrap
+
+Executes bootstrap.
+If bootstrap is async, second parameter is required.
+
+**Parameters**
+
+-   `done`  
+
+## runHooks
+
+Executes hooks.
 
 ## teardown
 

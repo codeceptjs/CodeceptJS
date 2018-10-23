@@ -314,6 +314,19 @@ I.click({css: 'nav a.login'});
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context`  (optional) element to search in CSS|XPath|Strict locator
 
+## clickLink
+
+Performs a click on a link and waits for navigation before moving on.
+
+```js
+I.click('Logout', '#nav');
+```
+
+**Parameters**
+
+-   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
+-   `context`  (optional) element to search in CSS|XPath|Strict locator
+
 ## closeCurrentTab
 
 Close current tab and switches to previous.

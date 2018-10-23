@@ -37,6 +37,46 @@ Launch Allure server and see the report like on a screenshot above:
 
 -   `config` **Any** 
 
+# autoDelay
+
+Sometimes it takes some time for a page to respond to user's actions.
+Depending on app's perfromance this can be either slow or fast.
+
+For instance, if you click a button and nothing happens - probably JS event is not attached to this button yet
+Also, if you fill field and input validation doesn't accept your input - maybe because you typed value too fast.
+
+This plugin allows to slow down tests execution when a test running too fast.
+It puts a tiny delay for before and after action commands.
+
+Commands affected (by default):
+
+-   `click`
+-   `fillField`
+-   `checkOption`
+-   `pressKey`
+-   `doubleClick`
+-   `rightClick`
+
+#### Configuration
+
+```js
+"plugins": {
+   "autoDelay": {
+     "enabled": true
+   }
+}
+```
+
+Possible config options:
+
+-   `methods`: list of affected commands. Can be overridden
+-   `delayBefore`: put a delay before a command. 100ms by default
+-   `delayAfter`: put a delay after a command. 200ms by default
+
+**Parameters**
+
+-   `config`  
+
 # retryFailedStep
 
 Retries each failed step in a test.
@@ -45,7 +85,7 @@ Add this plugin to config file:
 
 ```js
 "plugins": {
-    "runFailedStep": {
+    "retryFailedStep": {
        "enabled": true
     }
 }

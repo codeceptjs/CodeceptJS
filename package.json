@@ -1,9 +1,10 @@
 {
   "name": "codeceptjs",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
+    "end2end",
     "bdd",
     "tdd",
     "testing"
