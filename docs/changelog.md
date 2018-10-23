@@ -1,3 +1,40 @@
+## 1.4.4
+
+* [autoDelay plugin](https://codecept.io/plugins/#autoDelay) added. Adds tiny delay before and after an action so the page could react to actions performed.
+* [Puppeteer] improvements by @luismanuel001
+  * `click` no longer waits for navigation
+  * `clickLink` method added. Performs a click and waits for navigation.
+* Bootstrap scripts to be started only for `run` command and ignored on `list`, `def`, etc. Fix by @LukoyanovE
+
+
+## 1.4.3
+
+* Groups renamed to Tags for compatibility with BDD layer
+* Test and suite objects to contain tags property which can be accessed from internal API
+* Fixed adding tags for Scenario Outline in BDD
+* Added `tag()` method to ScenarioConfig and FeatureConfig:
+
+```js
+Scenario('update user profile', () => {
+  // test goes here
+}).tag('@slow');
+```
+
+* Fixed attaching Allure screenshot on exception. Fix by @DevinWatson
+* Improved type definitions for custom steps. By @Akxe
+* Fixed setting `multiple.parallel.chunks` as environment variable in config. See [#1238](https://github.com/Codeception/CodeceptJS/pull/1238) by @ngadiyak
+
+## 1.4.2
+
+* Fixed setting config for plugins (inclunding setting `outputDir` for allure) by @jplegoff
+
+## 1.4.1
+
+* Added `plugins` option to `run-multiple`
+* Minor output fixes
+* Added Type Definition for Helper class by @Akxe
+* Fixed extracing devault extension in generators by @Akxe
+
 ## 1.4.0
 
 * [**Allure Reporter Integration**](https://codecept.io/reports/#allure). Full inegration with Allure Server. Get nicely looking UI for tests,including steps, nested steps, and screenshots. Thanks **Natarajan Krishnamurthy @krish** for sponsoring this feature.
