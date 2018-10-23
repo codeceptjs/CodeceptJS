@@ -33,7 +33,10 @@
     "allure": {
       "enabled": false
     },
-    "stepByStepReport": {}
+    "stepByStepReport": {},
+    "autoDelay": {
+      "enabled": true
+    }
   },
   "tests": "./*_test.js",
   "timeout": 10000,
