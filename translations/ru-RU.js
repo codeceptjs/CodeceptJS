@@ -10,7 +10,7 @@ module.exports = {
     see: 'вижу',
     dontSee: 'не_вижу',
     selectOption: 'выбираю_опцию',
-    fillField: 'заполнаю_поле',
+    fillField: 'заполняю_поле',
     pressKey: 'нажимаю_кнопку',
     triggerMouseEvent: 'триггерное_событие_мыши',
     attachFile: 'загружаю_файл',
