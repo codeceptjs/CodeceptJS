@@ -401,7 +401,31 @@ services:
       - CODECEPT_ARGS=--debug
     volumes:
       - .:/tests
-</code></pre></div>
+</code></pre>
+
+<p>Moreover, alternatively arguments to <code>codecept run-multiple</code> command can be passed via <code>RUN_MULTIPLE</code> and <code>CODECEPT_ARGS</code> environment variable. 
+For example this is what looks like in your codeceptjs.conf.js</p>
+<pre><code class="yaml">&quot;multiple&quot;: {
+  &quot;parallel&quot;: {
+    // Splits tests into 2 chunks
+    &quot;chunks&quot;: 2
+  }
+}
+</code></pre>
+
+<p>Then to execute them use run-multiple command passing configured suite, which is parallel in this example:</p>
+<pre><code class="yaml">version: '2'
+services:
+  codeceptjs:
+    image: codeception/codeceptjs
+    environment:
+      - RUN_MULTIPLE=true
+      - CODECEPT_ARGS=parallel
+    volumes:
+      - .:/tests
+</code></pre>
+
+<p>If no <code>CODECEPT_ARGS</code> provided and <code>RUN_MULTIPLE</code> is <code>true</code>, tests will proceed with <code>CODECEPT_ARGS=--all</code></p></div>
             <div class="col-md-2" class="promo-1">
     <div class="promo-banner"  >
                 <h3>
