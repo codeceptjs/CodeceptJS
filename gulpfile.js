@@ -12,7 +12,7 @@ gulp.task('docs', () => {
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
       .pipe(mustache({}, {extension: '.js'}))
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
-      .pipe(documentation({ filename: path.basename(file, '.js') + '.md', shallow: true, format: 'md'}))
+      .pipe(documentation('md', { filename: path.basename(file, '.js') + '.md', shallow: true }))
       .pipe(gulp.dest(path.join(cpath, 'docs/helpers')));
   });
 
@@ -20,12 +20,12 @@ gulp.task('docs', () => {
 
   api.forEach((baseName) => {
     gulp.src(path.join(cpath, `lib/${baseName}.js`))
-      .pipe(documentation({ filename: baseName + '.md', shallow: true, format: 'md'}))
+      .pipe(documentation('md', { filename: baseName + '.md', shallow: true }))
       .pipe(gulp.dest(path.join(cpath, 'docs/api')));
   });
 
   gulp.src(path.join(cpath, 'lib/plugin/*.js'))
-    .pipe(documentation({ shallow: true, filename: 'plugins.md', format: 'md' }))
+    .pipe(documentation('md', { filename: 'plugins.md', shallow: true }))
     .pipe(gulp.dest(path.join(cpath, 'docs')));
 });
 
