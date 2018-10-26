@@ -12,7 +12,7 @@ gulp.task('docs', (done) => {
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
       .pipe(mustache({}, { extension: '.js' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
-      .pipe(documentation('md', { filename: path.basename(file, '.js') + '.md', shallow: true, sortOrder: 'alpha' }))
+      .pipe(documentation('md', { filename: `${path.basename(file, '.js')}.md`, shallow: true, sortOrder: 'alpha' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/helpers')));
   });
 
@@ -20,7 +20,7 @@ gulp.task('docs', (done) => {
 
   api.forEach((baseName) => {
     gulp.src(path.join(cpath, `lib/${baseName}.js`))
-      .pipe(documentation('md', { filename: baseName + '.md', shallow: true, sortOrder: 'alpha' }))
+      .pipe(documentation('md', { filename: `${baseName}.md`, shallow: true, sortOrder: 'alpha' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/api')));
   });
 
