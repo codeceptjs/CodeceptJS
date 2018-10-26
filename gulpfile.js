@@ -10,9 +10,9 @@ gulp.task('docs', (done) => {
   glob.sync(path.join(cpath, 'lib/helper/*.js')).forEach((file) => {
     gulp.src(file)
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
-      .pipe(mustache({}, {extension: '.js'}))
+      .pipe(mustache({}, { extension: '.js' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
-      .pipe(documentation('md', { filename: path.basename(file, '.js') + '.md', shallow: true, sortOrder: "alpha" }))
+      .pipe(documentation('md', { filename: path.basename(file, '.js') + '.md', shallow: true, sortOrder: 'alpha' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/helpers')));
   });
 
@@ -20,15 +20,15 @@ gulp.task('docs', (done) => {
 
   api.forEach((baseName) => {
     gulp.src(path.join(cpath, `lib/${baseName}.js`))
-      .pipe(documentation('md', { filename: baseName + '.md', shallow: true, sortOrder: "alpha" }))
+      .pipe(documentation('md', { filename: baseName + '.md', shallow: true, sortOrder: 'alpha' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/api')));
   });
 
   gulp.src(path.join(cpath, 'lib/plugin/*.js'))
-    .pipe(documentation('md', { filename: 'plugins.md', shallow: true, sortOrder: "alpha" }))
+    .pipe(documentation('md', { filename: 'plugins.md', shallow: true, sortOrder: 'alpha' }))
     .pipe(gulp.dest(path.join(cpath, 'docs')));
-  
-  done()
+
+  done();
 });
 
 gulp.task('default', gulp.series('docs'));
