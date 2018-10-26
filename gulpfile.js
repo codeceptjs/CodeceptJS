@@ -6,7 +6,7 @@ const mustache = require('gulp-mustache');
 
 const cpath = '.';
 
-gulp.task('docs', () => {
+gulp.task('docs', (done) => {
   glob.sync(path.join(cpath, 'lib/helper/*.js')).forEach((file) => {
     gulp.src(file)
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
@@ -27,7 +27,8 @@ gulp.task('docs', () => {
   gulp.src(path.join(cpath, 'lib/plugin/*.js'))
     .pipe(documentation('md', { filename: 'plugins.md', shallow: true, sortOrder: "alpha" }))
     .pipe(gulp.dest(path.join(cpath, 'docs')));
+  
+  done()
 });
 
-
-gulp.task('default', ['docs']);
+gulp.task('default', gulp.series('docs'));

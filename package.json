@@ -66,7 +66,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.14.0",
     "faker": "^4.1.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-documentation": "^3.2.1",
     "gulp-mustache": "^2.2.0",
     "json-server": "^0.10.1",
