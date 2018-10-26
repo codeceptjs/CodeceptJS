@@ -193,7 +193,7 @@ My First Test --
 ---
 
 ### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
-### Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/puppeteer/)
+### Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
 
 ---
 
