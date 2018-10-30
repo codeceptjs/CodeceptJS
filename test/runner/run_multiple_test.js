@@ -122,5 +122,31 @@ describe('CodeceptJS Multiple Runner', function () {
       done();
     });
   });
+
+  describe('with --require parameter', () => {
+    const _codecept_run = `run-multiple --config ${codecept_dir}/codecept.multiple.json`;
+    const requiredModule = 'requiredModule';
+    const moduleOutput = 'Module was required.';
+
+    it('should be executed with module when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${runner} --require ${requiredModule} ${_codecept_run} test`, (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        // one call for 'codeceptjs run-multiple' + one for each browser from multiple set
+        (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(3);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should not be executed without module when not described', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${runner} ${_codecept_run} test`, (err, stdout, stderr) => {
+        stdout.should.not.include(moduleOutput);
+        assert(!err);
+        done();
+      });
+    });
+  });
 });
 

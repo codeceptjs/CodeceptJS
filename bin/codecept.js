@@ -18,7 +18,7 @@ if (process.versions.node && process.versions.node.split('.') && process.version
 program.option('--require <name>', 'require the given module', []);
 
 const requires = [];
-program.on('option:require', mod => {
+program.on('option:require', (mod) => {
   const isLocalFile = fs.existsSync(mod) || fs.existsSync(`${mod}.js`);
   if (isLocalFile) {
     mod = path.resolve(mod);

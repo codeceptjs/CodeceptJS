@@ -199,6 +199,29 @@ describe('CodeceptJS Runner', () => {
       done();
     });
   });
+
+  describe('with --require parameter', () => {
+    const moduleOutput = 'Module was required.';
+
+    it('should be executed with module when described', (done) => {
+      process.chdir(codecept_dir);
+      const requiredModule = 'requiredModule';
+      exec(`${runner} --require ${requiredModule} run`, (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should not be executed without module when not described', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${runner} run`, (err, stdout, stderr) => {
+        stdout.should.not.include(moduleOutput);
+        assert(!err);
+        done();
+      });
+    });
+  });
 });
 
 describe('Codeceptjs Events', () => {
