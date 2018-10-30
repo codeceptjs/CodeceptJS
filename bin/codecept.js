@@ -15,6 +15,16 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
+program.option('--require <name>', 'require the given module', []);
+
+program.on('option:require', mod => {
+  const isLocalFile = fs.existsSync(mod) || fs.existsSync(`${mod}.js`);
+  if (isLocalFile) {
+    mod = path.resolve(mod);
+  }
+  require(mod);
+});
+
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
