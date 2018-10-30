@@ -15,7 +15,7 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
-program.option('--require <name>', 'require the given module', []);
+program.option('-r, --require <name>', 'require the given module', []);
 
 const requires = [];
 program.on('option:require', (mod) => {
