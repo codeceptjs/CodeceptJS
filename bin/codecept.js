@@ -4,8 +4,6 @@ const path = require('path');
 const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
-const fileExists = require('../lib/utils').fileExists;
-const fs = require('fs');
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 8) {
   error('NodeJS >= 8 is required to run.');
@@ -14,19 +12,6 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   print(`Current NodeJS version: ${process.version}`);
   process.exit(1);
 }
-
-program.option('-r, --require <name>', 'require the given module', []);
-
-const requires = [];
-program.on('option:require', (mod) => {
-  const isLocalFile = fs.existsSync(mod) || fs.existsSync(`${mod}.js`);
-  if (isLocalFile) {
-    mod = path.resolve(mod);
-  }
-  requires.push(mod);
-  process.env.CODECEPT_REQUIRED_MODULES = requires;
-  require(mod);
-});
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
