@@ -6,9 +6,8 @@
     "FileSystem": {}
   },
   "include": {},
-  "bootstrap": "hooks.js",
-  "teardown": "hooks.js",
+  "bootstrap": false,
   "mocha": {},
-  "name": "sandbox",
+  "name": "require test",
   "require": ["requiredModule"]
 }

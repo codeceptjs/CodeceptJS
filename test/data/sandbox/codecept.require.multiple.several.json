@@ -7,9 +7,8 @@
   },
   "include": {},
   "bootstrap": false,
-  "teardown": false,
   "mocha": {},
-  "name": "sandbox",
+  "name": "require test",
   "require": ["requiredModule", "requiredModule2"],
   "multiple": {
     "default": {
