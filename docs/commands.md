@@ -150,14 +150,3 @@ Prints all available methods of `I` to console
 ```sh
 codeceptjs list
 ```
-
-## Codecept options
-
-### -r, --require <module-name>
-
-Requires described module before run. This option is useful for assertion libraries, so you may `--require should` instead of manually invoking `require('should')` within each test file. It can be used with relative paths, e.g. `--require ./lib/somemodule.js`, and installed packages.
-
-```sh
-// register ts-node, so you can use Typescript in tests with ts-node package
-codeceptjs --require ts-node/register run
-```
