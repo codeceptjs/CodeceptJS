@@ -122,22 +122,4 @@ describe('CodeceptJS Multiple Runner', function () {
       done();
     });
   });
-
-  it('should merge overrides provided on launch', (done) => {
-    // const override = JSON.stringify({ "helpers": {
-    //   "FakeDriver": {
-    //     "require": "../fake_driver",
-    //     "browser": "foobar",
-    //     "windowSize": "maximize"
-    //   }
-    // }});
-    const override = '{"multiple": {"chunks": {"chunks": 3 }}}';
-    const codecept_override_run = `${codecept_run} --override '${override}' `;
-    return exec(`${codecept_override_run}chunks`, (err, stdout, stderr) => {
-      stdout.should.include('CodeceptJS'); // feature
-      assert(!err);
-      done();
-    });
-  });
 });
-
