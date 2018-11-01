@@ -8,7 +8,17 @@ if [[ -d "/tests/" ]]; then
 
 		# Run the tests
 		cd /tests/
-		codeceptjs run $CODECEPT_ARGS
+		if [ "$RUN_MULTIPLE" = true ]; then
+			echo "Tests are split into chunks and executed in multiple processes."
+			if [ ! "$CODECEPT_ARGS" ]; then
+				echo "No CODECEPT_ARGS provided. Tests will procceed with --all option to run all configured runs"
+				codeceptjs run-multiple --all
+			else		
+				codeceptjs run-multiple $CODECEPT_ARGS
+			fi
+		else
+			codeceptjs run $CODECEPT_ARGS
+		fi
 	else
 		display_usage
 fi
