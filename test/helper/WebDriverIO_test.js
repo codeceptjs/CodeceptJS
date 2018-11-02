@@ -419,8 +419,18 @@ describe('WebDriverIO', function () {
       .then(() => wd.click('Submit', '//form'))
       .then(() => wd.waitInUrl('/form/complex')));
 
+    it('should click by aria-label', () => wd.amOnPage('/info')
+      .then(() => wd.click('index via aria-label'))
+      .then(() => wd.see('Welcome to test app!')));
+    it('should click by title', () => wd.amOnPage('/info')
+      .then(() => wd.click('index via title'))
+      .then(() => wd.see('Welcome to test app!')));
+    it('should click by aria-labelledby', () => wd.amOnPage('/info')
+      .then(() => wd.click('index via labelledby'))
+      .then(() => wd.see('Welcome to test app!')));
+
     it('should click by accessibility_id', () => wd.amOnPage('/info')
-      .then(() => wd.click('~index'))
+      .then(() => wd.click('~index via aria-label'))
       .then(() => wd.see('Welcome to test app!')));
   });
 
