@@ -21,6 +21,27 @@ Here is an overview of available options with their defaults:
 * **noGlobals**: `false` - disable registering global variables like `Actor`, `Helper`, `pause`, `within`, `DataTable`
 * **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](http://codecept.io/hooks/#custom-hooks)
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
+* **require**: `[]` - array of module names to be required before codecept starts. See [Require](#require)
+
+
+## Require
+
+Requires described module before run. This option is useful for assertion libraries, so you may `--require should` instead of manually invoking `require('should')` within each test file. It can be used with relative paths, e.g. `"require": ["/lib/somemodule"]`, and installed packages.
+
+You can register ts-node, so you can use Typescript in tests with ts-node package
+```js
+exports.config = {
+  tests: './*_test.js',
+  timeout: 10000,
+  output: '',
+  helpers: {},
+  include: {},
+  bootstrap: false,
+  mocha: {},
+  // require modules
+  require: ["ts-node/register", "should"]
+}
+```
 
 ## Dynamic Configuration
 
