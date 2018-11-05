@@ -199,6 +199,41 @@ describe('CodeceptJS Runner', () => {
       done();
     });
   });
+
+  describe('with require parameter', () => {
+    const moduleOutput = 'Module was required 1';
+    const moduleOutput2 = 'Module was required 2';
+
+    it('should be executed with module when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(codecept_run_config('codecept.require.single.json'), (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        stdout.should.not.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should be executed with several modules when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(codecept_run_config('codecept.require.several.json'), (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        stdout.should.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should not be executed without module when not described', (done) => {
+      process.chdir(codecept_dir);
+      exec(codecept_run_config('codecept.require.without.json'), (err, stdout, stderr) => {
+        stdout.should.not.include(moduleOutput);
+        stdout.should.not.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
+    });
+  });
 });
 
 describe('Codeceptjs Events', () => {
