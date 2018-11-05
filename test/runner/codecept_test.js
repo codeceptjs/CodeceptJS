@@ -56,7 +56,6 @@ describe('CodeceptJS Runner', () => {
   });
 
   describe('grep', () => {
-
     it('filter by scenario tags', (done) => {
       process.chdir(codecept_dir);
       exec(`${codecept_run} --grep @slow`, (err, stdout, stderr) => {
@@ -96,7 +95,6 @@ describe('CodeceptJS Runner', () => {
         done();
       });
     });
-
   });
 
   it('should run bootstrap', (done) => {
