@@ -496,19 +496,15 @@
 
 <h2 id="145">1.4.5</h2>
 <ul>
-<li>Add <strong>require</strong> param to main config. Allows to require Node modules before executing tests. By @LukoyanovE</li>
+<li>Add <strong>require</strong> param to main config. Allows to require Node modules before executing tests. By @LukoyanovE. For example:</li>
+<li>Use <code>ts-node/register</code> to register TypeScript parser</li>
+<li>Use <code>should</code> to register should-style assertions</li>
 </ul>
-<p>Example (<code>codecept.json</code>):</p>
-<p><code>js
-     "require": ["ts-node/register", "should"]</code></p>
+<pre><code class="js">&quot;require&quot;: [&quot;ts-node/register&quot;, &quot;should&quot;]
+</code></pre>
+
 <ul>
-<li>Uses <code>ts-node/register</code> to register TypeScript parser</li>
-<li>
-<p>Uses <code>should</code> to register should-style assertions</p>
-</li>
-<li>
-<p>[WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE</p>
-</li>
+<li>[WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE</li>
 <li>Fixed: exception in Before block w/ Mocha causes test not to report failure. See <a href="https://github.com/Codeception/CodeceptJS/pull/1292">#1292</a> by @PeterNgTr</li>
 <li>Command <code>run-parallel</code> now accepts <code>--override</code> flag. Thanks to @ClemCB</li>
 <li>Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By @PeterNgTr</li>
