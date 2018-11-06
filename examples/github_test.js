@@ -5,7 +5,7 @@ Before((Smth) => {
   Smth.openGitHub();
 });
 
-Scenario('Visit Home Page @retry', (I) => {
+Scenario('Visit Home Page @retry', async (I) => {
   // .retry({ retries: 3, minTimeout: 1000 })
   I.retry(2).see('GitHub');
   I.retry(3).see('ALL');
@@ -24,7 +24,7 @@ Scenario('signin', (I, loginPage) => {
   I.say('it should not enter');
   loginPage.login('something@totest.com', '123456');
   I.see('Incorrect username or password.', '.flash-error');
-});
+}).tag('normal').tag('important').tag('@slow');
 
 Scenario('signin2', (I, Smth) => {
   Smth.openAndLogin();
