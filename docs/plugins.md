@@ -8,7 +8,7 @@ Allure reporter
 
 Enables Allure reporter.
 
-#### Usage
+##### Usage
 
 To start please install `allure-commandline` package (which requires Java 8)
 
@@ -31,13 +31,13 @@ Launch Allure server and see the report like on a screenshot above:
 
     allure serve output
 
-#### Configuration
+##### Configuration
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
 
 ### Parameters
 
--   `config` **any** 
+-   `config`  
 
 ## autoDelay
 
@@ -59,7 +59,7 @@ Commands affected (by default):
 -   `doubleClick`
 -   `rightClick`
 
-#### Configuration
+##### Configuration
 
 ```js
 "plugins": {
@@ -97,7 +97,7 @@ Run tests with plugin enabled:
 
     codeceptjs run --plugins retryFailedStep
 
-## Configuration:
+##### Configuration:
 
 -   `retries` - number of retries (by default 5),
 -   `when` - function, when to perform a retry (accepts error as parameter)
@@ -120,7 +120,7 @@ Initially this functionality was part of corresponding helper but has been moved
 
 This plugin is **enabled by default**.
 
-#### Configuration
+##### Configuration
 
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
@@ -153,7 +153,7 @@ Run tests with plugin enabled:
 
     codeceptjs run --plugins stepByStepReport
 
-#### Configuration
+##### Configuration
 
 ```js
 "plugins": {
@@ -170,7 +170,7 @@ Possible config options:
 -   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 
-#### Allure Reports
+##### Allure Reports
 
 If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.
 
