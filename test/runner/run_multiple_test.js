@@ -122,5 +122,43 @@ describe('CodeceptJS Multiple Runner', function () {
       done();
     });
   });
-});
 
+  describe('with require parameter', () => {
+    const _codecept_run = `run-multiple --config ${codecept_dir}`;
+    const moduleOutput = 'Module was required 1';
+    const moduleOutput2 = 'Module was required 2';
+
+    it('should be executed with module when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${runner} ${_codecept_run}/codecept.require.multiple.single.json default`, (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        stdout.should.not.include(moduleOutput2);
+        (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should be executed with several module when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${runner} ${_codecept_run}/codecept.require.multiple.several.json default`, (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        stdout.should.include(moduleOutput2);
+        (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);
+        (stdout.match(new RegExp(moduleOutput2, 'g')) || []).should.have.lengthOf(2);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should not be executed without module when not described', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${runner} ${_codecept_run}/codecept.require.multiple.without.json default`, (err, stdout, stderr) => {
+        stdout.should.not.include(moduleOutput);
+        stdout.should.not.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
+    });
+  });
+});

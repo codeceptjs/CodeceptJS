@@ -91,7 +91,7 @@ I.appendField('#myTextField', 'appended');
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  text value
+-   `value`  text value to append.
 
 ### checkOption
 
@@ -108,9 +108,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `checkbox`  
--   `field`  checkbox located by label | name | CSS | XPath | strict locator
--   `context`  (optional) element located by CSS | XPath | strict locator
+-   `field`  checkbox located by label | name | CSS | XPath | strict locator.
+-   `context`  (optional) element located by CSS | XPath | strict locator.
 
 ### click
 
@@ -138,9 +137,8 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
--   `button`  
--   `context`  (optional) element to search in CSS|XPath|Strict locator
--   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator
+-   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context`  (optional) element to search in CSS|XPath|Strict locator.
 
 ### closeApp
 
@@ -163,8 +161,8 @@ I.dontSee('Login'); // assume we are already logged in
 
 #### Parameters
 
--   `text`  is not present
--   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search
+-   `text`  is not present.
+-   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search.
 
 ### dontSeeCheckboxIsChecked
 
@@ -172,8 +170,7 @@ Verifies that the specified checkbox is not checked.
 
 #### Parameters
 
--   `checkbox`  
--   `field`  located by label|name|CSS|XPath|strict locator
+-   `field`  located by label|name|CSS|XPath|strict locator.
 
 ### dontSeeElement
 
@@ -181,9 +178,8 @@ Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 #### Parameters
 
--   `el`  
+-   `locator`  located by CSS|XPath|Strict locator.
 -   `context`  
--   `locator`  located by CSS|XPath|Strict locator
 
 ### dontSeeInField
 
@@ -192,8 +188,8 @@ Opposite to `seeInField`.
 
 #### Parameters
 
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  is not expected to be a field value
+-   `field`  located by label|name|CSS|XPath|strict locator.
+-   `value`  value to check.
 
 ### fillField
 
@@ -213,8 +209,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `field`  located by label|name|CSS|XPath|strict locator.
+-   `value`  text value to fill.
 
 ### grabAllContexts
 
@@ -289,8 +285,7 @@ If multiple elements found returns an array of texts.
 
 #### Parameters
 
--   `el`  
--   `locator`  element located by CSS|XPath|strict locator
+-   `locator`  element located by CSS|XPath|strict locator.
 
 ### grabValueFrom
 
@@ -303,8 +298,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `el`  
--   `locator`  field located by label|name|CSS|XPath|strict locator
+-   `locator`  field located by label|name|CSS|XPath|strict locator.
 
 ### hideDeviceKeyboard
 
@@ -515,8 +509,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
--   `text`  expected on page
--   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text
+-   `text`  expected on page.
+-   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text.
 
 ### seeAppIsInstalled
 
@@ -554,8 +548,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
--   `checkbox`  
--   `field`  located by label|name|CSS|XPath|strict locator
+-   `field`  located by label|name|CSS|XPath|strict locator.
 
 ### seeCurrentActivityIs
 
@@ -602,8 +595,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `el`  
--   `locator`  located by CSS|XPath|strict locator
+-   `locator`  located by CSS|XPath|strict locator.
 
 ### seeInField
 
@@ -619,8 +611,8 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
--   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  
+-   `field`  located by label|name|CSS|XPath|strict locator.
+-   `value`  value to check.
 
 ### seeOrientationIs
 
@@ -658,8 +650,9 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select`  field located by label|name|CSS|XPath|strict locator
--   `option`  Support only web testing!
+-   `select`  field located by label|name|CSS|XPath|strict locator.
+-   `option`  visible text or value of option.
+    Support only web testing!
 
 ### sendDeviceKeyEvent
 
