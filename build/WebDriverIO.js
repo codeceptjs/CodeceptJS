@@ -433,12 +433,14 @@ class WebDriverIO extends Helper {
   }
 
   /**
-   * Get elements by different locator types, including strict locator
+   * Get elements by different locator types, including strict locator.
    * Should be used in custom helpers:
    *
    * ```js
    * this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
    * ```
+   *
+   * @param locator element located by CSS|XPath|strict locator.
    */
   async _locate(locator, smartWait = false) {
     if (!this.options.smartWait || !smartWait) return this.browser.elements(withStrictLocator.call(this, locator));
@@ -456,6 +458,8 @@ class WebDriverIO extends Helper {
    * ```js
    * this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
    * ```
+   *
+   * @param locator element located by CSS|XPath|strict locator.
    */
   async _locateCheckable(locator) {
     return findCheckable.call(this, locator, this.browser.elements.bind(this)).then(res => res.value);
@@ -467,6 +471,8 @@ class WebDriverIO extends Helper {
    * ```js
    * this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
    * ```
+   *
+   * @param locator element located by CSS|XPath|strict locator.
    */
   async _locateClickable(locator) {
     return findClickable.call(this, locator, this.browser.elements.bind(this)).then(res => res.value);
@@ -478,6 +484,8 @@ class WebDriverIO extends Helper {
    * ```js
    * this.helpers['WebDriverIO']._locateFields('Your email').then // ...
    * ```
+   *
+   * @param locator element located by CSS|XPath|strict locator.
    */
   async _locateFields(locator) {
     return findFields.call(this, locator).then(res => res.value);
@@ -485,28 +493,35 @@ class WebDriverIO extends Helper {
 
   /**
    * Set [WebDriverIO timeouts](http://webdriver.io/guide/testrunner/timeouts.html) in realtime.
-   * Appium: support only web testing
+   * Appium: support only web testing.
    * Timeouts are expected to be passed as object:
    *
    * ```js
    * I.defineTimeout({ script: 5000 });
    * I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
    * ```
+   *
+   * @param timeouts WebDriver timeouts object.
    */
   async defineTimeout(timeouts) {
-    if (timeouts.implicit) {
-      await this.browser.timeouts('implicit', timeouts.implicit);
-    }
-    if (timeouts['page load']) {
-      await this.browser.timeouts('page load', timeouts['page load']);
-    }
-    // both pageLoad and page load are accepted
-    // see http://webdriver.io/api/protocol/timeouts.html
-    if (timeouts.pageLoad) {
-      await this.browser.timeouts('page load', timeouts.pageLoad);
-    }
-    if (timeouts.script) {
-      await this.browser.timeouts('script', timeouts.script);
+    try {
+      // try to set W3C compatible timeouts
+      await this.browser.timeouts(timeouts);
+    } catch (error) {
+      if (timeouts.implicit) {
+        await this.browser.timeouts('implicit', timeouts.implicit);
+      }
+      if (timeouts['page load']) {
+        await this.browser.timeouts('page load', timeouts['page load']);
+      }
+      // both pageLoad and page load are accepted
+      // see http://webdriver.io/api/protocol/timeouts.html
+      if (timeouts.pageLoad) {
+        await this.browser.timeouts('page load', timeouts.pageLoad);
+      }
+      if (timeouts.script) {
+        await this.browser.timeouts('script', timeouts.script);
+      }
     }
     return this.browser; // return the last response
   }
@@ -521,7 +536,7 @@ I.amOnPage('https://github.com'); // opens github
 I.amOnPage('/login'); // opens a login page
 ```
 
-@param url url path or global url
+@param url url path or global url.
    * Appium: support only web testing
    */
   amOnPage(url) {
@@ -550,8 +565,9 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
-@param context (optional) element to search in CSS|XPath|Strict locator
+
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+@param context (optional) element to search in CSS|XPath|Strict locator.
    * Appium: support
    */
   async click(locator, context = null) {
@@ -578,8 +594,8 @@ I.doubleClick({css: 'button.accept'});
 I.doubleClick('.btn.edit');
 ```
 
-@param locator
-@param context
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+@param context (optional) element to search in CSS|XPath|Strict locator.
    * Appium: support only web testing
    */
   async doubleClick(locator, context = null) {
@@ -599,12 +615,12 @@ I.doubleClick('.btn.edit');
 
   /**
    * Performs right click on an element matched by CSS or XPath.
+
+@param locator element located by CSS|XPath|strict locator.
    * Appium: support, but in apps works as usual click
    */
   async rightClick(locator) {
-    /**
-     * just press button if no selector is given
-     */
+    // just press button if no selector is given
     if (locator === undefined) {
       return this.browser.buttonPress('right');
     }
@@ -630,9 +646,8 @@ I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
 ```
-@param field located by label|name|CSS|XPath|strict locator
-@param value
-
+@param field located by label|name|CSS|XPath|strict locator.
+@param value text value to fill.
    * Appium: support
    */
   async fillField(field, value) {
@@ -650,7 +665,7 @@ Field is located by name, label, CSS or XPath
 I.appendField('#myTextField', 'appended');
 ```
 @param field located by label|name|CSS|XPath|strict locator
-@param value text value
+@param value text value to append.
    * Appium: support, but it's clear a field before insert in apps
    */
   async appendField(field, value) {
@@ -669,7 +684,7 @@ I.clearField('Email');
 I.clearField('user[email]');
 I.clearField('#email');
 ```
-@param field located by label|name|CSS|XPath|strict locator
+@param field located by label|name|CSS|XPath|strict locator.
    * Appium: support
    */
   async clearField(field) {
@@ -699,9 +714,8 @@ Provide an array for the second argument to select multiple options.
 ```js
 I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 ```
-@param select field located by label|name|CSS|XPath|strict locator
-@param option
-
+@param select field located by label|name|CSS|XPath|strict locator.
+@param option visible text or value of option.
    */
   async selectOption(select, option) {
     const res = await findFields.call(this, select);
@@ -740,9 +754,9 @@ File will be uploaded to remote system (if tests are running remotely).
 I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
-@param locator field located by label|name|CSS|XPath|strict locator
-@param pathToFile local file path relative to codecept.json config file
 
+@param locator field located by label|name|CSS|XPath|strict locator.
+@param pathToFile local file path relative to codecept.json config file.
    * Appium: not tested
    */
   async attachFile(locator, pathToFile) {
@@ -769,8 +783,8 @@ I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
 I.checkOption('agree', '//form');
 ```
-@param field checkbox located by label | name | CSS | XPath | strict locator
-@param context (optional) element located by CSS | XPath | strict locator
+@param field checkbox located by label | name | CSS | XPath | strict locator.
+@param context (optional) element located by CSS | XPath | strict locator.
    * Appium: not tested
    */
   async checkOption(field, context = null) {
@@ -798,9 +812,8 @@ I.uncheckOption('#agree');
 I.uncheckOption('I Agree to Terms and Conditions');
 I.uncheckOption('agree', '//form');
 ```
-@param field checkbox located by label | name | CSS | XPath | strict locator
-@param context (optional) element located by CSS | XPath | strict locator
-
+@param field checkbox located by label | name | CSS | XPath | strict locator.
+@param context (optional) element located by CSS | XPath | strict locator.
    * Appium: not tested
    */
   async uncheckOption(field, context = null) {
@@ -826,7 +839,7 @@ let pin = await I.grabTextFrom('#pin');
 ```
 If multiple elements found returns an array of texts.
 
-@param locator element located by CSS|XPath|strict locator
+@param locator element located by CSS|XPath|strict locator.
    * Appium: support
    */
   async grabTextFrom(locator) {
@@ -839,13 +852,14 @@ If multiple elements found returns an array of texts.
 
   /**
    * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-   * Resumes test execution, so **should be used inside async function with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTML = await I.grabHTMLFrom('#post');
+```
+
+@param locator element located by CSS|XPath|strict locator.
    * Appium: support only web testing
-   *
-   *
-   * ```js
-   * let postHTML = await I.grabHTMLFrom('#post');
-   * ```
    */
   async grabHTMLFrom(locator) {
     const html = await this.browser.getHTML(withStrictLocator.call(this, locator));
@@ -860,7 +874,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 ```js
 let email = await I.grabValueFrom('input[name=email]');
 ```
-@param locator field located by label|name|CSS|XPath|strict locator
+@param locator field located by label|name|CSS|XPath|strict locator.
    * Appium: support only web testing
    */
   async grabValueFrom(locator) {
@@ -878,6 +892,8 @@ Resumes test execution, so **should be used inside an async function with `await
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 ```
 
+@param locator element located by CSS|XPath|strict locator.
+@param cssProperty CSS property name.
    */
   async grabCssPropertyFrom(locator, cssProperty) {
     const res = await this._locate(locator, true);
@@ -892,8 +908,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
-@param locator element located by CSS|XPath|strict locator
-@param attr
+@param locator element located by CSS|XPath|strict locator.
+@param attr attribute name.
    * Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
    */
   async grabAttributeFrom(locator, attr) {
@@ -905,7 +921,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
   /**
    * Checks that title contains text.
 
-@param text
+@param text text value to check.
    * Appium: support only web testing
    */
   async seeInTitle(text) {
@@ -919,6 +935,8 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
    * ```js
    * I.seeTitleEquals('Test title.');
    * ```
+   *
+   * @param text value to check.
    */
   async seeTitleEquals(text) {
     const title = await this.browser.getTitle();
@@ -928,7 +946,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
   /**
    * Checks that title does not contain text.
 
-@param text
+@param text text value to check.
    * Appium: support only web testing
    */
   async dontSeeInTitle(text) {
@@ -960,8 +978,8 @@ I.see('Welcome'); // text welcome on a page
 I.see('Welcome', '.content'); // text inside .content div
 I.see('Register', {css: 'form.register'}); // use strict locator
 ```
-@param text expected on page
-@param context (optional) element located by CSS|Xpath|strict locator in which to search for text
+@param text expected on page.
+@param context (optional) element located by CSS|Xpath|strict locator in which to search for text.
    * Appium: support with context in apps
    */
   async see(text, context = null) {
@@ -974,6 +992,9 @@ I.see('Register', {css: 'form.register'}); // use strict locator
    * ```js
    * I.seeTextEquals('text', 'h1');
    * ```
+   *
+   * @param text element value to check.
+   * @param context (optional) element located by CSS|XPath|strict locator.
    */
   async seeTextEquals(text, context = null) {
     return proceedSee.call(this, 'assert', text, context, true);
@@ -986,8 +1007,8 @@ Use context parameter to narrow down the search.
 ```js
 I.dontSee('Login'); // assume we are already logged in
 ```
-@param text is not present
-@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
+@param text is not present.
+@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search.
    * Appium: support with context in apps
    */
   async dontSee(text, context = null) {
@@ -1004,8 +1025,8 @@ I.seeInField({css: 'form textarea'},'Type your comment here');
 I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
 ```
-@param field located by label|name|CSS|XPath|strict locator
-@param value
+@param field located by label|name|CSS|XPath|strict locator.
+@param value value to check.
    * Appium: support only web testing
    */
   async seeInField(field, value) {
@@ -1016,8 +1037,8 @@ I.seeInField('#searchform input','Search');
    * Checks that value of input field or textare doesn't equal to given value
 Opposite to `seeInField`.
 
-@param field located by label|name|CSS|XPath|strict locator
-@param value is not expected to be a field value
+@param field located by label|name|CSS|XPath|strict locator.
+@param value value to check.
    * Appium: support only web testing
    */
   async dontSeeInField(field, value) {
@@ -1032,7 +1053,7 @@ I.seeCheckboxIsChecked('Agree');
 I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
 I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 ```
-@param field located by label|name|CSS|XPath|strict locator
+@param field located by label|name|CSS|XPath|strict locator.
    * Appium: not tested
    */
   async seeCheckboxIsChecked(field) {
@@ -1042,8 +1063,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
   /**
    * Verifies that the specified checkbox is not checked.
 
-@param field located by label|name|CSS|XPath|strict locator
-
+@param field located by label|name|CSS|XPath|strict locator.
    * Appium: not tested
    */
   async dontSeeCheckboxIsChecked(field) {
@@ -1057,7 +1077,7 @@ Element is located by CSS or XPath.
 ```js
 I.seeElement('#modal');
 ```
-@param locator located by CSS|XPath|strict locator
+@param locator located by CSS|XPath|strict locator.
    * Appium: support
    */
   async seeElement(locator) {
@@ -1073,7 +1093,7 @@ I.seeElement('#modal');
   /**
    * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
-@param locator located by CSS|XPath|Strict locator
+@param locator located by CSS|XPath|Strict locator.
    * Appium: support
    */
   async dontSeeElement(locator) {
@@ -1092,7 +1112,7 @@ Element is located by CSS or XPath.
 ```js
 I.seeElementInDOM('#modal');
 ```
-@param locator located by CSS|XPath|strict locator
+@param locator located by CSS|XPath|strict locator.
    * Appium: support
    */
   async seeElementInDOM(locator) {
@@ -1103,7 +1123,7 @@ I.seeElementInDOM('#modal');
   /**
    * Opposite to `seeElementInDOM`. Checks that element is not on page.
 
-@param locator located by CSS|XPath|Strict locator
+@param locator located by CSS|XPath|Strict locator.
    * Appium: support
    */
   async dontSeeElementInDOM(locator) {
@@ -1117,7 +1137,7 @@ I.seeElementInDOM('#modal');
 ```js
 I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 ```
-@param text
+@param text value to check.
    * Appium: support
    */
   async seeInSource(text) {
@@ -1171,9 +1191,9 @@ console.log(`Current URL is [${url}]`);
   }
 
   /**
-   * Checks that the current page contains the given string in its raw source code
+   * Checks that the current page contains the given string in its raw source code.
 
-@param text
+@param text value to check.
    * Appium: support
    */
   async dontSeeInSource(text) {
@@ -1182,26 +1202,32 @@ console.log(`Current URL is [${url}]`);
   }
 
   /**
-   * asserts that an element appears a given number of times in the DOM
+   * Asserts that an element appears a given number of times in the DOM.
    * Element is located by label or name or CSS or XPath.
    * Appium: support
    *
    * ```js
    * I.seeNumberOfElements('#submitBtn', 1);
    * ```
+   *
+   * @param locator element located by CSS|XPath|strict locator.
+   * @param num number of elements.
    */
-  async seeNumberOfElements(selector, num) {
-    const res = await this._locate(withStrictLocator.call(this, selector));
-    return assert.equal(res.value.length, num, `expected number of elements (${selector}) is ${num}, but found ${res.value.length}`);
+  async seeNumberOfElements(locator, num) {
+    const res = await this._locate(withStrictLocator.call(this, locator));
+    return assert.equal(res.value.length, num, `expected number of elements (${locator}) is ${num}, but found ${res.value.length}`);
   }
 
   /**
-   * asserts that an element is visible a given number of times
-   * Element is located by CSS or XPath.
-   *
-   * ```js
-   * I.seeNumberOfVisibleElements('.buttons', 3);
-   * ```
+   * Asserts that an element is visible a given number of times.
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+
+@param locator element located by CSS|XPath|strict locator.
+@param num number of elements.
    */
   async seeNumberOfVisibleElements(locator, num) {
     const res = await this.grabNumberOfVisibleElements(locator);
@@ -1215,8 +1241,8 @@ console.log(`Current URL is [${url}]`);
 I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 ```
 
-@param locator
-@param properties
+@param locator located by CSS|XPath|strict locator.
+@param cssProperties object with CSS properties and their values to check.
    */
   async seeCssPropertiesOnElements(locator, cssProperties) {
     const res = await this._locate(locator);
@@ -1257,6 +1283,8 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 I.seeAttributesOnElements('//form', {'method': "post"});
 ```
 
+@param locator located by CSS|XPath|strict locator.
+@param attributes object with attributes and their values to check.
    */
   async seeAttributesOnElements(locator, attributes) {
     const res = await this._locate(locator);
@@ -1283,11 +1311,13 @@ I.seeAttributesOnElements('//form', {'method': "post"});
   }
 
   /**
-   * Grab number of visible elements by locator
-   *
-   * ```js
-   * I.grabNumberOfVisibleElements('p');
-   * ```
+   * Grab number of visible elements by locator.
+
+```js
+I.grabNumberOfVisibleElements('p');
+```
+
+@param locator located by CSS|XPath|strict locator.
    */
   async grabNumberOfVisibleElements(locator) {
     const res = await this._locate(locator);
@@ -1304,7 +1334,8 @@ I.seeAttributesOnElements('//form', {'method': "post"});
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
 ```
-@param url
+
+@param url value to check.
    * Appium: support only web testing
    */
   async seeInCurrentUrl(url) {
@@ -1315,7 +1346,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
   /**
    * Checks that current url does not contain a provided fragment.
 
-@param url
+@param url value to check.
    * Appium: support only web testing
    */
   async dontSeeInCurrentUrl(url) {
@@ -1332,7 +1363,8 @@ So both examples will work:
 I.seeCurrentUrlEquals('/register');
 I.seeCurrentUrlEquals('http://my.site.com/register');
 ```
-@param url
+
+@param url value to check.
    * Appium: support only web testing
    */
   async seeCurrentUrlEquals(url) {
@@ -1344,7 +1376,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
    * Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
-@param url
+@param url value to check.
    * Appium: support only web testing
    */
   async dontSeeCurrentUrlEquals(url) {
@@ -1376,9 +1408,8 @@ let date = await I.executeScript(function(el) {
 }, '#date'); // passing jquery selector
 ```
 
-@param fn function to be executed in browser context
-@param ...args args to be passed to function
-
+@param fn function to be executed in browser context.
+@param ...args args to be passed to function.
    * Appium: support only web testing
    *
    * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
@@ -1409,8 +1440,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param fn function to be executed in browser context
-@param ...args args to be passed to function
+@param fn function to be executed in browser context.
+@param ...args args to be passed to function.
    * Appium: support only web testing
    */
   executeAsyncScript(fn) {
@@ -1419,13 +1450,31 @@ let val = await I.executeAsyncScript(function(url, done) {
 
   /**
    * Scrolls to element matched by locator.
-   * Extra shift can be set with offsetX and offsetY options
-   * Appium: support only web testing
+   * Extra shift can be set with offsetX and offsetY options.
    *
    * ```js
    * I.scrollTo('footer');
-   * I.scrollTo('#submit', 5,5);
+   * I.scrollTo('#submit', 5, 5);
    * ```
+   *
+   * @param locator located by CSS|XPath|strict locator.
+   * @param offsetX (optional) X-axis offset.
+   * @param offsetY (optional) Y-axis offset.
+   */
+
+  /**
+   * Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5, 5);
+```
+
+@param locator located by CSS|XPath|strict locator.
+@param offsetX (optional) X-axis offset.
+@param offsetY (optional) Y-axis offset.
+   * Appium: support only web testing
    */
   async scrollTo(locator, offsetX = 0, offsetY = 0) {
     if (typeof locator === 'number' && typeof offsetX === 'number') {
@@ -1457,13 +1506,16 @@ let val = await I.executeAsyncScript(function(url, done) {
 
   /**
    * Moves cursor to element matched by locator.
-Extra shift can be set with offsetX and offsetY options
+Extra shift can be set with offsetX and offsetY options.
 
 ```js
 I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 ```
 
+@param locator located by CSS|XPath|strict locator.
+@param offsetX (optional) X-axis offset.
+@param offsetY (optional) Y-axis offset.
    * Appium: support only web testing
    */
   async moveCursorTo(locator, offsetX = 0, offsetY = 0) {
@@ -1503,10 +1555,11 @@ Optionally resize the window to the full available page `scrollHeight` and `scro
 
 ```js
 I.saveScreenshot('debug.png');
-I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
+I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
-@param fileName
-@param fullPage (optional)
+
+@param fileName file name to save. 
+@param fullPage (optional) flag to enable fullscreen screenshot mode.
    * Appium: support
    */
   async saveScreenshot(fileName, fullPage = false) {
@@ -1535,12 +1588,13 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 
 
   /**
-   * Sets a cookie
+   * Sets a cookie.
 
 ```js
 I.setCookie({name: 'auth', value: true});
 ```
-@param cookie
+
+@param cookie cookie JSON object.
    * Appium: support only web testing
    *
    * Uses Selenium's JSON [cookie
@@ -1552,13 +1606,14 @@ I.setCookie({name: 'auth', value: true});
 
   /**
    * Clears a cookie by name,
-if none provided clears all cookies
+if none provided clears all cookies.
 
 ```js
 I.clearCookie();
 I.clearCookie('test');
 ```
-@param cookie (optional)
+
+@param cookie (optional) cookie name.
    * Appium: support only web testing
    */
   async clearCookie(cookie) {
@@ -1571,7 +1626,8 @@ I.clearCookie('test');
 ```js
 I.seeCookie('Auth');
 ```
-@param name
+
+@param name cookie name.
    * Appium: support only web testing
    */
   async seeCookie(name) {
@@ -1582,7 +1638,7 @@ I.seeCookie('Auth');
   /**
    * Checks that cookie with given name does not exist.
 
-@param name
+@param name cookie name.
    * Appium: support only web testing
    */
   async dontSeeCookie(name) {
@@ -1591,14 +1647,16 @@ I.seeCookie('Auth');
   }
 
   /**
-   * Gets a cookie object by name
+   * Gets a cookie object by name.
+If none provided gets all cookies.
 * Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
-@param name
+
+@param name (optional) cookie name.
    * Appium: support only web testing
    */
   async grabCookie(name) {
@@ -1633,6 +1691,8 @@ assert(cookie.value, '123456');
   /**
    * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
    * given string. Appium: support only web testing
+   *
+   * @param text value to check.
    */
   async seeInPopup(text) {
     return this.browser.alertText().then((res) => {
@@ -1644,7 +1704,7 @@ assert(cookie.value, '123456');
   }
 
   /**
-   * Grab the text within the popup. If no popup is visible then it will return null
+   * Grab the text within the popup. If no popup is visible then it will return null.
    *
    * ```js
    * await I.grabPopupText();
@@ -1666,6 +1726,7 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 
+@param key key or array of keys to press.
    * [Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
 
 - `'Add'`,
@@ -1706,8 +1767,6 @@ I.pressKey(['Control','a']);
    * I.click('#someelement');
    * I.pressKey('Control');
    * ```
-   *
-   *
    */
   async pressKey(key) {
     let modifier;
@@ -1722,10 +1781,10 @@ I.pressKey(['Control','a']);
 
   /**
    * Resize the current window to provided width and height.
-First parameter can be set to `maximize`
+First parameter can be set to `maximize`.
 
-@param width or `maximize`
-@param height
+@param width width in pixels or `maximize`.
+@param height height in pixels.
    * Appium: not tested in web, in apps doesn't work
    */
   async resizeWindow(width, height) {
@@ -1747,11 +1806,14 @@ First parameter can be set to `maximize`
 
   /**
    * Drag an item to a destination element.
+
+```js
+I.dragAndDrop('#dragHandle', '#container');
+```
+
+@param srcElement located by CSS|XPath|strict locator.
+@param destElement located by CSS|XPath|strict locator.
    * Appium: not tested
-   *
-   * ```js
-   * I.dragAndDrop('#dragHandle', '#container');
-   * ```
    */
   async dragAndDrop(srcElement, destElement) {
     const client = this.browser;
@@ -1815,7 +1877,8 @@ First parameter can be set to `maximize`
 I.wait(2); // wait 2 secs
 ```
 
-@param sec
+@param sec number of second to wait.
+@param sec time in seconds to wait.
    * Appium: support
    */
   async wait(sec) {
@@ -1826,8 +1889,8 @@ I.wait(2); // wait 2 secs
    * Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitForEnabled(locator, sec = null) {
@@ -1855,8 +1918,8 @@ I.waitForElement('.btn.continue');
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitForElement(locator, sec = null) {
@@ -1881,6 +1944,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 ```js
 I.waitInUrl('/info', 2);
 ```
+
+@param urlPart value to check.
+@param sec (optional) time in seconds to wait.
    */
   async waitInUrl(urlPart, sec = null) {
     const client = this.browser;
@@ -1908,6 +1974,9 @@ I.waitInUrl('/info', 2);
 I.waitUrlEquals('/info', 2);
 I.waitUrlEquals('http://127.0.0.1:8000/info');
 ```
+
+@param urlPart value to check.
+@param sec (optional) time in seconds to wait.
    */
   async waitUrlEquals(urlPart, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -1940,17 +2009,17 @@ I.waitForText('Thank you, form has been submitted');
 I.waitForText('Thank you, form has been submitted', 5, '#modal');
 ```
 
-@param text to wait for
-@param sec seconds to wait
-@param context element located by CSS|XPath|strict locator
+@param text to wait for.
+@param sec (optional) time in seconds to wait.
+@param context (optional) element located by CSS|XPath|strict locator.
    * Appium: support
    */
-  async waitForText(text, sec = null, aContext = null) {
+  async waitForText(text, sec = null, context = null) {
     const aSec = sec || this.options.waitForTimeout;
-    const context = aContext || this.root;
+    const _context = context || this.root;
     return this.browser.waitUntil(
       async () => {
-        const res = await this.browser.elements(withStrictLocator.call(this, context));
+        const res = await this.browser.elements(withStrictLocator.call(this, _context));
         if (!res.value || res.value.length === 0) return false;
         const selected = await forEachAsync(res.value, async el => this.browser.elementIdText(el.ELEMENT));
         if (Array.isArray(selected)) {
@@ -1958,21 +2027,20 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
         }
         return selected.indexOf(text) >= 0;
       }, aSec * 1000,
-      `element (${context}) is not in DOM or there is no element(${context}) with text "${text}" after ${aSec} sec`,
+      `element (${_context}) is not in DOM or there is no element(${_context}) with text "${text}" after ${aSec} sec`,
     );
   }
 
   /**
-   *   Waits for the specified value to be in value attribute
+   * Waits for the specified value to be in value attribute.
 
-  ```js
-  I.waitForValue('//input', "GoodValue");
-  ```
+```js
+I.waitForValue('//input', "GoodValue");
+```
 
-  @param field input field
-  @param value expected value
-  @param sec seconds to wait, 1 sec by default
-
+@param field input field.
+@param value expected value.
+@param sec (optional) time in seconds to wait, 1 sec by default.
    */
   async waitForValue(field, value, sec = null) {
     const client = this.browser;
@@ -1999,8 +2067,8 @@ Element can be located by CSS or XPath.
 I.waitForVisible('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitForVisible(locator, sec = null) {
@@ -2017,14 +2085,15 @@ I.waitForVisible('#popup');
   }
 
   /**
-   * Waits for a specified number of elements on the page
+   * Waits for a specified number of elements on the page.
 
 ```js
 I.waitNumberOfVisibleElements('a', 3);
 ```
 
-@param locator
-@param seconds
+@param locator element located by CSS|XPath|strict locator.
+@param num number of elements.
+@param sec (optional) time in seconds to wait.
    */
   async waitNumberOfVisibleElements(locator, num, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -2046,9 +2115,8 @@ Element can be located by CSS or XPath.
 I.waitForInvisible('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitForInvisible(locator, sec = null) {
@@ -2072,9 +2140,8 @@ Element can be located by CSS or XPath.
 I.waitToHide('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitToHide(locator, sec = null) {
@@ -2094,9 +2161,8 @@ Element can be located by CSS or XPath.
 I.waitForDetached('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitForDetached(locator, sec = null) {
@@ -2124,10 +2190,9 @@ I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
 I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
-@param function to be executed in browser context
-@param args arguments for function
-@param sec time seconds to wait, 1 by default
-
+@param fn to be executed in browser context.
+@param argsOrSec (optional) arguments for function or seconds.
+@param sec (optional) time in seconds to wait, 1 by default.
    * Appium: support
    */
   async waitForFunction(fn, argsOrSec = null, sec = null) {
@@ -2153,9 +2218,9 @@ I.waitUntil(() => window.requests == 0);
 I.waitUntil(() => window.requests == 0, 5);
 ```
 
-@param function function which is executed in browser context.
-@param sec time seconds to wait, 1 by default
-
+@param fn function which is executed in browser context.
+@param sec (optional) time in seconds to wait, 1 by default.
+@param timeoutMsg (optional) message to show in case of timeout fail.
    * Appium: support
    */
   async waitUntil(fn, sec = null, timeoutMsg = null) {
@@ -2165,6 +2230,8 @@ I.waitUntil(() => window.requests == 0, 5);
 
   /**
    * Switches frame or in case of null locator reverts to parent.
+
+@param locator element located by CSS|XPath|strict locator.
    * Appium: support only web testing
    */
   async switchTo(locator) {
@@ -2179,12 +2246,15 @@ I.waitUntil(() => window.requests == 0, 5);
   }
 
   /**
-   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
    *
    * ```js
    * I.switchToNextTab();
    * I.switchToNextTab(2);
    * ```
+   *
+   * @param num (optional) number of tabs to switch forward, default: 1.
+   * @param sec (optional) time in seconds to wait.
    */
   async switchToNextTab(num = 1, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -2202,12 +2272,15 @@ I.waitUntil(() => window.requests == 0, 5);
   }
 
   /**
-   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+   * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
    *
    * ```js
    * I.switchToPreviousTab();
    * I.switchToPreviousTab(2);
    * ```
+   *
+   * @param num (optional) number of tabs to switch backward, default: 1.
+   * @param sec (optional) time in seconds to wait.
    */
   async switchToPreviousTab(num = 1, sec = null) {
     const aSec = sec || this.options.waitForTimeout;
@@ -2224,7 +2297,7 @@ I.waitUntil(() => window.requests == 0, 5);
   }
 
   /**
-   * Close current tab
+   * Close current tab.
    *
    * ```js
    * I.closeCurrentTab();
@@ -2236,7 +2309,7 @@ I.waitUntil(() => window.requests == 0, 5);
   }
 
   /**
-   * Open new tab and switch to it
+   * Open new tab and switch to it.
    *
    * ```js
    * I.openNewTab();
@@ -2248,7 +2321,7 @@ I.waitUntil(() => window.requests == 0, 5);
   }
 
   /**
-   * Grab number of open tabs
+   * Grab number of open tabs.
 
 ```js
 I.grabNumberOfOpenTabs();
@@ -2273,11 +2346,11 @@ I.grabNumberOfOpenTabs();
   }
 
   /**
-   * Scroll page to the top
-   *
-   * ```js
-   * I.scrollPageToTop();
-   * ```
+   * Scroll page to the top.
+
+```js
+I.scrollPageToTop();
+```
    */
   scrollPageToTop() {
     const client = this.browser;
@@ -2289,11 +2362,11 @@ I.grabNumberOfOpenTabs();
   }
 
   /**
-   * Scroll page to the bottom
-   *
-   * ```js
-   * I.scrollPageToBottom();
-   * ```
+   * Scroll page to the bottom.
+
+```js
+I.scrollPageToBottom();
+```
    */
   scrollPageToBottom() {
     const client = this.browser;
@@ -2330,19 +2403,19 @@ let { x, y } = await I.grabPageScrollPosition();
   }
 
   /**
-   * placeholder for ~ locator only test case write once run on both Appium and WebDriverIO
+   * Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
    */
   runOnIOS(caps, fn) {
   }
 
   /**
-   * placeholder for ~ locator only test case write once run on both Appium and WebDriverIO
+   * Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
    */
   runOnAndroid(caps, fn) {
   }
 
   /**
-   * placeholder for ~ locator only test case write once run on both Appium and WebDriverIO
+   * Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
    */
   runInWeb(fn) {
     return fn();

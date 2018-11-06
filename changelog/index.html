@@ -302,7 +302,10 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#144">1.4.4</a></li>
+        <li class="main active"><a href="#145">1.4.5</a></li>
+        
+    
+        <li class="main "><a href="#144">1.4.4</a></li>
         
     
         <li class="main "><a href="#143">1.4.3</a></li>
@@ -491,6 +494,28 @@
 </div></div>
             <div class="col-md-7" role="main">
 
+<h2 id="145">1.4.5</h2>
+<ul>
+<li>Add <strong>require</strong> param to main config. Allows to require Node modules before executing tests. By @LukoyanovE</li>
+</ul>
+<p>Example (<code>codecept.json</code>):</p>
+<p><code>js
+     "require": ["ts-node/register", "should"]</code></p>
+<ul>
+<li>Uses <code>ts-node/register</code> to register TypeScript parser</li>
+<li>
+<p>Uses <code>should</code> to register should-style assertions</p>
+</li>
+<li>
+<p>[WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE</p>
+</li>
+<li>Fixed: exception in Before block w/ Mocha causes test not to report failure. See <a href="https://github.com/Codeception/CodeceptJS/pull/1292">#1292</a> by @PeterNgTr</li>
+<li>Command <code>run-parallel</code> now accepts <code>--override</code> flag. Thanks to @ClemCB</li>
+<li>Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By @PeterNgTr</li>
+<li>Added <code>RUN_MULTIPLE</code> env variable to <a href="https://codecept.io/docker/">Docker config</a>. Allows to run tests in parallel inside a container. Thanks to @PeterNgTr</li>
+<li>[Mochawesome] Fixed showing screenshot on failure. Fix by @PeterNgTr</li>
+<li>Fixed running tests filtering by tag names defined via <code>Scenario.tag()</code></li>
+</ul>
 <h2 id="144">1.4.4</h2>
 <ul>
 <li><a href="https://codecept.io/plugins/#autoDelay">autoDelay plugin</a> added. Adds tiny delay before and after an action so the page could react to actions performed.</li>
@@ -1497,6 +1522,26 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
 <li>Fixed loading of custom helpers</li>
 </ul></div>
             <div class="col-md-2" class="promo-1">
+
+    <div>
+
+        <h3>Search</h3>
+            <script>
+                    (function() {
+                      var cx = '009959493015473517972:w6bnokjcsq8';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+
+                  <hr>
+    </div>
+
     <div class="promo-banner"  >
                 <h3>
                     Enterprise Support

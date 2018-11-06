@@ -1119,7 +1119,7 @@ Field is located by name, label, CSS or XPath
 I.appendField('#myTextField', 'appended');
 ```
 @param field located by label|name|CSS|XPath|strict locator
-@param value text value
+@param value text value to append.
    *
    */
   async appendField(field, value) {
@@ -1138,13 +1138,13 @@ I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
 I.checkOption('agree', '//form');
 ```
-@param field checkbox located by label | name | CSS | XPath | strict locator
-@param context (optional) element located by CSS | XPath | strict locator
+@param field checkbox located by label | name | CSS | XPath | strict locator.
+@param context (optional) element located by CSS | XPath | strict locator.
    *
    */
-  async checkOption(checkbox) {
-    if (this.isWeb) return super.checkOption(checkbox);
-    return super.checkOption(parseLocator.call(this, checkbox));
+  async checkOption(field) {
+    if (this.isWeb) return super.checkOption(field);
+    return super.checkOption(parseLocator.call(this, field));
   }
 
   /**
@@ -1169,44 +1169,44 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
-@param context (optional) element to search in CSS|XPath|Strict locator
+
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+@param context (optional) element to search in CSS|XPath|Strict locator.
    *
    */
-  async click(button, context) {
-    if (this.isWeb) return super.click(button, context);
-    return super.click(parseLocator.call(this, button), parseLocator.call(this, context));
+  async click(locator, context) {
+    if (this.isWeb) return super.click(locator, context);
+    return super.click(parseLocator.call(this, locator), parseLocator.call(this, context));
   }
 
   /**
    * Verifies that the specified checkbox is not checked.
 
-@param field located by label|name|CSS|XPath|strict locator
-
+@param field located by label|name|CSS|XPath|strict locator.
    *
    */
-  async dontSeeCheckboxIsChecked(checkbox) {
-    if (this.isWeb) return super.dontSeeCheckboxIsChecked(checkbox);
-    return super.dontSeeCheckboxIsChecked(parseLocator.call(this, checkbox));
+  async dontSeeCheckboxIsChecked(field) {
+    if (this.isWeb) return super.dontSeeCheckboxIsChecked(field);
+    return super.dontSeeCheckboxIsChecked(parseLocator.call(this, field));
   }
 
   /**
    * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
-@param locator located by CSS|XPath|Strict locator
+@param locator located by CSS|XPath|Strict locator.
    *
    */
-  async dontSeeElement(el, context) {
-    if (this.isWeb) return super.dontSeeElement(el);
-    return super.dontSeeElement(parseLocator.call(this, el));
+  async dontSeeElement(locator, context) {
+    if (this.isWeb) return super.dontSeeElement(locator);
+    return super.dontSeeElement(parseLocator.call(this, locator));
   }
 
   /**
    * Checks that value of input field or textare doesn't equal to given value
 Opposite to `seeInField`.
 
-@param field located by label|name|CSS|XPath|strict locator
-@param value is not expected to be a field value
+@param field located by label|name|CSS|XPath|strict locator.
+@param value value to check.
    *
    */
   async dontSeeInField(field, value) {
@@ -1222,8 +1222,8 @@ Use context parameter to narrow down the search.
 ```js
 I.dontSee('Login'); // assume we are already logged in
 ```
-@param text is not present
-@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
+@param text is not present.
+@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search.
    *
    */
   async dontSee(text, context) {
@@ -1245,9 +1245,8 @@ I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
 ```
-@param field located by label|name|CSS|XPath|strict locator
-@param value
-
+@param field located by label|name|CSS|XPath|strict locator.
+@param value text value to fill.
    *
    */
   async fillField(field, value) {
@@ -1264,12 +1263,12 @@ let pin = await I.grabTextFrom('#pin');
 ```
 If multiple elements found returns an array of texts.
 
-@param locator element located by CSS|XPath|strict locator
+@param locator element located by CSS|XPath|strict locator.
    *
    */
-  async grabTextFrom(el) {
-    if (this.isWeb) return super.grabTextFrom(el);
-    return super.grabTextFrom(parseLocator.call(this, el));
+  async grabTextFrom(locator) {
+    if (this.isWeb) return super.grabTextFrom(locator);
+    return super.grabTextFrom(parseLocator.call(this, locator));
   }
 
   /**
@@ -1279,12 +1278,12 @@ Resumes test execution, so **should be used inside async function with `await`**
 ```js
 let email = await I.grabValueFrom('input[name=email]');
 ```
-@param locator field located by label|name|CSS|XPath|strict locator
+@param locator field located by label|name|CSS|XPath|strict locator.
    *
    */
-  async grabValueFrom(el) {
-    if (this.isWeb) return super.grabValueFrom(el);
-    return super.grabValueFrom(parseLocator.call(this, el));
+  async grabValueFrom(locator) {
+    if (this.isWeb) return super.grabValueFrom(locator);
+    return super.grabValueFrom(parseLocator.call(this, locator));
   }
 
   /**
@@ -1295,12 +1294,12 @@ I.seeCheckboxIsChecked('Agree');
 I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
 I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 ```
-@param field located by label|name|CSS|XPath|strict locator
+@param field located by label|name|CSS|XPath|strict locator.
    *
    */
-  async seeCheckboxIsChecked(checkbox) {
-    if (this.isWeb) return super.seeCheckboxIsChecked(checkbox);
-    return super.seeCheckboxIsChecked(parseLocator.call(this, checkbox));
+  async seeCheckboxIsChecked(field) {
+    if (this.isWeb) return super.seeCheckboxIsChecked(field);
+    return super.seeCheckboxIsChecked(parseLocator.call(this, field));
   }
 
   /**
@@ -1310,12 +1309,12 @@ Element is located by CSS or XPath.
 ```js
 I.seeElement('#modal');
 ```
-@param locator located by CSS|XPath|strict locator
+@param locator located by CSS|XPath|strict locator.
    *
    */
-  async seeElement(el) {
-    if (this.isWeb) return super.seeElement(el);
-    return super.seeElement(parseLocator.call(this, el));
+  async seeElement(locator) {
+    if (this.isWeb) return super.seeElement(locator);
+    return super.seeElement(parseLocator.call(this, locator));
   }
 
   /**
@@ -1328,8 +1327,8 @@ I.seeInField({css: 'form textarea'},'Type your comment here');
 I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
 ```
-@param field located by label|name|CSS|XPath|strict locator
-@param value
+@param field located by label|name|CSS|XPath|strict locator.
+@param value value to check.
    *
    */
   async seeInField(field, value) {
@@ -1346,8 +1345,8 @@ I.see('Welcome'); // text welcome on a page
 I.see('Welcome', '.content'); // text inside .content div
 I.see('Register', {css: 'form.register'}); // use strict locator
 ```
-@param text expected on page
-@param context (optional) element located by CSS|Xpath|strict locator in which to search for text
+@param text expected on page.
+@param context (optional) element located by CSS|Xpath|strict locator in which to search for text.
    *
    */
   async see(text, context) {
@@ -1374,12 +1373,9 @@ Provide an array for the second argument to select multiple options.
 ```js
 I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 ```
-@param select field located by label|name|CSS|XPath|strict locator
-@param option
-
-   *
+@param select field located by label|name|CSS|XPath|strict locator.
+@param option visible text or value of option.
    * Support only web testing!
-   *
    */
   async selectOption(select, option) {
     if (this.isWeb) return super.selectOption(select, option);

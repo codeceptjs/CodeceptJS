@@ -463,7 +463,7 @@ I.amOnPage('https://github.com'); // opens github
 I.amOnPage('/login'); // opens a login page
 ```
 
-@param url url path or global url
+@param url url path or global url.
    */
   async amOnPage(url) {
     if (url.indexOf('http') !== 0) {
@@ -475,10 +475,10 @@ I.amOnPage('/login'); // opens a login page
 
   /**
    * Resize the current window to provided width and height.
-First parameter can be set to `maximize`
+First parameter can be set to `maximize`.
 
-@param width or `maximize`
-@param height
+@param width width in pixels or `maximize`.
+@param height height in pixels.
    *
    * Unlike other drivers Puppeteer changes the size of a viewport, not the window!
    * Puppeteer does not control the window of a browser so it can't adjust its real size.
@@ -509,16 +509,18 @@ First parameter can be set to `maximize`
     return this.page.setExtraHTTPHeaders(customHeaders);
   }
 
-
   /**
    * Moves cursor to element matched by locator.
-Extra shift can be set with offsetX and offsetY options
+Extra shift can be set with offsetX and offsetY options.
 
 ```js
 I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 ```
 
+@param locator located by CSS|XPath|strict locator.
+@param offsetX (optional) X-axis offset.
+@param offsetY (optional) Y-axis offset.
    */
   async moveCursorTo(locator, offsetX = 0, offsetY = 0) {
     const els = await this._locate(locator);
@@ -532,13 +534,16 @@ I.moveCursorTo('#submit', 5,5);
 
   /**
    * Drag an item to a destination element.
-   *
-   * ```js
-   * I.dragAndDrop('#dragHandle', '#container');
-   * ```
+
+```js
+I.dragAndDrop('#dragHandle', '#container');
+```
+
+@param srcElement located by CSS|XPath|strict locator.
+@param destElement located by CSS|XPath|strict locator.
    */
-  async dragAndDrop(source, destination) {
-    return proceedDragAndDrop.call(this, source, destination);
+  async dragAndDrop(srcElement, destElement) {
+    return proceedDragAndDrop.call(this, srcElement, destElement);
   }
 
   /**
@@ -554,7 +559,7 @@ I.moveCursorTo('#submit', 5,5);
   }
 
   /**
-   * Scroll page to the top
+   * Scroll page to the top.
 
 ```js
 I.scrollPageToTop();
@@ -567,7 +572,7 @@ I.scrollPageToTop();
   }
 
   /**
-   * Scroll page to the bottom
+   * Scroll page to the bottom.
 
 ```js
 I.scrollPageToBottom();
@@ -586,12 +591,16 @@ I.scrollPageToBottom();
 
   /**
    * Scrolls to element matched by locator.
-Extra shift can be set with offsetX and offsetY options
+Extra shift can be set with offsetX and offsetY options.
 
 ```js
 I.scrollTo('footer');
-I.scrollTo('#submit', 5,5);
+I.scrollTo('#submit', 5, 5);
 ```
+
+@param locator located by CSS|XPath|strict locator.
+@param offsetX (optional) X-axis offset.
+@param offsetY (optional) Y-axis offset.
    */
   async scrollTo(locator, offsetX = 0, offsetY = 0) {
     if (typeof locator === 'number' && typeof offsetX === 'number') {
@@ -619,7 +628,7 @@ I.scrollTo('#submit', 5,5);
   /**
    * Checks that title contains text.
 
-@param text
+@param text text value to check.
    */
   async seeInTitle(text) {
     const title = await this.page.title();
@@ -661,7 +670,7 @@ let { x, y } = await I.grabPageScrollPosition();
   /**
    * Checks that title does not contain text.
 
-@param text
+@param text text value to check.
    */
   async dontSeeInTitle(text) {
     const title = await this.page.title();
@@ -816,7 +825,7 @@ let title = await I.grabTitle();
   }
 
   /**
-   * Grab number of open tabs
+   * Grab number of open tabs.
 
 ```js
 I.grabNumberOfOpenTabs();
@@ -834,7 +843,7 @@ Element is located by CSS or XPath.
 ```js
 I.seeElement('#modal');
 ```
-@param locator located by CSS|XPath|strict locator
+@param locator located by CSS|XPath|strict locator.
    */
 
   async seeElement(locator) {
@@ -846,7 +855,7 @@ I.seeElement('#modal');
   /**
    * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
-@param locator located by CSS|XPath|Strict locator
+@param locator located by CSS|XPath|Strict locator.
    */
   async dontSeeElement(locator) {
     let els = await this._locate(locator);
@@ -861,7 +870,7 @@ Element is located by CSS or XPath.
 ```js
 I.seeElementInDOM('#modal');
 ```
-@param locator located by CSS|XPath|strict locator
+@param locator located by CSS|XPath|strict locator.
    */
   async seeElementInDOM(locator) {
     const els = await this._locate(locator);
@@ -871,7 +880,7 @@ I.seeElementInDOM('#modal');
   /**
    * Opposite to `seeElementInDOM`. Checks that element is not on page.
 
-@param locator located by CSS|XPath|Strict locator
+@param locator located by CSS|XPath|Strict locator.
    */
   async dontSeeElementInDOM(locator) {
     const els = await this._locate(locator);
@@ -900,8 +909,9 @@ I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
 ```
-@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
-@param context (optional) element to search in CSS|XPath|Strict locator
+
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+@param context (optional) element to search in CSS|XPath|Strict locator.
    */
   async click(locator, context = null) {
     return proceedClick.call(this, locator, context);
@@ -915,7 +925,6 @@ I.click('Logout', '#nav');
 ```
 @param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
 @param context (optional) element to search in CSS|XPath|Strict locator
-
    */
   async clickLink(locator, context = null) {
     return proceedClick.call(this, locator, context, { waitForNavigation: true });
@@ -932,8 +941,8 @@ I.doubleClick({css: 'button.accept'});
 I.doubleClick('.btn.edit');
 ```
 
-@param locator
-@param context
+@param locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+@param context (optional) element to search in CSS|XPath|Strict locator.
    */
   async doubleClick(locator, context = null) {
     return proceedClick.call(this, locator, context, { clickCount: 2 });
@@ -941,6 +950,8 @@ I.doubleClick('.btn.edit');
 
   /**
    * Performs right click on an element matched by CSS or XPath.
+
+@param locator element located by CSS|XPath|strict locator.
    */
   async rightClick(locator, context = null) {
     return proceedClick.call(this, locator, context, { button: 'right' });
@@ -957,8 +968,8 @@ I.checkOption('#agree');
 I.checkOption('I Agree to Terms and Conditions');
 I.checkOption('agree', '//form');
 ```
-@param field checkbox located by label | name | CSS | XPath | strict locator
-@param context (optional) element located by CSS | XPath | strict locator
+@param field checkbox located by label | name | CSS | XPath | strict locator.
+@param context (optional) element located by CSS | XPath | strict locator.
    */
   async checkOption(field, context = null) {
     const els = await findCheckable.call(this, field, context);
@@ -976,7 +987,7 @@ I.seeCheckboxIsChecked('Agree');
 I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
 I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 ```
-@param field located by label|name|CSS|XPath|strict locator
+@param field located by label|name|CSS|XPath|strict locator.
    */
   async seeCheckboxIsChecked(field) {
     return proceedIsChecked.call(this, 'assert', field);
@@ -985,8 +996,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
   /**
    * Verifies that the specified checkbox is not checked.
 
-@param field located by label|name|CSS|XPath|strict locator
-
+@param field located by label|name|CSS|XPath|strict locator.
    */
   async dontSeeCheckboxIsChecked(field) {
     return proceedIsChecked.call(this, 'negate', field);
@@ -1003,6 +1013,7 @@ I.pressKey('Enter');
 I.pressKey(['Control','a']);
 ```
 
+@param key key or array of keys to press.
    */
   async pressKey(key) {
     let modifier;
@@ -1031,9 +1042,8 @@ I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
 ```
-@param field located by label|name|CSS|XPath|strict locator
-@param value
-
+@param field located by label|name|CSS|XPath|strict locator.
+@param value text value to fill.
    */
   async fillField(field, value) {
     const els = await findFields.call(this, field);
@@ -1060,7 +1070,7 @@ I.clearField('Email');
 I.clearField('user[email]');
 I.clearField('#email');
 ```
-@param field located by label|name|CSS|XPath|strict locator
+@param field located by label|name|CSS|XPath|strict locator.
    */
   async clearField(field) {
     return this.fillField(field, '');
@@ -1074,7 +1084,7 @@ Field is located by name, label, CSS or XPath
 I.appendField('#myTextField', 'appended');
 ```
 @param field located by label|name|CSS|XPath|strict locator
-@param value text value
+@param value text value to append.
    */
   async appendField(field, value) {
     const els = await findFields.call(this, field);
@@ -1094,8 +1104,8 @@ I.seeInField({css: 'form textarea'},'Type your comment here');
 I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
 ```
-@param field located by label|name|CSS|XPath|strict locator
-@param value
+@param field located by label|name|CSS|XPath|strict locator.
+@param value value to check.
    */
   async seeInField(field, value) {
     return proceedSeeInField.call(this, 'assert', field, value);
@@ -1105,8 +1115,8 @@ I.seeInField('#searchform input','Search');
    * Checks that value of input field or textare doesn't equal to given value
 Opposite to `seeInField`.
 
-@param field located by label|name|CSS|XPath|strict locator
-@param value is not expected to be a field value
+@param field located by label|name|CSS|XPath|strict locator.
+@param value value to check.
    */
   async dontSeeInField(field, value) {
     return proceedSeeInField.call(this, 'negate', field, value);
@@ -1122,9 +1132,9 @@ File will be uploaded to remote system (if tests are running remotely).
 I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
-@param locator field located by label|name|CSS|XPath|strict locator
-@param pathToFile local file path relative to codecept.json config file
 
+@param locator field located by label|name|CSS|XPath|strict locator.
+@param pathToFile local file path relative to codecept.json config file.
    *
    */
   async attachFile(locator, pathToFile) {
@@ -1158,9 +1168,8 @@ Provide an array for the second argument to select multiple options.
 ```js
 I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 ```
-@param select field located by label|name|CSS|XPath|strict locator
-@param option
-
+@param select field located by label|name|CSS|XPath|strict locator.
+@param option visible text or value of option.
    */
   async selectOption(select, option) {
     const els = await findFields.call(this, select);
@@ -1192,11 +1201,13 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
   }
 
   /**
-   * * Grab number of visible elements by locator
+   * Grab number of visible elements by locator.
 
 ```js
 I.grabNumberOfVisibleElements('p');
 ```
+
+@param locator located by CSS|XPath|strict locator.
    */
   async grabNumberOfVisibleElements(locator) {
     let els = await this._locate(locator);
@@ -1210,7 +1221,8 @@ I.grabNumberOfVisibleElements('p');
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
 ```
-@param url
+
+@param url value to check.
    */
   async seeInCurrentUrl(url) {
     stringIncludes('url').assert(url, await this._getPageUrl());
@@ -1219,7 +1231,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
   /**
    * Checks that current url does not contain a provided fragment.
 
-@param url
+@param url value to check.
    */
   async dontSeeInCurrentUrl(url) {
     stringIncludes('url').negate(url, await this._getPageUrl());
@@ -1234,7 +1246,8 @@ So both examples will work:
 I.seeCurrentUrlEquals('/register');
 I.seeCurrentUrlEquals('http://my.site.com/register');
 ```
-@param url
+
+@param url value to check.
    */
   async seeCurrentUrlEquals(url) {
     urlEquals(this.options.url).assert(url, await this._getPageUrl());
@@ -1244,7 +1257,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
    * Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
-@param url
+@param url value to check.
    */
   async dontSeeCurrentUrlEquals(url) {
     urlEquals(this.options.url).negate(url, await this._getPageUrl());
@@ -1259,8 +1272,8 @@ I.see('Welcome'); // text welcome on a page
 I.see('Welcome', '.content'); // text inside .content div
 I.see('Register', {css: 'form.register'}); // use strict locator
 ```
-@param text expected on page
-@param context (optional) element located by CSS|Xpath|strict locator in which to search for text
+@param text expected on page.
+@param context (optional) element located by CSS|Xpath|strict locator in which to search for text.
    */
   async see(text, context = null) {
     return proceedSee.call(this, 'assert', text, context);
@@ -1284,8 +1297,8 @@ Use context parameter to narrow down the search.
 ```js
 I.dontSee('Login'); // assume we are already logged in
 ```
-@param text is not present
-@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search
+@param text is not present.
+@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search.
    */
   async dontSee(text, context = null) {
     return proceedSee.call(this, 'negate', text, context);
@@ -1336,7 +1349,7 @@ console.log(`Current URL is [${url}]`);
 ```js
 I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 ```
-@param text
+@param text value to check.
    */
   async seeInSource(text) {
     const source = await this.page.content();
@@ -1344,9 +1357,9 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
-   * Checks that the current page contains the given string in its raw source code
+   * Checks that the current page contains the given string in its raw source code.
 
-@param text
+@param text value to check.
    */
   async dontSeeInSource(text) {
     const source = await this.page.content();
@@ -1368,12 +1381,15 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
-   * asserts that an element is visible a given number of times
-   * Element is located by CSS or XPath.
-   *
-   * ```js
-   * I.seeNumberOfVisibleElements('.buttons', 3);
-   * ```
+   * Asserts that an element is visible a given number of times.
+Element is located by CSS or XPath.
+
+```js
+I.seeNumberOfVisibleElements('.buttons', 3);
+```
+
+@param locator element located by CSS|XPath|strict locator.
+@param num number of elements.
    */
   async seeNumberOfVisibleElements(locator, num) {
     const res = await this.grabNumberOfVisibleElements(locator);
@@ -1381,12 +1397,13 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
   }
 
   /**
-   * Sets a cookie
+   * Sets a cookie.
 
 ```js
 I.setCookie({name: 'auth', value: true});
 ```
-@param cookie
+
+@param cookie cookie JSON object.
    */
   async setCookie(cookie) {
     return this.page.setCookie(cookie);
@@ -1398,7 +1415,8 @@ I.setCookie({name: 'auth', value: true});
 ```js
 I.seeCookie('Auth');
 ```
-@param name
+
+@param name cookie name.
    *
    */
   async seeCookie(name) {
@@ -1409,7 +1427,7 @@ I.seeCookie('Auth');
   /**
    * Checks that cookie with given name does not exist.
 
-@param name
+@param name cookie name.
    */
   async dontSeeCookie(name) {
     const cookies = await this.page.cookies();
@@ -1417,14 +1435,16 @@ I.seeCookie('Auth');
   }
 
   /**
-   * Gets a cookie object by name
+   * Gets a cookie object by name.
+If none provided gets all cookies.
 * Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
-@param name
+
+@param name (optional) cookie name.
    *
    * Returns cookie in JSON format. If name not passed returns all cookies for this domain.
    */
@@ -1437,13 +1457,14 @@ assert(cookie.value, '123456');
 
   /**
    * Clears a cookie by name,
-if none provided clears all cookies
+if none provided clears all cookies.
 
 ```js
 I.clearCookie();
 I.clearCookie('test');
 ```
-@param cookie (optional)
+
+@param cookie (optional) cookie name.
    */
   async clearCookie(name) {
     const cookies = await this.page.cookies();
@@ -1479,9 +1500,8 @@ let date = await I.executeScript(function(el) {
 }, '#date'); // passing jquery selector
 ```
 
-@param fn function to be executed in browser context
-@param ...args args to be passed to function
-
+@param fn function to be executed in browser context.
+@param ...args args to be passed to function.
    *
    * If a function returns a Promise It will wait for it resolution.
    */
@@ -1515,8 +1535,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param fn function to be executed in browser context
-@param ...args args to be passed to function
+@param fn function to be executed in browser context.
+@param ...args args to be passed to function.
    *
    * Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
    */
@@ -1545,7 +1565,7 @@ let pin = await I.grabTextFrom('#pin');
 ```
 If multiple elements found returns an array of texts.
 
-@param locator element located by CSS|XPath|strict locator
+@param locator element located by CSS|XPath|strict locator.
    */
   async grabTextFrom(locator) {
     const els = await this._locate(locator);
@@ -1565,7 +1585,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 ```js
 let email = await I.grabValueFrom('input[name=email]');
 ```
-@param locator field located by label|name|CSS|XPath|strict locator
+@param locator field located by label|name|CSS|XPath|strict locator.
    */
   async grabValueFrom(locator) {
     const els = await findFields.call(this, locator);
@@ -1575,13 +1595,13 @@ let email = await I.grabValueFrom('input[name=email]');
 
   /**
    * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-   * Resumes test execution, so **should be used inside async function with `await`** operator.
-   * Appium: support only web testing
-   *
-   *
-   * ```js
-   * let postHTML = await I.grabHTMLFrom('#post');
-   * ```
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTML = await I.grabHTMLFrom('#post');
+```
+
+@param locator element located by CSS|XPath|strict locator.
    */
   async grabHTMLFrom(locator) {
     const els = await this._locate(locator);
@@ -1601,6 +1621,8 @@ Resumes test execution, so **should be used inside an async function with `await
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 ```
 
+@param locator element located by CSS|XPath|strict locator.
+@param cssProperty CSS property name.
    */
   async grabCssPropertyFrom(locator, cssProperty) {
     const els = await this._locate(locator);
@@ -1620,8 +1642,8 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 ```
 
-@param locator
-@param properties
+@param locator located by CSS|XPath|strict locator.
+@param cssProperties object with CSS properties and their values to check.
    */
   async seeCssPropertiesOnElements(locator, cssProperties) {
     const res = await this._locate(locator);
@@ -1665,6 +1687,8 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 I.seeAttributesOnElements('//form', {'method': "post"});
 ```
 
+@param locator located by CSS|XPath|strict locator.
+@param attributes object with attributes and their values to check.
    */
   async seeAttributesOnElements(locator, attributes) {
     const res = await this._locate(locator);
@@ -1700,8 +1724,8 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
-@param locator element located by CSS|XPath|strict locator
-@param attr
+@param locator element located by CSS|XPath|strict locator.
+@param attr attribute name.
    */
   async grabAttributeFrom(locator, attr) {
     const els = await this._locate(locator);
@@ -1717,10 +1741,11 @@ Optionally resize the window to the full available page `scrollHeight` and `scro
 
 ```js
 I.saveScreenshot('debug.png');
-I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
+I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
-@param fileName
-@param fullPage (optional)
+
+@param fileName file name to save. 
+@param fullPage (optional) flag to enable fullscreen screenshot mode.
    */
   async saveScreenshot(fileName, fullPage) {
     const fullPageOption = fullPage || this.options.fullPageScreenshots;
@@ -1740,7 +1765,8 @@ I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrol
 I.wait(2); // wait 2 secs
 ```
 
-@param sec
+@param sec number of second to wait.
+@param sec time in seconds to wait.
    */
   async wait(sec) {
     return new Promise(((done) => {
@@ -1752,8 +1778,8 @@ I.wait(2); // wait 2 secs
    * Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitForEnabled(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1783,20 +1809,19 @@ Element can be located by CSS or XPath.
   }
 
   /**
-   *   Waits for the specified value to be in value attribute
+   * Waits for the specified value to be in value attribute.
 
-  ```js
-  I.waitForValue('//input', "GoodValue");
-  ```
+```js
+I.waitForValue('//input', "GoodValue");
+```
 
-  @param field input field
-  @param value expected value
-  @param sec seconds to wait, 1 sec by default
-
+@param field input field.
+@param value expected value.
+@param sec (optional) time in seconds to wait, 1 sec by default.
    */
-  async waitForValue(locator, value, sec) {
+  async waitForValue(field, value, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
-    locator = new Locator(locator, 'css');
+    const locator = new Locator(field, 'css');
     const matcher = await this.context;
     let waiter;
     const context = await this._getContext();
@@ -1823,14 +1848,15 @@ Element can be located by CSS or XPath.
   }
 
   /**
-   * Waits for a specified number of elements on the page
+   * Waits for a specified number of elements on the page.
 
 ```js
 I.waitNumberOfVisibleElements('a', 3);
 ```
 
-@param locator
-@param seconds
+@param locator element located by CSS|XPath|strict locator.
+@param num number of elements.
+@param sec (optional) time in seconds to wait.
    */
   async waitNumberOfVisibleElements(locator, num, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1868,8 +1894,8 @@ I.waitForElement('.btn.continue');
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitForElement(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1895,8 +1921,8 @@ Element can be located by CSS or XPath.
 I.waitForVisible('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitForVisible(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1926,9 +1952,8 @@ Element can be located by CSS or XPath.
 I.waitForInvisible('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitForInvisible(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1959,9 +1984,8 @@ Element can be located by CSS or XPath.
 I.waitToHide('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitToHide(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -1995,6 +2019,9 @@ I.waitToHide('#popup');
 ```js
 I.waitInUrl('/info', 2);
 ```
+
+@param urlPart value to check.
+@param sec (optional) time in seconds to wait.
    */
   async waitInUrl(urlPart, sec = null) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -2019,6 +2046,9 @@ I.waitInUrl('/info', 2);
 I.waitUrlEquals('/info', 2);
 I.waitUrlEquals('http://127.0.0.1:8000/info');
 ```
+
+@param urlPart value to check.
+@param sec (optional) time in seconds to wait.
    */
   async waitUrlEquals(urlPart, sec = null) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -2051,9 +2081,9 @@ I.waitForText('Thank you, form has been submitted');
 I.waitForText('Thank you, form has been submitted', 5, '#modal');
 ```
 
-@param text to wait for
-@param sec seconds to wait
-@param context element located by CSS|XPath|strict locator
+@param text to wait for.
+@param sec (optional) time in seconds to wait.
+@param context (optional) element located by CSS|XPath|strict locator.
    */
   async waitForText(text, sec = null, context = null) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;
@@ -2121,6 +2151,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
   /**
    * Switches frame or in case of null locator reverts to parent.
+
+@param locator element located by CSS|XPath|strict locator.
    */
   async switchTo(locator) {
     if (Number.isInteger(locator)) {
@@ -2177,10 +2209,9 @@ I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
 I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
-@param function to be executed in browser context
-@param args arguments for function
-@param sec time seconds to wait, 1 by default
-
+@param fn to be executed in browser context.
+@param argsOrSec (optional) arguments for function or seconds.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitForFunction(fn, argsOrSec = null, sec = null) {
     let args = [];
@@ -2216,9 +2247,9 @@ I.waitUntil(() => window.requests == 0);
 I.waitUntil(() => window.requests == 0, 5);
 ```
 
-@param function function which is executed in browser context.
-@param sec time seconds to wait, 1 by default
-
+@param fn function which is executed in browser context.
+@param sec (optional) time in seconds to wait, 1 by default.
+@param timeoutMsg (optional) message to show in case of timeout fail.
    */
   async waitUntil(fn, sec = null) {
     console.log('This method will remove in CodeceptJS 1.4; use `waitForFunction` instead!');
@@ -2242,9 +2273,8 @@ Element can be located by CSS or XPath.
 I.waitForDetached('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator
-@param sec time seconds to wait, 1 by default
-
+@param locator element located by CSS|XPath|strict locator.
+@param sec (optional) time in seconds to wait, 1 by default.
    */
   async waitForDetached(locator, sec) {
     const waitTimeout = sec ? sec * 1000 : this.options.waitForTimeout;

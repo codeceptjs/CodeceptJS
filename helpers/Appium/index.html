@@ -509,7 +509,7 @@ Field is located by name, label, CSS or XPath</p>
 <h4 id="parameters_2">Parameters</h4>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  text value</li>
+<li><code>value</code>  text value to append.</li>
 </ul>
 <h3 id="checkoption">checkOption</h3>
 <p>Selects a checkbox or radio button.
@@ -521,11 +521,16 @@ I.checkOption('agree', '//form');
 </code></pre>
 
 <h4 id="parameters_3">Parameters</h4>
-<ul>
-<li><code>checkbox</code>  </li>
-<li><code>field</code>  checkbox located by label | name | CSS | XPath | strict locator</li>
-<li><code>context</code>  (optional) element located by CSS | XPath | strict locator</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>-   <code>field</code>  checkbox located by label</th>
+<th>name</th>
+<th>CSS</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
 <h3 id="click">click</h3>
 <p>Perform a click on a link or a button, given by a locator.
 If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
@@ -547,11 +552,16 @@ I.click({css: 'nav a.login'});
 </code></pre>
 
 <h4 id="parameters_4">Parameters</h4>
-<ul>
-<li><code>button</code>  </li>
-<li><code>context</code>  (optional) element to search in CSS|XPath|Strict locator</li>
-<li><code>locator</code>  clickable link or button located by text, or any element located by CSS|XPath|strict locator</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
+<th>XPath</th>
+<th>strict locator.</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
 <h3 id="closeapp">closeApp</h3>
 <p>Close the given application.</p>
 <pre><code class="js">I.closeApp();
@@ -566,31 +576,29 @@ Use context parameter to narrow down the search.</p>
 
 <h4 id="parameters_5">Parameters</h4>
 <ul>
-<li><code>text</code>  is not present</li>
-<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search</li>
+<li><code>text</code>  is not present.</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search.</li>
 </ul>
 <h3 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h3>
 <p>Verifies that the specified checkbox is not checked.</p>
 <h4 id="parameters_6">Parameters</h4>
 <ul>
-<li><code>checkbox</code>  </li>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="dontseeelement">dontSeeElement</h3>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible (or in DOM)</p>
 <h4 id="parameters_7">Parameters</h4>
 <ul>
-<li><code>el</code>  </li>
+<li><code>locator</code>  located by CSS|XPath|Strict locator.</li>
 <li><code>context</code>  </li>
-<li><code>locator</code>  located by CSS|XPath|Strict locator</li>
 </ul>
 <h3 id="dontseeinfield">dontSeeInField</h3>
 <p>Checks that value of input field or textare doesn't equal to given value
 Opposite to <code>seeInField</code>.</p>
 <h4 id="parameters_8">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  is not expected to be a field value</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  value to check.</li>
 </ul>
 <h3 id="fillfield">fillField</h3>
 <p>Fills a text field or textarea, after clearing its value, with the given string.
@@ -607,8 +615,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 <h4 id="parameters_9">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  text value to fill.</li>
 </ul>
 <h3 id="graballcontexts">grabAllContexts</h3>
 <p>Get list of all available contexts</p>
@@ -656,8 +664,7 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 <p>If multiple elements found returns an array of texts.</p>
 <h4 id="parameters_10">Parameters</h4>
 <ul>
-<li><code>el</code>  </li>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="grabvaluefrom">grabValueFrom</h3>
 <p>Retrieves a value from a form element located by CSS or XPath and returns it to test.
@@ -667,8 +674,7 @@ Resumes test execution, so <strong>should be used inside async function with <co
 
 <h4 id="parameters_11">Parameters</h4>
 <ul>
-<li><code>el</code>  </li>
-<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
+<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="hidedevicekeyboard">hideDeviceKeyboard</h3>
 <p>Hide the keyboard.</p>
@@ -833,8 +839,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 <h4 id="parameters_21">Parameters</h4>
 <ul>
-<li><code>text</code>  expected on page</li>
-<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text</li>
+<li><code>text</code>  expected on page.</li>
+<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text.</li>
 </ul>
 <h3 id="seeappisinstalled">seeAppIsInstalled</h3>
 <p>Check if an app is installed.</p>
@@ -863,8 +869,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 <h4 id="parameters_24">Parameters</h4>
 <ul>
-<li><code>checkbox</code>  </li>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="seecurrentactivityis">seeCurrentActivityIs</h3>
 <p>Check current activity on an Android device.</p>
@@ -896,8 +901,7 @@ Element is located by CSS or XPath.</p>
 
 <h4 id="parameters_26">Parameters</h4>
 <ul>
-<li><code>el</code>  </li>
-<li><code>locator</code>  located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="seeinfield">seeInField</h3>
 <p>Checks that the given input field or textarea equals to given value.
@@ -910,8 +914,8 @@ I.seeInField('#searchform input','Search');
 
 <h4 id="parameters_27">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  value to check.</li>
 </ul>
 <h3 id="seeorientationis">seeOrientationIs</h3>
 <p>Check the device orientation</p>
@@ -941,8 +945,9 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 <h4 id="parameters_29">Parameters</h4>
 <ul>
-<li><code>select</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>option</code>  Support only web testing!</li>
+<li><code>select</code>  field located by label|name|CSS|XPath|strict locator.</li>
+<li><code>option</code>  visible text or value of option.
+    Support only web testing!</li>
 </ul>
 <h3 id="senddevicekeyevent">sendDeviceKeyEvent</h3>
 <p>Send a key event to the device.
@@ -1187,6 +1192,26 @@ I.touchPerform([{
 <li><code>actions</code>  </li>
 </ul></div>
             <div class="col-md-2" class="promo-1">
+
+    <div>
+
+        <h3>Search</h3>
+            <script>
+                    (function() {
+                      var cx = '009959493015473517972:w6bnokjcsq8';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+
+                  <hr>
+    </div>
+
     <div class="promo-banner"  >
                 <h3>
                     Enterprise Support

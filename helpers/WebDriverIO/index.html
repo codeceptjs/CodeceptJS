@@ -435,6 +435,8 @@
         
             <li><a href="#scrollto">scrollTo</a></li>
         
+            <li><a href="#scrollto_1">scrollTo</a></li>
+        
             <li><a href="#see">see</a></li>
         
             <li><a href="#seeattributesonelements">seeAttributesOnElements</a></li>
@@ -508,9 +510,6 @@
             <li><a href="#waituntil">waitUntil</a></li>
         
             <li><a href="#waiturlequals">waitUrlEquals</a></li>
-        
-    
-        <li class="main "><a href="#buttonpress">buttonPress</a></li>
         
     
     </ul>
@@ -687,14 +686,14 @@ Individual control is something that is planned for a later version.</p>
 <li><code>config</code>  </li>
 </ul>
 <h3 id="95locate">_locate</h3>
-<p>Get elements by different locator types, including strict locator
+<p>Get elements by different locator types, including strict locator.
 Should be used in custom helpers:</p>
 <pre><code class="js">this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 </code></pre>
 
 <h4 id="parameters_1">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>smartWait</code>   (optional, default <code>false</code>)</li>
 </ul>
 <h3 id="95locatecheckable">_locateCheckable</h3>
@@ -704,7 +703,7 @@ Should be used in custom helpers:</p>
 
 <h4 id="parameters_2">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="95locateclickable">_locateClickable</h3>
 <p>Find a clickable element by providing human readable text:</p>
@@ -713,7 +712,7 @@ Should be used in custom helpers:</p>
 
 <h4 id="parameters_3">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="95locatefields">_locateFields</h3>
 <p>Find field elements by providing human readable text:</p>
@@ -722,7 +721,7 @@ Should be used in custom helpers:</p>
 
 <h4 id="parameters_4">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="acceptpopup">acceptPopup</h3>
 <p>Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
@@ -738,7 +737,7 @@ I.amOnPage('/login'); // opens a login page
 
 <h4 id="parameters_5">Parameters</h4>
 <ul>
-<li><code>url</code>  url path or global url
+<li><code>url</code>  url path or global url.
     Appium: support only web testing</li>
 </ul>
 <h3 id="appendfield">appendField</h3>
@@ -750,7 +749,7 @@ Field is located by name, label, CSS or XPath</p>
 <h4 id="parameters_6">Parameters</h4>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  text value
+<li><code>value</code>  text value to append.
     Appium: support, but it's clear a field before insert in apps</li>
 </ul>
 <h3 id="attachfile">attachFile</h3>
@@ -763,8 +762,9 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 <h4 id="parameters_7">Parameters</h4>
 <ul>
-<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>pathToFile</code>  local file path relative to codecept.json config fileAppium: not tested</li>
+<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator.</li>
+<li><code>pathToFile</code>  local file path relative to codecept.json config file.
+    Appium: not tested</li>
 </ul>
 <h3 id="cancelpopup">cancelPopup</h3>
 <p>Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
@@ -797,14 +797,14 @@ I.checkOption('agree', '//form');
 </table>
 <h3 id="clearcookie">clearCookie</h3>
 <p>Clears a cookie by name,
-if none provided clears all cookies</p>
+if none provided clears all cookies.</p>
 <pre><code class="js">I.clearCookie();
 I.clearCookie('test');
 </code></pre>
 
 <h4 id="parameters_9">Parameters</h4>
 <ul>
-<li><code>cookie</code>  (optional)
+<li><code>cookie</code>  (optional) cookie name.
     Appium: support only web testing</li>
 </ul>
 <h3 id="clearfield">clearField</h3>
@@ -816,7 +816,7 @@ I.clearField('#email');
 
 <h4 id="parameters_10">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.
     Appium: support</li>
 </ul>
 <h3 id="click">click</h3>
@@ -845,7 +845,7 @@ I.click({css: 'nav a.login'});
 <tr>
 <th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
 <th>XPath</th>
-<th>strict locator</th>
+<th>strict locator.</th>
 </tr>
 </thead>
 <tbody>
@@ -857,7 +857,7 @@ I.click({css: 'nav a.login'});
 </tbody>
 </table>
 <h3 id="closecurrenttab">closeCurrentTab</h3>
-<p>Close current tab</p>
+<p>Close current tab.</p>
 <pre><code class="js">I.closeCurrentTab();
 </code></pre>
 
@@ -869,7 +869,7 @@ Appium: support web test</p>
 
 <h3 id="definetimeout">defineTimeout</h3>
 <p>Set <a href="http://webdriver.io/guide/testrunner/timeouts.html">WebDriverIO timeouts</a> in realtime.
-Appium: support only web testing
+Appium: support only web testing.
 Timeouts are expected to be passed as object:</p>
 <pre><code class="js">I.defineTimeout({ script: 5000 });
 I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
@@ -877,7 +877,7 @@ I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
 
 <h4 id="parameters_12">Parameters</h4>
 <ul>
-<li><code>timeouts</code>  </li>
+<li><code>timeouts</code>  WebDriver timeouts object.</li>
 </ul>
 <h3 id="dontsee">dontSee</h3>
 <p>Opposite to <code>see</code>. Checks that a text is not present on a page.
@@ -887,69 +887,75 @@ Use context parameter to narrow down the search.</p>
 
 <h4 id="parameters_13">Parameters</h4>
 <ul>
-<li><code>text</code>  is not present</li>
-<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search
+<li><code>text</code>  is not present.</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search.
     Appium: support with context in apps</li>
 </ul>
 <h3 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h3>
 <p>Verifies that the specified checkbox is not checked.</p>
 <h4 id="parameters_14">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locatorAppium: not tested</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.
+    Appium: not tested</li>
 </ul>
 <h3 id="dontseecookie">dontSeeCookie</h3>
 <p>Checks that cookie with given name does not exist.</p>
 <h4 id="parameters_15">Parameters</h4>
 <ul>
-<li><code>name</code>  Appium: support only web testing</li>
+<li><code>name</code>  cookie name.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="dontseecurrenturlequals">dontSeeCurrentUrlEquals</h3>
 <p>Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.</p>
 <h4 id="parameters_16">Parameters</h4>
 <ul>
-<li><code>url</code>  Appium: support only web testing</li>
+<li><code>url</code>  value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="dontseeelement">dontSeeElement</h3>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible (or in DOM)</p>
 <h4 id="parameters_17">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|Strict locator
+<li><code>locator</code>  located by CSS|XPath|Strict locator.
     Appium: support</li>
 </ul>
 <h3 id="dontseeelementindom">dontSeeElementInDOM</h3>
 <p>Opposite to <code>seeElementInDOM</code>. Checks that element is not on page.</p>
 <h4 id="parameters_18">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|Strict locator
+<li><code>locator</code>  located by CSS|XPath|Strict locator.
     Appium: support</li>
 </ul>
 <h3 id="dontseeincurrenturl">dontSeeInCurrentUrl</h3>
 <p>Checks that current url does not contain a provided fragment.</p>
 <h4 id="parameters_19">Parameters</h4>
 <ul>
-<li><code>url</code>  Appium: support only web testing</li>
+<li><code>url</code>  value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="dontseeinfield">dontSeeInField</h3>
 <p>Checks that value of input field or textare doesn't equal to given value
 Opposite to <code>seeInField</code>.</p>
 <h4 id="parameters_20">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  is not expected to be a field value
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  value to check.
     Appium: support only web testing</li>
 </ul>
 <h3 id="dontseeinsource">dontSeeInSource</h3>
-<p>Checks that the current page contains the given string in its raw source code</p>
+<p>Checks that the current page contains the given string in its raw source code.</p>
 <h4 id="parameters_21">Parameters</h4>
 <ul>
-<li><code>text</code>  Appium: support</li>
+<li><code>text</code>  value to check.
+    Appium: support</li>
 </ul>
 <h3 id="dontseeintitle">dontSeeInTitle</h3>
 <p>Checks that title does not contain text.</p>
 <h4 id="parameters_22">Parameters</h4>
 <ul>
-<li><code>text</code>  Appium: support only web testing</li>
+<li><code>text</code>  text value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="doubleclick">doubleClick</h3>
 <p>Performs a double-click on an element matched by link|button|label|CSS or XPath.
@@ -961,21 +967,44 @@ I.doubleClick('.btn.edit');
 </code></pre>
 
 <h4 id="parameters_23">Parameters</h4>
-<ul>
-<li><code>locator</code>  </li>
-<li><code>context</code>  Appium: support only web testing</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
+<th>XPath</th>
+<th>strict locator.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Appium: support only web testing</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h3 id="draganddrop">dragAndDrop</h3>
-<p>Drag an item to a destination element.
-Appium: not tested</p>
+<p>Drag an item to a destination element.</p>
 <pre><code class="js">I.dragAndDrop('#dragHandle', '#container');
 </code></pre>
 
 <h4 id="parameters_24">Parameters</h4>
-<ul>
-<li><code>srcElement</code>  </li>
-<li><code>destElement</code>  </li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>-   <code>srcElement</code>  located by CSS</th>
+<th>XPath</th>
+<th>strict locator.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Appium: not tested</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h3 id="executeasyncscript">executeAsyncScript</h3>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
@@ -995,7 +1024,7 @@ $.ajax(url, { success: (data) =&gt; done(data); }
 
 <h4 id="parameters_25">Parameters</h4>
 <ul>
-<li><code>fn</code>  function to be executed in browser context</li>
+<li><code>fn</code>  function to be executed in browser context.</li>
 </ul>
 <h3 id="executescript">executeScript</h3>
 <p>Executes sync script on a page.
@@ -1019,7 +1048,7 @@ return $(el).datetimepicker('getDate').toString();
 
 <h4 id="parameters_26">Parameters</h4>
 <ul>
-<li><code>fn</code>  function to be executed in browser context</li>
+<li><code>fn</code>  function to be executed in browser context.</li>
 </ul>
 <h3 id="fillfield">fillField</h3>
 <p>Fills a text field or textarea, after clearing its value, with the given string.
@@ -1036,8 +1065,9 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 <h4 id="parameters_27">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  Appium: support</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  text value to fill.
+    Appium: support</li>
 </ul>
 <h3 id="grabattributefrom">grabAttributeFrom</h3>
 <p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -1047,8 +1077,9 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 
 <h4 id="parameters_28">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>attr</code>  Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>attr</code>  attribute name.
+    Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")</li>
 </ul>
 <h3 id="grabbrowserlogs">grabBrowserLogs</h3>
 <p>Get JS log from browser. Log buffer is reset after each request.</p>
@@ -1057,7 +1088,8 @@ console.log(JSON.stringify(logs))
 </code></pre>
 
 <h3 id="grabcookie">grabCookie</h3>
-<p>Gets a cookie object by name
+<p>Gets a cookie object by name.
+If none provided gets all cookies.
 Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
 <pre><code class="js">let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
@@ -1065,7 +1097,8 @@ assert(cookie.value, '123456');
 
 <h4 id="parameters_29">Parameters</h4>
 <ul>
-<li><code>name</code>  Appium: support only web testing</li>
+<li><code>name</code>  (optional) cookie name.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="grabcsspropertyfrom">grabCssPropertyFrom</h3>
 <p>Grab CSS property for given locator
@@ -1075,8 +1108,8 @@ Resumes test execution, so <strong>should be used inside an async function with 
 
 <h4 id="parameters_30">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>cssProperty</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>cssProperty</code>  CSS property name.</li>
 </ul>
 <h3 id="grabcurrenturl">grabCurrentUrl</h3>
 <p>Get current URL from browser.
@@ -1087,28 +1120,28 @@ console.log(`Current URL is [${url}]`);
 
 <h3 id="grabhtmlfrom">grabHTMLFrom</h3>
 <p>Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so <strong>should be used inside async function with <code>await</code></strong> operator.
-Appium: support only web testing</p>
+Resumes test execution, so <strong>should be used inside async function with <code>await</code></strong> operator.</p>
 <pre><code class="js">let postHTML = await I.grabHTMLFrom('#post');
 </code></pre>
 
 <h4 id="parameters_31">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="grabnumberofopentabs">grabNumberOfOpenTabs</h3>
-<p>Grab number of open tabs</p>
+<p>Grab number of open tabs.</p>
 <pre><code class="js">I.grabNumberOfOpenTabs();
 </code></pre>
 
 <h3 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h3>
-<p>Grab number of visible elements by locator</p>
+<p>Grab number of visible elements by locator.</p>
 <pre><code class="js">I.grabNumberOfVisibleElements('p');
 </code></pre>
 
 <h4 id="parameters_32">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="grabpagescrollposition">grabPageScrollPosition</h3>
 <p>Retrieves a page scroll position and returns it to test.
@@ -1117,7 +1150,7 @@ Resumes test execution, so <strong>should be used inside an async function with 
 </code></pre>
 
 <h3 id="grabpopuptext">grabPopupText</h3>
-<p>Grab the text within the popup. If no popup is visible then it will return null</p>
+<p>Grab the text within the popup. If no popup is visible then it will return null.</p>
 <pre><code class="js">await I.grabPopupText();
 </code></pre>
 
@@ -1137,7 +1170,7 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 <p>If multiple elements found returns an array of texts.</p>
 <h4 id="parameters_33">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator
+<li><code>locator</code>  element located by CSS|XPath|strict locator.
     Appium: support</li>
 </ul>
 <h3 id="grabtitle">grabTitle</h3>
@@ -1155,25 +1188,25 @@ Resumes test execution, so <strong>should be used inside async function with <co
 
 <h4 id="parameters_34">Parameters</h4>
 <ul>
-<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator
+<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator.
     Appium: support only web testing</li>
 </ul>
 <h3 id="movecursorto">moveCursorTo</h3>
 <p>Moves cursor to element matched by locator.
-Extra shift can be set with offsetX and offsetY options</p>
+Extra shift can be set with offsetX and offsetY options.</p>
 <pre><code class="js">I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 </code></pre>
 
-<p>Appium: support only web testing</p>
 <h4 id="parameters_35">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
-<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>offsetX</code>  (optional) X-axis offset.</li>
+<li><code>offsetY</code>  (optional) Y-axis offset.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="opennewtab">openNewTab</h3>
-<p>Open new tab and switch to it</p>
+<p>Open new tab and switch to it.</p>
 <pre><code class="js">I.openNewTab();
 </code></pre>
 
@@ -1186,9 +1219,10 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey(['Control','a']);
 </code></pre>
 
-<p><a href="https://w3c.github.io/webdriver/#keyboard-actions">Valid key names</a> are:</p>
+<h4 id="parameters_36">Parameters</h4>
 <ul>
-<li><code>'Add'</code>,</li>
+<li><code>key</code>  key or array of keys to press.
+    <a href="https://w3c.github.io/webdriver/#keyboard-actions">Valid key names</a> are:-   <code>'Add'</code>,<ul>
 <li><code>'Alt'</code>,</li>
 <li><code>'ArrowDown'</code> or <code>'Down arrow'</code>,</li>
 <li><code>'ArrowLeft'</code> or <code>'Left arrow'</code>,</li>
@@ -1216,18 +1250,13 @@ I.pressKey(['Control','a']);
 <li><code>'Shift'</code>,</li>
 <li><code>'Space'</code>,</li>
 <li><code>'Subtract'</code>,</li>
-<li><code>'Tab'</code>.</li>
-</ul>
-<p>To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-Appium: support, but clear field before pressing in apps:</p>
-<pre><code class="js">I.pressKey('Control');
-I.click('#someelement');
+<li><code>'Tab'</code>.To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
+Appium: support, but clear field before pressing in apps:<code>js
 I.pressKey('Control');
-</code></pre>
-
-<h4 id="parameters_36">Parameters</h4>
-<ul>
-<li><code>key</code>  </li>
+I.click('#someelement');
+I.pressKey('Control');</code></li>
+</ul>
+</li>
 </ul>
 <h3 id="refreshpage">refreshPage</h3>
 <p>Reload the current page.</p>
@@ -1236,34 +1265,35 @@ I.pressKey('Control');
 
 <h3 id="resizewindow">resizeWindow</h3>
 <p>Resize the current window to provided width and height.
-First parameter can be set to <code>maximize</code></p>
+First parameter can be set to <code>maximize</code>.</p>
 <h4 id="parameters_37">Parameters</h4>
 <ul>
-<li><code>width</code>  or <code>maximize</code></li>
-<li><code>height</code>  Appium: not tested in web, in apps doesn't work</li>
+<li><code>width</code>  width in pixels or <code>maximize</code>.</li>
+<li><code>height</code>  height in pixels.
+    Appium: not tested in web, in apps doesn't work</li>
 </ul>
 <h3 id="rightclick">rightClick</h3>
-<p>Performs right click on an element matched by CSS or XPath.
-Appium: support, but in apps works as usual click</p>
+<p>Performs right click on an element matched by CSS or XPath.</p>
 <h4 id="parameters_38">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.
+    Appium: support, but in apps works as usual click</li>
 </ul>
 <h3 id="runinweb">runInWeb</h3>
-<p>placeholder for ~ locator only test case write once run on both Appium and WebDriverIO</p>
+<p>Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.</p>
 <h4 id="parameters_39">Parameters</h4>
 <ul>
 <li><code>fn</code>  </li>
 </ul>
 <h3 id="runonandroid">runOnAndroid</h3>
-<p>placeholder for ~ locator only test case write once run on both Appium and WebDriverIO</p>
+<p>Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.</p>
 <h4 id="parameters_40">Parameters</h4>
 <ul>
 <li><code>caps</code>  </li>
 <li><code>fn</code>  </li>
 </ul>
 <h3 id="runonios">runOnIOS</h3>
-<p>placeholder for ~ locator only test case write once run on both Appium and WebDriverIO</p>
+<p>Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.</p>
 <h4 id="parameters_41">Parameters</h4>
 <ul>
 <li><code>caps</code>  </li>
@@ -1274,38 +1304,51 @@ Appium: support, but in apps works as usual click</p>
 Filename is relative to output folder. 
 Optionally resize the window to the full available page <code>scrollHeight</code> and <code>scrollWidth</code> to capture the entire page by passing <code>true</code> in as the second argument.</p>
 <pre><code class="js">I.saveScreenshot('debug.png');
-I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
+I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 </code></pre>
 
 <h4 id="parameters_42">Parameters</h4>
 <ul>
-<li><code>fileName</code>  </li>
-<li><code>fullPage</code>  (optional)
+<li><code>fileName</code>  file name to save.</li>
+<li><code>fullPage</code>  (optional) flag to enable fullscreen screenshot mode.
     Appium: support</li>
 </ul>
 <h3 id="scrollpagetobottom">scrollPageToBottom</h3>
-<p>Scroll page to the bottom</p>
+<p>Scroll page to the bottom.</p>
 <pre><code class="js">I.scrollPageToBottom();
 </code></pre>
 
 <h3 id="scrollpagetotop">scrollPageToTop</h3>
-<p>Scroll page to the top</p>
+<p>Scroll page to the top.</p>
 <pre><code class="js">I.scrollPageToTop();
 </code></pre>
 
 <h3 id="scrollto">scrollTo</h3>
 <p>Scrolls to element matched by locator.
-Extra shift can be set with offsetX and offsetY options
-Appium: support only web testing</p>
+Extra shift can be set with offsetX and offsetY options.</p>
 <pre><code class="js">I.scrollTo('footer');
-I.scrollTo('#submit', 5,5);
+I.scrollTo('#submit', 5, 5);
 </code></pre>
 
 <h4 id="parameters_43">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
-<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>offsetX</code>  (optional) X-axis offset.</li>
+<li><code>offsetY</code>  (optional) Y-axis offset.</li>
+</ul>
+<h3 id="scrollto_1">scrollTo</h3>
+<p>Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.</p>
+<pre><code class="js">I.scrollTo('footer');
+I.scrollTo('#submit', 5, 5);
+</code></pre>
+
+<h4 id="parameters_44">Parameters</h4>
+<ul>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>offsetX</code>  (optional) X-axis offset.</li>
+<li><code>offsetY</code>  (optional) Y-axis offset.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="see">see</h3>
 <p>Checks that a page contains a visible text.
@@ -1315,10 +1358,10 @@ I.see('Welcome', '.content'); // text inside .content div
 I.see('Register', {css: 'form.register'}); // use strict locator
 </code></pre>
 
-<h4 id="parameters_44">Parameters</h4>
+<h4 id="parameters_45">Parameters</h4>
 <ul>
-<li><code>text</code>  expected on page</li>
-<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text
+<li><code>text</code>  expected on page.</li>
+<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text.
     Appium: support with context in apps</li>
 </ul>
 <h3 id="seeattributesonelements">seeAttributesOnElements</h3>
@@ -1326,10 +1369,10 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 <pre><code class="js">I.seeAttributesOnElements('//form', {'method': &quot;post&quot;});
 </code></pre>
 
-<h4 id="parameters_45">Parameters</h4>
+<h4 id="parameters_46">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>attributes</code>  </li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>attributes</code>  object with attributes and their values to check.</li>
 </ul>
 <h3 id="seecheckboxischecked">seeCheckboxIsChecked</h3>
 <p>Verifies that the specified checkbox is checked.</p>
@@ -1338,9 +1381,9 @@ I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
 I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 </code></pre>
 
-<h4 id="parameters_46">Parameters</h4>
+<h4 id="parameters_47">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.
     Appium: not tested</li>
 </ul>
 <h3 id="seecookie">seeCookie</h3>
@@ -1348,20 +1391,20 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <pre><code class="js">I.seeCookie('Auth');
 </code></pre>
 
-<h4 id="parameters_47">Parameters</h4>
+<h4 id="parameters_48">Parameters</h4>
 <ul>
-<li><code>name</code>  Appium: support only web testing</li>
+<li><code>name</code>  cookie name.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="seecsspropertiesonelements">seeCssPropertiesOnElements</h3>
 <p>Checks that all elements with given locator have given CSS properties.</p>
 <pre><code class="js">I.seeCssPropertiesOnElements('h3', { 'font-weight': &quot;bold&quot;});
 </code></pre>
 
-<h4 id="parameters_48">Parameters</h4>
+<h4 id="parameters_49">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>cssProperties</code>  </li>
-<li><code>properties</code>  </li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>cssProperties</code>  object with CSS properties and their values to check.</li>
 </ul>
 <h3 id="seecurrenturlequals">seeCurrentUrlEquals</h3>
 <p>Checks that current url is equal to provided one.
@@ -1371,9 +1414,10 @@ So both examples will work:</p>
 I.seeCurrentUrlEquals('http://my.site.com/register');
 </code></pre>
 
-<h4 id="parameters_49">Parameters</h4>
+<h4 id="parameters_50">Parameters</h4>
 <ul>
-<li><code>url</code>  Appium: support only web testing</li>
+<li><code>url</code>  value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="seeelement">seeElement</h3>
 <p>Checks that a given Element is visible
@@ -1381,9 +1425,9 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElement('#modal');
 </code></pre>
 
-<h4 id="parameters_50">Parameters</h4>
+<h4 id="parameters_51">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|strict locator
+<li><code>locator</code>  located by CSS|XPath|strict locator.
     Appium: support</li>
 </ul>
 <h3 id="seeelementindom">seeElementInDOM</h3>
@@ -1392,9 +1436,9 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElementInDOM('#modal');
 </code></pre>
 
-<h4 id="parameters_51">Parameters</h4>
+<h4 id="parameters_52">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|strict locator
+<li><code>locator</code>  located by CSS|XPath|strict locator.
     Appium: support</li>
 </ul>
 <h3 id="seeincurrenturl">seeInCurrentUrl</h3>
@@ -1402,9 +1446,10 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
 </code></pre>
 
-<h4 id="parameters_52">Parameters</h4>
+<h4 id="parameters_53">Parameters</h4>
 <ul>
-<li><code>url</code>  Appium: support only web testing</li>
+<li><code>url</code>  value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="seeinfield">seeInField</h3>
 <p>Checks that the given input field or textarea equals to given value.
@@ -1415,74 +1460,77 @@ I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
 </code></pre>
 
-<h4 id="parameters_53">Parameters</h4>
+<h4 id="parameters_54">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  Appium: support only web testing</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="seeinpopup">seeInPopup</h3>
 <p>Checks that the active JavaScript popup, as created by <code>window.alert|window.confirm|window.prompt</code>, contains the
 given string. Appium: support only web testing</p>
-<h4 id="parameters_54">Parameters</h4>
+<h4 id="parameters_55">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  value to check.</li>
 </ul>
 <h3 id="seeinsource">seeInSource</h3>
 <p>Checks that the current page contains the given string in its raw source code.</p>
 <pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
 </code></pre>
 
-<h4 id="parameters_55">Parameters</h4>
+<h4 id="parameters_56">Parameters</h4>
 <ul>
-<li><code>text</code>  Appium: support</li>
+<li><code>text</code>  value to check.
+    Appium: support</li>
 </ul>
 <h3 id="seeintitle">seeInTitle</h3>
 <p>Checks that title contains text.</p>
-<h4 id="parameters_56">Parameters</h4>
+<h4 id="parameters_57">Parameters</h4>
 <ul>
-<li><code>text</code>  Appium: support only web testing</li>
+<li><code>text</code>  text value to check.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="seenumberofelements">seeNumberOfElements</h3>
-<p>asserts that an element appears a given number of times in the DOM
+<p>Asserts that an element appears a given number of times in the DOM.
 Element is located by label or name or CSS or XPath.
 Appium: support</p>
 <pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
 </code></pre>
 
-<h4 id="parameters_57">Parameters</h4>
+<h4 id="parameters_58">Parameters</h4>
 <ul>
-<li><code>selector</code>  </li>
-<li><code>num</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>num</code>  number of elements.</li>
 </ul>
 <h3 id="seenumberofvisibleelements">seeNumberOfVisibleElements</h3>
-<p>asserts that an element is visible a given number of times
+<p>Asserts that an element is visible a given number of times.
 Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeNumberOfVisibleElements('.buttons', 3);
 </code></pre>
 
-<h4 id="parameters_58">Parameters</h4>
+<h4 id="parameters_59">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>num</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>num</code>  number of elements.</li>
 </ul>
 <h3 id="seetextequals">seeTextEquals</h3>
 <p>Checks that text is equal to provided one.</p>
 <pre><code class="js">I.seeTextEquals('text', 'h1');
 </code></pre>
 
-<h4 id="parameters_59">Parameters</h4>
+<h4 id="parameters_60">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
-<li><code>context</code>   (optional, default <code>null</code>)</li>
+<li><code>text</code>  element value to check.</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="seetitleequals">seeTitleEquals</h3>
 <p>Checks that title is equal to provided one.</p>
 <pre><code class="js">I.seeTitleEquals('Test title.');
 </code></pre>
 
-<h4 id="parameters_60">Parameters</h4>
+<h4 id="parameters_61">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  value to check.</li>
 </ul>
 <h3 id="selectoption">selectOption</h3>
 <p>Selects an option in a drop-down select.
@@ -1500,49 +1548,50 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <pre><code class="js">I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 </code></pre>
 
-<h4 id="parameters_61">Parameters</h4>
+<h4 id="parameters_62">Parameters</h4>
 <ul>
-<li><code>select</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>option</code>  </li>
+<li><code>select</code>  field located by label|name|CSS|XPath|strict locator.</li>
+<li><code>option</code>  visible text or value of option.</li>
 </ul>
 <h3 id="setcookie">setCookie</h3>
-<p>Sets a cookie</p>
+<p>Sets a cookie.</p>
 <pre><code class="js">I.setCookie({name: 'auth', value: true});
 </code></pre>
 
-<h4 id="parameters_62">Parameters</h4>
+<h4 id="parameters_63">Parameters</h4>
 <ul>
-<li><code>cookie</code>  Appium: support only web testingUses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie
+<li><code>cookie</code>  cookie JSON object.
+    Appium: support only web testingUses Selenium's JSON <a href="https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object">cookie
     format</a>.</li>
 </ul>
 <h3 id="switchto">switchTo</h3>
-<p>Switches frame or in case of null locator reverts to parent.
-Appium: support only web testing</p>
-<h4 id="parameters_63">Parameters</h4>
+<p>Switches frame or in case of null locator reverts to parent.</p>
+<h4 id="parameters_64">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.
+    Appium: support only web testing</li>
 </ul>
 <h3 id="switchtonexttab">switchToNextTab</h3>
-<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
+<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.</p>
 <pre><code class="js">I.switchToNextTab();
 I.switchToNextTab(2);
 </code></pre>
 
-<h4 id="parameters_64">Parameters</h4>
+<h4 id="parameters_65">Parameters</h4>
 <ul>
-<li><code>num</code>   (optional, default <code>1</code>)</li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
+<li><code>num</code>  (optional) number of tabs to switch forward, default: 1.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
 </ul>
 <h3 id="switchtoprevioustab">switchToPreviousTab</h3>
-<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab</p>
+<p>Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.</p>
 <pre><code class="js">I.switchToPreviousTab();
 I.switchToPreviousTab(2);
 </code></pre>
 
-<h4 id="parameters_65">Parameters</h4>
+<h4 id="parameters_66">Parameters</h4>
 <ul>
-<li><code>num</code>   (optional, default <code>1</code>)</li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
+<li><code>num</code>  (optional) number of tabs to switch backward, default: 1.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
 </ul>
 <h3 id="uncheckoption">uncheckOption</h3>
 <p>Unselects a checkbox or radio button.
@@ -1553,7 +1602,7 @@ I.uncheckOption('I Agree to Terms and Conditions');
 I.uncheckOption('agree', '//form');
 </code></pre>
 
-<h4 id="parameters_66">Parameters</h4>
+<h4 id="parameters_67">Parameters</h4>
 <table>
 <thead>
 <tr>
@@ -1562,26 +1611,34 @@ I.uncheckOption('agree', '//form');
 <th>CSS</th>
 </tr>
 </thead>
-<tbody></tbody>
+<tbody>
+<tr>
+<td>Appium: not tested</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
 </table>
 <h3 id="wait">wait</h3>
 <p>Pauses execution for a number of seconds.</p>
 <pre><code class="js">I.wait(2); // wait 2 secs
 </code></pre>
 
-<h4 id="parameters_67">Parameters</h4>
+<h4 id="parameters_68">Parameters</h4>
 <ul>
-<li><code>sec</code>  Appium: support</li>
+<li><code>sec</code>  time in seconds to wait.
+    Appium: support</li>
 </ul>
 <h3 id="waitfordetached">waitForDetached</h3>
 <p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForDetached('#popup');
 </code></pre>
-<h4 id="parameters_68">Parameters</h4>
+<h4 id="parameters_69">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
+    Appium: support</li>
 </ul>
 <h3 id="waitforelement">waitForElement</h3>
 <p>Waits for element to be present on page (by default waits for 1sec).
@@ -1590,19 +1647,19 @@ Element can be located by CSS or XPath.</p>
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 </code></pre>
 
-<h4 id="parameters_69">Parameters</h4>
+<h4 id="parameters_70">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
     Appium: support</li>
 </ul>
 <h3 id="waitforenabled">waitForEnabled</h3>
 <p>Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
-<h4 id="parameters_70">Parameters</h4>
+<h4 id="parameters_71">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
     Appium: support</li>
 </ul>
 <h3 id="waitforfunction">waitForFunction</h3>
@@ -1616,23 +1673,23 @@ I.waitForFunction(() =&gt; window.requests == 0, 5); // waits for 5 sec
 I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args and wait for 5 sec
 </code></pre>
 
-<h4 id="parameters_71">Parameters</h4>
+<h4 id="parameters_72">Parameters</h4>
 <ul>
-<li><code>fn</code>  </li>
-<li><code>argsOrSec</code>   (optional, default <code>null</code>)</li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
-<li><code>function</code>  to be executed in browser context</li>
-<li><code>args</code>  arguments for function</li>
+<li><code>fn</code>  to be executed in browser context.</li>
+<li><code>argsOrSec</code>  (optional) arguments for function or seconds.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
+    Appium: support</li>
 </ul>
 <h3 id="waitforinvisible">waitForInvisible</h3>
 <p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
 </code></pre>
-<h4 id="parameters_72">Parameters</h4>
+<h4 id="parameters_73">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
+    Appium: support</li>
 </ul>
 <h3 id="waitfortext">waitForText</h3>
 <p>Waits for a text to appear (by default waits for 1sec).
@@ -1642,34 +1699,33 @@ Narrow down search results by providing context.</p>
 I.waitForText('Thank you, form has been submitted', 5, '#modal');
 </code></pre>
 
-<h4 id="parameters_73">Parameters</h4>
+<h4 id="parameters_74">Parameters</h4>
 <ul>
-<li><code>text</code>  to wait for</li>
-<li><code>sec</code>  seconds to wait</li>
-<li><code>aContext</code>   (optional, default <code>null</code>)</li>
-<li><code>context</code>  element located by CSS|XPath|strict locator
+<li><code>text</code>  to wait for.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator.
     Appium: support</li>
 </ul>
 <h3 id="waitforvalue">waitForValue</h3>
-<p>Waits for the specified value to be in value attribute</p>
+<p>Waits for the specified value to be in value attribute.</p>
 <pre><code class="js">I.waitForValue('//input', &quot;GoodValue&quot;);
 </code></pre>
 
-<h4 id="parameters_74">Parameters</h4>
+<h4 id="parameters_75">Parameters</h4>
 <ul>
-<li><code>field</code>  input field</li>
-<li><code>value</code>  expected value</li>
-<li><code>sec</code>  seconds to wait, 1 sec by default</li>
+<li><code>field</code>  input field.</li>
+<li><code>value</code>  expected value.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 sec by default.</li>
 </ul>
 <h3 id="waitforvisible">waitForVisible</h3>
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
 </code></pre>
-<h4 id="parameters_75">Parameters</h4>
+<h4 id="parameters_76">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
     Appium: support</li>
 </ul>
 <h3 id="waitinurl">waitInUrl</h3>
@@ -1677,32 +1733,32 @@ Element can be located by CSS or XPath.</p>
 <pre><code class="js">I.waitInUrl('/info', 2);
 </code></pre>
 
-<h4 id="parameters_76">Parameters</h4>
+<h4 id="parameters_77">Parameters</h4>
 <ul>
-<li><code>urlPart</code>  </li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
+<li><code>urlPart</code>  value to check.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
 </ul>
 <h3 id="waitnumberofvisibleelements">waitNumberOfVisibleElements</h3>
-<p>Waits for a specified number of elements on the page</p>
+<p>Waits for a specified number of elements on the page.</p>
 <pre><code class="js">I.waitNumberOfVisibleElements('a', 3);
 </code></pre>
 
-<h4 id="parameters_77">Parameters</h4>
+<h4 id="parameters_78">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>num</code>  </li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
-<li><code>seconds</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>num</code>  number of elements.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
 </ul>
 <h3 id="waittohide">waitToHide</h3>
 <p>Waits for an element to hide (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitToHide('#popup');
 </code></pre>
-<h4 id="parameters_78">Parameters</h4>
+<h4 id="parameters_79">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.
+    Appium: support</li>
 </ul>
 <h3 id="waituntil">waitUntil</h3>
 <p>Waits for a function to return true (waits for 1sec by default).</p>
@@ -1710,12 +1766,12 @@ Element can be located by CSS or XPath.</p>
 I.waitUntil(() =&gt; window.requests == 0, 5);
 </code></pre>
 
-<h4 id="parameters_79">Parameters</h4>
+<h4 id="parameters_80">Parameters</h4>
 <ul>
-<li><code>fn</code>  </li>
-<li><code>sec</code>  time seconds to wait, 1 by defaultAppium: support</li>
-<li><code>timeoutMsg</code>   (optional, default <code>null</code>)</li>
-<li><code>function</code>  function which is executed in browser context.</li>
+<li><code>fn</code>  function which is executed in browser context.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
+<li><code>timeoutMsg</code>  (optional) message to show in case of timeout fail.
+    Appium: support</li>
 </ul>
 <h3 id="waiturlequals">waitUrlEquals</h3>
 <p>Waits for the entire URL to match the expected</p>
@@ -1723,14 +1779,32 @@ I.waitUntil(() =&gt; window.requests == 0, 5);
 I.waitUrlEquals('http://127.0.0.1:8000/info');
 </code></pre>
 
-<h4 id="parameters_80">Parameters</h4>
+<h4 id="parameters_81">Parameters</h4>
 <ul>
-<li><code>urlPart</code>  </li>
-<li><code>sec</code>   (optional, default <code>null</code>)</li>
-</ul>
-<h2 id="buttonpress">buttonPress</h2>
-<p>just press button if no selector is given</p></div>
+<li><code>urlPart</code>  value to check.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
+</ul></div>
             <div class="col-md-2" class="promo-1">
+
+    <div>
+
+        <h3>Search</h3>
+            <script>
+                    (function() {
+                      var cx = '009959493015473517972:w6bnokjcsq8';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+
+                  <hr>
+    </div>
+
     <div class="promo-banner"  >
                 <h3>
                     Enterprise Support

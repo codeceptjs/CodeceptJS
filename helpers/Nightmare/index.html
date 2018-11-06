@@ -504,7 +504,7 @@ I.amOnPage('/login'); // opens a login page
 
 <h4 id="parameters_2">Parameters</h4>
 <ul>
-<li><code>url</code>  url path or global urlIn a second argument a list of request headers can be passed:<code>js
+<li><code>url</code>  url path or global url.In a second argument a list of request headers can be passed:<code>js
     I.amOnPage('/auth', { 'x-my-custom-header': 'some value' })</code></li>
 <li><code>headers</code>   (optional, default <code>null</code>)</li>
 </ul>
@@ -517,7 +517,7 @@ Field is located by name, label, CSS or XPath</p>
 <h4 id="parameters_3">Parameters</h4>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  text value</li>
+<li><code>value</code>  text value to append.</li>
 </ul>
 <h3 id="attachfile">attachFile</h3>
 <p>Attaches a file to element located by label, name, CSS or XPath
@@ -529,8 +529,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 <h4 id="parameters_4">Parameters</h4>
 <ul>
-<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>pathToFile</code>  local file path relative to codecept.json config file##### Limitations:-   works only with CSS selectors.<ul>
+<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator.</li>
+<li><code>pathToFile</code>  local file path relative to codecept.json config file.##### Limitations:-   works only with CSS selectors.<ul>
 <li>doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. <a href="https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs">See more</a>)</li>
 </ul>
 </li>
@@ -557,14 +557,14 @@ I.checkOption('agree', '//form');
 </table>
 <h3 id="clearcookie">clearCookie</h3>
 <p>Clears a cookie by name,
-if none provided clears all cookies</p>
+if none provided clears all cookies.</p>
 <pre><code class="js">I.clearCookie();
 I.clearCookie('test');
 </code></pre>
 
 <h4 id="parameters_6">Parameters</h4>
 <ul>
-<li><code>cookie</code>  (optional)</li>
+<li><code>cookie</code>  (optional) cookie name.</li>
 </ul>
 <h3 id="clearfield">clearField</h3>
 <p>Clears a <code>&lt;textarea&gt;</code> or text <code>&lt;input&gt;</code> element's value.</p>
@@ -575,7 +575,7 @@ I.clearField('#email');
 
 <h4 id="parameters_7">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="click">click</h3>
 <p>Perform a click on a link or a button, given by a locator.
@@ -603,7 +603,7 @@ I.click({css: 'nav a.login'});
 <tr>
 <th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
 <th>XPath</th>
-<th>strict locator</th>
+<th>strict locator.</th>
 </tr>
 </thead>
 <tbody></tbody>
@@ -616,65 +616,65 @@ Use context parameter to narrow down the search.</p>
 
 <h4 id="parameters_9">Parameters</h4>
 <ul>
-<li><code>text</code>  is not present</li>
-<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search</li>
+<li><code>text</code>  is not present.</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator in which to perfrom search.</li>
 </ul>
 <h3 id="dontseecheckboxischecked">dontSeeCheckboxIsChecked</h3>
 <p>Verifies that the specified checkbox is not checked.</p>
 <h4 id="parameters_10">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="dontseecookie">dontSeeCookie</h3>
 <p>Checks that cookie with given name does not exist.</p>
 <h4 id="parameters_11">Parameters</h4>
 <ul>
-<li><code>name</code>  </li>
+<li><code>name</code>  cookie name.</li>
 </ul>
 <h3 id="dontseecurrenturlequals">dontSeeCurrentUrlEquals</h3>
 <p>Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.</p>
 <h4 id="parameters_12">Parameters</h4>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  value to check.</li>
 </ul>
 <h3 id="dontseeelement">dontSeeElement</h3>
 <p>Opposite to <code>seeElement</code>. Checks that element is not visible (or in DOM)</p>
 <h4 id="parameters_13">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|Strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|Strict locator.</li>
 </ul>
 <h3 id="dontseeelementindom">dontSeeElementInDOM</h3>
 <p>Opposite to <code>seeElementInDOM</code>. Checks that element is not on page.</p>
 <h4 id="parameters_14">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|Strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|Strict locator.</li>
 </ul>
 <h3 id="dontseeincurrenturl">dontSeeInCurrentUrl</h3>
 <p>Checks that current url does not contain a provided fragment.</p>
 <h4 id="parameters_15">Parameters</h4>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  value to check.</li>
 </ul>
 <h3 id="dontseeinfield">dontSeeInField</h3>
 <p>Checks that value of input field or textare doesn't equal to given value
 Opposite to <code>seeInField</code>.</p>
 <h4 id="parameters_16">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  is not expected to be a field value</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  value to check.</li>
 </ul>
 <h3 id="dontseeinsource">dontSeeInSource</h3>
-<p>Checks that the current page contains the given string in its raw source code</p>
+<p>Checks that the current page contains the given string in its raw source code.</p>
 <h4 id="parameters_17">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  value to check.</li>
 </ul>
 <h3 id="dontseeintitle">dontSeeInTitle</h3>
 <p>Checks that title does not contain text.</p>
 <h4 id="parameters_18">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  text value to check.</li>
 </ul>
 <h3 id="doubleclick">doubleClick</h3>
 <p>Performs a double-click on an element matched by link|button|label|CSS or XPath.
@@ -686,10 +686,16 @@ I.doubleClick('.btn.edit');
 </code></pre>
 
 <h4 id="parameters_19">Parameters</h4>
-<ul>
-<li><code>locator</code>  </li>
-<li><code>context</code>  </li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>-   <code>locator</code>  clickable link or button located by text, or any element located by CSS</th>
+<th>XPath</th>
+<th>strict locator.</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
 <h3 id="executeasyncscript">executeAsyncScript</h3>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
@@ -709,7 +715,7 @@ $.ajax(url, { success: (data) =&gt; done(data); }
 
 <h4 id="parameters_20">Parameters</h4>
 <ul>
-<li><code>fn</code>  function to be executed in browser context</li>
+<li><code>fn</code>  function to be executed in browser context.</li>
 </ul>
 <h3 id="executescript">executeScript</h3>
 <p>Executes sync script on a page.
@@ -733,7 +739,7 @@ return $(el).datetimepicker('getDate').toString();
 
 <h4 id="parameters_21">Parameters</h4>
 <ul>
-<li><code>fn</code>  function to be executed in browser context</li>
+<li><code>fn</code>  function to be executed in browser context.</li>
 </ul>
 <h3 id="fillfield">fillField</h3>
 <p>Fills a text field or textarea, after clearing its value, with the given string.
@@ -750,8 +756,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 <h4 id="parameters_22">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  text value to fill.</li>
 </ul>
 <h3 id="grabattributefrom">grabAttributeFrom</h3>
 <p>Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -761,11 +767,12 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 
 <h4 id="parameters_23">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>attr</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>attr</code>  attribute name.</li>
 </ul>
 <h3 id="grabcookie">grabCookie</h3>
-<p>Gets a cookie object by name
+<p>Gets a cookie object by name.
+If none provided gets all cookies.
 Resumes test execution, so <strong>should be used inside async with <code>await</code></strong> operator.</p>
 <pre><code class="js">let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
@@ -773,7 +780,7 @@ assert(cookie.value, '123456');
 
 <h4 id="parameters_24">Parameters</h4>
 <ul>
-<li><code>name</code>  Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:<code>js
+<li><code>name</code>  (optional) cookie name.Returns cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:<code>js
     I.grabCookie({ secure: true});</code>If you'd like get all cookies for all urls, use: <code>.grabCookie({ url: null }).</code></li>
 </ul>
 <h3 id="grabcurrenturl">grabCurrentUrl</h3>
@@ -790,13 +797,13 @@ fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 </code></pre>
 
 <h3 id="grabnumberofvisibleelements">grabNumberOfVisibleElements</h3>
-<p>Grab number of visible elements by locator</p>
+<p>Grab number of visible elements by locator.</p>
 <pre><code class="js">I.grabNumberOfVisibleElements('p');
 </code></pre>
 
 <h4 id="parameters_25">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="grabpagescrollposition">grabPageScrollPosition</h3>
 <p>Retrieves a page scroll position and returns it to test.
@@ -813,7 +820,7 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 <p>If multiple elements found returns an array of texts.</p>
 <h4 id="parameters_26">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="grabtitle">grabTitle</h3>
 <p>Retrieves a page title and returns it to test.
@@ -829,7 +836,7 @@ Resumes test execution, so <strong>should be used inside async function with <co
 
 <h4 id="parameters_27">Parameters</h4>
 <ul>
-<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator</li>
+<li><code>locator</code>  field located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="haveheader">haveHeader</h3>
 <p>Add a header override for all HTTP requests. If header is undefined, the header overrides will be reset.</p>
@@ -844,16 +851,16 @@ I.haveHeader(); // clear headers
 </ul>
 <h3 id="movecursorto">moveCursorTo</h3>
 <p>Moves cursor to element matched by locator.
-Extra shift can be set with offsetX and offsetY options</p>
+Extra shift can be set with offsetX and offsetY options.</p>
 <pre><code class="js">I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
 </code></pre>
 
 <h4 id="parameters_29">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
-<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>offsetX</code>  (optional) X-axis offset.</li>
+<li><code>offsetY</code>  (optional) Y-axis offset.</li>
 </ul>
 <h3 id="presskey">pressKey</h3>
 <p>Sends <a href="http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent">input event</a> on a page.
@@ -871,47 +878,47 @@ Can submit special keys like 'Enter', 'Backspace', etc</p>
 
 <h3 id="resizewindow">resizeWindow</h3>
 <p>Resize the current window to provided width and height.
-First parameter can be set to <code>maximize</code></p>
+First parameter can be set to <code>maximize</code>.</p>
 <h4 id="parameters_31">Parameters</h4>
 <ul>
-<li><code>width</code>  or <code>maximize</code></li>
-<li><code>height</code>  </li>
+<li><code>width</code>  width in pixels or <code>maximize</code>.</li>
+<li><code>height</code>  height in pixels.</li>
 </ul>
 <h3 id="savescreenshot">saveScreenshot</h3>
 <p>Saves a screenshot to ouput folder (set in codecept.json).
 Filename is relative to output folder. 
 Optionally resize the window to the full available page <code>scrollHeight</code> and <code>scrollWidth</code> to capture the entire page by passing <code>true</code> in as the second argument.</p>
 <pre><code class="js">I.saveScreenshot('debug.png');
-I.saveScreenshot('debug.png',true) \\resizes to available scrollHeight and scrollWidth before taking screenshot
+I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 </code></pre>
 
 <h4 id="parameters_32">Parameters</h4>
 <ul>
-<li><code>fileName</code>  </li>
-<li><code>fullPage</code>  (optional)</li>
+<li><code>fileName</code>  file name to save.</li>
+<li><code>fullPage</code>  (optional) flag to enable fullscreen screenshot mode.</li>
 </ul>
 <h3 id="scrollpagetobottom">scrollPageToBottom</h3>
-<p>Scroll page to the bottom</p>
+<p>Scroll page to the bottom.</p>
 <pre><code class="js">I.scrollPageToBottom();
 </code></pre>
 
 <h3 id="scrollpagetotop">scrollPageToTop</h3>
-<p>Scroll page to the top</p>
+<p>Scroll page to the top.</p>
 <pre><code class="js">I.scrollPageToTop();
 </code></pre>
 
 <h3 id="scrollto">scrollTo</h3>
 <p>Scrolls to element matched by locator.
-Extra shift can be set with offsetX and offsetY options</p>
+Extra shift can be set with offsetX and offsetY options.</p>
 <pre><code class="js">I.scrollTo('footer');
-I.scrollTo('#submit', 5,5);
+I.scrollTo('#submit', 5, 5);
 </code></pre>
 
 <h4 id="parameters_33">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
-<li><code>offsetY</code>   (optional, default <code>0</code>)</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
+<li><code>offsetX</code>  (optional) X-axis offset.</li>
+<li><code>offsetY</code>  (optional) Y-axis offset.</li>
 </ul>
 <h3 id="see">see</h3>
 <p>Checks that a page contains a visible text.
@@ -923,8 +930,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 <h4 id="parameters_34">Parameters</h4>
 <ul>
-<li><code>text</code>  expected on page</li>
-<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text</li>
+<li><code>text</code>  expected on page.</li>
+<li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text.</li>
 </ul>
 <h3 id="seecheckboxischecked">seeCheckboxIsChecked</h3>
 <p>Verifies that the specified checkbox is checked.</p>
@@ -935,7 +942,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 <h4 id="parameters_35">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="seecookie">seeCookie</h3>
 <p>Checks that cookie with given name exists.</p>
@@ -944,7 +951,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 <h4 id="parameters_36">Parameters</h4>
 <ul>
-<li><code>name</code>  </li>
+<li><code>name</code>  cookie name.</li>
 </ul>
 <h3 id="seecurrenturlequals">seeCurrentUrlEquals</h3>
 <p>Checks that current url is equal to provided one.
@@ -956,7 +963,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 <h4 id="parameters_37">Parameters</h4>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  value to check.</li>
 </ul>
 <h3 id="seeelement">seeElement</h3>
 <p>Checks that a given Element is visible
@@ -966,7 +973,7 @@ Element is located by CSS or XPath.</p>
 
 <h4 id="parameters_38">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="seeelementindom">seeElementInDOM</h3>
 <p>Checks that a given Element is present in the DOM
@@ -976,7 +983,7 @@ Element is located by CSS or XPath.</p>
 
 <h4 id="parameters_39">Parameters</h4>
 <ul>
-<li><code>locator</code>  located by CSS|XPath|strict locator</li>
+<li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="seeincurrenturl">seeInCurrentUrl</h3>
 <p>Checks that current url contains a provided fragment.</p>
@@ -985,7 +992,7 @@ Element is located by CSS or XPath.</p>
 
 <h4 id="parameters_40">Parameters</h4>
 <ul>
-<li><code>url</code>  </li>
+<li><code>url</code>  value to check.</li>
 </ul>
 <h3 id="seeinfield">seeInField</h3>
 <p>Checks that the given input field or textarea equals to given value.
@@ -998,8 +1005,8 @@ I.seeInField('#searchform input','Search');
 
 <h4 id="parameters_41">Parameters</h4>
 <ul>
-<li><code>field</code>  located by label|name|CSS|XPath|strict locator</li>
-<li><code>value</code>  </li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  value to check.</li>
 </ul>
 <h3 id="seeinsource">seeInSource</h3>
 <p>Checks that the current page contains the given string in its raw source code.</p>
@@ -1008,13 +1015,13 @@ I.seeInField('#searchform input','Search');
 
 <h4 id="parameters_42">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  value to check.</li>
 </ul>
 <h3 id="seeintitle">seeInTitle</h3>
 <p>Checks that title contains text.</p>
 <h4 id="parameters_43">Parameters</h4>
 <ul>
-<li><code>text</code>  </li>
+<li><code>text</code>  text value to check.</li>
 </ul>
 <h3 id="seenumberofelements">seeNumberOfElements</h3>
 <p>asserts that an element appears a given number of times in the DOM
@@ -1028,15 +1035,15 @@ Element is located by label or name or CSS or XPath.</p>
 <li><code>num</code>  </li>
 </ul>
 <h3 id="seenumberofvisibleelements">seeNumberOfVisibleElements</h3>
-<p>asserts that an element is visible a given number of times
+<p>Asserts that an element is visible a given number of times.
 Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeNumberOfVisibleElements('.buttons', 3);
 </code></pre>
 
 <h4 id="parameters_45">Parameters</h4>
 <ul>
-<li><code>locator</code>  </li>
-<li><code>num</code>  </li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>num</code>  number of elements.</li>
 </ul>
 <h3 id="selectoption">selectOption</h3>
 <p>Selects an option in a drop-down select.
@@ -1056,17 +1063,17 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 <h4 id="parameters_46">Parameters</h4>
 <ul>
-<li><code>select</code>  field located by label|name|CSS|XPath|strict locator</li>
-<li><code>option</code>  </li>
+<li><code>select</code>  field located by label|name|CSS|XPath|strict locator.</li>
+<li><code>option</code>  visible text or value of option.</li>
 </ul>
 <h3 id="setcookie">setCookie</h3>
-<p>Sets a cookie</p>
+<p>Sets a cookie.</p>
 <pre><code class="js">I.setCookie({name: 'auth', value: true});
 </code></pre>
 
 <h4 id="parameters_47">Parameters</h4>
 <ul>
-<li><code>cookie</code>  Wrapper for <code>.cookies.set(cookie)</code>.
+<li><code>cookie</code>  cookie JSON object.Wrapper for <code>.cookies.set(cookie)</code>.
     <a href="https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie">See more</a></li>
 </ul>
 <h3 id="triggermouseevent">triggerMouseEvent</h3>
@@ -1089,7 +1096,7 @@ button: "left"
 
 <h4 id="parameters_49">Parameters</h4>
 <ul>
-<li><code>sec</code>  </li>
+<li><code>sec</code>  time in seconds to wait.</li>
 </ul>
 <h3 id="waitfordetached">waitForDetached</h3>
 <p>Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
@@ -1098,8 +1105,8 @@ Element can be located by CSS or XPath.</p>
 </code></pre>
 <h4 id="parameters_50">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
 </ul>
 <h3 id="waitforelement">waitForElement</h3>
 <p>Waits for element to be present on page (by default waits for 1sec).
@@ -1110,8 +1117,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 <h4 id="parameters_51">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
 </ul>
 <h3 id="waitforfunction">waitForFunction</h3>
 <p>Waits for a function to return true (waits for 1 sec by default).
@@ -1126,11 +1133,9 @@ I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args a
 
 <h4 id="parameters_52">Parameters</h4>
 <ul>
-<li><code>fn</code>  </li>
-<li><code>argsOrSec</code>   (optional, default <code>null</code>)</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
-<li><code>function</code>  to be executed in browser context</li>
-<li><code>args</code>  arguments for function</li>
+<li><code>fn</code>  to be executed in browser context.</li>
+<li><code>argsOrSec</code>  (optional) arguments for function or seconds.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
 </ul>
 <h3 id="waitforinvisible">waitForInvisible</h3>
 <p>Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
@@ -1139,8 +1144,8 @@ Element can be located by CSS or XPath.</p>
 </code></pre>
 <h4 id="parameters_53">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
 </ul>
 <h3 id="waitfortext">waitForText</h3>
 <p>Waits for a text to appear (by default waits for 1sec).
@@ -1152,9 +1157,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 <h4 id="parameters_54">Parameters</h4>
 <ul>
-<li><code>text</code>  to wait for</li>
-<li><code>sec</code>  seconds to wait</li>
-<li><code>context</code>  element located by CSS|XPath|strict locator</li>
+<li><code>text</code>  to wait for.</li>
+<li><code>sec</code>  (optional) time in seconds to wait.</li>
+<li><code>context</code>  (optional) element located by CSS|XPath|strict locator.</li>
 </ul>
 <h3 id="waitforvisible">waitForVisible</h3>
 <p>Waits for an element to become visible on a page (by default waits for 1sec).
@@ -1163,8 +1168,8 @@ Element can be located by CSS or XPath.</p>
 </code></pre>
 <h4 id="parameters_55">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
 </ul>
 <h3 id="waittohide">waitToHide</h3>
 <p>Waits for an element to hide (by default waits for 1sec).
@@ -1173,10 +1178,30 @@ Element can be located by CSS or XPath.</p>
 </code></pre>
 <h4 id="parameters_56">Parameters</h4>
 <ul>
-<li><code>locator</code>  element located by CSS|XPath|strict locator</li>
-<li><code>sec</code>  time seconds to wait, 1 by default</li>
+<li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
+<li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
 </ul></div>
             <div class="col-md-2" class="promo-1">
+
+    <div>
+
+        <h3>Search</h3>
+            <script>
+                    (function() {
+                      var cx = '009959493015473517972:w6bnokjcsq8';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+
+                  <hr>
+    </div>
+
     <div class="promo-banner"  >
                 <h3>
                     Enterprise Support

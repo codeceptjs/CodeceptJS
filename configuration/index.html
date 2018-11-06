@@ -304,6 +304,8 @@
     
         <li class="main active"><a href="#configuration">Configuration</a></li>
         
+            <li><a href="#require">Require</a></li>
+        
             <li><a href="#dynamic-configuration">Dynamic Configuration</a></li>
         
             <li><a href="#profile">Profile</a></li>
@@ -333,7 +335,24 @@
 <li><strong>noGlobals</strong>: <code>false</code> - disable registering global variables like <code>Actor</code>, <code>Helper</code>, <code>pause</code>, <code>within</code>, <code>DataTable</code></li>
 <li><strong>hooks</strong>: - include custom listeners to plug into execution workflow. See <a href="http://codecept.io/hooks/#custom-hooks">Custom Hooks</a></li>
 <li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print s  teps output, as well as used in source code.</li>
+<li><strong>require</strong>: <code>[]</code> - array of module names to be required before codecept starts. See <a href="#require">Require</a></li>
 </ul>
+<h2 id="require">Require</h2>
+<p>Requires described module before run. This option is useful for assertion libraries, so you may <code>--require should</code> instead of manually invoking <code>require('should')</code> within each test file. It can be used with relative paths, e.g. <code>"require": ["/lib/somemodule"]</code>, and installed packages.</p>
+<p>You can register ts-node, so you can use Typescript in tests with ts-node package</p>
+<pre><code class="js">exports.config = {
+  tests: './*_test.js',
+  timeout: 10000,
+  output: '',
+  helpers: {},
+  include: {},
+  bootstrap: false,
+  mocha: {},
+  // require modules
+  require: [&quot;ts-node/register&quot;, &quot;should&quot;]
+}
+</code></pre>
+
 <h2 id="dynamic-configuration">Dynamic Configuration</h2>
 <p>By default <code>codecept.json</code> is used for configuration. You can override its values in runtime by using <code>--override</code> or <code>-o</code> option in command line, passing valid JSON as a value:</p>
 <pre><code class="sh">codeceptjs run -o '{ &quot;helpers&quot;: {&quot;WebDriverIO&quot;: {&quot;browser&quot;: &quot;firefox&quot;}}}'
@@ -394,6 +413,26 @@ Use its value to change config value on the fly.</p>
 };
 </code></pre></div>
             <div class="col-md-2" class="promo-1">
+
+    <div>
+
+        <h3>Search</h3>
+            <script>
+                    (function() {
+                      var cx = '009959493015473517972:w6bnokjcsq8';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+
+                  <hr>
+    </div>
+
     <div class="promo-banner"  >
                 <h3>
                     Enterprise Support

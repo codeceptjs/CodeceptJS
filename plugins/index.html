@@ -320,8 +320,7 @@
     
         <li class="main "><a href="#retryfailedstep">retryFailedStep</a></li>
         
-    
-        <li class="main "><a href="#configuration_2">Configuration:</a></li>
+            <li><a href="#configuration_2">Configuration:</a></li>
         
             <li><a href="#parameters_2">Parameters</a></li>
         
@@ -352,7 +351,7 @@
 <p>Allure reporter</p>
 <p><img alt="" src="https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png" /></p>
 <p>Enables Allure reporter.</p>
-<h4 id="usage">Usage</h4>
+<h5 id="usage">Usage</h5>
 <p>To start please install <code>allure-commandline</code> package (which requires Java 8)</p>
 <pre><code>npm install -g allure-commandline --save-dev
 </code></pre>
@@ -369,13 +368,13 @@
 Launch Allure server and see the report like on a screenshot above:</p>
 <pre><code>allure serve output
 </code></pre>
-<h4 id="configuration">Configuration</h4>
+<h5 id="configuration">Configuration</h5>
 <ul>
 <li><code>outputDir</code> - a directory where allure reports should be stored. Standard output directory is set by default.</li>
 </ul>
 <h3 id="parameters">Parameters</h3>
 <ul>
-<li><code>config</code> <strong>any</strong> </li>
+<li><code>config</code>  </li>
 </ul>
 <h2 id="autodelay">autoDelay</h2>
 <p>Sometimes it takes some time for a page to respond to user's actions.
@@ -393,7 +392,7 @@ It puts a tiny delay for before and after action commands.</p>
 <li><code>doubleClick</code></li>
 <li><code>rightClick</code></li>
 </ul>
-<h4 id="configuration_1">Configuration</h4>
+<h5 id="configuration_1">Configuration</h5>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;autoDelay&quot;: {
      &quot;enabled&quot;: true
@@ -424,7 +423,7 @@ It puts a tiny delay for before and after action commands.</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code>codeceptjs run --plugins retryFailedStep
 </code></pre>
-<h2 id="configuration_2">Configuration:</h2>
+<h5 id="configuration_2">Configuration:</h5>
 <ul>
 <li><code>retries</code> - number of retries (by default 5),</li>
 <li><code>when</code> - function, when to perform a retry (accepts error as parameter)</li>
@@ -442,7 +441,7 @@ It puts a tiny delay for before and after action commands.</p>
 <p>Creates screenshot on failure. Screenshot is saved into <code>output</code> directory.</p>
 <p>Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4</p>
 <p>This plugin is <strong>enabled by default</strong>.</p>
-<h4 id="configuration_3">Configuration</h4>
+<h5 id="configuration_3">Configuration</h5>
 <p>Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).</p>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;screenshotOnFail&quot;: {
@@ -468,7 +467,7 @@ By default, reports are generated only for failed tests.</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code>codeceptjs run --plugins stepByStepReport
 </code></pre>
-<h4 id="configuration_4">Configuration</h4>
+<h5 id="configuration_4">Configuration</h5>
 <pre><code class="js">&quot;plugins&quot;: {
    &quot;stepByStepReport&quot;: {
      &quot;enabled&quot;: true
@@ -483,13 +482,33 @@ By default, reports are generated only for failed tests.</p>
 <li><code>ignoreSteps</code>: steps to ignore in report. Array of RegExps is expected. Recommended to skip <code>grab*</code> and <code>wait*</code> steps.</li>
 <li><code>fullPageScreenshots</code>: should full page screenshots be used. Default: false.</li>
 </ul>
-<h4 id="allure-reports">Allure Reports</h4>
+<h5 id="allure-reports">Allure Reports</h5>
 <p>If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.</p>
 <h3 id="parameters_4">Parameters</h3>
 <ul>
 <li><code>config</code> <strong>any</strong> </li>
 </ul></div>
             <div class="col-md-2" class="promo-1">
+
+    <div>
+
+        <h3>Search</h3>
+            <script>
+                    (function() {
+                      var cx = '009959493015473517972:w6bnokjcsq8';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+
+                  <hr>
+    </div>
+
     <div class="promo-banner"  >
                 <h3>
                     Enterprise Support
