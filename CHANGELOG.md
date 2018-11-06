@@ -1,15 +1,12 @@
 ## 1.4.5
 
-* Add **require** param to main config. Allows to require Node modules before executing tests. By @LukoyanovE
+* Add **require** param to main config. Allows to require Node modules before executing tests. By @LukoyanovE. For example:
+  * Use `ts-node/register` to register TypeScript parser
+  * Use `should` to register should-style assertions
 
-   Example (`codecept.json`):
-
-   ```js
-     "require": ["ts-node/register", "should"]
-   ```
-
-   * Uses `ts-node/register` to register TypeScript parser
-   * Uses `should` to register should-style assertions
+```js
+"require": ["ts-node/register", "should"]
+```
 
 * [WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE
 * Fixed: exception in Before block w/ Mocha causes test not to report failure. See [#1292](https://github.com/Codeception/CodeceptJS/pull/1292) by @PeterNgTr
