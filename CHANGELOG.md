@@ -1,3 +1,24 @@
+## 1.4.5
+
+* Add **require** param to main config. Allows to require Node modules before executing tests. By @LukoyanovE
+
+   Example (`codecept.json`):
+
+   ```js
+     "require": ["ts-node/register", "should"]
+   ```
+
+   * Uses `ts-node/register` to register TypeScript parser
+   * Uses `should` to register should-style assertions
+
+* [WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE
+* Fixed: exception in Before block w/ Mocha causes test not to report failure. See [#1292](https://github.com/Codeception/CodeceptJS/pull/1292) by @PeterNgTr
+* Command `run-parallel` now accepts `--override` flag. Thanks to @ClemCB
+* Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By @PeterNgTr
+* Added `RUN_MULTIPLE` env variable to [Docker config](https://codecept.io/docker/). Allows to run tests in parallel inside a container. Thanks to @PeterNgTr
+* [Mochawesome] Fixed showing screenshot on failure. Fix by @PeterNgTr
+* Fixed running tests filtering by tag names defined via `Scenario.tag()`
+
 ## 1.4.4
 
 * [autoDelay plugin](https://codecept.io/plugins/#autoDelay) added. Adds tiny delay before and after an action so the page could react to actions performed.
