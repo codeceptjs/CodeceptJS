@@ -3,7 +3,6 @@ const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
 const event = require('../../lib').event;
-const eventHandlers = require('../data/sandbox/eventHandlers');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
@@ -53,6 +52,48 @@ describe('CodeceptJS Runner', () => {
       stdout.should.include('FAILURES');
       err.code.should.eql(1);
       done();
+    });
+  });
+
+  describe('grep', () => {
+    it('filter by scenario tags', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${codecept_run} --grep @slow`, (err, stdout, stderr) => {
+        stdout.should.include('Filesystem'); // feature
+        stdout.should.include('check current dir'); // test name
+        assert(!err);
+        done();
+      });
+    });
+
+    it('filter by scenario tags #2', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${codecept_run} --grep @important`, (err, stdout, stderr) => {
+        stdout.should.include('Filesystem'); // feature
+        stdout.should.include('check current dir'); // test name
+        assert(!err);
+        done();
+      });
+    });
+
+    it('filter by feature tags', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${codecept_run} --grep @main`, (err, stdout, stderr) => {
+        stdout.should.include('Filesystem'); // feature
+        stdout.should.include('check current dir'); // test name
+        assert(!err);
+        done();
+      });
+    });
+
+    it('filter by feature tags', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${codecept_run} --grep @main`, (err, stdout, stderr) => {
+        stdout.should.include('Filesystem'); // feature
+        stdout.should.include('check current dir'); // test name
+        assert(!err);
+        done();
+      });
     });
   });
 
@@ -197,6 +238,41 @@ describe('CodeceptJS Runner', () => {
       stdout.should.include('I am bootstrap');
       assert(!err);
       done();
+    });
+  });
+
+  describe('with require parameter', () => {
+    const moduleOutput = 'Module was required 1';
+    const moduleOutput2 = 'Module was required 2';
+
+    it('should be executed with module when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(codecept_run_config('codecept.require.single.json'), (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        stdout.should.not.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should be executed with several modules when described', (done) => {
+      process.chdir(codecept_dir);
+      exec(codecept_run_config('codecept.require.several.json'), (err, stdout, stderr) => {
+        stdout.should.include(moduleOutput);
+        stdout.should.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should not be executed without module when not described', (done) => {
+      process.chdir(codecept_dir);
+      exec(codecept_run_config('codecept.require.without.json'), (err, stdout, stderr) => {
+        stdout.should.not.include(moduleOutput);
+        stdout.should.not.include(moduleOutput2);
+        assert(!err);
+        done();
+      });
     });
   });
 });

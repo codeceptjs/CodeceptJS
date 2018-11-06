@@ -34,6 +34,14 @@ Loads tests by pattern or by config.tests
 
 -   `pattern` **[string][1]?** 
 
+### requireModules
+
+Require modules before codeceptjs running
+
+#### Parameters
+
+-   `requiringModules` **\[[string][1]]** 
+
 ### run
 
 Run a specific test or all loaded tests.

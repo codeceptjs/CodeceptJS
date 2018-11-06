@@ -44,7 +44,7 @@ In this config config all methods of `I` will be taken from `WebDriverIO` helper
 
 ## Writing Tests
 
-Tests are written from user's perspective. There is an actor (represented as `I`) which contains actions taken from helpers. A test is written as a sequence of actions performed y actor:
+Tests are written from user's perspective. There is an actor (represented as `I`) which contains actions taken from helpers. A test is written as a sequence of actions performed by actor:
 
 ```js
 I.amOnPage('/');
