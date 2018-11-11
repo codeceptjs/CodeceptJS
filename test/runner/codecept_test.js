@@ -86,13 +86,84 @@ describe('CodeceptJS Runner', () => {
       });
     });
 
-    it('filter by feature tags', (done) => {
-      process.chdir(codecept_dir);
-      exec(`${codecept_run} --grep @main`, (err, stdout, stderr) => {
-        stdout.should.include('Filesystem'); // feature
-        stdout.should.include('check current dir'); // test name
-        assert(!err);
-        done();
+    describe('without "invert" option', () => {
+      it('should filter by scenario tags', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep`, (err, stdout, stderr) => {
+          stdout.should.include('@feature_grep'); // feature
+          stdout.should.include('grep message 1'); // test name
+          stdout.should.not.include('grep message 2'); // test name
+          assert(!err);
+          done();
+        });
+      });
+
+      it('should filter by scenario tags #2', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep`, (err, stdout, stderr) => {
+          stdout.should.include('@feature_grep'); // feature
+          stdout.should.include('grep message 2'); // test name
+          stdout.should.not.include('grep message 1'); // test name
+          assert(!err);
+          done();
+        });
+      });
+
+      it('should filter by feature tags', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep`, (err, stdout, stderr) => {
+          stdout.should.include('@feature_grep'); // feature
+          stdout.should.include('grep message 1'); // test name
+          stdout.should.include('grep message 2'); // test name
+          assert(!err);
+          done();
+        });
+      });
+    });
+
+    describe('with "invert" option', () => {
+      it('should filter by scenario tags', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep --invert`, (err, stdout, stderr) => {
+          stdout.should.include('@feature_grep'); // feature
+          stdout.should.not.include('grep message 1'); // test name
+          stdout.should.include('grep message 2'); // test name
+          assert(!err);
+          done();
+        });
+      });
+
+      it('should filter by scenario tags #2', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep --invert`, (err, stdout, stderr) => {
+          stdout.should.include('@feature_grep'); // feature
+          stdout.should.not.include('grep message 2'); // test name
+          stdout.should.include('grep message 1'); // test name
+          assert(!err);
+          done();
+        });
+      });
+
+      it('should filter by feature tags', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @main --invert`, (err, stdout, stderr) => {
+          stdout.should.include('@feature_grep'); // feature
+          stdout.should.include('grep message 1'); // test name
+          stdout.should.include('grep message 2'); // test name
+          assert(!err);
+          done();
+        });
+      });
+
+      it('should filter by feature tags', (done) => {
+        process.chdir(codecept_dir);
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep --invert`, (err, stdout, stderr) => {
+          stdout.should.not.include('@feature_grep'); // feature
+          stdout.should.not.include('grep message 1'); // test name
+          stdout.should.not.include('grep message 2'); // test name
+          assert(!err);
+          done();
+        });
       });
     });
   });
