@@ -4,8 +4,6 @@ const path = require('path');
 const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
-const fileExists = require('../lib/utils').fileExists;
-const fs = require('fs');
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 8) {
   error('NodeJS >= 8 is required to run.');
