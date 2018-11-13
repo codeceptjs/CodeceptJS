@@ -138,6 +138,26 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should run scenario outline by tag', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --grep "@user" --steps', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.not.include('0 passed');
+      stdout.should.include('I have product with price 10$');
+      assert(!err);
+      done();
+    });
+  });
+
+
+  it('should run scenario and scenario outline by tags', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.not.include('0 passed');
+      stdout.should.include('I have product with price 10$');
+      stdout.should.include('I have product with $600 price in my cart');
+      stdout.should.include('6 passed');
+      assert(!err);
+      done();
+    });
+  });
 
   it('should show all available steps', (done) => {
     exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line

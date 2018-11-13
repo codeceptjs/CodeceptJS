@@ -122,7 +122,7 @@ Rerun the test to see the browser.
 codeceptjs init
 ```
 
-3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
+3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriverIO**.
 
 ```sh
 ? What helpers do you want to use?
@@ -193,7 +193,7 @@ My First Test --
 ---
 
 ### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
-### Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/puppeteer/)
+### Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
 
 ---
 
