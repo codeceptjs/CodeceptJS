@@ -5,15 +5,14 @@
 **Extends Helper**
 
 REST helper allows to send additional requests to the REST API during acceptance tests.
-[Unirest][1] library is used to perform requests.
+[Axios][1] library is used to perform requests.
 
 ## Configuration
 
--   endpoint: API base URL
+-   baseURL: API base URL
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 -   resetHeaders: set to true to reset headers  between requests. Disabled by default
--   followRedirect: set to true to enable automatic redirect. Disabled by default
 
 ### Parameters
 
@@ -25,7 +24,7 @@ Changes headers to default if reset headers option is true
 
 ### \_executeRequest
 
-Executes unirest request
+Executes axios request
 
 #### Parameters
 
@@ -38,22 +37,6 @@ Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 #### Parameters
 
 -   `url` **any** 
-
-### amFollowingRequestRedirects
-
-Set response auto-redirects ON
-
-```js
-I.amFollowingRequestRedirects(); // To enable auto-redirects
-```
-
-### amNotFollowingRequestRedirects
-
-Set response auto-redirects OFF
-
-```js
-I.amNotFollowingRequestRedirects(); // To disable auto-redirects
-```
 
 ### haveRequestHeaders
 
@@ -158,7 +141,7 @@ I.setRequestTimeout(10000); // In milliseconds
 
 -   `newTimeout`  
 
-[1]: http://unirest.io/nodejs.html
+[1]: https://github.com/axios/axios
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
