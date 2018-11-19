@@ -12,15 +12,10 @@ REST helper allows to send additional requests to the REST API during acceptance
 -   baseURL: API base URL
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
--   resetHeaders: set to true to reset headers  between requests. Disabled by default
 
 ### Parameters
 
 -   `config`  
-
-### \_cleanRequestHeaders
-
-Changes headers to default if reset headers option is true
 
 ### \_executeRequest
 
@@ -37,29 +32,6 @@ Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 #### Parameters
 
 -   `url` **any** 
-
-### haveRequestHeaders
-
-Set headers for the request
-
-```js
-I.haveRequestHeaders({
-   'Accept': 'application/json',
-   'User-Agent': 'Unirest Node.js'
-});
-```
-
-#### Parameters
-
--   `customHeaders` **any** 
-
-### resetRequestHeaders
-
-Reset headers for the request to default state
-
-```js
-I.resetRequestHeaders();
-```
 
 ### sendDeleteRequest
 
@@ -98,7 +70,7 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **[string][3]** 
--   `payload` **[object][2]**  (optional, default `{}`)
+-   `payload` **[object][2]** 
 -   `headers` **[object][2]**  (optional, default `{}`)
 
 ### sendPostRequest
