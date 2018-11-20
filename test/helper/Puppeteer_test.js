@@ -555,5 +555,6 @@ describe('Puppeteer', function () {
       await I.dragSlider('#slidecontainer input', 20);
       const after = await I.grabValueFrom('#slidecontainer input');
       assert.notEqual(before, after);
-    });})
+    });
+  });
 });
