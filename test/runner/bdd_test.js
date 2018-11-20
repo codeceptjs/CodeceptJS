@@ -21,7 +21,8 @@ describe('BDD Gherkin', () => {
       stdout.should.include('And I have product with $1000 price');
       stdout.should.include('Then I should see that total number of products is 2');
       stdout.should.include('And my order amount is $1600');
-      stdout.should.not.include('I add item 600');
+      stdout.should.not.include('I add item 600'); // 'Given' actor's non-gherkin step check
+      stdout.should.not.include('I see sum 1600'); // 'And' actor's non-gherkin step check
       assert(!err);
       done();
     });
