@@ -302,13 +302,7 @@
             <div class="well col-md-3"><div class="bs-sidebar hidden-print" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#146">1.4.6</a></li>
-        
-    
-        <li class="main "><a href="#145">1.4.5</a></li>
-        
-    
-        <li class="main "><a href="#144">1.4.4</a></li>
+        <li class="main active"><a href="#144">1.4.4</a></li>
         
     
         <li class="main "><a href="#143">1.4.3</a></li>
@@ -497,37 +491,6 @@
 </div></div>
             <div class="col-md-7" role="main">
 
-<h2 id="146">1.4.6</h2>
-<ul>
-<li>[Puppeteer] <code>dragSlider</code> action added by @PeterNgTr</li>
-<li>[Puppeteer] Fixed opening browser in shell mode by @allenhwkim</li>
-<li>[Puppeteer] Fixed making screenshot on additional sessions by @PeterNgTr. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/1266">#1266</a></li>
-<li>Added <code>--invert</code> option to <code>run-multiple</code> command by @LukoyanovE</li>
-<li>Fixed steps in Allure reports by @PeterNgTr</li>
-<li>Add option <code>output</code> to customize output directory in <a href="https://codecept.io/plugins/#stepbystepreport">stepByStepReport plugin</a>. By @fpsthirty</li>
-<li>Changed type definition of PageObjects to get auto completion by @rhicu</li>
-<li>Fixed steps output for async/arrow functions in CLI by @LukoyanovE. See <a href="https://github.com/Codeception/CodeceptJS/pull/1329">#1329</a></li>
-</ul>
-<h2 id="145">1.4.5</h2>
-<ul>
-<li>Add <strong>require</strong> param to main config. Allows to require Node modules before executing tests. By @LukoyanovE. For example:<ul>
-<li>Use <code>ts-node/register</code> to register TypeScript parser</li>
-<li>Use <code>should</code> to register should-style assertions</li>
-</ul>
-</li>
-</ul>
-<pre><code class="js">&quot;require&quot;: [&quot;ts-node/register&quot;, &quot;should&quot;]
-</code></pre>
-
-<ul>
-<li>[WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE</li>
-<li>Fixed: exception in Before block w/ Mocha causes test not to report failure. See <a href="https://github.com/Codeception/CodeceptJS/pull/1292">#1292</a> by @PeterNgTr</li>
-<li>Command <code>run-parallel</code> now accepts <code>--override</code> flag. Thanks to @ClemCB</li>
-<li>Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By @PeterNgTr</li>
-<li>Added <code>RUN_MULTIPLE</code> env variable to <a href="https://codecept.io/docker/">Docker config</a>. Allows to run tests in parallel inside a container. Thanks to @PeterNgTr</li>
-<li>[Mochawesome] Fixed showing screenshot on failure. Fix by @PeterNgTr</li>
-<li>Fixed running tests filtering by tag names defined via <code>Scenario.tag()</code></li>
-</ul>
 <h2 id="144">1.4.4</h2>
 <ul>
 <li><a href="https://codecept.io/plugins/#autoDelay">autoDelay plugin</a> added. Adds tiny delay before and after an action so the page could react to actions performed.</li>
