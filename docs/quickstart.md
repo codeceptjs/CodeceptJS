@@ -105,6 +105,8 @@ Rerun the test to see the browser.
 
 ### Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
 ### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+### Next: [Demo Project](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
+
 
 ---
 

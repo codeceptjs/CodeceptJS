@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@types/inquirer": "^0.0.35",
-    "@types/node": "^8.10.29",
+    "@types/node": "^8.10.37",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2",
@@ -73,7 +73,7 @@
     "nightmare": "^3.0.0",
     "nyc": "^11.9.0",
     "protractor": "^5.4.1",
-    "puppeteer": "^1.8.0",
+    "puppeteer": "^1.10.0",
     "rosie": "^1.6.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.14.0",
