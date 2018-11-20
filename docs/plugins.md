@@ -169,6 +169,7 @@ Possible config options:
 -   `animateSlides`: should animation for slides to be used. Default: true.
 -   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
+-   `output`: a directory where reports should be stored. Default: `output`.
 
 ##### Allure Reports
 
