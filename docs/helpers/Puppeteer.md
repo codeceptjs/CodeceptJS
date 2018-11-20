@@ -466,6 +466,21 @@ I.dragAndDrop('#dragHandle', '#container');
 -   `srcElement`  located by CSS|XPath|strict locator.
 -   `destElement`  located by CSS|XPath|strict locator.
 
+### dragSlider
+
+Drag the srubber of a slider to a given position
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+
+```js
+I.dragSlider('#slider', 30);
+I.dragSlider('#slider', -70);
+```
+
+#### Parameters
+
+-   `locator`  located by label|name|CSS|XPath|strict locator.
+-   `value`  position to drag.
+
 ### executeAsyncScript
 
 Executes async script on page.
