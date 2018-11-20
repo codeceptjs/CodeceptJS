@@ -101,6 +101,18 @@ describe('CodeceptJS Multiple Runner', function () {
     });
   });
 
+  it('should pass grep invert to configuration', (done) => {
+    exec(`${codecept_run}default --grep @grep --invert`, (err, stdout, stderr) => {
+      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.not.include('[1.default:chrome] @grep print browser size');
+      stdout.should.not.include('[2.default:firefox] @grep print browser size');
+      stdout.should.include('[1.default:chrome] print browser ');
+      stdout.should.include('[2.default:firefox] print browser ');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should pass tests to configuration', (done) => {
     exec(`${codecept_run}test`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
