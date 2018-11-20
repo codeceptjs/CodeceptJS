@@ -468,7 +468,7 @@ I.dragAndDrop('#dragHandle', '#container');
 
 ### dragSlider
 
-Drag the scrubber of a slider to a given position
+Drag the scrubber of a slider to a given position.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
 
 ```js
