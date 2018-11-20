@@ -384,6 +384,8 @@
         
             <li><a href="#draganddrop">dragAndDrop</a></li>
         
+            <li><a href="#dragslider">dragSlider</a></li>
+        
             <li><a href="#executeasyncscript">executeAsyncScript</a></li>
         
             <li><a href="#executescript">executeScript</a></li>
@@ -919,6 +921,20 @@ I.doubleClick('.btn.edit');
 </thead>
 <tbody></tbody>
 </table>
+<h3 id="dragslider">dragSlider</h3>
+<p>Drag the scrubber of a slider to a given position
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.</p>
+<pre><code class="js">I.dragSlider('#slider', 30);
+I.dragSlider('#slider', -70);
+</code></pre>
+
+<h4 id="parameters_27">Parameters</h4>
+<ul>
+<li><code>locator</code>  </li>
+<li><code>offsetX</code>   (optional, default <code>0</code>)</li>
+<li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
+<li><code>value</code>  position to drag.</li>
+</ul>
 <h3 id="executeasyncscript">executeAsyncScript</h3>
 <p>Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.</p>
@@ -936,7 +952,7 @@ $.ajax(url, { success: (data) =&gt; done(data); }
 }, 'http://ajax.callback.url/');
 </code></pre>
 
-<h4 id="parameters_27">Parameters</h4>
+<h4 id="parameters_28">Parameters</h4>
 <ul>
 <li><code>fn</code>  function to be executed in browser context.</li>
 </ul>
@@ -960,7 +976,7 @@ return $(el).datetimepicker('getDate').toString();
 }, '#date'); // passing jquery selector
 </code></pre>
 
-<h4 id="parameters_28">Parameters</h4>
+<h4 id="parameters_29">Parameters</h4>
 <ul>
 <li><code>fn</code>  function to be executed in browser context.</li>
 </ul>
@@ -977,7 +993,7 @@ I.fillField('form#login input[name=username]', 'John');
 I.fillField({css: 'form#login input[name=username]'}, 'John');
 </code></pre>
 
-<h4 id="parameters_29">Parameters</h4>
+<h4 id="parameters_30">Parameters</h4>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 <li><code>value</code>  text value to fill.</li>
@@ -988,7 +1004,7 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 <pre><code class="js">let hint = await I.grabAttributeFrom('#tooltip', 'title');
 </code></pre>
 
-<h4 id="parameters_30">Parameters</h4>
+<h4 id="parameters_31">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>attr</code>  attribute name.</li>
@@ -1007,7 +1023,7 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 assert(cookie.value, '123456');
 </code></pre>
 
-<h4 id="parameters_31">Parameters</h4>
+<h4 id="parameters_32">Parameters</h4>
 <ul>
 <li><code>name</code>  (optional) cookie name.Returns cookie in JSON format. If name not passed returns all cookies for this domain.</li>
 </ul>
@@ -1017,7 +1033,7 @@ Resumes test execution, so <strong>should be used inside an async function with 
 <pre><code class="js">const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 </code></pre>
 
-<h4 id="parameters_32">Parameters</h4>
+<h4 id="parameters_33">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>cssProperty</code>  CSS property name.</li>
@@ -1035,7 +1051,7 @@ Resumes test execution, so <strong>should be used inside async function with <co
 <pre><code class="js">let postHTML = await I.grabHTMLFrom('#post');
 </code></pre>
 
-<h4 id="parameters_33">Parameters</h4>
+<h4 id="parameters_34">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
@@ -1049,7 +1065,7 @@ Resumes test execution, so <strong>should be used inside async function with <co
 <pre><code class="js">I.grabNumberOfVisibleElements('p');
 </code></pre>
 
-<h4 id="parameters_34">Parameters</h4>
+<h4 id="parameters_35">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
@@ -1077,7 +1093,7 @@ Resumes test execution, so <strong>should be used inside async with <code>await<
 </code></pre>
 
 <p>If multiple elements found returns an array of texts.</p>
-<h4 id="parameters_35">Parameters</h4>
+<h4 id="parameters_36">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
@@ -1093,7 +1109,7 @@ Resumes test execution, so <strong>should be used inside async function with <co
 <pre><code class="js">let email = await I.grabValueFrom('input[name=email]');
 </code></pre>
 
-<h4 id="parameters_36">Parameters</h4>
+<h4 id="parameters_37">Parameters</h4>
 <ul>
 <li><code>locator</code>  field located by label|name|CSS|XPath|strict locator.</li>
 </ul>
@@ -1104,7 +1120,7 @@ Resumes test execution, so <strong>should be used inside async function with <co
 });
 </code></pre>
 
-<h4 id="parameters_37">Parameters</h4>
+<h4 id="parameters_38">Parameters</h4>
 <ul>
 <li><code>customHeaders</code>  </li>
 </ul>
@@ -1115,7 +1131,7 @@ Extra shift can be set with offsetX and offsetY options.</p>
 I.moveCursorTo('#submit', 5,5);
 </code></pre>
 
-<h4 id="parameters_38">Parameters</h4>
+<h4 id="parameters_39">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 <li><code>offsetX</code>  (optional) X-axis offset.</li>
@@ -1135,7 +1151,7 @@ If modifier key is used (Control, Command, Alt, Shift) in array, it will be rele
 I.pressKey(['Control','a']);
 </code></pre>
 
-<h4 id="parameters_39">Parameters</h4>
+<h4 id="parameters_40">Parameters</h4>
 <ul>
 <li><code>key</code>  key or array of keys to press.</li>
 </ul>
@@ -1147,7 +1163,7 @@ I.pressKey(['Control','a']);
 <h3 id="resizewindow">resizeWindow</h3>
 <p>Resize the current window to provided width and height.
 First parameter can be set to <code>maximize</code>.</p>
-<h4 id="parameters_40">Parameters</h4>
+<h4 id="parameters_41">Parameters</h4>
 <ul>
 <li><code>width</code>  width in pixels or <code>maximize</code>.</li>
 <li><code>height</code>  height in pixels.Unlike other drivers Puppeteer changes the size of a viewport, not the window!
@@ -1156,7 +1172,7 @@ First parameter can be set to <code>maximize</code>.</p>
 </ul>
 <h3 id="rightclick">rightClick</h3>
 <p>Performs right click on an element matched by CSS or XPath.</p>
-<h4 id="parameters_41">Parameters</h4>
+<h4 id="parameters_42">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>context</code>   (optional, default <code>null</code>)</li>
@@ -1169,7 +1185,7 @@ Optionally resize the window to the full available page <code>scrollHeight</code
 I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 </code></pre>
 
-<h4 id="parameters_42">Parameters</h4>
+<h4 id="parameters_43">Parameters</h4>
 <ul>
 <li><code>fileName</code>  file name to save.</li>
 <li><code>fullPage</code>  (optional) flag to enable fullscreen screenshot mode.</li>
@@ -1191,7 +1207,7 @@ Extra shift can be set with offsetX and offsetY options.</p>
 I.scrollTo('#submit', 5, 5);
 </code></pre>
 
-<h4 id="parameters_43">Parameters</h4>
+<h4 id="parameters_44">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 <li><code>offsetX</code>  (optional) X-axis offset.</li>
@@ -1205,7 +1221,7 @@ I.see('Welcome', '.content'); // text inside .content div
 I.see('Register', {css: 'form.register'}); // use strict locator
 </code></pre>
 
-<h4 id="parameters_44">Parameters</h4>
+<h4 id="parameters_45">Parameters</h4>
 <ul>
 <li><code>text</code>  expected on page.</li>
 <li><code>context</code>  (optional) element located by CSS|Xpath|strict locator in which to search for text.</li>
@@ -1215,7 +1231,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 <pre><code class="js">I.seeAttributesOnElements('//form', {'method': &quot;post&quot;});
 </code></pre>
 
-<h4 id="parameters_45">Parameters</h4>
+<h4 id="parameters_46">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 <li><code>attributes</code>  object with attributes and their values to check.</li>
@@ -1227,7 +1243,7 @@ I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
 I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 </code></pre>
 
-<h4 id="parameters_46">Parameters</h4>
+<h4 id="parameters_47">Parameters</h4>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 </ul>
@@ -1236,7 +1252,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <pre><code class="js">I.seeCookie('Auth');
 </code></pre>
 
-<h4 id="parameters_47">Parameters</h4>
+<h4 id="parameters_48">Parameters</h4>
 <ul>
 <li><code>name</code>  cookie name.</li>
 </ul>
@@ -1245,7 +1261,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 <pre><code class="js">I.seeCssPropertiesOnElements('h3', { 'font-weight': &quot;bold&quot;});
 </code></pre>
 
-<h4 id="parameters_48">Parameters</h4>
+<h4 id="parameters_49">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 <li><code>cssProperties</code>  object with CSS properties and their values to check.</li>
@@ -1258,7 +1274,7 @@ So both examples will work:</p>
 I.seeCurrentUrlEquals('http://my.site.com/register');
 </code></pre>
 
-<h4 id="parameters_49">Parameters</h4>
+<h4 id="parameters_50">Parameters</h4>
 <ul>
 <li><code>url</code>  value to check.</li>
 </ul>
@@ -1268,7 +1284,7 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElement('#modal');
 </code></pre>
 
-<h4 id="parameters_50">Parameters</h4>
+<h4 id="parameters_51">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
@@ -1278,7 +1294,7 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeElementInDOM('#modal');
 </code></pre>
 
-<h4 id="parameters_51">Parameters</h4>
+<h4 id="parameters_52">Parameters</h4>
 <ul>
 <li><code>locator</code>  located by CSS|XPath|strict locator.</li>
 </ul>
@@ -1287,7 +1303,7 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeInCurrentUrl('/register'); // we are on registration page
 </code></pre>
 
-<h4 id="parameters_52">Parameters</h4>
+<h4 id="parameters_53">Parameters</h4>
 <ul>
 <li><code>url</code>  value to check.</li>
 </ul>
@@ -1300,7 +1316,7 @@ I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
 </code></pre>
 
-<h4 id="parameters_53">Parameters</h4>
+<h4 id="parameters_54">Parameters</h4>
 <ul>
 <li><code>field</code>  located by label|name|CSS|XPath|strict locator.</li>
 <li><code>value</code>  value to check.</li>
@@ -1308,7 +1324,7 @@ I.seeInField('#searchform input','Search');
 <h3 id="seeinpopup">seeInPopup</h3>
 <p>Checks that the active JavaScript popup, as created by <code>window.alert|window.confirm|window.prompt</code>, contains the
 given string.</p>
-<h4 id="parameters_54">Parameters</h4>
+<h4 id="parameters_55">Parameters</h4>
 <ul>
 <li><code>text</code>  </li>
 </ul>
@@ -1317,13 +1333,13 @@ given string.</p>
 <pre><code class="js">I.seeInSource('&lt;h1&gt;Green eggs &amp;amp; ham&lt;/h1&gt;');
 </code></pre>
 
-<h4 id="parameters_55">Parameters</h4>
+<h4 id="parameters_56">Parameters</h4>
 <ul>
 <li><code>text</code>  value to check.</li>
 </ul>
 <h3 id="seeintitle">seeInTitle</h3>
 <p>Checks that title contains text.</p>
-<h4 id="parameters_56">Parameters</h4>
+<h4 id="parameters_57">Parameters</h4>
 <ul>
 <li><code>text</code>  text value to check.</li>
 </ul>
@@ -1333,7 +1349,7 @@ Element is located by label or name or CSS or XPath.</p>
 <pre><code class="js">I.seeNumberOfElements('#submitBtn', 1);
 </code></pre>
 
-<h4 id="parameters_57">Parameters</h4>
+<h4 id="parameters_58">Parameters</h4>
 <ul>
 <li><code>selector</code>  </li>
 <li><code>num</code>  </li>
@@ -1344,7 +1360,7 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeNumberOfVisibleElements('.buttons', 3);
 </code></pre>
 
-<h4 id="parameters_58">Parameters</h4>
+<h4 id="parameters_59">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>num</code>  number of elements.</li>
@@ -1354,7 +1370,7 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeTextEquals('text', 'h1');
 </code></pre>
 
-<h4 id="parameters_59">Parameters</h4>
+<h4 id="parameters_60">Parameters</h4>
 <ul>
 <li><code>text</code>  </li>
 <li><code>context</code>   (optional, default <code>null</code>)</li>
@@ -1364,7 +1380,7 @@ Element is located by CSS or XPath.</p>
 <pre><code class="js">I.seeTitleEquals('Test title.');
 </code></pre>
 
-<h4 id="parameters_60">Parameters</h4>
+<h4 id="parameters_61">Parameters</h4>
 <ul>
 <li><code>text</code>  </li>
 </ul>
@@ -1384,7 +1400,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <pre><code class="js">I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 </code></pre>
 
-<h4 id="parameters_61">Parameters</h4>
+<h4 id="parameters_62">Parameters</h4>
 <ul>
 <li><code>select</code>  field located by label|name|CSS|XPath|strict locator.</li>
 <li><code>option</code>  visible text or value of option.</li>
@@ -1394,13 +1410,13 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 <pre><code class="js">I.setCookie({name: 'auth', value: true});
 </code></pre>
 
-<h4 id="parameters_62">Parameters</h4>
+<h4 id="parameters_63">Parameters</h4>
 <ul>
 <li><code>cookie</code>  cookie JSON object.</li>
 </ul>
 <h3 id="switchto">switchTo</h3>
 <p>Switches frame or in case of null locator reverts to parent.</p>
-<h4 id="parameters_63">Parameters</h4>
+<h4 id="parameters_64">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 </ul>
@@ -1410,7 +1426,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 I.switchToNextTab(2);
 </code></pre>
 
-<h4 id="parameters_64">Parameters</h4>
+<h4 id="parameters_65">Parameters</h4>
 <ul>
 <li><code>num</code>   (optional, default <code>1</code>)</li>
 </ul>
@@ -1420,7 +1436,7 @@ I.switchToNextTab(2);
 I.switchToPreviousTab(2);
 </code></pre>
 
-<h4 id="parameters_65">Parameters</h4>
+<h4 id="parameters_66">Parameters</h4>
 <ul>
 <li><code>num</code>   (optional, default <code>1</code>)</li>
 </ul>
@@ -1429,7 +1445,7 @@ I.switchToPreviousTab(2);
 <pre><code class="js">I.wait(2); // wait 2 secs
 </code></pre>
 
-<h4 id="parameters_66">Parameters</h4>
+<h4 id="parameters_67">Parameters</h4>
 <ul>
 <li><code>sec</code>  time in seconds to wait.</li>
 </ul>
@@ -1438,7 +1454,7 @@ I.switchToPreviousTab(2);
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForDetached('#popup');
 </code></pre>
-<h4 id="parameters_67">Parameters</h4>
+<h4 id="parameters_68">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1450,7 +1466,7 @@ Element can be located by CSS or XPath.</p>
 I.waitForElement('.btn.continue', 5); // wait for 5 secs
 </code></pre>
 
-<h4 id="parameters_68">Parameters</h4>
+<h4 id="parameters_69">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1458,7 +1474,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 <h3 id="waitforenabled">waitForEnabled</h3>
 <p>Waits for element to become enabled (by default waits for 1sec).
 Element can be located by CSS or XPath.</p>
-<h4 id="parameters_69">Parameters</h4>
+<h4 id="parameters_70">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1474,7 +1490,7 @@ I.waitForFunction(() =&gt; window.requests == 0, 5); // waits for 5 sec
 I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args and wait for 5 sec
 </code></pre>
 
-<h4 id="parameters_70">Parameters</h4>
+<h4 id="parameters_71">Parameters</h4>
 <ul>
 <li><code>fn</code>  to be executed in browser context.</li>
 <li><code>argsOrSec</code>  (optional) arguments for function or seconds.</li>
@@ -1485,7 +1501,7 @@ I.waitForFunction((count) =&gt; window.requests == count, [3], 5) // pass args a
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForInvisible('#popup');
 </code></pre>
-<h4 id="parameters_71">Parameters</h4>
+<h4 id="parameters_72">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1493,7 +1509,7 @@ Element can be located by CSS or XPath.</p>
 <h3 id="waitfornavigation">waitForNavigation</h3>
 <p>Waits for navigation to finish. By default takes configured <code>waitForNavigation</code> option.</p>
 <p>See <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions">Pupeteer's reference</a></p>
-<h4 id="parameters_72">Parameters</h4>
+<h4 id="parameters_73">Parameters</h4>
 <ul>
 <li><code>opts</code> <strong>any</strong>  (optional, default <code>{}</code>)</li>
 </ul>
@@ -1503,7 +1519,7 @@ Element can be located by CSS or XPath.</p>
 I.waitForRequest(request =&gt; request.url() === 'http://example.com' &amp;&amp; request.method() === 'GET');
 </code></pre>
 
-<h4 id="parameters_73">Parameters</h4>
+<h4 id="parameters_74">Parameters</h4>
 <ul>
 <li><code>urlOrPredicate</code> <strong>any</strong> </li>
 <li><code>sec</code> <strong>any</strong>  (optional, default <code>null</code>)</li>
@@ -1514,7 +1530,7 @@ I.waitForRequest(request =&gt; request.url() === 'http://example.com' &amp;&amp;
 I.waitForResponse(request =&gt; request.url() === 'http://example.com' &amp;&amp; request.method() === 'GET');
 </code></pre>
 
-<h4 id="parameters_74">Parameters</h4>
+<h4 id="parameters_75">Parameters</h4>
 <ul>
 <li><code>urlOrPredicate</code> <strong>any</strong> </li>
 <li><code>sec</code> <strong>any</strong>  (optional, default <code>null</code>)</li>
@@ -1527,7 +1543,7 @@ Narrow down search results by providing context.</p>
 I.waitForText('Thank you, form has been submitted', 5, '#modal');
 </code></pre>
 
-<h4 id="parameters_75">Parameters</h4>
+<h4 id="parameters_76">Parameters</h4>
 <ul>
 <li><code>text</code>  to wait for.</li>
 <li><code>sec</code>  (optional) time in seconds to wait.</li>
@@ -1538,7 +1554,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 <pre><code class="js">I.waitForValue('//input', &quot;GoodValue&quot;);
 </code></pre>
 
-<h4 id="parameters_76">Parameters</h4>
+<h4 id="parameters_77">Parameters</h4>
 <ul>
 <li><code>field</code>  input field.</li>
 <li><code>value</code>  expected value.</li>
@@ -1549,7 +1565,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitForVisible('#popup');
 </code></pre>
-<h4 id="parameters_77">Parameters</h4>
+<h4 id="parameters_78">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1559,7 +1575,7 @@ Element can be located by CSS or XPath.</p>
 <pre><code class="js">I.waitInUrl('/info', 2);
 </code></pre>
 
-<h4 id="parameters_78">Parameters</h4>
+<h4 id="parameters_79">Parameters</h4>
 <ul>
 <li><code>urlPart</code>  value to check.</li>
 <li><code>sec</code>  (optional) time in seconds to wait.</li>
@@ -1569,7 +1585,7 @@ Element can be located by CSS or XPath.</p>
 <pre><code class="js">I.waitNumberOfVisibleElements('a', 3);
 </code></pre>
 
-<h4 id="parameters_79">Parameters</h4>
+<h4 id="parameters_80">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>num</code>  number of elements.</li>
@@ -1580,7 +1596,7 @@ Element can be located by CSS or XPath.</p>
 Element can be located by CSS or XPath.</p>
 <pre><code>I.waitToHide('#popup');
 </code></pre>
-<h4 id="parameters_80">Parameters</h4>
+<h4 id="parameters_81">Parameters</h4>
 <ul>
 <li><code>locator</code>  element located by CSS|XPath|strict locator.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1591,7 +1607,7 @@ Element can be located by CSS or XPath.</p>
 I.waitUntil(() =&gt; window.requests == 0, 5);
 </code></pre>
 
-<h4 id="parameters_81">Parameters</h4>
+<h4 id="parameters_82">Parameters</h4>
 <ul>
 <li><code>fn</code>  function which is executed in browser context.</li>
 <li><code>sec</code>  (optional) time in seconds to wait, 1 by default.</li>
@@ -1603,7 +1619,7 @@ I.waitUntil(() =&gt; window.requests == 0, 5);
 I.waitUrlEquals('http://127.0.0.1:8000/info');
 </code></pre>
 
-<h4 id="parameters_82">Parameters</h4>
+<h4 id="parameters_83">Parameters</h4>
 <ul>
 <li><code>urlPart</code>  value to check.</li>
 <li><code>sec</code>  (optional) time in seconds to wait.</li>
@@ -1651,6 +1667,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
                 <h5>Support:</h5>
                 <ul>
                     <li><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Channel</a></li>
+                    <li><a href="https://codecept.discourse.group">Discussion Group</a></li>
                     <li><a href="https://stackoverflow.com/questions/tagged/codeceptjs?mixed=1">Stack Overflow</a></li>
                     <li><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=bottom&utm_term=link&utm_campaign=reference">Commercial Support</a></li>
                 </ul>

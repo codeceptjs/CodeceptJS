@@ -1718,6 +1718,35 @@ I.seeAttributesOnElements('//form', {'method': "post"});
   }
 
   /**
+   * Drag the scrubber of a slider to a given position
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+
+```js
+I.dragSlider('#slider', 30);
+I.dragSlider('#slider', -70);
+```
+@param field located by label|name|CSS|XPath|strict locator.
+@param value position to drag.
+   */
+  async dragSlider(locator, offsetX = 0) {
+    const src = await this._locate(locator);
+    assertElementExists(src, locator, 'Slider Element');
+
+    // Note: Using private api ._clickablePoint because the .BoundingBox does not take into account iframe offsets!
+    const sliderSource = await src[0]._clickablePoint();
+
+    // Drag start point
+    await this.page.mouse.move(sliderSource.x, sliderSource.y, { steps: 5 });
+    await this.page.mouse.down();
+
+    // Drag destination
+    await this.page.mouse.move(sliderSource.x + offsetX, sliderSource.y, { steps: 5 });
+    await this.page.mouse.up();
+
+    await this._waitForAction();
+  }
+
+  /**
    * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async with `await`** operator.
 
@@ -1751,6 +1780,10 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
     const fullPageOption = fullPage || this.options.fullPageScreenshots;
     const outputFile = path.join(global.output_dir, fileName);
     this.debug(`Screenshot is saving to ${outputFile}`);
+    const openSessions = await this.browser.pages();
+    if (openSessions.length > 1) {
+      this.page = await this.browser.targets()[this.browser.targets().length - 1].page();
+    }
     return this.page.screenshot({ path: outputFile, fullPage: fullPageOption, type: 'png' });
   }
 

@@ -367,7 +367,7 @@ body .bs-sidebar {
 }
 
 .reference p {
-  margin-bottom: 1em;
+  margin: 1em 0 0.5em;
   line-height: 1.5em;
 }
 
