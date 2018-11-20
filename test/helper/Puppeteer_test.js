@@ -551,9 +551,9 @@ describe('Puppeteer', function () {
     it('Drag scrubber to given position', async () => {
       await I.amOnPage('https://www.w3schools.com/howto/howto_js_rangeslider.asp');
       await I.seeElementInDOM('#slidecontainer input');
-      let before = await I.grabValueFrom('#slidecontainer input');
+      const before = await I.grabValueFrom('#slidecontainer input');
       await I.dragSlider('#slidecontainer input', 20);
-      let after = await I.grabValueFrom('#slidecontainer input');
+      const after = await I.grabValueFrom('#slidecontainer input');
       assert.notEqual(before, after);
     });})
 });
