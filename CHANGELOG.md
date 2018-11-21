@@ -1,15 +1,23 @@
+## 1.4.6
+
+* [Puppeteer] `dragSlider` action added by @PeterNgTr
+* [Puppeteer] Fixed opening browser in shell mode by @allenhwkim
+* [Puppeteer] Fixed making screenshot on additional sessions by @PeterNgTr. Fixes [#1266](https://github.com/Codeception/CodeceptJS/issues/1266)
+* Added `--invert` option to `run-multiple` command by @LukoyanovE
+* Fixed steps in Allure reports by @PeterNgTr
+* Add option `output` to customize output directory in [stepByStepReport plugin](https://codecept.io/plugins/#stepbystepreport). By @fpsthirty
+* Changed type definition of PageObjects to get auto completion by @rhicu
+* Fixed steps output for async/arrow functions in CLI by @LukoyanovE. See [#1329](https://github.com/Codeception/CodeceptJS/pull/1329)
+
 ## 1.4.5
 
-* Add **require** param to main config. Allows to require Node modules before executing tests. By @LukoyanovE
+* Add **require** param to main config. Allows to require Node modules before executing tests. By @LukoyanovE. For example:
+    * Use `ts-node/register` to register TypeScript parser
+    * Use `should` to register should-style assertions
 
-   Example (`codecept.json`):
-
-   ```js
-     "require": ["ts-node/register", "should"]
-   ```
-
-   * Uses `ts-node/register` to register TypeScript parser
-   * Uses `should` to register should-style assertions
+```js
+"require": ["ts-node/register", "should"]
+```
 
 * [WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE
 * Fixed: exception in Before block w/ Mocha causes test not to report failure. See [#1292](https://github.com/Codeception/CodeceptJS/pull/1292) by @PeterNgTr
