@@ -246,6 +246,15 @@ describe('WebDriverIO', function () {
         e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
       }));
 
+    it('should be no [object Object] in the error message', () => wd.amOnPage('/info')
+      .then(() => wd.waitNumberOfVisibleElements({ css: '//div[@id = "grab-multiple"]//a' }, 3))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.not.include('[object Object]');
+      }));
+
     it('should wait for a specified number of elements on the page using a css selector', () => wd.amOnPage('/info')
       .then(() => wd.waitNumberOfVisibleElements('#grab-multiple > a', 3))
       .then(() => wd.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1))
@@ -260,6 +269,38 @@ describe('WebDriverIO', function () {
       .then(() => wd.waitNumberOfVisibleElements('.title', 2, 3))
       .then(() => wd.see('Hello'))
       .then(() => wd.see('World')));
+  });
+
+  describe('#waitForVisible', () => {
+    it('should be no [object Object] in the error message', () => wd.amOnPage('/info')
+      .then(() => wd.waitForVisible('//div[@id = "grab-multiple"]//a', 3))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.not.include('[object Object]');
+      }));
+
+    it('should wait for a specified element to be visible', () => wd.amOnPage('https://www.google.de/')
+      .then(() => wd.waitForVisible('input[type="submit"]', 5, 3))
+      .then(() => wd.seeElement('input[type="submit"]')));
+  });
+
+  describe('#waitForInvisible', () => {
+    it.only('should be no [object Object] in the error message', () => wd.amOnPage('/info')
+      .then(() => wd.waitForInvisible('//div[@id = "grab-multiple"]//a', 3))
+      .then(() => {
+        throw Error('It should never get this far');
+      })
+      .catch((e) => {
+        e.message.should.not.include('[object Object]');
+      }));
+
+    it.only('should wait for a specified element to be invisible', () => wd.amOnPage('https://www.google.de/')
+      .then(() => wd.fillField('input[type="text"]', 'testing'))
+      .then(() => wd.click('input[type="submit"]'))
+      .then(() => wd.waitForInvisible('input[type="submit"]', 5, 3))
+      .then(() => wd.dontSeeElement('input[type="submit"]')));
   });
 
   describe('#moveCursorTo', () => {
