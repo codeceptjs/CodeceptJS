@@ -182,3 +182,33 @@ If Allure plugin is enabled this plugin attaches each saved screenshot to allure
 [1]: https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png
 
 [2]: https://codecept.io/images/codeceptjs-slideshow.gif
+
+##### Testrail
+
+Enables Testrail integration.
+
+##### Configuration
+
+Add this plugin to config file:
+
+```js
+"plugins": {
+    "testrail": {
+       host: 'https://peternguyentr.testrail.io',
+       user: 'username',
+       password: 'password or api key'
+       projectId: 1,
+       runName: 'Custom run name',
+       enabled: true
+ }
+}
+```
+
+Possible config options:
+
+`projectId`: The project Id which is from the Testrail - Required. This should be provided to make this plugin works
+`runName`: your desired test run name - Optional. If you done provide this test run name, default test run name is as `This is a new test run on ${dd/mm/yyy}` which is current day.
+
+### Parameters
+
+-   `config`  
