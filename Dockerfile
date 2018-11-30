@@ -1,4 +1,4 @@
-ARG NODE_VERSION=8.9.1
+ARG NODE_VERSION=10.14.1
 FROM node:${NODE_VERSION}
 
 # Add our user and group first to make sure their IDs get assigned consistently,
