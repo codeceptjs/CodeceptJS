@@ -2,7 +2,7 @@
 
 ## Run
 
-Executes tests. Requires `codecept.json` config to be present in provided path.
+Executes tests. Requires `codecept.conf.js` config to be present in provided path.
 
 ---
 
@@ -85,7 +85,7 @@ codeceptjs run-multiple smoke:chrome regression:firefox
 
 ## Init
 
-Creates `codecept.json` file in current directory:
+Creates `codecept.conf.js` file in current directory:
 
 ```sh
 codeceptjs init
