@@ -97,6 +97,14 @@ Or in provided path
 codecept init test
 ```
 
+## Migrate
+
+Migrate your current `codecept.json` to `codecept.conf.js`
+
+```sh
+codeceptjs migrate
+```
+
 ## Shell
 
 Interactive shell. Allows to try `I.` commands in runtime

@@ -17,6 +17,10 @@ program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
 
+program.command('migrate [path]')
+  .description('Migrate json config to js config in current dir or [path]')
+  .action(require('../lib/command/configMigrate'));
+
 program.command('shell [path]')
   .alias('sh')
   .description('Interactive shell')
