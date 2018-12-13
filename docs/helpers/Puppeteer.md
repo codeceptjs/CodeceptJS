@@ -12,7 +12,7 @@ Requires `puppeteer` package to be installed.
 
 ## Configuration
 
-This helper should be configured in codecept.json
+This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url`: base url of website to be tested
 -   `show`: (optional, default: false) - show Google Chrome window for debug.
@@ -225,7 +225,7 @@ I.appendField('#myTextField', 'appended');
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json is located).
+Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -804,7 +804,7 @@ Performs right click on an element matched by CSS or XPath.
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.json).
+Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
 Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
