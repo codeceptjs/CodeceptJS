@@ -85,28 +85,22 @@ You will be asked questions about initial configuration, make sure you select Pr
 If you didn't have Protractor library it **will be installed**.
 Please agree to extend steps, and use `http://todomvc.com/examples/angularjs/` as a url for Protractor helper.
 
-For TodoMVC application you will have following config created in `codecept.json` file:
+For TodoMVC application you will have following config created in `codecept.conf.js` file:
 
-```json
-{
-  "tests": "./*_test.js",
-  "timeout": 10000,
-  "output": "./output",
-  "helpers": {
-    "Protractor": {
-      "url": "http://todomvc.com/examples/angularjs/",
-      "driver": "hosted",
-      "browser": "chrome",
-      "rootElement": "body"
-    }
-  },
-  "include": {
-    "I": "./steps_file.js"
-  },
-  "bootstrap": false,
-  "mocha": {},
-  "name": "todoangular"
-}
+```js
+exports.config = { tests: './*_test.js',
+  timeout: 10000,
+  output: './output',
+  helpers:
+   { Protractor:
+      { url: 'http://todomvc.com/examples/angularjs/',
+        driver: 'hosted',
+        browser: 'chrome',
+        rootElement: 'body' } },
+  include: { I: './steps_file.js' },
+  bootstrap: false,
+  mocha: {},
+  name: 'todoangular' }
 ```
 
 First test can be generated with `gt` command:

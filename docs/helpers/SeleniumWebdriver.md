@@ -25,7 +25,7 @@ It allows you to run Selenium tests on a server without a GUI installed.
 
 ## Configuration
 
-This helper should be configured in codecept.json
+This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url` - base url of website to be tested
 -   `browser` - browser in which perform testing
