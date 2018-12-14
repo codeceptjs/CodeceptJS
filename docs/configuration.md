@@ -1,6 +1,6 @@
 # Configuration
 
-CodeceptJS configuration is set in `codecept.json` file.
+CodeceptJS configuration is set in `codecept.conf.js` file.
 
 After running `codeceptjs init` it should be saved in test root.
 

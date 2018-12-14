@@ -20,7 +20,7 @@ Corresponding examples provided in next sections.
 
 ### Example: Async Bootstrap in a Function
 
-Add to `codecept.json`:
+Add to `codecept.conf.js`:
 
 ```json
 "bootstrap": "./run_server.js"

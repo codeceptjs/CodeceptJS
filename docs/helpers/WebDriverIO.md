@@ -11,7 +11,7 @@ WebDriverIO requires [Selenium Server and ChromeDriver/GeckoDriver to be install
 
 ### Configuration
 
-This helper should be configured in codecept.json
+This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url`: base url of website to be tested.
 -   `browser`: browser in which to perform testing.
@@ -284,7 +284,7 @@ I.appendField('#myTextField', 'appended');
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json is located).
+Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -922,7 +922,7 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.json).
+Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
 Filename is relative to output folder. 
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
