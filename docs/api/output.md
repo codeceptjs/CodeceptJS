@@ -41,6 +41,15 @@ Used in multiple-run
 
 -   `process`  
 
+## say
+
+Print a text in console log
+
+### Parameters
+
+-   `message`  
+-   `color`   (optional, default `'cyan'`)
+
 ## step
 
 Print a step
