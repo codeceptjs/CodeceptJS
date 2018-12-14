@@ -69,6 +69,7 @@
     "gulp": "^4.0.0",
     "gulp-documentation": "^3.2.1",
     "gulp-mustache": "^2.2.0",
+    "husky": "^1.2.1",
     "json-server": "^0.10.1",
     "nightmare": "^3.0.0",
     "nyc": "^11.9.0",
@@ -87,5 +88,11 @@
     "node": ">=8.9.1",
     "npm": ">=5.6.0"
   },
-  "es6": true
+  "es6": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run docs && npm run lint-fix",
+      "pre-push": "npm test"
+    }
+  }
 }
