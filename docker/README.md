@@ -7,7 +7,7 @@ CodeceptJS packed into container with the Nightmare, Protractor, Puppeteer, and 
 This image comes with the necessary dependencies and packages to execute CodeceptJS tests.
 Mount in your CodeceptJS config directory into the `/tests` directory in the docker container.
 
-Sample mount: `-v path/to/codecept.json:/tests`
+Sample mount: `-v path/to/codecept.conf.js:/tests`
 
 CodeceptJS runner is available inside container as `codeceptjs`.
 
