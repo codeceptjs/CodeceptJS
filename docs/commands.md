@@ -118,19 +118,19 @@ codeceptjs shell
 Create new test
 
 ```sh
-codeceptjs generate test
+codeceptjs generate:test
 ```
 
 Create new pageobject
 
 ```sh
-codeceptjs generate pageobject
+codeceptjs generate:pageobject
 ```
 
 Create new helper
 
 ```sh
-codeceptjs generate helper
+codeceptjs generate:helper
 ```
 
 ## TypeScript Definitions
