@@ -339,4 +339,8 @@ To run only tests without features use `--tests` option:
 codeceptjs run --tests
 ```
 
-## done()
+---
+
+### Next: [Test Lifecycle >>>](lifecycle.md)
+
+---

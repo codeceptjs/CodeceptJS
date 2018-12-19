@@ -2,16 +2,13 @@
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
-Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
+*Acceptance tests* (also called *End-to-End tests*) can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
-By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
-However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
-No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
+No matter of helper and driver you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
-In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
+In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript and allow the framework to handle the rest.
 
 Within web page you can locate elements, interact with them, and check that expected elements are present on a page. That is what a test look like.
-That is what a test look like.
 
 ```js
 I.amOnPage('/login');
@@ -21,7 +18,7 @@ I.click('Login');
 I.see('Welcome, John');
 ```
 
-This is how we can check that login form of a simple web application works. At first we opened `/login` page, then filled forms and in the end we saw the greetings text.
+This is how we can check that login form of a simple web application works. At first we opened the `/login` page, then filled in form fields, clicked a button, and in the end we check that we saw the greeting text.
 
 ## Locating Element
 
@@ -50,7 +47,7 @@ I.seeElement({name: 'password'});
 I.seeElement({id: 'users'});
 ```
 
-In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~` to specify accessibility id to locate an element. In web application you can locate element by their `aria-label` value.
+In [mobile testing](mobile.md#locating-elements) you can use `~` to specify accessibility id to locate an element. In web application you can locate element by their `aria-label` value.
 
 ```js
 // locate element by [aria-label] attribute in web
@@ -247,7 +244,7 @@ If it's hard to define what to wait, it is recommended to use [retries](https://
 
 ## IFrames
 
-[within](/basics/#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
+[within](locators.md#within) operator can be used to work inside IFrames. Special `frame` locator is required to locate the iframe and get into its context.
 
 See example:
 
@@ -339,6 +336,10 @@ Also, you can use `within` inside a session but you can't call session from insi
 
 ---
 
-### done()
-
 CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
+
+---
+
+### Next: [BDD Testing >>>](bdd.md)
+
+---

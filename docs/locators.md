@@ -205,4 +205,42 @@ ID locators are best to select the exact semantic element in web and mobile test
 * `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
 
-### done()
+## Within
+
+To specify the exact area on a page where actions can be performed you can use `within` function.
+Everything executed in its context will be narrowed to context specified by locator:
+
+Usage: `within('section', ()=>{})`
+
+```js
+I.amOnPage('https://github.com');
+within('.js-signup-form', () => {
+  I.fillField('user[login]', 'User');
+  I.fillField('user[email]', 'user@user.com');
+  I.fillField('user[password]', 'user@user.com');
+  I.click('button');
+});
+I.see('There were problems creating your account.');
+```
+
+`within` can also work with [iframes](acceptance.md#iframes)
+
+When running steps inside a within block will be shown with a shift:
+
+![within](http://codecept.io/images/within.png)
+
+Within can return a value which can be used in a scenario:
+
+```js
+// inside async function
+const val = await within('#sidebar', () => {
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+```
+
+---
+
+### Next: [Debugging >>>](debugging.md)
+
+---

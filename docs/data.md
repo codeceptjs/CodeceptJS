@@ -1,6 +1,6 @@
 # Data Management
 
-*This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
+*This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](datadriven.md) concept*
 
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
@@ -17,13 +17,13 @@ API supposed to be a stable interface and it can be used by acceptance tests. Co
 
 ## REST
 
-[REST helper](http://codecept.io/helpers/REST/) uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
+[REST helper](helpers/REST.md) uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
 However, it doesn't provide tools for testing APIs, so it should be paired with WebDriverIO, Nightmare or Protractor helpers for browser testing.
 
 Enable REST helper in global config. It is recommended to set `endpoint`, a base URL for all API requests.
 If you need some authorization you can optionally set default headers too.
 
-See the sample config:
+See this sample config:
 
 ```js
 "helpers": {
@@ -35,12 +35,15 @@ See the sample config:
   },
 
   "WebDriverIO" : {
-    "browser": "chrome"
+    "browser": "chrome",
+    "url": "http://localhost/"
   }
 }
 ```
 
-REST helper provides basic methods to send requests to application:
+Note that the WebDriverIO helper is still there, and it is handling all the web-page related commands like `I.click` and so on.
+
+The `REST` helper provides basic methods to send requests to application:
 
 ```js
 I.sendGetRequest()
@@ -52,7 +55,7 @@ I.sendDeleteRequest()
 
 As well as a method for setting headers: `haveRequestHeaders`.
 
-Here is a usage example:
+Here is an example:
 
 ```js
 let postId = null;
@@ -83,7 +86,7 @@ I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest
 
 ## Data Generation with Factories
 
-This concept is extended by [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
+This concept is extended by [ApiDataFactory](helpers/ApiDataFactory.md) helper.
 It builds data according to defined rules and uses API to store them and automatically clean them up after a test,
 This way setting data for a test is as simple as writing:
 
@@ -139,6 +142,4 @@ At the end of a test ApiDataFactory will clean up created record for you. This i
 ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
 This rules can be customized in helper configuration.
 
----
 
-### done()

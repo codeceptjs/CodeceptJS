@@ -132,156 +132,6 @@ It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
 
 > For more options see [full reference of `run` command](https://codecept.io/commands/#run).
 
-
-## Debug
-
-CodeceptJS allows to write and debug tests on the fly while keeping your browser opened.
-By using interactive shell you can stop execution at any point and type in CodeceptJS commands.
-
-This is especially useful while writing a new scratch. After opening a page call `pause()` to start interacting with a page:
-
-```js
-I.amOnPage('/');
-pause();
-```
-
-Try to perform your scenario step by step. Then copy succesful commands and insert them into a test.
-
-### Pause
-
-Test execution can be paused in any place of a test with `pause()` call.
-
-This launches interactive console where you can call actions of `I` object.
-
-```
- Interactive shell started
- Press ENTER to resume test
- - Use JavaScript syntax to try steps in action
- - Press TAB twice to see all available commands
- - Enter next to run the next step
- I.click
-
-```
-
-Type in different actions to try them, copy valid successful ones to test, update the test file.
-
-Press `ENTER` to resume test execution.
-
-To **debug test step-by-step** type `next` and press Enter. The next step will be executed and interactive shell will be shown again.
-
-To see all available commands press TAB two times to see list of all actions included in I.
-
-If a test is failing you can prevent browser from closing by putting `pause()` command into `After()` hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.
-
-```js
-After(pause);
-```
-
-Interactive shell can be started outside the test context by running
-
-```bash
-codeceptjs shell
-```
-
-
-### Screenshot on failure
-
-By default CodeceptJS saves a screenshot of a failed test.
-This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/#screenshotonfail)
-
-### Step By Step Report
-
-To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
-
-
-## Before
-
-Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background` hook:
-
-```js
-Feature('CodeceptJS Demonstration');
-
-Before((I) => { // or Background
-  I.amOnPage('/documentation');
-});
-
-Scenario('test some forms', (I) => {
-  I.click('Create User');
-  I.see('User is valid');
-  I.dontSeeInCurrentUrl('/documentation');
-});
-
-Scenario('test title', (I) => {
-  I.seeInTitle('Example application');
-});
-```
-
-Same as `Before` you can use `After` to run teardown for each scenario.
-
-## BeforeSuite
-
-If you need to run complex setup before all tests and teardown this afterwards you can use `BeforeSuite` and `AfterSuite`
-functions. `BeforeSuite` and `AfterSuite` have access to `I` object, but `BeforeSuite/AfterSuite` don't have an access to the browser because it's not running at this moment.
-You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work  only for a file where it was declared (so you can declare different setups for files)
-
-```js
-BeforeSuite((I) => {
-  I.syncDown('testfolder');
-});
-
-AfterSuite((I) => {
-  I.syncUp('testfolder');
-  I.clearDir('testfolder');
-});
-```
-
-[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
-
-## Within
-
-To specify the exact area on a page where actions can be performed you can use `within` function.
-Everything executed in its context will be narrowed to context specified by locator:
-
-Usage: `within('section', ()=>{})`
-
-```js
-I.amOnPage('https://github.com');
-within('.js-signup-form', () => {
-  I.fillField('user[login]', 'User');
-  I.fillField('user[email]', 'user@user.com');
-  I.fillField('user[password]', 'user@user.com');
-  I.click('button');
-});
-I.see('There were problems creating your account.');
-```
-
-`within` can also work with [iframes](/acceptance/#iframes)
-
-When running steps inside a within block will be shown with a shift:
-
-![within](http://codecept.io/images/within.png)
-
-Within can return a value which can be used in a scenario:
-
-```js
-// inside async function
-const val = await within('#sidebar', () => {
-  return I.grabTextFrom({ css: 'h1' });
-});
-I.fillField('Description', val);
-```
-
-## Comments
-
-There is a simple way to add additional comments to your test scenario.
-Use `say` command to print information to screen:
-
-```js
-I.say('I am going to publish post');
-I.say('I enter title and body');
-I.say('I expect post is visible on site');
-```
-
 ## IntelliSense
 
 If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
@@ -294,12 +144,6 @@ codeceptjs def
 Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
 method autocompletion while writing tests.
 
-## Skipping
-
-Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
-
-* `xScenario` - skips current test
-* `Scenario.only` - executes only the current test
 
 
 ## Retries
@@ -371,7 +215,8 @@ Feature('Complex JS Stuff').retry(3);
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
 
-
 ---
 
-### done()
+### Next: [Acceptance Testing >>>](acceptance.md)
+
+---

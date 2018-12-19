@@ -110,7 +110,7 @@ codeceptjs gt
 ```
 
 After that you can start writing your first CodeceptJS/Angular tests.
-Please look into the reference of [Protractor helper](http://codecept.io/helpers/Protractor/) for all available actions.
+Please look into the reference of [Protractor helper](helpers/Protractor.md) for all available actions.
 You can also run `list` command to see methods of I:
 
 ```bash
@@ -297,6 +297,4 @@ element.all(by.repeater('result in memory'));
 This way we recommend to implement all custom logic using low-level Protractor syntax and using it inside scenario tests.
 Please see an [example of such helper](http://codecept.io/helpers/#protractor-example).
 
-### done()
-
-Almost ) This example is [available on GitHub](https://github.com/DavertMik/codeceptjs-angular-todomvc).
+This example is [available on GitHub](https://github.com/DavertMik/codeceptjs-angular-todomvc).

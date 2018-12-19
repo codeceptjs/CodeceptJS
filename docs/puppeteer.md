@@ -162,9 +162,9 @@ within('.todoapp', () => {
 I.see('0 items left', '.todo-count');
 ```
 
-CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
+CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](pageobjects.md) guide.
 
-`within` can also work with [iframes](/acceptance/#iframes)
+`within` can also work with [iframes](acceptance.md#iframes)
 
 When running steps inside a within block will be shown with a shift:
 
@@ -194,6 +194,5 @@ async renderPageToPdf() {
 
 The same way you can also access `browser` object to implement more actions or handle events. [Learn more about Helpers](http://codecept.io/helpers/) in the corresponding guide.
 
-## done()
 
 Yes, also the [demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
