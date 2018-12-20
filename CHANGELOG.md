@@ -104,7 +104,7 @@ Scenario('update user profile', () => {
 
 ## 1.3.0
 
-* **Cucumber-style BDD Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
+* **Cucumber-style BDD. Introduced [Gherkin support](https://codecept.io/bdd). Thanks to [David Vins](https://github.com/dvins) and [Omedym](https://www.omedym.com) for sponsoring this feature**.
 
 Basic feature file:
 
@@ -561,7 +561,7 @@ I.dontSee('Nothing special', '~email of the customer'));
 
 ---
 
-We also introduced two new helpers for data management.
+We also introduced two new **helpers for data management**.
 Using them you can easily prepare and cleanup data for your tests using public REST API.
 
 Sample test
@@ -638,7 +638,7 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 
 Special thanks to **Andrey Pshenkin** for his work on this release and the major improvements.
 
- ## 0.6.3
+## 0.6.3
 
 * Errors are printed in non-verbose mode. Shows "Selenium not started" and other important errors.
 * Allowed to set custom test options:
