@@ -19,5 +19,5 @@ Educational videos provided by our community member **[@ontytoom](http://github.
 ### [3. Using Page Objects](https://www.youtube.com/watch?v=fvlvm5HBXDI)
 
 
-<iframe width="854" height="480" src="https://www.youtube.com/embed/fvlvm5HBXDI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="854" height="480" src="https://www.youtube.com/embed/s677_6VctjQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
