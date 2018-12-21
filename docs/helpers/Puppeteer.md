@@ -33,7 +33,8 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 ```js
 "chrome": {
-  "executablePath" : "/path/to/Chrome"
+  "executablePath" : "/path/to/Chrome",
+  "browserWSEndpoint": "ws://localhost:3000"
 }
 ```
 
@@ -1044,6 +1045,21 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 -   `locator`  element located by CSS|XPath|strict locator.
 -   `num`  number of elements.
+
+### seeResponseCodeIs
+
+Asserts that response code from a url is equal to provided status code.
+
+```js
+I.seeResponseCodeIs('https://google.com', '200');
+```
+
+#### Parameters
+
+-   `url`  
+-   `statusCode`  
+-   `string`  URL string to get the response code.
+-   `string`  expected response code.
 
 ### seeTextEquals
 

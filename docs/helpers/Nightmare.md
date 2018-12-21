@@ -742,6 +742,19 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 -   `locator`  element located by CSS|XPath|strict locator.
 -   `num`  number of elements.
 
+### seeResponseCodeIs
+
+Asserts that response code from a url is equal to provided status code.
+
+```js
+I.seeResponseCodeIs('https://google.com', '200');
+```
+
+#### Parameters
+
+-   `url`  URL string to get the response code.
+-   `statusCode`  expected response code.
+
 ### selectOption
 
 Selects an option in a drop-down select.

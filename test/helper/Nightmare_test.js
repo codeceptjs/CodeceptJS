@@ -64,6 +64,13 @@ describe('Nightmare', function () {
       .then(() => I.amOnPage('/')));
   });
 
+  describe('#seeResponseCodeIs', () => {
+    it('should check repsonse code is equal to provided one', async () => {
+      const result = await I.seeResponseCodeIs('https://google.com', '200');
+      assert.equal(true, result, 'Repsonse code is not equal to provided one');
+    });
+  });
+
   webApiTests.tests();
 
   describe('#waitForFunction', () => {

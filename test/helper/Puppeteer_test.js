@@ -321,6 +321,13 @@ describe('Puppeteer', function () {
       }));
   });
 
+  describe('#seeResponseCodeIs', () => {
+    it('should check repsonse code is equal to provided one', async () => {
+      const result = await I.seeResponseCodeIs('https://google.com', '200');
+      assert.equal(true, result, 'Repsonse code is not equal to provided one');
+    });
+  });
+
   describe('#_locateClickable', () => {
     it('should locate a button to click', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateClickable('Submit'))
