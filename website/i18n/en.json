@@ -38,6 +38,9 @@
       "bdd": {
         "title": "bdd"
       },
+      "changelog": {
+        "title": "changelog"
+      },
       "commands": {
         "title": "commands"
       },
