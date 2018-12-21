@@ -41,7 +41,7 @@ const siteConfig = {
   headerLinks: [
     {doc: 'quickstart', label: 'Quickstart'},
     {doc: 'basics', label: 'Guides'},
-    {doc: 'helpers/WebDriverIO', label: 'Reference'},
+    {page: 'reference', label: 'Reference'},
     // {doc: 'changelog', label: 'Reference'},
     // {blog: true, label: 'Blog'},
   ],
@@ -52,7 +52,7 @@ const siteConfig = {
   /* path to images for header/footer */
   headerIcon: 'img/logo.svg',
   footerIcon: 'img/logo.svg',
-  favicon: 'img/favicon.png',
+  favicon: 'img/favicon/favicon.png',
 
   /* Colors for website */
   colors: {
@@ -102,6 +102,7 @@ const siteConfig = {
 
   stylesheets: [
     'https://fonts.googleapis.com/css?family=IBM+Plex+Sans',
+    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
     // {
     //   href: 'http://css.link',
     //   type: 'text/css',
@@ -123,6 +124,7 @@ const siteConfig = {
   // Show documentation's last update time.
   enableUpdateTime: true,
 
+  wrapPagesHTML: true
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   //   repoUrl: 'https://github.com/facebook/test-site',
