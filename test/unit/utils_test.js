@@ -41,7 +41,7 @@ describe('utils', () => {
     });
   });
 
-  describe.only('#clearString', () => {
+  describe('#clearString', () => {
     it('should exclude the data driven in failed screenshot file name', () => {
       utils.clearString('Scenario with data driven | {"login":"admin","password":"123456"}').should.equal('Scenario_with_data_driven');
     });
