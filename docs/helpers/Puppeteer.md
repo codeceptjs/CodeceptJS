@@ -33,7 +33,8 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 ```js
 "chrome": {
-  "executablePath" : "/path/to/Chrome"
+  "executablePath" : "/path/to/Chrome",
+  "browserWSEndpoint": "ws://localhost:3000"
 }
 ```
 
