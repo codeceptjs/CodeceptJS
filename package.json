@@ -66,6 +66,7 @@
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-mocha": "^5.2.0",
     "faker": "^4.1.0",
     "gulp": "^4.0.0",
     "gulp-documentation": "^3.2.1",
@@ -81,7 +82,7 @@
     "sinon-chai": "^2.14.0",
     "typescript": "^2.9.2",
     "unirest": "^0.5.1",
-    "webdriverio": "^4.13.2",
+    "webdriverio": "^5.0",
     "xmldom": "^0.1.27",
     "xpath": "0.0.27"
   },
