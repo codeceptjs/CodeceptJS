@@ -31,8 +31,10 @@ describe('Appium', function () {
       port: 80,
       // port: 4723,
       // host: 'localhost',
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
+      user: 'codeceptjs',
+      key: '8840a288-826f-4d73-8d90-f94b7a662b3b',
+      // user:  process.env.SAUCE_USERNAME,
+      // key: process.env.SAUCE_ACCESS_KEY,
     });
     return app._beforeSuite();
   });

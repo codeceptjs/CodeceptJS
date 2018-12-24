@@ -4,10 +4,10 @@
 
 **Extends Helper**
 
-WebDriverIO helper which wraps [webdriverio][1] library to
+WebDriver helper which wraps [webdriverio][1] library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-WebDriverIO requires [Selenium Server and ChromeDriver/GeckoDriver to be installed][2].
+WebDriver requires [Selenium Server and ChromeDriver/GeckoDriver to be installed][2].
 
 ### Configuration
 
@@ -19,6 +19,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `port`: (optional, default: 4444) - WebDriver port to connect.
 -   `protocol`: (optional, default: http) - protocol for WebDriver server.
 -   `path`: (optional, default: /wd/hub) - path to WebDriver server,
+-   `remoteFileUpload`: (optional, default: true) - upload file to remote server when running `attachFile`.
 -   `restart`: (optional, default: true) - restart browser between tests.
 -   `smartWait`: (optional) **enables [SmartWait][3]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`: (optional, default: false) - don't save screenshots on failure.
@@ -31,15 +32,15 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `desiredCapabilities`: Selenium's [desired
     capabilities][4].
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper
-    with `this.helpers["WebDriverIO"]._startBrowser()`.
--   `timeouts`: [WebDriverIO timeouts][5] defined as hash.
+    with `this.helpers["WebDriver"]._startBrowser()`.
+-   `timeouts`: [WebDriver timeouts][5] defined as hash.
 
 Example:
 
 ```json
 {
    "helpers": {
-     "WebDriverIO" : {
+     "WebDriver" : {
        "smartWait": 5000,
        "browser": "chrome",
        "restart": false,
@@ -61,10 +62,10 @@ website][6].
 ```json
 {
    "helpers": {
-     "WebDriverIO" : {
+     "WebDriver" : {
        "url": "http://localhost",
        "browser": "chrome",
-       "desiredCapabilities": {
+       "capabilities": {
          "chromeOptions": {
            "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
          }
@@ -77,13 +78,13 @@ website][6].
 ### Connect through proxy
 
 CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
-need to update the `helpers.WebDriverIO.desiredCapabilities.proxy` key.
+need to update the `helpers.WebDriver.capabilities.proxy` key.
 
 ```js
 {
     "helpers": {
-        "WebDriverIO": {
-            "desiredCapabilities": {
+        "WebDriver": {
+            "capabilities": {
                 "proxy": {
                     "proxyType": "manual|pac",
                     "proxyAutoconfigUrl": "URL TO PAC FILE",
@@ -106,8 +107,8 @@ For example,
 ```js
 {
     "helpers": {
-        "WebDriverIO": {
-            "desiredCapabilities": {
+        "WebDriver": {
+            "capabilities": {
                 "proxy": {
                     "proxyType": "manual",
                     "httpProxy": "http://corporate.proxy:8080",
@@ -126,17 +127,17 @@ information.
 
 ### Cloud Providers
 
-WebDriverIO makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
+WebDriver makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
 Check out their documentation on [available parameters][7]
 
 Connecting to `BrowserStack` and `Sauce Labs` is simple. All you need to do
-is set the `user` and `key` parameters. WebDriverIO automatically know which
+is set the `user` and `key` parameters. WebDriver automatically know which
 service provider to connect to.
 
 ```js
 {
     "helpers":{
-        "WebDriverIO": {
+        "WebDriver": {
             "url": "YOUR_DESIRED_HOST",
             "user": "YOUR_BROWSERSTACK_USER",
             "key": "YOUR_BROWSERSTACK_KEY",
@@ -164,7 +165,7 @@ Here is the [webdriverio docs][8] on the subject
 ```js
 {
     "helpers": {
-        "WebDriverIO": {
+        "WebDriver": {
             "multiremote": {
                 "MyChrome": {
                     "desiredCapabilities": {
@@ -184,7 +185,7 @@ Here is the [webdriverio docs][8] on the subject
 
 ## Access From Helpers
 
-Receive a WebDriverIO client from a custom helper by accessing `browser` property:
+Receive a WebDriver client from a custom helper by accessing `browser` property:
 
 ```js
 this.helpers['WebDriver'].browser
@@ -200,7 +201,7 @@ Get elements by different locator types, including strict locator.
 Should be used in custom helpers:
 
 ```js
-this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
+this.helpers['WebDriver']._locate({name: 'password'}).then //...
 ```
 
 #### Parameters
@@ -213,7 +214,7 @@ this.helpers['WebDriverIO']._locate({name: 'password'}).then //...
 Find a checkbox by providing human readable text:
 
 ```js
-this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions').then // ...
+this.helpers['WebDriver']._locateCheckable('I agree with terms and conditions').then // ...
 ```
 
 #### Parameters
@@ -225,7 +226,7 @@ this.helpers['WebDriverIO']._locateCheckable('I agree with terms and conditions'
 Find a clickable element by providing human readable text:
 
 ```js
-this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
+this.helpers['WebDriver']._locateClickable('Next page').then // ...
 ```
 
 #### Parameters
@@ -237,7 +238,7 @@ this.helpers['WebDriverIO']._locateClickable('Next page').then // ...
 Find field elements by providing human readable text:
 
 ```js
-this.helpers['WebDriverIO']._locateFields('Your email').then // ...
+this.helpers['WebDriver']._locateFields('Your email').then // ...
 ```
 
 #### Parameters
@@ -401,7 +402,7 @@ I.closeOtherTabs();
 
 ### defineTimeout
 
-Set [WebDriverIO timeouts][5] in realtime.
+Set [WebDriver timeouts][10] in realtime.
 Appium: support only web testing.
 Timeouts are expected to be passed as object:
 
@@ -550,7 +551,7 @@ I.dragAndDrop('#dragHandle', '#container');
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][10].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][11].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -819,7 +820,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][11]
+Special keys like 'Enter', 'Control', [etc][12]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -831,7 +832,7 @@ I.pressKey(['Control','a']);
 #### Parameters
 
 -   `key`  key or array of keys to press.
-    [Valid key names][12] are:-   `'Add'`,
+    [Valid key names][13] are:-   `'Add'`,
     -   `'Alt'`,
     -   `'ArrowDown'` or `'Down arrow'`,
     -   `'ArrowLeft'` or `'Left arrow'`,
@@ -896,7 +897,7 @@ Performs right click on an element matched by CSS or XPath.
 
 ### runInWeb
 
-Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
+Placeholder for ~ locator only test case write once run on both Appium and WebDriver.
 
 #### Parameters
 
@@ -904,7 +905,7 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 ### runOnAndroid
 
-Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
+Placeholder for ~ locator only test case write once run on both Appium and WebDriver.
 
 #### Parameters
 
@@ -913,7 +914,7 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 ### runOnIOS
 
-Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
+Placeholder for ~ locator only test case write once run on both Appium and WebDriver.
 
 #### Parameters
 
@@ -1255,7 +1256,7 @@ I.setCookie({name: 'auth', value: true});
 
 -   `cookie`  cookie JSON object.
     Appium: support only web testingUses Selenium's JSON [cookie
-    format][13].
+    format][14].
 
 ### switchTo
 
@@ -1524,7 +1525,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [4]: https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
 
-[5]: http://webdriver.io/guide/testrunner/timeouts.html
+[5]: http://webdriver.io/docs/timeouts.html
 
 [6]: http://webdriver.io/guide/getstarted/configuration.html
 
@@ -1534,10 +1535,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [9]: http://jster.net/category/windows-modals-popups
 
-[10]: https://vuejs.org/v2/api/#Vue-nextTick
+[10]: http://webdriver.io/guide/testrunner/timeouts.html
 
-[11]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[11]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[12]: https://w3c.github.io/webdriver/#keyboard-actions
+[12]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
-[13]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[13]: https://w3c.github.io/webdriver/#keyboard-actions
+
+[14]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

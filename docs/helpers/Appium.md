@@ -2,7 +2,7 @@
 
 ## Appium
 
-**Extends WebdriverIO**
+**Extends Webdriver**
 
 Appium helper extends [WebriverIO][1] helper.
  It supports all browser methods and also includes special methods for mobile apps testing.
