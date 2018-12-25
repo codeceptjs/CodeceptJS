@@ -478,4 +478,3 @@ codecept.run();
 
 In this way Codecept runner class can be extended.
 
-## done()

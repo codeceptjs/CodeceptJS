@@ -287,4 +287,3 @@ Just as you can specify android, and ios-specific locators, you can do so for we
 I.click({web: '#login', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
 
-## done()

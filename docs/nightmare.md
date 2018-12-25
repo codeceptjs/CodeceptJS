@@ -225,4 +225,3 @@ use locate found elements on a page and return attribute from the first of them.
 
 * [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
 
-## done()

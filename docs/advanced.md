@@ -3,8 +3,6 @@ id: advanced
 title: Advanced Usage
 ---
 
-# Advanced Usage
-
 ## Data Driven Tests
 
 Execute the same scenario on a different data set.
@@ -392,4 +390,3 @@ Please note that some config changes can't be applied on the fly. For instance, 
 
 Configuration changes will be reverted after a test or a suite.
 
-## done()
