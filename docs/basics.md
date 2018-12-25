@@ -25,7 +25,7 @@ CodeceptJS bypasses execution commands to helpers. Depending on helper enabled y
 
 Here is the diagram of CodeceptJS architecture
 
-![](https://codecept.io/images/architecture.svg)
+![](img/architecture.svg)
 
 All helpers share the same API so it's easy to migrate tests from one backend to other.
 However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nigthmare.
@@ -374,7 +374,3 @@ Feature('Complex JS Stuff').retry(3);
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
 
-
----
-
-### done()

@@ -207,5 +207,3 @@ ID locators are best to select the exact semantic element in web and mobile test
 
 * `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
-
-### done()
