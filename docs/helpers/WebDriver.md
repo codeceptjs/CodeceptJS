@@ -141,7 +141,7 @@ service provider to connect to.
             "url": "YOUR_DESIRED_HOST",
             "user": "YOUR_BROWSERSTACK_USER",
             "key": "YOUR_BROWSERSTACK_KEY",
-            "desiredCapabilities": {
+            "capabilities": {
                 "browserName": "chrome",
 
                 // only set this if you're using BrowserStackLocal to test a local domain

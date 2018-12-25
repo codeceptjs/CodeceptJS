@@ -381,12 +381,12 @@ Appium: support Android and iOS
 Remove an app from the device.
 
 ```js
-I.removeApp('com.example.android.apis');
+I.removeApp('appName', 'com.example.android.apis');
 ```
 
 #### Parameters
 
--   `bundleId`  String  ID of bundled appAppium: support only Android
+-   `bundleId`  String  ID of bundleAppium: support only Android
 
 ### rotate
 

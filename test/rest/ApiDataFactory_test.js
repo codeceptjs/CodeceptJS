@@ -1,3 +1,4 @@
+require('../support/setup');
 const TestHelper = require('../support/TestHelper');
 
 const ApiDataFactory = require('../../lib/helper/ApiDataFactory');
@@ -55,39 +56,39 @@ describe('ApiDataFactory', function () {
     it('should create a new post', async () => {
       await I.have('post');
       const resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(2);
+      resp.data.length.should.eql(2);
     });
 
     it('should create a new post with predefined field', async () => {
       await I.have('post', { author: 'Tapac' });
       let resp = await I.restHelper.sendGetRequest('/posts/1');
-      resp.body.author.should.eql('davert');
+      resp.data.author.should.eql('davert');
       resp = await I.restHelper.sendGetRequest('/posts/2');
-      resp.body.author.should.eql('Tapac');
+      resp.data.author.should.eql('Tapac');
     });
 
     it('should cleanup created data', async () => {
       await I.have('post', { author: 'Tapac' });
       let resp = await I.restHelper.sendGetRequest('/posts/2');
-      resp.body.author.should.eql('Tapac');
+      resp.data.author.should.eql('Tapac');
       await I._after();
       resp = await I.restHelper.sendGetRequest('/posts/2');
-      resp.body.should.be.empty;
+      resp.data.should.be.empty;
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(1);
+      resp.data.length.should.eql(1);
     });
 
     it('should create multiple posts and cleanup after', async () => {
       let resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(1);
+      resp.data.length.should.eql(1);
       await I.haveMultiple('post', 3);
       await new Promise(done => setTimeout(done, 500));
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(4);
+      resp.data.length.should.eql(4);
       await I._after();
       await new Promise(done => setTimeout(done, 500));
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(1);
+      resp.data.length.should.eql(1);
     });
 
     it('should create with different api', async () => {
@@ -104,9 +105,9 @@ describe('ApiDataFactory', function () {
       });
       await I.have('post');
       let resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(1);
+      resp.data.length.should.eql(1);
       resp = await I.restHelper.sendGetRequest('/comments');
-      resp.body.length.should.eql(1);
+      resp.data.length.should.eql(1);
     });
 
     it('should not remove records if cleanup:false', async () => {
@@ -122,11 +123,11 @@ describe('ApiDataFactory', function () {
       });
       await I.have('post');
       let resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(2);
+      resp.data.length.should.eql(2);
       await I._after();
       await new Promise(done => setTimeout(done, 500));
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.body.length.should.eql(2);
+      resp.data.length.should.eql(2);
     });
 
     it('should send default headers', async () => {
