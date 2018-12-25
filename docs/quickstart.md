@@ -104,10 +104,10 @@ Puppeteer starts a browser without showing its window. To see the browser, edit 
 
 Rerun the test to see the browser.
 
----
-
 > Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
+
 > Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+
 > Next: [Demo Project](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
 
 
@@ -195,12 +195,11 @@ My First Test --
  ✓ OK
 ```
 
----
 
 > Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+
 > Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
 
----
 
 ## Using Protractor
 

@@ -169,9 +169,9 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 `within` can also work with [iframes](/acceptance/#iframes)
 
-When running steps inside a within block will be shown with a shift:
+When running steps inside a within block will be shown with a shift.
 
-![within](http://codecept.io/images/within.png)
+> [Demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
 
 ## Extending
 
@@ -197,6 +197,3 @@ async renderPageToPdf() {
 
 The same way you can also access `browser` object to implement more actions or handle events. [Learn more about Helpers](http://codecept.io/helpers/) in the corresponding guide.
 
-## done()
-
-Yes, also the [demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
