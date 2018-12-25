@@ -30,12 +30,10 @@ describe('Appium', function () {
       protocol: 'http',
       host: 'ondemand.saucelabs.com',
       port: 80,
-      user: 'codeceptjs',
-      key: '8840a288-826f-4d73-8d90-f94b7a662b3b',
       // port: 4723,
       // host: 'localhost',
-      // user:  process.env.SAUCE_USERNAME,
-      // key: process.env.SAUCE_ACCESS_KEY,
+      user: process.env.SAUCE_USERNAME,
+      key: process.env.SAUCE_ACCESS_KEY,
     });
     return app._beforeSuite();
   });
@@ -89,7 +87,7 @@ describe('Appium', function () {
       },
     );
 
-    it('should remove App and install it again', () => app.seeAppIsInstalled('io.selendroid.testapp')
+    it.only('should remove App and install it again', () => app.seeAppIsInstalled('io.selendroid.testapp')
       .then(() => app.removeApp('io.selendroid.testapp'))
       .then(() => app.seeAppIsNotInstalled('io.selendroid.testapp'))
       .then(() => app.installApp(apk_path))
