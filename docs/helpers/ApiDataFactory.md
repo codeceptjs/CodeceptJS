@@ -89,7 +89,7 @@ See the example:
 }
 ```
 
-It is required to set REST API `endpoint` which is the baseUrl for all API requests.
+It is required to set REST API `endpoint` which is the baseURL for all API requests.
 Factory file is expected to be passed via `factory` option.
 
 This Helper uses [REST][3] helper and accepts its configuration in "REST" section.

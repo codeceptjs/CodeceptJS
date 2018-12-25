@@ -221,7 +221,7 @@ describe('Appium', function () {
       assert.equal(val, '.WebViewActivity');
     });
 
-    it('should react on swipe action @second' , function* () {
+    it('should react on swipe action @second', function* () {
       yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       yield app.waitForText(
         'Gesture Type', 10,
