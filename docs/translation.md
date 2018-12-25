@@ -1,4 +1,7 @@
-# Translation
+---
+id: translation
+title: Translation
+---
 
 Test output and the way tests are written can be localized.
 This way scenarios can be written in almost native language using UTF support of JavaScript.

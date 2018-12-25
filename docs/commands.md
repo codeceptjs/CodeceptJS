@@ -1,4 +1,8 @@
-# Commands
+---
+id: commands
+title: Commands
+---
+
 
 ## Run
 
@@ -64,7 +68,7 @@ codeceptjs run --config path/to/codecept.json
 Override config on the fly. Provide valid JSON which will be merged into current config:
 
 ```sh
-codeceptjs run --override '{ "helpers": {"WebDriverIO": {"browser": "chrome"}}}'
+codeceptjs run --override '{ "helpers": {"WebDriver": {"browser": "chrome"}}}'
 ```
 
 Run tests and produce xunit report:

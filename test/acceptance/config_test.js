@@ -21,7 +21,7 @@ Scenario('change config 4 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) =
   I.amOnPage('/');
   I.seeInCurrentUrl('codecept.io');
 }).config((test) => {
-  return { url: 'https://codecept.io/', desiredCapabilities: { title: test.title } };
+  return { url: 'https://codecept.io/', capabilities: { 'moz:title': test.title } };
 });
 
 Scenario('change config 5 @WebDriverIO @Puppeteer @Protractor @Nightmare', (I) => {
