@@ -6,13 +6,13 @@
     "tagline": "Elegant end 2 end testing framework for NodeJS",
     "docs": {
       "acceptance": {
-        "title": "acceptance"
+        "title": "Acceptance Testing"
       },
       "advanced": {
-        "title": "advanced"
+        "title": "Advanced Usage"
       },
       "angular": {
-        "title": "angular"
+        "title": "Testing with Protractor"
       },
       "api/codecept": {
         "title": "api/codecept"
@@ -33,97 +33,100 @@
         "title": "api/recorder"
       },
       "basics": {
-        "title": "basics"
+        "title": "Basics"
       },
       "bdd": {
-        "title": "bdd"
+        "title": "Behavior Driven Development"
       },
       "changelog": {
         "title": "changelog"
       },
       "commands": {
-        "title": "commands"
+        "title": "Commands"
       },
       "configuration": {
-        "title": "configuration"
+        "title": "Configuration"
       },
       "data": {
-        "title": "data"
+        "title": "Data Management"
       },
       "docker": {
-        "title": "docker"
+        "title": "Docker"
       },
       "helpers": {
-        "title": "helpers"
+        "title": "Custom Helpers"
       },
       "helpers/ApiDataFactory": {
-        "title": "helpers/ApiDataFactory"
+        "title": "ApiDataFactory"
       },
       "helpers/Appium": {
-        "title": "helpers/Appium"
+        "title": "Appium"
       },
       "helpers/FileSystem": {
-        "title": "helpers/FileSystem"
+        "title": "FileSystem"
       },
       "helpers/Mochawesome": {
-        "title": "helpers/Mochawesome"
+        "title": "Mochawesome"
       },
       "helpers/Nightmare": {
-        "title": "helpers/Nightmare"
+        "title": "Nightmare"
       },
       "helpers/Protractor": {
-        "title": "helpers/Protractor"
+        "title": "Protractor"
       },
       "helpers/Puppeteer": {
-        "title": "helpers/Puppeteer"
+        "title": "Puppeteer"
       },
       "helpers/REST": {
-        "title": "helpers/REST"
+        "title": "REST"
       },
       "helpers/SeleniumWebdriver": {
-        "title": "helpers/SeleniumWebdriver"
+        "title": "SeleniumWebdriver"
+      },
+      "helpers/WebDriver": {
+        "title": "WebDriver"
       },
       "helpers/WebDriverIO": {
-        "title": "helpers/WebDriverIO"
+        "title": "WebDriverIO"
       },
       "hooks": {
-        "title": "hooks"
+        "title": "Bootstrap / Teardown / Plugins"
       },
       "index": {
         "title": "index"
       },
       "installation": {
-        "title": "installation"
+        "title": "Installation"
       },
       "locators": {
-        "title": "locators"
+        "title": "Locators"
       },
       "mobile": {
-        "title": "mobile"
+        "title": "Mobile Testing with Appium"
       },
       "nightmare": {
-        "title": "nightmare"
+        "title": "Testing with Nightmare"
       },
       "pageobjects": {
-        "title": "pageobjects"
+        "title": "Reusing Code with Page Objects"
       },
       "plugins": {
-        "title": "plugins"
+        "title": "Plugins"
       },
       "puppeteer": {
-        "title": "puppeteer"
+        "title": "Testing with Puppeteer"
       },
       "quickstart": {
-        "title": "quickstart"
+        "title": "Quickstart"
       },
-      "reports": {
-        "title": "reports"
+      "reporters": {
+        "title": "Reporters"
       },
       "translation": {
-        "title": "translation"
+        "title": "Translation"
       },
       "video": {
-        "title": "video"
+        "title": "Tutorial Videos"
       }
     },
     "links": {
