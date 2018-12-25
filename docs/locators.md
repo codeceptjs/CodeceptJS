@@ -1,4 +1,7 @@
-# Locators
+---
+id: locators
+title: Locators
+---
 
 CodeceptJS provides flexible strategies for locating elements:
 

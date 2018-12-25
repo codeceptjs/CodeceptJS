@@ -1,6 +1,7 @@
 const path = require('path');
 const gulp = require('gulp');
 const documentation = require('gulp-documentation');
+const gap = require('gulp-append-prepend');
 const glob = require('glob');
 const mustache = require('gulp-mustache');
 
@@ -13,6 +14,10 @@ gulp.task('docs', (done) => {
       .pipe(mustache({}, { extension: '.js' }))
       .pipe(gulp.dest(path.join(cpath, 'docs/build')))
       .pipe(documentation('md', { filename: `${path.basename(file, '.js')}.md`, shallow: true, sortOrder: 'alpha' }))
+      .pipe(gap.prependText(`---
+id: ${path.basename(file, '.js')}
+title: ${path.basename(file, '.js')}
+---`))
       .pipe(gulp.dest(path.join(cpath, 'docs/helpers')));
   });
 
@@ -26,6 +31,10 @@ gulp.task('docs', (done) => {
 
   gulp.src(path.join(cpath, 'lib/plugin/*.js'))
     .pipe(documentation('md', { filename: 'plugins.md', shallow: true, sortOrder: 'alpha' }))
+    .pipe(gap.prependText(`---
+id: plugins
+title: Plugins
+---`))
     .pipe(gulp.dest(path.join(cpath, 'docs')));
 
   done();

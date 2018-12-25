@@ -1,4 +1,8 @@
-# Configuration
+---
+id: configuration
+title: Configuration
+---
+
 
 CodeceptJS configuration is set in `codecept.conf.js` file.
 
