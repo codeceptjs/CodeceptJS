@@ -70,7 +70,7 @@ Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
 
 ```sh
 ? What helpers do you want to use?
- ◯ WebDriverIO
+ ◯ WebDriver
  ◯ Protractor
  ◯ Puppeteer
  ◯ Nightmare

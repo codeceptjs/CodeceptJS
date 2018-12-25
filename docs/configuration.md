@@ -48,7 +48,7 @@ exports.config = {
  By default `codecept.json` is used for configuration. You can override its values in runtime by using `--override` or `-o` option in command line, passing valid JSON as a value:
 
 ```sh
-codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'
+codeceptjs run -o '{ "helpers": {"WebDriver": {"browser": "firefox"}}}'
 ```
 
  You can also switch to JS configuration format for more dynamic options.
@@ -59,7 +59,7 @@ codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "firefox"}}}'
 ```js
 exports.config = {
   helpers: {
-    WebDriverIO: {
+    WebDriver: {
       // load variables from the environment and provide defaults
       url: process.env.CODECEPT_URL || 'http://localhost:3000',
 
@@ -107,7 +107,7 @@ codeceptjs run --profile firefox
 ```js
 exports.config = {
   helpers: {
-    WebDriverIO: {
+    WebDriver: {
       url: 'http://localhost:3000',
       // load value from `profile`
       browser: process.profile || 'firefox'
