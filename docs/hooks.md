@@ -324,7 +324,7 @@ let container = require('codeceptjs').container;
 let helpers = container.helpers();
 
 // get helper by name
-let WebDriverIO = container.helpers('WebDriverIO');
+let WebDriver = container.helpers('WebDriver');
 
 // get support objects
 let support = container.support();
@@ -466,7 +466,7 @@ To initialize Codecept you need to create Config and Container objects.
 let Container = require('codeceptjs').container;
 let Codecept = require('codeceptjs').codecept;
 
-let config = { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } };
+let config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
 let opts = { steps: true };
 
 // create runner

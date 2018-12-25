@@ -16,7 +16,7 @@ class TestHelper {
   }
 
   static seleniumPort() {
-    return (process.env.SELENIUM_PORT || '4444');
+    return parseInt(process.env.SELENIUM_PORT || '4444', 10);
   }
 
   static jsonServerUrl() {
