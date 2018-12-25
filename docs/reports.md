@@ -1,4 +1,7 @@
-# Reporters
+---
+id: reporters
+title: Reporters
+---
 
 ## Cli
 

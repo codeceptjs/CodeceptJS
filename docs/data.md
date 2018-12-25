@@ -1,6 +1,10 @@
-# Data Management
+---
+id: data
+title: Data Management
+---
 
-*This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
+
+> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
 
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:

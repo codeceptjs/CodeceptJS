@@ -1,3 +1,8 @@
+---
+id: advanced
+title: Advanced Usage
+---
+
 # Advanced Usage
 
 ## Data Driven Tests

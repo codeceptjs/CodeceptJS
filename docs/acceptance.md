@@ -1,4 +1,8 @@
-# Acceptance Testing
+---
+id: acceptance
+title: Acceptance Testing
+---
+
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 

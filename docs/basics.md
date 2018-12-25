@@ -1,4 +1,7 @@
-# Basics
+---
+id: basics
+title: Basics
+---
 
 CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.
 

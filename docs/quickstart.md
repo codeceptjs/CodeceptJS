@@ -1,4 +1,7 @@
-# QuickStart
+---
+id: quickstart
+title: Quickstart
+---
 
 **NodeJS v 8.9** and higher required to start.
 CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.
@@ -103,9 +106,9 @@ Rerun the test to see the browser.
 
 ---
 
-### Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
-### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
-### Next: [Demo Project](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
+> Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
+> Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+> Next: [Demo Project](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
 
 
 ---
@@ -194,19 +197,19 @@ My First Test --
 
 ---
 
-### Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
-### Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
+> Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+> Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
 
 ---
 
 ## Using Protractor
 
-[**Follow corresponding guide >>**](https://codecept.io/angular/)
+> [**Follow corresponding guide >>**](https://codecept.io/angular/)
 
 ## Using Appium
 
-[**Follow corresponding guide >>**](https://codecept.io/mobile/)
+> [**Follow corresponding guide >>**](https://codecept.io/mobile/)
 
 ## Using NightmareJS
 
-[**Follow corresponding guide >>**](https://codecept.io/nightmare/)
+> [**Follow corresponding guide >>**](https://codecept.io/nightmare/)
