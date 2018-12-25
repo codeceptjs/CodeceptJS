@@ -1,4 +1,7 @@
-# Reporters
+---
+id: reporters
+title: Reporters
+---
 
 ## Cli
 
@@ -71,8 +74,8 @@ GitHub --
  register
    [1] Starting recording promises
    Emitted | test.before
- > WebDriverIO._before
-   [1] Queued | hook WebDriverIO._before()
+ > WebDriver._before
+   [1] Queued | hook WebDriver._before()
    [1] Queued | amOnPage: https://github.com
    Emitted | step.before (I am on page "https://github.com")
  • I am on page "https://github.com"

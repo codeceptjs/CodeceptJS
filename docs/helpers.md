@@ -1,4 +1,8 @@
-# Helpers
+---
+id: helpers
+title: Custom Helpers
+---
+
 
 Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
 Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends.
@@ -22,7 +26,7 @@ This command generates a basic helper and appends it to `helpers` section of con
 
 ```json
 "helpers": {
-  "WebDriverIO": {  },
+  "WebDriver": {  },
   "MyHelper": {
     "require": "./path/to/module.js"
   }
@@ -68,10 +72,10 @@ codeceptjs def .
 
 This way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.
 
-## WebDriverIO Example
+## WebDriver Example
 
-Next example demonstrates how to use WebDriverIO library to create your own test action.
-Method `seeAuthentication` will use `client` instance of WebDriverIO to get access to cookies.
+Next example demonstrates how to use WebDriver library to create your own test action.
+Method `seeAuthentication` will use `client` instance of WebDriver to get access to cookies.
 Standard NodeJS assertion library will be used (you can use any).
 
 ```js
@@ -86,8 +90,8 @@ class MyHelper extends Helper {
    * checks that authentication cookie is set
    */
   async seeAuthentication() {
-    // access current client of WebDriverIO helper
-    let client = this.helpers['WebDriverIO'].browser;
+    // access current client of WebDriver helper
+    let client = this.helpers['WebDriver'].browser;
 
     // get all cookies according to http://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
@@ -152,7 +156,7 @@ You can also pass additional config options to your helper from a config - **(pl
 ```js
 "helpers": {
   // here goes standard helpers:
-  // WebDriverIO, Protractor, Nightmare, etc...
+  // WebDriver, Protractor, Nightmare, etc...
   // and their configuration
   "MyHelper": {
     "require": "./my_helper.js", // path to module
@@ -196,14 +200,14 @@ Each implemented method should return a value as they will be added to global pr
 
 ### Hook Usage Examples
 
-1)  Failing if JS error occur in WebDriverIO:
+1)  Failing if JS error occur in WebDriver:
 
 ```js
 class JSFailure extends codecept_helper {
 
   _before() {
     this.err = null;
-    this.helpers['WebDriverIO'].browser.on('error', (e) => this.err = e);
+    this.helpers['WebDriver'].browser.on('error', (e) => this.err = e);
   }
 
   _afterStep() {
@@ -222,7 +226,7 @@ class JSWait extends codecept_helper {
   _afterStep(step) {
     if (step.name == 'click') {
       var jqueryActive = () => jQuery.active == 0;
-      return this.helpers['WebDriverIO'].waitUntil(jqueryActive);
+      return this.helpers['WebDriver'].waitUntil(jqueryActive);
     }
   }
 }

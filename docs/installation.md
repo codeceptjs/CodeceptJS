@@ -1,4 +1,7 @@
-# Installation
+---
+id: installation
+title: Installation
+---
 
 ## Local
 
@@ -14,7 +17,7 @@ and started as
 ./node_modules/.bin/codeceptjs
 ```
 
-To use it with WebDriverIO install webdriverio package:
+To use it with WebDriver install webdriverio package:
 
 ```sh
 npm install webdriverio --save-dev
@@ -40,7 +43,7 @@ npm install puppeteer --save-dev
 
 ## WebDriver
 
-WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
+WebDriver based helpers like WebDriver, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriver/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriver/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
 
 We recommend to install them manually or use NPM packages:
 

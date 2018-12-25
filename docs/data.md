@@ -1,6 +1,10 @@
-# Data Management
+---
+id: data
+title: Data Management
+---
 
-*This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
+
+> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
 
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
@@ -18,7 +22,7 @@ API supposed to be a stable interface and it can be used by acceptance tests. Co
 ## REST
 
 [REST helper](http://codecept.io/helpers/REST/) uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
-However, it doesn't provide tools for testing APIs, so it should be paired with WebDriverIO, Nightmare or Protractor helpers for browser testing.
+However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
 
 Enable REST helper in global config. It is recommended to set `endpoint`, a base URL for all API requests.
 If you need some authorization you can optionally set default headers too.
@@ -34,7 +38,7 @@ See the sample config:
     }
   },
 
-  "WebDriverIO" : {
+  "WebDriver" : {
     "browser": "chrome"
   }
 }

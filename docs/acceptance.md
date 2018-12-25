@@ -1,10 +1,14 @@
-# Acceptance Testing
+---
+id: acceptance
+title: Acceptance Testing
+---
+
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
-By default CodeceptJS uses [WebDriverIO](/helpers/WebDriverIO/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
+By default CodeceptJS uses [WebDriver](/helpers/WebDriver/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
 However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
@@ -26,7 +30,7 @@ This is how we can check that login form of a simple web application works. At f
 ## Locating Element
 
 Element can be found by CSS or XPath locators. Practically every steps
-in WebDriverIO helper accept them both.
+in WebDriver helper accept them both.
 
 ```js
 I.seeElement('.user'); // element with CSS class user
@@ -215,7 +219,7 @@ More wait actions can be found in helper's reference.
 
 It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
 
-SmartWait can be enabled by setting wait option in WebDriverIO config.
+SmartWait can be enabled by setting wait option in WebDriver config.
 Add `"smartWait": 5000` to wait for additional 5s.
 
 SmartWait works with a CSS/XPath locators in `click`, `seeElement` and other methods. See where it is enabled and where is not:
@@ -257,7 +261,7 @@ within({frame: "#editor"}, () => {
 });
 ```
 
-Nested IFrames can be set by passing array *(WebDriverIO, Nightmare & Puppeteer only)*:
+Nested IFrames can be set by passing array *(WebDriver, Nightmare & Puppeteer only)*:
 
 ```js
 within({frame: [".content", "#editor"]}, () => {
@@ -341,4 +345,4 @@ Also, you can use `within` inside a session but you can't call session from insi
 
 ### done()
 
-CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriverIO helper which allows to control browser through Selenium WebDriver.
+CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriver helper which allows to control browser through Selenium WebDriver.

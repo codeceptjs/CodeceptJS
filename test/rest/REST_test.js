@@ -25,7 +25,7 @@ const data = {
 describe('REST', () => {
   before(() => {
     I = new REST({
-      baseURL: api_url,
+      endpoint: api_url,
       defaultHeaders: {
         'X-Test': 'test',
       },
