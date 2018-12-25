@@ -35,7 +35,7 @@
       "translation"
     ],
     "Driver Helpers": [
-      "helpers/WebDriverIO",
+      "helpers/WebDriver",
       "helpers/Puppeteer",
       "helpers/Protractor",
       "helpers/Nightmare",
