@@ -27,20 +27,6 @@ describe('Scenario', () => {
     assert.ok(fn.called);
   });
 
-  it('should work with generator func', () => {
-    let counter = 0;
-    test.fn = function* () {
-      yield counter++;
-      yield counter++;
-      yield counter++;
-      counter++;
-    };
-    scenario.setup();
-    scenario.test(test).fn(() => null);
-    recorder.add('validation', () => assert.equal(counter, 3));
-    return recorder.promise();
-  });
-
   it('should work with async func', () => {
     let counter = 0;
     let error;

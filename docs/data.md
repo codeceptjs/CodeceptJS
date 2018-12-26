@@ -18,7 +18,7 @@ API supposed to be a stable interface and it can be used by acceptance tests. Co
 ## REST
 
 [REST helper](http://codecept.io/helpers/REST/) uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
-However, it doesn't provide tools for testing APIs, so it should be paired with WebDriverIO, Nightmare or Protractor helpers for browser testing.
+However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
 
 Enable REST helper in global config. It is recommended to set `endpoint`, a base URL for all API requests.
 If you need some authorization you can optionally set default headers too.
@@ -34,7 +34,7 @@ See the sample config:
     }
   },
 
-  "WebDriverIO" : {
+  "WebDriver" : {
     "browser": "chrome"
   }
 }

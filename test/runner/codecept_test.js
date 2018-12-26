@@ -266,11 +266,10 @@ describe('CodeceptJS Runner', () => {
       expect(lines).to.include.members([
         'Test scenario types --',
         'It\'s usual test',
-        'Test: I\'m generator test',
         'Test: I\'m async/await test',
         'Test: I\'m asyncbrackets test',
       ]);
-      stdout.should.include('OK  | 4 passed');
+      stdout.should.include('OK  | 3 passed');
       assert(!err);
       done();
     });
