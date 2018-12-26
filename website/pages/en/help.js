@@ -19,20 +19,25 @@ function Help(props) {
   const langPart = `${language ? `${language}/` : ''}`;
   const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
+  const forumUrl = 'https://codecept.discourse.group';
+  const slackUrl = 'https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI';
+  const commercialSupport = 'http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference';
+  const issues = 'https://github.com/Codeception/CodeceptJS/issues';
+
   const supportLinks = [
     {
-      content: `Learn more using the [documentation on this site.](${docUrl(
-        'doc1.html',
-      )})`,
-      title: 'Browse Docs',
+      content: `Ask questions on our [community forum](${forumUrl}) powered by Discourse.
+        If you want to report some bugs or ask for a feature, use [GitHub Issues](https://github.com/Codeception/CodeceptJS/issues).
+        Also please read the source code and contribute back!`,
+      title: 'Discussion Board',
     },
     {
-      content: 'Ask questions about the documentation and project',
-      title: 'Join the community',
+      content: `[Do you want to chat? Come to us!](${slackUrl}) Please be polite, try not just to ask but to help others. Also we have dedicated channels for each of driver helpers in CodeceptJS.`,
+      title: 'Join our Slack',
     },
     {
-      content: "Find out what's new with this project",
-      title: 'Stay up to date',
+      content: `We offer commerical support by [SDCLabs](http://sdclabs.com). [Contact us](http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference) to order trainings or consulting. We can also offer dedicated test engineers to create your tests from ground up!`,
+      title: 'Commerical Support',
     },
   ];
 
@@ -41,9 +46,8 @@ function Help(props) {
       <Container className="mainContainer documentContainer postContainer">
         <div className="post">
           <header className="postHeader">
-            <h1>Need help?</h1>
+            <h1>Support</h1>
           </header>
-          <p>This project is maintained by a dedicated group of people.</p>
           <GridBlock contents={supportLinks} layout="threeColumn" />
         </div>
       </Container>

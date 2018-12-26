@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: 'CodeceptJS', // Title for your website.
-  tagline: 'Elegant end 2 end testing framework for NodeJS',
+  tagline: 'Modern End 2 End Testing Framework for NodeJS',
   url: 'https://codecept.io', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
@@ -42,6 +42,8 @@ const siteConfig = {
     {doc: 'quickstart', label: 'Quickstart'},
     {doc: 'basics', label: 'Guides'},
     {page: 'reference', label: 'Reference'},
+    {page: 'changelog', label: 'Releases'},
+    {page: 'help', label: 'Support'},
     // {doc: 'changelog', label: 'Reference'},
     // {blog: true, label: 'Blog'},
   ],

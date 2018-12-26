@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Elegant end 2 end testing framework for NodeJS",
+    "tagline": "Modern End 2 End Testing Framework for NodeJS",
     "docs": {
       "acceptance": {
         "title": "Acceptance Testing"
@@ -132,7 +132,9 @@
     "links": {
       "Quickstart": "Quickstart",
       "Guides": "Guides",
-      "Reference": "Reference"
+      "Reference": "Reference",
+      "Releases": "Releases",
+      "Support": "Support"
     },
     "categories": {
       "Quickstart": "Quickstart",
