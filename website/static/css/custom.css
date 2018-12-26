@@ -81,6 +81,10 @@ color: #fff;
 margin-bottom: 4em;
 }
 
+.jumbotron .version {
+  font-size: 16px;
+}
+
 .jumbotron h3 {
 font-size: 1em;
 font-weight: 900;

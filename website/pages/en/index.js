@@ -13,7 +13,7 @@ class Index extends React.Component {
     <div className="jumbotron">
   <div className="container">
     <img src="/img/cjs-base.png" style={{width: '150px'}} alt="" />
-    <h1>CodeceptJS</h1>
+    <h1>CodeceptJS <a className="badge badge-primary version" href="/changelog#2000">2.0</a> </h1>
     <div className="motto">Modern End 2 End Testing for NodeJS</div>
 
 
