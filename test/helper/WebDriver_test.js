@@ -619,4 +619,12 @@ describe('WebDriver', function () {
       .then(() => wd.see('Information', 'h1'))
       .then(() => wd.dontSee('Iframe test', 'h1')));
   });
+
+  describe.only('#seeResponseCodeIs', () => {
+    it('should check repsonse code is equal to provided one', async () => {
+      await wd.amOnPage('https://google.com');
+      const result = await wd.seeResponseCodeIs('200');
+      assert.equal(true, result, 'Repsonse code is not equal to provided one');
+    });
+  });
 });
