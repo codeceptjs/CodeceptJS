@@ -23,6 +23,7 @@ header {
 }
 
 .referenceContainer .docsNavContainer {
+  height: auto;
 }
 
 
