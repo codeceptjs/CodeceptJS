@@ -285,6 +285,14 @@ I.say('I enter title and body');
 I.say('I expect post is visible on site');
 ```
 
+Use second parameter to pass in color value (ASCII).
+
+```js
+I.say('This is red', 'red'); //red is used
+I.say('This is blue', 'blue'); //blue is used
+I.say('This is by default'); //cyan is used
+```
+
 ## IntelliSense
 
 If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,

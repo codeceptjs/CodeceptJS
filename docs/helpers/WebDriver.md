@@ -69,7 +69,7 @@ website][6].
      "WebDriver" : {
        "url": "http://localhost",
        "browser": "chrome",
-       "capabilities": {
+       "desiredCapabilities": {
          "chromeOptions": {
            "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
          }
