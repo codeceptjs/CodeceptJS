@@ -18,29 +18,29 @@ I object is an **actor**, an abstraction for a testing user. I is a proxy object
 
 ## Architecture
 
-CodeceptJS bypasses execution commands to helpers. Depending on helper enabled your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriverIO or Protractor, if you are interested in speed - use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.
+CodeceptJS bypasses execution commands to helpers. Depending on helper enabled your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or Protractor, if you are interested in speed - use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.
 
 Here is the diagram of CodeceptJS architecture
 
 ![](https://codecept.io/images/architecture.svg)
 
 All helpers share the same API so it's easy to migrate tests from one backend to other.
-However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriverIO or Protractor, but you can do so in Puppteer or Nigthmare.
+However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nigthmare.
 
-Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriverIO and some from Nightmare. You should **pick one helper, as it definses how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
+Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should **pick one helper, as it definses how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
 
 A helper should be enabled in main config. Configuration (like base url) should be provided as well:
 
 ```json
   "helpers": {
-    "WebDriverIO": {
+    "WebDriver": {
       "url": "http://localhost",
       "browser": "chrome"
     }
   }
 ```
 
-In this config config all methods of `I` will be taken from `WebDriverIO` helper.
+In this config config all methods of `I` will be taken from `WebDriver` helper.
 
 ## Writing Tests
 
