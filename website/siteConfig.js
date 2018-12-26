@@ -30,6 +30,8 @@ const siteConfig = {
   //   baseUrl: '/test-site/',
 
   docsUrl: '',
+
+  cname: 'codecept.io',
   // Used for publishing and more
   projectName: 'codeceptjs',
   organizationName: 'codeception',
@@ -55,6 +57,7 @@ const siteConfig = {
   headerIcon: 'img/logo.svg',
   footerIcon: 'img/logo.svg',
   favicon: 'img/favicon/favicon.png',
+  editUrl: 'https://github.com/Codeception/CodeceptJS/blob/master/docs/',
 
   /* Colors for website */
   colors: {
