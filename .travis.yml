@@ -13,7 +13,7 @@ env:
   - HELPER=Nightmare
   - HELPER=Puppeteer
   - HELPER=ProtractorWeb
-  - HELPER=WebDriverIO
+  - HELPER=WebDriver
 addons:
   apt:
     packages:

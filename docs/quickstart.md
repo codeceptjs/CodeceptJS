@@ -35,7 +35,7 @@ npm install codeceptjs puppeteer --save-dev
 
 ```sh
 ? What helpers do you want to use?
- ◯ WebDriverIO
+ ◯ WebDriver
  ◯ Protractor
 ❯◉ Puppeteer
  ◯ Appium
@@ -124,11 +124,11 @@ Rerun the test to see the browser.
 codeceptjs init
 ```
 
-3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriverIO**.
+3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriver**.
 
 ```sh
 ? What helpers do you want to use?
-❯◉ WebDriverIO
+❯◉ WebDriver
  ◯ Protractor
  ◯ Puppeteer
  ◯ Appium
