@@ -14,7 +14,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 ## Using Puppeteer
 
 
-<video onclick="this.paused ? this.play() : this.pause();" src="/images/codeceptjs-install.mp4" style="width: 100%" controls></video>
+<video onclick="this.paused ? this.play() : this.pause();" src="/img/codeceptjs-install.mp4" style="width: 100%" controls></video>
 
 
 1) Install CodeceptJS with Puppeteer
