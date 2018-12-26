@@ -571,6 +571,7 @@ describe('Protractor', function () {
 
   describe('#seeResponseCodeIs', () => {
     it('should check repsonse code is equal to provided one', async () => {
+      I.amOutsideAngularApp();
       await I.amOnPage('https://google.com');
       const result = await I.seeResponseCodeIs('200');
       assert.equal(true, result, 'Repsonse code is not equal to provided one');
