@@ -14,6 +14,7 @@ let sidebar = { id: 'reference',
 
  const Container = CompLibrary.Container;
  const GridBlock = CompLibrary.GridBlock;
+ const support = '<div className="alert alert-info">CodeceptJS has enterprise support: <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">trainings</a>, consulting, test automation. <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference">Contact us at SDCLabs!</a></div>';
 
  function Reference(props) {
    const {config: siteConfig, language = ''} = props;
@@ -24,7 +25,6 @@ let sidebar = { id: 'reference',
         className="productShowcaseSection"
         style={{textAlign: 'left'}}>
         <h2>Reference</h2>
-        <div className="alert alert-info">CodeceptJS has enterprise support: <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">trainings</a>, consulting, test automation. <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference">Contact us at SDCLabs!</a></div>
       </div>
 
         <DocsSidebar metadata={sidebar} ></DocsSidebar>
