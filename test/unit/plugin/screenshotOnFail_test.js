@@ -19,6 +19,14 @@ describe('screenshotOnFail', () => {
     });
   });
 
+  it('should exclude the data driven in failed screenshot file name', async () => {
+    screenshotOnFail({});
+    event.dispatcher.emit(event.test.failed, { title: 'Scenario with data driven | {"login":"admin","password":"123456"}' });
+    await recorder.promise();
+    assert.ok(screenshotSaved.called);
+    assert.equal('Scenario_with_data_driven.failed.png', screenshotSaved.getCall(0).args[0]);
+  });
+
   it('should create screenshot on fail', async () => {
     screenshotOnFail({});
     event.dispatcher.emit(event.test.failed, { title: 'test1' });
