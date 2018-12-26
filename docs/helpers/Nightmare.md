@@ -744,16 +744,16 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 ### seeResponseCodeIs
 
-Asserts that response code from a url is equal to provided status code.
+Asserts if response code of current url equals to provided status code.
 
 ```js
-I.seeResponseCodeIs('https://google.com', '200');
+I.amOnPage('http://codecept.io/');
+I.seeResponseCodeIs('200');
 ```
 
 #### Parameters
-
--   `url`  URL string to get the response code.
--   `statusCode`  expected response code.
+ 
+-   `string`  expected response code.
 
 ### selectOption
 
