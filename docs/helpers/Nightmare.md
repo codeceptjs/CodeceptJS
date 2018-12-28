@@ -29,6 +29,8 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 -   options from [Nightmare configuration][2]
 
+## Methods
+
 ### Parameters
 
 -   `config`  
