@@ -33,15 +33,13 @@ describe('utils', () => {
     it('should beautify JS code', () => {
       utils
         .beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')
-        .should.eql(
-`module.exports = function(a, b) {
+        .should.eql(`module.exports = function(a, b) {
   a++;
   b = a;
   if (a == b) {
     return 2
   }
 };`);
-
     });
   });
 
