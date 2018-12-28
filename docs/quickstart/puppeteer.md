@@ -38,7 +38,7 @@ Installing
 ? Where are your tests located? ./*_test.js
 
 ? What helpers do you want to use?
- ◯ WebDriverIO
+ ◯ WebDriver
  ◯ Protractor
 ❯◉ Puppeteer
  ◯ Appium

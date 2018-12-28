@@ -6,7 +6,7 @@ repo_url: https://github.com/codeception/codeceptjs/
 pages:
 - Index: 'index.md'
 - Quickstart: 
-    - 'Quickstart': 'quickstart/quickstart.md'
+    - 'Overview': 'quickstart/quickstart.md'
     - 'Installation': 'quickstart/installation.md'
     - 'Puppeteer': 'quickstart/puppeteer.md'
     - 'WebDriver': 'quickstart/selenium.md'
@@ -36,7 +36,7 @@ pages:
     - 'Advanced Usage': 'advanced.md'
 - Helpers:
     - 'What is a Helper?': 'what-is-helper.md'
-    - 'WebDriver': 'helpers/WebDriverIO.md'
+    - 'WebDriver': 'helpers/WebDriver.md'
     - 'Protractor': 'helpers/Protractor.md'
     - 'SeleniumWebdriver': 'helpers/SeleniumWebdriver.md'
     - 'Puppeteer': 'helpers/Puppeteer.md'

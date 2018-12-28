@@ -1,4 +1,4 @@
-# QuickStart
+# Overview
 
 CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc. Note that these libraries need to be installed separately - they are not included in the CodeceptJS package.
 

@@ -30,7 +30,7 @@ Answer the questions. Agree on defaults, when asked to select helpers choose **N
 
 ```sh
 ? What helpers do you want to use?
- ◯ WebDriverIO
+ ◯ WebDriver
  ◯ Protractor
  ◯ Puppeteer
  ◯ Appium

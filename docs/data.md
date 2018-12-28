@@ -40,7 +40,7 @@ See this sample config:
 }
 ```
 
-Note that the WebDriverIO helper is still there, and it is handling all the web-page related commands like `I.click` and so on.
+Note that the `WebDriver` helper is still there, and it is handling all the web-page related commands like `I.click` and so on.
 
 The `REST` helper provides basic methods to send requests to application:
 

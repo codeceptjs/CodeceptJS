@@ -23,7 +23,7 @@ Create `multiple` section in configuration file, and fill it with run suites. Ea
   "smoke": {
     "browsers": [
       "firefox",
-      // replace any config values from WebDriverIO helper
+      // replace any config values from WebDriver helper
       {
         "browser": "chrome",
         "windowSize": "maximize",

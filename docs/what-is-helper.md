@@ -6,12 +6,12 @@ So we have a **Puppeteer helper** which talks to the *Puppeteer driver*, which t
 
 The **Nightmare helper** talks to the *Nightmare driver*, which talks to an Electron 'browser'.
 
-The **Webdriverio helper** which talks the webdriver protocol to the *Webdriverio driver*, which talks to a Selenium server, which talks to a Firefox, Edge, or Chrome browser.
+The **Webdriver helper** which talks the webdriver protocol to the *Webdriverio driver*, which talks to a Selenium server, which talks to a Firefox, Edge, or Chrome browser.
 
 All these helpers implement (nearly) the same API. 
 
-The **Puppeteer helper** implements `amOnPage(url)` to navigate to a URL.
-The **Nightmare helper** and the **Webdriverio helper** also implement the `amOnPage(url)` function.
+* The **Puppeteer helper** implements `amOnPage(url)` to navigate to a URL.
+* The **Nightmare helper** and the **Webdriver helper** also implement the `amOnPage(url)` function.
 
 Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends.
 

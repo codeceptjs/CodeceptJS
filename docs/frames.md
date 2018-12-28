@@ -16,7 +16,7 @@ within({frame: "#editor"}, () => {
 });
 ```
 
-Nested IFrames can be set by passing array *(WebDriverIO, Nightmare & Puppeteer only)*:
+Nested IFrames can be set by passing array *(WebDriver, Nightmare & Puppeteer only)*:
 
 ```js
 within({frame: [".content", "#editor"]}, () => {
