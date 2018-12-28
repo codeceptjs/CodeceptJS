@@ -120,8 +120,14 @@ const siteConfig = {
   cleanUrl: true,
 
   // Open Graph and Twitter card images.
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  // ogImage: 'img/docusaurus.png',
+  // twitterImage: 'img/docusaurus.png',
+
+  algolia: {
+    apiKey: '0cc13a0af567a05fc38790be681b1491',
+    indexName: 'codecept',
+    algoliaOptions: {} // Optional, if provided by Algolia
+  },
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
