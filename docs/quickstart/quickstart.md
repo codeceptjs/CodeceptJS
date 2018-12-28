@@ -1,18 +1,25 @@
-# Selenium QuickStart
+# QuickStart
 
-CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc. Note that the libraries need to be installed separately - they are not included in CodeceptJS.
+CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc. Note that these libraries need to be installed separately - they are not included in the CodeceptJS package.
 
-CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
+CodeceptJS is an acceptance testing framework. In the diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
+
 CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *puppeteer*, or *protractor* depends on you.
-This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.
+This way you aren't be bound to implementation, and your acceptance tests will work no matter which framework is running them.
 
 ![](codecept-overview.svg)
 
 CodeceptJS contains **helpers** that talk to **drivers**. The drivers control a **browser**, usually in headless mode - which means that the browser window is not visible while the test is running.
 
+You need to install
+* Node and Node Package Manager (NPM)
+* CodeceptJS
+* A browser
+* A suitable driver (webdriver, puppeteer, protractor, nightmare)
+
 You need to provide 
-* a test script, and
-* usually a web page to test.
+* a web page to test
+* a test script
 
 CodeceptJS takes care of connecting your test script to the browser through a helper and its corresponding driver.
 
