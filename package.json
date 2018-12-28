@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "1.4.6",
+  "version": "2.0.0",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
