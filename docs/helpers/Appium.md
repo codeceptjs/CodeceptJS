@@ -71,6 +71,8 @@ Receive a Appium client from a custom helper by accessing `browser` property:
 let browser = this.helpers['Appium'].browser
 ```
 
+## Methods
+
 ### Parameters
 
 -   `config`  

@@ -18,6 +18,8 @@ I.seeInThisFile('FileSystem');
 I.dontSeeInThisFile("WebDriverIO");
 ```
 
+## Methods
+
 ### amInPath
 
 Enters a directory In local filesystem.

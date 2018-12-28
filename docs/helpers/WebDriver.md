@@ -195,6 +195,8 @@ Receive a WebDriver client from a custom helper by accessing `browser` property:
 this.helpers['WebDriver'].browser
 ```
 
+## Methods
+
 ### Parameters
 
 -   `config`  

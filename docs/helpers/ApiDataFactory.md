@@ -128,6 +128,8 @@ However this behavior can be configured with following options:
 -   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 -   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
 
+## Methods
+
 ### Parameters
 
 -   `config`  

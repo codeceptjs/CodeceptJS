@@ -100,6 +100,8 @@ const currentPage = this.helpers['Puppeteer'].page;
 await currentPage.url(); // Get the url of the current page
 ```
 
+## Methods
+
 ### Parameters
 
 -   `config`  

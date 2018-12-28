@@ -17,6 +17,19 @@ REST helper allows to send additional requests to the REST API during acceptance
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 
+## Access From Helpers
+
+Send REST requests by accessing `_executeRequest` method:
+
+```js
+this.helpers['REST']._executeRequest({
+   url,
+   data,
+});
+```
+
+## Methods
+
 ### Parameters
 
 -   `config`  
