@@ -27,6 +27,7 @@ describe('WebDriver', function () {
       url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
+      remoteFileUpload: true,
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
