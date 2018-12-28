@@ -90,6 +90,8 @@ Receive a WebDriverIO client from a custom helper by accessing `browser` propert
 this.helpers['Protractor'].browser
 ```
 
+## Methods
+
 ### Parameters
 
 -   `config`  
