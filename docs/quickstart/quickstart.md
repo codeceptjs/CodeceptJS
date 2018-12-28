@@ -38,10 +38,12 @@ v8.11.1
 
 There are separate Quickstarts for all the major drivers:
 
-* [Puppeteer Quickstart](puppeteer.md)
-* [Selenium WebDriver Quickstart](selenium.md)
-* [Protractor Quickstart](protractor.md)
-* [Nightmare Quickstart](nightmare.md)
+|    |    |
+|:----:|:----|
+| [![Puppeteer Quickstart](../puppeteer.png)](puppeteer.md) | ## [Puppeteer](puppeteer.md) |
+| [![Selenium WebDriver Quickstart](../webdriver.png)](selenium.md) | ## [WebDriver](selenium.md) |
+| [![Protractor Quickstart](../protractor.png)](protractor.md) | Protractor |
+| [![Nightmare Quickstart](../nightmare.png)](nightmare.md) | Nightmare |
 
 All of the quickstarts show you how to test GitHub.
 

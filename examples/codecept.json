@@ -1,7 +1,7 @@
 {
   "output": "./output",
   "helpers": {
-    "Puppeteer": {
+    "WebDriverIO": {
       "url": "http://localhost",
       "browser": "chrome",
       "restart": true,

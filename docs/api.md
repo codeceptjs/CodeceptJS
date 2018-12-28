@@ -1,10 +1,10 @@
 
 # API
 
-**Use the local CodeceptJS installation to get access to `codeceptjs` module**
+**Use local CodeceptJS installation to get access to `codeceptjs` module**
 
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
-These internal objects are available from the require:
+These internal objects are available:
 
 * [`codecept`](https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js): test runner class
 * [`config`](https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js): current codecept config
@@ -14,7 +14,6 @@ These internal objects are available from the require:
 * [`container`](https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
 * [`helper`](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js): basic helper class
 * [`actor`](https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
-
 
 [API reference](https://github.com/Codeception/CodeceptJS/tree/master/docs/api) is available on GitHub.
 Also please check the source code of corresponding modules.
@@ -89,7 +88,7 @@ Step events provide step objects with following fields:
 * `prefix` if a step is executed inside `within` block contain within text, like: 'Within .js-signup-form'.
 * `args` passed arguments
 
-### Recorder
+## Recorder
 
 To inject asynchronous functions in a test or before/after a test you can subscribe to corresponding event and register a function inside a recorder object. [Recorder](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) represents a global promises chain.
 
@@ -125,7 +124,7 @@ module.exports = function() {
 Whenever you execute tests with `--verbose` option you will see registered events and promises executed by a recorder.
 
 
-### Output
+## Output
 
 Output module provides 4 verbosity levels. Depending on the mode you can have different information printed using corresponding functions.
 
@@ -144,7 +143,7 @@ output.debug('This is debug information');
 output.log('This is verbose logging information');
 ```
 
-### Container
+## Container
 
 CodeceptJS has a dependency injection container with Helpers and Support objects.
 They can be retrieved from the container:
@@ -156,7 +155,7 @@ let container = require('codeceptjs').container;
 let helpers = container.helpers();
 
 // get helper by name
-let WebDriverIO = container.helpers('WebDriverIO');
+let WebDriver = container.helpers('WebDriver');
 
 // get support objects
 let support = container.support();
@@ -189,7 +188,7 @@ Container also contains current Mocha instance:
 let mocha = container.mocha();
 ```
 
-### Config
+## Config
 
 CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
 
@@ -202,7 +201,7 @@ if (config.myKey == 'value') {
 }
 ```
 
-## Plugins
+# Plugins
 
 Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.
 
@@ -249,7 +248,7 @@ Several plugins can be enabled as well:
 ./node_modules/.bin/codeceptjs run --plugin myPlugin,allure
 ```
 
-### Example: Execute code for a specific group of tests
+## Example: Execute code for a specific group of tests
 
 If you need to execute some code before a group of tests, you can [mark these tests with a same tag](https://codecept.io/advanced/#tags). Then to listen for tests where this tag is included (see [test object api](#test-object)).
 
@@ -272,7 +271,24 @@ module.exports = function() {
 }
 ```
 
-## Custom Runner
+# Custom Hooks
+
+*(deprecated, use [plugins](#plugins))*
+
+Hooks are JavaScript files same as for bootstrap and teardown, which can be registered inside `hooks` section of config. Unlike `bootstrap` you can have multiple hooks registered:
+
+```json
+"hooks": [
+  "./server.js",
+  "./data_builder.js",
+  "./report_notification.js"
+]
+```
+
+Inside those JS files you can use CodeceptJS API (see below) to access its internals.
+
+
+# Custom Runner
 
 CodeceptJS can be imported and used in custom runners.
 To initialize Codecept you need to create Config and Container objects.
@@ -281,7 +297,7 @@ To initialize Codecept you need to create Config and Container objects.
 let Container = require('codeceptjs').container;
 let Codecept = require('codeceptjs').codecept;
 
-let config = { helpers: { WebDriverIO: { browser: 'chrome', url: 'http://localhost' } } };
+let config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
 let opts = { steps: true };
 
 // create runner
@@ -303,4 +319,4 @@ codecept.loadTests('*_test.js');
 codecept.run();
 ```
 
-In this way the Codecept runner class can be extended.
+In this way Codecept runner class can be extended.

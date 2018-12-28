@@ -139,17 +139,6 @@ AfterSuite((I) => {
 ## AfterSuite
 
 
-## Comments
-
-There is a simple way to add additional comments to your test scenario.
-Use `say` command to print information to screen:
-
-```js
-I.say('I am going to publish post');
-I.say('I enter title and body');
-I.say('I expect post is visible on site');
-```
-
 ## Skipping
 
 Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.

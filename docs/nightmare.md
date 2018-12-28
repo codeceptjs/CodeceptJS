@@ -47,7 +47,7 @@ this makes testing less relevant, as they are not native to operating systems.
 
 ## How Fast Is Nightmare JS?
 
-Let's execute the test above within WebDriverIO using headless Firefox + Selenium Server packed in Docker container.
+Let's execute the test above within WebDriver using headless Firefox + Selenium Server packed in Docker container.
 
 ```sh
 docker run -d -p 4444:4444 selenium/standalone-firefox:2.53.0
@@ -58,7 +58,7 @@ This provides use with output:
 
 ```sh
  Yahoo basic test
- > WebDriverIO._before
+ > WebDriver._before
  • I am on page "http://yahoo.com"
  • I fill field "p", "github nightmare"
  • I click "Search Web"
@@ -151,7 +151,7 @@ As a small bonus: all `console.log` calls on a page will be also shown in `--deb
 
 ## Manipulating Web Page
 
-Nightmare helper is supposed to work in the same manner as WebDriverIO or Protractor.
+Nightmare helper is supposed to work in the same manner as WebDriver or Protractor.
 This means that all CodeceptJS actions like `click`, `fillField`, `selectOption` and others are supposed to work in the very same manner.
 They are expressive and flexible to accept CSS, XPath, names, values, or strict locators. Follow the helper reference for detailed description.
 

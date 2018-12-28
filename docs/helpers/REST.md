@@ -9,7 +9,7 @@ REST helper allows to send additional requests to the REST API during acceptance
 
 ## Configuration
 
--   baseURL: API base URL
+-   endpoint: API base URL
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 

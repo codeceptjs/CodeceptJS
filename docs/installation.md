@@ -14,13 +14,13 @@ CodeceptJS can be installed together with a suitable driver via NPM globally:
 [sudo] npm install -g codeceptjs nightmare
 ```
 
-then it can be started as
+then it can be started anywhere using
 
 ```sh
 codeceptjs
 ```
 
-Global installations are easier to use on the command-line, but are not registered in the `package.json` manifest, so they won't be automatically installed for others who download your source code. It also means you need to install these tools on the CI/Build servers before you can run the tests there.
+Global installations are easier to use on the command-line, but are not registered in the `package.json` manifest for your project, so they won't be automatically installed for others who download your source code. It also means you need to install these tools on the CI/Build servers before you can run the tests there.
 
 ## Local Installation
 
@@ -31,7 +31,7 @@ npm install --save-dev codeceptjs
 ```
 
 ```sh
-npm install --save-dev codeceptjs webdriverio
+npm install --save-dev codeceptjs webdriver
 # or
 npm install --save-dev codeceptjs protractor
 # or
@@ -48,7 +48,7 @@ and started as
 
 ## WebDriver
 
-WebDriver based helpers like WebDriverIO, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriverIO/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriverIO/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
+WebDriver based helpers like WebDriver, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriver/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriver/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
 
 We recommend to install them manually or use NPM packages:
 

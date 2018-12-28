@@ -1,4 +1,4 @@
-# Debugging
+# Debug
 
 CodeceptJS allows to write and debug tests on the fly while keeping your browser opened.
 By using interactive shell you can stop execution at any point and type in CodeceptJS commands.
@@ -52,14 +52,14 @@ codeceptjs shell
 ## Screenshot on failure
 
 By default CodeceptJS saves a screenshot of a failed test.
-This can be configured in [screenshotOnFail Plugin](plugins.md#screenshotonfail)
+This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/#screenshotonfail)
 
 ## Step By Step Report
 
-To see how the test was executed, use [stepByStepReport Plugin](plugins.md#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
+To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
 
-## Debug Mode
+# Debug Mode
 
 CodeceptJS provides a debug mode in which additional information is printed.
 It can be turned on with `--debug` flag.

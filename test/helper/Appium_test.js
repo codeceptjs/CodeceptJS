@@ -12,7 +12,7 @@ const apk_path = 'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data
 
 
 describe('Appium', function () {
-  this.retries(1);
+  // this.retries(1);
   this.timeout(0);
 
   before(() => {
@@ -27,6 +27,7 @@ describe('Appium', function () {
         platformVersion: '6.0',
         deviceName: 'Android Emulator',
       },
+      protocol: 'http',
       host: 'ondemand.saucelabs.com',
       port: 80,
       // port: 4723,
@@ -37,13 +38,13 @@ describe('Appium', function () {
     return app._beforeSuite();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     app.isWeb = false;
-    return app._before();
+    await app._before();
+    // await app.installApp(apk_path);
   });
 
   afterEach(() => app._after());
-
 
   describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {
     describe(
@@ -65,7 +66,7 @@ describe('Appium', function () {
           assert.equal(val, '.HomeScreenActivity');
         });
 
-        it('should grab network connection settings @second', function* () {
+        it('should grab network connection settings', function* () {
           yield app.setNetworkConnection(4);
           const val = yield app.grabNetworkConnection();
           assert.equal(val.value, 4);
@@ -86,7 +87,7 @@ describe('Appium', function () {
       },
     );
 
-    it('should remove App and install it again @quick', () => app.seeAppIsInstalled('io.selendroid.testapp')
+    it.only('should remove App and install it again', () => app.seeAppIsInstalled('io.selendroid.testapp')
       .then(() => app.removeApp('io.selendroid.testapp'))
       .then(() => app.seeAppIsNotInstalled('io.selendroid.testapp'))
       .then(() => app.installApp(apk_path))
@@ -105,7 +106,7 @@ describe('Appium', function () {
   });
 
   describe('see seeCurrentActivity: #seeCurrentActivityIs', () => {
-    it('should return .HomeScreenActivity for default screen @second', () => app.seeCurrentActivityIs('.HomeScreenActivity'));
+    it('should return .HomeScreenActivity for default screen', () => app.seeCurrentActivityIs('.HomeScreenActivity'));
 
     it('should assert for wrong screen', () => app.seeCurrentActivityIs('.SuperScreen')
       .catch((e) => {
@@ -212,13 +213,13 @@ describe('Appium', function () {
   });
 
   describe('#makeTouchAction', () => {
-    it('should react on touch actions @second', function* () {
+    it('should react on touch actions', function* () {
       yield app.tap('~buttonStartWebviewCD');
       const val = yield app.grabCurrentActivity();
       assert.equal(val, '.WebViewActivity');
     });
 
-    it('should react on swipe action', function* () {
+    it('should react on swipe action @second', function* () {
       yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       yield app.waitForText(
         'Gesture Type', 10,
@@ -260,7 +261,7 @@ describe('Appium', function () {
       );
       yield app.swipeDown('#io.selendroid.testapp:id/LinearLayout1');
       const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
+      // const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
     });
 
@@ -272,7 +273,7 @@ describe('Appium', function () {
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       yield app.swipeUp(
-        "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", -1200,
+        "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200,
         1000,
       );
       const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
@@ -294,7 +295,7 @@ describe('Appium', function () {
       const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
       assert.equal(type, 'FLICK');
-      assert.ok(vy.match(/vx: \d\d000.\0 pps/), 'to be like \d\d000.0 pps');
+      assert.ok(vy.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeLeft action', function* () {
@@ -305,7 +306,7 @@ describe('Appium', function () {
       );
       yield app.swipeLeft(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        -800, 1000,
+        800, 1000,
       );
       const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
@@ -313,7 +314,7 @@ describe('Appium', function () {
       assert.ok(vy.match(/vx: -\d\d000\.0 pps/), 'to be like 21000.0 pps');
     });
 
-    it('should react on touchPerform action @quick', function* () {
+    it('should react on touchPerform action', function* () {
       yield app.touchPerform([{
         action: 'press',
         options: {
@@ -331,7 +332,7 @@ describe('Appium', function () {
         30, 100, 500,
       ))
       .catch((e) => {
-        e.inspect().should.include('Scroll to the end and element android.widget.CheckBox was not found');
+        e.message.should.include('Scroll to the end and element android.widget.CheckBox was not found');
       }));
 
     it('should react on swipeTo action', function* () {
@@ -383,7 +384,7 @@ describe('Appium', function () {
   });
 
   describe('#seeInSource', () => {
-    it('should check for text to be in HTML source', () => app.seeInSource('class="//android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
+    it('should check for text to be in HTML source', () => app.seeInSource('class="android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
       .then(() => app.dontSeeInSource('<meta')));
   });
 

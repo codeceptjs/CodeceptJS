@@ -18,29 +18,29 @@ I object is an **actor**, an abstraction for a testing user. I is a proxy object
 
 ## Architecture
 
-CodeceptJS bypasses execution commands to helpers. Depending on helper enabled your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriverIO or Protractor, if you are interested in speed - use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.
+CodeceptJS bypasses execution commands to helpers. Depending on helper enabled your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or Protractor, if you are interested in speed - use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.
 
 Here is the diagram of CodeceptJS architecture
 
-![](https://codecept.io/images/architecture.svg)
+![](./images/architecture.svg)
 
 All helpers share the same API so it's easy to migrate tests from one backend to other.
-However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriverIO or Protractor, but you can do so in Puppteer or Nigthmare.
+However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nigthmare.
 
-Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriverIO and some from Nightmare. You should **pick one helper, as it definses how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
+Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should **pick one helper, as it definses how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
 
 A helper should be enabled in main config. Configuration (like base url) should be provided as well:
 
 ```json
   "helpers": {
-    "WebDriverIO": {
+    "WebDriver": {
       "url": "http://localhost",
       "browser": "chrome"
     }
   }
 ```
 
-In this config config all methods of `I` will be taken from `WebDriverIO` helper.
+In this config config all methods of `I` will be taken from `WebDriver` helper.
 
 ## Writing Tests
 
@@ -132,6 +132,27 @@ It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
 
 > For more options see [full reference of `run` command](https://codecept.io/commands/#run).
 
+
+
+## Comments
+
+There is a simple way to add additional comments to your test scenario.
+Use `say` command to print information to screen:
+
+```js
+I.say('I am going to publish post');
+I.say('I enter title and body');
+I.say('I expect post is visible on site');
+```
+
+Use second parameter to pass in color value (ASCII).
+
+```js
+I.say('This is red', 'red'); //red is used
+I.say('This is blue', 'blue'); //blue is used
+I.say('This is by default'); //cyan is used
+```
+
 ## IntelliSense
 
 If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
@@ -145,75 +166,6 @@ Now you should include `/// <reference path="./steps.d.ts" />` into your test fi
 method autocompletion while writing tests.
 
 
-
-## Retries
-
-### Retry Step
-
-If you have a step which often fails you can retry execution for this single step.
-Use `retry()` function before an action to ask CodeceptJS to retry this step on failure:
-
-```js
-I.retry().see('Welcome');
-```
-
-If you'd like to retry step more than once pass the amount as parameter:
-
-```js
-I.retry(3).see('Welcome');
-```
-
-Additional options can be provided to retry so you can set the additional options (defined in [promise-retry](https://www.npmjs.com/package/promise-retry) library).
-
-
-```js
-// retry action 3 times waiting for 0.1 second before next try
-I.retry({ retries: 3, minTimeout: 100 }).see('Hello');
-
-// retry action 3 times waiting no more than 3 seconds for last retry
-I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello');
-
-// retry 2 times if error with message 'Node not visible' happens
-I.retry({
-  retries: 2,
-  when: err => err.message === 'Node not visible'
-}).seeElement('#user');
-```
-
-Pass a function to `when` option to retry only when error matches the expected one.
-
-### Auto Retry
-
-You can auto-retry a failed step by enabling [retryFailedStep Plugin](https://codecept.io/plugins/#retryfailedstep).
-
-### Retry Scenario
-
-When you need to rerun scenarios few times just add `retries` option added to `Scenario` declaration.
-
-CodeceptJS implements retries the same way [Mocha do](https://mochajs.org#retry-tests);
-You can set number of a retries for a feature:
-
-```js
-Scenario('Really complex', (I) => {
-  // test goes here
-}).retry(2);
-
-// alternative
-Scenario('Really complex', { retries: 2 }, (I) => {});
-```
-
-This scenario will be restarted two times on a failure.
-
-### Retry Feature
-
-To set this option for all scenarios in a file, add retry to a feature:
-
-```js
-Feature('Complex JS Stuff').retry(3);
-```
-
-Every Scenario inside this feature will be rerun 3 times.
-You can make an exception for a specific scenario by passing `retries` option to a Scenario.
 
 ---
 
