@@ -1,3 +1,10 @@
+## 2.0.1
+
+* Fixed creating project with `codecept init`.
+* Fixed error while installing webdriverio@5.
+* Added code beautifier for generated configs.
+* [WebDriver] Updated to webdriverio 5.1.0
+
 ## 2.0.0
 
 * [WebDriver] **Breaking Change.** Updated to webdriverio v5. New helper **WebDriver** helper introduced.
