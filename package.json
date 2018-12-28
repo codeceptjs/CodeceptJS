@@ -49,7 +49,7 @@
     "fn-args": "^3.0.0",
     "gherkin": "^5.1.0",
     "glob": "^6.0.1",
-    "inquirer": "^2.0.0",
+    "inquirer": "^6.2.1",
     "mkdirp": "^0.5.1",
     "mocha": "^4.1.0",
     "parse-function": "^5.2.10",
