@@ -29,6 +29,23 @@ describe('utils', () => {
     });
   });
 
+  describe('#beautify', () => {
+    it('should beautify JS code', () => {
+      utils
+        .beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')
+        .should.eql(
+`module.exports = function(a, b) {
+  a++;
+  b = a;
+  if (a == b) {
+    return 2
+  }
+};`);
+
+    });
+  });
+
+
   describe('#xpathLocator', () => {
     it('combines xpaths', () => {
       utils.xpathLocator.combine(['//a', '//button'])
