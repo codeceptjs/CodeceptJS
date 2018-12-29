@@ -985,7 +985,7 @@ I.scrollTo('#submit', 5, 5);
 -   `offsetX`  (optional) X-axis offset.
 -   `offsetY`  (optional) Y-axis offset.
     Appium: support only web testing
-
+    
 ### see
 
 Checks that a page contains a visible text.
@@ -1194,16 +1194,17 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 ### seeResponseCodeIs
 
-Asserts if response code of current url equals to provided status code.
+Asserts the response code after navigating to a given url equals to provided status code.
 
 ```js
 I.amOnPage('http://codecept.io/');
-I.seeResponseCodeIs('200');
+I.seeResponseCodeIs(200);
 ```
 
 #### Parameters
- 
--   `string`  expected response code.
+
+-   `expectedStatusCode`  
+-   `int`  expected response code.
 
 ### seeTextEquals
 

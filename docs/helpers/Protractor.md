@@ -1049,19 +1049,6 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 -   `locator`  element located by CSS|XPath|strict locator.
 -   `num`  number of elements.
 
-### seeResponseCodeIs
-
-Asserts if response code of current url equals to provided status code.
-
-```js
-I.amOnPage('http://codecept.io/');
-I.seeResponseCodeIs('200');
-```
-
-#### Parameters
- 
--   `string`  expected response code.
-
 ### seeTextEquals
 
 Checks that text is equal to provided one.
