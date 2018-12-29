@@ -19,13 +19,16 @@ class RoboFile extends \Robo\Tasks
     function publishSite()
     {
         $this->taskGitStack()
-            ->checkout('site')
+            ->checkout('docusaurus')
             ->merge('master')
             ->run();
         $this->stopOnFail();
         $this->_copy('CHANGELOG.md', 'docs/changelog.md');
         $this->_copy('docker/README.md', 'docs/docker.md');
-        $this->_exec('mkdocs gh-deploy');
+        $this
+            ->taskExec('USE_SSH=true GIT_USER=davertmik npm run publish-gh-pages')
+            ->dir('website')
+            ->run();
         $this->_remove('docs/changelog.md');
         $this->taskGitStack()
             ->checkout('master')

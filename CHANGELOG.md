@@ -1,3 +1,52 @@
+## 2.0.1
+
+* Fixed creating project with `codecept init`.
+* Fixed error while installing webdriverio@5.
+* Added code beautifier for generated configs.
+* [WebDriver] Updated to webdriverio 5.1.0
+
+## 2.0.0
+
+* [WebDriver] **Breaking Change.** Updated to webdriverio v5. New helper **WebDriver** helper introduced.
+
+  * **Upgrade plan**:
+
+    1. Install latest webdriverio
+    ```
+    npm install webdriverio@5 --save
+    ```
+
+    2. Replace `WebDriverIO` => `WebDriver` helper name in config.
+    3. Read [webdriverio changelog](https://github.com/webdriverio/webdriverio/blob/master/CHANGELOG.md). If you were using webdriver API in your helpers, upgrade accordingly.
+    4. We made WebDriver helper to be compatible with old API so no additional changes required.
+
+    > If you face issues using webdriverio v5 you can still use webdriverio 4.x and WebDriverIO helper. Make sure you have `webdriverio: ^4.0` installed.
+
+  * Known issues: `attachFile` doesn't work with proxy server.
+
+* [Appium] **Breaking Change.** Updated to use webdriverio v5 as well. See upgrade plan ↑
+* [REST] **Breaking Change.** Replaced `unirest` library with `axios`.
+
+  * **Upgrade plan**:
+
+    1. Refer to [axios API](https://github.com/axios/axios).
+    2. If you were using `unirest` requests/responses in your tests change them to axios format.
+* **Breaking Change.** Generators support in tests removed. Use `async/await` in your tests
+* **Using `codecept.conf.js` as default configuration format**
+* Fixed "enametoolong" error when saving screenshots for data driven tests by @PeterNgTr
+* Updated NodeJS to 10 in Docker image
+* [Pupeteer] Add support to use WSEndpoint. Allows to execute tests remotely. [See #1350] by @gabrielcaires (https://github.com/Codeception/CodeceptJS/pull/1350)
+* In interactive shell [Enter] goes to next step. Improvement by @PeterNgTr.
+* `I.say` accepts second parameter as color to print colorful comments. Improvement by @PeterNgTr.
+
+```js
+I.say('This is red', 'red'); //red is used
+I.say('This is blue', 'blue'); //blue is used
+I.say('This is by default'); //cyan is used
+```
+* Fixed allure reports for multi session testing by @PeterNgTr
+* Fixed allure reports for hooks by @PeterNgTr
+
 ## 1.4.6
 
 * [Puppeteer] `dragSlider` action added by @PeterNgTr

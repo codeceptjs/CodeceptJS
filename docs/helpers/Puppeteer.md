@@ -27,16 +27,10 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `getPageTimeout` (optional, default: '0') config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait\* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
+-   `WSEndpoint`: (optional) Chrome websocket URL to use remote browser
 -   `userAgent`: (optional) user-agent string.
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `chrome`: (optional) pass additional [Puppeteer run options][3]. Example
-
-```js
-"chrome": {
-  "executablePath" : "/path/to/Chrome",
-  "browserWSEndpoint": "ws://localhost:3000"
-}
-```
 
 #### Example #1: Wait for 0 network connections.
 
@@ -78,6 +72,15 @@ This helper should be configured in codecept.json or codecept.conf.js
        "show": true
      }
    }
+}
+```
+
+#### Example #4: Using remote WS endpoint
+
+```js
+"chrome": {
+  "executablePath" : "/path/to/Chrome",
+  "browserWSEndpoint": "ws://localhost:3000"
 }
 ```
 
