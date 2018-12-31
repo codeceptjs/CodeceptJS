@@ -76,16 +76,6 @@ describe('Puppeteer (remote browser)', function () {
       }
     });
 
-    it('should throw an exception when connection was lost', async () => {
-      await I._startBrowser();
-      try {
-        await I.browser.disconnect();
-        throw Error('It should never get this far');
-      } catch (e) {
-        e.message.should.include('Connection with remote browser was lost.');
-      }
-    });
-
     it('should clear any prior existing pages on remote browser', async () => {
       const remotePages = await remoteBrowser.pages();
       assert.equal(remotePages.length, 1);
