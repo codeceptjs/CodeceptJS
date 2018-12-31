@@ -12,7 +12,6 @@ env:
   - HELPER=Protractor
   - HELPER=Nightmare
   - HELPER=Puppeteer
-  - HELPER=PuppeteerRemote
   - HELPER=ProtractorWeb
   - HELPER=WebDriver
 addons:
