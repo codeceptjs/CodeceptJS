@@ -168,7 +168,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 When running steps inside a within block will be shown with a shift:
 
-![within](http://codecept.io/images/within.png)
+![within](https://codecept.io/img/within.png)
 
 ## Extending
 
