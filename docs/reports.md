@@ -172,7 +172,7 @@ Result will be located at `output/result.xml` file.
 
 Best HTML reports could be produced with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
 
-![](http://codecept.io/images/mochawesome.png)
+![mochawesome](https://codecept.io/img/mochawesome.png)
 
 Install it via NPM:
 
