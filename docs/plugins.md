@@ -150,7 +150,7 @@ Possible config options:
 
 ## stepByStepReport
 
-![][2]
+![step-by-step-report][2]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -188,4 +188,4 @@ If Allure plugin is enabled this plugin attaches each saved screenshot to allure
 
 [1]: https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png
 
-[2]: https://codecept.io/images/codeceptjs-slideshow.gif
+[2]: https://codecept.io/img/codeceptjs-slideshow.gif
