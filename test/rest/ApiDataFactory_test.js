@@ -67,8 +67,9 @@ describe('ApiDataFactory', function () {
     });
 
     it('should obtain id by function', async () => {
-      I = new ApiDataFactory({
+      const I = new ApiDataFactory({
         endpoint: api_url,
+        returnId: true,
         factories: {
           post: {
             factory: path.join(__dirname, '/../data/rest/posts_factory.js'),

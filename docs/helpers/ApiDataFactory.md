@@ -65,8 +65,9 @@ Then configure ApiDataHelper to match factories and REST API:
 ApiDataFactory has following config options:
 
 -   `endpoint`: base URL for the API to send requests to.
--   `cleanup`: should inserted records be deleted up after tests. Default: true
+-   `cleanup` (default: true): should inserted records be deleted up after tests
 -   `factories`: list of defined factories
+-   `returnId` (default: false): return id instead of a complete response when creating items.
 -   `REST`: configuration for REST requests
 
 See the example:
@@ -107,7 +108,7 @@ So, in order to set default headers or timeout you should add:
 }
 ```
 
-### Api Requests
+### Requests
 
 By default to create a record ApiDataFactory will use endpoint and plural factory name:
 
@@ -125,12 +126,25 @@ This behavior can be configured with following options:
 -   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 -   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
 
-### Record Ids
+### Responses
 
-To delete items their ids are collected. You can obtain them as well:
+By default `I.have()` returns a promise with a created data:
 
 ```js
-const clientId = await I.have('client');
+let client = await I.have('client');
+```
+
+Ids of created records are collected and used in the end of a test for the cleanup.
+If you need to receive `id` instead of full response enable `returnId` in a helper config:
+
+```js
+// returnId: false
+let clientId = await I.have('client');
+// clientId == 1
+
+// returnId: true
+let clientId = await I.have('client');
+// client == { name: 'John', email: 'john@snow.com' }
 ```
 
 By default `id` property of response is taken. This behavior can be changed by setting `fetchId` function in a factory config.
