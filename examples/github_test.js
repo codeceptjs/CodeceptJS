@@ -14,6 +14,7 @@ Scenario('Visit Home Page @retry', async (I) => {
 
 Scenario('search @grop', (I) => {
   I.amOnPage('https://github.com/search');
+  pause();
   I.fillField('Search GitHub', 'CodeceptJS');
   I.pressKey('Enter');
   I.wait(1);
