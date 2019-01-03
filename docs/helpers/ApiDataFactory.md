@@ -72,18 +72,19 @@ ApiDataFactory has following config options:
 See the example:
 
 ```js
- "ApiDataFactory": {
-   "endpoint": "http://user.com/api",
-   "cleanup": true,
-   "factories": {
-     "post": {
-        "uri": "/posts"
-        "factory": "./factories/post"
+ ApiDataFactory: {
+   endpoint: "http://user.com/api",
+   cleanup: true,
+   factories: {
+     post: {
+       uri: "/posts",
+       factory: "./factories/post",
      },
-     "comment": {
-       "factory": "./factories/comment",
-       "create": { "post": "/comments/create" },
-       "delete": { "post": "/comments/delete" }
+     comment: {
+       factory: "./factories/comment",
+       create: { post: "/comments/create" },
+       delete: { post: "/comments/delete/{id}" },
+       fetchId: (data) => data.result.id
      }
    }
 }
@@ -118,35 +119,37 @@ Example (`endpoint`: `http://app.com/api`):
 -   create: POST request to `http://app.com/api/users`
 -   delete: DELETE request to `http://app.com/api/users/1`
 
-However this behavior can be configured with following options:
+This behavior can be configured with following options:
 
 -   `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
 -   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 -   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
+
+### Record Ids
+
+To delete items their ids are collected. You can obtain them as well:
+
+```js
+const clientId = await I.have('client');
+```
+
+By default `id` property of response is taken. This behavior can be changed by setting `fetchId` function in a factory config.
+
+```js
+   factories: {
+     post: {
+       uri: "/posts",
+       factory: "./factories/post",
+       fetchId: (data) => data.result.posts[0].id
+     }
+   }
+```
 
 ## Methods
 
 ### Parameters
 
 -   `config`  
-
-### \_fetchId
-
-Fetches id of a record after it was created by `have`.
-By default fetched `id` attribute from JSON body.
-
-Customize it from custom Helper file:
-
-```js
-this.helpers['ApiDataFactory']._fetchId = (body, factory) {
-   return body[factory][0].id;
-}
-```
-
-#### Parameters
-
--   `body` **any** 
--   `factory` **any** 
 
 ### \_requestCreate
 

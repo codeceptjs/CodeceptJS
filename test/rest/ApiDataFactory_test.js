@@ -33,7 +33,6 @@ describe('ApiDataFactory', function () {
         post: {
           factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
           uri: '/posts',
-
         },
       },
     });
@@ -65,6 +64,21 @@ describe('ApiDataFactory', function () {
       resp.data.author.should.eql('davert');
       resp = await I.restHelper.sendGetRequest('/posts/2');
       resp.data.author.should.eql('Tapac');
+    });
+
+    it('should obtain id by function', async () => {
+      I = new ApiDataFactory({
+        endpoint: api_url,
+        factories: {
+          post: {
+            factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
+            uri: '/posts',
+            fetchId: () => 'someId',
+          },
+        },
+      });
+      const id = await I.have('post');
+      id.should.eql('someId');
     });
 
     it('should cleanup created data', async () => {
