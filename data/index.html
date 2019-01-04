@@ -97,11 +97,15 @@ This is a tool to make shortcuts and create your data pragmatically via API. How
 <p>This can also be used to emulate Ajax requests:</p>
 <pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.sendPostRequest(<span class="hljs-string">'/update-status'</span>, {}, { <span class="hljs-attr">http_x_requested_with</span>: <span class="hljs-string">'xmlhttprequest'</span> });
 </code></pre>
+<blockquote>
+<p>See complete reference on <a href="http://codecept.io/helpers/REST">REST</a> helper</p>
+</blockquote>
 <h2><a class="anchor" aria-hidden="true" id="data-generation-with-factories"></a><a href="#data-generation-with-factories" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Generation with Factories</h2>
 <p>This concept is extended by <a href="http://codecept.io/helpers/ApiDataFactory/">ApiDataFactory</a> helper.
 It builds data according to defined rules and uses API to store them and automatically clean them up after a test,
 This way setting data for a test is as simple as writing:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">let</span> post = <span class="hljs-keyword">yield</span> <span class="hljs-built_in">I</span>.have(<span class="hljs-string">'post'</span>);
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
+<span class="hljs-keyword">let</span> post = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.have(<span class="hljs-string">'post'</span>);
 <span class="hljs-built_in">I</span>.haveMultiple(<span class="hljs-string">'comment'</span>, <span class="hljs-number">5</span>, { <span class="hljs-attr">postId</span>: post.id});
 </code></pre>
 <p>Just define how many items of any kind you need and ApiDataFactory will create them for you.
@@ -130,8 +134,8 @@ to generate objects using factories.</p>
    },
    <span class="hljs-attr">factories</span>: {
      <span class="hljs-attr">user</span>: {
-        <span class="hljs-attr">uri</span>: <span class="hljs-string">"/users"</span>
-        factory: <span class="hljs-string">"./factories/user"</span>
+        <span class="hljs-attr">uri</span>: <span class="hljs-string">"/users"</span>,
+        <span class="hljs-attr">factory</span>: <span class="hljs-string">"./factories/user"</span>
      }
    }
  }
@@ -141,7 +145,10 @@ This is done by sending POST request to <code>/api/users</code> URL. Response is
 <p>At the end of a test ApiDataFactory will clean up created record for you. This is done by collecting
 ids from crated records and running <code>DELETE /api/users/{id}</code> requests at the end of a test.
 This rules can be customized in helper configuration.</p>
-<h3><a class="anchor" aria-hidden="true" id="api-requests-using-browser-session"></a><a href="#api-requests-using-browser-session" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Requests Using Browser Session</h3>
+<blockquote>
+<p>See complete reference on <a href="http://codecept.io/helpers/ApiDataFactory">ApiDataFactory</a> helper</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="api-requests-using-browser-session"></a><a href="#api-requests-using-browser-session" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Requests Using Browser Session</h2>
 <p>Both REST and ApiDataFactory helpers allow override requests before sending.
 This feature can be used to fetch current browser cookies and set them to REST API client.
 By doing this we can make requests within the current browser session without a need of additional authentication.</p>
@@ -158,8 +165,8 @@ By doing this we can make requests within the current browser session without a 
     },
     <span class="hljs-attr">factories</span>: {
       <span class="hljs-attr">user</span>: {
-          <span class="hljs-attr">uri</span>: <span class="hljs-string">"/users"</span>
-          factory: <span class="hljs-string">"./factories/user"</span>
+          <span class="hljs-attr">uri</span>: <span class="hljs-string">"/users"</span>,
+          <span class="hljs-attr">factory</span>: <span class="hljs-string">"./factories/user"</span>,
       }
     },
     <span class="hljs-attr">onRequest</span>: <span class="hljs-keyword">async</span> (request) =&gt; {
@@ -169,12 +176,13 @@ By doing this we can make requests within the current browser session without a 
   }
   WebDriver: {
     <span class="hljs-attr">url</span>: <span class="hljs-string">'https://local.app/'</span>,
-    <span class="hljs-attr">browser</span>: <span class="hljs-string">'chrome'</span>
+    <span class="hljs-attr">browser</span>: <span class="hljs-string">'chrome'</span>,
+  }
 </code></pre>
 <p>In this case we are accessing WebDriver helper. However, you can replace WebDriver with any helper you use.</p>
 <p>The order of helpers is important! ApiDataFactory will clean up created users after a test,
 so it needs browser to be still opened to obtain its cookies.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-4</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/bdd"><span class="arrow-prev">← </span><span>Behavior Driven Development</span></a><a class="docs-next button" href="/hooks"><span>Bootstrap / Teardown / Plugins</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#rest">REST</a></li><li><a href="#data-generation-with-factories">Data Generation with Factories</a><ul class="toc-headings"><li><a href="#api-requests-using-browser-session">API Requests Using Browser Session</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-4</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/bdd"><span class="arrow-prev">← </span><span>Behavior Driven Development</span></a><a class="docs-next button" href="/hooks"><span>Bootstrap / Teardown / Plugins</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#rest">REST</a></li><li><a href="#data-generation-with-factories">Data Generation with Factories</a></li><li><a href="#api-requests-using-browser-session">API Requests Using Browser Session</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
