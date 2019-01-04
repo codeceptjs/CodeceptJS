@@ -9,7 +9,7 @@ title: Puppeteer
 **Extends Helper**
 
 Uses [Google Chrome's Puppeteer][1] library to run tests inside headless Chrome.
-Browser control is executed via DevTools without Selenium.
+Browser control is executed via DevTools Protocol (instead of Selenium).
 This helper works with a browser out of the box with no additional tools required to install.
 
 Requires `puppeteer` package to be installed.
@@ -31,10 +31,9 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `getPageTimeout` (optional, default: '0') config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait\* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
--   `WSEndpoint`: (optional) Chrome websocket URL to use remote browser
 -   `userAgent`: (optional) user-agent string.
 -   `manualStart`: (optional, default: false) - do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
--   `chrome`: (optional) pass additional [Puppeteer run options][3]. Example
+-   `chrome`: (optional) pass additional [Puppeteer run options][3].
 
 #### Example #1: Wait for 0 network connections.
 
@@ -79,14 +78,22 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
-#### Example #4: Using remote WS endpoint
+#### Example #4: Connect to remote browser by specifying [websocket endpoint][4]
 
-```js
-"chrome": {
-  "executablePath" : "/path/to/Chrome",
-  "browserWSEndpoint": "ws://localhost:3000"
+```json
+{
+   "helpers": {
+     "Puppeteer" : {
+       "url": "http://localhost",
+       "chrome": {
+         "browserWSEndpoint": "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
+       }
+     }
+   }
 }
 ```
+
+Note: When connecting to remote browser `show` and specific `chrome` options (e.g. `headless` or `devtools`) are ignored.
 
 ## Access From Helpers
 
@@ -173,13 +180,13 @@ Set current page
 
 #### Parameters
 
--   `page` **[object][4]** page to set
+-   `page` **[object][5]** page to set
 
 ### acceptPopup
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][5].
+libraries][6].
 
 ### amAcceptingPopups
 
@@ -498,7 +505,7 @@ I.dragSlider('#slider', -70);
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][6].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][7].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -770,7 +777,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][7]
+Special keys like 'Enter', 'Control', [etc][8]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -1389,10 +1396,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [3]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[4]: https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target
 
-[5]: http://jster.net/category/windows-modals-popups
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[6]: https://vuejs.org/v2/api/#Vue-nextTick
+[6]: http://jster.net/category/windows-modals-popups
 
-[7]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[7]: https://vuejs.org/v2/api/#Vue-nextTick
+
+[8]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value

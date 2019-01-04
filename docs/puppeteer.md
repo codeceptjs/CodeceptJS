@@ -171,6 +171,8 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 When running steps inside a within block will be shown with a shift.
 
+![within](https://codecept.io/img/within.png)
+
 > [Demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
 
 ## Extending
