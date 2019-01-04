@@ -26,7 +26,9 @@ class RoboFile extends \Robo\Tasks
         $this->stopOnFail();
         $this->_copy('CHANGELOG.md', 'docs/changelog.md');
         $this->_copy('docker/README.md', 'docs/docker.md');
-        $this->_exec('npm install');
+        $this->taskExec('npm install')
+            ->dir('website')
+            ->run();
         $this
             ->taskExec('USE_SSH=true GIT_USER=davertmik npm run publish-gh-pages')
             ->dir('website')
