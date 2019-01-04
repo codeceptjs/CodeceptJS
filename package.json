@@ -85,7 +85,7 @@
     "sinon-chai": "^2.14.0",
     "typescript": "^2.9.2",
     "unirest": "^0.5.1",
-    "webdriverio": "^5.1.0",
+    "webdriverio": "^5.2.0",
     "xmldom": "^0.1.27",
     "xpath": "0.0.27"
   },
