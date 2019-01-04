@@ -149,8 +149,6 @@ At the end of a test ApiDataFactory will clean up created record for you. This i
 ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
 This rules can be customized in helper configuration.
 
-<<<<<<< HEAD
-=======
 ### API Requests Using Browser Session
 
 Both REST and ApiDataFactory helpers allow override requests before sending.
@@ -189,4 +187,3 @@ In this case we are accessing WebDriver helper. However, you can replace WebDriv
 
 The order of helpers is important! ApiDataFactory will clean up created users after a test,
 so it needs browser to be still opened to obtain its cookies.
->>>>>>> master
