@@ -23,16 +23,15 @@ const data = {
 };
 
 describe('REST', () => {
-  before(() => {
+
+  beforeEach((done) => {
     I = new REST({
       endpoint: api_url,
       defaultHeaders: {
         'X-Test': 'test',
       },
     });
-  });
 
-  beforeEach((done) => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data));
     } catch (err) {
@@ -77,6 +76,13 @@ describe('REST', () => {
     it('should send DELETE requests', () => I.sendDeleteRequest('/posts/1').then(() => I.sendGetRequest('/posts').then((response) => {
       response.data.should.be.empty;
     })));
+
+    it('should update request with onRequest', async () => {
+      I.config.onRequest = (request) => request.data =  { name: 'Vasya' };
+      return I.sendPostRequest('/user', { name: 'john' }).then((response) => {
+        response.data.name.should.eql('Vasya');
+      });
+    });
 
     it('should set timeout for the request', () => {
       I.setRequestTimeout(2000);

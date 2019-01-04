@@ -82,6 +82,21 @@ describe('ApiDataFactory', function () {
       id.should.eql('someId');
     });
 
+    it('should update request with onRequest', async () => {
+      const I = new ApiDataFactory({
+        endpoint: api_url,
+        onRequest: (request) => request.data.author = 'Vasya',
+        factories: {
+          post: {
+            factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
+            uri: '/posts',
+          },
+        },
+      });
+      const post = await I.have('post');
+      post.author.should.eql('Vasya');
+    });
+
     it('should cleanup created data', async () => {
       await I.have('post', { author: 'Tapac' });
       let resp = await I.restHelper.sendGetRequest('/posts/2');
@@ -124,6 +139,7 @@ describe('ApiDataFactory', function () {
       resp = await I.restHelper.sendGetRequest('/comments');
       resp.data.length.should.eql(1);
     });
+
 
     it('should not remove records if cleanup:false', async () => {
       I = new ApiDataFactory({
