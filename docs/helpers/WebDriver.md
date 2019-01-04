@@ -1541,7 +1541,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [9]: http://jster.net/category/windows-modals-popups
 
-[10]: http://webdriver.io/guide/testrunner/timeouts.html
+[10]: https://webdriver.io/docs/timeouts.html
 
 [11]: https://vuejs.org/v2/api/#Vue-nextTick
 

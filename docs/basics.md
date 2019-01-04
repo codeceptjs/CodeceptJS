@@ -25,7 +25,11 @@ CodeceptJS bypasses execution commands to helpers. Depending on helper enabled y
 
 Here is the diagram of CodeceptJS architecture
 
+<<<<<<< HEAD
 ![](img/architecture.svg)
+=======
+![architecture](https://codecept.io/img/architecture.svg)
+>>>>>>> master
 
 All helpers share the same API so it's easy to migrate tests from one backend to other.
 However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nigthmare.
@@ -262,7 +266,7 @@ I.see('There were problems creating your account.');
 
 When running steps inside a within block will be shown with a shift:
 
-![within](http://codecept.io/images/within.png)
+![within](https://codecept.io/img/within.png)
 
 Within can return a value which can be used in a scenario:
 

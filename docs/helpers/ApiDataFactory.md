@@ -69,25 +69,32 @@ Then configure ApiDataHelper to match factories and REST API:
 ApiDataFactory has following config options:
 
 -   `endpoint`: base URL for the API to send requests to.
--   `cleanup`: should inserted records be deleted up after tests. Default: true
+-   `cleanup` (default: true): should inserted records be deleted up after tests
 -   `factories`: list of defined factories
+-   `returnId` (default: false): return id instead of a complete response when creating items.
+-   `headers`: list of headers
 -   `REST`: configuration for REST requests
 
 See the example:
 
 ```js
- "ApiDataFactory": {
-   "endpoint": "http://user.com/api",
-   "cleanup": true,
-   "factories": {
-     "post": {
-        "uri": "/posts"
-        "factory": "./factories/post"
+ ApiDataFactory: {
+   endpoint: "http://user.com/api",
+   cleanup: true,
+   headers: {
+     'Content-Type': 'application/json',
+     'Accept': 'application/json',
+   },
+   factories: {
+     post: {
+       uri: "/posts",
+       factory: "./factories/post",
      },
-     "comment": {
-       "factory": "./factories/comment",
-       "create": { "post": "/comments/create" },
-       "delete": { "post": "/comments/delete" }
+     comment: {
+       factory: "./factories/comment",
+       create: { post: "/comments/create" },
+       delete: { post: "/comments/delete/{id}" },
+       fetchId: (data) => data.result.id
      }
    }
 }
@@ -97,20 +104,17 @@ It is required to set REST API `endpoint` which is the baseURL for all API reque
 Factory file is expected to be passed via `factory` option.
 
 This Helper uses [REST][3] helper and accepts its configuration in "REST" section.
-So, in order to set default headers or timeout you should add:
+For instance, to set timeout you should add:
 
 ```js
 "ApiDataFactory": {
    "REST": {
      "timeout": "100000",
-     "defaultHeaders": {
-       "auth": "111111"
-     }
   }
 }
 ```
 
-### Api Requests
+### Requests
 
 By default to create a record ApiDataFactory will use endpoint and plural factory name:
 
@@ -122,35 +126,71 @@ Example (`endpoint`: `http://app.com/api`):
 -   create: POST request to `http://app.com/api/users`
 -   delete: DELETE request to `http://app.com/api/users/1`
 
-However this behavior can be configured with following options:
+This behavior can be configured with following options:
 
 -   `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
 -   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 -   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
+
+Create and delete requests can also be overridden with a function:
+
+```js
+create: (data) => {
+   return { method: 'post', url: '/posts', data }
+},
+delete: (id) => {
+   return { method: 'delete', url: '/posts', data: { id } }
+}
+```
+
+Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
+
+```js
+ onRequest: async (request) => {
+    // using global codeceptjs instance
+    let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session');
+    request.headers = { Cookie: `session=${cookie.value}` };
+  }
+```
+
+### Responses
+
+By default `I.have()` returns a promise with a created data:
+
+```js
+let client = await I.have('client');
+```
+
+Ids of created records are collected and used in the end of a test for the cleanup.
+If you need to receive `id` instead of full response enable `returnId` in a helper config:
+
+```js
+// returnId: false
+let clientId = await I.have('client');
+// clientId == 1
+
+// returnId: true
+let clientId = await I.have('client');
+// client == { name: 'John', email: 'john@snow.com' }
+```
+
+By default `id` property of response is taken. This behavior can be changed by setting `fetchId` function in a factory config.
+
+```js
+   factories: {
+     post: {
+       uri: "/posts",
+       factory: "./factories/post",
+       fetchId: (data) => data.result.posts[0].id
+     }
+   }
+```
 
 ## Methods
 
 ### Parameters
 
 -   `config`  
-
-### \_fetchId
-
-Fetches id of a record after it was created by `have`.
-By default fetched `id` attribute from JSON body.
-
-Customize it from custom Helper file:
-
-```js
-this.helpers['ApiDataFactory']._fetchId = (body, factory) {
-   return body[factory][0].id;
-}
-```
-
-#### Parameters
-
--   `body` **any** 
--   `factory` **any** 
 
 ### \_requestCreate
 

@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -56,7 +56,6 @@
     "parse-function": "^5.2.10",
     "promise-retry": "^1.1.1",
     "requireg": "^0.1.8",
-    "source-map-support": "^0.5.9",
     "sprintf-js": "^1.1.1"
   },
   "devDependencies": {
@@ -86,7 +85,7 @@
     "sinon-chai": "^2.14.0",
     "typescript": "^2.9.2",
     "unirest": "^0.5.1",
-    "webdriverio": "^5.1.0",
+    "webdriverio": "^5.2.2",
     "xmldom": "^0.1.27",
     "xpath": "0.0.27"
   },
@@ -96,9 +95,5 @@
   },
   "es6": true,
   "husky": {
-    "hooks": {
-      "pre-commit": "npm run docs && npm run lint-fix",
-      "pre-push": "npm test"
-    }
   }
 }
