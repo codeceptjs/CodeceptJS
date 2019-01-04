@@ -87,6 +87,8 @@ This can also be used to emulate Ajax requests:
 I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
 ```
 
+> See complete reference on [REST](http://codecept.io/helpers/REST) helper
+
 ## Data Generation with Factories
 
 This concept is extended by [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
@@ -94,7 +96,8 @@ It builds data according to defined rules and uses API to store them and automat
 This way setting data for a test is as simple as writing:
 
 ```js
-let post = yield I.have('post');
+// inside async function
+let post = await I.have('post');
 I.haveMultiple('comment', 5, { postId: post.id});
 ```
 
@@ -135,7 +138,7 @@ Next is to configure helper to match factories with API:
    },
    factories: {
      user: {
-        uri: "/users"
+        uri: "/users",
         factory: "./factories/user"
      }
    }
@@ -149,7 +152,9 @@ At the end of a test ApiDataFactory will clean up created record for you. This i
 ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
 This rules can be customized in helper configuration.
 
-### API Requests Using Browser Session
+> See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
+
+## API Requests Using Browser Session
 
 Both REST and ApiDataFactory helpers allow override requests before sending.
 This feature can be used to fetch current browser cookies and set them to REST API client.
@@ -169,8 +174,8 @@ Let's see how to configure ApiDataFactory alongside with WebDriver to share cook
     },
     factories: {
       user: {
-          uri: "/users"
-          factory: "./factories/user"
+          uri: "/users",
+          factory: "./factories/user",
       }
     },
     onRequest: async (request) => {
@@ -180,7 +185,8 @@ Let's see how to configure ApiDataFactory alongside with WebDriver to share cook
   }
   WebDriver: {
     url: 'https://local.app/',
-    browser: 'chrome'
+    browser: 'chrome',
+  }
 ```
 
 In this case we are accessing WebDriver helper. However, you can replace WebDriver with any helper you use.
