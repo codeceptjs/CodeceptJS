@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Mobile Testing with Appium · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Mobile Testing with Appium · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;p&gt;CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class="siteNavGroupActive"><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">Reference</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Mobile Testing</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Quickstart</h3><ul><li class="navListItem"><a class="navItem" href="/quickstart">Quickstart</a></li><li class="navListItem"><a class="navItem" href="/basics">Basics</a></li><li class="navListItem"><a class="navItem" href="/video">Tutorial Videos</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Web Testing</h3><ul><li class="navListItem"><a class="navItem" href="/acceptance">Acceptance Testing</a></li><li class="navListItem"><a class="navItem" href="/puppeteer">Testing with Puppeteer</a></li><li class="navListItem"><a class="navItem" href="/angular">Testing with Protractor</a></li><li class="navListItem"><a class="navItem" href="/nightmare">Testing with Nightmare</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Mobile Testing</h3><ul><li class="navListItem navListItemActive"><a class="navItem" href="/mobile">Mobile Testing with Appium</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Organizing Tests</h3><ul><li class="navListItem"><a class="navItem" href="/helpers">Custom Helpers</a></li><li class="navListItem"><a class="navItem" href="/pageobjects">Reusing Code with Page Objects</a></li><li class="navListItem"><a class="navItem" href="/bdd">Behavior Driven Development</a></li><li class="navListItem"><a class="navItem" href="/data">Data Management</a></li><li class="navListItem"><a class="navItem" href="/hooks">Bootstrap / Teardown / Plugins</a></li><li class="navListItem"><a class="navItem" href="/advanced">Advanced Usage</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/mobile.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Mobile Testing with Appium</h1></header><article><div><span><p>CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.
+Such tests are executed using <a href="http://appium.io">Appium</a> on emulated or physical devices. Also, Appium allows to test web application on mobile devices.</p>
+<p>What makes CodeceptJS better for mobile testing?
+Take a look. Here is the sample test for a native mobile application written in CodeceptJS:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeAppIsInstalled(<span class="hljs-string">"io.super.app"</span>);
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'~startUserRegistrationCD'</span>);
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'~email of the customer'</span>, <span class="hljs-string">'Nothing special'</span>));
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'davert@codecept.io'</span>, <span class="hljs-string">'~email of the customer'</span>));
+<span class="hljs-built_in">I</span>.clearField(<span class="hljs-string">'~email of the customer'</span>));
+<span class="hljs-built_in">I</span>.dontSee(<span class="hljs-string">'Nothing special'</span>, <span class="hljs-string">'~email of the customer'</span>));
+<span class="hljs-built_in">I</span>.seeElement({
+  <span class="hljs-attr">android</span>: <span class="hljs-string">'android.widget.Button'</span>,
+  <span class="hljs-attr">ios</span>: <span class="hljs-string">'//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'</span>
+});
+</code></pre>
+<p>This test is easy to read and write. Also it will work both on iOS and Android devices.
+Doesn't it sound cool?</p>
+<h2><a class="anchor" aria-hidden="true" id="setting-up"></a><a href="#setting-up" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setting Up</h2>
+<p>Ensure that you have <a href="http://codecept.io/installation/">CodeceptJS installed</a>.
+You will also need to install <a href="http://appium.io/">Appium</a>.
+We suggest to use <a href="https://www.npmjs.com/package/appium-doctor">appium-doctor</a> to check if your system is ready for mobile testing.</p>
+<pre><code class="hljs css language-sh">npm i -g appium-doctor
+</code></pre>
+<p>If everything is OK, continue with installing Appium. If not, consider using cloud based alternatives like <a href="https://saucelabs.com">SauceLabs</a> or <a href="http://browserstack.com">BrowserStack</a>. Cloud services provide hosted appium with real and emulated mobile devices.</p>
+<p>To install Appium use npm:</p>
+<pre><code class="hljs css language-sh">npm i -g appium
+</code></pre>
+<p>Then you need to prepare application for execution.
+It should be packed into apk (for Android) or .ipa (for iOS) or zip.</p>
+<p>Next, is to launch the emulator or connect physical device.
+Once they are prepared, launch Appium:</p>
+<pre><code class="hljs css language-sh">appium
+</code></pre>
+<p>To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.</p>
+<p>CodeceptJS should be installed with webdriverio support:</p>
+<pre><code class="hljs css language-bash">npm install -g codeceptjs webdriverio
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="configuring"></a><a href="#configuring" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuring</h2>
+<p>Initialize CodeceptJS with <code>init</code> command:</p>
+<pre><code class="hljs css language-sh">codeceptjs init
+</code></pre>
+<p>Select <a href="http://codecept.io/helpers/Appium/">Appium helper</a> when asked.</p>
+<pre><code class="hljs css language-sh">? What helpers <span class="hljs-keyword">do</span> you want to use?
+ ◯ WebDriver
+ ◯ Protractor
+ ◯ Puppeteer
+ ◯ Nightmare
+❯◉ Appium
+ ◯ REST
+</code></pre>
+<p>You will also be asked for the platform and the application package.</p>
+<pre><code class="hljs css language-sh">? [Appium] Application package. Path to file or url
+</code></pre>
+<p>Check the newly created <code>codecept.conf.js</code> configuration file.
+You may want to set some additional Appium settings via <a href="https://appium.io/docs/en/writing-running-appium/caps/">desiredCapabilities</a></p>
+<pre><code class="hljs css language-js"><span class="hljs-string">"helpers"</span>: {
+  <span class="hljs-string">"Appium"</span>: {
+    <span class="hljs-string">"app"</span>: <span class="hljs-string">"my_app.apk"</span>,
+    <span class="hljs-string">"platform"</span>: <span class="hljs-string">"Android"</span>,
+    <span class="hljs-string">"desiredCapabilities"</span>: {}
+  }
+}
+</code></pre>
+<p>Once you configured Appium, create the first test by running</p>
+<pre><code class="hljs css language-sh">codeceptjs gt
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="browserstack-configuration"></a><a href="#browserstack-configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BrowserStack Configuration</h2>
+<p>If you wish to use BrowserStack's <a href="https://www.browserstack.com/app-automate">Automated Mobile App Testing</a> platform. Configure the Appium helper like this:</p>
+<pre><code class="hljs css language-js"><span class="hljs-string">"helpers"</span>: {
+  <span class="hljs-string">"Appium"</span>:
+    <span class="hljs-string">"app"</span>: <span class="hljs-string">"bs://&lt;hashed app-id&gt;"</span>,
+    <span class="hljs-string">"host"</span>: <span class="hljs-string">"hub-cloud.browserstack.com"</span>,
+    <span class="hljs-string">"port"</span>: <span class="hljs-number">4444</span>,
+    <span class="hljs-string">"user"</span>: <span class="hljs-string">"BROWSERSTACK_USER"</span>,
+    <span class="hljs-string">"key"</span>: <span class="hljs-string">"BROWSERSTACK_KEY"</span>,
+    <span class="hljs-string">"device"</span>: <span class="hljs-string">"iPhone 7"</span>
+}
+</code></pre>
+<p>Here is the full list of <a href="https://www.browserstack.com/app-automate/capabilities">capabilities</a>.</p>
+<p>You need to upload your Android app (.apk) or iOS app (.ipa) to the BrowserStack servers using the REST API before running your tests. The App URL (<code>bs://hashed appid</code>) is returned in the response of this call.</p>
+<pre><code class="hljs css language-sh">curl -u <span class="hljs-string">"USERNAME:ACCESS_KEY"</span> \
+-X POST <span class="hljs-string">"https://api-cloud.browserstack.com/app-automate/upload"</span> \
+-F <span class="hljs-string">"file=@/path/to/app/file/Application-debug.apk"</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="writing-a-test"></a><a href="#writing-a-test" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writing a Test</h2>
+<p>A test is written in a scenario-driven manner, listing an actions taken by a user.
+This is the sample test for a native mobile application:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test registration'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'~startUserRegistrationCD'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'~inputUsername'</span>, <span class="hljs-string">'davert'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'~inputEmail'</span>, <span class="hljs-string">'davert@codecept.io'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'~inputPassword'</span>, <span class="hljs-string">'123456'</span>);
+  <span class="hljs-built_in">I</span>.hideDeviceKeyboard();
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'~input_preferredProgrammingLanguage'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Javascript'</span>);
+  <span class="hljs-built_in">I</span>.checkOption(<span class="hljs-string">'#io.demo.testapp:id/input_adds'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Register User (verify)'</span>);
+  <span class="hljs-built_in">I</span>.swipeUp(<span class="hljs-string">"#io.selendroid.testapp:id/LinearLayout1"</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Javascript'</span>); <span class="hljs-comment">// see on the screen</span>
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'davert'</span>, <span class="hljs-string">'~label_username_data'</span>); <span class="hljs-comment">// see in element</span>
+});
+</code></pre>
+<p>Mobile test is pretty similar to a web test. And it is much the same, if you test hybrid app with a web view context inside.
+However, mobile apps do not have URLs, Cookies, they have other features which may vary on a running platform.</p>
+<p>There are mobile-only methods like:</p>
+<ul>
+<li><code>swipeUp</code>, <code>swipeLeft</code>, ...</li>
+<li><code>hideDeviceKeyboard</code>,</li>
+<li><code>seeAppIsInstalled</code>, <code>installApp</code>, <code>removeApp</code>, <code>seeAppIsNotInstalled</code> - Android only</li>
+</ul>
+<p>and <a href="http://codecept.io/helpers/Appium/">others</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="locating-elements"></a><a href="#locating-elements" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Locating Elements</h2>
+<p>To start writing a test it is important to understand how to locate elements for native mobile applications.
+In both Android and iPhone elements are defined in XML format and can be searched by XPath locators.</p>
+<pre><code class="hljs css language-js">I.seeElement('//android.widget.ScrollView/android.widget.LinearLayout')'
+</code></pre>
+<p>CSS locators are not supported in native mobile apps, you need to switch to web context to use them.</p>
+<p>Elements can also be located by their accessability id, available both at Android and iOS.
+Accessibility id is recommended to use for locating element, as it rarely changed.</p>
+<ul>
+<li>iOS uses <a href="https://developer.apple.com/documentation/uikit/uiaccessibilityidentification">UIAccessibilityIdentification</a></li>
+<li>Android <code>accessibility id</code> matches the content-description</li>
+<li>Web view uses <code>[aria-label]</code> attribute as accessibility id</li>
+</ul>
+<p>Add <code>~</code> prefix to search for element by its accessibility id:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'~startUserRegistrationButton'</span>);
+</code></pre>
+<p>Elements can also have ids, which can be located with <code>#</code> prefix.
+On Android it it is important to keep full package name in id locator:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'#io.selendroid.testapp:id/inputUsername'</span>);
+</code></pre>
+<p>Buttons can be matched by their visible text:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.tap(<span class="hljs-string">'Click me!'</span>);
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Click me!'</span>);
+</code></pre>
+<p>Native iOS/Android locators can be used with <code>android=</code> and <code>ios=</code> prefixes. <a href="http://webdriver.io/guide/usage/selectors.html#Mobile-Selectors">Learn more</a>.</p>
+<p>But how to get all those locators? We recommend to use <a href="https://github.com/appium/appium-desktop">Appium Inspector</a>.</p>
+<p>For Android you can use <strong>UI Automator Viewer</strong> bundled with Android SDK:</p>
+<p><img src="https://user-images.githubusercontent.com/220264/27566310-1f631604-5aed-11e7-8b92-1ffe9e9f14f9.png" alt=""></p>
+<h2><a class="anchor" aria-hidden="true" id="hybrid-apps-and-contexts"></a><a href="#hybrid-apps-and-contexts" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hybrid Apps and Contexts</h2>
+<p>Mobile applications may have different contexts. For instance, there can be native view and web view with a browser instance in it.</p>
+<p>To execute commands in context of a webview use <code>within('webview')</code> function:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.click(<span class="hljs-string">'~startWebView'</span>);
+<span class="hljs-built_in">within</span>(<span class="hljs-string">'webview'</span>, () =&gt; {
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Preferred car'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Send me your name!'</span>);
+});
+</code></pre>
+<p>It will locate first available webview, switch to it, and switch back to native application after.
+Inside WebView all browser features are enabled: CSS locators, JavaScript, etc.</p>
+<p>To set a specific context use <code>{ web: 'webview.context' }</code> instead:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">within</span>({<span class="hljs-attr">webview</span>: <span class="hljs-string">'MyWEBVIEW_com.my.app'</span>}, () =&gt; );
+</code></pre>
+<p>Alternatively use <code>switchToWeb</code> or <code>switchToNative</code> methods to switch between contexts.</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.click(<span class="hljs-string">'~startWebView'</span>);
+<span class="hljs-built_in">I</span>.switchToWeb();
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Preferred car'</span>);
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Send me your name!'</span>);
+<span class="hljs-built_in">I</span>.switchToNative();
+</code></pre>
+<p>To get a list of all contexts use <code>grabAllContexts</code> method:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">let</span> contexts = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.grabAllContexts();
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="cross-platform-testing"></a><a href="#cross-platform-testing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cross-Platform Testing</h2>
+<p>It is often happen that mobile applications behave similarly on different platforms. Can we build one test for them? Yes!
+CodeceptJS provides a way to specify different locators for Android and iOS platforms:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.click({<span class="hljs-attr">android</span>: <span class="hljs-string">'//android.widget.Button'</span>, <span class="hljs-attr">ios</span>: <span class="hljs-string">'//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'</span>});
+</code></pre>
+<p>In case some code should be executed on one platform and ignored on others use <code>runOnAndroid</code> and <code>runOnIOS</code> methods:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.runOnAndroid(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Hello Android'</span>);
+});
+<span class="hljs-built_in">I</span>.runOnIOS(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Hello iOS'</span>);
+});
+</code></pre>
+<p>The same code can be shared for web applications as well. To execute some code in web browser only, use <code>I.runInWeb</code>:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.runInWeb(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/login'</span>); <span class="hljs-comment">// not available for mobile</span>
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'name'</span>, <span class="hljs-string">'jon'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, <span class="hljs-string">'123456'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
+  <span class="hljs-built_in">I</span>.waitForElement(<span class="hljs-string">'#success'</span>); <span class="hljs-comment">// no available for mobile</span>
+});
+</code></pre>
+<p>Just as you can specify android, and ios-specific locators, you can do so for web:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.click({<span class="hljs-attr">web</span>: <span class="hljs-string">'#login'</span>, <span class="hljs-attr">ios</span>: <span class="hljs-string">'//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'</span>});
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2018-12-25</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/nightmare"><span class="arrow-prev">← </span><span>Testing with Nightmare</span></a><a class="docs-next button" href="/helpers"><span>Custom Helpers</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#setting-up">Setting Up</a></li><li><a href="#configuring">Configuring</a></li><li><a href="#browserstack-configuration">BrowserStack Configuration</a></li><li><a href="#writing-a-test">Writing a Test</a></li><li><a href="#locating-elements">Locating Elements</a></li><li><a href="#hybrid-apps-and-contexts">Hybrid Apps and Contexts</a></li><li><a href="#cross-platform-testing">Cross-Platform Testing</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

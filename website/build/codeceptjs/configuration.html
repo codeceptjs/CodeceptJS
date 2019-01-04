@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Configuration · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;CodeceptJS configuration is set in &lt;code&gt;codecept.conf.js&lt;/code&gt; file.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Configuration · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;p&gt;CodeceptJS configuration is set in &lt;code&gt;codecept.conf.js&lt;/code&gt; file.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/quickstart" target="_self">Quickstart</a></li><li class=""><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">Reference</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/configuration.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Configuration</h1></header><article><div><span><p>CodeceptJS configuration is set in <code>codecept.conf.js</code> file.</p>
+<p>After running <code>codeceptjs init</code> it should be saved in test root.</p>
+<p>Here is an overview of available options with their defaults:</p>
+<ul>
+<li><strong>tests</strong>: <code>&quot;./*_test.js&quot;</code> - pattern to locate tests</li>
+<li><strong>grep</strong>: - patern to filter tests by name</li>
+<li><strong>include</strong>: <code>{}</code> - actors and page objects to be registered in DI container and included in tests. Accepts objects and module <code>require</code> paths</li>
+<li><strong>timeout</strong>: <code>10000</code> - default tests timeout</li>
+<li><strong>output</strong>: <code>&quot;./output&quot;</code> - where to store failure screenshots, etc</li>
+<li><strong>helpers</strong>: <code>{}</code> - list of enabled helpers</li>
+<li><strong>mocha</strong>: <code>{}</code> - mocha options, <a href="http://codecept.io/reports/">reporters</a> can be configured here</li>
+<li><strong>multiple</strong>: <code>{}</code> - multiple options, see <a href="http://codecept.io/advanced/#multiple-execution">Multiple Execution</a></li>
+<li><strong>bootstrap</strong>: <code>&quot;./bootstrap.js&quot;</code> - an option to run code <em>before</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>).</li>
+<li><strong>bootstrapAll</strong>: <code>&quot;./bootstrap.js&quot;</code> - an option to run code <em>before</em> all test suites are run when using the run-multiple mode. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>).</li>
+<li><strong>teardown</strong>: - an option to run code <em>after</em>  all test suites are run when using the run-multiple mode. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>.</li>
+<li><strong>teardownAll</strong>: - an option to run code <em>after</em> tests are run. See <a href="http://codecept.io/hooks/#bootstrap-teardown">Hooks</a>.</li>
+<li><strong>noGlobals</strong>: <code>false</code> - disable registering global variables like <code>Actor</code>, <code>Helper</code>, <code>pause</code>, <code>within</code>, <code>DataTable</code></li>
+<li><strong>hooks</strong>: - include custom listeners to plug into execution workflow. See <a href="http://codecept.io/hooks/#custom-hooks">Custom Hooks</a></li>
+<li><strong>translation</strong>: - <a href="http://codecept.io/translation/">locale</a> to be used to print s  teps output, as well as used in source code.</li>
+<li><strong>require</strong>: <code>[]</code> - array of module names to be required before codecept starts. See <a href="#require">Require</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="require"></a><a href="#require" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Require</h2>
+<p>Requires described module before run. This option is useful for assertion libraries, so you may <code>--require should</code> instead of manually invoking <code>require('should')</code> within each test file. It can be used with relative paths, e.g. <code>&quot;require&quot;: [&quot;/lib/somemodule&quot;]</code>, and installed packages.</p>
+<p>You can register ts-node, so you can use Typescript in tests with ts-node package</p>
+<pre><code class="hljs css language-js">exports.config = {
+  <span class="hljs-attr">tests</span>: <span class="hljs-string">'./*_test.js'</span>,
+  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>,
+  <span class="hljs-attr">output</span>: <span class="hljs-string">''</span>,
+  <span class="hljs-attr">helpers</span>: {},
+  <span class="hljs-attr">include</span>: {},
+  <span class="hljs-attr">bootstrap</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">mocha</span>: {},
+  <span class="hljs-comment">// require modules</span>
+  <span class="hljs-built_in">require</span>: [<span class="hljs-string">"ts-node/register"</span>, <span class="hljs-string">"should"</span>]
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="dynamic-configuration"></a><a href="#dynamic-configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dynamic Configuration</h2>
+<p>By default <code>codecept.json</code> is used for configuration. You can override its values in runtime by using <code>--override</code> or <code>-o</code> option in command line, passing valid JSON as a value:</p>
+<pre><code class="hljs css language-sh">codeceptjs run -o <span class="hljs-string">'{ "helpers": {"WebDriver": {"browser": "firefox"}}}'</span>
+</code></pre>
+<p>You can also switch to JS configuration format for more dynamic options.
+Create <code>codecept.conf.js</code> file and make it export <code>config</code> property.</p>
+<p>See the config example:</p>
+<pre><code class="hljs css language-js">exports.config = {
+  <span class="hljs-attr">helpers</span>: {
+    <span class="hljs-attr">WebDriver</span>: {
+      <span class="hljs-comment">// load variables from the environment and provide defaults</span>
+      url: process.env.CODECEPT_URL || <span class="hljs-string">'http://localhost:3000'</span>,
+
+      <span class="hljs-attr">user</span>: process.env.CLOUDSERVICE_USER,
+      <span class="hljs-attr">key</span>: process.env.CLOUDSERVICE_KEY,
+
+      <span class="hljs-attr">coloredLogs</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">waitForTimeout</span>: <span class="hljs-number">10000</span>
+    }
+  },
+
+  <span class="hljs-comment">// don't build monolithic configs</span>
+  mocha: <span class="hljs-built_in">require</span>(<span class="hljs-string">'./mocha.conf.js'</span>) || {},
+  <span class="hljs-attr">include</span>: {
+    <span class="hljs-attr">I</span>: <span class="hljs-string">'./src/steps_file.js'</span>,
+    <span class="hljs-attr">loginPage</span>: <span class="hljs-string">'./src/pages/login_page'</span>,
+    <span class="hljs-attr">dashboardPage</span>: <span class="hljs-keyword">new</span> DashboardPage()
+  }
+
+  <span class="hljs-comment">// here goes config as it was in codecept.json</span>
+  <span class="hljs-comment">// ....</span>
+};
+</code></pre>
+<p>(Don't copy-paste this config, it's just demo)</p>
+<p>If you prefer to store your configuration files in a different location, or with a different name, you can do that with <code>--config</code> or `-c:</p>
+<pre><code class="hljs css language-sh">codeceptjs run --config=./path/to/my/config.json
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="profile"></a><a href="#profile" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Profile</h2>
+<p>Using values from <code>process.profile</code> you can change the config dynamically.
+It provides value of <code>--profile</code> option passed to runner.
+Use its value to change config value on the fly.</p>
+<p>For instance, with the config above we can change browser value using <code>profile</code> option</p>
+<pre><code class="hljs css language-sh">codeceptjs run --profile firefox
+</code></pre>
+<pre><code class="hljs css language-js">exports.config = {
+  <span class="hljs-attr">helpers</span>: {
+    <span class="hljs-attr">WebDriver</span>: {
+      <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost:3000'</span>,
+      <span class="hljs-comment">// load value from `profile`</span>
+      browser: process.profile || <span class="hljs-string">'firefox'</span>
+
+    }
+  }
+};
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2018-12-25</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#require">Require</a></li><li><a href="#dynamic-configuration">Dynamic Configuration</a></li><li><a href="#profile">Profile</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

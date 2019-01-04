@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Testing with Puppeteer · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome &lt;a href=&quot;https://chromedevtools.github.io/devtools-protocol/&quot;&gt;DevTools Protocol&lt;/a&gt;. And the most prominent one is &lt;a href=&quot;https://github.com/GoogleChrome/puppeteer&quot;&gt;Puppeteer&lt;/a&gt;.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Testing with Puppeteer · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;p&gt;Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome &lt;a href=&quot;https://chromedevtools.github.io/devtools-protocol/&quot;&gt;DevTools Protocol&lt;/a&gt;. And the most prominent one is &lt;a href=&quot;https://github.com/GoogleChrome/puppeteer&quot;&gt;Puppeteer&lt;/a&gt;.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class="siteNavGroupActive"><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">Reference</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Web Testing</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Quickstart</h3><ul><li class="navListItem"><a class="navItem" href="/quickstart">Quickstart</a></li><li class="navListItem"><a class="navItem" href="/basics">Basics</a></li><li class="navListItem"><a class="navItem" href="/video">Tutorial Videos</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Web Testing</h3><ul><li class="navListItem"><a class="navItem" href="/acceptance">Acceptance Testing</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/puppeteer">Testing with Puppeteer</a></li><li class="navListItem"><a class="navItem" href="/angular">Testing with Protractor</a></li><li class="navListItem"><a class="navItem" href="/nightmare">Testing with Nightmare</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Mobile Testing</h3><ul><li class="navListItem"><a class="navItem" href="/mobile">Mobile Testing with Appium</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Organizing Tests</h3><ul><li class="navListItem"><a class="navItem" href="/helpers">Custom Helpers</a></li><li class="navListItem"><a class="navItem" href="/pageobjects">Reusing Code with Page Objects</a></li><li class="navListItem"><a class="navItem" href="/bdd">Behavior Driven Development</a></li><li class="navListItem"><a class="navItem" href="/data">Data Management</a></li><li class="navListItem"><a class="navItem" href="/hooks">Bootstrap / Teardown / Plugins</a></li><li class="navListItem"><a class="navItem" href="/advanced">Advanced Usage</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/puppeteer.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Testing with Puppeteer</h1></header><article><div><span><p>Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome <a href="https://chromedevtools.github.io/devtools-protocol/">DevTools Protocol</a>. And the most prominent one is <a href="https://github.com/GoogleChrome/puppeteer">Puppeteer</a>.
+It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.</p>
+<p>CodeceptJS uses Puppeteer to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.</p>
+<p>Take a look at a sample test:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'https://github.com'</span>);
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Sign in'</span>, <span class="hljs-string">'//html/body/div[1]/header'</span>);
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Sign in to GitHub'</span>, <span class="hljs-string">'h1'</span>);
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Username or email address'</span>, <span class="hljs-string">'something@totest.com'</span>);
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Password'</span>, <span class="hljs-string">'123456'</span>);
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Sign in'</span>);
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Incorrect username or password.'</span>, <span class="hljs-string">'.flash-error'</span>);
+</code></pre>
+<p>It's readable and simple and works using Puppeteer API!</p>
+<h2><a class="anchor" aria-hidden="true" id="setup"></a><a href="#setup" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup</h2>
+<p>To start you need CodeceptJS with Puppeteer packages installed</p>
+<pre><code class="hljs css language-bash">npm install -g codeceptjs puppeteer
+</code></pre>
+<p>Or see <a href="http://codecept.io/installation/">alternative installation options</a>
+If you already have CodeceptJS project, just install <code>puppeteer</code> package and enable it in config.</p>
+<p>And a basic project initialized</p>
+<pre><code class="hljs css language-sh">codeceptjs init
+</code></pre>
+<p>You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.</p>
+<h2><a class="anchor" aria-hidden="true" id="configuring"></a><a href="#configuring" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuring</h2>
+<p>Make sure <code>Puppeteer</code> helper is enabled in <code>codecept.json</code> config:</p>
+<pre><code class="hljs css language-js">{ <span class="hljs-comment">// ..</span>
+  <span class="hljs-string">"helpers"</span>: {
+    <span class="hljs-string">"Puppeteer"</span>: {
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"http://localhost"</span>,
+      <span class="hljs-string">"show"</span>: <span class="hljs-literal">false</span>
+    }
+  }
+  <span class="hljs-comment">// ..</span>
+}
+</code></pre>
+<p>Turn on the <code>show</code> option if you want to follow test progress in a window. This is very useful for debugging.</p>
+<p>Puppeteer uses different strategies to detect if a page is loaded. In configuration use <code>waitForNavigation</code> option for that:</p>
+<p>By default it is set to <code>domcontentloaded</code> which waits for <code>DOMContentLoaded</code> event being fired. However, for Single Page Applications it's more useful to set this value to <code>networkidle0</code> which waits for all network connections to be finished.</p>
+<pre><code class="hljs css language-js">  <span class="hljs-string">"helpers"</span>: {
+    <span class="hljs-string">"Puppeteer"</span>: {
+      <span class="hljs-string">"url"</span>: <span class="hljs-string">"http://localhost"</span>,
+      <span class="hljs-string">"waitForNavigation"</span>: <span class="hljs-string">"networkidle0"</span>
+    }
+  }
+</code></pre>
+<p>When a test runs faster than application it is recommended to increase <code>waitForAction</code> config value.
+It will wait for a small amount of time (100ms) by default after each user action is taken.</p>
+<p><em>More options are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
+<h2><a class="anchor" aria-hidden="true" id="writing-tests"></a><a href="#writing-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writing Tests</h2>
+<p>CodeceptJS test should be created with <code>gt</code> command:</p>
+<pre><code class="hljs css language-sh">codeceptjs gt
+</code></pre>
+<p>As an example we will use <code>ToDoMvc</code> app for testing.</p>
+<h3><a class="anchor" aria-hidden="true" id="actions"></a><a href="#actions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Actions</h3>
+<p>Tests consist with a scenario of user's action taken on a page. The most widely used ones are:</p>
+<ul>
+<li><code>amOnPage</code> - to open a webpage (accepts relative or absolute url)</li>
+<li><code>click</code> - to locate a button or link and click on it</li>
+<li><code>fillField</code> - to enter a text inside a field</li>
+<li><code>selectOption</code>, <code>checkOption</code> - to interact with a form</li>
+<li><code>wait*</code> to wait for some parts of page to be fully rendered (important for testing SPA)</li>
+<li><code>grab*</code> to get values from page sources</li>
+<li><code>see</code>, <code>dontSee</code> - to check for a text on a page</li>
+<li><code>seeElement</code>, <code>dontSeeElement</code> - to check for elements on a page</li>
+</ul>
+<p><em>All actions are listed in <a href="http://codecept.io/helpers/Puppeteer/">helper reference</a>.</em></p>
+<p>All actions whicn interact with elements <strong>support CSS and XPath locators</strong>. Actions like <code>click</code> or <code>fillField</code> by locate elements by their name or value on a page:</p>
+<pre><code class="hljs css language-js">
+<span class="hljs-comment">// search for link or button</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
+<span class="hljs-comment">// locate field by its label</span>
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Name'</span>, <span class="hljs-string">'Miles'</span>);
+<span class="hljs-comment">// we can use input name</span>
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'user[email]'</span>,<span class="hljs-string">'miles@davis.com'</span>);
+</code></pre>
+<p>You can also specify the exact locator type with strict locators:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.click({<span class="hljs-attr">css</span>: <span class="hljs-string">'button.red'</span>});
+<span class="hljs-built_in">I</span>.fillField({<span class="hljs-attr">name</span>: <span class="hljs-string">'user[email]'</span>},<span class="hljs-string">'miles@davis.com'</span>);
+<span class="hljs-built_in">I</span>.seeElement({<span class="hljs-attr">xpath</span>: <span class="hljs-string">'//body/header'</span>});
+</code></pre>
+<p>A complete ToDo-MVC test may look like:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'ToDo'</span>);
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'create todo item'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'http://todomvc.com/examples/react/'</span>);
+  <span class="hljs-built_in">I</span>.dontSeeElement(<span class="hljs-string">'.todo-count'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'What needs to be done?'</span>, <span class="hljs-string">'Write a guide'</span>);
+  <span class="hljs-built_in">I</span>.pressKey(<span class="hljs-string">'Enter'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Write a guide'</span>, <span class="hljs-string">'.todo-list'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'1 item left'</span>, <span class="hljs-string">'.todo-count'</span>);
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="grabbers"></a><a href="#grabbers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Grabbers</h3>
+<p>If you need to get element's value inside a test you can use <code>grab*</code> methods. They should be used with <code>await</code> operator inside <code>async</code> function:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">'assert'</span>);
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'get value of current tasks'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.createTodo(<span class="hljs-string">'do 1'</span>);
+  <span class="hljs-built_in">I</span>.createTodo(<span class="hljs-string">'do 2'</span>);
+  <span class="hljs-keyword">let</span> numTodos = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.grabTextFrom(<span class="hljs-string">'.todo-count strong'</span>);
+  assert.equal(<span class="hljs-number">2</span>, numTodos);
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="within"></a><a href="#within" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Within</h3>
+<p>In case some actions should be taken inside one element (a container or modal window) you can use <code>within</code> block to narrow the scope.
+Please take a note that you can't use within inside another within in Puppeteer helper:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">within</span>(<span class="hljs-string">'.todoapp'</span>, () =&gt; {
+  <span class="hljs-built_in">I</span>.createTodo(<span class="hljs-string">'my new item'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'1 item left'</span>, <span class="hljs-string">'.todo-count'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'.todo-list input.toggle'</span>);
+});
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'0 items left'</span>, <span class="hljs-string">'.todo-count'</span>);
+</code></pre>
+<p>CodeceptJS allows you to implement custom actions like <code>I.createTodo</code> or use <strong>PageObjects</strong>. Learn how to improve your tests in <a href="http://codecept.io/pageobjects/">PageObjects</a> guide.</p>
+<p><code>within</code> can also work with <a href="/acceptance/#iframes">iframes</a></p>
+<p>When running steps inside a within block will be shown with a shift.</p>
+<p><img src="https://codecept.io/img/within.png" alt="within"></p>
+<blockquote>
+<p><a href="https://github.com/DavertMik/codeceptjs-todomvc-puppeteer">Demo project is available on GitHub</a></p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="extending"></a><a href="#extending" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extending</h2>
+<p>Puppeteer has a very <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md">rich and flexible API</a>. Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.</p>
+<p>Start with creating an <code>MyPuppeteer</code> helper using <code>generate:helper</code> or <code>gh</code> command:</p>
+<pre><code class="hljs css language-sh">codeceptjs gh
+</code></pre>
+<p>Then inside a Helper you can access <code>Puppeteer</code> helper of CodeceptJS.
+Let's say you want to create <code>I.renderPageToPdf</code> action. In this case you need to call <code>pdf</code> method of <code>page</code> object</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside a MyPuppeteer helper</span>
+<span class="hljs-keyword">async</span> renderPageToPdf() {
+  <span class="hljs-keyword">const</span> page = <span class="hljs-keyword">this</span>.helpers[<span class="hljs-string">'Puppeteer'</span>].page;
+  <span class="hljs-keyword">await</span> page.emulateMedia(<span class="hljs-string">'screen'</span>);
+  <span class="hljs-keyword">return</span> page.pdf({<span class="hljs-attr">path</span>: <span class="hljs-string">'page.pdf'</span>});
+}
+</code></pre>
+<p>The same way you can also access <code>browser</code> object to implement more actions or handle events. <a href="http://codecept.io/helpers/">Learn more about Helpers</a> in the corresponding guide.</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-2</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/acceptance"><span class="arrow-prev">← </span><span>Acceptance Testing</span></a><a class="docs-next button" href="/angular"><span>Testing with Protractor</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#setup">Setup</a></li><li><a href="#configuring">Configuring</a></li><li><a href="#writing-tests">Writing Tests</a><ul class="toc-headings"><li><a href="#actions">Actions</a></li><li><a href="#grabbers">Grabbers</a></li><li><a href="#within">Within</a></li></ul></li><li><a href="#extending">Extending</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
