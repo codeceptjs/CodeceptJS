@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Basics · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user&#x27;s action on a site.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Basics · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;p&gt;CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user&#x27;s action on a site.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class="siteNavGroupActive siteNavItemActive"><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">Reference</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Quickstart</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Quickstart</h3><ul><li class="navListItem"><a class="navItem" href="/quickstart">Quickstart</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/basics">Basics</a></li><li class="navListItem"><a class="navItem" href="/video">Tutorial Videos</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Web Testing</h3><ul><li class="navListItem"><a class="navItem" href="/acceptance">Acceptance Testing</a></li><li class="navListItem"><a class="navItem" href="/puppeteer">Testing with Puppeteer</a></li><li class="navListItem"><a class="navItem" href="/angular">Testing with Protractor</a></li><li class="navListItem"><a class="navItem" href="/nightmare">Testing with Nightmare</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Mobile Testing</h3><ul><li class="navListItem"><a class="navItem" href="/mobile">Mobile Testing with Appium</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Organizing Tests</h3><ul><li class="navListItem"><a class="navItem" href="/helpers">Custom Helpers</a></li><li class="navListItem"><a class="navItem" href="/pageobjects">Reusing Code with Page Objects</a></li><li class="navListItem"><a class="navItem" href="/bdd">Behavior Driven Development</a></li><li class="navListItem"><a class="navItem" href="/data">Data Management</a></li><li class="navListItem"><a class="navItem" href="/hooks">Bootstrap / Teardown / Plugins</a></li><li class="navListItem"><a class="navItem" href="/advanced">Advanced Usage</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/basics.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Basics</h1></header><article><div><span><p>CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'CodeceptJS demo'</span>);
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'check Welcome page on site'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Welcome'</span>);
+});
+</code></pre>
+<p>Tests are expected to be written in <strong>ECMAScript 7</strong>.</p>
+<p>Each test is described inside a <code>Scenario</code> function with <code>I</code> object passed into it.
+I object is an <strong>actor</strong>, an abstraction for a testing user. I is a proxy object for currently enabled <strong>Helpers</strong>.</p>
+<h2><a class="anchor" aria-hidden="true" id="architecture"></a><a href="#architecture" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Architecture</h2>
+<p>CodeceptJS bypasses execution commands to helpers. Depending on helper enabled your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or Protractor, if you are interested in speed - use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.</p>
+<p>Here is the diagram of CodeceptJS architecture</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+<img src="img/architecture.svg" alt="">
+=======
+<img src="https://codecept.io/img/architecture.svg" alt="architecture"></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>master</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>All helpers share the same API so it's easy to migrate tests from one backend to other.
+However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nigthmare.</p>
+<p>Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should <strong>pick one helper, as it definses how tests are executed.</strong> If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.</p>
+<p>A helper should be enabled in main config. Configuration (like base url) should be provided as well:</p>
+<pre><code class="hljs css language-json">  "helpers": {
+    "WebDriver": {
+      "url": "http://localhost",
+      "browser": "chrome"
+    }
+  }
+</code></pre>
+<p>In this config config all methods of <code>I</code> will be taken from <code>WebDriver</code> helper.</p>
+<h2><a class="anchor" aria-hidden="true" id="writing-tests"></a><a href="#writing-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writing Tests</h2>
+<p>Tests are written from user's perspective. There is an actor (represented as <code>I</code>) which contains actions taken from helpers. A test is written as a sequence of actions performed by actor:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Please Login'</span>, <span class="hljs-string">'h1'</span>);
+<span class="hljs-comment">// ...</span>
+</code></pre>
+<p>To list all available commands for current configuration run <code>codeceptjs list</code>
+or enable <a href="#intellisense">auto-completion by generating TypeScript definitions</a>.</p>
+<blockquote>
+<p>For most helpers basic actions like <code>amOnPage</code>, <code>fillField</code>, <code>click</code> are the same.
+Proceed to <a href="https://codecept.io/acceptance/">Acceptance Testing Chapter</a> to learn how to use them.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="how-it-works"></a><a href="#how-it-works" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h2>
+<p>Tests are written in synchronous way. This improves readability and maintainability of tests.
+While writing tests you should not think about promises. You should focus on test scenario.</p>
+<p>However, behind the scene <strong>all actions are wrapped in promises</strong> inside the <code>I</code> object.
+<a href="https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js">Global promise</a> chain is initialized before each test and all <code>I.*</code> calls will be appended to it as well as setup and teardown.</p>
+<p>If you want to get information from a running test you can use <code>await</code> inside <strong>async function</strong> and special methods of helpers started with <code>grab</code> prefix.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'try grabbers'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-keyword">let</span> title = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.grabTitle();
+});
+</code></pre>
+<p>then you can use those variables in assertions:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">var</span> title = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.grabTitle();
+<span class="hljs-keyword">var</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">'assert'</span>);
+assert.equal(title, <span class="hljs-string">'CodeceptJS'</span>);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="running-tests"></a><a href="#running-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running Tests</h2>
+<p>To launch tests use <code>run</code> command. To execute tests in <a href="https://codecept.io/advanced/#multiple-browsers-execution">multiple browsers</a> or <a href="https://codecept.io/advanced/#parallel-execution">multiple threads</a> use <code>run-multiple</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="level-of-detail"></a><a href="#level-of-detail" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Level of Detail</h3>
+<p>To see step-by-step output of running tests, add <code>--steps</code> flag:</p>
+<pre><code class="hljs">codeceptjs run --steps
+</code></pre>
+<p>To see more detailed output add <code>--debug</code> flag:</p>
+<pre><code class="hljs">codeceptjs run --debug
+</code></pre>
+<p>To see very detailed output system use <code>--verbose</code> flag:</p>
+<pre><code class="hljs">codeceptjs run --verbose
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="filter"></a><a href="#filter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Filter</h3>
+<p>A single test file can be executed if you provide a relative path to such file:</p>
+<pre><code class="hljs">codeceptjs run github_test.js
+
+# or
+
+codeceptjs run admin/login_test.js
+</code></pre>
+<p>To filter a test by name use <code>--grep</code> parameter. Which will execute all tests with names matching the regex pattern.</p>
+<p>To run all tests with <code>slow</code> word in it</p>
+<pre><code class="hljs">codeceptjs run --grep <span class="hljs-string">"slow"</span>
+</code></pre>
+<p>It is recommended to <a href="https://codecept.io/advanced/#tags">filter tests by tags</a>.</p>
+<blockquote>
+<p>For more options see <a href="https://codecept.io/commands/#run">full reference of <code>run</code> command</a>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="debug"></a><a href="#debug" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Debug</h2>
+<p>CodeceptJS allows to write and debug tests on the fly while keeping your browser opened.
+By using interactive shell you can stop execution at any point and type in CodeceptJS commands.</p>
+<p>This is especially useful while writing a new scratch. After opening a page call <code>pause()</code> to start interacting with a page:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+<span class="hljs-built_in">pause</span>();
+</code></pre>
+<p>Try to perform your scenario step by step. Then copy succesful commands and insert them into a test.</p>
+<h3><a class="anchor" aria-hidden="true" id="pause"></a><a href="#pause" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pause</h3>
+<p>Test execution can be paused in any place of a test with <code>pause()</code> call.</p>
+<p>This launches interactive console where you can call actions of <code>I</code> object.</p>
+<pre><code class="hljs"> Interactive shell started
+ Press ENTER to resume test
+ - Use JavaScript syntax to <span class="hljs-keyword">try</span> steps <span class="hljs-keyword">in</span> action
+ - Press TAB twice to see all available commands
+ - Enter next to run the next step
+ <span class="hljs-built_in">I</span>.click
+
+</code></pre>
+<p>Type in different actions to try them, copy valid successful ones to test, update the test file.</p>
+<p>Press <code>ENTER</code> to resume test execution.</p>
+<p>To <strong>debug test step-by-step</strong> type <code>next</code> and press Enter. The next step will be executed and interactive shell will be shown again.</p>
+<p>To see all available commands press TAB two times to see list of all actions included in I.</p>
+<p>If a test is failing you can prevent browser from closing by putting <code>pause()</code> command into <code>After()</code> hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get the idea what went wrong.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">After</span>(<span class="hljs-built_in">pause</span>);
+</code></pre>
+<p>Interactive shell can be started outside the test context by running</p>
+<pre><code class="hljs css language-bash">codeceptjs shell
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="screenshot-on-failure"></a><a href="#screenshot-on-failure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Screenshot on failure</h3>
+<p>By default CodeceptJS saves a screenshot of a failed test.
+This can be configured in <a href="https://codecept.io/plugins/#screenshotonfail">screenshotOnFail Plugin</a></p>
+<h3><a class="anchor" aria-hidden="true" id="step-by-step-report"></a><a href="#step-by-step-report" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Step By Step Report</h3>
+<p>To see how the test was executed, use <a href="https://codecept.io/plugins/#stepbystepreport">stepByStepReport Plugin</a>. It saves a screenshot of each passed step and shows them in a nice slideshow.</p>
+<h2><a class="anchor" aria-hidden="true" id="before"></a><a href="#before" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Before</h2>
+<p>Common preparation steps like opening a web page, logging in a user, can be placed in <code>Before</code> or <code>Background</code> hook:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'CodeceptJS Demonstration'</span>);
+
+<span class="hljs-keyword">Before</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> { <span class="hljs-comment">// or Background</span>
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/documentation'</span>);
+});
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test some forms'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Create User'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'User is valid'</span>);
+  <span class="hljs-built_in">I</span>.dontSeeInCurrentUrl(<span class="hljs-string">'/documentation'</span>);
+});
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test title'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.seeInTitle(<span class="hljs-string">'Example application'</span>);
+});
+</code></pre>
+<p>Same as <code>Before</code> you can use <code>After</code> to run teardown for each scenario.</p>
+<h2><a class="anchor" aria-hidden="true" id="beforesuite"></a><a href="#beforesuite" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BeforeSuite</h2>
+<p>If you need to run complex setup before all tests and teardown this afterwards you can use <code>BeforeSuite</code> and <code>AfterSuite</code>
+functions. <code>BeforeSuite</code> and <code>AfterSuite</code> have access to <code>I</code> object, but <code>BeforeSuite/AfterSuite</code> don't have an access to the browser because it's not running at this moment.
+You can use them to execute handlers that will setup your environment. <code>BeforeSuite/AfterSuite</code> will work  only for a file where it was declared (so you can declare different setups for files)</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">BeforeSuite</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+  <span class="hljs-built_in">I</span>.syncDown(<span class="hljs-string">'testfolder'</span>);
+});
+
+<span class="hljs-keyword">AfterSuite</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+  <span class="hljs-built_in">I</span>.syncUp(<span class="hljs-string">'testfolder'</span>);
+  <span class="hljs-built_in">I</span>.clearDir(<span class="hljs-string">'testfolder'</span>);
+});
+</code></pre>
+<p><a href="https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933">Here are some ideas</a> where to use BeforeSuite hooks.</p>
+<h2><a class="anchor" aria-hidden="true" id="within"></a><a href="#within" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Within</h2>
+<p>To specify the exact area on a page where actions can be performed you can use <code>within</code> function.
+Everything executed in its context will be narrowed to context specified by locator:</p>
+<p>Usage: <code>within('section', ()=&gt;{})</code></p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'https://github.com'</span>);
+<span class="hljs-built_in">within</span>(<span class="hljs-string">'.js-signup-form'</span>, () =&gt; {
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'user[login]'</span>, <span class="hljs-string">'User'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'user[email]'</span>, <span class="hljs-string">'user@user.com'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'user[password]'</span>, <span class="hljs-string">'user@user.com'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'button'</span>);
+});
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'There were problems creating your account.'</span>);
+</code></pre>
+<p><code>within</code> can also work with <a href="/acceptance/#iframes">iframes</a></p>
+<p>When running steps inside a within block will be shown with a shift:</p>
+<p><img src="https://codecept.io/img/within.png" alt="within"></p>
+<p>Within can return a value which can be used in a scenario:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
+<span class="hljs-keyword">const</span> val = <span class="hljs-keyword">await</span> <span class="hljs-built_in">within</span>(<span class="hljs-string">'#sidebar'</span>, () =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">I</span>.grabTextFrom({ <span class="hljs-attr">css</span>: <span class="hljs-string">'h1'</span> });
+});
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Description'</span>, val);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="comments"></a><a href="#comments" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Comments</h2>
+<p>There is a simple way to add additional comments to your test scenario.
+Use <code>say</code> command to print information to screen:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.say(<span class="hljs-string">'I am going to publish post'</span>);
+<span class="hljs-built_in">I</span>.say(<span class="hljs-string">'I enter title and body'</span>);
+<span class="hljs-built_in">I</span>.say(<span class="hljs-string">'I expect post is visible on site'</span>);
+</code></pre>
+<p>Use second parameter to pass in color value (ASCII).</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.say(<span class="hljs-string">'This is red'</span>, <span class="hljs-string">'red'</span>); <span class="hljs-comment">//red is used</span>
+<span class="hljs-built_in">I</span>.say(<span class="hljs-string">'This is blue'</span>, <span class="hljs-string">'blue'</span>); <span class="hljs-comment">//blue is used</span>
+<span class="hljs-built_in">I</span>.say(<span class="hljs-string">'This is by default'</span>); <span class="hljs-comment">//cyan is used</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="intellisense"></a><a href="#intellisense" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IntelliSense</h2>
+<p>If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
+you can generate step definitions with</p>
+<pre><code class="hljs css language-sh">codeceptjs def
+</code></pre>
+<p>Now you should include <code>/// &lt;reference path=&quot;./steps.d.ts&quot; /&gt;</code> into your test files to get
+method autocompletion while writing tests.</p>
+<h2><a class="anchor" aria-hidden="true" id="skipping"></a><a href="#skipping" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Skipping</h2>
+<p>Like in Mocha you can use <code>x</code> and <code>only</code> to skip tests or making a single test to run.</p>
+<ul>
+<li><code>xScenario</code> - skips current test</li>
+<li><code>Scenario.only</code> - executes only the current test</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="retries"></a><a href="#retries" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retries</h2>
+<h3><a class="anchor" aria-hidden="true" id="retry-step"></a><a href="#retry-step" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retry Step</h3>
+<p>If you have a step which often fails you can retry execution for this single step.
+Use <code>retry()</code> function before an action to ask CodeceptJS to retry this step on failure:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.retry().see(<span class="hljs-string">'Welcome'</span>);
+</code></pre>
+<p>If you'd like to retry step more than once pass the amount as parameter:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.retry(<span class="hljs-number">3</span>).see(<span class="hljs-string">'Welcome'</span>);
+</code></pre>
+<p>Additional options can be provided to retry so you can set the additional options (defined in <a href="https://www.npmjs.com/package/promise-retry">promise-retry</a> library).</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// retry action 3 times waiting for 0.1 second before next try</span>
+<span class="hljs-built_in">I</span>.retry({ <span class="hljs-attr">retries</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">minTimeout</span>: <span class="hljs-number">100</span> }).see(<span class="hljs-string">'Hello'</span>);
+
+<span class="hljs-comment">// retry action 3 times waiting no more than 3 seconds for last retry</span>
+<span class="hljs-built_in">I</span>.retry({ <span class="hljs-attr">retries</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">maxTimeout</span>: <span class="hljs-number">3000</span> }).see(<span class="hljs-string">'Hello'</span>);
+
+<span class="hljs-comment">// retry 2 times if error with message 'Node not visible' happens</span>
+<span class="hljs-built_in">I</span>.retry({
+  <span class="hljs-attr">retries</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">when</span>: <span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> err.message === <span class="hljs-string">'Node not visible'</span>
+}).seeElement(<span class="hljs-string">'#user'</span>);
+</code></pre>
+<p>Pass a function to <code>when</code> option to retry only when error matches the expected one.</p>
+<h3><a class="anchor" aria-hidden="true" id="auto-retry"></a><a href="#auto-retry" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Auto Retry</h3>
+<p>You can auto-retry a failed step by enabling <a href="https://codecept.io/plugins/#retryfailedstep">retryFailedStep Plugin</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="retry-scenario"></a><a href="#retry-scenario" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retry Scenario</h3>
+<p>When you need to rerun scenarios few times just add <code>retries</code> option added to <code>Scenario</code> declaration.</p>
+<p>CodeceptJS implements retries the same way <a href="https://mochajs.org#retry-tests">Mocha do</a>;
+You can set number of a retries for a feature:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'Really complex'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-comment">// test goes here</span>
+}).retry(<span class="hljs-number">2</span>);
+
+<span class="hljs-comment">// alternative</span>
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'Really complex'</span>, { <span class="hljs-attr">retries</span>: <span class="hljs-number">2</span> }, (<span class="hljs-built_in">I</span>) =&gt; {});
+</code></pre>
+<p>This scenario will be restarted two times on a failure.</p>
+<h3><a class="anchor" aria-hidden="true" id="retry-feature"></a><a href="#retry-feature" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retry Feature</h3>
+<p>To set this option for all scenarios in a file, add retry to a feature:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'Complex JS Stuff'</span>).retry(<span class="hljs-number">3</span>);
+</code></pre>
+<p>Every Scenario inside this feature will be rerun 3 times.
+You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-2</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/quickstart"><span class="arrow-prev">← </span><span>Quickstart</span></a><a class="docs-next button" href="/video"><span>Tutorial Videos</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#architecture">Architecture</a></li><li><a href="#writing-tests">Writing Tests</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#running-tests">Running Tests</a><ul class="toc-headings"><li><a href="#level-of-detail">Level of Detail</a></li><li><a href="#filter">Filter</a></li></ul></li><li><a href="#debug">Debug</a><ul class="toc-headings"><li><a href="#pause">Pause</a></li><li><a href="#screenshot-on-failure">Screenshot on failure</a></li><li><a href="#step-by-step-report">Step By Step Report</a></li></ul></li><li><a href="#before">Before</a></li><li><a href="#beforesuite">BeforeSuite</a></li><li><a href="#within">Within</a></li><li><a href="#comments">Comments</a></li><li><a href="#intellisense">IntelliSense</a></li><li><a href="#skipping">Skipping</a></li><li><a href="#retries">Retries</a><ul class="toc-headings"><li><a href="#retry-step">Retry Step</a></li><li><a href="#auto-retry">Auto Retry</a></li><li><a href="#retry-scenario">Retry Scenario</a></li><li><a href="#retry-feature">Retry Feature</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
