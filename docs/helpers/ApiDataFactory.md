@@ -216,7 +216,8 @@ Generates a new record using factory and saves API request to store it.
 // create a user
 I.have('user');
 // create user with defined email
-I.have('user', { email: 'user@user.com'});
+// and receive it when inside async function
+const user = await I.have('user', { email: 'user@user.com'});
 ```
 
 #### Parameters
@@ -230,10 +231,10 @@ Generates bunch of records and saves multiple API requests to store them.
 
 ```js
 // create 3 posts
-I.have('post', 3);
+I.haveMultiple('post', 3);
 
 // create 3 posts by one author
-I.have('post', 3, { author: 'davert' });
+I.haveMultiple('post', 3, { author: 'davert' });
 ```
 
 #### Parameters
