@@ -1,3 +1,19 @@
+## 2.0.2
+
+* [Puppeteer] Improved handling of connection with remote browser using Puppeteer by @martomo
+* [WebDriver] Updated to webdriverio 5.2.2 by @martomo
+* Interactive pause improvements by @davertmik
+  * Disable retryFailedStep plugin in in interactive mode
+  * Removes `Interface: parseInput` while in interactive pause
+* [ApiDataFactory] Improvements
+  * added `fetchId` config option to override id retrieval from payload
+  * added `onRequest` config option to update request in realtime
+  * added `returnId` config option to return ids of created items instead of items themvelves
+  * added `headers` config option to override default headers.
+  * added a new chapter into [DataManagement](https://codecept.io/data#api-requests-using-browser-session)
+* [REST] Added `onRequest` config option
+
+
 ## 2.0.1
 
 * Fixed creating project with `codecept init`.
