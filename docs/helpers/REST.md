@@ -12,6 +12,18 @@ REST helper allows to send additional requests to the REST API during acceptance
 -   endpoint: API base URL
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
+-   onRequest: a async function which can update request object.
+
+## Example
+
+```js
+REST: {
+   endpoint: 'http://site.com/api',
+   onRequest: (request) => {
+     request.headers.auth = '123';
+   }
+}
+```
 
 ## Access From Helpers
 
