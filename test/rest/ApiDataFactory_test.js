@@ -85,7 +85,7 @@ describe('ApiDataFactory', function () {
     it('should update request with onRequest', async () => {
       const I = new ApiDataFactory({
         endpoint: api_url,
-        onRequest: (request) => request.data.author = 'Vasya',
+        onRequest: request => request.data.author = 'Vasya',
         factories: {
           post: {
             factory: path.join(__dirname, '/../data/rest/posts_factory.js'),

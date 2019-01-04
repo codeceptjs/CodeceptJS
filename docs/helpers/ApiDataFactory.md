@@ -68,6 +68,7 @@ ApiDataFactory has following config options:
 -   `cleanup` (default: true): should inserted records be deleted up after tests
 -   `factories`: list of defined factories
 -   `returnId` (default: false): return id instead of a complete response when creating items.
+-   `headers`: list of headers
 -   `REST`: configuration for REST requests
 
 See the example:
@@ -76,6 +77,10 @@ See the example:
  ApiDataFactory: {
    endpoint: "http://user.com/api",
    cleanup: true,
+   headers: {
+     'Content-Type': 'application/json',
+     'Accept': 'application/json',
+   },
    factories: {
      post: {
        uri: "/posts",
@@ -95,15 +100,12 @@ It is required to set REST API `endpoint` which is the baseURL for all API reque
 Factory file is expected to be passed via `factory` option.
 
 This Helper uses [REST][3] helper and accepts its configuration in "REST" section.
-So, in order to set default headers or timeout you should add:
+For instance, to set timeout you should add:
 
 ```js
 "ApiDataFactory": {
    "REST": {
      "timeout": "100000",
-     "defaultHeaders": {
-       "auth": "111111"
-     }
   }
 }
 ```
@@ -125,6 +127,27 @@ This behavior can be configured with following options:
 -   `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
 -   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 -   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
+
+Create and delete requests can also be overridden with a function:
+
+```js
+create: (data) => {
+   return { method: 'post', url: '/posts', data }
+},
+delete: (id) => {
+   return { method: 'delete', url: '/posts', data: { id } }
+}
+```
+
+Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
+
+```js
+ onRequest: async (request) => {
+    // using global codeceptjs instance
+    let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session');
+    request.headers = { Cookie: `session=${cookie.value}` };
+  }
+```
 
 ### Responses
 

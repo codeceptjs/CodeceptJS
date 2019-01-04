@@ -23,7 +23,6 @@ const data = {
 };
 
 describe('REST', () => {
-
   beforeEach((done) => {
     I = new REST({
       endpoint: api_url,
@@ -78,7 +77,7 @@ describe('REST', () => {
     })));
 
     it('should update request with onRequest', async () => {
-      I.config.onRequest = (request) => request.data =  { name: 'Vasya' };
+      I.config.onRequest = request => request.data = { name: 'Vasya' };
       return I.sendPostRequest('/user', { name: 'john' }).then((response) => {
         response.data.name.should.eql('Vasya');
       });
