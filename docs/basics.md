@@ -25,9 +25,9 @@ Here is the diagram of CodeceptJS architecture
 ![architecture](https://codecept.io/img/architecture.svg)
 
 All helpers share the same API so it's easy to migrate tests from one backend to other.
-However, because of difference in backends and their limitations, they are not guarantted to compatible between each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nigthmare.
+However, because of difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
 
-Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should **pick one helper, as it definses how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
+Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should **pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
 
 A helper should be enabled in main config. Configuration (like base url) should be provided as well:
 
@@ -44,7 +44,7 @@ In this config config all methods of `I` will be taken from `WebDriver` helper.
 
 ## Writing Tests
 
-Tests are written from user's perspective. There is an actor (represented as `I`) which contains actions taken from helpers. A test is written as a sequence of actions performed by actor:
+Tests are written from a user's perspective. There is an actor (represented as `I`) which contains actions taken from helpers. A test is written as a sequence of actions performed by actor:
 
 ```js
 I.amOnPage('/');
@@ -61,10 +61,10 @@ Proceed to [Acceptance Testing Chapter](https://codecept.io/acceptance/) to lear
 
 ## How It Works
 
-Tests are written in synchronous way. This improves readability and maintainability of tests.
-While writing tests you should not think about promises. You should focus on test scenario.
+Tests are written in a synchronous way. This improves the readability and maintainability of tests.
+While writing tests you should not think about promises. You should focus on the test scenario.
 
-However, behind the scene **all actions are wrapped in promises** inside the `I` object.
+However, behind the scenes **all actions are wrapped in promises** inside of the `I` object.
 [Global promise](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it as well as setup and teardown.
 
 If you want to get information from a running test you can use `await` inside **async function** and special methods of helpers started with `grab` prefix.
