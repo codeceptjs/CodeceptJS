@@ -1,4 +1,7 @@
-## Writing Effective Tests
+---
+id: best
+title: Best Practices
+---
 
 ## Focus on Readability
 
