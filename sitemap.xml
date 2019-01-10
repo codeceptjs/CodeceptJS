@@ -21,6 +21,7 @@
 <url> <loc>https://codecept.io/api/recorder</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/api/recorder" /> </url>
 <url> <loc>https://codecept.io/basics</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/basics" /> </url>
 <url> <loc>https://codecept.io/bdd</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/bdd" /> </url>
+<url> <loc>https://codecept.io/best</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/best" /> </url>
 <url> <loc>https://codecept.io/changelog</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/changelog" /> </url>
 <url> <loc>https://codecept.io/commands</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/commands" /> </url>
 <url> <loc>https://codecept.io/configuration</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/configuration" /> </url>
