@@ -1,3 +1,8 @@
+---
+id: angular
+title: Testing with Protractor
+---
+
 # Protractor Testing with CodeceptJS
 
 ## Introduction
@@ -222,6 +227,9 @@ Scenario('check todo item', (I) => {
 });
 ```
 
+> This example is [available on GitHub](https://github.com/DavertMik/codeceptjs-angular-todomvc).
+
+
 ## Locators
 
 Like you may have noticed, CodeceptJS doesn't use `by.*` locators similar to Protractor or Selenium Webdriver.
@@ -297,6 +305,4 @@ element.all(by.repeater('result in memory'));
 This way we recommend to implement all custom logic using low-level Protractor syntax and using it inside scenario tests.
 Please see an [example of such helper](http://codecept.io/helpers/#protractor-example).
 
-### done()
 
-Almost ) This example is [available on GitHub](https://github.com/DavertMik/codeceptjs-angular-todomvc).

@@ -1,4 +1,7 @@
-# Page Object
+---
+id: pageobjects
+title: Reusing Code with Page Objects
+---
 
 UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.
@@ -163,7 +166,7 @@ To use a Page Fragment within a Page Object, you need to `require` it on top of 
 const I = actor();
 const modal = require('../fragments/modal');
 
-module.exports = { 
+module.exports = {
   doStuff() {
     ...
     modal.accept();
@@ -233,4 +236,3 @@ Scenario('search @grop', (I, Data) => {
 
 This requires `./data.js` module and assigns it to `Data` argument in a test.
 
-### done()

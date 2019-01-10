@@ -1,4 +1,7 @@
-# Advanced Usage
+---
+id: advanced
+title: Advanced Usage
+---
 
 ## Data Driven Tests
 
@@ -387,4 +390,3 @@ Please note that some config changes can't be applied on the fly. For instance, 
 
 Configuration changes will be reverted after a test or a suite.
 
-## done()

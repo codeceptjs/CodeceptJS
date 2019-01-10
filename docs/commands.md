@@ -1,4 +1,8 @@
-# Commands
+---
+id: commands
+title: Commands
+---
+
 
 ## Run
 

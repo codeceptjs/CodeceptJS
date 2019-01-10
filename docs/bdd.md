@@ -1,4 +1,7 @@
-# Behavior Driven Development
+---
+id: bdd
+title: Behavior Driven Development
+---
 
 Behavior Driven Development (BDD) is a popular software development methodology. BDD is considered an extension of TDD, and is greatly inspired by [Agile](http://agilemanifesto.org/) practices. The primary reason to choose BDD as your development process is to break down communication barriers between business and technical teams. BDD encourages the use of automated testing to verify all documented features of a project from the very beginning. This is why it is common to talk about BDD in the context of test frameworks (like CodeceptJS). The BDD approach, however, is about much more than testing - it is a common language for all team members to use during the development process.
 
@@ -339,4 +342,3 @@ To run only tests without features use `--tests` option:
 codeceptjs run --tests
 ```
 
-## done()
