@@ -3,6 +3,7 @@ coverage
 .vscode
 coverage
 site
+website/build
 .idea
 docs/build
 test/data/output

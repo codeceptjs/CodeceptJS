@@ -1,3 +1,15 @@
+## 2.0.3
+
+* [**autoLogin plugin**](https://codecept.io/plugins#autoLogin) added. Allows to log in once and reuse browser session. When session expires - automatically logs in again. Can persist session between runs by saving cookies to file.
+* Fixed `Maximum stack trace` issue in `retryFailedStep` plugin.
+* Added `locate()` function into the interactive shell.
+* [WebDriver] Disabled smartWait for interactive shell.
+* [Appium] Updated methods to use for mobile locators
+  * `waitForElement`
+  * `waitForVisible`
+  * `waitForInvisible`
+* Helper and page object generators no longer update config automatically. Please add your page objects and helpers manually.
+
 ## 2.0.2
 
 * [Puppeteer] Improved handling of connection with remote browser using Puppeteer by @martomo
