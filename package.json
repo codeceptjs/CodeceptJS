@@ -71,6 +71,7 @@
     "eslint-plugin-mocha": "^5.2.1",
     "faker": "^4.1.0",
     "gulp": "^4.0.0",
+    "gulp-append-prepend": "^1.0.6",
     "gulp-documentation": "^3.2.1",
     "gulp-mustache": "^2.2.0",
     "husky": "^1.2.1",
@@ -94,9 +95,5 @@
   },
   "es6": true,
   "husky": {
-    "hooks": {
-      "pre-commit": "npm run docs && npm run lint-fix",
-      "pre-push": "npm test"
-    }
   }
 }

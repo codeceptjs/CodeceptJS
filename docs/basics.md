@@ -1,4 +1,7 @@
-# Basics
+---
+id: basics
+title: Basics
+---
 
 CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The test is written as a linear scenario of user's action on a site.
 
@@ -378,8 +381,6 @@ Feature('Complex JS Stuff').retry(3);
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
-
-## Auto Login
 
 To share the same user session accoross different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autoLogin).
 It simplifies login manages and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist it logs in again.
