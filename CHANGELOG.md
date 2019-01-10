@@ -1,3 +1,7 @@
+## 2.0.3
+
+* [**autoLogin**](https://codecept.io/plugins#autoLogin) plugin added. Allows to log in once and reuse browser session. When session expires - automatically logs in again. Can persist session between runs by saving cookies to file.
+
 ## 2.0.2
 
 * [Puppeteer] Improved handling of connection with remote browser using Puppeteer by @martomo
