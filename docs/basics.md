@@ -167,7 +167,7 @@ Type in different actions to try them, copy valid successful ones to test, updat
 
 Press `ENTER` to resume test execution.
 
-To **debug test step-by-step** type `next` and press Enter. The next step will be executed and interactive shell will be shown again.
+To **debug test step-by-step** type press Enter. The next step will be executed and interactive shell will be shown again.
 
 To see all available commands press TAB two times to see list of all actions included in I.
 
@@ -379,7 +379,20 @@ Feature('Complex JS Stuff').retry(3);
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
 
+## Auto Login
 
----
+To share the same user session accoross different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autoLogin).
+It simplifies login manages and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist it logs in again.
 
-### done()
+This plugin requires some configuration but is very simple in use:
+
+```js
+Scenario('do something with logged in user', (I, loginAs)) => {
+  loginAs('user');
+  I.see('Dashboard','h1');
+});
+```
+
+With autoLogin plugin you can save cookies into a file and reuse same session on different runs.
+
+> Read more about setting up [autoLogin](https://codecept.io/plugins#autoLogin)

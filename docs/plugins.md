@@ -86,7 +86,7 @@ Possible config options:
 
 -   `config`  
 
-## 
+## autoLogin
 
 Logs user in for the first test and reuses session for next tests.
 Works by saving cookies into memory or file.
@@ -206,6 +206,10 @@ plugins: {
   }
 }
 ```
+
+### Parameters
+
+-   `config`  
 
 ## retryFailedStep
 
