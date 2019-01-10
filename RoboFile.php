@@ -18,6 +18,7 @@ class RoboFile extends \Robo\Tasks
 
     function publishSite()
     {
+        $this->stopOnFail();
         $this->taskGitStack()
             ->checkout('docusaurus')
             ->merge('master')
@@ -25,6 +26,9 @@ class RoboFile extends \Robo\Tasks
         $this->stopOnFail();
         $this->_copy('CHANGELOG.md', 'docs/changelog.md');
         $this->_copy('docker/README.md', 'docs/docker.md');
+        $this->taskExec('npm install')
+            ->dir('website')
+            ->run();
         $this
             ->taskExec('USE_SSH=true GIT_USER=davertmik npm run publish-gh-pages')
             ->dir('website')
@@ -33,6 +37,7 @@ class RoboFile extends \Robo\Tasks
         $this->taskGitStack()
             ->checkout('master')
             ->run();
+        $this->_exec('rm -rf website');
     }
 
     function testServer()

@@ -128,15 +128,11 @@ This behavior can be configured with following options:
 -   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 -   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
 
-Create and delete requests can also be overridden with a function:
+Requests can also be overridden with a function which returns [axois request config][4].
 
 ```js
-create: (data) => {
-   return { method: 'post', url: '/posts', data }
-},
-delete: (id) => {
-   return { method: 'delete', url: '/posts', data: { id } }
-}
+create: (data) => ({ method: 'post', url: '/posts', data }),
+delete: (id) => ({ method: 'delete', url: '/posts', data: { id } })
 ```
 
 Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
@@ -216,7 +212,8 @@ Generates a new record using factory and saves API request to store it.
 // create a user
 I.have('user');
 // create user with defined email
-I.have('user', { email: 'user@user.com'});
+// and receive it when inside async function
+const user = await I.have('user', { email: 'user@user.com'});
 ```
 
 #### Parameters
@@ -230,10 +227,10 @@ Generates bunch of records and saves multiple API requests to store them.
 
 ```js
 // create 3 posts
-I.have('post', 3);
+I.haveMultiple('post', 3);
 
 // create 3 posts by one author
-I.have('post', 3, { author: 'davert' });
+I.haveMultiple('post', 3, { author: 'davert' });
 ```
 
 #### Parameters
@@ -247,3 +244,5 @@ I.have('post', 3, { author: 'davert' });
 [2]: https://www.npmjs.com/package/faker
 
 [3]: http://codecept.io/helpers/REST/
+
+[4]: https://github.com/axios/axios#request-config
