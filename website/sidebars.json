@@ -15,8 +15,10 @@
       "mobile"
     ],
     "Organizing Tests": [
-      "helpers",
+      "best",
+      "locators",
       "pageobjects",
+      "helpers",
       "bdd",
       "data",
       "hooks",
@@ -29,7 +31,6 @@
       "commands",
       "config",
       "plugins",
-      "locators",
       "docker",
       "reports",
       "translation"
