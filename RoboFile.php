@@ -19,10 +19,6 @@ class RoboFile extends \Robo\Tasks
     function publishSite()
     {
         $this->stopOnFail();
-        $this->taskGitStack()
-            ->checkout('docusaurus')
-            ->merge('master')
-            ->run();
         $this->stopOnFail();
         $this->_copy('CHANGELOG.md', 'docs/changelog.md');
         $this->_copy('docker/README.md', 'docs/docker.md');
@@ -37,7 +33,6 @@ class RoboFile extends \Robo\Tasks
         $this->taskGitStack()
             ->checkout('master')
             ->run();
-        $this->_exec('rm -rf website');
     }
 
     function testServer()
