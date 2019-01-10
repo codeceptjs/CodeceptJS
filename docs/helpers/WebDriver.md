@@ -1325,7 +1325,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
+-   `sec`  (optional) time in seconds to wait, 1 by default.
 
 ### waitForEnabled
 
@@ -1385,7 +1385,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 -   `text`  to wait for.
 -   `sec`  (optional) time in seconds to wait.
--   `context`  (optional) element located by CSS|XPath|strict locator.-   _Appium_: supported
+-   `context`  (optional) element located by CSS|XPath|strict locator.
 
 ### waitForValue
 
