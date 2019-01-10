@@ -38,6 +38,9 @@
       "bdd": {
         "title": "Behavior Driven Development"
       },
+      "best": {
+        "title": "Best Practices"
+      },
       "changelog": {
         "title": "changelog"
       },
