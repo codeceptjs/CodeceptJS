@@ -83,6 +83,131 @@ Possible config options:
 
 -   `config`  
 
+## autoLogin
+
+Logs user in for the first test and reuses session for next tests.
+Works by saving cookies into memory or file.
+If a session expires automatically logs in again.
+
+> For better development experience cookies can be saved into file, so a session can be reused while writing tests.
+
+#### Usage
+
+1.  Enable this plugin and configure as described below
+2.  Define user session names (example: `user`, `editor`, `admin`, etc).
+3.  Define how users are logged in and how to check that user is logged in
+4.  Use `loginAs` object inside your tests to log in:
+
+```js
+// inside a test file
+// use loginAs to inject auto-login function
+Before(loginAs => {
+   loginAs('user'); // login using user session
+});
+
+// Alternatively log in for one scenario
+Scenario('log me in', (I, loginAs) => {
+   loginAs('admin');
+   I.see('I am logged in');
+});
+```
+
+#### Configuration
+
+-   `saveToFile` (default: false) - save cookies to file. Allows to reuse session between execution.
+-   `inject` (default: `loginAs`) - name of the login function to use
+-   `users` - an array containing different session names and functions to:
+    -   `login` - sign in into the system
+    -   `check` - check that user is logged in
+    -   `fetch` - to get current cookies (by default `I.grabCookie()`)
+    -   `load` - to set cookies (by default `I.setCookie(cookie)`)
+
+#### Example: Simple login
+
+```js
+autoLogin: {
+  enabled: true,
+  saveToFile: true,
+  inject: 'loginAs',
+  users: {
+    admin: {
+      // loginAsAdmin function is defined in `steps_file.js`
+      login: (I) => I.loginAsAdmin(),
+      // if we see `Admin` on page, we assume we are logged in
+      check: (I) => I.see('Admin'),
+      // we take all cookies from a browser
+      fetch: I => I.grabCookie(),
+      // we set all available cookies to restore session
+      restore: (I, cookie) => I.setCookie(cookie)
+    }
+  }
+}
+```
+
+#### Example: Multiple users
+
+```js
+autoLogin: {
+  enabled: true,
+  saveToFile: true,
+  inject: 'loginAs',
+  users: {
+    user: {
+      login: (I) => {
+         I.amOnPage('/login');
+         I.fillField('email', 'user@site.com');
+         I.fillField('password', '123456');
+         I.click('Login');
+      }
+      check: (I) => I.see('User', '.navbar'),
+    },
+    admin: {
+      login: (I) => {
+         I.amOnPage('/login');
+         I.fillField('email', 'admin@site.com');
+         I.fillField('password', '123456');
+         I.click('Login');
+      }
+      check: (I) => I.see('Admin', '.navbar'),
+    },
+  }
+}
+```
+
+#### Example: Keep cookies between tests
+
+If you decide to keep cookies between tests you don't need to save/retrieve cookies between tests.
+But you need to login once work until session expires.
+For this case, disable `fetch` and `restore` methods.
+
+```js
+helpers: {
+   WebDriver: {
+     // config goes here
+     keepCookies: true; // keep cookies for all tests
+   }
+},
+plugins: {
+   autoLogin: {
+    admin: {
+      login: (I) => {
+         I.amOnPage('/login');
+         I.fillField('email', 'admin@site.com');
+         I.fillField('password', '123456');
+         I.click('Login');
+      }
+      check: (I) => I.see('Admin', '.navbar'),
+      fetch: () => {}, // empty function
+      restore: () => {}, // empty funciton
+    }
+  }
+}
+```
+
+### Parameters
+
+-   `config`  
+
 ## retryFailedStep
 
 Retries each failed step in a test.

@@ -255,7 +255,9 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][9]. Appium: support only web testing
+libraries][9].
+
+-   _Appium_: supported only for web testing
 
 ### amOnPage
 
@@ -270,8 +272,7 @@ I.amOnPage('/login'); // opens a login page
 
 #### Parameters
 
--   `url`  url path or global url.
-    Appium: support only web testing
+-   `url`  url path or global url.-   _Appium_: supported only for web testing
 
 ### appendField
 
@@ -285,8 +286,7 @@ I.appendField('#myTextField', 'appended');
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator
--   `value`  text value to append.
-    Appium: support, but it's clear a field before insert in apps
+-   `value`  text value to append.-   _Appium_: supported, but it's clear a field before insert in apps
 
 ### attachFile
 
@@ -308,7 +308,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ### cancelPopup
 
 Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
-Appium: support only web testing
+
+-   _Appium_: supported only for web testing
 
 ### checkOption
 
@@ -341,8 +342,7 @@ I.clearCookie('test');
 
 #### Parameters
 
--   `cookie`  (optional) cookie name.
-    Appium: support only web testing
+-   `cookie`  (optional) cookie name.-   _Appium_: supported only for web testing
 
 ### clearField
 
@@ -356,8 +356,7 @@ I.clearField('#email');
 
 #### Parameters
 
--   `field`  located by label|name|CSS|XPath|strict locator.
-    Appium: support
+-   `field`  located by label|name|CSS|XPath|strict locator.-   _Appium_: supported
 
 ### click
 
@@ -386,8 +385,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context`  (optional) element to search in CSS|XPath|Strict locator.
-    Appium: support
+-   `context`  (optional) element to search in CSS|XPath|Strict locator.-   _Appium_: supported
 
 ### closeCurrentTab
 
@@ -400,7 +398,8 @@ I.closeCurrentTab();
 ### closeOtherTabs
 
 Close all tabs except for the current one.
-Appium: support web test
+
+-   _Appium_: supported web test
 
 ```js
 I.closeOtherTabs();
@@ -409,8 +408,9 @@ I.closeOtherTabs();
 ### defineTimeout
 
 Set [WebDriver timeouts][10] in realtime.
-Appium: support only web testing.
-Timeouts are expected to be passed as object:
+
+-   _Appium_: supported only for web testing.
+    Timeouts are expected to be passed as object:
 
 ```js
 I.defineTimeout({ script: 5000 });
@@ -433,8 +433,7 @@ I.dontSee('Login'); // assume we are already logged in
 #### Parameters
 
 -   `text`  is not present.
--   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-    Appium: support with context in apps
+-   `context`  (optional) element located by CSS|XPath|strict locator in which to perfrom search.-   _Appium_: supported with context in apps
 
 ### dontSeeCheckboxIsChecked
 
@@ -451,8 +450,7 @@ Checks that cookie with given name does not exist.
 
 #### Parameters
 
--   `name`  cookie name.
-    Appium: support only web testing
+-   `name`  cookie name.-   _Appium_: supported only for web testing
 
 ### dontSeeCurrentUrlEquals
 
@@ -461,8 +459,7 @@ If a relative url provided, a configured url will be prepended to it.
 
 #### Parameters
 
--   `url`  value to check.
-    Appium: support only web testing
+-   `url`  value to check.-   _Appium_: supported only for web testing
 
 ### dontSeeElement
 
@@ -470,8 +467,7 @@ Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 #### Parameters
 
--   `locator`  located by CSS|XPath|Strict locator.
-    Appium: support
+-   `locator`  located by CSS|XPath|Strict locator.-   _Appium_: supported
 
 ### dontSeeElementInDOM
 
@@ -479,8 +475,7 @@ Opposite to `seeElementInDOM`. Checks that element is not on page.
 
 #### Parameters
 
--   `locator`  located by CSS|XPath|Strict locator.
-    Appium: support
+-   `locator`  located by CSS|XPath|Strict locator.-   _Appium_: supported
 
 ### dontSeeInCurrentUrl
 
@@ -488,8 +483,7 @@ Checks that current url does not contain a provided fragment.
 
 #### Parameters
 
--   `url`  value to check.
-    Appium: support only web testing
+-   `url`  value to check.-   _Appium_: supported only for web testing
 
 ### dontSeeInField
 
@@ -499,8 +493,7 @@ Opposite to `seeInField`.
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator.
--   `value`  value to check.
-    Appium: support only web testing
+-   `value`  value to check.-   _Appium_: supported only for web testing
 
 ### dontSeeInSource
 
@@ -508,8 +501,7 @@ Checks that the current page contains the given string in its raw source code.
 
 #### Parameters
 
--   `text`  value to check.
-    Appium: support
+-   `text`  value to check.-   _Appium_: supported
 
 ### dontSeeInTitle
 
@@ -517,8 +509,7 @@ Checks that title does not contain text.
 
 #### Parameters
 
--   `text`  text value to check.
-    Appium: support only web testing
+-   `text`  text value to check.-   _Appium_: supported only for web testing
 
 ### doubleClick
 
@@ -535,8 +526,7 @@ I.doubleClick('.btn.edit');
 #### Parameters
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context`  (optional) element to search in CSS|XPath|Strict locator.
-    Appium: support only web testing
+-   `context`  (optional) element to search in CSS|XPath|Strict locator.-   _Appium_: supported only for web testing
 
 ### dragAndDrop
 
@@ -628,8 +618,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator.
--   `value`  text value to fill.
-    Appium: support
+-   `value`  text value to fill.-   _Appium_: supported
 
 ### grabAttributeFrom
 
@@ -668,8 +657,7 @@ assert(cookie.value, '123456');
 
 #### Parameters
 
--   `name`  (optional) cookie name.
-    Appium: support only web testing
+-   `name`  (optional) cookie name.-   _Appium_: supported only for web testing
 
 ### grabCssPropertyFrom
 
@@ -706,8 +694,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
-    Appium: support only web testing
+-   `locator`  element located by CSS|XPath|strict locator.-   _Appium_: supported only for web testing
 
 ### grabNumberOfOpenTabs
 
@@ -755,7 +742,7 @@ Resumes test execution, so should be used inside an async function.
 let pageSource = await I.grabSource();
 ```
 
-Appium: support
+-   _Appium_: supported
 
 ### grabTextFrom
 
@@ -770,8 +757,7 @@ If multiple elements found returns an array of texts.
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
-    Appium: support
+-   `locator`  element located by CSS|XPath|strict locator.-   _Appium_: supported
 
 ### grabTitle
 
@@ -782,7 +768,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Appium: support only web testing
+-   _Appium_: supported only for web testing
 
 ### grabValueFrom
 
@@ -795,8 +781,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `locator`  field located by label|name|CSS|XPath|strict locator.
-    Appium: support only web testing
+-   `locator`  field located by label|name|CSS|XPath|strict locator.-   _Appium_: supported only for web testing
 
 ### moveCursorTo
 
@@ -812,8 +797,7 @@ I.moveCursorTo('#submit', 5,5);
 
 -   `locator`  located by CSS|XPath|strict locator.
 -   `offsetX`  (optional) X-axis offset.
--   `offsetY`  (optional) Y-axis offset.
-    Appium: support only web testing
+-   `offsetY`  (optional) Y-axis offset.-   _Appium_: supported only for web testing
 
 ### openNewTab
 
@@ -866,8 +850,7 @@ I.pressKey(['Control','a']);
     -   `'Shift'`,
     -   `'Space'`,
     -   `'Subtract'`,
-    -   `'Tab'`.To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-    Appium: support, but clear field before pressing in apps:```js
+    -   `'Tab'`.To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.-   _Appium_: supported, but clear field before pressing in apps:```js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');
@@ -898,8 +881,7 @@ Performs right click on an element matched by CSS or XPath.
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
-    Appium: support, but in apps works as usual click
+-   `locator`  element located by CSS|XPath|strict locator.-   _Appium_: supported, but in apps works as usual click
 
 ### runInWeb
 
@@ -941,8 +923,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName`  file name to save.
--   `fullPage`  (optional) flag to enable fullscreen screenshot mode.
-    Appium: support
+-   `fullPage`  (optional) flag to enable fullscreen screenshot mode.-   _Appium_: supported
 
 ### scrollPageToBottom
 
@@ -990,8 +971,7 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator`  located by CSS|XPath|strict locator.
 -   `offsetX`  (optional) X-axis offset.
--   `offsetY`  (optional) Y-axis offset.
-    Appium: support only web testing
+-   `offsetY`  (optional) Y-axis offset.-   _Appium_: supported only for web testing
 
 ### see
 
@@ -1007,8 +987,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 #### Parameters
 
 -   `text`  expected on page.
--   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text.
-    Appium: support with context in apps
+-   `context`  (optional) element located by CSS|Xpath|strict locator in which to search for text.-   _Appium_: supported with context in apps
 
 ### seeAttributesOnElements
 
@@ -1048,8 +1027,7 @@ I.seeCookie('Auth');
 
 #### Parameters
 
--   `name`  cookie name.
-    Appium: support only web testing
+-   `name`  cookie name.-   _Appium_: supported only for web testing
 
 ### seeCssPropertiesOnElements
 
@@ -1077,8 +1055,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 #### Parameters
 
--   `url`  value to check.
-    Appium: support only web testing
+-   `url`  value to check.-   _Appium_: supported only for web testing
 
 ### seeElement
 
@@ -1091,8 +1068,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator`  located by CSS|XPath|strict locator.
-    Appium: support
+-   `locator`  located by CSS|XPath|strict locator.-   _Appium_: supported
 
 ### seeElementInDOM
 
@@ -1105,8 +1081,7 @@ I.seeElementInDOM('#modal');
 
 #### Parameters
 
--   `locator`  located by CSS|XPath|strict locator.
-    Appium: support
+-   `locator`  located by CSS|XPath|strict locator.-   _Appium_: supported
 
 ### seeInCurrentUrl
 
@@ -1118,8 +1093,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 #### Parameters
 
--   `url`  value to check.
-    Appium: support only web testing
+-   `url`  value to check.-   _Appium_: supported only for web testing
 
 ### seeInField
 
@@ -1136,13 +1110,14 @@ I.seeInField('#searchform input','Search');
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator.
--   `value`  value to check.
-    Appium: support only web testing
+-   `value`  value to check.-   _Appium_: supported only for web testing
 
 ### seeInPopup
 
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
-given string. Appium: support only web testing
+given string.
+
+-   _Appium_: supported only for web testing
 
 #### Parameters
 
@@ -1158,8 +1133,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 #### Parameters
 
--   `text`  value to check.
-    Appium: support
+-   `text`  value to check.-   _Appium_: supported
 
 ### seeInTitle
 
@@ -1167,14 +1141,14 @@ Checks that title contains text.
 
 #### Parameters
 
--   `text`  text value to check.
-    Appium: support only web testing
+-   `text`  text value to check.-   _Appium_: supported only for web testing
 
 ### seeNumberOfElements
 
 Asserts that an element appears a given number of times in the DOM.
 Element is located by label or name or CSS or XPath.
-Appium: support
+
+-   _Appium_: supported
 
 ```js
 I.seeNumberOfElements('#submitBtn', 1);
@@ -1260,8 +1234,7 @@ I.setCookie({name: 'auth', value: true});
 
 #### Parameters
 
--   `cookie`  cookie JSON object.
-    Appium: support only web testingUses Selenium's JSON [cookie
+-   `cookie`  cookie JSON object.-   _Appium_: supported only for web testingUses Selenium's JSON [cookie
     format][14].
 
 ### switchTo
@@ -1270,8 +1243,7 @@ Switches frame or in case of null locator reverts to parent.
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
-    Appium: support only web testing
+-   `locator`  element located by CSS|XPath|strict locator.-   _Appium_: supported only for web testing
 
 ### switchToNextTab
 
@@ -1330,8 +1302,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec`  time in seconds to wait.
-    Appium: support
+-   `sec`  time in seconds to wait.-   _Appium_: supported
 
 ### waitForDetached
 
@@ -1343,8 +1314,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitForElement
 
@@ -1359,8 +1329,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitForEnabled
 
@@ -1370,8 +1339,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitForFunction
 
@@ -1392,8 +1360,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 -   `fn`  to be executed in browser context.
 -   `argsOrSec`  (optional) arguments for function or seconds.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitForInvisible
 
@@ -1405,8 +1372,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitForText
 
@@ -1423,8 +1389,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 -   `text`  to wait for.
 -   `sec`  (optional) time in seconds to wait.
--   `context`  (optional) element located by CSS|XPath|strict locator.
-    Appium: support
+-   `context`  (optional) element located by CSS|XPath|strict locator.-   _Appium_: supported
 
 ### waitForValue
 
@@ -1450,8 +1415,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitInUrl
 
@@ -1490,8 +1454,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.
-    Appium: support
+-   `sec`  (optional) time in seconds to wait, 1 by default.-   _Appium_: supported
 
 ### waitUntil
 
@@ -1506,8 +1469,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
 -   `fn`  function which is executed in browser context.
 -   `sec`  (optional) time in seconds to wait, 1 by default.
--   `timeoutMsg`  (optional) message to show in case of timeout fail.
-    Appium: support
+-   `timeoutMsg`  (optional) message to show in case of timeout fail.-   _Appium_: supported
 
 ### waitUrlEquals
 

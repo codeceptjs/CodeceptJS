@@ -339,4 +339,3 @@ Function passed into session can use `I`, page objects, and any objects declared
 This function can also be declared as async (but doesn't work as generator).
 
 Also, you can use `within` inside a session but you can't call session from inside `within`.
-
