@@ -37,8 +37,7 @@ saves a screenshot when using `I.saveScreenshot` method
 
 `baseFolder`: This is the folder for base images, which will be used with screenshot for comparison
 
-`diffFolder`: This will the folder where resemble would try to store the difference image, which can be viewed later,
-Please remember to create empty folder if you don't have one already
+`diffFolder`: This will the folder where resemble would try to store the difference image, which can be viewed later.
 
 ### Usage
 Details about the helper can be found on the [Github Repo](https://github.com/puneet0191/codeceptjs-resemblehelper)
@@ -54,7 +53,7 @@ Feature('To test screen comparison with resemble Js Example test');
 Scenario('Compare CodeceptIO Home Page @visual-test', async (I, adminPage) => {
     I.amOnPage("/");
     I.saveScreenshot("Codecept_IO_Screenshot_Image.png");
-    I.verifyMisMatchPercentage("Codecept_IO_Base_Image.png", "Codecept_IO_Screenshot_Image.png", "difference_Image_Codecept_Home", 2, false);
+    I.seeVisualDiff("Codecept_IO_Screenshot_Image.png", {tolerance: 2, prepareBaseImage: false});
 });
 ```
 In this example, we are setting the expected mismatch tolerance level as `2`
@@ -77,7 +76,7 @@ Clearly the difference in both the images visible to human eye is the section ab
 ```
 To test screen comparison with resemble Js Example test --
   Compare CodeceptIO Home Page @visual-test
-    I verify mis match percentage "Codecept_IO_Base_Image.png", "Codecept_IO_Screenshot_Image.png", "difference_Image_Codecept_Home", 2, false
+    I see Visual Diff "Codecept_IO_Screenshot_Image.png", {tolerance: 2, prepareBaseImage: false}
 MisMatch Percentage Calculated is 2.85
   ✖ FAILED in 418ms
 
@@ -94,7 +93,10 @@ MisMatch Percentage Calculated is 2.85
       +true
 ```
 
+`Codeceptjs-resemblehelper` basically comes with two major functions
 
+1) `seeVisualDiff` which can be used to compare two images and calculate the misMatch percentage.
+2) `seeVisualDiffForElement` which can be used to compare elements on the two images and calculate misMatch percentage.
 
 ## Using Visual Knight
 
