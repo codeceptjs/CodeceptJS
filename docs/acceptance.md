@@ -1,4 +1,7 @@
-# Acceptance Testing
+---
+id: acceptance
+title: Acceptance Testing
+---
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
@@ -336,9 +339,3 @@ Function passed into session can use `I`, page objects, and any objects declared
 This function can also be declared as async (but doesn't work as generator).
 
 Also, you can use `within` inside a session but you can't call session from inside `within`.
-
----
-
-### done()
-
-CodeceptJS through helpers provides user friendly API to interact with a webpage. In this section we described using WebDriver helper which allows to control browser through Selenium WebDriver.

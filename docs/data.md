@@ -1,6 +1,10 @@
-# Data Management
+---
+id: data
+title: Data Management
+---
 
-*This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
+
+> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
 
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
@@ -17,25 +21,27 @@ API supposed to be a stable interface and it can be used by acceptance tests. Co
 
 ## REST
 
-[REST helper](http://codecept.io/helpers/REST/) uses [Unirest](http://unirest.io/nodejs.html) library to send HTTP requests to application.
-However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
+[REST helper](http://codecept.io/helpers/REST/) allows sending raw HTTP requests to application.
+This is a tool to make shortcuts and create your data pragmatically via API. However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
 
-Enable REST helper in global config. It is recommended to set `endpoint`, a base URL for all API requests.
-If you need some authorization you can optionally set default headers too.
+Enable REST helper in the config. It is recommended to set `endpoint`, a base URL for all API requests. If you need some authorization you can optionally set default headers too.
 
 See the sample config:
 
 ```js
-"helpers": {
-  "REST": {
-    "endpoint": "http://localhost/api/v1/",
-    "defaultHeaders": {
-      "Auth": "11111"
-    }
+helpers: {
+  REST: {
+    endpoint: "http://localhost/api/v1/",
+    defaultHeaders: {
+      'Auth': '11111',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      },
+    },
   },
-
-  "WebDriver" : {
-    "browser": "chrome"
+  WebDriver : {
+    url: 'http://localhost',
+    browser: 'chrome'
   }
 }
 ```
@@ -81,6 +87,8 @@ This can also be used to emulate Ajax requests:
 I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
 ```
 
+> See complete reference on [REST](http://codecept.io/helpers/REST) helper
+
 ## Data Generation with Factories
 
 This concept is extended by [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
@@ -88,7 +96,8 @@ It builds data according to defined rules and uses API to store them and automat
 This way setting data for a test is as simple as writing:
 
 ```js
-let post = yield I.have('post');
+// inside async function
+let post = await I.have('post');
 I.haveMultiple('comment', 5, { postId: post.id});
 ```
 
@@ -121,12 +130,16 @@ module.exports = new Factory()
 Next is to configure helper to match factories with API:
 
 ```js
- "ApiDataFactory": {
-   "endpoint": "http://user.com/api",
-   "factories": {
-     "user": {
-        "uri": "/users"
-        "factory": "./factories/user"
+ ApiDataFactory: {
+   endpoint: "http://user.com/api",
+   headers: {
+     'Content-Type': 'application/json',
+     'Accept': 'application/json',
+   },
+   factories: {
+     user: {
+        uri: "/users",
+        factory: "./factories/user"
      }
    }
  }
@@ -139,6 +152,44 @@ At the end of a test ApiDataFactory will clean up created record for you. This i
 ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
 This rules can be customized in helper configuration.
 
----
+> See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
 
-### done()
+## API Requests Using Browser Session
+
+Both REST and ApiDataFactory helpers allow override requests before sending.
+This feature can be used to fetch current browser cookies and set them to REST API client.
+By doing this we can make requests within the current browser session without a need of additional authentication.
+
+> Sharing browser session with ApiDataFactory can be especially useful when you test Single Page Applications
+
+Let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:
+
+```js
+  ApiDataFactory: {
+    endpoint: 'http://local.app/api',
+    cleanup: true,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    factories: {
+      user: {
+          uri: "/users",
+          factory: "./factories/user",
+      }
+    },
+    onRequest: async (request) => {
+      let cookies = await codeceptjs.container.helpers('WebDriver').grabCookie();
+      request.headers = { Cookie: cookies.map(c => `${c.name}=${c.value}`).join('; ') };
+    },
+  }
+  WebDriver: {
+    url: 'https://local.app/',
+    browser: 'chrome',
+  }
+```
+
+In this case we are accessing WebDriver helper. However, you can replace WebDriver with any helper you use.
+
+The order of helpers is important! ApiDataFactory will clean up created users after a test,
+so it needs browser to be still opened to obtain its cookies.
