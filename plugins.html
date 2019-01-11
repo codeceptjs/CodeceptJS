@@ -99,24 +99,24 @@ If a session expires automatically logs in again.</p>
 <li>Enable this plugin and configure as described below</li>
 <li>Define user session names (example: <code>user</code>, <code>editor</code>, <code>admin</code>, etc).</li>
 <li>Define how users are logged in and how to check that user is logged in</li>
-<li>Use <code>loginAs</code> object inside your tests to log in:</li>
+<li>Use <code>login</code> object inside your tests to log in:</li>
 </ol>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// inside a test file</span>
-<span class="hljs-comment">// use loginAs to inject auto-login function</span>
-<span class="hljs-keyword">Before</span>(<span class="hljs-function"><span class="hljs-params">loginAs</span> =&gt;</span> {
-   loginAs(<span class="hljs-string">'user'</span>); <span class="hljs-comment">// login using user session</span>
+<span class="hljs-comment">// use login to inject auto-login function</span>
+<span class="hljs-keyword">Before</span>(<span class="hljs-function"><span class="hljs-params">login</span> =&gt;</span> {
+   login(<span class="hljs-string">'user'</span>); <span class="hljs-comment">// login using user session</span>
 });
 
 <span class="hljs-comment">// Alternatively log in for one scenario</span>
-<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'log me in'</span>, (<span class="hljs-built_in">I</span>, loginAs) =&gt; {
-   loginAs(<span class="hljs-string">'admin'</span>);
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'log me in'</span>, (<span class="hljs-built_in">I</span>, login) =&gt; {
+   login(<span class="hljs-string">'admin'</span>);
    <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'I am logged in'</span>);
 });
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="configuration-2"></a><a href="#configuration-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h4>
 <ul>
 <li><code>saveToFile</code> (default: false) - save cookies to file. Allows to reuse session between execution.</li>
-<li><code>inject</code> (default: <code>loginAs</code>) - name of the login function to use</li>
+<li><code>inject</code> (default: <code>login</code>) - name of the login function to use</li>
 <li><code>users</code> - an array containing different session names and functions to:
 <ul>
 <li><code>login</code> - sign in into the system</li>
@@ -129,11 +129,11 @@ If a session expires automatically logs in again.</p>
 <pre><code class="hljs css language-js">autoLogin: {
   <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">saveToFile</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">inject</span>: <span class="hljs-string">'loginAs'</span>,
+  <span class="hljs-attr">inject</span>: <span class="hljs-string">'login'</span>,
   <span class="hljs-attr">users</span>: {
     <span class="hljs-attr">admin</span>: {
-      <span class="hljs-comment">// loginAsAdmin function is defined in `steps_file.js`</span>
-      login: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.loginAsAdmin(),
+      <span class="hljs-comment">// loginAdmin function is defined in `steps_file.js`</span>
+      login: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.loginAdmin(),
       <span class="hljs-comment">// if we see `Admin` on page, we assume we are logged in</span>
       check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>),
       <span class="hljs-comment">// we take all cookies from a browser</span>
@@ -148,8 +148,8 @@ If a session expires automatically logs in again.</p>
 <pre><code class="hljs css language-js">autoLogin: {
   <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">saveToFile</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">inject</span>: <span class="hljs-string">'loginAs'</span>,
-  <span class="hljs-attr">users</span>: {
+  <span class="hljs-attr">inject</span>: <span class="hljs-string">'loginAs'</span>, <span class="hljs-comment">// use `loginAs` instead of login</span>
+  users: {
     <span class="hljs-attr">user</span>: {
       <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
          <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/login'</span>);
@@ -277,7 +277,7 @@ By default, reports are generated only for failed tests.</p>
 <ul>
 <li><code>config</code> <strong>any</strong></li>
 </ul>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-10</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/config"><span class="arrow-prev">← </span><span>Previous</span></a><a class="docs-next button" href="/docker"><span>Docker</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#allure">allure</a><ul class="toc-headings"><li><a href="#parameters">Parameters</a></li></ul></li><li><a href="#autodelay">autoDelay</a><ul class="toc-headings"><li><a href="#parameters-1">Parameters</a></li></ul></li><li><a href="#autologin">autoLogin</a><ul class="toc-headings"><li><a href="#parameters-2">Parameters</a></li></ul></li><li><a href="#retryfailedstep">retryFailedStep</a><ul class="toc-headings"><li><a href="#parameters-3">Parameters</a></li></ul></li><li><a href="#screenshotonfail">screenshotOnFail</a><ul class="toc-headings"><li><a href="#parameters-4">Parameters</a></li></ul></li><li><a href="#stepbystepreport">stepByStepReport</a><ul class="toc-headings"><li><a href="#parameters-5">Parameters</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-11</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/config"><span class="arrow-prev">← </span><span>Previous</span></a><a class="docs-next button" href="/docker"><span>Docker</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#allure">allure</a><ul class="toc-headings"><li><a href="#parameters">Parameters</a></li></ul></li><li><a href="#autodelay">autoDelay</a><ul class="toc-headings"><li><a href="#parameters-1">Parameters</a></li></ul></li><li><a href="#autologin">autoLogin</a><ul class="toc-headings"><li><a href="#parameters-2">Parameters</a></li></ul></li><li><a href="#retryfailedstep">retryFailedStep</a><ul class="toc-headings"><li><a href="#parameters-3">Parameters</a></li></ul></li><li><a href="#screenshotonfail">screenshotOnFail</a><ul class="toc-headings"><li><a href="#parameters-4">Parameters</a></li></ul></li><li><a href="#stepbystepreport">stepByStepReport</a><ul class="toc-headings"><li><a href="#parameters-5">Parameters</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
