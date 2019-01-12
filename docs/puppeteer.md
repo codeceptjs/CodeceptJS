@@ -1,4 +1,7 @@
-# Robust Chrome Testing with Puppeteer
+---
+id: puppeteer
+title: Testing with Puppeteer
+---
 
 Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer).
 It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
@@ -166,9 +169,11 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 `within` can also work with [iframes](/acceptance/#iframes)
 
-When running steps inside a within block will be shown with a shift:
+When running steps inside a within block will be shown with a shift.
 
-![within](http://codecept.io/images/within.png)
+![within](https://codecept.io/img/within.png)
+
+> [Demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
 
 ## Extending
 
@@ -194,6 +199,3 @@ async renderPageToPdf() {
 
 The same way you can also access `browser` object to implement more actions or handle events. [Learn more about Helpers](http://codecept.io/helpers/) in the corresponding guide.
 
-## done()
-
-Yes, also the [demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)

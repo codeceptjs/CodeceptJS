@@ -1,0 +1,51 @@
+{
+  "docs": {
+    "Quickstart": [
+      "quickstart",
+      "basics",
+      "video"
+    ],
+    "Web Testing": [
+      "acceptance",
+      "puppeteer",
+      "angular",
+      "nightmare"
+    ],
+    "Mobile Testing": [
+      "mobile"
+    ],
+    "Organizing Tests": [
+      "best",
+      "locators",
+      "pageobjects",
+      "helpers",
+      "bdd",
+      "data",
+      "hooks",
+      "advanced"
+    ]
+  },
+  "reference": {
+    "Reference": [
+      "installation",
+      "commands",
+      "config",
+      "plugins",
+      "docker",
+      "reports",
+      "translation"
+    ],
+    "Driver Helpers": [
+      "helpers/WebDriver",
+      "helpers/Puppeteer",
+      "helpers/Protractor",
+      "helpers/Nightmare",
+      "helpers/Appium"
+    ],
+    "Data Helpers": [
+      "helpers/REST",
+      "helpers/ApiDataFactory",
+      "helpers/FileSystem"
+    ]
+  }
+}
