@@ -1,4 +1,8 @@
-# Blazing Fast Tests with Nightmare
+---
+id: nightmare
+title: Testing with Nightmare
+---
+
 
 Selenium WebDriver is considered to be standard for end to end testing of web applications.
 Despite its popularity it have its drawbacks, it requires a real browser and Selenium server to control it.
@@ -221,4 +225,3 @@ use locate found elements on a page and return attribute from the first of them.
 
 * [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
 
-## done()

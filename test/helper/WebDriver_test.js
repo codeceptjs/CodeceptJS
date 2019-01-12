@@ -166,6 +166,15 @@ describe('WebDriver', function () {
     it('should grab the source', () => wd.amOnPage('/')
       .then(() => wd.grabSource())
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
+
+    it('should grab the source for element', () => wd.amOnPage('/')
+      .then(() => wd.grabHTMLFrom('#area1'))
+      .then(source => assert.equal(
+        source,
+        `<div id="area1" qa-id="test">
+    <a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>
+</div>`,
+      )));
   });
 
 

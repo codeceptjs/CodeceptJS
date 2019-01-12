@@ -1,4 +1,8 @@
-# Helpers
+---
+id: helpers
+title: Custom Helpers
+---
+
 
 Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
 Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends.
@@ -253,4 +257,3 @@ _before() {
 
 Retry rules are available in array `recorder.retries`. The last retry rule can be disabled by running `recorder.retries.pop()`;
 
-### done()
