@@ -71,6 +71,22 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should run all different data for tests with only', (done) => {
+    exec(config_run_config('codecept.sddt.json'), (err, stdout, stderr) => {
+      const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
+      output.should.include(`Got array item 1
+  ✔ Should log array of strings | 1`);
+
+      output.should.include(`Got array item 2
+  ✔ Should log array of strings | 2`);
+
+      output.should.include(`Got array item 3
+  ✔ Should log array of strings | 3`);
+      assert(!err);
+      done();
+    });
+  });
+
   it('should execute expected promise chain', (done) => {
     exec(`${codecept_run} --verbose`, (err, stdout, stderr) => {
       const lines = stdout.match(/\S.+/g);
