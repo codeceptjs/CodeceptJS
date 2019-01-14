@@ -71,7 +71,7 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-  it.only('should run all different data for tests with only', (done) => {
+  it('should run all different data for tests with only', (done) => {
     exec(config_run_config('codecept.sddt.json'), (err, stdout, stderr) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       output.should.include(`Got array item 1
