@@ -1,5 +1,5 @@
 {
-  "tests": "./*_test.sddt.js",
+  "tests": "./*_test.gddt.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {

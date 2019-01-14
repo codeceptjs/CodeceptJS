@@ -23,6 +23,13 @@ Data(function* () {
   console.log(`Got changed login ${current[0]}`);
 });
 
+Data(function* () {
+  yield { user: 'nick' };
+  yield { user: 'pick' };
+}).Scenario('Should log accounts4', (I, current) => {
+  console.log(`Got generator login ${current.user}`);
+});
+
 Data(['1', '2', '3']).Scenario('Should log array of strings', (I, current) => {
   console.log(`Got array item ${current}`);
 });
