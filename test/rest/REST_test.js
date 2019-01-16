@@ -76,6 +76,14 @@ describe('REST', () => {
       response.data.should.be.empty;
     })));
 
+    it('should send DELETE requests: payload format = form urlencoded', () => I.sendDeleteRequest('/posts/1', 'author=john').then(() => I.sendGetRequest('/posts').then((response) => {
+      response.data.should.be.empty;
+    })));
+
+    it('should send DELETE requests: payload format = json', () => I.sendDeleteRequest('/posts/1', { author: 'john' }).then(() => I.sendGetRequest('/posts').then((response) => {
+      response.data.should.be.empty;
+    })));
+
     it('should update request with onRequest', async () => {
       I.config.onRequest = request => request.data = { name: 'Vasya' };
       return I.sendPostRequest('/user', { name: 'john' }).then((response) => {
