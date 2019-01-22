@@ -629,4 +629,13 @@ describe('WebDriver', function () {
       .then(() => wd.see('Information', 'h1'))
       .then(() => wd.dontSee('Iframe test', 'h1')));
   });
+
+  describe('#AttachFile', () => {
+    it('should attach to regular input element', () => wd.amOnPage('/form/file')
+      .then(() => wd.attachFile('Avatar', './app/avatar.jpg'))
+      .then(() => wd.seeInField('Avatar', 'avatar.jpg')));
+
+    it('should attach to invisible input element', () => wd.amOnPage('/form/file')
+      .then(() => wd.attachFile('hidden', '/app/avatar.jpg')));
+  });
 });
