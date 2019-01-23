@@ -25,10 +25,15 @@ let sidebar = { id: 'reference',
         className="productShowcaseSection"
         style={{textAlign: 'left'}}>
         <h2>Reference</h2>
+        <div className="alert alert-info">CodeceptJS has enterprise support: <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=top_menu&utm_term=link&utm_campaign=reference">trainings</a>, consulting, test automation. <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference">Contact us at SDCLabs!</a></div>
       </div>
 
         <DocsSidebar metadata={sidebar} ></DocsSidebar>
-        <p className="pl-2 pb-4">Want some more? We have a nice set of <a href="https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers">community helpers</a>. Check them out and add yours!</p>
+        <div className="row">
+          <p className="col-md-4 p-4 alert alert-warning">Practical tips in <a href="https://codecept.discourse.group/c/cookbook">Cookbook</a> &raquo;</p>
+          <p className="col-md-8 p-4 alert alert-light">We have <a href="https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers">Community helpers</a>. Check them out and add yours!</p>
+
+        </div>
        </Container>
      </div>
    );
