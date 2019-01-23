@@ -581,6 +581,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js

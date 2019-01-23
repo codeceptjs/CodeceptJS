@@ -36,6 +36,7 @@
     "no-cond-assign": 0,
     "import/no-unresolved": 0,
     "no-await-in-loop": 0,
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "no-loop-func": 0
   }
 }
