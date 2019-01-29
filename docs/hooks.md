@@ -467,7 +467,10 @@ codecept.initGlobals(__dirname);
 Container.create(config, opts);
 
 // initialize listeners
-codecept.bootstrap();
+codecept.runHooks();
+
+// run bootstrap function from config
+codecept.runBootstrap();
 
 // load tests
 codecept.loadTests('*_test.js');
