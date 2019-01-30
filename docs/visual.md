@@ -10,7 +10,7 @@ Currently there are two helpers available for Visual testing with CodeceptJS
 
 ## Using Resemble helper
 [Resemble.js](https://github.com/rsmbl/Resemble.js) is a great tool for image comparison and analysis, which can be used with CodeceptJS
-###Setup
+### Setup
 To install the package, just run `npm install codeceptjs-resemblehelper`
 ### Configuring
 This helper should be added in codecept.json/codecept.conf.js
