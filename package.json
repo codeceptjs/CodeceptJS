@@ -46,7 +46,7 @@
     "cucumber-expressions": "^6.0.1",
     "escape-string-regexp": "^1.0.3",
     "figures": "^2.0.0",
-    "fn-args": "^3.0.0",
+    "fn-args": "^4.0.0",
     "gherkin": "^5.1.0",
     "glob": "^6.0.1",
     "inquirer": "^6.2.1",
