@@ -46,6 +46,8 @@ const siteConfig = {
     {page: 'reference', label: 'Reference'},
     {page: 'changelog', label: 'Releases'},
     {page: 'help', label: 'Support'},
+    { href: 'https://codecept.discourse.group', label: 'Forum' },
+
     // {doc: 'changelog', label: 'Reference'},
     // {blog: true, label: 'Blog'},
   ],
@@ -62,7 +64,7 @@ const siteConfig = {
   /* Colors for website */
   colors: {
     primaryColor: '#7B1FA2',
-    secondaryColor: '#e1b0f6',
+    secondaryColor: '#7B1FA2',
   },
 
   fonts: {
