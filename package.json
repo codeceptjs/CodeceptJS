@@ -51,6 +51,7 @@
     "glob": "^6.0.1",
     "inquirer": "^6.2.1",
     "js-beautify": "^1.8.9",
+    "lodash.merge": "^4.6.1",
     "mkdirp": "^0.5.1",
     "mocha": "^4.1.0",
     "parse-function": "^5.2.10",
