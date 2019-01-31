@@ -55,7 +55,6 @@
     "mocha": "^4.1.0",
     "parse-function": "^5.2.10",
     "promise-retry": "^1.1.1",
-    "relative": "^3.0.2",
     "requireg": "^0.1.8",
     "sprintf-js": "^1.1.1"
   },
