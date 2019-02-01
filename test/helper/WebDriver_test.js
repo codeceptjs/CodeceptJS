@@ -167,13 +167,13 @@ describe('WebDriver', function () {
       .then(() => wd.grabSource())
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
 
-    it('should grab the source for element', () => wd.amOnPage('/')
+    it('should grab the innerHTML for an element', () => wd.amOnPage('/')
       .then(() => wd.grabHTMLFrom('#area1'))
-      .then(source => assert.equal(
+      .then(source => assert.deepEqual(
         source,
-        `<div id="area1" qa-id="test">
+        [`
     <a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>
-</div>`,
+`],
       )));
   });
 
