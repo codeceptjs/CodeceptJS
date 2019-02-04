@@ -110,5 +110,11 @@ describe('ui', () => {
       scenarioConfig.tag('@user');
       scenarioConfig.test.tags.should.include('@user');
     });
+
+    it('should dynamically inject dependencies', () => {
+      scenarioConfig = context.Scenario('scenario');
+      scenarioConfig.injectDependencies({ Data: 'data' });
+      assert.equal(scenarioConfig.test.inject.Data, 'data');
+    });
   });
 });
