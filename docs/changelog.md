@@ -1,3 +1,17 @@
+## 2.0.4
+
+* [WebDriver][Protractor][Nightmare][Puppeteer] `grabAttributeFrom` returns an array when multiple elements matched. By @PeterNgTr
+* [autoLogin plugin] Fixed merging users config by @nealfennimore
+* [autoDelay plugin] Added WebDriver to list of supported helpers by @mattin4d
+* [Appium] Fixed using locators in `waitForElement`, `waitForVisible`, `waitForInvisible`. By @eduardofinotti
+* [allure plugin] Add tags to allure reports by @Vorobeyko
+* [allure plugin] Add skipped tests to allure reports by @Vorobeyko
+* Fixed `Logged Test name | [object Object]` when used Data().Scenario(). By @Vorobeyko
+* Fixed Data().only.Scenario() to run for all datasets. By @Vorobeyko
+* [WebDriver] `attachFile` to work with hidden elements. Fixed in [#1460](https://github.com/Codeception/CodeceptJS/pull/1460) by @tsuemura
+
+
+
 ## 2.0.3
 
 * [**autoLogin plugin**](https://codecept.io/plugins#autologin) added. Allows to log in once and reuse browser session. When session expires - automatically logs in again. Can persist session between runs by saving cookies to file.
