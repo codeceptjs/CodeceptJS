@@ -46,11 +46,12 @@
     "cucumber-expressions": "^6.0.1",
     "escape-string-regexp": "^1.0.3",
     "figures": "^2.0.0",
-    "fn-args": "^3.0.0",
+    "fn-args": "^4.0.0",
     "gherkin": "^5.1.0",
     "glob": "^6.0.1",
     "inquirer": "^6.2.1",
     "js-beautify": "^1.8.9",
+    "lodash.merge": "^4.6.1",
     "mkdirp": "^0.5.1",
     "mocha": "^4.1.0",
     "parse-function": "^5.2.10",
@@ -94,5 +95,10 @@
     "npm": ">=5.6.0"
   },
   "es6": true,
-  "husky": {}
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint && npm run test"
+    }
+  }
 }
