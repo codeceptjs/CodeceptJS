@@ -638,4 +638,16 @@ describe('WebDriver', function () {
     it('should attach to invisible input element', () => wd.amOnPage('/form/file')
       .then(() => wd.attachFile('hidden', '/app/avatar.jpg')));
   });
+
+
+  describe('#dragSlider', () => {
+    it('should drag scrubber to given position', async () => {
+      await wd.amOnPage('/form/page_slider');
+      await wd.seeElementInDOM('#slidecontainer input');
+      const before = await wd.grabValueFrom('#slidecontainer input');
+      await wd.dragSlider('#slidecontainer input', 20);
+      const after = await wd.grabValueFrom('#slidecontainer input');
+      assert.notEqual(before, after);
+    });
+  });
 });

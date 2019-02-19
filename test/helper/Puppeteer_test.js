@@ -550,7 +550,7 @@ describe('Puppeteer', function () {
 
   describe('#dragSlider', () => {
     it('should drag scrubber to given position', async () => {
-      await I.amOnPage(`file://${path.resolve(__dirname, '../data/sandbox/page_slider.html')}`);
+      await I.amOnPage('/form/page_slider');
       await I.seeElementInDOM('#slidecontainer input');
       const before = await I.grabValueFrom('#slidecontainer input');
       await I.dragSlider('#slidecontainer input', 20);
