@@ -95,5 +95,10 @@
     "npm": ">=5.6.0"
   },
   "es6": true,
-  "husky": {}
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint && npm run test"
+    }
+  }
 }

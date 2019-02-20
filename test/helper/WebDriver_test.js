@@ -167,13 +167,13 @@ describe('WebDriver', function () {
       .then(() => wd.grabSource())
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
 
-    it('should grab the source for element', () => wd.amOnPage('/')
+    it('should grab the innerHTML for an element', () => wd.amOnPage('/')
       .then(() => wd.grabHTMLFrom('#area1'))
-      .then(source => assert.equal(
+      .then(source => assert.deepEqual(
         source,
-        `<div id="area1" qa-id="test">
+        [`
     <a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>
-</div>`,
+`],
       )));
   });
 
@@ -637,5 +637,17 @@ describe('WebDriver', function () {
 
     it('should attach to invisible input element', () => wd.amOnPage('/form/file')
       .then(() => wd.attachFile('hidden', '/app/avatar.jpg')));
+  });
+
+
+  describe('#dragSlider', () => {
+    it('should drag scrubber to given position', async () => {
+      await wd.amOnPage('/form/page_slider');
+      await wd.seeElementInDOM('#slidecontainer input');
+      const before = await wd.grabValueFrom('#slidecontainer input');
+      await wd.dragSlider('#slidecontainer input', 20);
+      const after = await wd.grabValueFrom('#slidecontainer input');
+      assert.notEqual(before, after);
+    });
   });
 });
