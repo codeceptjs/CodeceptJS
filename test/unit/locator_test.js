@@ -96,7 +96,7 @@ describe('Locator', () => {
     expect(nodes[0].firstChild.data).to.eql('Show');
   });
 
-  it('should parent select a by label', () => {
+  it('should select a label text', () => {
     const l = Locator.build('a')
       .withAttr({ href: '#' })
       .parent(Locator.build('label').withText('Hello'));
