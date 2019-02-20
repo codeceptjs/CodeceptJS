@@ -96,6 +96,16 @@ describe('Locator', () => {
     expect(nodes[0].firstChild.data).to.eql('Show');
   });
 
+  it('should parent select a by label', () => {
+    const l = Locator.build('a')
+      .withAttr({ href: '#' })
+      .parent(Locator.build('label').withText('Hello'));
+
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes[0].firstChild.data).to.eql('Hello', l.toXPath());
+  });
+
   it('should select a by label', () => {
     const l = Locator.build('a')
       .withAttr({ href: '#' })
