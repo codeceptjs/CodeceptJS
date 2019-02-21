@@ -174,15 +174,6 @@ locate('#table td').at(2);
 locate('#table td').at(-2);
 ```
 
-#### parent
-
-Finds an element that is the ancestor of the located:
-
-```js
-// finds `form#user_profile' as the parent element of 'div`
-locate('select').parent('form#user_profile');
-```
-
 #### inside
 
 Finds an element which contains an provided ancestor:
