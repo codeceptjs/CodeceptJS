@@ -54,7 +54,6 @@ const xml = `<body>
   <label>Hello<a href="#">Please click</a></label>
   </div>
   <input type="hidden" name="return_url" value="" id="return_url" />
-
 </body>`;
 
 describe('Locator', () => {
