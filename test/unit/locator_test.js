@@ -115,7 +115,7 @@ describe('Locator', () => {
 
   it('should select child element by name', () => {
     const l = Locator.build('.form-field')
-      .withChild(Locator.build('//input[@name="name1"]'));
+      .withDescendant(Locator.build('//input[@name="name1"]'));
     const nodes = xpath.select(l.toXPath(), doc);
 
     expect(nodes).to.have.length(1, l.toXPath());
