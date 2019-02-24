@@ -146,3 +146,43 @@ Scenario('成功提交表單', (我) => {
     我.在當前網址中看不到('/documentation')
 });
 ```
+
+## Japanese
+
+Add to config
+
+```json
+  "translation": "ja-JP"
+```
+
+Now you can write test like this:
+
+```js
+Scenario('ログインできる', (私は) => {
+    私は.ページを移動する('/login');
+    私は.フィールドに入力する("Eメール", "foo@example.com");
+    私は.フィールドに入力する("パスワード", "p@ssword");
+    私は.クリックする('ログイン');
+    私は.待つ(1);
+    私は.URLに含まれるか確認する('/home');
+});
+```
+
+## Using your own translation file
+
+Create translation file like this:
+
+```js
+module.exports = {
+  I: '',
+  actions: {
+    click: 'Klicken',
+    wait: 'Wartenn',
+  }
+```
+
+And add the file path to your config
+
+```json
+    "translation": "./path/to/your/translation.js"
+```
