@@ -1,4 +1,7 @@
-# Visual Testing
+---
+id: visual
+title: Visual Testing
+---
 
 How does one test if the UI being rendered appears correctly to the users or how to test if each UI element appears in the right position and size? The traditional way to test the UI of the application has always been manually, which is time consuming.
 
@@ -9,11 +12,20 @@ By default CodeceptJS uses [WebDriver](/helpers/WebDriver/) helper and **Seleniu
 Currently there are two helpers available for Visual testing with CodeceptJS
 
 ## Using Resemble helper
+
 [Resemble.js](https://github.com/rsmbl/Resemble.js) is a great tool for image comparison and analysis, which can be used with CodeceptJS
+
 ### Setup
-To install the package, just run `npm install codeceptjs-resemblehelper`
+
+To install the package, just run
+
+```
+npm install codeceptjs-resemblehelper --save
+```
+
 ### Configuring
-This helper should be added in codecept.json/codecept.conf.js
+
+This helper should be added to `codecept.conf.js` config file.
 
 Example:
 
@@ -32,19 +44,19 @@ Example:
 
 To use the Helper, users must provide the three parameters:
 
-`screenshotFolder` : This will always have the same value as `output` in Codecept configuration, this is the folder where webdriverIO
+* `screenshotFolder` : This will always have the same value as `output` in Codecept configuration, this is the folder where webdriverIO
 saves a screenshot when using `I.saveScreenshot` method
-
-`baseFolder`: This is the folder for base images, which will be used with screenshot for comparison
-
-`diffFolder`: This will the folder where resemble would try to store the difference image, which can be viewed later.
+* `baseFolder`: This is the folder for base images, which will be used with screenshot for comparison
+* `diffFolder`: This will the folder where resemble would try to store the difference image, which can be viewed later.
 
 ### Usage
+
 Details about the helper can be found on the [Github Repo](https://github.com/puneet0191/codeceptjs-resemblehelper)
 
 Base Image is compared with the screenshot image and test results are derived based on the `mismatch tolerance` level provided by the user for the comparison
 
 ### Example
+
 Lets consider visual testing for [CodeceptJS Home](http://codecept.io)
 
 ```js
@@ -103,8 +115,12 @@ MisMatch Percentage Calculated is 2.85
 Visual Knight is a SaaS product which strongly supports CodeceptJS with multiple use cases. It provides an user interface to handle mismatches, statistics and more. It was designed to support Designer, Product Owner and other roles which are not familiar with coding and all this tools. All captured images are saved in a secure cloud system to not mess up your git repository.
 
 ### Setup
+
 Create an account at [Visual Knight](https://www.visual-knight.io) and install the npm package
-```npm install @visual-knight/codeceptjs -D```
+
+```
+npm install @visual-knight/codeceptjs -D
+```
 
 ### Configuring
 
@@ -152,6 +168,7 @@ ScreenshotOptions {
 > You can find the latest documentation here [CodeceptJS helper page](https://doc.visual-knight.io/adapters/codeceptjs)
 
 ### Example
+
 Lets consider visual testing for [CodeceptJS Home](http://codecept.io)
 
 ```js
@@ -166,4 +183,3 @@ Scenario('Compare CodeceptIO Home Page @visual-test', async (I, adminPage) => {
 Depending of your configuration this test will fail if no baseline exists and log the link to the image to accept or automatically accept the first run as baseline.
 > You can accept the first image as baseline automatically via ```autoBaseline: true``` _default is false_
 
-### done()
