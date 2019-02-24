@@ -44,6 +44,12 @@ const xml = `<body>
         <label for="remember" class="optional">Remember Me</label>
       </div>
     </div>
+    <div class="form-field">
+      <input name="name0" label="Выберите услугу" type="text" value=""/>
+    </div>
+    <div class="form-field">
+      <input name="name1" label="Выберите услугу" type="text" value=""/>
+    </div>
   </fieldset>
   <label>Hello<a href="#">Please click</a></label>
   </div>
@@ -104,6 +110,15 @@ describe('Locator', () => {
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath());
+  });
+
+
+  it('should select child element by name', () => {
+    const l = Locator.build('.form-field')
+      .withDescendant(Locator.build('//input[@name="name1"]'));
+    const nodes = xpath.select(l.toXPath(), doc);
+
+    expect(nodes).to.have.length(1, l.toXPath());
   });
 
   it('should select element by siblings', () => {
