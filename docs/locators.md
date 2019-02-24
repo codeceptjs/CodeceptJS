@@ -137,6 +137,15 @@ Finds an element which contains a child element provided:
 locate('form').withChild('select');
 ```
 
+#### withDescendant
+
+Finds an element which contains a descendant element provided:
+
+```js
+// finds form with <select> which is the descendant it
+locate('form').withDescendant('select');
+```
+
 #### withText
 
 Finds element containing a text
