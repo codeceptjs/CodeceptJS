@@ -467,7 +467,7 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
+  describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
     it('should grab text from page', function* () {
       yield I.amOnPage('/');
       let val = yield I.grabTextFrom('h1');
@@ -483,6 +483,22 @@ module.exports.tests = function () {
       assert.equal(vals[1], 'Second');
       assert.equal(vals[2], 'Third');
     });
+
+    it('should grab html from page', function* () {
+      yield I.amOnPage('/info');
+      const val = yield I.grabHTMLFrom('#grab-multiple');
+      assert.equal(`
+    <a id="first-link">First</a>
+    <a id="second-link">Second</a>
+    <a id="third-link">Third</a>
+`, val);
+
+      const vals = yield I.grabHTMLFrom('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+    });
+
 
     it('should grab value from field', function* () {
       yield I.amOnPage('/form/hidden');
