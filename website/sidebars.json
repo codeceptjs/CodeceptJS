@@ -9,7 +9,8 @@
       "acceptance",
       "puppeteer",
       "angular",
-      "nightmare"
+      "nightmare",
+      "visual"
     ],
     "Mobile Testing": [
       "mobile"
@@ -22,6 +23,7 @@
       "bdd",
       "data",
       "hooks",
+      "reports",
       "advanced"
     ]
   },

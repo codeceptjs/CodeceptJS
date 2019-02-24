@@ -171,9 +171,9 @@ describe('WebDriver', function () {
       .then(() => wd.grabHTMLFrom('#area1'))
       .then(source => assert.deepEqual(
         source,
-        [`
+        `
     <a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>
-`],
+`,
       )));
   });
 
