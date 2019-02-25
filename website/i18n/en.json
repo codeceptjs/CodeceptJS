@@ -130,6 +130,9 @@
       },
       "video": {
         "title": "Tutorial Videos"
+      },
+      "visual": {
+        "title": "Visual Testing"
       }
     },
     "links": {

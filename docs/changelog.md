@@ -1,3 +1,32 @@
+## 2.0.5
+
+* Introduced [Custom Locator Strategies](https://codecept.io/locators#custom-locators).
+* Added [Visual Testing Guide](https://codecept.io/visual) by @puneet0191 and @MitkoTschimev.
+* [Puppeteer] [`puppeteerCoverage`](https://codecept.io/plugins#puppeteercoverage) plugin added to collect code coverage in JS. By @dvillarama
+* Make override option in `run-multiple` to respect the generated overridden config by @kinyat
+* Fixed deep merge for `container.append()`. Introduced `lodash.merge()`. By @Vorobeyko
+* Fixed saving screenshot on Windows by
+* Fix errors on using interactive shell with Allure plugin by tsuemura
+* Fixed using dynamic injections with `Scenario().injectDependencies` by @tsemura
+* [WebDriver][Puppeteer][Nightmare][Protractor] Fixed url protocol detection for non-http urls by @LukoyanovE
+* [WebDriver] Enabled compatibility with `stepByStepReport` by @tsuemura
+* [WebDriver] Fixed `grabHTMLFrom` to return innerHTML value by @Holorium. Fixed compatibility with WebDriverIO.
+* [WebDriver] `grabHTMLFrom` to return one HTML vlaue for one element matched, array if multiple elements found by @davertmik.
+* [Nightmare] Added `grabHTMLFrom` by @davertmik
+* Fixed `bootstrapAll` and `teardownAll` launch with path as argument by @LukoyanovE
+* Fixed `bootstrapAll` and `teardownAll` calls from exported object by @LukoyanovE
+* [WebDriver] Added possibility to define conditional checks interval for `waitUntil` by @LukoyanovE
+* Fixed storing current data in data driven tests in a test object. By @Vorobeyko
+* [WebDriver] Fixed `hostname` config option overwrite when setting a cloud provider. By @Vorobeyko
+* [WebDriver] `dragSlider` method implemented by @DavertMik
+* [WebDrover] Fixed `scrollTo` to use new webdriverio API by @PeterNgTr
+* Added Japanese translation file by @tsemura
+* Added `Locator.withDescendant()` method to find an element which contains a descendant (child, grandchild) by @Vorobeyko
+* [WebDriver] Fixed configuring capabilities for Selenoid and IE by @Vorobeyko
+* [WebDriver] Restore original window size when taking full size screenshot by @tsuemura
+* Enabled `throws()`,` fails()`, `retry()`, `timeout()`, `config()` functions for data driven tests. By @jjm409
+
+
 ## 2.0.4
 
 * [WebDriver][Protractor][Nightmare][Puppeteer] `grabAttributeFrom` returns an array when multiple elements matched. By @PeterNgTr
