@@ -270,7 +270,7 @@ Possible config options:
 
 -   `config`  
 
-## stepByStepReport
+## screenshotsForAllureReport
 
 ![step-by-step-report][2]
 
@@ -299,13 +299,10 @@ Possible config options:
 -   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 -   `output`: a directory where reports should be stored. Default: `output`.
--   `stepByStepAllure`: attaches each saved screenshot to allure report. Default: false
 
 ##### Allure Reports
 
-If Allure plugin is enabled this plugin attaches each saved screenshot to allure report when stepByStepAllure is set to true.
-
--   `stepByStepAllure`: attaches each saved screenshot to allure report. Default: false
+-   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
 
 ### Parameters
 
