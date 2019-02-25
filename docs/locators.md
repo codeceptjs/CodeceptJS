@@ -9,7 +9,7 @@ CodeceptJS provides flexible strategies for locating elements:
 * [Semantic locators](#semantic-locators): by link text, by button text, by field names, etc.
 * [Locator Builder](#locator-builder)
 * [ID locators](#id-locators): by CSS id or by accessibility id
-
+* [Custom Locator Strategies](#custom-locators): by data attributes or whatever you prefer.
 
 Most methods in CodeceptJS use locators which can be either a string or an object.
 
@@ -216,3 +216,52 @@ ID locators are best to select the exact semantic element in web and mobile test
 
 * `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
+
+## Custom Locators
+
+CodeceptJS allows to create custom locator strategies and use them in tests. This way you can define your own handling of elements using specially prepared attributes of elements.
+
+For instance, if you have site-wide policy of placing locators to data attribute `data-element` you can easily implement a strategy, which will allow you to use `{ data: 'my-element' }` as a valid locator.
+
+Custom locators should be implemented in a plugin or a bootstrap script using internal CodeceptJS API:
+
+```js
+// inside a plugin or a bootstrap script:
+codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
+  // providedLocator - a locator in a format it was provided
+  // locatorObj - a standrard locator object.
+    if (providedLocator.data) {
+      locatorObj.type = 'css';
+      locatorObj.value = `[data-element=${providedLocator.data}]`
+    }
+});
+```
+
+That's all. New locator type is ready to use:
+
+```js
+I.click({data: 'user-login'});
+```
+
+How about handling custom string locators? What if we want to locators prefixed with `=` to match elements with exact text value.
+We can do that too:
+
+```js
+// inside a plugin or a bootstrap script:
+codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
+    if (typeof providedLocator === 'string') {
+      // this is a string
+      if (providedLocator[0] === '=') {
+        locatorObj.value = `.//*[text()="${providedLocator.substring(1)}"]`;
+        locatorObj.type = 'xpath';
+      }
+    }
+});
+```
+New locator strategy is ready to use:
+
+```js
+I.click('=Login');
+```
+
+> For more details on locator object see [Locator](https://github.com/Codeception/CodeceptJS/blob/master/lib/locator.js) class implementation.

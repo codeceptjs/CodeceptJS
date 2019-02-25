@@ -59,10 +59,18 @@ Scenario('editing a metric', async (I, loginAs, metricPage) => {
 });
 ```
 
+## Refactoring and PageObjects
 
+When a project is growing and more and more tests are required, it's time to think about reusing test code accoross the tests. Some common actions should be moved from tests to other files so to be accessible from different tests.
 
+Here is a recommended strategy what to store where:
 
+* Move site-wide actions into an **Actor** file (`custom_steps.js` file). Such actions like `login`, using site-wide common controls, like drop-downs, rich text editors, calendars.
+* Move page-based actions and selectors into **Page Object**. All acitivities made on that page can go into methods of page object. If you test Single Page Application a PageObject should represent a screen of your application.
+* When site-wide widgets are used, interactions with them should be placed in **Page Fragments**. This should be applied to global navigation, modals, widgets.
+* A custom action that require some low-level driver access, should be placed into a **Helper**. For instance, database connections, complex mouse actions, email testing, filesystem, services access.
 
+> [Learn more](https://codecept.io/pageobjects) about different refactoring options
 
-
+However, it's recommended to not overengineer and keep tests simple. If a test code doesn't require reusage at this point it should not be transformed to use page objects.
 

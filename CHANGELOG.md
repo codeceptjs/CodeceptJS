@@ -1,5 +1,6 @@
 ## 2.0.5
 
+* Introduced [Custom Locator Strategies](https://codecept.io/locators#custom-locators).
 * Added [Visual Testing Guide](https://codecept.io/visual) by @puneet0191 and @MitkoTschimev.
 * [Puppeteer] [`puppeteerCoverage`](https://codecept.io/plugins#puppeteercoverage) plugin added to collect code coverage in JS. By @dvillarama
 * Make override option in `run-multiple` to respect the generated overridden config by @kinyat
