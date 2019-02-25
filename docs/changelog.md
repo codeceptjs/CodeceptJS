@@ -1,4 +1,4 @@
-## 2.0.5
+## 2.0.6
 
 * Introduced [Custom Locator Strategies](https://codecept.io/locators#custom-locators).
 * Added [Visual Testing Guide](https://codecept.io/visual) by @puneet0191 and @MitkoTschimev.
@@ -26,6 +26,9 @@
 * [WebDriver] Restore original window size when taking full size screenshot by @tsuemura
 * Enabled `throws()`,` fails()`, `retry()`, `timeout()`, `config()` functions for data driven tests. By @jjm409
 
+## 2.0.5
+
+[Broken Release]
 
 ## 2.0.4
 
