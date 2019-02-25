@@ -245,15 +245,6 @@ plugins: {
 
 -   `config`  
 
-## on
-
-Hack!  we're going to try to "start" coverage before each step because this is
- when the browser is already up and is ready to start coverage.
-
-## on
-
-Save puppeteer coverage data after every test run
-
 ## puppeteerCoverage
 
 Dumps puppeteers code coverage after every test.
