@@ -422,6 +422,20 @@ let har = await I.grabHAR();
 fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 ```
 
+### grabHTMLFrom
+
+Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - an array of HTMLs returned.
+
+```js
+let postHTML = await I.grabHTMLFrom('#post');
+```
+
+#### Parameters
+
+-   `locator`  element located by CSS|XPath|strict locator.
+
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.

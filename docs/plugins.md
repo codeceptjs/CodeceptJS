@@ -120,7 +120,15 @@ Scenario('log me in', (I, login) => {
     -   `login` - sign in into the system
     -   `check` - check that user is logged in
     -   `fetch` - to get current cookies (by default `I.grabCookie()`)
-    -   `load` - to set cookies (by default `I.setCookie(cookie)`)
+    -   `restore` - to set cookies (by default `I.amOnPage('/'); I.setCookie(cookie)`)
+
+#### How It Works
+
+1.  `restore` method is executed. It should open a page and set credentials.
+2.  `check` method is executed. It should reload a page (so cookies are applied) and check that this page belongs to logged in user.
+3.  If `restore` and `check` were not successful, `login` is executed
+4.  `login` should fill in login form
+5.  After successful login, `fetch` is executed to save cookies into memory or file.
 
 #### Example: Simple login
 
@@ -134,11 +142,10 @@ autoLogin: {
       // loginAdmin function is defined in `steps_file.js`
       login: (I) => I.loginAdmin(),
       // if we see `Admin` on page, we assume we are logged in
-      check: (I) => I.see('Admin'),
-      // we take all cookies from a browser
-      fetch: I => I.grabCookie(),
-      // we set all available cookies to restore session
-      restore: (I, cookie) => I.setCookie(cookie)
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('Admin');
+      }
     }
   }
 }
@@ -159,7 +166,10 @@ autoLogin: {
          I.fillField('password', '123456');
          I.click('Login');
       }
-      check: (I) => I.see('User', '.navbar'),
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('User', '.navbar');
+      }
     },
     admin: {
       login: (I) => {
@@ -168,7 +178,9 @@ autoLogin: {
          I.fillField('password', '123456');
          I.click('Login');
       }
-      check: (I) => I.see('Admin', '.navbar'),
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('Admin', '.navbar'),
     },
   }
 }
@@ -196,13 +208,86 @@ plugins: {
          I.fillField('password', '123456');
          I.click('Login');
       }
-      check: (I) => I.see('Admin', '.navbar'),
+      check: (I) => {
+         I.amOnPage('/dashboard');
+         I.see('Admin', '.navbar');
+      },
       fetch: () => {}, // empty function
       restore: () => {}, // empty funciton
     }
   }
 }
 ```
+
+#### Example: Getting sessions from local storage
+
+If your session is stored in local storage instead of cookies you still can obtain sessions.
+
+```js
+plugins: {
+   autoLogin: {
+    admin: {
+      login: (I) => I.loginAsAdmin(),
+      check: (I) => I.see('Admin', '.navbar');
+      fetch: (I) => {
+        return I.executeScript(() => localStorage.getItem('session_id'));
+      },
+      restore: (I, session) => {
+        I.amOnPage('/');
+        I.executeScript(() => localStorage.setItem('session_id', session), session);
+      },
+    }
+  }
+}
+```
+
+### Parameters
+
+-   `config`  
+
+## on
+
+Hack!  we're going to try to "start" coverage before each step because this is
+ when the browser is already up and is ready to start coverage.
+
+## on
+
+Save puppeteer coverage data after every test run
+
+## puppeteerCoverage
+
+Dumps puppeteers code coverage after every test.
+
+##### Configuration
+
+Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
+
+```js
+"plugins": {
+   "puppeteerCoverage": {
+     "enabled": true
+   }
+}
+```
+
+Possible config options:
+
+-   `outputDir`: directory to dump coverage files
+-   `uniqueFileName`: generate a unique filename by adding uuid
+
+    First of all, your mileage may vary!
+
+    To work, you need the client javascript code to be NOT uglified. They need to be built in "development" mode.
+    And the end of your tests, you'll get a directory full of coverage per test run.  Now what?
+    You'll need to convert the coverage code to something istanbul can read.  Good news is someone wrote the code
+    for you (see puppeteer-to-istanbul link below).  Then using istanbul you need to combine the converted
+    coverage and create a report.  Good luck!
+
+    Links:
+
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][2]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][3]
+-   [https://github.com/gotwarlost/istanbul][4]
 
 ### Parameters
 
@@ -272,7 +357,7 @@ Possible config options:
 
 ## stepByStepReport
 
-![step-by-step-report][2]
+![step-by-step-report][5]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -310,4 +395,10 @@ If Allure plugin is enabled this plugin attaches each saved screenshot to allure
 
 [1]: https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png
 
-[2]: https://codecept.io/img/codeceptjs-slideshow.gif
+[2]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+
+[3]: https://github.com/istanbuljs/puppeteer-to-istanbul
+
+[4]: https://github.com/gotwarlost/istanbul
+
+[5]: https://codecept.io/img/codeceptjs-slideshow.gif
