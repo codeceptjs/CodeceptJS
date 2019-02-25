@@ -12,7 +12,7 @@ const xml = `<body>
   <p>
     <span></span>
     <div></div>
-    <div id="user">davert</div>
+    <div id="user" data-element="name">davert</div>
   </p>
   <div class="form-wrapper" id="buttons-wrapper">
   <fieldset id="fieldset-buttons">
@@ -146,5 +146,36 @@ describe('Locator', () => {
       .find('td')
       .as('cell');
     expect(l.toString()).to.eql('cell');
+  });
+
+  it('should be able to add custom locator strategy', () => {
+    Locator.addFilter((selector, locator) => {
+      if (selector.data) {
+        locator.type = 'css';
+        locator.value = `[data-element=${locator.value}]`;
+      }
+    });
+    const l = Locator.build({ data: 'name' });
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes[0].firstChild.data).to.eql('davert', l.toXPath());
+    Locator.filters = [];
+  });
+
+  it('should be able to add custom locator strategy', () => {
+    Locator.addFilter((providedLocator, locator) => {
+      if (typeof providedLocator === 'string') {
+        // this is a string
+        if (providedLocator[0] === '=') {
+          locator.value = `.//*[text()='${providedLocator.substring(1)}']`;
+          locator.type = 'xpath';
+        }
+      }
+    });
+    const l = Locator.build('=Sign In');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes[0].firstChild.data).to.eql('Sign In', l.toXPath());
+    Locator.filters = [];
   });
 });
