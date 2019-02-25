@@ -122,9 +122,17 @@ If a session expires automatically logs in again.</p>
 <li><code>login</code> - sign in into the system</li>
 <li><code>check</code> - check that user is logged in</li>
 <li><code>fetch</code> - to get current cookies (by default <code>I.grabCookie()</code>)</li>
-<li><code>load</code> - to set cookies (by default <code>I.setCookie(cookie)</code>)</li>
+<li><code>restore</code> - to set cookies (by default <code>I.amOnPage('/'); I.setCookie(cookie)</code>)</li>
 </ul></li>
 </ul>
+<h4><a class="anchor" aria-hidden="true" id="how-it-works"></a><a href="#how-it-works" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h4>
+<ol>
+<li><code>restore</code> method is executed. It should open a page and set credentials.</li>
+<li><code>check</code> method is executed. It should reload a page (so cookies are applied) and check that this page belongs to logged in user.</li>
+<li>If <code>restore</code> and <code>check</code> were not successful, <code>login</code> is executed</li>
+<li><code>login</code> should fill in login form</li>
+<li>After successful login, <code>fetch</code> is executed to save cookies into memory or file.</li>
+</ol>
 <h4><a class="anchor" aria-hidden="true" id="example-simple-login"></a><a href="#example-simple-login" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example: Simple login</h4>
 <pre><code class="hljs css language-js">autoLogin: {
   <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
@@ -135,11 +143,10 @@ If a session expires automatically logs in again.</p>
       <span class="hljs-comment">// loginAdmin function is defined in `steps_file.js`</span>
       login: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.loginAdmin(),
       <span class="hljs-comment">// if we see `Admin` on page, we assume we are logged in</span>
-      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>),
-      <span class="hljs-comment">// we take all cookies from a browser</span>
-      fetch: <span class="hljs-function"><span class="hljs-params">I</span> =&gt;</span> <span class="hljs-built_in">I</span>.grabCookie(),
-      <span class="hljs-comment">// we set all available cookies to restore session</span>
-      restore: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span>, cookie</span>) =&gt;</span> <span class="hljs-built_in">I</span>.setCookie(cookie)
+      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+         <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+         <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>);
+      }
     }
   }
 }
@@ -157,7 +164,10 @@ If a session expires automatically logs in again.</p>
          <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, <span class="hljs-string">'123456'</span>);
          <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
       }
-      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'User'</span>, <span class="hljs-string">'.navbar'</span>),
+      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+         <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+         <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'User'</span>, <span class="hljs-string">'.navbar'</span>);
+      }
     },
     <span class="hljs-attr">admin</span>: {
       <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
@@ -166,7 +176,9 @@ If a session expires automatically logs in again.</p>
          <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, <span class="hljs-string">'123456'</span>);
          <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
       }
-      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>, <span class="hljs-string">'.navbar'</span>),
+      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+         <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+         <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>, <span class="hljs-string">'.navbar'</span>),
     },
   }
 }
@@ -190,14 +202,69 @@ For this case, disable <code>fetch</code> and <code>restore</code> methods.</p>
          <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, <span class="hljs-string">'123456'</span>);
          <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
       }
-      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>, <span class="hljs-string">'.navbar'</span>),
+      check: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+         <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/dashboard'</span>);
+         <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>, <span class="hljs-string">'.navbar'</span>);
+      },
       <span class="hljs-attr">fetch</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {}, <span class="hljs-comment">// empty function</span>
       restore: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {}, <span class="hljs-comment">// empty funciton</span>
     }
   }
 }
 </code></pre>
+<h4><a class="anchor" aria-hidden="true" id="example-getting-sessions-from-local-storage"></a><a href="#example-getting-sessions-from-local-storage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example: Getting sessions from local storage</h4>
+<p>If your session is stored in local storage instead of cookies you still can obtain sessions.</p>
+<pre><code class="hljs css language-js">plugins: {
+   <span class="hljs-attr">autoLogin</span>: {
+    <span class="hljs-attr">admin</span>: {
+      <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.loginAsAdmin(),
+      <span class="hljs-attr">check</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Admin'</span>, <span class="hljs-string">'.navbar'</span>);
+      fetch: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">I</span>.executeScript(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> localStorage.getItem(<span class="hljs-string">'session_id'</span>));
+      },
+      <span class="hljs-attr">restore</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span>, <span class="hljs-built_in">session</span></span>) =&gt;</span> {
+        <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+        <span class="hljs-built_in">I</span>.executeScript(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> localStorage.setItem(<span class="hljs-string">'session_id'</span>, <span class="hljs-built_in">session</span>), <span class="hljs-built_in">session</span>);
+      },
+    }
+  }
+}
+</code></pre>
 <h3><a class="anchor" aria-hidden="true" id="parameters-2"></a><a href="#parameters-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
+<ul>
+<li><code>config</code></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="on"></a><a href="#on" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>on</h2>
+<p>Hack!  we're going to try to &quot;start&quot; coverage before each step because this is
+when the browser is already up and is ready to start coverage.</p>
+<h2><a class="anchor" aria-hidden="true" id="on-1"></a><a href="#on-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>on</h2>
+<p>Save puppeteer coverage data after every test run</p>
+<h2><a class="anchor" aria-hidden="true" id="puppeteercoverage"></a><a href="#puppeteercoverage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>puppeteerCoverage</h2>
+<p>Dumps puppeteers code coverage after every test.</p>
+<h5><a class="anchor" aria-hidden="true" id="configuration-3"></a><a href="#configuration-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h5>
+<p>Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).</p>
+<pre><code class="hljs css language-js"><span class="hljs-string">"plugins"</span>: {
+   <span class="hljs-string">"puppeteerCoverage"</span>: {
+     <span class="hljs-string">"enabled"</span>: <span class="hljs-literal">true</span>
+   }
+}
+</code></pre>
+<p>Possible config options:</p>
+<ul>
+<li><p><code>outputDir</code>: directory to dump coverage files</p></li>
+<li><p><code>uniqueFileName</code>: generate a unique filename by adding uuid</p>
+<p>First of all, your mileage may vary!</p>
+<p>To work, you need the client javascript code to be NOT uglified. They need to be built in &quot;development&quot; mode.
+And the end of your tests, you'll get a directory full of coverage per test run.  Now what?
+You'll need to convert the coverage code to something istanbul can read.  Good news is someone wrote the code
+for you (see puppeteer-to-istanbul link below).  Then using istanbul you need to combine the converted
+coverage and create a report.  Good luck!</p>
+<p>Links:</p></li>
+<li><p><a href="https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage">https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage</a></p></li>
+<li><p><a href="https://github.com/istanbuljs/puppeteer-to-istanbul">https://github.com/istanbuljs/puppeteer-to-istanbul</a></p></li>
+<li><p><a href="https://github.com/gotwarlost/istanbul">https://github.com/gotwarlost/istanbul</a></p></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="parameters-3"></a><a href="#parameters-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
 <ul>
 <li><code>config</code></li>
 </ul>
@@ -213,7 +280,7 @@ For this case, disable <code>fetch</code> and <code>restore</code> methods.</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code class="hljs">codeceptjs run --plugins retryFailedStep
 </code></pre>
-<h5><a class="anchor" aria-hidden="true" id="configuration-3"></a><a href="#configuration-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration:</h5>
+<h5><a class="anchor" aria-hidden="true" id="configuration-4"></a><a href="#configuration-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration:</h5>
 <ul>
 <li><code>retries</code> - number of retries (by default 5),</li>
 <li><code>when</code> - function, when to perform a retry (accepts error as parameter)</li>
@@ -223,7 +290,7 @@ For this case, disable <code>fetch</code> and <code>restore</code> methods.</p>
 <li><code>randomize</code> - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.</li>
 </ul>
 <p>This plugin is very basic so it's recommended to improve it to match your custom needs.</p>
-<h3><a class="anchor" aria-hidden="true" id="parameters-3"></a><a href="#parameters-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
+<h3><a class="anchor" aria-hidden="true" id="parameters-4"></a><a href="#parameters-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
 <ul>
 <li><code>config</code></li>
 </ul>
@@ -231,7 +298,7 @@ For this case, disable <code>fetch</code> and <code>restore</code> methods.</p>
 <p>Creates screenshot on failure. Screenshot is saved into <code>output</code> directory.</p>
 <p>Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4</p>
 <p>This plugin is <strong>enabled by default</strong>.</p>
-<h5><a class="anchor" aria-hidden="true" id="configuration-4"></a><a href="#configuration-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h5>
+<h5><a class="anchor" aria-hidden="true" id="configuration-5"></a><a href="#configuration-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h5>
 <p>Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).</p>
 <pre><code class="hljs css language-js"><span class="hljs-string">"plugins"</span>: {
    <span class="hljs-string">"screenshotOnFail"</span>: {
@@ -244,7 +311,7 @@ For this case, disable <code>fetch</code> and <code>restore</code> methods.</p>
 <li><code>uniqueScreenshotNames</code>: use unique names for screenshot. Default: false.</li>
 <li><code>fullPageScreenshots</code>: make full page screenshots. Default: false.</li>
 </ul>
-<h3><a class="anchor" aria-hidden="true" id="parameters-4"></a><a href="#parameters-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
+<h3><a class="anchor" aria-hidden="true" id="parameters-5"></a><a href="#parameters-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
 <ul>
 <li><code>config</code></li>
 </ul>
@@ -256,7 +323,7 @@ By default, reports are generated only for failed tests.</p>
 <p>Run tests with plugin enabled:</p>
 <pre><code class="hljs">codeceptjs run --plugins stepByStepReport
 </code></pre>
-<h5><a class="anchor" aria-hidden="true" id="configuration-5"></a><a href="#configuration-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h5>
+<h5><a class="anchor" aria-hidden="true" id="configuration-6"></a><a href="#configuration-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h5>
 <pre><code class="hljs css language-js"><span class="hljs-string">"plugins"</span>: {
    <span class="hljs-string">"stepByStepReport"</span>: {
      <span class="hljs-string">"enabled"</span>: <span class="hljs-literal">true</span>
@@ -273,11 +340,11 @@ By default, reports are generated only for failed tests.</p>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="allure-reports"></a><a href="#allure-reports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Allure Reports</h5>
 <p>If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.</p>
-<h3><a class="anchor" aria-hidden="true" id="parameters-5"></a><a href="#parameters-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
+<h3><a class="anchor" aria-hidden="true" id="parameters-6"></a><a href="#parameters-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
 <ul>
 <li><code>config</code> <strong>any</strong></li>
 </ul>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-11</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/configuration"><span class="arrow-prev">← </span><span>Configuration</span></a><a class="docs-next button" href="/docker"><span>Docker</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#allure">allure</a><ul class="toc-headings"><li><a href="#parameters">Parameters</a></li></ul></li><li><a href="#autodelay">autoDelay</a><ul class="toc-headings"><li><a href="#parameters-1">Parameters</a></li></ul></li><li><a href="#autologin">autoLogin</a><ul class="toc-headings"><li><a href="#parameters-2">Parameters</a></li></ul></li><li><a href="#retryfailedstep">retryFailedStep</a><ul class="toc-headings"><li><a href="#parameters-3">Parameters</a></li></ul></li><li><a href="#screenshotonfail">screenshotOnFail</a><ul class="toc-headings"><li><a href="#parameters-4">Parameters</a></li></ul></li><li><a href="#stepbystepreport">stepByStepReport</a><ul class="toc-headings"><li><a href="#parameters-5">Parameters</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-2-25</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/configuration"><span class="arrow-prev">← </span><span>Configuration</span></a><a class="docs-next button" href="/docker"><span>Docker</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#allure">allure</a><ul class="toc-headings"><li><a href="#parameters">Parameters</a></li></ul></li><li><a href="#autodelay">autoDelay</a><ul class="toc-headings"><li><a href="#parameters-1">Parameters</a></li></ul></li><li><a href="#autologin">autoLogin</a><ul class="toc-headings"><li><a href="#parameters-2">Parameters</a></li></ul></li><li><a href="#on">on</a></li><li><a href="#on-1">on</a></li><li><a href="#puppeteercoverage">puppeteerCoverage</a><ul class="toc-headings"><li><a href="#parameters-3">Parameters</a></li></ul></li><li><a href="#retryfailedstep">retryFailedStep</a><ul class="toc-headings"><li><a href="#parameters-4">Parameters</a></li></ul></li><li><a href="#screenshotonfail">screenshotOnFail</a><ul class="toc-headings"><li><a href="#parameters-5">Parameters</a></li></ul></li><li><a href="#stepbystepreport">stepByStepReport</a><ul class="toc-headings"><li><a href="#parameters-6">Parameters</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

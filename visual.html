@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Visual Testing · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;How does one test if the UI being rendered appears correctly to the users or how to test if each UI element appears in the right position and size? The traditional way to test the UI of the application has always been manually, which is time consuming.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Visual Testing · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;p&gt;How does one test if the UI being rendered appears correctly to the users or how to test if each UI element appears in the right position and size? The traditional way to test the UI of the application has always been manually, which is time consuming.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class="siteNavGroupActive"><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">Reference</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class=""><a href="https://codecept.discourse.group" target="_self">Forum</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Web Testing</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Quickstart</h3><ul><li class="navListItem"><a class="navItem" href="/quickstart">Quickstart</a></li><li class="navListItem"><a class="navItem" href="/basics">Basics</a></li><li class="navListItem"><a class="navItem" href="/video">Tutorial Videos</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Web Testing</h3><ul><li class="navListItem"><a class="navItem" href="/acceptance">Acceptance Testing</a></li><li class="navListItem"><a class="navItem" href="/puppeteer">Testing with Puppeteer</a></li><li class="navListItem"><a class="navItem" href="/angular">Testing with Protractor</a></li><li class="navListItem"><a class="navItem" href="/nightmare">Testing with Nightmare</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/visual">Visual Testing</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Mobile Testing</h3><ul><li class="navListItem"><a class="navItem" href="/mobile">Mobile Testing with Appium</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Organizing Tests</h3><ul><li class="navListItem"><a class="navItem" href="/best">Best Practices</a></li><li class="navListItem"><a class="navItem" href="/locators">Locators</a></li><li class="navListItem"><a class="navItem" href="/pageobjects">Reusing Code with Page Objects</a></li><li class="navListItem"><a class="navItem" href="/helpers">Custom Helpers</a></li><li class="navListItem"><a class="navItem" href="/bdd">Behavior Driven Development</a></li><li class="navListItem"><a class="navItem" href="/data">Data Management</a></li><li class="navListItem"><a class="navItem" href="/hooks">Bootstrap / Teardown / Plugins</a></li><li class="navListItem"><a class="navItem" href="/advanced">Advanced Usage</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/visual.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Visual Testing</h1></header><article><div><span><p>How does one test if the UI being rendered appears correctly to the users or how to test if each UI element appears in the right position and size? The traditional way to test the UI of the application has always been manually, which is time consuming.</p>
+<p>Visual testing with help of CodeceptJS will help in improving such use cases for the QA folks.</p>
+<p>By default CodeceptJS uses <a href="/helpers/WebDriver/">WebDriver</a> helper and <strong>Selenium</strong> to automate browser. It is also capable of taking screenshots of the application and this could be used for visual testing.</p>
+<p>Currently there are two helpers available for Visual testing with CodeceptJS</p>
+<h2><a class="anchor" aria-hidden="true" id="using-resemble-helper"></a><a href="#using-resemble-helper" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Resemble helper</h2>
+<p><a href="https://github.com/rsmbl/Resemble.js">Resemble.js</a> is a great tool for image comparison and analysis, which can be used with CodeceptJS</p>
+<h3><a class="anchor" aria-hidden="true" id="setup"></a><a href="#setup" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup</h3>
+<p>To install the package, just run</p>
+<pre><code class="hljs">npm install codeceptjs-resemblehelper --save
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="configuring"></a><a href="#configuring" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuring</h3>
+<p>This helper should be added to <code>codecept.conf.js</code> config file.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-json">{
+   <span class="hljs-attr">"helpers"</span>: {
+     <span class="hljs-attr">"ResembleHelper"</span> : {
+       <span class="hljs-attr">"require"</span>: <span class="hljs-string">"codeceptjs-resemblehelper"</span>,
+       <span class="hljs-attr">"screenshotFolder"</span> : <span class="hljs-string">"./tests/output/"</span>,
+       <span class="hljs-attr">"baseFolder"</span>: <span class="hljs-string">"./tests/screenshots/base/"</span>,
+       <span class="hljs-attr">"diffFolder"</span>: <span class="hljs-string">"./tests/screenshots/diff/"</span>
+     }
+   }
+}
+</code></pre>
+<p>To use the Helper, users must provide the three parameters:</p>
+<ul>
+<li><code>screenshotFolder</code> : This will always have the same value as <code>output</code> in Codecept configuration, this is the folder where webdriverIO
+saves a screenshot when using <code>I.saveScreenshot</code> method</li>
+<li><code>baseFolder</code>: This is the folder for base images, which will be used with screenshot for comparison</li>
+<li><code>diffFolder</code>: This will the folder where resemble would try to store the difference image, which can be viewed later.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h3>
+<p>Details about the helper can be found on the <a href="https://github.com/puneet0191/codeceptjs-resemblehelper">Github Repo</a></p>
+<p>Base Image is compared with the screenshot image and test results are derived based on the <code>mismatch tolerance</code> level provided by the user for the comparison</p>
+<h3><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+<p>Lets consider visual testing for <a href="http://codecept.io">CodeceptJS Home</a></p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'To test screen comparison with resemble Js Example test'</span>);
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'Compare CodeceptIO Home Page @visual-test'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>, adminPage) =&gt; {
+    <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">"/"</span>);
+    <span class="hljs-built_in">I</span>.saveScreenshot(<span class="hljs-string">"Codecept_IO_Screenshot_Image.png"</span>);
+    <span class="hljs-built_in">I</span>.seeVisualDiff(<span class="hljs-string">"Codecept_IO_Screenshot_Image.png"</span>, {<span class="hljs-attr">tolerance</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">prepareBaseImage</span>: <span class="hljs-literal">false</span>});
+});
+</code></pre>
+<p>In this example, we are setting the expected mismatch tolerance level as <code>2</code></p>
+<p><code>Base Image</code> (Generated by User)
+<img src="images/Codecept_IO_Base_Image.png" alt="Base Image"></p>
+<p><code>Screenshot Image</code> (Generated by Test)
+<img src="images/Codecept_IO_Screenshot_Image.png" alt="Screenshot Image"></p>
+<p>Clearly the difference in both the images visible to human eye is the section about <code>Scenario Driven</code></p>
+<p><img src="images/difference_Image_Codecept_Home.png" alt="Difference Image"></p>
+<p><code>Diff Image</code> generated by the helper clearly highlights the section which don't match</p>
+<p><img src="images/Difference%20Image%20Focus.png" alt="Highlight"></p>
+<p><code>Failed Test output</code></p>
+<pre><code class="hljs">To test screen comparison <span class="hljs-keyword">with</span> resemble Js Example test --
+  Compare CodeceptIO Home Page @visual-test
+    <span class="hljs-built_in">I</span> see Visual Diff <span class="hljs-string">"Codecept_IO_Screenshot_Image.png"</span>, {<span class="hljs-attr">tolerance</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">prepareBaseImage</span>: <span class="hljs-literal">false</span>}
+MisMatch Percentage Calculated is <span class="hljs-number">2.85</span>
+  ✖ FAILED <span class="hljs-keyword">in</span> <span class="hljs-number">418</span>ms
+
+
+-- FAILURES:
+
+  <span class="hljs-number">1</span>) To test screen comparison <span class="hljs-keyword">with</span> resemble Js Example test
+       Compare CodeceptIO Home Page @visual-test:
+
+      MissMatch Percentage <span class="hljs-number">2.85</span>
+      + expected - actual
+
+      -<span class="hljs-literal">false</span>
+      +<span class="hljs-literal">true</span>
+</code></pre>
+<p><code>Codeceptjs-resemblehelper</code> basically comes with two major functions</p>
+<ol>
+<li><code>seeVisualDiff</code> which can be used to compare two images and calculate the misMatch percentage.</li>
+<li><code>seeVisualDiffForElement</code> which can be used to compare elements on the two images and calculate misMatch percentage.</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="using-visual-knight"></a><a href="#using-visual-knight" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Visual Knight</h2>
+<p>Visual Knight is a SaaS product which strongly supports CodeceptJS with multiple use cases. It provides an user interface to handle mismatches, statistics and more. It was designed to support Designer, Product Owner and other roles which are not familiar with coding and all this tools. All captured images are saved in a secure cloud system to not mess up your git repository.</p>
+<h3><a class="anchor" aria-hidden="true" id="setup-1"></a><a href="#setup-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup</h3>
+<p>Create an account at <a href="https://www.visual-knight.io">Visual Knight</a> and install the npm package</p>
+<pre><code class="hljs">npm install @visual-knight/codeceptjs -D
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="configuring-1"></a><a href="#configuring-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuring</h3>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"helpers"</span>: {
+        <span class="hljs-attr">"VisualKnight"</span>: {
+            <span class="hljs-attr">"require"</span>: <span class="hljs-string">"@visual-knight/codeceptjs"</span>,
+            <span class="hljs-attr">"key"</span>: <span class="hljs-string">"YOUR_API_KEY"</span>,
+            <span class="hljs-attr">"project"</span>: <span class="hljs-string">"YOUR_PROJECT_ID OR PROJECT_NAME"</span>
+        }
+    }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="usage-1"></a><a href="#usage-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h3>
+<pre><code class="hljs css language-javascript"><span class="hljs-comment">/**
+ * @param testName {string} Is provided to visual knight (must be unique)
+ * @param options {ScreenshotOptions} Contains additional settings
+ */</span>
+<span class="hljs-built_in">I</span>.compareFullpageScreenshot(testName, options)
+<span class="hljs-comment">/**
+ * @param testName {string} Is provided to visual knight (must be unique)
+ * @param options {ScreenshotOptions} Contains additional settings
+ */</span>
+<span class="hljs-built_in">I</span>.compareViewportScreenshot(testName, options)
+<span class="hljs-comment">/**
+ * @param cssSelector {string} Is provided to visual knight
+ * @param testName {string} Is provided to visual knight (must be unique)
+ * @param options {ScreenshotOptions} Contains additional settings
+ */</span>
+<span class="hljs-built_in">I</span>.compareElementScreenshot(cssSelector, testName, options)
+
+<span class="hljs-comment">/*
+ScreenshotOptions {
+  hide?: string[] // Array of css selectors which gets hidden by "opacity: 0",
+  remove?: string[] // Array of css selectors which gets hidden by "display: none",
+  additional?: object // Data is saved as relation to the variation. (Future: can be used for filtering)
+}
+*/</span>
+</code></pre>
+<blockquote>
+<p>You can find the latest documentation here <a href="https://doc.visual-knight.io/adapters/codeceptjs">CodeceptJS helper page</a></p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="example-1"></a><a href="#example-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+<p>Lets consider visual testing for <a href="http://codecept.io">CodeceptJS Home</a></p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'To test screen comparison with Visual Knight Example test'</span>);
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'Compare CodeceptIO Home Page @visual-test'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>, adminPage) =&gt; {
+    <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">"/"</span>);
+    <span class="hljs-built_in">I</span>.compareFullpageScreenshot(<span class="hljs-string">"CodeceptIO Home Page"</span>)
+});
+</code></pre>
+<p>Depending of your configuration this test will fail if no baseline exists and log the link to the image to accept or automatically accept the first run as baseline.</p>
+<blockquote>
+<p>You can accept the first image as baseline automatically via <code>autoBaseline: true</code> <em>default is false</em></p>
+</blockquote>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-2-25</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/nightmare"><span class="arrow-prev">← </span><span>Testing with Nightmare</span></a><a class="docs-next button" href="/mobile"><span>Mobile Testing with Appium</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#using-resemble-helper">Using Resemble helper</a><ul class="toc-headings"><li><a href="#setup">Setup</a></li><li><a href="#configuring">Configuring</a></li><li><a href="#usage">Usage</a></li><li><a href="#example">Example</a></li></ul></li><li><a href="#using-visual-knight">Using Visual Knight</a><ul class="toc-headings"><li><a href="#setup-1">Setup</a></li><li><a href="#configuring-1">Configuring</a></li><li><a href="#usage-1">Usage</a></li><li><a href="#example-1">Example</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

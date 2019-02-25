@@ -52,4 +52,5 @@
 <url> <loc>https://codecept.io/reporters</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/reporters" /> </url>
 <url> <loc>https://codecept.io/translation</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/translation" /> </url>
 <url> <loc>https://codecept.io/video</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/video" /> </url>
+<url> <loc>https://codecept.io/visual</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/visual" /> </url>
 </urlset>
