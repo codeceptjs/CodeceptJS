@@ -225,6 +225,30 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#rightClick', () => {
+    it('it should rightClick', function* () {
+      yield I.amOnPage('/form/rightclick');
+      yield I.dontSee('right clicked');
+      yield I.rightClick('Lorem Ipsum');
+      return I.see('right clicked');
+    });
+
+    it('it should rightClick by locator', function* () {
+      yield I.amOnPage('/form/rightclick');
+      yield I.dontSee('right clicked');
+      yield I.rightClick('.context a');
+      return I.see('right clicked');
+    });
+
+    it('it should rightClick by locator and context', function* () {
+      yield I.amOnPage('/form/rightclick');
+      yield I.dontSee('right clicked');
+      yield I.rightClick('Lorem Ipsum', '.context');
+      return I.see('right clicked');
+    });
+  });
+
+
   describe('#checkOption', () => {
     it('should check option by css', function* () {
       yield I.amOnPage('/form/checkbox');
