@@ -346,7 +346,7 @@ Possible config options:
 
 -   `config`  
 
-## stepByStepReport
+## screenshotsForAllureReport
 
 ![step-by-step-report][5]
 
@@ -378,7 +378,7 @@ Possible config options:
 
 ##### Allure Reports
 
-If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.
+-   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
 
 ### Parameters
 
