@@ -174,10 +174,10 @@ class Index extends React.Component {
     </div>
   </div>
   <div className="row">
-      <h2 className="col-12 text-center m-2">Follow for Updates &nbsp;
+      <h3 className="col-12 text-center m-2 text-muted">Follow for updates &nbsp;
         <a href="https://twitter.com/CodeceptJS"><i className="fab fa-twitter"></i></a> &nbsp;
         <a href="https://github.com/Codeception/CodeceptJS"><i className="fab fa-github"></i></a>
-        </h2>
+        </h3>
   </div>
   </div>
 </div>);
