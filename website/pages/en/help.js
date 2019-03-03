@@ -32,7 +32,7 @@ function Help(props) {
       title: 'Discussion Board',
     },
     {
-      content: `[Do you want to chat? Come to us!](${slackUrl}) Please be polite, try not just to ask but to help others. Also we have dedicated channels for each of driver helpers in CodeceptJS.`,
+      content: `[Do you want to chat? Come to us!](${slackUrl}) Please be polite, try not just to ask but to help others`,
       title: 'Join our Slack',
     },
     {
