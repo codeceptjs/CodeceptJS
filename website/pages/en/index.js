@@ -28,8 +28,6 @@ class Index extends React.Component {
 
   <a href="/quickstart" className="btn btn-danger btn-lg install-label">Quickstart &raquo;</a>
 
-  <div className="mt-3 text-muted">No coding skills? That's fine! Get your tests automated with <a href="https://easytesting.io"><b>EasyTesting.io</b></a></div>
-
 </div>
 
 <div className="container page">
@@ -59,7 +57,7 @@ class Index extends React.Component {
     <div className="col-md-4">
       <img src="/img/Prism-3.svg" alt="" />
       <h5>Rich Locators</h5>
-      Use semantic locators, CSS, or XPath to find elements on page.
+      Use semantic locators, CSS, XPath to find elements on page
       <a href="/locators" className="btn btn-light btn-sm">Learn More</a>
     </div>
 
@@ -92,7 +90,7 @@ class Index extends React.Component {
       <img src="/img/Prism-3.svg" style={{filter: 'hue-rotate(180deg)', transform: 'rotate(90deg)'}} alt="" />
       <h5>Beautiful Reports</h5>
       Integrated with Allure reporter
-      <a href="/reports#allure" className="btn btn-light btn-sm">Learn More</a>
+      <a href="/plugins#allure" className="btn btn-light btn-sm">Learn More</a>
     </div>
 
     <div className="col-md-4">
@@ -153,6 +151,33 @@ class Index extends React.Component {
         <small className="text-muted">Don't turn off your music. The video is muted :)</small>
       </p>
     </div>
+  </div>
+
+  <div className="row">
+      <h2 className="col-12 text-center">Solving Real Cases</h2>
+  </div>
+  <div className="row testimonials">
+    <div className="col-6">
+      <p className="text-muted">
+        We have been using CodeceptJS as our UI testing framework, and it has made writing tests so simple for us, the amount of options and features available in CodeceptJS just out of the box are perfect for us to test an application like Percona Monitoring and Management (PMM), with so many dashboards & Metric plots.
+        We would recommend CodeceptJS to anyone who is looking for a Javascript based testing framework.
+      </p>
+      <div className="signature">
+        <img src="/img/kala.jpg"></img>
+        <b>Puneet Kala</b>,
+        <div className="position">Frontend QA Automation Engineer at <b>Percona</b></div>
+      </div>
+    </div>
+    <div className="col-6">
+      <blockquote className="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">Amazing e2e automation framework <a href="https://twitter.com/CodeceptJS?ref_src=twsrc%5Etfw">@CodeceptJS</a>. Successful migration from nightwatch to this awesome framework. Everyone who never tries this should do it. Highly recommended!</p>&mdash; Thành Nguyen (@peterNgTrung) <a href="https://twitter.com/peterNgTrung/status/1102189013333671937?ref_src=twsrc%5Etfw">March 3, 2019</a></blockquote>
+      <h6>Using it too? Spread the word, <a href="https://twitter.com/intent/tweet?text=I+testing+with+CodeceptJS&url=https%3A%2F%2Fcodecept.io">tweet about CodeceptJS! </a></h6>
+    </div>
+  </div>
+  <div className="row">
+      <h2 className="col-12 text-center m-2">Follow for Updates &nbsp;
+        <a href="https://twitter.com/CodeceptJS"><i className="fab fa-twitter"></i></a> &nbsp;
+        <a href="https://github.com/Codeception/CodeceptJS"><i className="fab fa-github"></i></a>
+        </h2>
   </div>
   </div>
 </div>);

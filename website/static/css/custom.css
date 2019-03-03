@@ -227,6 +227,33 @@ text-decoration: underline;
 background: #2ecc71;
 }
 
+.testimonials img {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  vertical-align: middle;
+  margin-right: 10px;
+  float: left;
+}
+
+.testimonials p {
+  background: #eee;
+  padding: 2rem;
+  border-radius: 10px;
+  color: #6c757d;
+
+}
+
+.testimonials .signature {
+  margin-bottom: 4rem;
+  margin-left: 4rem;
+}
+
+
+.testimonials .position {
+  font-size: 14px;
+}
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
