@@ -130,7 +130,7 @@ describe('Locator', () => {
     expect(nodes).to.have.length(1, l.toXPath());
   });
 
-  it.only('should not select element by siblings', () => {
+  it('should not select element by siblings', () => {
     const l = Locator.build('//table')
       .withChild('td');
     const nodes = xpath.select(l.toXPath(), doc);
