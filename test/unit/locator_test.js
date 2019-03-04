@@ -123,9 +123,9 @@ describe('Locator', () => {
 
   it('should select element by siblings', () => {
     const l = Locator.build('//table')
-      .withChild('td')
-      .withText('Also Edit')
-      .first();
+      .withChild(Locator.build('tr')
+        .withChild('td')
+        .withText('Also Edit'));
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
   });
