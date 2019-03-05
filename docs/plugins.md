@@ -39,6 +39,19 @@ Launch Allure server and see the report like on a screenshot above:
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
 
+#### Public API
+
+There are few public API methods which can be accessed from other plugins.
+
+```js
+const allure = codeceptjs.container.plugins('allure');
+```
+
+`allure` object has following methods:
+
+-   `addAttachment(name, buffer, type)` - add an attachment to current test / suite
+-   `addLabel(name, value)` - adds a label to current test
+
 ### Parameters
 
 -   `config`  
@@ -375,9 +388,6 @@ Possible config options:
 -   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 -   `output`: a directory where reports should be stored. Default: `output`.
-
-##### Allure Reports
-
 -   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
 
 ### Parameters
