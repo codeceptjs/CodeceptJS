@@ -22,6 +22,12 @@ describe('Puppeteer', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
+    // create directory /download;
+    fs.mkdir(path.join(`${__dirname}/download`), () => {
+
+    });
+    global.output_dir = path.join(`${__dirname}/download`);
+
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
@@ -49,6 +55,19 @@ describe('Puppeteer', function () {
 
   afterEach(() => {
     return I._after();
+  });
+
+  after(() => {
+    // Remove the test dir
+    fs.readdir(global.output_dir, (err, files) => {
+      if (err) throw err;
+
+      for (const file of files) {
+        fs.unlink(path.join(global.output_dir, file), (err) => {
+          if (err) throw err;
+        });
+      }
+    });
   });
 
   describe('open page : #amOnPage', () => {
@@ -556,6 +575,15 @@ describe('Puppeteer', function () {
       await I.dragSlider('#slidecontainer input', 20);
       const after = await I.grabValueFrom('#slidecontainer input');
       assert.notEqual(before, after);
+    });
+  });
+
+  describe.only('#downloadFile', () => {
+    it('should dowload file', async () => {
+      await I.amOnPage('http://file-examples.com/index.php/sample-video-files/sample-mp4-files/');
+      const outputFile = await I.downloadFile('td[class="text-right file-link"] a');
+
+      assert.equal(fs.existsSync(path.join(outputFile)), true);
     });
   });
 });
