@@ -555,6 +555,24 @@ First parameter can be set to `maximize`.
 -   `width`  width in pixels or `maximize`.
 -   `height`  height in pixels.
 
+### rightClick
+
+Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+
+```js
+// right click element with id el
+I.rightClick('#el');
+// right click link or button with text "Click me"
+I.rightClick('Click me');
+// right click button with text "Click me" inside .context
+I.rightClick('Click me', '.context');
+```
+
+#### Parameters
+
+-   `locator`  clickable element located by CSS|XPath|strict locator.
+-   `context`  (optional) element located by CSS|XPath|strict locator.
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).

@@ -812,12 +812,21 @@ First parameter can be set to `maximize`.
 
 ### rightClick
 
-Performs right click on an element matched by CSS or XPath.
+Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+
+```js
+// right click element with id el
+I.rightClick('#el');
+// right click link or button with text "Click me"
+I.rightClick('Click me');
+// right click button with text "Click me" inside .context
+I.rightClick('Click me', '.context');
+```
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
--   `context`   (optional, default `null`)
+-   `locator`  clickable element located by CSS|XPath|strict locator.
+-   `context`  (optional) element located by CSS|XPath|strict locator.
 
 ### saveScreenshot
 

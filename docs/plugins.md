@@ -346,7 +346,7 @@ Possible config options:
 
 -   `config`  
 
-## screenshotsForAllureReport
+## stepByStepReport
 
 ![step-by-step-report][5]
 
