@@ -473,15 +473,17 @@ I.doubleClick('.btn.edit');
 ### downloadFile
 
 Performs a download file on an element matched by link|button|CSS or XPath.
-File is downloaded by default to output folder
+File is downloaded by default to output folder.
+If no custom file name is provided, the default name will be used
 
 ```js
-I.downloadFile('td[class="text-right file-link"] a');
+I.downloadFile('td[class="text-right file-link"] a', 'thisIsCustomName');
 ```
 
 #### Parameters
 
 -   `locator`  clickable link or button located by CSS|XPath locator.
+-   `string`  custom file name.
 
 ### dragAndDrop
 
