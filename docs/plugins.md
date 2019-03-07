@@ -247,7 +247,7 @@ plugins: {
       },
       restore: (I, session) => {
         I.amOnPage('/');
-        I.executeScript(() => localStorage.setItem('session_id', session), session);
+        I.executeScript((session) => localStorage.setItem('session_id', session), session);
       },
     }
   }
