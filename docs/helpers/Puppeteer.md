@@ -470,6 +470,21 @@ I.doubleClick('.btn.edit');
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context`  (optional) element to search in CSS|XPath|Strict locator.
 
+### downloadFile
+
+Performs a download file on an element matched by link|button|CSS or XPath.
+File is downloaded by default to output folder.
+If no custom file name is provided, the default name will be used
+
+```js
+I.downloadFile('td[class="text-right file-link"] a', 'thisIsCustomName');
+```
+
+#### Parameters
+
+-   `locator`  clickable link or button located by CSS|XPath locator.
+-   `string`  custom file name.
+
 ### dragAndDrop
 
 Drag an item to a destination element.
