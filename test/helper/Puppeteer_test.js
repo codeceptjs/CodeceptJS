@@ -586,7 +586,7 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#downloadFile', () => {
+  describe.only('#downloadFile', () => {
     it('should dowload file', async () => {
       await I.amOnPage('http://file-examples.com/index.php/sample-video-files/sample-mp4-files/');
       const fileName = await I.downloadFile('td[class="text-right file-link"] a');
