@@ -24,15 +24,6 @@ describe('Puppeteer', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
-    // create download folder;
-    fs.mkdir(path.join(`${__dirname}/../data/download`), () => {
-
-    });
-    global.output_dir = path.join(`${__dirname}/../data/download`);
-
-    FS = new FileSystem();
-    FS._before();
-    FS.amInPath('download');
 
     I = new Puppeteer({
       url: siteUrl,
@@ -61,21 +52,6 @@ describe('Puppeteer', function () {
 
   afterEach(() => {
     return I._after();
-  });
-
-  after(() => {
-    // Remove the test dir
-    fs.readdir(global.output_dir, (err, files) => {
-      if (err) throw err;
-
-      for (const file of files) {
-        if (file.includes('.mp4')) {
-          fs.unlink(path.join(global.output_dir, file), (err) => {
-            if (err) throw err;
-          });
-        }
-      }
-    });
   });
 
   describe('open page : #amOnPage', () => {
@@ -587,6 +563,35 @@ describe('Puppeteer', function () {
   });
 
   describe('#downloadFile', () => {
+    before(() => {
+      // create download folder;
+      fs.mkdir(path.join(`${__dirname}/../data/download`), () => {
+
+      });
+      global.output_dir = path.join(`${__dirname}/../data/download`);
+
+      FS = new FileSystem();
+      FS._before();
+      FS.amInPath('download');
+    });
+
+    after(() => {
+      // Remove the test dir
+      fs.readdir(global.output_dir, (err, files) => {
+        if (err) throw err;
+
+        for (const file of files) {
+          if (file.includes('.mp4')) {
+            fs.unlink(path.join(global.output_dir, file), (err) => {
+              if (err) throw err;
+            });
+          }
+        }
+      });
+    });
+
+
+
     it('should dowload file', async () => {
       await I.amOnPage('http://file-examples.com/index.php/sample-video-files/sample-mp4-files/');
       const fileName = await I.downloadFile('td[class="text-right file-link"] a');
