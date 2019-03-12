@@ -63,9 +63,10 @@ color: #cdcdcd;
 
 .jumbotron h1 {
   margin-top: 0;
-  font-size: 4em;
-font-weight: bold;
+  font-size: 2rem;
+/* font-weight: bold; */
 text-align: center;
+  color: #aaa;
 }
 
 .jumbotron a {
@@ -73,12 +74,24 @@ color: #fff;
 /*text-decoration: underline;*/
 }
 
-.jumbotron .motto {
-letter-spacing: 0.10em;
-text-transform: uppercase;
-font-size: 0.9em;
-color: #fff;
-margin-bottom: 4em;
+.jumbotron h1 {
+/* letter-spacing: 0.10em; */
+/* text-transform: uppercase; */
+font-size: 2rem;
+color: #ccc;
+font-weight: bold;
+margin-bottom: 0rem;
+}
+
+.jumbotron .motto .name {
+  color: #fff;
+  font-weight: bold;
+  /* font-size: 1.2rem; */
+}
+
+.jumbotron h1 .small {
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .jumbotron .version {
@@ -228,19 +241,24 @@ background: #2ecc71;
 }
 
 .testimonials img {
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
   vertical-align: middle;
   margin-right: 10px;
   float: left;
+  margin-left: -5px;
 }
 
 .testimonials p {
-  background: #eee;
+  background: hsl(0, 0%, 97%);
   padding: 2rem;
   border-radius: 10px;
-  color: #6c757d;
+  /* color: #6c757d; */
+  color: #4a4f54;
+  line-height: 2;
+
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
 
 }
 
@@ -253,6 +271,30 @@ background: #2ecc71;
 .testimonials .position {
   font-size: 14px;
 }
+
+
+.testimonials .position b {
+  font-size: 18px;
+  display: inline-block;
+  background: #7d4da2;
+  /* text-transform: uppercase; */
+  color: #fff;
+
+  padding: 5px 10px;
+  border-radius: 5px;
+  /* text-transform: uppercase; */
+}
+
+.bugira {
+  background: #50d86d;
+  padding: 5px;
+  color: #000;
+}
+
+.bugira a {
+  color: #333;
+}
+
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
