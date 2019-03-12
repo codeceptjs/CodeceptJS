@@ -41,13 +41,12 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 </ol>
 <pre><code class="hljs">npm install codeceptjs puppeteer --save-dev
 </code></pre>
-<p>(due to <a href="https://github.com/GoogleChrome/puppeteer/issues/375">this issue in Puppeteer</a>, we install it locally)</p>
 <ol start="2">
 <li>Initialize CodeceptJS in current directory by running:</li>
 </ol>
-<pre><code class="hljs css language-sh">./node_modules/.bin/codeceptjs init
+<pre><code class="hljs css language-sh">npx codeceptjs init
 </code></pre>
-<p>(use <code>node node_modules/.bin/codeceptjs</code> on Windows)</p>
+<p>(use <code>node node_modules/.bin/codeceptjs</code> if you have issues with npx)</p>
 <ol start="3">
 <li>Answer questions. Agree on defaults, when asked to select helpers choose <strong>Puppeteer</strong>.</li>
 </ol>
@@ -62,7 +61,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 <ol start="4">
 <li>Create First Test.</li>
 </ol>
-<pre><code class="hljs css language-bash">./node_modules/.bin/codeceptjs gt
+<pre><code class="hljs css language-bash">npx codeceptjs gt
 </code></pre>
 <ol start="5">
 <li>Enter a test name. Open a generated file in your favorite JavaScript editor.</li>
@@ -86,7 +85,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 <ol start="7">
 <li>Run a test:</li>
 </ol>
-<pre><code class="hljs">./node_modules/.bin/codeceptjs run --steps
+<pre><code class="hljs">npx codeceptjs run --steps
 </code></pre>
 <p>The output should be similar to this:</p>
 <pre><code class="hljs css language-bash">My First Test --
@@ -120,13 +119,14 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 <ol>
 <li>Install CodeceptJS with webdriverio library</li>
 </ol>
-<pre><code class="hljs">[sudo] npm install -g codeceptjs webdriverio
+<pre><code class="hljs">npm install codeceptjs webdriverio --save-dev
 </code></pre>
 <ol start="2">
 <li>Initialize CodeceptJS in current directory by running:</li>
 </ol>
-<pre><code class="hljs css language-sh">codeceptjs init
+<pre><code class="hljs css language-sh">npx codeceptjs init
 </code></pre>
+<p>(use <code>node node_modules/.bin/codeceptjs init</code> if you have issues with npx)</p>
 <ol start="3">
 <li>Answer questions. Agree on defaults, when asked to select helpers choose <strong>WebDriver</strong>.</li>
 </ol>
@@ -141,7 +141,7 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 <ol start="4">
 <li>Create First Test.</li>
 </ol>
-<pre><code class="hljs css language-bash">codeceptjs gt
+<pre><code class="hljs css language-bash">npx codeceptjs gt
 </code></pre>
 <ol start="5">
 <li>Enter a test name. Open a generated file in your favorite JavaScript editor.</li>
@@ -174,7 +174,7 @@ selenium-standalone start
 <ol start="8">
 <li>Run a test:</li>
 </ol>
-<pre><code class="hljs">codeceptjs run --steps
+<pre><code class="hljs">npx codeceptjs run --steps
 </code></pre>
 <p>If everything is done right, you will see in console:</p>
 <pre><code class="hljs css language-bash">My First Test --
@@ -201,7 +201,7 @@ selenium-standalone start
 <blockquote>
 <p><a href="https://codecept.io/nightmare/"><strong>Follow corresponding guide &gt;&gt;</strong></a></p>
 </blockquote>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2018-12-28</em></div><div class="docs-prevnext"><a class="docs-next button" href="/basics"><span>Basics</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#using-puppeteer">Using Puppeteer</a></li><li><a href="#using-selenium-webdriver">Using Selenium WebDriver</a></li><li><a href="#using-protractor">Using Protractor</a></li><li><a href="#using-appium">Using Appium</a></li><li><a href="#using-nightmarejs">Using NightmareJS</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-3-13</em></div><div class="docs-prevnext"><a class="docs-next button" href="/basics"><span>Basics</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#using-puppeteer">Using Puppeteer</a></li><li><a href="#using-selenium-webdriver">Using Selenium WebDriver</a></li><li><a href="#using-protractor">Using Protractor</a></li><li><a href="#using-appium">Using Appium</a></li><li><a href="#using-nightmarejs">Using NightmareJS</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
