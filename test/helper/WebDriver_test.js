@@ -199,7 +199,7 @@ describe('WebDriver', function () {
         // e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
       }));
 
-    it.only('should check text is not equal to empty string of element text', () => wd.amOnPage('https://codecept.discourse.group/')
+    it('should check text is not equal to empty string of element text', () => wd.amOnPage('https://codecept.discourse.group/')
       .then(() => wd.seeTextEquals('This is not empty', '[id="site-logo"]'))
       .catch((e) => {
         e.should.be.instanceOf(Error);
