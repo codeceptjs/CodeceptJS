@@ -144,6 +144,12 @@ describe('WebDriver', function () {
       yield wd.dontSeeInField('select2', 'not seen three');
       return wd.seeInField('select2', 'see test three');
     });
+
+    it('should return error when element has no value attribute', () => wd.amOnPage('https://codecept.io/quickstart')
+      .then(() => wd.seeInField('#search_input_react', 'WebDriver1')
+        .catch((e) => {
+          e.should.be.instanceOf(Error);
+        })));
   });
 
   describe('#pressKey', () => {
