@@ -268,6 +268,25 @@ within({frame: [".content", "#editor"]}, () => {
 });
 ```
 
+
+## Auto Login
+
+To share the same user session accoross different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
+
+This plugin requires some configuration but is very simple in use:
+
+```js
+Scenario('do something with logged in user', (I, login)) => {
+  login('user');
+  I.see('Dashboard','h1');
+});
+```
+
+With `autoLogin` plugin you can save cookies into a file and reuse same session on different runs.
+
+> Read more about setting up [autoLogin](https://codecept.io/plugins#autologin)
+
+
 ## Multiple Sessions
 
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
