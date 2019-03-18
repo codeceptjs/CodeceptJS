@@ -1,3 +1,11 @@
+## 2.0.7
+
+* [WebDriver][Protractor][Nightmare] `rightClick` method implemented (fixed) in a standard way. By @davertmik
+* [WebDriver] Updated WebDriver API calls in helper. By @PeterNgTr
+* [stepByStepReportPlugin] Added `screenshotsForAllureReport` config options to automatically attach screenshots to allure reports. By @PeterNgTr
+* [allurePlugin] Added `addLabel` method by @Vorobeyko
+* Locator Builder: fixed `withChild` and `withDescendant` to match deep nested siblings by @Vorobeyko.
+
 ## 2.0.6
 
 * Introduced [Custom Locator Strategies](https://codecept.io/locators#custom-locators).

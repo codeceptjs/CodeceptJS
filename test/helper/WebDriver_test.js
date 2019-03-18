@@ -144,6 +144,12 @@ describe('WebDriver', function () {
       yield wd.dontSeeInField('select2', 'not seen three');
       return wd.seeInField('select2', 'see test three');
     });
+
+    it('should return error when element has no value attribute', () => wd.amOnPage('https://codecept.io/quickstart')
+      .then(() => wd.seeInField('#search_input_react', 'WebDriver1')
+        .catch((e) => {
+          e.should.be.instanceOf(Error);
+        })));
   });
 
   describe('#pressKey', () => {
@@ -197,6 +203,13 @@ describe('WebDriver', function () {
         e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
         // e.should.be.instanceOf(AssertionFailedError);
         // e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
+      }));
+
+    it('should check text is not equal to empty string of element text', () => wd.amOnPage('https://codecept.discourse.group/')
+      .then(() => wd.seeTextEquals('This is not empty', '[id="site-logo"]'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected element [id="site-logo"] "This is not empty" to equal ""');
       }));
   });
 

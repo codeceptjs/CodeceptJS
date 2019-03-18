@@ -10,10 +10,12 @@ const AssertionFailedError = require('../../lib/assert/error');
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
+const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
 let browser;
 let page;
+let FS;
 const siteUrl = TestHelper.siteUrl();
 
 describe('Puppeteer', function () {
@@ -22,6 +24,7 @@ describe('Puppeteer', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
+
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
@@ -572,6 +575,48 @@ describe('Puppeteer', function () {
       await I.uncheckOption('interesting');
 
       await I.dontSeeCheckboxIsChecked('interesting');
+      
+  describe('#downloadFile', () => {
+    before(() => {
+      // create download folder;
+      fs.mkdir(path.join(`${__dirname}/../data/download`), () => {
+
+      });
+      global.output_dir = path.join(`${__dirname}/../data/download`);
+
+      FS = new FileSystem();
+      FS._before();
+      FS.amInPath('download');
+    });
+
+    after(() => {
+      // Remove the test dir
+      fs.readdir(global.output_dir, (err, files) => {
+        if (err) throw err;
+
+        for (const file of files) {
+          if (file.includes('.mp4')) {
+            fs.unlink(path.join(global.output_dir, file), (err) => {
+              if (err) throw err;
+            });
+          }
+        }
+      });
+    });
+
+
+    it('should dowload file', async () => {
+      await I.amOnPage('http://file-examples.com/index.php/sample-video-files/sample-mp4-files/');
+      const fileName = await I.downloadFile('td[class="text-right file-link"] a');
+
+      FS.seeFile(fileName);
+    });
+
+    it('should dowload file with custom name', async () => {
+      await I.amOnPage('http://file-examples.com/index.php/sample-video-files/sample-mp4-files/');
+      const fileName = await I.downloadFile('td[class="text-right file-link"] a', 'thisisacustomname');
+
+      FS.seeFile(fileName);
     });
   });
 });

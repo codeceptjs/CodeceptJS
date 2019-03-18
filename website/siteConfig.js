@@ -103,11 +103,15 @@ const siteConfig = {
   },
 
   // Add custom scripts here that would be placed in <script> tags.
-  scripts: ['https://buttons.github.io/buttons.js'],
+  scripts: [
+    'https://buttons.github.io/buttons.js',
+    'https://platform.twitter.com/widgets.js',
+  ],
 
   // <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
   stylesheets: [
+    'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
     'https://fonts.googleapis.com/css?family=IBM+Plex+Sans',
     'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
     // {

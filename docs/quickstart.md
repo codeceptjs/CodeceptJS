@@ -23,16 +23,14 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 npm install codeceptjs puppeteer --save-dev
 ```
 
-(due to [this issue in Puppeteer](https://github.com/GoogleChrome/puppeteer/issues/375), we install it locally)
-
 
 2) Initialize CodeceptJS in current directory by running:
 
 ```sh
-./node_modules/.bin/codeceptjs init
+npx codeceptjs init
 ```
 
-(use `node node_modules/.bin/codeceptjs` on Windows)
+(use `node node_modules/.bin/codeceptjs` if you have issues with npx)
 
 3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
 
@@ -49,7 +47,7 @@ npm install codeceptjs puppeteer --save-dev
 4) Create First Test.
 
 ```bash
-./node_modules/.bin/codeceptjs gt
+npx codeceptjs gt
 ```
 
 5) Enter a test name. Open a generated file in your favorite JavaScript editor.
@@ -76,7 +74,7 @@ Scenario('test something', (I) => {
 7) Run a test:
 
 ```
-./node_modules/.bin/codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 The output should be similar to this:
@@ -118,14 +116,16 @@ Rerun the test to see the browser.
 1) Install CodeceptJS with webdriverio library
 
 ```
-[sudo] npm install -g codeceptjs webdriverio
+npm install codeceptjs webdriverio --save-dev
 ```
 
 2) Initialize CodeceptJS in current directory by running:
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
+
+(use `node node_modules/.bin/codeceptjs init` if you have issues with npx)
 
 3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriver**.
 
@@ -142,7 +142,7 @@ codeceptjs init
 4) Create First Test.
 
 ```bash
-codeceptjs gt
+npx codeceptjs gt
 ```
 
 5) Enter a test name. Open a generated file in your favorite JavaScript editor.
@@ -182,7 +182,7 @@ selenium-standalone start
 8) Run a test:
 
 ```
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 If everything is done right, you will see in console:
