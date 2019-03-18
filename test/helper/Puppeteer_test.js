@@ -575,7 +575,9 @@ describe('Puppeteer', function () {
       await I.uncheckOption('interesting');
 
       await I.dontSeeCheckboxIsChecked('interesting');
-      
+    });
+  });
+
   describe('#downloadFile', () => {
     before(() => {
       // create download folder;
