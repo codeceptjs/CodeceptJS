@@ -299,6 +299,24 @@ module.exports = function() {
 }
 ```
 
+### Example: Check URL before running a test
+
+If you want to share bootstrap script or run multiple bootstraps, it's a good idea to wrap that script into a plugin.
+Plugin can also execute JS before tests but you need to use internal APIs to synchronize promises.
+
+```js
+const { recorder } = require('codeceptjs');
+
+module.exports = function(options) {
+
+  event.dispatcher.on(event.all.before, function () {
+    recorder.startUnlessRunning(); // start recording promises
+    recorder.add('do some async stuff', async () => {
+      // your code
+    });
+  });
+}
+```
 
 ## API
 

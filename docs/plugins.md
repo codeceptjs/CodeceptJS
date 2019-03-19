@@ -38,6 +38,9 @@ Launch Allure server and see the report like on a screenshot above:
 ##### Configuration
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
+-   `enableScreenshotDiffPlugin` - a boolean flag for add screenshot diff to report.
+     To attach, tou need to attach three files to the report - "diff.png", "actual.png", "expected.png".
+     See [Allure Screenshot Plugin][2]
 
 #### Public API
 
@@ -289,9 +292,9 @@ Possible config options:
 
     Links:
 
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][2]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][3]
--   [https://github.com/gotwarlost/istanbul][4]
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][3]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][4]
+-   [https://github.com/gotwarlost/istanbul][5]
 
 ### Parameters
 
@@ -361,7 +364,7 @@ Possible config options:
 
 ## stepByStepReport
 
-![step-by-step-report][5]
+![step-by-step-report][6]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -396,10 +399,12 @@ Possible config options:
 
 [1]: https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png
 
-[2]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
 
-[3]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[3]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
 
-[4]: https://github.com/gotwarlost/istanbul
+[4]: https://github.com/istanbuljs/puppeteer-to-istanbul
 
-[5]: https://codecept.io/img/codeceptjs-slideshow.gif
+[5]: https://github.com/gotwarlost/istanbul
+
+[6]: https://codecept.io/img/codeceptjs-slideshow.gif
