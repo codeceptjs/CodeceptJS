@@ -483,6 +483,7 @@ I.downloadFile('td[class="text-right file-link"] a', 'thisIsCustomName');
 #### Parameters
 
 -   `locator`  clickable link or button located by CSS|XPath locator.
+-   `customName`  
 -   `string`  custom file name.
 
 ### dragAndDrop

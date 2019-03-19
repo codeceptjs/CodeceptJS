@@ -40,7 +40,7 @@ To make this work you need
 Install [Rosie][1] and [Faker][2] libraries.
 
 ```sh
-npm i rosie faker --save-dev`
+npm i rosie faker --save-dev
 ```
 
 Create a factory file for a resource.
