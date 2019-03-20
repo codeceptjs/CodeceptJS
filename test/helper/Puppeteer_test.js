@@ -561,19 +561,15 @@ describe('Puppeteer', function () {
   describe('#uncheckOption', () => {
     it('should uncheck option that is currently checked', async () => {
       await I.amOnPage('/info');
-
       await I.uncheckOption('interesting');
-
       await I.dontSeeCheckboxIsChecked('interesting');
     });
 
     it('should NOT uncheck option that is NOT currently checked', async () => {
       await I.amOnPage('/info');
       await I.uncheckOption('interesting');
-
       // Unchecking again should not affect the current 'unchecked' status
       await I.uncheckOption('interesting');
-
       await I.dontSeeCheckboxIsChecked('interesting');
     });
   });
