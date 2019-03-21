@@ -365,6 +365,37 @@ I.openNotifications();
 
 Appium: support only Android
 
+### performSwipe
+
+Perform a swipe on the screen.
+
+```js
+I.performswipe(100,200);
+```
+
+#### Parameters
+
+-   `from`  
+-   `to`  
+
+Appium: support Android and iOS
+
+### performTouchAction
+
+Perform a certain touch action on the screen such as swipeDown, swipeUp, swipeLeft, swipeRight.
+
+```js
+I.swipeDown('swipeDown'); // perform swipe down on the screen
+I.swipeDown('swipeUp'); // perform swipe up on the screen
+I.swipeDown('swipeLeft'); // perform swipe left on the screen
+I.swipeDown('swipeRight'); // perform swipe right on the screen
+```
+
+#### Parameters
+
+-   `action`  
+-   `percentage`  (optional), from 0 - 1, 1 by defaultAppium: support Android and iOS
+
 ### pullFile
 
 Pulls a file from the device.
@@ -392,6 +423,7 @@ I.removeApp('appName', 'com.example.android.apis');
 
 #### Parameters
 
+-   `appId`  
 -   `bundleId`  String  ID of bundleAppium: support only Android
 
 ### rotate
