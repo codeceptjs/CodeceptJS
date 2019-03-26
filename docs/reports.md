@@ -291,7 +291,8 @@ Configure mocha-multi with reports that you want:
         "stdout": "./output/console.log",
         "options": {
           "mochaFile": "./output/result.xml"
-        }
+        },
+        "attachments": true //add screenshot for a failed test
       }
     }
   }
