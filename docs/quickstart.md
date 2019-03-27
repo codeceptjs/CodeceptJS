@@ -173,9 +173,9 @@ To execute tests in Google Chrome browser running Selenium Server with ChromeDri
 Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) from NPM to install and run them:
 
 ```sh
-[sudo] npm install -g selenium-standalone
-selenium-standalone install
-selenium-standalone start
+npm install selenium-standalone --save-dev
+npx selenium-standalone install
+npx selenium-standalone start
 ```
 
 
