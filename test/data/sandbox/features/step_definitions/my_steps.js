@@ -31,3 +31,6 @@ Then('I should see overall price is "{float}" $', (price) => {
   I.seeSum(price);
 });
 
+Given('I login', () => {
+  I.login('user', secret('password'));
+});

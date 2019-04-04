@@ -45,6 +45,16 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should obfuscate secret substeps in debug mode', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --debug --grep "Secrets"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Given I login'); // feature
+      stdout.should.include('I login user, *****');
+      stdout.should.not.include('password');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run feature with examples files', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout examples"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(' order discount {"price":"10","total":"10.0"}');

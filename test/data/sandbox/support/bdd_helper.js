@@ -37,7 +37,8 @@ class CheckoutHelper extends Helper {
       this.discountCalc();
     }
   }
+
+  login() {}
 }
 
 module.exports = CheckoutHelper;
-
