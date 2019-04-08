@@ -9,6 +9,7 @@ const path = require('path');
 const dataFile = path.join(__dirname, '/../data/app/db');
 const formContents = require('../../lib/utils').test.submittedData(dataFile);
 const fileExists = require('../../lib/utils').fileExists;
+const secret = require('../../lib/secret').secret;
 
 module.exports.init = function (testData) {
   data = testData;
@@ -367,6 +368,13 @@ module.exports.tests = function () {
       yield I.fillField('Name', 'Nothing special');
       yield I.click('Submit');
       return assert.equal(formContents('name'), 'Nothing special');
+    });
+
+    it('should fill input fields with secrets', function* () {
+      yield I.amOnPage('/form/field');
+      yield I.fillField('Name', secret('Something special'));
+      yield I.click('Submit');
+      return assert.equal(formContents('name'), 'Something special');
     });
 
     it('should fill field by css', function* () {
