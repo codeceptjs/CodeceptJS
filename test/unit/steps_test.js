@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Step = require('../../lib/step');
 const event = require('../../lib/event');
+const secret = require('../../lib/secret').secret;
 const sinon = require('sinon');
 
 let step;
@@ -33,6 +34,9 @@ describe('Step', () => {
     let testUndefined;
     step.args = [testUndefined, 'undefined'];
     step.humanizeArgs().should.eql('undefined, "undefined"');
+
+    step.args = [secret('word'), 1];
+    step.humanizeArgs().should.eql('*****, 1');
   });
 
   it('should provide nice output', () => {
