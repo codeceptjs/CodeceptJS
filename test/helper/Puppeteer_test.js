@@ -340,11 +340,7 @@ describe('Puppeteer', function () {
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
-      .then(res => res.length.should.be.equal(1)));
-
-    it('should not locate a non-existing checkbox', () => I.amOnPage('/form/checkbox')
-      .then(() => I._locateCheckable('I disagree'))
-      .then(res => res.length.should.be.equal(0)));
+      .then(res => res.should.be.defined));
   });
 
   describe('#_locateFields', () => {
@@ -559,6 +555,22 @@ describe('Puppeteer', function () {
       await I.dragSlider('#slidecontainer input', 20);
       const after = await I.grabValueFrom('#slidecontainer input');
       assert.notEqual(before, after);
+    });
+  });
+
+  describe('#uncheckOption', () => {
+    it('should uncheck option that is currently checked', async () => {
+      await I.amOnPage('/info');
+      await I.uncheckOption('interesting');
+      await I.dontSeeCheckboxIsChecked('interesting');
+    });
+
+    it('should NOT uncheck option that is NOT currently checked', async () => {
+      await I.amOnPage('/info');
+      await I.uncheckOption('interesting');
+      // Unchecking again should not affect the current 'unchecked' status
+      await I.uncheckOption('interesting');
+      await I.dontSeeCheckboxIsChecked('interesting');
     });
   });
 
