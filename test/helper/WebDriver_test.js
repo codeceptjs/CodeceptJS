@@ -206,6 +206,7 @@ describe('WebDriver', function () {
       }));
 
     it('should check text is not equal to empty string of element text', () => wd.amOnPage('https://codecept.discourse.group/')
+      .then(() => wd.seeTextEquals('', '[id="site-logo"]'))
       .then(() => wd.seeTextEquals('This is not empty', '[id="site-logo"]'))
       .catch((e) => {
         e.should.be.instanceOf(Error);
