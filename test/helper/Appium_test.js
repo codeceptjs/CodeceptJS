@@ -88,7 +88,7 @@ describe('Appium', function () {
       },
     );
 
-    it.only('should remove App and install it again', () => app.seeAppIsInstalled('io.selendroid.testapp')
+    it('should remove App and install it again', () => app.seeAppIsInstalled('io.selendroid.testapp')
       .then(() => app.removeApp('io.selendroid.testapp'))
       .then(() => app.seeAppIsNotInstalled('io.selendroid.testapp'))
       .then(() => app.installApp(apk_path))
@@ -220,7 +220,7 @@ describe('Appium', function () {
       assert.equal(val, '.WebViewActivity');
     });
 
-    it('should react on swipe action @second', function* () {
+    it('should react on swipe action', function* () {
       yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       yield app.waitForText(
         'Gesture Type', 10,
@@ -345,7 +345,7 @@ describe('Appium', function () {
     });
 
     describe('#performTouchAction', () => {
-      it('should react on swipeUp action', function* () {
+      it('should react on swipeUp action @second', function* () {
         yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         yield app.waitForText(
           'Gesture Type', 10,
@@ -359,7 +359,7 @@ describe('Appium', function () {
         expect(vy.split(' ')[1]).to.be.below(1006);
       });
 
-      it('should react on swipeDown action', function* () {
+      it('should react on swipeDown action @second', function* () {
         yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         yield app.waitForText(
           'Gesture Type', 10,
