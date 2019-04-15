@@ -425,7 +425,7 @@ describe('Appium', function () {
   });
 
   describe('#pressKey', () => {
-    it.only('should be able to send special keys to element @second', function* () {
+    it('should be able to send special keys to element @second', function* () {
       yield app.click('~startUserRegistrationCD');
       yield app.click('~email of the customer');
       yield app.sendDeviceKeyEvent(1);
