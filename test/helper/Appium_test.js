@@ -260,7 +260,8 @@ describe('Appium', function () {
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      yield app.swipeDown('#io.selendroid.testapp:id/LinearLayout1');
+      // yield app.swipeDown('#io.selendroid.testapp:id/LinearLayout1');
+      yield app.performTouchAction('swipeDown');
       const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       // const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
@@ -424,10 +425,10 @@ describe('Appium', function () {
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element @second', function* () {
+    it.only('should be able to send special keys to element @second', function* () {
       yield app.click('~startUserRegistrationCD');
       yield app.click('~email of the customer');
-      yield app.pressKey('1');
+      yield app.sendDeviceKeyEvent(1);
       yield app.hideDeviceKeyboard('pressKey', 'Done');
       yield app.swipeTo(
         '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
