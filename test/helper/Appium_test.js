@@ -354,7 +354,6 @@ describe('Appium', function () {
         yield app.performTouchAction('swipeUp');
         const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-        console.log(vy.split(' ')[1]);
         assert.equal(type, 'FLICK');
         expect(vy.split(' ')[1]).to.be.below(1006);
       });
