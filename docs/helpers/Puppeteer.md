@@ -439,7 +439,7 @@ Opposite to `seeInField`.
 
 ### dontSeeInSource
 
-Checks that the current page contains the given string in its raw source code.
+Checks that the current page does not contains the given string in its raw source code.
 
 #### Parameters
 
