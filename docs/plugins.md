@@ -397,6 +397,77 @@ Possible config options:
 
 -   `config` **any** 
 
+## wdio
+
+Webdriverio services runner.
+
+This plugin allows to run webdriverio services like:
+
+-   selenium-standalone
+-   sauce
+-   testingbot
+-   browserstack
+-   appium
+
+A complete list of all available services can be found on [webdriverio website][7].
+
+###### Setup
+
+1.  Install a webdriverio service
+2.  Enable `wdio` plugin in config
+3.  Add service name to `services` array inside wdio plugin config.
+
+See examples below:
+
+###### Selenium Standalone Service
+
+Install `@wdio/selenium-standalone-service` package, as [described here][8].
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
+
+```js
+plugins: {
+   wdio: {
+       services: ['selenium-standalone']
+       // additional config for service can be passed here
+   }
+}
+```
+
+Please note, this service can be used with Protractor helper as well!
+
+##### Sauce Service
+
+Install `@wdio/sauce-service` package, as [described here][9].
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `sauce` service:
+
+```js
+plugins: {
+   wdio: {
+       services: ['sauce'],
+       user: ... ,// saucelabs username
+       key: ... // saucelabs api key
+       // additional config, from sauce service
+   }
+}
+```
+
+* * *
+
+In the same manner additional services from webdriverio can be installed, enabled, and configured.
+
+#### Configuration
+
+-   `services` - list of enabled services
+-   ... - additional configuration passed into services.
+
+### Parameters
+
+-   `config`  
+
 [1]: https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png
 
 [2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
@@ -408,3 +479,9 @@ Possible config options:
 [5]: https://github.com/gotwarlost/istanbul
 
 [6]: https://codecept.io/img/codeceptjs-slideshow.gif
+
+[7]: https://webdriver.io
+
+[8]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[9]: https://webdriver.io/docs/sauce-service.html
