@@ -77,7 +77,7 @@ Every step in this scenario requires a code which defines it.
 Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running `gherkin:init` command on **already initialized project**:
 
 ```
-codeceptjs gherkin:init
+npx codeceptjs gherkin:init
 ```
 
 It will add `gherkin` section to the current config. It will also prepare directories for features and step definition. And it will create the first feature file for you.
@@ -150,12 +150,13 @@ Our next step will be to define those steps and transforming feature-file into a
 Step definitions are placed in JavaScript file with Given/When/Then functions that map strings from feature file to functions:
 
 ```js
-const I = actor();
+// use I and productPage via inject() function
+const { I, productPage } = inject();
 
 // you can provide RegEx to match corresponding steps
 Given(/I have product with \$(\d+) price/, (price) => {
   I.amOnPage('/products');
-  I.click(`.product[data-price=${price}]`);
+  productPage.create({ price });
   I.click('Add to cart');
 });
 
@@ -178,19 +179,19 @@ Steps can be either strings or regular expressions. Parameters from string are p
 To list all defined steps run `gherkin:steps` command:
 
 ```bash
-codeceptjs gherkin:steps
+npx codeceptjs gherkin:steps
 ```
 
 To run tests and see step-by step output use `--steps` optoin:
 
 ```
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 To see not only business steps but an actual performed steps use `--debug` flag:
 
 ```
-codeceptjs run --debug
+npx codeceptjs run --debug
 ```
 
 ## Advanced Gherkin
