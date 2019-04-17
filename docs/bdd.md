@@ -365,8 +365,9 @@ After(async (test) => {
 });
 
 Fail((test, err) => {
+  // test didn't
   console.log('Failed with', err);
-  pause(); // start interactice pause to debug failure
+  pause();
 });
 ```
 
