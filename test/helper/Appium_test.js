@@ -20,7 +20,7 @@ describe('Appium', function () {
     app = new Appium({
       app: apk_path,
       desiredCapabilities: {
-        appiumVersion: '1.6.4',
+        appiumVersion: '1.9.1',
         browserName: '',
         recordVideo: 'false',
         recordScreenshots: 'false',
@@ -254,18 +254,18 @@ describe('Appium', function () {
       assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
-    it('run simplified swipeDown @quick', function* () {
-      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
-      yield app.waitForText(
+    it('run simplified swipeDown @quick', async () => {
+      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
+      await app.waitForText(
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       // yield app.swipeDown('#io.selendroid.testapp:id/LinearLayout1');
-      yield app.swipeDown(
+      await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
         1200, 1000,
       );
-      const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
+      const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       // const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
     });
