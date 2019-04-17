@@ -85,8 +85,8 @@ To say it again, its <strong>goal is to provide standard action steps you can us
 Surely, it can't cover 100% of cases but it aims for 90%, for others you can write your own steps inside a <a href="http://codecept.io/helpers/">custom Helper</a> using API of Protractor</p>
 <h3><a class="anchor" aria-hidden="true" id="setting-up-codeceptjs-with-protractor"></a><a href="#setting-up-codeceptjs-with-protractor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setting up CodeceptJS with Protractor</h3>
 <p>To start using CodeceptJS you will need to install it via NPM and initialize it in directory with tests.</p>
-<pre><code class="hljs css language-bash">npm install -g codeceptjs
-codeceptjs init
+<pre><code class="hljs css language-bash">npm install codeceptjs --save
+npx codeceptjs init
 </code></pre>
 <p>You will be asked questions about initial configuration, make sure you select Protractor helper.
 If you didn't have Protractor library it <strong>will be installed</strong>.
@@ -104,15 +104,31 @@ Please agree to extend steps, and use <code>http://todomvc.com/examples/angularj
   <span class="hljs-attr">include</span>: { <span class="hljs-attr">I</span>: <span class="hljs-string">'./steps_file.js'</span> },
   <span class="hljs-attr">bootstrap</span>: <span class="hljs-literal">false</span>,
   <span class="hljs-attr">mocha</span>: {},
-  <span class="hljs-attr">name</span>: <span class="hljs-string">'todoangular'</span> }
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'todoangular'</span>
+}
 </code></pre>
 <p>First test can be generated with <code>gt</code> command:</p>
-<pre><code class="hljs css language-bash">codeceptjs gt
+<pre><code class="hljs css language-bash">npx codeceptjs gt
 </code></pre>
 <p>After that you can start writing your first CodeceptJS/Angular tests.
 Please look into the reference of <a href="http://codecept.io/helpers/Protractor/">Protractor helper</a> for all available actions.
 You can also run <code>list</code> command to see methods of I:</p>
-<pre><code class="hljs css language-bash">codeceptjs list
+<pre><code class="hljs css language-bash">npx codeceptjs list
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="starting-selenium-server"></a><a href="#starting-selenium-server" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Starting Selenium Server</h2>
+<p>Protractor requires Selenium Server to be started and running. To start and stop Selenium automatically install <code>@wdio/selenium-standalone-service</code>.</p>
+<pre><code class="hljs">npm i @wdio/selenium-standalone-service --save
+</code></pre>
+<p>Enable it in config inside plugins section:</p>
+<pre><code class="hljs css language-js">exports.config = {
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-comment">// inside condecept.conf.js</span>
+  plugins: {
+    <span class="hljs-attr">wdio</span>: {
+        <span class="hljs-attr">services</span>: [<span class="hljs-string">'selenium-standalone'</span>]
+    }
+  }
+}
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="testing-non-angular-applications"></a><a href="#testing-non-angular-applications" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing non-Angular Applications</h2>
 <p>Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:</p>
@@ -145,16 +161,15 @@ we can pass relative path into it instead of absolute url:</p>
 });
 </code></pre>
 <p>A test can be executed with <code>run</code> command, we recommend to use <code>--steps</code> options to follow step-by-step execution:</p>
-<pre><code class="hljs css language-sh">$ codeceptjs run --steps
-
-CodeceptJS 1.2.0
-Test root is assumed to be /home/davert/demos/todoangular
-Using the selenium server at http://localhost:4444/wd/hub
+<pre><code class="hljs css language-sh">npx codeceptjs run --steps
+</code></pre>
+<pre><code class="hljs">Test root is assumed to be /home/davert/demos/todoangular
+Using the selenium server at http:<span class="hljs-comment">//localhost:4444/wd/hub</span>
 
 TodoMvc --
  create todo item
- • I am on page <span class="hljs-string">"/"</span>
- • I dont see element <span class="hljs-string">"#todo-count"</span>
+ • <span class="hljs-built_in">I</span> am on page <span class="hljs-string">"/"</span>
+ • <span class="hljs-built_in">I</span> dont see element <span class="hljs-string">"#todo-count"</span>
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="running-several-scenarios"></a><a href="#running-several-scenarios" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running Several Scenarios</h2>
 <p>By writing a test in similar manner we will have a test shown in the beginning of this guide. Probably we would like not to finish with one test,
@@ -249,7 +264,7 @@ by accessing Protractor helper:</p>
 </code></pre>
 <p>This way we recommend to implement all custom logic using low-level Protractor syntax and using it inside scenario tests.
 Please see an <a href="http://codecept.io/helpers/#protractor-example">example of such helper</a>.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-2</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/puppeteer"><span class="arrow-prev">← </span><span>Testing with Puppeteer</span></a><a class="docs-next button" href="/nightmare"><span>Testing with Nightmare</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#introduction">Introduction</a><ul class="toc-headings"><li><a href="#setting-up-codeceptjs-with-protractor">Setting up CodeceptJS with Protractor</a></li></ul></li><li><a href="#testing-non-angular-applications">Testing non-Angular Applications</a></li><li><a href="#writing-first-test">Writing First Test</a></li><li><a href="#running-several-scenarios">Running Several Scenarios</a></li><li><a href="#locators">Locators</a></li><li><a href="#refactoring">Refactoring</a></li><li><a href="#multiple-sessions">Multiple Sessions</a></li><li><a href="#extending">Extending</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-4-18</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/puppeteer"><span class="arrow-prev">← </span><span>Testing with Puppeteer</span></a><a class="docs-next button" href="/nightmare"><span>Testing with Nightmare</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#introduction">Introduction</a><ul class="toc-headings"><li><a href="#setting-up-codeceptjs-with-protractor">Setting up CodeceptJS with Protractor</a></li></ul></li><li><a href="#starting-selenium-server">Starting Selenium Server</a></li><li><a href="#testing-non-angular-applications">Testing non-Angular Applications</a></li><li><a href="#writing-first-test">Writing First Test</a></li><li><a href="#running-several-scenarios">Running Several Scenarios</a></li><li><a href="#locators">Locators</a></li><li><a href="#refactoring">Refactoring</a></li><li><a href="#multiple-sessions">Multiple Sessions</a></li><li><a href="#extending">Extending</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
