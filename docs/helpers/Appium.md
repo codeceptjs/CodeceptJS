@@ -206,7 +206,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -376,25 +376,7 @@ I.performswipe(100,200);
 #### Parameters
 
 -   `from`  
--   `to`  
-
-Appium: support Android and iOS
-
-### performTouchAction
-
-Perform a certain touch action on the screen such as swipeDown, swipeUp, swipeLeft, swipeRight.
-
-```js
-I.swipeDown('swipeDown'); // perform swipe down on the screen
-I.swipeDown('swipeUp'); // perform swipe up on the screen
-I.swipeDown('swipeLeft'); // perform swipe left on the screen
-I.swipeDown('swipeRight'); // perform swipe right on the screen
-```
-
-#### Parameters
-
--   `action`  
--   `percentage`  (optional), from 0 - 1, 1 by defaultAppium: support Android and iOS
+-   `to`  Appium: support Android and iOS
 
 ### pullFile
 
@@ -703,6 +685,19 @@ I.sendDeviceKeyEvent(3);
 #### Parameters
 
 -   `keyValue`  Device specific key valueAppium: support only Android
+
+### sendKey
+
+Send a sequence of key strokes to an element
+
+```js
+I.sendKey('~email of the customer', '1');;
+```
+
+#### Parameters
+
+-   `locator`  element to send a sequence of key strokes
+-   `keys`  a sequence of key strokes to send to an element
 
 ### setImmediateValue
 
