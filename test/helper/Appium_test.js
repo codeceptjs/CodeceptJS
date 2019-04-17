@@ -424,11 +424,11 @@ describe('Appium', function () {
     });
   });
 
-  describe('#pressKey', () => {
-    it('should be able to send special keys to element @second', function* () {
+  describe('#sendKey', () => {
+    it.only('should be able to send special keys to element @second', function* () {
       yield app.click('~startUserRegistrationCD');
       yield app.click('~email of the customer');
-      yield app.pressKey('1');
+      yield app.sendKey('~email of the customer', '1');
       yield app.hideDeviceKeyboard('pressKey', 'Done');
       yield app.swipeTo(
         '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
