@@ -199,12 +199,62 @@ service provider to connect to.
 }
 ```
 
+#### SauceLabs
+
+SauceLabs can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/sauce-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `sauce` service:
+
+```js
+plugins: {
+   wdio: {
+       services: ['sauce'],
+       user: ... ,// saucelabs username
+       key: ... // saucelabs api key
+       // additional config, from sauce service
+   }
+}
+```
+
+See [complete reference on webdriver.io][9].
+
+> Alternatively, use [codeceptjs-saucehelper][10] for better reporting.
+
+#### BrowserStack
+
+BrowserStack can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/browserstack-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `browserstack` service:
+
+```js
+plugins: {
+   wdio: {
+       services: ['browserstack'],
+       user: ... ,// browserstack username
+       key: ... // browserstack api key
+       // additional config, from browserstack service
+   }
+}
+```
+
+See [complete reference on webdriver.io][11].
+
+> Alternatively, use [codeceptjs-bshelper][12] for better reporting.
+
 ### Multiremote Capabilities
 
 This is a work in progress but you can control two browsers at a time right out of the box.
 Individual control is something that is planned for a later version.
 
-Here is the [webdriverio docs][9] on the subject
+Here is the [webdriverio docs][13] on the subject
 
 ```js
 {
@@ -295,7 +345,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][10].
+libraries][14].
 
 -   _Appium_: supported only for web testing
 
@@ -447,7 +497,7 @@ I.closeOtherTabs();
 
 ### defineTimeout
 
-Set [WebDriver timeouts][11] in realtime.
+Set [WebDriver timeouts][15] in realtime.
 
 -   _Appium_: supported only for web testing.
     Timeouts are expected to be passed as object:
@@ -602,7 +652,7 @@ I.dragSlider('#slider', -70);
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][12].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][16].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -663,7 +713,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -867,7 +917,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][13]
+Special keys like 'Enter', 'Control', [etc][17]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -879,7 +929,7 @@ I.pressKey(['Control','a']);
 #### Parameters
 
 -   `key`  key or array of keys to press.
-    [Valid key names][14] are:-   `'Add'`,
+    [Valid key names][18] are:-   `'Add'`,
     -   `'Alt'`,
     -   `'ArrowDown'` or `'Down arrow'`,
     -   `'ArrowLeft'` or `'Left arrow'`,
@@ -1302,7 +1352,7 @@ I.setCookie({name: 'auth', value: true});
 #### Parameters
 
 -   `cookie`  cookie JSON object.-   _Appium_: supported only for web testingUses Selenium's JSON [cookie
-    format][15].
+    format][19].
 
 ### switchTo
 
@@ -1569,16 +1619,24 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [8]: http://webdriver.io/guide/usage/cloudservices.html
 
-[9]: http://webdriver.io/guide/usage/multiremote.html
+[9]: https://webdriver.io/docs/sauce-service.html
 
-[10]: http://jster.net/category/windows-modals-popups
+[10]: https://github.com/puneet0191/codeceptjs-saucehelper/
 
-[11]: https://webdriver.io/docs/timeouts.html
+[11]: https://webdriver.io/docs/browserstack-service.html
 
-[12]: https://vuejs.org/v2/api/#Vue-nextTick
+[12]: https://github.com/PeterNgTr/codeceptjs-bshelper
 
-[13]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[13]: http://webdriver.io/guide/usage/multiremote.html
 
-[14]: https://w3c.github.io/webdriver/#keyboard-actions
+[14]: http://jster.net/category/windows-modals-popups
 
-[15]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[15]: https://webdriver.io/docs/timeouts.html
+
+[16]: https://vuejs.org/v2/api/#Vue-nextTick
+
+[17]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+
+[18]: https://w3c.github.io/webdriver/#keyboard-actions
+
+[19]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

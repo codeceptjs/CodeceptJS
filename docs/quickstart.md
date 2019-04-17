@@ -168,15 +168,27 @@ Scenario('test something', (I) => {
 
 7) Prepare Selenium Server
 
-To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.
+Install `@wdio/selenium-standalone-service` package to automatically start and stop selenium service.
 
-Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) from NPM to install and run them:
-
-```sh
-[sudo] npm install -g selenium-standalone
-selenium-standalone install
-selenium-standalone start
 ```
+npm i @wdio/selenium-standalone-service --save
+```
+
+Enable it in config inside plugins section:
+
+```js
+exports.config = {
+  // ...
+  // inside condecept.conf.js
+  plugins: {
+    wdio: {
+        services: ['selenium-standalone']
+    }
+  }
+}
+```
+
+> Alternatively, use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) to install, start and stop Selenium Server manually.
 
 
 8) Run a test:

@@ -16,6 +16,8 @@ describe('BDD Gherkin', () => {
   it('should run feature files', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Checkout process'); // feature
+      stdout.should.include('-- before checkout --');
+      stdout.should.include('-- after checkout --');
       // stdout.should.include('In order to buy products'); // test name
       stdout.should.include('Given I have product with $600 price');
       stdout.should.include('And I have product with $1000 price');
