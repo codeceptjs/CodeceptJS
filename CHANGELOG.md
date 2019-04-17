@@ -1,3 +1,40 @@
+## 2.1.0
+
+* Added global `inject()` function to require actor and page objects using dependency injection. Recommended to use in page objects, step definition files, support objects:
+
+```js
+// old way
+const I = actor();
+const myPage = require('../page/myPage');
+
+// new way
+const { I, myPage } = inject();
+```
+
+* Added global `secret` function to fill in sensitive data by @RohanHart:
+
+```js
+I.fillField('password', secret('123456'));
+```
+
+* [wdioPlugin](https://codecept.io/plugins/#wdio) Added a plugin to **support webdriverio services** including *selenium-standalone*, *sauce*, *browserstack*, etc. **Sponsored by @GSasu**
+* [Appium] Fixed `swipe*` methods by @PeterNgTr
+* BDD Gherkin Improvements:
+  * Implemented `run-multiple` for feature files.  **Sponsored by @GSasu**
+  * Added `--features` and `--tests` options to `run-multiple`. **Sponsored by @GSasu**
+  * Implemened `Before` and `After` hooks in [step definitions](https://codecept.io/bdd#before)
+* Fixed running tests by absolute path. By @batalov.
+* Enabled the adding screenshot to failed test for moch-junit-reporter by @PeterNgTr.
+* [Puppeteer] Implemented `uncheckOption` and fixed behavior of `checkOption` by @aml2610
+* [WebDriver] Fixed `seeTextEquals` on empty strings by @PeterNgTr
+* [Puppeteer] Fixed launch with `browserWSEndpoint` config by @ngadiyak.
+* [Puppeteer] Fixed switching back to main window in multi-session mode by @davertmik.
+* [autoLoginPlugin] Fixed using async functions for auto login by @nitschSB
+
+> This release was partly sponsored by @GSasu. Thanks for the support!
+Do you want to improve this project? [Learn more about sponsoring CodeceptJS](https://github.com/Codeception/CodeceptJS/issues/1462)
+
+
 ## 2.0.8
 
 * [Puppeteer] Added `downloadFile` action by @PeterNgTr.

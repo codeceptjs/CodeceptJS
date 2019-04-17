@@ -82,8 +82,8 @@ Surely, it can't cover 100% of cases but it aims for 90%, for others you can wri
 To start using CodeceptJS you will need to install it via NPM and initialize it in directory with tests.
 
 ```bash
-npm install -g codeceptjs
-codeceptjs init
+npm install codeceptjs --save
+npx codeceptjs init
 ```
 
 You will be asked questions about initial configuration, make sure you select Protractor helper.
@@ -105,13 +105,14 @@ exports.config = { tests: './*_test.js',
   include: { I: './steps_file.js' },
   bootstrap: false,
   mocha: {},
-  name: 'todoangular' }
+  name: 'todoangular'
+}
 ```
 
 First test can be generated with `gt` command:
 
 ```bash
-codeceptjs gt
+npx codeceptjs gt
 ```
 
 After that you can start writing your first CodeceptJS/Angular tests.
@@ -119,7 +120,29 @@ Please look into the reference of [Protractor helper](http://codecept.io/helpers
 You can also run `list` command to see methods of I:
 
 ```bash
-codeceptjs list
+npx codeceptjs list
+```
+
+## Starting Selenium Server
+
+Protractor requires Selenium Server to be started and running. To start and stop Selenium automatically install `@wdio/selenium-standalone-service`.
+
+```
+npm i @wdio/selenium-standalone-service --save
+```
+
+Enable it in config inside plugins section:
+
+```js
+exports.config = {
+  // ...
+  // inside condecept.conf.js
+  plugins: {
+    wdio: {
+        services: ['selenium-standalone']
+    }
+  }
+}
 ```
 
 ## Testing non-Angular Applications
@@ -166,9 +189,10 @@ Scenario('create todo item', (I) => {
 A test can be executed with `run` command, we recommend to use `--steps` options to follow step-by-step execution:
 
 ```sh
-$ codeceptjs run --steps
+npx codeceptjs run --steps
+```
 
-CodeceptJS 1.2.0
+```
 Test root is assumed to be /home/davert/demos/todoangular
 Using the selenium server at http://localhost:4444/wd/hub
 
