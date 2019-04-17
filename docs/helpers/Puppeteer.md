@@ -141,6 +141,7 @@ const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
 ### \_locateCheckable
 
 Find a checkbox by providing human readable text:
+NOTE: Assumes the checkable element exists
 
 ```js
 this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').then // ...
@@ -149,6 +150,7 @@ this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').
 #### Parameters
 
 -   `locator`  
+-   `providedContext`   (optional, default `null`)
 
 ### \_locateClickable
 
@@ -190,8 +192,9 @@ libraries][6].
 
 ### amAcceptingPopups
 
-Set the automatic popup response to Accept.
-This must be set before a popup is triggered.
+\[existingPages.length -1
+\[existingPages.length -1
+\[existingPages.length -1
 
 ```js
 I.amAcceptingPopups();
@@ -580,7 +583,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -1183,6 +1186,24 @@ I.switchToPreviousTab(2);
 #### Parameters
 
 -   `num`   (optional, default `1`)
+
+### uncheckOption
+
+Unselects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.uncheckOption('#agree');
+I.uncheckOption('I Agree to Terms and Conditions');
+I.uncheckOption('agree', '//form');
+```
+
+#### Parameters
+
+-   `field`  checkbox located by label | name | CSS | XPath | strict locator.
+-   `context`  (optional) element located by CSS | XPath | strict locator.
 
 ### wait
 

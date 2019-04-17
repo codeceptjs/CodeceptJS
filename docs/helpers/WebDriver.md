@@ -663,7 +663,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator

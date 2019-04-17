@@ -505,8 +505,7 @@ Checks that the current page does not contains the given string in its raw sourc
 
 #### Parameters
 
--   `text`  value to check.
-    Appium: support
+-   `text`  value to check.Appium: support
 
 ### dontSeeInTitle
 
@@ -615,7 +614,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -625,8 +624,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator.
--   `value`  text value to fill.
-    Appium: support
+-   `value`  text value to fill.Appium: support
 
 ### grabAttributeFrom
 
