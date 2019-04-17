@@ -1,3 +1,22 @@
+## 2.0.8
+
+* [Puppeteer] Added `downloadFile` action by @PeterNgTr.
+
+Use it with `FileSystem` helper to test availability of a file:
+```js
+  const fileName = await I.downloadFile('a.file-link');
+  I.amInPath('output');
+  I.seeFile(fileName);
+```
+> Actions `amInPath` and `seeFile` are taken from [FileSystem](https://codecept.io/helpers/FileSystem) helper
+
+* [Puppeteer] Fixed `autoLogin` plugin with Puppeteer by @davertmik
+* [WebDriver] `seeInField` should throw error if element has no value attrubite. By @PeterNgTr
+* [WebDriver] Fixed `seeTextEquals` passes for any string if element is empty by @PeterNgTr.
+* [WebDriver] Internal refctoring to use `el.isDisplayed` to match latest webdriverio implementation. Thanks to @LukoyanovE
+* [allure plugin] Add ability enable [screenshotDiff plugin](https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md) by @Vorobeyko
+* [Appium] Fixed `locator.stringify` call by @LukoyanovE
+
 ## 2.0.7
 
 * [WebDriver][Protractor][Nightmare] `rightClick` method implemented (fixed) in a standard way. By @davertmik
@@ -25,7 +44,7 @@
 * Fixed `bootstrapAll` and `teardownAll` calls from exported object by @LukoyanovE
 * [WebDriver] Added possibility to define conditional checks interval for `waitUntil` by @LukoyanovE
 * Fixed storing current data in data driven tests in a test object. By @Vorobeyko
-* [WebDriver] Fixed `hostname` config option overwrite when setting a cloud provider. By @Vorobeyko
+* [WebDriver] Fixed `hostname` config option overwrite when setting a cloud provider. By @LukoyanovE
 * [WebDriver] `dragSlider` method implemented by @DavertMik
 * [WebDrover] Fixed `scrollTo` to use new webdriverio API by @PeterNgTr
 * Added Japanese translation file by @tsemura
