@@ -145,10 +145,29 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-
   it('should display meta steps and substeps', (done) => {
     exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
+      lines.should.include.members([
+        '  check current dir',
+        '    I: openDir ',
+        '      I am in path "."',
+        '      I see file "codecept.json"',
+        '    MyPage: hasFile ',
+        '      I see file "codecept.json"',
+        '      I see file "codecept.po.json"',
+        '    I see file "codecept.po.json"',
+      ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should work with inject() keyword', (done) => {
+    exec(`${config_run_config('codecept.inject.po.json')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      stdout.should.include('injected');
       lines.should.include.members([
         '  check current dir',
         '    I: openDir ',
