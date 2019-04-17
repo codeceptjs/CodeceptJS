@@ -82,7 +82,7 @@ $ docker run -d -P --name selenium-chrome selenium/standalone-chrome
 $ docker run -it --rm -v /<path_to_codeceptjs_test_dir>/:/tests/ --link selenium-chrome:selenium codeception/codeceptjs
 ```
 
-You may run use `-v $(pwd)/:tests/` if running this from the root of your CodeceptJS tests directory.
+You may run use `-v $(pwd)/:/tests/` if running this from the root of your CodeceptJS tests directory.
 _Note: The output of your test run will appear in your local directory if your output path is `./output` in the CodeceptJS config_
 _Note: If running with the Nightmare driver, it is not necessary to run a selenium docker container and link it. So `--link selenium-chrome:selenium` may be omitted_
 
