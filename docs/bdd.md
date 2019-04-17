@@ -360,13 +360,22 @@ When('I open account page', () => {
 Similarly to `Before` you can use `After` and `Fail` inside a scenario. `Fail` hook is activated on failure and receive two parameters: `test` and current `error`.
 
 ```js
+<<<<<<< HEAD
 After(async (test) => {
+=======
+After(async () => {
+>>>>>>> 0344a9fbc8908831a246f5a3293b86400162dea7
   await someService.cleanup();
 });
 
 Fail((test, err) => {
+<<<<<<< HEAD
   console.log('Failed with', err);
   pause(); // start interactice pause to debug failure
+=======
+  // test didn't
+  console.log('Failed with', err);
+>>>>>>> 0344a9fbc8908831a246f5a3293b86400162dea7
 });
 ```
 
