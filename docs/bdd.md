@@ -323,6 +323,53 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
 }
 ```
 
+## Before
+
+You can set up some before hooks inside step definition files. Use `Before` function to do that.
+This function receives current test as a parameter, so you can apply additional configuration to it.
+
+```js
+// inside step_definitions
+Before((test) => {
+  // perform your code
+  test.retries(3); // retry test 3 times
+});
+```
+
+This can be used to keep state between steps:
+
+```js
+let state = {};
+
+// inside step_definitions
+Before(() => {
+  state = {};
+});
+
+Given('have a user', async () => {
+  state.user = await I.have('user');
+});
+
+When('I open account page', () => {
+  I.amOnPage(`/user/${state.user.slug}`);
+})
+```
+
+## After
+
+Similarly to `Before` you can use `After` and `Fail` inside a scenario. `Fail` hook is activated on failure and receive two parameters: `test` and current `error`.
+
+```js
+After(async () => {
+  await someService.cleanup();
+});
+
+Fail((test, err) => {
+  // test didn't
+  console.log('Failed with', err);
+});
+```
+
 ## Tests vs Features
 
 It is common to think that BDD scenario is equal to test. But it's actually not. Not every test should be described as a feature. Not every test is written to test real business value. For instance, regression tests or negative scenario tests are not bringing any value to business. Business analysts don't care about scenario reproducing bug #13, or what error message is displayed when user tries to enter wrong password on login screen. Writing all the tests inside a feature files creates informational overflow.
