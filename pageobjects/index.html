@@ -46,10 +46,10 @@ To avoid code duplication you can put common locators and methods into one place
 <h2><a class="anchor" aria-hidden="true" id="pageobject"></a><a href="#pageobject" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PageObject</h2>
 <p>In case an application has different pages (login, admin, etc) you should use a page object.
 CodeceptJS can generate a template for it with the command:</p>
-<pre><code class="hljs css language-sh">codeceptjs gpo
+<pre><code class="hljs css language-sh">npx codeceptjs gpo
 </code></pre>
 <p>This will create a sample template for a page object and include it into <code>codecept.json</code> config.</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> <span class="hljs-built_in">I</span> = actor();
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span>, otherPage } = inject();
 
 <span class="hljs-built_in">module</span>.exports = {
 
@@ -58,7 +58,8 @@ CodeceptJS can generate a template for it with the command:</p>
 </code></pre>
 <p>As you see, <code>I</code> object is available there so you can use it as you do in tests.
 General page object for a login page may look like this:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> <span class="hljs-built_in">I</span> = actor();
+<pre><code class="hljs css language-js"><span class="hljs-comment">// enable I and another page object</span>
+<span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span>, registerPage } = inject();
 
 <span class="hljs-built_in">module</span>.exports = {
 
@@ -74,6 +75,11 @@ General page object for a login page may look like this:</p>
     <span class="hljs-built_in">I</span>.fillField(<span class="hljs-keyword">this</span>.fields.email, email);
     <span class="hljs-built_in">I</span>.fillField(<span class="hljs-keyword">this</span>.fields.password, password);
     <span class="hljs-built_in">I</span>.click(<span class="hljs-keyword">this</span>.submitButton);
+  },
+
+  register(email, password) {
+    <span class="hljs-comment">// use another page object inside current one</span>
+    registerPage.registerUser({ email, password });
   }
 }
 </code></pre>
@@ -85,7 +91,7 @@ it should be added to list of test arguments to be included in test:</p>
 });
 </code></pre>
 <p>Also you can use <code>async/await</code> inside PageObject:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> <span class="hljs-built_in">I</span> = actor();
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span> } = inject();
 
 <span class="hljs-built_in">module</span>.exports = {
 
@@ -120,13 +126,13 @@ it should be added to list of test arguments to be included in test:</p>
 <h2><a class="anchor" aria-hidden="true" id="page-fragments"></a><a href="#page-fragments" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Page Fragments</h2>
 <p>In a similar manner CodeceptJS allows you to generate <strong>PageFragments</strong> and any other are abstraction
 by running <code>go</code> command with <code>--type</code> (or <code>-t</code>) option:</p>
-<pre><code class="hljs css language-sh">codeceptjs go --<span class="hljs-built_in">type</span> fragment
+<pre><code class="hljs css language-sh">npx codeceptjs go --<span class="hljs-built_in">type</span> fragment
 </code></pre>
 <p>Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
 Technically they are the same as PageObject but conceptually they are a bit different.
 For instance, it is recommended that Page Fragment to include a root locator of a component.
 Methods of page fragment can use <code>within</code> block to narrow scope to a root locator:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> <span class="hljs-built_in">I</span> = actor();
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span> } = inject();
 <span class="hljs-comment">// fragments/modal.js</span>
 <span class="hljs-built_in">module</span>.exports = {
 
@@ -149,9 +155,8 @@ Methods of page fragment can use <code>within</code> block to narrow scope to a 
   })
 });
 </code></pre>
-<p>To use a Page Fragment within a Page Object, you need to <code>require</code> it on top of the Page Object file:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> <span class="hljs-built_in">I</span> = actor();
-<span class="hljs-keyword">const</span> modal = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../fragments/modal'</span>);
+<p>To use a Page Fragment within a Page Object, you can use <code>inject</code> method to get it by its name.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span>, modal } = inject();
 
 <span class="hljs-built_in">module</span>.exports = {
   doStuff() {
@@ -160,17 +165,17 @@ Methods of page fragment can use <code>within</code> block to narrow scope to a 
     ...
   }
 }
-
 </code></pre>
+<blockquote>
+<p>PageObject and PageFragment names are declared inside <code>include</code> section of <code>codecept.conf.js</code>. See <a href="#dependency-injection">Dependency Injection</a></p>
+</blockquote>
 <h2><a class="anchor" aria-hidden="true" id="stepobjects"></a><a href="#stepobjects" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>StepObjects</h2>
 <p>StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, changing permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:</p>
-<pre><code class="hljs css language-sh">codeceptjs go --<span class="hljs-built_in">type</span> step
+<pre><code class="hljs css language-sh">npx codeceptjs go --<span class="hljs-built_in">type</span> step
 </code></pre>
 <p>Technically they are the same as PageObjects. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> <span class="hljs-built_in">I</span> = actor();
-<span class="hljs-keyword">const</span> userPage = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../pages/user'</span>);
-<span class="hljs-keyword">const</span> permissionPage = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../pages/permissions'</span>);
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span>, userPage, permissionPage } = inject();
 
 <span class="hljs-built_in">module</span>.exports = {
 
@@ -185,17 +190,24 @@ StepObject can be created similarly to PageObjects or PageFragments:</p>
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="dependency-injection"></a><a href="#dependency-injection" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dependency Injection</h2>
 <h3><a class="anchor" aria-hidden="true" id="configuration"></a><a href="#configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h3>
-<p>All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework.
-If you want an object to be injected in scenario by its name add it to configuration:</p>
-<pre><code class="hljs css language-js">  <span class="hljs-string">"include"</span>: {
-    <span class="hljs-string">"I"</span>: <span class="hljs-string">"./custom_steps.js"</span>,
-    <span class="hljs-string">"Smth"</span>: <span class="hljs-string">"./pages/Smth.js"</span>,
-    <span class="hljs-string">"loginPage"</span>: <span class="hljs-string">"./pages/Login.js"</span>,
-    <span class="hljs-string">"signinFragment"</span>: <span class="hljs-string">"./fragments/Signin.js"</span>
+<p>All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework. If you want an object to be injected in scenario by its name add it to configuration:</p>
+<pre><code class="hljs css language-js">  include: {
+    <span class="hljs-attr">I</span>: <span class="hljs-string">"./custom_steps.js"</span>,
+    <span class="hljs-attr">Smth</span>: <span class="hljs-string">"./pages/Smth.js"</span>,
+    <span class="hljs-attr">loginPage</span>: <span class="hljs-string">"./pages/Login.js"</span>,
+    <span class="hljs-attr">signinFragment</span>: <span class="hljs-string">"./fragments/Signin.js"</span>
   }
 </code></pre>
-<p>Now this objects can be retrieved by the name specified in configuration.
-CodeceptJS generator commands (like <code>codeceptjs gpo</code>) will update configuration for you.</p>
+<p>Now this objects can be retrieved by the name specified in configuration.</p>
+<p>Required objects can be obtained via parameters in tests or via global <code>inject()</code> call.</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// globally inject objects by name</span>
+<span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span>, myPage, mySteps } = inject();
+
+<span class="hljs-comment">// inject objects for a test by name</span>
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'sample test'</span>, (<span class="hljs-built_in">I</span>, myPage, mySteps) =&gt; {
+  <span class="hljs-comment">// ...</span>
+})
+</code></pre>
 <h3><a class="anchor" aria-hidden="true" id="dynamic-injection"></a><a href="#dynamic-injection" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dynamic Injection</h3>
 <p>You can inject objects per test by calling <code>injectDependencies</code> function on Scenario:</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'search @grop'</span>, (<span class="hljs-built_in">I</span>, Data) =&gt; {
@@ -204,7 +216,7 @@ CodeceptJS generator commands (like <code>codeceptjs gpo</code>) will update con
 }).injectDependencies({ <span class="hljs-attr">Data</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">'./data.js'</span>) });
 </code></pre>
 <p>This requires <code>./data.js</code> module and assigns it to <code>Data</code> argument in a test.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2018-12-25</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/locators"><span class="arrow-prev">← </span><span>Locators</span></a><a class="docs-next button" href="/helpers"><span>Custom Helpers</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#actor">Actor</a></li><li><a href="#pageobject">PageObject</a></li><li><a href="#page-fragments">Page Fragments</a></li><li><a href="#stepobjects">StepObjects</a></li><li><a href="#dependency-injection">Dependency Injection</a><ul class="toc-headings"><li><a href="#configuration">Configuration</a></li><li><a href="#dynamic-injection">Dynamic Injection</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-4-17</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/locators"><span class="arrow-prev">← </span><span>Locators</span></a><a class="docs-next button" href="/helpers"><span>Custom Helpers</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#actor">Actor</a></li><li><a href="#pageobject">PageObject</a></li><li><a href="#page-fragments">Page Fragments</a></li><li><a href="#stepobjects">StepObjects</a></li><li><a href="#dependency-injection">Dependency Injection</a><ul class="toc-headings"><li><a href="#configuration">Configuration</a></li><li><a href="#dynamic-injection">Dynamic Injection</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

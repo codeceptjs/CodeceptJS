@@ -350,7 +350,61 @@ By default, reports are generated only for failed tests.</p>
 <ul>
 <li><code>config</code> <strong>any</strong></li>
 </ul>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-3-19</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/configuration"><span class="arrow-prev">← </span><span>Configuration</span></a><a class="docs-next button" href="/docker"><span>Docker</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#allure">allure</a><ul class="toc-headings"><li><a href="#parameters">Parameters</a></li></ul></li><li><a href="#autodelay">autoDelay</a><ul class="toc-headings"><li><a href="#parameters-1">Parameters</a></li></ul></li><li><a href="#autologin">autoLogin</a><ul class="toc-headings"><li><a href="#parameters-2">Parameters</a></li></ul></li><li><a href="#puppeteercoverage">puppeteerCoverage</a><ul class="toc-headings"><li><a href="#parameters-3">Parameters</a></li></ul></li><li><a href="#retryfailedstep">retryFailedStep</a><ul class="toc-headings"><li><a href="#parameters-4">Parameters</a></li></ul></li><li><a href="#screenshotonfail">screenshotOnFail</a><ul class="toc-headings"><li><a href="#parameters-5">Parameters</a></li></ul></li><li><a href="#stepbystepreport">stepByStepReport</a><ul class="toc-headings"><li><a href="#parameters-6">Parameters</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+<h2><a class="anchor" aria-hidden="true" id="wdio"></a><a href="#wdio" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>wdio</h2>
+<p>Webdriverio services runner.</p>
+<p>This plugin allows to run webdriverio services like:</p>
+<ul>
+<li>selenium-standalone</li>
+<li>sauce</li>
+<li>testingbot</li>
+<li>browserstack</li>
+<li>appium</li>
+</ul>
+<p>A complete list of all available services can be found on <a href="https://webdriver.io">webdriverio website</a>.</p>
+<h6><a class="anchor" aria-hidden="true" id="setup"></a><a href="#setup" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup</h6>
+<ol>
+<li>Install a webdriverio service</li>
+<li>Enable <code>wdio</code> plugin in config</li>
+<li>Add service name to <code>services</code> array inside wdio plugin config.</li>
+</ol>
+<p>See examples below:</p>
+<h6><a class="anchor" aria-hidden="true" id="selenium-standalone-service"></a><a href="#selenium-standalone-service" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Selenium Standalone Service</h6>
+<p>Install <code>@wdio/selenium-standalone-service</code> package, as <a href="https://webdriver.io/docs/selenium-standalone-service.html">described here</a>.
+It is important to make sure it is compatible with current webdriverio version.</p>
+<p>Enable <code>wdio</code> plugin in plugins list and add <code>selenium-standalone</code> service:</p>
+<pre><code class="hljs css language-js">plugins: {
+   <span class="hljs-attr">wdio</span>: {
+       <span class="hljs-attr">services</span>: [<span class="hljs-string">'selenium-standalone'</span>]
+       <span class="hljs-comment">// additional config for service can be passed here</span>
+   }
+}
+</code></pre>
+<p>Please note, this service can be used with Protractor helper as well!</p>
+<h5><a class="anchor" aria-hidden="true" id="sauce-service"></a><a href="#sauce-service" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sauce Service</h5>
+<p>Install <code>@wdio/sauce-service</code> package, as <a href="https://webdriver.io/docs/sauce-service.html">described here</a>.
+It is important to make sure it is compatible with current webdriverio version.</p>
+<p>Enable <code>wdio</code> plugin in plugins list and add <code>sauce</code> service:</p>
+<pre><code class="hljs css language-js">plugins: {
+   <span class="hljs-attr">wdio</span>: {
+       <span class="hljs-attr">services</span>: [<span class="hljs-string">'sauce'</span>],
+       <span class="hljs-attr">user</span>: ... ,<span class="hljs-comment">// saucelabs username</span>
+       key: ... <span class="hljs-comment">// saucelabs api key</span>
+       <span class="hljs-comment">// additional config, from sauce service</span>
+   }
+}
+</code></pre>
+<hr>
+<p>In the same manner additional services from webdriverio can be installed, enabled, and configured.</p>
+<h4><a class="anchor" aria-hidden="true" id="configuration-7"></a><a href="#configuration-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h4>
+<ul>
+<li><code>services</code> - list of enabled services</li>
+<li>... - additional configuration passed into services.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="parameters-7"></a><a href="#parameters-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h3>
+<ul>
+<li><code>config</code></li>
+</ul>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-4-18</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/configuration"><span class="arrow-prev">← </span><span>Configuration</span></a><a class="docs-next button" href="/docker"><span>Docker</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#allure">allure</a><ul class="toc-headings"><li><a href="#parameters">Parameters</a></li></ul></li><li><a href="#autodelay">autoDelay</a><ul class="toc-headings"><li><a href="#parameters-1">Parameters</a></li></ul></li><li><a href="#autologin">autoLogin</a><ul class="toc-headings"><li><a href="#parameters-2">Parameters</a></li></ul></li><li><a href="#puppeteercoverage">puppeteerCoverage</a><ul class="toc-headings"><li><a href="#parameters-3">Parameters</a></li></ul></li><li><a href="#retryfailedstep">retryFailedStep</a><ul class="toc-headings"><li><a href="#parameters-4">Parameters</a></li></ul></li><li><a href="#screenshotonfail">screenshotOnFail</a><ul class="toc-headings"><li><a href="#parameters-5">Parameters</a></li></ul></li><li><a href="#stepbystepreport">stepByStepReport</a><ul class="toc-headings"><li><a href="#parameters-6">Parameters</a></li></ul></li><li><a href="#wdio">wdio</a><ul class="toc-headings"><li><a href="#parameters-7">Parameters</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
