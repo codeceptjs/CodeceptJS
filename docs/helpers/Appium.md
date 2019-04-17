@@ -686,19 +686,6 @@ I.sendDeviceKeyEvent(3);
 
 -   `keyValue`  Device specific key valueAppium: support only Android
 
-### sendKey
-
-Send a sequence of key strokes to an element
-
-```js
-I.sendKey('~email of the customer', '1');;
-```
-
-#### Parameters
-
--   `locator`  element to send a sequence of key strokes
--   `keys`  a sequence of key strokes to send to an element
-
 ### setImmediateValue
 
 Set immediate value in app.

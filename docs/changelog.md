@@ -1,3 +1,59 @@
+## 2.1.0
+
+* Added global `inject()` function to require actor and page objects using dependency injection. Recommended to use in page objects, step definition files, support objects:
+
+```js
+// old way
+const I = actor();
+const myPage = require('../page/myPage');
+
+// new way
+const { I, myPage } = inject();
+```
+
+* Added global `secret` function to fill in sensitive data by @RohanHart:
+
+```js
+I.fillField('password', secret('123456'));
+```
+
+* [wdioPlugin](https://codecept.io/plugins/#wdio) Added a plugin to **support webdriverio services** including *selenium-standalone*, *sauce*, *browserstack*, etc. **Sponsored by @GSasu**
+* [Appium] Fixed `swipe*` methods by @PeterNgTr
+* BDD Gherkin Improvements:
+  * Implemented `run-multiple` for feature files.  **Sponsored by @GSasu**
+  * Added `--features` and `--tests` options to `run-multiple`. **Sponsored by @GSasu**
+  * Implemened `Before` and `After` hooks in [step definitions](https://codecept.io/bdd#before)
+* Fixed running tests by absolute path. By @batalov.
+* Enabled the adding screenshot to failed test for moch-junit-reporter by @PeterNgTr.
+* [Puppeteer] Implemented `uncheckOption` and fixed behavior of `checkOption` by @aml2610
+* [WebDriver] Fixed `seeTextEquals` on empty strings by @PeterNgTr
+* [Puppeteer] Fixed launch with `browserWSEndpoint` config by @ngadiyak.
+* [Puppeteer] Fixed switching back to main window in multi-session mode by @davertmik.
+* [autoLoginPlugin] Fixed using async functions for auto login by @nitschSB
+
+> This release was partly sponsored by @GSasu. Thanks for the support!
+Do you want to improve this project? [Learn more about sponsoring CodeceptJS](https://github.com/Codeception/CodeceptJS/issues/1462)
+
+
+## 2.0.8
+
+* [Puppeteer] Added `downloadFile` action by @PeterNgTr.
+
+Use it with `FileSystem` helper to test availability of a file:
+```js
+  const fileName = await I.downloadFile('a.file-link');
+  I.amInPath('output');
+  I.seeFile(fileName);
+```
+> Actions `amInPath` and `seeFile` are taken from [FileSystem](https://codecept.io/helpers/FileSystem) helper
+
+* [Puppeteer] Fixed `autoLogin` plugin with Puppeteer by @davertmik
+* [WebDriver] `seeInField` should throw error if element has no value attrubite. By @PeterNgTr
+* [WebDriver] Fixed `seeTextEquals` passes for any string if element is empty by @PeterNgTr.
+* [WebDriver] Internal refctoring to use `el.isDisplayed` to match latest webdriverio implementation. Thanks to @LukoyanovE
+* [allure plugin] Add ability enable [screenshotDiff plugin](https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md) by @Vorobeyko
+* [Appium] Fixed `locator.stringify` call by @LukoyanovE
+
 ## 2.0.7
 
 * [WebDriver][Protractor][Nightmare] `rightClick` method implemented (fixed) in a standard way. By @davertmik
@@ -25,7 +81,7 @@
 * Fixed `bootstrapAll` and `teardownAll` calls from exported object by @LukoyanovE
 * [WebDriver] Added possibility to define conditional checks interval for `waitUntil` by @LukoyanovE
 * Fixed storing current data in data driven tests in a test object. By @Vorobeyko
-* [WebDriver] Fixed `hostname` config option overwrite when setting a cloud provider. By @Vorobeyko
+* [WebDriver] Fixed `hostname` config option overwrite when setting a cloud provider. By @LukoyanovE
 * [WebDriver] `dragSlider` method implemented by @DavertMik
 * [WebDrover] Fixed `scrollTo` to use new webdriverio API by @PeterNgTr
 * Added Japanese translation file by @tsemura
