@@ -22,7 +22,7 @@ I.fillField('password', secret('123456'));
 * BDD Gherkin Improvements:
   * Implemented `run-multiple` for feature files.  **Sponsored by @GSasu**
   * Added `--features` and `--tests` options to `run-multiple`. **Sponsored by @GSasu**
-  * Implemened `Before` and `After` hooks in [step definitions](https://codecept.io/bdd#before)
+  * Implemented `Before` and `After` hooks in [step definitions](https://codecept.io/bdd#before)
 * Fixed running tests by absolute path. By @batalov.
 * Enabled the adding screenshot to failed test for moch-junit-reporter by @PeterNgTr.
 * [Puppeteer] Implemented `uncheckOption` and fixed behavior of `checkOption` by @aml2610
