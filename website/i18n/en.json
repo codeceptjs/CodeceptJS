@@ -54,6 +54,9 @@
         "title": "Data Management"
       },
       "docker": {
+        "title": "Docker"
+      },
+      "examples": {
         "title": "Examples"
       },
       "helpers": {
