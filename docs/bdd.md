@@ -360,7 +360,7 @@ When('I open account page', () => {
 Similarly to `Before` you can use `After` and `Fail` inside a scenario. `Fail` hook is activated on failure and receive two parameters: `test` and current `error`.
 
 ```js
-After(async (test) => {
+After(async () => {
   await someService.cleanup();
 });
 
