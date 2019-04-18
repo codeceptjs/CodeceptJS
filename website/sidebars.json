@@ -3,7 +3,8 @@
     "Quickstart": [
       "quickstart",
       "basics",
-      "video"
+      "video",
+      "examples"
     ],
     "Web Testing": [
       "acceptance",
