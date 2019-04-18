@@ -249,6 +249,31 @@ See [complete reference on webdriver.io][11].
 
 > Alternatively, use [codeceptjs-bshelper][12] for better reporting.
 
+#### TestingBot
+
+TestingBot can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/testingbot-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `testingbot` service:
+
+```js
+plugins: {
+   wdio: {
+       services: ['testingbot'],
+       user: ... ,// testingbot key
+       key: ... // testingbot secret
+       // additional config, from testingbot service
+   }
+}
+```
+
+See [complete reference on webdriver.io][20].
+
+> Alternatively, use [codeceptjs-tbhelper][21] for better reporting.
+
 ### Multiremote Capabilities
 
 This is a work in progress but you can control two browsers at a time right out of the box.
@@ -1640,3 +1665,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 [18]: https://w3c.github.io/webdriver/#keyboard-actions
 
 [19]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+
+[20]: https://webdriver.io/docs/testingbot-service.html
+
+[21]: https://github.com/testingbot/codeceptjs-tbhelper
