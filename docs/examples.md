@@ -1,5 +1,5 @@
 ---
-id: docker
+id: examples
 title: Examples
 ---
 
@@ -9,17 +9,17 @@ title: Examples
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
 
-> See them https://github.com/Codeception/CodeceptJS/tree/master/examples
+> See tests https://github.com/Codeception/CodeceptJS/tree/master/examples
 
-## Testing Single Page Application
+## Single Page Application Tests
 
 ![](https://user-images.githubusercontent.com/220264/56353972-56975080-61db-11e9-8b23-06e8b4620995.png)
 
 End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application which helps to collect user feedback and transform it into professional bugreports.
 
-> See them https://github.com/bugiratracker/codeceptjs-demo
+> See tests https://github.com/bugiratracker/codeceptjs-demo
 
-Tests repository deomstrate usage of
+Tests repository demonstrates usage of
 
 * Puppeteer helper
 * ApiDataFactory helper
@@ -31,7 +31,7 @@ Tests repository deomstrate usage of
 
 Testing Amazon website using Selenium WebDriver.
 
-> See them https://github.com/PeterNgTr/amazon-ui-tests
+> See tests https://github.com/PeterNgTr/amazon-ui-tests
 
 This repository demonstrates usage of:
 
@@ -44,7 +44,7 @@ This repository demonstrates usage of:
 
 Test automation by ModusCreate agency with NightmareJS.
 
-> See them https://github.com/ModusCreateOrg/codeceptjs-nightmare-harness
+> See tests https://github.com/ModusCreateOrg/codeceptjs-nightmare-harness
 
 This repository demonstrates usage of:
 
@@ -57,7 +57,7 @@ This repository demonstrates usage of:
 
 Based on [Setting up End-to-End Testing in Angular Project with CodeceptJS](https://medium.com/@armno/setting-up-end-to-end-testing-in-angular-project-with-codeceptjs-ac1784de3420) post by Armno Prommarak.
 
-> See them https://github.com/armno/angular-e2e-codeceptjs-example
+> See tests https://github.com/armno/angular-e2e-codeceptjs-example
 
 This repository demonstrates usage of
 
