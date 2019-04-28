@@ -62,32 +62,87 @@ Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 
 -   `url` **any** 
 
+### deleteHttpHeader
+
+Deletes the header with the passed name. Subsequent requests will not have the deleted header in its request.
+
+#### Parameters
+
+-   `name` **[string][2]** 
+
+### dontSeeHttpHeader
+
+Checks over the given HTTP header and (optionally) its value, asserting that are not there
+
+```js
+I.dontSeeHttpHeader('content-type');
+I.dontSeeHttpHeader('content-type', 'application/json; charset=utf-8');
+```
+
+#### Parameters
+
+-   `name` **[string][2]** 
+-   `value` **([string][2] \| [undefined][3])**  (optional, default `undefined`)
+
+### dontSeeResponseCodeIs
+
+Checks that response code is not equal to provided value.
+
+```js
+I.dontSeeResponseCodeIs(404)
+```
+
+#### Parameters
+
+-   `statusCode` **[number][4]** 
+
+### grabHttpHeader
+
+Returns the value of the specified header name.
+If name not specified, return all headers
+
+#### Parameters
+
+-   `name` **([string][2] \| [undefined][3])**  (optional, default `undefined`)
+
+### grabResponse
+
+Returns current response so that it can be used in next scenario steps.
+
+### haveHttpHeader
+
+Sets HTTP header valid for all next requests. Use deleteHeader to unset it
+
+#### Parameters
+
+-   `name` **[string][2]** 
+-   `value` **[string][2]** 
+
 ### seeHttpHeader
 
 Checks over the given HTTP header and (optionally) its value
 
 ```js
+I.seeHttpHeader('content-type');
 I.seeHttpHeader('content-type', 'application/json; charset=utf-8');
 ```
 
 #### Parameters
 
 -   `name` **[string][2]** 
--   `value` **[string][2]**  (optional, default `undefined`)
+-   `value` **([string][2] \| [undefined][3])**  (optional, default `undefined`)
 
 ### seeResponseCodeIs
 
 Checks response code equals to provided value.
 
-#### Parameters
-
--   `statusCode` **[number][3]** 
-
-#### Examples
-
-```javascript
+```js
 I.seeResponseCodeIs(200)
 ```
+
+#### Parameters
+
+-   `statusCode` **[number][4]** 
 
 ### sendDeleteRequest
 
@@ -100,7 +155,7 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][4]**  (optional, default `{}`)
+-   `headers` **[object][5]**  (optional, default `{}`)
 
 ### sendGetRequest
 
@@ -113,7 +168,7 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][4]**  (optional, default `{}`)
+-   `headers` **[object][5]**  (optional, default `{}`)
 
 ### sendPatchRequest
 
@@ -126,8 +181,8 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **[string][2]** 
--   `payload` **[object][4]** 
--   `headers` **[object][4]**  (optional, default `{}`)
+-   `payload` **[object][5]** 
+-   `headers` **[object][5]**  (optional, default `{}`)
 
 ### sendPostRequest
 
@@ -141,7 +196,7 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 
 -   `url` **any** 
 -   `payload` **any**  (optional, default `{}`)
--   `headers` **[object][4]**  (optional, default `{}`)
+-   `headers` **[object][5]**  (optional, default `{}`)
 
 ### sendPutRequest
 
@@ -154,8 +209,8 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **[string][2]** 
--   `payload` **[object][4]**  (optional, default `{}`)
--   `headers` **[object][4]**  (optional, default `{}`)
+-   `payload` **[object][5]**  (optional, default `{}`)
+-   `headers` **[object][5]**  (optional, default `{}`)
 
 ### setRequestTimeout
 
@@ -173,6 +228,8 @@ I.setRequestTimeout(10000); // In milliseconds
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
