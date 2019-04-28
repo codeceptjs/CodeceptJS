@@ -96,10 +96,14 @@ I.dontSeeResponseCodeIs(404)
 
 -   `statusCode` **[number][4]** 
 
-### grabHttpHeader
+### grabRequestHttpHeader
 
-Returns the value of the specified header name.
+Returns the value of the specified header name from request.
 If name not specified, return all headers
+
+```js
+I.grabRequestHttpHeader('content-type')
+```
 
 #### Parameters
 
@@ -109,9 +113,27 @@ If name not specified, return all headers
 
 Returns current response so that it can be used in next scenario steps.
 
+### grabResponseHttpHeader
+
+Returns the value of the specified header name from response.
+If name not specified, return all headers
+
+```js
+I.grabResponseHttpHeader('content-type')
+```
+
+#### Parameters
+
+-   `name` **([string][2] \| [undefined][3])**  (optional, default `undefined`)
+
 ### haveHttpHeader
 
 Sets HTTP header valid for all next requests. Use deleteHeader to unset it
+
+```js
+I.haveHttpHeader('HTTP_X_REQUESTED_WITH', 'xmlhttprequest')
+// all next requests will contain this header
+```
 
 #### Parameters
 
@@ -143,6 +165,28 @@ I.seeResponseCodeIs(200)
 #### Parameters
 
 -   `statusCode` **[number][4]** 
+
+### seeResponseContainsJson
+
+Checks whether the last JSON response contains data by json path.
+
+```js
+I.seeResponseContainsJson('items[0]', response.result);
+I.seeResponseContainsJson('items[0].id', response.result.id);
+// If . or [] are part of an actual property name, they can be escaped by adding two backslashes before them.
+I.seeResponseContainsJson('items[0].\\.id', response.result['.id']);
+I.seeResponseContainsJson({
+ 'name': generatedFolder.name,
+ 'id': generatedFolder.id,
+ 'roles[0]': generatedFolder.roles[0],
+});
+I.seeResponseContainsJson('.', createResponse.result); // check root
+```
+
+#### Parameters
+
+-   `jsonMatches` **([string][2] \| [object][5])** 
+-   `value` **(any | [undefined][3])** 
 
 ### sendDeleteRequest
 

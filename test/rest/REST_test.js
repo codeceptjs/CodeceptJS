@@ -20,11 +20,28 @@ const data = {
   ],
   user: {
     name: 'davert',
+    '.dot': 'dot prop',
+    object: {
+      id: 'custom_id',
+      title: 'custom_title',
+      array: ['string', 123],
+      '.dot': 'dot prop',
+    },
+    object2: {
+      id: 'custom_id',
+      array: ['string', 123],
+      '.dot': 'dot prop',
+    },
+    object3: {
+      id: 'custom_id',
+      '.dot': 'dot prop',
+    },
+    array: ['string', 123],
   },
 };
 
 describe('REST', () => {
-  before((done) => {
+  beforeEach((done) => {
     I = new REST({
       endpoint: api_url,
       defaultHeaders: {
@@ -137,17 +154,17 @@ describe('REST', () => {
       expect(I.seeHttpHeader.bind(I, 'HTTP_X_REQUESTED_WITH')).to.throw();
     });
 
-    it('should set request headers', function* () {
+    it('should set request headers by haveHttpHeader', function* () {
       I.haveHttpHeader('HTTP_X_REQUESTED_WITH', 'xmlhttprequest');
-      yield I.sendGetRequest('/users');
+      yield I.sendGetRequest('/restheaders');
       I.seeHttpHeader('HTTP_X_REQUESTED_WITH');
     });
 
     it('should delete request headers', function* () {
       I.haveHttpHeader('HTTP_X_REQUESTED_WITH', 'xmlhttprequest');
-      yield I.sendGetRequest('/users');
+      yield I.sendGetRequest('/restheaders');
       I.deleteHttpHeader('HTTP_X_REQUESTED_WITH');
-      yield I.sendGetRequest('/users');
+      yield I.sendGetRequest('/restheaders');
       I.dontSeeHttpHeader('HTTP_X_REQUESTED_WITH');
     });
 
@@ -173,6 +190,94 @@ describe('REST', () => {
       yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
       const header = I.grabResponseHttpHeader();
       expect(header).to.have.property('x-test', 'test');
+    });
+  });
+
+  describe('seeResponseContainsJson', () => {
+    it('should contain by string', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('name', 'davert');
+    });
+
+    it('should contain by object', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        name: 'davert',
+      });
+    });
+
+    it('should pass when recieved args jsonMatches like string and array[0] value', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('array[0]', 'string');
+    });
+
+    it('should pass when recieved args jsonMatches like array and array[1] value', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('array[1]', 123);
+    });
+
+    it('should pass when recieved args jsonMatches like string and object value', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('object.id', 'custom_id');
+    });
+
+    it('should pass when recieved args jsonMatches like object and object value with 1 property', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        'object.id': 'custom_id',
+      });
+    });
+
+    it('should pass when recieved args jsonMatches like object and object value with 2 property', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        'object.id': 'custom_id',
+        'object.title': 'custom_title',
+      });
+    });
+
+    it('should pass when recieved args jsonMatches like object and object value with array property', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        'object.array[0]': 'string',
+      });
+    });
+
+    it('should pass when recieved args jsonMatches like object and object value with string and array properties', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        'object.title': 'custom_title',
+        'object.array[0]': 'string',
+      });
+    });
+
+    it('should pass when recieved args jsonMatches like string which start with dot', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('\\.dot', 'dot prop');
+    });
+
+    it('should pass when recieved args jsonMatches like object which start with dot', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        '\\.dot': 'dot prop',
+      });
+    });
+
+    it('should pass when recieved args jsonMatches like string which contain object with property which start with dot', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('object.\\.dot', 'dot prop');
+    });
+
+    it('should pass when recieved args jsonMatches like string which contain dot like root matches', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson('.', data.user);
+    });
+
+    it('should contain object by object', function* () {
+      yield I.sendPostRequest('/user', data.user);
+      I.seeResponseContainsJson({
+        object: data.user.object3,
+      });
     });
   });
 });
