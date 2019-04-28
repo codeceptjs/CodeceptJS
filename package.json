@@ -65,7 +65,7 @@
     "@wdio/sauce-service": "^5.7.8",
     "@wdio/selenium-standalone-service": "^5.7.8",
     "@wdio/utils": "^5.7.8",
-    "chai": "^3.4.1",
+    "chai": "^4.2.0",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2",
     "documentation": "^8.1.2",

@@ -62,6 +62,33 @@ Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 
 -   `url` **any** 
 
+### seeHttpHeader
+
+Checks over the given HTTP header and (optionally) its value
+
+```js
+I.seeHttpHeader('content-type', 'application/json; charset=utf-8');
+```
+
+#### Parameters
+
+-   `name` **[string][2]** 
+-   `value` **[string][2]**  (optional, default `undefined`)
+
+### seeResponseCodeIs
+
+Checks response code equals to provided value.
+
+#### Parameters
+
+-   `statusCode` **[number][3]** 
+
+#### Examples
+
+```javascript
+I.seeResponseCodeIs(200)
+```
+
 ### sendDeleteRequest
 
 Sends DELETE request to API.
@@ -73,7 +100,7 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `headers` **[object][4]**  (optional, default `{}`)
 
 ### sendGetRequest
 
@@ -86,7 +113,7 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `headers` **[object][4]**  (optional, default `{}`)
 
 ### sendPatchRequest
 
@@ -98,9 +125,9 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 
 #### Parameters
 
--   `url` **[string][3]** 
--   `payload` **[object][2]** 
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `url` **[string][2]** 
+-   `payload` **[object][4]** 
+-   `headers` **[object][4]**  (optional, default `{}`)
 
 ### sendPostRequest
 
@@ -114,7 +141,7 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 
 -   `url` **any** 
 -   `payload` **any**  (optional, default `{}`)
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `headers` **[object][4]**  (optional, default `{}`)
 
 ### sendPutRequest
 
@@ -126,9 +153,9 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 
 #### Parameters
 
--   `url` **[string][3]** 
--   `payload` **[object][2]**  (optional, default `{}`)
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `url` **[string][2]** 
+-   `payload` **[object][4]**  (optional, default `{}`)
+-   `headers` **[object][4]**  (optional, default `{}`)
 
 ### setRequestTimeout
 
@@ -144,6 +171,8 @@ I.setRequestTimeout(10000); // In milliseconds
 
 [1]: https://github.com/axios/axios
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
