@@ -4,6 +4,7 @@ const REST = require('../../lib/helper/REST');
 const api_url = TestHelper.jsonServerUrl();
 const path = require('path');
 const fs = require('fs');
+const expect = require('chai').expect;
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
@@ -23,7 +24,7 @@ const data = {
 };
 
 describe('REST', () => {
-  beforeEach((done) => {
+  before((done) => {
     I = new REST({
       endpoint: api_url,
       defaultHeaders: {
@@ -111,6 +112,67 @@ describe('REST', () => {
         resp.config.headers.should.have.property('HTTP_X_REQUESTED_WITH');
         resp.config.headers.HTTP_X_REQUESTED_WITH.should.eql('xmlhttprequest');
       });
+    });
+
+    it('should see request headers', function* () {
+      yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
+      I.seeHttpHeader('HTTP_X_REQUESTED_WITH');
+      I.seeHttpHeader('X-Test', 'test');
+    });
+
+    it('should dont see request headers', function* () {
+      yield I.sendGetRequest('/restheaders');
+      I.dontSeeHttpHeader('HTTP_X_REQUESTED_WITH');
+      I.dontSeeHttpHeader('X-Test', 'tesst');
+    });
+
+    it('should throw error when request exist headers', function* () {
+      yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
+      expect(I.dontSeeHttpHeader.bind(I, 'HTTP_X_REQUESTED_WITH')).to.throw();
+      expect(I.dontSeeHttpHeader.bind(I, 'X-Test', 'test')).to.throw();
+    });
+
+    it('should throw error when request headers not exists', function* () {
+      yield I.sendGetRequest('/restheaders');
+      expect(I.seeHttpHeader.bind(I, 'HTTP_X_REQUESTED_WITH')).to.throw();
+    });
+
+    it('should set request headers', function* () {
+      I.haveHttpHeader('HTTP_X_REQUESTED_WITH', 'xmlhttprequest');
+      yield I.sendGetRequest('/users');
+      I.seeHttpHeader('HTTP_X_REQUESTED_WITH');
+    });
+
+    it('should delete request headers', function* () {
+      I.haveHttpHeader('HTTP_X_REQUESTED_WITH', 'xmlhttprequest');
+      yield I.sendGetRequest('/users');
+      I.deleteHttpHeader('HTTP_X_REQUESTED_WITH');
+      yield I.sendGetRequest('/users');
+      I.dontSeeHttpHeader('HTTP_X_REQUESTED_WITH');
+    });
+
+    it('should grab request header by name', function* () {
+      yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
+      const header = I.grabRequestHttpHeader('X-Test');
+      expect(header).to.eql('test');
+    });
+
+    it('should grab request header without name', function* () {
+      yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
+      const header = I.grabRequestHttpHeader();
+      expect(header).to.eql({ 'X-Test': 'test' });
+    });
+
+    it('should grab response header by name', function* () {
+      yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
+      const header = I.grabResponseHttpHeader('x-test');
+      expect(header).to.eql('test');
+    });
+
+    it('should grab response header without name', function* () {
+      yield I.sendGetRequest('/restheaders', { 'content-type': 'applicatiosn/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' });
+      const header = I.grabResponseHttpHeader();
+      expect(header).to.have.property('x-test', 'test');
     });
   });
 });
