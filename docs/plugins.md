@@ -429,6 +429,7 @@ Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
 ```js
 plugins: {
    wdio: {
+       enabled: true,
        services: ['selenium-standalone']
        // additional config for service can be passed here
    }
@@ -447,6 +448,7 @@ Enable `wdio` plugin in plugins list and add `sauce` service:
 ```js
 plugins: {
    wdio: {
+       enabled: true,
        services: ['sauce'],
        user: ... ,// saucelabs username
        key: ... // saucelabs api key

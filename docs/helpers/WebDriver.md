@@ -212,6 +212,7 @@ Enable `wdio` plugin in plugins list and add `sauce` service:
 ```js
 plugins: {
    wdio: {
+      enabled: true,
        services: ['sauce'],
        user: ... ,// saucelabs username
        key: ... // saucelabs api key
@@ -237,6 +238,7 @@ Enable `wdio` plugin in plugins list and add `browserstack` service:
 ```js
 plugins: {
    wdio: {
+      enabled: true,
        services: ['browserstack'],
        user: ... ,// browserstack username
        key: ... // browserstack api key
@@ -249,12 +251,44 @@ See [complete reference on webdriver.io][11].
 
 > Alternatively, use [codeceptjs-bshelper][12] for better reporting.
 
+#### TestingBot
+
+> **Recommended**: use official [TestingBot Helper][13].
+
+Alternatively, TestingBot can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/testingbot-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `testingbot` service:
+
+```js
+plugins: {
+  wdio: {
+      enabled: true,
+      services: ['testingbot'],
+      user: ... ,// testingbot key
+      key: ... // testingbot secret
+      // additional config, from testingbot service
+  }
+}
+```
+
+See [complete reference on webdriver.io][14].
+
+#### Applitools
+
+Visual testing via Applitools service
+
+> Use [CodeceptJS Applitools Helper][15] with Applitools wdio service.
+
 ### Multiremote Capabilities
 
 This is a work in progress but you can control two browsers at a time right out of the box.
 Individual control is something that is planned for a later version.
 
-Here is the [webdriverio docs][13] on the subject
+Here is the [webdriverio docs][16] on the subject
 
 ```js
 {
@@ -276,37 +310,6 @@ Here is the [webdriverio docs][13] on the subject
     }
 }
 ```
-
-#### TestingBot
-
-> **Recommended**: use official [TestingBot Helper][14].
-
-Alternatively, TestingBot can be configured via wdio service, which should be installed additionally:
-
-    npm i @wdio/testingbot-service --save
-
-It is important to make sure it is compatible with current webdriverio version.
-
-Enable `wdio` plugin in plugins list and add `testingbot` service:
-
-```js
-plugins: {
-  wdio: {
-      services: ['testingbot'],
-      user: ... ,// testingbot key
-      key: ... // testingbot secret
-      // additional config, from testingbot service
-  }
-}
-```
-
-See [complete reference on webdriver.io][15].
-
-#### Applitools
-
-Visual testing via Applitools service
-
-> Use [CodeceptJS Applitools Helper][16] with Applitools wdio service.
 
 ## Access From Helpers
 
@@ -1659,13 +1662,13 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [12]: https://github.com/PeterNgTr/codeceptjs-bshelper
 
-[13]: http://webdriver.io/guide/usage/multiremote.html
+[13]: https://github.com/testingbot/codeceptjs-tbhelper
 
-[14]: https://github.com/testingbot/codeceptjs-tbhelper
+[14]: https://webdriver.io/docs/testingbot-service.html
 
-[15]: https://webdriver.io/docs/testingbot-service.html
+[15]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
 
-[16]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
+[16]: http://webdriver.io/guide/usage/multiremote.html
 
 [17]: http://jster.net/category/windows-modals-popups
 
