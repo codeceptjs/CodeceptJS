@@ -11,7 +11,7 @@ CodeceptJS provides API to run custom code before and after the test and inject 
 In case you need to execute arbitrary code before or after the tests,
 you can use `bootstrap` and `teardown` config. Use it to start and stop webserver, Selenium, etc.
 
-When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode , there are two additional hooks available; `bootstrapAll` and `teardownAll`. These hooks are only called once each; before all of the test suites are run (`bootstrapAll`) and after all of the test suites have finished (`teardownAll`).
+When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [BootstrapAll & TeardownAll](#bootstrapall--teardownall) for more information.
 
 There are different ways to define bootstrap and teardown functions:
 
@@ -113,6 +113,27 @@ exports.config = {
 
 ```
 
+## BootstrapAll & TeardownAll
+
+There are two additional hooks for [multiple browser execution](http://codecept.io/advanced/#multiple-execution) mode.
+These hooks are only called once each; before all of the multiple runs are start (`bootstrapAll`) and after all of the multiple runs have finished (`teardownAll`).
+Unlike them, the `bootstrap` and `teardown` hooks are called between and after each of multiple runs respectively.
+
+For example, you use Firefox and Chrome browsers in multiple run.
+First, `bootstrapAll` is called. Then two `bootstrap` runs: first is for Firefox and second - for Chrome.
+Then tests in Chrome end, so `teardown` for Chrome runs. Same for Firefox, after tests `teardown` is executed.
+Finally, `teardownAll` runs.
+
+The `bootstrapAll` and `teardownAll` hooks are preferred to use for setting up common logic of tested project: to start application server or database, to start webdriver's grid.
+The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](https://codecept.io/helpers/WebDriverIO#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
+
+Same as `bootstrap` and `teardown`, there are 3 ways to define `bootstrapAll` and `teardownAll` functions:
+
+* JS file executed as is (synchronously).
+* JS file exporting function with optional callback for async execution.
+* JS file exporting an object with `bootstrapAll` and `teardownAll` methods.
+* Inside JS config file
+
 ### Example: BootstrapAll & TeardownAll Inside Config
 
 Using JavaScript-style config `codecept.conf.js`, bootstrapAll and teardownAll functions can be placed inside of it:
@@ -169,7 +190,44 @@ exports.config = {
 }
 ```
 
-**Note**: The `bootstrapAll` and `teardownAll` hooks are only called when using [Multiple Execution](http://codecept.io/advanced/#multiple-execution).
+### Example: Bootstrap & Teardown Inside an Object
+
+Examples above can be combined into one file.
+
+Add to config (`codecept.json`):
+
+```js
+  "bootstrapAll": "./presettings.js"
+  "teardownAll": "./presettings.js"
+  "bootstrap": "./presettings.js"
+  "teardown": "./presettings.js"
+```
+
+`presettings.js` should export object with `bootstrap` and `teardown` functions:
+
+```js
+// presettings.js
+const server = require('./app_server');
+const browserstackConnection = require("./browserstackConnection");
+const uniqueIdentifier = generateSomeUniqueIdentifierFunction();
+
+module.exports = {
+  bootstrapAll: function(done) {
+    server.start(done);
+  },
+  teardownAll: function(done) {
+    server.stop(done);
+  },
+  bootstrap: function(done) {
+    browserstackConnection.connect(uniqueIdentifier);
+  },
+  teardown: function(done) {
+    browserstackConnection.disconnect(uniqueIdentifier);
+  },
+}
+```
+
+**Remember**: The `bootstrapAll` and `teardownAll` hooks are only called when using [Multiple Execution](http://codecept.io/advanced/#multiple-execution).
 
 ## Plugins
 
@@ -241,6 +299,24 @@ module.exports = function() {
 }
 ```
 
+### Example: Check URL before running a test
+
+If you want to share bootstrap script or run multiple bootstraps, it's a good idea to wrap that script into a plugin.
+Plugin can also execute JS before tests but you need to use internal APIs to synchronize promises.
+
+```js
+const { recorder } = require('codeceptjs');
+
+module.exports = function(options) {
+
+  event.dispatcher.on(event.all.before, function () {
+    recorder.startUnlessRunning(); // start recording promises
+    recorder.add('do some async stuff', async () => {
+      // your code
+    });
+  });
+}
+```
 
 ## API
 
@@ -467,7 +543,10 @@ codecept.initGlobals(__dirname);
 Container.create(config, opts);
 
 // initialize listeners
-codecept.bootstrap();
+codecept.runHooks();
+
+// run bootstrap function from config
+codecept.runBootstrap();
 
 // load tests
 codecept.loadTests('*_test.js');

@@ -38,6 +38,22 @@ Launch Allure server and see the report like on a screenshot above:
 ##### Configuration
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
+-   `enableScreenshotDiffPlugin` - a boolean flag for add screenshot diff to report.
+     To attach, tou need to attach three files to the report - "diff.png", "actual.png", "expected.png".
+     See [Allure Screenshot Plugin][2]
+
+#### Public API
+
+There are few public API methods which can be accessed from other plugins.
+
+```js
+const allure = codeceptjs.container.plugins('allure');
+```
+
+`allure` object has following methods:
+
+-   `addAttachment(name, buffer, type)` - add an attachment to current test / suite
+-   `addLabel(name, value)` - adds a label to current test
 
 ### Parameters
 
@@ -120,7 +136,15 @@ Scenario('log me in', (I, login) => {
     -   `login` - sign in into the system
     -   `check` - check that user is logged in
     -   `fetch` - to get current cookies (by default `I.grabCookie()`)
-    -   `load` - to set cookies (by default `I.setCookie(cookie)`)
+    -   `restore` - to set cookies (by default `I.amOnPage('/'); I.setCookie(cookie)`)
+
+#### How It Works
+
+1.  `restore` method is executed. It should open a page and set credentials.
+2.  `check` method is executed. It should reload a page (so cookies are applied) and check that this page belongs to logged in user.
+3.  If `restore` and `check` were not successful, `login` is executed
+4.  `login` should fill in login form
+5.  After successful login, `fetch` is executed to save cookies into memory or file.
 
 #### Example: Simple login
 
@@ -134,11 +158,10 @@ autoLogin: {
       // loginAdmin function is defined in `steps_file.js`
       login: (I) => I.loginAdmin(),
       // if we see `Admin` on page, we assume we are logged in
-      check: (I) => I.see('Admin'),
-      // we take all cookies from a browser
-      fetch: I => I.grabCookie(),
-      // we set all available cookies to restore session
-      restore: (I, cookie) => I.setCookie(cookie)
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('Admin');
+      }
     }
   }
 }
@@ -159,7 +182,10 @@ autoLogin: {
          I.fillField('password', '123456');
          I.click('Login');
       }
-      check: (I) => I.see('User', '.navbar'),
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('User', '.navbar');
+      }
     },
     admin: {
       login: (I) => {
@@ -168,7 +194,9 @@ autoLogin: {
          I.fillField('password', '123456');
          I.click('Login');
       }
-      check: (I) => I.see('Admin', '.navbar'),
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('Admin', '.navbar'),
     },
   }
 }
@@ -196,13 +224,77 @@ plugins: {
          I.fillField('password', '123456');
          I.click('Login');
       }
-      check: (I) => I.see('Admin', '.navbar'),
+      check: (I) => {
+         I.amOnPage('/dashboard');
+         I.see('Admin', '.navbar');
+      },
       fetch: () => {}, // empty function
       restore: () => {}, // empty funciton
     }
   }
 }
 ```
+
+#### Example: Getting sessions from local storage
+
+If your session is stored in local storage instead of cookies you still can obtain sessions.
+
+```js
+plugins: {
+   autoLogin: {
+    admin: {
+      login: (I) => I.loginAsAdmin(),
+      check: (I) => I.see('Admin', '.navbar');
+      fetch: (I) => {
+        return I.executeScript(() => localStorage.getItem('session_id'));
+      },
+      restore: (I, session) => {
+        I.amOnPage('/');
+        I.executeScript((session) => localStorage.setItem('session_id', session), session);
+      },
+    }
+  }
+}
+```
+
+### Parameters
+
+-   `config`  
+
+## puppeteerCoverage
+
+Dumps puppeteers code coverage after every test.
+
+##### Configuration
+
+Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
+
+```js
+"plugins": {
+   "puppeteerCoverage": {
+     "enabled": true
+   }
+}
+```
+
+Possible config options:
+
+-   `outputDir`: directory to dump coverage files
+-   `uniqueFileName`: generate a unique filename by adding uuid
+
+    First of all, your mileage may vary!
+
+    To work, you need the client javascript code to be NOT uglified. They need to be built in "development" mode.
+    And the end of your tests, you'll get a directory full of coverage per test run.  Now what?
+    You'll need to convert the coverage code to something istanbul can read.  Good news is someone wrote the code
+    for you (see puppeteer-to-istanbul link below).  Then using istanbul you need to combine the converted
+    coverage and create a report.  Good luck!
+
+    Links:
+
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][3]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][4]
+-   [https://github.com/gotwarlost/istanbul][5]
 
 ### Parameters
 
@@ -272,7 +364,7 @@ Possible config options:
 
 ## stepByStepReport
 
-![step-by-step-report][2]
+![step-by-step-report][6]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -299,15 +391,99 @@ Possible config options:
 -   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 -   `output`: a directory where reports should be stored. Default: `output`.
-
-##### Allure Reports
-
-If Allure plugin is enabled this plugin attaches each saved screenshot to allure report.
+-   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
 
 ### Parameters
 
 -   `config` **any** 
 
+## wdio
+
+Webdriverio services runner.
+
+This plugin allows to run webdriverio services like:
+
+-   selenium-standalone
+-   sauce
+-   testingbot
+-   browserstack
+-   appium
+
+A complete list of all available services can be found on [webdriverio website][7].
+
+###### Setup
+
+1.  Install a webdriverio service
+2.  Enable `wdio` plugin in config
+3.  Add service name to `services` array inside wdio plugin config.
+
+See examples below:
+
+###### Selenium Standalone Service
+
+Install `@wdio/selenium-standalone-service` package, as [described here][8].
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
+
+```js
+plugins: {
+   wdio: {
+       enabled: true,
+       services: ['selenium-standalone']
+       // additional config for service can be passed here
+   }
+}
+```
+
+Please note, this service can be used with Protractor helper as well!
+
+##### Sauce Service
+
+Install `@wdio/sauce-service` package, as [described here][9].
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `sauce` service:
+
+```js
+plugins: {
+   wdio: {
+       enabled: true,
+       services: ['sauce'],
+       user: ... ,// saucelabs username
+       key: ... // saucelabs api key
+       // additional config, from sauce service
+   }
+}
+```
+
+* * *
+
+In the same manner additional services from webdriverio can be installed, enabled, and configured.
+
+#### Configuration
+
+-   `services` - list of enabled services
+-   ... - additional configuration passed into services.
+
+### Parameters
+
+-   `config`  
+
 [1]: https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png
 
-[2]: https://codecept.io/img/codeceptjs-slideshow.gif
+[2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
+
+[3]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+
+[4]: https://github.com/istanbuljs/puppeteer-to-istanbul
+
+[5]: https://github.com/gotwarlost/istanbul
+
+[6]: https://codecept.io/img/codeceptjs-slideshow.gif
+
+[7]: https://webdriver.io
+
+[8]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[9]: https://webdriver.io/docs/sauce-service.html

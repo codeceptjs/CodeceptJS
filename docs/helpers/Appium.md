@@ -206,7 +206,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -365,6 +365,19 @@ I.openNotifications();
 
 Appium: support only Android
 
+### performSwipe
+
+Perform a swipe on the screen.
+
+```js
+I.performswipe(100,200);
+```
+
+#### Parameters
+
+-   `from`  
+-   `to`  Appium: support Android and iOS
+
 ### pullFile
 
 Pulls a file from the device.
@@ -392,6 +405,7 @@ I.removeApp('appName', 'com.example.android.apis');
 
 #### Parameters
 
+-   `appId`  
 -   `bundleId`  String  ID of bundleAppium: support only Android
 
 ### rotate

@@ -141,6 +141,7 @@ const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
 ### \_locateCheckable
 
 Find a checkbox by providing human readable text:
+NOTE: Assumes the checkable element exists
 
 ```js
 this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').then // ...
@@ -149,6 +150,7 @@ this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').
 #### Parameters
 
 -   `locator`  
+-   `providedContext`   (optional, default `null`)
 
 ### \_locateClickable
 
@@ -190,8 +192,9 @@ libraries][6].
 
 ### amAcceptingPopups
 
-Set the automatic popup response to Accept.
-This must be set before a popup is triggered.
+\[existingPages.length -1
+\[existingPages.length -1
+\[existingPages.length -1
 
 ```js
 I.amAcceptingPopups();
@@ -439,7 +442,7 @@ Opposite to `seeInField`.
 
 ### dontSeeInSource
 
-Checks that the current page contains the given string in its raw source code.
+Checks that the current page does not contains the given string in its raw source code.
 
 #### Parameters
 
@@ -470,6 +473,22 @@ I.doubleClick('.btn.edit');
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context`  (optional) element to search in CSS|XPath|Strict locator.
 
+### downloadFile
+
+Performs a download file on an element matched by link|button|CSS or XPath.
+File is downloaded by default to output folder.
+If no custom file name is provided, the default name will be used
+
+```js
+I.downloadFile('td[class="text-right file-link"] a', 'thisIsCustomName');
+```
+
+#### Parameters
+
+-   `locator`  clickable link or button located by CSS|XPath locator.
+-   `customName`  
+-   `string`  custom file name.
+
 ### dragAndDrop
 
 Drag an item to a destination element.
@@ -495,10 +514,8 @@ I.dragSlider('#slider', -70);
 
 #### Parameters
 
--   `locator`  
--   `offsetX`   (optional, default `0`)
--   `field`  located by label|name|CSS|XPath|strict locator.
--   `value`  position to drag.
+-   `locator`  located by label|name|CSS|XPath|strict locator.
+-   `offsetX`  position to drag.
 
 ### executeAsyncScript
 
@@ -566,7 +583,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -581,6 +598,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
@@ -644,6 +662,7 @@ console.log(`Current URL is [${url}]`);
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - an array of HTMLs returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -812,12 +831,21 @@ First parameter can be set to `maximize`.
 
 ### rightClick
 
-Performs right click on an element matched by CSS or XPath.
+Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+
+```js
+// right click element with id el
+I.rightClick('#el');
+// right click link or button with text "Click me"
+I.rightClick('Click me');
+// right click button with text "Click me" inside .context
+I.rightClick('Click me', '.context');
+```
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
--   `context`   (optional, default `null`)
+-   `locator`  clickable element located by CSS|XPath|strict locator.
+-   `context`  (optional) element located by CSS|XPath|strict locator.
 
 ### saveScreenshot
 
@@ -1158,6 +1186,24 @@ I.switchToPreviousTab(2);
 #### Parameters
 
 -   `num`   (optional, default `1`)
+
+### uncheckOption
+
+Unselects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+I.uncheckOption('#agree');
+I.uncheckOption('I Agree to Terms and Conditions');
+I.uncheckOption('agree', '//form');
+```
+
+#### Parameters
+
+-   `field`  checkbox located by label | name | CSS | XPath | strict locator.
+-   `context`  (optional) element located by CSS | XPath | strict locator.
 
 ### wait
 

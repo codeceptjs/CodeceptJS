@@ -3,13 +3,15 @@
     "Quickstart": [
       "quickstart",
       "basics",
-      "video"
+      "video",
+      "examples"
     ],
     "Web Testing": [
       "acceptance",
       "puppeteer",
       "angular",
-      "nightmare"
+      "nightmare",
+      "visual"
     ],
     "Mobile Testing": [
       "mobile"
@@ -22,6 +24,7 @@
       "bdd",
       "data",
       "hooks",
+      "reports",
       "advanced"
     ]
   },
@@ -29,11 +32,12 @@
     "Reference": [
       "installation",
       "commands",
-      "config",
+      "configuration",
       "plugins",
       "docker",
       "reports",
-      "translation"
+      "translation",
+      "community-helpers"
     ],
     "Driver Helpers": [
       "helpers/WebDriver",

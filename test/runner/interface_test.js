@@ -61,11 +61,55 @@ describe('CodeceptJS Interface', () => {
   ✔ Should log accounts2 | {"login":"collaborator","password":"222222"}`);
 
       output.should.include(`Got changed login nick
-  ✔ Should log accounts3 | nick`);
+  ✔ Should log accounts3 | ["nick","pick"]`);
 
       output.should.include(`Got changed login jack
-  ✔ Should log accounts3 | jack`);
+  ✔ Should log accounts3 | ["jack","sacj"]`);
 
+      output.should.include(`Got generator login nick
+  ✔ Should log accounts4 | {"user":"nick"}`);
+
+      output.should.include(`Got generator login pick
+  ✔ Should log accounts4 | {"user":"pick"}`);
+
+      output.should.include(`Got array item 1
+  ✔ Should log array of strings | {"1"}`);
+
+      output.should.include(`Got array item 2
+  ✔ Should log array of strings | {"2"}`);
+
+      output.should.include(`Got array item 3
+  ✔ Should log array of strings | {"3"}`);
+
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run all tests with data of array by only', (done) => {
+    exec(config_run_config('codecept.addt.json'), (err, stdout, stderr) => {
+      const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
+      output.should.include(`Got array item 1
+  ✔ Should log array of strings | {"1"}`);
+
+      output.should.include(`Got array item 2
+  ✔ Should log array of strings | {"2"}`);
+
+      output.should.include(`Got array item 3
+  ✔ Should log array of strings | {"3"}`);
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run all tests with data of generator by only', (done) => {
+    exec(config_run_config('codecept.gddt.json'), (err, stdout, stderr) => {
+      const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
+      output.should.include(`Got generator login nick
+  ✔ Should log generator of strings | {"user":"nick"}`);
+
+      output.should.include(`Got generator login pick
+  ✔ Should log generator of strings | {"user":"pick"}`);
       assert(!err);
       done();
     });
@@ -101,10 +145,29 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-
   it('should display meta steps and substeps', (done) => {
     exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
+      lines.should.include.members([
+        '  check current dir',
+        '    I: openDir ',
+        '      I am in path "."',
+        '      I see file "codecept.json"',
+        '    MyPage: hasFile ',
+        '      I see file "codecept.json"',
+        '      I see file "codecept.po.json"',
+        '    I see file "codecept.po.json"',
+      ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should work with inject() keyword', (done) => {
+    exec(`${config_run_config('codecept.inject.po.json')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      stdout.should.include('injected');
       lines.should.include.members([
         '  check current dir',
         '    I: openDir ',

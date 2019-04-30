@@ -12,7 +12,7 @@ const xml = `<body>
   <p>
     <span></span>
     <div></div>
-    <div id="user">davert</div>
+    <div id="user" data-element="name">davert</div>
   </p>
   <div class="form-wrapper" id="buttons-wrapper">
   <fieldset id="fieldset-buttons">
@@ -43,6 +43,12 @@ const xml = `<body>
         <input type="checkbox" data-value="yes" id="remember" value="1" tabindex="4" />
         <label for="remember" class="optional">Remember Me</label>
       </div>
+    </div>
+    <div class="form-field">
+      <input name="name0" label="Выберите услугу" type="text" value=""/>
+    </div>
+    <div class="form-field">
+      <input name="name1" label="Выберите услугу" type="text" value=""/>
     </div>
   </fieldset>
   <label>Hello<a href="#">Please click</a></label>
@@ -106,13 +112,29 @@ describe('Locator', () => {
     expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath());
   });
 
+
+  it('should select child element by name', () => {
+    const l = Locator.build('.form-field')
+      .withDescendant(Locator.build('//input[@name="name1"]'));
+    const nodes = xpath.select(l.toXPath(), doc);
+
+    expect(nodes).to.have.length(1, l.toXPath());
+  });
+
   it('should select element by siblings', () => {
     const l = Locator.build('//table')
-      .withChild('td')
-      .withText('Also Edit')
-      .first();
+      .withChild(Locator.build('tr')
+        .withChild('td')
+        .withText('Also Edit'));
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
+  });
+
+  it('should not select element by deep nested siblings', () => {
+    const l = Locator.build('//table')
+      .withChild('td');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(0, l.toXPath());
   });
 
   it('should select element by siblings', () => {
@@ -131,5 +153,36 @@ describe('Locator', () => {
       .find('td')
       .as('cell');
     expect(l.toString()).to.eql('cell');
+  });
+
+  it('should be able to add custom locator strategy', () => {
+    Locator.addFilter((selector, locator) => {
+      if (selector.data) {
+        locator.type = 'css';
+        locator.value = `[data-element=${locator.value}]`;
+      }
+    });
+    const l = Locator.build({ data: 'name' });
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes[0].firstChild.data).to.eql('davert', l.toXPath());
+    Locator.filters = [];
+  });
+
+  it('should be able to add custom locator strategy', () => {
+    Locator.addFilter((providedLocator, locator) => {
+      if (typeof providedLocator === 'string') {
+        // this is a string
+        if (providedLocator[0] === '=') {
+          locator.value = `.//*[text()='${providedLocator.substring(1)}']`;
+          locator.type = 'xpath';
+        }
+      }
+    });
+    const l = Locator.build('=Sign In');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes[0].firstChild.data).to.eql('Sign In', l.toXPath());
+    Locator.filters = [];
   });
 });

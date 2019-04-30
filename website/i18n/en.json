@@ -47,6 +47,9 @@
       "commands": {
         "title": "Commands"
       },
+      "community-helpers": {
+        "title": "Community Helpers"
+      },
       "configuration": {
         "title": "Configuration"
       },
@@ -55,6 +58,9 @@
       },
       "docker": {
         "title": "Docker"
+      },
+      "examples": {
+        "title": "Examples"
       },
       "helpers": {
         "title": "Custom Helpers"
@@ -130,6 +136,9 @@
       },
       "video": {
         "title": "Tutorial Videos"
+      },
+      "visual": {
+        "title": "Visual Testing"
       }
     },
     "links": {
@@ -137,7 +146,8 @@
       "Guides": "Guides",
       "Reference": "Reference",
       "Releases": "Releases",
-      "Support": "Support"
+      "Support": "Support",
+      "Forum": "Forum"
     },
     "categories": {
       "Quickstart": "Quickstart",

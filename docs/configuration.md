@@ -11,13 +11,13 @@ After running `codeceptjs init` it should be saved in test root.
 Here is an overview of available options with their defaults:
 
 * **tests**: `"./*_test.js"` - pattern to locate tests
-* **grep**: - patern to filter tests by name
+* **grep**: - pattern to filter tests by name
 * **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require` paths
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/advanced/#multiple-execution)
+* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/advanced/#multiple-browsers-execution)
 * **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
 * **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
 * **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).

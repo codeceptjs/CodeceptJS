@@ -144,6 +144,12 @@ describe('WebDriver', function () {
       yield wd.dontSeeInField('select2', 'not seen three');
       return wd.seeInField('select2', 'see test three');
     });
+
+    it('should return error when element has no value attribute', () => wd.amOnPage('https://codecept.io/quickstart')
+      .then(() => wd.seeInField('#search_input_react', 'WebDriver1')
+        .catch((e) => {
+          e.should.be.instanceOf(Error);
+        })));
   });
 
   describe('#pressKey', () => {
@@ -167,13 +173,13 @@ describe('WebDriver', function () {
       .then(() => wd.grabSource())
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
 
-    it('should grab the source for element', () => wd.amOnPage('/')
+    it('should grab the innerHTML for an element', () => wd.amOnPage('/')
       .then(() => wd.grabHTMLFrom('#area1'))
-      .then(source => assert.equal(
+      .then(source => assert.deepEqual(
         source,
-        `<div id="area1" qa-id="test">
+        `
     <a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>
-</div>`,
+`,
       )));
   });
 
@@ -197,6 +203,14 @@ describe('WebDriver', function () {
         e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
         // e.should.be.instanceOf(AssertionFailedError);
         // e.inspect().should.include("expected element h1 'Welcome to test app' to equal 'Welcome to test app!'");
+      }));
+
+    it('should check text is not equal to empty string of element text', () => wd.amOnPage('https://codecept.discourse.group/')
+      .then(() => wd.seeTextEquals('', '[id="site-logo"]'))
+      .then(() => wd.seeTextEquals('This is not empty', '[id="site-logo"]'))
+      .catch((e) => {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.equal('expected element [id="site-logo"] "This is not empty" to equal ""');
       }));
   });
 
@@ -628,5 +642,26 @@ describe('WebDriver', function () {
       .then(() => wd.switchTo(0))
       .then(() => wd.see('Information', 'h1'))
       .then(() => wd.dontSee('Iframe test', 'h1')));
+  });
+
+  describe('#AttachFile', () => {
+    it('should attach to regular input element', () => wd.amOnPage('/form/file')
+      .then(() => wd.attachFile('Avatar', './app/avatar.jpg'))
+      .then(() => wd.seeInField('Avatar', 'avatar.jpg')));
+
+    it('should attach to invisible input element', () => wd.amOnPage('/form/file')
+      .then(() => wd.attachFile('hidden', '/app/avatar.jpg')));
+  });
+
+
+  describe('#dragSlider', () => {
+    it('should drag scrubber to given position', async () => {
+      await wd.amOnPage('/form/page_slider');
+      await wd.seeElementInDOM('#slidecontainer input');
+      const before = await wd.grabValueFrom('#slidecontainer input');
+      await wd.dragSlider('#slidecontainer input', 20);
+      const after = await wd.grabValueFrom('#slidecontainer input');
+      assert.notEqual(before, after);
+    });
   });
 });

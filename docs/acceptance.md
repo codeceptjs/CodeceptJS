@@ -8,7 +8,7 @@ How does your client, manager, or tester, or any other non-technical person, kno
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
 By default CodeceptJS uses [WebDriver](/helpers/WebDriver/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
-However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
+However, you can also choose [Puppeteer](/helpers/Puppeteer), [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
 In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
@@ -135,6 +135,12 @@ I.fillField('#user_email','miles@davis.com');
 I.selectOption('#user_gender','m');
 // click 'Update' button, found by name
 I.click('submitButton', '#update_form');
+```
+
+To fill in sensitive data use `secret` function:
+
+```js
+I.fillField('password', secret('123456'));
 ```
 
 ## Assertions
@@ -267,6 +273,25 @@ within({frame: [".content", "#editor"]}, () => {
   I.see('Page');
 });
 ```
+
+
+## Auto Login
+
+To share the same user session accoross different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
+
+This plugin requires some configuration but is very simple in use:
+
+```js
+Scenario('do something with logged in user', (I, login)) => {
+  login('user');
+  I.see('Dashboard','h1');
+});
+```
+
+With `autoLogin` plugin you can save cookies into a file and reuse same session on different runs.
+
+> Read more about setting up [autoLogin](https://codecept.io/plugins#autologin)
+
 
 ## Multiple Sessions
 

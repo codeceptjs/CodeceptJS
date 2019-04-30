@@ -31,3 +31,19 @@ Then('I should see overall price is "{float}" $', (price) => {
   I.seeSum(price);
 });
 
+Given('I login', () => {
+  I.login('user', secret('password'));
+});
+
+
+Before((test) => {
+  console.log(`-- before ${test.title} --`);
+});
+
+After((test) => {
+  console.log(`-- after ${test.title} --`);
+});
+
+Fail(() => {
+  console.log(`-- failed ${test.title} --`);
+});

@@ -23,16 +23,14 @@ CodeceptJS is multi-backend testing framework. It can execute tests using differ
 npm install codeceptjs puppeteer --save-dev
 ```
 
-(due to [this issue in Puppeteer](https://github.com/GoogleChrome/puppeteer/issues/375), we install it locally)
-
 
 2) Initialize CodeceptJS in current directory by running:
 
 ```sh
-./node_modules/.bin/codeceptjs init
+npx codeceptjs init
 ```
 
-(use `node node_modules/.bin/codeceptjs` on Windows)
+(use `node node_modules/.bin/codeceptjs` if you have issues with npx)
 
 3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
 
@@ -49,7 +47,7 @@ npm install codeceptjs puppeteer --save-dev
 4) Create First Test.
 
 ```bash
-./node_modules/.bin/codeceptjs gt
+npx codeceptjs gt
 ```
 
 5) Enter a test name. Open a generated file in your favorite JavaScript editor.
@@ -76,7 +74,7 @@ Scenario('test something', (I) => {
 7) Run a test:
 
 ```
-./node_modules/.bin/codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 The output should be similar to this:
@@ -118,14 +116,16 @@ Rerun the test to see the browser.
 1) Install CodeceptJS with webdriverio library
 
 ```
-[sudo] npm install -g codeceptjs webdriverio
+npm install codeceptjs webdriverio --save-dev
 ```
 
 2) Initialize CodeceptJS in current directory by running:
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
+
+(use `node node_modules/.bin/codeceptjs init` if you have issues with npx)
 
 3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriver**.
 
@@ -142,7 +142,7 @@ codeceptjs init
 4) Create First Test.
 
 ```bash
-codeceptjs gt
+npx codeceptjs gt
 ```
 
 5) Enter a test name. Open a generated file in your favorite JavaScript editor.
@@ -168,21 +168,34 @@ Scenario('test something', (I) => {
 
 7) Prepare Selenium Server
 
-To execute tests in Google Chrome browser running Selenium Server with ChromeDriver is required.
+Install `@wdio/selenium-standalone-service` package to automatically start and stop selenium service.
 
-Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) from NPM to install and run them:
-
-```sh
-[sudo] npm install -g selenium-standalone
-selenium-standalone install
-selenium-standalone start
 ```
+npm i @wdio/selenium-standalone-service --save
+```
+
+Enable it in config inside plugins section:
+
+```js
+exports.config = {
+  // ...
+  // inside condecept.conf.js
+  plugins: {
+    wdio: {
+      enabled: true,
+      services: ['selenium-standalone']
+    }
+  }
+}
+```
+
+> Alternatively, use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) to install, start and stop Selenium Server manually.
 
 
 8) Run a test:
 
 ```
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 If everything is done right, you will see in console:

@@ -286,6 +286,13 @@ Configure mocha-multi with reports that you want:
        "options": {
          "reportDir": "./output",
          "reportFilename": "report"
+      },
+      "mocha-junit-reporter": {
+        "stdout": "./output/console.log",
+        "options": {
+          "mochaFile": "./output/result.xml"
+        },
+        "attachments": true //add screenshot for a failed test
       }
     }
   }

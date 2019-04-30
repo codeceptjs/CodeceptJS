@@ -79,6 +79,46 @@ website][6].
 }
 ```
 
+### Internet Explorer
+
+Additional configuration params can be used from [IE options][7]
+
+```json
+{
+   "helpers": {
+     "WebDriver" : {
+       "url": "http://localhost",
+       "browser": "internet explorer",
+       "desiredCapabilities": {
+         "ieOptions": {
+           "ie.browserCommandLineSwitches": "-private",
+           "ie.usePerProcessProxy": true,
+           "ie.ensureCleanSession": true,
+         }
+       }
+     }
+   }
+}
+```
+
+### Selenoid Options
+
+```json
+{
+   "helpers": {
+     "WebDriver" : {
+       "url": "http://localhost",
+       "browser": "chrome",
+       "desiredCapabilities": {
+         "selenoidOptions": {
+           "enableVNC": true,
+         }
+       }
+     }
+   }
+}
+```
+
 ### Connect through proxy
 
 CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
@@ -132,7 +172,7 @@ information.
 ### Cloud Providers
 
 WebDriver makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
-Check out their documentation on [available parameters][7]
+Check out their documentation on [available parameters][8]
 
 Connecting to `BrowserStack` and `Sauce Labs` is simple. All you need to do
 is set the `user` and `key` parameters. WebDriver automatically know which
@@ -159,12 +199,96 @@ service provider to connect to.
 }
 ```
 
+#### SauceLabs
+
+SauceLabs can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/sauce-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `sauce` service:
+
+```js
+plugins: {
+   wdio: {
+      enabled: true,
+       services: ['sauce'],
+       user: ... ,// saucelabs username
+       key: ... // saucelabs api key
+       // additional config, from sauce service
+   }
+}
+```
+
+See [complete reference on webdriver.io][9].
+
+> Alternatively, use [codeceptjs-saucehelper][10] for better reporting.
+
+#### BrowserStack
+
+BrowserStack can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/browserstack-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `browserstack` service:
+
+```js
+plugins: {
+   wdio: {
+      enabled: true,
+       services: ['browserstack'],
+       user: ... ,// browserstack username
+       key: ... // browserstack api key
+       // additional config, from browserstack service
+   }
+}
+```
+
+See [complete reference on webdriver.io][11].
+
+> Alternatively, use [codeceptjs-bshelper][12] for better reporting.
+
+#### TestingBot
+
+> **Recommended**: use official [TestingBot Helper][13].
+
+Alternatively, TestingBot can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/testingbot-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `testingbot` service:
+
+```js
+plugins: {
+  wdio: {
+      enabled: true,
+      services: ['testingbot'],
+      user: ... ,// testingbot key
+      key: ... // testingbot secret
+      // additional config, from testingbot service
+  }
+}
+```
+
+See [complete reference on webdriver.io][14].
+
+#### Applitools
+
+Visual testing via Applitools service
+
+> Use [CodeceptJS Applitools Helper][15] with Applitools wdio service.
+
 ### Multiremote Capabilities
 
 This is a work in progress but you can control two browsers at a time right out of the box.
 Individual control is something that is planned for a later version.
 
-Here is the [webdriverio docs][8] on the subject
+Here is the [webdriverio docs][16] on the subject
 
 ```js
 {
@@ -192,7 +316,8 @@ Here is the [webdriverio docs][8] on the subject
 Receive a WebDriver client from a custom helper by accessing `browser` property:
 
 ```js
-this.helpers['WebDriver'].browser
+const { WebDriver } = this.helpers;
+const browser = WebDriver.browser
 ```
 
 ## Methods
@@ -255,7 +380,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][9].
+libraries][17].
 
 -   _Appium_: supported only for web testing
 
@@ -407,7 +532,7 @@ I.closeOtherTabs();
 
 ### defineTimeout
 
-Set [WebDriver timeouts][10] in realtime.
+Set [WebDriver timeouts][18] in realtime.
 
 -   _Appium_: supported only for web testing.
     Timeouts are expected to be passed as object:
@@ -497,7 +622,7 @@ Opposite to `seeInField`.
 
 ### dontSeeInSource
 
-Checks that the current page contains the given string in its raw source code.
+Checks that the current page does not contains the given string in its raw source code.
 
 #### Parameters
 
@@ -542,12 +667,27 @@ I.dragAndDrop('#dragHandle', '#container');
 -   `destElement`  located by CSS|XPath|strict locator.
     Appium: not tested
 
+### dragSlider
+
+Drag the scrubber of a slider to a given position
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+
+```js
+I.dragSlider('#slider', 30);
+I.dragSlider('#slider', -70);
+```
+
+#### Parameters
+
+-   `locator`  located by label|name|CSS|XPath|strict locator.
+-   `offsetX`  position to drag.
+
 ### executeAsyncScript
 
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][11].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][19].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -608,7 +748,7 @@ Field is located by name, label, CSS, or XPath.
 // by label
 I.fillField('Email', 'hello@world.com');
 // by name
-I.fillField('password', '123456');
+I.fillField('password', secret('123456'));
 // by CSS
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
@@ -623,6 +763,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
@@ -687,6 +828,7 @@ console.log(`Current URL is [${url}]`);
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - an array of HTMLs returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -810,7 +952,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][12]
+Special keys like 'Enter', 'Control', [etc][20]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -822,7 +964,7 @@ I.pressKey(['Control','a']);
 #### Parameters
 
 -   `key`  key or array of keys to press.
-    [Valid key names][13] are:-   `'Add'`,
+    [Valid key names][21] are:-   `'Add'`,
     -   `'Alt'`,
     -   `'ArrowDown'` or `'Down arrow'`,
     -   `'ArrowLeft'` or `'Left arrow'`,
@@ -877,11 +1019,21 @@ First parameter can be set to `maximize`.
 
 ### rightClick
 
-Performs right click on an element matched by CSS or XPath.
+Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+
+```js
+// right click element with id el
+I.rightClick('#el');
+// right click link or button with text "Click me"
+I.rightClick('Click me');
+// right click button with text "Click me" inside .context
+I.rightClick('Click me', '.context');
+```
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.-   _Appium_: supported, but in apps works as usual click
+-   `locator`  clickable element located by CSS|XPath|strict locator.
+-   `context`  (optional) element located by CSS|XPath|strict locator.-   _Appium_: supported, but in apps works as usual click
 
 ### runInWeb
 
@@ -955,7 +1107,7 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator`  located by CSS|XPath|strict locator.
 -   `offsetX`  (optional) X-axis offset.
--   `offsetY`  (optional) Y-axis offset.
+-   `offsetY`  (optional) Y-axis offset.-   _Appium_: supported only for web testing
 
 ### scrollTo
 
@@ -971,7 +1123,7 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator`  located by CSS|XPath|strict locator.
 -   `offsetX`  (optional) X-axis offset.
--   `offsetY`  (optional) Y-axis offset.-   _Appium_: supported only for web testing
+-   `offsetY`  (optional) Y-axis offset.
 
 ### see
 
@@ -1235,7 +1387,7 @@ I.setCookie({name: 'auth', value: true});
 #### Parameters
 
 -   `cookie`  cookie JSON object.-   _Appium_: supported only for web testingUses Selenium's JSON [cookie
-    format][14].
+    format][22].
 
 ### switchTo
 
@@ -1469,7 +1621,8 @@ I.waitUntil(() => window.requests == 0, 5);
 
 -   `fn`  function which is executed in browser context.
 -   `sec`  (optional) time in seconds to wait, 1 by default.
--   `timeoutMsg`  (optional) message to show in case of timeout fail.-   _Appium_: supported
+-   `timeoutMsg`  (optional) message to show in case of timeout fail.
+-   `interval`  (optional) time in seconds between condition checks.-   _Appium_: supported
 
 ### waitUrlEquals
 
@@ -1497,18 +1650,34 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [6]: http://webdriver.io/guide/getstarted/configuration.html
 
-[7]: http://webdriver.io/guide/usage/cloudservices.html
+[7]: https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/IE/Options.html
 
-[8]: http://webdriver.io/guide/usage/multiremote.html
+[8]: http://webdriver.io/guide/usage/cloudservices.html
 
-[9]: http://jster.net/category/windows-modals-popups
+[9]: https://webdriver.io/docs/sauce-service.html
 
-[10]: https://webdriver.io/docs/timeouts.html
+[10]: https://github.com/puneet0191/codeceptjs-saucehelper/
 
-[11]: https://vuejs.org/v2/api/#Vue-nextTick
+[11]: https://webdriver.io/docs/browserstack-service.html
 
-[12]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[12]: https://github.com/PeterNgTr/codeceptjs-bshelper
 
-[13]: https://w3c.github.io/webdriver/#keyboard-actions
+[13]: https://github.com/testingbot/codeceptjs-tbhelper
 
-[14]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[14]: https://webdriver.io/docs/testingbot-service.html
+
+[15]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
+
+[16]: http://webdriver.io/guide/usage/multiremote.html
+
+[17]: http://jster.net/category/windows-modals-popups
+
+[18]: https://webdriver.io/docs/timeouts.html
+
+[19]: https://vuejs.org/v2/api/#Vue-nextTick
+
+[20]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+
+[21]: https://w3c.github.io/webdriver/#keyboard-actions
+
+[22]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

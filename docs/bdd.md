@@ -77,7 +77,7 @@ Every step in this scenario requires a code which defines it.
 Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running `gherkin:init` command on **already initialized project**:
 
 ```
-codeceptjs gherkin:init
+npx codeceptjs gherkin:init
 ```
 
 It will add `gherkin` section to the current config. It will also prepare directories for features and step definition. And it will create the first feature file for you.
@@ -150,12 +150,13 @@ Our next step will be to define those steps and transforming feature-file into a
 Step definitions are placed in JavaScript file with Given/When/Then functions that map strings from feature file to functions:
 
 ```js
-const I = actor();
+// use I and productPage via inject() function
+const { I, productPage } = inject();
 
 // you can provide RegEx to match corresponding steps
 Given(/I have product with \$(\d+) price/, (price) => {
   I.amOnPage('/products');
-  I.click(`.product[data-price=${price}]`);
+  productPage.create({ price });
   I.click('Add to cart');
 });
 
@@ -178,19 +179,19 @@ Steps can be either strings or regular expressions. Parameters from string are p
 To list all defined steps run `gherkin:steps` command:
 
 ```bash
-codeceptjs gherkin:steps
+npx codeceptjs gherkin:steps
 ```
 
 To run tests and see step-by step output use `--steps` optoin:
 
 ```
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 To see not only business steps but an actual performed steps use `--debug` flag:
 
 ```
-codeceptjs run --debug
+npx codeceptjs run --debug
 ```
 
 ## Advanced Gherkin
@@ -320,6 +321,54 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
     "./step_definitions/steps.js"
   ]
 }
+```
+
+## Before
+
+You can set up some before hooks inside step definition files. Use `Before` function to do that.
+This function receives current test as a parameter, so you can apply additional configuration to it.
+
+```js
+// inside step_definitions
+Before((test) => {
+  // perform your code
+  test.retries(3); // retry test 3 times
+});
+```
+
+This can be used to keep state between steps:
+
+```js
+let state = {};
+
+// inside step_definitions
+Before(() => {
+  state = {};
+});
+
+Given('have a user', async () => {
+  state.user = await I.have('user');
+});
+
+When('I open account page', () => {
+  I.amOnPage(`/user/${state.user.slug}`);
+})
+```
+
+## After
+
+Similarly to `Before` you can use `After` and `Fail` inside a scenario. `Fail` hook is activated on failure and receive two parameters: `test` and current `error`.
+
+```js
+After(async () => {
+  await someService.cleanup();
+});
+
+Fail((test, err) => {
+  // test didn't
+  console.log('Failed with', err);
+  pause();
+});
 ```
 
 ## Tests vs Features

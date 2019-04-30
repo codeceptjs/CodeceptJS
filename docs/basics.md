@@ -381,21 +381,3 @@ Feature('Complex JS Stuff').retry(3);
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
-
-## Auto Login
-
-To share the same user session accoross different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin).
-It simplifies login manages and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist it logs in again.
-
-This plugin requires some configuration but is very simple in use:
-
-```js
-Scenario('do something with logged in user', (I, login)) => {
-  login('user');
-  I.see('Dashboard','h1');
-});
-```
-
-With autoLogin plugin you can save cookies into a file and reuse same session on different runs.
-
-> Read more about setting up [autoLogin](https://codecept.io/plugins#autologin)

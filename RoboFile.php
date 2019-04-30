@@ -21,6 +21,7 @@ class RoboFile extends \Robo\Tasks
         $this->stopOnFail();
         $this->_copy('CHANGELOG.md', 'docs/changelog.md');
         $this->_copy('docker/README.md', 'docs/docker.md');
+        $this->wiki();
         $this->taskExec('npm install')
             ->dir('website')
             ->run();
@@ -28,6 +29,44 @@ class RoboFile extends \Robo\Tasks
             ->taskExec('USE_SSH=true GIT_USER=davertmik npm run publish-gh-pages')
             ->dir('website')
             ->run();
+    }
+
+    /**
+     * Synchronizes CodeceptJS wiki pages with docs
+     */
+    function wiki()
+    {
+        if (!file_exists('website/wiki/Home.md')) {
+            $this->taskGitStack()
+                ->cloneShallow('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki')
+                ->run();
+        }
+
+        $this->taskGitStack()
+            ->dir('website/wiki')
+            ->pull()
+            ->run();
+
+        $this->taskWriteToFile('docs/community-helpers.md')
+        ->line('---')
+        ->line('id: community-helpers')
+        ->line('title: Community Helpers')
+        ->line('---')
+        ->line('')
+        ->line('> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)')
+        ->line('')
+        ->textFromFile('website/wiki/Community-Helpers.md')
+        ->run();
+
+        $this->taskWriteToFile('docs/examples.md')
+        ->line('---')
+        ->line('id: examples')
+        ->line('title: Examples')
+        ->line('---')
+        ->line('')
+        ->line('> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)')
+        ->textFromFile('website/wiki/Examples.md')
+        ->run();
     }
 
     function testServer()
