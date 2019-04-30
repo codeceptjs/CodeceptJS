@@ -36,7 +36,8 @@
       "plugins",
       "docker",
       "reports",
-      "translation"
+      "translation",
+      "community-helpers"
     ],
     "Driver Helpers": [
       "helpers/WebDriver",

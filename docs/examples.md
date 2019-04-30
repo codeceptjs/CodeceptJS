@@ -3,7 +3,7 @@ id: examples
 title: Examples
 ---
 
-
+> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)
 ## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
@@ -25,7 +25,7 @@ Tests repository deomstrate usage of
 
 ## [Practical E2E Tests](https://gitlab.com/paulvincent/codeceptjs-e2e-testing)
 
-Examples from the book [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/) by **Paul Vincent Beigang**.
+Examples from the book [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/) by **Paul Vincent Beigang**. 
 
 This repository demonstrates usage of:
 
@@ -62,7 +62,7 @@ Running CodeceptJS tests with Docker Compose
 
 This repository demonstrates usage of:
 
-* CodeceptJS Docker image
+* CodeceptJS Docker image 
 * WebDriver helper
 * Allure plugin
 
@@ -87,8 +87,4 @@ This repository demonstrates usage of
 * Puppeteer helper
 * Working with Angular CLI
 * Reports with Mochawesome helper
-
----
-
-**Do you know more open-source CodeceptJS examples? Please [edit this page](https://github.com/Codeception/CodeceptJS/blob/edit/master/docs/examples.md) and add them to list**.
 
