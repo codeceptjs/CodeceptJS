@@ -23,15 +23,16 @@ Please **add your own** by editing this page.
 * [codeceptjs-saucehelper](https://github.com/puneet0191/codeceptjs-saucehelper/) - a helper which updates `Test Names` & `Test Results` on Saucelabs 
 * [codeceptjs-bshelper](https://github.com/PeterNgTr/codeceptjs-bshelper) - a helper which updates `Test Names` & `Test Results` on Browserstack 
 * [codeceptjs-tbhelper](https://github.com/testingbot/codeceptjs-tbhelper) - a helper which updates `Test Names` & `Test Results` on TestingBot 
-* [codeceptjs-applitoolshelper](https://www.npmjs.com/package/codeceptjs-applitoolshelper) - a helper which helps interaction with [Applitools](https://applitools.com)
 
 ## Integrations
 * [codeceptjs-testrail](https://github.com/PeterNgTr/codeceptjs-testrail) - a plugin to integrate with [Testrail](https://www.gurock.com/testrail)
 
 ## Visual-Testing
 * [codeceptjs-resemblehelper](https://github.com/puneet0191/codeceptjs-resemblehelper) - a helper which helps with visual testing using resemble.js. 
+* [codeceptjs-applitoolshelper](https://www.npmjs.com/package/codeceptjs-applitoolshelper) - a helper which helps interaction with [Applitools](https://applitools.com)
 
 ## Reporters
+* [codeceptjs-rphelper](https://www.npmjs.com/package/codeceptjs-rphelper) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
 
 ## Other
 
