@@ -277,12 +277,44 @@ Here is the [webdriverio docs][13] on the subject
 }
 ```
 
+#### TestingBot
+
+> **Recommended**: use official [TestingBot Helper][14].
+
+Alternatively, TestingBot can be configured via wdio service, which should be installed additionally:
+
+    npm i @wdio/testingbot-service --save
+
+It is important to make sure it is compatible with current webdriverio version.
+
+Enable `wdio` plugin in plugins list and add `testingbot` service:
+
+```js
+plugins: {
+  wdio: {
+      services: ['testingbot'],
+      user: ... ,// testingbot key
+      key: ... // testingbot secret
+      // additional config, from testingbot service
+  }
+}
+```
+
+See [complete reference on webdriver.io][15].
+
+#### Applitools
+
+Visual testing via Applitools service
+
+> Use [CodeceptJS Applitools Helper][16] with Applitools wdio service.
+
 ## Access From Helpers
 
 Receive a WebDriver client from a custom helper by accessing `browser` property:
 
 ```js
-this.helpers['WebDriver'].browser
+const { WebDriver } = this.helpers;
+const browser = WebDriver.browser
 ```
 
 ## Methods
@@ -345,7 +377,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][14].
+libraries][17].
 
 -   _Appium_: supported only for web testing
 
@@ -497,7 +529,7 @@ I.closeOtherTabs();
 
 ### defineTimeout
 
-Set [WebDriver timeouts][15] in realtime.
+Set [WebDriver timeouts][18] in realtime.
 
 -   _Appium_: supported only for web testing.
     Timeouts are expected to be passed as object:
@@ -652,7 +684,7 @@ I.dragSlider('#slider', -70);
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][16].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][19].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -917,7 +949,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][17]
+Special keys like 'Enter', 'Control', [etc][20]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -929,7 +961,7 @@ I.pressKey(['Control','a']);
 #### Parameters
 
 -   `key`  key or array of keys to press.
-    [Valid key names][18] are:-   `'Add'`,
+    [Valid key names][21] are:-   `'Add'`,
     -   `'Alt'`,
     -   `'ArrowDown'` or `'Down arrow'`,
     -   `'ArrowLeft'` or `'Left arrow'`,
@@ -1352,7 +1384,7 @@ I.setCookie({name: 'auth', value: true});
 #### Parameters
 
 -   `cookie`  cookie JSON object.-   _Appium_: supported only for web testingUses Selenium's JSON [cookie
-    format][19].
+    format][22].
 
 ### switchTo
 
@@ -1629,14 +1661,20 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [13]: http://webdriver.io/guide/usage/multiremote.html
 
-[14]: http://jster.net/category/windows-modals-popups
+[14]: https://github.com/testingbot/codeceptjs-tbhelper
 
-[15]: https://webdriver.io/docs/timeouts.html
+[15]: https://webdriver.io/docs/testingbot-service.html
 
-[16]: https://vuejs.org/v2/api/#Vue-nextTick
+[16]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
 
-[17]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[17]: http://jster.net/category/windows-modals-popups
 
-[18]: https://w3c.github.io/webdriver/#keyboard-actions
+[18]: https://webdriver.io/docs/timeouts.html
 
-[19]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[19]: https://vuejs.org/v2/api/#Vue-nextTick
+
+[20]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+
+[21]: https://w3c.github.io/webdriver/#keyboard-actions
+
+[22]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
