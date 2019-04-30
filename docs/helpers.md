@@ -188,6 +188,7 @@ Helpers may contain several hooks you can use to handle events of a test.
 Implement corresponding methods to them.
 
 * `_init` - before all tests
+* `_finishTest` - after all tests
 * `_before` - before a test
 * `_beforeStep` - before each step
 * `_afterStep` - after each step
