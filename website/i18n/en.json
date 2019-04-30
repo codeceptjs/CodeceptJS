@@ -47,6 +47,9 @@
       "commands": {
         "title": "Commands"
       },
+      "community-helpers": {
+        "title": "Community Helpers"
+      },
       "configuration": {
         "title": "Configuration"
       },
