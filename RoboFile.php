@@ -36,15 +36,16 @@ class RoboFile extends \Robo\Tasks
      */
     function wiki()
     {
-        $res = $this->taskGitStack()
-            ->cloneShallow('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki')
-            ->run();
-        if (!$res->wasSuccessful()) {
+        if (!file_exists('website/wiki/Home.md')) {
             $this->taskGitStack()
-                ->dir('website/wiki')
-                ->pull()
+                ->cloneShallow('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki')
                 ->run();
         }
+
+        $this->taskGitStack()
+            ->dir('website/wiki')
+            ->pull()
+            ->run();
 
         $this->taskWriteToFile('docs/community-helpers.md')
         ->line('---')
