@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Community Helpers · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;blockquote&gt;
+&lt;p&gt;Share your helpers at our &lt;a href=&quot;https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers&quot;&gt;Wiki Page&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Community Helpers · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;blockquote&gt;
+&lt;p&gt;Share your helpers at our &lt;a href=&quot;https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers&quot;&gt;Wiki Page&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/quickstart" target="_self">Quickstart</a></li><li class=""><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">Reference</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class=""><a href="https://codecept.discourse.group" target="_self">Forum</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Reference</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Reference</h3><ul><li class="navListItem"><a class="navItem" href="/installation">Installation</a></li><li class="navListItem"><a class="navItem" href="/commands">Commands</a></li><li class="navListItem"><a class="navItem" href="/configuration">Configuration</a></li><li class="navListItem"><a class="navItem" href="/plugins">Plugins</a></li><li class="navListItem"><a class="navItem" href="/docker">Docker</a></li><li class="navListItem"><a class="navItem" href="/translation">Translation</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/community-helpers">Community Helpers</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Driver Helpers</h3><ul><li class="navListItem"><a class="navItem" href="/helpers/WebDriver">WebDriver</a></li><li class="navListItem"><a class="navItem" href="/helpers/Puppeteer">Puppeteer</a></li><li class="navListItem"><a class="navItem" href="/helpers/Protractor">Protractor</a></li><li class="navListItem"><a class="navItem" href="/helpers/Nightmare">Nightmare</a></li><li class="navListItem"><a class="navItem" href="/helpers/Appium">Appium</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Data Helpers</h3><ul><li class="navListItem"><a class="navItem" href="/helpers/REST">REST</a></li><li class="navListItem"><a class="navItem" href="/helpers/ApiDataFactory">ApiDataFactory</a></li><li class="navListItem"><a class="navItem" href="/helpers/FileSystem">FileSystem</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/community-helpers.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Community Helpers</h1></header><article><div><span><blockquote>
+<p>Share your helpers at our <a href="https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers">Wiki Page</a></p>
+</blockquote>
+<p>Here is the list of helpers created by our community.
+Please <strong>add your own</strong> by editing this page.</p>
+<h2><a class="anchor" aria-hidden="true" id="email-checking"></a><a href="#email-checking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Email Checking</h2>
+<ul>
+<li><a href="https://gist.github.com/schmkr/026732dfa1627b927ff3a08dc31ee884">MailCatcher</a> - to check emails via Mailcatcher locally.</li>
+<li><a href="https://github.com/wwerner/codeceptjs-mailslurp-helper">MailSlurp</a> - provides access to randomly generated email address inboxes and retrieve emails from these inboxes.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="data-sources"></a><a href="#data-sources" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Sources</h2>
+<ul>
+<li><a href="https://github.com/testphony/codeceptjs-httpMock">codeceptjs-httpmock</a> -  a helper which wraps mockttp library to manage http mock in tests.</li>
+<li><a href="https://github.com/testphony/codeceptjs-http">codeceptjs-http</a> - a helper which wraps then-request library to process HTTP requests. It's alternative helper that provides more flexible request management.</li>
+<li><a href="https://www.npmjs.com/package/codeceptjs-dbhelper">codeceptjs-dbhelper</a> - allows you to execute queries or commands to databases using database-js.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="cloud-providers"></a><a href="#cloud-providers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cloud Providers</h2>
+<ul>
+<li><a href="https://github.com/puneet0191/codeceptjs-saucehelper/">codeceptjs-saucehelper</a> - a helper which updates <code>Test Names</code> &amp; <code>Test Results</code> on Saucelabs</li>
+<li><a href="https://github.com/PeterNgTr/codeceptjs-bshelper">codeceptjs-bshelper</a> - a helper which updates <code>Test Names</code> &amp; <code>Test Results</code> on Browserstack</li>
+<li><a href="https://github.com/testingbot/codeceptjs-tbhelper">codeceptjs-tbhelper</a> - a helper which updates <code>Test Names</code> &amp; <code>Test Results</code> on TestingBot</li>
+<li><a href="https://www.npmjs.com/package/codeceptjs-applitoolshelper">codeceptjs-applitoolshelper</a> - a helper which helps interaction with <a href="https://applitools.com">Applitools</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="integrations"></a><a href="#integrations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Integrations</h2>
+<ul>
+<li><a href="https://github.com/PeterNgTr/codeceptjs-testrail">codeceptjs-testrail</a> - a plugin to integrate with <a href="https://www.gurock.com/testrail">Testrail</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="visual-testing"></a><a href="#visual-testing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Visual-Testing</h2>
+<ul>
+<li><a href="https://github.com/puneet0191/codeceptjs-resemblehelper">codeceptjs-resemblehelper</a> - a helper which helps with visual testing using resemble.js.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="reporters"></a><a href="#reporters" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reporters</h2>
+<h2><a class="anchor" aria-hidden="true" id="other"></a><a href="#other" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Other</h2>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-4-30</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/translation"><span class="arrow-prev">← </span><span>Translation</span></a><a class="docs-next button" href="/helpers/WebDriver"><span class="function-name-prevnext">WebDriver</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#email-checking">Email Checking</a></li><li><a href="#data-sources">Data Sources</a></li><li><a href="#cloud-providers">Cloud Providers</a></li><li><a href="#integrations">Integrations</a></li><li><a href="#visual-testing">Visual-Testing</a></li><li><a href="#reporters">Reporters</a></li><li><a href="#other">Other</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
