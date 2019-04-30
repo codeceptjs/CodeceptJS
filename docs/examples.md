@@ -56,6 +56,17 @@ This repository demonstrates usage of:
 * Bootstrap and teardown
 * Parallel execution
 
+## [Tests with Docker Compose](https://github.com/mathesouza/codeceptjs-docker-compose)
+
+Running CodeceptJS tests with Docker Compose
+
+This repository demonstrates usage of:
+
+* CodeceptJS Docker image 
+* WebDriver helper
+* Allure plugin
+
+
 ## [ModusCreate Tests](https://github.com/ModusCreateOrg/codeceptjs-nightmare-harness)
 
 Test automation by ModusCreate agency with NightmareJS.
