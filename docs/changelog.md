@@ -1,3 +1,7 @@
+## 2.1.1
+
+* Do not retry `within` and `session` calls inside `retryFailedStep` plugin. Fix by @tsuemura
+
 ## 2.1.0
 
 * Added global `inject()` function to require actor and page objects using dependency injection. Recommended to use in page objects, step definition files, support objects:
