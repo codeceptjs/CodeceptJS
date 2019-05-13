@@ -36,6 +36,8 @@ declare module NodeJS {
     session: any;
     DataTable: any;
     locate: Locator,
+    inject: any,
+    secret: any,
     by: any;
 
     // Used by Protractor helper
