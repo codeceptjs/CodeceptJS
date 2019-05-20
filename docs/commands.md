@@ -146,7 +146,6 @@ codeceptjs def
 codeceptjs def --config path/to/codecept.json
 ```
 
-Produces `steps.d.ts` file, which referenced in the very beginning of a test file.
 After doing that IDE should provide autocompletion for `I` object inside `Scenario` and `within` blocks.
 
 ## List Commands
