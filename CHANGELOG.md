@@ -1,3 +1,8 @@
+## 2.1.3
+
+* Fixed autoLogin plugin to inject `login` function
+* Fixed using `toString()` in DataTablewhen it is defined by @tsuemura
+
 ## 2.1.2
 
 * Fixed `inject` to load objects recursively.
