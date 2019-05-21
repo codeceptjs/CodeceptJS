@@ -34,6 +34,7 @@ Then('I should see overall price is "{float}" $', (price) => {
 Given('I login', () => {
   I.login('user', secret('password'));
 });
+
 Given(/^I have this product in my cart$/, (table) => {
   let str = '';
   for (const id in table.rows) {
@@ -58,4 +59,3 @@ After((test) => {
 Fail(() => {
   console.log(`-- failed ${test.title} --`);
 });
-
