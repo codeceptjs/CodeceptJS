@@ -34,7 +34,18 @@ Then('I should see overall price is "{float}" $', (price) => {
 Given('I login', () => {
   I.login('user', secret('password'));
 });
+Given(/^I have this product in my cart$/, (table) =>{
+  let str = '';
+  for (const id in table.rows) {
+    const cells = table.rows[id].cells;
+    str += cells.map(c => c.value).map(c => c.slice(0, 15).padEnd(15)).join(' | ');
+    str += '\n';
+  }
+  console.log(str);
+});
 
+Then(/^I should see total price is "([^"]*)" \$$/,  (price) => {
+});
 
 Before((test) => {
   console.log(`-- before ${test.title} --`);
@@ -47,3 +58,5 @@ After((test) => {
 Fail(() => {
   console.log(`-- failed ${test.title} --`);
 });
+
+
