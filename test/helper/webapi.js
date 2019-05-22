@@ -293,12 +293,11 @@ module.exports.tests = function () {
   describe('#uncheckOption', () => {
     it('should uncheck option by css', () => {
       I.amOnPage('https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox');
-      within({ frame: '#iframeResult' }, () => {
-        I.checkOption('form input[name="vehicle1"]');
-        I.uncheckOption('form input[name="vehicle3"]');
-        I.click({ xpath: "//input[@value='Submit']" });
-        I.see('vehicle1=Bike');
-      });
+      I.switchTo({ id: 'iframeResult' });
+      I.checkOption('form input[name="vehicle1"]');
+      I.uncheckOption('form input[name="vehicle3"]');
+      I.click({ xpath: "//input[@value='Submit']" });
+      I.see('vehicle1=Bike');
     });
   });
 
