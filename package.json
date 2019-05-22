@@ -82,6 +82,7 @@
     "json-server": "^0.10.1",
     "nightmare": "^3.0.0",
     "nyc": "^11.9.0",
+    "pa11y": "^5.1.0",
     "protractor": "^5.4.1",
     "puppeteer": "^1.14.0",
     "rosie": "^1.6.0",

@@ -725,6 +725,32 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `field`  located by label|name|CSS|XPath|strict locator.
 -   `value`  text value to fill.-   _Appium_: supported
 
+### grabAccessibilityTestResults
+
+Retrieves accessibility test results of given URL.
+If no URL is given, the URL in the config will be used.
+
+```js
+let results = await I.grabAccessibilityTestResults('http://localhost:8000/');
+
+//Returned results
+{ documentTitle: 'TestEd Beta 2.0',
+pageUrl: 'http://localhost:8000/',
+issues:
+[ { code: 'WCAG2AA.Principle3.Guideline3_1.3_1_1.H57.2',
+context: '<html><head><title>TestEd Beta 2.0</t...</html>',
+message:
+'The html element should have a lang or xml:lang attribute which describes the language of the document.',
+type: 'error',
+typeCode: 1,
+selector: 'html' } ] }
+```
+
+#### Parameters
+
+-   `url`   (optional, default url in the config file)
+-   `string`  url to grab accessibility test results
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.

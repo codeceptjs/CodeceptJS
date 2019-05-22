@@ -50,6 +50,19 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#grabAccessibilityTestResults', () => {
+    it('should return results of url in config if no url is given', async () => {
+      const results = await I.grabAccessibilityTestResults();
+      assert.equal(results.pageUrl, `${siteUrl}/`);
+    });
+
+    it('should return results of given url', async () => {
+      const url = 'https://codecept.io';
+      const results = await I.grabAccessibilityTestResults(url);
+      assert.equal(results.pageUrl, `${url}/`);
+    });
+  });
+
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
       if (isHelper('Nightmare')) return;
