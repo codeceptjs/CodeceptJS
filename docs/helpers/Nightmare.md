@@ -835,7 +835,7 @@ button: "left"
 
 -   `event`  
 
-### unCheckOption
+### uncheckOption
 
 Unselects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.

@@ -1163,7 +1163,7 @@ I.switchToPreviousTab(2);
 
 -   `num`   (optional, default `1`)
 
-### unCheckOption
+### uncheckOption
 
 Unselects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
