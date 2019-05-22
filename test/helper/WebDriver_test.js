@@ -664,4 +664,20 @@ describe('WebDriver', function () {
       assert.notEqual(before, after);
     });
   });
+
+  describe('#uncheckOption', () => {
+    it('should uncheck option that is currently checked', async () => {
+      await wd.amOnPage('/info');
+      await wd.uncheckOption('interesting');
+      await wd.dontSeeCheckboxIsChecked('interesting');
+    });
+
+    it('should NOT uncheck option that is NOT currently checked', async () => {
+      await wd.amOnPage('/info');
+      await wd.uncheckOption('interesting');
+      // Unchecking again should not affect the current 'unchecked' status
+      await wd.uncheckOption('interesting');
+      await wd.dontSeeCheckboxIsChecked('interesting');
+    });
+  });
 });
