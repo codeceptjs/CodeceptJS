@@ -658,6 +658,23 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
+### grabDataFromPerformanceTiming
+
+Grab the data from performance timing using Navigation Timing API
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+await I.amOnPage('https://example.com');
+let data = await I.grabDataFromPerformanceTiming();
+//Returned data
+{ // all results are in [ms]
+responseEnd: 23,
+domInteractive: 44,
+domContentLoadedEventEnd: 196,
+loadEventEnd: 241
+}
+```
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
