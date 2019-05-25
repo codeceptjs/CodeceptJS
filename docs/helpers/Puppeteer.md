@@ -660,8 +660,14 @@ console.log(`Current URL is [${url}]`);
 
 ### grabDataFromPerformanceTiming
 
-Grab the data from performance timing using Navigation Timing API
-Resumes test execution, so **should be used inside an async function with `await`** operator.
+Grab the data from performance timing using Navigation Timing API.
+The returned data will contain following things in ms:
+
+-   responseEnd,
+-   domInteractive,
+-   domContentLoadedEventEnd,
+-   loadEventEnd
+    Resumes test execution, so **should be used inside an async function with `await`** operator.
 
 ```js
 await I.amOnPage('https://example.com');
