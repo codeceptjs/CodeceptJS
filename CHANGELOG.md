@@ -1,3 +1,24 @@
+## 2.1.3
+
+* Fixed autoLogin plugin to inject `login` function
+* Fixed using `toString()` in DataTablewhen it is defined by @tsuemura
+
+## 2.1.2
+
+* Fixed `inject` to load objects recursively.
+* Fixed TypeScript definitions for locators by @LukoyanovE
+* **EXPERIMENTAL** [WebDriver] ReactJS locators support with webdriverio v5.8+:
+
+```js
+// locating React element by name, prop, state
+I.click({ react: 'component-name', props: {}, state: {} });
+I.seeElement({ react: 'component-name', props: {}, state: {} });
+```
+
+## 2.1.1
+
+* Do not retry `within` and `session` calls inside `retryFailedStep` plugin. Fix by @tsuemura
+
 ## 2.1.0
 
 * Added global `inject()` function to require actor and page objects using dependency injection. Recommended to use in page objects, step definition files, support objects:

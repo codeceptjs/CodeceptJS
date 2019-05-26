@@ -14,6 +14,8 @@ Promise description should be passed as first parameter.
 -   `taskName` **any** 
 -   `fn` **any**  (optional, default `undefined`)
 -   `force` **any**  (optional, default `false`)
+-   `retry` **[boolean][1]**     true: it will retries if `retryOpts` set.
+        false: ignore `retryOpts` and won't retry. (optional, default `true`)
 
 ### errHandler
 
@@ -57,3 +59,5 @@ Adds a promise which throws an error into a chain
 ### toString
 
 Get a state of current queue and tasks
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean

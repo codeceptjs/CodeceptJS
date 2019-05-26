@@ -88,3 +88,8 @@ This repository demonstrates usage of
 * Working with Angular CLI
 * Reports with Mochawesome helper
 
+## [REST Example Tests](https://github.com/PeterNgTr/codeceptjs-rest-demo)
+
+This repository demonstrates usage of
+
+* REST helper

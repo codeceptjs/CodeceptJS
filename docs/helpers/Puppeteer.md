@@ -814,7 +814,7 @@ I.pressKey(['Control','a']);
 Reload the current page.
 
 ```js
-`I.refreshPage();
+I.refreshPage();
 ```
 
 ### resizeWindow
