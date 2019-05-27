@@ -336,7 +336,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator`  clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context`  (optional) element to search in CSS|XPath|Strict locator.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `context`  (optional) element to search in CSS|XPath|Strict locator.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -417,7 +417,7 @@ Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 #### Parameters
 
--   `locator`  located by CSS|XPath|Strict locator.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `locator`  located by CSS|XPath|Strict locator.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -603,7 +603,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field`  located by label|name|CSS|XPath|strict locator.
--   `value`  text value to fill.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `value`  text value to fill.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -746,7 +746,7 @@ If multiple elements found returns an array of texts.
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `locator`  element located by CSS|XPath|strict locator.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -1009,7 +1009,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator`  located by CSS|XPath|strict locator.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `locator`  located by CSS|XPath|strict locator.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -1096,7 +1096,7 @@ Element is located by label or name or CSS or XPath.
 I.seeNumberOfElements('#submitBtn', 1);
 ```
 
-* * *
+**React support available**:
 
 For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.
 
@@ -1124,7 +1124,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `num`  number of elements.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `num`  number of elements.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -1283,7 +1283,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `sec`  (optional) time in seconds to wait, 1 by default.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
@@ -1412,7 +1412,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator`  element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.* * *For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
+-   `sec`  (optional) time in seconds to wait, 1 by default.**React support available**:For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.```js
     { react: 'MyComponent' }
     { react: 'Button', props: { title: 'Click Me' }}
     { react: 'Button', state: { some: 'state' }}
