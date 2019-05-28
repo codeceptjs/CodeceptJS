@@ -499,6 +499,19 @@ describe('WebDriver', function () {
       .then(() => wd.see('Height 700', '#height'))
       .then(() => wd.see('Width 500', '#width')));
 
+    it('should set window size on new session', () => wd.amOnPage('/info')
+      .then(() => wd._session())
+      .then(session => session.start()
+        .then(browser => ({
+          browser,
+          session,
+        })))
+      .then(({ session, browser }) => session.loadVars(browser))
+      .then(() => wd.amOnPage('/form/resize'))
+      .then(() => wd.click('Window Size'))
+      .then(() => wd.see('Height 700', '#height'))
+      .then(() => wd.see('Width 500', '#width')));
+
     it('should resize window to specific dimensions', () => wd.amOnPage('/form/resize')
       .then(() => wd.resizeWindow(950, 600))
       .then(() => wd.click('Window Size'))
