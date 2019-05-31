@@ -155,10 +155,11 @@ Feature('My new test');
 
 After doing that IDE should provide autocompletion for `I` object inside `Scenario` and `within` blocks.
 
-Add optional parameter `to`, if you want to place your definition file in specific folder:
+Add optional parameter `output` (or shortcat `-o`), if you want to place your definition file in specific folder:
 
 ```sh
-codeceptjs def --to ./tests/typings
+codeceptjs def --output ./tests/typings
+codeceptjs def -o ./tests/typings
 ```
 
 ## List Commands

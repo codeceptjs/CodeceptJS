@@ -36,7 +36,7 @@ program.command('list [path]')
 program.command('def [path]')
   .description('Generates TypeScript definitions for all I actions.')
   .option('-c, --config [file]', 'configuration file to be used')
-  .option('--to [file]', 'target folder to paste definitions')
+  .option('-o, --output [folder]', 'target folder to paste definitions')
   .action(require('../lib/command/definitions'));
 
 program.command('gherkin:init [path]')
