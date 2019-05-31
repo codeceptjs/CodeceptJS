@@ -6,14 +6,53 @@
  */
 class RoboFile extends \Robo\Tasks
 {
+
     function docs()
     {
-        $this->taskGulpRun('docs')
-          ->run();
-        $this->taskGitStack()
-          ->add('docs')
-          ->commit('updated docs')
-          ->run();
+        $files = scandir('lib/helper');
+
+        $partials = array_slice(scandir('docs/webapi'), 2);
+        $placeholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{> $p }}"; }, $partials);
+        $templates = array_map(function($p) { return substr(preg_replace('~^~m', "   * " , file_get_contents("docs/webapi/$p")), 5); }, $partials);
+
+        $sharedPartials = array_slice(scandir('docs/shared'), 2);
+        $sharedPlaceholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{ $p }}"; }, $sharedPartials);
+        $sharedTemplates = array_map(function($p) { return substr(preg_replace('~^~m', "   * " , file_get_contents("docs/shared/$p")), 5); }, $sharedPartials);
+
+
+        foreach ($files as $file) {
+            $info = pathinfo($file);
+            if (!isset($info['extension'])) continue;
+            if ($info['extension'] !== 'js') continue;
+            $this->_copy("lib/helper/$file", "docs/build/$file");
+
+            $this->taskReplaceInFile("docs/build/$file")
+                ->from($placeholders)
+                ->to($templates)
+                ->run();
+
+                $this->taskReplaceInFile("docs/build/$file")
+                ->from($sharedPlaceholders)
+                ->to($sharedTemplates)
+            ->run();
+
+
+            $this->_exec("npx documentation build docs/build/{$info['basename']} -o docs/helpers/{$info['filename']}.md -f md --shallow --markdown-toc=false --sort-order=alpha ");
+
+            // $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
+            //     ->from($sharedPlaceholders)
+            //     ->to($sharedTemplates)
+            //     ->run();
+
+            $this->taskWriteToFile("docs/helpers/{$info['filename']}.md")
+                ->line('-----')
+                ->line("id: {$info['filename']}")
+                ->line("title: {$info['filename']}")
+                ->line('----')
+                ->line('')
+                ->textFromFile("docs/helpers/{$info['filename']}.md")
+                ->run();
+        }
     }
 
     function publishSite()

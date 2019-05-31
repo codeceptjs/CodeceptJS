@@ -1,3 +1,6 @@
+## Test React Applications
+
+## Locators
 
 For Ract apps a special `react` locator is available. It allows to select an element by its component name, props and state.
 
@@ -7,3 +10,4 @@ For Ract apps a special `react` locator is available. It allows to select an ele
 { react: 'Button', state: { some: 'state' }}
 { react: 'Input', state: 'valid'}
 ```
+
