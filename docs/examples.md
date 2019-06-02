@@ -9,6 +9,13 @@ title: Examples
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
 
+## [CodeceptJS Quick Start with Cucumber/Gherkin](https://github.com/gkushang/codeceptjs-quick-start)
+
+This repository demonstrate the CodeceptJS with Cucumber/Gherkin configuration
+
+* Easy 3-Steps process to colocate the CodeceptJS with Gherkin tests with your project
+* Quick Start with CodeceptJS wih Cucumber/Gherkin
+* Sample example and feature files to test GitHub Features
 
 ## [Testing Single Page Application](https://github.com/bugiratracker/codeceptjs-demo)
 
