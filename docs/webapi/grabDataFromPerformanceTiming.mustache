@@ -1,0 +1,19 @@
+Grab the data from performance timing using Navigation Timing API.
+The returned data will contain following things in ms:
+- responseEnd,
+- domInteractive,
+- domContentLoadedEventEnd,
+- loadEventEnd
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+await I.amOnPage('https://example.com');
+let data = await I.grabDataFromPerformanceTiming();
+//Returned data
+{ // all results are in [ms]
+  responseEnd: 23,
+  domInteractive: 44,
+  domContentLoadedEventEnd: 196,
+  loadEventEnd: 241
+}
+```
