@@ -302,8 +302,19 @@ you can generate step definitions with
 codeceptjs def
 ```
 
-Now you should include `/// <reference path="./steps.d.ts" />` into your test files to get
-method autocompletion while writing tests.
+Now you should create `tsconfig.json` in your project root directory.
+
+```tsconfig.json
+{
+  "compilerOptions": {
+    "allowJs": true,
+  }
+}
+```
+but in usually case, this file has already generated when you execute `codeceptjs init`.
+
+Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files 
+to get method autocompletion while writing tests.
 
 ## Skipping
 
