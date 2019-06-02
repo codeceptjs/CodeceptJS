@@ -1107,7 +1107,7 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator`  located by CSS|XPath|strict locator.
 -   `offsetX`  (optional) X-axis offset.
--   `offsetY`  (optional) Y-axis offset.-   _Appium_: supported only for web testing
+-   `offsetY`  (optional) Y-axis offset.
 
 ### scrollTo
 
@@ -1123,7 +1123,7 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator`  located by CSS|XPath|strict locator.
 -   `offsetX`  (optional) X-axis offset.
--   `offsetY`  (optional) Y-axis offset.
+-   `offsetY`  (optional) Y-axis offset.-   _Appium_: supported only for web testing
 
 ### see
 
