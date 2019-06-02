@@ -1,5 +1,5 @@
 ---
-id: reporters
+id: reports
 title: Reporters
 ---
 
