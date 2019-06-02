@@ -181,6 +181,7 @@ Accessibility id is recommended to use for locating element, as it rarely change
 * iOS uses [UIAccessibilityIdentification](https://developer.apple.com/documentation/uikit/uiaccessibilityidentification)
 * Android `accessibility id` matches the content-description
 * Web view uses `[aria-label]` attribute as accessibility id
+* ReactNative for Android has some caveats you could find more [here](mobile-react-native-locators.md)
 
 Add `~` prefix to search for element by its accessibility id:
 
