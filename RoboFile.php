@@ -13,17 +13,18 @@ class RoboFile extends \Robo\Tasks
 
         $partials = array_slice(scandir('docs/webapi'), 2);
         $placeholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{> $p }}"; }, $partials);
-        $templates = array_map(function($p) { return substr(preg_replace('~^~m', "   * " , file_get_contents("docs/webapi/$p")), 5); }, $partials);
+        $templates = array_map(function($p) { return substr(preg_replace('~^~m', "   * " , file_get_contents("docs/webapi/$p")), 5) . "\n   * " . "   * "; }, $partials);
 
         $sharedPartials = array_slice(scandir('docs/shared'), 2);
         $sharedPlaceholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{ $p }}"; }, $sharedPartials);
-        $sharedTemplates = array_map(function($p) { return substr(preg_replace('~^~m', "   * " , file_get_contents("docs/shared/$p")), 5); }, $sharedPartials);
+        $sharedTemplates = array_map(function($p) { return "\n\n\n" . file_get_contents("docs/shared/$p"); }, $sharedPartials);
 
 
         foreach ($files as $file) {
             $info = pathinfo($file);
             if (!isset($info['extension'])) continue;
             if ($info['extension'] !== 'js') continue;
+
             $this->_copy("lib/helper/$file", "docs/build/$file");
 
             $this->taskReplaceInFile("docs/build/$file")
@@ -31,18 +32,18 @@ class RoboFile extends \Robo\Tasks
                 ->to($templates)
                 ->run();
 
-                $this->taskReplaceInFile("docs/build/$file")
-                ->from($sharedPlaceholders)
-                ->to($sharedTemplates)
-            ->run();
-
-
             $this->_exec("npx documentation build docs/build/{$info['basename']} -o docs/helpers/{$info['filename']}.md -f md --shallow --markdown-toc=false --sort-order=alpha ");
 
-            // $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
-            //     ->from($sharedPlaceholders)
-            //     ->to($sharedTemplates)
-            //     ->run();
+            $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
+                ->from($sharedPlaceholders)
+                ->to($sharedTemplates)
+                ->run();
+
+            // removing badly formatted documentation.js shit
+            $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
+                ->regex('~\(optional, default.*?\)~')
+                ->to('')
+                ->run();
 
             $this->taskWriteToFile("docs/helpers/{$info['filename']}.md")
                 ->line('-----')

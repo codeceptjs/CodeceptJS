@@ -21,12 +21,12 @@ Requires `nightmare` package to be installed.
 This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url` - base url of website to be tested
--   `restart` (optional, default: true) - restart browser between tests.
--   `disableScreenshots` (optional, default: false)  - don't save screenshot on failure.
--   `uniqueScreenshotNames` (optional, default: false)  - option to prevent screenshot override if you have scenarios with the same name in different suites.
--   `fullPageScreenshots` (optional, default: false) - make full page screenshots on failure.
--   `keepBrowserState` (optional, default: false)  - keep browser state between tests when `restart` set to false.
--   `keepCookies` (optional, default: false)  - keep cookies between tests when `restart` set to false.
+-   `restart`  - restart browser between tests.
+-   `disableScreenshots`   - don't save screenshot on failure.
+-   `uniqueScreenshotNames`   - option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `fullPageScreenshots`  - make full page screenshots on failure.
+-   `keepBrowserState`   - keep browser state between tests when `restart` set to false.
+-   `keepCookies`   - keep cookies between tests when `restart` set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 500.
 -   `waitForTimeout`: (optional) default wait\* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -66,8 +66,8 @@ let value = this.helpers['Nightmare']._locate({name: 'password'}).then(function(
 
 ### amOnPage
 
--   Opens a web page in a browser. Requires relative or absolute url.
-    If url starts with `/`, opens a web page of a site defined in `url` config parameter.
+Opens a web page in a browser. Requires relative or absolute url.
+If url starts with `/`, opens a web page of a site defined in `url` config parameter.
 
 ```js
 I.amOnPage('/'); // opens main page of website
@@ -80,12 +80,12 @@ I.amOnPage('/login'); // opens a login page
 -   `url` **[string][3]** url path or global url.In a second argument a list of request headers can be passed:```js
     I.amOnPage('/auth', { 'x-my-custom-header': 'some value' })
     ```
--   `headers`   (optional, default `null`)
+-   `headers`   
 
 ### appendField
 
--   Appends text to a input field or textarea.
-    Field is located by name, label, CSS or XPath
+Appends text to a input field or textarea.
+Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
@@ -98,9 +98,9 @@ I.appendField('#myTextField', 'appended');
 
 ### attachFile
 
--   Attaches a file to element located by label, name, CSS or XPath
-    Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
-    File will be uploaded to remote system (if tests are running remotely).
+Attaches a file to element located by label, name, CSS or XPath
+Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
@@ -115,8 +115,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 ### checkOption
 
--   Selects a checkbox or radio button.
-    Element is located by label or name or CSS or XPath.
+Selects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
 
 The second parameter is a context (CSS or XPath locator) to narrow the search.
 
@@ -129,7 +129,7 @@ I.checkOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][3] \| [object][4])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **[string][3]** element located by CSS | XPath | strict locator. (optional, default `null`)
+-   `context` **[string][3]** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 ### clearCookie
 
@@ -141,7 +141,7 @@ I.checkOption('agree', '//form');
 
 ### clearField
 
--   Clears a `<textarea>` or text `<input>` element's value.
+Clears a `<textarea>` or text `<input>` element's value.
 
 ```js
 I.clearField('Email');
@@ -156,10 +156,10 @@ I.clearField('#email');
 
 ### click
 
--   Perform a click on a link or a button, given by a locator.
-    If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
-    For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
-    For images, the "alt" attribute and inner text of any parent links are searched.
+Perform a click on a link or a button, given by a locator.
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
 
 The second parameter is a context (CSS or XPath locator) to narrow the search.
 
@@ -181,12 +181,12 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][3] \| [object][4])** element to search in CSS|XPath|Strict locator. (optional, default `null`)
+-   `context` **([string][3] \| [object][4])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 ### dontSee
 
--   Opposite to `see`. Checks that a text is not present on a page.
-    Use context parameter to narrow down the search.
+Opposite to `see`. Checks that a text is not present on a page.
+Use context parameter to narrow down the search.
 
 ```js
 I.dontSee('Login'); // assume we are already logged in.
@@ -196,12 +196,12 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 #### Parameters
 
 -   `text` **[string][3]** is not present.
--   `context`   (optional, default `null`)
+-   `context`   
 -   `null` **([string][3] \| [object][4])** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
 
 ### dontSeeCheckboxIsChecked
 
--   Verifies that the specified checkbox is not checked.
+Verifies that the specified checkbox is not checked.
 
 ```js
 I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
@@ -223,8 +223,8 @@ I.dontSeeeCheckboxIsChedcked('agree'); // located by name
 
 ### dontSeeCurrentUrlEquals
 
--   Checks that current url is not equal to provided one.
-    If a relative url provided, a configured url will be prepended to it.
+Checks that current url is not equal to provided one.
+If a relative url provided, a configured url will be prepended to it.
 
 ```js
 I.dontSeeCurrentUrlEquals('/login'); // relative url are ok
@@ -237,7 +237,7 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 
 ### dontSeeElement
 
--   Opposite to `seeElement`. Checks that element is not visible (or in DOM)
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 ```js
 I.dontSeeElement('.modal'); // modal is not shown
@@ -249,7 +249,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 ### dontSeeElementInDOM
 
--   Opposite to `seeElementInDOM`. Checks that element is not on page.
+Opposite to `seeElementInDOM`. Checks that element is not on page.
 
 ```js
 I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or not
@@ -261,7 +261,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 ### dontSeeInCurrentUrl
 
--   Checks that current url does not contain a provided fragment.
+Checks that current url does not contain a provided fragment.
 
 #### Parameters
 
@@ -269,8 +269,8 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 ### dontSeeInField
 
--   Checks that value of input field or textare doesn't equal to given value
-    Opposite to `seeInField`.
+Checks that value of input field or textare doesn't equal to given value
+Opposite to `seeInField`.
 
 ```js
 I.dontSeeInField('email', 'user@user.com'); // field by name
@@ -284,7 +284,7 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 ### dontSeeInSource
 
--   Checks that the current page does not contains the given string in its raw source code.
+Checks that the current page does not contains the given string in its raw source code.
 
 ```js
 I.dontSeeInSource('<!--'); // no comments in source
@@ -297,7 +297,7 @@ I.dontSeeInSource('<!--'); // no comments in source
 
 ### dontSeeInTitle
 
--   Checks that title does not contain text.
+Checks that title does not contain text.
 
 ```js
 I.dontSeeInTitle('Error');
@@ -309,8 +309,8 @@ I.dontSeeInTitle('Error');
 
 ### doubleClick
 
--   Performs a double-click on an element matched by link|button|label|CSS or XPath.
-    Context can be specified as second parameter to narrow search.
+Performs a double-click on an element matched by link|button|label|CSS or XPath.
+Context can be specified as second parameter to narrow search.
 
 ```js
 I.doubleClick('Edit');
@@ -322,12 +322,12 @@ I.doubleClick('.btn.edit');
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][3] \| [object][4])** element to search in CSS|XPath|Strict locator. (optional, default `null`)
+-   `context` **([string][3] \| [object][4])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 ### executeAsyncScript
 
--   Executes async script on page.
-    Provided function should execute a passed callback (as first argument) to signal it is finished.
+Executes async script on page.
+Provided function should execute a passed callback (as first argument) to signal it is finished.
 
 Example: In Vue.js to make components completely rendered we are waiting for [nextTick][6].
 
@@ -353,10 +353,10 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 ### executeScript
 
--   Executes sync script on a page.
-    Pass arguments to function as additional parameters.
-    Will return execution result to a test.
-    In this case you should use async function and await to receive results.
+Executes sync script on a page.
+Pass arguments to function as additional parameters.
+Will return execution result to a test.
+In this case you should use async function and await to receive results.
 
 Example with jQuery DatePicker:
 
@@ -383,8 +383,8 @@ let date = await I.executeScript(function(el) {
 
 ### fillField
 
--   Fills a text field or textarea, after clearing its value, with the given string.
-    Field is located by name, label, CSS, or XPath.
+Fills a text field or textarea, after clearing its value, with the given string.
+Field is located by name, label, CSS, or XPath.
 
 ```js
 // by label
@@ -404,9 +404,9 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 ### grabAttributeFrom
 
--   Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-    An array as a result will be returned if there are more than one matched element.
-    Resumes test execution, so **should be used inside async with `await`** operator.
+Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+An array as a result will be returned if there are more than one matched element.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -439,8 +439,8 @@ If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ### grabCurrentUrl
 
--   Get current URL from browser.
-    Resumes test execution, so should be used inside an async function.
+Get current URL from browser.
+Resumes test execution, so should be used inside an async function.
 
 ```js
 let url = await I.grabCurrentUrl();
@@ -460,9 +460,9 @@ fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 
 ### grabHTMLFrom
 
--   Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-    Resumes test execution, so **should be used inside async function with `await`** operator.
-    If more than one element is found - an array of HTMLs returned.
+Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - an array of HTMLs returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -476,7 +476,7 @@ Returns **[Promise][8]&lt;[string][3]>** HTML code for an element
 
 ### grabNumberOfVisibleElements
 
--   Grab number of visible elements by locator.
+Grab number of visible elements by locator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -494,8 +494,8 @@ Returns **[Promise][8]&lt;[number][9]>** number of visible elements
 
 ### grabTextFrom
 
--   Retrieves a text from an element located by CSS or XPath and returns it to test.
-    Resumes test execution, so **should be used inside async with `await`** operator.
+Retrieves a text from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let pin = await I.grabTextFrom('#pin');
@@ -511,8 +511,8 @@ Returns **[Promise][8]&lt;[string][3]>** attribute value
 
 ### grabTitle
 
--   Retrieves a page title and returns it to test.
-    Resumes test execution, so **should be used inside async with `await`** operator.
+Retrieves a page title and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let title = await I.grabTitle();
@@ -522,8 +522,8 @@ Returns **[Promise][8]&lt;[string][3]>** title
 
 ### grabValueFrom
 
--   Retrieves a value from a form element located by CSS or XPath and returns it to test.
-    Resumes test execution, so **should be used inside async function with `await`** operator.
+Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -551,8 +551,8 @@ I.haveHeader(); // clear headers
 
 ### moveCursorTo
 
--   Moves cursor to element matched by locator.
-    Extra shift can be set with offsetX and offsetY options.
+Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.
 
 ```js
 I.moveCursorTo('.tooltip');
@@ -562,8 +562,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][9]** X-axis offset. (optional, default `0`)
--   `offsetY` **[number][9]** Y-axis offset. (optional, default `0`)
+-   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset. 
 
 ### pressKey
 
@@ -580,7 +580,7 @@ Reload the page
 
 ### refreshPage
 
--   Reload the current page.
+Reload the current page.
 
 ```js
 I.refreshPage();
@@ -588,8 +588,8 @@ I.refreshPage();
 
 ### resizeWindow
 
--   Resize the current window to provided width and height.
-    First parameter can be set to `maximize`.
+Resize the current window to provided width and height.
+First parameter can be set to `maximize`.
 
 #### Parameters
 
@@ -598,7 +598,7 @@ I.refreshPage();
 
 ### rightClick
 
--   Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+Performs right click on a clickable element matched by semantic locator, CSS or XPath.
 
 ```js
 // right click element with id el
@@ -612,13 +612,13 @@ I.rightClick('Click me', '.context');
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** clickable element located by CSS|XPath|strict locator.
--   `context` **([string][3] \| [object][4])** element located by CSS|XPath|strict locator. (optional, default `null`)
+-   `context` **([string][3] \| [object][4])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
 ### saveScreenshot
 
--   Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
-    Filename is relative to output folder.
-    Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
+Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
@@ -628,11 +628,11 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][3]** file name to save.
--   `fullPage` **[boolean][11]** flag to enable fullscreen screenshot mode. (optional, default `false`)
+-   `fullPage` **[boolean][11]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 ### scrollPageToBottom
 
--   Scroll page to the bottom.
+Scroll page to the bottom.
 
 ```js
 I.scrollPageToBottom();
@@ -640,7 +640,7 @@ I.scrollPageToBottom();
 
 ### scrollPageToTop
 
--   Scroll page to the top.
+Scroll page to the top.
 
 ```js
 I.scrollPageToTop();
@@ -648,8 +648,8 @@ I.scrollPageToTop();
 
 ### scrollTo
 
--   Scrolls to element matched by locator.
-    Extra shift can be set with offsetX and offsetY options.
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.
 
 ```js
 I.scrollTo('footer');
@@ -659,13 +659,13 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][9]** X-axis offset. (optional, default `0`)
--   `offsetY` **[number][9]** Y-axis offset. (optional, default `0`)
+-   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset. 
 
 ### see
 
--   Checks that a page contains a visible text.
-    Use context parameter to narrow down the search.
+Checks that a page contains a visible text.
+Use context parameter to narrow down the search.
 
 ```js
 I.see('Welcome'); // text welcome on a page
@@ -676,11 +676,11 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 #### Parameters
 
 -   `text` **[string][3]** expected on page.
--   `context` **([string][3] \| [object][4])** element located by CSS|Xpath|strict locator in which to search for text. (optional, default `null`)
+-   `context` **([string][3] \| [object][4])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
 
 ### seeCheckboxIsChecked
 
--   Verifies that the specified checkbox is checked.
+Verifies that the specified checkbox is checked.
 
 ```js
 I.seeCheckboxIsChecked('Agree');
@@ -702,9 +702,9 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 ### seeCurrentUrlEquals
 
--   Checks that current url is equal to provided one.
-    If a relative url provided, a configured url will be prepended to it.
-    So both examples will work:
+Checks that current url is equal to provided one.
+If a relative url provided, a configured url will be prepended to it.
+So both examples will work:
 
 ```js
 I.seeCurrentUrlEquals('/register');
@@ -717,8 +717,8 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 ### seeElement
 
--   Checks that a given Element is visible
-    Element is located by CSS or XPath.
+Checks that a given Element is visible
+Element is located by CSS or XPath.
 
 ```js
 I.seeElement('#modal');
@@ -730,8 +730,8 @@ I.seeElement('#modal');
 
 ### seeElementInDOM
 
--   Checks that a given Element is present in the DOM
-    Element is located by CSS or XPath.
+Checks that a given Element is present in the DOM
+Element is located by CSS or XPath.
 
 ```js
 I.seeElementInDOM('#modal');
@@ -743,7 +743,7 @@ I.seeElementInDOM('#modal');
 
 ### seeInCurrentUrl
 
--   Checks that current url contains a provided fragment.
+Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
@@ -755,8 +755,8 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 ### seeInField
 
--   Checks that the given input field or textarea equals to given value.
-    For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+Checks that the given input field or textarea equals to given value.
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
 
 ```js
 I.seeInField('Username', 'davert');
@@ -772,7 +772,7 @@ I.seeInField('#searchform input','Search');
 
 ### seeInSource
 
--   Checks that the current page contains the given string in its raw source code.
+Checks that the current page contains the given string in its raw source code.
 
 ```js
 I.seeInSource('<h1>Green eggs &amp; ham</h1>');
@@ -784,7 +784,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 ### seeInTitle
 
--   Checks that title contains text.
+Checks that title contains text.
 
 ```js
 I.seeInTitle('Home Page');
@@ -810,8 +810,8 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 ### seeNumberOfVisibleElements
 
--   Asserts that an element is visible a given number of times.
-    Element is located by CSS or XPath.
+Asserts that an element is visible a given number of times.
+Element is located by CSS or XPath.
 
 ```js
 I.seeNumberOfVisibleElements('.buttons', 3);
@@ -824,9 +824,9 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 ### selectOption
 
--   Selects an option in a drop-down select.
-    Field is searched by label | name | CSS | XPath.
-    Option is selected by visible text or by value.
+Selects an option in a drop-down select.
+Field is searched by label | name | CSS | XPath.
+Option is selected by visible text or by value.
 
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
@@ -850,7 +850,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
--   Sets a cookie.
+Sets a cookie.
 
 ```js
 I.setCookie({name: 'auth', value: true});
@@ -878,7 +878,7 @@ button: "left"
 
 ### wait
 
--   Pauses execution for a number of seconds.
+Pauses execution for a number of seconds.
 
 ```js
 I.wait(2); // wait 2 secs
@@ -890,8 +890,8 @@ I.wait(2); // wait 2 secs
 
 ### waitForDetached
 
--   Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForDetached('#popup');
@@ -900,12 +900,12 @@ I.waitForDetached('#popup');
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
 
 ### waitForElement
 
--   Waits for element to be present on page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for element to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForElement('.btn.continue');
@@ -915,12 +915,12 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
 
 ### waitForFunction
 
--   Waits for a function to return true (waits for 1 sec by default).
-    Running in browser context.
+Waits for a function to return true (waits for 1 sec by default).
+Running in browser context.
 
 ```js
 I.waitForFunction(fn[, [args[, timeout]])
@@ -935,13 +935,13 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 -   `fn` **([string][3] \| [function][7])** to be executed in browser context.
--   `argsOrSec` **([array][12] \| [number][9])** arguments for function or seconds. (optional, default `1`)
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
+-   `argsOrSec` **([array][12] \| [number][9])** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
--   Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForInvisible('#popup');
@@ -950,13 +950,13 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
 
 ### waitForText
 
--   Waits for a text to appear (by default waits for 1sec).
-    Element can be located by CSS or XPath.
-    Narrow down search results by providing context.
+Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.
 
 ```js
 I.waitForText('Thank you, form has been submitted');
@@ -966,13 +966,13 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][3]** to wait for.
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
--   `context` **([string][3] \| [object][4])** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `context` **([string][3] \| [object][4])** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
 
--   Waits for an element to become visible on a page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForVisible('#popup');
@@ -981,12 +981,12 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
 
 ### waitToHide
 
--   Waits for an element to hide (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for an element to hide (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitToHide('#popup');
@@ -995,7 +995,7 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][3] \| [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 [1]: https://github.com/segmentio/nightmare
 

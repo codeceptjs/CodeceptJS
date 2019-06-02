@@ -74,7 +74,7 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `headers` **[object][2]**  
 
 ### sendGetRequest
 
@@ -87,7 +87,7 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `headers` **[object][2]**  
 
 ### sendPatchRequest
 
@@ -101,7 +101,7 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 
 -   `url` **[string][3]** 
 -   `payload` **[object][2]** 
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `headers` **[object][2]**  
 
 ### sendPostRequest
 
@@ -114,8 +114,8 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **any** 
--   `payload` **any**  (optional, default `{}`)
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `payload` **any**  
+-   `headers` **[object][2]**  
 
 ### sendPutRequest
 
@@ -128,8 +128,8 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **[string][3]** 
--   `payload` **[object][2]**  (optional, default `{}`)
--   `headers` **[object][2]**  (optional, default `{}`)
+-   `payload` **[object][2]**  
+-   `headers` **[object][2]**  
 
 ### setRequestTimeout
 

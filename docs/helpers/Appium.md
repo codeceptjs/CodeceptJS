@@ -88,8 +88,8 @@ Switch to the specified context.
 
 ### appendField
 
--   Appends text to a input field or textarea.
-    Field is located by name, label, CSS or XPath
+Appends text to a input field or textarea.
+Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
@@ -102,8 +102,8 @@ I.appendField('#myTextField', 'appended');
 
 ### checkOption
 
--   Selects a checkbox or radio button.
-    Element is located by label or name or CSS or XPath.
+Selects a checkbox or radio button.
+Element is located by label or name or CSS or XPath.
 
 The second parameter is a context (CSS or XPath locator) to narrow the search.
 
@@ -116,14 +116,14 @@ I.checkOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][4] \| [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **[string][4]** element located by CSS | XPath | strict locator. (optional, default `null`)
+-   `context` **[string][4]** (optional, `null` by default) element located by CSS | XPath | strict locator.
 
 ### click
 
--   Perform a click on a link or a button, given by a locator.
-    If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
-    For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
-    For images, the "alt" attribute and inner text of any parent links are searched.
+Perform a click on a link or a button, given by a locator.
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
 
 The second parameter is a context (CSS or XPath locator) to narrow the search.
 
@@ -145,7 +145,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][4] \| [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][4] \| [object][5])** element to search in CSS|XPath|Strict locator. (optional, default `null`)
+-   `context` **([string][4] \| [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
 
 ### closeApp
 
@@ -159,8 +159,8 @@ Appium: support only iOS
 
 ### dontSee
 
--   Opposite to `see`. Checks that a text is not present on a page.
-    Use context parameter to narrow down the search.
+Opposite to `see`. Checks that a text is not present on a page.
+Use context parameter to narrow down the search.
 
 ```js
 I.dontSee('Login'); // assume we are already logged in.
@@ -175,7 +175,7 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 ### dontSeeCheckboxIsChecked
 
--   Verifies that the specified checkbox is not checked.
+Verifies that the specified checkbox is not checked.
 
 ```js
 I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
@@ -189,7 +189,7 @@ I.dontSeeeCheckboxIsChedcked('agree'); // located by name
 
 ### dontSeeElement
 
--   Opposite to `seeElement`. Checks that element is not visible (or in DOM)
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
 ```js
 I.dontSeeElement('.modal'); // modal is not shown
@@ -202,8 +202,8 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 ### dontSeeInField
 
--   Checks that value of input field or textare doesn't equal to given value
-    Opposite to `seeInField`.
+Checks that value of input field or textare doesn't equal to given value
+Opposite to `seeInField`.
 
 ```js
 I.dontSeeInField('email', 'user@user.com'); // field by name
@@ -217,8 +217,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 ### fillField
 
--   Fills a text field or textarea, after clearing its value, with the given string.
-    Field is located by name, label, CSS, or XPath.
+Fills a text field or textarea, after clearing its value, with the given string.
+Field is located by name, label, CSS, or XPath.
 
 ```js
 // by label
@@ -298,8 +298,8 @@ Appium: support Android and iOS
 
 ### grabTextFrom
 
--   Retrieves a text from an element located by CSS or XPath and returns it to test.
-    Resumes test execution, so **should be used inside async with `await`** operator.
+Retrieves a text from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let pin = await I.grabTextFrom('#pin');
@@ -315,8 +315,8 @@ Returns **[Promise][6]&lt;[string][4]>** attribute value
 
 ### grabValueFrom
 
--   Retrieves a value from a form element located by CSS or XPath and returns it to test.
-    Resumes test execution, so **should be used inside async function with `await`** operator.
+Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -540,8 +540,8 @@ I.runOnAndroid((caps) => {
 
 ### see
 
--   Checks that a page contains a visible text.
-    Use context parameter to narrow down the search.
+Checks that a page contains a visible text.
+Use context parameter to narrow down the search.
 
 ```js
 I.see('Welcome'); // text welcome on a page
@@ -552,7 +552,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 #### Parameters
 
 -   `text` **[string][4]** expected on page.
--   `context` **([string][4] \| [object][5])** element located by CSS|Xpath|strict locator in which to search for text. (optional, default `null`)
+-   `context` **([string][4] \| [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
 
 ### seeAppIsInstalled
 
@@ -580,7 +580,7 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 
 ### seeCheckboxIsChecked
 
--   Verifies that the specified checkbox is checked.
+Verifies that the specified checkbox is checked.
 
 ```js
 I.seeCheckboxIsChecked('Agree');
@@ -628,8 +628,8 @@ Appium: support only Android
 
 ### seeElement
 
--   Checks that a given Element is visible
-    Element is located by CSS or XPath.
+Checks that a given Element is visible
+Element is located by CSS or XPath.
 
 ```js
 I.seeElement('#modal');
@@ -641,8 +641,8 @@ I.seeElement('#modal');
 
 ### seeInField
 
--   Checks that the given input field or textarea equals to given value.
-    For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+Checks that the given input field or textarea equals to given value.
+For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
 
 ```js
 I.seeInField('Username', 'davert');
@@ -671,9 +671,9 @@ I.seeOrientationIs('LANDSCAPE')
 
 ### selectOption
 
--   Selects an option in a drop-down select.
-    Field is searched by label | name | CSS | XPath.
-    Option is selected by visible text or by value.
+Selects an option in a drop-down select.
+Field is searched by label | name | CSS | XPath.
+Option is selected by visible text or by value.
 
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
@@ -935,7 +935,7 @@ I.switchToNative('SOME_OTHER_CONTEXT');
 
 #### Parameters
 
--   `context` **any**  (optional, default `null`)
+-   `context` **any**  
 
 ### switchToWeb
 
@@ -1001,8 +1001,8 @@ Appium: support Android and iOS
 
 ### waitForElement
 
--   Waits for element to be present on page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for element to be present on page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForElement('.btn.continue');
@@ -1012,12 +1012,12 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][4] \| [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][14]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
--   Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForInvisible('#popup');
@@ -1026,13 +1026,13 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] \| [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][14]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForText
 
--   Waits for a text to appear (by default waits for 1sec).
-    Element can be located by CSS or XPath.
-    Narrow down search results by providing context.
+Waits for a text to appear (by default waits for 1sec).
+Element can be located by CSS or XPath.
+Narrow down search results by providing context.
 
 ```js
 I.waitForText('Thank you, form has been submitted');
@@ -1042,13 +1042,13 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][4]** to wait for.
--   `sec` **[number][14]** time in seconds to wait (optional, default `1`)
--   `context` **([string][4] \| [object][5])** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
+-   `context` **([string][4] \| [object][5])** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
 
--   Waits for an element to become visible on a page (by default waits for 1sec).
-    Element can be located by CSS or XPath.
+Waits for an element to become visible on a page (by default waits for 1sec).
+Element can be located by CSS or XPath.
 
 ```js
 I.waitForVisible('#popup');
@@ -1057,7 +1057,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] \| [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][14]** time in seconds to wait (optional, default `1`)
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
 
 [1]: http://codecept.io/helpers/WebDriver/
 
