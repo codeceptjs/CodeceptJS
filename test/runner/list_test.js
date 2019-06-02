@@ -25,7 +25,6 @@ describe('list/def commands', () => {
     }
     exec(`${runner} def ${codecept_dir}`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
-      stdout.should.include('<reference path="./steps.d.ts" />');
       fs.existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
       const def = fs.readFileSync(`${codecept_dir}/steps.d.ts`).toString();
       def.should.include('amInPath(openPath: string) : void');
@@ -43,7 +42,6 @@ describe('list/def commands', () => {
     }
     exec(`${runner} def --config ${codecept_dir}/codecept.ddt.json`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
-      stdout.should.include('<reference path="./steps.d.ts" />');
       fs.existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
       assert(!err);
       done();

@@ -146,13 +146,6 @@ codeceptjs def
 codeceptjs def --config path/to/codecept.json
 ```
 
-Produces `steps.d.ts` file, which referenced in the very beginning of a test file.
-
-```js
-/// <reference path="./steps.d.ts" />
-Feature('My new test');
-```
-
 After doing that IDE should provide autocompletion for `I` object inside `Scenario` and `within` blocks.
 
 Add optional parameter `output` (or shortcat `-o`), if you want to place your definition file in specific folder:
