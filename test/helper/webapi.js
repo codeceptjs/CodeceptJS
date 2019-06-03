@@ -290,6 +290,14 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#uncheckOption', () => {
+    it('should uncheck option that is currently checked', async () => {
+      await I.amOnPage('/info');
+      await I.uncheckOption('interesting');
+      await I.dontSeeCheckboxIsChecked('interesting');
+    });
+  });
+
   describe('#selectOption', () => {
     it('should select option by css', function* () {
       yield I.amOnPage('/form/select');

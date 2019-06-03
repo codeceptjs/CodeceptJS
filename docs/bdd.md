@@ -138,11 +138,11 @@ This scenarios are nice as live documentation but they do not test anything yet.
 Steps can be defined by executing `gherkin:snippets` command:
 
 ```bash
-codeceptjs gherkin:snippets
+codeceptjs gherkin:snippets [--path=PATH]
 ```
 
 This will produce code templates for all undefined steps in all feature files of this suite.
-It will also place stub definitions into `step_definitions/steps.js` file.
+It will also place stub definitions into `step_definitions/steps.js` file. However, you may also target a specific file to place all undefined steps in. This file must exist and be placed in the gherkin steps in the current config.
 Our next step will be to define those steps and transforming feature-file into a valid test.
 
 ### Step Definitions

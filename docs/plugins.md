@@ -257,6 +257,38 @@ plugins: {
 }
 ```
 
+#### Tips: Using async function in the autoLogin
+
+If you use async functions in the autoLogin plugin, login function should be used with `await` keyword.
+
+```js
+autoLogin: {
+  enabled: true,
+  saveToFile: true,
+  inject: 'login',
+  users: {
+    admin: {
+      login: async (I) => {  // If you use async function in the autoLogin plugin
+         const phrase = await I.grabTextFrom('#phrase')
+         I.fillField('username', 'admin'),
+         I.fillField('password', 'password')
+         I.fillField('phrase', phrase)
+      },
+      check: (I) => {
+         I.amOnPage('/');
+         I.see('Admin');
+      }
+    }
+  }
+}
+```
+
+```js
+Scenario('login', async (I, login) => {
+  await login('admin') // you should use `await`
+})
+```
+
 ### Parameters
 
 -   `config`  

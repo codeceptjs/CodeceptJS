@@ -769,6 +769,10 @@ console.log(`Current URL is [${url}]`);
 Returns **[Promise][11]&lt;[string][7]>** current URL
    \*
 
+### grabDataFromPerformanceTiming
+
+{{> ../webapi/grabDataFromPerformanceTiming }}
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.

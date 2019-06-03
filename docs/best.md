@@ -61,7 +61,7 @@ Scenario('editing a metric', async (I, loginAs, metricPage) => {
 
 ## Refactoring and PageObjects
 
-When a project is growing and more and more tests are required, it's time to think about reusing test code accoross the tests. Some common actions should be moved from tests to other files so to be accessible from different tests.
+When a project is growing and more and more tests are required, it's time to think about reusing test code across the tests. Some common actions should be moved from tests to other files so to be accessible from different tests.
 
 Here is a recommended strategy what to store where:
 
