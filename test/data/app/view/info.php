@@ -9,7 +9,10 @@
 
 <p>Lots of valuable data here
 
-    <a href="/" id="back" aria-label="index"><img src="blank.gif" alt="Back"/></a>
+    <a href="/" id="back" aria-label="index via aria-label"><img src="blank.gif" alt="Back"/></a>
+    <a href="/" title="index via title"><img src="blank.gif" alt="Back"/></a>
+    <a href="/" aria-labelledby="label-span"><img src="blank.gif" alt="Back"/></a>
+    <span id="label-span">index via labelledby</span>
 </p>
 
 <div class="notice"><?php if (isset($notice)) echo $notice; ?></div>
