@@ -1578,11 +1578,10 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` ([string][10] \| [object][11]) element located by CSS|XPath|strict locator.
--   `num`  
+-   `num` [number][15] number of elements.
 -   `sec` [number][15] (optional, `1` by default) time in seconds to wait
     
  
--   `number` [number][15] of elements.
 
 ### waitToHide
 

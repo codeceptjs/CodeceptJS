@@ -1073,13 +1073,21 @@ Returns [Promise][24]&lt;[string][18]> attribute value
 
 ### moveCursorTo
 
-{{> moveCursorTo}}
+Moves cursor to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.
+
+```js
+I.moveCursorTo('.tooltip');
+I.moveCursorTo('#submit', 5,5);
+```
 
 #### Parameters
 
--   `locator`  
--   `offsetX`   
--   `offsetY`   
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `offsetX` [number][21] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][21] (optional, `0` by default) Y-axis offset.
+    
+ 
 
 ### openNewTab
 
@@ -1106,7 +1114,40 @@ I.pressKey(['Control','a']);
 -   `key` ([string][18] \| [array][26]) key or array of keys to press.
     
 
-    {{> \_keys }}To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.```js
+    
+
+
+[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+
+- `'Add'`,
+- `'Alt'`,
+- `'ArrowDown'` or `'Down arrow'`,
+- `'ArrowLeft'` or `'Left arrow'`,
+- `'ArrowRight'` or `'Right arrow'`,
+- `'ArrowUp'` or `'Up arrow'`,
+- `'Backspace'`,
+- `'Command'`,
+- `'Control'`,
+- `'Del'`,
+- `'Divide'`,
+- `'End'`,
+- `'Enter'`,
+- `'Equals'`,
+- `'Escape'`,
+- `'F1 to F12'`,
+- `'Home'`,
+- `'Insert'`,
+- `'Meta'`,
+- `'Multiply'`,
+- `'Numpad 0'` to `'Numpad 9'`,
+- `'Pagedown'` or `'PageDown'`,
+- `'Pageup'` or `'PageUp'`,
+- `'Pause'`,
+- `'Semicolon'`,
+- `'Shift'`,
+- `'Space'`,
+- `'Subtract'`,
+- `'Tab'`.To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.```js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');
@@ -1188,12 +1229,21 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 ### saveScreenshot
 
-{{> saveScreenshot}}
+Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
+
+```js
+I.saveScreenshot('debug.png');
+I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
+```
 
 #### Parameters
 
--   `fileName`  
--   `fullPage`   
+-   `fileName` [string][18] file name to save.
+-   `fullPage` [boolean][27] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+    
+ 
 
 ### scrollPageToBottom
 
@@ -1452,10 +1502,10 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `num`  
--   `number` [number][21] of elements.
+-   `num` [number][21] number of elements.
     
 
+    {{ react}}
 
 ### seeNumberOfVisibleElements
 
@@ -1544,7 +1594,7 @@ I.setCookie({name: 'auth', value: true});
 -   `cookie` [object][19] a cookie object.
     
 Uses Selenium's JSON [cookie
-    format][27].
+    format][28].
 
 ### switchTo
 
@@ -1785,11 +1835,10 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `num`  
+-   `num` [number][21] number of elements.
 -   `sec` [number][21] (optional, `1` by default) time in seconds to wait
     
  
--   `number` [number][21] of elements.
 
 ### waitToHide
 
@@ -1893,4 +1942,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[27]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[28]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

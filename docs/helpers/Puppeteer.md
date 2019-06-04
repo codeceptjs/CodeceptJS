@@ -583,21 +583,14 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### downloadFile
 
-Performs a download file on an element matched by link|button|CSS or XPath.
-File is downloaded by default to output folder.
-If no custom file name is provided, the default name will be used
+This method is depreacted.
 
-```js
-I.downloadFile('td[class="text-right file-link"] a', 'thisIsCustomName');
-```
+Please use `handleDownloads()` instead.
 
 #### Parameters
 
--   `locator` ([string][7] \| [object][5]) clickable link or button located by CSS|XPath locator.
+-   `locator`  
 -   `customName`  
--   `file` [string][7] custom file name.
-    
-
 
 ### dragAndDrop
 
@@ -813,7 +806,29 @@ Returns [Promise][11]&lt;[string][7]> current URL
 
 ### grabDataFromPerformanceTiming
 
-{{> ../webapi/grabDataFromPerformanceTiming }}
+Grab the data from performance timing using Navigation Timing API.
+The returned data will contain following things in ms:
+
+-   responseEnd,
+-   domInteractive,
+-   domContentLoadedEventEnd,
+-   loadEventEnd
+    Resumes test execution, so should be used inside an async function with `await` operator.
+
+```js
+await I.amOnPage('https://example.com');
+let data = await I.grabDataFromPerformanceTiming();
+//Returned data
+{ // all results are in [ms]
+  responseEnd: 23,
+  domInteractive: 44,
+  domContentLoadedEventEnd: 196,
+  loadEventEnd: 241
+}
+```
+
+
+
 
 ### grabHTMLFrom
 
@@ -868,7 +883,16 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### grabPageScrollPosition
 
-{{> grabPageScrollPosition}}
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
+Returns [Promise][11]&lt;[object][5]> scroll position
+
+
 
 ### grabPopupText
 
@@ -945,6 +969,25 @@ Returns [Promise][11]&lt;[string][7]> attribute value
 
 
 
+### handleDownloads
+
+Sets a directory to where save files. Allows to test file downloads.
+Should be used with [FileSystem helper][12] to check that file were downloaded correctly.
+
+By default files are saved to `output/downloads`.
+This directory is cleaned on every `handleDownloads` call, to ensure no old files are kept.
+
+```js
+I.handleDownloads();
+I.click('Download Avatar');
+I.amInPath('output/downloads');
+I.seeFile('avatar.jpg');
+```
+
+#### Parameters
+
+-   `downloadPath` [string][7] change this parameter to set another directory for saving 
+
 ### haveRequestHeaders
 
 Set headers for all next requests
@@ -993,7 +1036,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][12]
+Special keys like 'Enter', 'Control', [etc][13]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -1004,7 +1047,7 @@ I.pressKey(['Control','a']);
 
 #### Parameters
 
--   `key` ([string][7] \| [array][13]) key or array of keys to press.
+-   `key` ([string][7] \| [array][14]) key or array of keys to press.
     
 
 
@@ -1104,7 +1147,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` [string][7] file name to save.
--   `fullPage` [boolean][14] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` [boolean][15] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
 
 
@@ -1364,23 +1407,24 @@ I.seeInTitle('Home Page');
 
 ### seeNumberOfElements
 
-Asserts that an element appears a given number of times in the DOM
+Asserts that an element appears a given number of times in the DOM.
 Element is located by label or name or CSS or XPath.
 
 ```js
 I.seeNumberOfElements('#submitBtn', 1);
 ```
 
+#### Parameters
+
+-   `selector`  
+-   `num` [number][8] number of elements.
+    
 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
 
-
-#### Parameters
-
--   `selector`  
--   `num`  
+-   `locator` ([string][7] \| [object][5]) element located by CSS|XPath|strict locator.
 
 ### seeNumberOfVisibleElements
 
@@ -1451,7 +1495,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` ([string][7] \| [object][5]) field located by label|name|CSS|XPath|strict locator.
--   `option` ([string][7] \| [array][13]) visible text or value of option.
+-   `option` ([string][7] \| [array][14]) visible text or value of option.
     
 
 
@@ -1612,7 +1656,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 -   `fn` ([string][7] \| [function][10]) to be executed in browser context.
--   `argsOrSec` ([array][13] \| [number][8]) (optional, `1` by default) arguments for function or seconds. 
+-   `argsOrSec` ([array][14] \| [number][8]) (optional, `1` by default) arguments for function or seconds. 
 -   `sec` [number][8] (optional, `1` by default) time in seconds to wait
     
  
@@ -1720,7 +1764,7 @@ I.waitForVisible('#popup');
 -   `locator` ([string][7] \| [object][5]) element located by CSS|XPath|strict locator.
 -   `sec` [number][8] (optional, `1` by default) time in seconds to wait
     
-This method accepts [React selectors][15].
+This method accepts [React selectors][16].
 
 ### waitInUrl
 
@@ -1748,7 +1792,7 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` ([string][7] \| [object][5]) element located by CSS|XPath|strict locator.
--   `num`  
+-   `num` [number][8] number of elements.
 -   `sec` [number][8] (optional, `1` by default) time in seconds to wait
     
 
@@ -1757,7 +1801,6 @@ I.waitNumberOfVisibleElements('a', 3);
 
 This action supports [React locators](https://codecept.io/react#locators)
 
--   `number` [number][8] of elements.
 
 ### waitToHide
 
@@ -1830,10 +1873,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[12]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[12]: https://codecept.io/helpers/FileSystem
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[13]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[15]: https://codecept.io/react
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[16]: https://codecept.io/react

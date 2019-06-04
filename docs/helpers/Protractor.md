@@ -729,7 +729,16 @@ Returns [Promise][13]&lt;[number][7]> number of visible elements
 
 ### grabPageScrollPosition
 
-{{> grabPageScrollPosition}}
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
+Returns [Promise][13]&lt;[object][10]> scroll position
+
+
 
 ### grabPopupText
 
@@ -1217,7 +1226,7 @@ I.seeInTitle('Home Page');
 
 ### seeNumberOfElements
 
-asserts that an element appears a given number of times in the DOM
+Asserts that an element appears a given number of times in the DOM.
 Element is located by label or name or CSS or XPath.
 
 ```js
@@ -1227,7 +1236,10 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `selector`  
--   `num`  
+-   `num` [number][7] number of elements.
+    
+
+-   `locator` ([string][9] \| [object][10]) element located by CSS|XPath|strict locator.
 
 ### seeNumberOfVisibleElements
 
@@ -1561,11 +1573,10 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` ([string][9] \| [object][10]) element located by CSS|XPath|strict locator.
--   `num`  
+-   `num` [number][7] number of elements.
 -   `sec` [number][7] (optional, `1` by default) time in seconds to wait
     
  
--   `number` [number][7] of elements.
 
 ### waitToHide
 

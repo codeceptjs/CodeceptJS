@@ -489,7 +489,7 @@ describe('WebDriver', function () {
       .then(() => wd.waitInUrl('/form/complex')));
 
     it('should click by accessibility_id', () => wd.amOnPage('/info')
-      .then(() => wd.click('~index'))
+      .then(() => wd.click('~index via aria-label'))
       .then(() => wd.see('Welcome to test app!')));
   });
 

@@ -484,9 +484,7 @@ Returns [Promise][8]&lt;[string][3]> attribute value
 
 
 
-Returns any Promise<object> Cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object:```js
-I.grabCookie({ secure: true});
-```If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+Returns any Promise<object> Cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ### grabCurrentUrl
 
@@ -921,11 +919,10 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `selector`  
--   `num`  
--   `locator` ([string][3] \| [object][4]) element located by CSS|XPath|strict locator.
--   `number` [number][9] of elements.
+-   `num` [number][9] number of elements.
     
 
+-   `locator` ([string][3] \| [object][4]) element located by CSS|XPath|strict locator.
 
 ### seeNumberOfVisibleElements
 
