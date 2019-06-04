@@ -102,7 +102,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 
 *All actions are listed in [helper reference](http://codecept.io/helpers/Puppeteer/).*
 
-All actions whicn interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
+All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
 ```js
 
