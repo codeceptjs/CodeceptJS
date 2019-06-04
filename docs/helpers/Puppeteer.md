@@ -1416,7 +1416,7 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 #### Parameters
 
--   `selector`  
+-   `locator` ([string][7] \| [object][5]) element located by CSS|XPath|strict locator.
 -   `num` [number][8] number of elements.
     
 
@@ -1424,7 +1424,6 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 This action supports [React locators](https://codecept.io/react#locators)
 
--   `locator` ([string][7] \| [object][5]) element located by CSS|XPath|strict locator.
 
 ### seeNumberOfVisibleElements
 

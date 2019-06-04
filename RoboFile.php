@@ -15,8 +15,6 @@ class RoboFile extends \Robo\Tasks
         $placeholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{> $p }}"; }, $partials);
         $templates = array_map(function($p) { return trim(substr(preg_replace('~^~m', "   * " , file_get_contents("docs/webapi/$p")), 5)) . "\n   * {--end--}"; }, $partials);
 
-        print_r($templates);
-
         $sharedPartials = array_slice(scandir('docs/shared'), 2);
         $sharedPlaceholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{ $p }}"; }, $sharedPartials);
         $sharedTemplates = array_map(function($p) { return "\n\n\n" . file_get_contents("docs/shared/$p"); }, $sharedPartials);

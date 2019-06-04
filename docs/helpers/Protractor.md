@@ -1235,11 +1235,10 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 #### Parameters
 
--   `selector`  
+-   `locator` ([string][9] \| [object][10]) element located by CSS|XPath|strict locator.
 -   `num` [number][7] number of elements.
     
 
--   `locator` ([string][9] \| [object][10]) element located by CSS|XPath|strict locator.
 
 ### seeNumberOfVisibleElements
 

@@ -1505,7 +1505,11 @@ I.seeNumberOfElements('#submitBtn', 1);
 -   `num` [number][21] number of elements.
     
 
-    {{ react}}
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 ### seeNumberOfVisibleElements
 
