@@ -113,4 +113,18 @@ describe('REST', () => {
       });
     });
   });
+
+  describe('_url autocompletion', () => {
+    it('should not prepend base url, when url is absolute', () => {
+      I._url('https://bla.bla/blabla').should.eql('https://bla.bla/blabla');
+    });
+
+    it('should prepend base url, when url is not absolute', () => {
+      I._url('/blabla').should.eql(`${api_url}/blabla`);
+    });
+
+    it('should prepend base url, when url is not absolute, and "http" in request', () => {
+      I._url('/blabla&p=http://bla.bla').should.eql(`${api_url}/blabla&p=http://bla.bla`);
+    });
+  });
 });
