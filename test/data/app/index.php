@@ -41,6 +41,7 @@ $urls = array(
     '/iframe_nested' => 'iframe_nested',
     '/dynamic' => 'dynamic',
     '/timeout' => 'timeout',
+    '/download' => 'download',
 );
 
 glue::stick($urls);

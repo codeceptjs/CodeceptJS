@@ -47,6 +47,7 @@
     "escape-string-regexp": "^1.0.3",
     "figures": "^2.0.0",
     "fn-args": "^4.0.0",
+    "fs-extra": "^8.0.1",
     "gherkin": "^5.1.0",
     "glob": "^6.0.1",
     "inquirer": "^6.3.1",
