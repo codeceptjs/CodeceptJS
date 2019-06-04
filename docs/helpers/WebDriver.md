@@ -7,7 +7,7 @@ title: WebDriver
 
 ## WebDriver
 
-**Extends Helper**
+Extends Helper
 
 WebDriver helper which wraps [webdriverio][1] library to
 manipulate browser using Selenium WebDriver or PhantomJS.
@@ -26,14 +26,14 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `path`:  - path to WebDriver server,
 -   `remoteFileUpload`:  - upload file to remote server when running `attachFile`.
 -   `restart`:  - restart browser between tests.
--   `smartWait`: (optional) **enables [SmartWait][3]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+-   `smartWait`: (optional) enables [SmartWait][3]; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`:  - don't save screenshots on failure.
 -   `fullPageScreenshots`  - make full page screenshots on failure.
 -   `uniqueScreenshotNames`:  - option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState`:  - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`:  - keep cookies between tests when `restart` set to false.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout`:  sets default wait time in _ms_ for all `wait*` functions.
+-   `waitForTimeout`:  sets default wait time in _ms_ for all `wait` functions.
 -   `desiredCapabilities`: Selenium's [desired
     capabilities][4].
 -   `manualStart`:  - do not start browser before a test, start it manually inside a helper
@@ -254,7 +254,7 @@ See [complete reference on webdriver.io][11].
 
 #### TestingBot
 
-> **Recommended**: use official [TestingBot Helper][13].
+> Recommended: use official [TestingBot Helper][13].
 
 Alternatively, TestingBot can be configured via wdio service, which should be installed additionally:
 
@@ -383,8 +383,6 @@ Accepts the active JavaScript native popup window, as created by window.alert|wi
 Don't confuse popups with modal windows, as created by [various
 libraries][17].
 
--   _Appium_: supported only for web testing
-
 ### amOnPage
 
 Opens a web page in a browser. Requires relative or absolute url.
@@ -398,7 +396,9 @@ I.amOnPage('/login'); // opens a login page
 
 #### Parameters
 
--   `url` **[string][18]** url path or global url.-   -   _Appium_: supported only for web testing
+-   `url` [string][18] url path or global url.
+    
+
 
 ### appendField
 
@@ -411,12 +411,15 @@ I.appendField('#myTextField', 'appended');
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator
--   `value` **[string][18]** text value to append.-   
+-   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator
+-   `value` [string][18] text value to append.
+    
+
+    
 
 
 This action supports [React locators](https://codecept.io/react#locators)
--   _Appium_: supported, but it's clear a field before insert in apps
+
 
 ### attachFile
 
@@ -431,14 +434,15 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** field located by label|name|CSS|XPath|strict locator.
--   `pathToFile` **[string][18]** local file path relative to codecept.json config file.-   Appium: not tested
+-   `locator` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
+-   `pathToFile` [string][18] local file path relative to codecept.json config file.
+    
+
+    Appium: not tested
 
 ### cancelPopup
 
 Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
-
--   _Appium_: supported only for web testing
 
 ### checkOption
 
@@ -455,28 +459,44 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **[string][18]** (optional, `null` by default) element located by CSS | XPath | strict locator.-   Appium: not tested 
+-   `field` ([string][18] \| [object][19]) checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` [string][18] (optional, `null` by default) element located by CSS | XPath | strict locator.
+    
+
+    Appium: not tested 
 
 ### clearCookie
 
-{{> clearCookie}}
+Clears a cookie by name,
+if none provided clears all cookies.
 
--   _Appium_: supported only for web testing
+```js
+I.clearCookie();
+I.clearCookie('test');
+```
 
 #### Parameters
 
--   `cookie`  
+-   `cookie` [string][18] (optional, `null` by default) cookie name
+    
+
 
 ### clearField
 
-{{> clearField}}
+Clears a `<textarea>` or text `<input>` element's value.
 
--   _Appium_: supported
+```js
+I.clearField('Email');
+I.clearField('user[email]');
+I.clearField('#email');
+```
 
 #### Parameters
 
 -   `field`  
+-   `editable` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
+    
+
 
 ### click
 
@@ -495,7 +515,7 @@ I.click('Submit');
 // CSS button
 I.click('#form input[type=submit]');
 // XPath
-I.click('//form/*[@type=submit]');
+I.click('//form/[@type=submit]');
 // link in context
 I.click('Logout', '#nav');
 // using strict locator
@@ -504,12 +524,14 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][18] \| [object][19])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.-   
+-   `locator` ([string][18] \| [object][19]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` ([string][18] \| [object][19]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    
+
 
 
 This action supports [React locators](https://codecept.io/react#locators)
--   _Appium_: supported 
+ 
 
 ### closeCurrentTab
 
@@ -523,8 +545,6 @@ I.closeCurrentTab();
 
 Close all tabs except for the current one.
 
--   _Appium_: supported web test
-
 ```js
 I.closeOtherTabs();
 ```
@@ -533,8 +553,7 @@ I.closeOtherTabs();
 
 Set [WebDriver timeouts][20] in realtime.
 
--   _Appium_: supported only for web testing.
-    Timeouts are expected to be passed as object:
+Timeouts are expected to be passed as object:
 
 ```js
 I.defineTimeout({ script: 5000 });
@@ -557,13 +576,13 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
--   `text` **[string][18]** is not present.
--   `context`   
--   `null` **([string][18] \| [object][19])** (optional) element located by CSS|XPath|strict locator in which to perfrom search.-   
+-   `text` [string][18] which is not present.
+-   `context` ([string][18] \| [object][19]) (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+
 
 
 This action supports [React locators](https://codecept.io/react#locators)
--   _Appium_: supported with context in apps
+ 
 
 ### dontSeeCheckboxIsChecked
 
@@ -577,17 +596,24 @@ I.dontSeeeCheckboxIsChedcked('agree'); // located by name
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator.-   Appium: not tested
+-   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+    
+
+    Appium: not tested
 
 ### dontSeeCookie
 
-{{> dontSeeCookie}}
+Checks that cookie with given name does not exist.
 
--   _Appium_: supported only for web testing
+```js
+I.dontSeeCookie('auth'); // no auth cookie
+```
 
 #### Parameters
 
--   `name`  
+-   `name` [string][18] cookie name.
+    
+
 
 ### dontSeeCurrentUrlEquals
 
@@ -601,18 +627,28 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 
 #### Parameters
 
--   `url` **[string][18]** value to check.-   -   _Appium_: supported only for web testing
+-   `url` [string][18] value to check.
+    
+
 
 ### dontSeeElement
 
-{{> dontSeeElement}}
-{{react}}
+Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
--   _Appium_: supported
+```js
+I.dontSeeElement('.modal'); // modal is not shown
+```
 
 #### Parameters
 
--   `locator`  
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|Strict locator.
+    
+
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 ### dontSeeElementInDOM
 
@@ -624,7 +660,9 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by CSS|XPath|Strict locator.-   -   _Appium_: supported
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|Strict locator.
+    
+
 
 ### dontSeeInCurrentUrl
 
@@ -632,7 +670,9 @@ Checks that current url does not contain a provided fragment.
 
 #### Parameters
 
--   `url` **[string][18]** value to check.-   -   _Appium_: supported only for web testing
+-   `url` [string][18] value to check.
+    
+
 
 ### dontSeeInField
 
@@ -646,8 +686,10 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][18]** value to check.-   -   _Appium_: supported only for web testing
+-   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+-   `value` [string][18] value to check.
+    
+
 
 ### dontSeeInSource
 
@@ -660,7 +702,9 @@ I.dontSeeInSource('<!--'); // no comments in source
 #### Parameters
 
 -   `text`  
--   `value` **[string][18]** to check.-   -   _Appium_: supported
+-   `value` [string][18] to check.
+    
+
 
 ### dontSeeInTitle
 
@@ -672,7 +716,9 @@ I.dontSeeInTitle('Error');
 
 #### Parameters
 
--   `text` **[string][18]** value to check.-   -   _Appium_: supported only for web testing
+-   `text` [string][18] value to check.
+    
+
 
 ### doubleClick
 
@@ -688,12 +734,14 @@ I.doubleClick('.btn.edit');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][18] \| [object][19])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.-   
+-   `locator` ([string][18] \| [object][19]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` ([string][18] \| [object][19]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    
+
 
 
 This action supports [React locators](https://codecept.io/react#locators)
--   _Appium_: supported only for web testing 
+ 
 
 ### dragAndDrop
 
@@ -705,8 +753,11 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.
--   `destElement` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.-   Appium: not tested
+-   `srcElement` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `destElement` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+    
+
+    Appium: not tested
 
 ### dragSlider
 
@@ -720,9 +771,10 @@ I.dragSlider('#slider', -70);
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator.
--   `offsetX` **[number][21]** position to drag.
-       \* 
+-   `locator` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+-   `offsetX` [number][21] position to drag.
+    
+ 
 
 ### executeAsyncScript
 
@@ -749,7 +801,7 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][18] \| [function][23])** function to be executed in browser context.
+-   `fn` ([string][18] \| [function][23]) function to be executed in browser context.
 
 ### executeScript
 
@@ -779,7 +831,7 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][18] \| [function][23])** function to be executed in browser context.
+-   `fn` ([string][18] \| [function][23]) function to be executed in browser context.
 
 ### fillField
 
@@ -799,14 +851,21 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][18]** text value to fill.-   {{react}}-   _Appium_: supported
+-   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+-   `value` [string][18] text value to fill.
+    
+
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 An array as a result will be returned if there are more than one matched element.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so should be used inside async with `await` operator.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -814,10 +873,13 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `attr` **[string][18]** attribute name.
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `attr` [string][18] attribute name.
 
-Returns **[Promise][24]&lt;[string][18]>** attribute value-   Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+Returns [Promise][24]&lt;[string][18]> attribute value
+
+
+Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
 
 ### grabBrowserLogs
 
@@ -830,18 +892,28 @@ console.log(JSON.stringify(logs))
 
 ### grabCookie
 
-{{> grabCookie}}
+Gets a cookie object by name.
+If none provided gets all cookies.
 
--   _Appium_: supported only for web testing
+-   Resumes test execution, so should be used inside async with `await` operator.
+
+```js
+let cookie = await I.grabCookie('auth');
+assert(cookie.value, '123456');
+```
 
 #### Parameters
 
--   `name`  
+-   `name`  cookie name. 
+
+Returns [Promise][24]&lt;[string][18]> attribute value
+
+
 
 ### grabCssPropertyFrom
 
 Grab CSS property for given locator
-Resumes test execution, so **should be used inside an async function with `await`** operator.
+Resumes test execution, so should be used inside an async function with `await` operator.
 
 ```js
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
@@ -849,11 +921,12 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `cssProperty` **[string][18]** CSS property name.
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `cssProperty` [string][18] CSS property name.
 
-Returns **[Promise][24]&lt;[string][18]>** CSS value
-   \*
+Returns [Promise][24]&lt;[string][18]> CSS value
+
+
 
 ### grabCurrentUrl
 
@@ -865,13 +938,14 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][24]&lt;[string][18]>** current URL
-   \*
+Returns [Promise][24]&lt;[string][18]> current URL
+
+
 
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside async function with `await`** operator.
+Resumes test execution, so should be used inside async function with `await` operator.
 If more than one element is found - an array of HTMLs returned.
 
 ```js
@@ -882,7 +956,9 @@ let postHTML = await I.grabHTMLFrom('#post');
 
 -   `locator`  element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[string][18]>** HTML code for an element-   -   _Appium_: supported only for web testing
+Returns [Promise][24]&lt;[string][18]> HTML code for an element
+
+
 
 ### grabNumberOfOpenTabs
 
@@ -892,8 +968,9 @@ Grab number of open tabs.
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][24]&lt;[number][21]>** number of open tabs
-   \*
+Returns [Promise][24]&lt;[number][21]> number of open tabs
+
+
 
 ### grabNumberOfVisibleElements
 
@@ -905,14 +982,24 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[number][21]>** number of visible elements
-   \*
+Returns [Promise][24]&lt;[number][21]> number of visible elements
+
+
 
 ### grabPageScrollPosition
 
-{{> grabPageScrollPosition}}
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
+Returns [Promise][24]&lt;[object][19]> scroll position
+
+
 
 ### grabPopupText
 
@@ -931,12 +1018,14 @@ Resumes test execution, so should be used inside an async function.
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][24]&lt;[string][18]>** source code-   -   _Appium_: supported
+Returns [Promise][24]&lt;[string][18]> source code
+
+
 
 ### grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so should be used inside async with `await` operator.
 
 ```js
 let pin = await I.grabTextFrom('#pin');
@@ -948,23 +1037,27 @@ If multiple elements found returns an array of texts.
 
 -   `locator`  element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[string][18]>** attribute value-   -   _Appium_: supported
+Returns [Promise][24]&lt;[string][18]> attribute value
+
+
 
 ### grabTitle
 
 Retrieves a page title and returns it to test.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so should be used inside async with `await` operator.
 
 ```js
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][24]&lt;[string][18]>** title-   -   _Appium_: supported only for web testing
+Returns [Promise][24]&lt;[string][18]> title
+
+
 
 ### grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside async function with `await`** operator.
+Resumes test execution, so should be used inside async function with `await` operator.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -972,15 +1065,15 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** field located by label|name|CSS|XPath|strict locator.
+-   `locator` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[string][18]>** attribute value-   -   _Appium_: supported only for web testing
+Returns [Promise][24]&lt;[string][18]> attribute value
+
+
 
 ### moveCursorTo
 
 {{> moveCursorTo}}
-
--   _Appium_: supported only for web testing
 
 #### Parameters
 
@@ -1010,7 +1103,10 @@ I.pressKey(['Control','a']);
 
 #### Parameters
 
--   `key` **([string][18] \| [array][26])** key or array of keys to press.-   {{> \_keys }}To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.-   _Appium_: supported, but clear field before pressing in apps:```js
+-   `key` ([string][18] \| [array][26]) key or array of keys to press.
+    
+
+    {{> \_keys }}To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.```js
     I.pressKey('Control');
     I.click('#someelement');
     I.pressKey('Control');
@@ -1024,7 +1120,8 @@ Reload the current page.
 I.refreshPage();
 ```
 
-   \*
+
+
 
 ### resizeWindow
 
@@ -1033,8 +1130,11 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][21]** width in pixels or `maximize`.
--   `height` **[number][21]** height in pixels.-   Appium: not tested in web, in apps doesn't work
+-   `width` [number][21] width in pixels or `maximize`.
+-   `height` [number][21] height in pixels.
+    
+
+    Appium: not tested in web, in apps doesn't work
 
 ### rightClick
 
@@ -1051,12 +1151,14 @@ I.rightClick('Click me', '.context');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** clickable element located by CSS|XPath|strict locator.
--   `context` **([string][18] \| [object][19])** (optional, `null` by default) element located by CSS|XPath|strict locator.-   
+-   `locator` ([string][18] \| [object][19]) clickable element located by CSS|XPath|strict locator.
+-   `context` ([string][18] \| [object][19]) (optional, `null` by default) element located by CSS|XPath|strict locator.
+    
+
 
 
 This action supports [React locators](https://codecept.io/react#locators)
--   _Appium_: supported, but in apps works as usual click
+
 
 ### runInWeb
 
@@ -1088,8 +1190,6 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 {{> saveScreenshot}}
 
--   _Appium_: supported
-
 #### Parameters
 
 -   `fileName`  
@@ -1103,7 +1203,8 @@ Scroll page to the bottom.
 I.scrollPageToBottom();
 ```
 
-   \*
+
+
 
 ### scrollPageToTop
 
@@ -1113,7 +1214,8 @@ Scroll page to the top.
 I.scrollPageToTop();
 ```
 
-   \*
+
+
 
 ### scrollTo
 
@@ -1127,9 +1229,11 @@ I.scrollTo('#submit', 5, 5);
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][21]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][21]** (optional, `0` by default) Y-axis offset.-   -   _Appium_: supported only for web testing 
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `offsetX` [number][21] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][21] (optional, `0` by default) Y-axis offset.
+    
+ 
 
 ### see
 
@@ -1144,12 +1248,14 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
--   `text` **[string][18]** expected on page.
--   `context` **([string][18] \| [object][19])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.-   
+-   `text` [string][18] expected on page.
+-   `context` ([string][18] \| [object][19]) (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+    
+
 
 
 This action supports [React locators](https://codecept.io/react#locators)
--   _Appium_: supported with context in apps 
+ 
 
 ### seeAttributesOnElements
 
@@ -1161,9 +1267,10 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.
--   `attributes` **[object][19]** attributes and their values to check.
-       \*
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `attributes` [object][19] attributes and their values to check.
+    
+
 
 ### seeCheckboxIsChecked
 
@@ -1177,17 +1284,24 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator.-   Appium: not tested
+-   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+    
+
+    Appium: not tested
 
 ### seeCookie
 
-{{> seeCookie}}
+Checks that cookie with given name exists.
 
--   _Appium_: supported only for web testing
+```js
+I.seeCookie('Auth');
+```
 
 #### Parameters
 
--   `name`  
+-   `name` [string][18] cookie name.
+    
+
 
 ### seeCssPropertiesOnElements
 
@@ -1199,9 +1313,10 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.
--   `cssProperties` **[object][19]** object with CSS properties and their values to check.
-       \*
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `cssProperties` [object][19] object with CSS properties and their values to check.
+    
+
 
 ### seeCurrentUrlEquals
 
@@ -1216,7 +1331,9 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 #### Parameters
 
--   `url` **[string][18]** value to check.-   -   _Appium_: supported only for web testing
+-   `url` [string][18] value to check.
+    
+
 
 ### seeElement
 
@@ -1229,7 +1346,14 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** located by CSS|XPath|strict locator.-   {{react}}-   _Appium_: supported
+-   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+    
+
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 ### seeElementInDOM
 
@@ -1242,7 +1366,9 @@ I.seeElementInDOM('#modal');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.-   -   _Appium_: supported
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+    
+
 
 ### seeInCurrentUrl
 
@@ -1254,7 +1380,9 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 #### Parameters
 
--   `url` **[string][18]** a fragment to check-   -   _Appium_: supported only for web testing
+-   `url` [string][18] a fragment to check
+    
+
 
 ### seeInField
 
@@ -1270,15 +1398,15 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][18]** value to check.-   -   _Appium_: supported only for web testing
+-   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+-   `value` [string][18] value to check.
+    
+
 
 ### seeInPopup
 
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
 given string.
-
--   _Appium_: supported only for web testing
 
 #### Parameters
 
@@ -1294,7 +1422,9 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 #### Parameters
 
--   `text` **[string][18]** value to check.-   -   _Appium_: supported
+-   `text` [string][18] value to check.
+    
+
 
 ### seeInTitle
 
@@ -1306,7 +1436,9 @@ I.seeInTitle('Home Page');
 
 #### Parameters
 
--   `text` **[string][18]** text value to check.-   -   _Appium_: supported only for web testing
+-   `text` [string][18] text value to check.
+    
+
 
 ### seeNumberOfElements
 
@@ -1319,9 +1451,11 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
 -   `num`  
--   `number` **[number][21]** of elements.-   -   _Appium_: supported
+-   `number` [number][21] of elements.
+    
+
 
 ### seeNumberOfVisibleElements
 
@@ -1334,8 +1468,15 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `num` **[number][21]** number of elements.-   {{react}}
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `num` [number][21] number of elements.
+    
+
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 ### seeTextEquals
 
@@ -1364,25 +1505,46 @@ I.seeTitleEquals('Test title.');
 
 ### selectOption
 
-{{> selectOption}}
+Selects an option in a drop-down select.
+Field is searched by label | name | CSS | XPath.
+Option is selected by visible text or by value.
+
+```js
+I.selectOption('Choose Plan', 'Monthly'); // select by label
+I.selectOption('subscription', 'Monthly'); // match option by text
+I.selectOption('subscription', '0'); // or by value
+I.selectOption('//form/select[@name=account]','Premium');
+I.selectOption('form select[name=account]', 'Premium');
+I.selectOption({css: 'form select[name=account]'}, 'Premium');
+```
+
+Provide an array for the second argument to select multiple options.
+
+```js
+I.selectOption('Which OS do you use?', ['Android', 'iOS']);
+```
 
 #### Parameters
 
--   `select`  
--   `option`  
+-   `select` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
+-   `option` ([string][18] \| [array][26]) visible text or value of option.
+    
+
 
 ### setCookie
 
-{{> setCookie}}
+Sets a cookie.
 
--   _Appium_: supported only for web testing
-
-Uses Selenium's JSON [cookie
-format][27].
+```js
+I.setCookie({name: 'auth', value: true});
+```
 
 #### Parameters
 
--   `cookie`  
+-   `cookie` [object][19] a cookie object.
+    
+Uses Selenium's JSON [cookie
+    format][27].
 
 ### switchTo
 
@@ -1395,7 +1557,9 @@ I.switchTo(); // switch back to main page
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** (optional, `null` by default) element located by CSS|XPath|strict locator.-   -   _Appium_: supported only for web testing
+-   `locator` ([string][18] \| [object][19]) (optional, `null` by default) element located by CSS|XPath|strict locator.
+    
+
 
 ### switchToNextTab
 
@@ -1440,8 +1604,11 @@ I.uncheckOption('agree', '//form');
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **[string][18]** (optional, `null` by default) element located by CSS | XPath | strict locator.-   Appium: not tested 
+-   `field` ([string][18] \| [object][19]) checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` [string][18] (optional, `null` by default) element located by CSS | XPath | strict locator.
+    
+
+    Appium: not tested 
 
 ### wait
 
@@ -1453,7 +1620,9 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][21]** number of second to wait.-   -   _Appium_: supported
+-   `sec` [number][21] number of second to wait.
+    
+
 
 ### waitForDetached
 
@@ -1466,8 +1635,10 @@ I.waitForDetached('#popup');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait-   -   _Appium_: supported 
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitForElement
 
@@ -1481,9 +1652,10 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait
-       \* 
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitForEnabled
 
@@ -1492,8 +1664,10 @@ Element can be located by CSS or XPath.
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `sec`  (optional) time in seconds to wait, 1 by default.-   -   _Appium_: supported
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `sec`  (optional) time in seconds to wait, 1 by default.
+    
+
 
 ### waitForFunction
 
@@ -1512,9 +1686,11 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][18] \| [function][23])** to be executed in browser context.
--   `argsOrSec` **([array][26] \| [number][21])** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait-   -   _Appium_: supported 
+-   `fn` ([string][18] \| [function][23]) to be executed in browser context.
+-   `argsOrSec` ([array][26] \| [number][21]) (optional, `1` by default) arguments for function or seconds. 
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitForInvisible
 
@@ -1527,8 +1703,10 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait-   -   _Appium_: supported 
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitForText
 
@@ -1543,10 +1721,11 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
--   `text` **[string][18]** to wait for.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait 
--   `context` **([string][18] \| [object][19])** (optional) element located by CSS|XPath|strict locator.
-       \* 
+-   `text` [string][18] to wait for.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait 
+-   `context` ([string][18] \| [object][19]) (optional) element located by CSS|XPath|strict locator.
+    
+ 
 
 ### waitForValue
 
@@ -1558,10 +1737,11 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` **([string][18] \| [object][19])** input field.
--   `value` **[string][18]** expected value.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait
-       \* 
+-   `field` ([string][18] \| [object][19]) input field.
+-   `value` [string][18] expected value.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitForVisible
 
@@ -1574,8 +1754,10 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait-   -   _Appium_: supported 
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitInUrl
 
@@ -1587,9 +1769,10 @@ I.waitInUrl('/info', 2);
 
 #### Parameters
 
--   `urlPart` **[string][18]** value to check.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait
-       \* 
+-   `urlPart` [string][18] value to check.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitNumberOfVisibleElements
 
@@ -1601,11 +1784,12 @@ I.waitNumberOfVisibleElements('a', 3);
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
 -   `num`  
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait
-       \* 
--   `number` **[number][21]** of elements.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
+-   `number` [number][21] of elements.
 
 ### waitToHide
 
@@ -1618,8 +1802,10 @@ I.waitToHide('#popup');
 
 #### Parameters
 
--   `locator` **([string][18] \| [object][19])** element located by CSS|XPath|strict locator.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait-   -   _Appium_: supported 
+-   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 ### waitUntil
 
@@ -1632,11 +1818,12 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
--   `fn` **([function][23] \| [string][18])** function which is executed in browser context.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait 
--   `timeoutMsg` **[string][18]** message to show in case of timeout fail.
-       \* 
--   `interval`  (optional) time in seconds between condition checks.-   _Appium_: supported
+-   `fn` ([function][23] \| [string][18]) function which is executed in browser context.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait 
+-   `timeoutMsg` [string][18] message to show in case of timeout fail.
+    
+ 
+-   `interval`   
 
 ### waitUrlEquals
 
@@ -1649,9 +1836,10 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 #### Parameters
 
--   `urlPart` **[string][18]** value to check.
--   `sec` **[number][21]** (optional, `1` by default) time in seconds to wait
-       \* 
+-   `urlPart` [string][18] value to check.
+-   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+    
+ 
 
 [1]: http://webdriver.io/
 

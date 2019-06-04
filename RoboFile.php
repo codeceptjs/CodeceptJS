@@ -13,7 +13,9 @@ class RoboFile extends \Robo\Tasks
 
         $partials = array_slice(scandir('docs/webapi'), 2);
         $placeholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{> $p }}"; }, $partials);
-        $templates = array_map(function($p) { return substr(preg_replace('~^~m', "   * " , file_get_contents("docs/webapi/$p")), 5) . "\n   * " . "   * "; }, $partials);
+        $templates = array_map(function($p) { return trim(substr(preg_replace('~^~m', "   * " , file_get_contents("docs/webapi/$p")), 5)) . "\n   * {--end--}"; }, $partials);
+
+        print_r($templates);
 
         $sharedPartials = array_slice(scandir('docs/shared'), 2);
         $sharedPlaceholders = array_map(function($p) { $p = str_replace('.mustache', '', $p); return "{{ $p }}"; }, $sharedPartials);
@@ -34,15 +36,15 @@ class RoboFile extends \Robo\Tasks
 
             $this->_exec("npx documentation build docs/build/{$info['basename']} -o docs/helpers/{$info['filename']}.md -f md --shallow --markdown-toc=false --sort-order=alpha ");
 
+            // removing badly formatted documentation.js shit
+            $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
+                ->regex(['{{--end--}}','~\(optional, default.*?\)~','~\\*~'])
+                ->to(["\n",'',''])
+                ->run();
+
             $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
                 ->from($sharedPlaceholders)
                 ->to($sharedTemplates)
-                ->run();
-
-            // removing badly formatted documentation.js shit
-            $this->taskReplaceInFile("docs/helpers/{$info['filename']}.md")
-                ->regex('~\(optional, default.*?\)~')
-                ->to('')
                 ->run();
 
             $this->taskWriteToFile("docs/helpers/{$info['filename']}.md")
