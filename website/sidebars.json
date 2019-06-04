@@ -11,7 +11,8 @@
       "puppeteer",
       "angular",
       "nightmare",
-      "visual"
+      "visual",
+      "react"
     ],
     "Mobile Testing": [
       "mobile"
@@ -29,7 +30,7 @@
     ]
   },
   "reference": {
-    "Reference": [
+    "API": [
       "installation",
       "commands",
       "configuration",

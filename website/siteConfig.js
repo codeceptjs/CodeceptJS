@@ -43,10 +43,10 @@ const siteConfig = {
   headerLinks: [
     {doc: 'quickstart', label: 'Quickstart'},
     {doc: 'basics', label: 'Guides'},
-    {page: 'reference', label: 'Reference'},
+    {page: 'reference', label: 'API'},
     {page: 'changelog', label: 'Releases'},
     {page: 'help', label: 'Support'},
-    { href: 'https://codecept.discourse.group', label: 'Forum' },
+    { href: 'https://github.com/Codeception/CodeceptJS', label: 'GitHub' },
 
     // {doc: 'changelog', label: 'Reference'},
     // {blog: true, label: 'Blog'},
