@@ -19,12 +19,12 @@ Generated HTML code may often look like this:
 <span class="jss610"></span></div>
 ```
 
-It's quite common that clickable elements are not actual `a` or `button` elements. This way `I.click('Link');` won't work, as well as `fillField('name', 'value)`. Finding a correct locator for such cases may be almost impossible.
+It's quite common that clickable elements are not actual `a` or `button` elements. This way `I.click('Click Me!');` won't work, as well as `fillField('name', 'value)`. Finding a correct locator for such cases turns to be almost impossible.
 
 In this case test engineers have two options:
 
-* Update JSX files to set element's semantic and rebuild the application
-* Test the application how it is now.
+1. Update JSX files to change output HTML and rebuild the application
+1. Test the application how it is.
 
 We recommend for long-running projects to go with the first option. The better you write your initial HTML the cleaner and less fragile will be your tests. Replace divs with correct HTML elements, add `data-` attributes, add labels, and names to input fields to make all CodeceptJS magic like clicking link by a text to work.
 
@@ -34,7 +34,7 @@ However, if you can't update the code you can go to the second option. In this c
 //*[@id="document"]/div[2]/div/div[2]/div
 ```
 
-use [Locator Builder](https://codecept.io/locators#locator-builder) to build clean semantic locator:
+use [Locator Builder](https://codecept.io/locators#locator-builder) to make clean semantic locator:
 
 ```js
 locate('[role=tab]').withText('Click Me!');
@@ -53,13 +53,15 @@ For React apps a special `react` locator is available. It allows to select an el
 { react: 'Input', state: 'valid'}
 ```
 
-In WebDriver and Puppeteer you can use this locators in any method which requires a locator:
+In WebDriver and Puppeteer you can use React locators in any method where locator is required:
 
 ```js
 I.click({ react: 'Tab', props: { title: 'Click Me!' }});
+I.seeElement({ react: 't', props: { title: 'Clicked' }});
 ```
 
 To find React element names and props in a tree use [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) extension.
 
 > Turn off minifcation for application builds otherwise component names will be uglified as well
 
+React locators work via [resq](https://github.com/baruchvlz/resq) library, which handles React 16 and above.
