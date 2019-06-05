@@ -1,9 +1,11 @@
 {
   "docs": {
     "Quickstart": [
-      "quickstart",
-      "basics",
-      "video",
+      "quickstart"
+    ],
+    "Tutorials": [
+      "books",
+      "videos",
       "examples"
     ],
     "Web Testing": [
@@ -37,8 +39,7 @@
       "plugins",
       "docker",
       "reports",
-      "translation",
-      "community-helpers"
+      "translation"
     ],
     "Driver Helpers": [
       "helpers/WebDriver",
@@ -47,10 +48,11 @@
       "helpers/Nightmare",
       "helpers/Appium"
     ],
-    "Data Helpers": [
+    "Additional Helpers": [
       "helpers/REST",
       "helpers/ApiDataFactory",
-      "helpers/FileSystem"
+      "helpers/FileSystem",
+      "community-helpers"
     ]
   }
 }
