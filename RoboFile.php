@@ -7,7 +7,16 @@
 class RoboFile extends \Robo\Tasks
 {
 
-    function docs()
+    function docs() {
+        $this->docsHelpers();
+        $this->docsPlugins();
+    }
+
+    function docsPlugins() {
+        $this->_exec("npx documentation build lib/plugin/*.js -o docs/plugins.md -f md --shallow --markdown-toc=false --sort-order=alpha ");
+    }
+
+    function docsHelpers()
     {
         $files = scandir('lib/helper');
 
@@ -88,25 +97,47 @@ class RoboFile extends \Robo\Tasks
             ->run();
 
         $this->taskWriteToFile('docs/community-helpers.md')
-        ->line('---')
-        ->line('id: community-helpers')
-        ->line('title: Community Helpers')
-        ->line('---')
-        ->line('')
-        ->line('> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)')
-        ->line('')
-        ->textFromFile('website/wiki/Community-Helpers.md')
-        ->run();
+            ->line('---')
+            ->line('id: community-helpers')
+            ->line('title: Community Helpers')
+            ->line('---')
+            ->line('')
+            ->line('> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)')
+            ->line('')
+            ->textFromFile('website/wiki/Community-Helpers.md')
+            ->run();
 
         $this->taskWriteToFile('docs/examples.md')
-        ->line('---')
-        ->line('id: examples')
-        ->line('title: Examples')
-        ->line('---')
-        ->line('')
-        ->line('> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)')
-        ->textFromFile('website/wiki/Examples.md')
-        ->run();
+            ->line('---')
+            ->line('id: examples')
+            ->line('title: Examples')
+            ->line('---')
+            ->line('')
+            ->line('> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)')
+            ->textFromFile('website/wiki/Examples.md')
+            ->run();
+
+        $this->taskWriteToFile('docs/books.md')
+            ->line('---')
+            ->line('id: books')
+            ->line('title: Books & Posts')
+            ->line('---')
+            ->line('')
+            ->line('> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)')
+            ->textFromFile('website/wiki/Books-&-Posts.md')
+            ->run();
+
+        $this->taskWriteToFile('docs/videos.md')
+            ->line('---')
+            ->line('id: videos')
+            ->line('title: Videos')
+            ->line('---')
+            ->line('')
+            ->line('> Add your own videos to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Videos)')
+            ->textFromFile('website/wiki/Videos.md')
+            ->run();
+
+
     }
 
     function testServer()
