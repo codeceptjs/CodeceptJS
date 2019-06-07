@@ -14,6 +14,14 @@ class RoboFile extends \Robo\Tasks
 
     function docsPlugins() {
         $this->_exec("npx documentation build lib/plugin/*.js -o docs/plugins.md -f md --shallow --markdown-toc=false --sort-order=alpha ");
+        $this->taskWriteToFile("docs/plugins.md")
+            ->line('---')
+            ->line("id: plugins")
+            ->line("title: Plugins")
+            ->line('---')
+            ->line('')
+            ->textFromFile("docs/plugins.md")
+            ->run();
     }
 
     function docsHelpers()
@@ -55,10 +63,10 @@ class RoboFile extends \Robo\Tasks
                 ->run();
 
             $this->taskWriteToFile("docs/helpers/{$info['filename']}.md")
-                ->line('-----')
+                ->line('---')
                 ->line("id: {$info['filename']}")
                 ->line("title: {$info['filename']}")
-                ->line('----')
+                ->line('---')
                 ->line('')
                 ->textFromFile("docs/helpers/{$info['filename']}.md")
                 ->run();

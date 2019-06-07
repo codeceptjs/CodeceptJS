@@ -41,6 +41,9 @@
       "best": {
         "title": "Best Practices"
       },
+      "books": {
+        "title": "Books & Posts"
+      },
       "changelog": {
         "title": "changelog"
       },
@@ -110,6 +113,9 @@
       "locators": {
         "title": "Locators"
       },
+      "mobile-react-native-locators": {
+        "title": "mobile-react-native-locators"
+      },
       "mobile": {
         "title": "Mobile Testing with Appium"
       },
@@ -128,14 +134,17 @@
       "quickstart": {
         "title": "Quickstart"
       },
-      "reporters": {
+      "react": {
+        "title": "Testing React Applications"
+      },
+      "reports": {
         "title": "Reporters"
       },
       "translation": {
         "title": "Translation"
       },
-      "video": {
-        "title": "Tutorial Videos"
+      "videos": {
+        "title": "Videos"
       },
       "visual": {
         "title": "Visual Testing"
@@ -144,19 +153,20 @@
     "links": {
       "Quickstart": "Quickstart",
       "Guides": "Guides",
-      "Reference": "Reference",
+      "API": "API",
       "Releases": "Releases",
       "Support": "Support",
-      "Forum": "Forum"
+      "GitHub": "GitHub"
     },
     "categories": {
       "Quickstart": "Quickstart",
+      "Tutorials": "Tutorials",
       "Web Testing": "Web Testing",
       "Mobile Testing": "Mobile Testing",
       "Organizing Tests": "Organizing Tests",
-      "Reference": "Reference",
+      "API": "API",
       "Driver Helpers": "Driver Helpers",
-      "Data Helpers": "Data Helpers"
+      "Additional Helpers": "Additional Helpers"
     }
   },
   "pages-strings": {
