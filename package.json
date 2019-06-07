@@ -71,6 +71,7 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2",
+    "detox": "^12.11.0",
     "documentation": "^8.1.2",
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
