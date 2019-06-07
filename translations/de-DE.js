@@ -64,6 +64,6 @@ module.exports = {
     sendPutRequest: 'mache einen Put Request',
     sendDeleteRequest: 'mache einen Delete Request',
     sendPostRequest: 'mache einen Post Request',
-    switchTo: 'wechlse in iframe'
+    switchTo: 'wechlse in iframe',
   },
 };
