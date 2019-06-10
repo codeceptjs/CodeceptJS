@@ -694,20 +694,20 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('allow back and forth between handles: #getWindowHandles #getWindowHandle #switchToWindow', () => {
+  describe('allow back and forth between handles: #grabAllWindowHandles #grabCurrentWindowHandle #switchToWindow', () => {
     it('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', function* () {
       yield wd.amOnPage('/');
-      const handleBeforePopup = yield wd.getWindowHandle();
+      const handleBeforePopup = yield wd.grabCurrentWindowHandle();
       const urlBeforePopup = yield wd.grabCurrentUrl();
 
-      const allHandlesBeforePopup = yield wd.getWindowHandles();
+      const allHandlesBeforePopup = yield wd.grabAllWindowHandles();
       allHandlesBeforePopup.length.should.eql(1);
 
       yield wd.executeScript(() => {
         window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400');
       });
 
-      const allHandlesAfterPopup = yield wd.getWindowHandles();
+      const allHandlesAfterPopup = yield wd.grabAllWindowHandles();
       allHandlesAfterPopup.length.should.eql(2);
 
       yield wd.switchToWindow(allHandlesAfterPopup[1]);
@@ -724,8 +724,10 @@ describe('WebDriver', function () {
       urlAfterSwitchBack.should.eql('https://www.w3schools.com/');
       yield wd.closeCurrentTab();
 
-      const allHandlesAfterPopupClosed = yield wd.getWindowHandles();
+      const allHandlesAfterPopupClosed = yield wd.grabAllWindowHandles();
       allHandlesAfterPopupClosed.length.should.eql(1);
+      const currentWindowHandle = yield wd.grabCurrentWindowHandle();
+      currentWindowHandle.should.eql(handleBeforePopup);
     });
   });
 });
