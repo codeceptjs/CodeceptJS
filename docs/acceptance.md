@@ -367,8 +367,7 @@ Also, you can use `within` inside a session but you can't call session from insi
 
 ## Multiple Windows
 
-CodeceptJS allows to use several browser windows inside a test. 
-
+CodeceptJS allows to use several browser windows inside a test. Sometimes we are testing the functionality of websites that we cannot control, such as a closed-source managed package, and there are popups that either remain open for configuring data on the screen, or close as a result of clicking a window. We can use these functions in order to gain more control over which page is being tested with Codecept at any given time. For example:
 
 ```js
 const assert = require('assert');
