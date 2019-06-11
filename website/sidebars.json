@@ -9,6 +9,7 @@
       "examples"
     ],
     "Web Testing": [
+      "basics",
       "acceptance",
       "puppeteer",
       "angular",
