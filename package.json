@@ -60,8 +60,7 @@
     "promise-retry": "^1.1.1",
     "requireg": "^0.1.8",
     "resq": "^1.5.0",
-    "sprintf-js": "^1.1.1",
-    "testcafe": "^1.2.1"
+    "sprintf-js": "^1.1.1"
   },
   "devDependencies": {
     "@types/inquirer": "^0.0.35",
@@ -87,6 +86,7 @@
     "rosie": "^1.6.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.14.0",
+    "testcafe": "^1.2.1",
     "typescript": "^2.9.2",
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^5.8.0",
