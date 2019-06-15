@@ -35,6 +35,10 @@ describe('Testcafe', function () {
     return I._beforeSuite();
   });
 
+  after(() => {
+    return I._finishTest();
+  });
+
   beforeEach(() => {
     webApiTests.init({
       I, siteUrl,
@@ -639,6 +643,10 @@ describe('Testcafe (remote browser)', function () {
     I = new Testcafe(helperConfig);
     I._init();
     return I._beforeSuite();
+  });
+
+  after(() => {
+    return I._finishTest();
   });
 
   beforeEach(async () => {
