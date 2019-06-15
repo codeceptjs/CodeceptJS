@@ -115,7 +115,7 @@ describe('Testcafe', function () {
     });
   });
 
-  describe('#waitNumberOfVisibleElements', () => {
+  describe.only('#waitNumberOfVisibleElements', () => {
     it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
       .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
       .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
