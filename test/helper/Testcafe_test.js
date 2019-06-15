@@ -85,7 +85,7 @@ describe('Testcafe', function () {
 
   // webApiTests.tests();
 
-  describe.only('#waitForFunction', () => {
+  describe('#waitForFunction', () => {
     it('should wait for function returns true', () => {
       return I.amOnPage('/form/wait_js')
         .then(() => I.waitForFunction(() => window.__waitJs, 3));
