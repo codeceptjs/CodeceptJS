@@ -24,7 +24,7 @@ module.exports.tests = function () {
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
-  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
+  describe.only('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
     it('should check for url fragment', function* () {
       yield I.amOnPage('/form/checkbox');
       yield I.seeInCurrentUrl('/form');

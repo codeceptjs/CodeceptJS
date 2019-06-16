@@ -21,6 +21,7 @@ describe('Testcafe', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(__dirname, '/../data/output');
 
     I = new Testcafe({
       url: siteUrl,
@@ -83,7 +84,7 @@ describe('Testcafe', function () {
   //   });
   // });
 
-  // webApiTests.tests();
+  webApiTests.tests();
 
   describe('#waitForFunction', () => {
     it('should wait for function returns true', () => {
@@ -115,7 +116,7 @@ describe('Testcafe', function () {
     });
   });
 
-  describe.only('#waitNumberOfVisibleElements', () => {
+  describe('#waitNumberOfVisibleElements', () => {
     it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
       .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
       .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
