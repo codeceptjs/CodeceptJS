@@ -24,7 +24,7 @@ module.exports.tests = function () {
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
-  describe.only('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
+  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
     it('should check for url fragment', function* () {
       yield I.amOnPage('/form/checkbox');
       yield I.seeInCurrentUrl('/form');
@@ -50,7 +50,7 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#waitInUrl, #waitUrlEquals', () => {
+  describe.only('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
       if (isHelper('Nightmare')) return;
       try {
