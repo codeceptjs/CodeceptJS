@@ -50,7 +50,7 @@ module.exports.tests = function () {
     });
   });
 
-  describe.only('#waitInUrl, #waitUrlEquals', () => {
+  describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
       if (isHelper('Nightmare')) return;
       try {
@@ -76,7 +76,7 @@ module.exports.tests = function () {
   });
 
   describe('see text : #see', () => {
-    it('should check text on site', function* () {
+    it.only('should check text on site', function* () {
       yield I.amOnPage('/');
       yield I.see('Welcome to test app!');
       yield I.see('A wise man said: "debug!"');
