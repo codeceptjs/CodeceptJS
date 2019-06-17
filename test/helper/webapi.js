@@ -76,7 +76,7 @@ module.exports.tests = function () {
   });
 
   describe('see text : #see', () => {
-    it.only('should check text on site', function* () {
+    it('should check text on site', function* () {
       yield I.amOnPage('/');
       yield I.see('Welcome to test app!');
       yield I.see('A wise man said: "debug!"');
@@ -218,7 +218,7 @@ module.exports.tests = function () {
   });
 
   describe('#doubleClick', () => {
-    it('it should doubleClick', function* () {
+    it.only('it should doubleClick', function* () {
       yield I.amOnPage('/form/doubleclick');
       yield I.dontSee('Done');
       yield I.doubleClick('#block');
