@@ -18,6 +18,14 @@ To run codeceptjs from this repo use:
 node bin/codecept.js
 ```
 
+To run examples:
+
+
+```
+node bin/codecept.js run -c examples
+```
+
+
 Depending on a type of a change you should do the following.
 
 ## Helpers
