@@ -285,6 +285,26 @@ describe('CodeceptJS Runner', () => {
     });
   });
 
+  it('should run async bootstrap function without args', (done) => {
+    exec(codecept_run_config('codecept.bootstrap.func.withoutargs.js'), (err, stdout, stderr) => {
+      console.log(stdout);
+      stdout.should.include('Filesystem'); // feature
+      stdout.should.include('I am bootstrap');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should raise exception and exit with code 1 when run async bootstrap as object', (done) => {
+    exec(codecept_run_config('codecept.failed.bootstrap.obj.js'), (err, stdout, stderr) => {
+      assert.equal(err.code, 1);
+      stdout.should.include('Error from async bootstrap');
+      stdout.should.not.include('✔ check current dir @slow @important in 2ms');
+      assert(err);
+      done();
+    });
+  });
+
   it('should run dynamic config', (done) => {
     exec(codecept_run_config('config.js'), (err, stdout, stderr) => {
       stdout.should.include('Filesystem'); // feature
