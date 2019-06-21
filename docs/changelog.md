@@ -16,7 +16,7 @@
 * [Puppeteer] Fixed `UnhandledPromiseRejectionWarning: "Execution context was destroyed...` by @adrielcodeco
 * [WebDriver] Keep browser window dimensions when starting a new session by @spiroid
 * Replace Ghekrin plceholders with values in files that combine a scenerio outline and table by @medtoure18.
-* Added Documentation to [locate elements in React Native](https://codecept.io/react-native-locators) apps. By @DimGun.
+* Added Documentation to [locate elements in React Native](https://codecept.io/mobile-react-native-locators) apps. By @DimGun.
 * Adding optional `path` parameter to `bdd:snippets` command to append snippets to a specific file. By @cthorsen31.
 * Added optional `output` parameter to `def` command by @LukoyanovE.
 * [Puppeteer] Added `grabDataFromPerformanceTiming` by @PeterNgTr.
