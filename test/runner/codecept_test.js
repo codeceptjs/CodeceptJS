@@ -306,6 +306,18 @@ describe('CodeceptJS Runner', () => {
 
   it('should raise exception and exit with code 1 when run async bootstrap and teardown', (done) => {
     exec(codecept_run_config('codecept.failed.invalid.require.func.js'), (err, stdout, stderr) => {
+      assert.equal(err.code, 1);
+      stdout.should.include('Cannot find module \'invalidRequire\'');
+      stdout.should.not.include('✔ check current dir @slow @important in 2ms');
+      stdout.should.include('I am teardown');
+      assert(err);
+      done();
+    });
+  });
+
+  it('should raise exception and exit with code 1 when run async bootstrap and teardown with done', (done) => {
+    exec(codecept_run_config('codecept.failed.tearandboot.func.js'), (err, stdout, stderr) => {
+      assert.equal(err.code, 1);
       stdout.should.include('Cannot find module \'invalidRequire\'');
       stdout.should.not.include('✔ check current dir @slow @important in 2ms');
       stdout.should.include('I am teardown');
