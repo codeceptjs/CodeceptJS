@@ -252,7 +252,7 @@ module.exports.tests = function () {
   });
 
 
-  describe.only('#checkOption', () => {
+  describe('#checkOption', () => {
     it('should check option by css', function* () {
       yield I.amOnPage('/form/checkbox');
       yield I.checkOption('#checkin');
@@ -287,6 +287,7 @@ module.exports.tests = function () {
     // TODO Having problems with functional style selectors in testcafe
     // cannot do Selector(css).find(elementByXPath(xpath))
     // testcafe always says "xpath is not defined"
+    // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
     it.skip('should check option by context', function* () {
       yield I.amOnPage('/form/example1');
       yield I.checkOption('Remember me next time', '.rememberMe');
@@ -295,7 +296,7 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#uncheckOption', () => {
+  describe.only('#uncheckOption', () => {
     it('should uncheck option that is currently checked', async () => {
       await I.amOnPage('/info');
       await I.uncheckOption('interesting');
