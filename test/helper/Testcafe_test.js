@@ -27,7 +27,7 @@ describe('Testcafe', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: true,
-      browser: 'firefox',
+      browser: 'chrome',
       waitForTimeout: 5000,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
