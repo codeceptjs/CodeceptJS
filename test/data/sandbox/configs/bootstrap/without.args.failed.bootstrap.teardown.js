@@ -1,18 +1,17 @@
 exports.config = {
-  tests: './invalid_require.test.js',
+  tests: './invalid_require_test.js',
   timeout: 10000,
   output: './output',
   helpers: {
     FileSystem: {},
   },
   include: {},
-  bootstrap: async (done) => {
+  bootstrap: async () => {
     console.log('I am bootstrap');
-    done();
+    throw new Error('Error from async bootstrap');
   },
-  teardown: (done) => {
+  teardown: () => {
     console.log('I am teardown');
-    done();
   },
   mocha: {},
   name: 'sandbox',

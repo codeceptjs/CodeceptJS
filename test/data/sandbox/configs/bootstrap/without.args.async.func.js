@@ -1,5 +1,5 @@
 exports.config = {
-  tests: './*_test.js',
+  tests: './fs_test.js',
   timeout: 10000,
   output: './output',
   helpers: {

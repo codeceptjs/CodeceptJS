@@ -1,14 +1,14 @@
 exports.config = {
-  tests: './*_test.js',
+  tests: './fs_test.js',
   timeout: 10000,
   output: './output',
   helpers: {
     FileSystem: {},
   },
   include: {},
-  bootstrap: async () => {
+  bootstrap: async (done) => {
     console.log('I am bootstrap');
-    throw new Error('Error from async bootstrap');
+    done();
   },
   mocha: {},
   name: 'sandbox',
