@@ -9,7 +9,7 @@ const codecept_run_config = (config, grep) => `${codecept_run} --config ${codece
 const config_run_override = (config, override) => `${codecept_run} --config ${codecept_dir}/${config} --override '${JSON.stringify(override)}'`;
 
 
-describe.only('CodeceptJS Bootstrap and Teardown', () => {
+describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
   it('should run bootstrap', (done) => {
     exec(codecept_run_config('sync.json', '@important'), (err, stdout, stderr) => {
