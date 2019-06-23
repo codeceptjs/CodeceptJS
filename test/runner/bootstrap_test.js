@@ -179,7 +179,7 @@ describe.only('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   // with teardown and fail bootstrap - teardown not call
-  it('should fail with code 1 when async bootstrap function with args failed', (done) => {
+  it('should fail with code 1 when async bootstrap with args failed and not call teardown', (done) => {
     exec(codecept_run_config('with.args.failed.bootstrap.teardown.js'), (err, stdout, stderr) => {
       assert(err);
       assert.equal(err.code, 1);
@@ -190,38 +190,13 @@ describe.only('CodeceptJS Bootstrap and Teardown', () => {
     });
   });
 
-  it.only('should fail with code 1 when async bootstrap function without args failed', (done) => {
+  it('should fail with code 1 when async bootstrap without args failed and not call teardown', (done) => {
     exec(codecept_run_config('without.args.failed.bootstrap.teardown.js'), (err, stdout, stderr) => {
-      console.log(stdout);
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Error from async bootstrap');
       stdout.should.not.include('✔ check current dir @slow @important in 2ms');
       stdout.should.not.include('I am teardown');
-      done();
-    });
-  });
-
-
-  it('should raise exception and exit with code 1 when run async bootstrap and teardown', (done) => {
-    exec(codecept_run_config('without.args.bootstrap.teardown'), (err, stdout, stderr) => {
-      assert.equal(err.code, 1);
-      stdout.should.include('Cannot find module \'invalidRequire\'');
-      stdout.should.not.include('✔ check current dir @slow @important in 2ms');
-      stdout.should.include('I am teardown');
-      assert(err);
-      done();
-    });
-  });
-
-  // bootstrap and teardown
-  it('should raise exception and exit with code 1 when run async bootstrap and teardown with done', (done) => {
-    exec(codecept_run_config('with.args.bootstrap.teardown'), (err, stdout, stderr) => {
-      assert.equal(err.code, 1);
-      stdout.should.include('Cannot find module \'invalidRequire\'');
-      stdout.should.not.include('✔ check current dir @slow @important in 2ms');
-      stdout.should.include('I am teardown');
-      assert(err);
       done();
     });
   });

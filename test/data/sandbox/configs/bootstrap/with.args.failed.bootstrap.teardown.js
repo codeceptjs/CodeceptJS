@@ -1,5 +1,5 @@
 exports.config = {
-  tests: './invalid_require_test.js',
+  tests: './fs_test.js',
   timeout: 10000,
   output: './output',
   helpers: {

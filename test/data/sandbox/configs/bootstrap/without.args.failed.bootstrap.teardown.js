@@ -1,5 +1,5 @@
 exports.config = {
-  tests: './invalid_require_test.js',
+  tests: './fs_test.js',
   timeout: 10000,
   output: './output',
   helpers: {
@@ -10,7 +10,7 @@ exports.config = {
     console.log('I am bootstrap');
     throw new Error('Error from async bootstrap');
   },
-  teardown: () => {
+  teardown: async () => {
     console.log('I am teardown');
   },
   mocha: {},
