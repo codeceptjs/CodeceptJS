@@ -201,4 +201,3 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
     });
   });
 });
-
