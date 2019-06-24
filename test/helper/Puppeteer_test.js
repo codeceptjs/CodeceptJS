@@ -12,6 +12,7 @@ const formContents = require('../../lib/utils').test.submittedData(path.join(__d
 const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
+const axios = require('axios');
 
 let I;
 let browser;
@@ -274,6 +275,22 @@ describe('Puppeteer', function () {
   describe('#seeNumberOfElements', () => {
     it('should return 1 as count', () => I.amOnPage('/')
       .then(() => I.seeNumberOfElements('#area1', 1)));
+  });
+
+  describe('#startMocking, #mock', () => {
+    it('should throw error if mock is used before startMocking', () => {
+      I.mock('get', '/', 200).catch((e) => {
+        e.message.should.include('Please start Mocking before using mock');
+      });
+    });
+
+    it.only('should be able to mock request with 200', async () => {
+      await I.startMocking();
+      await I.mock('get', '/users', 200);
+
+      const { status } = await axios.get('/users');
+      assert.equal(status, 200);
+    });
   });
 
   describe('#switchTo', () => {
