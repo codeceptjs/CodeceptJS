@@ -861,6 +861,15 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 This action supports [React locators](https://codecept.io/react#locators)
 
 
+### grabAllWindowHandles
+
+Get all Window Handles.
+Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
+
+```js
+const windows = await I.grabAllWindowHandles();
+```
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -941,6 +950,15 @@ console.log(`Current URL is [${url}]`);
 Returns [Promise][24]&lt;[string][18]> current URL
 
 
+
+### grabCurrentWindowHandle
+
+Get the current Window Handle.
+Useful for referencing it when calling `I.switchToWindow(handle)`
+
+```js
+const window = await I.grabCurrentWindowHandle();
+```
 
 ### grabHTMLFrom
 
@@ -1642,6 +1660,24 @@ I.switchToPreviousTab(2);
 
 -   `num`  (optional) number of tabs to switch backward, default: 1.
 -   `sec`  (optional) time in seconds to wait.
+
+### switchToWindow
+
+Switch to the window with a specified handle.
+
+```js
+const windows = await I.grabAllWindowHandles();
+// ... do something
+await I.switchToWindow( windows[0] );
+
+const window = await.grabCurrentWindowHandle();
+// ... do something
+await I.switchToWindow( window );
+```
+
+#### Parameters
+
+-   `window`  
 
 ### uncheckOption
 
