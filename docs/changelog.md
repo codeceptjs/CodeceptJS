@@ -1,3 +1,17 @@
+## 2.1.5
+
+* **EXPERIMENTAL** [Wix Detox support](https://github.com/Codeception/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
+* Saving successful commands inside interactive pause into `_output/cli-history` file. By @hubidu
+* Fixed hanging error handler inside scenario. See [#1721](https://github.com/Codeception/CodeceptJS/pull/1721) by @haily-lgc.
+* Fixed by @Vorobeyko: tests did not fail when an exception was raised in async bootstrap.
+* [WebDriver] Added window control methods by @emmonspired
+  * `grabAllWindowHandles` returns all window handles
+  * `grabCurrentWindowHandle` returns current window handle
+  * `switchToWindow` switched to window by its handle
+* [Appium] Fixed using `host` as configuration by @trinhpham
+* Fixed `run-multiple` command when `tests` config option is undefined (in Gherkin scenarios). By @gkushang.
+* German translation introduced by @hubidu
+
 ## 2.1.4
 
 * [WebDriver][Puppeteer][Protractor][Nightmare] A11y locator support introduced by @Holorium. Clickable elements as well as fields can be located by following attributes:
