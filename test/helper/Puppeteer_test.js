@@ -288,8 +288,11 @@ describe('Puppeteer', function () {
       await I.startMocking();
       await I.mock('get', '/users', 200);
 
-      const { status } = await axios.get('/users');
-      assert.equal(status, 200);
+      // const { status } = await axios.get('/users');
+      // assert.equal(status, 200);
+
+
+      // something that triggers puppeteer for API call to '/users'.
     });
   });
 
