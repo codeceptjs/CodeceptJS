@@ -277,25 +277,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeNumberOfElements('#area1', 1)));
   });
 
-  describe('#startMocking, #mock', () => {
-    it('should throw error if mock is used before startMocking', () => {
-      I.mock('get', '/', 200).catch((e) => {
-        e.message.should.include('Please start Mocking before using mock');
-      });
-    });
-
-    it.only('should be able to mock request with 200', async () => {
-      await I.startMocking();
-      await I.mock('get', '/users', 200);
-
-      // const { status } = await axios.get('/users');
-      // assert.equal(status, 200);
-
-
-      // something that triggers puppeteer for API call to '/users'.
-    });
-  });
-
   describe('#switchTo', () => {
     it('should switch reference to iframe content', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('[name="content"]'))
