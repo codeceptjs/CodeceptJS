@@ -1,6 +1,6 @@
 # Puppeteer-firefox
 
-Now you could use Puppeteer for Firefox (min version: Firefox/63.0.4)
+Now you can use Puppeteer for Firefox (min version: Firefox/63.0.4)
 
 [Repository](https://github.com/GoogleChrome/puppeteer/tree/master/experimental/puppeteer-firefox)
 
