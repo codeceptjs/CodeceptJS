@@ -28,11 +28,13 @@
 <url> <loc>https://codecept.io/community-helpers</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/community-helpers" /> </url>
 <url> <loc>https://codecept.io/configuration</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/configuration" /> </url>
 <url> <loc>https://codecept.io/data</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/data" /> </url>
+<url> <loc>https://codecept.io/detox</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/detox" /> </url>
 <url> <loc>https://codecept.io/docker</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/docker" /> </url>
 <url> <loc>https://codecept.io/examples</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/examples" /> </url>
 <url> <loc>https://codecept.io/helpers</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers" /> </url>
 <url> <loc>https://codecept.io/helpers/ApiDataFactory</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/ApiDataFactory" /> </url>
 <url> <loc>https://codecept.io/helpers/Appium</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Appium" /> </url>
+<url> <loc>https://codecept.io/helpers/Detox</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Detox" /> </url>
 <url> <loc>https://codecept.io/helpers/FileSystem</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/FileSystem" /> </url>
 <url> <loc>https://codecept.io/helpers/Mochawesome</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Mochawesome" /> </url>
 <url> <loc>https://codecept.io/helpers/Nightmare</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Nightmare" /> </url>
