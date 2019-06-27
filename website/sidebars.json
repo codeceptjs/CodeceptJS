@@ -18,7 +18,8 @@
       "react"
     ],
     "Mobile Testing": [
-      "mobile"
+      "mobile",
+      "detox"
     ],
     "Organizing Tests": [
       "best",
@@ -47,7 +48,8 @@
       "helpers/Puppeteer",
       "helpers/Protractor",
       "helpers/Nightmare",
-      "helpers/Appium"
+      "helpers/Appium",
+      "helpers/Detox"
     ],
     "Additional Helpers": [
       "helpers/REST",
