@@ -34,5 +34,7 @@ Please **add your own** by editing this page.
 ## Reporters
 * [codeceptjs-rphelper](https://www.npmjs.com/package/codeceptjs-rphelper) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
 
+## Page Object Code Generator
+* comming soon
 ## Other
 

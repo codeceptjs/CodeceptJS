@@ -3,6 +3,8 @@ id: detox
 title: Testing React Native Apps with CodeceptJS & Detox
 ---
 
+> Warning! Detox support in CodeceptJS is experiments. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/Codeception/detox-helper).
+
 Automated mobile testing can be slow, hard, and ineffective. The price of it goes high, if we take into account fragility of applications, slowness of emulators, and the complexity of debug. [Appium](https://codecept.io/mobile) helps writing mobile tests but not all apps can be tested effectively with it. That's why you should consider using an alternative approach.
 
 Meet [Detox](https://github.com/wix/Detox) - grey-box testing solution for mobile testing by Wix.

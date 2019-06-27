@@ -9,25 +9,26 @@ title: Detox
 
 **Extends Helper**
 
-This is a wrapper on top of [Detox][1] library by Wix aimied to unify testing experience for CodeceptJS framework.
+This is a wrapper on top of [Detox][1] library, aimied to unify testing experience for CodeceptJS framework.
 Detox provides a grey box testing for mobile applications, playing especially good for React Native apps.
 
 Detox plays quite differently from Appium. To establish detox testing you need to build a mobile application in a special way to inject Detox code.
-This why Detox is grey box testing, so you need an access to application source code, and a way to build and execute it on emulator.
+This why **Detox is grey box testing** solution, so you need an access to application source code, and a way to build and execute it on emulator.
 
 Comparing to Appium, Detox runs faster and more stable but requires an additional setup for build.
 
 ### Setup
 
-To install and condifure Detox [see the official guide for iOS][2] and [Android][3]
+1.  [Install and configure Detox for iOS][2] and [Android][3]
+2.  [Build an application][4] using `detox build` command.
+3.  Install [CodeceptJS][5] and detox-helper: 
 
-After you performed all steps required to set up Detox by itself you are ready to configure this helper. Install it via npm:
 
     npm i @codeceptjs/detox-helper --save
 
 Detox configuration is required in `package.json` under `detox` section.
 
-Example:
+If you completed step 1 and step 2 you should have a configuration similar this:
 
 ```js
  "detox": {
@@ -44,14 +45,16 @@ Example:
 
 ### Configuration
 
+Besides Detox configuration, CodeceptJS should also be configured to use Detox.
+
 In `codecept.conf.js` enable Detox helper:
 
 ```js
 helpers: {
    Detox: {
      require: '@codeceptjs/detox',
-     configuration: 'ios.sim.debug',
-   }
+     configuration: '<detox-configuration-name>', 
+   }   
 }
 ```
 
@@ -61,6 +64,8 @@ Options:
 
 -   `configuration` - a detox configuration name. Required.
 -   `reloadReactNative` - should be enabled for React Native applications.
+-   `reuse` - reuse application for tests. By default, Detox reinstalls and relaunches app.
+-   `registerGlobals` - (default: true) Register Detox helper functions `by`, `element`, `expect`, `waitFor` globally.
 
 ### Parameters
 
@@ -77,8 +82,8 @@ I.appendField('name', 'davert');
 
 #### Parameters
 
--   `field` **([string][4] \| [object][5])** 
--   `value` **[string][4]** 
+-   `field` **([string][6] \| [object][7])** 
+-   `value` **[string][6]** 
 
 ### clearField
 
@@ -91,16 +96,16 @@ I.clearField('~name');
 
 #### Parameters
 
--   `field` **([string][4] \| [object][5])** an input element to clear
+-   `field` **([string][6] \| [object][7])** an input element to clear
 
 ### click
 
-Clicks on an element.
+Clicks on an element. 
 Element can be located by its text or id or accessibility id
 
 The second parameter is a context (id | type | accessibility id) to narrow the search.
 
-Same as [tap][6]
+Same as [tap][8]
 
 ```js
 I.click('Login'); // locate by text
@@ -112,8 +117,8 @@ I.click({ ios: 'Save', android: 'SAVE' }, '#main'); // different texts on iOS an
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
--   `context` **([string][4] \| [object][5])**  (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** 
+-   `context` **([string][6] \| [object][7])**  (optional, default `null`)
 
 ### clickAtPoint
 
@@ -127,7 +132,7 @@ I.clickAtPoint('~save', 10, 10); // locate by accessibility id
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
+-   `locator` **([string][6] \| [object][7])** 
 -   `x` **int** horizontal offset (optional, default `0`)
 -   `y` **int** vertical offset (optional, default `0`)
 
@@ -144,8 +149,8 @@ I.dontSee('Record deleted', '~message');
 
 #### Parameters
 
--   `text` **[string][4]** to check invisibility
--   `context` **([string][4] \| [object][5])** element in which to search for text (optional, default `null`)
+-   `text` **[string][6]** to check invisibility
+-   `context` **([string][6] \| [object][7])** element in which to search for text (optional, default `null`)
 
 ### dontSeeElement
 
@@ -159,8 +164,8 @@ I.dontSeeElement('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** element to locate
--   `context` **([string][4] \| [object][5])** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### dontSeeElementExists
 
@@ -174,8 +179,8 @@ I.dontSeeElementExist('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** element to locate
--   `context` **([string][4] \| [object][5])** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### fillField
 
@@ -190,8 +195,8 @@ I.fillField({ android: 'NAME', ios: 'name' }, 'davert');
 
 #### Parameters
 
--   `field` **([string][4] \| [object][5])** an input element to fill in
--   `value` **[string][4]** value to fill
+-   `field` **([string][6] \| [object][7])** an input element to fill in
+-   `value` **[string][6]** value to fill
 
 ### goBack
 
@@ -212,7 +217,7 @@ I.installApp();
 
 ### launchApp
 
-Launches an application. If application instance already exists, use [relaunchApp][7].
+Launches an application. If application instance already exists, use [relaunchApp][9].
 
 ```js
 I.launchApp();
@@ -230,9 +235,9 @@ I.longPress('Update', 2, '#menu'); // locate by text inside #menu, hold for 2 se
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** element to locate
+-   `locator` **([string][6] \| [object][7])** element to locate
 -   `sec` **num** number of seconds to hold tap
--   `context` **([string][4] \| [object][5])** context element (optional, default `null`)
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### multiTap
 
@@ -251,9 +256,9 @@ I.multiTap('Update', 2, '#menu'); // locate by id
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** element to locate
+-   `locator` **([string][6] \| [object][7])** element to locate
 -   `num` **int** number of taps
--   `context` **([string][4] \| [object][5])** context element (optional, default `null`)
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### relaunchApp
 
@@ -293,6 +298,19 @@ I.runOnIOS(() => {
 
 -   `fn`  a function which will be executed on iOS
 
+### saveScreenshot
+
+Saves a screenshot to the output dir
+
+```js
+I.saveScreenshot('main-window.png');
+```
+
+#### Parameters
+
+-   `name`  
+-   `string`  name
+
 ### scrollDown
 
 Scrolls to the bottom of an element.
@@ -303,7 +321,7 @@ I.scrollDown('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### scrollLeft
 
@@ -315,7 +333,7 @@ I.scrollLeft('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### scrollRight
 
@@ -327,7 +345,7 @@ I.scrollRight('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### scrollUp
 
@@ -339,7 +357,7 @@ I.scrollUp('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### see
 
@@ -354,8 +372,8 @@ I.see('Record deleted', '~message');
 
 #### Parameters
 
--   `text` **[string][4]** to check visibility
--   `context` **([string][4] \| [object][5])** element inside which to search for text (optional, default `null`)
+-   `text` **[string][6]** to check visibility
+-   `context` **([string][6] \| [object][7])** element inside which to search for text (optional, default `null`)
 
 ### seeElement
 
@@ -369,8 +387,8 @@ I.seeElement('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** element to locate
--   `context` **([string][4] \| [object][5])** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### seeElementExists
 
@@ -384,8 +402,8 @@ I.seeElementExists('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** element to locate
--   `context` **([string][4] \| [object][5])** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### setLandscapeOrientation
 
@@ -422,8 +440,8 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element on which to perform swipe
--   `speed` **[string][4]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
+-   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### swipeLeft
 
@@ -436,8 +454,8 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element on which to perform swipe
--   `speed` **[string][4]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
+-   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### swipeRight
 
@@ -450,8 +468,8 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element on which to perform swipe
--   `speed` **[string][4]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
+-   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### swipeUp
 
@@ -464,17 +482,17 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element on which to perform swipe
--   `speed` **[string][4]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
+-   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### tap
 
-Taps on an element.
+Taps on an element. 
 Element can be located by its text or id or accessibility id.
 
 The second parameter is a context element to narrow the search.
 
-Same as [click][8]
+Same as [click][10]
 
 ```js
 I.tap('Login'); // locate by text
@@ -486,8 +504,8 @@ I.tap({ ios: 'Save', android: 'SAVE' }, '#main'); // different texts on iOS and 
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** 
--   `context` **([string][4] \| [object][5])**  (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** 
+-   `context` **([string][6] \| [object][7])**  (optional, default `null`)
 
 ### wait
 
@@ -511,7 +529,7 @@ I.waitForElement('#message', 1); // wait for 1 second
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element to wait for
+-   `locator` **([string][6] \| [object][7])** an element to wait for
 -   `sec` **int** number of seconds to wait, 5 by default (optional, default `5`)
 
 ### waitForElementVisible
@@ -524,7 +542,7 @@ I.waitForElementVisible('#message', 1); // wait for 1 second
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element to wait for
+-   `locator` **([string][6] \| [object][7])** an element to wait for
 -   `sec` **int** number of seconds to wait (optional, default `5`)
 
 ### waitToHide
@@ -537,7 +555,7 @@ I.waitToHide('#message', 2); // wait for 2 seconds
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][5])** an element to wait for
+-   `locator` **([string][6] \| [object][7])** an element to wait for
 -   `sec` **int** number of seconds to wait (optional, default `5`)
 
 [1]: https://github.com/wix/Detox
@@ -546,12 +564,16 @@ I.waitToHide('#message', 2); // wait for 2 seconds
 
 [3]: https://github.com/wix/Detox/blob/master/docs/Introduction.Android.md
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[4]: https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md#step-4-build-your-app-and-run-detox-tests
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[5]: https://codecept.io
 
-[6]: #tap
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[7]: #relaunchApp
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[8]: #click
+[8]: #tap
+
+[9]: #relaunchApp
+
+[10]: #click
