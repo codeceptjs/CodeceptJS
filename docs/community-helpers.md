@@ -35,6 +35,6 @@ Please **add your own** by editing this page.
 * [codeceptjs-rphelper](https://www.npmjs.com/package/codeceptjs-rphelper) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
 
 ## Page Object Code Generator
-* comming soon
+* [codeceptjs-CodeGenerator](https://github.com/senthillkumar/CodeCeptJS-PageObject) is a CodeceptJS custom wrapper which can create page class with action methods from the page object file(JSON) and project setup(Folder Structure).
 ## Other
 
