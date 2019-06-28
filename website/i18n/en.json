@@ -60,7 +60,7 @@
         "title": "Data Management"
       },
       "detox": {
-        "title": "Testing React Native Apps with CodeceptJS & Detox"
+        "title": "Testing React Native with Detox"
       },
       "docker": {
         "title": "Docker"
