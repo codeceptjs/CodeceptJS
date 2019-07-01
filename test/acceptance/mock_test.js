@@ -55,7 +55,7 @@ Scenario(
   (I) => {
     I.amOnPage('/form/fetch_call');
     I.click('GET COMMENTS');
-    I.waitForResponse(fetchComments);
+    I.waitForResponse(fetchComments, 3);
     I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', {
       comment: 'CUSTOM',
     });
@@ -64,7 +64,7 @@ Scenario(
     I.stopMocking();
 
     I.click('GET COMMENTS');
-    I.waitForResponse(fetchComments);
+    I.waitForResponse(fetchComments, 3);
     I.dontSee('CUSTOM', '#data');
   },
 );
