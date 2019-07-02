@@ -4,6 +4,8 @@ const fetchPost = response => response.url() === 'https://jsonplaceholder.typico
 
 const fetchComments = response => response.url() === 'https://jsonplaceholder.typicode.com/comments/1';
 
+const fetchUsers = response => response.url() === 'https://jsonplaceholder.typicode.com/users/1';
+
 Scenario('change statusCode @Puppeteer', (I) => {
   I.amOnPage('/form/fetch_call');
   I.click('GET POSTS');
@@ -28,8 +30,8 @@ Scenario('change response data @Puppeteer', (I) => {
 
 Scenario('change response data for multiple requests @Puppeteer', (I) => {
   I.amOnPage('/form/fetch_call');
-  I.click('GET POSTS');
-  I.waitForResponse(fetchPost, 3);
+  I.click('GET USERS');
+  I.waitForResponse(fetchUsers, 3);
   I.mockRequest(
     'GET',
     [
@@ -64,7 +66,6 @@ Scenario(
     I.stopMocking();
 
     I.click('GET COMMENTS');
-    I.waitForResponse(fetchComments, 3);
     I.dontSee('CUSTOM', '#data');
   },
 );
