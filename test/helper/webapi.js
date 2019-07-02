@@ -218,8 +218,10 @@ module.exports.tests = function () {
   });
 
   // Could not get double click to work
-  describe.skip('#doubleClick', () => {
+  describe('#doubleClick', () => {
     it('it should doubleClick', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/doubleclick');
       yield I.dontSee('Done');
       yield I.doubleClick('#block');
@@ -228,8 +230,10 @@ module.exports.tests = function () {
   });
 
   // rightClick does not seem to work either
-  describe.skip('#rightClick', () => {
+  describe('#rightClick', () => {
     it('it should rightClick', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/rightclick');
       yield I.dontSee('right clicked');
       yield I.rightClick('Lorem Ipsum');
@@ -237,6 +241,8 @@ module.exports.tests = function () {
     });
 
     it('it should rightClick by locator', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/rightclick');
       yield I.dontSee('right clicked');
       yield I.rightClick('.context a');
@@ -244,6 +250,8 @@ module.exports.tests = function () {
     });
 
     it('it should rightClick by locator and context', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/rightclick');
       yield I.dontSee('right clicked');
       yield I.rightClick('Lorem Ipsum', '.context');
@@ -341,7 +349,9 @@ module.exports.tests = function () {
     });
 
     // Could not get multiselect to work with testcafe
-    it.skip('should select multiple options', function* () {
+    it('should select multiple options', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/select_multiple');
       yield I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
       yield I.click('Submit');
@@ -364,7 +374,9 @@ module.exports.tests = function () {
       assert.equal(val, 10);
     });
 
-    it.only('should execute async script', function* () {
+    it('should execute async script', function* () {
+      if (isHelper('Testcafe')) return; // TODO Not yet implemented
+
       yield I.amOnPage('/');
       const val = yield I.executeAsyncScript((val, done) => {
         setTimeout(() => {
