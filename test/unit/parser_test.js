@@ -24,26 +24,4 @@ describe('parser', () => {
       expect(parser.getParamsToString(obj.method4)).to.eql('locator, context');
     });
   });
-
-  describe('#toTypeDef', () => {
-    it('should transform function to TS types', () => {
-      const res = parser.toTypeDef(obj.method1);
-      expect(res).to.include('    method1(locator: LocatorOrString, sec: number) : void');
-    });
-
-    it('should transform function to TS types', () => {
-      const res = parser.toTypeDef(obj.method2);
-      expect(res).to.include('method2(locator: LocatorOrString, value: string, sec: number) : void');
-    });
-
-    it('should transform function to TS types', () => {
-      const res = parser.toTypeDef(obj.method3);
-      expect(res).to.include('method3(locator: LocatorOrString, context: LocatorOrString) : void');
-    });
-
-    it('should transform function to TS types', () => {
-      const res = parser.toTypeDef(obj.method4);
-      expect(res).to.include('method4(locator: LocatorOrString, context: LocatorOrString) : void');
-    });
-  });
 });
