@@ -528,6 +528,8 @@ module.exports.tests = function () {
 
   describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
     it('should grab text from page', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/');
       let val = yield I.grabTextFrom('h1');
       assert.equal(val, 'Welcome to test app!');
@@ -536,6 +538,8 @@ module.exports.tests = function () {
     });
 
     it('should grab multiple texts from page', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/info');
       const vals = yield I.grabTextFrom('#grab-multiple a');
       assert.equal(vals[0], 'First');
@@ -544,6 +548,8 @@ module.exports.tests = function () {
     });
 
     it('should grab html from page', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/info');
       const val = yield I.grabHTMLFrom('#grab-multiple');
       assert.equal(`
@@ -560,6 +566,8 @@ module.exports.tests = function () {
 
 
     it('should grab value from field', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/hidden');
       let val = yield I.grabValueFrom('#action');
       assert.equal(val, 'kill_people');
@@ -574,6 +582,8 @@ module.exports.tests = function () {
     });
 
     it('should grab attribute from element', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/search');
       const val = yield I.grabAttributeFrom({
         css: 'form',
@@ -582,6 +592,8 @@ module.exports.tests = function () {
     });
 
     it('should grab custom attribute from element', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/example4');
       const val = yield I.grabAttributeFrom({
         css: '.navbar-toggle',
@@ -592,6 +604,8 @@ module.exports.tests = function () {
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
     it('should check page title', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/');
       yield I.seeInTitle('TestEd Beta 2.0');
       yield I.dontSeeInTitle('Welcome to test app');
@@ -600,6 +614,8 @@ module.exports.tests = function () {
     });
 
     it('should grab page title', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/');
       const val = yield I.grabTitle();
       return assert.equal(val, 'TestEd Beta 2.0');
@@ -608,6 +624,8 @@ module.exports.tests = function () {
 
   describe('#attachFile', () => {
     it('should upload file located by CSS', function* () {
+      if (isHelper('Testcafe')) return;
+
       yield I.amOnPage('/form/file');
       yield I.attachFile('#avatar', 'app/avatar.jpg');
       yield I.click('Submit');
@@ -618,6 +636,8 @@ module.exports.tests = function () {
     });
 
     it('should upload file located by label', function* () {
+      if (isHelper('Testcafe')) return;
+
       if (isHelper('Nightmare')) return;
       yield I.amOnPage('/form/file');
       yield I.attachFile('Avatar', 'app/avatar.jpg');
@@ -634,6 +654,8 @@ module.exports.tests = function () {
     });
 
     it('should create a screenshot file in output dir', () => {
+      if (isHelper('Testcafe')) return;
+
       const sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
         .then(() => I.saveScreenshot(`screenshot_${sec}.png`))
@@ -641,6 +663,8 @@ module.exports.tests = function () {
     });
 
     it('should create a full page screenshot file in output dir', () => {
+      if (isHelper('Testcafe')) return;
+
       const sec = (new Date()).getUTCMilliseconds();
       return I.amOnPage('/')
         .then(() => I.saveScreenshot(`screenshot_full_${+sec}.png`, true))
@@ -982,6 +1006,8 @@ module.exports.tests = function () {
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', async () => {
       if (isHelper('Nightmare')) return;
+      if (isHelper('Testcafe')) return;
+
       try {
         await I.amOnPage('/info');
         await I.seeAttributesOnElements('//form', {
@@ -1002,6 +1028,8 @@ module.exports.tests = function () {
 
     it('should check attributes values for several elements', async () => {
       if (isHelper('Nightmare')) return;
+      if (isHelper('Testcafe')) return;
+
       try {
         await I.amOnPage('/');
         await I.seeAttributesOnElements('a', {
@@ -1025,6 +1053,8 @@ module.exports.tests = function () {
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', async () => {
       if (isHelper('Nightmare')) return;
+      if (isHelper('Testcafe')) return;
+
       try {
         await I.amOnPage('/info');
         await I.seeCssPropertiesOnElements('h3', {
@@ -1046,6 +1076,8 @@ module.exports.tests = function () {
 
     it('should check css property for several elements', async () => {
       if (isHelper('Nightmare')) return;
+      if (isHelper('Testcafe')) return;
+
       try {
         await I.amOnPage('/');
         await I.seeCssPropertiesOnElements('a', {
@@ -1071,6 +1103,8 @@ module.exports.tests = function () {
 
     it('should normalize css color properties for given element', async () => {
       if (isHelper('Nightmare')) return;
+      if (isHelper('Testcafe')) return;
+
 
       await I.amOnPage('/form/css_colors');
       await I.seeCssPropertiesOnElements('#namedColor', {
