@@ -12,7 +12,6 @@ const formContents = require('../../lib/utils').test.submittedData(path.join(__d
 const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
-const axios = require('axios');
 
 let I;
 let browser;
