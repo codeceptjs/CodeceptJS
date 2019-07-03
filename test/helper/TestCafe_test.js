@@ -1,12 +1,12 @@
 const TestHelper = require('../support/TestHelper');
-const Testcafe = require('../../lib/helper/Testcafe');
+const TestCafe = require('../../lib/helper/TestCafe');
 const path = require('path');
 const webApiTests = require('./webapi');
 
 let I;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Testcafe', function () {
+describe('TestCafe', function () {
   this.timeout(35000);
   this.retries(1);
 
@@ -14,7 +14,7 @@ describe('Testcafe', function () {
     global.codecept_dir = path.join(__dirname, '/../data');
     global.output_dir = path.join(__dirname, '/../data/output');
 
-    I = new Testcafe({
+    I = new TestCafe({
       url: siteUrl,
       windowSize: '500x700',
       show: true,
