@@ -483,7 +483,7 @@ module.exports.tests = function () {
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
-    it.only('should check for empty field', function* () {
+    it('should check for empty field', function* () {
       yield I.amOnPage('/form/empty');
       return I.seeInField('#empty_input', '');
     });
