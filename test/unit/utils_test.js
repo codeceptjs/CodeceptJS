@@ -61,7 +61,7 @@ describe('utils', () => {
     });
   });
 
-  describe('#replaceValue', () => {
+  describe('#replaceValueDeep', () => {
     let target;
 
     it('returns updated object', () => {
@@ -72,7 +72,7 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValue(target.helpers, 'something', 1234).should.eql({ something: 1234 });
+      utils.replaceValueDeep(target.helpers, 'something', 1234).should.eql({ something: 1234 });
       target.should.eql({
         timeout: 1,
         helpers: {
@@ -89,7 +89,7 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValue(target, 'unexisting', 1234);
+      utils.replaceValueDeep(target, 'unexisting', 1234);
       target.should.eql({
         timeout: 1,
         helpers: {
@@ -106,7 +106,7 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValue(target, 'timeout', 1234);
+      utils.replaceValueDeep(target, 'timeout', 1234);
       target.should.eql({
         timeout: 1234,
         helpers: {
@@ -134,7 +134,7 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValue(target, 'timeout', 1234);
+      utils.replaceValueDeep(target, 'timeout', 1234);
       target.should.eql({
         zeroValue: {
           timeout: 1234,
@@ -168,7 +168,7 @@ describe('utils', () => {
         [{ a: 1 }, 123]],
       };
 
-      utils.replaceValue(target, 'a', 1234);
+      utils.replaceValueDeep(target, 'a', 1234);
       target.should.eql({
         timeout: 1,
         something: [{
@@ -193,7 +193,7 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValue(target, 'otherthing', 1234);
+      utils.replaceValueDeep(target, 'otherthing', 1234);
       target.should.eql({
         timeout: 1,
         helpers: {
@@ -218,7 +218,7 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValue(target.helpers, 'WebDriver', { timeouts: 1234 });
+      utils.replaceValueDeep(target.helpers, 'WebDriver', { timeouts: 1234 });
       target.should.eql({
         timeout: 1,
         helpers: {
