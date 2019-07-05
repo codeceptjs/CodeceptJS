@@ -60,4 +60,177 @@ describe('utils', () => {
         .should.eql('concat(\'can\',"\'",\'t find thing\')');
     });
   });
+
+  describe('#replaceValue', () => {
+    let target;
+
+    it('returns updated object', () => {
+      target = {
+        timeout: 1,
+        helpers: {
+          something: 2,
+        },
+      };
+
+      utils.replaceValue(target.helpers, 'something', 1234).should.eql({ something: 1234 });
+      target.should.eql({
+        timeout: 1,
+        helpers: {
+          something: 1234,
+        },
+      });
+    });
+
+    it('do not replace unexisting value', () => {
+      target = {
+        timeout: 1,
+        helpers: {
+          something: 2,
+        },
+      };
+
+      utils.replaceValue(target, 'unexisting', 1234);
+      target.should.eql({
+        timeout: 1,
+        helpers: {
+          something: 2,
+        },
+      });
+    });
+
+    it('replace simple value', () => {
+      target = {
+        timeout: 1,
+        helpers: {
+          something: 2,
+        },
+      };
+
+      utils.replaceValue(target, 'timeout', 1234);
+      target.should.eql({
+        timeout: 1234,
+        helpers: {
+          something: 2,
+        },
+      });
+    });
+
+    it('replace simple falsy value', () => {
+      target = {
+        zeroValue: {
+          timeout: 0,
+        },
+        falseValue: {
+          timeout: false,
+        },
+        undefinedValue: {
+          timeout: undefined,
+        },
+        emptyStringValue: {
+          timeout: '',
+        },
+        nullValue: {
+          timeout: null,
+        },
+      };
+
+      utils.replaceValue(target, 'timeout', 1234);
+      target.should.eql({
+        zeroValue: {
+          timeout: 1234,
+        },
+        falseValue: {
+          timeout: 1234,
+        },
+        undefinedValue: {
+          timeout: 1234,
+        },
+        emptyStringValue: {
+          timeout: 1234,
+        },
+        nullValue: {
+          timeout: 1234,
+        },
+      });
+    });
+
+    it('replace value in array of objects', () => {
+      target = {
+        timeout: 1,
+        something: [{
+          a: 1,
+          b: 2,
+        }, {
+          a: 3,
+        },
+        123,
+        0,
+        [{ a: 1 }, 123]],
+      };
+
+      utils.replaceValue(target, 'a', 1234);
+      target.should.eql({
+        timeout: 1,
+        something: [{
+          a: 1234,
+          b: 2,
+        }, {
+          a: 1234,
+        },
+        123,
+        0,
+        [{ a: 1234 }, 123]],
+      });
+    });
+
+    it('replace simple value deep in object', () => {
+      target = {
+        timeout: 1,
+        helpers: {
+          something: {
+            otherthing: 2,
+          },
+        },
+      };
+
+      utils.replaceValue(target, 'otherthing', 1234);
+      target.should.eql({
+        timeout: 1,
+        helpers: {
+          something: {
+            otherthing: 1234,
+          },
+        },
+      });
+    });
+
+    it('replace object value', () => {
+      target = {
+        timeout: 1,
+        helpers: {
+          WebDriver: {
+            timeouts: 0,
+            url: 'someurl',
+          },
+          someHelper: {
+            timeouts: 3,
+          },
+        },
+      };
+
+      utils.replaceValue(target.helpers, 'WebDriver', { timeouts: 1234 });
+      target.should.eql({
+        timeout: 1,
+        helpers: {
+          WebDriver: {
+            timeouts: 1234,
+            // url is not described in new object
+          },
+          someHelper: {
+            timeouts: 3,
+          },
+        },
+      });
+    });
+  });
 });
