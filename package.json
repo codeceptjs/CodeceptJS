@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -82,7 +82,6 @@
     "husky": "^1.2.1",
     "json-server": "^0.10.1",
     "nightmare": "^3.0.2",
-    "nyc": "^14.1.1",
     "protractor": "^5.4.1",
     "puppeteer": "^1.15.0",
     "rosie": "^1.6.0",

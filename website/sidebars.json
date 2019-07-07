@@ -46,12 +46,14 @@
       "helpers/WebDriver",
       "helpers/Puppeteer",
       "helpers/Protractor",
+      "helpers/TestCafe",
       "helpers/Nightmare",
       "helpers/Appium"
     ],
     "Additional Helpers": [
       "helpers/REST",
       "helpers/ApiDataFactory",
+      "helpers/Polly",
       "helpers/FileSystem",
       "community-helpers"
     ]
