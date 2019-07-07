@@ -76,7 +76,7 @@ class RoboFile extends \Robo\Tasks
     function publishSite()
     {
         $this->stopOnFail();
-        $this->_copy('CHANGELOG.md', 'docs/changelog.md');
+        $this->processChangelog();
         $this->_copy('docker/README.md', 'docs/docker.md');
         $this->wiki();
         $this->taskExec('npm install')
@@ -147,6 +147,35 @@ class RoboFile extends \Robo\Tasks
 
 
     }
+
+    protected function processChangelog()
+    {
+        $file = 'CHANGELOG.md';
+        $changelog = file_get_contents($file);
+
+        //user
+        $changelog = preg_replace('~\s@([\w-]+)~', ' **[$1](https://github.com/$1)**', $changelog);
+
+        //issue
+        $changelog = preg_replace(
+            '~#(\d+)~',
+            '[#$1](https://github.com/Codeception/Codeception/issues/$1)',
+            $changelog
+        );
+
+        //helper
+        $changelog = preg_replace('~\s\[(\w+)\]\s~', ' **[$1]** ', $changelog);
+
+        $this->taskWriteToFile('docs/changelog.md')
+            ->line('---')
+            ->line('id: changelog')
+            ->line('title: Releases')
+            ->line('---')
+            ->line('')
+            ->line($changelog)
+            ->run();
+    }
+
 
     function testServer()
     {
