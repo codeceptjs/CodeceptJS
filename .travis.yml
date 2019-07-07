@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - 8
-- 10
+- 12
 sudo: required
 dist: trusty
 env:
@@ -14,6 +14,7 @@ env:
   - HELPER=Puppeteer
   - HELPER=ProtractorWeb
   - HELPER=WebDriver
+  - HELPER=TestCafe
 addons:
   apt:
     packages:
