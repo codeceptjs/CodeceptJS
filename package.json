@@ -63,6 +63,8 @@
     "sprintf-js": "^1.1.1"
   },
   "devDependencies": {
+    "@pollyjs/adapter-puppeteer": "^2.5.0",
+    "@pollyjs/core": "^2.5.0",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.10.48",
     "@wdio/sauce-service": "^5.8.0",
@@ -80,7 +82,7 @@
     "husky": "^1.2.1",
     "json-server": "^0.10.1",
     "nightmare": "^3.0.2",
-    "nyc": "^11.9.0",
+    "nyc": "^14.1.1",
     "protractor": "^5.4.1",
     "puppeteer": "^1.15.0",
     "rosie": "^1.6.0",
