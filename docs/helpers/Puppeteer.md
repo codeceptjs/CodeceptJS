@@ -15,12 +15,11 @@ This helper works with a browser out of the box with no additional tools require
 
 Requires `puppeteer` package to be installed.
 
-[Experimental: Puppeteer-firefox](Puppeteer-firefox.md)
-
 ## Configuration
 
 This helper should be configured in codecept.json or codecept.conf.js
 
+-   `browser`:  - select browser
 -   `url`: base url of website to be tested
 -   `show`:  - show Google Chrome window for debug.
 -   `restart`:  - restart browser between tests.
