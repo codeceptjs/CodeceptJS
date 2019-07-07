@@ -121,6 +121,16 @@ describe('Container', () => {
       assert.ok(container.support('I'));
     });
 
+    it('should load DI and return a reference to the module', () => {
+      container.create({
+        include: {
+          dummyPage: './data/dummy_page',
+        },
+      });
+      const dummyPage = require('../data/dummy_page');
+      container.support('dummyPage').should.be.equal(dummyPage);
+    });
+
     it('should load I from path and execute _init', () => {
       container.create({
         include: {
