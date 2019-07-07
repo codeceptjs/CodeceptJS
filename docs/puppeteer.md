@@ -3,10 +3,7 @@ id: puppeteer
 title: Testing with Puppeteer
 ---
 
-Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer).
-It operates over Google Chrome directly without requireing additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
-
-[Experimental: Puppeteer-firefox](helpers/Puppeteer-firefox.md)
+Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer). It operates over Google Chrome directly without requiring additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
 
 CodeceptJS uses Puppeteer to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
 
@@ -29,11 +26,12 @@ It's readable and simple and works using Puppeteer API!
 To start you need CodeceptJS with Puppeteer packages installed
 
 ```bash
-npm install -g codeceptjs puppeteer
+npm install codeceptjs puppeteer --save
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
-If you already have CodeceptJS project, just install `puppeteer` package and enable it in config.
+
+> If you already have CodeceptJS project, just install `puppeteer` package and enable a helper it in config.
 
 And a basic project initialized
 
@@ -43,16 +41,18 @@ codeceptjs init
 
 You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.
 
+> Puppeteer can also work with Firefox. [Learn how to set it up](https://codecept.io/helpers/Puppeteer-firefox)
+
 ## Configuring
 
-Make sure `Puppeteer` helper is enabled in `codecept.json` config:
+Make sure `Puppeteer` helper is enabled in `codecept.conf.js` config:
 
 ```js
 { // ..
-  "helpers": {
-    "Puppeteer": {
-      "url": "http://localhost",
-      "show": false
+  helpers: {
+    Puppeteer: {
+      url: "http://localhost",
+      show: false
     }
   }
   // ..
@@ -66,10 +66,10 @@ Puppeteer uses different strategies to detect if a page is loaded. In configurat
 By default it is set to `domcontentloaded` which waits for `DOMContentLoaded` event being fired. However, for Single Page Applications it's more useful to set this value to `networkidle0` which waits for all network connections to be finished.
 
 ```js
-  "helpers": {
-    "Puppeteer": {
-      "url": "http://localhost",
-      "waitForNavigation": "networkidle0"
+  helpers: {
+    Puppeteer: {
+      url: "http://localhost",
+      waitForNavigation: "networkidle0"
     }
   }
 ```
@@ -77,7 +77,7 @@ By default it is set to `domcontentloaded` which waits for `DOMContentLoaded` ev
 When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
-*More options are listed in [helper reference](http://codecept.io/helpers/Puppeteer/).*
+> More options are listed in [helper reference](http://codecept.io/helpers/Puppeteer/).
 
 ## Writing Tests
 

@@ -1,8 +1,32 @@
+## 2.2.0
+
+* **EXPERIMENTAL** [**TestCafe** helper](https://codecept.io/helpers/TestCafe) introduced. TestCafe allows to run cross-browser tests it its own very fast engine. Supports all browsers including mobile. Thanks to @hubidu for implementation! Please test it and send us feedback.
+* [Puppeteer] Mocking requests enabled by introducing [Polly.js helper](https://codecept.io/helpers/Polly)
+
+```js
+// use Polly & Puppeteer helpers
+I.mockRequest('GET', '/api/users', 200);
+I.mockRequest('POST', '/users', { user: { name: 'fake' }});
+```
+
+* **EXPERIMENTAL** [Puppeteer] [Firefox support](https://codecept.io/helpers/Puppeteer-firefox) introduced by @ngadiyak, see #1740
+* [stepByStepReportPlugin] use md5 hash to generate reports into unique folder. Fix #1744 by @chimurai
+* Interactive pause improvements:
+  * print result of `grab` commands
+  * print message for successful assertions
+* `run-multiple` (parallel execution) improvements:
+  * `bootstrapAll` must be called before creating chunks. #1741 by @Vorobeyko
+  * Bugfix: If value in config has falsy value then multiple config does not overwrite original value. #1756 by @LukoyanovE
+* Fixed hooks broken in 2.1.5 by @Vorobeyko
+* Fix references to support objects when using Dependency Injection. Fix by @johnyb. See #1701
+* Fix dynamic config applied for multiple helpers by @VikalpP #1743
+
+
 ## 2.1.5
 
 * **EXPERIMENTAL** [Wix Detox support](https://github.com/Codeception/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
 * Saving successful commands inside interactive pause into `_output/cli-history` file. By @hubidu
-* Fixed hanging error handler inside scenario. See [#1721](https://github.com/Codeception/CodeceptJS/pull/1721) by @haily-lgc.
+* Fixed hanging error handler inside scenario. See #1721 by @haily-lgc.
 * Fixed by @Vorobeyko: tests did not fail when an exception was raised in async bootstrap.
 * [WebDriver] Added window control methods by @emmonspired
   * `grabAllWindowHandles` returns all window handles
@@ -71,7 +95,7 @@ const myPage = require('../page/myPage');
 const { I, myPage } = inject();
 ```
 
-* Added global `secret` function to fill in sensitive data by @RohanHart:
+* Added global `secret` function to fill in sensitive data. By @RohanHart:
 
 ```js
 I.fillField('password', secret('123456'));
@@ -92,7 +116,7 @@ I.fillField('password', secret('123456'));
 * [autoLoginPlugin] Fixed using async functions for auto login by @nitschSB
 
 > This release was partly sponsored by @GSasu. Thanks for the support!
-Do you want to improve this project? [Learn more about sponsoring CodeceptJS](https://github.com/Codeception/CodeceptJS/issues/1462)
+Do you want to improve this project? [Learn more about sponsorin CodeceptJS
 
 
 ## 2.0.8
@@ -164,7 +188,7 @@ Use it with `FileSystem` helper to test availability of a file:
 * [allure plugin] Add skipped tests to allure reports by @Vorobeyko
 * Fixed `Logged Test name | [object Object]` when used Data().Scenario(). By @Vorobeyko
 * Fixed Data().only.Scenario() to run for all datasets. By @Vorobeyko
-* [WebDriver] `attachFile` to work with hidden elements. Fixed in [#1460](https://github.com/Codeception/CodeceptJS/pull/1460) by @tsuemura
+* [WebDriver] `attachFile` to work with hidden elements. Fixed in #1460 by @tsuemura
 
 
 
@@ -249,12 +273,12 @@ I.say('This is by default'); //cyan is used
 
 * [Puppeteer] `dragSlider` action added by @PeterNgTr
 * [Puppeteer] Fixed opening browser in shell mode by @allenhwkim
-* [Puppeteer] Fixed making screenshot on additional sessions by @PeterNgTr. Fixes [#1266](https://github.com/Codeception/CodeceptJS/issues/1266)
+* [Puppeteer] Fixed making screenshot on additional sessions by @PeterNgTr. Fixes #1266
 * Added `--invert` option to `run-multiple` command by @LukoyanovE
 * Fixed steps in Allure reports by @PeterNgTr
 * Add option `output` to customize output directory in [stepByStepReport plugin](https://codecept.io/plugins/#stepbystepreport). By @fpsthirty
 * Changed type definition of PageObjects to get auto completion by @rhicu
-* Fixed steps output for async/arrow functions in CLI by @LukoyanovE. See [#1329](https://github.com/Codeception/CodeceptJS/pull/1329)
+* Fixed steps output for async/arrow functions in CLI by @LukoyanovE. See #1329
 
 ## 1.4.5
 
@@ -267,7 +291,7 @@ I.say('This is by default'); //cyan is used
 ```
 
 * [WebDriverIO] Fix timeouts definition to be compatible with W3C drivers. By @LukoyanovE
-* Fixed: exception in Before block w/ Mocha causes test not to report failure. See [#1292](https://github.com/Codeception/CodeceptJS/pull/1292) by @PeterNgTr
+* Fixed: exception in Before block w/ Mocha causes test not to report failure. See #1292 by @PeterNgTr
 * Command `run-parallel` now accepts `--override` flag. Thanks to @ClemCB
 * Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By @PeterNgTr
 * Added `RUN_MULTIPLE` env variable to [Docker config](https://codecept.io/docker/). Allows to run tests in parallel inside a container. Thanks to @PeterNgTr
@@ -298,7 +322,7 @@ Scenario('update user profile', () => {
 
 * Fixed attaching Allure screenshot on exception. Fix by @DevinWatson
 * Improved type definitions for custom steps. By @Akxe
-* Fixed setting `multiple.parallel.chunks` as environment variable in config. See [#1238](https://github.com/Codeception/CodeceptJS/pull/1238) by @ngadiyak
+* Fixed setting `multiple.parallel.chunks` as environment variable in config. See #1238 by @ngadiyak
 
 ## 1.4.2
 
@@ -468,9 +492,9 @@ locate('//table')
 
 * [Dynamic configuration](https://codecept.io/advanced/#dynamic-configuration) to update helpers config per test or per suite.
 * Added `event.test.finished` which fires synchronously for both failed and passed tests.
-* [WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue #1600](https://github.com/Codeception/CodeceptJS/issues/1060). You can enabled them with `fullPageScreenshots: true`, however they may work unstable in Selenium.
+* [WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue#1600. You can enabled them with `fullPageScreenshots: true`, however they may work unstable in Selenium.
 * `within` blocks can return values. See [updated documentation](https://codecept.io/basics/#within).
-* Removed doublt call to `_init` in helpers. Fixes issue [#1036](https://github.com/Codeception/CodeceptJS/issues/1036)
+* Removed doublt call to `_init` in helpers. Fixes issue #1036
 * Added scenario and feature configuration via fluent API:
 
 ```js
@@ -734,7 +758,7 @@ I.dontSee('Email Address');
 ↑ This element can be located with `~foobar` in WebDriverIO and Appium helpers. Thanks to @flyskywhy
 
 * Allow providing arbitrary objects in config includes by @rlewan
-* [REST] Prevent from mutating default headers by @alexashley. See [#789](https://github.com/Codeception/CodeceptJS/pull/789)
+* [REST] Prevent from mutating default headers by @alexashley. See #789
 * [REST] Fixed sending empty helpers with `haveRequestHeaders` in `sendPostRequest`. By @petrisorionel
 * Fixed displaying undefined args in output by @APshenkin
 * Fixed NaN instead of seconds in output by @APshenkin
@@ -746,8 +770,7 @@ I.dontSee('Email Address');
 ## 1.0.3
 
 * [WebDriverIO][Protractor][Nightmare] method `waitUntilExists` implemented by @sabau
-* Absolute path can be set for `output` dir by @APshenkin. Fix [#571](https://github.com/Codeception/CodeceptJS/issues/571)
-* Data table rows can be ignored by using `xadd`. By @APhenkin
+* Absolute path can be set for `output` dir by @APshenkin. Fix #571* Data table rows can be ignored by using `xadd`. By @APhenkin
 * Added `Data(table).only.Scenario` to give ability to launch only Data tests. By @APhenkin
 * Implemented `ElementNotFound` error by @BorisOsipov.
 * Added TypeScript compiler / configs to check the JavaScript by @KennyRules
@@ -760,12 +783,11 @@ I.dontSee('Email Address');
 
 * Introduced generators support in scenario hooks for `BeforeSuite`/`Before`/`AfterSuite`/`After`
 * [ApiDataFactory] Fixed loading helper; `requireg` package included.
-* Fix [#485](https://github.com/Codeception/CodeceptJS/issues/485) `run-multiple`: the first browser-resolution combination was be used in all configurations
+* Fix #485`run-multiple`: the first browser-resolution combination was be used in all configurations
 * Fixed unique test names:
-  * Fixed [#447](https://github.com/Codeception/CodeceptJS/issues/447): tests failed silently if they have the same name as other tests.
+  * Fixed #447 tests failed silently if they have the same name as other tests.
   * Use uuid in screenshot names when `uniqueScreenshotNames: true`
-* [Protractor] Fixed testing non-angular application. `amOutsideAngularApp` is executed before each step. Fixes [#458](https://github.com/Codeception/CodeceptJS/issues/458)
-* Added output for steps in hooks when they fail
+* [Protractor] Fixed testing non-angular application. `amOutsideAngularApp` is executed before each step. Fixes #458* Added output for steps in hooks when they fail
 
 ## 1.0.1
 
@@ -774,8 +796,7 @@ I.dontSee('Email Address');
   * Added [Mochawesome](http://codecept.io/helpers/Mochawesome/) helper
   * `addMochawesomeContext` method to add custom data to mochawesome reports
   * Fixed Mochawesome context for failed screenshots.
-* [WebDriverIO] improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/Codeception/CodeceptJS/issues/647)
-* [Nightmare] Added `refresh` function by @awhanks
+* [WebDriverIO] improved click on context to match clickable element with a text inside. Fixes #647* [Nightmare] Added `refresh` function by @awhanks
 * fixed `Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad`
 * support for tests with retries in html report
 * be sure that change window size and timeouts completes before test
@@ -840,16 +861,16 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
 * [Data Driven Tests](http://codecept.io/advanced/#data-driven-tests) introduced.
-* Print execution time per step in `--debug` mode. [#591](https://github.com/Codeception/CodeceptJS/pull/591) by @APshenkin
+* Print execution time per step in `--debug` mode. #591 by @APshenkin
 * [WebDriverIO][Protractor][Nightmare] Added `disableScreenshots` option to disable screenshots on fail by @Apshenkin
 * [WebDriverIO][Protractor][Nightmare] Added `uniqueScreenshotNames` option to generate unique names for screenshots on failure by @Apshenkin
 * [WebDriverIO][Nightmare] Fixed click on context; `click('text', '#el')` will throw exception if text is not found inside `#el`.
 * [WebDriverIO][Protractor][SeleniumWebdriver] [SmartWait introduced](http://codecept.io/acceptance/#smartwait).
-* [WebDriverIO][Protractor][Nightmare]Fixed `saveScreenshot` for PhantomJS, `fullPageScreenshots` option introduced by @HughZurname [#549](https://github.com/Codeception/CodeceptJS/pull/549)
+* [WebDriverIO][Protractor][Nightmare]Fixed `saveScreenshot` for PhantomJS, `fullPageScreenshots` option introduced by @HughZurname #549
 * [Appium] helper introduced by @APshenkin
-* [REST] helper introduced by @atrevino in [#504](https://github.com/Codeception/CodeceptJS/pull/504)
+* [REST] helper introduced by @atrevino in #504
 * [WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version #560 by @APshenkin
-* [Nightmare] Fixed restarting by @APshenkin [#581](https://github.com/Codeception/CodeceptJS/pull/581)
+* [Nightmare] Fixed restarting by @APshenkin #581
 * [WebDriverIO] Methods added by @APshenkin:
     * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
     * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seetitleequals)
@@ -869,10 +890,10 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
     * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
     * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
     * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
-* Use mkdirp to create output directory. [#592](https://github.com/Codeception/CodeceptJS/pull/592) by @vkramskikh
-* [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov [#574](https://github.com/Codeception/CodeceptJS/pull/574)
-* Lots of fixes for promise chain by @APshenkin [#568](https://github.com/Codeception/CodeceptJS/pull/568)
-    * Fix [#543](https://github.com/Codeception/CodeceptJS/issues/543) - After block not properly executed if Scenario fails
+* Use mkdirp to create output directory. #592 by @vkramskikh
+* [WebDriverIO] Fixed `seeNumberOfVisibleElements` by @BorisOsipov #574
+* Lots of fixes for promise chain by @APshenkin #568
+    * Fix #543- After block not properly executed if Scenario fails
     * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
     * if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another
     * if during test we got error from Selenium server - stop complete this suite and go to another
@@ -880,7 +901,7 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
     * Complete `_after`, `_afterSuite` hooks even After/AfterSuite from test was failed
     * Don't close browser between suites, when `restart` option is false. We should start browser only one time and close it only after all tests.
     * Close tabs and clear local storage, if `keepCookies` flag is enabled
-* Fix TypeError when using babel-node or ts-node on node.js 7+ [#586](https://github.com/Codeception/CodeceptJS/pull/586) by @vkramskikh
+* Fix TypeError when using babel-node or ts-node on node.js 7+ #586 by @vkramskikh
 * [Nightmare] fixed usage of `_locate`
 
 Special thanks to **Andrey Pshenkin** for his work on this release and the major improvements.
@@ -896,9 +917,9 @@ Scenario('My scenario', { build_id: 123, type: 'slow' }, function (I)
 those options can be accessed as `opts` property inside a `test` object. Can be used in custom listeners.
 
 * Added `docs` directory to a package.
-* [WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when `restart: false` by @tfiwm [#519](https://github.com/Codeception/CodeceptJS/pull/519)
+* [WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when `restart: false` by @tfiwm #519
 * [WebDriverIO][Protractor][Nightmare] Added second parameter to `saveScreenshot` to allow a full page screenshot. By @HughZurname
-* Added suite object to `suite.before` and `suite.after` events by @implico. [#496](https://github.com/Codeception/CodeceptJS/pull/496)
+* Added suite object to `suite.before` and `suite.after` events by @implico. #496
 
 ## 0.6.2
 
@@ -961,15 +982,14 @@ codeceptjs run users_test.js -c tests
 * [Polish translation](http://codecept.io/translation/#polish) added by @limes.
 * Update process exit code so that mocha saves reports before exit by @romanovma.
 * [Nightmare] fixed `getAttributeFrom` for custom attributes by @robrkerr
-* [Nightmare] Fixed *UnhandledPromiseRejectionWarning error* when selecting the dropdown using `selectOption` by @robrkerr. [See PR](https://github.com/Codeception/CodeceptJS/pull/408).
+* [Nightmare] Fixed *UnhandledPromiseRejectionWarning error* when selecting the dropdown using `selectOption` by @robrkerr. [Se PR.
 * [Protractor] fixed `pressKey` method by @romanovma
 
 ## 0.5.0
 
 * Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)
-* Fix 'fullTitle() is not a function' in exit.js by @hubidu. See [#388](https://github.com/Codeception/CodeceptJS/pull/388).
-* [Nightmare] Fix for `waitTimeout` by @HughZurname. See [#391](https://github.com/Codeception/CodeceptJS/pull/391). Resolves [#236](https://github.com/Codeception/CodeceptJS/issues/236)
-* Dockerized CodeceptJS setup by @artiomnist. [See reference](https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md)
+* Fix 'fullTitle() is not a function' in exit.js by @hubidu. See #388.
+* [Nightmare] Fix for `waitTimeout` by @HughZurname. See #391. Resolves #236* Dockerized CodeceptJS setup by @artiomnist. [See reference](https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md)
 
 ## 0.4.16
 
@@ -1051,7 +1071,7 @@ Scenario('Not that complex', {timeout: 1000}, (I) => {
 });
 ```
 
-* [WebDriverIO] Added `uniqueScreenshotNames` option to set unique screenshot names for failed tests. By @APshenkin. See [#299](https://github.com/Codeception/CodeceptJS/pull/299)
+* [WebDriverIO] Added `uniqueScreenshotNames` option to set unique screenshot names for failed tests. By @APshenkin. See #299
 * [WebDriverIO] `clearField` method improved to accept name/label locators and throw errors.
 * [Nightmare][SeleniumWebdriver][Protractor] `clearField` method added.
 * [Nightmare] Fixed `waitForElement`, and `waitForVisible` methods.
@@ -1102,12 +1122,12 @@ module.exports = function(done) {
 ## 0.4.8
 
 * [Protractor][SeleniumWebdriver][Nightmare] added `moveCursorTo` method.
-* [Protractor][SeleniumWebdriver][WebDriverIO] Added `manualStart` option to start browser manually in the beginning of test. By @cnworks. [PR #250](https://github.com/Codeception/CodeceptJS/pull/255)
+* [Protractor][SeleniumWebdriver][WebDriverIO] Added `manualStart` option to start browser manually in the beginning of test. By @cnworks. [PR#250
 * Fixed `codeceptjs init` to work with nested directories and file masks.
 * Fixed `codeceptjs gt` to generate test with proper file name suffix. By @Zougi.
 * [Nightmare] Fixed: Error is thrown when clicking on element which can't be locate. By @davetmik
 * [WebDriverIO] Fixed `attachFile` for file upload. By @giuband and @davetmik
-* [WebDriverIO] Add support for timeouts in config and with `defineTimeouts` method. By @easternbloc [#258](https://github.com/Codeception/CodeceptJS/pull/258) and [#267](https://github.com/Codeception/CodeceptJS/pull/267) by @davetmik
+* [WebDriverIO] Add support for timeouts in config and with `defineTimeouts` method. By @easternbloc #258 and #267 by @davetmik
 * Fixed hanging of CodeceptJS when error is thrown by event dispatcher. Fix by @Zougi and @davetmik
 
 
@@ -1151,7 +1171,7 @@ exports.config = {
 
 ## 0.4.2
 
-* Added ability to localize tests with translation [#189](https://github.com/Codeception/CodeceptJS/pull/189). Thanks to @abner
+* Added ability to localize tests with translation #189. Thanks to @abner
   * [Translation] ru-RU translation added.
   * [Translation] pt-BR translation added.
 * [Protractor] Protractor 4.0.4 compatibility.

@@ -224,21 +224,21 @@ helpers: {
 },
 plugins: {
    autoLogin: {
-    users: {
-      admin: {
-        login: (I) => {
+     users: {
+       admin: {
+         login: (I) => {
            I.amOnPage('/login');
            I.fillField('email', 'admin@site.com');
            I.fillField('password', '123456');
            I.click('Login');
-        },
-        check: (I) => {
+         },
+         check: (I) => {
            I.amOnPage('/dashboard');
            I.see('Admin', '.navbar');
-        },
-        fetch: () => {}, // empty function
-        restore: () => {}, // empty funciton
-      }
+         },
+         fetch: () => {}, // empty function
+         restore: () => {}, // empty funciton
+       }
     }
   }
 }
@@ -251,18 +251,16 @@ If your session is stored in local storage instead of cookies you still can obta
 ```js
 plugins: {
    autoLogin: {
-    users: {
-      admin: {
-        login: (I) => I.loginAsAdmin(),
-        check: (I) => I.see('Admin', '.navbar');
-        fetch: (I) => {
-          return I.executeScript(() => localStorage.getItem('session_id'));
-        },
-        restore: (I, session) => {
-          I.amOnPage('/');
-          I.executeScript((session) => localStorage.setItem('session_id', session), session);
-        }
-      }
+    admin: {
+      login: (I) => I.loginAsAdmin(),
+      check: (I) => I.see('Admin', '.navbar');
+      fetch: (I) => {
+        return I.executeScript(() => localStorage.getItem('session_id'));
+      },
+      restore: (I, session) => {
+        I.amOnPage('/');
+        I.executeScript((session) => localStorage.setItem('session_id', session), session);
+      },
     }
   }
 }
