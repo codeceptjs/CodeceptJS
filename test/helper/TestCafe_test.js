@@ -8,7 +8,7 @@ const siteUrl = TestHelper.siteUrl();
 
 describe('TestCafe', function () {
   this.timeout(35000);
-  this.retries(1);
+  this.retries(0);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -16,9 +16,10 @@ describe('TestCafe', function () {
 
     I = new TestCafe({
       url: siteUrl,
-      windowSize: '500x700',
-      show: true,
+      windowSize: '1000x700',
+      show: false,
       browser: 'chrome',
+      restart: false,
       waitForTimeout: 5000,
     });
     I._init();

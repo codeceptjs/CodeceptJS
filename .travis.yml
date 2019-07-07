@@ -14,6 +14,7 @@ env:
   - HELPER=Puppeteer
   - HELPER=ProtractorWeb
   - HELPER=WebDriver
+  - HELPER=TestCafe
 addons:
   apt:
     packages:
