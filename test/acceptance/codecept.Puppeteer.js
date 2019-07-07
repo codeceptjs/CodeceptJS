@@ -15,6 +15,9 @@ module.exports.config = {
         ],
       },
     },
+    Polly: {
+      url: TestHelper.siteUrl(),
+    },
   },
   include: {},
   bootstrap: false,
