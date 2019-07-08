@@ -31,6 +31,7 @@ Scenario('change response data for multiple requests @Puppeteer', (I) => {
     [
       'https://jsonplaceholder.typicode.com/posts/*',
       'https://jsonplaceholder.typicode.com/comments/*',
+      'https://jsonplaceholder.typicode.com/users/*',
     ],
     {
       modified: 'MY CUSTOM DATA',
@@ -41,8 +42,7 @@ Scenario('change response data for multiple requests @Puppeteer', (I) => {
   I.click('GET COMMENTS');
   I.waitForText('MY CUSTOM DATA', 1, '#data');
   I.click('GET USERS');
-  pause();
-  I.dontSee('MY CUSTOM DATA', '#data');
+  I.waitForText('MY CUSTOM DATA', 1, '#data');
   I.stopMocking();
 });
 
