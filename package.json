@@ -20,10 +20,11 @@
     "bin",
     "docs",
     "lib",
-    "translations"
+    "translations",
+    "typings"
   ],
   "main": "lib/index.js",
-  "typings": "typings/index.d.ts",
+  "typings": "typings/types.d.ts",
   "bin": {
     "codeceptjs": "./bin/codecept.js"
   },
