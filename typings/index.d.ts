@@ -1,95 +1,51 @@
-// Type definitions for CodeceptJS 1.0.2
+// Type definitions for CodeceptJS 2.1.4
 // Project: https://github.com/codeception/codeceptjs/
-// Definitions by: Michael Bodnarchuk <http://github.com/DavertMik>, Drew Diamantoukos <https://github.com/KennyRules>
+/// <reference path="./types.d.ts" />
 
-declare class Locator {
-  or(locator): Locator;
-  find(locator): Locator;
-  withChild(locator): Locator;
-  find(locator): Locator;
-  at(position): Locator;
-  first(): Locator;
-  last(): Locator;
-  inside(locator): Locator;
-  before(locator): Locator;
-  after(locator): Locator;
-  withText(text): Locator;
-  withAttr(attr): Locator;
-  as(output): Locator;
-}
+import * as Protractor from "protractor";
+import index = require("../lib/index");
 
-declare module NodeJS {
-  interface Process {
-    profile: string;
+declare global {
+  const codeceptjs: {
+    codecept: typeof Codecept,
+    container: typeof Container,
+    config: typeof Config,
+    actor: any,
+    helper: typeof Helper,
+    pause: typeof pause,
+    within: typeof within,
+    dataTable: typeof DataTable,
+    locator: typeof Locator,
+    
+    // export typings from JS files, type any when allowJs is set to false
+    recorder: typeof index.recorder,
+    event: typeof index.event,
+    output: typeof index.output,
+    store: typeof index.store,
+  };
+  const codecept_dir: string;
+  const codecept_helper: Helper;
+  const output_dir: string;
+
+  const locate: typeof Locator.build;
+  const inject: typeof Container.support;
+  const secret: typeof Secret.secret;
+
+  const Given: typeof addStep;
+  const When: typeof addStep;
+  const Then: typeof addStep;
+
+  // Used by Protractor helper
+  const by: Protractor.ProtractorBy;
+  const By: Protractor.ProtractorBy;
+  const ExpectedConditions: Protractor.ProtractorExpectedConditions;
+  const element: typeof Protractor.element;
+  const $: typeof Protractor.$;
+  const $$: typeof Protractor.$$;
+  const browser: Protractor.ProtractorBrowser;
+  namespace NodeJS {
+    interface Process {
+      profile: string;
+    }
   }
-
-  interface Global {
-    codecept_actor: any;
-    codecept_dir: string;
-    codecept_helper: any;
-    output_dir: string;
-
-    actor: any;
-    Helper: any;
-    pause: any;
-    within: any;
-    session: any;
-    DataTable: any;
-    locate: Locator,
-    inject: any,
-    secret: any,
-    by: any;
-
-    // Used by Protractor helper
-    By: any;
-    ExpectedConditions: any;
-    element: any;
-    $: any;
-    $$: any;
-    browser: any;
-  }
-}
-
-declare interface Window {
-  codeceptjs: any;
-}
-
-declare var window: Window;
-
-
-/**
- * Special Mocha definitions for reporter Base and Suite.
- * The mocha type definitions on DefinitelyTyped are for an older version of Mocha!
- */
-
-declare module 'mocha/lib/reporters/base' {
-  class base {
-    constructor(runner: any);
-    static cursor: any;
-    static color: any;
-    static list(items: any);
-    static symbols: any;
-    failures: any;
-    stats: any;
-  }
-
-  export = base;
-}
-
-declare interface Suite {
-  addTest: any;
-  afterAll: any;
-  afterEach: any;
-  beforeAll: any;
-  beforeEach: any;
-  pending: any;
-  on: any;
-  timeout: any;
-  title: any;
-
-  create(suite: any, title: any): any;
-}
-
-declare module 'mocha/lib/suite' {
-  export = Suite;
 }
