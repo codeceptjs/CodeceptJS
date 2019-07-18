@@ -5,7 +5,17 @@
 import * as Protractor from "protractor";
 import index = require("../lib/index");
 
+type ValueOf<T> = T[keyof T]
+type KeyValueTupleToObject<T extends [keyof any, any]> = {
+  [K in T[0]]: Extract<T, [K, any]>[1]
+}
+
 declare global {
+  type Translate<T, M extends Record<string, string>> =
+    KeyValueTupleToObject<ValueOf<{
+      [K in keyof T]: [K extends keyof M ? M[K] : K, T[K]]
+    }>>
+
   const codeceptjs: {
     codecept: typeof Codecept,
     container: typeof Container,
