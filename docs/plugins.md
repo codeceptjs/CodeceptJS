@@ -29,7 +29,7 @@ Add this plugin to config file:
 
 Run tests with allure plugin enabled:
 
-    codeceptjs run --plugins allure
+   npx codeceptjs run --plugins allure
 
 By default, allure reports are saved to `output` directory.
 Launch Allure server and see the report like on a screenshot above:
