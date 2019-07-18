@@ -27,7 +27,7 @@ describe('list/def commands', () => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       fs.existsSync(`${codecept_dir}/steps.d.ts`).should.be.ok;
       const def = fs.readFileSync(`${codecept_dir}/steps.d.ts`).toString();
-      def.should.include('type I = Filesystem');
+      def.should.include('type methods = FileSystem');
       assert(!err);
       done();
     });
