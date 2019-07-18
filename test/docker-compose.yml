@@ -85,6 +85,20 @@ services:
       - ./support:/support
       - node_modules:/node_modules
 
+  test-acceptance.testcafe:
+    build: ..
+    env_file: .env
+    environment:
+      # TODO Add a testcafe tag
+      - CODECEPT_ARGS=-c codecept.Testcafe.js --grep @Puppeteer
+    depends_on:
+      - php
+    volumes:
+      - ./acceptance:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
+
   test-acceptance.protractor:
     build: ..
     env_file: .env

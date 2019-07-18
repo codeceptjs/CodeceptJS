@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "Modern Era Acceptance Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -66,6 +66,8 @@
     "sprintf-js": "^1.1.1"
   },
   "devDependencies": {
+    "@pollyjs/adapter-puppeteer": "^2.5.0",
+    "@pollyjs/core": "^2.5.0",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.10.48",
     "@wdio/sauce-service": "^5.8.0",
@@ -84,13 +86,13 @@
     "jsdoc": "^3.6.2",
     "json-server": "^0.10.1",
     "nightmare": "^3.0.2",
-    "nyc": "^11.9.0",
     "protractor": "^5.4.1",
     "puppeteer": "^1.15.0",
     "rosie": "^1.6.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.14.0",
     "tsd-jsdoc": "^2.3.0",
+    "testcafe": "^1.2.1",
     "typescript": "^2.9.2",
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^5.8.0",

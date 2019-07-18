@@ -224,19 +224,21 @@ helpers: {
 },
 plugins: {
    autoLogin: {
-    admin: {
-      login: (I) => {
-         I.amOnPage('/login');
-         I.fillField('email', 'admin@site.com');
-         I.fillField('password', '123456');
-         I.click('Login');
-      }
-      check: (I) => {
-         I.amOnPage('/dashboard');
-         I.see('Admin', '.navbar');
-      },
-      fetch: () => {}, // empty function
-      restore: () => {}, // empty funciton
+     users: {
+       admin: {
+         login: (I) => {
+           I.amOnPage('/login');
+           I.fillField('email', 'admin@site.com');
+           I.fillField('password', '123456');
+           I.click('Login');
+         },
+         check: (I) => {
+           I.amOnPage('/dashboard');
+           I.see('Admin', '.navbar');
+         },
+         fetch: () => {}, // empty function
+         restore: () => {}, // empty funciton
+       }
     }
   }
 }

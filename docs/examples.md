@@ -33,13 +33,20 @@ This repository demonstrates usage of:
 * testing WYSIWYG editor
 * GitLab CI
 
-## [Quick Start with Cucumber/Gherkin](https://github.com/gkushang/codeceptjs-quick-start)
+## [CodeceptJS Cucumber E2E Framework](https://github.com/gkushang/codeceptjs-e2e)
 
-This repository demonstrates the CodeceptJS with Cucumber/Gherkin configuration
+This repository contains complete E2E framework for CodeceptJS with Cucumber and SauceLabs Integration
 
-* Easy 3-Steps process to colocate the CodeceptJS with Gherkin tests with your project
-* Quick Start with CodeceptJS wih Cucumber/Gherkin
-* Sample example and feature files to test GitHub Features
+* CodecepJS-Cucumber E2E Framework
+* Saucelabs Integration
+* Run Cross Browser tests in Parallel on SauceLabs with a simple command
+* Run tests on `chrome:headless`
+* Page Objects
+* `Should.js` Assertion Library
+* Uses `wdio` service (selenium-standalone, sauce)
+* Allure HTML Reports
+* Uses shared Master configuration
+* Sample example and feature files of GitHub Features
 
 ## [Amazon Tests v2](https://gitlab.com/thanhnguyendh/codeceptjs-wdio-services)
 
