@@ -138,6 +138,15 @@ program.command('run-multiple [suites...]')
 
   .action(require('../lib/command/run-multiple'));
 
+program.command('run-workers [otherOptions...]')
+  .description('Executes tests in workers')
+  .option('-n, --workers <value>', 'number of workers', 3)
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-o, --override [value]', 'override current config options')
+
+  .action(require('../lib/command/run-workers'));
+
 if (process.argv.length <= 2) {
   console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();

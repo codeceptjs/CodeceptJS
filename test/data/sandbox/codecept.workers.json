@@ -1,0 +1,15 @@
+{
+  "tests": "./workers/*.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "FileSystem": {},
+    "Within": {
+      "require": "./within_helper"
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}
