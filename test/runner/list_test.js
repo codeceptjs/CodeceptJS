@@ -79,4 +79,33 @@ describe('list/def commands', () => {
       done();
     });
   });
+
+  it('def should create definition file with inject which contains support objects', (done) => {
+    try {
+      fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
+    } catch (e) {
+      // continue regardless of error
+    }
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+      const content = fs.readFileSync(`${codecept_dir}/steps.d.ts`).toString();
+      content.should.include('declare function inject(): {');
+      content.should.include(' MyPage: CodeceptJS.MyPage');
+      content.should.include(' SecondPage: CodeceptJS.SecondPage');
+      done();
+    });
+  });
+
+  it('def should create definition file with inject which contains I object', (done) => {
+    try {
+      fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
+    } catch (e) {
+      // continue regardless of error
+    }
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+      const content = fs.readFileSync(`${codecept_dir}/steps.d.ts`).toString();
+      content.should.include('declare function inject(): {');
+      content.should.include(' I: CodeceptJS.I');
+      done();
+    });
+  });
 });
