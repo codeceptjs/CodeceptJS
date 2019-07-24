@@ -108,4 +108,17 @@ describe('list/def commands', () => {
       done();
     });
   });
+
+  it('def should create definition file with callback params', (done) => {
+    try {
+      fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
+    } catch (e) {
+      // continue regardless of error
+    }
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+      const content = fs.readFileSync(`${codecept_dir}/steps.d.ts`).toString();
+      content.should.include('type ICodeceptCallback = (i?: CodeceptJS.I, current?:any, MyPage?:CodeceptJS.MyPage, SecondPage?:CodeceptJS.SecondPage, ...args: any) => void;');
+      done();
+    });
+  });
 });
