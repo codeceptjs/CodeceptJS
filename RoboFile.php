@@ -159,7 +159,7 @@ class RoboFile extends \Robo\Tasks
         //issue
         $changelog = preg_replace(
             '~#(\d+)~',
-            '[#$1](https://github.com/Codeception/Codeception/issues/$1)',
+            '[#$1](https://github.com/Codeception/CodeceptJS/issues/$1)',
             $changelog
         );
 
