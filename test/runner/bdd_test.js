@@ -220,6 +220,46 @@ When('I submit {int} form', () => {
 Then('I should log in', () => {
   // From "support/dummy.feature" {"line":8,"column":5}
   throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with an opening paren \( only$/, () => {
+  // From "support/dummy.feature" {"line":9,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a closing paren \) only$/, () => {
+  // From "support/dummy.feature" {"line":10,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a opening brace \{ only$/, () => {
+  // From "support/dummy.feature" {"line":11,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a closing brace \} only$/, () => {
+  // From "support/dummy.feature" {"line":12,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a slash http:\/\/example\.com\/foo$/, () => {
+  // From "support/dummy.feature" {"line":13,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \( paren and an (\d+) int$/, () => {
+  // From "support/dummy.feature" {"line":14,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \( paren and a (\d+\.\d+) float$/, () => {
+  // From "support/dummy.feature" {"line":15,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \( paren and a "(.*?)" string$/, () => {
+  // From "support/dummy.feature" {"line":16,"column":5}
+  throw new Error('Not implemented yet');
 });`);
       assert(!err);
       done();
