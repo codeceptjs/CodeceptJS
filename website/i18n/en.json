@@ -45,7 +45,7 @@
         "title": "Books & Posts"
       },
       "changelog": {
-        "title": "changelog"
+        "title": "Releases"
       },
       "commands": {
         "title": "Commands"
@@ -83,8 +83,14 @@
       "helpers/Nightmare": {
         "title": "Nightmare"
       },
+      "helpers/Polly": {
+        "title": "Polly"
+      },
       "helpers/Protractor": {
         "title": "Protractor"
+      },
+      "helpers/Puppeteer-firefox": {
+        "title": "helpers/Puppeteer-firefox"
       },
       "helpers/Puppeteer": {
         "title": "Puppeteer"
@@ -94,6 +100,9 @@
       },
       "helpers/SeleniumWebdriver": {
         "title": "SeleniumWebdriver"
+      },
+      "helpers/TestCafe": {
+        "title": "TestCafe"
       },
       "helpers/WebDriver": {
         "title": "WebDriver"
