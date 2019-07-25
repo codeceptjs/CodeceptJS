@@ -34,7 +34,7 @@
     "lint": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js --fix",
     "docs": "gulp docs",
-    "test": "mocha test/runner --recursive"
+    "test": "mocha test/unit --recursive && mocha test/runner --recursive"
   },
   "dependencies": {
     "allure-js-commons": "^1.3.2",
