@@ -10,8 +10,8 @@
 <span class="hljs-built_in">I</span>.mockRequest(<span class="hljs-string">'POST'</span>, <span class="hljs-string">'/users'</span>, { <span class="hljs-attr">user</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">'fake'</span> }});
 </code></pre>
 <ul>
-<li><strong>EXPERIMENTAL</strong> <strong>[Puppeteer]</strong> <a href="https://codecept.io/helpers/Puppeteer-firefox">Firefox support</a> introduced by <strong><a href="https://github.com/ngadiyak">ngadiyak</a></strong>, see <a href="https://github.com/Codeception/Codeception/issues/1740">#1740</a></li>
-<li><strong>[stepByStepReportPlugin]</strong> use md5 hash to generate reports into unique folder. Fix <a href="https://github.com/Codeception/Codeception/issues/1744">#1744</a> by <strong><a href="https://github.com/chimurai">chimurai</a></strong></li>
+<li><strong>EXPERIMENTAL</strong> <strong>[Puppeteer]</strong> <a href="https://codecept.io/helpers/Puppeteer-firefox">Firefox support</a> introduced by <strong><a href="https://github.com/ngadiyak">ngadiyak</a></strong>, see <a href="https://github.com/Codeception/CodeceptJS/issues/1740">#1740</a></li>
+<li><strong>[stepByStepReportPlugin]</strong> use md5 hash to generate reports into unique folder. Fix <a href="https://github.com/Codeception/CodeceptJS/issues/1744">#1744</a> by <strong><a href="https://github.com/chimurai">chimurai</a></strong></li>
 <li>Interactive pause improvements:
 <ul>
 <li>print result of <code>grab</code> commands</li>
@@ -19,18 +19,18 @@
 </ul></li>
 <li><code>run-multiple</code> (parallel execution) improvements:
 <ul>
-<li><code>bootstrapAll</code> must be called before creating chunks. <a href="https://github.com/Codeception/Codeception/issues/1741">#1741</a> by <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong></li>
-<li>Bugfix: If value in config has falsy value then multiple config does not overwrite original value. <a href="https://github.com/Codeception/Codeception/issues/1756">#1756</a> by <strong><a href="https://github.com/LukoyanovE">LukoyanovE</a></strong></li>
+<li><code>bootstrapAll</code> must be called before creating chunks. <a href="https://github.com/Codeception/CodeceptJS/issues/1741">#1741</a> by <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong></li>
+<li>Bugfix: If value in config has falsy value then multiple config does not overwrite original value. <a href="https://github.com/Codeception/CodeceptJS/issues/1756">#1756</a> by <strong><a href="https://github.com/LukoyanovE">LukoyanovE</a></strong></li>
 </ul></li>
 <li>Fixed hooks broken in 2.1.5 by <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong></li>
-<li>Fix references to support objects when using Dependency Injection. Fix by <strong><a href="https://github.com/johnyb">johnyb</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/1701">#1701</a></li>
-<li>Fix dynamic config applied for multiple helpers by <strong><a href="https://github.com/VikalpP">VikalpP</a></strong> <a href="https://github.com/Codeception/Codeception/issues/1743">#1743</a></li>
+<li>Fix references to support objects when using Dependency Injection. Fix by <strong><a href="https://github.com/johnyb">johnyb</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/1701">#1701</a></li>
+<li>Fix dynamic config applied for multiple helpers by <strong><a href="https://github.com/VikalpP">VikalpP</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/1743">#1743</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="215"></a><a href="#215" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.1.5</h2>
 <ul>
 <li><strong>EXPERIMENTAL</strong> <a href="https://github.com/Codeception/detox-helper">Wix Detox support</a> introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.</li>
 <li>Saving successful commands inside interactive pause into <code>_output/cli-history</code> file. By <strong><a href="https://github.com/hubidu">hubidu</a></strong></li>
-<li>Fixed hanging error handler inside scenario. See <a href="https://github.com/Codeception/Codeception/issues/1721">#1721</a> by <strong><a href="https://github.com/haily-lgc">haily-lgc</a></strong>.</li>
+<li>Fixed hanging error handler inside scenario. See <a href="https://github.com/Codeception/CodeceptJS/issues/1721">#1721</a> by <strong><a href="https://github.com/haily-lgc">haily-lgc</a></strong>.</li>
 <li>Fixed by <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong>: tests did not fail when an exception was raised in async bootstrap.</li>
 <li><strong>[WebDriver]</strong> Added window control methods by <strong><a href="https://github.com/emmonspired">emmonspired</a></strong>
 <ul>
@@ -195,7 +195,7 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS</p>
 <li>[allure plugin] Add skipped tests to allure reports by <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong></li>
 <li>Fixed <code>Logged Test name | [object Object]</code> when used Data().Scenario(). By <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong></li>
 <li>Fixed Data().only.Scenario() to run for all datasets. By <strong><a href="https://github.com/Vorobeyko">Vorobeyko</a></strong></li>
-<li><strong>[WebDriver]</strong> <code>attachFile</code> to work with hidden elements. Fixed in <a href="https://github.com/Codeception/Codeception/issues/1460">#1460</a> by <strong><a href="https://github.com/tsuemura">tsuemura</a></strong></li>
+<li><strong>[WebDriver]</strong> <code>attachFile</code> to work with hidden elements. Fixed in <a href="https://github.com/Codeception/CodeceptJS/issues/1460">#1460</a> by <strong><a href="https://github.com/tsuemura">tsuemura</a></strong></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="203"></a><a href="#203" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.0.3</h2>
 <ul>
@@ -270,7 +270,7 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS</p>
 <li><p><strong>Using <code>codecept.conf.js</code> as default configuration format</strong></p></li>
 <li><p>Fixed &quot;enametoolong&quot; error when saving screenshots for data driven tests by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></p></li>
 <li><p>Updated NodeJS to 10 in Docker image</p></li>
-<li><p><strong>[Pupeteer]</strong> Add support to use WSEndpoint. Allows to execute tests remotely. [See <a href="https://github.com/Codeception/Codeception/issues/1350">#1350</a>] by <strong><a href="https://github.com/gabrielcaires">gabrielcaires</a></strong> (<a href="https://github.com/Codeception/CodeceptJS/pull/1350">https://github.com/Codeception/CodeceptJS/pull/1350</a>)</p></li>
+<li><p><strong>[Pupeteer]</strong> Add support to use WSEndpoint. Allows to execute tests remotely. [See <a href="https://github.com/Codeception/CodeceptJS/issues/1350">#1350</a>] by <strong><a href="https://github.com/gabrielcaires">gabrielcaires</a></strong> (<a href="https://github.com/Codeception/CodeceptJS/pull/1350">https://github.com/Codeception/CodeceptJS/pull/1350</a>)</p></li>
 <li><p>In interactive shell <strong>[Enter]</strong> goes to next step. Improvement by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong>.</p></li>
 <li><p><code>I.say</code> accepts second parameter as color to print colorful comments. Improvement by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong>.</p></li>
 </ul>
@@ -286,12 +286,12 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS</p>
 <ul>
 <li><strong>[Puppeteer]</strong> <code>dragSlider</code> action added by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></li>
 <li><strong>[Puppeteer]</strong> Fixed opening browser in shell mode by <strong><a href="https://github.com/allenhwkim">allenhwkim</a></strong></li>
-<li><strong>[Puppeteer]</strong> Fixed making screenshot on additional sessions by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong>. Fixes <a href="https://github.com/Codeception/Codeception/issues/1266">#1266</a></li>
+<li><strong>[Puppeteer]</strong> Fixed making screenshot on additional sessions by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong>. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/1266">#1266</a></li>
 <li>Added <code>--invert</code> option to <code>run-multiple</code> command by <strong><a href="https://github.com/LukoyanovE">LukoyanovE</a></strong></li>
 <li>Fixed steps in Allure reports by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></li>
 <li>Add option <code>output</code> to customize output directory in <a href="https://codecept.io/plugins/#stepbystepreport">stepByStepReport plugin</a>. By <strong><a href="https://github.com/fpsthirty">fpsthirty</a></strong></li>
 <li>Changed type definition of PageObjects to get auto completion by <strong><a href="https://github.com/rhicu">rhicu</a></strong></li>
-<li>Fixed steps output for async/arrow functions in CLI by <strong><a href="https://github.com/LukoyanovE">LukoyanovE</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/1329">#1329</a></li>
+<li>Fixed steps output for async/arrow functions in CLI by <strong><a href="https://github.com/LukoyanovE">LukoyanovE</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/1329">#1329</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="145"></a><a href="#145" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.4.5</h2>
 <ul>
@@ -305,7 +305,7 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS</p>
 </code></pre>
 <ul>
 <li><strong>[WebDriverIO]</strong> Fix timeouts definition to be compatible with W3C drivers. By <strong><a href="https://github.com/LukoyanovE">LukoyanovE</a></strong></li>
-<li>Fixed: exception in Before block w/ Mocha causes test not to report failure. See <a href="https://github.com/Codeception/Codeception/issues/1292">#1292</a> by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></li>
+<li>Fixed: exception in Before block w/ Mocha causes test not to report failure. See <a href="https://github.com/Codeception/CodeceptJS/issues/1292">#1292</a> by <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></li>
 <li>Command <code>run-parallel</code> now accepts <code>--override</code> flag. Thanks to <strong><a href="https://github.com/ClemCB">ClemCB</a></strong></li>
 <li>Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></li>
 <li>Added <code>RUN_MULTIPLE</code> env variable to <a href="https://codecept.io/docker/">Docker config</a>. Allows to run tests in parallel inside a container. Thanks to <strong><a href="https://github.com/PeterNgTr">PeterNgTr</a></strong></li>
@@ -336,7 +336,7 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS</p>
 <ul>
 <li>Fixed attaching Allure screenshot on exception. Fix by <strong><a href="https://github.com/DevinWatson">DevinWatson</a></strong></li>
 <li>Improved type definitions for custom steps. By <strong><a href="https://github.com/Akxe">Akxe</a></strong></li>
-<li>Fixed setting <code>multiple.parallel.chunks</code> as environment variable in config. See <a href="https://github.com/Codeception/Codeception/issues/1238">#1238</a> by <strong><a href="https://github.com/ngadiyak">ngadiyak</a></strong></li>
+<li>Fixed setting <code>multiple.parallel.chunks</code> as environment variable in config. See <a href="https://github.com/Codeception/CodeceptJS/issues/1238">#1238</a> by <strong><a href="https://github.com/ngadiyak">ngadiyak</a></strong></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="142"></a><a href="#142" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.4.2</h2>
 <ul>
@@ -499,9 +499,9 @@ locate(<span class="hljs-string">'//table'</span>)
 <ul>
 <li><a href="https://codecept.io/advanced/#dynamic-configuration">Dynamic configuration</a> to update helpers config per test or per suite.</li>
 <li>Added <code>event.test.finished</code> which fires synchronously for both failed and passed tests.</li>
-<li>[WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue<a href="https://github.com/Codeception/Codeception/issues/1600">#1600</a>. You can enabled them with <code>fullPageScreenshots: true</code>, however they may work unstable in Selenium.</li>
+<li>[WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue<a href="https://github.com/Codeception/CodeceptJS/issues/1600">#1600</a>. You can enabled them with <code>fullPageScreenshots: true</code>, however they may work unstable in Selenium.</li>
 <li><code>within</code> blocks can return values. See <a href="https://codecept.io/basics/#within">updated documentation</a>.</li>
-<li>Removed doublt call to <code>_init</code> in helpers. Fixes issue <a href="https://github.com/Codeception/Codeception/issues/1036">#1036</a></li>
+<li>Removed doublt call to <code>_init</code> in helpers. Fixes issue <a href="https://github.com/Codeception/CodeceptJS/issues/1036">#1036</a></li>
 <li>Added scenario and feature configuration via fluent API:</li>
 </ul>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'checkout'</span>)
@@ -771,7 +771,7 @@ This brings native async-await support to CodeceptJS. It is recommended to start
 <p>↑ This element can be located with <code>~foobar</code> in WebDriverIO and Appium helpers. Thanks to <strong><a href="https://github.com/flyskywhy">flyskywhy</a></strong></p>
 <ul>
 <li>Allow providing arbitrary objects in config includes by <strong><a href="https://github.com/rlewan">rlewan</a></strong></li>
-<li><strong>[REST]</strong> Prevent from mutating default headers by <strong><a href="https://github.com/alexashley">alexashley</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/789">#789</a></li>
+<li><strong>[REST]</strong> Prevent from mutating default headers by <strong><a href="https://github.com/alexashley">alexashley</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/789">#789</a></li>
 <li><strong>[REST]</strong> Fixed sending empty helpers with <code>haveRequestHeaders</code> in <code>sendPostRequest</code>. By <strong><a href="https://github.com/petrisorionel">petrisorionel</a></strong></li>
 <li>Fixed displaying undefined args in output by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
 <li>Fixed NaN instead of seconds in output by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
@@ -781,7 +781,7 @@ This brings native async-await support to CodeceptJS. It is recommended to start
 <h2><a class="anchor" aria-hidden="true" id="103"></a><a href="#103" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.0.3</h2>
 <ul>
 <li>[WebDriverIO][Protractor][Nightmare] method <code>waitUntilExists</code> implemented by <strong><a href="https://github.com/sabau">sabau</a></strong></li>
-<li>Absolute path can be set for <code>output</code> dir by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong>. Fix <a href="https://github.com/Codeception/Codeception/issues/571">#571</a>* Data table rows can be ignored by using <code>xadd</code>. By <strong><a href="https://github.com/APhenkin">APhenkin</a></strong></li>
+<li>Absolute path can be set for <code>output</code> dir by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong>. Fix <a href="https://github.com/Codeception/CodeceptJS/issues/571">#571</a>* Data table rows can be ignored by using <code>xadd</code>. By <strong><a href="https://github.com/APhenkin">APhenkin</a></strong></li>
 <li>Added <code>Data(table).only.Scenario</code> to give ability to launch only Data tests. By <strong><a href="https://github.com/APhenkin">APhenkin</a></strong></li>
 <li>Implemented <code>ElementNotFound</code> error by <strong><a href="https://github.com/BorisOsipov">BorisOsipov</a></strong>.</li>
 <li>Added TypeScript compiler / configs to check the JavaScript by <strong><a href="https://github.com/KennyRules">KennyRules</a></strong></li>
@@ -793,13 +793,13 @@ This brings native async-await support to CodeceptJS. It is recommended to start
 <ul>
 <li>Introduced generators support in scenario hooks for <code>BeforeSuite</code>/<code>Before</code>/<code>AfterSuite</code>/<code>After</code></li>
 <li><strong>[ApiDataFactory]</strong> Fixed loading helper; <code>requireg</code> package included.</li>
-<li>Fix <a href="https://github.com/Codeception/Codeception/issues/485">#485</a><code>run-multiple</code>: the first browser-resolution combination was be used in all configurations</li>
+<li>Fix <a href="https://github.com/Codeception/CodeceptJS/issues/485">#485</a><code>run-multiple</code>: the first browser-resolution combination was be used in all configurations</li>
 <li>Fixed unique test names:
 <ul>
-<li>Fixed <a href="https://github.com/Codeception/Codeception/issues/447">#447</a> tests failed silently if they have the same name as other tests.</li>
+<li>Fixed <a href="https://github.com/Codeception/CodeceptJS/issues/447">#447</a> tests failed silently if they have the same name as other tests.</li>
 <li>Use uuid in screenshot names when <code>uniqueScreenshotNames: true</code></li>
 </ul></li>
-<li><strong>[Protractor]</strong> Fixed testing non-angular application. <code>amOutsideAngularApp</code> is executed before each step. Fixes <a href="https://github.com/Codeception/Codeception/issues/458">#458</a>* Added output for steps in hooks when they fail</li>
+<li><strong>[Protractor]</strong> Fixed testing non-angular application. <code>amOutsideAngularApp</code> is executed before each step. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/458">#458</a>* Added output for steps in hooks when they fail</li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="101"></a><a href="#101" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.0.1</h2>
 <ul>
@@ -810,7 +810,7 @@ This brings native async-await support to CodeceptJS. It is recommended to start
 <li><code>addMochawesomeContext</code> method to add custom data to mochawesome reports</li>
 <li>Fixed Mochawesome context for failed screenshots.</li>
 </ul></li>
-<li><strong>[WebDriverIO]</strong> improved click on context to match clickable element with a text inside. Fixes <a href="https://github.com/Codeception/Codeception/issues/647">#647</a>* <strong>[Nightmare]</strong> Added <code>refresh</code> function by <strong><a href="https://github.com/awhanks">awhanks</a></strong></li>
+<li><strong>[WebDriverIO]</strong> improved click on context to match clickable element with a text inside. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/647">#647</a>* <strong>[Nightmare]</strong> Added <code>refresh</code> function by <strong><a href="https://github.com/awhanks">awhanks</a></strong></li>
 <li>fixed <code>Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad</code></li>
 <li>support for tests with retries in html report</li>
 <li>be sure that change window size and timeouts completes before test</li>
@@ -866,16 +866,16 @@ Using them you can easily prepare and cleanup data for your tests using public R
 <li>Minimal NodeJS version is 6.11.1 LTS</li>
 <li>Use <code>within</code> command with generators.</li>
 <li><a href="http://codecept.io/advanced/#data-driven-tests">Data Driven Tests</a> introduced.</li>
-<li>Print execution time per step in <code>--debug</code> mode. <a href="https://github.com/Codeception/Codeception/issues/591">#591</a> by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
+<li>Print execution time per step in <code>--debug</code> mode. <a href="https://github.com/Codeception/CodeceptJS/issues/591">#591</a> by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
 <li>[WebDriverIO][Protractor][Nightmare] Added <code>disableScreenshots</code> option to disable screenshots on fail by <strong><a href="https://github.com/Apshenkin">Apshenkin</a></strong></li>
 <li>[WebDriverIO][Protractor][Nightmare] Added <code>uniqueScreenshotNames</code> option to generate unique names for screenshots on failure by <strong><a href="https://github.com/Apshenkin">Apshenkin</a></strong></li>
 <li>[WebDriverIO][Nightmare] Fixed click on context; <code>click('text', '#el')</code> will throw exception if text is not found inside <code>#el</code>.</li>
 <li>[WebDriverIO][Protractor][SeleniumWebdriver] <a href="http://codecept.io/acceptance/#smartwait">SmartWait introduced</a>.</li>
-<li>[WebDriverIO][Protractor][Nightmare]Fixed <code>saveScreenshot</code> for PhantomJS, <code>fullPageScreenshots</code> option introduced by <strong><a href="https://github.com/HughZurname">HughZurname</a></strong> <a href="https://github.com/Codeception/Codeception/issues/549">#549</a></li>
+<li>[WebDriverIO][Protractor][Nightmare]Fixed <code>saveScreenshot</code> for PhantomJS, <code>fullPageScreenshots</code> option introduced by <strong><a href="https://github.com/HughZurname">HughZurname</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/549">#549</a></li>
 <li><strong>[Appium]</strong> helper introduced by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
-<li><strong>[REST]</strong> helper introduced by <strong><a href="https://github.com/atrevino">atrevino</a></strong> in <a href="https://github.com/Codeception/Codeception/issues/504">#504</a></li>
-<li>[WebDriverIO][SeleniumWebdriver] Fixed &quot;windowSize&quot;: &quot;maximize&quot; for Chrome 59+ version <a href="https://github.com/Codeception/Codeception/issues/560">#560</a> by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
-<li><strong>[Nightmare]</strong> Fixed restarting by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong> <a href="https://github.com/Codeception/Codeception/issues/581">#581</a></li>
+<li><strong>[REST]</strong> helper introduced by <strong><a href="https://github.com/atrevino">atrevino</a></strong> in <a href="https://github.com/Codeception/CodeceptJS/issues/504">#504</a></li>
+<li>[WebDriverIO][SeleniumWebdriver] Fixed &quot;windowSize&quot;: &quot;maximize&quot; for Chrome 59+ version <a href="https://github.com/Codeception/CodeceptJS/issues/560">#560</a> by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong></li>
+<li><strong>[Nightmare]</strong> Fixed restarting by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/581">#581</a></li>
 <li><strong>[WebDriverIO]</strong> Methods added by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong>:
 <ul>
 <li><a href="http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom">grabCssPropertyFrom</a></li>
@@ -897,11 +897,11 @@ Using them you can easily prepare and cleanup data for your tests using public R
 <li><a href="http://codecept.io/helpers/WebDriverIO/#scrollpagetotop">scrollPageToTop</a></li>
 <li><a href="http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs">grabBrowserLogs</a></li>
 </ul></li>
-<li>Use mkdirp to create output directory. <a href="https://github.com/Codeception/Codeception/issues/592">#592</a> by <strong><a href="https://github.com/vkramskikh">vkramskikh</a></strong></li>
-<li><strong>[WebDriverIO]</strong> Fixed <code>seeNumberOfVisibleElements</code> by <strong><a href="https://github.com/BorisOsipov">BorisOsipov</a></strong> <a href="https://github.com/Codeception/Codeception/issues/574">#574</a></li>
-<li>Lots of fixes for promise chain by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong> <a href="https://github.com/Codeception/Codeception/issues/568">#568</a>
+<li>Use mkdirp to create output directory. <a href="https://github.com/Codeception/CodeceptJS/issues/592">#592</a> by <strong><a href="https://github.com/vkramskikh">vkramskikh</a></strong></li>
+<li><strong>[WebDriverIO]</strong> Fixed <code>seeNumberOfVisibleElements</code> by <strong><a href="https://github.com/BorisOsipov">BorisOsipov</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/574">#574</a></li>
+<li>Lots of fixes for promise chain by <strong><a href="https://github.com/APshenkin">APshenkin</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/568">#568</a>
 <ul>
-<li>Fix <a href="https://github.com/Codeception/Codeception/issues/543">#543</a>- After block not properly executed if Scenario fails</li>
+<li>Fix <a href="https://github.com/Codeception/CodeceptJS/issues/543">#543</a>- After block not properly executed if Scenario fails</li>
 <li>Expected behavior in promise chains: <code>_beforeSuite</code> hooks from helpers -&gt; <code>BeforeSuite</code> from test -&gt; <code>_before</code> hooks from helpers -&gt; <code>Before</code> from test - &gt; Test steps -&gt; <code>_failed</code> hooks from helpers (if test failed) -&gt; <code>After</code> from test -&gt; <code>_after</code> hooks from helpers -&gt; <code>AfterSuite</code> from test -&gt; <code>_afterSuite</code> hook from helpers.</li>
 <li>if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another</li>
 <li>if during test we got error from Selenium server - stop complete this suite and go to another</li>
@@ -910,7 +910,7 @@ Using them you can easily prepare and cleanup data for your tests using public R
 <li>Don't close browser between suites, when <code>restart</code> option is false. We should start browser only one time and close it only after all tests.</li>
 <li>Close tabs and clear local storage, if <code>keepCookies</code> flag is enabled</li>
 </ul></li>
-<li>Fix TypeError when using babel-node or ts-node on node.js 7+ <a href="https://github.com/Codeception/Codeception/issues/586">#586</a> by <strong><a href="https://github.com/vkramskikh">vkramskikh</a></strong></li>
+<li>Fix TypeError when using babel-node or ts-node on node.js 7+ <a href="https://github.com/Codeception/CodeceptJS/issues/586">#586</a> by <strong><a href="https://github.com/vkramskikh">vkramskikh</a></strong></li>
 <li><strong>[Nightmare]</strong> fixed usage of <code>_locate</code></li>
 </ul>
 <p>Special thanks to <strong>Andrey Pshenkin</strong> for his work on this release and the major improvements.</p>
@@ -924,9 +924,9 @@ Using them you can easily prepare and cleanup data for your tests using public R
 <p>those options can be accessed as <code>opts</code> property inside a <code>test</code> object. Can be used in custom listeners.</p>
 <ul>
 <li>Added <code>docs</code> directory to a package.</li>
-<li>[WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when <code>restart: false</code> by <strong><a href="https://github.com/tfiwm">tfiwm</a></strong> <a href="https://github.com/Codeception/Codeception/issues/519">#519</a></li>
+<li>[WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when <code>restart: false</code> by <strong><a href="https://github.com/tfiwm">tfiwm</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/519">#519</a></li>
 <li>[WebDriverIO][Protractor][Nightmare] Added second parameter to <code>saveScreenshot</code> to allow a full page screenshot. By <strong><a href="https://github.com/HughZurname">HughZurname</a></strong></li>
-<li>Added suite object to <code>suite.before</code> and <code>suite.after</code> events by <strong><a href="https://github.com/implico">implico</a></strong>. <a href="https://github.com/Codeception/Codeception/issues/496">#496</a></li>
+<li>Added suite object to <code>suite.before</code> and <code>suite.after</code> events by <strong><a href="https://github.com/implico">implico</a></strong>. <a href="https://github.com/Codeception/CodeceptJS/issues/496">#496</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="062"></a><a href="#062" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.6.2</h2>
 <ul>
@@ -996,8 +996,8 @@ codeceptjs run users_test.js -c tests
 <h2><a class="anchor" aria-hidden="true" id="050"></a><a href="#050" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.5.0</h2>
 <ul>
 <li>Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)</li>
-<li>Fix 'fullTitle() is not a function' in exit.js by <strong><a href="https://github.com/hubidu">hubidu</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/388">#388</a>.</li>
-<li><strong>[Nightmare]</strong> Fix for <code>waitTimeout</code> by <strong><a href="https://github.com/HughZurname">HughZurname</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/391">#391</a>. Resolves <a href="https://github.com/Codeception/Codeception/issues/236">#236</a>* Dockerized CodeceptJS setup by <strong><a href="https://github.com/artiomnist">artiomnist</a></strong>. <a href="https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md">See reference</a></li>
+<li>Fix 'fullTitle() is not a function' in exit.js by <strong><a href="https://github.com/hubidu">hubidu</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/388">#388</a>.</li>
+<li><strong>[Nightmare]</strong> Fix for <code>waitTimeout</code> by <strong><a href="https://github.com/HughZurname">HughZurname</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/391">#391</a>. Resolves <a href="https://github.com/Codeception/CodeceptJS/issues/236">#236</a>* Dockerized CodeceptJS setup by <strong><a href="https://github.com/artiomnist">artiomnist</a></strong>. <a href="https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md">See reference</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="0416"></a><a href="#0416" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.16</h2>
 <ul>
@@ -1071,7 +1071,7 @@ _afterStep() {
 });
 </code></pre>
 <ul>
-<li><strong>[WebDriverIO]</strong> Added <code>uniqueScreenshotNames</code> option to set unique screenshot names for failed tests. By <strong><a href="https://github.com/APshenkin">APshenkin</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/299">#299</a></li>
+<li><strong>[WebDriverIO]</strong> Added <code>uniqueScreenshotNames</code> option to set unique screenshot names for failed tests. By <strong><a href="https://github.com/APshenkin">APshenkin</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/299">#299</a></li>
 <li><strong>[WebDriverIO]</strong> <code>clearField</code> method improved to accept name/label locators and throw errors.</li>
 <li>[Nightmare][SeleniumWebdriver][Protractor] <code>clearField</code> method added.</li>
 <li><strong>[Nightmare]</strong> Fixed <code>waitForElement</code>, and <code>waitForVisible</code> methods.</li>
@@ -1092,7 +1092,7 @@ codeceptjs run -o <span class="hljs-string">'{ "helpers": {"WebDriverIO": {"brow
 <h2><a class="anchor" aria-hidden="true" id="0411"></a><a href="#0411" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.11</h2>
 <ul>
 <li>Fixed regression in 0.4.10</li>
-<li>Added <code>bootstrap</code>/<code>teardown</code> config options to accept functions as parameters by <strong><a href="https://github.com/pscanf">pscanf</a></strong>. See updated <a href="http://codecept.io/configuration/">config reference</a> <a href="https://github.com/Codeception/Codeception/issues/319">#319</a></li>
+<li>Added <code>bootstrap</code>/<code>teardown</code> config options to accept functions as parameters by <strong><a href="https://github.com/pscanf">pscanf</a></strong>. See updated <a href="http://codecept.io/configuration/">config reference</a> <a href="https://github.com/Codeception/CodeceptJS/issues/319">#319</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="0410"></a><a href="#0410" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.10</h2>
 <ul>
@@ -1106,25 +1106,25 @@ codeceptjs run -o <span class="hljs-string">'{ "helpers": {"WebDriverIO": {"brow
 }
 </code></pre>
 <ul>
-<li>Changed 'pending' to 'skipped' in reports by <strong><a href="https://github.com/timja-kainos">timja-kainos</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/315">#315</a></li>
+<li>Changed 'pending' to 'skipped' in reports by <strong><a href="https://github.com/timja-kainos">timja-kainos</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/315">#315</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="049"></a><a href="#049" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.9</h2>
 <ul>
 <li>[SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed <code>executeScript</code>, <code>executeAsyncScript</code> to work and return values.</li>
 <li>[Protractor][SeleniumWebdriver][WebDriverIO] Added <code>waitForInvisible</code> and <code>waitForStalenessOf</code> methods by <strong><a href="https://github.com/Nighthawk14">Nighthawk14</a></strong>.</li>
 <li>Added <code>--config</code> option to <code>codeceptjs run</code> to manually specify config file by <strong><a href="https://github.com/cnworks">cnworks</a></strong></li>
-<li><strong>[Protractor]</strong> Simplified behavior of <code>amOutsideAngularApp</code> by using <code>ignoreSynchronization</code>. Fixes <a href="https://github.com/Codeception/Codeception/issues/278">#278</a></li>
-<li>Set exit code to 1 when test fails at <code>Before</code>/<code>After</code> hooks. Fixes <a href="https://github.com/Codeception/Codeception/issues/279">#279</a></li>
+<li><strong>[Protractor]</strong> Simplified behavior of <code>amOutsideAngularApp</code> by using <code>ignoreSynchronization</code>. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/278">#278</a></li>
+<li>Set exit code to 1 when test fails at <code>Before</code>/<code>After</code> hooks. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/279">#279</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="048"></a><a href="#048" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.8</h2>
 <ul>
 <li>[Protractor][SeleniumWebdriver][Nightmare] added <code>moveCursorTo</code> method.</li>
-<li>[Protractor][SeleniumWebdriver][WebDriverIO] Added <code>manualStart</code> option to start browser manually in the beginning of test. By <strong><a href="https://github.com/cnworks">cnworks</a></strong>. [PR<a href="https://github.com/Codeception/Codeception/issues/250">#250</a></li>
+<li>[Protractor][SeleniumWebdriver][WebDriverIO] Added <code>manualStart</code> option to start browser manually in the beginning of test. By <strong><a href="https://github.com/cnworks">cnworks</a></strong>. [PR<a href="https://github.com/Codeception/CodeceptJS/issues/250">#250</a></li>
 <li>Fixed <code>codeceptjs init</code> to work with nested directories and file masks.</li>
 <li>Fixed <code>codeceptjs gt</code> to generate test with proper file name suffix. By <strong><a href="https://github.com/Zougi">Zougi</a></strong>.</li>
 <li><strong>[Nightmare]</strong> Fixed: Error is thrown when clicking on element which can't be locate. By <strong><a href="https://github.com/davetmik">davetmik</a></strong></li>
 <li><strong>[WebDriverIO]</strong> Fixed <code>attachFile</code> for file upload. By <strong><a href="https://github.com/giuband">giuband</a></strong> and <strong><a href="https://github.com/davetmik">davetmik</a></strong></li>
-<li><strong>[WebDriverIO]</strong> Add support for timeouts in config and with <code>defineTimeouts</code> method. By <strong><a href="https://github.com/easternbloc">easternbloc</a></strong> <a href="https://github.com/Codeception/Codeception/issues/258">#258</a> and <a href="https://github.com/Codeception/Codeception/issues/267">#267</a> by <strong><a href="https://github.com/davetmik">davetmik</a></strong></li>
+<li><strong>[WebDriverIO]</strong> Add support for timeouts in config and with <code>defineTimeouts</code> method. By <strong><a href="https://github.com/easternbloc">easternbloc</a></strong> <a href="https://github.com/Codeception/CodeceptJS/issues/258">#258</a> and <a href="https://github.com/Codeception/CodeceptJS/issues/267">#267</a> by <strong><a href="https://github.com/davetmik">davetmik</a></strong></li>
 <li>Fixed hanging of CodeceptJS when error is thrown by event dispatcher. Fix by <strong><a href="https://github.com/Zougi">Zougi</a></strong> and <strong><a href="https://github.com/davetmik">davetmik</a></strong></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="047"></a><a href="#047" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.7</h2>
@@ -1140,7 +1140,7 @@ codeceptjs run -o <span class="hljs-string">'{ "helpers": {"WebDriverIO": {"brow
 <h2><a class="anchor" aria-hidden="true" id="045"></a><a href="#045" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.5</h2>
 <ul>
 <li>Fixed running <code>codecept def</code> command by <strong><a href="https://github.com/jankaspar">jankaspar</a></strong></li>
-<li>[Protractor][SeleniumWebdriver] Added support for special keys in <code>pressKey</code> method. Fixes <a href="https://github.com/Codeception/Codeception/issues/216">#216</a></li>
+<li>[Protractor][SeleniumWebdriver] Added support for special keys in <code>pressKey</code> method. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/216">#216</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="044"></a><a href="#044" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.4</h2>
 <ul>
@@ -1167,7 +1167,7 @@ exports.config = {
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="042"></a><a href="#042" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.2</h2>
 <ul>
-<li>Added ability to localize tests with translation <a href="https://github.com/Codeception/Codeception/issues/189">#189</a>. Thanks to <strong><a href="https://github.com/abner">abner</a></strong>
+<li>Added ability to localize tests with translation <a href="https://github.com/Codeception/CodeceptJS/issues/189">#189</a>. Thanks to <strong><a href="https://github.com/abner">abner</a></strong>
 <ul>
 <li><strong>[Translation]</strong> ru-RU translation added.</li>
 <li><strong>[Translation]</strong> pt-BR translation added.</li>
@@ -1180,8 +1180,8 @@ exports.config = {
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="041"></a><a href="#041" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.1</h2>
 <ul>
-<li>Added custom steps to step definition list. See <a href="https://github.com/Codeception/Codeception/issues/174">#174</a> by <strong><a href="https://github.com/jayS-de">jayS-de</a></strong></li>
-<li><strong>[WebDriverIO]</strong> Fixed using <code>waitForTimeout</code> option by <strong><a href="https://github.com/stephane-ruhlmann">stephane-ruhlmann</a></strong>. See <a href="https://github.com/Codeception/Codeception/issues/178">#178</a></li>
+<li>Added custom steps to step definition list. See <a href="https://github.com/Codeception/CodeceptJS/issues/174">#174</a> by <strong><a href="https://github.com/jayS-de">jayS-de</a></strong></li>
+<li><strong>[WebDriverIO]</strong> Fixed using <code>waitForTimeout</code> option by <strong><a href="https://github.com/stephane-ruhlmann">stephane-ruhlmann</a></strong>. See <a href="https://github.com/Codeception/CodeceptJS/issues/178">#178</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="040"></a><a href="#040" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.4.0</h2>
 <ul>
@@ -1216,7 +1216,7 @@ Depending on installation type additional modules (webdriverio, protractor, ...)
 <li>[Protractor][SeleniumWebdriver] fixed closing browser instances</li>
 <li>[Protractor][SeleniumWebdriver] <code>doubleClick</code> method added</li>
 <li>[WebDriverIO][Protractor][SeleniumWebdriver] <code>doubleClick</code> method to locate clickable elements by text, <code>context</code> option added.</li>
-<li>Fixed using assert in generator without yields <a href="https://github.com/Codeception/Codeception/issues/89">#89</a></li>
+<li>Fixed using assert in generator without yields <a href="https://github.com/Codeception/CodeceptJS/issues/89">#89</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="031"></a><a href="#031" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.3.1</h2>
 <ul>
@@ -1235,8 +1235,8 @@ Starting from 0.3.0 webdriverio is not the only backend for running selenium tes
 <li><strong>[WebDriverIO]</strong> fixed <code>windowSize: maximize</code> option in config</li>
 <li><strong>[WebDriverIO]</strong> <code>seeElement</code> and <code>dontSeeElement</code> check element for visibility by <strong><a href="https://github.com/fabioel">fabioel</a></strong> and <strong><a href="https://github.com/davertmik">davertmik</a></strong></li>
 <li><strong>[WebDriverIO]</strong> <code>seeElementInDOM</code>, <code>dontSeeElementInDOM</code> added to check element exists on page.</li>
-<li><strong>[WebDriverIO]</strong> fixed saving screenshots on failure. Fixes <a href="https://github.com/Codeception/Codeception/issues/70">#70</a></li>
-<li>fixed <code>within</code> block doesn't end in output not <a href="https://github.com/Codeception/Codeception/issues/79">#79</a></li>
+<li><strong>[WebDriverIO]</strong> fixed saving screenshots on failure. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/70">#70</a></li>
+<li>fixed <code>within</code> block doesn't end in output not <a href="https://github.com/Codeception/CodeceptJS/issues/79">#79</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="028"></a><a href="#028" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.2.8</h2>
 <ul>
@@ -1244,20 +1244,20 @@ Starting from 0.3.0 webdriverio is not the only backend for running selenium tes
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="027"></a><a href="#027" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.2.7</h2>
 <ul>
-<li>process ends with exit code 1 on error or failure <a href="https://github.com/Codeception/Codeception/issues/49">#49</a></li>
-<li>fixed registereing global Helper <a href="https://github.com/Codeception/Codeception/issues/57">#57</a></li>
-<li>fixed handling error in within block <a href="https://github.com/Codeception/Codeception/issues/50">#50</a></li>
+<li>process ends with exit code 1 on error or failure <a href="https://github.com/Codeception/CodeceptJS/issues/49">#49</a></li>
+<li>fixed registereing global Helper <a href="https://github.com/Codeception/CodeceptJS/issues/57">#57</a></li>
+<li>fixed handling error in within block <a href="https://github.com/Codeception/CodeceptJS/issues/50">#50</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="026"></a><a href="#026" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.2.6</h2>
 <ul>
 <li>Fixed <code>done() was called multiple times</code></li>
 <li><strong>[WebDriverIO]</strong> added <code>waitToHide</code> method by <strong><a href="https://github.com/fabioel">fabioel</a></strong></li>
-<li>Added global <code>Helper</code> (alias <code>codecept_helper)</code>, object use for writing custom Helpers. Generator updated. Changes to <a href="https://github.com/Codeception/Codeception/issues/48">#48</a></li>
+<li>Added global <code>Helper</code> (alias <code>codecept_helper)</code>, object use for writing custom Helpers. Generator updated. Changes to <a href="https://github.com/Codeception/CodeceptJS/issues/48">#48</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="025"></a><a href="#025" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.2.5</h2>
 <ul>
-<li>Fixed issues with using yield inside a test <a href="https://github.com/Codeception/Codeception/issues/45">#45</a> <a href="https://github.com/Codeception/Codeception/issues/47">#47</a> <a href="https://github.com/Codeception/Codeception/issues/43">#43</a></li>
-<li>Fixed generating a custom helper. Helper class is now accessible with <code>codecept_helper</code> var. Fixes <a href="https://github.com/Codeception/Codeception/issues/48">#48</a></li>
+<li>Fixed issues with using yield inside a test <a href="https://github.com/Codeception/CodeceptJS/issues/45">#45</a> <a href="https://github.com/Codeception/CodeceptJS/issues/47">#47</a> <a href="https://github.com/Codeception/CodeceptJS/issues/43">#43</a></li>
+<li>Fixed generating a custom helper. Helper class is now accessible with <code>codecept_helper</code> var. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/48">#48</a></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="024"></a><a href="#024" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>0.2.4</h2>
 <ul>
@@ -1290,11 +1290,11 @@ Whenever you need to create <code>I</code> object (in page objects, custom steps
 </ul></li>
 <li>tests added</li>
 <li><strong>[WebDriverIO]</strong> proxy configuration added by <strong><a href="https://github.com/petehouston">petehouston</a></strong></li>
-<li><strong>[WebDriverIO]</strong> fixed <code>waitForText</code> method by <strong><a href="https://github.com/roadhump">roadhump</a></strong>. Fixes <a href="https://github.com/Codeception/Codeception/issues/11">#11</a></li>
+<li><strong>[WebDriverIO]</strong> fixed <code>waitForText</code> method by <strong><a href="https://github.com/roadhump">roadhump</a></strong>. Fixes <a href="https://github.com/Codeception/CodeceptJS/issues/11">#11</a></li>
 <li>Fixed creating output dir when it already exists on init by <strong><a href="https://github.com/alfirin">alfirin</a></strong></li>
 <li>Fixed loading of custom helpers</li>
 </ul>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-7-7</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#220">2.2.0</a></li><li><a href="#215">2.1.5</a></li><li><a href="#214">2.1.4</a></li><li><a href="#213">2.1.3</a></li><li><a href="#212">2.1.2</a></li><li><a href="#211">2.1.1</a></li><li><a href="#210">2.1.0</a></li><li><a href="#208">2.0.8</a></li><li><a href="#207">2.0.7</a></li><li><a href="#206">2.0.6</a></li><li><a href="#205">2.0.5</a></li><li><a href="#204">2.0.4</a></li><li><a href="#203">2.0.3</a></li><li><a href="#202">2.0.2</a></li><li><a href="#201">2.0.1</a></li><li><a href="#200">2.0.0</a></li><li><a href="#146">1.4.6</a></li><li><a href="#145">1.4.5</a></li><li><a href="#144">1.4.4</a></li><li><a href="#143">1.4.3</a></li><li><a href="#142">1.4.2</a></li><li><a href="#141">1.4.1</a></li><li><a href="#140">1.4.0</a></li><li><a href="#133">1.3.3</a></li><li><a href="#132">1.3.2</a></li><li><a href="#131">1.3.1</a></li><li><a href="#130">1.3.0</a></li><li><a href="#121">1.2.1</a></li><li><a href="#120">1.2.0</a></li><li><a href="#118">1.1.8</a></li><li><a href="#117">1.1.7</a></li><li><a href="#116">1.1.6</a></li><li><a href="#115">1.1.5</a></li><li><a href="#114">1.1.4</a></li><li><a href="#113">1.1.3</a></li><li><a href="#112">1.1.2</a></li><li><a href="#111">1.1.1</a></li><li><a href="#110">1.1.0</a></li><li><a href="#103">1.0.3</a></li><li><a href="#102">1.0.2</a></li><li><a href="#101">1.0.1</a></li><li><a href="#10">1.0</a></li><li><a href="#063">0.6.3</a></li><li><a href="#062">0.6.2</a></li><li><a href="#061">0.6.1</a></li><li><a href="#060">0.6.0</a></li><li><a href="#051">0.5.1</a></li><li><a href="#050">0.5.0</a></li><li><a href="#0416">0.4.16</a></li><li><a href="#0415">0.4.15</a></li><li><a href="#0414">0.4.14</a></li><li><a href="#0413">0.4.13</a></li><li><a href="#0412">0.4.12</a></li><li><a href="#0411">0.4.11</a></li><li><a href="#0410">0.4.10</a></li><li><a href="#049">0.4.9</a></li><li><a href="#048">0.4.8</a></li><li><a href="#047">0.4.7</a></li><li><a href="#046">0.4.6</a></li><li><a href="#045">0.4.5</a></li><li><a href="#044">0.4.4</a></li><li><a href="#043">0.4.3</a></li><li><a href="#042">0.4.2</a></li><li><a href="#041">0.4.1</a></li><li><a href="#040">0.4.0</a></li><li><a href="#035">0.3.5</a></li><li><a href="#034">0.3.4</a></li><li><a href="#033">0.3.3</a></li><li><a href="#032">0.3.2</a></li><li><a href="#031">0.3.1</a></li><li><a href="#030">0.3.0</a></li><li><a href="#028">0.2.8</a></li><li><a href="#027">0.2.7</a></li><li><a href="#026">0.2.6</a></li><li><a href="#025">0.2.5</a></li><li><a href="#024">0.2.4</a></li><li><a href="#023">0.2.3</a></li><li><a href="#022">0.2.2</a></li><li><a href="#020">0.2.0</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-7-25</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#220">2.2.0</a></li><li><a href="#215">2.1.5</a></li><li><a href="#214">2.1.4</a></li><li><a href="#213">2.1.3</a></li><li><a href="#212">2.1.2</a></li><li><a href="#211">2.1.1</a></li><li><a href="#210">2.1.0</a></li><li><a href="#208">2.0.8</a></li><li><a href="#207">2.0.7</a></li><li><a href="#206">2.0.6</a></li><li><a href="#205">2.0.5</a></li><li><a href="#204">2.0.4</a></li><li><a href="#203">2.0.3</a></li><li><a href="#202">2.0.2</a></li><li><a href="#201">2.0.1</a></li><li><a href="#200">2.0.0</a></li><li><a href="#146">1.4.6</a></li><li><a href="#145">1.4.5</a></li><li><a href="#144">1.4.4</a></li><li><a href="#143">1.4.3</a></li><li><a href="#142">1.4.2</a></li><li><a href="#141">1.4.1</a></li><li><a href="#140">1.4.0</a></li><li><a href="#133">1.3.3</a></li><li><a href="#132">1.3.2</a></li><li><a href="#131">1.3.1</a></li><li><a href="#130">1.3.0</a></li><li><a href="#121">1.2.1</a></li><li><a href="#120">1.2.0</a></li><li><a href="#118">1.1.8</a></li><li><a href="#117">1.1.7</a></li><li><a href="#116">1.1.6</a></li><li><a href="#115">1.1.5</a></li><li><a href="#114">1.1.4</a></li><li><a href="#113">1.1.3</a></li><li><a href="#112">1.1.2</a></li><li><a href="#111">1.1.1</a></li><li><a href="#110">1.1.0</a></li><li><a href="#103">1.0.3</a></li><li><a href="#102">1.0.2</a></li><li><a href="#101">1.0.1</a></li><li><a href="#10">1.0</a></li><li><a href="#063">0.6.3</a></li><li><a href="#062">0.6.2</a></li><li><a href="#061">0.6.1</a></li><li><a href="#060">0.6.0</a></li><li><a href="#051">0.5.1</a></li><li><a href="#050">0.5.0</a></li><li><a href="#0416">0.4.16</a></li><li><a href="#0415">0.4.15</a></li><li><a href="#0414">0.4.14</a></li><li><a href="#0413">0.4.13</a></li><li><a href="#0412">0.4.12</a></li><li><a href="#0411">0.4.11</a></li><li><a href="#0410">0.4.10</a></li><li><a href="#049">0.4.9</a></li><li><a href="#048">0.4.8</a></li><li><a href="#047">0.4.7</a></li><li><a href="#046">0.4.6</a></li><li><a href="#045">0.4.5</a></li><li><a href="#044">0.4.4</a></li><li><a href="#043">0.4.3</a></li><li><a href="#042">0.4.2</a></li><li><a href="#041">0.4.1</a></li><li><a href="#040">0.4.0</a></li><li><a href="#035">0.3.5</a></li><li><a href="#034">0.3.4</a></li><li><a href="#033">0.3.3</a></li><li><a href="#032">0.3.2</a></li><li><a href="#031">0.3.1</a></li><li><a href="#030">0.3.0</a></li><li><a href="#028">0.2.8</a></li><li><a href="#027">0.2.7</a></li><li><a href="#026">0.2.6</a></li><li><a href="#025">0.2.5</a></li><li><a href="#024">0.2.4</a></li><li><a href="#023">0.2.3</a></li><li><a href="#022">0.2.2</a></li><li><a href="#020">0.2.0</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
