@@ -4,11 +4,37 @@ title: Quickstart
 ---
 
 **NodeJS v 8.9** and higher required to start.
-CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.
+CodeceptJS is an end 2 end testing framework which supports multiple browser drivers like WebDriver, Puppeteer, Protractor, TestCafe etc.
 
-* In this guide we will use [Google Chrome **Puppeteer**](https://github.com/GoogleChrome/puppeteer) as a driver for browsers. This allows us to start in a minutes with no extra tools installed.
-* If you are familiar with Selenium, you can choose classical [**Selenium WebDriver** setup](#using-selenium-webdriver).
-* Also, look at [complete installation reference](https://codecept.io/installation/).
+> **⬇️ TLDR: [Use CodeceptJS with Puppteer for fastest and simplest setup](#Using-Puppeteer) ⬇️**
+
+How to choose the right driver for your web application?
+Here is a brief comparison of all tools you can use with CodeceptJS.
+
+
+| Driver  | Cross-Browser | Limitations | Headless | Selenuim | Speed |
+|---|---|---|--|--|--|
+| WebDriver  | ✔️ | headers, downloads, flakiness |  | ✔️ | normal |
+| Puppeteer  | chrome, firefox | cross-browser support | ✔️ | | fast |
+| Protractor | ✔️ | headers, downloads, flakiness | | ✔️ | normal |
+| TestCafe | ✔️  | multiple pages, flakiness | ✔️ | | fast |
+| Nightmare | electron (chromium) | multiple pages, cross-browser  | ✔️ | | fast |
+
+#### How to choose browser driver
+
+* **[Choose Puppeteer](#Using-Puppeteer)** for simplest setup, fast tests, full browser control. Limited to Chrome and Firefox only. Cloud browsers via browserless.io.
+* **[Choose WebDriver](#Using-WebDriver)** or Protractor for classical Selenium. Rich ecosystem and cross browser support with cloud browsers via Sauce Labs, BrowserStack, TestingBot. **Selenium server requried** for local start.
+* **Choose TestCafe** for cheap and fast cross-browser tests. Has stability and feature limitation comparing to WebDriver.
+
+Each driver has its own pros and cons which can't be described in this paragraph. However, in CodeceptJS it is easy to switch between them. In most cases you just need to update a config to run tests differently.
+
+### Mobile Driver Comparison
+
+| Driver  | OS | Type | Browser | Speed |
+|---|---|---|--|--|--|
+| Appium | android, ios| Black Box | ✔️  | slow |
+| Detox | android, ios | Grey Box | | fast |
+
 
 
 ## Using Puppeteer
