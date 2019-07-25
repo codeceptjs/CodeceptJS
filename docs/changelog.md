@@ -6,7 +6,7 @@ title: Releases
 ## 2.2.0
 
 * **EXPERIMENTAL** [**TestCafe** helper](https://codecept.io/helpers/TestCafe) introduced. TestCafe allows to run cross-browser tests it its own very fast engine. Supports all browsers including mobile. Thanks to **[hubidu](https://github.com/hubidu)** for implementation! Please test it and send us feedback.
-* **[Puppeteer]** Mocking requests enabled by introducing [Polly.js helper](https://codecept.io/helpers/Polly)
+* **[Puppeteer]** Mocking requests enabled by introducing [Polly.js helper](https://codecept.io/helpers/Polly). Thanks **[VikalpP](https://github.com/VikalpP)**
 
 ```js
 // use Polly & Puppeteer helpers
