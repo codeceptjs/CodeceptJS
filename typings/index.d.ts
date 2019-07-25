@@ -1,4 +1,4 @@
-// Type definitions for CodeceptJS 2.1.4
+// Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 
@@ -9,30 +9,36 @@ type ValueOf<T> = T[keyof T]
 type KeyValueTupleToObject<T extends [keyof any, any]> = {
   [K in T[0]]: Extract<T, [K, any]>[1]
 }
+export type Translate<T, M extends Record<string, string>> = KeyValueTupleToObject<ValueOf<{
+  [K in keyof T]: [K extends keyof M ? M[K] : K, T[K]]
+}>>
+
+export type ActorStatic = {
+  say: (msg: any, color?: any) => Promise<any> | undefined,
+  retry: (opts: any) => any
+}
+
+type codeceptjs = {
+  codecept: typeof Codecept,
+  container: typeof Container,
+  config: typeof Config,
+  actor: any,
+  helper: typeof Helper,
+  pause: typeof pause,
+  within: typeof within,
+  dataTable: typeof DataTable,
+  locator: typeof Locator,
+  
+  // export typings from JS files, type any when allowJs is set to false
+  recorder: typeof index.recorder,
+  event: typeof index.event,
+  output: typeof index.output,
+  store: typeof index.store,
+};
 
 declare global {
-  type Translate<T, M extends Record<string, string>> =
-    KeyValueTupleToObject<ValueOf<{
-      [K in keyof T]: [K extends keyof M ? M[K] : K, T[K]]
-    }>>
-
-  const codeceptjs: {
-    codecept: typeof Codecept,
-    container: typeof Container,
-    config: typeof Config,
-    actor: any,
-    helper: typeof Helper,
-    pause: typeof pause,
-    within: typeof within,
-    dataTable: typeof DataTable,
-    locator: typeof Locator,
-    
-    // export typings from JS files, type any when allowJs is set to false
-    recorder: typeof index.recorder,
-    event: typeof index.event,
-    output: typeof index.output,
-    store: typeof index.store,
-  };
+  const codeceptjs: codeceptjs;
+  
   const codecept_dir: string;
   const codecept_helper: Helper;
   const output_dir: string;
@@ -45,17 +51,45 @@ declare global {
   const When: typeof addStep;
   const Then: typeof addStep;
 
-  // Used by Protractor helper
-  const by: Protractor.ProtractorBy;
-  const By: Protractor.ProtractorBy;
-  const ExpectedConditions: Protractor.ProtractorExpectedConditions;
-  const element: typeof Protractor.element;
-  const $: typeof Protractor.$;
-  const $$: typeof Protractor.$$;
-  const browser: Protractor.ProtractorBrowser;
   namespace NodeJS {
     interface Process {
       profile: string;
+    }
+    
+    interface Global {
+      codecept_dir: typeof codecept_dir;
+      codecept_helper: typeof Helper;
+      output_dir: typeof output_dir;
+
+      codeceptjs: codeceptjs;
+      Helper: typeof Helper;
+      pause: typeof pause;
+      within: typeof within;
+      session: typeof session;
+      DataTable: typeof DataTable;
+
+      locate: typeof locate;
+      inject: typeof inject;
+      secret: typeof secret;      
+
+      Given: typeof Given;
+      When: typeof When;
+      Then: typeof Then;
+
+      // Used by Protractor helper
+      by: Protractor.ProtractorBy;
+      By: Protractor.ProtractorBy;
+      ExpectedConditions: Protractor.ProtractorExpectedConditions;
+      element: typeof Protractor.element;
+      $: typeof Protractor.$;
+      $$: typeof Protractor.$$;
+      browser: Protractor.ProtractorBrowser;
+    }
+  }
+
+  namespace Mocha {
+    interface MochaGlobals {
+      Feature: typeof Feature
     }
   }
 }
