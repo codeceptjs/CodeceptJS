@@ -7,7 +7,8 @@
   },
   "include": {
     "I": "./support/custom_steps.js",
-    "MyPage": "./support/my_page.js"
+    "MyPage": "./support/my_page.js",
+    "SecondPage": "./support/second_page.js"
   },
   "bootstrap": false,
   "mocha": {},
