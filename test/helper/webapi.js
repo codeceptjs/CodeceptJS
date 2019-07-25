@@ -980,7 +980,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to an element', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       const { x, y } = await I.grabPageScrollPosition();
@@ -990,7 +989,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to coordinates', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       const { x, y } = await I.grabPageScrollPosition();
@@ -1001,7 +999,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to bottom of page', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       const { y } = await I.grabPageScrollPosition();
@@ -1012,7 +1009,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to top of page', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       await I.scrollPageToBottom();
