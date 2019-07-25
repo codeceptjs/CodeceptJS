@@ -44,16 +44,21 @@ I object is an <strong>actor</strong>, an abstraction for a testing user. I is a
 <p><img src="https://codecept.io/img/architecture.svg" alt="architecture"></p>
 <p>All helpers share the same API so it's easy to migrate tests from one backend to other.
 However, because of difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.</p>
-<p>Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should <strong>pick one helper, as it defines how tests are executed.</strong> If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.</p>
-<p>A helper should be enabled in main config. Configuration (like base url) should be provided as well:</p>
-<pre><code class="hljs css language-json">  "helpers": {
-    "WebDriver": {
-      "url": "http://localhost",
-      "browser": "chrome"
-    }
-  }
-</code></pre>
-<p>In this config config all methods of <code>I</code> will be taken from <code>WebDriver</code> helper.</p>
+<p><strong>Pick one helper, as it defines how tests are executed.</strong> If requirements change it's easy to migrate to another, but don't use few helpers of same kind at once.</p>
+<hr>
+<p>Refer to following guides to more information on:</p>
+<ul>
+<li>WebDriver</li>
+<li>Protractor</li>
+<li>Puppeteer</li>
+<li>Nightmare</li>
+<li>TestCafe</li>
+</ul>
+<blockquote>
+<p>Depending on a helper selected a list of available actions may change.</p>
+</blockquote>
+<p>To list all available commands for current configuration run <code>codeceptjs list</code>
+or enable <a href="#intellisense">auto-completion by generating TypeScript definitions</a>.</p>
 <h2><a class="anchor" aria-hidden="true" id="writing-tests"></a><a href="#writing-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writing Tests</h2>
 <p>Tests are written from a user's perspective. There is an actor (represented as <code>I</code>) which contains actions taken from helpers. A test is written as a sequence of actions performed by actor:</p>
 <pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
@@ -61,11 +66,153 @@ However, because of difference in backends and their limitations, they are not g
 <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Please Login'</span>, <span class="hljs-string">'h1'</span>);
 <span class="hljs-comment">// ...</span>
 </code></pre>
-<p>To list all available commands for current configuration run <code>codeceptjs list</code>
-or enable <a href="#intellisense">auto-completion by generating TypeScript definitions</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="opening-a-page"></a><a href="#opening-a-page" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Opening a Page</h3>
+<p>A test should usually start with navigating browser to the website.</p>
+<p>Start a test by opening a page. Use <code>I.amOnPage()</code> command for this:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// When "http://site.com" is url in config</span>
+<span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>); <span class="hljs-comment">// -&gt; opens http://site.com/</span>
+<span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/about'</span>); <span class="hljs-comment">// -&gt; opens http://site.com/about</span>
+<span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'https://google.com'</span>); <span class="hljs-comment">// -&gt; https://google.com</span>
+</code></pre>
+<p>When URL doesn't start with a protocol (http:// or https://) it is considered to be a relative URL and appended to URL which was initially set in the config.</p>
 <blockquote>
-<p>For most helpers basic actions like <code>amOnPage</code>, <code>fillField</code>, <code>click</code> are the same.
-Proceed to <a href="https://codecept.io/acceptance/">Acceptance Testing Chapter</a> to learn how to use them.</p>
+<p>It is recommended to use relative URLs and keep base URL in config file, so you could easily switch between development, staging, and production environments.</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="locating-element"></a><a href="#locating-element" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Locating Element</h3>
+<p>Element can be found by CSS or XPath locators.</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'.user'</span>); <span class="hljs-comment">// element with CSS class user</span>
+<span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'//button[contains(., "press me")]'</span>); <span class="hljs-comment">// button</span>
+</code></pre>
+<p>By default CodeceptJS tries to guess the locator type.
+In order to specify exact locator type you can pass an object called <strong>strict locator</strong>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeElement({<span class="hljs-attr">css</span>: <span class="hljs-string">'div.user'</span>});
+<span class="hljs-built_in">I</span>.seeElement({<span class="hljs-attr">xpath</span>: <span class="hljs-string">'//div[@class=user]'</span>});
+</code></pre>
+<p>Strict locators allow to specify additional locator types:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// locate form element by name</span>
+<span class="hljs-built_in">I</span>.seeElement({<span class="hljs-attr">name</span>: <span class="hljs-string">'password'</span>});
+<span class="hljs-comment">// locate element by id</span>
+<span class="hljs-built_in">I</span>.seeElement({<span class="hljs-attr">id</span>: <span class="hljs-string">'users'</span>});
+<span class="hljs-comment">// locate element by React component and props</span>
+<span class="hljs-built_in">I</span>.seeElement({<span class="hljs-attr">react</span>: <span class="hljs-string">'user-profile'</span>, <span class="hljs-attr">props</span>: {<span class="hljs-attr">name</span>: <span class="hljs-string">'davert'</span>}});
+</code></pre>
+<p>In <a href="http://codecept.io/mobile/#locating-elements">mobile testing</a> you can use <code>~</code> to specify accessibility id to locate an element. In web application you can locate element by their <code>aria-label</code> value.</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// locate element by [aria-label] attribute in web</span>
+<span class="hljs-comment">// or by accessibility id in mobile</span>
+<span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'~username'</span>);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="clicking"></a><a href="#clicking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Clicking</h3>
+<p>CodeceptJS provides a flexible syntax to specify an element to click.</p>
+<p>By default CodeceptJS tries to find button or link with exact text on it</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// search for link or button</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
+</code></pre>
+<p>If none found, CodeceptJS tries to find link or button containing that text. In case an image is clickable its <code>alt</code> attribute will be checked for text inclusion. Form buttons will also be searched by name.</p>
+<p>To narrow down the results you can specify a context in second parameter.</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>, <span class="hljs-string">'.nav'</span>); <span class="hljs-comment">// search only in .nav</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>, {<span class="hljs-attr">css</span>: <span class="hljs-string">'footer'</span>}); <span class="hljs-comment">// search only in footer</span>
+</code></pre>
+<blockquote>
+<p>To skip guessing locator type pass in a strict locator. A locator starting with '#' or '.' is considered to be CSS. Locator starting with '//' or './/' is considered to be XPath.</p>
+</blockquote>
+<p>You are not limited to buttons and links. Any element can be found by passing in valid CSS or XPath:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// click element by CSS</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'#signup'</span>);
+<span class="hljs-comment">// click element located by special test-id attribute</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'//dev[@test-id="myid"]'</span>);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="filling-fields"></a><a href="#filling-fields" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Filling Fields</h3>
+<p>Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most routine waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.</p>
+<p>Let's submit this sample form for a test:</p>
+<pre><code class="hljs css language-html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"post"</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"/update"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"update_form"</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"user_name"</span>&gt;</span>Name<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"user[name]"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user_name"</span> /&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"user_email"</span>&gt;</span>Email<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"user[email]"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user_email"</span> /&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"user_gender"</span>&gt;</span>Gender<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"user_gender"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"user[gender]"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"m"</span>&gt;</span>Male<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"f"</span>&gt;</span>Female<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+     <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"submitButton"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Update"</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+</code></pre>
+<p>We need to fill in all those fields and click &quot;Update&quot; button. CodeceptJS matches form elements by their label, name, or by CSS or XPath locators.</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// we are using label to match user_name field</span>
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Name'</span>, <span class="hljs-string">'Miles'</span>);
+<span class="hljs-comment">// we can use input name</span>
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'user[email]'</span>,<span class="hljs-string">'miles@davis.com'</span>);
+<span class="hljs-comment">// select element by label, choose option by text</span>
+<span class="hljs-built_in">I</span>.selectOption(<span class="hljs-string">'Gender'</span>,<span class="hljs-string">'Male'</span>);
+<span class="hljs-comment">// click 'Update' button, found by text</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Update'</span>);
+</code></pre>
+<p>Alternative scenario:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// we are using CSS</span>
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'#user_name'</span>, <span class="hljs-string">'Miles'</span>);
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'#user_email'</span>,<span class="hljs-string">'miles@davis.com'</span>);
+<span class="hljs-comment">// select element by label, option by value</span>
+<span class="hljs-built_in">I</span>.selectOption(<span class="hljs-string">'#user_gender'</span>,<span class="hljs-string">'m'</span>);
+<span class="hljs-comment">// click 'Update' button, found by name</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'submitButton'</span>, <span class="hljs-string">'#update_form'</span>);
+</code></pre>
+<p>To fill in sensitive data use <code>secret</code> function:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, secret(<span class="hljs-string">'123456'</span>));
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="assertions"></a><a href="#assertions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Assertions</h3>
+<p>In order to verify the expected behavior of a web application, a content should be checked.
+CodeceptJS provides built-in assertions for that. They start with <code>see</code> (or <code>dontSee</code>) prefix.</p>
+<p>The most general and common assertion is <code>see</code>, which checks visilibility of a text on a page:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// Just a visible text on a page</span>
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello'</span>);
+<span class="hljs-comment">// text inside .msg element</span>
+<span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello'</span>, <span class="hljs-string">'.msg'</span>);
+<span class="hljs-comment">// opposite</span>
+<span class="hljs-built_in">I</span>.dontSee(<span class="hljs-string">'Bye'</span>);
+</code></pre>
+<p>You should provide a text as first argument and optionally a locator to search for a text in a context.</p>
+<p>You can check that specific element exists (or not) on a page, as it was described in <a href="#locating-element">Locating Element</a> section.</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'.notice'</span>);
+<span class="hljs-built_in">I</span>.dontSeeElement(<span class="hljs-string">'.error'</span>);
+</code></pre>
+<p>Additional assertions:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.seeInCurrentUrl(<span class="hljs-string">'/user/miles'</span>);
+<span class="hljs-built_in">I</span>.seeInField(<span class="hljs-string">'user[name]'</span>, <span class="hljs-string">'Miles'</span>);
+<span class="hljs-built_in">I</span>.seeInTitle(<span class="hljs-string">'My Website'</span>);
+</code></pre>
+<p>To see all possible assertions see the helper's reference.</p>
+<h3><a class="anchor" aria-hidden="true" id="grabbing"></a><a href="#grabbing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Grabbing</h3>
+<p>Sometimes you need to retrieve a data from a page to use it in next steps of a scenario.
+Imagine, application generates a password and you want to ensure that user can login using this password.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'login with generated password'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'email'</span>, <span class="hljs-string">'miles@davis.com'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Generate Password'</span>);
+  <span class="hljs-keyword">const</span> password = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.grabTextFrom(<span class="hljs-string">'#password'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Login'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'email'</span>, <span class="hljs-string">'miles@davis.com'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, password);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Log in!'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello, Miles'</span>);
+});
+</code></pre>
+<p><code>grabTextFrom</code> action is used here to retrieve text from an element. All actions starting with <code>grab</code> prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with <code>await</code> keyword of ES6. To make it work your test should be written inside a async function (notice <code>async</code> in its definition).</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'use page title'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-keyword">const</span> password = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.grabTextFrom(<span class="hljs-string">'#password'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'password'</span>, password);
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="waiting"></a><a href="#waiting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Waiting</h3>
+<p>In modern web applications rendering is happen on client side.
+Sometimes that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
+To handle this cases <code>wait*</code> methods introduced.</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.waitForElement(<span class="hljs-string">'#agree_button'</span>, <span class="hljs-number">30</span>); <span class="hljs-comment">// secs</span>
+<span class="hljs-comment">// clicks a button only when it is visible</span>
+<span class="hljs-built_in">I</span>.click(<span class="hljs-string">'#agree_button'</span>);
+</code></pre>
+<hr>
+<blockquote>
+<p>See the <a href="https://codecept.io/reference">reference</a> for a complete list of all available commands of a helper you use.</p>
 </blockquote>
 <h2><a class="anchor" aria-hidden="true" id="how-it-works"></a><a href="#how-it-works" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h2>
 <p>Tests are written in a synchronous way. This improves the readability and maintainability of tests.
@@ -276,7 +423,7 @@ You can set number of a retries for a feature:</p>
 </code></pre>
 <p>Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-6-3</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/examples"><span class="arrow-prev">← </span><span>Examples</span></a><a class="docs-next button" href="/acceptance"><span>Acceptance Testing</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#architecture">Architecture</a></li><li><a href="#writing-tests">Writing Tests</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#running-tests">Running Tests</a><ul class="toc-headings"><li><a href="#level-of-detail">Level of Detail</a></li><li><a href="#filter">Filter</a></li></ul></li><li><a href="#debug">Debug</a><ul class="toc-headings"><li><a href="#pause">Pause</a></li><li><a href="#screenshot-on-failure">Screenshot on failure</a></li><li><a href="#step-by-step-report">Step By Step Report</a></li></ul></li><li><a href="#before">Before</a></li><li><a href="#beforesuite">BeforeSuite</a></li><li><a href="#within">Within</a></li><li><a href="#comments">Comments</a></li><li><a href="#intellisense">IntelliSense</a></li><li><a href="#skipping">Skipping</a></li><li><a href="#retries">Retries</a><ul class="toc-headings"><li><a href="#retry-step">Retry Step</a></li><li><a href="#auto-retry">Auto Retry</a></li><li><a href="#retry-scenario">Retry Scenario</a></li><li><a href="#retry-feature">Retry Feature</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-6-3</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/examples"><span class="arrow-prev">← </span><span>Examples</span></a><a class="docs-next button" href="/acceptance"><span>Acceptance Testing</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#architecture">Architecture</a></li><li><a href="#writing-tests">Writing Tests</a><ul class="toc-headings"><li><a href="#opening-a-page">Opening a Page</a></li><li><a href="#locating-element">Locating Element</a></li><li><a href="#clicking">Clicking</a></li><li><a href="#filling-fields">Filling Fields</a></li><li><a href="#assertions">Assertions</a></li><li><a href="#grabbing">Grabbing</a></li><li><a href="#waiting">Waiting</a></li></ul></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#running-tests">Running Tests</a><ul class="toc-headings"><li><a href="#level-of-detail">Level of Detail</a></li><li><a href="#filter">Filter</a></li></ul></li><li><a href="#debug">Debug</a><ul class="toc-headings"><li><a href="#pause">Pause</a></li><li><a href="#screenshot-on-failure">Screenshot on failure</a></li><li><a href="#step-by-step-report">Step By Step Report</a></li></ul></li><li><a href="#before">Before</a></li><li><a href="#beforesuite">BeforeSuite</a></li><li><a href="#within">Within</a></li><li><a href="#comments">Comments</a></li><li><a href="#intellisense">IntelliSense</a></li><li><a href="#skipping">Skipping</a></li><li><a href="#retries">Retries</a><ul class="toc-headings"><li><a href="#retry-step">Retry Step</a></li><li><a href="#auto-retry">Auto Retry</a></li><li><a href="#retry-scenario">Retry Scenario</a></li><li><a href="#retry-feature">Retry Feature</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
