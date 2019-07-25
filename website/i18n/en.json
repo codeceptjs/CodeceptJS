@@ -59,6 +59,9 @@
       "data": {
         "title": "Data Management"
       },
+      "detox": {
+        "title": "Testing React Native with Detox"
+      },
       "docker": {
         "title": "Docker"
       },
@@ -73,6 +76,9 @@
       },
       "helpers/Appium": {
         "title": "Appium"
+      },
+      "helpers/Detox": {
+        "title": "Detox"
       },
       "helpers/FileSystem": {
         "title": "FileSystem"
