@@ -50,14 +50,14 @@ describe('Protractor', function () {
   afterEach(() => I._after());
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', () => {
-      I.amOnPage('/');
-      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
+    it('should open main page of configured site', async () => {
+      await I.amOnPage('/');
+      expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
     });
 
-    it('should open absolute url', () => {
-      I.amOnPage(siteUrl);
-      return expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
+    it('should open absolute url', async () => {
+      await I.amOnPage(siteUrl);
+      expect(browser.getCurrentUrl()).to.eventually.equal(`${siteUrl}/#/`);
     });
   });
 
@@ -65,13 +65,13 @@ describe('Protractor', function () {
     it('should check for url fragment', async () => {
       await I.amOnPage(`${siteUrl}/#/info`);
       await I.seeInCurrentUrl('/info');
-      return I.dontSeeInCurrentUrl('/result');
+      await I.dontSeeInCurrentUrl('/result');
     });
 
     it('should check for equality', async () => {
       await I.amOnPage('/#/info');
       await I.seeCurrentUrlEquals('/#/info');
-      return I.dontSeeCurrentUrlEquals('/#/result');
+      await I.dontSeeCurrentUrlEquals('/#/result');
     });
   });
 
@@ -79,14 +79,14 @@ describe('Protractor', function () {
     it('should check text on site', async () => {
       await I.amOnPage('/');
       await I.see('Description');
-      return I.dontSee('Create Event Today');
+      await I.dontSee('Create Event Today');
     });
 
     it('should check text inside element', async () => {
       await I.amOnPage('/#/info');
       await I.see('About', 'h1');
       await I.see('Welcome to event app', { css: 'p.jumbotron' });
-      return I.see('Back to form', '//div/a');
+      await I.see('Back to form', '//div/a');
     });
   });
 
@@ -95,7 +95,7 @@ describe('Protractor', function () {
       await I.amOnPage('/');
       await I.seeElement('.btn.btn-primary');
       await I.seeElement({ css: '.btn.btn-primary' });
-      return I.dontSeeElement({ css: '.btn.btn-secondary' });
+      await I.dontSeeElement({ css: '.btn.btn-secondary' });
     });
   });
 
@@ -104,43 +104,43 @@ describe('Protractor', function () {
       await I.amOnPage('/');
       await I.dontSeeInCurrentUrl('/info');
       await I.click('Get more info!');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click by css', async () => {
       await I.amOnPage('/');
       await I.click('.btn-primary');
-      return I.seeInCurrentUrl('/result');
+      await I.seeInCurrentUrl('/result');
     });
 
     it('should click by non-optimal css', async () => {
       await I.amOnPage('/');
       await I.click('form a.btn');
-      return I.seeInCurrentUrl('/result');
+      await I.seeInCurrentUrl('/result');
     });
 
     it('should click by xpath', async () => {
       await I.amOnPage('/');
       await I.click('//a[contains(., "more info")]');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click on context', async () => {
       await I.amOnPage('/');
       await I.click('.btn-primary', 'form');
-      return I.seeInCurrentUrl('/result');
+      await I.seeInCurrentUrl('/result');
     });
 
     it('should click link with inner span', async () => {
       await I.amOnPage('/#/result');
       await I.click('Go to info');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click buttons as links', async () => {
       await I.amOnPage('/');
       await I.click('Options');
-      return I.seeInCurrentUrl('/options');
+      await I.seeInCurrentUrl('/options');
     });
   });
 
@@ -149,26 +149,26 @@ describe('Protractor', function () {
       await I.amOnPage('/#/options');
       await I.dontSee('Accepted', '#terms');
       await I.checkOption('.checkboxes .real');
-      return I.see('Accepted', '#terms');
+      await I.see('Accepted', '#terms');
     });
 
     it('should check option by strict locator', async () => {
       await I.amOnPage('/#/options');
       await I.checkOption({ className: 'real' });
-      return I.see('Accepted', '#terms');
+      await I.see('Accepted', '#terms');
     });
 
     it('should check option by name', async () => {
       await I.amOnPage('/#/options');
       await I.checkOption('agree');
-      return I.see('Accepted', '#terms');
+      await I.see('Accepted', '#terms');
     });
 
     it('should check option by label', async () => {
       await I.amOnPage('/');
       await I.checkOption('Designers');
       await I.click('Submit');
-      return assertFormContains('for[0]', 'designers');
+      await assertFormContains('for[0]', 'designers');
     });
   });
 
@@ -177,28 +177,28 @@ describe('Protractor', function () {
       await I.amOnPage('/');
       await I.selectOption('form select', 'Iron Man');
       await I.click('Submit');
-      return assertFormContains('speaker1', 'iron_man');
+      await assertFormContains('speaker1', 'iron_man');
     });
 
     it('should select option by label', async () => {
       await I.amOnPage('/');
       await I.selectOption('Guest Speaker', 'Captain America');
       await I.click('Submit');
-      return assertFormContains('speaker1', 'captain_america');
+      await assertFormContains('speaker1', 'captain_america');
     });
 
     it('should select option by label and value', async () => {
       await I.amOnPage('/');
       await I.selectOption('Guest Speaker', 'string:captain_america');
       await I.click('Submit');
-      return assertFormContains('speaker1', 'captain_america');
+      await assertFormContains('speaker1', 'captain_america');
     });
 
     it('should select option in grouped select', async () => {
       await I.amOnPage('/');
       await I.selectOption('Speaker', 'Captain America');
       await I.click('Submit');
-      return assertFormContains('speaker2', 'captain_america');
+      await assertFormContains('speaker2', 'captain_america');
     });
   });
 
@@ -207,79 +207,81 @@ describe('Protractor', function () {
       await I.amOnPage('/');
       await I.fillField('Name', 'Jon Doe');
       await I.click('Submit');
-      return assertFormContains('name', 'Jon Doe');
+      await assertFormContains('name', 'Jon Doe');
     });
 
     it('should fill textarea by label', async () => {
       await I.amOnPage('/');
       await I.fillField('Description', 'Just the best event');
       await I.click('Submit');
-      return assertFormContains('description', 'Just the best event');
+      await assertFormContains('description', 'Just the best event');
     });
 
     it('should fill field by placeholder', async () => {
       await I.amOnPage('/');
       await I.fillField('Please enter a name', 'Jon Doe');
       await I.click('Submit');
-      return assertFormContains('name', 'Jon Doe');
+      await assertFormContains('name', 'Jon Doe');
     });
 
     it('should fill field by css ', async () => {
       await I.amOnPage('/#/options');
       await I.fillField('input.code', '0123456');
-      return I.see('Code: 0123456');
+      await I.see('Code: 0123456');
     });
 
     it('should fill field by model ', async () => {
       await I.amOnPage('/#/options');
       await I.fillField({ model: 'license' }, 'AAABBB');
-      return I.see('AAABBB', '.results');
+      await I.see('AAABBB', '.results');
     });
 
     it('should fill field by name ', async () => {
       await I.amOnPage('/#/options');
       await I.fillField('mylicense', 'AAABBB');
-      return I.see('AAABBB', '.results');
+      await I.see('AAABBB', '.results');
     });
 
     it('should fill textarea by name ', async () => {
       await I.amOnPage('/#/options');
       await I.fillField('sshkey', 'hellossh');
-      return I.see('hellossh', '.results');
+      await I.see('hellossh', '.results');
     });
 
     it('should fill textarea by css ', async () => {
       await I.amOnPage('/#/options');
       await I.fillField('.inputs textarea', 'hellossh');
-      return I.see('SSH Public Key: hellossh', '.results');
+      await I.see('SSH Public Key: hellossh', '.results');
     });
 
     it('should fill textarea by model', async () => {
       await I.amOnPage('/#/options');
       await I.fillField({ model: 'ssh' }, 'hellossh');
-      return I.see('SSH Public Key: hellossh', '.results');
+      await I.see('SSH Public Key: hellossh', '.results');
     });
 
     it('should append value to field', async () => {
       await I.amOnPage('/#/options');
       await I.appendField({ model: 'ssh' }, 'hellossh');
-      return I.see('SSH Public Key: PUBLIC-SSH-KEYhellossh', '.results');
+      await I.see('SSH Public Key: PUBLIC-SSH-KEYhellossh', '.results');
     });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', async () => {
       await I.amOnPage('/#/options');
-      return I.seeInField('code', '');
+      await I.seeInField('code', '');
     });
 
     it('should throw error if field is not empty', async () => {
       await I.amOnPage('/#/options');
-      return I.seeInField('#ssh', 'something')
-        .catch((e) => {
-          e.should.be.instanceOf(AssertionFailedError);
-          e.inspect().should.be.equal('expected field by #ssh to include "something"');
-        });
+
+      try {
+        await I.seeInField('#ssh', 'something');
+      } catch (e) {
+        e.should.be.instanceOf(AssertionFailedError);
+        e.inspect().should.be.equal('expected field by #ssh to include "something"');
+      }
     });
 
     it('should check field equals', async () => {
@@ -287,19 +289,19 @@ describe('Protractor', function () {
       await I.seeInField({ model: 'ssh' }, 'PUBLIC-SSH-KEY');
       await I.seeInField('#ssh', 'PUBLIC-SSH-KEY');
       await I.seeInField('sshkey', 'PUBLIC-SSH-KEY');
-      return I.dontSeeInField('sshkey', 'PUBLIC-SSL-KEY');
+      await I.dontSeeInField('sshkey', 'PUBLIC-SSL-KEY');
     });
 
     it('should check values in select', async () => {
       await I.amOnPage('/#/options');
-      return I.seeInField('auth', 'SSH');
+      await I.seeInField('auth', 'SSH');
     });
 
     it('should check checkbox is checked :)', async () => {
       await I.amOnPage('/#/options');
       await I.seeCheckboxIsChecked('notagree');
       await I.dontSeeCheckboxIsChecked({ model: 'agree' });
-      return I.dontSeeCheckboxIsChecked('#agreenot');
+      await I.dontSeeCheckboxIsChecked('#agreenot');
     });
   });
 
@@ -307,37 +309,37 @@ describe('Protractor', function () {
     it('should grab text from page', async () => {
       await I.amOnPage('/#/info');
       const val = await I.grabTextFrom('p.jumbotron');
-      return expect(val).to.equal('Welcome to event app');
+      expect(val).to.equal('Welcome to event app');
     });
 
     it('should grab value from field', async () => {
       await I.amOnPage('/#/options');
       const val = await I.grabValueFrom('#ssh');
-      return expect(val).to.equal('PUBLIC-SSH-KEY');
+      expect(val).to.equal('PUBLIC-SSH-KEY');
     });
 
     it('should grab value from select', async () => {
       await I.amOnPage('/#/options');
       const val = await I.grabValueFrom('auth');
-      return expect(val).to.equal('ssh');
+      expect(val).to.equal('ssh');
     });
 
     it('should grab attribute from element', async () => {
       await I.amOnPage('/#/info');
       const val = await I.grabAttributeFrom('a.btn', 'ng-href');
-      return expect(val).to.equal('#/');
+      expect(val).to.equal('#/');
     });
   });
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle, #seeTitleEquals', () => {
     it('should check page title', async () => {
       await I.amOnPage('/');
-      return I.seeInTitle('Event App');
+      await I.seeInTitle('Event App');
     });
 
     it('should grab page title', async () => {
       await I.amOnPage('/');
-      return expect(I.grabTitle()).to.eventually.equal('Event App');
+      expect(I.grabTitle()).to.eventually.equal('Event App');
     });
 
     it('should check that title is equal to provided one', () => I.amOnPage('/')
@@ -368,13 +370,13 @@ describe('Protractor', function () {
     it('should create a screenshot file in output dir', async () => {
       await I.amOnPage('/');
       await I.saveScreenshot('protractor_user.png');
-      return assert.ok(fileExists(path.join(output_dir, 'protractor_user.png')), null, 'file does not exists');
+      assert.ok(fileExists(path.join(output_dir, 'protractor_user.png')), null, 'file does not exists');
     });
 
     it('should create full page a screenshot file in output dir', async () => {
       await I.amOnPage('/');
       await I.saveScreenshot('protractor_user_full.png', true);
-      return assert.ok(fileExists(path.join(output_dir, 'protractor_user_full.png')), null, 'file does not exists');
+      assert.ok(fileExists(path.join(output_dir, 'protractor_user_full.png')), null, 'file does not exists');
     });
   });
 
@@ -480,7 +482,7 @@ describe('Protractor', function () {
     it('should check for text to be in HTML source', async () => {
       await I.amOnPage('/');
       await I.seeInSource('<meta charset="utf-8"');
-      return I.dontSeeInSource('<article');
+      await I.dontSeeInSource('<article');
     });
 
     it('should grab the source', async () => {
@@ -505,7 +507,7 @@ describe('Protractor', function () {
       await I.amOutsideAngularApp();
       await I.amOnPage(web_app_url);
       await I.click('More info');
-      return I.see('Information', 'h1');
+      await I.see('Information', 'h1');
     });
 
     it('should switch between applications', async () => {
@@ -515,7 +517,7 @@ describe('Protractor', function () {
       await I.amInsideAngularApp();
       await I.amOnPage('/');
       await I.seeInCurrentUrl(siteUrl);
-      return I.see('Create Event');
+      await I.see('Create Event');
     });
   });
 
@@ -536,34 +538,38 @@ describe('Protractor', function () {
     it('should wait for text', async () => {
       await I.dontSee('Boom!');
       await I.waitForText('Boom!', 2);
-      return I.see('Boom!');
+      await I.see('Boom!');
     });
 
     it('should wait for text in context', async () => {
       await I.dontSee('Boom!');
       await I.waitForText('Boom!', 2, '#hello');
-      return I.see('Boom!');
+      await I.see('Boom!');
     });
 
     it('should return error if not present', async () => {
-      return I.waitForText('Nothing here', 0, '#hello')
-        .then(() => { throw new Error('😟'); })
-        .catch((e) => {
-          e.message.should.include('Wait timed out');
-        });
+      try {
+        await I.waitForText('Nothing here', 0, '#hello');
+        throw new Error('😟');
+      } catch (e) {
+        e.message.should.include('Wait timed out');
+      }
     });
 
     it('should return error if waiting is too small', async () => {
-      return I.waitForText('Boom!', 0.5)
-        .then(() => { throw new Error('😟'); })
-        .catch((e) => {
-          e.message.should.include('Wait timed out');
-        });
+      try {
+        await I.waitForText('Boom!', 0.5);
+        throw new Error('😟');
+      } catch (e) {
+        e.message.should.include('Wait timed out');
+      }
     });
 
     describe('#seeNumberOfElements', () => {
-      it('should return 1 as count', () => I.amOnPage('/')
-        .then(() => I.seeNumberOfElements('h1', 1)));
+      it('should return 1 as count', async () => {
+        await I.amOnPage('/');
+        await I.seeNumberOfElements('h1', 1);
+      });
     });
   });
 });

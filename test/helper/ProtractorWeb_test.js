@@ -78,19 +78,19 @@ describe('Protractor-NonAngular', function () {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
       const url = await browser.getCurrentUrl();
-      return url.should.eql(`${siteUrl}/`);
+      url.should.eql(`${siteUrl}/`);
     });
 
     it('should open any page of configured site', async () => {
       await I.amOnPage('/info');
       const url = await browser.getCurrentUrl();
-      return url.should.eql(`${siteUrl}/info`);
+      url.should.eql(`${siteUrl}/info`);
     });
 
     it('should open absolute url', async () => {
       await I.amOnPage(siteUrl);
       const url = await browser.getCurrentUrl();
-      return url.should.eql(`${siteUrl}/`);
+      url.should.eql(`${siteUrl}/`);
     });
   });
 
@@ -102,7 +102,7 @@ describe('Protractor-NonAngular', function () {
       await I.pressKey('Delete');
       await I.pressKey(['Shift', '111']);
       await I.pressKey('1');
-      return I.seeInField('Name', '!!!1');
+      await I.seeInField('Name', '!!!1');
     });
   });
 
@@ -360,7 +360,7 @@ describe('Protractor-NonAngular', function () {
     it('should not locate a non-existing checkbox using _locateClickable', async () => {
       await I.amOnPage('/form/checkbox');
       try {
-        const els = await I._locateClickable('I disagree');
+        await I._locateClickable('I disagree');
         throw Error('Should not get this far');
       } catch (e) {
         e.message.should.include = 'No element found using locator:';
@@ -378,7 +378,7 @@ describe('Protractor-NonAngular', function () {
     it('should not locate a non-existing checkbox', async () => {
       await I.amOnPage('/form/checkbox');
       try {
-        const els = await I._locateCheckable('I Agree');
+        await I._locateCheckable('I Agree');
         throw Error('Should not get this far');
       } catch (e) {
         e.message.should.include = 'No element found using locator:';

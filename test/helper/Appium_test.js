@@ -1,15 +1,13 @@
-const Appium = require('../../lib/helper/Appium');
-
-let app;
 const assert = require('assert');
 const expect = require('chai').expect;
 const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
+
+const Appium = require('../../lib/helper/Appium');
 const AssertionFailedError = require('../../lib/assert/error');
+const fileExists = require('../../lib/utils').fileExists;
 
+let app;
 const apk_path = 'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk';
-
 
 describe('Appium', function () {
   // this.retries(1);
@@ -87,54 +85,74 @@ describe('Appium', function () {
       },
     );
 
-    it('should remove App and install it again', () => app.seeAppIsInstalled('io.selendroid.testapp')
-      .then(() => app.removeApp('io.selendroid.testapp'))
-      .then(() => app.seeAppIsNotInstalled('io.selendroid.testapp'))
-      .then(() => app.installApp(apk_path))
-      .then(() => app.seeAppIsInstalled('io.selendroid.testapp')));
+    it('should remove App and install it again', async () => {
+      await app.seeAppIsInstalled('io.selendroid.testapp');
+      await app.removeApp('io.selendroid.testapp');
+      await app.seeAppIsNotInstalled('io.selendroid.testapp');
+      await app.installApp(apk_path);
+      await app.seeAppIsInstalled('io.selendroid.testapp');
+    });
 
-    it('should assert when app is/is not installed', () => app.seeAppIsInstalled('io.super.app')
-      .catch((e) => {
+    it('should assert when app is/is not installed', async () => {
+      try {
+        await app.seeAppIsInstalled('io.super.app');
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('expected app io.super.app to be installed');
-      })
-      .then(() => app.seeAppIsNotInstalled('io.selendroid.testapp'))
-      .catch((e) => {
+      }
+
+      try {
+        await app.seeAppIsNotInstalled('io.selendroid.testapp');
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('expected app io.selendroid.testapp not to be installed');
-      }));
+      }
+    });
   });
 
   describe('see seeCurrentActivity: #seeCurrentActivityIs', () => {
-    it('should return .HomeScreenActivity for default screen', () => app.seeCurrentActivityIs('.HomeScreenActivity'));
+    it('should return .HomeScreenActivity for default screen', async () => {
+      await app.seeCurrentActivityIs('.HomeScreenActivity');
+    });
 
-    it('should assert for wrong screen', () => app.seeCurrentActivityIs('.SuperScreen')
-      .catch((e) => {
+    it('should assert for wrong screen', async () => {
+      try {
+        await app.seeCurrentActivityIs('.SuperScreen');
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('expected current activity to be .SuperScreen');
-      }));
+      }
+    });
   });
 
   describe('device lock : #seeDeviceIsLocked, #seeDeviceIsUnlocked', () => {
-    it('should return correct status about lock @second', () => app.seeDeviceIsUnlocked()
-      .then(() => app.seeDeviceIsLocked())
-      .catch((e) => {
+    it('should return correct status about lock @second', async () => {
+      await app.seeDeviceIsUnlocked();
+      try {
+        await app.seeDeviceIsLocked();
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('expected device to be locked');
-      }));
+      }
+    });
   });
 
   describe('device orientation : #seeOrientationIs #setOrientation', () => {
-    it('should return correct status about lock', () => app.seeOrientationIs('PORTRAIT')
-      .then(() => app.seeOrientationIs('LANDSCAPE'))
-      .catch((e) => {
+    it('should return correct status about lock', async () => {
+      await app.seeOrientationIs('PORTRAIT');
+      try {
+        await app.seeOrientationIs('LANDSCAPE');
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('expected orientation to be LANDSCAPE');
-      }));
+      }
+    });
 
-    it('should set device orientation', () => app.click('~buttonStartWebviewCD')
-      .then(() => app.setOrientation('LANDSCAPE'))
-      .then(() => app.seeOrientationIs('LANDSCAPE')));
+    it('should set device orientation', async () => {
+      await app.click('~buttonStartWebviewCD');
+      await app.setOrientation('LANDSCAPE');
+      await app.seeOrientationIs('LANDSCAPE');
+    });
   });
 
   describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
@@ -181,35 +199,44 @@ describe('Appium', function () {
   });
 
   describe('#hideDeviceKeyboard', () => {
-    it('should hide device Keyboard @quick', () => app.click('~startUserRegistrationCD')
-      .then(() => app.click('//android.widget.CheckBox'))
-      .catch((e) => {
+    it('should hide device Keyboard @quick', async () => {
+      await app.click('~startUserRegistrationCD');
+      try {
+        await app.click('//android.widget.CheckBox');
+      } catch (e) {
         e.message.should.include('element');
-      })
-      .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
-      .then(() => app.click('//android.widget.CheckBox')));
+      }
+      await app.hideDeviceKeyboard('pressKey', 'Done');
+      await app.click('//android.widget.CheckBox');
+    });
 
-    it('should assert if no keyboard', () => app.hideDeviceKeyboard('pressKey', 'Done')
-      .catch((e) => {
+    it('should assert if no keyboard', async () => {
+      try {
+        await app.hideDeviceKeyboard('pressKey', 'Done');
+      } catch (e) {
         e.message.should.include('An unknown server-side error occurred while processing the command. Original error: Soft keyboard not present, cannot hide keyboard');
-      }));
+      }
+    });
   });
 
   describe('#sendDeviceKeyEvent', () => {
     it('should react on pressing keycode', async () => {
-      return app.sendDeviceKeyEvent(3)
-        .then(() => app.waitForVisible('~Apps'));
+      await app.sendDeviceKeyEvent(3);
+      await app.waitForVisible('~Apps');
     });
   });
 
   describe('#openNotifications', () => {
-    it('should react on notification opening', () => app.seeElement('//android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"]')
-      .catch((e) => {
+    it('should react on notification opening', async () => {
+      try {
+        await app.seeElement('//android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"]');
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('expected elements of //android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"] to be seen');
-      })
-      .then(() => app.openNotifications())
-      .then(() => app.waitForVisible('//android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"]', 10)));
+      }
+      await app.openNotifications();
+      await app.waitForVisible('//android.widget.FrameLayout[@resource-id="com.android.systemui:id/quick_settings_container"]', 10);
+    });
   });
 
   describe('#makeTouchAction', () => {
@@ -328,14 +355,17 @@ describe('Appium', function () {
       assert.equal(val, '.HomeScreenActivity');
     });
 
-    it('should assert when you dont scroll the document anymore', () => app.click('~startUserRegistrationCD')
-      .then(() => app.swipeTo(
-        '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up',
-        30, 100, 500,
-      ))
-      .catch((e) => {
+    it('should assert when you dont scroll the document anymore', async () => {
+      await app.click('~startUserRegistrationCD');
+      try {
+        await app.swipeTo(
+          '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up',
+          30, 100, 500,
+        );
+      } catch (e) {
         e.message.should.include('Scroll to the end and element android.widget.CheckBox was not found');
-      }));
+      }
+    });
 
     it('should react on swipeTo action', async () => {
       await app.click('~startUserRegistrationCD');
@@ -403,21 +433,23 @@ describe('Appium', function () {
   describe('#pullFile', () => {
     it('should pull file to local machine', async () => {
       const savepath = path.join(__dirname, `/../data/output/testpullfile${new Date().getTime()}.png`);
-      return app.pullFile('/storage/emulated/0/DCIM/sauce_logo.png', savepath)
-        .then(() => assert.ok(fileExists(savepath), null, 'file does not exists'));
+      await app.pullFile('/storage/emulated/0/DCIM/sauce_logo.png', savepath);
+      assert.ok(fileExists(savepath), null, 'file does not exists');
     });
   });
 
 
   describe('see text : #see', () => {
-    it('should work inside elements @second', () => app.see('EN Button', '~buttonTestCD')
-      .then(() => app.see('Hello'))
-      .then(() => app.dontSee('Welcome', '~buttonTestCD')));
+    it('should work inside elements @second', async () => {
+      await app.see('EN Button', '~buttonTestCD');
+      await app.see('Hello');
+      await app.dontSee('Welcome', '~buttonTestCD');
+    });
 
     it('should work inside web view as normally @quick', async () => {
       await app.click('~buttonStartWebviewCD');
       await app.switchToWeb();
-      return app.see('Prefered Car:');
+      await app.see('Prefered Car:');
     });
   });
 
@@ -432,7 +464,7 @@ describe('Appium', function () {
         100, 700,
       );
       await app.click('//android.widget.Button');
-      return app.see(
+      await app.see(
         '1',
         '#io.selendroid.testapp:id/label_email_data',
       );
@@ -440,20 +472,27 @@ describe('Appium', function () {
   });
 
   describe('#seeInSource', () => {
-    it('should check for text to be in HTML source', () => app.seeInSource('class="android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"')
-      .then(() => app.dontSeeInSource('<meta')));
+    it('should check for text to be in HTML source', async () => {
+      await app.seeInSource('class="android.widget.Button" package="io.selendroid.testapp" content-desc="buttonTestCD"');
+      await app.dontSeeInSource('<meta');
+    });
   });
 
   describe('#waitForText', () => {
-    it('should return error if not present', () => app.waitForText('Nothing here', 1, '~buttonTestCD')
-      .catch((e) => {
+    it('should return error if not present', async () => {
+      try {
+        await app.waitForText('Nothing here', 1, '~buttonTestCD');
+      } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.be.equal('expected element ~buttonTestCD to include "Nothing here"');
-      }));
+      }
+    });
   });
 
   describe('#seeNumberOfElements @second', () => {
-    it('should return 1 as count', () => app.seeNumberOfElements('~buttonTestCD', 1));
+    it('should return 1 as count', async () => {
+      await app.seeNumberOfElements('~buttonTestCD', 1);
+    });
   });
 
   describe('see element : #seeElement, #dontSeeElement', () => {
@@ -461,36 +500,36 @@ describe('Appium', function () {
       await app.seeElement('~buttonTestCD');
       await app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
       await app.dontSeeElement('#something-beyond');
-      return app.dontSeeElement('//input[@id="something-beyond"]');
+      await app.dontSeeElement('//input[@id="something-beyond"]');
     });
   });
 
   describe('#click @quick', () => {
     it('should click by accessibility id', async () => {
-      return app.click('~startUserRegistrationCD')
-        .then(() => app.seeElement('~label_usernameCD'));
+      await app.click('~startUserRegistrationCD');
+      await app.seeElement('~label_usernameCD');
     });
 
     it('should click by xpath', async () => {
-      return app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
-        .then(() => app.seeElement('~label_usernameCD'));
+      await app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]');
+      await app.seeElement('~label_usernameCD');
     });
   });
 
   describe('#fillField, #appendField @second', () => {
     it('should fill field by accessibility id', async () => {
-      return app.click('~startUserRegistrationCD')
-        .then(() => app.fillField('~email of the customer', 'Nothing special'))
-        .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
-        .then(() => app.swipeTo(
-          '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-          100, 700,
-        ))
-        .then(() => app.click('//android.widget.Button'))
-        .then(() => app.see(
-          'Nothing special',
-          '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
-        ));
+      await app.click('~startUserRegistrationCD');
+      await app.fillField('~email of the customer', 'Nothing special');
+      await app.hideDeviceKeyboard('pressKey', 'Done');
+      await app.swipeTo(
+        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
+        100, 700,
+      );
+      await app.click('//android.widget.Button');
+      await app.see(
+        'Nothing special',
+        '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
+      );
     });
 
     it('should fill field by xpath', async () => {
@@ -526,11 +565,13 @@ describe('Appium', function () {
   });
 
   describe('#clearField', () => {
-    it('should clear a given element', () => app.click('~startUserRegistrationCD')
-      .then(() => app.fillField('~email of the customer', 'Nothing special'))
-      .then(() => app.see('Nothing special', '~email of the customer'))
-      .then(() => app.clearField('~email of the customer'))
-      .then(() => app.dontSee('Nothing special', '~email of the customer')));
+    it('should clear a given element', async () => {
+      await app.click('~startUserRegistrationCD');
+      await app.fillField('~email of the customer', 'Nothing special');
+      await app.see('Nothing special', '~email of the customer');
+      await app.clearField('~email of the customer');
+      await app.dontSee('Nothing special', '~email of the customer');
+    });
   });
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
@@ -541,7 +582,7 @@ describe('Appium', function () {
 
     it('should grab attribute from element', async () => {
       const val = await app.grabAttributeFrom('~buttonTestCD', 'resourceId');
-      return assert.equal(val, 'io.selendroid.testapp:id/buttonTest');
+      assert.equal(val, 'io.selendroid.testapp:id/buttonTest');
     });
   });
 
@@ -550,18 +591,17 @@ describe('Appium', function () {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
 
-    it('should create a screenshot file in output dir', () => {
+    it('should create a screenshot file in output dir', async () => {
       const sec = (new Date()).getUTCMilliseconds();
-      return app.saveScreenshot(`screenshot_${sec}`)
-        .then(() => assert.ok(fileExists(path.join(output_dir, `screenshot_${sec}`)), null, 'file does not exists'));
+      await app.saveScreenshot(`screenshot_${sec}`);
+      assert.ok(fileExists(path.join(output_dir, `screenshot_${sec}`)), null, 'file does not exists');
     });
   });
 
   describe('#runOnIOS, #runOnAndroid, #runInWeb', () => {
-    it('should use Android locators', () => {
-      app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' }).then(() => {
-        app.see('Welcome to register a new User');
-      });
+    it('should use Android locators', async () => {
+      await app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' });
+      await app.see('Welcome to register a new User');
     });
 
     it('should execute only on Android @quick', () => {

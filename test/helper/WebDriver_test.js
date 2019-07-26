@@ -4,7 +4,6 @@ const fs = require('fs');
 
 const TestHelper = require('../support/TestHelper');
 const WebDriver = require('../../lib/helper/WebDriver');
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 

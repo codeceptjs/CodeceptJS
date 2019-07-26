@@ -1,18 +1,7 @@
 const Appium = require('../../lib/helper/Appium');
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
 
-chai.use(chaiAsPromised);
-const expect = chai.expect;
 let I;
 const site_url = 'http://davertmik.github.io';
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
-const AssertionFailedError = require('../../lib/assert/error');
-const webApiTests = require('./webapi');
-const within = require('../../lib/within');
 
 describe('Appium Web', function () {
   this.retries(4);
@@ -56,13 +45,13 @@ describe('Appium Web', function () {
     it('should check for url fragment', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       await I.seeInCurrentUrl('/info');
-      return I.dontSeeInCurrentUrl('/result');
+      await I.dontSeeInCurrentUrl('/result');
     });
 
     it('should check for equality', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       await I.seeCurrentUrlEquals('/angular-demo-app/#/info');
-      return I.dontSeeCurrentUrlEquals('/angular-demo-app/#/result');
+      await I.dontSeeCurrentUrlEquals('/angular-demo-app/#/result');
     });
   });
 
@@ -70,14 +59,14 @@ describe('Appium Web', function () {
     it('should check text on site', async () => {
       await I.amOnPage('/angular-demo-app/');
       await I.see('Description');
-      return I.dontSee('Create Event Today');
+      await I.dontSee('Create Event Today');
     });
 
     it('should check text inside element', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       await I.see('About', 'h1');
       await I.see('Welcome to event app', { css: 'p.jumbotron' });
-      return I.see('Back to form', '//div/a');
+      await I.see('Back to form', '//div/a');
     });
   });
 
@@ -86,7 +75,7 @@ describe('Appium Web', function () {
       await I.amOnPage('/angular-demo-app/');
       await I.seeElement('.btn.btn-primary');
       await I.seeElement({ css: '.btn.btn-primary' });
-      return I.dontSeeElement({ css: '.btn.btn-secondary' });
+      await I.dontSeeElement({ css: '.btn.btn-secondary' });
     });
   });
 
@@ -96,46 +85,46 @@ describe('Appium Web', function () {
       await I.amOnPage('/angular-demo-app/');
       await I.dontSeeInCurrentUrl('/info');
       await I.click('Get more info!');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click by css', async () => {
       await I.amOnPage('/angular-demo-app/');
       await I.click('.btn-primary');
       await I.wait(2);
-      return I.seeInCurrentUrl('/result');
+      await I.seeInCurrentUrl('/result');
     });
 
     it('should click by non-optimal css', async () => {
       await I.amOnPage('/angular-demo-app/');
       await I.click('form a.btn');
       await I.wait(2);
-      return I.seeInCurrentUrl('/result');
+      await I.seeInCurrentUrl('/result');
     });
 
     it('should click by xpath', async () => {
       await I.amOnPage('/angular-demo-app/');
       await I.click('//a[contains(., "more info")]');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click on context', async () => {
       await I.amOnPage('/angular-demo-app/');
       await I.click('.btn-primary', 'form');
       await I.wait(2);
-      return I.seeInCurrentUrl('/result');
+      await I.seeInCurrentUrl('/result');
     });
 
     it('should click link with inner span', async () => {
       await I.amOnPage('/angular-demo-app/#/result');
       await I.click('Go to info');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click buttons as links', async () => {
       await I.amOnPage('/angular-demo-app/');
       await I.click('Options');
-      return I.seeInCurrentUrl('/options');
+      await I.seeInCurrentUrl('/options');
     });
   });
 
@@ -143,19 +132,19 @@ describe('Appium Web', function () {
     it('should grab text from page', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       const val = await I.grabTextFrom('p.jumbotron');
-      return expect(val).to.equal('Welcome to event app');
+      val.should.be.equal('Welcome to event app');
     });
 
     it('should grab value from field', async () => {
       await I.amOnPage('/angular-demo-app/#/options');
       const val = await I.grabValueFrom('#ssh');
-      return expect(val).to.equal('PUBLIC-SSH-KEY');
+      val.should.be.equal('PUBLIC-SSH-KEY');
     });
 
     it('should grab attribute from element', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       const val = await I.grabAttributeFrom('a.btn', 'ng-href');
-      return expect(val).to.equal('#/');
+      val.should.be.equal('#/');
     });
   });
 
@@ -167,7 +156,7 @@ describe('Appium Web', function () {
       await I.see('Choose if you ok with terms');
       await I._withinBegin({ css: 'div.results' });
       await I.see('SSH Public Key: PUBLIC-SSH-KEY');
-      return I.dontSee('Options');
+      await I.dontSee('Options');
     });
   });
 });
