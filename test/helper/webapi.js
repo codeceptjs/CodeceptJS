@@ -1,6 +1,3 @@
-let I;
-let data;
-let siteUrl;
 const assert = require('assert');
 const path = require('path');
 
@@ -8,6 +5,10 @@ const dataFile = path.join(__dirname, '/../data/app/db');
 const formContents = require('../../lib/utils').test.submittedData(dataFile);
 const fileExists = require('../../lib/utils').fileExists;
 const secret = require('../../lib/secret').secret;
+
+let I;
+let data;
+let siteUrl;
 
 module.exports.init = function (testData) {
   data = testData;
@@ -26,25 +27,25 @@ module.exports.tests = function () {
     it('should check for url fragment', async () => {
       await I.amOnPage('/form/checkbox');
       await I.seeInCurrentUrl('/form');
-      return I.dontSeeInCurrentUrl('/user');
+      await I.dontSeeInCurrentUrl('/user');
     });
 
     it('should check for equality', async () => {
       await I.amOnPage('/info');
       await I.seeCurrentUrlEquals('/info');
-      return I.dontSeeCurrentUrlEquals('form');
+      await I.dontSeeCurrentUrlEquals('form');
     });
 
     it('should check for equality in absolute urls', async () => {
       await I.amOnPage('/info');
       await I.seeCurrentUrlEquals(`${siteUrl}/info`);
-      return I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
+      await I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
     });
 
     it('should grab browser url', async () => {
       await I.amOnPage('/info');
       const url = await I.grabCurrentUrl();
-      return assert.equal(url, `${siteUrl}/info`);
+      assert.equal(url, `${siteUrl}/info`);
     });
   });
 
@@ -78,25 +79,23 @@ module.exports.tests = function () {
       await I.amOnPage('/');
       await I.see('Welcome to test app!');
       await I.see('A wise man said: "debug!"');
-      return I.dontSee('Info');
+      await I.dontSee('Info');
     });
 
     it('should check text inside element', async () => {
       await I.amOnPage('/');
       await I.see('Welcome to test app!', 'h1');
       await I.amOnPage('/info');
-      await I.see('valuable', {
-        css: 'p',
-      });
+      await I.see('valuable', { css: 'p' });
       await I.see('valuable', '//body/p');
-      return I.dontSee('valuable', 'h1');
+      await I.dontSee('valuable', 'h1');
     });
 
     it('should verify non-latin chars', async () => {
       await I.amOnPage('/info');
       await I.see('на');
       await I.see("Don't do that at home!", 'h3');
-      return I.see('Текст', 'p');
+      await I.see('Текст', 'p');
     });
   });
 
@@ -104,12 +103,10 @@ module.exports.tests = function () {
     it('should check visible elements on page', async () => {
       await I.amOnPage('/form/field');
       await I.seeElement('input[name=name]');
-      await I.seeElement({
-        name: 'name',
-      });
+      await I.seeElement({ name: 'name' });
       await I.seeElement('//input[@id="name"]');
       await I.dontSeeElement('#something-beyond');
-      return I.dontSeeElement('//input[@id="something-beyond"]');
+      await I.dontSeeElement('//input[@id="something-beyond"]');
     });
 
     it('should check elements are in the DOM', async () => {
@@ -117,37 +114,50 @@ module.exports.tests = function () {
       await I.seeElementInDOM('input[name=name]');
       await I.seeElementInDOM('//input[@id="name"]');
       await I.dontSeeElementInDOM('#something-beyond');
-      return I.dontSeeElementInDOM('//input[@id="something-beyond"]');
+      await I.dontSeeElementInDOM('//input[@id="something-beyond"]');
     });
 
     it('should check elements are visible on the page', async () => {
       await I.amOnPage('/form/field');
       await I.seeElementInDOM('input[name=email]');
       await I.dontSeeElement('input[name=email]');
-      return I.dontSeeElement('#something-beyond');
+      await I.dontSeeElement('#something-beyond');
     });
   });
 
   describe('#seeNumberOfVisibleElements', () => {
-    it('should check number of visible elements for given locator', () => I.amOnPage('/info')
-      .then(() => I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)));
+    it('should check number of visible elements for given locator', async () => {
+      await I.amOnPage('/info');
+      await I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3);
+    });
   });
 
   describe('#grabNumberOfVisibleElements', () => {
-    it('should grab number of visible elements for given locator', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a'))
-      .then(num => assert.equal(num, 3)));
-    it('should support locators like {xpath:"//div"}', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements({
+    it('should grab number of visible elements for given locator', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a');
+      assert.equal(num, 3);
+    });
+
+    it('should support locators like {xpath:"//div"}', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements({
         xpath: '//div[@id = "grab-multiple"]//a',
-      }))
-      .then(num => assert.equal(num, 3)));
-    it('should grab number of visible elements for given css locator', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements('[id=grab-multiple] a'))
-      .then(num => assert.equal(num, 3)));
-    it('should return 0 for non-existing elements', () => I.amOnPage('/info')
-      .then(() => I.grabNumberOfVisibleElements('button[type=submit]'))
-      .then(num => assert.equal(num, 0)));
+      });
+      assert.equal(num, 3);
+    });
+
+    it('should grab number of visible elements for given css locator', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('[id=grab-multiple] a');
+      assert.equal(num, 3);
+    });
+
+    it('should return 0 for non-existing elements', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('button[type=submit]');
+      assert.equal(num, 0);
+    });
   });
 
   describe('#seeInSource, #dontSeeInSource', () => {
@@ -156,7 +166,7 @@ module.exports.tests = function () {
       await I.seeInSource('<body>');
       await I.dontSeeInSource('<meta>');
       await I.seeInSource('Invisible text');
-      return I.seeInSource('content="text/html; charset=utf-8"');
+      await I.seeInSource('content="text/html; charset=utf-8"');
     });
   });
 
@@ -164,46 +174,49 @@ module.exports.tests = function () {
     it('should click by inner text', async () => {
       await I.amOnPage('/');
       await I.click('More info');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click by css', async () => {
       await I.amOnPage('/');
       await I.click('#link');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click by xpath', async () => {
       await I.amOnPage('/');
       await I.click('//a[@id="link"]');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should click by name', async () => {
       await I.amOnPage('/form/button');
       await I.click('btn0');
-      return assert.equal(formContents('text'), 'val');
+      assert.equal(formContents('text'), 'val');
     });
 
     it('should click on context', async () => {
       await I.amOnPage('/');
       await I.click('More info', 'body>p');
-      return I.seeInCurrentUrl('/info');
+      await I.seeInCurrentUrl('/info');
     });
 
     it('should not click wrong context', async () => {
       let err = false;
       await I.amOnPage('/');
-      return I.click('More info', '#area1')
-        .catch(e => err = true)
-        .then(() => assert.ok(err));
+      try {
+        await I.click('More info', '#area1');
+      } catch (e) {
+        err = true;
+      }
+
+      assert.ok(err);
     });
 
     it('should click link with inner span', async () => {
       await I.amOnPage('/form/example7');
       await I.click('Buy Chocolate Bar');
-      // await I.wait(3);
-      return I.seeCurrentUrlEquals('/');
+      await I.seeCurrentUrlEquals('/');
     });
 
     it('should click link with xpath locator', async () => {
@@ -211,7 +224,7 @@ module.exports.tests = function () {
       await I.click({
         xpath: '(//*[@title = "Chocolate Bar"])[1]',
       });
-      return I.seeCurrentUrlEquals('/');
+      await I.seeCurrentUrlEquals('/');
     });
   });
 
@@ -221,7 +234,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/doubleclick');
       await I.dontSee('Done');
       await I.doubleClick('#block');
-      return I.see('Done');
+      await I.see('Done');
     });
   });
 
@@ -231,21 +244,21 @@ module.exports.tests = function () {
       await I.amOnPage('/form/rightclick');
       await I.dontSee('right clicked');
       await I.rightClick('Lorem Ipsum');
-      return I.see('right clicked');
+      await I.see('right clicked');
     });
 
     it('it should rightClick by locator', async () => {
       await I.amOnPage('/form/rightclick');
       await I.dontSee('right clicked');
       await I.rightClick('.context a');
-      return I.see('right clicked');
+      await I.see('right clicked');
     });
 
     it('it should rightClick by locator and context', async () => {
       await I.amOnPage('/form/rightclick');
       await I.dontSee('right clicked');
       await I.rightClick('Lorem Ipsum', '.context');
-      return I.see('right clicked');
+      await I.see('right clicked');
     });
   });
 
@@ -256,7 +269,7 @@ module.exports.tests = function () {
       await I.checkOption('#checkin');
       await I.click('Submit');
       await I.wait(1);
-      return assert.equal(formContents('terms'), 'agree');
+      assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by strict locator', async () => {
@@ -265,21 +278,21 @@ module.exports.tests = function () {
         id: 'checkin',
       });
       await I.click('Submit');
-      return assert.equal(formContents('terms'), 'agree');
+      assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by name', async () => {
       await I.amOnPage('/form/checkbox');
       await I.checkOption('terms');
       await I.click('Submit');
-      return assert.equal(formContents('terms'), 'agree');
+      assert.equal(formContents('terms'), 'agree');
     });
 
     it('should check option by label', async () => {
       await I.amOnPage('/form/checkbox');
       await I.checkOption('I Agree');
       await I.click('Submit');
-      return assert.equal(formContents('terms'), 'agree');
+      assert.equal(formContents('terms'), 'agree');
     });
 
     // TODO Having problems with functional style selectors in testcafe
@@ -290,7 +303,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/example1');
       await I.checkOption('Remember me next time', '.rememberMe');
       await I.click('Login');
-      return assert.equal(formContents('LoginForm').rememberMe, 1);
+      assert.equal(formContents('LoginForm').rememberMe, 1);
     });
   });
 
@@ -307,35 +320,35 @@ module.exports.tests = function () {
       await I.amOnPage('/form/select');
       await I.selectOption('form select[name=age]', 'adult');
       await I.click('Submit');
-      return assert.equal(formContents('age'), 'adult');
+      assert.equal(formContents('age'), 'adult');
     });
 
     it('should select option by name', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('age', 'adult');
       await I.click('Submit');
-      return assert.equal(formContents('age'), 'adult');
+      assert.equal(formContents('age'), 'adult');
     });
 
     it('should select option by label', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('Select your age', 'dead');
       await I.click('Submit');
-      return assert.equal(formContents('age'), 'dead');
+      assert.equal(formContents('age'), 'dead');
     });
 
     it('should select option by label and option text', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('Select your age', '21-60');
       await I.click('Submit');
-      return assert.equal(formContents('age'), 'adult');
+      assert.equal(formContents('age'), 'adult');
     });
 
     it('should select option by label and option text - with an onchange callback', async () => {
       await I.amOnPage('/form/select_onchange');
       await I.selectOption('Select a value', 'Option 2');
       await I.click('Submit');
-      return assert.equal(formContents('select'), 'option2');
+      assert.equal(formContents('select'), 'option2');
     });
 
     // Could not get multiselect to work with testcafe
@@ -345,7 +358,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/select_multiple');
       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
       await I.click('Submit');
-      return assert.deepEqual(formContents('like'), ['play', 'adult']);
+      assert.deepEqual(formContents('like'), ['play', 'adult']);
     });
   });
 
@@ -355,7 +368,7 @@ module.exports.tests = function () {
       await I.executeScript(() => {
         document.getElementById('link').innerHTML = 'Appended';
       });
-      return I.see('Appended', 'a');
+      await I.see('Appended', 'a');
     });
 
     it('should return value from sync script', async () => {
@@ -375,7 +388,7 @@ module.exports.tests = function () {
         }, 100);
       }, 'Timeout');
       assert.equal(val, 5);
-      return I.see('Timeout', 'a');
+      await I.see('Timeout', 'a');
     });
   });
 
@@ -384,21 +397,21 @@ module.exports.tests = function () {
       await I.amOnPage('/form/field');
       await I.fillField('Name', 'Nothing special');
       await I.click('Submit');
-      return assert.equal(formContents('name'), 'Nothing special');
+      assert.equal(formContents('name'), 'Nothing special');
     });
 
     it('should fill input fields with secrets', async () => {
       await I.amOnPage('/form/field');
       await I.fillField('Name', secret('Something special'));
       await I.click('Submit');
-      return assert.equal(formContents('name'), 'Something special');
+      assert.equal(formContents('name'), 'Something special');
     });
 
     it('should fill field by css', async () => {
       await I.amOnPage('/form/field');
       await I.fillField('#name', 'Nothing special');
       await I.click('Submit');
-      return assert.equal(formContents('name'), 'Nothing special');
+      assert.equal(formContents('name'), 'Nothing special');
     });
 
     it('should fill field by strict locator', async () => {
@@ -407,7 +420,7 @@ module.exports.tests = function () {
         id: 'name',
       }, 'Nothing special');
       await I.click('Submit');
-      return assert.equal(formContents('name'), 'Nothing special');
+      assert.equal(formContents('name'), 'Nothing special');
     });
 
     it('should fill field by name', async () => {
@@ -416,21 +429,21 @@ module.exports.tests = function () {
       await I.fillField('LoginForm[password]', '123456');
       await I.click('Login');
       assert.equal(formContents('LoginForm').username, 'davert');
-      return assert.equal(formContents('LoginForm').password, '123456');
+      assert.equal(formContents('LoginForm').password, '123456');
     });
 
     it('should fill textarea by css', async () => {
       await I.amOnPage('/form/textarea');
       await I.fillField('textarea', 'Nothing special');
       await I.click('Submit');
-      return assert.equal(formContents('description'), 'Nothing special');
+      assert.equal(formContents('description'), 'Nothing special');
     });
 
     it('should fill textarea by label', async () => {
       await I.amOnPage('/form/textarea');
       await I.fillField('Description', 'Nothing special');
       await I.click('Submit');
-      return assert.equal(formContents('description'), 'Nothing special');
+      assert.equal(formContents('description'), 'Nothing special');
     });
 
     it('should fill textarea by overwritting the existing value', async () => {
@@ -438,49 +451,50 @@ module.exports.tests = function () {
       await I.fillField('Description', 'Nothing special');
       await I.fillField('Description', 'Some other text');
       await I.click('Submit');
-      return assert.equal(formContents('description'), 'Some other text');
+      assert.equal(formContents('description'), 'Some other text');
     });
 
     it('should append field value', async () => {
       await I.amOnPage('/form/field');
       await I.appendField('Name', '_AND_NEW');
       await I.click('Submit');
-      return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+      assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
   });
 
-
   describe('#clearField', () => {
-    it('should clear a given element', () => I.amOnPage('/form/field')
-      .then(() => I.fillField('#name', 'Nothing special'))
-      .then(() => I.seeInField('#name', 'Nothing special'))
-      .then(() => I.clearField('#name'))
-      .then(() => I.dontSeeInField('#name', 'Nothing special')));
+    it('should clear a given element', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('#name', 'Nothing special');
+      await I.seeInField('#name', 'Nothing special');
+      await I.clearField('#name');
+      await I.dontSeeInField('#name', 'Nothing special');
+    });
 
     it('should clear field by name', async () => {
       await I.amOnPage('/form/example1');
       await I.clearField('LoginForm[username]');
       await I.click('Login');
-      return assert.equal(formContents('LoginForm').username, '');
+      assert.equal(formContents('LoginForm').username, '');
     });
 
     it('should clear field by locator', async () => {
       await I.amOnPage('/form/example1');
       await I.clearField('#LoginForm_username');
       await I.click('Login');
-      return assert.equal(formContents('LoginForm').username, '');
+      assert.equal(formContents('LoginForm').username, '');
     });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', async () => {
       await I.amOnPage('/form/empty');
-      return I.seeInField('#empty_input', '');
+      await I.seeInField('#empty_input', '');
     });
 
     it('should check for empty textarea', async () => {
       await I.amOnPage('/form/empty');
-      return I.seeInField('#empty_textarea', '');
+      await I.seeInField('#empty_textarea', '');
     });
 
     it('should check field equals', async () => {
@@ -488,7 +502,7 @@ module.exports.tests = function () {
       await I.seeInField('Name', 'OLD_VALUE');
       await I.seeInField('name', 'OLD_VALUE');
       await I.seeInField('//input[@id="name"]', 'OLD_VALUE');
-      return I.dontSeeInField('//input[@id="name"]', 'NOtVALUE');
+      await I.dontSeeInField('//input[@id="name"]', 'NOtVALUE');
     });
 
     it('should check textarea equals', async () => {
@@ -496,23 +510,23 @@ module.exports.tests = function () {
       await I.seeInField('Description', 'sunrise');
       await I.seeInField('textarea', 'sunrise');
       await I.seeInField('//textarea[@id="description"]', 'sunrise');
-      return I.dontSeeInField('//textarea[@id="description"]', 'sunset');
+      await I.dontSeeInField('//textarea[@id="description"]', 'sunset');
     });
 
     it('should check checkbox is checked :)', async () => {
       await I.amOnPage('/info');
-      return I.seeCheckboxIsChecked('input[type=checkbox]');
+      await I.seeCheckboxIsChecked('input[type=checkbox]');
     });
 
     it('should check checkbox is not checked', async () => {
       await I.amOnPage('/form/checkbox');
-      return I.dontSeeCheckboxIsChecked('#checkin');
+      await I.dontSeeCheckboxIsChecked('#checkin');
     });
 
     it('should match fields with the same name', async () => {
       await I.amOnPage('/form/example20');
       await I.seeInField("//input[@name='txtName'][2]", 'emma');
-      return I.seeInField("input[name='txtName']:nth-child(2)", 'emma');
+      await I.seeInField("input[name='txtName']:nth-child(2)", 'emma');
     });
   });
 
@@ -521,8 +535,9 @@ module.exports.tests = function () {
       await I.amOnPage('/');
       let val = await I.grabTextFrom('h1');
       assert.equal(val, 'Welcome to test app!');
+
       val = await I.grabTextFrom('//h1');
-      return assert.equal(val, 'Welcome to test app!');
+      assert.equal(val, 'Welcome to test app!');
     });
 
     it('should grab multiple texts from page', async () => {
@@ -562,7 +577,7 @@ module.exports.tests = function () {
       assert.equal(val, 'sunrise');
       await I.amOnPage('/form/select');
       val = await I.grabValueFrom('#age');
-      return assert.equal(val, 'oldfag');
+      assert.equal(val, 'oldfag');
     });
 
     it('should grab attribute from element', async () => {
@@ -571,7 +586,7 @@ module.exports.tests = function () {
       const val = await I.grabAttributeFrom({
         css: 'form',
       }, 'method');
-      return assert.equal(val, 'get');
+      assert.equal(val, 'get');
     });
 
     it('should grab custom attribute from element', async () => {
@@ -581,7 +596,7 @@ module.exports.tests = function () {
       const val = await I.grabAttributeFrom({
         css: '.navbar-toggle',
       }, 'data-toggle');
-      return assert.equal(val, 'collapse');
+      assert.equal(val, 'collapse');
     });
   });
 
@@ -593,7 +608,7 @@ module.exports.tests = function () {
       await I.seeInTitle('TestEd Beta 2.0');
       await I.dontSeeInTitle('Welcome to test app');
       await I.amOnPage('/info');
-      return I.dontSeeInTitle('TestEd Beta 2.0');
+      await I.dontSeeInTitle('TestEd Beta 2.0');
     });
 
     it('should grab page title', async () => {
@@ -601,7 +616,7 @@ module.exports.tests = function () {
 
       await I.amOnPage('/');
       const val = await I.grabTitle();
-      return assert.equal(val, 'TestEd Beta 2.0');
+      assert.equal(val, 'TestEd Beta 2.0');
     });
   });
 
@@ -632,346 +647,410 @@ module.exports.tests = function () {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
 
-    it('should create a screenshot file in output dir', () => {
+    it('should create a screenshot file in output dir', async () => {
       if (isHelper('TestCafe')) return;
 
       const sec = (new Date()).getUTCMilliseconds();
-      return I.amOnPage('/')
-        .then(() => I.saveScreenshot(`screenshot_${sec}.png`))
-        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists'));
+      await I.amOnPage('/');
+      await I.saveScreenshot(`screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists');
     });
 
-    it('should create a full page screenshot file in output dir', () => {
+    it('should create a full page screenshot file in output dir', async () => {
       if (isHelper('TestCafe')) return;
 
       const sec = (new Date()).getUTCMilliseconds();
-      return I.amOnPage('/')
-        .then(() => I.saveScreenshot(`screenshot_full_${+sec}.png`, true))
-        .then(() => assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists'));
+      await I.amOnPage('/');
+      await I.saveScreenshot(`screenshot_full_${+sec}.png`, true);
+      assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists');
     });
   });
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
-    it('should do all cookie stuff', () => I.amOnPage('/')
-      .then(() => I.setCookie({
+    it('should do all cookie stuff', async () => {
+      await I.amOnPage('/');
+      await I.setCookie({
         name: 'auth',
         value: '123456',
-      }))
-      .then(() => I.seeCookie('auth'))
-      .then(() => I.dontSeeCookie('auuth'))
-      .then(() => I.grabCookie('auth'))
-      .then(cookie => assert.equal(cookie.value, '123456'))
-      .then(() => I.clearCookie('auth'))
-      .then(() => I.dontSeeCookie('auth')));
+      });
+      await I.seeCookie('auth');
+      await I.dontSeeCookie('auuth');
 
-    it('should grab all cookies', () => I.amOnPage('/')
-      .then(() => I.setCookie({
+      const cookie = await I.grabCookie('auth');
+      assert.equal(cookie.value, '123456');
+
+      await I.clearCookie('auth');
+      await I.dontSeeCookie('auth');
+    });
+
+    it('should grab all cookies', async () => {
+      await I.amOnPage('/');
+      await I.setCookie({
         name: 'auth',
         value: '123456',
-      }))
-      .then(() => I.setCookie({
+      });
+      await I.setCookie({
         name: 'user',
         value: 'davert',
-      }))
-      .then(() => I.grabCookie())
-      .then((cookies) => {
-        assert.equal(cookies.length, 2);
-        assert(cookies[0].name);
-        assert(cookies[0].value);
-      }));
+      });
 
-    it('should clear all cookies', () => I.amOnPage('/')
-      .then(() => I.setCookie({
+      const cookies = await I.grabCookie();
+      assert.equal(cookies.length, 2);
+      assert(cookies[0].name);
+      assert(cookies[0].value);
+    });
+
+    it('should clear all cookies', async () => {
+      await I.amOnPage('/');
+      await I.setCookie({
         name: 'auth',
         value: '123456',
-      }))
-      .then(() => I.clearCookie())
-      .then(() => I.dontSeeCookie('auth')));
+      });
+      await I.clearCookie();
+      await I.dontSeeCookie('auth');
+    });
   });
 
   describe('#waitForText', () => {
-    it('should wait for text', () => I.amOnPage('/dynamic')
-      .then(() => I.dontSee('Dynamic text'))
-      .then(() => I.waitForText('Dynamic text', 2))
-      .then(() => I.see('Dynamic text')));
-
-    it('should wait for text in context', () => I.amOnPage('/dynamic')
-      .then(() => I.dontSee('Dynamic text'))
-      .then(() => I.waitForText('Dynamic text', 2, '#text'))
-      .then(() => I.see('Dynamic text')));
-
-    it('should fail if no context', () => {
-      if (isHelper('TestCafe')) return;
-      let failed = false;
-      return I.amOnPage('/dynamic')
-        .then(() => I.dontSee('Dynamic text'))
-        .then(() => I.waitForText('Dynamic text', 1, '#fext'))
-        .catch(err => failed = true)
-        .then(() => assert.ok(failed));
+    it('should wait for text', async () => {
+      await I.amOnPage('/dynamic');
+      await I.dontSee('Dynamic text');
+      await I.waitForText('Dynamic text', 2);
+      await I.see('Dynamic text');
     });
 
-    it('should fail if text doesn\'t contain', () => {
-      if (isHelper('TestCafe')) return;
-      let failed = false;
-      return I.amOnPage('/dynamic')
-        .then(() => I.waitForText('Other text', 1))
-        .catch(err => failed = true)
-        .then(() => assert.ok(failed));
+    it('should wait for text in context', async () => {
+      await I.amOnPage('/dynamic');
+      await I.dontSee('Dynamic text');
+      await I.waitForText('Dynamic text', 2, '#text');
+      await I.see('Dynamic text');
     });
 
-    it('should fail if text is not in element', () => {
+    it('should fail if no context', async () => {
       if (isHelper('TestCafe')) return;
+
       let failed = false;
-      return I.amOnPage('/dynamic')
-        .then(() => I.waitForText('Other text', 1, '#text'))
-        .catch(err => failed = true)
-        .then(() => assert.ok(failed));
+      await I.amOnPage('/dynamic');
+      await I.dontSee('Dynamic text');
+      try {
+        await I.waitForText('Dynamic text', 1, '#fext');
+      } catch (e) {
+        failed = true;
+      }
+      assert.ok(failed);
     });
 
-
-    it('should wait for text after timeout', () => {
+    it('should fail if text doesn\'t contain', async () => {
       if (isHelper('TestCafe')) return;
-      return I.amOnPage('/timeout')
-        .then(() => I.dontSee('Timeout text'))
-        .then(() => I.waitForText('Timeout text', 31, '#text'))
-        .then(() => I.see('Timeout text'));
+
+      let failed = false;
+      await I.amOnPage('/dynamic');
+      try {
+        await I.waitForText('Other text', 1);
+      } catch (e) {
+        failed = true;
+      }
+      assert.ok(failed);
+    });
+
+    it('should fail if text is not in element', async () => {
+      if (isHelper('TestCafe')) return;
+
+      let failed = false;
+      await I.amOnPage('/dynamic');
+      try {
+        await I.waitForText('Other text', 1, '#text');
+      } catch (e) {
+        failed = true;
+      }
+      assert.ok(failed);
+    });
+
+    it('should wait for text after timeout', async () => {
+      if (isHelper('TestCafe')) return;
+
+      await I.amOnPage('/timeout');
+      await I.dontSee('Timeout text');
+      await I.waitForText('Timeout text', 31, '#text');
+      await I.see('Timeout text');
     });
   });
 
   describe('#waitForElement', () => {
-    it('should wait for visible element', () => I.amOnPage('/form/wait_visible')
-      .then(() => I.dontSee('Step One Button'))
-      .then(() => I.dontSeeElement('#step_1'))
-      .then(() => I.waitForVisible('#step_1', 2))
-      .then(() => I.seeElement('#step_1'))
-      .then(() => I.click('#step_1'))
-      .then(() => I.waitForVisible('#step_2', 2))
-      .then(() => I.see('Step Two Button')));
+    it('should wait for visible element', async () => {
+      await I.amOnPage('/form/wait_visible');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('#step_1');
+      await I.waitForVisible('#step_1', 2);
+      await I.seeElement('#step_1');
+      await I.click('#step_1');
+      await I.waitForVisible('#step_2', 2);
+      await I.see('Step Two Button');
+    });
 
-    it('should wait for element in DOM', () => I.amOnPage('/form/wait_visible')
-      .then(() => I.waitForElement('#step_2'))
-      .then(() => I.dontSeeElement('#step_2'))
-      .then(() => I.seeElementInDOM('#step_2')));
+    it('should wait for element in DOM', async () => {
+      await I.amOnPage('/form/wait_visible');
+      await I.waitForElement('#step_2');
+      await I.dontSeeElement('#step_2');
+      await I.seeElementInDOM('#step_2');
+    });
 
-    it('should wait for element by XPath', () => I.amOnPage('/form/wait_visible')
-      .then(() => I.waitForElement('//div[@id="step_2"]'))
-      .then(() => I.dontSeeElement('//div[@id="step_2"]'))
-      .then(() => I.seeElementInDOM('//div[@id="step_2"]')));
+    it('should wait for element by XPath', async () => {
+      await I.amOnPage('/form/wait_visible');
+      await I.waitForElement('//div[@id="step_2"]');
+      await I.dontSeeElement('//div[@id="step_2"]');
+      await I.seeElementInDOM('//div[@id="step_2"]');
+    });
 
-
-    it('should wait for element to appear', () => I.amOnPage('/form/wait_element')
-      .then(() => I.dontSee('Hello'))
-      .then(() => I.dontSeeElement('h1'))
-      .then(() => I.waitForElement('h1', 2))
-      .then(() => I.see('Hello')));
+    it('should wait for element to appear', async () => {
+      await I.amOnPage('/form/wait_element');
+      await I.dontSee('Hello');
+      await I.dontSeeElement('h1');
+      await I.waitForElement('h1', 2);
+      await I.see('Hello');
+    });
   });
 
   describe('#waitForInvisible', () => {
-    it('should wait for element to be invisible', () => I.amOnPage('/form/wait_invisible')
-      .then(() => I.see('Step One Button'))
-      .then(() => I.seeElement('#step_1'))
-      .then(() => I.waitForInvisible('#step_1', 2))
-      .then(() => I.dontSeeElement('#step_1')));
+    it('should wait for element to be invisible', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.see('Step One Button');
+      await I.seeElement('#step_1');
+      await I.waitForInvisible('#step_1', 2);
+      await I.dontSeeElement('#step_1');
+    });
 
-    it('should wait for element to be invisible by XPath', () => I.amOnPage('/form/wait_invisible')
-      .then(() => I.seeElement('//div[@id="step_1"]'))
-      .then(() => I.waitForInvisible('//div[@id="step_1"]'))
-      .then(() => I.dontSeeElement('//div[@id="step_1"]'))
-      .then(() => I.seeElementInDOM('//div[@id="step_1"]')));
+    it('should wait for element to be invisible by XPath', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.seeElement('//div[@id="step_1"]');
+      await I.waitForInvisible('//div[@id="step_1"]');
+      await I.dontSeeElement('//div[@id="step_1"]');
+      await I.seeElementInDOM('//div[@id="step_1"]');
+    });
 
-    it('should wait for element to be removed', () => I.amOnPage('/form/wait_invisible')
-      .then(() => I.see('Step Two Button'))
-      .then(() => I.seeElement('#step_2'))
-      .then(() => I.waitForInvisible('#step_2', 2))
-      .then(() => I.dontSeeElement('#step_2')));
+    it('should wait for element to be removed', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.see('Step Two Button');
+      await I.seeElement('#step_2');
+      await I.waitForInvisible('#step_2', 2);
+      await I.dontSeeElement('#step_2');
+    });
 
-    it('should wait for element to be removed by XPath', () => I.amOnPage('/form/wait_invisible')
-      .then(() => I.see('Step Two Button'))
-      .then(() => I.seeElement('//div[@id="step_2"]'))
-      .then(() => I.waitForInvisible('//div[@id="step_2"]', 2))
-      .then(() => I.dontSeeElement('//div[@id="step_2"]')));
+    it('should wait for element to be removed by XPath', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.see('Step Two Button');
+      await I.seeElement('//div[@id="step_2"]');
+      await I.waitForInvisible('//div[@id="step_2"]', 2);
+      await I.dontSeeElement('//div[@id="step_2"]');
+    });
   });
 
   describe('#waitToHide', () => {
-    it('should wait for element to be invisible', () => {
-      return I.amOnPage('/form/wait_invisible')
-        .then(() => I.see('Step One Button'))
-        .then(() => I.seeElement('#step_1'))
-        .then(() => I.waitToHide('#step_1', 2))
-        .then(() => I.dontSeeElement('#step_1'));
+    it('should wait for element to be invisible', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.see('Step One Button');
+      await I.seeElement('#step_1');
+      await I.waitToHide('#step_1', 2);
+      await I.dontSeeElement('#step_1');
     });
 
-    it('should wait for element to be invisible by XPath', () => {
-      return I.amOnPage('/form/wait_invisible')
-        .then(() => I.seeElement('//div[@id="step_1"]'))
-        .then(() => I.waitToHide('//div[@id="step_1"]'))
-        .then(() => I.dontSeeElement('//div[@id="step_1"]'))
-        .then(() => I.seeElementInDOM('//div[@id="step_1"]'));
+    it('should wait for element to be invisible by XPath', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.seeElement('//div[@id="step_1"]');
+      await I.waitToHide('//div[@id="step_1"]');
+      await I.dontSeeElement('//div[@id="step_1"]');
+      await I.seeElementInDOM('//div[@id="step_1"]');
     });
 
-    it('should wait for element to be removed', () => {
-      return I.amOnPage('/form/wait_invisible')
-        .then(() => I.see('Step Two Button'))
-        .then(() => I.seeElement('#step_2'))
-        .then(() => I.waitToHide('#step_2', 2))
-        .then(() => I.dontSeeElement('#step_2'));
+    it('should wait for element to be removed', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.see('Step Two Button');
+      await I.seeElement('#step_2');
+      await I.waitToHide('#step_2', 2);
+      await I.dontSeeElement('#step_2');
     });
 
-    it('should wait for element to be removed by XPath', () => {
-      return I.amOnPage('/form/wait_invisible')
-        .then(() => I.see('Step Two Button'))
-        .then(() => I.seeElement('//div[@id="step_2"]'))
-        .then(() => I.waitToHide('//div[@id="step_2"]', 2))
-        .then(() => I.dontSeeElement('//div[@id="step_2"]'));
+    it('should wait for element to be removed by XPath', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.see('Step Two Button');
+      await I.seeElement('//div[@id="step_2"]');
+      await I.waitToHide('//div[@id="step_2"]', 2);
+      await I.dontSeeElement('//div[@id="step_2"]');
     });
   });
 
   describe('#waitForDetached', () => {
-    it('should throw an error if the element still exists in DOM', () => {
+    it('should throw an error if the element still exists in DOM', async () => {
       if (isHelper('TestCafe')) return;
-      return I.amOnPage('/form/wait_detached')
-        .then(() => I.see('Step One Button'))
-        .then(() => I.seeElement('#step_1'))
-        .then(() => I.waitForDetached('#step_1', 2))
-        .then(() => {
-          throw Error('Should not get this far');
-        })
-        .catch((err) => {
-          err.message.should.include('still on page after');
-        });
+
+      await I.amOnPage('/form/wait_detached');
+      await I.see('Step One Button');
+      await I.seeElement('#step_1');
+
+      try {
+        await I.waitForDetached('#step_1', 2);
+        throw Error('Should not get this far');
+      } catch (err) {
+        err.message.should.include('still on page after');
+      }
     });
 
-    it('should throw an error if the element still exists in DOM by XPath', () => {
+    it('should throw an error if the element still exists in DOM by XPath', async () => {
       if (isHelper('TestCafe')) return;
-      return I.amOnPage('/form/wait_detached')
-        .then(() => I.see('Step One Button'))
-        .then(() => I.seeElement('#step_1'))
-        .then(() => I.waitForDetached('#step_1', 2))
-        .then(() => {
-          throw Error('Should not get this far');
-        })
-        .catch((err) => {
-          err.message.should.include('still on page after');
-        });
+
+      await I.amOnPage('/form/wait_detached');
+      await I.see('Step One Button');
+      await I.seeElement('#step_1');
+
+      try {
+        await I.waitForDetached('#step_1', 2);
+        throw Error('Should not get this far');
+      } catch (err) {
+        err.message.should.include('still on page after');
+      }
     });
 
-    it('should wait for element to be removed from DOM', () => {
+    it('should wait for element to be removed from DOM', async () => {
       if (isHelper('TestCafe')) return;
-      return I.amOnPage('/form/wait_detached')
-        .then(() => I.see('Step Two Button'))
-        .then(() => I.seeElement('#step_2'))
-        .then(() => I.waitForDetached('#step_2', 2))
-        .then(() => I.dontSeeElementInDOM('#step_2'));
+
+      await I.amOnPage('/form/wait_detached');
+      await I.see('Step Two Button');
+      await I.seeElement('#step_2');
+      await I.waitForDetached('#step_2', 2);
+      await I.dontSeeElementInDOM('#step_2');
     });
 
-    it('should wait for element to be removed from DOM by XPath', () => {
+    it('should wait for element to be removed from DOM by XPath', async () => {
       if (isHelper('TestCafe')) return;
-      return I.amOnPage('/form/wait_detached')
-        .then(() => I.seeElement('//div[@id="step_2"]'))
-        .then(() => I.waitForDetached('//div[@id="step_2"]'))
-        .then(() => I.dontSeeElement('//div[@id="step_2"]'))
-        .then(() => I.dontSeeElementInDOM('//div[@id="step_2"]'));
+
+      await I.amOnPage('/form/wait_detached');
+      await I.seeElement('//div[@id="step_2"]');
+      await I.waitForDetached('//div[@id="step_2"]');
+      await I.dontSeeElement('//div[@id="step_2"]');
+      await I.dontSeeElementInDOM('//div[@id="step_2"]');
     });
   });
 
   describe('within tests', () => {
     afterEach(() => I._withinEnd());
 
-    it('should execute within block', () => I.amOnPage('/form/example4')
-      .then(() => I.seeElement('#navbar-collapse-menu'))
-      .then(() => I._withinBegin('#register'))
-      .then(() => I.see('E-Mail'))
-      .then(() => I.dontSee('Toggle navigation'))
-      .then(() => I.dontSeeElement('#navbar-collapse-menu')));
+    it('should execute within block', async () => {
+      await I.amOnPage('/form/example4');
+      await I.seeElement('#navbar-collapse-menu');
+      await I._withinBegin('#register');
+      await I.see('E-Mail');
+      await I.dontSee('Toggle navigation');
+      await I.dontSeeElement('#navbar-collapse-menu');
+    });
 
-
-    it('should respect form fields inside within block ', () => {
+    it('should respect form fields inside within block ', async () => {
       let rethrow;
-      return I.amOnPage('/form/example4')
-        .then(() => I.seeElement('#navbar-collapse-menu'))
-        .then(() => I.see('E-Mail'))
-        .then(() => I.see('Hasło'))
-        .then(() => I.fillField('Hasło', '12345'))
-        .then(() => I.seeInField('Hasło', '12345'))
-        .then(() => I.checkOption('terms'))
-        .then(() => I.seeCheckboxIsChecked('terms'))
-        .then(() => I._withinBegin({
-          css: '.form-group',
-        }))
-        .then(() => I.see('E-Mail'))
-        .then(() => I.dontSee('Hasło'))
-        .then(() => I.dontSeeElement('#navbar-collapse-menu'))
-        .catch(err => rethrow = err)
-        .then(() => I.dontSeeCheckboxIsChecked('terms'))
-        .catch((err) => {
-          if (!err) assert.fail('seen checkbox');
-        })
-        .then(() => I.seeInField('Hasło', '12345'))
-        .catch((err) => {
-          if (!err) assert.fail('seen field');
-        })
-        .then(() => {
-          if (rethrow) throw rethrow;
-        });
+
+      await I.amOnPage('/form/example4');
+      await I.seeElement('#navbar-collapse-menu');
+      await I.see('E-Mail');
+      await I.see('Hasło');
+      await I.fillField('Hasło', '12345');
+      await I.seeInField('Hasło', '12345');
+      await I.checkOption('terms');
+      await I.seeCheckboxIsChecked('terms');
+      await I._withinBegin({ css: '.form-group' });
+      await I.see('E-Mail');
+      await I.dontSee('Hasło');
+
+      try {
+        await I.dontSeeElement('#navbar-collapse-menu');
+      } catch (err) {
+        rethrow = err;
+      }
+
+      try {
+        await I.dontSeeCheckboxIsChecked('terms');
+      } catch (err) {
+        if (!err) assert.fail('seen checkbox');
+      }
+
+      try {
+        await I.seeInField('Hasło', '12345');
+      } catch (err) {
+        if (!err) assert.fail('seen field');
+      }
+
+      if (rethrow) throw rethrow;
     });
 
-    it('should execute within block 2', () => {
+    it('should execute within block 2', async () => {
       if (isHelper('TestCafe')) return;
-      return I.amOnPage('/form/example4')
-        .then(() => I.fillField('Hasło', '12345'))
-        .then(() => I._withinBegin({
-          xpath: '//div[@class="form-group"][2]',
-        }))
-        .then(() => I.dontSee('E-Mail'))
-        .then(() => I.see('Hasło'))
-        .then(() => I.grabTextFrom('label'))
-        .then(label => assert.equal(label, 'Hasło'))
-        .then(() => I.grabValueFrom('input'))
-        .then(input => assert.equal(input, '12345'));
+
+      await I.amOnPage('/form/example4');
+      await I.fillField('Hasło', '12345');
+      await I._withinBegin({ xpath: '//div[@class="form-group"][2]' });
+      await I.dontSee('E-Mail');
+      await I.see('Hasło');
+
+      const label = await I.grabTextFrom('label');
+      assert.equal(label, 'Hasło');
+
+      const input = await I.grabValueFrom('input');
+      assert.equal(input, '12345');
     });
 
-    it('within should respect context in see', () => I.amOnPage('/form/example4')
-      .then(() => I.see('Rejestracja', 'fieldset'))
-      .then(() => I._withinBegin({
-        css: '.navbar-header',
-      }))
-      .then(() => I.see('Rejestracja', '.container fieldset'))
-      .catch((err) => {
-        if (!err) assert.fail('seen fieldset');
-      })
-      .then(() => I.see('Toggle navigation', '.container fieldset'))
-      .catch((err) => {
-        if (!err) assert.fail('seen fieldset');
-      }));
+    it('within should respect context in see', async () => {
+      await I.amOnPage('/form/example4');
+      await I.see('Rejestracja', 'fieldset');
+      await I._withinBegin({ css: '.navbar-header' });
 
-    it('within should respect context in see when using nested frames', () => I.amOnPage('/iframe_nested')
-      .then(() => I._withinBegin({
+      try {
+        await I.see('Rejestracja', '.container fieldset');
+      } catch (err) {
+        if (!err) assert.fail('seen fieldset');
+      }
+
+      try {
+        await I.see('Toggle navigation', '.container fieldset');
+      } catch (err) {
+        if (!err) assert.fail('seen fieldset');
+      }
+    });
+
+    it('within should respect context in see when using nested frames', async () => {
+      await I.amOnPage('/iframe_nested');
+      await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
-      }))
-      .then(() => I.see('Kill & Destroy'))
-      .catch((err) => {
+      });
+
+      try {
+        await I.see('Kill & Destroy');
+      } catch (err) {
         if (!err) assert.fail('seen "Kill & Destroy"');
-      })
-      .then(() => I.dontSee('Nested Iframe test'))
-      .catch((err) => {
+      }
+
+      try {
+        await I.dontSee('Nested Iframe test');
+      } catch (err) {
         if (!err) assert.fail('seen "Nested Iframe test"');
-      })
-      .then(() => I.dontSee('Iframe test'))
-      .catch((err) => {
+      }
+
+      try {
+        await I.dontSee('Iframe test');
+      } catch (err) {
         if (!err) assert.fail('seen "Iframe test"');
-      }));
+      }
+    });
   });
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     it('should scroll inside an iframe', async () => {
       if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
+
       await I.amOnPage('/iframe');
       await I.resizeWindow(500, 700);
       await I.switchTo(0);
 
       const { x, y } = await I.grabPageScrollPosition();
       await I.scrollTo('.sign');
+
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
       assert.equal(afterScrollX, x);
@@ -982,6 +1061,7 @@ module.exports.tests = function () {
       await I.resizeWindow(500, 700);
       const { x, y } = await I.grabPageScrollPosition();
       await I.scrollTo('.section3 input[name="test"]');
+
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
     });
@@ -991,6 +1071,7 @@ module.exports.tests = function () {
       await I.resizeWindow(500, 700);
       const { x, y } = await I.grabPageScrollPosition();
       await I.scrollTo(50, 70);
+
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
       assert.equal(afterScrollX, 50);
       assert.equal(afterScrollY, 70);
@@ -1001,6 +1082,7 @@ module.exports.tests = function () {
       await I.resizeWindow(500, 700);
       const { y } = await I.grabPageScrollPosition();
       await I.scrollPageToBottom();
+
       const { y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
       assert.notEqual(afterScrollY, 0);
@@ -1011,8 +1093,8 @@ module.exports.tests = function () {
       await I.resizeWindow(500, 700);
       await I.scrollPageToBottom();
       const { y } = await I.grabPageScrollPosition();
-
       await I.scrollPageToTop();
+
       const { y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
       assert.equal(afterScrollY, 0);
@@ -1023,6 +1105,7 @@ module.exports.tests = function () {
     it('should grab css property for given element', async () => {
       if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
+
       await I.amOnPage('/form/doubleclick');
       const css = await I.grabCssPropertyFrom('#block', 'height');
       assert.equal(css, '100px');
@@ -1130,7 +1213,6 @@ module.exports.tests = function () {
     it('should normalize css color properties for given element', async () => {
       if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
-
 
       await I.amOnPage('/form/css_colors');
       await I.seeCssPropertiesOnElements('#namedColor', {
