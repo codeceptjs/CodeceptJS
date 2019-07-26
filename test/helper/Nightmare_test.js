@@ -9,7 +9,6 @@ const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
 const AssertionFailedError = require('../../lib/assert/error');
-require('co-mocha')(require('mocha'));
 const webApiTests = require('./webapi');
 
 describe('Nightmare', function () {
@@ -42,21 +41,21 @@ describe('Nightmare', function () {
   afterEach(() => I._after());
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', function* () {
+    it('should open main page of configured site', async () => {
       I.amOnPage('/');
-      const url = yield browser.url();
+      const url = await browser.url();
       return url.should.eql(`${siteUrl}/`);
     });
 
-    it('should open any page of configured site', function* () {
+    it('should open any page of configured site', async () => {
       I.amOnPage('/info');
-      const url = yield browser.url();
+      const url = await browser.url();
       return url.should.eql(`${siteUrl}/info`);
     });
 
-    it('should open absolute url', function* () {
+    it('should open absolute url', async () => {
       I.amOnPage(siteUrl);
-      const url = yield browser.url();
+      const url = await browser.url();
       return url.should.eql(`${siteUrl}/`);
     });
 
@@ -156,12 +155,12 @@ describe('Nightmare', function () {
 
 
   describe('refresh page', () => {
-    it('should refresh the current page', function* () {
+    it('should refresh the current page', async () => {
       I.amOnPage(siteUrl);
-      const url = yield browser.url();
+      const url = await browser.url();
       assert.equal(`${siteUrl}/`, url);
-      yield I.refreshPage();
-      const nextUrl = yield browser.url();
+      await I.refreshPage();
+      const nextUrl = await browser.url();
       // reloaded the page, check the url is the same
       assert.equal(url, nextUrl);
     });

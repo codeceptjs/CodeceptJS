@@ -1,5 +1,3 @@
-require('co-mocha')(require('mocha'));
-
 let I;
 let data;
 let siteUrl;
@@ -25,27 +23,27 @@ module.exports.tests = function () {
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
-    it('should check for url fragment', function* () {
-      yield I.amOnPage('/form/checkbox');
-      yield I.seeInCurrentUrl('/form');
+    it('should check for url fragment', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.seeInCurrentUrl('/form');
       return I.dontSeeInCurrentUrl('/user');
     });
 
-    it('should check for equality', function* () {
-      yield I.amOnPage('/info');
-      yield I.seeCurrentUrlEquals('/info');
+    it('should check for equality', async () => {
+      await I.amOnPage('/info');
+      await I.seeCurrentUrlEquals('/info');
       return I.dontSeeCurrentUrlEquals('form');
     });
 
-    it('should check for equality in absolute urls', function* () {
-      yield I.amOnPage('/info');
-      yield I.seeCurrentUrlEquals(`${siteUrl}/info`);
+    it('should check for equality in absolute urls', async () => {
+      await I.amOnPage('/info');
+      await I.seeCurrentUrlEquals(`${siteUrl}/info`);
       return I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
     });
 
-    it('should grab browser url', function* () {
-      yield I.amOnPage('/info');
-      const url = yield I.grabCurrentUrl();
+    it('should grab browser url', async () => {
+      await I.amOnPage('/info');
+      const url = await I.grabCurrentUrl();
       return assert.equal(url, `${siteUrl}/info`);
     });
   });
@@ -76,56 +74,56 @@ module.exports.tests = function () {
   });
 
   describe('see text : #see', () => {
-    it('should check text on site', function* () {
-      yield I.amOnPage('/');
-      yield I.see('Welcome to test app!');
-      yield I.see('A wise man said: "debug!"');
+    it('should check text on site', async () => {
+      await I.amOnPage('/');
+      await I.see('Welcome to test app!');
+      await I.see('A wise man said: "debug!"');
       return I.dontSee('Info');
     });
 
-    it('should check text inside element', function* () {
-      yield I.amOnPage('/');
-      yield I.see('Welcome to test app!', 'h1');
-      yield I.amOnPage('/info');
-      yield I.see('valuable', {
+    it('should check text inside element', async () => {
+      await I.amOnPage('/');
+      await I.see('Welcome to test app!', 'h1');
+      await I.amOnPage('/info');
+      await I.see('valuable', {
         css: 'p',
       });
-      yield I.see('valuable', '//body/p');
+      await I.see('valuable', '//body/p');
       return I.dontSee('valuable', 'h1');
     });
 
-    it('should verify non-latin chars', function* () {
-      yield I.amOnPage('/info');
-      yield I.see('на');
-      yield I.see("Don't do that at home!", 'h3');
+    it('should verify non-latin chars', async () => {
+      await I.amOnPage('/info');
+      await I.see('на');
+      await I.see("Don't do that at home!", 'h3');
       return I.see('Текст', 'p');
     });
   });
 
   describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
-    it('should check visible elements on page', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeElement('input[name=name]');
-      yield I.seeElement({
+    it('should check visible elements on page', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElement('input[name=name]');
+      await I.seeElement({
         name: 'name',
       });
-      yield I.seeElement('//input[@id="name"]');
-      yield I.dontSeeElement('#something-beyond');
+      await I.seeElement('//input[@id="name"]');
+      await I.dontSeeElement('#something-beyond');
       return I.dontSeeElement('//input[@id="something-beyond"]');
     });
 
-    it('should check elements are in the DOM', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeElementInDOM('input[name=name]');
-      yield I.seeElementInDOM('//input[@id="name"]');
-      yield I.dontSeeElementInDOM('#something-beyond');
+    it('should check elements are in the DOM', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElementInDOM('input[name=name]');
+      await I.seeElementInDOM('//input[@id="name"]');
+      await I.dontSeeElementInDOM('#something-beyond');
       return I.dontSeeElementInDOM('//input[@id="something-beyond"]');
     });
 
-    it('should check elements are visible on the page', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeElementInDOM('input[name=email]');
-      yield I.dontSeeElement('input[name=email]');
+    it('should check elements are visible on the page', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElementInDOM('input[name=email]');
+      await I.dontSeeElement('input[name=email]');
       return I.dontSeeElement('#something-beyond');
     });
   });
@@ -153,64 +151,64 @@ module.exports.tests = function () {
   });
 
   describe('#seeInSource, #dontSeeInSource', () => {
-    it('should check meta of a page', function* () {
-      yield I.amOnPage('/info');
-      yield I.seeInSource('<body>');
-      yield I.dontSeeInSource('<meta>');
-      yield I.seeInSource('Invisible text');
+    it('should check meta of a page', async () => {
+      await I.amOnPage('/info');
+      await I.seeInSource('<body>');
+      await I.dontSeeInSource('<meta>');
+      await I.seeInSource('Invisible text');
       return I.seeInSource('content="text/html; charset=utf-8"');
     });
   });
 
   describe('#click', () => {
-    it('should click by inner text', function* () {
-      yield I.amOnPage('/');
-      yield I.click('More info');
+    it('should click by inner text', async () => {
+      await I.amOnPage('/');
+      await I.click('More info');
       return I.seeInCurrentUrl('/info');
     });
 
-    it('should click by css', function* () {
-      yield I.amOnPage('/');
-      yield I.click('#link');
+    it('should click by css', async () => {
+      await I.amOnPage('/');
+      await I.click('#link');
       return I.seeInCurrentUrl('/info');
     });
 
-    it('should click by xpath', function* () {
-      yield I.amOnPage('/');
-      yield I.click('//a[@id="link"]');
+    it('should click by xpath', async () => {
+      await I.amOnPage('/');
+      await I.click('//a[@id="link"]');
       return I.seeInCurrentUrl('/info');
     });
 
-    it('should click by name', function* () {
-      yield I.amOnPage('/form/button');
-      yield I.click('btn0');
+    it('should click by name', async () => {
+      await I.amOnPage('/form/button');
+      await I.click('btn0');
       return assert.equal(formContents('text'), 'val');
     });
 
-    it('should click on context', function* () {
-      yield I.amOnPage('/');
-      yield I.click('More info', 'body>p');
+    it('should click on context', async () => {
+      await I.amOnPage('/');
+      await I.click('More info', 'body>p');
       return I.seeInCurrentUrl('/info');
     });
 
-    it('should not click wrong context', function* () {
+    it('should not click wrong context', async () => {
       let err = false;
-      yield I.amOnPage('/');
+      await I.amOnPage('/');
       return I.click('More info', '#area1')
         .catch(e => err = true)
         .then(() => assert.ok(err));
     });
 
-    it('should click link with inner span', function* () {
-      yield I.amOnPage('/form/example7');
-      yield I.click('Buy Chocolate Bar');
-      // yield I.wait(3);
+    it('should click link with inner span', async () => {
+      await I.amOnPage('/form/example7');
+      await I.click('Buy Chocolate Bar');
+      // await I.wait(3);
       return I.seeCurrentUrlEquals('/');
     });
 
-    it('should click link with xpath locator', function* () {
-      yield I.amOnPage('/form/example7');
-      yield I.click({
+    it('should click link with xpath locator', async () => {
+      await I.amOnPage('/form/example7');
+      await I.click({
         xpath: '(//*[@title = "Chocolate Bar"])[1]',
       });
       return I.seeCurrentUrlEquals('/');
@@ -219,68 +217,68 @@ module.exports.tests = function () {
 
   // Could not get double click to work
   describe('#doubleClick', () => {
-    it('it should doubleClick', function* () {
-      yield I.amOnPage('/form/doubleclick');
-      yield I.dontSee('Done');
-      yield I.doubleClick('#block');
+    it('it should doubleClick', async () => {
+      await I.amOnPage('/form/doubleclick');
+      await I.dontSee('Done');
+      await I.doubleClick('#block');
       return I.see('Done');
     });
   });
 
   // rightClick does not seem to work either
   describe('#rightClick', () => {
-    it('it should rightClick', function* () {
-      yield I.amOnPage('/form/rightclick');
-      yield I.dontSee('right clicked');
-      yield I.rightClick('Lorem Ipsum');
+    it('it should rightClick', async () => {
+      await I.amOnPage('/form/rightclick');
+      await I.dontSee('right clicked');
+      await I.rightClick('Lorem Ipsum');
       return I.see('right clicked');
     });
 
-    it('it should rightClick by locator', function* () {
-      yield I.amOnPage('/form/rightclick');
-      yield I.dontSee('right clicked');
-      yield I.rightClick('.context a');
+    it('it should rightClick by locator', async () => {
+      await I.amOnPage('/form/rightclick');
+      await I.dontSee('right clicked');
+      await I.rightClick('.context a');
       return I.see('right clicked');
     });
 
-    it('it should rightClick by locator and context', function* () {
-      yield I.amOnPage('/form/rightclick');
-      yield I.dontSee('right clicked');
-      yield I.rightClick('Lorem Ipsum', '.context');
+    it('it should rightClick by locator and context', async () => {
+      await I.amOnPage('/form/rightclick');
+      await I.dontSee('right clicked');
+      await I.rightClick('Lorem Ipsum', '.context');
       return I.see('right clicked');
     });
   });
 
 
   describe('#checkOption', () => {
-    it('should check option by css', function* () {
-      yield I.amOnPage('/form/checkbox');
-      yield I.checkOption('#checkin');
-      yield I.click('Submit');
-      yield I.wait(1);
+    it('should check option by css', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption('#checkin');
+      await I.click('Submit');
+      await I.wait(1);
       return assert.equal(formContents('terms'), 'agree');
     });
 
-    it('should check option by strict locator', function* () {
-      yield I.amOnPage('/form/checkbox');
-      yield I.checkOption({
+    it('should check option by strict locator', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption({
         id: 'checkin',
       });
-      yield I.click('Submit');
+      await I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
-    it('should check option by name', function* () {
-      yield I.amOnPage('/form/checkbox');
-      yield I.checkOption('terms');
-      yield I.click('Submit');
+    it('should check option by name', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption('terms');
+      await I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
-    it('should check option by label', function* () {
-      yield I.amOnPage('/form/checkbox');
-      yield I.checkOption('I Agree');
-      yield I.click('Submit');
+    it('should check option by label', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption('I Agree');
+      await I.click('Submit');
       return assert.equal(formContents('terms'), 'agree');
     });
 
@@ -288,10 +286,10 @@ module.exports.tests = function () {
     // cannot do Selector(css).find(elementByXPath(xpath))
     // testcafe always says "xpath is not defined"
     // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
-    it.skip('should check option by context', function* () {
-      yield I.amOnPage('/form/example1');
-      yield I.checkOption('Remember me next time', '.rememberMe');
-      yield I.click('Login');
+    it.skip('should check option by context', async () => {
+      await I.amOnPage('/form/example1');
+      await I.checkOption('Remember me next time', '.rememberMe');
+      await I.click('Login');
       return assert.equal(formContents('LoginForm').rememberMe, 1);
     });
   });
@@ -305,72 +303,72 @@ module.exports.tests = function () {
   });
 
   describe('#selectOption', () => {
-    it('should select option by css', function* () {
-      yield I.amOnPage('/form/select');
-      yield I.selectOption('form select[name=age]', 'adult');
-      yield I.click('Submit');
+    it('should select option by css', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('form select[name=age]', 'adult');
+      await I.click('Submit');
       return assert.equal(formContents('age'), 'adult');
     });
 
-    it('should select option by name', function* () {
-      yield I.amOnPage('/form/select');
-      yield I.selectOption('age', 'adult');
-      yield I.click('Submit');
+    it('should select option by name', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('age', 'adult');
+      await I.click('Submit');
       return assert.equal(formContents('age'), 'adult');
     });
 
-    it('should select option by label', function* () {
-      yield I.amOnPage('/form/select');
-      yield I.selectOption('Select your age', 'dead');
-      yield I.click('Submit');
+    it('should select option by label', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('Select your age', 'dead');
+      await I.click('Submit');
       return assert.equal(formContents('age'), 'dead');
     });
 
-    it('should select option by label and option text', function* () {
-      yield I.amOnPage('/form/select');
-      yield I.selectOption('Select your age', '21-60');
-      yield I.click('Submit');
+    it('should select option by label and option text', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('Select your age', '21-60');
+      await I.click('Submit');
       return assert.equal(formContents('age'), 'adult');
     });
 
-    it('should select option by label and option text - with an onchange callback', function* () {
-      yield I.amOnPage('/form/select_onchange');
-      yield I.selectOption('Select a value', 'Option 2');
-      yield I.click('Submit');
+    it('should select option by label and option text - with an onchange callback', async () => {
+      await I.amOnPage('/form/select_onchange');
+      await I.selectOption('Select a value', 'Option 2');
+      await I.click('Submit');
       return assert.equal(formContents('select'), 'option2');
     });
 
     // Could not get multiselect to work with testcafe
-    it('should select multiple options', function* () {
+    it('should select multiple options', async () => {
       if (isHelper('TestCafe')) return;
 
-      yield I.amOnPage('/form/select_multiple');
-      yield I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
-      yield I.click('Submit');
+      await I.amOnPage('/form/select_multiple');
+      await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
+      await I.click('Submit');
       return assert.deepEqual(formContents('like'), ['play', 'adult']);
     });
   });
 
   describe('#executeScript', () => {
-    it('should execute synchronous script', function* () {
-      yield I.amOnPage('/');
-      yield I.executeScript(() => {
+    it('should execute synchronous script', async () => {
+      await I.amOnPage('/');
+      await I.executeScript(() => {
         document.getElementById('link').innerHTML = 'Appended';
       });
       return I.see('Appended', 'a');
     });
 
-    it('should return value from sync script', function* () {
-      yield I.amOnPage('/');
-      const val = yield I.executeScript(a => a + 5, 5);
+    it('should return value from sync script', async () => {
+      await I.amOnPage('/');
+      const val = await I.executeScript(a => a + 5, 5);
       assert.equal(val, 10);
     });
 
-    it('should execute async script', function* () {
+    it('should execute async script', async () => {
       if (isHelper('TestCafe')) return; // TODO Not yet implemented
 
-      yield I.amOnPage('/');
-      const val = yield I.executeAsyncScript((val, done) => {
+      await I.amOnPage('/');
+      const val = await I.executeAsyncScript((val, done) => {
         setTimeout(() => {
           document.getElementById('link').innerHTML = val;
           done(5);
@@ -382,71 +380,71 @@ module.exports.tests = function () {
   });
 
   describe('#fillField, #appendField', () => {
-    it('should fill input fields', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.fillField('Name', 'Nothing special');
-      yield I.click('Submit');
+    it('should fill input fields', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', 'Nothing special');
+      await I.click('Submit');
       return assert.equal(formContents('name'), 'Nothing special');
     });
 
-    it('should fill input fields with secrets', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.fillField('Name', secret('Something special'));
-      yield I.click('Submit');
+    it('should fill input fields with secrets', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', secret('Something special'));
+      await I.click('Submit');
       return assert.equal(formContents('name'), 'Something special');
     });
 
-    it('should fill field by css', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.fillField('#name', 'Nothing special');
-      yield I.click('Submit');
+    it('should fill field by css', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('#name', 'Nothing special');
+      await I.click('Submit');
       return assert.equal(formContents('name'), 'Nothing special');
     });
 
-    it('should fill field by strict locator', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.fillField({
+    it('should fill field by strict locator', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField({
         id: 'name',
       }, 'Nothing special');
-      yield I.click('Submit');
+      await I.click('Submit');
       return assert.equal(formContents('name'), 'Nothing special');
     });
 
-    it('should fill field by name', function* () {
-      yield I.amOnPage('/form/example1');
-      yield I.fillField('LoginForm[username]', 'davert');
-      yield I.fillField('LoginForm[password]', '123456');
-      yield I.click('Login');
+    it('should fill field by name', async () => {
+      await I.amOnPage('/form/example1');
+      await I.fillField('LoginForm[username]', 'davert');
+      await I.fillField('LoginForm[password]', '123456');
+      await I.click('Login');
       assert.equal(formContents('LoginForm').username, 'davert');
       return assert.equal(formContents('LoginForm').password, '123456');
     });
 
-    it('should fill textarea by css', function* () {
-      yield I.amOnPage('/form/textarea');
-      yield I.fillField('textarea', 'Nothing special');
-      yield I.click('Submit');
+    it('should fill textarea by css', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('textarea', 'Nothing special');
+      await I.click('Submit');
       return assert.equal(formContents('description'), 'Nothing special');
     });
 
-    it('should fill textarea by label', function* () {
-      yield I.amOnPage('/form/textarea');
-      yield I.fillField('Description', 'Nothing special');
-      yield I.click('Submit');
+    it('should fill textarea by label', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('Description', 'Nothing special');
+      await I.click('Submit');
       return assert.equal(formContents('description'), 'Nothing special');
     });
 
-    it('should fill textarea by overwritting the existing value', function* () {
-      yield I.amOnPage('/form/textarea');
-      yield I.fillField('Description', 'Nothing special');
-      yield I.fillField('Description', 'Some other text');
-      yield I.click('Submit');
+    it('should fill textarea by overwritting the existing value', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('Description', 'Nothing special');
+      await I.fillField('Description', 'Some other text');
+      await I.click('Submit');
       return assert.equal(formContents('description'), 'Some other text');
     });
 
-    it('should append field value', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.appendField('Name', '_AND_NEW');
-      yield I.click('Submit');
+    it('should append field value', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '_AND_NEW');
+      await I.click('Submit');
       return assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
   });
@@ -459,128 +457,128 @@ module.exports.tests = function () {
       .then(() => I.clearField('#name'))
       .then(() => I.dontSeeInField('#name', 'Nothing special')));
 
-    it('should clear field by name', function* () {
-      yield I.amOnPage('/form/example1');
-      yield I.clearField('LoginForm[username]');
-      yield I.click('Login');
+    it('should clear field by name', async () => {
+      await I.amOnPage('/form/example1');
+      await I.clearField('LoginForm[username]');
+      await I.click('Login');
       return assert.equal(formContents('LoginForm').username, '');
     });
 
-    it('should clear field by locator', function* () {
-      yield I.amOnPage('/form/example1');
-      yield I.clearField('#LoginForm_username');
-      yield I.click('Login');
+    it('should clear field by locator', async () => {
+      await I.amOnPage('/form/example1');
+      await I.clearField('#LoginForm_username');
+      await I.click('Login');
       return assert.equal(formContents('LoginForm').username, '');
     });
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
-    it('should check for empty field', function* () {
-      yield I.amOnPage('/form/empty');
+    it('should check for empty field', async () => {
+      await I.amOnPage('/form/empty');
       return I.seeInField('#empty_input', '');
     });
 
-    it('should check for empty textarea', function* () {
-      yield I.amOnPage('/form/empty');
+    it('should check for empty textarea', async () => {
+      await I.amOnPage('/form/empty');
       return I.seeInField('#empty_textarea', '');
     });
 
-    it('should check field equals', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.seeInField('Name', 'OLD_VALUE');
-      yield I.seeInField('name', 'OLD_VALUE');
-      yield I.seeInField('//input[@id="name"]', 'OLD_VALUE');
+    it('should check field equals', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeInField('Name', 'OLD_VALUE');
+      await I.seeInField('name', 'OLD_VALUE');
+      await I.seeInField('//input[@id="name"]', 'OLD_VALUE');
       return I.dontSeeInField('//input[@id="name"]', 'NOtVALUE');
     });
 
-    it('should check textarea equals', function* () {
-      yield I.amOnPage('/form/textarea');
-      yield I.seeInField('Description', 'sunrise');
-      yield I.seeInField('textarea', 'sunrise');
-      yield I.seeInField('//textarea[@id="description"]', 'sunrise');
+    it('should check textarea equals', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.seeInField('Description', 'sunrise');
+      await I.seeInField('textarea', 'sunrise');
+      await I.seeInField('//textarea[@id="description"]', 'sunrise');
       return I.dontSeeInField('//textarea[@id="description"]', 'sunset');
     });
 
-    it('should check checkbox is checked :)', function* () {
-      yield I.amOnPage('/info');
+    it('should check checkbox is checked :)', async () => {
+      await I.amOnPage('/info');
       return I.seeCheckboxIsChecked('input[type=checkbox]');
     });
 
-    it('should check checkbox is not checked', function* () {
-      yield I.amOnPage('/form/checkbox');
+    it('should check checkbox is not checked', async () => {
+      await I.amOnPage('/form/checkbox');
       return I.dontSeeCheckboxIsChecked('#checkin');
     });
 
-    it('should match fields with the same name', function* () {
-      yield I.amOnPage('/form/example20');
-      yield I.seeInField("//input[@name='txtName'][2]", 'emma');
+    it('should match fields with the same name', async () => {
+      await I.amOnPage('/form/example20');
+      await I.seeInField("//input[@name='txtName'][2]", 'emma');
       return I.seeInField("input[name='txtName']:nth-child(2)", 'emma');
     });
   });
 
   describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
-    it('should grab text from page', function* () {
-      yield I.amOnPage('/');
-      let val = yield I.grabTextFrom('h1');
+    it('should grab text from page', async () => {
+      await I.amOnPage('/');
+      let val = await I.grabTextFrom('h1');
       assert.equal(val, 'Welcome to test app!');
-      val = yield I.grabTextFrom('//h1');
+      val = await I.grabTextFrom('//h1');
       return assert.equal(val, 'Welcome to test app!');
     });
 
-    it('should grab multiple texts from page', function* () {
-      yield I.amOnPage('/info');
-      const vals = yield I.grabTextFrom('#grab-multiple a');
+    it('should grab multiple texts from page', async () => {
+      await I.amOnPage('/info');
+      const vals = await I.grabTextFrom('#grab-multiple a');
       assert.equal(vals[0], 'First');
       assert.equal(vals[1], 'Second');
       assert.equal(vals[2], 'Third');
     });
 
-    it('should grab html from page', function* () {
+    it('should grab html from page', async () => {
       if (isHelper('TestCafe')) return;
 
-      yield I.amOnPage('/info');
-      const val = yield I.grabHTMLFrom('#grab-multiple');
+      await I.amOnPage('/info');
+      const val = await I.grabHTMLFrom('#grab-multiple');
       assert.equal(`
     <a id="first-link">First</a>
     <a id="second-link">Second</a>
     <a id="third-link">Third</a>
 `, val);
 
-      const vals = yield I.grabHTMLFrom('#grab-multiple a');
+      const vals = await I.grabHTMLFrom('#grab-multiple a');
       assert.equal(vals[0], 'First');
       assert.equal(vals[1], 'Second');
       assert.equal(vals[2], 'Third');
     });
 
 
-    it('should grab value from field', function* () {
-      yield I.amOnPage('/form/hidden');
-      let val = yield I.grabValueFrom('#action');
+    it('should grab value from field', async () => {
+      await I.amOnPage('/form/hidden');
+      let val = await I.grabValueFrom('#action');
       assert.equal(val, 'kill_people');
-      val = yield I.grabValueFrom("//form/input[@name='action']");
+      val = await I.grabValueFrom("//form/input[@name='action']");
       assert.equal(val, 'kill_people');
-      yield I.amOnPage('/form/textarea');
-      val = yield I.grabValueFrom('#description');
+      await I.amOnPage('/form/textarea');
+      val = await I.grabValueFrom('#description');
       assert.equal(val, 'sunrise');
-      yield I.amOnPage('/form/select');
-      val = yield I.grabValueFrom('#age');
+      await I.amOnPage('/form/select');
+      val = await I.grabValueFrom('#age');
       return assert.equal(val, 'oldfag');
     });
 
-    it('should grab attribute from element', function* () {
+    it('should grab attribute from element', async () => {
       if (isHelper('TestCafe')) return;
-      yield I.amOnPage('/search');
-      const val = yield I.grabAttributeFrom({
+      await I.amOnPage('/search');
+      const val = await I.grabAttributeFrom({
         css: 'form',
       }, 'method');
       return assert.equal(val, 'get');
     });
 
-    it('should grab custom attribute from element', function* () {
+    it('should grab custom attribute from element', async () => {
       if (isHelper('TestCafe')) return;
 
-      yield I.amOnPage('/form/example4');
-      const val = yield I.grabAttributeFrom({
+      await I.amOnPage('/form/example4');
+      const val = await I.grabAttributeFrom({
         css: '.navbar-toggle',
       }, 'data-toggle');
       return assert.equal(val, 'collapse');
@@ -588,41 +586,41 @@ module.exports.tests = function () {
   });
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
-    it('should check page title', function* () {
+    it('should check page title', async () => {
       if (isHelper('TestCafe')) return;
 
-      yield I.amOnPage('/');
-      yield I.seeInTitle('TestEd Beta 2.0');
-      yield I.dontSeeInTitle('Welcome to test app');
-      yield I.amOnPage('/info');
+      await I.amOnPage('/');
+      await I.seeInTitle('TestEd Beta 2.0');
+      await I.dontSeeInTitle('Welcome to test app');
+      await I.amOnPage('/info');
       return I.dontSeeInTitle('TestEd Beta 2.0');
     });
 
-    it('should grab page title', function* () {
+    it('should grab page title', async () => {
       if (isHelper('TestCafe')) return;
 
-      yield I.amOnPage('/');
-      const val = yield I.grabTitle();
+      await I.amOnPage('/');
+      const val = await I.grabTitle();
       return assert.equal(val, 'TestEd Beta 2.0');
     });
   });
 
   describe('#attachFile', () => {
-    it('should upload file located by CSS', function* () {
-      yield I.amOnPage('/form/file');
-      yield I.attachFile('#avatar', 'app/avatar.jpg');
-      yield I.click('Submit');
-      yield I.amOnPage('/');
+    it('should upload file located by CSS', async () => {
+      await I.amOnPage('/form/file');
+      await I.attachFile('#avatar', 'app/avatar.jpg');
+      await I.click('Submit');
+      await I.amOnPage('/');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
     });
 
-    it('should upload file located by label', function* () {
+    it('should upload file located by label', async () => {
       if (isHelper('Nightmare')) return;
-      yield I.amOnPage('/form/file');
-      yield I.attachFile('Avatar', 'app/avatar.jpg');
-      yield I.click('Submit');
+      await I.amOnPage('/form/file');
+      await I.attachFile('Avatar', 'app/avatar.jpg');
+      await I.click('Submit');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');

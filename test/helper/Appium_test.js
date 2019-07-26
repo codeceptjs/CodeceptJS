@@ -7,7 +7,6 @@ const path = require('path');
 const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
-require('co-mocha')(require('mocha'));
 
 const apk_path = 'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk';
 
@@ -51,38 +50,38 @@ describe('Appium', function () {
     describe(
       '#grabAllContexts, #grabContext, #grabCurrentActivity, #grabNetworkConnection, #grabOrientation, #grabSettings',
       () => {
-        it('should grab all available contexts for screen', function* () {
-          yield app.click('~buttonStartWebviewCD');
-          const val = yield app.grabAllContexts();
+        it('should grab all available contexts for screen', async () => {
+          await app.click('~buttonStartWebviewCD');
+          const val = await app.grabAllContexts();
           assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']);
         });
 
-        it('should grab current context', function* () {
-          const val = yield app.grabContext();
+        it('should grab current context', async () => {
+          const val = await app.grabContext();
           assert.equal(val, 'NATIVE_APP');
         });
 
-        it('should grab current activity of app', function* () {
-          const val = yield app.grabCurrentActivity();
+        it('should grab current activity of app', async () => {
+          const val = await app.grabCurrentActivity();
           assert.equal(val, '.HomeScreenActivity');
         });
 
-        it('should grab network connection settings', function* () {
-          yield app.setNetworkConnection(4);
-          const val = yield app.grabNetworkConnection();
+        it('should grab network connection settings', async () => {
+          await app.setNetworkConnection(4);
+          const val = await app.grabNetworkConnection();
           assert.equal(val.value, 4);
           assert.equal(val.inAirplaneMode, false);
           assert.equal(val.hasWifi, false);
           assert.equal(val.hasData, true);
         });
 
-        it('should grab orientation', function* () {
-          const val = yield app.grabOrientation();
+        it('should grab orientation', async () => {
+          const val = await app.grabOrientation();
           assert.equal(val, 'PORTRAIT');
         });
 
-        it('should grab custom settings', function* () {
-          const val = yield app.grabSettings();
+        it('should grab custom settings', async () => {
+          const val = await app.grabSettings();
           assert.deepEqual(val, { ignoreUnimportantViews: false });
         });
       },
@@ -139,44 +138,44 @@ describe('Appium', function () {
   });
 
   describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
-    it('should switch context', function* () {
-      yield app.click('~buttonStartWebviewCD');
-      yield app._switchToContext('WEBVIEW_io.selendroid.testapp');
-      const val = yield app.grabContext();
+    it('should switch context', async () => {
+      await app.click('~buttonStartWebviewCD');
+      await app._switchToContext('WEBVIEW_io.selendroid.testapp');
+      const val = await app.grabContext();
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
     });
 
-    it('should switch to native and web contexts @quick', function* () {
-      yield app.click('~buttonStartWebviewCD');
-      yield app.see('WebView location');
-      yield app.switchToWeb();
-      let val = yield app.grabContext();
+    it('should switch to native and web contexts @quick', async () => {
+      await app.click('~buttonStartWebviewCD');
+      await app.see('WebView location');
+      await app.switchToWeb();
+      let val = await app.grabContext();
       assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
-      yield app.see('Prefered Car');
+      await app.see('Prefered Car');
       assert.ok(app.isWeb);
-      yield app.switchToNative();
-      val = yield app.grabContext();
+      await app.switchToNative();
+      val = await app.grabContext();
       assert.equal(val, 'NATIVE_APP');
       return assert.ok(!app.isWeb);
     });
 
-    it('should switch activity', function* () {
-      yield app.startActivity('io.selendroid.testapp', '.RegisterUserActivity');
-      const val = yield app.grabCurrentActivity();
+    it('should switch activity', async () => {
+      await app.startActivity('io.selendroid.testapp', '.RegisterUserActivity');
+      const val = await app.grabCurrentActivity();
       assert.equal(val, '.RegisterUserActivity');
     });
   });
 
   describe('#setNetworkConnection, #setSettings', () => {
-    it('should set Network Connection (airplane mode on)', function* () {
-      yield app.setNetworkConnection(1);
-      const val = yield app.grabNetworkConnection();
+    it('should set Network Connection (airplane mode on)', async () => {
+      await app.setNetworkConnection(1);
+      const val = await app.grabNetworkConnection();
       return assert.equal(val.value, 1);
     });
 
-    it('should set custom settings', function* () {
-      yield app.setSettings({ cyberdelia: 'open' });
-      const val = yield app.grabSettings();
+    it('should set custom settings', async () => {
+      await app.setSettings({ cyberdelia: 'open' });
+      const val = await app.grabSettings();
       assert.deepEqual(val, { ignoreUnimportantViews: false, cyberdelia: 'open' });
     });
   });
@@ -197,7 +196,7 @@ describe('Appium', function () {
   });
 
   describe('#sendDeviceKeyEvent', () => {
-    it('should react on pressing keycode', function* () {
+    it('should react on pressing keycode', async () => {
       return app.sendDeviceKeyEvent(3)
         .then(() => app.waitForVisible('~Apps'));
     });
@@ -214,42 +213,42 @@ describe('Appium', function () {
   });
 
   describe('#makeTouchAction', () => {
-    it('should react on touch actions', function* () {
-      yield app.tap('~buttonStartWebviewCD');
-      const val = yield app.grabCurrentActivity();
+    it('should react on touch actions', async () => {
+      await app.tap('~buttonStartWebviewCD');
+      const val = await app.grabCurrentActivity();
       assert.equal(val, '.WebViewActivity');
     });
 
-    it('should react on swipe action', function* () {
-      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
-      yield app.waitForText(
+    it('should react on swipe action', async () => {
+      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
+      await app.waitForText(
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      yield app.swipe(
+      await app.swipe(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800,
         1200, 1000,
       );
-      const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      const vx = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
-      const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
+      const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
+      const vx = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
+      const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
       assert.ok(vx.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
       assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
-    it('should react on swipeDown action', function* () {
-      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
-      yield app.waitForText(
+    it('should react on swipeDown action', async () => {
+      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
+      await app.waitForText(
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      yield app.swipeDown(
+      await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
         1200, 1000,
       );
-      const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
+      const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
+      const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
       assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
@@ -260,74 +259,72 @@ describe('Appium', function () {
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      // yield app.swipeDown('#io.selendroid.testapp:id/LinearLayout1');
       await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
         1200, 1000,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      // const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
     });
 
 
-    it('should react on swipeUp action', function* () {
-      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
-      yield app.waitForText(
+    it('should react on swipeUp action', async () => {
+      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
+      await app.waitForText(
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      yield app.swipeUp(
+      await app.swipeUp(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200,
         1000,
       );
-      const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
+      const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
+      const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
       assert.ok(vy.match(/vy: -\d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
-    it('should react on swipeRight action', function* () {
-      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
-      yield app.waitForText(
+    it('should react on swipeRight action', async () => {
+      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
+      await app.waitForText(
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      yield app.swipeRight(
+      await app.swipeRight(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
         800, 1000,
       );
-      const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
+      const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
+      const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
       assert.equal(type, 'FLICK');
       assert.ok(vy.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
-    it('should react on swipeLeft action', function* () {
-      yield app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
-      yield app.waitForText(
+    it('should react on swipeLeft action', async () => {
+      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
+      await app.waitForText(
         'Gesture Type', 10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
-      yield app.swipeLeft(
+      await app.swipeLeft(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
         800, 1000,
       );
-      const type = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      const vy = yield app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
+      const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
+      const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
       assert.equal(type, 'FLICK');
       assert.ok(vy.match(/vx: -\d\d000\.0 pps/), 'to be like 21000.0 pps');
     });
 
-    it('should react on touchPerform action', function* () {
-      yield app.touchPerform([{
+    it('should react on touchPerform action', async () => {
+      await app.touchPerform([{
         action: 'press',
         options: {
           x: 100,
           y: 200,
         },
       }, { action: 'release' }]);
-      const val = yield app.grabCurrentActivity();
+      const val = await app.grabCurrentActivity();
       assert.equal(val, '.HomeScreenActivity');
     });
 
@@ -340,9 +337,9 @@ describe('Appium', function () {
         e.message.should.include('Scroll to the end and element android.widget.CheckBox was not found');
       }));
 
-    it('should react on swipeTo action', function* () {
-      yield app.click('~startUserRegistrationCD');
-      yield app.swipeTo(
+    it('should react on swipeTo action', async () => {
+      await app.click('~startUserRegistrationCD');
+      await app.swipeTo(
         '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
         100, 700,
       );
@@ -404,7 +401,7 @@ describe('Appium', function () {
   });
 
   describe('#pullFile', () => {
-    it('should pull file to local machine', function* () {
+    it('should pull file to local machine', async () => {
       const savepath = path.join(__dirname, `/../data/output/testpullfile${new Date().getTime()}.png`);
       return app.pullFile('/storage/emulated/0/DCIM/sauce_logo.png', savepath)
         .then(() => assert.ok(fileExists(savepath), null, 'file does not exists'));
@@ -417,24 +414,24 @@ describe('Appium', function () {
       .then(() => app.see('Hello'))
       .then(() => app.dontSee('Welcome', '~buttonTestCD')));
 
-    it('should work inside web view as normally @quick', function* () {
-      yield app.click('~buttonStartWebviewCD');
-      yield app.switchToWeb();
+    it('should work inside web view as normally @quick', async () => {
+      await app.click('~buttonStartWebviewCD');
+      await app.switchToWeb();
       return app.see('Prefered Car:');
     });
   });
 
   describe('#appendField', () => {
-    it('should be able to send special keys to element @second', function* () {
-      yield app.click('~startUserRegistrationCD');
-      yield app.click('~email of the customer');
-      yield app.appendField('~email of the customer', '1');
-      yield app.hideDeviceKeyboard('pressKey', 'Done');
-      yield app.swipeTo(
+    it('should be able to send special keys to element @second', async () => {
+      await app.click('~startUserRegistrationCD');
+      await app.click('~email of the customer');
+      await app.appendField('~email of the customer', '1');
+      await app.hideDeviceKeyboard('pressKey', 'Done');
+      await app.swipeTo(
         '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
         100, 700,
       );
-      yield app.click('//android.widget.Button');
+      await app.click('//android.widget.Button');
       return app.see(
         '1',
         '#io.selendroid.testapp:id/label_email_data',
@@ -460,28 +457,28 @@ describe('Appium', function () {
   });
 
   describe('see element : #seeElement, #dontSeeElement', () => {
-    it('should check visible elements on page @quick', function* () {
-      yield app.seeElement('~buttonTestCD');
-      yield app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
-      yield app.dontSeeElement('#something-beyond');
+    it('should check visible elements on page @quick', async () => {
+      await app.seeElement('~buttonTestCD');
+      await app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
+      await app.dontSeeElement('#something-beyond');
       return app.dontSeeElement('//input[@id="something-beyond"]');
     });
   });
 
   describe('#click @quick', () => {
-    it('should click by accessibility id', function* () {
+    it('should click by accessibility id', async () => {
       return app.click('~startUserRegistrationCD')
         .then(() => app.seeElement('~label_usernameCD'));
     });
 
-    it('should click by xpath', function* () {
+    it('should click by xpath', async () => {
       return app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
         .then(() => app.seeElement('~label_usernameCD'));
     });
   });
 
   describe('#fillField, #appendField @second', () => {
-    it('should fill field by accessibility id', function* () {
+    it('should fill field by accessibility id', async () => {
       return app.click('~startUserRegistrationCD')
         .then(() => app.fillField('~email of the customer', 'Nothing special'))
         .then(() => app.hideDeviceKeyboard('pressKey', 'Done'))
@@ -496,32 +493,32 @@ describe('Appium', function () {
         ));
     });
 
-    it('should fill field by xpath', function* () {
-      yield app.click('~startUserRegistrationCD');
-      yield app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
-      yield app.hideDeviceKeyboard('pressKey', 'Done');
-      yield app.swipeTo(
+    it('should fill field by xpath', async () => {
+      await app.click('~startUserRegistrationCD');
+      await app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
+      await app.hideDeviceKeyboard('pressKey', 'Done');
+      await app.swipeTo(
         '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
         100, 700,
       );
-      yield app.click('//android.widget.Button');
-      yield app.see(
+      await app.click('//android.widget.Button');
+      await app.see(
         'Nothing special',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
       );
     });
 
-    it('should append field value @second', function* () {
-      yield app.click('~startUserRegistrationCD');
-      yield app.fillField('~email of the customer', 'Nothing special');
-      yield app.appendField('~email of the customer', 'blabla');
-      yield app.hideDeviceKeyboard('pressKey', 'Done');
-      yield app.swipeTo(
+    it('should append field value @second', async () => {
+      await app.click('~startUserRegistrationCD');
+      await app.fillField('~email of the customer', 'Nothing special');
+      await app.appendField('~email of the customer', 'blabla');
+      await app.hideDeviceKeyboard('pressKey', 'Done');
+      await app.swipeTo(
         '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
         100, 700,
       );
-      yield app.click('//android.widget.Button');
-      yield app.see(
+      await app.click('//android.widget.Button');
+      await app.see(
         'Nothing specialblabla',
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
       );
@@ -537,13 +534,13 @@ describe('Appium', function () {
   });
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
-    it('should grab text from page', function* () {
-      const val = yield app.grabTextFrom('~buttonTestCD');
+    it('should grab text from page', async () => {
+      const val = await app.grabTextFrom('~buttonTestCD');
       assert.equal(val, 'EN Button');
     });
 
-    it('should grab attribute from element', function* () {
-      const val = yield app.grabAttributeFrom('~buttonTestCD', 'resourceId');
+    it('should grab attribute from element', async () => {
+      const val = await app.grabAttributeFrom('~buttonTestCD', 'resourceId');
       return assert.equal(val, 'io.selendroid.testapp:id/buttonTest');
     });
   });

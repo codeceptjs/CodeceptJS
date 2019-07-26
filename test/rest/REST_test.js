@@ -7,7 +7,6 @@ const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
-require('co-mocha')(require('mocha'));
 
 const data = {
   posts: [
@@ -100,8 +99,8 @@ describe('REST', () => {
       resp.config.headers['X-Test'].should.eql('test');
     }));
 
-    it('should set request headers', function* () {
-      yield I.sendGetRequest('/user', { 'Content-Type': 'application/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' }).then((resp) => {
+    it('should set request headers', async () => {
+      await I.sendGetRequest('/user', { 'Content-Type': 'application/json', HTTP_X_REQUESTED_WITH: 'xmlhttprequest' }).then((resp) => {
         resp.config.headers.should.have.property('Content-Type');
         resp.config.headers['Content-Type'].should.eql('application/json');
 
