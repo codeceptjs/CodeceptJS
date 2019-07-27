@@ -73,7 +73,7 @@ class Index extends React.Component {
     <div className="col-md-4">
       <img src="/img/Mind-Map-Paper.svg" alt="" />
       <h5>Driver Agnostic</h5>
-        Run your tests via <b>WebDriver, Puppeteer, Protractor, Appium</b>. The code is the same.
+        Run your tests via <b>WebDriver, Puppeteer, TestCafe, Protractor, Appium</b>. The code is the same.
         <a href="/basics#architecture" className="btn btn-light btn-sm">Learn More</a>
     </div>
     <div className="col-md-4">
