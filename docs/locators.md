@@ -64,6 +64,8 @@ I.seeElement({ css: 'button' });
 I.seeElement({ xpath: 'descendant::table/tr' });
 ```
 
+> ℹ Use [Locator Advicer](https://davertmik.github.io/locator/) to check quality of your locators.
+
 ## Semantic Locators
 
 CodeceptJS can guess an element's locator from context.
