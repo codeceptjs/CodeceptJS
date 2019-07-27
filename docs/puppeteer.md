@@ -176,7 +176,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 ## Mocking Requests
 
-Web application sends various requetss to local services (Rest API, GraphQL) or to 3rd party services (CDNS, Google Analytics, etc).
+Web application sends various requests to local services (Rest API, GraphQL) or to 3rd party services (CDNS, Google Analytics, etc).
 When you run tests with Puppeteer you can control those requests by mocking them. For instance, you can speed up your tests by blocking trackers, Google Analytics, and other services you don't control.
 
 Also you can replace real request with a one explicitly defined. This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
