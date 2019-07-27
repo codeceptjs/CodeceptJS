@@ -146,7 +146,7 @@ keepBrowserState: <span class="hljs-literal">true</span>,
 });
 </code></pre>
 <blockquote>
-<p>▶ Actions like <code>amOnPage</code>, <code>click</code>, <code>fillField</code> are not limited to WebDriver only. They work similarly for all available helpers. To learn more standard commands proceed to <a href="https://codecept.io/basics#writing-tests">Writing Tests</a> chapter.</p>
+<p>▶ Actions like <code>amOnPage</code>, <code>click</code>, <code>fillField</code> are not limited to WebDriver only. They work similarly for all available helpers. <a href="https://codecept.io/basics#writing-tests">Go to Basics guide to learn them</a>.</p>
 </blockquote>
 <p>An empty test case can be created with <code>codeceptjs gt</code> command.</p>
 <pre><code class="hljs">npx codeceptjs gt
@@ -166,7 +166,7 @@ keepBrowserState: <span class="hljs-literal">true</span>,
 </code></pre>
 <p>After a page is opened a full control of a browser is given to a terminal. Type in different commands such as <code>click</code>, <code>see</code>, <code>fillField</code> to write the test. A successful commands will be saved to <code>./output/cli-history</code> file and can be copied into a test.</p>
 <blockquote>
-<p>ℹ  All actions are listed in <a href="https://codecept.io/helpers/WebDriver">WebDriver helper reference</a> actions.</p>
+<p>ℹ  All actions are listed in <a href="https://codecept.io/helpers/WebDriver">WebDriver helper reference</a>.</p>
 </blockquote>
 <p>An interactive shell output may look like this:</p>
 <pre><code class="hljs"> Interactive shell started
@@ -191,6 +191,9 @@ keepBrowserState: <span class="hljs-literal">true</span>,
   <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'1 item left'</span>, <span class="hljs-string">'.todo-count'</span>);
 });
 </code></pre>
+<blockquote>
+<p><a href="https://github.com/DavertMik/codeceptjs-webdriver-example">▶ Working example of CodeceptJS WebDriver tests</a> for TodoMVC application.</p>
+</blockquote>
 <h2><a class="anchor" aria-hidden="true" id="waiting"></a><a href="#waiting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Waiting</h2>
 <p>Web applications do not always respond instantly. That's why WebDriver protocol has methods to wait for changes on a page. CodeceptJS provides such commands prefixed with <code>wait*</code> so you could explicitly define what effects we wait for.</p>
 <p>Most popular &quot;waiters&quot; are:</p>
@@ -214,7 +217,7 @@ exports.config = {
 <h2><a class="anchor" aria-hidden="true" id="smartwait"></a><a href="#smartwait" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SmartWait</h2>
 <p>It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on <a href="http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits">Implicit Wait</a> of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.</p>
 <p>SmartWait can be enabled by setting wait option in WebDriver config.
-Add <code>&quot;smartWait&quot;: 5000</code> to wait for additional 5s.</p>
+Add <code>smartWait: 5000</code> to wait for additional 5s.</p>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// inside codecept.conf.js</span>
 exports.config = {
   <span class="hljs-attr">helpers</span>: {
@@ -255,65 +258,8 @@ exports.config = {
 </code></pre>
 <p>With <code>autoLogin</code> plugin you can save cookies into a file and reuse same session on different runs.</p>
 <blockquote>
-<p>Read more about setting up <a href="https://codecept.io/plugins#autologin">autoLogin</a></p>
+<p><a href="https://codecept.io/plugins#autologin">▶ How to set up autoLogin plugin</a></p>
 </blockquote>
-<h2><a class="anchor" aria-hidden="true" id="multiple-sessions"></a><a href="#multiple-sessions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiple Sessions</h2>
-<p>CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use <code>session()</code> function as shown in example:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test app'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
-  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/chat'</span>);
-  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'name'</span>, <span class="hljs-string">'davert'</span>);
-  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Sign In'</span>);
-  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello, davert'</span>);
-  <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, () =&gt; {
-    <span class="hljs-comment">// another session started</span>
-    <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/chat'</span>);
-    <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'name'</span>, <span class="hljs-string">'john'</span>);
-    <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Sign In'</span>);
-    <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello, john'</span>);
-  });
-  <span class="hljs-comment">// switching back to default session</span>
-  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'message'</span>, <span class="hljs-string">'Hi, john'</span>);
-  <span class="hljs-comment">// there is a message from current user</span>
-  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'me: Hi, john'</span>, <span class="hljs-string">'.messages'</span>);
-  <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, () =&gt; {
-    <span class="hljs-comment">// let's check if john received it</span>
-    <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'davert: Hi, john'</span>, <span class="hljs-string">'.messages'</span>);
-  });
-});
-</code></pre>
-<p><code>session</code> function expects a first parameter to be a name of a session. You can switch back to session by using the same name.</p>
-<p>You can override config for session by passing second parameter:</p>
-<pre><code class="hljs css language-js"><span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, { <span class="hljs-attr">browser</span>: <span class="hljs-string">'firefox'</span> } , () =&gt; {
-  <span class="hljs-comment">// run this steps in firefox</span>
-  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
-});
-</code></pre>
-<p>or just start session without switching to it. Call <code>session</code> passing only its name:</p>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
-  <span class="hljs-comment">// opens 3 additional browsers</span>
-  <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>);
-  <span class="hljs-built_in">session</span>(<span class="hljs-string">'mary'</span>);
-  <span class="hljs-built_in">session</span>(<span class="hljs-string">'jane'</span>);
-
-  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
-
-  <span class="hljs-comment">// switch to session by its name</span>
-  <span class="hljs-built_in">session</span>(<span class="hljs-string">'mary'</span>, () =&gt; {
-    <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/login'</span>);
-  });
-}
-</code></pre>
-<p><code>session</code> can return value which can be used in scenario:</p>
-<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
-<span class="hljs-keyword">const</span> val = <span class="hljs-keyword">await</span> <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, () =&gt; {
-  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/info'</span>);
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">I</span>.grabTextFrom({ <span class="hljs-attr">css</span>: <span class="hljs-string">'h1'</span> });
-});
-<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Description'</span>, val);
-</code></pre>
-<p>Function passed into session can use <code>I</code>, page objects, and any objects declared for the scenario.
-This function can also be declared as async (but doesn't work as generator).</p>
-<p>Also, you can use <code>within</code> inside a session but you can't call session from inside <code>within</code>.</p>
 <h2><a class="anchor" aria-hidden="true" id="multiple-windows"></a><a href="#multiple-windows" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiple Windows</h2>
 <p>CodeceptJS allows to use several browser windows inside a test. Sometimes we are testing the functionality of websites that we cannot control, such as a closed-source managed package, and there are popups that either remain open for configuring data on the screen, or close as a result of clicking a window. We can use these functions in order to gain more control over which page is being tested with Codecept at any given time. For example:</p>
 <pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> assert = <span class="hljs-built_in">require</span>(<span class="hljs-string">'assert'</span>);
@@ -415,7 +361,7 @@ This function can also be declared as async (but doesn't work as generator).</p>
 <p>When a helper is created, regenerate your step definitions, so you could see those actions when using <a href="https://codecept.io/basics#intellisense">intellisense</a>:</p>
 <pre><code class="hljs">npx codeceptjs def
 </code></pre>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/basics"><span class="arrow-prev">← </span><span>Basics</span></a><a class="docs-next button" href="/puppeteer"><span>Testing with Puppeteer</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#what-is-selenium-webdriver">What is Selenium WebDriver</a></li><li><a href="#configuring-webdriver">Configuring WebDriver</a><ul class="toc-headings"><li><a href="#configuring-webdriver-for-ci">Configuring WebDriver for CI</a></li></ul></li><li><a href="#writing-tests">Writing Tests</a></li><li><a href="#waiting">Waiting</a></li><li><a href="#smartwait">SmartWait</a></li><li><a href="#auto-login">Auto Login</a></li><li><a href="#multiple-sessions">Multiple Sessions</a></li><li><a href="#multiple-windows">Multiple Windows</a></li><li><a href="#extending-webdriver">Extending WebDriver</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-7-27</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/basics"><span class="arrow-prev">← </span><span>Basics</span></a><a class="docs-next button" href="/puppeteer"><span>Testing with Puppeteer</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#what-is-selenium-webdriver">What is Selenium WebDriver</a></li><li><a href="#configuring-webdriver">Configuring WebDriver</a><ul class="toc-headings"><li><a href="#configuring-webdriver-for-ci">Configuring WebDriver for CI</a></li></ul></li><li><a href="#writing-tests">Writing Tests</a></li><li><a href="#waiting">Waiting</a></li><li><a href="#smartwait">SmartWait</a></li><li><a href="#auto-login">Auto Login</a></li><li><a href="#multiple-windows">Multiple Windows</a></li><li><a href="#extending-webdriver">Extending WebDriver</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

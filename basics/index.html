@@ -48,14 +48,14 @@ However, because of difference in backends and their limitations, they are not g
 <hr>
 <p>Refer to following guides to more information on:</p>
 <ul>
-<li>WebDriver</li>
-<li>Protractor</li>
-<li>Puppeteer</li>
-<li>Nightmare</li>
+<li><a href="https://codecept.io/webdriver">▶ WebDriver</a></li>
+<li><a href="https://codecept.io/angular">▶ Protractor</a></li>
+<li><a href="https://codecept.io/puppeteer">▶ Puppeteer</a></li>
+<li><a href="https://codecept.io/nightmare">▶ Nightmare</a></li>
 <li>TestCafe</li>
 </ul>
 <blockquote>
-<p>Depending on a helper selected a list of available actions may change.</p>
+<p>ℹ Depending on a helper selected a list of available actions may change.</p>
 </blockquote>
 <p>To list all available commands for current configuration run <code>codeceptjs list</code>
 or enable <a href="#intellisense">auto-completion by generating TypeScript definitions</a>.</p>
@@ -101,6 +101,9 @@ In order to specify exact locator type you can pass an object called <strong>str
 <span class="hljs-comment">// or by accessibility id in mobile</span>
 <span class="hljs-built_in">I</span>.seeElement(<span class="hljs-string">'~username'</span>);
 </code></pre>
+<blockquote>
+<p><a href="https://codecept.io/locators">▶ Learn more about using locators in CodeceptJS</a>.</p>
+</blockquote>
 <h3><a class="anchor" aria-hidden="true" id="clicking"></a><a href="#clicking" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Clicking</h3>
 <p>CodeceptJS provides a flexible syntax to specify an element to click.</p>
 <p>By default CodeceptJS tries to find button or link with exact text on it</p>
@@ -368,6 +371,63 @@ Use <code>say</code> command to print information to screen:</p>
 <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'This is blue'</span>, <span class="hljs-string">'blue'</span>); <span class="hljs-comment">//blue is used</span>
 <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'This is by default'</span>); <span class="hljs-comment">//cyan is used</span>
 </code></pre>
+<h2><a class="anchor" aria-hidden="true" id="multiple-sessions"></a><a href="#multiple-sessions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiple Sessions</h2>
+<p>CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use <code>session()</code> function as shown in example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test app'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/chat'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'name'</span>, <span class="hljs-string">'davert'</span>);
+  <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Sign In'</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello, davert'</span>);
+  <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, () =&gt; {
+    <span class="hljs-comment">// another session started</span>
+    <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/chat'</span>);
+    <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'name'</span>, <span class="hljs-string">'john'</span>);
+    <span class="hljs-built_in">I</span>.click(<span class="hljs-string">'Sign In'</span>);
+    <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'Hello, john'</span>);
+  });
+  <span class="hljs-comment">// switching back to default session</span>
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'message'</span>, <span class="hljs-string">'Hi, john'</span>);
+  <span class="hljs-comment">// there is a message from current user</span>
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'me: Hi, john'</span>, <span class="hljs-string">'.messages'</span>);
+  <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, () =&gt; {
+    <span class="hljs-comment">// let's check if john received it</span>
+    <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'davert: Hi, john'</span>, <span class="hljs-string">'.messages'</span>);
+  });
+});
+</code></pre>
+<p><code>session</code> function expects a first parameter to be a name of a session. You can switch back to session by using the same name.</p>
+<p>You can override config for session by passing second parameter:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, { <span class="hljs-attr">browser</span>: <span class="hljs-string">'firefox'</span> } , () =&gt; {
+  <span class="hljs-comment">// run this steps in firefox</span>
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+});
+</code></pre>
+<p>or just start session without switching to it. Call <code>session</code> passing only its name:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-comment">// opens 3 additional browsers</span>
+  <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>);
+  <span class="hljs-built_in">session</span>(<span class="hljs-string">'mary'</span>);
+  <span class="hljs-built_in">session</span>(<span class="hljs-string">'jane'</span>);
+
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/'</span>);
+
+  <span class="hljs-comment">// switch to session by its name</span>
+  <span class="hljs-built_in">session</span>(<span class="hljs-string">'mary'</span>, () =&gt; {
+    <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/login'</span>);
+  });
+}
+</code></pre>
+<p><code>session</code> can return value which can be used in scenario:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
+<span class="hljs-keyword">const</span> val = <span class="hljs-keyword">await</span> <span class="hljs-built_in">session</span>(<span class="hljs-string">'john'</span>, () =&gt; {
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'/info'</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">I</span>.grabTextFrom({ <span class="hljs-attr">css</span>: <span class="hljs-string">'h1'</span> });
+});
+<span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'Description'</span>, val);
+</code></pre>
+<p>Function passed into session can use <code>I</code>, page objects, and any objects declared for the scenario.
+This function can also be declared as async (but doesn't work as generator).</p>
+<p>Also, you can use <code>within</code> inside a session but you can't call session from inside <code>within</code>.</p>
 <h2><a class="anchor" aria-hidden="true" id="intellisense"></a><a href="#intellisense" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IntelliSense</h2>
 <p>If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
 you can generate step definitions with</p>
@@ -432,7 +492,7 @@ You can set number of a retries for a feature:</p>
 </code></pre>
 <p>Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing <code>retries</code> option to a Scenario.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-6-3</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/examples"><span class="arrow-prev">← </span><span>Examples</span></a><a class="docs-next button" href="/webdriver"><span class="function-name-prevnext">Testing with WebDriver</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#architecture">Architecture</a></li><li><a href="#writing-tests">Writing Tests</a><ul class="toc-headings"><li><a href="#opening-a-page">Opening a Page</a></li><li><a href="#locating-element">Locating Element</a></li><li><a href="#clicking">Clicking</a></li><li><a href="#filling-fields">Filling Fields</a></li><li><a href="#assertions">Assertions</a></li><li><a href="#grabbing">Grabbing</a></li><li><a href="#waiting">Waiting</a></li></ul></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#running-tests">Running Tests</a><ul class="toc-headings"><li><a href="#level-of-detail">Level of Detail</a></li><li><a href="#filter">Filter</a></li></ul></li><li><a href="#debug">Debug</a><ul class="toc-headings"><li><a href="#pause">Pause</a></li><li><a href="#screenshot-on-failure">Screenshot on failure</a></li><li><a href="#step-by-step-report">Step By Step Report</a></li></ul></li><li><a href="#before">Before</a></li><li><a href="#beforesuite">BeforeSuite</a></li><li><a href="#within">Within</a></li><li><a href="#comments">Comments</a></li><li><a href="#intellisense">IntelliSense</a></li><li><a href="#skipping">Skipping</a></li><li><a href="#retries">Retries</a><ul class="toc-headings"><li><a href="#retry-step">Retry Step</a></li><li><a href="#auto-retry">Auto Retry</a></li><li><a href="#retry-scenario">Retry Scenario</a></li><li><a href="#retry-feature">Retry Feature</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-7-27</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/examples"><span class="arrow-prev">← </span><span>Examples</span></a><a class="docs-next button" href="/webdriver"><span class="function-name-prevnext">Testing with WebDriver</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#architecture">Architecture</a></li><li><a href="#writing-tests">Writing Tests</a><ul class="toc-headings"><li><a href="#opening-a-page">Opening a Page</a></li><li><a href="#locating-element">Locating Element</a></li><li><a href="#clicking">Clicking</a></li><li><a href="#filling-fields">Filling Fields</a></li><li><a href="#assertions">Assertions</a></li><li><a href="#grabbing">Grabbing</a></li><li><a href="#waiting">Waiting</a></li></ul></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#running-tests">Running Tests</a><ul class="toc-headings"><li><a href="#level-of-detail">Level of Detail</a></li><li><a href="#filter">Filter</a></li></ul></li><li><a href="#debug">Debug</a><ul class="toc-headings"><li><a href="#pause">Pause</a></li><li><a href="#screenshot-on-failure">Screenshot on failure</a></li><li><a href="#step-by-step-report">Step By Step Report</a></li></ul></li><li><a href="#before">Before</a></li><li><a href="#beforesuite">BeforeSuite</a></li><li><a href="#within">Within</a></li><li><a href="#comments">Comments</a></li><li><a href="#multiple-sessions">Multiple Sessions</a></li><li><a href="#intellisense">IntelliSense</a></li><li><a href="#skipping">Skipping</a></li><li><a href="#retries">Retries</a><ul class="toc-headings"><li><a href="#retry-step">Retry Step</a></li><li><a href="#auto-retry">Auto Retry</a></li><li><a href="#retry-scenario">Retry Scenario</a></li><li><a href="#retry-feature">Retry Feature</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
