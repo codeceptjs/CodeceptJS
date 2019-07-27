@@ -10,7 +10,7 @@
     ],
     "Web Testing": [
       "basics",
-      "acceptance",
+      "webdriver",
       "puppeteer",
       "angular",
       "nightmare",

@@ -163,6 +163,9 @@
       },
       "visual": {
         "title": "Visual Testing"
+      },
+      "webdriver": {
+        "title": "Testing with WebDriver"
       }
     },
     "links": {

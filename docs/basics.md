@@ -30,20 +30,23 @@ Here is the diagram of CodeceptJS architecture
 All helpers share the same API so it's easy to migrate tests from one backend to other.
 However, because of difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
 
-Please note, you can't run tests by different helpers at once. You can't use some APIs from WebDriver and some from Nightmare. You should **pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers at once. It's just not possible.
+**Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another, but don't use few helpers of same kind at once.
 
-A helper should be enabled in main config. Configuration (like base url) should be provided as well:
+---
 
-```json
-  "helpers": {
-    "WebDriver": {
-      "url": "http://localhost",
-      "browser": "chrome"
-    }
-  }
-```
+Refer to following guides to more information on:
 
-In this config config all methods of `I` will be taken from `WebDriver` helper.
+* [▶ WebDriver](https://codecept.io/webdriver)
+* [▶ Protractor](https://codecept.io/angular)
+* [▶ Puppeteer](https://codecept.io/puppeteer)
+* [▶ Nightmare](https://codecept.io/nightmare)
+* TestCafe
+
+> ℹ Depending on a helper selected a list of available actions may change.
+
+To list all available commands for current configuration run `codeceptjs list`
+or enable [auto-completion by generating TypeScript definitions](#intellisense).
+
 
 ## Writing Tests
 
@@ -56,11 +59,221 @@ I.see('Please Login', 'h1');
 // ...
 ```
 
-To list all available commands for current configuration run `codeceptjs list`
-or enable [auto-completion by generating TypeScript definitions](#intellisense).
+### Opening a Page
 
-> For most helpers basic actions like `amOnPage`, `fillField`, `click` are the same.
-Proceed to [Acceptance Testing Chapter](https://codecept.io/acceptance/) to learn how to use them.
+A test should usually start with navigating browser to the website.
+
+Start a test by opening a page. Use `I.amOnPage()` command for this:
+
+```js
+// When "http://site.com" is url in config
+I.amOnPage('/'); // -> opens http://site.com/
+I.amOnPage('/about'); // -> opens http://site.com/about
+I.amOnPage('https://google.com'); // -> https://google.com
+```
+
+When URL doesn't start with a protocol (http:// or https://) it is considered to be a relative URL and appended to URL which was initially set in the config.
+
+> It is recommended to use relative URLs and keep base URL in config file, so you could easily switch between development, staging, and production environments.
+
+
+### Locating Element
+
+Element can be found by CSS or XPath locators.
+
+```js
+I.seeElement('.user'); // element with CSS class user
+I.seeElement('//button[contains(., "press me")]'); // button
+```
+
+By default CodeceptJS tries to guess the locator type.
+In order to specify exact locator type you can pass an object called **strict locator**.
+
+```js
+I.seeElement({css: 'div.user'});
+I.seeElement({xpath: '//div[@class=user]'});
+```
+
+Strict locators allow to specify additional locator types:
+
+```js
+// locate form element by name
+I.seeElement({name: 'password'});
+// locate element by id
+I.seeElement({id: 'users'});
+// locate element by React component and props
+I.seeElement({react: 'user-profile', props: {name: 'davert'}});
+```
+
+In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~` to specify accessibility id to locate an element. In web application you can locate element by their `aria-label` value.
+
+```js
+// locate element by [aria-label] attribute in web
+// or by accessibility id in mobile
+I.seeElement('~username');
+```
+
+> [▶ Learn more about using locators in CodeceptJS](https://codecept.io/locators).
+
+### Clicking
+
+CodeceptJS provides a flexible syntax to specify an element to click.
+
+By default CodeceptJS tries to find button or link with exact text on it
+
+```js
+// search for link or button
+I.click('Login');
+```
+
+If none found, CodeceptJS tries to find link or button containing that text. In case an image is clickable its `alt` attribute will be checked for text inclusion. Form buttons will also be searched by name.
+
+To narrow down the results you can specify a context in second parameter.
+
+```js
+I.click('Login', '.nav'); // search only in .nav
+I.click('Login', {css: 'footer'}); // search only in footer
+```
+
+> To skip guessing locator type pass in a strict locator. A locator starting with '#' or '.' is considered to be CSS. Locator starting with '//' or './/' is considered to be XPath.
+
+You are not limited to buttons and links. Any element can be found by passing in valid CSS or XPath:
+
+```js
+// click element by CSS
+I.click('#signup');
+// click element located by special test-id attribute
+I.click('//dev[@test-id="myid"]');
+```
+
+### Filling Fields
+
+Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most routine waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.
+
+Let's submit this sample form for a test:
+
+```html
+<form method="post" action="/update" id="update_form">
+     <label for="user_name">Name</label>
+     <input type="text" name="user[name]" id="user_name" />
+     <label for="user_email">Email</label>
+     <input type="text" name="user[email]" id="user_email" />
+     <label for="user_gender">Gender</label>
+     <select id="user_gender" name="user[gender]">
+          <option value="m">Male</option>
+          <option value="f">Female</option>
+     </select>
+     <input type="submit" name="submitButton" value="Update" />
+</form>
+```
+
+We need to fill in all those fields and click "Update" button. CodeceptJS matches form elements by their label, name, or by CSS or XPath locators.
+
+```js
+// we are using label to match user_name field
+I.fillField('Name', 'Miles');
+// we can use input name
+I.fillField('user[email]','miles@davis.com');
+// select element by label, choose option by text
+I.selectOption('Gender','Male');
+// click 'Update' button, found by text
+I.click('Update');
+```
+
+Alternative scenario:
+
+```js
+// we are using CSS
+I.fillField('#user_name', 'Miles');
+I.fillField('#user_email','miles@davis.com');
+// select element by label, option by value
+I.selectOption('#user_gender','m');
+// click 'Update' button, found by name
+I.click('submitButton', '#update_form');
+```
+
+To fill in sensitive data use `secret` function:
+
+```js
+I.fillField('password', secret('123456'));
+```
+
+### Assertions
+
+In order to verify the expected behavior of a web application, a content should be checked.
+CodeceptJS provides built-in assertions for that. They start with `see` (or `dontSee`) prefix.
+
+The most general and common assertion is `see`, which checks visilibility of a text on a page:
+
+```js
+// Just a visible text on a page
+I.see('Hello');
+// text inside .msg element
+I.see('Hello', '.msg');
+// opposite
+I.dontSee('Bye');
+```
+
+You should provide a text as first argument and optionally a locator to search for a text in a context.
+
+You can check that specific element exists (or not) on a page, as it was described in [Locating Element](#locating-element) section.
+
+```js
+I.seeElement('.notice');
+I.dontSeeElement('.error');
+```
+
+Additional assertions:
+
+```js
+I.seeInCurrentUrl('/user/miles');
+I.seeInField('user[name]', 'Miles');
+I.seeInTitle('My Website');
+```
+
+To see all possible assertions see the helper's reference.
+
+### Grabbing
+
+Sometimes you need to retrieve a data from a page to use it in next steps of a scenario.
+Imagine, application generates a password and you want to ensure that user can login using this password.
+
+```js
+Scenario('login with generated password', async (I) => {
+  I.fillField('email', 'miles@davis.com');
+  I.click('Generate Password');
+  const password = await I.grabTextFrom('#password');
+  I.click('Login');
+  I.fillField('email', 'miles@davis.com');
+  I.fillField('password', password);
+  I.click('Log in!');
+  I.see('Hello, Miles');
+});
+```
+
+`grabTextFrom` action is used here to retrieve text from an element. All actions starting with `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause test execution with `await` keyword of ES6. To make it work your test should be written inside a async function (notice `async` in its definition).
+
+```js
+Scenario('use page title', async (I) => {
+  // ...
+  const password = await I.grabTextFrom('#password');
+  I.fillField('password', password);
+});
+```
+
+### Waiting
+
+In modern web applications rendering is happen on client side.
+Sometimes that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
+To handle this cases `wait*` methods introduced.
+
+```js
+I.waitForElement('#agree_button', 30); // secs
+// clicks a button only when it is visible
+I.click('#agree_button');
+```
+
+> ℹ See [helpers reference](https://codecept.io/reference) for a complete list of all available commands for a helper you use.
 
 ## How It Works
 
@@ -197,133 +410,6 @@ This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/
 To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
 
-## Before
-
-Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background` hook:
-
-```js
-Feature('CodeceptJS Demonstration');
-
-Before((I) => { // or Background
-  I.amOnPage('/documentation');
-});
-
-Scenario('test some forms', (I) => {
-  I.click('Create User');
-  I.see('User is valid');
-  I.dontSeeInCurrentUrl('/documentation');
-});
-
-Scenario('test title', (I) => {
-  I.seeInTitle('Example application');
-});
-```
-
-Same as `Before` you can use `After` to run teardown for each scenario.
-
-## BeforeSuite
-
-If you need to run complex setup before all tests and teardown this afterwards you can use `BeforeSuite` and `AfterSuite`
-functions. `BeforeSuite` and `AfterSuite` have access to `I` object, but `BeforeSuite/AfterSuite` don't have an access to the browser because it's not running at this moment.
-You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work  only for a file where it was declared (so you can declare different setups for files)
-
-```js
-BeforeSuite((I) => {
-  I.syncDown('testfolder');
-});
-
-AfterSuite((I) => {
-  I.syncUp('testfolder');
-  I.clearDir('testfolder');
-});
-```
-
-[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
-
-## Within
-
-To specify the exact area on a page where actions can be performed you can use `within` function.
-Everything executed in its context will be narrowed to context specified by locator:
-
-Usage: `within('section', ()=>{})`
-
-```js
-I.amOnPage('https://github.com');
-within('.js-signup-form', () => {
-  I.fillField('user[login]', 'User');
-  I.fillField('user[email]', 'user@user.com');
-  I.fillField('user[password]', 'user@user.com');
-  I.click('button');
-});
-I.see('There were problems creating your account.');
-```
-
-`within` can also work with [iframes](/acceptance/#iframes)
-
-When running steps inside a within block will be shown with a shift:
-
-![within](https://codecept.io/img/within.png)
-
-Within can return a value which can be used in a scenario:
-
-```js
-// inside async function
-const val = await within('#sidebar', () => {
-  return I.grabTextFrom({ css: 'h1' });
-});
-I.fillField('Description', val);
-```
-
-## Comments
-
-There is a simple way to add additional comments to your test scenario.
-Use `say` command to print information to screen:
-
-```js
-I.say('I am going to publish post');
-I.say('I enter title and body');
-I.say('I expect post is visible on site');
-```
-
-Use second parameter to pass in color value (ASCII).
-
-```js
-I.say('This is red', 'red'); //red is used
-I.say('This is blue', 'blue'); //blue is used
-I.say('This is by default'); //cyan is used
-```
-
-## IntelliSense
-
-If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
-you can generate step definitions with
-
-```sh
-codeceptjs def
-```
-
-Now you should create `tsconfig.json` in your project root directory.
-
-```tsconfig.json
-{
-  "compilerOptions": {
-    "allowJs": true,
-  }
-}
-```
-but in usually case, this file has already generated when you execute `codeceptjs init`.
-
-Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files 
-to get method autocompletion while writing tests.
-
-## Skipping
-
-Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
-
-* `xScenario` - skips current test
-* `Scenario.only` - executes only the current test
-
-
 ## Retries
 
 ### Retry Step
@@ -392,3 +478,219 @@ Feature('Complex JS Stuff').retry(3);
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing `retries` option to a Scenario.
+
+
+## Before
+
+Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background` hook:
+
+```js
+Feature('CodeceptJS Demonstration');
+
+Before((I) => { // or Background
+  I.amOnPage('/documentation');
+});
+
+Scenario('test some forms', (I) => {
+  I.click('Create User');
+  I.see('User is valid');
+  I.dontSeeInCurrentUrl('/documentation');
+});
+
+Scenario('test title', (I) => {
+  I.seeInTitle('Example application');
+});
+```
+
+Same as `Before` you can use `After` to run teardown for each scenario.
+
+## BeforeSuite
+
+If you need to run complex setup before all tests and teardown this afterwards you can use `BeforeSuite` and `AfterSuite`
+functions. `BeforeSuite` and `AfterSuite` have access to `I` object, but `BeforeSuite/AfterSuite` don't have an access to the browser because it's not running at this moment.
+You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work  only for a file where it was declared (so you can declare different setups for files)
+
+```js
+BeforeSuite((I) => {
+  I.syncDown('testfolder');
+});
+
+AfterSuite((I) => {
+  I.syncUp('testfolder');
+  I.clearDir('testfolder');
+});
+```
+
+[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) where to use BeforeSuite hooks.
+
+## Within
+
+To specify the exact area on a page where actions can be performed you can use `within` function.
+Everything executed in its context will be narrowed to context specified by locator:
+
+Usage: `within('section', ()=>{})`
+
+```js
+I.amOnPage('https://github.com');
+within('.js-signup-form', () => {
+  I.fillField('user[login]', 'User');
+  I.fillField('user[email]', 'user@user.com');
+  I.fillField('user[password]', 'user@user.com');
+  I.click('button');
+});
+I.see('There were problems creating your account.');
+```
+
+`within` can also work with IFrames. Special `frame` locator is required to locate the iframe and get into its context.
+
+See example:
+
+```js
+within({frame: "#editor"}, () => {
+  I.see('Page');
+});
+```
+
+Nested IFrames can be set by passing array *(WebDriver, Nightmare & Puppeteer only)*:
+
+```js
+within({frame: [".content", "#editor"]}, () => {
+  I.see('Page');
+});
+```
+
+When running steps inside a within block will be shown with a shift:
+
+![within](https://codecept.io/img/within.png)
+
+Within can return a value which can be used in a scenario:
+
+```js
+// inside async function
+const val = await within('#sidebar', () => {
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+```
+
+## Comments
+
+There is a simple way to add additional comments to your test scenario.
+Use `say` command to print information to screen:
+
+```js
+I.say('I am going to publish post');
+I.say('I enter title and body');
+I.say('I expect post is visible on site');
+```
+
+Use second parameter to pass in color value (ASCII).
+
+```js
+I.say('This is red', 'red'); //red is used
+I.say('This is blue', 'blue'); //blue is used
+I.say('This is by default'); //cyan is used
+```
+
+## Multiple Sessions
+
+CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
+
+```js
+Scenario('test app', (I) => {
+  I.amOnPage('/chat');
+  I.fillField('name', 'davert');
+  I.click('Sign In');
+  I.see('Hello, davert');
+  session('john', () => {
+    // another session started
+    I.amOnPage('/chat');
+    I.fillField('name', 'john');
+    I.click('Sign In');
+    I.see('Hello, john');
+  });
+  // switching back to default session
+  I.fillField('message', 'Hi, john');
+  // there is a message from current user
+  I.see('me: Hi, john', '.messages');
+  session('john', () => {
+    // let's check if john received it
+    I.see('davert: Hi, john', '.messages');
+  });
+});
+```
+
+`session` function expects a first parameter to be a name of a session. You can switch back to session by using the same name.
+
+You can override config for session by passing second parameter:
+
+```js
+session('john', { browser: 'firefox' } , () => {
+  // run this steps in firefox
+  I.amOnPage('/');
+});
+```
+
+or just start session without switching to it. Call `session` passing only its name:
+
+```js
+Scenario('test', (I) => {
+  // opens 3 additional browsers
+  session('john');
+  session('mary');
+  session('jane');
+
+  I.amOnPage('/');
+
+  // switch to session by its name
+  session('mary', () => {
+    I.amOnPage('/login');
+  });
+}
+```
+`session` can return value which can be used in scenario:
+
+```js
+// inside async function
+const val = await session('john', () => {
+  I.amOnPage('/info');
+  return I.grabTextFrom({ css: 'h1' });
+});
+I.fillField('Description', val);
+```
+
+Function passed into session can use `I`, page objects, and any objects declared for the scenario.
+This function can also be declared as async (but doesn't work as generator).
+
+Also, you can use `within` inside a session but you can't call session from inside `within`.
+
+
+## IntelliSense
+
+If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
+you can generate step definitions with
+
+```sh
+codeceptjs def
+```
+
+Now you should create `jsconfig.json` in your project root directory.
+
+```jsconfig.json
+{
+  "compilerOptions": {
+    "allowJs": true,
+  }
+}
+```
+but in usually case, this file has already generated when you execute `codeceptjs init`.
+
+Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
+to get method autocompletion while writing tests.
+
+## Skipping
+
+Like in Mocha you can use `x` and `only` to skip tests or making a single test to run.
+
+* `xScenario` - skips current test
+* `Scenario.only` - executes only the current test
