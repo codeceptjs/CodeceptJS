@@ -26,7 +26,7 @@ Here is a brief comparison of all tools you can use with CodeceptJS.
 
 * **[Choose Puppeteer](#Using-Puppeteer)** for simplest setup, fast tests, full browser control. Limited to Chrome and Firefox only. Cloud browsers via browserless.io.
 * **[Choose WebDriver](#Using-WebDriver)** or Protractor for classical Selenium. Rich ecosystem and cross browser support with cloud browsers via Sauce Labs, BrowserStack, TestingBot. **Selenium server requried** for local start.
-* **Choose TestCafe** for cheap and fast cross-browser tests. Has stability and feature limitation comparing to WebDriver.
+* **[Choose TestCafe](#Using-TestCafe)** for cheap and fast cross-browser tests. Has stability and feature limitation comparing to WebDriver.
 
 Each driver has its own pros and cons which can't be described in this paragraph. However, in CodeceptJS it is easy to switch between them. In most cases you just need to update a config to run tests differently.
 
@@ -256,3 +256,7 @@ My First Test --
 ## Using NightmareJS
 
 > [▶ Follow corresponding guide](https://codecept.io/nightmare/)
+
+## Using TestCafe
+
+> [▶ Follow corresponding guide](https://codecept.io/testcafe/)
