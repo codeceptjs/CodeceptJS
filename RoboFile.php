@@ -71,6 +71,25 @@ class RoboFile extends \Robo\Tasks
                 ->textFromFile("docs/helpers/{$info['filename']}.md")
                 ->run();
         }
+
+        $this->docsExternalHelpers();
+    }
+
+
+    function docsExternalHelpers()
+    {
+
+        $this->say('Building @codecepjs/detox helper docs');
+        $helper = 'Detox';
+        $this->_exec("npx documentation build node_modules/@codeceptjs/detox-helper/$helper.js -o docs/helpers/$helper.md -f md --shallow --markdown-toc=false --sort-order=alpha ");
+        $this->taskWriteToFile("docs/helpers/$helper.md")
+            ->line('---')
+            ->line("id: $helper")
+            ->line("title: $helper")
+            ->line('---')
+            ->line('')
+            ->textFromFile("docs/helpers/$helper.md")
+            ->run();
     }
 
     function publishSite()

@@ -491,6 +491,19 @@ Returns [Promise][6]&lt;[number][7]> number of visible elements
 
 
 
+### grabPageScrollPosition
+
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
+Returns [Promise][6]&lt;[object][4]> scroll position
+
+
+
 ### grabSource
 
 Retrieves page source and returns it to test.
@@ -669,6 +682,46 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fullPage` [boolean][10] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
 
+
+### scrollPageToBottom
+
+Scroll page to the bottom.
+
+```js
+I.scrollPageToBottom();
+```
+
+
+
+
+### scrollPageToTop
+
+Scroll page to the top.
+
+```js
+I.scrollPageToTop();
+```
+
+
+
+
+### scrollTo
+
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5, 5);
+```
+
+#### Parameters
+
+-   `locator` ([string][3] \| [object][4]) located by CSS|XPath|strict locator.
+-   `offsetX` [number][7] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][7] (optional, `0` by default) Y-axis offset.
+    
+ 
 
 ### see
 

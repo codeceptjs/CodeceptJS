@@ -57,6 +57,7 @@ program.command('gherkin:snippets [path]')
   .option('--dry-run', "don't save snippets to file")
   .option('-c, --config [file]', 'configuration file to be used')
   .option('--feature [file]', 'feature files(s) to scan')
+  .option('--path [file]', 'file in which to place the new snippets')
   .action(require('../lib/command/gherkin/snippets'));
 
 
