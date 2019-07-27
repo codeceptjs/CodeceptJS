@@ -184,7 +184,7 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-  it.only('should inject page objects via proxy', (done) => {
+  it('should inject page objects via proxy', (done) => {
     exec(`${config_run_config('../inject-fail-example')} --debug`, (err, stdout) => {
       stdout.should.include('qw');
       stdout.should.include('OK  | 1 passed');
