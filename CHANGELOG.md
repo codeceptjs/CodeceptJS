@@ -26,7 +26,6 @@
   * Fix `--path` option on `gherkin:snippets` command by @asselin. See #1790
   * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See #1803 by @asselin.
 * Fixed: dynamic configs not reset after test. Fixes #1776 by @cviejo.
-* allurePlugin - fixed displaying ANSI chars in reports by @Vorobeyko
 
 ## 2.2.0
 
