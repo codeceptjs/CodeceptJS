@@ -79,7 +79,7 @@ Configuration for WebDriver should be provided inside `codecept.conf.js` file un
 
 WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
 
-By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Services](https://codecept.io/helpers/WebDriver#cloud-providers) (Sauce Labs, etc) or inside Docker container.
+By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Services](https://codecept.io/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
 
 If you want to run tests using raw ChromeDriver (which also supports WebDriver protocol) avoiding Selenium Server, you should provide following configuration:
 
@@ -112,6 +112,31 @@ desiredCapabilities: {
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
+Here is a sample BrowserStack config for running tests on iOS mobile browser:
+
+```js
+ helpers: {
+   WebDriver: {
+     host: 'hub.browserstack.com',
+     path: '/wd/hub',
+     url: 'http://WEBSITE:8080/renderer',
+     user: 'xx', // credentials
+     key: 'xx', // credentials
+     browser: 'iphone',
+     desiredCapabilities: {
+       'os_version' : '11',
+       'device' : 'iPhone 8', // you can select device
+       'real_mobile' : 'true', // real or emulated
+       'browserstack.local' : 'true',
+       'browserstack.debug' : 'true',
+       'browserstack.networkLogs' : 'true',
+       'browserstack.appium_version' : '1.9.1',
+       'browserstack.user' : 'xx', // credentials
+       'browserstack.key' : 'xx' // credentials
+     }
+   }
+```
+
 There are also options specific to CodeceptJS. By default CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
 
 ```js
@@ -124,7 +149,7 @@ keepCookies: true,
 
 > ▶ More config options available on [WebDriver helper reference](https://codecept.io/helpers/WebDriver#configuration)
 
-### Configuring WebDriver for CI
+### Configuring CI
 
 To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
 

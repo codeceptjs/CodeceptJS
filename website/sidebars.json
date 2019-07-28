@@ -3,15 +3,11 @@
     "Quickstart": [
       "quickstart"
     ],
-    "Tutorials": [
-      "books",
-      "videos",
-      "examples"
-    ],
     "Web Testing": [
       "basics",
       "webdriver",
       "puppeteer",
+      "testcafe",
       "angular",
       "nightmare",
       "visual",
@@ -31,6 +27,11 @@
       "hooks",
       "reports",
       "advanced"
+    ],
+    "Tutorials": [
+      "books",
+      "videos",
+      "examples"
     ]
   },
   "reference": {

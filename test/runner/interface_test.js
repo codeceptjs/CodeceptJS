@@ -184,9 +184,10 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-  it.skip('should inject page objects via proxy', (done) => {
+  it('should inject page objects via proxy', (done) => {
     exec(`${config_run_config('../inject-fail-example')} --debug`, (err, stdout) => {
-      stdout.should.include('qw');
+      stdout.should.include('newdomain');
+      stdout.should.include("[ 'veni', 'vedi', 'vici' ]", 'array objects work');
       stdout.should.include('OK  | 1 passed');
       assert(!err);
       done();

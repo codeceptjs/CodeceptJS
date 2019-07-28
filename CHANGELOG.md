@@ -1,3 +1,31 @@
+## 2.2.1
+
+* [WebDriver] A [dedicated guide](https://codecept.io/webdriver) written.
+* [TestCade] A [dedicated guide](https://codecept.io/testcafe) written.
+* [Puppeteer][Nightmare][TestCafe] Window mode is enabled by default on `codeceptjs init`.
+* [TestCafe] Actions implemented by @hubidu
+  * `grabPageScrollPosition`
+  * `scrollPageToTop`
+  * `scrollPageToBottom`
+  * `scrollTo`
+  * `switchTo`
+* Intellisense improvements. Renamed `tsconfig.json` to `jsconfig.json` on init. Fixed autocompletion for Visual Studio Code.
+* [Polly] Take configuration values from Puppeteer. Fix #1766 by @VikalpP
+* [Polly] Add preconditions to check for puppeteer page availability by @VikalpP. Fixes #1767
+* [WebDriver] Use filename for `uploadFile` by @VikalpP. See #1797
+* [Puppeteer] Configure speed of input with `pressKeyDelay` option. By @hubidu
+* Fixed recursive loading of support objects by @davertmik.
+* Fixed support object definitions in steps.d.ts by @johnyb. Fixes #1795
+* Fixed `Data().Scenario().injectDependencies()` is not a function by @andrerleao
+* Fixed crash when using xScenario & Scenario.skip with tag by @VikalpP. Fixes #1751
+* Dynamic configuration of helpers can be performed with async function. See #1786 by @cviejo
+* Added TS definitions for internal objects by @Vorobeyko
+* BDD improvements:
+  * Fix for snippets command with a .feature file that has special characters by @asselin
+  * Fix `--path` option on `gherkin:snippets` command by @asselin. See #1790
+  * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See #1803 by @asselin.
+* Fixed: dynamic configs not reset after test. Fixes #1776 by @cviejo.
+
 ## 2.2.0
 
 * **EXPERIMENTAL** [**TestCafe** helper](https://codecept.io/helpers/TestCafe) introduced. TestCafe allows to run cross-browser tests it its own very fast engine. Supports all browsers including mobile. Thanks to @hubidu for implementation! Please test it and send us feedback.
