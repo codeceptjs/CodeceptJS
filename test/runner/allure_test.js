@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const exec = require('child_process').exec;
+const { exec } = require('child_process');
 const fs = require('fs');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
@@ -23,8 +23,8 @@ describe('CodeceptJS Allure Plugin', () => {
       assert(err);
       fs.readdir(path.join(codecept_dir, 'output/ansi'), (err, files) => {
         assert.equal(files.length, 1);
+        done();
       });
-      done();
     });
   });
 });
