@@ -7,6 +7,7 @@ exports.config = {
 
     page: './pages/page.js',
     notpage: './pages/notpage.js',
+    arraypage: './pages/arraypage.js',
 
   },
   bootstrap: null,

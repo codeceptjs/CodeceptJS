@@ -1,4 +1,4 @@
-const { event, recorder } = require('codeceptjs');
+const { event, recorder } = codeceptjs;
 
 const { page } = inject();
 
