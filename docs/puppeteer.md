@@ -36,7 +36,7 @@ Or see [alternative installation options](http://codecept.io/installation/)
 And a basic project initialized
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
 
 You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.
@@ -84,7 +84,7 @@ It will wait for a small amount of time (100ms) by default after each user actio
 CodeceptJS test should be created with `gt` command:
 
 ```sh
-codeceptjs gt
+npx codeceptjs gt
 ```
 
 As an example we will use `ToDoMvc` app for testing.
@@ -102,7 +102,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 * `see`, `dontSee` - to check for a text on a page
 * `seeElement`, `dontSeeElement` - to check for elements on a page
 
-*All actions are listed in [helper reference](http://codecept.io/helpers/Puppeteer/).*
+> ℹ  All actions are listed in [Puppeteer helper reference](http://codecept.io/helpers/Puppeteer/).*
 
 All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
@@ -184,7 +184,7 @@ Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/pup
 Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` command:
 
 ```sh
-codeceptjs gh
+npx codeceptjs gh
 ```
 
 Then inside a Helper you can access `Puppeteer` helper of CodeceptJS.

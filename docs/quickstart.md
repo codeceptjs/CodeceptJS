@@ -4,18 +4,42 @@ title: Quickstart
 ---
 
 **NodeJS v 8.9** and higher required to start.
-CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.
+CodeceptJS is an end 2 end testing framework which supports multiple browser drivers like WebDriver, Puppeteer, Protractor, TestCafe etc.
 
-* In this guide we will use [Google Chrome **Puppeteer**](https://github.com/GoogleChrome/puppeteer) as a driver for browsers. This allows us to start in a minutes with no extra tools installed.
-* If you are familiar with Selenium, you can choose classical [**Selenium WebDriver** setup](#using-selenium-webdriver).
-* Also, look at [complete installation reference](https://codecept.io/installation/).
+> **⬇️ TLDR [Fastest and simplest setup with Puppeteer and CodeceptJS](#using-puppeteer) ⬇️**
 
+How to choose the right driver for your web application?
+Here is a brief comparison of all tools you can use with CodeceptJS.
+
+
+| Driver  | Cross-Browser | Limitations | Headless | Selenuim | Speed |
+|---|---|---|--|--|--|
+| WebDriver  | ✔️ | headers, downloads | ⁉ | ✔️ | normal |
+| Puppeteer  | chrome | cross-browser support | ✔️ | | fast |
+| Protractor | ✔️ | headers, downloads | ⁉ | ✔️ | normal |
+| TestCafe | ✔️  | multiple tabs | ✔️ | | fast |
+| Nightmare | electron (chromium) | multiple tabs, cross-browser  | ✔️ | | fast |
+
+⁉ - headless mode requires additional tools and configuration.
+
+#### How to choose browser driver
+
+* **[Choose Puppeteer](#Using-Puppeteer)** for simplest setup, fast tests, full browser control. Limited to Chrome and Firefox only. Cloud browsers via browserless.io.
+* **[Choose WebDriver](#Using-WebDriver)** or Protractor for classical Selenium. Rich ecosystem and cross browser support with cloud browsers via Sauce Labs, BrowserStack, TestingBot. **Selenium server requried** for local start.
+* **Choose TestCafe** for cheap and fast cross-browser tests. Has stability and feature limitation comparing to WebDriver.
+
+Each driver has its own pros and cons which can't be described in this paragraph. However, in CodeceptJS it is easy to switch between them. In most cases you just need to update a config to run tests differently.
 
 ## Using Puppeteer
 
 
 <video onclick="this.paused ? this.play() : this.pause();" src="/img/codeceptjs-install.mp4" style="width: 100%" controls></video>
 
+0) If you start an empty project, initialize npm first:
+
+```
+npm init -y
+```
 
 1) Install CodeceptJS with Puppeteer
 
@@ -102,16 +126,23 @@ Puppeteer starts a browser without showing its window. To see the browser, edit 
 
 Rerun the test to see the browser.
 
-> Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
+> [▶ Next: CodeceptJS Basics](https://codecept.io/basics/)
 
-> Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+> [▶ Next: CodeceptJS with Puppeteer](https://codecept.io/puppeteer/)
 
-> Next: [Demo Project](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
+
 
 
 ---
 
 ## Using Selenium WebDriver
+
+0) If you start an empty project, initialize npm first:
+
+```
+npm init -y
+```
+
 
 1) Install CodeceptJS with webdriverio library
 
@@ -209,19 +240,19 @@ My First Test --
 ```
 
 
-> Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
+> [▶ Next: CodeceptJS Basics](https://codecept.io/basics/)
 
-> Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
+> [▶ Next: WebDriver Testing](https://codecept.io/webdriver/)
 
 
 ## Using Protractor
 
-> [**Follow corresponding guide >>**](https://codecept.io/angular/)
+> [▶ Follow corresponding guide](https://codecept.io/angular/)
 
 ## Using Appium
 
-> [**Follow corresponding guide >>**](https://codecept.io/mobile/)
+> [▶ Follow corresponding guide](https://codecept.io/mobile/)
 
 ## Using NightmareJS
 
-> [**Follow corresponding guide >>**](https://codecept.io/nightmare/)
+> [▶ Follow corresponding guide](https://codecept.io/nightmare/)
