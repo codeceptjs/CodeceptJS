@@ -14,6 +14,7 @@
 * [Polly] Add preconditions to check for puppeteer page availability by @VikalpP. Fixes #1767
 * [WebDriver] Use filename for `uploadFile` by @VikalpP. See #1797
 * [Puppeteer] Configure speed of input with `pressKeyDelay` option. By @hubidu
+* Fixed recursive loading of support objects by @davertmik.
 * Fixed support object definitions in steps.d.ts by @johnyb. Fixes #1795
 * Fixed `Data().Scenario().injectDependencies()` is not a function by @andrerleao
 * Fixed crash when using xScenario & Scenario.skip with tag by @VikalpP. Fixes #1751

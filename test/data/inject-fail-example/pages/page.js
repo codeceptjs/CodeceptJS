@@ -1,9 +1,10 @@
-const { I, notpage } = inject();
+const { I, notpage, arraypage } = inject();
 
 module.exports = {
   type: (s) => {
-    console.log(s);
-    notpage.domainIds.push('asdasd');
+    console.log('type => ', s);
+    console.log('strategy', arraypage);
+    notpage.domainIds.push('newdomain');
     return notpage.domainIds;
   },
 
