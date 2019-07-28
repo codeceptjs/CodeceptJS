@@ -3,6 +3,36 @@ id: changelog
 title: Releases
 ---
 
+## 2.2.1
+
+* **[WebDriver]** A [dedicated guide](https://codecept.io/webdriver) written.
+* **[TestCade]** A [dedicated guide](https://codecept.io/testcafe) written.
+* **[Puppeteer]** A [chapter on mocking](https://codecept.io/puppeteer#mocking) written
+* [Puppeteer][Nightmare][TestCafe] Window mode is enabled by default on `codeceptjs init`.
+* **[TestCafe]** Actions implemented by **[hubidu](https://github.com/hubidu)**
+  * `grabPageScrollPosition`
+  * `scrollPageToTop`
+  * `scrollPageToBottom`
+  * `scrollTo`
+  * `switchTo`
+* Intellisense improvements. Renamed `tsconfig.json` to `jsconfig.json` on init. Fixed autocompletion for Visual Studio Code.
+* **[Polly]** Take configuration values from Puppeteer. Fix [#1766](https://github.com/Codeception/CodeceptJS/issues/1766) by **[VikalpP](https://github.com/VikalpP)**
+* **[Polly]** Add preconditions to check for puppeteer page availability by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1767](https://github.com/Codeception/CodeceptJS/issues/1767)
+* **[WebDriver]** Use filename for `uploadFile` by **[VikalpP](https://github.com/VikalpP)**. See [#1797](https://github.com/Codeception/CodeceptJS/issues/1797)
+* **[Puppeteer]** Configure speed of input with `pressKeyDelay` option. By **[hubidu](https://github.com/hubidu)**
+* Fixed recursive loading of support objects by **[davertmik](https://github.com/davertmik)**.
+* Fixed support object definitions in steps.d.ts by **[johnyb](https://github.com/johnyb)**. Fixes [#1795](https://github.com/Codeception/CodeceptJS/issues/1795)
+* Fixed `Data().Scenario().injectDependencies()` is not a function by **[andrerleao](https://github.com/andrerleao)**
+* Fixed crash when using xScenario & Scenario.skip with tag by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1751](https://github.com/Codeception/CodeceptJS/issues/1751)
+* Dynamic configuration of helpers can be performed with async function. See [#1786](https://github.com/Codeception/CodeceptJS/issues/1786) by **[cviejo](https://github.com/cviejo)**
+* Added TS definitions for internal objects by **[Vorobeyko](https://github.com/Vorobeyko)**
+* BDD improvements:
+  * Fix for snippets command with a .feature file that has special characters by **[asselin](https://github.com/asselin)**
+  * Fix `--path` option on `gherkin:snippets` command by **[asselin](https://github.com/asselin)**. See [#1790](https://github.com/Codeception/CodeceptJS/issues/1790)
+  * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See [#1803](https://github.com/Codeception/CodeceptJS/issues/1803) by **[asselin](https://github.com/asselin)**.
+* Fixed: dynamic configs not reset after test. Fixes [#1776](https://github.com/Codeception/CodeceptJS/issues/1776) by **[cviejo](https://github.com/cviejo)**.
+* allurePlugin - fixed displaying ANSI chars in reports by **[Vorobeyko](https://github.com/Vorobeyko)**
+
 ## 2.2.0
 
 * **EXPERIMENTAL** [**TestCafe** helper](https://codecept.io/helpers/TestCafe) introduced. TestCafe allows to run cross-browser tests it its own very fast engine. Supports all browsers including mobile. Thanks to **[hubidu](https://github.com/hubidu)** for implementation! Please test it and send us feedback.

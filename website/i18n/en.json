@@ -155,6 +155,9 @@
       "reports": {
         "title": "Reporters"
       },
+      "testcafe": {
+        "title": "testcafe"
+      },
       "translation": {
         "title": "Translation"
       },
@@ -178,10 +181,10 @@
     },
     "categories": {
       "Quickstart": "Quickstart",
-      "Tutorials": "Tutorials",
       "Web Testing": "Web Testing",
       "Mobile Testing": "Mobile Testing",
       "Organizing Tests": "Organizing Tests",
+      "Tutorials": "Tutorials",
       "API": "API",
       "Driver Helpers": "Driver Helpers",
       "Additional Helpers": "Additional Helpers"
