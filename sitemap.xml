@@ -60,6 +60,7 @@
 <url> <loc>https://codecept.io/quickstart</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/quickstart" /> </url>
 <url> <loc>https://codecept.io/react</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/react" /> </url>
 <url> <loc>https://codecept.io/reports</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/reports" /> </url>
+<url> <loc>https://codecept.io/testcafe</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/testcafe" /> </url>
 <url> <loc>https://codecept.io/translation</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/translation" /> </url>
 <url> <loc>https://codecept.io/videos</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/videos" /> </url>
 <url> <loc>https://codecept.io/visual</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/visual" /> </url>

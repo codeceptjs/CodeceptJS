@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>testcafe · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;h1&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;testcafe&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#testcafe&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;TestCafe&lt;/h1&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="testcafe · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;h1&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;testcafe&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#testcafe&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;TestCafe&lt;/h1&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class="siteNavGroupActive"><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">API</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class=""><a href="https://github.com/Codeception/CodeceptJS" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Web Testing</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Quickstart</h3><ul><li class="navListItem"><a class="navItem" href="/quickstart">Quickstart</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Web Testing</h3><ul><li class="navListItem"><a class="navItem" href="/basics">Basics</a></li><li class="navListItem"><a class="navItem" href="/webdriver">Testing with WebDriver</a></li><li class="navListItem"><a class="navItem" href="/puppeteer">Testing with Puppeteer</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/testcafe">testcafe</a></li><li class="navListItem"><a class="navItem" href="/angular">Testing with Protractor</a></li><li class="navListItem"><a class="navItem" href="/nightmare">Testing with Nightmare</a></li><li class="navListItem"><a class="navItem" href="/visual">Visual Testing</a></li><li class="navListItem"><a class="navItem" href="/react">Testing React Applications</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Mobile Testing</h3><ul><li class="navListItem"><a class="navItem" href="/mobile">Mobile Testing with Appium</a></li><li class="navListItem"><a class="navItem" href="/detox">Testing React Native with Detox</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Organizing Tests</h3><ul><li class="navListItem"><a class="navItem" href="/best">Best Practices</a></li><li class="navListItem"><a class="navItem" href="/locators">Locators</a></li><li class="navListItem"><a class="navItem" href="/pageobjects">Reusing Code with Page Objects</a></li><li class="navListItem"><a class="navItem" href="/helpers">Custom Helpers</a></li><li class="navListItem"><a class="navItem" href="/bdd">Behavior Driven Development</a></li><li class="navListItem"><a class="navItem" href="/data">Data Management</a></li><li class="navListItem"><a class="navItem" href="/hooks">Bootstrap / Teardown / Plugins</a></li><li class="navListItem"><a class="navItem" href="/advanced">Advanced Usage</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Tutorials</h3><ul><li class="navListItem"><a class="navItem" href="/books">Books &amp; Posts</a></li><li class="navListItem"><a class="navItem" href="/videos">Videos</a></li><li class="navListItem"><a class="navItem" href="/examples">Examples</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/testcafe.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">testcafe</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="testcafe"></a><a href="#testcafe" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TestCafe</h1>
+<p><a href="https://devexpress.github.io/testcafe/">TestCafe</a> is another alternative engine for driving browsers. It is driven by unique technology which provides fast and simple cross browser testing for desktop and mobile browsers. Unlike WebDriver or Puppeteer, TestCafe doesn't control a browser at all. It is not a browser itself, like <a href="https://codecept.io/nightmare">Nightmare</a> or Cypress. <strong>TestCafe core is a proxy server</strong> that runs behind the scene, and transforms all HTML and JS to include code that is needed for test automation.</p>
+<p><img src="/img/testcafe.png" alt=""></p>
+<p>This is very smart idea. But to use TestCafe on daily basis you need to clearly understand its benefits and limitations:</p>
+<h3><a class="anchor" aria-hidden="true" id="pros"></a><a href="#pros" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pros</h3>
+<ul>
+<li><strong>Fast</strong>. Browser is controlled from inside a web page. This makes test run inside a browser as fast as your browser can render page with no extra network requests.</li>
+<li><strong>Simple Cross-Browser Support.</strong> Because TestCafe only launches browsers, it can <strong>automate browser</strong> on desktop or mobile. Unlike WebDriver, you don't need special version of browser and driver to prepare to run tests. Setup simplified. All you need is just a browser installed, and you are ready to go.</li>
+<li><strong>Stable to Execution.</strong> Because a test is executed inside a browser, the network latency effects are reduced. Unlike WebDriver you won't hit stale element exceptions, or element not interactable exceptions, as from within a web browser all DOM elements are accessible.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="cons"></a><a href="#cons" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cons</h2>
+<ul>
+<li><strong>Magic.</strong> Browsers executed in TestCafe are not aware that they run in test mode. So at some edges automation control can be broken. It's also quite hard to debug possible issues, as you don't know how actually a web page is parsed to inject automation scripts.</li>
+<li><strong>No Browser Control.</strong> Because TestCafe do not control browser, you can't actually automate all users actions. For instance, TestCafe can't open new tabs or open a new browser window in incognito mode. There can be also some issues running tests on 3rd party servers or inside iframes.</li>
+<li><strong>Simulated Events.</strong> Events like <code>click</code> or <code>doubleClick</code> are simulated by JavaScript internally. Inside WebDriver or Puppeteer, where those events are dispatched by a browser, called native events. Native events are closer to real user experience. So in some cases simulated events wouldn't represent actual user experience, which can lead to false positive results. For instance, a button which can't be physically clicked by a user, would be clickable inside TestCafe.</li>
+</ul>
+<p>Anyway, TestCafe is a good option to start if you need cross browser testing. And here is the <strong>reason to use TestCafe with CodeceptJS: if you hit an edge case or issue, you can easily switch your tests to WebDriver</strong>. As all helpers in CodeceptJS share the same syntax.</p>
+<p>CodeceptJS is a rich testing frameworks which also provides features missing in original TestCafe:</p>
+<ul>
+<li><a href="https://codecept.io/bdd">Cucumber integration</a></li>
+<li><a href="https://codecept.io/pageobjects">Real Page Objects</a></li>
+<li><a href="https://codecept.io/data">Data Management via API</a></li>
+<li>and others</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="writing-tests"></a><a href="#writing-tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writing Tests</h2>
+<p>To start using TestCafe with CodeceptJS install both via NPM</p>
+<blockquote>
+<p>If you don't have <code>package.json</code> in your project, create it with <code>npm init -y</code>.</p>
+</blockquote>
+<pre><code class="hljs">npm i codeceptjs testcafe --save-dev
+</code></pre>
+<p>Then you need to initialize a project, selecting TestCafe when asked:</p>
+<pre><code class="hljs">npx codeceptjs init
+</code></pre>
+<p>A first test should be created with <code>codeceptjs gt</code> command</p>
+<pre><code class="hljs">npx codeceptjs gt
+</code></pre>
+<p>In the next example we will <a href="http://todomvc.com/examples/angularjs/#/">TodoMVC application</a>. So let's create a test which will fill in todo list:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'TodoMVC'</span>);
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'create todo item'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'http://todomvc.com/examples/angularjs/#/'</span>);
+  <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'.new-todo'</span>, todo)
+  <span class="hljs-built_in">I</span>.pressKey(<span class="hljs-string">'Enter'</span>);
+  <span class="hljs-built_in">I</span>.seeNumberOfVisibleElements(<span class="hljs-string">'.todo-list li'</span>, <span class="hljs-number">1</span>);
+  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'1 item left'</span>, <span class="hljs-string">'.todo-count'</span>);
+});
+</code></pre>
+<p>Same syntax is the same for all helpers in CodeceptJS so to learn more about available commands learn <a href="https://codecept.io/basics">CodeceptJS Basics</a>.</p>
+<blockquote>
+<p><a href="https://codecept.io/helpers/TestCafe">▶ Complete list of TestCafe actions</a></p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="page-objects"></a><a href="#page-objects" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Page Objects</h2>
+<p>Multiple tests can be refactored to share some logic and locators. It is recommended to use PageObjects for this. For instance, in example above, we could create special actions for creating todos and checking them. If we move such methods in a corresponding object a test would look even clearer:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'Create a new todo item'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>, TodosPage) =&gt; {
+  <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'Given I have an empty todo list'</span>)
+
+  <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'When I create a todo "foo"'</span>)
+  TodosPage.enterTodo(<span class="hljs-string">'foo'</span>)
+
+  <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'Then I see the new todo on my list'</span>)
+  TodosPage.seeNumberOfTodos(<span class="hljs-number">1</span>)
+
+  <span class="hljs-built_in">I</span>.saveScreenshot(<span class="hljs-string">'create-todo-item.png'</span>)
+})
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'Create multiple todo items'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>, TodosPage) =&gt; {
+  <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'Given I have an empty todo list'</span>)
+
+  <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'When I create todos "foo", "bar" and "baz"'</span>)
+  TodosPage.enterTodo(<span class="hljs-string">'foo'</span>)
+  TodosPage.enterTodo(<span class="hljs-string">'bar'</span>)
+  TodosPage.enterTodo(<span class="hljs-string">'baz'</span>)
+
+  <span class="hljs-built_in">I</span>.say(<span class="hljs-string">'Then I have these 3 todos on my list'</span>)
+  TodosPage.seeNumberOfTodos(<span class="hljs-number">3</span>)
+
+  <span class="hljs-built_in">I</span>.saveScreenshot(<span class="hljs-string">'create-multiple-todo-items.png'</span>)
+})
+</code></pre>
+<blockquote>
+<p>ℹ <a href="https://github.com/hubidu/codeceptjs-testcafe-todomvc">Source code of this example</a> is available on GitHub.</p>
+</blockquote>
+<p>A PageObject can be injected into a test by its name. Here is how TodosPage looks like:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside todos_page.js</span>
+<span class="hljs-keyword">const</span> { <span class="hljs-built_in">I</span> } = inject();
+
+<span class="hljs-built_in">module</span>.exports = {
+    goto() {
+        <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'http://todomvc.com/examples/angularjs/#/'</span>)
+    },
+
+    enterTodo(todo) {
+        <span class="hljs-built_in">I</span>.fillField(<span class="hljs-string">'.new-todo'</span>, todo)
+        <span class="hljs-built_in">I</span>.pressKey(<span class="hljs-string">'Enter'</span>)
+    },
+
+    seeNumberOfTodos(numberOfTodos) {
+        <span class="hljs-built_in">I</span>.seeNumberOfVisibleElements(<span class="hljs-string">'.todo-list li'</span>, numberOfTodos)
+    },
+}
+</code></pre>
+<blockquote>
+<p><a href="https://codecept.io/pageobjects">▶ Read more about PageObjects in CodeceptJS</a></p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="extending"></a><a href="#extending" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extending</h2>
+<p>If you want to use TestCafe API inside your tests you can put them into actions of <code>I</code> object. To do so you can generate a new helper, access TestCafe helper, and get the test controller.</p>
+<p>Create a helper using <code>codecepjs gh</code> command.</p>
+<pre><code class="hljs">npx codeceptjs gh
+</code></pre>
+<p>All methods of newly created class will be added to <code>I</code> object.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> Helper = codeceptjs.helper;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyTestCafe</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Helper</span> </span>{
+
+  slowlyFillField(field, text) {
+    <span class="hljs-comment">// import test controller from TestCafe helper</span>
+    <span class="hljs-keyword">const</span> { t } = <span class="hljs-keyword">this</span>.helpers.TestCafe;
+    <span class="hljs-comment">// use TestCafe API here</span>
+    <span class="hljs-keyword">return</span> t.setTestSpeed(<span class="hljs-number">0.1</span>)
+        .typeText(field, text);
+  }
+
+}
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-7-28</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/puppeteer"><span class="arrow-prev">← </span><span>Testing with Puppeteer</span></a><a class="docs-next button" href="/angular"><span>Testing with Protractor</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#cons">Cons</a></li><li><a href="#writing-tests">Writing Tests</a></li><li><a href="#page-objects">Page Objects</a></li><li><a href="#extending">Extending</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '0cc13a0af567a05fc38790be681b1491',
+                indexName: 'codecept',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
