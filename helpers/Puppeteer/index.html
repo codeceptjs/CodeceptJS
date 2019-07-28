@@ -48,6 +48,7 @@ This helper works with a browser out of the box with no additional tools require
 <li><code>keepCookies</code>:  - keep cookies between tests when <code>restart</code> is set to false.</li>
 <li><code>waitForAction</code>: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.</li>
 <li><code>waitForNavigation</code>: . When to consider navigation succeeded. Possible options: <code>load</code>, <code>domcontentloaded</code>, <code>networkidle0</code>, <code>networkidle2</code>. See <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions">Puppeteer API</a>. Array values are accepted as well.</li>
+<li><code>pressKeyDelay</code>: . Delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField</li>
 <li><code>getPageTimeout</code>  config option to set maximum navigation time in milliseconds.</li>
 <li><code>waitForTimeout</code>: (optional) default wait\ timeout in ms. Default: 1000.</li>
 <li><code>windowSize</code>: (optional) default window size. Set a dimension like <code>640x480</code>.</li>
