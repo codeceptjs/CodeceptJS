@@ -3,22 +3,19 @@
     "Quickstart": [
       "quickstart"
     ],
-    "Tutorials": [
-      "books",
-      "videos",
-      "examples"
-    ],
     "Web Testing": [
       "basics",
-      "acceptance",
+      "webdriver",
       "puppeteer",
+      "testcafe",
       "angular",
       "nightmare",
       "visual",
       "react"
     ],
     "Mobile Testing": [
-      "mobile"
+      "mobile",
+      "detox"
     ],
     "Organizing Tests": [
       "best",
@@ -30,6 +27,11 @@
       "hooks",
       "reports",
       "advanced"
+    ],
+    "Tutorials": [
+      "books",
+      "videos",
+      "examples"
     ]
   },
   "reference": {
@@ -48,7 +50,8 @@
       "helpers/Protractor",
       "helpers/TestCafe",
       "helpers/Nightmare",
-      "helpers/Appium"
+      "helpers/Appium",
+      "helpers/Detox"
     ],
     "Additional Helpers": [
       "helpers/REST",

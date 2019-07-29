@@ -128,7 +128,7 @@ describe('Container', () => {
         },
       });
       const dummyPage = require('../data/dummy_page');
-      container.support('dummyPage').should.be.equal(dummyPage);
+      container.support('dummyPage').should.be.eql(dummyPage);
     });
 
     it('should load I from path and execute _init', () => {

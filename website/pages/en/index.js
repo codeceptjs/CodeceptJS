@@ -73,7 +73,7 @@ class Index extends React.Component {
     <div className="col-md-4">
       <img src="/img/Mind-Map-Paper.svg" alt="" />
       <h5>Driver Agnostic</h5>
-        Run your tests via <b>WebDriver, Puppeteer, Protractor, Appium</b>. The code is the same.
+        Run your tests via <b>WebDriver, Puppeteer, TestCafe, Protractor, Appium</b>. The code is the same.
         <a href="/basics#architecture" className="btn btn-light btn-sm">Learn More</a>
     </div>
     <div className="col-md-4">
@@ -101,7 +101,8 @@ class Index extends React.Component {
     <div className="col-md-4">
       <img src="/img/Prism-3.svg" style={{filter: 'hue-rotate(90deg)', transform: 'rotate(180deg)'}} alt="" />
       <h5>Web & Mobile Testing</h5>
-      Write your tests for web and and mobile applications using same API.
+      Test native mobile apps using <b>Appium</b> or <b>Detox</b>.
+      <a href="/mobile" className="btn btn-light btn-sm">Learn More</a>
     </div>
   </div>
 

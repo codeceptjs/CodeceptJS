@@ -367,7 +367,7 @@ Scenario('should create data via v2 version of API', (I) => {
 ```
 
 Config can also be set by a function, in this case you can get a test object and specify config values based on it.
-This is very useful when running tests against cloud providers, like BrowserStack.
+This is very useful when running tests against cloud providers, like BrowserStack. This function can also be asynchronous.
 
 ```js
 Scenario('should report to BrowserStack', (I) => {

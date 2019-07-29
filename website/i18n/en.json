@@ -45,7 +45,7 @@
         "title": "Books & Posts"
       },
       "changelog": {
-        "title": "changelog"
+        "title": "Releases"
       },
       "commands": {
         "title": "Commands"
@@ -58,6 +58,9 @@
       },
       "data": {
         "title": "Data Management"
+      },
+      "detox": {
+        "title": "Testing React Native with Detox"
       },
       "docker": {
         "title": "Docker"
@@ -74,6 +77,9 @@
       "helpers/Appium": {
         "title": "Appium"
       },
+      "helpers/Detox": {
+        "title": "Detox"
+      },
       "helpers/FileSystem": {
         "title": "FileSystem"
       },
@@ -83,8 +89,14 @@
       "helpers/Nightmare": {
         "title": "Nightmare"
       },
+      "helpers/Polly": {
+        "title": "Polly"
+      },
       "helpers/Protractor": {
         "title": "Protractor"
+      },
+      "helpers/Puppeteer-firefox": {
+        "title": "helpers/Puppeteer-firefox"
       },
       "helpers/Puppeteer": {
         "title": "Puppeteer"
@@ -94,6 +106,9 @@
       },
       "helpers/SeleniumWebdriver": {
         "title": "SeleniumWebdriver"
+      },
+      "helpers/TestCafe": {
+        "title": "TestCafe"
       },
       "helpers/WebDriver": {
         "title": "WebDriver"
@@ -140,6 +155,9 @@
       "reports": {
         "title": "Reporters"
       },
+      "testcafe": {
+        "title": "testcafe"
+      },
       "translation": {
         "title": "Translation"
       },
@@ -148,6 +166,9 @@
       },
       "visual": {
         "title": "Visual Testing"
+      },
+      "webdriver": {
+        "title": "Testing with WebDriver"
       }
     },
     "links": {
@@ -160,10 +181,10 @@
     },
     "categories": {
       "Quickstart": "Quickstart",
-      "Tutorials": "Tutorials",
       "Web Testing": "Web Testing",
       "Mobile Testing": "Mobile Testing",
       "Organizing Tests": "Organizing Tests",
+      "Tutorials": "Tutorials",
       "API": "API",
       "Driver Helpers": "Driver Helpers",
       "Additional Helpers": "Additional Helpers"

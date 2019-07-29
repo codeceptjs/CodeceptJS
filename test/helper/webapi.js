@@ -918,7 +918,6 @@ module.exports.tests = function () {
     });
 
     it('should execute within block 2', () => {
-      if (isHelper('TestCafe')) return;
       return I.amOnPage('/form/example4')
         .then(() => I.fillField('Hasło', '12345'))
         .then(() => I._withinBegin({
@@ -932,36 +931,42 @@ module.exports.tests = function () {
         .then(input => assert.equal(input, '12345'));
     });
 
-    it('within should respect context in see', () => I.amOnPage('/form/example4')
-      .then(() => I.see('Rejestracja', 'fieldset'))
-      .then(() => I._withinBegin({
-        css: '.navbar-header',
-      }))
-      .then(() => I.see('Rejestracja', '.container fieldset'))
-      .catch((err) => {
-        if (!err) assert.fail('seen fieldset');
-      })
-      .then(() => I.see('Toggle navigation', '.container fieldset'))
-      .catch((err) => {
-        if (!err) assert.fail('seen fieldset');
-      }));
+    it('within should respect context in see', function () {
+      if (isHelper('TestCafe')) this.skip();
+      return I.amOnPage('/form/example4')
+        .then(() => I.see('Rejestracja', 'fieldset'))
+        .then(() => I._withinBegin({
+          css: '.navbar-header',
+        }))
+        .then(() => I.see('Rejestracja', '.container fieldset'))
+        .catch((err) => {
+          if (!err) assert.fail('seen fieldset');
+        })
+        .then(() => I.see('Toggle navigation', '.container fieldset'))
+        .catch((err) => {
+          if (!err) assert.fail('seen fieldset');
+        });
+    });
 
-    it('within should respect context in see when using nested frames', () => I.amOnPage('/iframe_nested')
-      .then(() => I._withinBegin({
-        frame: ['#wrapperId', '[name=content]'],
-      }))
-      .then(() => I.see('Kill & Destroy'))
-      .catch((err) => {
-        if (!err) assert.fail('seen "Kill & Destroy"');
-      })
-      .then(() => I.dontSee('Nested Iframe test'))
-      .catch((err) => {
-        if (!err) assert.fail('seen "Nested Iframe test"');
-      })
-      .then(() => I.dontSee('Iframe test'))
-      .catch((err) => {
-        if (!err) assert.fail('seen "Iframe test"');
-      }));
+    it('within should respect context in see when using nested frames', function () {
+      if (isHelper('TestCafe')) this.skip();
+      return I.amOnPage('/iframe_nested')
+        .then(() => I._withinBegin({
+          frame: ['#wrapperId', '[name=content]'],
+        }))
+        .then(() => I.see('Kill & Destroy'))
+        .catch((err) => {
+          if (!err) assert.fail('seen "Kill & Destroy"');
+        })
+        .then(() => I.dontSee('Nested Iframe test'))
+        .catch((err) => {
+          if (!err) assert.fail('seen "Nested Iframe test"');
+        })
+        .then(() => I.dontSee('Iframe test'))
+        .catch((err) => {
+          if (!err) assert.fail('seen "Iframe test"');
+        });
+    });
   });
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
@@ -980,7 +985,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to an element', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       const { x, y } = await I.grabPageScrollPosition();
@@ -990,7 +994,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to coordinates', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       const { x, y } = await I.grabPageScrollPosition();
@@ -1001,7 +1004,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to bottom of page', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       const { y } = await I.grabPageScrollPosition();
@@ -1012,7 +1014,6 @@ module.exports.tests = function () {
     });
 
     it('should scroll to top of page', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
       await I.scrollPageToBottom();
