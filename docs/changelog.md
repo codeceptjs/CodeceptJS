@@ -6,7 +6,7 @@ title: Releases
 ## 2.2.1
 
 * **[WebDriver]** A [dedicated guide](https://codecept.io/webdriver) written.
-* **[TestCade]** A [dedicated guide](https://codecept.io/testcafe) written.
+* **[TestCafe]** A [dedicated guide](https://codecept.io/testcafe) written.
 * **[Puppeteer]** A [chapter on mocking](https://codecept.io/puppeteer#mocking) written
 * [Puppeteer][Nightmare][TestCafe] Window mode is enabled by default on `codeceptjs init`.
 * **[TestCafe]** Actions implemented by **[hubidu](https://github.com/hubidu)**
