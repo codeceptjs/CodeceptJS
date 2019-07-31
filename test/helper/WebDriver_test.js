@@ -733,10 +733,10 @@ describe('WebDriver', function () {
 
   describe('GeoLocation', () => {
     it('should set the geoLocation', async () => {
-      await wd.setGeoLocation(121.21, 11.56);
+      await wd.setGeoLocation(37.4043, -122.0748);
       const geoLocation = await wd.getGeoLocation();
-      expect(geoLocation.latitude).to.eq(121.21, 'The latitude is not properly set');
-      expect(geoLocation.longitude).to.eq(11.56, 'The longitude is not properly set');
+      expect(geoLocation.latitude).to.eq(37.4043, 'The latitude is not properly set');
+      expect(geoLocation.longitude).to.eq(-122.0748, 'The longitude is not properly set');
     });
   });
 });
