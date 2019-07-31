@@ -10,26 +10,24 @@ type KeyValueTupleToObject<T extends [keyof any, any]> = {
   [K in T[0]]: Extract<T, [K, any]>[1]
 }
 
-type codeceptjs = {
-  codecept: typeof Codecept,
-  container: typeof Container,
-  config: typeof Config,
-  actor: any,
-  helper: typeof Helper,
-  pause: typeof pause,
-  within: typeof within,
-  dataTable: typeof DataTable,
-  locator: typeof Locator,
-  
-  // export typings from JS files, type any when allowJs is set to false
-  recorder: typeof index.recorder,
-  event: typeof index.event,
-  output: typeof index.output,
-  store: typeof index.store,
-};
-
 declare global {
-  const codeceptjs: codeceptjs;
+  const codeceptjs: {
+    codecept: typeof Codecept,
+    container: typeof Container,
+    config: typeof Config,
+    actor: any,
+    helper: typeof Helper,
+    pause: typeof pause,
+    within: typeof within,
+    dataTable: typeof DataTable,
+    locator: typeof Locator,
+    
+    // export typings from JS files, type any when allowJs is set to false
+    recorder: typeof index.recorder,
+    event: typeof index.event,
+    output: typeof index.output,
+    store: typeof index.store,
+  }
   
   const codecept_dir: string;
   const codecept_helper: Helper;
@@ -52,7 +50,7 @@ declare global {
       codecept_helper: typeof Helper;
       output_dir: typeof output_dir;
 
-      codeceptjs: codeceptjs;
+      codeceptjs: typeof codeceptjs;
       Helper: typeof Helper;
       pause: typeof pause;
       within: typeof within;
