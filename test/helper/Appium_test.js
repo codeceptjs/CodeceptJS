@@ -403,7 +403,7 @@ describe('Appium', function () {
     });
   });
 
-  describe('GeoLocation', () => {
+  describe('GeoLocation @second', () => {
     it('should set the geoLocation', async () => {
       await app.setGeoLocation(121.21, 11.56);
       const geoLocation = await app.getGeoLocation();
