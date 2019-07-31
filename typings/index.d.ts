@@ -36,7 +36,6 @@ declare global {
   const output_dir: string;
 
   const locate: typeof Locator.build;
-  const inject: typeof Container.support;
   const secret: typeof Secret.secret;
 
   const Given: typeof addStep;
@@ -61,7 +60,7 @@ declare global {
       DataTable: typeof DataTable;
 
       locate: typeof locate;
-      inject: typeof inject;
+      inject: any;
       secret: typeof secret;      
 
       Given: typeof Given;
