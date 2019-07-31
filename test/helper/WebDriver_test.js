@@ -730,4 +730,13 @@ describe('WebDriver', function () {
       currentWindowHandle.should.eql(handleBeforePopup);
     });
   });
+
+  describe('GeoLocation', () => {
+    it('should set the geoLocation', async () => {
+      await wd.setGeoLocation(121.21, 11.56);
+      const geoLocation = await wd.getGeoLocation();
+      expect(geoLocation.latitude).to.eq(121.21, 'The latitude is not properly set');
+      expect(geoLocation.longitude).to.eq(11.56, 'The longitude is not properly set');
+    });
+  });
 });
