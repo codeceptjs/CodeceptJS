@@ -6,8 +6,11 @@ declare class Config {
      * Create a config with default options
      *
      * @param {*} newConfig
+     * @return {Object<string, *>}
      */
-    static create(newConfig: any): void;
+    static create(newConfig: any): {
+        [key: string]: any;
+    };
     /**
      * Load config from a file.
      * If js file provided: require it and get .config key
@@ -17,23 +20,35 @@ declare class Config {
      * * try to load `codecept.json` from it
      * If none of above: fail.
      *
-     * @param {*} configFile
+     * @param {string} configFile
+     * @return {*}
      */
-    static load(configFile: any): void;
+    static load(configFile: string): any;
     /**
      * Get current config.
+     * @param {string} key
+     * @param {*} val
+     * @return {*}
      */
-    static get(): void;
+    static get(key: string, val: any): any;
     /**
      * Appends values to current config
      *
-     * @param {*} additionalConfig
+     * @param {Object<string, *>} additionalConfig
+     * @return {Object<string, *>}
      */
-    static append(additionalConfig: any): void;
+    static append(additionalConfig: {
+        [key: string]: any;
+    }): {
+        [key: string]: any;
+    };
     /**
      * Resets config to default
+     * @return {Object<string, *>}
      */
-    static reset(): void;
+    static reset(): {
+        [key: string]: any;
+    };
 }
 
 /**
@@ -140,21 +155,32 @@ declare class Container {
      * Get Mocha instance
      *
      * @api
+     * @returns {Mocha}
      */
-    static mocha(): void;
+    static mocha(): Mocha;
     /**
      * Append new services to container
      *
      * @api
+     * @param {Object<string, *>} newContainer
      */
-    static append(): void;
+    static append(newContainer: {
+        [key: string]: any;
+    }): void;
     /**
      * Clear container
      *
-     * @param {*} newHelpers
-     * @param {*} newSupport
+     * @param {Object<string, *>} newHelpers
+     * @param {Object<string, *>} newSupport
+     * @param {Object<string, *>} newPlugins
      */
-    static clear(newHelpers: any, newSupport: any): void;
+    static clear(newHelpers: {
+        [key: string]: any;
+    }, newSupport: {
+        [key: string]: any;
+    }, newPlugins: {
+        [key: string]: any;
+    }): void;
 }
 
 /**
@@ -303,82 +329,94 @@ declare class Helper {
     /**
      * Abstract method to provide required config options
      * @return {*}
+     * @protected
      */
-    static _config(): any;
+    protected static _config(): any;
     /**
      * Abstract method to validate config
      * @param {*} config
      * @returns {*}
+     * @protected
      */
-    _validateConfig(config: any): any;
+    protected _validateConfig(config: any): any;
     /**
      * Sets config for current test
      * @param {*} opts
+     * @protected
      */
-    _setConfig(opts: any): void;
+    protected _setConfig(opts: any): void;
     /**
      * Hook executed before all tests
+     * @protected
      */
-    _init(): void;
+    protected _init(): void;
     /**
      * Hook executed before each test.
+     * @protected
      */
-    _before(): void;
+    protected _before(): void;
     /**
      * Hook executed after each test
+     * @protected
      */
-    _after(): void;
+    protected _after(): void;
     /**
      * Hook provides a test details
      * Executed in the very beginning of a test
      *
      * @param {IHelperVoidFunc} test
+     * @protected
      */
-    _test(test: IHelperVoidFunc): void;
+    protected _test(test: IHelperVoidFunc): void;
     /**
      * Hook executed after each passed test
      *
      * @param {IHelperVoidFunc} test
+     * @protected
      */
-    _passed(test: IHelperVoidFunc): void;
+    protected _passed(test: IHelperVoidFunc): void;
     /**
      * Hook executed after each failed test
      *
      * @param {IHelperVoidFunc} test
+     * @protected
      */
-    _failed(test: IHelperVoidFunc): void;
+    protected _failed(test: IHelperVoidFunc): void;
     /**
      * Hook executed before each step
      *
      * @param {IHelperVoidFunc} step
-     * @override
+     * @protected
      */
-    _beforeStep(step: IHelperVoidFunc): void;
+    protected _beforeStep(step: IHelperVoidFunc): void;
     /**
      * Hook executed after each step
      *
      * @param {IHelperVoidFunc} step
-     * @override
+     * @protected
      */
-    _afterStep(step: IHelperVoidFunc): void;
+    protected _afterStep(step: IHelperVoidFunc): void;
     /**
      * Hook executed before each suite
      *
      * @param {IHelperVoidFunc} suite
+     * @protected
      */
-    _beforeSuite(suite: IHelperVoidFunc): void;
+    protected _beforeSuite(suite: IHelperVoidFunc): void;
     /**
      * Hook executed after each suite
      *
      * @param {IHelperVoidFunc} suite
+     * @protected
      */
-    _afterSuite(suite: IHelperVoidFunc): void;
+    protected _afterSuite(suite: IHelperVoidFunc): void;
     /**
      * Hook executed after all tests are executed
      *
      * @param {IHelperVoidFunc} suite
+     * @protected
      */
-    _finishTest(suite: IHelperVoidFunc): void;
+    protected _finishTest(suite: IHelperVoidFunc): void;
     /**
      * Access another configured helper: `this.helpers['AnotherHelper']`
      *
@@ -1309,7 +1347,6 @@ declare class Appium {
      *
      * @param {string} text which is not present.
      * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-     *
      * {--end--}
      */
     dontSee(text: string, context?: string | any): void;
@@ -1710,7 +1747,6 @@ declare class Nightmare {
      *
      * @param {string} text which is not present.
      * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-     *
      * {--end--}
      */
     dontSee(text: string, context?: string | any): void;
@@ -2464,6 +2500,39 @@ declare class Nightmare {
     }>;
 }
 
+declare class Polly {
+    /**
+     * Mock response status
+     *
+     * ```js
+     * I.mockRequest('GET', '/api/users', 200);
+     * I.mockRequest('ANY', '/secretsRoutes/*', 403);
+     * I.mockRequest('POST', '/secrets', { secrets: 'fakeSecrets' });
+     * I.mockRequest('GET', '/api/users/1', 404, 'User not found');
+     * ```
+     *
+     * Multiple requests
+     *
+     * ```js
+     * I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
+     * ```
+     * @param {string} method request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+     * @param {string|Array<*>} oneOrMoreUrls url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+     * @param {number|string|object} dataOrStatusCode status code when number provided. A response body otherwise
+     * @param {string|object} additionalData response body when a status code is set by previous parameter.
+     *
+     */
+    mockRequest(method: string, oneOrMoreUrls: string | any[], dataOrStatusCode: number | string | any, additionalData: string | any): void;
+    /**
+     * Starts mocking if it's not started yet.
+     */
+    _checkAndStartMocking(): void;
+    /**
+     * Stops mocking requests.
+     */
+    stopMocking(): void;
+}
+
 declare class Protractor {
     /**
      * Switch to non-Angular mode,
@@ -2637,7 +2706,6 @@ declare class Protractor {
      *
      * @param {string} text which is not present.
      * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-     *
      * {--end--}
      */
     dontSee(text: string, context?: string | any): void;
@@ -2723,7 +2791,7 @@ declare class Protractor {
      *
      * @param {string|string[]} key key or array of keys to press.
      * {--end--}
-     * {{ keys }}
+     *
      */
     pressKey(key: string | string[]): void;
     /**
@@ -3737,8 +3805,9 @@ declare class Puppeteer {
      * ```js
      * await I.grabPopupText();
      * ```
+     * @return {Promise<string | null>}
      */
-    grabPopupText(): void;
+    grabPopupText(): Promise<string | null>;
     /**
      * Opens a web page in a browser. Requires relative or absolute url.
      * If url starts with `/`, opens a web page of a site defined in `url` config parameter.
@@ -3791,7 +3860,7 @@ declare class Puppeteer {
      * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
      * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
      * {--end--}
-     * {{ react }}
+     *
      */
     moveCursorTo(locator: string | any, offsetX?: number, offsetY?: number): void;
     /**
@@ -3912,7 +3981,7 @@ declare class Puppeteer {
      * const elements = await this.helpers['Puppeteer']._locate({name: 'password'});
      * ```
      *
-     * {{ react }}
+     *
      */
     _locate(): void;
     /**
@@ -4005,7 +4074,7 @@ declare class Puppeteer {
      * ```
      * @param {string|object} locator located by CSS|XPath|strict locator.
      * {--end--}
-     * {{ react }}
+     *
      */
     seeElement(locator: string | any): void;
     /**
@@ -4017,7 +4086,7 @@ declare class Puppeteer {
      *
      * @param {string|object} locator located by CSS|XPath|Strict locator.
      * {--end--}
-     * {{ react }}
+     *
      */
     dontSeeElement(locator: string | any): void;
     /**
@@ -4069,7 +4138,7 @@ declare class Puppeteer {
      * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     click(locator: string | any, context?: string | any): void;
     /**
@@ -4082,7 +4151,7 @@ declare class Puppeteer {
      * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     clickLink(locator: string | any, context?: string | any): void;
     /**
@@ -4124,7 +4193,7 @@ declare class Puppeteer {
      * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     doubleClick(locator: string | any, context?: string | any): void;
     /**
@@ -4143,7 +4212,7 @@ declare class Puppeteer {
      * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     rightClick(locator: string | any, context?: string | any): void;
     /**
@@ -4218,7 +4287,7 @@ declare class Puppeteer {
      * @param {string|string[]} key key or array of keys to press.
      * {--end--}
      *
-     * {{ keys }}
+     *
      */
     pressKey(key: string | string[]): void;
     /**
@@ -4238,7 +4307,7 @@ declare class Puppeteer {
      * @param {string|object} field located by label|name|CSS|XPath|strict locator.
      * @param {string} value text value to fill.
      * {--end--}
-     * {{ react }}
+     *
      */
     fillField(field: string | any, value: string): void;
     /**
@@ -4264,7 +4333,7 @@ declare class Puppeteer {
      * @param {string} value text value to append.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     appendField(field: string | any, value: string): void;
     /**
@@ -4345,7 +4414,7 @@ declare class Puppeteer {
      * @param {string|object} locator located by CSS|XPath|strict locator.
      * @returns {Promise<number>} number of visible elements
      * {--end--}
-     * {{ react }}
+     *
      */
     grabNumberOfVisibleElements(locator: string | any): Promise<number>;
     /**
@@ -4406,7 +4475,7 @@ declare class Puppeteer {
      * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     see(text: string, context?: string | any): void;
     /**
@@ -4428,10 +4497,9 @@ declare class Puppeteer {
      *
      * @param {string} text which is not present.
      * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-     *
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     dontSee(text: string, context?: string | any): void;
     /**
@@ -4453,8 +4521,9 @@ declare class Puppeteer {
      * let logs = await I.grabBrowserLogs();
      * console.log(JSON.stringify(logs))
      * ```
+     * @return {Promise<any[]>}
      */
-    grabBrowserLogs(): void;
+    grabBrowserLogs(): Promise<any[]>;
     /**
      * Get current URL from browser.
      * Resumes test execution, so should be used inside an async function.
@@ -4502,7 +4571,7 @@ declare class Puppeteer {
      * @param {number} num number of elements.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     seeNumberOfElements(locator: string | any, num: number): void;
     /**
@@ -4517,7 +4586,7 @@ declare class Puppeteer {
      * @param {number} num number of elements.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     seeNumberOfVisibleElements(locator: string | any, num: number): void;
     /**
@@ -4656,7 +4725,7 @@ declare class Puppeteer {
      * @param locator element located by CSS|XPath|strict locator.
      * @returns {Promise<string>} attribute value
      * {--end--}
-     * {{ react }}
+     *
      */
     grabTextFrom(locator: any): Promise<string>;
     /**
@@ -4697,7 +4766,7 @@ declare class Puppeteer {
      * @param {string} cssProperty CSS property name.
      * @returns {Promise<string>} CSS value
      * {--end--}
-     * {{ react }}
+     *
      */
     grabCssPropertyFrom(locator: string | any, cssProperty: string): Promise<string>;
     /**
@@ -4710,7 +4779,7 @@ declare class Puppeteer {
      * @param {string|object} locator located by CSS|XPath|strict locator.
      * @param {object} cssProperties object with CSS properties and their values to check.
      * {--end--}
-     * {{ react }}
+     *
      */
     seeCssPropertiesOnElements(locator: string | any, cssProperties: any): void;
     /**
@@ -4723,7 +4792,7 @@ declare class Puppeteer {
      * @param {string|object} locator located by CSS|XPath|strict locator.
      * @param {object} attributes attributes and their values to check.
      * {--end--}
-     * {{ react }}
+     *
      */
     seeAttributesOnElements(locator: string | any, attributes: any): void;
     /**
@@ -4738,7 +4807,7 @@ declare class Puppeteer {
      * @param {string|object} locator located by label|name|CSS|XPath|strict locator.
      * @param {number} offsetX position to drag.
      * {--end--}
-     * {{ react }}
+     *
      */
     dragSlider(locator: string | any, offsetX: number): void;
     /**
@@ -4753,7 +4822,7 @@ declare class Puppeteer {
      * @param {string} attr attribute name.
      * @returns {Promise<string>} attribute value
      * {--end--}
-     * {{ react }}
+     *
      */
     grabAttributeFrom(locator: string | any, attr: string): Promise<string>;
     /**
@@ -4815,7 +4884,7 @@ declare class Puppeteer {
      * @param {number} num number of elements.
      * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
      * {--end--}
-     * {{ react }}
+     *
      */
     waitNumberOfVisibleElements(locator: string | any, num: number, sec?: number): void;
     /**
@@ -4830,7 +4899,7 @@ declare class Puppeteer {
      * @param {string|object} locator element located by CSS|XPath|strict locator.
      * @param {number} [sec] (optional, `1` by default) time in seconds to wait
      * {--end--}
-     * {{ react }}
+     *
      */
     waitForElement(locator: string | any, sec?: number): void;
     /**
@@ -5117,6 +5186,878 @@ declare class REST {
 declare class SeleniumWebdriver {
 }
 
+/**
+ * Client Functions
+ */
+declare function getPageUrl(): void;
+
+declare class TestCafe {
+    /**
+     * Get elements by different locator types, including strict locator
+     * Should be used in custom helpers:
+     *
+     * ```js
+     * const elements = await this.helpers['TestCafe']._locate('.item');
+     * ```
+     *
+     */
+    _locate(): void;
+    /**
+     * Opens a web page in a browser. Requires relative or absolute url.
+     * If url starts with `/`, opens a web page of a site defined in `url` config parameter.
+     *
+     * ```js
+     * I.amOnPage('/'); // opens main page of website
+     * I.amOnPage('https://github.com'); // opens github
+     * I.amOnPage('/login'); // opens a login page
+     * ```
+     *
+     * @param {string} url url path or global url.
+     * {--end--}
+     */
+    amOnPage(url: string): void;
+    /**
+     * Resize the current window to provided width and height.
+     * First parameter can be set to `maximize`.
+     *
+     * @param {number} width width in pixels or `maximize`.
+     * @param {number} height height in pixels.
+     * {--end--}
+     */
+    resizeWindow(width: number, height: number): void;
+    /**
+     * Perform a click on a link or a button, given by a locator.
+     * If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+     * For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+     * For images, the "alt" attribute and inner text of any parent links are searched.
+     *
+     * The second parameter is a context (CSS or XPath locator) to narrow the search.
+     *
+     * ```js
+     * // simple link
+     * I.click('Logout');
+     * // button of form
+     * I.click('Submit');
+     * // CSS button
+     * I.click('#form input[type=submit]');
+     * // XPath
+     * I.click('//form/*[@type=submit]');
+     * // link in context
+     * I.click('Logout', '#nav');
+     * // using strict locator
+     * I.click({css: 'nav a.login'});
+     * ```
+     *
+     * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+     * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+     * {--end--}
+     *
+     */
+    click(locator: string | any, context?: string | any): void;
+    /**
+     * Reload the current page.
+     *
+     * ```js
+     * I.refreshPage();
+     * ```
+     * {--end--}
+     */
+    refreshPage(): void;
+    /**
+     * Waits for an element to become visible on a page (by default waits for 1sec).
+     * Element can be located by CSS or XPath.
+     *
+     * ```js
+     * I.waitForVisible('#popup');
+     * ```
+     *
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     *
+     */
+    waitForVisible(locator: string | any, sec?: number): void;
+    /**
+     * Fills a text field or textarea, after clearing its value, with the given string.
+     * Field is located by name, label, CSS, or XPath.
+     *
+     * ```js
+     * // by label
+     * I.fillField('Email', 'hello@world.com');
+     * // by name
+     * I.fillField('password', secret('123456'));
+     * // by CSS
+     * I.fillField('form#login input[name=username]', 'John');
+     * // or by strict locator
+     * I.fillField({css: 'form#login input[name=username]'}, 'John');
+     * ```
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator.
+     * @param {string} value text value to fill.
+     * {--end--}
+     */
+    fillField(field: string | any, value: string): void;
+    /**
+     * Clears a `<textarea>` or text `<input>` element's value.
+     *
+     * ```js
+     * I.clearField('Email');
+     * I.clearField('user[email]');
+     * I.clearField('#email');
+     * ```
+     * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
+     * {--end--}
+     */
+    clearField(editable: string | any): void;
+    /**
+     * Appends text to a input field or textarea.
+     * Field is located by name, label, CSS or XPath
+     *
+     * ```js
+     * I.appendField('#myTextField', 'appended');
+     * ```
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator
+     * @param {string} value text value to append.
+     * {--end--}
+     *
+     */
+    appendField(field: string | any, value: string): void;
+    /**
+     * Appends text to a input field or textarea.
+     * Field is located by name, label, CSS or XPath
+     *
+     * ```js
+     * I.appendField('#myTextField', 'appended');
+     * ```
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator
+     * @param {string} value text value to append.
+     * {--end--}
+     *
+     */
+    attachFile(field: string | any, value: string): void;
+    /**
+     * Presses a key on a focused element.
+     * Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
+     * will be replaced with corresponding unicode.
+     * If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+     *
+     * ```js
+     * I.pressKey('Enter');
+     * I.pressKey(['Control','a']);
+     * ```
+     *
+     * @param {string|string[]} key key or array of keys to press.
+     * {--end--}
+     *
+     *
+     */
+    pressKey(key: string | string[]): void;
+    /**
+     * Moves cursor to element matched by locator.
+     * Extra shift can be set with offsetX and offsetY options.
+     *
+     * ```js
+     * I.moveCursorTo('.tooltip');
+     * I.moveCursorTo('#submit', 5,5);
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|strict locator.
+     * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
+     * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
+     * {--end--}
+     *
+     */
+    moveCursorTo(locator: string | any, offsetX?: number, offsetY?: number): void;
+    /**
+     * Performs a double-click on an element matched by link|button|label|CSS or XPath.
+     * Context can be specified as second parameter to narrow search.
+     *
+     * ```js
+     * I.doubleClick('Edit');
+     * I.doubleClick('Edit', '.actions');
+     * I.doubleClick({css: 'button.accept'});
+     * I.doubleClick('.btn.edit');
+     * ```
+     *
+     * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+     * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+     * {--end--}
+     *
+     */
+    doubleClick(locator: string | any, context?: string | any): void;
+    /**
+     * Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+     *
+     * ```js
+     * // right click element with id el
+     * I.rightClick('#el');
+     * // right click link or button with text "Click me"
+     * I.rightClick('Click me');
+     * // right click button with text "Click me" inside .context
+     * I.rightClick('Click me', '.context');
+     * ```
+     *
+     * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
+     * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+     * {--end--}
+     *
+     */
+    rightClick(locator: string | any, context?: string | any): void;
+    /**
+     * Selects a checkbox or radio button.
+     * Element is located by label or name or CSS or XPath.
+     *
+     * The second parameter is a context (CSS or XPath locator) to narrow the search.
+     *
+     * ```js
+     * I.checkOption('#agree');
+     * I.checkOption('I Agree to Terms and Conditions');
+     * I.checkOption('agree', '//form');
+     * ```
+     * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
+     * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+     * {--end--}
+     */
+    checkOption(field: string | any, context?: string): void;
+    /**
+     * Unselects a checkbox or radio button.
+     * Element is located by label or name or CSS or XPath.
+     *
+     * The second parameter is a context (CSS or XPath locator) to narrow the search.
+     *
+     * ```js
+     * I.uncheckOption('#agree');
+     * I.uncheckOption('I Agree to Terms and Conditions');
+     * I.uncheckOption('agree', '//form');
+     * ```
+     * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
+     * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+     * {--end--}
+     */
+    uncheckOption(field: string | any, context?: string): void;
+    /**
+     * Verifies that the specified checkbox is checked.
+     *
+     * ```js
+     * I.seeCheckboxIsChecked('Agree');
+     * I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
+     * I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
+     * ```
+     *
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator.
+     * {--end--}
+     */
+    seeCheckboxIsChecked(field: string | any): void;
+    /**
+     * Verifies that the specified checkbox is not checked.
+     *
+     * ```js
+     * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
+     * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
+     * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+     * ```
+     *
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator.
+     * {--end--}
+     */
+    dontSeeCheckboxIsChecked(field: string | any): void;
+    /**
+     * Selects an option in a drop-down select.
+     * Field is searched by label | name | CSS | XPath.
+     * Option is selected by visible text or by value.
+     *
+     * ```js
+     * I.selectOption('Choose Plan', 'Monthly'); // select by label
+     * I.selectOption('subscription', 'Monthly'); // match option by text
+     * I.selectOption('subscription', '0'); // or by value
+     * I.selectOption('//form/select[@name=account]','Premium');
+     * I.selectOption('form select[name=account]', 'Premium');
+     * I.selectOption({css: 'form select[name=account]'}, 'Premium');
+     * ```
+     *
+     * Provide an array for the second argument to select multiple options.
+     *
+     * ```js
+     * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
+     * ```
+     * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+     * @param {string|Array<*>} option visible text or value of option.
+     * {--end--}
+     */
+    selectOption(select: string | any, option: string | any[]): void;
+    /**
+     * Checks that current url contains a provided fragment.
+     *
+     * ```js
+     * I.seeInCurrentUrl('/register'); // we are on registration page
+     * ```
+     *
+     * @param {string} url a fragment to check
+     * {--end--}
+     */
+    seeInCurrentUrl(url: string): void;
+    /**
+     * Checks that current url does not contain a provided fragment.
+     *
+     * @param {string} url value to check.
+     * {--end--}
+     */
+    dontSeeInCurrentUrl(url: string): void;
+    /**
+     * Checks that current url is equal to provided one.
+     * If a relative url provided, a configured url will be prepended to it.
+     * So both examples will work:
+     *
+     * ```js
+     * I.seeCurrentUrlEquals('/register');
+     * I.seeCurrentUrlEquals('http://my.site.com/register');
+     * ```
+     *
+     * @param {string} url value to check.
+     * {--end--}
+     */
+    seeCurrentUrlEquals(url: string): void;
+    /**
+     * Checks that current url is not equal to provided one.
+     * If a relative url provided, a configured url will be prepended to it.
+     *
+     * ```js
+     * I.dontSeeCurrentUrlEquals('/login'); // relative url are ok
+     * I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also ok
+     * ```
+     *
+     * @param {string} url value to check.
+     * {--end--}
+     */
+    dontSeeCurrentUrlEquals(url: string): void;
+    /**
+     * Checks that a page contains a visible text.
+     * Use context parameter to narrow down the search.
+     *
+     * ```js
+     * I.see('Welcome'); // text welcome on a page
+     * I.see('Welcome', '.content'); // text inside .content div
+     * I.see('Register', {css: 'form.register'}); // use strict locator
+     * ```
+     * @param {string} text expected on page.
+     * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+     * {--end--}
+     *
+     */
+    see(text: string, context?: string | any): void;
+    /**
+     * Opposite to `see`. Checks that a text is not present on a page.
+     * Use context parameter to narrow down the search.
+     *
+     * ```js
+     * I.dontSee('Login'); // assume we are already logged in.
+     * I.dontSee('Login', '.nav'); // no login inside .nav element
+     * ```
+     *
+     * @param {string} text which is not present.
+     * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+     * {--end--}
+     *
+     */
+    dontSee(text: string, context?: string | any): void;
+    /**
+     * Checks that a given Element is visible
+     * Element is located by CSS or XPath.
+     *
+     * ```js
+     * I.seeElement('#modal');
+     * ```
+     * @param {string|object} locator located by CSS|XPath|strict locator.
+     * {--end--}
+     */
+    seeElement(locator: string | any): void;
+    /**
+     * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
+     *
+     * ```js
+     * I.dontSeeElement('.modal'); // modal is not shown
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|Strict locator.
+     * {--end--}
+     */
+    dontSeeElement(locator: string | any): void;
+    /**
+     * Checks that a given Element is present in the DOM
+     * Element is located by CSS or XPath.
+     *
+     * ```js
+     * I.seeElementInDOM('#modal');
+     * ```
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * {--end--}
+     */
+    seeElementInDOM(locator: string | any): void;
+    /**
+     * Opposite to `seeElementInDOM`. Checks that element is not on page.
+     *
+     * ```js
+     * I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or not
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|Strict locator.
+     * {--end--}
+     */
+    dontSeeElementInDOM(locator: string | any): void;
+    /**
+     * Asserts that an element is visible a given number of times.
+     * Element is located by CSS or XPath.
+     *
+     * ```js
+     * I.seeNumberOfVisibleElements('.buttons', 3);
+     * ```
+     *
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {number} num number of elements.
+     * {--end--}
+     *
+     */
+    seeNumberOfVisibleElements(locator: string | any, num: number): void;
+    /**
+     * Grab number of visible elements by locator.
+     *
+     * ```js
+     * let numOfElements = await I.grabNumberOfVisibleElements('p');
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|strict locator.
+     * @returns {Promise<number>} number of visible elements
+     * {--end--}
+     */
+    grabNumberOfVisibleElements(locator: string | any): Promise<number>;
+    /**
+     * Checks that the given input field or textarea equals to given value.
+     * For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+     *
+     * ```js
+     * I.seeInField('Username', 'davert');
+     * I.seeInField({css: 'form textarea'},'Type your comment here');
+     * I.seeInField('form input[type=hidden]','hidden_value');
+     * I.seeInField('#searchform input','Search');
+     * ```
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator.
+     * @param {string} value value to check.
+     * {--end--}
+     */
+    seeInField(field: string | any, value: string): void;
+    /**
+     * Checks that value of input field or textare doesn't equal to given value
+     * Opposite to `seeInField`.
+     *
+     * ```js
+     * I.dontSeeInField('email', 'user@user.com'); // field by name
+     * I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
+     * ```
+     *
+     * @param {string|object} field located by label|name|CSS|XPath|strict locator.
+     * @param {string} value value to check.
+     * {--end--}
+     */
+    dontSeeInField(field: string | any, value: string): void;
+    /**
+     * Checks that text is equal to provided one.
+     *
+     * ```js
+     * I.seeTextEquals('text', 'h1');
+     * ```
+     */
+    seeTextEquals(): void;
+    /**
+     * Checks that the current page contains the given string in its raw source code.
+     *
+     * ```js
+     * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+     * ```
+     * @param {string} text value to check.
+     * {--end--}
+     */
+    seeInSource(text: string): void;
+    /**
+     * Checks that the current page does not contains the given string in its raw source code.
+     *
+     * ```js
+     * I.dontSeeInSource('<!--'); // no comments in source
+     * ```
+     *
+     * @param {string} value to check.
+     * {--end--}
+     */
+    dontSeeInSource(value: string): void;
+    /**
+     * Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+     * Filename is relative to output folder.
+     * Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
+     *
+     * ```js
+     * I.saveScreenshot('debug.png');
+     * I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
+     * ```
+     *
+     * @param {string} fileName file name to save.
+     * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+     * {--end--}
+     */
+    saveScreenshot(fileName: string, fullPage?: boolean): void;
+    /**
+     * Pauses execution for a number of seconds.
+     *
+     * ```js
+     * I.wait(2); // wait 2 secs
+     * ```
+     *
+     * @param {number} sec number of second to wait.
+     * {--end--}
+     */
+    wait(sec: number): void;
+    /**
+     * Executes sync script on a page.
+     * Pass arguments to function as additional parameters.
+     * Will return execution result to a test.
+     * In this case you should use async function and await to receive results.
+     *
+     * Example with jQuery DatePicker:
+     *
+     * ```js
+     * // change date of jQuery DatePicker
+     * I.executeScript(function() {
+     *   // now we are inside browser context
+     *   $('date').datetimepicker('setDate', new Date());
+     * });
+     * ```
+     * Can return values. Don't forget to use `await` to get them.
+     *
+     * ```js
+     * let date = await I.executeScript(function(el) {
+     *   // only basic types can be returned
+     *   return $(el).datetimepicker('getDate').toString();
+     * }, '#date'); // passing jquery selector
+     * ```
+     *
+     * @param {string|function} fn function to be executed in browser context.
+     * @param {...any} args to be passed to function.
+     * {--end--}
+     *
+     * If a function returns a Promise It will wait for it resolution.
+     */
+    executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+    /**
+     * Retrieves a text from an element located by CSS or XPath and returns it to test.
+     * Resumes test execution, so **should be used inside async with `await`** operator.
+     *
+     * ```js
+     * let pin = await I.grabTextFrom('#pin');
+     * ```
+     * If multiple elements found returns an array of texts.
+     *
+     * @param locator element located by CSS|XPath|strict locator.
+     * @returns {Promise<string>} attribute value
+     * {--end--}
+     */
+    grabTextFrom(locator: any): Promise<string>;
+    /**
+     * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+     * An array as a result will be returned if there are more than one matched element.
+     * Resumes test execution, so **should be used inside async with `await`** operator.
+     *
+     * ```js
+     * let hint = await I.grabAttributeFrom('#tooltip', 'title');
+     * ```
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {string} attr attribute name.
+     * @returns {Promise<string>} attribute value
+     * {--end--}
+     */
+    grabAttributeFrom(locator: string | any, attr: string): Promise<string>;
+    /**
+     * Retrieves a value from a form element located by CSS or XPath and returns it to test.
+     * Resumes test execution, so **should be used inside async function with `await`** operator.
+     *
+     * ```js
+     * let email = await I.grabValueFrom('input[name=email]');
+     * ```
+     * @param {string|object} locator field located by label|name|CSS|XPath|strict locator.
+     * @returns {Promise<string>} attribute value
+     * {--end--}
+     */
+    grabValueFrom(locator: string | any): Promise<string>;
+    /**
+     * Retrieves page source and returns it to test.
+     * Resumes test execution, so should be used inside an async function.
+     *
+     * ```js
+     * let pageSource = await I.grabSource();
+     * ```
+     *
+     * @returns {Promise<string>} source code
+     * {--end--}
+     */
+    grabSource(): Promise<string>;
+    /**
+     * Get JS log from browser.
+     *
+     * ```js
+     * let logs = await I.grabBrowserLogs();
+     * console.log(JSON.stringify(logs))
+     * ```
+     */
+    grabBrowserLogs(): void;
+    /**
+     * Get current URL from browser.
+     * Resumes test execution, so should be used inside an async function.
+     *
+     * ```js
+     * let url = await I.grabCurrentUrl();
+     * console.log(`Current URL is [${url}]`);
+     * ```
+     *
+     * @returns {Promise<string>} current URL
+     * {--end--}
+     */
+    grabCurrentUrl(): Promise<string>;
+    /**
+     * Retrieves a page scroll position and returns it to test.
+     * Resumes test execution, so **should be used inside an async function with `await`** operator.
+     *
+     * ```js
+     * let { x, y } = await I.grabPageScrollPosition();
+     * ```
+     *
+     * @returns {Promise<Object<string, *>>} scroll position
+     * {--end--}
+     */
+    grabPageScrollPosition(): Promise<{
+        [key: string]: any;
+    }>;
+    /**
+     * Scroll page to the top.
+     *
+     * ```js
+     * I.scrollPageToTop();
+     * ```
+     * {--end--}
+     */
+    scrollPageToTop(): void;
+    /**
+     * Scroll page to the bottom.
+     *
+     * ```js
+     * I.scrollPageToBottom();
+     * ```
+     * {--end--}
+     */
+    scrollPageToBottom(): void;
+    /**
+     * Scrolls to element matched by locator.
+     * Extra shift can be set with offsetX and offsetY options.
+     *
+     * ```js
+     * I.scrollTo('footer');
+     * I.scrollTo('#submit', 5, 5);
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|strict locator.
+     * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
+     * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
+     * {--end--}
+     */
+    scrollTo(locator: string | any, offsetX?: number, offsetY?: number): void;
+    /**
+     * Switches frame or in case of null locator reverts to parent.
+     *
+     * ```js
+     * I.switchTo('iframe'); // switch to first iframe
+     * I.switchTo(); // switch back to main page
+     * ```
+     *
+     * @param {string|object} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+     * {--end--}
+     */
+    switchTo(locator?: string | any): void;
+    /**
+     * Sets a cookie.
+     *
+     * ```js
+     * I.setCookie({name: 'auth', value: true});
+     * ```
+     *
+     * @param {object} cookie a cookie object.
+     * {--end--}
+     */
+    setCookie(cookie: any): void;
+    /**
+     * Checks that cookie with given name exists.
+     *
+     * ```js
+     * I.seeCookie('Auth');
+     * ```
+     *
+     * @param {string} name cookie name.
+     * {--end--}
+     *
+     */
+    seeCookie(name: string): void;
+    /**
+     * Checks that cookie with given name does not exist.
+     *
+     * ```js
+     * I.dontSeeCookie('auth'); // no auth cookie
+     * ```
+     *
+     * @param {string} name cookie name.
+     * {--end--}
+     */
+    dontSeeCookie(name: string): void;
+    /**
+     * Gets a cookie object by name.
+     * If none provided gets all cookies.
+     * * Resumes test execution, so **should be used inside async with `await`** operator.
+     *
+     * ```js
+     * let cookie = await I.grabCookie('auth');
+     * assert(cookie.value, '123456');
+     * ```
+     *
+     * @param {string} [name=null] cookie name.
+     * @returns {Promise<string>} attribute value
+     * {--end--}
+     *
+     * Returns cookie in JSON format. If name not passed returns all cookies for this domain.
+     */
+    grabCookie(name?: string): Promise<string>;
+    /**
+     * Clears a cookie by name,
+     * if none provided clears all cookies.
+     *
+     * ```js
+     * I.clearCookie();
+     * I.clearCookie('test');
+     * ```
+     *
+     * @param {string} [cookie=null] (optional, `null` by default) cookie name
+     * {--end--}
+     */
+    clearCookie(cookie?: string): void;
+    /**
+     * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+     *
+     * ```js
+     * I.waitInUrl('/info', 2);
+     * ```
+     *
+     * @param {string} urlPart value to check.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitInUrl(urlPart: string, sec?: number): void;
+    /**
+     * Waits for the entire URL to match the expected
+     *
+     * ```js
+     * I.waitUrlEquals('/info', 2);
+     * I.waitUrlEquals('http://127.0.0.1:8000/info');
+     * ```
+     *
+     * @param {string} urlPart value to check.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitUrlEquals(urlPart: string, sec?: number): void;
+    /**
+     * Waits for a function to return true (waits for 1 sec by default).
+     * Running in browser context.
+     *
+     * ```js
+     * I.waitForFunction(fn[, [args[, timeout]])
+     * ```
+     *
+     * ```js
+     * I.waitForFunction(() => window.requests == 0);
+     * I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+     * I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+     * ```
+     *
+     * @param {string|function} fn to be executed in browser context.
+     * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
+     * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
+    /**
+     * Waits for a specified number of elements on the page.
+     *
+     * ```js
+     * I.waitNumberOfVisibleElements('a', 3);
+     * ```
+     *
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {number} num number of elements.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitNumberOfVisibleElements(locator: string | any, num: number, sec?: number): void;
+    /**
+     * Waits for element to be present on page (by default waits for 1sec).
+     * Element can be located by CSS or XPath.
+     *
+     * ```js
+     * I.waitForElement('.btn.continue');
+     * I.waitForElement('.btn.continue', 5); // wait for 5 secs
+     * ```
+     *
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitForElement(locator: string | any, sec?: number): void;
+    /**
+     * Waits for an element to hide (by default waits for 1sec).
+     * Element can be located by CSS or XPath.
+     *
+     * ```js
+     * I.waitToHide('#popup');
+     * ```
+     *
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitToHide(locator: string | any, sec?: number): void;
+    /**
+     * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
+     * Element can be located by CSS or XPath.
+     *
+     * ```js
+     * I.waitForInvisible('#popup');
+     * ```
+     *
+     * @param {string|object} locator element located by CSS|XPath|strict locator.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * {--end--}
+     */
+    waitForInvisible(locator: string | any, sec?: number): void;
+    /**
+     * Waits for a text to appear (by default waits for 1sec).
+     * Element can be located by CSS or XPath.
+     * Narrow down search results by providing context.
+     *
+     * ```js
+     * I.waitForText('Thank you, form has been submitted');
+     * I.waitForText('Thank you, form has been submitted', 5, '#modal');
+     * ```
+     *
+     * @param {string }text to wait for.
+     * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+     * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+     * {--end--}
+     *
+     */
+    waitForText(text: string, sec?: number, context?: string | any): void;
+}
+
 declare class WebDriver {
     /**
      * Get elements by different locator types, including strict locator.
@@ -5215,7 +6156,7 @@ declare class WebDriver {
      * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     click(locator: string | any, context?: string | any): void;
     /**
@@ -5233,7 +6174,7 @@ declare class WebDriver {
      * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     doubleClick(locator: string | any, context?: string | any): void;
     /**
@@ -5252,7 +6193,7 @@ declare class WebDriver {
      * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     rightClick(locator: string | any, context?: string | any): void;
     /**
@@ -5272,7 +6213,7 @@ declare class WebDriver {
      * @param {string|object} field located by label|name|CSS|XPath|strict locator.
      * @param {string} value text value to fill.
      * {--end--}
-     * {{ react }}
+     *
      *
      */
     fillField(field: string | any, value: string): void;
@@ -5286,7 +6227,7 @@ declare class WebDriver {
      * @param {string|object} field located by label|name|CSS|XPath|strict locator
      * @param {string} value text value to append.
      * {--end--}
-     * {{ react }}
+     *
      */
     appendField(field: string | any, value: string): void;
     /**
@@ -5508,7 +6449,7 @@ declare class WebDriver {
      * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     see(text: string, context?: string | any): void;
     /**
@@ -5533,10 +6474,9 @@ declare class WebDriver {
      *
      * @param {string} text which is not present.
      * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-     *
      * {--end--}
      *
-     * {{ react }}
+     *
      */
     dontSee(text: string, context?: string | any): void;
     /**
@@ -5607,7 +6547,7 @@ declare class WebDriver {
      * ```
      * @param {string|object} locator located by CSS|XPath|strict locator.
      * {--end--}
-     * {{ react }}
+     *
      *
      */
     seeElement(locator: string | any): void;
@@ -5620,7 +6560,7 @@ declare class WebDriver {
      *
      * @param {string|object} locator located by CSS|XPath|Strict locator.
      * {--end--}
-     * {{ react }}
+     *
      */
     dontSeeElement(locator: string | any): void;
     /**
@@ -5717,7 +6657,7 @@ declare class WebDriver {
      * @param {string|object} locator element located by CSS|XPath|strict locator.
      * @param {number} num number of elements.
      * {--end--}
-     * {{ react }}
+     *
      */
     seeNumberOfElements(locator: string | any, num: number): void;
     /**
@@ -5731,7 +6671,7 @@ declare class WebDriver {
      * @param {string|object} locator element located by CSS|XPath|strict locator.
      * @param {number} num number of elements.
      * {--end--}
-     * {{ react }}
+     *
      */
     seeNumberOfVisibleElements(locator: string | any, num: number): void;
     /**
@@ -6035,7 +6975,7 @@ declare class WebDriver {
      *
      * @param {string|string[]} key key or array of keys to press.
      * {--end--}
-     * {{ keys }}
+     *
      *
      * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
      *
@@ -6084,6 +7024,38 @@ declare class WebDriver {
      * {--end--}
      */
     dragSlider(locator: string | any, offsetX: number): void;
+    /**
+     * Get all Window Handles.
+     * Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
+     *
+     * ```js
+     * const windows = await I.grabAllWindowHandles();
+     * ```
+     */
+    grabAllWindowHandles(): void;
+    /**
+     * Get the current Window Handle.
+     * Useful for referencing it when calling `I.switchToWindow(handle)`
+     *
+     * ```js
+     * const window = await I.grabCurrentWindowHandle();
+     * ```
+     */
+    grabCurrentWindowHandle(): void;
+    /**
+     * Switch to the window with a specified handle.
+     *
+     * ```js
+     * const windows = await I.grabAllWindowHandles();
+     * // ... do something
+     * await I.switchToWindow( windows[0] );
+     *
+     * const window = await.grabCurrentWindowHandle();
+     * // ... do something
+     * await I.switchToWindow( window );
+     * ```
+     */
+    switchToWindow(): void;
     /**
      * Close all tabs except for the current one.
      *
@@ -6577,14 +7549,42 @@ declare class WebDriverIO {
      */
     appendField(field: string | any, value: string): void;
     /**
-     * {{> clearField}}
+     * Clears a `<textarea>` or text `<input>` element's value.
+     *
+     * ```js
+     * I.clearField('Email');
+     * I.clearField('user[email]');
+     * I.clearField('#email');
+     * ```
+     * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
+     * {--end--}
      * Appium: support
      */
-    clearField(): void;
+    clearField(editable: string | any): void;
     /**
-     * {{> selectOption}}
+     * Selects an option in a drop-down select.
+     * Field is searched by label | name | CSS | XPath.
+     * Option is selected by visible text or by value.
+     *
+     * ```js
+     * I.selectOption('Choose Plan', 'Monthly'); // select by label
+     * I.selectOption('subscription', 'Monthly'); // match option by text
+     * I.selectOption('subscription', '0'); // or by value
+     * I.selectOption('//form/select[@name=account]','Premium');
+     * I.selectOption('form select[name=account]', 'Premium');
+     * I.selectOption({css: 'form select[name=account]'}, 'Premium');
+     * ```
+     *
+     * Provide an array for the second argument to select multiple options.
+     *
+     * ```js
+     * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
+     * ```
+     * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+     * @param {string|Array<*>} option visible text or value of option.
+     * {--end--}
      */
-    selectOption(): void;
+    selectOption(select: string | any, option: string | any[]): void;
     /**
      * Attaches a file to element located by label, name, CSS or XPath
      * Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
@@ -6791,7 +7791,6 @@ declare class WebDriverIO {
      *
      * @param {string} text which is not present.
      * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-     *
      * {--end--}
      * Appium: support with context in apps
      */
@@ -6868,10 +7867,17 @@ declare class WebDriverIO {
      */
     seeElement(locator: string | any): void;
     /**
-     * {{> dontSeeElement}}
+     * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
+     *
+     * ```js
+     * I.dontSeeElement('.modal'); // modal is not shown
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|Strict locator.
+     * {--end--}
      * Appium: support
      */
-    dontSeeElement(): void;
+    dontSeeElement(locator: string | any): void;
     /**
      * Checks that a given Element is present in the DOM
      * Element is located by CSS or XPath.
@@ -7142,43 +8148,106 @@ declare class WebDriverIO {
      */
     scrollTo(locator: string | any, offsetX?: number, offsetY?: number): void;
     /**
-     * {{> moveCursorTo}}
+     * Moves cursor to element matched by locator.
+     * Extra shift can be set with offsetX and offsetY options.
+     *
+     * ```js
+     * I.moveCursorTo('.tooltip');
+     * I.moveCursorTo('#submit', 5,5);
+     * ```
+     *
+     * @param {string|object} locator located by CSS|XPath|strict locator.
+     * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
+     * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
+     * {--end--}
      * Appium: support only web testing
      */
-    moveCursorTo(): void;
+    moveCursorTo(locator: string | any, offsetX?: number, offsetY?: number): void;
     /**
-     * {{> saveScreenshot}}
+     * Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+     * Filename is relative to output folder.
+     * Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
+     *
+     * ```js
+     * I.saveScreenshot('debug.png');
+     * I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
+     * ```
+     *
+     * @param {string} fileName file name to save.
+     * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+     * {--end--}
      * Appium: support
      */
-    saveScreenshot(): void;
+    saveScreenshot(fileName: string, fullPage?: boolean): void;
     /**
-     * {{> setCookie}}
+     * Sets a cookie.
+     *
+     * ```js
+     * I.setCookie({name: 'auth', value: true});
+     * ```
+     *
+     * @param {object} cookie a cookie object.
+     * {--end--}
      * Appium: support only web testing
      *
      * Uses Selenium's JSON [cookie
      * format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
      */
-    setCookie(): void;
+    setCookie(cookie: any): void;
     /**
-     * {{> clearCookie}}
+     * Clears a cookie by name,
+     * if none provided clears all cookies.
+     *
+     * ```js
+     * I.clearCookie();
+     * I.clearCookie('test');
+     * ```
+     *
+     * @param {string} [cookie=null] (optional, `null` by default) cookie name
+     * {--end--}
      * Appium: support only web testing
      */
-    clearCookie(): void;
+    clearCookie(cookie?: string): void;
     /**
-     * {{> seeCookie}}
+     * Checks that cookie with given name exists.
+     *
+     * ```js
+     * I.seeCookie('Auth');
+     * ```
+     *
+     * @param {string} name cookie name.
+     * {--end--}
      * Appium: support only web testing
      */
-    seeCookie(): void;
+    seeCookie(name: string): void;
     /**
-     * {{> dontSeeCookie}}
+     * Checks that cookie with given name does not exist.
+     *
+     * ```js
+     * I.dontSeeCookie('auth'); // no auth cookie
+     * ```
+     *
+     * @param {string} name cookie name.
+     * {--end--}
      * Appium: support only web testing
      */
-    dontSeeCookie(): void;
+    dontSeeCookie(name: string): void;
     /**
-     * {{> grabCookie}}
+     * Gets a cookie object by name.
+     * If none provided gets all cookies.
+     * * Resumes test execution, so **should be used inside async with `await`** operator.
+     *
+     * ```js
+     * let cookie = await I.grabCookie('auth');
+     * assert(cookie.value, '123456');
+     * ```
+     *
+     * @param {string} [name=null] cookie name.
+     * @returns {Promise<string>} attribute value
+     * {--end--}
      * Appium: support only web testing
      */
-    grabCookie(): void;
+    grabCookie(name?: string): Promise<string>;
     /**
      * Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
      * Don't confuse popups with modal windows, as created by [various
@@ -7218,7 +8287,7 @@ declare class WebDriverIO {
      *
      * @param {string|string[]} key key or array of keys to press.
      * {--end--}
-     * {{> _keys }}
+     *
      *
      * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
      * Appium: support, but clear field before pressing in apps:
@@ -7552,9 +8621,19 @@ declare class WebDriverIO {
      */
     scrollPageToBottom(): void;
     /**
-     * {{> grabPageScrollPosition}}
+     * Retrieves a page scroll position and returns it to test.
+     * Resumes test execution, so **should be used inside an async function with `await`** operator.
+     *
+     * ```js
+     * let { x, y } = await I.grabPageScrollPosition();
+     * ```
+     *
+     * @returns {Promise<Object<string, *>>} scroll position
+     * {--end--}
      */
-    grabPageScrollPosition(): void;
+    grabPageScrollPosition(): Promise<{
+        [key: string]: any;
+    }>;
     /**
      * Placeholder for ~ locator only test case write once run on both Appium and WebDriverIO.
      */
