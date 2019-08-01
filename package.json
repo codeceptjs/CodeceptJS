@@ -35,7 +35,7 @@
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js --fix",
     "docs": "gulp docs",
     "test": "mocha test/unit --recursive && mocha test/runner --recursive",
-    "graphql:server": "nodemon /home/radhey/radhey/opensource/CodeceptJS/test/data/graphql/index.js --ignore db.json",
+    "dev:graphql": "nodemon /home/radhey/radhey/opensource/CodeceptJS/test/data/graphql/index.js --ignore db.json",
     "graphql:json": "json-server --watch /home/radhey/radhey/opensource/CodeceptJS/test/data/graphql/db.json --port 8010"
   },
   "dependencies": {

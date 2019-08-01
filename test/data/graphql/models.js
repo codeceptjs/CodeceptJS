@@ -4,8 +4,9 @@ const TestHelper = require('../../support/TestHelper');
 
 class User {
   constructor() {
+    const url = `http://localhost:${TestHelper.graphQLServerPort()}`;
     this.api = axios.create({
-      baseURL: TestHelper.jsonServerUrl(),
+      baseURL: url,
     });
   }
 
