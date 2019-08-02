@@ -88,7 +88,7 @@ describe('GraphQL', () => {
           },
         },
       };
-      I.sendMutation(operation).then((response) => {
+      return I.sendMutation(operation).then((response) => {
         const { createUser } = response.data.data;
         createUser.should.eql({
           id: '69',
@@ -110,7 +110,7 @@ describe('GraphQL', () => {
           id: 69,
         },
       };
-      I.sendMutation(operation).then((response) => {
+      return I.sendMutation(operation).then((response) => {
         const { deleteUser } = response.data.data;
         deleteUser.should.eql('69');
       });
