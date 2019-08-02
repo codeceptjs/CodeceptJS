@@ -8,7 +8,6 @@ exports.typeDefs = gql`
     name: String
     age: Int
     email: String
-    friends: [User]
   }
 
   type Query {
@@ -21,7 +20,6 @@ exports.typeDefs = gql`
     name: String
     age: Int
     email: String
-    friends: [Int]
   }
 
   type Mutation {
@@ -37,13 +35,6 @@ exports.resolvers = {
     },
     user(source, args) {
       return userModel.find(args.id);
-    },
-  },
-  User: {
-    friends(source) {
-      if (source.friends && source.friends.length > 0) {
-        return Promise.all(source.friends.map(({ id }) => userModel.find(id)));
-      }
     },
   },
   Mutation: {

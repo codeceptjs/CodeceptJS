@@ -7,9 +7,36 @@ const path = require('path');
 const fs = require('fs');
 
 let I;
+const dbFile = path.join(__dirname, '/../data/graphql/db.json');
 require('co-mocha')(require('mocha'));
 
+const data = {
+  users: [
+    {
+      id: 0,
+      age: 31,
+      name: 'Peck Montoya',
+      email: 'peckmontoya@qualitex.com',
+    },
+    {
+      id: 1,
+      age: 36,
+      name: 'Renee Herman',
+      email: 'reneeherman@qualitex.com',
+    },
+  ],
+};
+
 describe('GraphQL', () => {
+  before((done) => {
+    try {
+      fs.writeFileSync(dbFile, JSON.stringify(data));
+    } catch (err) {
+      console.error(err);
+    }
+    setTimeout(done, 1500);
+  });
+
   after((done) => {
     server.close();
     done();
@@ -58,7 +85,6 @@ describe('GraphQL', () => {
             name: 'Sourab',
             email: 'sourab@mail.com',
             age: 23,
-            friends: [2, 3],
           },
         },
       };
