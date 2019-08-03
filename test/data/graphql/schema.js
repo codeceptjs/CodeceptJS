@@ -5,9 +5,9 @@ const { userModel } = require('./models');
 exports.typeDefs = gql`
   type User {
     id: ID
-    name: String
+    name: String!
     age: Int
-    email: String
+    email: String!
   }
 
   type Query {
@@ -16,10 +16,9 @@ exports.typeDefs = gql`
   }
 
   input UserInput {
-    id: Int
-    name: String
+    name: String!
     age: Int
-    email: String
+    email: String!
   }
 
   type Mutation {
@@ -39,6 +38,7 @@ exports.resolvers = {
   },
   Mutation: {
     createUser(source, args) {
+      console.log(args);
       return userModel.create(args.input);
     },
     deleteUser(source, args) {

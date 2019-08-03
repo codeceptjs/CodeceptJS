@@ -19,10 +19,6 @@ class User {
   }
 
   create(data) {
-    data.friends = data.friends
-      ? data.friends.map(id => ({ id }))
-      : [];
-
     return this.api.post('/users', data).then(res => res.data);
   }
 
