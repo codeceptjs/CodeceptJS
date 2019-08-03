@@ -26,6 +26,10 @@ class TestHelper {
   static graphQLServerPort() {
     return parseInt(process.env.GRAPHQL_SERVER_PORT || '8020', 10);
   }
+
+  static graphQLServerUrl() {
+    return (process.env.GRAPHQL_SERVER_URL || 'http://localhost:8020/graphql');
+  }
 }
 
 module.exports = TestHelper;
