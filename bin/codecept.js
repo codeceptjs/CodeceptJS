@@ -140,6 +140,20 @@ program.command('run-multiple [suites...]')
 
   .action(require('../lib/command/run-multiple'));
 
+program.command('dry-run [test]')
+  .description('Executes tests multiple')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('--all', 'run all suites')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-f, --fgrep <string>', 'only run tests containing <string>')
+  .option('-i, --invert', 'inverts --grep and --fgrep matches')
+  .option('--steps', 'show step-by-step execution')
+  .option('--verbose', 'output internal logging information')
+  .option('--debug', 'output additional information')
+  .action(require('../lib/command/dryRun'));
+
 if (process.argv.length <= 2) {
   console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
