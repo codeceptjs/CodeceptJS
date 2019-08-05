@@ -108,19 +108,16 @@ I.appendField('#myTextField', 'appended');
 
 ### attachFile
 
-Appends text to a input field or textarea.
-Field is located by name, label, CSS or XPath
+Attaches a file to element located by label, name, CSS or XPath. Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located). File will be uploaded to remote system (if tests are running remotely).
 
 ```js
-I.appendField('#myTextField', 'appended');
+I.attachFile('#myTextField', '/path/to/image_file.jpg');
 ```
 
 #### Parameters
 
 -   `field` ([string][3] \| [object][4]) located by label|name|CSS|XPath|strict locator
--   `pathToFile`  
--   `value` [string][3] text value to append.
-    
+-   `pathToFile` ([string][3]) local file path relative to codecept.json config file.
 
 
 ### checkOption
