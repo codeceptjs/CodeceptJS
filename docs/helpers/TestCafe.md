@@ -111,7 +111,7 @@ I.appendField('#myTextField', 'appended');
 Attaches a file to element located by label, name, CSS or XPath. Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located). File will be uploaded to remote system (if tests are running remotely).
 
 ```js
-I.attachFile('#myTextField', '/path/to/image_file.jpg');
+I.attachFile('#myTextField', 'data/avatar.jpg');
 ```
 
 #### Parameters
