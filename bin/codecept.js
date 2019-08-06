@@ -142,6 +142,7 @@ program.command('run-multiple [suites...]')
 
 program.command('dry-run [test]')
   .description('Executes tests multiple')
+  .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-c, --config [file]', 'configuration file to be used')
   .option('--all', 'run all suites')
   .option('--features', 'run only *.feature files and skip tests')
