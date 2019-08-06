@@ -54,9 +54,7 @@ describe('GraphQL', () => {
 
   describe('basic queries', () => {
     it('should send a query: read', () =>
-      I.sendQuery({
-        query: 'query { user(id: 1) { id name email }}',
-      }).then((response) => {
+      I.sendQuery('{ user(id: 1) { id name email }}').then((response) => {
         const { user } = response.data.data;
         user.should.eql({
           id: '1',
@@ -68,26 +66,24 @@ describe('GraphQL', () => {
 
   describe('basic mutations', () => {
     it('should send a mutation: create', () => {
-      const operation = {
-        query: `
-          mutation CreateUser($input: UserInput!) {
-            createUser(input: $input) {
-              id
-              name
-              email
-              age
-            }
+      const mutation = `
+        mutation CreateUser($input: UserInput!) {
+          createUser(input: $input) {
+            id
+            name
+            email
+            age
           }
-        `,
-        variables: {
-          input: {
-            name: 'Sourab',
-            email: 'sourab@mail.com',
-            age: 23,
-          },
+        }
+      `;
+      const variables = {
+        input: {
+          name: 'Sourab',
+          email: 'sourab@mail.com',
+          age: 23,
         },
       };
-      return I.sendMutation(operation).then((response) => {
+      return I.sendMutation(mutation, variables).then((response) => {
         const { createUser } = response.data.data;
         createUser.should.eql({
           id: '2',
@@ -99,17 +95,15 @@ describe('GraphQL', () => {
     });
 
     it('should send a mutation: delete', () => {
-      const operation = {
-        query: `
-          mutation deleteUser($id: ID) {
-            deleteUser(id: $id)
-          }
-        `,
-        variables: {
-          id: 2,
-        },
+      const mutation = `
+        mutation deleteUser($id: ID) {
+          deleteUser(id: $id)
+        }
+      `;
+      const variables = {
+        id: 2,
       };
-      return I.sendMutation(operation).then((response) => {
+      return I.sendMutation(mutation, variables).then((response) => {
         console.log(response.data);
         const { deleteUser } = response.data.data;
         deleteUser.should.eql('2');
