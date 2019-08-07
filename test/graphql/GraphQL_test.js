@@ -15,14 +15,8 @@ const data = {
     {
       id: 0,
       age: 31,
-      name: 'Peck Montoya',
-      email: 'peckmontoya@qualitex.com',
-    },
-    {
-      id: 1,
-      age: 36,
-      name: 'Renee Herman',
-      email: 'reneeherman@qualitex.com',
+      name: 'john doe',
+      email: 'johnd@mutex.com',
     },
   ],
 };
@@ -54,12 +48,12 @@ describe('GraphQL', () => {
 
   describe('basic queries', () => {
     it('should send a query: read', () =>
-      I.sendQuery('{ user(id: 1) { id name email }}').then((response) => {
+      I.sendQuery('{ user(id: 0) { id name email }}').then((response) => {
         const { user } = response.data.data;
         user.should.eql({
-          id: '1',
-          name: 'Renee Herman',
-          email: 'reneeherman@qualitex.com',
+          id: '0',
+          name: 'john doe',
+          email: 'johnd@mutex.com',
         });
       }));
   });
@@ -86,7 +80,7 @@ describe('GraphQL', () => {
       return I.sendMutation(mutation, variables).then((response) => {
         const { createUser } = response.data.data;
         createUser.should.eql({
-          id: '2',
+          id: '1',
           name: 'Sourab',
           email: 'sourab@mail.com',
           age: 23,
@@ -101,12 +95,12 @@ describe('GraphQL', () => {
         }
       `;
       const variables = {
-        id: 2,
+        id: 1,
       };
       return I.sendMutation(mutation, variables).then((response) => {
         console.log(response.data);
         const { deleteUser } = response.data.data;
-        deleteUser.should.eql('2');
+        deleteUser.should.eql('1');
       });
     });
   });

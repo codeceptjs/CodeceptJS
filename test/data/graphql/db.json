@@ -3,14 +3,8 @@
     {
       "id": 0,
       "age": 31,
-      "name": "Peck Montoya",
-      "email": "peckmontoya@qualitex.com"
-    },
-    {
-      "id": 1,
-      "age": 36,
-      "name": "Renee Herman",
-      "email": "reneeherman@qualitex.com"
+      "name": "john doe",
+      "email": "johnd@mutex.com"
     }
   ]
 }

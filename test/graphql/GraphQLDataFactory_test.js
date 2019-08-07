@@ -16,14 +16,8 @@ const data = {
     {
       id: 0,
       age: 31,
-      name: 'Peck Montoya',
-      email: 'peckmontoya@qualitex.com',
-    },
-    {
-      id: 1,
-      age: 36,
-      name: 'Renee Herman',
-      email: 'reneeherman@qualitex.com',
+      name: 'john doe',
+      email: 'johnd@mutex.com',
     },
   ],
 };
@@ -94,6 +88,16 @@ describe('GraphQLDataFactory', function () {
       const resp = await I.graphqlHelper.sendMutation('query { users { id name } }');
       const { users } = resp.data.data;
       users.length.should.eql(3);
+    });
+
+    it('should create a new user with predefined field', async () => {
+      await I.mutate('createUser', { name: 'radhey' });
+
+      await I.muata('post', { author: 'Tapac' });
+      let resp = await I.restHelper.sendGetRequest('/posts/1');
+      resp.data.author.should.eql('davert');
+      resp = await I.restHelper.sendGetRequest('/posts/2');
+      resp.data.author.should.eql('Tapac');
     });
   });
 });
