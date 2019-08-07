@@ -1,19 +1,20 @@
 module.exports = {
   source: {
     include: [
-      './lib/config.js',
+      './docs/build',
       './lib/codecept.js',
+      './lib/config.js',
       './lib/container.js',
+      './lib/data/table.js',
+      './lib/Helper.js',
+      './lib/interfaces',
       './lib/locator.js',
       './lib/pause.js',
       './lib/secret.js',
       './lib/session.js',
-      './lib/Helper.js',
+      './lib/step.js',
       './lib/ui.js',
       './lib/within.js',
-      './lib/data/table.js',
-      './lib/interfaces',
-      './docs/build',
     ],
   },
   opts: {
@@ -21,4 +22,5 @@ module.exports = {
     recurse: true,
     destination: './typings/',
   },
+  plugins: ['jsdoc.namespace.js'],
 };

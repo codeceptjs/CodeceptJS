@@ -36,7 +36,7 @@
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js --fix",
     "docs": "gulp docs",
     "test": "mocha test/unit --recursive && mocha test/runner --recursive",
-    "def": "jsdoc -c jsdoc.conf.js"
+    "def": "jsdoc -c typings/jsdoc.conf.js"
   },
   "dependencies": {
     "@codeceptjs/detox-helper": "^1.0.1",
