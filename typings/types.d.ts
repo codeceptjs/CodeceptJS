@@ -8375,25 +8375,25 @@ declare namespace CodeceptJS {
          */
         toXPath(): string;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        or(locator: LocatorOrString): Locator;
+        or(locator: CodeceptJS.LocatorOrString): Locator;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        find(locator: LocatorOrString): Locator;
+        find(locator: CodeceptJS.LocatorOrString): Locator;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        withChild(locator: LocatorOrString): Locator;
+        withChild(locator: CodeceptJS.LocatorOrString): Locator;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        withDescendant(locator: LocatorOrString): Locator;
+        withDescendant(locator: CodeceptJS.LocatorOrString): Locator;
         /**
          * @param {number}  position
          * @return {Locator}
@@ -8425,25 +8425,25 @@ declare namespace CodeceptJS {
          */
         as(output: string): Locator;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        inside(locator: LocatorOrString): Locator;
+        inside(locator: CodeceptJS.LocatorOrString): Locator;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        after(locator: LocatorOrString): Locator;
+        after(locator: CodeceptJS.LocatorOrString): Locator;
         /**
-         * @param {LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          * @return  {Locator}
          */
-        before(locator: LocatorOrString): Locator;
+        before(locator: CodeceptJS.LocatorOrString): Locator;
         /**
-         * @param { LocatorOrString } locator
-         * @returns { Locator }
+         * @param {CodeceptJS.LocatorOrString} locator
+         * @returns {Locator}
          */
-        static build(locator: LocatorOrString): Locator;
+        static build(locator: CodeceptJS.LocatorOrString): Locator;
     }
     /**
      * Pauses test execution and starts interactive shell
