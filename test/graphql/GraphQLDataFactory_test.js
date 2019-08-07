@@ -34,44 +34,32 @@ describe('GraphQLDataFactory', function () {
   this.timeout(20000);
 
   before(() => {
-    const createOperation = {
-      query: `
-        mutation createUser($input: UserInput!) {
-          createUser(input: $input) {
-            id
-            name
-            email
-          }
+    const creatUserQuery = `
+      mutation createUser($input: UserInput!) {
+        createUser(input: $input) {
+          id
+          name
+          email
         }
-      `,
-      operationName: 'createUser',
-      variablesObjectGenerator: data => ({
-        input: {
-          name: data.name,
-          email: data.email,
-        },
-      }),
-    };
+      }
+    `;
 
-    const deleteOperation = {
-      query: `
-        mutation deleteUser($id: ID!) {
-          deleteUser(id: $id)
-        }
-      `,
-      operationName: 'deleteUser',
-      variablesObjectGenerator: data => ({
-        id: data.id,
-      }),
-    };
+    const deleteOperationQuery = `
+      mutation deleteUser($id: ID!) {
+        deleteUser(id: $id)
+      }
+    `;
     I = new GraphQLDataFactory({
       endpoint: graphql_url,
       factories: {
-        user: {
+        createUser: {
           factory: path.join(__dirname, '/../data/graphql/users_factory.js'),
-          operations: {
-            create: createOperation,
-            delete: deleteOperation,
+          query: creatUserQuery,
+          revert: (data) => {
+            return {
+              query: deleteOperationQuery,
+              variables: { id: data.id },
+            };
           },
         },
       },
@@ -100,10 +88,8 @@ describe('GraphQLDataFactory', function () {
 
   describe('create and cleanup records', () => {
     it('should create a new user', async () => {
-      await I.have('user');
-      const resp = await I.graphqlHelper.sendMutation({
-        query: 'query { users { id name } }',
-      });
+      await I.mutate('createUser');
+      const resp = await I.graphqlHelper.sendMutation('query { users { id name } }');
       const { users } = resp.data.data;
       users.length.should.eql(3);
     });
