@@ -86,7 +86,9 @@ describe('GraphQLDataFactory', function () {
     return I._after();
   });
 
-  describe('create and cleanup records', () => {
+  describe('create and cleanup records', function () {
+    this.retries(2);
+
     it('should create a new user', async () => {
       await I.mutate('createUser');
       const resp = await I.graphqlHelper.sendMutation('query { users { id name } }');
