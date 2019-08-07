@@ -713,7 +713,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          */
@@ -768,7 +768,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          */
         dontSee(text: string, context?: string | any): void;
@@ -872,7 +872,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          */
@@ -958,7 +958,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          */
@@ -1152,7 +1152,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          */
         see(text: string, context?: string | any): void;
@@ -1166,7 +1166,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          */
         dontSee(text: string, context?: string | any): void;
@@ -1298,7 +1298,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         click(locator: string | any, context?: string | any): void;
@@ -1314,7 +1314,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         doubleClick(locator: string | any, context?: string | any): void;
@@ -1331,7 +1331,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         rightClick(locator: string | any, context?: string | any): void;
@@ -1773,7 +1773,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         waitForText(text: string, sec?: number, context?: string | any): void;
@@ -2039,7 +2039,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         click(locator: string | any, context?: string | any): void;
@@ -2055,7 +2055,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         doubleClick(locator: string | any, context?: string | any): void;
@@ -2072,7 +2072,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         rightClick(locator: string | any, context?: string | any): void;
@@ -2101,7 +2101,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          */
         see(text: string, context?: string | any): void;
@@ -2123,7 +2123,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          */
         dontSee(text: string, context?: string | any): void;
@@ -3062,7 +3062,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         waitForText(text: string, sec?: number, context?: string | any): void;
@@ -3552,7 +3552,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -3565,7 +3565,7 @@ declare namespace CodeceptJS {
          * I.clickLink('Logout', '#nav');
          * ```
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator
          * {--end--}
          *
          * {{ react }}
@@ -3607,7 +3607,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -3626,7 +3626,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -3889,7 +3889,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          * {{ react }}
@@ -3913,7 +3913,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          *
          * {{ react }}
@@ -4397,7 +4397,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         waitForText(text: string, sec?: number, context?: string | any): void;
@@ -4662,7 +4662,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          */
@@ -4792,7 +4792,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          */
@@ -4810,7 +4810,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          */
@@ -4952,7 +4952,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          */
@@ -4967,7 +4967,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          *
          */
@@ -5464,7 +5464,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          */
@@ -5565,7 +5565,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -5583,7 +5583,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -5602,7 +5602,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -5858,7 +5858,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          * {{ react }}
@@ -5885,7 +5885,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          *
          * {{ react }}
@@ -6550,7 +6550,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          */
@@ -6886,7 +6886,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          * Appium: support
          */
@@ -6903,7 +6903,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          * Appium: support only web testing
          */
@@ -6921,7 +6921,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|object} locator clickable element located by CSS|XPath|strict locator.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          * Appium: support, but in apps works as usual click
          */
@@ -7147,7 +7147,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {string|object} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          * Appium: support with context in apps
          */
@@ -7173,7 +7173,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text which is not present.
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
          * {--end--}
          * Appium: support with context in apps
          */
@@ -7718,7 +7718,7 @@ declare namespace CodeceptJS {
          *
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * @param {string|object} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
          * {--end--}
          * Appium: support
          */

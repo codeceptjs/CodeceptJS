@@ -1,6 +1,7 @@
 // Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
+/// <reference path="../node_modules/webdriverio/webdriverio-core.d.ts" />
 
 import index = require("../lib/index");
 
