@@ -61,9 +61,17 @@ describe('GraphQLDataFactory', function () {
     });
   });
 
-  after(() => {
+  after((done) => {
     server.close();
     console.log('closed server');
+    // Prepare db.json for the next test run
+    try {
+      fs.writeFileSync(dbFile, JSON.stringify(data));
+    } catch (err) {
+      console.error(err);
+      // continue regardless of error
+    }
+    setTimeout(done, 1000);
   });
 
   beforeEach((done) => {
@@ -80,9 +88,8 @@ describe('GraphQLDataFactory', function () {
     return I._after();
   });
 
-  // eslint-disable-next-line prefer-arrow-callback
   describe('create and cleanup records', function () {
-    // this.retries(2);
+    this.retries(2);
 
     it('should create a new user', async () => {
       await I.mutate('createUser');
@@ -129,8 +136,46 @@ describe('GraphQLDataFactory', function () {
       user.id.should.eql('1');
       await I._after();
       const resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      console.log(resp.data.data);
       resp.data.data.users.length.should.eql(1);
+    });
+
+    it('should create multiple users and cleanup after', async () => {
+      let resp = await I.graphqlHelper.sendQuery('query { users { id } }');
+      resp.data.data.users.length.should.eql(1);
+
+      await I.mutateMultiple('createUser', 3);
+      resp = await I.graphqlHelper.sendQuery('query { users { id } }');
+      resp.data.data.users.length.should.eql(4);
+
+      await I._after();
+      resp = await I.graphqlHelper.sendQuery('query { users { id } }');
+      resp.data.data.users.length.should.eql(1);
+    });
+
+
+    it('should not remove records if cleanup:false', async () => {
+      I = new GraphQLDataFactory({
+        endpoint: graphql_url,
+        cleanup: false,
+        factories: {
+          createUser: {
+            factory: path.join(__dirname, '/../data/graphql/users_factory.js'),
+            query: creatUserQuery,
+            revert: (data) => {
+              return {
+                query: deleteOperationQuery,
+                variables: { id: data.id },
+              };
+            },
+          },
+        },
+      });
+      await I.mutate('createUser');
+      let resp = await I.graphqlHelper.sendQuery('query { users { id } }');
+      resp.data.data.users.length.should.eql(2);
+      await I._after();
+      resp = await I.graphqlHelper.sendQuery('query { users { id } }');
+      resp.data.data.users.length.should.eql(2);
     });
   });
 });
