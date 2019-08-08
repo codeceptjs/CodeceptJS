@@ -1,5 +1,5 @@
 const TestHelper = require('../support/TestHelper');
-const GraphQL = require('../../lib/helper/Graphql');
+const GraphQL = require('../../lib/helper/GraphQL');
 const server = require('../data/graphql/index');
 
 const PORT = TestHelper.graphQLServerPort();
