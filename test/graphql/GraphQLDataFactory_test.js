@@ -38,8 +38,6 @@ const deleteOperationQuery = `
   }
 `;
 
-const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
-
 describe('GraphQLDataFactory', function () {
   this.timeout(20000);
 
@@ -92,14 +90,14 @@ describe('GraphQLDataFactory', function () {
     this.retries(2);
 
     it('should create a new user', async () => {
-      await I.mutate('createUser');
+      await I.mutateData('createUser');
       const resp = await I.graphqlHelper.sendQuery('query { users { id name } }');
       const { users } = resp.data.data;
       users.length.should.eql(2);
     });
 
     it('should create a new user with predefined field', async () => {
-      const user = await I.mutate('createUser', { name: 'radhey' });
+      const user = await I.mutateData('createUser', { name: 'radhey' });
 
       user.name.should.eql('radhey');
       user.id.should.eql('1');
@@ -126,12 +124,12 @@ describe('GraphQLDataFactory', function () {
           },
         },
       });
-      const user = await I.mutate('createUser');
+      const user = await I.mutateData('createUser');
       user.name.should.eql('Dante');
     });
 
     it('should cleanup created data', async () => {
-      const user = await I.mutate('createUser', { name: 'Dante' });
+      const user = await I.mutateData('createUser', { name: 'Dante' });
       user.name.should.eql('Dante');
       user.id.should.eql('1');
       await I._after();
@@ -170,7 +168,7 @@ describe('GraphQLDataFactory', function () {
           },
         },
       });
-      await I.mutate('createUser');
+      await I.mutateData('createUser');
       let resp = await I.graphqlHelper.sendQuery('query { users { id } }');
       resp.data.data.users.length.should.eql(2);
       await I._after();
