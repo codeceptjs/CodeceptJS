@@ -22,13 +22,7 @@ const data = {
   ],
 };
 
-const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
-
-describe('GraphQLDataFactory', function () {
-  this.timeout(20000);
-
-  before(() => {
-    const creatUserQuery = `
+const creatUserQuery = `
       mutation createUser($input: UserInput!) {
         createUser(input: $input) {
           id
@@ -38,11 +32,18 @@ describe('GraphQLDataFactory', function () {
       }
     `;
 
-    const deleteOperationQuery = `
-      mutation deleteUser($id: ID!) {
-        deleteUser(id: $id)
-      }
-    `;
+const deleteOperationQuery = `
+  mutation deleteUser($id: ID!) {
+    deleteUser(id: $id)
+  }
+`;
+
+const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
+
+describe('GraphQLDataFactory', function () {
+  this.timeout(20000);
+
+  before(() => {
     I = new GraphQLDataFactory({
       endpoint: graphql_url,
       factories: {
@@ -60,10 +61,9 @@ describe('GraphQLDataFactory', function () {
     });
   });
 
-  after((done) => {
+  after(() => {
     server.close();
     console.log('closed server');
-    done();
   });
 
   beforeEach((done) => {
@@ -80,24 +80,57 @@ describe('GraphQLDataFactory', function () {
     return I._after();
   });
 
+  // eslint-disable-next-line prefer-arrow-callback
   describe('create and cleanup records', function () {
-    this.retries(2);
+    // this.retries(2);
 
     it('should create a new user', async () => {
       await I.mutate('createUser');
-      const resp = await I.graphqlHelper.sendMutation('query { users { id name } }');
+      const resp = await I.graphqlHelper.sendQuery('query { users { id name } }');
       const { users } = resp.data.data;
-      users.length.should.eql(3);
+      users.length.should.eql(2);
     });
 
     it('should create a new user with predefined field', async () => {
-      await I.mutate('createUser', { name: 'radhey' });
+      const user = await I.mutate('createUser', { name: 'radhey' });
 
-      await I.muata('post', { author: 'Tapac' });
-      let resp = await I.restHelper.sendGetRequest('/posts/1');
-      resp.data.author.should.eql('davert');
-      resp = await I.restHelper.sendGetRequest('/posts/2');
-      resp.data.author.should.eql('Tapac');
+      user.name.should.eql('radhey');
+      user.id.should.eql('1');
+    });
+
+    it('should update request with onRequest', async () => {
+      I = new GraphQLDataFactory({
+        endpoint: graphql_url,
+        onRequest: (request) => {
+          if (request.data.variables && request.data.variables.input) {
+            request.data.variables.input.name = 'Dante';
+          }
+        },
+        factories: {
+          createUser: {
+            factory: path.join(__dirname, '/../data/graphql/users_factory.js'),
+            query: creatUserQuery,
+            revert: (data) => {
+              return {
+                query: deleteOperationQuery,
+                variables: { id: data.id },
+              };
+            },
+          },
+        },
+      });
+      const user = await I.mutate('createUser');
+      user.name.should.eql('Dante');
+    });
+
+    it('should cleanup created data', async () => {
+      const user = await I.mutate('createUser', { name: 'Dante' });
+      user.name.should.eql('Dante');
+      user.id.should.eql('1');
+      await I._after();
+      const resp = await I.graphqlHelper.sendQuery('query { users { id } }');
+      console.log(resp.data.data);
+      resp.data.data.users.length.should.eql(1);
     });
   });
 });
