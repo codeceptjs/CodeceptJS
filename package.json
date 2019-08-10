@@ -62,6 +62,7 @@
     "promise-retry": "^1.1.1",
     "requireg": "^0.1.8",
     "resq": "^1.5.0",
+    "semver": "^6.2.0",
     "sprintf-js": "^1.1.1"
   },
   "devDependencies": {
