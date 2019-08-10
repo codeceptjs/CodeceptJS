@@ -4,7 +4,6 @@ const path = require('path');
 const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
-const { version } = require('../package.json');
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 8) {
   error('NodeJS >= 8 is required to run.');
@@ -14,7 +13,7 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
-program.version(version);
+program.version(Codecept.version());
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
@@ -144,7 +143,6 @@ program.command('run-multiple [suites...]')
   .action(require('../lib/command/run-multiple'));
 
 if (process.argv.length <= 2) {
-  console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
 }
 program.parse(process.argv);
