@@ -62,7 +62,7 @@ Lets consider visual testing for [CodeceptJS Home](http://codecept.io)
 ```js
 Feature('To test screen comparison with resemble Js Example test');
 
-Scenario('Compare CodeceptIO Home Page @visual-test', async (I, adminPage) => {
+Scenario('Compare CodeceptIO Home Page @visual-test', async (I) => {
     I.amOnPage("/");
     I.saveScreenshot("Codecept_IO_Screenshot_Image.png");
     I.seeVisualDiff("Codecept_IO_Screenshot_Image.png", {tolerance: 2, prepareBaseImage: false});
