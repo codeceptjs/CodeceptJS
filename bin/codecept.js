@@ -13,6 +13,8 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
+program.version(Codecept.version());
+
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
@@ -141,7 +143,6 @@ program.command('run-multiple [suites...]')
   .action(require('../lib/command/run-multiple'));
 
 if (process.argv.length <= 2) {
-  console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
 }
 program.parse(process.argv);
