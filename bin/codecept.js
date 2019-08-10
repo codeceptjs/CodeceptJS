@@ -13,6 +13,9 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
+program.usage('<command> [options]');
+program.version(Codecept.version());
+
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
@@ -156,8 +159,12 @@ program.command('dry-run [test]')
   .option('--debug', 'output additional information')
   .action(require('../lib/command/dryRun'));
 
+program.on('command:*', (cmd) => {
+  console.log(`\nUnknown command ${cmd}\n`);
+  program.outputHelp();
+});
+
 if (process.argv.length <= 2) {
-  console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
 }
 program.parse(process.argv);
