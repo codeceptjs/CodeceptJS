@@ -38,7 +38,6 @@ exports.resolvers = {
   },
   Mutation: {
     createUser(source, args) {
-      console.log(args);
       return userModel.create(args.input);
     },
     deleteUser(source, args) {

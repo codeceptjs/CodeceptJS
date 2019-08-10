@@ -67,7 +67,6 @@ describe('GraphQLDataFactory', function () {
       fs.writeFileSync(dbFile, JSON.stringify(data));
     } catch (err) {
       console.error(err);
-      // continue regardless of error
     }
     setTimeout(done, 1000);
   });
@@ -77,7 +76,6 @@ describe('GraphQLDataFactory', function () {
       fs.writeFileSync(dbFile, JSON.stringify(data));
     } catch (err) {
       console.error(err);
-      // continue regardless of error
     }
     setTimeout(done, 1000);
   });

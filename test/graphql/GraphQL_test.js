@@ -2,7 +2,7 @@ const TestHelper = require('../support/TestHelper');
 const GraphQL = require('../../lib/helper/GraphQL');
 const server = require('../data/graphql/index');
 
-const PORT = TestHelper.graphQLServerPort();
+const graphql_url = TestHelper.graphQLServerUrl();
 const path = require('path');
 const fs = require('fs');
 
@@ -38,7 +38,7 @@ describe('GraphQL', () => {
 
   beforeEach((done) => {
     I = new GraphQL({
-      endpoint: `http://localhost:${PORT}/graphql`,
+      endpoint: graphql_url,
       defaultHeaders: {
         'X-Test': 'test',
       },
