@@ -4,6 +4,7 @@ const path = require('path');
 const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
+const { version } = require('../package.json');
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 8) {
   error('NodeJS >= 8 is required to run.');
@@ -12,6 +13,8 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   print(`Current NodeJS version: ${process.version}`);
   process.exit(1);
 }
+
+program.version(version);
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
