@@ -143,6 +143,11 @@ program.command('run-multiple [suites...]')
 
   .action(require('../lib/command/run-multiple'));
 
+program.on('command:*', (cmd) => {
+  console.log(`\nUnknown command ${cmd}\n`);
+  program.outputHelp();
+});
+
 if (process.argv.length <= 2) {
   program.outputHelp();
 }
