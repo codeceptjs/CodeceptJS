@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
-    "json-server:graphql": "nodemon test/data/graphql/index.js",
+    "json-server:graphql": "node test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js --fix",
     "docs": "gulp docs",
