@@ -13,6 +13,7 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
+program.usage('<command> [options]');
 program.version(Codecept.version());
 
 program.command('init [path]')
