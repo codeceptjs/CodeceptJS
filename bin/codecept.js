@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const envinfo = require('envinfo');
 const program = require('commander');
 const path = require('path');
 const Config = require('../lib/config');
@@ -142,6 +143,20 @@ program.command('run-multiple [suites...]')
   .option('--recursive', 'include sub directories')
 
   .action(require('../lib/command/run-multiple'));
+
+program.command('info')
+  .description('Print debugging information concerning the local environment')
+  .action(() => {
+    console.log('\n Environment information:-\n');
+    envinfo
+      .run({
+        System: ['OS', 'CPU'],
+        Binaries: ['Node', 'Yarn', 'npm'],
+        Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
+        npmGlobalPackages: ['codeceptjs'],
+      })
+      .then(console.log);
+  });
 
 program.on('command:*', (cmd) => {
   console.log(`\nUnknown command ${cmd}\n`);
