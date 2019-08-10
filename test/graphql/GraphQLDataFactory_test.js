@@ -2,7 +2,7 @@ require('../support/setup');
 const TestHelper = require('../support/TestHelper');
 
 const GraphQLDataFactory = require('../../lib/helper/GraphQLDataFactory');
-const server = require('../data/graphql/index');
+// const server = require('../data/graphql/index');
 
 const graphql_url = TestHelper.graphQLServerUrl();
 const path = require('path');
@@ -60,8 +60,8 @@ describe('GraphQLDataFactory', function () {
   });
 
   after((done) => {
-    server.close();
-    console.log('closed server');
+    // server.close();
+    // console.log('closed server');
     // Prepare db.json for the next test run
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data));

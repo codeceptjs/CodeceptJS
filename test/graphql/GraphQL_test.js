@@ -1,6 +1,6 @@
 const TestHelper = require('../support/TestHelper');
 const GraphQL = require('../../lib/helper/GraphQL');
-const server = require('../data/graphql/index');
+// const server = require('../data/graphql/index');
 
 const graphql_url = TestHelper.graphQLServerUrl();
 const path = require('path');
@@ -31,10 +31,10 @@ describe('GraphQL', () => {
     setTimeout(done, 1500);
   });
 
-  after((done) => {
-    server.close();
-    done();
-  });
+  // after((done) => {
+  //   server.close();
+  //   done();
+  // });
 
   beforeEach((done) => {
     I = new GraphQL({
