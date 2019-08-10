@@ -13,6 +13,8 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
+program.usage('<command> [options]');
+
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
