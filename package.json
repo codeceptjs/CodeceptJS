@@ -31,11 +31,12 @@
   "scripts": {
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
+    "json-server:graphql": "nodemon test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js --fix",
     "docs": "gulp docs",
     "test": "mocha test/unit --recursive && mocha test/runner --recursive",
-    "dev:graphql": "nodemon /home/radhey/radhey/opensource/CodeceptJS/test/data/graphql/index.js --ignore db.json"
+    "dev:graphql": "nodemon test/data/graphql/index.js"
   },
   "dependencies": {
     "@codeceptjs/detox-helper": "^1.0.1",

@@ -41,6 +41,8 @@ services:
     command: test/graphql
     working_dir: /codecept
     env_file: .env
+    depends_on:
+      - json_server-graphql
     volumes:
       - ..:/codecept
       - node_modules:/codecept/node_modules
@@ -144,6 +146,17 @@ services:
     working_dir: /codecept
     expose:
       - 8010
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
+  json_server-graphql:
+    build: ..
+    entrypoint: []
+    command: npm run json-server:graphql
+    working_dir: /codecept
+    expose:
+      - 8020
     volumes:
       - ..:/codecept
       - node_modules:/codecept/node_modules
