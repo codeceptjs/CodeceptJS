@@ -16,6 +16,7 @@ exports.typeDefs = gql`
   }
 
   input UserInput {
+    id: ID
     name: String!
     age: Int
     email: String!

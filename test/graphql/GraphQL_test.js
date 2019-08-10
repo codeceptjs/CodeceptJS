@@ -72,6 +72,7 @@ describe('GraphQL', () => {
       `;
       const variables = {
         input: {
+          id: 111,
           name: 'Sourab',
           email: 'sourab@mail.com',
           age: 23,
@@ -80,7 +81,7 @@ describe('GraphQL', () => {
       const resp = await I.sendMutation(mutation, variables);
       const { createUser } = resp.data.data;
       createUser.should.eql({
-        id: '1',
+        id: '111',
         name: 'Sourab',
         email: 'sourab@mail.com',
         age: 23,
@@ -94,11 +95,11 @@ describe('GraphQL', () => {
         }
       `;
       const variables = {
-        id: 1,
+        id: 111,
       };
       const resp = await I.sendMutation(mutation, variables);
       const { deleteUser } = resp.data.data;
-      deleteUser.should.eql('1');
+      deleteUser.should.eql('111');
     });
   });
 });
