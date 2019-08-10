@@ -16,6 +16,10 @@ defaults: &defaults
         working_directory: test
         when: always
     - run:
+        command: docker-compose run --rm test-graphql
+        working_directory: test
+        when: always
+    - run:
         command: docker-compose run --rm test-acceptance.webdriverio
         working_directory: test
         when: always
