@@ -31,10 +31,12 @@
   "scripts": {
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
+    "json-server:graphql": "node test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ gulpfile.js --fix",
     "docs": "gulp docs",
-    "test": "mocha test/unit --recursive && mocha test/runner --recursive"
+    "test": "mocha test/unit --recursive && mocha test/runner --recursive",
+    "dev:graphql": "nodemon test/data/graphql/index.js"
   },
   "dependencies": {
     "@codeceptjs/detox-helper": "^1.0.1",
@@ -72,6 +74,7 @@
     "@wdio/sauce-service": "^5.10.8",
     "@wdio/selenium-standalone-service": "^5.9.3",
     "@wdio/utils": "^5.9.3",
+    "apollo-server-express": "^2.8.1",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "co-mocha": "^1.2",
@@ -80,10 +83,13 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-mocha": "^5.3.0",
+    "express": "^4.17.1",
     "faker": "^4.1.0",
+    "graphql": "^14.4.2",
     "husky": "^1.2.1",
     "json-server": "^0.10.1",
     "nightmare": "^3.0.2",
+    "nodemon": "^1.19.1",
     "protractor": "^5.4.1",
     "puppeteer": "^1.18.1",
     "rosie": "^1.6.0",
