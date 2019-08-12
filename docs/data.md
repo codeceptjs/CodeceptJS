@@ -189,7 +189,7 @@ Please look at the respective Factory sections for examples for factory modules 
 
 ### API Data Factory
 
-This helper uses API to store the built data and automatically clean them up after a test,
+This helper uses REST API to store the built data and automatically clean them up after a test,
 The way for setting data for a test is as simple as writing:
 
 ```js
