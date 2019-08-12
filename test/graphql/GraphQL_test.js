@@ -7,7 +7,6 @@ const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/graphql/db.json');
-require('co-mocha')(require('mocha'));
 
 const data = {
   users: [
