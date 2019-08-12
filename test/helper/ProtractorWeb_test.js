@@ -13,7 +13,6 @@ const should = require('chai').should();
 
 const siteUrl = TestHelper.siteUrl();
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-require('co-mocha')(require('mocha'));
 
 describe('Protractor-NonAngular', function () {
   this.retries(3);
@@ -76,34 +75,34 @@ describe('Protractor-NonAngular', function () {
   after(() => I._after());
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', function* () {
-      yield I.amOnPage('/');
-      const url = yield browser.getCurrentUrl();
-      return url.should.eql(`${siteUrl}/`);
+    it('should open main page of configured site', async () => {
+      await I.amOnPage('/');
+      const url = await browser.getCurrentUrl();
+      url.should.eql(`${siteUrl}/`);
     });
 
-    it('should open any page of configured site', function* () {
-      yield I.amOnPage('/info');
-      const url = yield browser.getCurrentUrl();
-      return url.should.eql(`${siteUrl}/info`);
+    it('should open any page of configured site', async () => {
+      await I.amOnPage('/info');
+      const url = await browser.getCurrentUrl();
+      url.should.eql(`${siteUrl}/info`);
     });
 
-    it('should open absolute url', function* () {
-      yield I.amOnPage(siteUrl);
-      const url = yield browser.getCurrentUrl();
-      return url.should.eql(`${siteUrl}/`);
+    it('should open absolute url', async () => {
+      await I.amOnPage(siteUrl);
+      const url = await browser.getCurrentUrl();
+      url.should.eql(`${siteUrl}/`);
     });
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element', function* () {
-      yield I.amOnPage('/form/field');
-      yield I.appendField('Name', '-');
-      yield I.pressKey(['Control', 'a']);
-      yield I.pressKey('Delete');
-      yield I.pressKey(['Shift', '111']);
-      yield I.pressKey('1');
-      return I.seeInField('Name', '!!!1');
+    it('should be able to send special keys to element', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '-');
+      await I.pressKey(['Control', 'a']);
+      await I.pressKey('Delete');
+      await I.pressKey(['Shift', '111']);
+      await I.pressKey('1');
+      await I.seeInField('Name', '!!!1');
     });
   });
 
@@ -361,7 +360,7 @@ describe('Protractor-NonAngular', function () {
     it('should not locate a non-existing checkbox using _locateClickable', async () => {
       await I.amOnPage('/form/checkbox');
       try {
-        const els = await I._locateClickable('I disagree');
+        await I._locateClickable('I disagree');
         throw Error('Should not get this far');
       } catch (e) {
         e.message.should.include = 'No element found using locator:';
@@ -379,7 +378,7 @@ describe('Protractor-NonAngular', function () {
     it('should not locate a non-existing checkbox', async () => {
       await I.amOnPage('/form/checkbox');
       try {
-        const els = await I._locateCheckable('I Agree');
+        await I._locateCheckable('I Agree');
         throw Error('Should not get this far');
       } catch (e) {
         e.message.should.include = 'No element found using locator:';
