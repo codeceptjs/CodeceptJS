@@ -146,8 +146,8 @@ Scenario('check post page', async (I)  => {
   );
   postData = response.data.data['createPost'];
   // open browser page of new post
-  I.amOnPage('/posts/2.html');
-  I.see('some text', 'p.body');
+  I.amOnPage(`/posts/${postData.slug}.html`);
+  I.see(postData.body, 'p.body');
 });
 
 // cleanup created data
@@ -165,9 +165,9 @@ After((I) => {
 
 This concept is extended by: 
 - [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper, and,
-- [GraphQLDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
+- [GraphQLDataFactory](http://codecept.io/helpers/GraphQLDataFactory/) helper.
 
-These helpers build data according to defined rules and use API or GraphQL mutations to store them and automatically clean them up after a test.
+These helpers build data according to defined rules and use REST API or GraphQL mutations to store them and automatically clean them up after a test.
 
 Just define how many items of any kind you need and the data factory helper will create them for you. 
 
