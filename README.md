@@ -18,19 +18,20 @@ Scenario('check Welcome page on site', (I) => {
 });
 ```
 
-Codeception tests are:
+CodeceptJS tests are:
 
 * **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be too.
 * Written from **user's perspective**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
 * Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
 
-Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
+CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
 
-* [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
-* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
-* [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - helper which for testing web applications indi Electron  using NightmareJS.
-* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 * [**Puppeteer**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
+* [**WebDriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
+* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) to run tests via WebDriver protocol.
+* [**TestCafe**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
+* [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - uses Electron and NightmareJS to run tests.
+* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 
 And more to come...
 
@@ -38,7 +39,7 @@ And more to come...
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc,
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, Protractor, TestCafe etc,
 as CodeceptJS unifies them and makes them work as they were synchronous.
 
 ## Features
@@ -47,7 +48,6 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 * Designed for scenario driven acceptance testing in BDD-style
 * Uses ES6 natively without transpiler.
 * Also plays nice with TypeScript.
-* Selenium WebDriver integration using [webdriverio](http://webdriver.io).
 * Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 * Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
@@ -55,13 +55,13 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 ## Install
 
 ```sh
-npm install -g codeceptjs
+npm install codeceptjs --save
 ```
 
 Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
 
 to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers,
@@ -70,19 +70,19 @@ if you need to write Selenium WebDriver tests.
 After that create your first test by executing:
 
 ```sh
-codeceptjs generate:test
+npx codeceptjs generate:test
 ```
 
 Now test is created and can be executed with
 
 ```sh
-codeceptjs run
+npx codeceptjs run
 ```
 
 If you want to write your tests using TypeScript just generate standard Type Definitions by executing:
 
 ```sh
-codeceptjs def .
+npx codeceptjs def .
 ```
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
@@ -113,7 +113,7 @@ Scenario('test some forms', (I) => {
 ```
 
 All actions are performed by I object; assertions functions start with `see` function.
-In this examples all methods of `I` are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) to learn how to use them.
+In this examples all methods of `I` are taken from WebDriver helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriver.md) to learn how to use them.
 
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
@@ -230,16 +230,9 @@ It will create a page object file for you and add it to config.
 Let's assume we created one named `docsPage`:
 
 ```js
-'use strict';
-
-let I;
+const { I } = inject();
 
 module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
   fields: {
     email: '#user_basic_email',
     password: '#user_basic_password'

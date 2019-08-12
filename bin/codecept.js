@@ -13,6 +13,9 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   process.exit(1);
 }
 
+program.usage('<command> [options]');
+program.version(Codecept.version());
+
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .action(require('../lib/command/init'));
@@ -53,9 +56,11 @@ program.command('gherkin:steps [path]')
 
 program.command('gherkin:snippets [path]')
   .alias('bdd:snippets')
-  .description('Generate step defintions from steps.')
+  .description('Generate step definitions from steps.')
   .option('--dry-run', "don't save snippets to file")
   .option('-c, --config [file]', 'configuration file to be used')
+  .option('--feature [file]', 'feature files(s) to scan')
+  .option('--path [file]', 'file in which to place the new snippets')
   .action(require('../lib/command/gherkin/snippets'));
 
 
@@ -138,8 +143,12 @@ program.command('run-multiple [suites...]')
 
   .action(require('../lib/command/run-multiple'));
 
+program.on('command:*', (cmd) => {
+  console.log(`\nUnknown command ${cmd}\n`);
+  program.outputHelp();
+});
+
 if (process.argv.length <= 2) {
-  console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
 }
 program.parse(process.argv);
