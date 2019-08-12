@@ -161,13 +161,15 @@ After((I) => {
 
 > See complete reference on [GraphQL](http://codecept.io/helpers/GraphQL) helper
 
-# Data Generation with Factories
+## Data Generation with Factories
 
 This concept is extended by: 
 - [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper, and,
 - [GraphQLDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
 
 These helpers build data according to defined rules and use API or GraphQL mutations to store them and automatically clean them up after a test.
+
+Just define how many items of any kind you need and the data factory helper will create them for you. 
 
 To make this work some preparations are required.
 
@@ -185,7 +187,7 @@ And add that module as a part of the configuration for the helper.
 
 Please look at the respective Factory sections for examples for factory modules and configuration.
 
-## API Data Factory
+# API Data Factory
 
 This helper uses API to store the built data and automatically clean them up after a test,
 The way for setting data for a test is as simple as writing:
@@ -195,7 +197,6 @@ The way for setting data for a test is as simple as writing:
 let post = await I.have('post');
 I.haveMultiple('comment', 5, { postId: post.id});
 ```
-Just define how many items of any kind you need and ApiDataFactory will create them for you. But for that creating a factory and setting up configuration is required.
 
 After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
 
@@ -238,7 +239,7 @@ This rules can be customized in helper configuration.
 
 > See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
 
-## GraphQL Data Factory
+# GraphQL Data Factory
 
 The helper uses GraphQL mutations to store the built data and automatically clean them up after a test.
 This way for setting data for a test is as simple as writing:
@@ -249,7 +250,7 @@ let post = await I.mutateData('createPost');
 I.mutateMultiple('createComment', 5, { postId: post.id});
 ```
 
-Just define how many items of any kind you need and GraphQLDataFactory will create them for you. But for that creating a factory and setting up configuration is required.
+
 
 After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
 
@@ -303,15 +304,15 @@ The revert function returns an object, that contains the query for deletion, and
 
 > See complete reference on [GraphQLDataFactory](http://codecept.io/helpers/GraphQLDataFactory) helper
 
-## API Requests Using Browser Session
+## Requests Using Browser Session
 
-Both REST and ApiDataFactory helpers allow override requests before sending.
-This feature can be used to fetch current browser cookies and set them to REST API client.
+All the REST, GraphQL, GraphQLDataFactory, and ApiDataFactory helpers allow override requests before sending.
+This feature can be used to fetch current browser cookies and set them to REST API or GraphQL client.
 By doing this we can make requests within the current browser session without a need of additional authentication.
 
-> Sharing browser session with ApiDataFactory can be especially useful when you test Single Page Applications
+> Sharing browser session with ApiDataFactory or GrapqhQLDataFactory can be especially useful when you test Single Page Applications
 
-Let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:
+For example, let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:
 
 ```js
   ApiDataFactory: {
@@ -339,6 +340,8 @@ Let's see how to configure ApiDataFactory alongside with WebDriver to share cook
 ```
 
 In this case we are accessing WebDriver helper. However, you can replace WebDriver with any helper you use.
+
+The same can be done with GraphQLDataFactory.
 
 The order of helpers is important! ApiDataFactory will clean up created users after a test,
 so it needs browser to be still opened to obtain its cookies.
