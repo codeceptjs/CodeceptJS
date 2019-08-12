@@ -126,7 +126,7 @@ As well as a method for setting headers: `haveRequestHeaders`.
 Here is a usage example:
 
 ```js
-let post = null;
+let postData = null;
 
 Scenario('check post page', async (I)  => {
   // valid access token
@@ -144,7 +144,7 @@ Scenario('check post page', async (I)  => {
       }
     },
   );
-  post = response.data;
+  postData = response.data.data['createPost'];
   // open browser page of new post
   I.amOnPage('/posts/2.html');
   I.see('some text', 'p.body');
@@ -154,7 +154,7 @@ Scenario('check post page', async (I)  => {
 After((I) => {
   I.sendMutation(
     'mutation deletePost($id: ID!) { deletePost(id: $id) }',
-    { id: post.data.id},
+    { id: postData.id},
   );
 });
 ```
@@ -187,7 +187,7 @@ And add that module as a part of the configuration for the helper.
 
 Please look at the respective Factory sections for examples for factory modules and configuration.
 
-# API Data Factory
+### API Data Factory
 
 This helper uses API to store the built data and automatically clean them up after a test,
 The way for setting data for a test is as simple as writing:
@@ -239,7 +239,7 @@ This rules can be customized in helper configuration.
 
 > See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
 
-# GraphQL Data Factory
+### GraphQL Data Factory
 
 The helper uses GraphQL mutations to store the built data and automatically clean them up after a test.
 This way for setting data for a test is as simple as writing:
