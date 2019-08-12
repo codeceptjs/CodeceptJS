@@ -36,7 +36,6 @@ helpers: {
       'Auth': '11111',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      },
     },
   },
   WebDriver : {
@@ -294,14 +293,15 @@ GraphQLDataFactory: {
   }
 ```
 
-Then, calling `I.have('user')` inside a test will create a new user for you.
-This is done by sending POST request to `/api/users` URL. Response is returned and can be used in tests.
+Then, calling `I.mutateData('createUser')` inside a test will create a new user for you.
+This is done by sending a GraphQL mutation request over Http to `/graphql` endpoint. Response is returned and can be used in tests.
 
-At the end of a test ApiDataFactory will clean up created record for you. This is done by collecting
-ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
-This rules can be customized in helper configuration.
+At the end of a test GraphQLDataFactory will clean up created record for you. This is done by collecting
+data from crated records, creating deletion mutation objects by passing the data to the `revert` function provided, and sending deletion mutation objects as requests at the end of a test.
+This behavior is according the `revert` function be customized in helper configuration.
+The revert function returns an object, that contains the query for deletion, and the variables object to go along with it.
 
-> See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
+> See complete reference on [GraphQLDataFactory](http://codecept.io/helpers/GraphQLDataFactory) helper
 
 ## API Requests Using Browser Session
 
