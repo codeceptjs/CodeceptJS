@@ -310,7 +310,7 @@ All the REST, GraphQL, GraphQLDataFactory, and ApiDataFactory helpers allow over
 This feature can be used to fetch current browser cookies and set them to REST API or GraphQL client.
 By doing this we can make requests within the current browser session without a need of additional authentication.
 
-> Sharing browser session with ApiDataFactory or GrapqhQLDataFactory can be especially useful when you test Single Page Applications
+> Sharing browser session with ApiDataFactory or GraphQLDataFactory can be especially useful when you test Single Page Applications
 
 For example, let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:
 
