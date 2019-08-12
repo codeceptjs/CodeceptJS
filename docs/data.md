@@ -161,7 +161,7 @@ After((I) => {
 
 > See complete reference on [GraphQL](http://codecept.io/helpers/GraphQL) helper
 
-### Data Generation with Factories
+# Data Generation with Factories
 
 This concept is extended by: 
 - [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper, and,
