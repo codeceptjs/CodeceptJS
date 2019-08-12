@@ -16,8 +16,8 @@ There are different approaches to solve it:
 The most efficient way would be to allow test to control its data, i.e. the 3rd option.
 However, accessing database directly is not a good idea as database vendor, schema and data are used by application internally and are out of scope of acceptance test.
 
-Today all modern web applications have REST API. So it is a good idea to use it to create data for a test and delete it after.
-API supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 2 helpers for Data Management via REST API.
+Today all modern web applications have REST or GraphQL API . So it is a good idea to use it to create data for a test and delete it after.
+API is supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 4 helpers for Data Management via REST and GraphQL API.
 
 ## REST
 
@@ -78,6 +78,85 @@ Scenario('check post page', async (I)  => {
 // cleanup created data
 After((I) => {
   I.sendDeleteRequest('/api/posts/'+postId);
+});
+```
+
+This can also be used to emulate Ajax requests:
+
+```js
+I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
+```
+
+> See complete reference on [REST](http://codecept.io/helpers/REST) helper
+
+## GraphQL
+
+[GraphQL helper](http://codecept.io/helpers/GraphQL/) allows sending GraphQL queries and mutations to application, over Http.
+This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
+
+Enable GraphQL helper in the config. It is recommended to set `endpoint`, the URL to which the requests go to. If you need some authorization you can optionally set default headers too.
+
+See the sample config:
+
+```js
+helpers: {
+  GraphQL: {
+    endpoint: "http://localhost/graphql/",
+    defaultHeaders: {
+      'Auth': '11111',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+  },
+  WebDriver : {
+    url: 'http://localhost',
+    browser: 'chrome'
+  }
+}
+```
+
+REST helper provides two basic methods to queries and mutations to application:
+
+```js
+I.sendQuery()
+I.sendMutation()
+```
+
+As well as a method for setting headers: `haveRequestHeaders`.
+
+Here is a usage example:
+
+```js
+let post = null;
+
+Scenario('check post page', async (I)  => {
+  // valid access token
+  I.haveRequestHeaders({auth: '1111111'});
+  // get the first user
+  let response = await I.sendQuery('{ user(id:1) { id }}');
+  let user = response.data;
+  // create a post and save its Id
+  response = await I.sendMutation(
+    'mutation createPost($input: PostInput!) { createPost(input: $input) { id }}',
+    { 
+      input : {
+        author: user.data.id,
+        body: 'some text',
+      }
+    },
+  );
+  post = response.data;
+  // open browser page of new post
+  I.amOnPage('/posts/2.html');
+  I.see('some text', 'p.body');
+});
+
+// cleanup created data
+After((I) => {
+  I.sendMutation(
+    'mutation deletePost($id: ID!) { deletePost(id: $id) }',
+    { id: post.data.id},
+  );
 });
 ```
 
