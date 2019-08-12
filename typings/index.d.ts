@@ -1,12 +1,16 @@
 // Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
-/// <reference path="../node_modules/webdriverio/webdriverio-core.d.ts" />
+/// <reference types="webdriverio" />
 
 import index = require("../lib/index");
 
 declare global {
   namespace CodeceptJS {
+    interface Step {
+      isMetaStep(): this is MetaStep;
+    }
+
     interface index {
       codecept: typeof CodeceptJS.Codecept;
       container: typeof CodeceptJS.Container;
@@ -37,7 +41,7 @@ declare global {
       | {ios: string }
       | {react: string };
 
-    type LocatorOrString = string | ILocator | Locator;
+    type LocatorOrString = string | ILocator | typeof CodeceptJS.Locator;;
   }
   const codeceptjs: CodeceptJS.index;
   const Helper: typeof CodeceptJS.Helper;
