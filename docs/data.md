@@ -115,7 +115,7 @@ helpers: {
 }
 ```
 
-REST helper provides two basic methods to queries and mutations to application:
+GraphQL helper provides two basic methods to queries and mutations to application:
 
 ```js
 I.sendQuery()
@@ -160,28 +160,17 @@ After((I) => {
 });
 ```
 
-This can also be used to emulate Ajax requests:
+> See complete reference on [GraphQL](http://codecept.io/helpers/GraphQL) helper
 
-```js
-I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
-```
+### Data Generation with Factories
 
-> See complete reference on [REST](http://codecept.io/helpers/REST) helper
+This concept is extended by: 
+- [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper, and,
+- [GraphQLDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
 
-## Data Generation with Factories
+These helpers build data according to defined rules and use API or GraphQL mutations to store them and automatically clean them up after a test.
 
-This concept is extended by [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper.
-It builds data according to defined rules and uses API to store them and automatically clean them up after a test,
-This way setting data for a test is as simple as writing:
-
-```js
-// inside async function
-let post = await I.have('post');
-I.haveMultiple('comment', 5, { postId: post.id});
-```
-
-Just define how many items of any kind you need and ApiDataFactory will create them for you.
-However, to make this work some preparations required.
+To make this work some preparations are required.
 
 At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker). Faker can generate random names, emails, texts, and Rosie uses them
 to generate objects using factories.
@@ -193,6 +182,23 @@ npm i rosie faker --save-dev
 ```
 
 Then create a module which will export a factory for an entity.
+And add that module as a part of the configuration for the helper.
+
+Please look at the respective Factory sections for examples for factory modules and configuration.
+
+## API Data Factory
+
+This helper uses API to store the built data and automatically clean them up after a test,
+The way for setting data for a test is as simple as writing:
+
+```js
+// inside async function
+let post = await I.have('post');
+I.haveMultiple('comment', 5, { postId: post.id});
+```
+Just define how many items of any kind you need and ApiDataFactory will create them for you. But for that creating a factory and setting up configuration is required.
+
+After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
 
 See the example providing a factory for User generation:
 
@@ -222,6 +228,70 @@ Next is to configure helper to match factories with API:
      }
    }
  }
+```
+
+Then, calling `I.have('user')` inside a test will create a new user for you.
+This is done by sending POST request to `/api/users` URL. Response is returned and can be used in tests.
+
+At the end of a test ApiDataFactory will clean up created record for you. This is done by collecting
+ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
+This rules can be customized in helper configuration.
+
+> See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
+
+## GraphQL Data Factory
+
+The helper uses GraphQL mutations to store the built data and automatically clean them up after a test.
+This way for setting data for a test is as simple as writing:
+
+```js
+// inside async function
+let post = await I.mutateData('createPost');
+I.mutateMultiple('createComment', 5, { postId: post.id});
+```
+
+Just define how many items of any kind you need and GraphQLDataFactory will create them for you. But for that creating a factory and setting up configuration is required.
+
+After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
+
+The object built by the factory is sent as the variables object along with the mutation. So make sure it matches the argument type as detailed in the GraphQL schema. You may want to pass a constructor to the factory to achieve that.
+
+See the example providing a factory for User generation:
+
+```js
+// factories/post.js
+var Factory = require('rosie').Factory;
+var faker = require('faker');
+
+module.exports = new Factory((buildObj) => {
+  return {
+    input: { ...buildObj },
+  }
+})
+  .attr('name', () => faker.name.findName())
+  .attr('email', () => faker.internet.email());
+```
+
+Next is to configure helper to match factories with API:
+
+```js
+GraphQLDataFactory: {
+  endpoint: "http://user.com/graphql",
+  cleanup: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  },
+  factories: {
+    createUser: {
+      query: 'mutation createUser($input: UserInput!) { createUser(input: $input) { id name }}',
+      factory: './factories/users',
+      revert: (data) => ({
+        query: 'mutation deleteUser($id: ID!) { deleteUser(id: $id) }',
+        variables: { id : data.id},
+      }),
+    },
+  }
 ```
 
 Then, calling `I.have('user')` inside a test will create a new user for you.
