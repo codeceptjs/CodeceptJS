@@ -15,7 +15,7 @@ This helper works with a browser out of the box with no additional tools require
 
 Requires `puppeteer` package to be installed.
 
-> Experiemental Firefox support [can be activated][2].
+> Experimental Firefox support [can be activated][2].
 
 ## Configuration
 
