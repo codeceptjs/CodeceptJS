@@ -1,7 +1,41 @@
+## 2.3.0
+
+* [GraphQL][GraphQLDataFactory] **Helpers for data management over GraphQL** APIs added. By @radhey1851.
+  * Learn how to [use GraphQL helper](https://codecept.io/data#graphql) to access GarphQL API
+  * And how to combine it with [GraphQLDataFactory](https://codecept.io/data#graphql-data-factory) to generate and persist test data.
+* **Updated to use Mocha 6**. See #1802 by @elukoyanov
+* **Parallel testing by workers introduced** by @VikalpP and @davertmik. Use `run-workers` command as faster and simpler alternative to `run-multiple`. Requires NodeJS v12
+
+```
+# run all tests in parallel using 3 workers
+npx codeceptjs run-workers 3
+```
+
+* Added `dry-run` command to print steps of test scenarios without running them. Fails to execute scenarios with `grab*` methods or custom code. See #1825 for more details.
+
+```
+npx codeceptjs dry-run
+```
+
+* [Appium] Optimization when clicking, searching for fields by accessibility id. See #1777 by @gagandeepsingh26
+* [TestCafe] Fixed `switchTo` by @KadoBOT
+* [WebDrover] Added geolocation actions by @PeterNgTr
+    * `grabGeoLocation()`
+    * `setGeoLocation()`
+* [Polly] Check typeof arguments for mock requests by @VikalpP. Fixes #1815
+* CLI improvements by @jamesgeorge007
+  * `codeceptjs` command prints list of all available commands
+  * added `codeceptjs -V` flag to print version information
+  * warns on unknown command
+* Added TypeScript files support to `run-multiple` by @z4o4z
+* Fixed element position bug in locator builder. See #1829 by @AnotherAnkor
+* Various TypeScript typings updates by @elukoyanov and @Vorobeyko
+* Added `event.step.comment` event for all comment steps like `I.say` or gherking steps.
+
 ## 2.2.1
 
 * [WebDriver] A [dedicated guide](https://codecept.io/webdriver) written.
-* [TestCade] A [dedicated guide](https://codecept.io/testcafe) written.
+* [TestCafe] A [dedicated guide](https://codecept.io/testcafe) written.
 * [Puppeteer] A [chapter on mocking](https://codecept.io/puppeteer#mocking-requests) written
 * [Puppeteer][Nightmare][TestCafe] Window mode is enabled by default on `codeceptjs init`.
 * [TestCafe] Actions implemented by @hubidu

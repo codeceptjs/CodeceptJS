@@ -24,9 +24,10 @@
       "helpers",
       "bdd",
       "data",
-      "hooks",
+      "parallel",
       "reports",
-      "advanced"
+      "advanced",
+      "hooks"
     ],
     "Tutorials": [
       "books",
@@ -41,7 +42,6 @@
       "configuration",
       "plugins",
       "docker",
-      "reports",
       "translation"
     ],
     "Driver Helpers": [
@@ -56,6 +56,8 @@
     "Additional Helpers": [
       "helpers/REST",
       "helpers/ApiDataFactory",
+      "helpers/GraphQL",
+      "helpers/GraphQLDataFactory",
       "helpers/Polly",
       "helpers/FileSystem",
       "community-helpers"
