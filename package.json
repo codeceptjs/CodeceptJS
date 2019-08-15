@@ -58,7 +58,6 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.1",
     "mkdirp": "^0.5.1",
-    "nanoid": "^2.0.3",
     "mocha": "^6.2.0",
     "mocha-junit-reporter": "^1.23.1",
     "ms": "^2.1.2",

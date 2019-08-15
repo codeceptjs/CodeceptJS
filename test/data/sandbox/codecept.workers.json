@@ -4,8 +4,8 @@
   "output": "./output",
   "helpers": {
     "FileSystem": {},
-    "Within": {
-      "require": "./within_helper"
+    "Workers": {
+      "require": "./workers_helper"
     }
   },
   "include": {},
