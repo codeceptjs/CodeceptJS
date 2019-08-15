@@ -15,7 +15,7 @@ This helper works with a browser out of the box with no additional tools require
 
 Requires `puppeteer` package to be installed.
 
-> Experiemental Firefox support [can be activated][2].
+> Experimental Firefox support [can be activated][2].
 
 ## Configuration
 
@@ -31,6 +31,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `keepCookies`:  - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
 -   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][3]. Array values are accepted as well.
+-   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait\ timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -41,14 +42,14 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #1: Wait for 0 network connections.
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "restart": false,
-       "waitForNavigation": "networkidle0",
-       "waitForAction": 500
+   helpers: {
+     Puppeteer : {
+       url: "http://localhost",
+       restart: false,
+       waitForNavigation: "networkidle0",
+       waitForAction: 500
      }
    }
 }
@@ -56,14 +57,14 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #2: Wait for DOMContentLoaded event and 0 network connections
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "restart": false,
-       "waitForNavigation": [ "domcontentloaded", "networkidle0" ],
-       "waitForAction": 500
+   helpers: {
+     Puppeteer : {
+       url: "http://localhost",
+       restart: false,
+       waitForNavigation: [ "domcontentloaded", "networkidle0" ],
+       waitForAction: 500
      }
    }
 }
@@ -71,12 +72,12 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #3: Debug in window mode
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "show": true
+   helpers: {
+     Puppeteer : {
+       url: "http://localhost",
+       show: true
      }
    }
 }
@@ -84,13 +85,13 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #4: Connect to remote browser by specifying [websocket endpoint][5]
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "chrome": {
-         "browserWSEndpoint": "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
+   helpers: {
+     Puppeteer: {
+       url: "http://localhost",
+       chrome: {
+         browserWSEndpoint: "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
        }
      }
    }
@@ -104,11 +105,11 @@ Note: When connecting to remote browser `show` and specific `chrome` options (e.
 Receive Puppeteer client from a custom helper by accessing `browser` for the Browser object or `page` for the current Page object:
 
 ```js
-const browser = this.helpers['Puppeteer'].browser;
+const { browser } = this.helpers.Puppeteer;
 await browser.pages(); // List of pages in the browser
 
-const currentPage = this.helpers['Puppeteer'].page;
-await currentPage.url(); // Get the url of the current page
+const { page } = this.helpers.Puppeteer;
+await page.url(); // Get the url of the current page
 ```
 
 ## Methods

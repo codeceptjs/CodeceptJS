@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 const program = require('commander');
-const path = require('path');
-const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
 
@@ -157,7 +155,7 @@ program.command('run-multiple [suites...]')
   .action(require('../lib/command/run-multiple'));
 
 program.command('dry-run [test]')
-  .description('Executes tests multiple')
+  .description('Prints step-by-step scenario for a test without actually running it')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('--bootstrap', 'enable bootstrap script for dry-run')
   .option('-c, --config [file]', 'configuration file to be used')

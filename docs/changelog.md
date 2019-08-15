@@ -3,11 +3,27 @@ id: changelog
 title: Releases
 ---
 
+## 2.3.0
+
+* [GraphQL][GraphQLDataFactory] Helpers introduced for **data management over GraphQL** APIs. By **[radhey1851](https://github.com/radhey1851)**.
+  * Learn how to [use GraphQL helper docs](https://codecept.io/data#graphql)
+  * And how to combine it with **[GraphQLDataFactory]** * **Updated to use Mocha 6**. See [#1802](https://github.com/Codeception/CodeceptJS/issues/1802) by **[elukoyanov](https://github.com/elukoyanov)**
+* **[Appium]** Optimization when clicking, searching for fields by accessibility id. See [#1777](https://github.com/Codeception/CodeceptJS/issues/1777) by **[gagandeepsingh26](https://github.com/gagandeepsingh26)**
+* **[TestCafe]** Fixed `switchTo` by **[KadoBOT](https://github.com/KadoBOT)**
+* **[WebDrover]** Added geolocation actions by **[PeterNgTr](https://github.com/PeterNgTr)**
+    * `grabGeoLocation()`
+    * `setGeoLocation()`
+* **[Polly]** Check typeof arguments for mock requests by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1815](https://github.com/Codeception/CodeceptJS/issues/1815)
+* CLI improvements by **[jamesgeorge007](https://github.com/jamesgeorge007)**
+  * `codeceptjs` command prints list of all available commands
+  * added `codeceptjs -V` flag to print version information
+  * warns on unknown command
+
 ## 2.2.1
 
 * **[WebDriver]** A [dedicated guide](https://codecept.io/webdriver) written.
 * **[TestCafe]** A [dedicated guide](https://codecept.io/testcafe) written.
-* **[Puppeteer]** A [chapter on mocking](https://codecept.io/puppeteer#mocking) written
+* **[Puppeteer]** A [chapter on mocking](https://codecept.io/puppeteer#mocking-requests) written
 * [Puppeteer][Nightmare][TestCafe] Window mode is enabled by default on `codeceptjs init`.
 * **[TestCafe]** Actions implemented by **[hubidu](https://github.com/hubidu)**
   * `grabPageScrollPosition`
@@ -31,7 +47,6 @@ title: Releases
   * Fix `--path` option on `gherkin:snippets` command by **[asselin](https://github.com/asselin)**. See [#1790](https://github.com/Codeception/CodeceptJS/issues/1790)
   * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See [#1803](https://github.com/Codeception/CodeceptJS/issues/1803) by **[asselin](https://github.com/asselin)**.
 * Fixed: dynamic configs not reset after test. Fixes [#1776](https://github.com/Codeception/CodeceptJS/issues/1776) by **[cviejo](https://github.com/cviejo)**.
-* allurePlugin - fixed displaying ANSI chars in reports by **[Vorobeyko](https://github.com/Vorobeyko)**
 
 ## 2.2.0
 
