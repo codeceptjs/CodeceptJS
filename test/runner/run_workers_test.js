@@ -23,7 +23,7 @@ describe('CodeceptJS Workers Runner', function () {
       stdout.should.include('From worker @2_grep print message 2');
       stdout.should.include('Running tests in 3 workers');
       stdout.should.not.include('this is running inside worker');
-      stdout.should.include('1 failed');
+      stdout.should.include('failed');
       stdout.should.include('File notafile not found');
       stdout.should.include('Scenario Steps:');
       assert(err.code === 1, 'failure');
@@ -40,9 +40,24 @@ describe('CodeceptJS Workers Runner', function () {
       stdout.should.include('From worker @2_grep print message 2');
       stdout.should.include('Running tests in 2 workers');
       stdout.should.not.include('this is running inside worker');
-      stdout.should.not.include('1 failed');
+      stdout.should.not.include('failed');
       stdout.should.not.include('File notafile not found');
       assert(!err);
+      done();
+    });
+  });
+
+  it('should show failures when suite is failing', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout, stderr) => {
+      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Running tests in 2 workers');
+      stdout.should.not.include('should not be executed');
+      stdout.should.not.include('this is running inside worker');
+      stdout.should.include('failed');
+      stdout.should.include('FAILURES');
+      stdout.should.include('worker has failed');
+      assert(err.code === 1, 'failure');
       done();
     });
   });
