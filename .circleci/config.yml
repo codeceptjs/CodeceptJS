@@ -40,7 +40,7 @@ jobs:
   docker:
     <<: *defaults
     environment:
-      - NODE_VERSION: 9.2.0
+      - NODE_VERSION: 12.8.0
 
 workflows:
   version: 2

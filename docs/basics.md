@@ -40,7 +40,7 @@ Refer to following guides to more information on:
 * [▶ Protractor](https://codecept.io/angular)
 * [▶ Puppeteer](https://codecept.io/puppeteer)
 * [▶ Nightmare](https://codecept.io/nightmare)
-* TestCafe
+* [▶ TestCafe](https://codecept.io/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
 
@@ -308,19 +308,19 @@ To launch tests use `run` command. To execute tests in [multiple browsers](https
 To see step-by-step output of running tests, add `--steps` flag:
 
 ```
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 To see more detailed output add `--debug` flag:
 
 ```
-codeceptjs run --debug
+npx codeceptjs run --debug
 ```
 
 To see very detailed output system use `--verbose` flag:
 
 ```
-codeceptjs run --verbose
+npx codeceptjs run --verbose
 ```
 
 ### Filter
@@ -328,11 +328,11 @@ codeceptjs run --verbose
 A single test file can be executed if you provide a relative path to such file:
 
 ```
-codeceptjs run github_test.js
+npx codeceptjs run github_test.js
 
 # or
 
-codeceptjs run admin/login_test.js
+npx codeceptjs run admin/login_test.js
 ```
 
 To filter a test by name use `--grep` parameter. Which will execute all tests with names matching the regex pattern.
@@ -340,7 +340,7 @@ To filter a test by name use `--grep` parameter. Which will execute all tests wi
 To run all tests with `slow` word in it
 
 ```
-codeceptjs run --grep "slow"
+npx codeceptjs run --grep "slow"
 ```
 
 It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
@@ -348,6 +348,16 @@ It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
 
 > For more options see [full reference of `run` command](https://codecept.io/commands/#run).
 
+### Parallel Run
+
+Since CodeceptJS 2.3 you can run tests in parallel by using NodeJS workers. This feature requires NodeJS >= 11.6. Use `run-workers` command with the number of workers (threads) to split tests.
+
+```
+npx codeceptjs run-workers 3
+```
+
+Tests are split by scenarios, not by files. Results are aggregated and shown in the main process.
+If
 
 ## Debug
 

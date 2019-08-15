@@ -996,6 +996,8 @@ module.exports.tests = function () {
     });
 
     it('within should respect context in see', async () => {
+      if (isHelper('TestCafe')) return;
+
       await I.amOnPage('/form/example4');
       await I.see('Rejestracja', 'fieldset');
       await I._withinBegin({ css: '.navbar-header' });
@@ -1013,7 +1015,8 @@ module.exports.tests = function () {
       }
     });
 
-    it('within should respect context in see when using nested frames', async () => {
+    it('within should respect context in see when using nested frames', async function () {
+      if (isHelper('TestCafe')) this.skip();
       await I.amOnPage('/iframe_nested');
       await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
