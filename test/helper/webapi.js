@@ -1043,9 +1043,9 @@ module.exports.tests = function () {
   });
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
-    it('should scroll inside an iframe', async function () {
-      if (isHelper('Nightmare')) this.skip();
-      if (isHelper('TestCafe')) this.skip();
+    it('should scroll inside an iframe', async () => {
+      if (isHelper('Nightmare')) return;
+      if (isHelper('TestCafe')) return;
 
       await I.amOnPage('/iframe');
       await I.resizeWindow(500, 700);
