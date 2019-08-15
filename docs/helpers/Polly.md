@@ -54,6 +54,7 @@ Mock response status
 I.mockRequest('GET', '/api/users', 200);
 I.mockRequest('ANY', '/secretsRoutes/', 403);
 I.mockRequest('POST', '/secrets', { secrets: 'fakeSecrets' });
+I.mockRequest('GET', '/api/users/1', 404, 'User not found');
 ```
 
 Multiple requests
@@ -64,12 +65,21 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
 
 #### Parameters
 
--   `method`  
--   `oneOrMoreUrls`  
--   `dataOrStatusCode`  
+-   `method` [string][2] request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+-   `oneOrMoreUrls` ([string][2] \| [array][3]) url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+-   `dataOrStatusCode` ([number][4] \| [string][2] \| [object][5]) status code when number provided. A response body otherwise
+-   `additionalData` ([string][2] \| [object][5]) response body when a status code is set by previous parameter. 
 
 ### stopMocking
 
 Stops mocking requests.
 
 [1]: https://netflix.github.io/pollyjs/#/
+
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
