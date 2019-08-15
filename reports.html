@@ -28,7 +28,6 @@
               }
             });
         </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/reports.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Reporters</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="cli"></a><a href="#cli" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cli</h2>
-<p>(default)</p>
 <p>By default CodeceptJS provides cli reporter with console output.
 Test names and failures will be printed to screen.</p>
 <pre><code class="hljs css language-sh">GitHub --
@@ -51,39 +50,51 @@ Test names and failures will be printed to screen.</p>
 
 
   Run with --verbose flag to see NodeJS stacktrace
+
 </code></pre>
-<p>For dynamic step-by-step output add <code>--steps</code> option to <code>run</code> command:</p>
-<pre><code class="hljs css language-sh">GitHub --
+<p>npx codeceptjs run --stepsutput add <code>--steps</code> option to <code>run</code> command:</p>
+<pre><code class="hljs"></code></pre>
+<p>npx codeceptjs run --steps</p>
+<pre><code class="hljs">
+Output:
+
+<span class="hljs-string">``</span><span class="hljs-string">`sh
+GitHub --
  search
- • I am on page <span class="hljs-string">"https://github.com"</span>
- • I am on page <span class="hljs-string">"https://github.com/search"</span>
- • I fill field <span class="hljs-string">"Search GitHub"</span>, <span class="hljs-string">"CodeceptJS"</span>
- • I press key <span class="hljs-string">"Enter"</span>
- • I see <span class="hljs-string">"Codeception/CodeceptJS"</span>, <span class="hljs-string">"a"</span>
- ✓ OK <span class="hljs-keyword">in</span> 2681ms
+ • I am on page "https://github.com"
+ • I am on page "https://github.com/search"
+ • I fill field "Search GitHub", "CodeceptJS"
+ • I press key "Enter"
+ • I see "Codeception/CodeceptJS", "a"
+ ✓ OK in 2681ms
 
  signin
- • I am on page <span class="hljs-string">"https://github.com"</span>
- • I click <span class="hljs-string">"Sign in"</span>
- • I see <span class="hljs-string">"Sign in to GitHub"</span>
- • I fill field <span class="hljs-string">"Username or email address"</span>, <span class="hljs-string">"something@totest.com"</span>
- • I fill field <span class="hljs-string">"Password"</span>, <span class="hljs-string">"123456"</span>
- • I click <span class="hljs-string">"Sign in"</span>
- • I see <span class="hljs-string">"Incorrect username or password."</span>, <span class="hljs-string">".flash-error"</span>
- ✓ OK <span class="hljs-keyword">in</span> 2252ms
+ • I am on page "https://github.com"
+ • I click "Sign in"
+ • I see "Sign in to GitHub"
+ • I fill field "Username or email address", "something@totest.com"
+ • I fill field "Password", "123456"
+ • I click "Sign in"
+ • I see "Incorrect username or password.", ".flash-error"
+ ✓ OK in 2252ms
 
  register
- • I am on page <span class="hljs-string">"https://github.com"</span>
+ • I am on page "https://github.com"
    Within .js-signup-form:
-   • I fill field <span class="hljs-string">"user[login]"</span>, <span class="hljs-string">"User"</span>
-   • I fill field <span class="hljs-string">"user[email]"</span>, <span class="hljs-string">"user@user.com"</span>
-   • I fill field <span class="hljs-string">"user[password]"</span>, <span class="hljs-string">"user@user.com"</span>
-   • I fill field <span class="hljs-string">"q"</span>, <span class="hljs-string">"aaa"</span>
- ✖ FAILED <span class="hljs-keyword">in</span> 1260ms
+   • I fill field "user[login]", "User"
+   • I fill field "user[email]", "user@user.com"
+   • I fill field "user[password]", "user@user.com"
+   • I fill field "q", "aaa"
+ ✖ FAILED in 1260ms
+</span></code></pre>
+<p>To get additional information about test execution use <code>--debug</code> option.</p>
+<pre><code class="hljs">npx codeceptjs run --debug
 </code></pre>
-<p>To get additional information about test execution use <code>--debug</code> option. This will show execution steps
+<p>This will show execution steps
 as well as notices from test runner. To get even more information with more technical details like error stack traces,
 and global promises, or events use <code>--verbose</code> mode.</p>
+<pre><code class="hljs">npx codeceptjs run --verbose
+</code></pre>
 <pre><code class="hljs css language-sh">GitHub --
  register
    [1] Starting recording promises
@@ -98,24 +109,56 @@ and global promises, or events use <code>--verbose</code> mode.</p>
 ...
 </code></pre>
 <p>Please use verbose output when reporting issues to GitHub.</p>
+<h3><a class="anchor" aria-hidden="true" id="dry-run"></a><a href="#dry-run" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dry Run</h3>
+<p>There is a way to list all tests and their steps without actually executing them. Execute tests in <code>dry-run</code> mode to see all available tests:</p>
+<pre><code class="hljs">npx codeceptjs dry-run
+</code></pre>
+<p>Output:</p>
+<pre><code class="hljs">Tests <span class="hljs-keyword">from</span> /home/davert/projects/codeceptjs/examples:
+
+Business rules --
+  ☐ <span class="hljs-keyword">do</span> something
+Google --
+  ☐ test @<span class="hljs-number">123</span>
+GitHub -- <span class="hljs-regexp">/home/</span>davert/projects/codeceptjs/examples/github_test.js
+  ☐ Visit Home Page @retry
+  ☐ search @grop
+  ☐ signin @normal @important @slow
+  ☐ signin2
+  ☐ register
+
+  Total: <span class="hljs-number">3</span> suites | <span class="hljs-number">7</span> tests
+
+--- DRY MODE: No tests were executed ---
+</code></pre>
+<p>Pass <code>--steps</code> or <code>--debug</code> option as in <code>run</code> command to also get steps and substeps to be printed. In this mode <strong>tests will be executed</strong> but all helpers and plugins disabled, so no real actions will be performed.</p>
+<pre><code class="hljs">npx codecepjs dry-run --debug
+</code></pre>
+<blockquote>
+<p>ℹ If you use custom JavaScript code inside tests, or rely on values from <code>grab*</code> commands, dry-run may produce error output.</p>
+</blockquote>
 <h2><a class="anchor" aria-hidden="true" id="allure"></a><a href="#allure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Allure</h2>
-<p>(recommended)</p>
+<blockquote>
+<p>ℹ  We recommend using Allure reports on CI. Allure is one of the best open-source reporters designed to collect and show test reports in nicest way.</p>
+</blockquote>
 <p><a href="http://allure.qatools.ru/#">Allure reporter</a> is a tool to store and display test reports.
 It provides nice web UI which contains all important information on test execution.
 CodeceptJS has built-in support for Allure reports. Inside reports you will have all steps, substeps and screenshots.</p>
 <p><img src="https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png" alt=""></p>
-<p><em>Disclaimer: Allure is a standalone tool. Please refer to <a href="https://docs.qameta.io/allure/">Allure documentation</a> to learn more about using Allure reports.</em></p>
+<blockquote>
+<p>▶ Allure is a standalone tool. Please refer to <a href="https://docs.qameta.io/allure/">Allure documentation</a> to learn more about using Allure reports.</p>
+</blockquote>
 <p>Allure requires <strong>Java 8</strong> to work. Then Allure can be installed via NPM:</p>
 <pre><code class="hljs">npm install -g allure-commandline --save-dev
 </code></pre>
 <p>Add <a href="https://codecept.io/plugins/#allure">Allure plugin</a> in config under <code>plugins</code> section.</p>
-<pre><code class="hljs css language-js"><span class="hljs-string">"plugins"</span>: {
-    <span class="hljs-string">"allure"</span>: {
-    }
+<pre><code class="hljs css language-js">plugins: {
+    <span class="hljs-attr">allure</span>: {
+  }
 }
 </code></pre>
 <p>Run tests with allure plugin enabled:</p>
-<pre><code class="hljs">codeceptjs run --plugins allure
+<pre><code class="hljs">npx codeceptjs run --plugins allure
 </code></pre>
 <p>(optionally) To enable allure plugin permanently include <code>&quot;enabled&quot;: true</code> into plugin config:</p>
 <pre><code class="hljs css language-js"><span class="hljs-string">"plugins"</span>: {
@@ -128,6 +171,9 @@ CodeceptJS has built-in support for Allure reports. Inside reports you will have
 <pre><code class="hljs">allure serve output
 </code></pre>
 <p>Allure reporter aggregates data from other plugins like <a href="https://codecept.io/plugins/#stepByStepReport"><em>stepByStepReport</em></a> and <a href="https://codecept.io/plugins/#screenshotOnFail"><em>screenshotOnFail</em></a></p>
+<p>Allure reports can also be generated for <code>dry-run</code> command. So you can get the first report with no tests actually being executed. Enable allure plugin in dry-run options, and pass <code>--debug</code> option to print all tests on screen.</p>
+<pre><code class="hljs">npx codeceptjs dry-run --debug -p allure
+</code></pre>
 <h2><a class="anchor" aria-hidden="true" id="xml"></a><a href="#xml" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>XML</h2>
 <p>Use default xunit reporter of Mocha to print xml reports. Provide <code>--reporter xunit</code> to get the report to screen.
 It is recommended to use more powerful <a href="https://www.npmjs.com/package/mocha-junit-reporter"><code>mocha-junit-reporter</code></a> package
@@ -237,10 +283,10 @@ Then add Mochawesome helper to your config:</p>
   }
 </code></pre>
 <p>Execute CodeceptJS with mocha-multi reporter:</p>
-<pre><code class="hljs css language-sh">codeceptjs run --reporter mocha-multi
+<pre><code class="hljs css language-sh">npx codeceptjs run --reporter mocha-multi
 </code></pre>
 <p>This will give you cli with steps in console and HTML report in <code>output</code> directory.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-6-5</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docker"><span class="arrow-prev">← </span><span>Docker</span></a><a class="docs-next button" href="/translation"><span>Translation</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#cli">Cli</a></li><li><a href="#allure">Allure</a></li><li><a href="#xml">XML</a></li><li><a href="#html">Html</a><ul class="toc-headings"><li><a href="#advanced-usage">Advanced usage</a></li><li><a href="#configuration">Configuration</a></li></ul></li><li><a href="#multi-reports">Multi Reports</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 8/15/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docker"><span class="arrow-prev">← </span><span>Docker</span></a><a class="docs-next button" href="/translation"><span>Translation</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#cli">Cli</a><ul class="toc-headings"><li><a href="#dry-run">Dry Run</a></li></ul></li><li><a href="#allure">Allure</a></li><li><a href="#xml">XML</a></li><li><a href="#html">Html</a><ul class="toc-headings"><li><a href="#advanced-usage">Advanced usage</a></li><li><a href="#configuration">Configuration</a></li></ul></li><li><a href="#multi-reports">Multi Reports</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

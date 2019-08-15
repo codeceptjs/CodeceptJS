@@ -43,8 +43,8 @@ There are different approaches to solve it:</p>
 </ol>
 <p>The most efficient way would be to allow test to control its data, i.e. the 3rd option.
 However, accessing database directly is not a good idea as database vendor, schema and data are used by application internally and are out of scope of acceptance test.</p>
-<p>Today all modern web applications have REST API. So it is a good idea to use it to create data for a test and delete it after.
-API supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 2 helpers for Data Management via REST API.</p>
+<p>Today all modern web applications have REST or GraphQL API . So it is a good idea to use it to create data for a test and delete it after.
+API is supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 4 helpers for Data Management via REST and GraphQL API.</p>
 <h2><a class="anchor" aria-hidden="true" id="rest"></a><a href="#rest" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>REST</h2>
 <p><a href="http://codecept.io/helpers/REST/">REST helper</a> allows sending raw HTTP requests to application.
 This is a tool to make shortcuts and create your data pragmatically via API. However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.</p>
@@ -57,7 +57,6 @@ This is a tool to make shortcuts and create your data pragmatically via API. How
       <span class="hljs-string">'Auth'</span>: <span class="hljs-string">'11111'</span>,
       <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
       <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/json'</span>,
-      },
     },
   },
   <span class="hljs-attr">WebDriver</span> : {
@@ -100,22 +99,92 @@ This is a tool to make shortcuts and create your data pragmatically via API. How
 <blockquote>
 <p>See complete reference on <a href="http://codecept.io/helpers/REST">REST</a> helper</p>
 </blockquote>
-<h2><a class="anchor" aria-hidden="true" id="data-generation-with-factories"></a><a href="#data-generation-with-factories" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Generation with Factories</h2>
-<p>This concept is extended by <a href="http://codecept.io/helpers/ApiDataFactory/">ApiDataFactory</a> helper.
-It builds data according to defined rules and uses API to store them and automatically clean them up after a test,
-This way setting data for a test is as simple as writing:</p>
-<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
-<span class="hljs-keyword">let</span> post = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.have(<span class="hljs-string">'post'</span>);
-<span class="hljs-built_in">I</span>.haveMultiple(<span class="hljs-string">'comment'</span>, <span class="hljs-number">5</span>, { <span class="hljs-attr">postId</span>: post.id});
+<h2><a class="anchor" aria-hidden="true" id="graphql"></a><a href="#graphql" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GraphQL</h2>
+<p><a href="http://codecept.io/helpers/GraphQL/">GraphQL helper</a> allows sending GraphQL queries and mutations to application, over Http.
+This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.</p>
+<p>Enable GraphQL helper in the config. It is recommended to set <code>endpoint</code>, the URL to which the requests go to. If you need some authorization you can optionally set default headers too.</p>
+<p>See the sample config:</p>
+<pre><code class="hljs css language-js">helpers: {
+  <span class="hljs-attr">GraphQL</span>: {
+    <span class="hljs-attr">endpoint</span>: <span class="hljs-string">"http://localhost/graphql/"</span>,
+    <span class="hljs-attr">defaultHeaders</span>: {
+      <span class="hljs-string">'Auth'</span>: <span class="hljs-string">'11111'</span>,
+      <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+      <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/json'</span>,
+    },
+  },
+  <span class="hljs-attr">WebDriver</span> : {
+    <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost'</span>,
+    <span class="hljs-attr">browser</span>: <span class="hljs-string">'chrome'</span>
+  }
+}
 </code></pre>
-<p>Just define how many items of any kind you need and ApiDataFactory will create them for you.
-However, to make this work some preparations required.</p>
+<p>GraphQL helper provides two basic methods to queries and mutations to application:</p>
+<pre><code class="hljs css language-js"><span class="hljs-built_in">I</span>.sendQuery()
+<span class="hljs-built_in">I</span>.sendMutation()
+</code></pre>
+<p>As well as a method for setting headers: <code>haveRequestHeaders</code>.</p>
+<p>Here is a usage example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">let</span> postData = <span class="hljs-literal">null</span>;
+
+<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'check post page'</span>, <span class="hljs-keyword">async</span> (<span class="hljs-built_in">I</span>)  =&gt; {
+  <span class="hljs-comment">// valid access token</span>
+  <span class="hljs-built_in">I</span>.haveRequestHeaders({<span class="hljs-attr">auth</span>: <span class="hljs-string">'1111111'</span>});
+  <span class="hljs-comment">// get the first user</span>
+  <span class="hljs-keyword">let</span> response = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.sendQuery(<span class="hljs-string">'{ user(id:1) { id }}'</span>);
+  <span class="hljs-keyword">let</span> user = response.data;
+  <span class="hljs-comment">// create a post and save its Id</span>
+  response = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.sendMutation(
+    <span class="hljs-string">'mutation createPost($input: PostInput!) { createPost(input: $input) { id }}'</span>,
+    { 
+      <span class="hljs-attr">input</span> : {
+        <span class="hljs-attr">author</span>: user.data.id,
+        <span class="hljs-attr">body</span>: <span class="hljs-string">'some text'</span>,
+      }
+    },
+  );
+  postData = response.data.data[<span class="hljs-string">'createPost'</span>];
+  <span class="hljs-comment">// open browser page of new post</span>
+  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">`/posts/<span class="hljs-subst">${postData.slug}</span>.html`</span>);
+  <span class="hljs-built_in">I</span>.see(postData.body, <span class="hljs-string">'p.body'</span>);
+});
+
+<span class="hljs-comment">// cleanup created data</span>
+<span class="hljs-keyword">After</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-built_in">I</span></span>) =&gt;</span> {
+  <span class="hljs-built_in">I</span>.sendMutation(
+    <span class="hljs-string">'mutation deletePost($id: ID!) { deletePost(id: $id) }'</span>,
+    { <span class="hljs-attr">id</span>: postData.id},
+  );
+});
+</code></pre>
+<blockquote>
+<p>See complete reference on <a href="http://codecept.io/helpers/GraphQL">GraphQL</a> helper</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="data-generation-with-factories"></a><a href="#data-generation-with-factories" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Generation with Factories</h2>
+<p>This concept is extended by:</p>
+<ul>
+<li><a href="http://codecept.io/helpers/ApiDataFactory/">ApiDataFactory</a> helper, and,</li>
+<li><a href="http://codecept.io/helpers/GraphQLDataFactory/">GraphQLDataFactory</a> helper.</li>
+</ul>
+<p>These helpers build data according to defined rules and use REST API or GraphQL mutations to store them and automatically clean them up after a test.</p>
+<p>Just define how many items of any kind you need and the data factory helper will create them for you.</p>
+<p>To make this work some preparations are required.</p>
 <p>At first, you need data generation libraries which are <a href="https://github.com/rosiejs/rosie">Rosie</a> and <a href="https://www.npmjs.com/package/faker">Faker</a>. Faker can generate random names, emails, texts, and Rosie uses them
 to generate objects using factories.</p>
 <p>Install rosie and faker to create a first factory:</p>
 <pre><code class="hljs css language-js">npm i rosie faker --save-dev
 </code></pre>
-<p>Then create a module which will export a factory for an entity.</p>
+<p>Then create a module which will export a factory for an entity.
+And add that module as a part of the configuration for the helper.</p>
+<p>Please look at the respective Factory sections for examples for factory modules and configuration.</p>
+<h3><a class="anchor" aria-hidden="true" id="api-data-factory"></a><a href="#api-data-factory" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Data Factory</h3>
+<p>This helper uses REST API to store the built data and automatically clean them up after a test,
+The way for setting data for a test is as simple as writing:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
+<span class="hljs-keyword">let</span> post = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.have(<span class="hljs-string">'post'</span>);
+<span class="hljs-built_in">I</span>.haveMultiple(<span class="hljs-string">'comment'</span>, <span class="hljs-number">5</span>, { <span class="hljs-attr">postId</span>: post.id});
+</code></pre>
+<p>After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.</p>
 <p>See the example providing a factory for User generation:</p>
 <pre><code class="hljs css language-js"><span class="hljs-comment">// factories/post.js</span>
 <span class="hljs-keyword">var</span> Factory = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rosie'</span>).Factory;
@@ -148,14 +217,64 @@ This rules can be customized in helper configuration.</p>
 <blockquote>
 <p>See complete reference on <a href="http://codecept.io/helpers/ApiDataFactory">ApiDataFactory</a> helper</p>
 </blockquote>
-<h2><a class="anchor" aria-hidden="true" id="api-requests-using-browser-session"></a><a href="#api-requests-using-browser-session" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Requests Using Browser Session</h2>
-<p>Both REST and ApiDataFactory helpers allow override requests before sending.
-This feature can be used to fetch current browser cookies and set them to REST API client.
+<h3><a class="anchor" aria-hidden="true" id="graphql-data-factory"></a><a href="#graphql-data-factory" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GraphQL Data Factory</h3>
+<p>The helper uses GraphQL mutations to store the built data and automatically clean them up after a test.
+This way for setting data for a test is as simple as writing:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// inside async function</span>
+<span class="hljs-keyword">let</span> post = <span class="hljs-keyword">await</span> <span class="hljs-built_in">I</span>.mutateData(<span class="hljs-string">'createPost'</span>);
+<span class="hljs-built_in">I</span>.mutateMultiple(<span class="hljs-string">'createComment'</span>, <span class="hljs-number">5</span>, { <span class="hljs-attr">postId</span>: post.id});
+</code></pre>
+<p>After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.</p>
+<p>The object built by the factory is sent as the variables object along with the mutation. So make sure it matches the argument type as detailed in the GraphQL schema. You may want to pass a constructor to the factory to achieve that.</p>
+<p>See the example providing a factory for User generation:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// factories/post.js</span>
+<span class="hljs-keyword">var</span> Factory = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rosie'</span>).Factory;
+<span class="hljs-keyword">var</span> faker = <span class="hljs-built_in">require</span>(<span class="hljs-string">'faker'</span>);
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-keyword">new</span> Factory(<span class="hljs-function">(<span class="hljs-params">buildObj</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">input</span>: { ...buildObj },
+  }
+})
+  .attr(<span class="hljs-string">'name'</span>, () =&gt; faker.name.findName())
+  .attr(<span class="hljs-string">'email'</span>, () =&gt; faker.internet.email());
+</code></pre>
+<p>Next is to configure helper to match factories with API:</p>
+<pre><code class="hljs css language-js">GraphQLDataFactory: {
+  <span class="hljs-attr">endpoint</span>: <span class="hljs-string">"http://user.com/graphql"</span>,
+  <span class="hljs-attr">cleanup</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">headers</span>: {
+    <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>,
+    <span class="hljs-string">'Accept'</span>: <span class="hljs-string">'application/json'</span>,
+  },
+  <span class="hljs-attr">factories</span>: {
+    <span class="hljs-attr">createUser</span>: {
+      <span class="hljs-attr">query</span>: <span class="hljs-string">'mutation createUser($input: UserInput!) { createUser(input: $input) { id name }}'</span>,
+      <span class="hljs-attr">factory</span>: <span class="hljs-string">'./factories/users'</span>,
+      <span class="hljs-attr">revert</span>: <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> ({
+        <span class="hljs-attr">query</span>: <span class="hljs-string">'mutation deleteUser($id: ID!) { deleteUser(id: $id) }'</span>,
+        <span class="hljs-attr">variables</span>: { <span class="hljs-attr">id</span> : data.id},
+      }),
+    },
+  }
+</code></pre>
+<p>Then, calling <code>I.mutateData('createUser')</code> inside a test will create a new user for you.
+This is done by sending a GraphQL mutation request over Http to <code>/graphql</code> endpoint. Response is returned and can be used in tests.</p>
+<p>At the end of a test GraphQLDataFactory will clean up created record for you. This is done by collecting
+data from crated records, creating deletion mutation objects by passing the data to the <code>revert</code> function provided, and sending deletion mutation objects as requests at the end of a test.
+This behavior is according the <code>revert</code> function be customized in helper configuration.
+The revert function returns an object, that contains the query for deletion, and the variables object to go along with it.</p>
+<blockquote>
+<p>See complete reference on <a href="http://codecept.io/helpers/GraphQLDataFactory">GraphQLDataFactory</a> helper</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="requests-using-browser-session"></a><a href="#requests-using-browser-session" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Requests Using Browser Session</h2>
+<p>All the REST, GraphQL, GraphQLDataFactory, and ApiDataFactory helpers allow override requests before sending.
+This feature can be used to fetch current browser cookies and set them to REST API or GraphQL client.
 By doing this we can make requests within the current browser session without a need of additional authentication.</p>
 <blockquote>
-<p>Sharing browser session with ApiDataFactory can be especially useful when you test Single Page Applications</p>
+<p>Sharing browser session with ApiDataFactory or GraphQLDataFactory can be especially useful when you test Single Page Applications</p>
 </blockquote>
-<p>Let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:</p>
+<p>For example, let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:</p>
 <pre><code class="hljs css language-js">  ApiDataFactory: {
     <span class="hljs-attr">endpoint</span>: <span class="hljs-string">'http://local.app/api'</span>,
     <span class="hljs-attr">cleanup</span>: <span class="hljs-literal">true</span>,
@@ -180,9 +299,10 @@ By doing this we can make requests within the current browser session without a 
   }
 </code></pre>
 <p>In this case we are accessing WebDriver helper. However, you can replace WebDriver with any helper you use.</p>
+<p>The same can be done with GraphQLDataFactory.</p>
 <p>The order of helpers is important! ApiDataFactory will clean up created users after a test,
 so it needs browser to be still opened to obtain its cookies.</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-1-10</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/bdd"><span class="arrow-prev">← </span><span>Behavior Driven Development</span></a><a class="docs-next button" href="/hooks"><span>Bootstrap / Teardown / Plugins</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#rest">REST</a></li><li><a href="#data-generation-with-factories">Data Generation with Factories</a></li><li><a href="#api-requests-using-browser-session">API Requests Using Browser Session</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 8/15/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/bdd"><span class="arrow-prev">← </span><span>Behavior Driven Development</span></a><a class="docs-next button" href="/hooks"><span>Bootstrap / Teardown / Plugins</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#rest">REST</a></li><li><a href="#graphql">GraphQL</a></li><li><a href="#data-generation-with-factories">Data Generation with Factories</a><ul class="toc-headings"><li><a href="#api-data-factory">API Data Factory</a></li><li><a href="#graphql-data-factory">GraphQL Data Factory</a></li></ul></li><li><a href="#requests-using-browser-session">Requests Using Browser Session</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

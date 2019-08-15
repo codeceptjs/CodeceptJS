@@ -55,6 +55,7 @@
 <url> <loc>https://codecept.io/mobile</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/mobile" /> </url>
 <url> <loc>https://codecept.io/nightmare</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/nightmare" /> </url>
 <url> <loc>https://codecept.io/pageobjects</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/pageobjects" /> </url>
+<url> <loc>https://codecept.io/parallel</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/parallel" /> </url>
 <url> <loc>https://codecept.io/plugins</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/plugins" /> </url>
 <url> <loc>https://codecept.io/puppeteer</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/puppeteer" /> </url>
 <url> <loc>https://codecept.io/quickstart</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/quickstart" /> </url>

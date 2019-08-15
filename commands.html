@@ -31,84 +31,102 @@
 <p>Executes tests. Requires <code>codecept.conf.js</code> config to be present in provided path.</p>
 <hr>
 <p>Run all tests from current dir</p>
-<pre><code class="hljs css language-sh">codeceptjs run
+<pre><code class="hljs css language-sh">npx codeceptjs run
 </code></pre>
 <p>Load config and run tests from <code>test</code> dir</p>
-<pre><code class="hljs css language-sh">codeceptjs run -c <span class="hljs-built_in">test</span>
+<pre><code class="hljs css language-sh">npx codeceptjs run -c <span class="hljs-built_in">test</span>
 </code></pre>
 <p>Run only tests with &quot;signin&quot; word in name</p>
-<pre><code class="hljs css language-sh">codeceptjs run --grep <span class="hljs-string">"signin"</span>
+<pre><code class="hljs css language-sh">npx codeceptjs run --grep <span class="hljs-string">"signin"</span>
 </code></pre>
 <p>Run all tests without &quot;@IEOnly&quot; word in name</p>
-<pre><code class="hljs css language-sh">codeceptjs run --grep <span class="hljs-string">"@IEOnly"</span> --invert
+<pre><code class="hljs css language-sh">npx codeceptjs run --grep <span class="hljs-string">"@IEOnly"</span> --invert
 </code></pre>
 <p>Run single test [path to codecept.js] [test filename]</p>
-<pre><code class="hljs css language-sh">codeceptjs run github_test.js
+<pre><code class="hljs css language-sh">npx codeceptjs run github_test.js
 </code></pre>
 <p>Run single test with steps printed</p>
-<pre><code class="hljs css language-sh">codeceptjs run github_test.js --steps
+<pre><code class="hljs css language-sh">npx codeceptjs run github_test.js --steps
 </code></pre>
 <p>Run single test in debug mode</p>
-<pre><code class="hljs css language-sh">codeceptjs run github_test.js --debug
+<pre><code class="hljs css language-sh">npx codeceptjs run github_test.js --debug
 </code></pre>
 <p>Run test with internal logs printed (global promises, and events).</p>
-<pre><code class="hljs css language-sh">codeceptjs run github_test.js --verbose
+<pre><code class="hljs css language-sh">npx codeceptjs run github_test.js --verbose
 </code></pre>
 <p>Select config file manually (<code>-c</code> or <code>--config</code> option)</p>
-<pre><code class="hljs css language-sh">codeceptjs run -c my.codecept.conf.js
-codeceptjs run --config path/to/codecept.json
+<pre><code class="hljs css language-sh">npx codeceptjs run -c my.codecept.conf.js
+npx codeceptjs run --config path/to/codecept.json
 </code></pre>
 <p>Override config on the fly. Provide valid JSON which will be merged into current config:</p>
-<pre><code class="hljs css language-sh">codeceptjs run --override <span class="hljs-string">'{ "helpers": {"WebDriver": {"browser": "chrome"}}}'</span>
+<pre><code class="hljs css language-sh">npx codeceptjs run --override <span class="hljs-string">'{ "helpers": {"WebDriver": {"browser": "chrome"}}}'</span>
 </code></pre>
 <p>Run tests and produce xunit report:</p>
-<pre><code class="hljs css language-sh">codeceptjs run --reporter xunit
+<pre><code class="hljs css language-sh">npx codeceptjs run --reporter xunit
 </code></pre>
 <p>Use any of <a href="https://github.com/mochajs/mocha/tree/master/lib/reporters">Mocha reporters</a> used.</p>
-<h2><a class="anchor" aria-hidden="true" id="run-multiple"></a><a href="#run-multiple" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run multiple</h2>
-<p>Run multiple suites.</p>
-<pre><code class="hljs css language-sh">codeceptjs run-multiple smoke:chrome regression:firefox
+<h2><a class="anchor" aria-hidden="true" id="run-workers"></a><a href="#run-workers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run Workers</h2>
+<p>Run tests in parallel threads.</p>
+<pre><code class="hljs">npx codeceptjs run-workers <span class="hljs-number">3</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="dry-run"></a><a href="#dry-run" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dry Run</h2>
+<p>Prints test scenarios without executing them</p>
+<pre><code class="hljs">npx codeceptjs dry-run
+</code></pre>
+<p>When passed <code>--steps</code> or <code>--debug</code> option runs tests, disabling all plugins and helpers, so you can get step-by-step report with no tests actually executed.</p>
+<pre><code class="hljs">npx codeceptjs dry-run --steps
+</code></pre>
+<p>If a plugin needs to be enabled in <code>dry-run</code> mode, pass its name in <code>-p</code> option:</p>
+<pre><code class="hljs">npx codeceptjs dry-run --steps -p allure
+</code></pre>
+<p>To enable bootstrap script in dry-run mode, pass in <code>--bootstrap</code> option when running with <code>--steps</code> or <code>--debug</code></p>
+<pre><code class="hljs">nox codeceptjs dry-run --steps --bootstrap
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="run-multiple"></a><a href="#run-multiple" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run Multiple</h2>
+<p>Run multiple suites. Unlike <code>run-workers</code> spawns processes to execute tests.
+<a href="https://codecept.io/advanced#multiple-browsers-execution">Requires additional configuration</a> and can be used to execute tests in multiple browsers.</p>
+<pre><code class="hljs css language-sh">npx codeceptjs run-multiple smoke:chrome regression:firefox
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="init"></a><a href="#init" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Init</h2>
 <p>Creates <code>codecept.conf.js</code> file in current directory:</p>
-<pre><code class="hljs css language-sh">codeceptjs init
+<pre><code class="hljs css language-sh">npx codeceptjs init
 </code></pre>
 <p>Or in provided path</p>
-<pre><code class="hljs css language-sh">codecept init <span class="hljs-built_in">test</span>
+<pre><code class="hljs css language-sh">npx codecept init <span class="hljs-built_in">test</span>
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="migrate"></a><a href="#migrate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Migrate</h2>
 <p>Migrate your current <code>codecept.json</code> to <code>codecept.conf.js</code></p>
-<pre><code class="hljs css language-sh">codeceptjs migrate
+<pre><code class="hljs css language-sh">npx codeceptjs migrate
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="shell"></a><a href="#shell" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shell</h2>
 <p>Interactive shell. Allows to try <code>I.</code> commands in runtime</p>
-<pre><code class="hljs css language-sh">codeceptjs shell
+<pre><code class="hljs css language-sh">npx codeceptjs shell
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="generators"></a><a href="#generators" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Generators</h2>
 <p>Create new test</p>
-<pre><code class="hljs css language-sh">codeceptjs generate:<span class="hljs-built_in">test</span>
+<pre><code class="hljs css language-sh">npx codeceptjs generate:<span class="hljs-built_in">test</span>
 </code></pre>
 <p>Create new pageobject</p>
-<pre><code class="hljs css language-sh">codeceptjs generate:pageobject
+<pre><code class="hljs css language-sh">npx codeceptjs generate:pageobject
 </code></pre>
 <p>Create new helper</p>
-<pre><code class="hljs css language-sh">codeceptjs generate:helper
+<pre><code class="hljs css language-sh">npx codeceptjs generate:helper
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="typescript-definitions"></a><a href="#typescript-definitions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TypeScript Definitions</h2>
 <p>TypeScript Definitions allows IDEs to provide autocompletion when writing tests.</p>
-<pre><code class="hljs css language-sh">codeceptjs def
-codeceptjs def --config path/to/codecept.json
+<pre><code class="hljs css language-sh">npx codeceptjs def
+npx codeceptjs def --config path/to/codecept.json
 </code></pre>
 <p>After doing that IDE should provide autocompletion for <code>I</code> object inside <code>Scenario</code> and <code>within</code> blocks.</p>
 <p>Add optional parameter <code>output</code> (or shortcat <code>-o</code>), if you want to place your definition file in specific folder:</p>
-<pre><code class="hljs css language-sh">codeceptjs def --output ./tests/typings
-codeceptjs def -o ./tests/typings
+<pre><code class="hljs css language-sh">npx codeceptjs def --output ./tests/typings
+npx codeceptjs def -o ./tests/typings
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="list-commands"></a><a href="#list-commands" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>List Commands</h2>
 <p>Prints all available methods of <code>I</code> to console</p>
-<pre><code class="hljs css language-sh">codeceptjs list
+<pre><code class="hljs css language-sh">npx codeceptjs list
 </code></pre>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 2019-6-3</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/installation"><span class="arrow-prev">← </span><span>Installation</span></a><a class="docs-next button" href="/configuration"><span>Configuration</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#run">Run</a></li><li><a href="#run-multiple">Run multiple</a></li><li><a href="#init">Init</a></li><li><a href="#migrate">Migrate</a></li><li><a href="#shell">Shell</a></li><li><a href="#generators">Generators</a></li><li><a href="#typescript-definitions">TypeScript Definitions</a></li><li><a href="#list-commands">List Commands</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 8/15/2019</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/installation"><span class="arrow-prev">← </span><span>Installation</span></a><a class="docs-next button" href="/configuration"><span>Configuration</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#run">Run</a></li><li><a href="#run-workers">Run Workers</a></li><li><a href="#dry-run">Dry Run</a></li><li><a href="#run-multiple">Run Multiple</a></li><li><a href="#init">Init</a></li><li><a href="#migrate">Migrate</a></li><li><a href="#shell">Shell</a></li><li><a href="#generators">Generators</a></li><li><a href="#typescript-definitions">TypeScript Definitions</a></li><li><a href="#list-commands">List Commands</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
