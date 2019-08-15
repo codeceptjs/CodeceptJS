@@ -1,3 +1,7 @@
+## 2.3.0
+
+* [Appium] Optimization when clicking, searching for fields by accessibility id. See #1777 by @gagandeepsingh26
+
 ## 2.2.1
 
 * [WebDriver] A [dedicated guide](https://codecept.io/webdriver) written.
