@@ -87,6 +87,32 @@ Run tests in parallel threads.
 npx codeceptjs run-workers 3
 ```
 
+## Dry Run
+
+Prints test scenarios without executing them
+
+```
+npx codeceptjs dry-run
+```
+
+When passed `--steps` or `--debug` option runs tests, disabling all plugins and helpers, so you can get step-by-step report with no tests actually executed.
+
+```
+npx codeceptjs dry-run --steps
+```
+
+If a plugin needs to be enabled in `dry-run` mode, pass its name in `-p` option:
+
+```
+npx codeceptjs dry-run --steps -p allure
+```
+
+To enable bootstrap script in dry-run mode, pass in `--bootstrap` option when running with `--steps` or `--debug`
+
+```
+nox codeceptjs dry-run --steps --bootstrap
+```
+
 ## Run Multiple
 
 Run multiple suites. Unlike `run-workers` spawns processes to execute tests.
@@ -107,7 +133,7 @@ npx codeceptjs init
 Or in provided path
 
 ```sh
-codecept init test
+npx codecept init test
 ```
 
 ## Migrate

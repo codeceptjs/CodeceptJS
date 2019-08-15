@@ -139,6 +139,7 @@ exports.config = {
   // inside condecept.conf.js
   plugins: {
     wdio: {
+        enabled: true,
         services: ['selenium-standalone']
     }
   }
