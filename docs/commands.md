@@ -79,6 +79,14 @@ npx codeceptjs run --reporter xunit
 
 Use any of [Mocha reporters](https://github.com/mochajs/mocha/tree/master/lib/reporters) used.
 
+## Run Workers
+
+Run tests in parallel threads.
+
+```
+npx codeceptjs run-workers 3
+```
+
 ## Dry Run
 
 Prints test scenarios without executing them
@@ -105,9 +113,10 @@ To enable bootstrap script in dry-run mode, pass in `--bootstrap` option when ru
 nox codeceptjs dry-run --steps --bootstrap
 ```
 
-## Run multiple
+## Run Multiple
 
-Run multiple suites.
+Run multiple suites. Unlike `run-workers` spawns processes to execute tests.
+[Requires additional configuration](https://codecept.io/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
 
 ```sh
 npx codeceptjs run-multiple smoke:chrome regression:firefox
