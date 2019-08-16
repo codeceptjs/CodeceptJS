@@ -27,10 +27,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-  plugins: {
-    wdio: {
-      enabled: true,
-      services: ['selenium-standalone'],
-    },
-  },
 };
