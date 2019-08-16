@@ -17,7 +17,6 @@ module.exports.config = {
       //   },
       // },
     },
-    Polly: {},
   },
   include: {},
   bootstrap: done => setTimeout(done, 5000), // let's wait for selenium
@@ -26,11 +25,5 @@ module.exports.config = {
   gherkin: {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
-  },
-  plugins: {
-    wdio: {
-      enabled: true,
-      services: ['selenium-standalone'],
-    },
   },
 };
