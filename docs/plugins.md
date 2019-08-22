@@ -29,7 +29,7 @@ Add this plugin to config file:
 
 Run tests with allure plugin enabled:
 
-    codeceptjs run --plugins allure
+    npx codeceptjs run --plugins allure
 
 By default, allure reports are saved to `output` directory.
 Launch Allure server and see the report like on a screenshot above:
@@ -69,7 +69,7 @@ const allure = codeceptjs.container.plugins('allure');
 ## autoDelay
 
 Sometimes it takes some time for a page to respond to user's actions.
-Depending on app's perfromance this can be either slow or fast.
+Depending on app's performance this can be either slow or fast.
 
 For instance, if you click a button and nothing happens - probably JS event is not attached to this button yet
 Also, if you fill field and input validation doesn't accept your input - maybe because you typed value too fast.
@@ -89,9 +89,9 @@ Commands affected (by default):
 ##### Configuration
 
 ```js
-"plugins": {
-   "autoDelay": {
-     "enabled": true
+plugins: {
+   autoDelay: {
+     enabled: true
    }
 }
 ```
@@ -311,9 +311,9 @@ Dumps puppeteers code coverage after every test.
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
 ```js
-"plugins": {
-   "puppeteerCoverage": {
-     "enabled": true
+plugins: {
+   puppeteerCoverage: {
+     enabled: true
    }
 }
 ```
@@ -348,9 +348,9 @@ Retries each failed step in a test.
 Add this plugin to config file:
 
 ```js
-"plugins": {
-    "retryFailedStep": {
-       "enabled": true
+plugins: {
+    retryFailedStep: {
+       enabled: true
     }
 }
 ```
@@ -387,9 +387,9 @@ This plugin is **enabled by default**.
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
 ```js
-"plugins": {
-   "screenshotOnFail": {
-     "enabled": true
+plugins: {
+   screenshotOnFail: {
+     enabled: true
    }
 }
 ```
@@ -413,7 +413,7 @@ By default, reports are generated only for failed tests.
 
 Run tests with plugin enabled:
 
-    codeceptjs run --plugins stepByStepReport
+    npx codeceptjs run --plugins stepByStepReport
 
 ##### Configuration
 

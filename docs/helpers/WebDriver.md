@@ -963,6 +963,17 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 const window = await I.grabCurrentWindowHandle();
 ```
 
+### grabGeoLocation
+
+Return the current geo location 
+
+```js
+let geoLocation = await I.grabGeoLocation();
+```
+
+
+
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
@@ -1621,6 +1632,23 @@ I.setCookie({name: 'auth', value: true});
 Uses Selenium's JSON [cookie
     format][29].
 
+### setGeoLocation
+
+Set the current geo location
+
+```js
+I.setGeoLocation(121.21, 11.56);
+I.setGeoLocation(121.21, 11.56, 10);
+```
+
+#### Parameters
+
+-   `latitude` [number][22] to set.
+-   `longitude` [number][22] to set
+-   `altitude` [number][22] (optional, null by default) to set
+    
+ 
+
 ### switchTo
 
 Switches frame or in case of null locator reverts to parent.
@@ -1673,7 +1701,7 @@ const windows = await I.grabAllWindowHandles();
 // ... do something
 await I.switchToWindow( windows[0] );
 
-const window = await.grabCurrentWindowHandle();
+const window = await I.grabCurrentWindowHandle();
 // ... do something
 await I.switchToWindow( window );
 ```

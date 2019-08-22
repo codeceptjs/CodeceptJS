@@ -140,6 +140,9 @@
       "pageobjects": {
         "title": "Reusing Code with Page Objects"
       },
+      "parallel": {
+        "title": "Parallel Execution"
+      },
       "plugins": {
         "title": "Plugins"
       },
@@ -156,7 +159,7 @@
         "title": "Reporters"
       },
       "testcafe": {
-        "title": "testcafe"
+        "title": "Testing with TestCafe"
       },
       "translation": {
         "title": "Translation"

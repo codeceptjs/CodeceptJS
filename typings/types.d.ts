@@ -8095,6 +8095,7 @@ declare namespace CodeceptJS {
      */
     interface ActorStatic {
         /**
+         * add print comment method`
          * @param {string} msg
          * @param {string} color
          * @return {Promise<any> | undefined}
