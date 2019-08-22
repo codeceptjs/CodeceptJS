@@ -5,8 +5,3 @@ type KeyValueTupleToObject<T extends [keyof any, any]> = {
 export type Translate<T, M extends Record<string, string>> = KeyValueTupleToObject<ValueOf<{
   [K in keyof T]: [K extends keyof M ? M[K] : K, T[K]]
 }>>
-
-export type ActorStatic = {
-  say: (msg: any, color?: any) => Promise<any> | undefined,
-  retry: (opts: any) => any
-}

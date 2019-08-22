@@ -2,95 +2,173 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
+/// <reference types="Mocha" />
 
-import index = require("../lib/index");
+declare namespace CodeceptJS {
+  type WithTranslation<T> = T &
+    import("./utils").Translate<T, CodeceptJS.Translation.Actions>;
 
-declare global {
-  namespace CodeceptJS {
-    interface Step {
-      isMetaStep(): this is MetaStep;
-    }
-
-    interface index {
-      codecept: typeof CodeceptJS.Codecept;
-      container: typeof CodeceptJS.Container;
-      config: typeof CodeceptJS.Config;
-      helper: typeof CodeceptJS.Helper;
-      pause: typeof CodeceptJS.pause;
-      within: typeof CodeceptJS.within;
-      dataTable: typeof CodeceptJS.DataTable;
-      locator: typeof CodeceptJS.Locator;
-
-      // export typings from JS files, type any when allowJs is set to false
-      recorder: typeof index.recorder;
-      event: typeof index.event;
-      output: typeof index.output;
-      store: typeof index.store;
-    }
-
-    interface Globals {
-      codeceptjs: typeof codeceptjs;
-    }
-
-    type ILocator = {id: string }
-      | {xpath: string }
-      | {css: string }
-      | {name: string }
-      | {frame: string }
-      | {android: string }
-      | {ios: string }
-      | {react: string };
-
-    type LocatorOrString = string | ILocator | typeof CodeceptJS.Locator;;
+  // Could get extended by user generated typings
+  interface Methods extends ActorStatic {}
+  interface I extends WithTranslation<Methods> {}
+  interface IHook {}
+  interface IScenario {}
+  interface CallbackOrder extends Array<any> {}
+  interface SupportObject {
+    I: CodeceptJS.I;
   }
-  const codeceptjs: CodeceptJS.index;
-  const Helper: typeof CodeceptJS.Helper;
-  const pause: typeof CodeceptJS.pause;
-  const within: typeof CodeceptJS.within;
-  const session: typeof CodeceptJS.session;
-  const DataTable: typeof CodeceptJS.DataTable;
+  namespace Translation {
+    interface Actions {}
+  }
 
-  const codecept_dir: string;
-  const codecept_helper: typeof CodeceptJS.Helper;
-  const output_dir: string;
+  // Extending JSDoc generated typings
+  interface Step {
+    isMetaStep(): this is MetaStep;
+  }
 
-  const locate: typeof CodeceptJS.Locator.build;
-  const secret: typeof CodeceptJS.Secret.secret;
+  interface index {
+    actor: CodeceptJS.actor;
+    pause: typeof CodeceptJS.pause;
+    within: typeof CodeceptJS.within;
+  }
 
-  const Given: typeof CodeceptJS.addStep;
-  const When: typeof CodeceptJS.addStep;
-  const Then: typeof CodeceptJS.addStep;
+  // Types who are not be defined by JSDoc
+  type actor = <T extends { [action: string]: Function }>(
+    customSteps: T & ThisType<WithTranslation<Methods & T>>
+  ) => WithTranslation<Methods & T>;
 
-  const Feature: typeof CodeceptJS.Feature;
+  type ILocator =
+    | { id: string }
+    | { xpath: string }
+    | { css: string }
+    | { name: string }
+    | { frame: string }
+    | { android: string }
+    | { ios: string }
+    | { react: string };
 
-  // Make sure type are available within an browser context.
-  interface Window extends CodeceptJS.Globals {}
+  type LocatorOrString = string | ILocator | Locator;
 
-  namespace NodeJS {
-    interface Process {
-      profile: string;
-    }
+  interface HookCallback<U extends any[]> { (...args: U): void; }
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario }
+  interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
-    interface Global extends CodeceptJS.Globals {
-      codecept_dir: typeof codecept_dir;
-      codecept_helper: typeof CodeceptJS.Helper;
-      output_dir: typeof output_dir;
+  interface IScenario {
+    <T extends any[] = CallbackOrder>(
+      title: string,
+      callback: HookCallback<T>
+    ): ScenarioConfig;
+    <T extends any[] = CallbackOrder>(
+      title: string,
+      opts: { [key: string]: any },
+      callback: HookCallback<T>
+    ): ScenarioConfig;
+  }
+  interface IHook {
+    <T extends any[] = CallbackOrder>(callback: HookCallback<T>): void;
+  }
 
-      Helper: typeof CodeceptJS.Helper;
-      pause: typeof CodeceptJS.pause;
-      within: typeof CodeceptJS.within;
-      session: typeof CodeceptJS.session;
-      DataTable: typeof CodeceptJS.DataTable;
-
-      locate: typeof locate;
-      inject: any;
-      secret: typeof secret;
-
-      Given: typeof Given;
-      When: typeof When;
-      Then: typeof Then;
-    }
+  interface Globals {
+    codeceptjs: typeof codeceptjs;
   }
 }
 
-export = codeceptjs;
+// Globals
+declare const codecept_dir: string;
+declare const output_dir: string;
+
+declare const actor: CodeceptJS.actor;
+declare const codecept_actor: CodeceptJS.actor;
+declare const Helper: typeof CodeceptJS.Helper;
+declare const codecept_helper: typeof CodeceptJS.Helper;
+declare const pause: typeof CodeceptJS.pause;
+declare const within: typeof CodeceptJS.within;
+declare const session: typeof CodeceptJS.session;
+declare const DataTable: typeof CodeceptJS.DataTable;
+declare const codeceptjs: CodeceptJS.index;
+declare const locate: typeof CodeceptJS.Locator.build;
+declare function inject(): CodeceptJS.SupportObject;
+declare function inject<T extends keyof CodeceptJS.SupportObject>(
+  name: T
+): CodeceptJS.SupportObject[T];
+declare const secret: typeof CodeceptJS.Secret.secret;
+
+// BDD
+declare const Given: typeof CodeceptJS.addStep;
+declare const When: typeof CodeceptJS.addStep;
+declare const Then: typeof CodeceptJS.addStep;
+
+declare const Feature: typeof CodeceptJS.Feature;
+declare const Scenario: CodeceptJS.Scenario;
+declare const xScenario: CodeceptJS.IScenario;
+declare function Data(data: any): CodeceptJS.IData;
+declare function xData(data: any): CodeceptJS.IData;
+
+// Hooks
+declare const BeforeSuite: CodeceptJS.IHook;
+declare const AfterSuite: CodeceptJS.IHook;
+declare const Background: CodeceptJS.IHook;
+declare const Before: CodeceptJS.IHook;
+declare const After: CodeceptJS.IHook;
+
+interface Window {
+  codeceptjs: CodeceptJS.browserCodecept;
+  resq: any;
+}
+
+declare namespace NodeJS {
+  interface Process {
+    profile: string;
+  }
+
+  interface Global extends CodeceptJS.Globals {
+    codecept_dir: typeof codecept_dir;
+    output_dir: typeof output_dir;
+
+    actor: typeof actor;
+    codecept_actor: typeof codecept_actor;
+    Helper: typeof Helper;
+    codecept_helper: typeof codecept_helper;
+    pause: typeof pause;
+    within: typeof within;
+    session: typeof session;
+    DataTable: typeof DataTable;
+    locate: typeof locate;
+    inject: typeof inject;
+    secret: typeof secret;
+
+    // BDD
+    Given: typeof Given;
+    When: typeof When;
+    Then: typeof Then;
+  }
+}
+
+declare namespace Mocha {
+  interface MochaGlobals {
+    Feature: typeof Feature;
+    Scenario: typeof Scenario;
+    xScenario: typeof xScenario;
+    Data: typeof Data;
+    xData: typeof xData;
+    BeforeSuite: typeof BeforeSuite;
+    AfterSuite: typeof AfterSuite;
+    Background: typeof Background;
+    Before: typeof Before;
+    After: typeof After;
+  }
+
+  interface Suite {
+    tags: any[]
+    comment: string
+    feature: any
+  }
+
+  interface Test {
+    tags: any[]
+  }
+}
+
+declare module "codeceptjs" {
+  export = codeceptjs;
+}
