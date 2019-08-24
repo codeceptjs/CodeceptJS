@@ -68,12 +68,11 @@
   },
   "devDependencies": {
     "@pollyjs/adapter-puppeteer": "^2.5.0",
-    "@pollyjs/adapter-xhr": "^2.6.2",
     "@pollyjs/core": "^2.5.0",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.10.49",
     "@wdio/sauce-service": "^5.10.8",
-    "@wdio/selenium-standalone-service": "^5.12.0",
+    "@wdio/selenium-standalone-service": "^5.9.3",
     "@wdio/utils": "^5.9.3",
     "apollo-server-express": "^2.8.1",
     "chai": "^3.4.1",
@@ -101,7 +100,6 @@
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^5.10.9",
     "xmldom": "^0.1.27",
-    "xmlhttprequest": "^1.8.0",
     "xpath": "0.0.27"
   },
   "engines": {
