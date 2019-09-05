@@ -5,7 +5,7 @@ Thanks for getting here. If you have a good will to improve CodeceptJS we are al
 To start you need:
 
 1.  Fork the repo.
-2.  Run `npm install` to install all required libraries
+2.  Run `npm i` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
 5. Update documentation

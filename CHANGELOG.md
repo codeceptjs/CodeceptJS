@@ -298,7 +298,7 @@ Use it with `FileSystem` helper to test availability of a file:
 
     1. Install latest webdriverio
     ```
-    npm install webdriverio@5 --save
+    npm i webdriverio@5 --save
     ```
 
     2. Replace `WebDriverIO` => `WebDriver` helper name in config.

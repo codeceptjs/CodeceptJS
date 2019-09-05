@@ -154,7 +154,7 @@ CodeceptJS has built-in support for Allure reports. Inside reports you will have
 Allure requires **Java 8** to work. Then Allure can be installed via NPM:
 
 ```
-npm install -g allure-commandline --save-dev
+npm i -D -g allure-commandline
 ```
 
 Add [Allure plugin](https://codecept.io/plugins/#allure) in config under `plugins` section.

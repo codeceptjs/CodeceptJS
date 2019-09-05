@@ -94,7 +94,7 @@ Sure, this can't be taken as a valuable benchmark but more like a proof of conce
 To start you need CodeceptJS with nightmare package installed.
 
 ```bash
-npm install -g nightmare
+npm i -g nightmare
 ```
 
 And a basic project initialized

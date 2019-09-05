@@ -17,7 +17,7 @@ Enables Allure reporter.
 
 To start please install `allure-commandline` package (which requires Java 8)
 
-    npm install -g allure-commandline --save-dev
+    npm i -D -g allure-commandline
 
 Add this plugin to config file:
 

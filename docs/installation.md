@@ -8,7 +8,7 @@ title: Installation
 Use NPM install CodeceptJS:
 
 ```sh
-npm install --save-dev codeceptjs
+npm i -D codeceptjs
 ```
 
 and started as
@@ -20,25 +20,25 @@ and started as
 To use it with WebDriver install webdriverio package:
 
 ```sh
-npm install webdriverio --save-dev
+npm i -D webdriverio
 ```
 
 To use it with Protractor install protractor package:
 
 ```sh
-npm install protractor --save-dev
+npm i -D protractor
 ```
 
 To use it with Nightmare install nightmare and nightmare-upload packages:
 
 ```sh
-npm install nightmare --save-dev
+npm i -D nightmare
 ```
 
 To use it with Puppeteer install puppeteer package:
 
 ```sh
-npm install puppeteer --save-dev
+npm i -D puppeteer
 ```
 
 ## WebDriver
@@ -63,13 +63,13 @@ docker run --net=host selenium/standalone-chrome
 CodeceptJS can be installed via NPM globally:
 
 ```sh
-[sudo] npm install -g codeceptjs webdriverio
+[sudo] npm i -g codeceptjs webdriverio
 # or
-[sudo] npm install -g codeceptjs protractor
+[sudo] npm i -g codeceptjs protractor
 # or
-[sudo] npm install -g codeceptjs puppeteer
+[sudo] npm i -g codeceptjs puppeteer
 # or
-[sudo] npm install -g codeceptjs nightmare
+[sudo] npm i -g codeceptjs nightmare
 ```
 
 then it can be started as

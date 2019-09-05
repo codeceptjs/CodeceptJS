@@ -55,7 +55,7 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 ## Install
 
 ```sh
-npm install codeceptjs --save
+npm i codeceptjs --save
 ```
 
 Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run

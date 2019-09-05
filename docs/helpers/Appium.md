@@ -21,7 +21,7 @@ It allows you to run Selenium tests on mobile devices and also test native, hybr
 Download and install [Appium][2]
 
 ```sh
-npm install -g appium
+npm i -g appium
 ```
 
 Launch the daemon: `appium`

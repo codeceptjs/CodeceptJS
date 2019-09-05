@@ -20,7 +20,7 @@ Currently there are two helpers available for Visual testing with CodeceptJS
 To install the package, just run
 
 ```
-npm install codeceptjs-resemblehelper --save
+npm i codeceptjs-resemblehelper --save
 ```
 
 ### Configuring
@@ -119,7 +119,7 @@ Visual Knight is a SaaS product which strongly supports CodeceptJS with multiple
 Create an account at [Visual Knight](https://www.visual-knight.io) and install the npm package
 
 ```
-npm install @visual-knight/codeceptjs -D
+npm i @visual-knight/codeceptjs -D
 ```
 
 ### Configuring

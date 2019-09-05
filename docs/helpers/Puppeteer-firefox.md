@@ -9,7 +9,7 @@ Some of Puppeteer API methods has not supported in firefox yet. You could check 
 ## Installation
 
 ```sh
-npm install puppeteer-firefox
+npm i puppeteer-firefox
 ```
 
 ## Configuration

@@ -82,7 +82,7 @@ Surely, it can't cover 100% of cases but it aims for 90%, for others you can wri
 To start using CodeceptJS you will need to install it via NPM and initialize it in directory with tests.
 
 ```bash
-npm install codeceptjs --save
+npm i codeceptjs --save
 npx codeceptjs init
 ```
 

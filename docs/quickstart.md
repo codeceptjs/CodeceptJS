@@ -44,7 +44,7 @@ npm init -y
 1) Install CodeceptJS with Puppeteer
 
 ```
-npm install codeceptjs puppeteer --save-dev
+npm i codeceptjs puppeteer --save-dev
 ```
 
 

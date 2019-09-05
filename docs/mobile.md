@@ -58,7 +58,7 @@ To run mobile test you need either an device emulator (available with Android SD
 CodeceptJS should be installed with webdriverio support:
 
 ```bash
-npm install -g codeceptjs webdriverio
+npm i -g codeceptjs webdriverio
 ```
 
 ## Configuring
