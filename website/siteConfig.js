@@ -135,6 +135,9 @@ const siteConfig = {
     algoliaOptions: {} // Optional, if provided by Algolia
   },
 
+  gaTrackingId: 'UA-30075781-3',
+  gaGtag: true,
+
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
 

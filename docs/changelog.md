@@ -5,12 +5,26 @@ title: Releases
 
 ## 2.3.0
 
-* [GraphQL][GraphQLDataFactory] Helpers introduced for **data management over GraphQL** APIs. By **[radhey1851](https://github.com/radhey1851)**.
-  * Learn how to [use GraphQL helper docs](https://codecept.io/data#graphql)
-  * And how to combine it with **[GraphQLDataFactory]** * **Updated to use Mocha 6**. See [#1802](https://github.com/Codeception/CodeceptJS/issues/1802) by **[elukoyanov](https://github.com/elukoyanov)**
+
+* **[Parallel testing by workers](https://codecept.io/parallel#parallel-execution-by-workers) introduced** by **[VikalpP](https://github.com/VikalpP)** and **[davertmik](https://github.com/davertmik)**. Use `run-workers` command as faster and simpler alternative to `run-multiple`. Requires NodeJS v12
+
+```
+# run all tests in parallel using 3 workers
+npx codeceptjs run-workers 3
+```
+* [GraphQL][GraphQLDataFactory] **Helpers for data management over GraphQL** APIs added. By **[radhey1851](https://github.com/radhey1851)**.
+  * Learn how to [use GraphQL helper](https://codecept.io/data#graphql) to access GarphQL API
+  * And how to combine it with [GraphQLDataFactory](https://codecept.io/data#graphql-data-factory) to generate and persist test data.
+* **Updated to use Mocha 6**. See [#1802](https://github.com/Codeception/CodeceptJS/issues/1802) by **[elukoyanov](https://github.com/elukoyanov)**
+* Added `dry-run` command to print steps of test scenarios without running them. Fails to execute scenarios with `grab*` methods or custom code. See [#1825](https://github.com/Codeception/CodeceptJS/issues/1825) for more details.
+
+```
+npx codeceptjs dry-run
+```
+
 * **[Appium]** Optimization when clicking, searching for fields by accessibility id. See [#1777](https://github.com/Codeception/CodeceptJS/issues/1777) by **[gagandeepsingh26](https://github.com/gagandeepsingh26)**
 * **[TestCafe]** Fixed `switchTo` by **[KadoBOT](https://github.com/KadoBOT)**
-* **[WebDrover]** Added geolocation actions by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[WebDriver]** Added geolocation actions by **[PeterNgTr](https://github.com/PeterNgTr)**
     * `grabGeoLocation()`
     * `setGeoLocation()`
 * **[Polly]** Check typeof arguments for mock requests by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1815](https://github.com/Codeception/CodeceptJS/issues/1815)
@@ -18,6 +32,10 @@ title: Releases
   * `codeceptjs` command prints list of all available commands
   * added `codeceptjs -V` flag to print version information
   * warns on unknown command
+* Added TypeScript files support to `run-multiple` by **[z4o4z](https://github.com/z4o4z)**
+* Fixed element position bug in locator builder. See [#1829](https://github.com/Codeception/CodeceptJS/issues/1829) by **[AnotherAnkor](https://github.com/AnotherAnkor)**
+* Various TypeScript typings updates by **[elukoyanov](https://github.com/elukoyanov)** and **[Vorobeyko](https://github.com/Vorobeyko)**
+* Added `event.step.comment` event for all comment steps like `I.say` or gherking steps.
 
 ## 2.2.1
 
