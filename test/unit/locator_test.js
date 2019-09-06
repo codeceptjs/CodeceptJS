@@ -156,7 +156,7 @@ describe('Locator', () => {
       .find('td')
       .first();
     const nodes = xpath.select(l.toXPath(), doc);
-    expect(nodes).to.have.length(1);
+    expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Show');
   });
 
@@ -186,6 +186,18 @@ describe('Locator', () => {
         .withText('Also Edit'));
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
+  });
+
+  it('should throw an error when xpath with round brackets is nested', () => {
+    assert.throws(() => {
+      Locator.build('tr').find('(./td)[@id="id"]');
+    }, /round brackets/);
+  });
+
+  it('should throw an error when locator with specific position is nested', () => {
+    assert.throws(() => {
+      Locator.build('tr').withChild(Locator.build('td').first());
+    }, /round brackets/);
   });
 
   it('should not select element by deep nested siblings', () => {
