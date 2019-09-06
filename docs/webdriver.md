@@ -378,21 +378,22 @@ Scenario('should open main page of configured site, open a popup, switch to main
 
 ## Mocking Requests
 
-Web application sends various requests to local services (Rest API, GraphQL) or to 3rd party services (CDNS, Google Analytics, etc).
-When you run tests with WebDriver you can control those requests by mocking them. For instance, you can speed up your tests by blocking trackers, Google Analytics, and other services you don't control.
+When testing web application you can disable some of external requests calls by enabling HTTP mocking.
+This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
 
-Also you can replace real request with a one explicitly defined. This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
+  > **WebDriver has limited ability to mock requests**, so you can only mock only requests performed after page is loaded. This means that you can't block Google Analytics, or CDN calls, but you can mock API requests performed on user action.
 
-To mock requests enable additional helper [Polly](https://codecept.io/helpers/Polly) (which is based on Polly.js).
+To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
 
 ```js
 helpers: {
    WebDriver: {
      // regular WebDriver config here
    },
-   Polly: {}
+   MockRequest: {}
 }
 ```
+
 
 The function `mockRequest` will be added to `I` object. You can use it to explicitly define which requests to block and which response they should return instead:
 
@@ -407,7 +408,7 @@ I.mockRequest('POST', '/api/users', { user: 'davert' });
 I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
 ```
 
-**Note: In WebDriver mocking is disabled every time a new page is loaded. Hence, `_startMocking` method should be called and the mocks should be updated, after navigating to a new page. This is a limitation of WebDriver.**
+> In WebDriver mocking is disabled every time a new page is loaded. Hence, `startMocking` method should be called and the mocks should be updated, after navigating to a new page. This is a limitation of WebDriver. Consider using Puppeteer with MockRequest instead.
 
 ```js
 I.amOnPage('/xyz');
@@ -417,7 +418,7 @@ I.click('Go to Next Page');
 // in WebDriver as we can't detect that the page was reloaded, so no mocking :(
 ```
 
-> See [`mockRequest` API](https://codecept.io/helpers/Polly#mockrequest)
+> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
 
 To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
 

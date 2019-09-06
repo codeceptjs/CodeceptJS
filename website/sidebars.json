@@ -58,7 +58,7 @@
       "helpers/ApiDataFactory",
       "helpers/GraphQL",
       "helpers/GraphQLDataFactory",
-      "helpers/Polly",
+      "helpers/MockRequest",
       "helpers/FileSystem",
       "community-helpers"
     ]

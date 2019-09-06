@@ -181,14 +181,14 @@ When you run tests with Puppeteer you can control those requests by mocking them
 
 Also you can replace real request with a one explicitly defined. This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
 
-To mock requests enable additional helper [Polly](https://codecept.io/helpers/Polly) (which is based on Polly.js).
+To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
 
 ```js
 helpers: {
    Puppeteer: {
      // regular Puppeteer config here
    },
-   Polly: {}
+   MockRequest: {}
 }
 ```
 
@@ -211,7 +211,7 @@ I.mockRequest('POST', '/api/users', { user: 'davert' });
 I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
 ```
 
-> See [`mockRequest` API](https://codecept.io/helpers/Polly#mockrequest)
+> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
 
 To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
 

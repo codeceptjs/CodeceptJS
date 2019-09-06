@@ -83,6 +83,12 @@
       "helpers/FileSystem": {
         "title": "FileSystem"
       },
+      "helpers/GraphQL": {
+        "title": "GraphQL"
+      },
+      "helpers/GraphQLDataFactory": {
+        "title": "GraphQLDataFactory"
+      },
       "helpers/Mochawesome": {
         "title": "Mochawesome"
       },
