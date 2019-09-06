@@ -39,6 +39,7 @@
 <url> <loc>https://codecept.io/helpers/GraphQL</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/GraphQL" /> </url>
 <url> <loc>https://codecept.io/helpers/GraphQLDataFactory</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/GraphQLDataFactory" /> </url>
 <url> <loc>https://codecept.io/helpers/Mochawesome</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Mochawesome" /> </url>
+<url> <loc>https://codecept.io/helpers/MockRequest</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/MockRequest" /> </url>
 <url> <loc>https://codecept.io/helpers/Nightmare</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Nightmare" /> </url>
 <url> <loc>https://codecept.io/helpers/Polly</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Polly" /> </url>
 <url> <loc>https://codecept.io/helpers/Protractor</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://codecept.io/helpers/Protractor" /> </url>
