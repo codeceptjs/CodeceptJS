@@ -108,20 +108,22 @@ I.appendField('#myTextField', 'appended');
 
 ### attachFile
 
-Appends text to a input field or textarea.
-Field is located by name, label, CSS or XPath
+Attaches a file to element located by label, name, CSS or XPath
+Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
-I.appendField('#myTextField', 'appended');
+I.attachFile('Avatar', 'data/avatar.jpg');
+I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
 
 #### Parameters
 
--   `field` ([string][3] \| [object][4]) located by label|name|CSS|XPath|strict locator
--   `pathToFile`  
--   `value` [string][3] text value to append.
+-   `field`  
+-   `pathToFile` [string][3] local file path relative to codecept.json config file.
     
 
+-   `locator` ([string][3] \| [object][4]) field located by label|name|CSS|XPath|strict locator.
 
 ### checkOption
 
@@ -491,6 +493,19 @@ Returns [Promise][6]&lt;[number][7]> number of visible elements
 
 
 
+### grabPageScrollPosition
+
+Retrieves a page scroll position and returns it to test.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+```js
+let { x, y } = await I.grabPageScrollPosition();
+```
+
+Returns [Promise][6]&lt;[object][4]> scroll position
+
+
+
 ### grabSource
 
 Retrieves page source and returns it to test.
@@ -669,6 +684,46 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fullPage` [boolean][10] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
 
+
+### scrollPageToBottom
+
+Scroll page to the bottom.
+
+```js
+I.scrollPageToBottom();
+```
+
+
+
+
+### scrollPageToTop
+
+Scroll page to the top.
+
+```js
+I.scrollPageToTop();
+```
+
+
+
+
+### scrollTo
+
+Scrolls to element matched by locator.
+Extra shift can be set with offsetX and offsetY options.
+
+```js
+I.scrollTo('footer');
+I.scrollTo('#submit', 5, 5);
+```
+
+#### Parameters
+
+-   `locator` ([string][3] \| [object][4]) located by CSS|XPath|strict locator.
+-   `offsetX` [number][7] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][7] (optional, `0` by default) Y-axis offset.
+    
+ 
 
 ### see
 

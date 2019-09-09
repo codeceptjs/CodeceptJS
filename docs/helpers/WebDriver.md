@@ -42,15 +42,15 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 Example:
 
-```json
+```js
 {
-   "helpers": {
-     "WebDriver" : {
-       "smartWait": 5000,
-       "browser": "chrome",
-       "restart": false,
-       "windowSize": "maximize",
-       "timeouts": {
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
          "script": 60000,
          "page load": 10000
        }
@@ -64,15 +64,15 @@ website][6].
 
 ### Headless Chrome
 
-```json
+```js
 {
-   "helpers": {
-     "WebDriver" : {
-       "url": "http://localhost",
-       "browser": "chrome",
-       "desiredCapabilities": {
-         "chromeOptions": {
-           "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "chrome",
+       desiredCapabilities: {
+         chromeOptions: {
+           args: [ "--headless", "--disable-gpu", "--window-size=800,600" ]
          }
        }
      }
@@ -84,14 +84,14 @@ website][6].
 
 Additional configuration params can be used from [IE options][7]
 
-```json
+```js
 {
-   "helpers": {
-     "WebDriver" : {
-       "url": "http://localhost",
-       "browser": "internet explorer",
-       "desiredCapabilities": {
-         "ieOptions": {
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "internet explorer",
+       desiredCapabilities: {
+         ieOptions: {
            "ie.browserCommandLineSwitches": "-private",
            "ie.usePerProcessProxy": true,
            "ie.ensureCleanSession": true,
@@ -104,15 +104,18 @@ Additional configuration params can be used from [IE options][7]
 
 ### Selenoid Options
 
-```json
+[Selenoid][8] is a modern way to run Selenium inside Docker containers.
+Selenoid is easy to set up and provides more features than original Selenium Server. Use `selenoidOptions` to set Selenoid capabilities
+
+```js
 {
-   "helpers": {
-     "WebDriver" : {
-       "url": "http://localhost",
-       "browser": "chrome",
-       "desiredCapabilities": {
-         "selenoidOptions": {
-           "enableVNC": true,
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "chrome",
+       desiredCapabilities: {
+         selenoidOptions: {
+           enableVNC: true,
          }
        }
      }
@@ -120,17 +123,17 @@ Additional configuration params can be used from [IE options][7]
 }
 ```
 
-### Connect through proxy
+### Connect Through proxy
 
 CodeceptJS also provides flexible options when you want to execute tests to Selenium servers through proxy. You will
 need to update the `helpers.WebDriver.capabilities.proxy` key.
 
 ```js
 {
-    "helpers": {
-        "WebDriver": {
-            "capabilities": {
-                "proxy": {
+    helpers: {
+        WebDriver: {
+            capabilities: {
+                proxy: {
                     "proxyType": "manual|pac",
                     "proxyAutoconfigUrl": "URL TO PAC FILE",
                     "httpProxy": "PROXY SERVER",
@@ -151,10 +154,10 @@ For example,
 
 ```js
 {
-    "helpers": {
-        "WebDriver": {
-            "capabilities": {
-                "proxy": {
+    helpers: {
+        WebDriver: {
+            capabilities: {
+                proxy: {
                     "proxyType": "manual",
                     "httpProxy": "http://corporate.proxy:8080",
                     "socksUsername": "codeceptjs",
@@ -173,7 +176,7 @@ information.
 ### Cloud Providers
 
 WebDriver makes it possible to execute tests against services like `Sauce Labs` `BrowserStack` `TestingBot`
-Check out their documentation on [available parameters][8]
+Check out their documentation on [available parameters][9]
 
 Connecting to `BrowserStack` and `Sauce Labs` is simple. All you need to do
 is set the `user` and `key` parameters. WebDriver automatically know which
@@ -181,12 +184,12 @@ service provider to connect to.
 
 ```js
 {
-    "helpers":{
-        "WebDriver": {
-            "url": "YOUR_DESIRED_HOST",
-            "user": "YOUR_BROWSERSTACK_USER",
-            "key": "YOUR_BROWSERSTACK_KEY",
-            "capabilities": {
+    helpers:{
+        WebDriver: {
+            url: "YOUR_DESIRED_HOST",
+            user: "YOUR_BROWSERSTACK_USER",
+            key: "YOUR_BROWSERSTACK_KEY",
+            capabilities: {
                 "browserName": "chrome",
 
                 // only set this if you're using BrowserStackLocal to test a local domain
@@ -222,9 +225,9 @@ plugins: {
 }
 ```
 
-See [complete reference on webdriver.io][9].
+See [complete reference on webdriver.io][10].
 
-> Alternatively, use [codeceptjs-saucehelper][10] for better reporting.
+> Alternatively, use [codeceptjs-saucehelper][11] for better reporting.
 
 #### BrowserStack
 
@@ -248,13 +251,13 @@ plugins: {
 }
 ```
 
-See [complete reference on webdriver.io][11].
+See [complete reference on webdriver.io][12].
 
-> Alternatively, use [codeceptjs-bshelper][12] for better reporting.
+> Alternatively, use [codeceptjs-bshelper][13] for better reporting.
 
 #### TestingBot
 
-> Recommended: use official [TestingBot Helper][13].
+> Recommended: use official [TestingBot Helper][14].
 
 Alternatively, TestingBot can be configured via wdio service, which should be installed additionally:
 
@@ -276,25 +279,25 @@ plugins: {
 }
 ```
 
-See [complete reference on webdriver.io][14].
+See [complete reference on webdriver.io][15].
 
 #### Applitools
 
 Visual testing via Applitools service
 
-> Use [CodeceptJS Applitools Helper][15] with Applitools wdio service.
+> Use [CodeceptJS Applitools Helper][16] with Applitools wdio service.
 
 ### Multiremote Capabilities
 
 This is a work in progress but you can control two browsers at a time right out of the box.
 Individual control is something that is planned for a later version.
 
-Here is the [webdriverio docs][16] on the subject
+Here is the [webdriverio docs][17] on the subject
 
 ```js
 {
-    "helpers": {
-        "WebDriver": {
+    helpers: {
+        WebDriver: {
             "multiremote": {
                 "MyChrome": {
                     "desiredCapabilities": {
@@ -381,7 +384,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][17].
+libraries][18].
 
 ### amOnPage
 
@@ -396,7 +399,7 @@ I.amOnPage('/login'); // opens a login page
 
 #### Parameters
 
--   `url` [string][18] url path or global url.
+-   `url` [string][19] url path or global url.
     
 
 
@@ -411,8 +414,8 @@ I.appendField('#myTextField', 'appended');
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator
--   `value` [string][18] text value to append.
+-   `field` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator
+-   `value` [string][19] text value to append.
     
 
     
@@ -434,8 +437,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
--   `pathToFile` [string][18] local file path relative to codecept.json config file.
+-   `locator` ([string][19] \| [object][20]) field located by label|name|CSS|XPath|strict locator.
+-   `pathToFile` [string][19] local file path relative to codecept.json config file.
     
 
     Appium: not tested
@@ -459,8 +462,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) checkbox located by label | name | CSS | XPath | strict locator.
--   `context` [string][18] (optional, `null` by default) element located by CSS | XPath | strict locator.
+-   `field` ([string][19] \| [object][20]) checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` [string][19] (optional, `null` by default) element located by CSS | XPath | strict locator.
     
 
     Appium: not tested 
@@ -477,7 +480,7 @@ I.clearCookie('test');
 
 #### Parameters
 
--   `cookie` [string][18] (optional, `null` by default) cookie name
+-   `cookie` [string][19] (optional, `null` by default) cookie name
     
 
 
@@ -494,7 +497,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
+-   `editable` ([string][19] \| [object][20]) field located by label|name|CSS|XPath|strict locator.
     
 
 
@@ -524,8 +527,8 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` ([string][18] \| [object][19]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `locator` ([string][19] \| [object][20]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` ([string][19] \| [object][20]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
     
 
 
@@ -551,7 +554,7 @@ I.closeOtherTabs();
 
 ### defineTimeout
 
-Set [WebDriver timeouts][20] in realtime.
+Set [WebDriver timeouts][21] in realtime.
 
 Timeouts are expected to be passed as object:
 
@@ -576,8 +579,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
--   `text` [string][18] which is not present.
--   `context` ([string][18] \| [object][19]) (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+-   `text` [string][19] which is not present.
+-   `context` ([string][19] \| [object][20]) (optional) element located by CSS|XPath|strict locator in which to perfrom search.
 
 
 
@@ -596,7 +599,7 @@ I.dontSeeeCheckboxIsChedcked('agree'); // located by name
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+-   `field` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator.
     
 
     Appium: not tested
@@ -611,7 +614,7 @@ I.dontSeeCookie('auth'); // no auth cookie
 
 #### Parameters
 
--   `name` [string][18] cookie name.
+-   `name` [string][19] cookie name.
     
 
 
@@ -627,7 +630,7 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 
 #### Parameters
 
--   `url` [string][18] value to check.
+-   `url` [string][19] value to check.
     
 
 
@@ -641,7 +644,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|Strict locator.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|Strict locator.
     
 
     
@@ -660,7 +663,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|Strict locator.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|Strict locator.
     
 
 
@@ -670,7 +673,7 @@ Checks that current url does not contain a provided fragment.
 
 #### Parameters
 
--   `url` [string][18] value to check.
+-   `url` [string][19] value to check.
     
 
 
@@ -686,8 +689,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][18] value to check.
+-   `field` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator.
+-   `value` [string][19] value to check.
     
 
 
@@ -702,7 +705,7 @@ I.dontSeeInSource('<!--'); // no comments in source
 #### Parameters
 
 -   `text`  
--   `value` [string][18] to check.
+-   `value` [string][19] to check.
     
 
 
@@ -716,7 +719,7 @@ I.dontSeeInTitle('Error');
 
 #### Parameters
 
--   `text` [string][18] value to check.
+-   `text` [string][19] value to check.
     
 
 
@@ -734,8 +737,8 @@ I.doubleClick('.btn.edit');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` ([string][18] \| [object][19]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `locator` ([string][19] \| [object][20]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` ([string][19] \| [object][20]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
     
 
 
@@ -753,8 +756,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
--   `destElement` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `srcElement` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
+-   `destElement` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
     
 
     Appium: not tested
@@ -771,8 +774,8 @@ I.dragSlider('#slider', -70);
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
--   `offsetX` [number][21] position to drag.
+-   `locator` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator.
+-   `offsetX` [number][22] position to drag.
     
  
 
@@ -781,7 +784,7 @@ I.dragSlider('#slider', -70);
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][22].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][23].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -801,7 +804,7 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` ([string][18] \| [function][23]) function to be executed in browser context.
+-   `fn` ([string][19] \| [function][24]) function to be executed in browser context.
 
 ### executeScript
 
@@ -831,7 +834,7 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` ([string][18] \| [function][23]) function to be executed in browser context.
+-   `fn` ([string][19] \| [function][24]) function to be executed in browser context.
 
 ### fillField
 
@@ -851,8 +854,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][18] text value to fill.
+-   `field` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator.
+-   `value` [string][19] text value to fill.
     
 
     
@@ -882,10 +885,10 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `attr` [string][18] attribute name.
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `attr` [string][19] attribute name.
 
-Returns [Promise][24]&lt;[string][18]> attribute value
+Returns [Promise][25]&lt;[string][19]> attribute value
 
 
 Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
@@ -915,7 +918,7 @@ assert(cookie.value, '123456');
 
 -   `name`  cookie name. 
 
-Returns [Promise][24]&lt;[string][18]> attribute value
+Returns [Promise][25]&lt;[string][19]> attribute value
 
 
 
@@ -930,10 +933,10 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `cssProperty` [string][18] CSS property name.
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `cssProperty` [string][19] CSS property name.
 
-Returns [Promise][24]&lt;[string][18]> CSS value
+Returns [Promise][25]&lt;[string][19]> CSS value
 
 
 
@@ -947,7 +950,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns [Promise][24]&lt;[string][18]> current URL
+Returns [Promise][25]&lt;[string][19]> current URL
 
 
 
@@ -959,6 +962,17 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 ```js
 const window = await I.grabCurrentWindowHandle();
 ```
+
+### grabGeoLocation
+
+Return the current geo location 
+
+```js
+let geoLocation = await I.grabGeoLocation();
+```
+
+
+
 
 ### grabHTMLFrom
 
@@ -974,7 +988,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 
 -   `locator`  element located by CSS|XPath|strict locator.
 
-Returns [Promise][24]&lt;[string][18]> HTML code for an element
+Returns [Promise][25]&lt;[string][19]> HTML code for an element
 
 
 
@@ -986,7 +1000,7 @@ Grab number of open tabs.
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns [Promise][24]&lt;[number][21]> number of open tabs
+Returns [Promise][25]&lt;[number][22]> number of open tabs
 
 
 
@@ -1000,9 +1014,9 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
 
-Returns [Promise][24]&lt;[number][21]> number of visible elements
+Returns [Promise][25]&lt;[number][22]> number of visible elements
 
 
 
@@ -1015,7 +1029,7 @@ Resumes test execution, so should be used inside an async function with `await` 
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns [Promise][24]&lt;[object][19]> scroll position
+Returns [Promise][25]&lt;[object][20]> scroll position
 
 
 
@@ -1036,7 +1050,7 @@ Resumes test execution, so should be used inside an async function.
 let pageSource = await I.grabSource();
 ```
 
-Returns [Promise][24]&lt;[string][18]> source code
+Returns [Promise][25]&lt;[string][19]> source code
 
 
 
@@ -1055,7 +1069,7 @@ If multiple elements found returns an array of texts.
 
 -   `locator`  element located by CSS|XPath|strict locator.
 
-Returns [Promise][24]&lt;[string][18]> attribute value
+Returns [Promise][25]&lt;[string][19]> attribute value
 
 
 
@@ -1068,7 +1082,7 @@ Resumes test execution, so should be used inside async with `await` operator.
 let title = await I.grabTitle();
 ```
 
-Returns [Promise][24]&lt;[string][18]> title
+Returns [Promise][25]&lt;[string][19]> title
 
 
 
@@ -1083,9 +1097,9 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) field located by label|name|CSS|XPath|strict locator.
 
-Returns [Promise][24]&lt;[string][18]> attribute value
+Returns [Promise][25]&lt;[string][19]> attribute value
 
 
 
@@ -1101,9 +1115,9 @@ I.moveCursorTo('#submit', 5,5);
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
--   `offsetX` [number][21] (optional, `0` by default) X-axis offset. 
--   `offsetY` [number][21] (optional, `0` by default) Y-axis offset.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
+-   `offsetX` [number][22] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][22] (optional, `0` by default) Y-axis offset.
     
  
 
@@ -1118,7 +1132,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][25]
+Special keys like 'Enter', 'Control', [etc][26]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -1129,7 +1143,7 @@ I.pressKey(['Control','a']);
 
 #### Parameters
 
--   `key` ([string][18] \| [array][26]) key or array of keys to press.
+-   `key` ([string][19] \| [array][27]) key or array of keys to press.
     
 
     
@@ -1189,8 +1203,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` [number][21] width in pixels or `maximize`.
--   `height` [number][21] height in pixels.
+-   `width` [number][22] width in pixels or `maximize`.
+-   `height` [number][22] height in pixels.
     
 
     Appium: not tested in web, in apps doesn't work
@@ -1210,8 +1224,8 @@ I.rightClick('Click me', '.context');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) clickable element located by CSS|XPath|strict locator.
--   `context` ([string][18] \| [object][19]) (optional, `null` by default) element located by CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) clickable element located by CSS|XPath|strict locator.
+-   `context` ([string][19] \| [object][20]) (optional, `null` by default) element located by CSS|XPath|strict locator.
     
 
 
@@ -1258,8 +1272,8 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 
 #### Parameters
 
--   `fileName` [string][18] file name to save.
--   `fullPage` [boolean][27] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fileName` [string][19] file name to save.
+-   `fullPage` [boolean][28] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
  
 
@@ -1297,9 +1311,9 @@ I.scrollTo('#submit', 5, 5);
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
--   `offsetX` [number][21] (optional, `0` by default) X-axis offset. 
--   `offsetY` [number][21] (optional, `0` by default) Y-axis offset.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
+-   `offsetX` [number][22] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][22] (optional, `0` by default) Y-axis offset.
     
  
 
@@ -1316,8 +1330,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
--   `text` [string][18] expected on page.
--   `context` ([string][18] \| [object][19]) (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+-   `text` [string][19] expected on page.
+-   `context` ([string][19] \| [object][20]) (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
     
 
 
@@ -1335,8 +1349,8 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
--   `attributes` [object][19] attributes and their values to check.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
+-   `attributes` [object][20] attributes and their values to check.
     
 
 
@@ -1352,7 +1366,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
+-   `field` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator.
     
 
     Appium: not tested
@@ -1367,7 +1381,7 @@ I.seeCookie('Auth');
 
 #### Parameters
 
--   `name` [string][18] cookie name.
+-   `name` [string][19] cookie name.
     
 
 
@@ -1381,8 +1395,8 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
--   `cssProperties` [object][19] object with CSS properties and their values to check.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
+-   `cssProperties` [object][20] object with CSS properties and their values to check.
     
 
 
@@ -1399,7 +1413,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 #### Parameters
 
--   `url` [string][18] value to check.
+-   `url` [string][19] value to check.
     
 
 
@@ -1414,7 +1428,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) located by CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) located by CSS|XPath|strict locator.
     
 
     
@@ -1434,7 +1448,7 @@ I.seeElementInDOM('#modal');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
     
 
 
@@ -1448,7 +1462,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 #### Parameters
 
--   `url` [string][18] a fragment to check
+-   `url` [string][19] a fragment to check
     
 
 
@@ -1466,8 +1480,8 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][18] value to check.
+-   `field` ([string][19] \| [object][20]) located by label|name|CSS|XPath|strict locator.
+-   `value` [string][19] value to check.
     
 
 
@@ -1490,7 +1504,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 #### Parameters
 
--   `text` [string][18] value to check.
+-   `text` [string][19] value to check.
     
 
 
@@ -1504,7 +1518,7 @@ I.seeInTitle('Home Page');
 
 #### Parameters
 
--   `text` [string][18] text value to check.
+-   `text` [string][19] text value to check.
     
 
 
@@ -1519,8 +1533,8 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `num` [number][21] number of elements.
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `num` [number][22] number of elements.
     
 
     
@@ -1540,8 +1554,8 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `num` [number][21] number of elements.
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `num` [number][22] number of elements.
     
 
     
@@ -1598,8 +1612,8 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` ([string][18] \| [object][19]) field located by label|name|CSS|XPath|strict locator.
--   `option` ([string][18] \| [array][26]) visible text or value of option.
+-   `select` ([string][19] \| [object][20]) field located by label|name|CSS|XPath|strict locator.
+-   `option` ([string][19] \| [array][27]) visible text or value of option.
     
 
 
@@ -1613,10 +1627,27 @@ I.setCookie({name: 'auth', value: true});
 
 #### Parameters
 
--   `cookie` [object][19] a cookie object.
+-   `cookie` [object][20] a cookie object.
     
 Uses Selenium's JSON [cookie
-    format][28].
+    format][29].
+
+### setGeoLocation
+
+Set the current geo location
+
+```js
+I.setGeoLocation(121.21, 11.56);
+I.setGeoLocation(121.21, 11.56, 10);
+```
+
+#### Parameters
+
+-   `latitude` [number][22] to set.
+-   `longitude` [number][22] to set
+-   `altitude` [number][22] (optional, null by default) to set
+    
+ 
 
 ### switchTo
 
@@ -1629,7 +1660,7 @@ I.switchTo(); // switch back to main page
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) (optional, `null` by default) element located by CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) (optional, `null` by default) element located by CSS|XPath|strict locator.
     
 
 
@@ -1670,7 +1701,7 @@ const windows = await I.grabAllWindowHandles();
 // ... do something
 await I.switchToWindow( windows[0] );
 
-const window = await.grabCurrentWindowHandle();
+const window = await I.grabCurrentWindowHandle();
 // ... do something
 await I.switchToWindow( window );
 ```
@@ -1694,8 +1725,8 @@ I.uncheckOption('agree', '//form');
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) checkbox located by label | name | CSS | XPath | strict locator.
--   `context` [string][18] (optional, `null` by default) element located by CSS | XPath | strict locator.
+-   `field` ([string][19] \| [object][20]) checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` [string][19] (optional, `null` by default) element located by CSS | XPath | strict locator.
     
 
     Appium: not tested 
@@ -1710,7 +1741,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` [number][21] number of second to wait.
+-   `sec` [number][22] number of second to wait.
     
 
 
@@ -1725,8 +1756,8 @@ I.waitForDetached('#popup');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1742,8 +1773,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1754,7 +1785,7 @@ Element can be located by CSS or XPath.
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
 -   `sec`  (optional) time in seconds to wait, 1 by default.
     
 
@@ -1776,9 +1807,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` ([string][18] \| [function][23]) to be executed in browser context.
--   `argsOrSec` ([array][26] \| [number][21]) (optional, `1` by default) arguments for function or seconds. 
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `fn` ([string][19] \| [function][24]) to be executed in browser context.
+-   `argsOrSec` ([array][27] \| [number][22]) (optional, `1` by default) arguments for function or seconds. 
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1793,8 +1824,8 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1811,9 +1842,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
--   `text` [string][18] to wait for.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait 
--   `context` ([string][18] \| [object][19]) (optional) element located by CSS|XPath|strict locator.
+-   `text` [string][19] to wait for.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait 
+-   `context` ([string][19] \| [object][20]) (optional) element located by CSS|XPath|strict locator.
     
  
 
@@ -1827,9 +1858,9 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` ([string][18] \| [object][19]) input field.
--   `value` [string][18] expected value.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `field` ([string][19] \| [object][20]) input field.
+-   `value` [string][19] expected value.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1844,8 +1875,8 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1859,8 +1890,8 @@ I.waitInUrl('/info', 2);
 
 #### Parameters
 
--   `urlPart` [string][18] value to check.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `urlPart` [string][19] value to check.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1874,9 +1905,9 @@ I.waitNumberOfVisibleElements('a', 3);
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `num` [number][21] number of elements.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `num` [number][22] number of elements.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1891,8 +1922,8 @@ I.waitToHide('#popup');
 
 #### Parameters
 
--   `locator` ([string][18] \| [object][19]) element located by CSS|XPath|strict locator.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1907,9 +1938,9 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
--   `fn` ([function][23] \| [string][18]) function which is executed in browser context.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait 
--   `timeoutMsg` [string][18] message to show in case of timeout fail.
+-   `fn` ([function][24] \| [string][19]) function which is executed in browser context.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait 
+-   `timeoutMsg` [string][19] message to show in case of timeout fail.
     
  
 -   `interval`   
@@ -1925,8 +1956,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 #### Parameters
 
--   `urlPart` [string][18] value to check.
--   `sec` [number][21] (optional, `1` by default) time in seconds to wait
+-   `urlPart` [string][19] value to check.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
     
  
 
@@ -1944,44 +1975,46 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [7]: https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/IE/Options.html
 
-[8]: http://webdriver.io/guide/usage/cloudservices.html
+[8]: https://aerokube.com/selenoid/latest/
 
-[9]: https://webdriver.io/docs/sauce-service.html
+[9]: http://webdriver.io/guide/usage/cloudservices.html
 
-[10]: https://github.com/puneet0191/codeceptjs-saucehelper/
+[10]: https://webdriver.io/docs/sauce-service.html
 
-[11]: https://webdriver.io/docs/browserstack-service.html
+[11]: https://github.com/puneet0191/codeceptjs-saucehelper/
 
-[12]: https://github.com/PeterNgTr/codeceptjs-bshelper
+[12]: https://webdriver.io/docs/browserstack-service.html
 
-[13]: https://github.com/testingbot/codeceptjs-tbhelper
+[13]: https://github.com/PeterNgTr/codeceptjs-bshelper
 
-[14]: https://webdriver.io/docs/testingbot-service.html
+[14]: https://github.com/testingbot/codeceptjs-tbhelper
 
-[15]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
+[15]: https://webdriver.io/docs/testingbot-service.html
 
-[16]: http://webdriver.io/guide/usage/multiremote.html
+[16]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
 
-[17]: http://jster.net/category/windows-modals-popups
+[17]: http://webdriver.io/guide/usage/multiremote.html
 
-[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[18]: http://jster.net/category/windows-modals-popups
 
-[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[20]: https://webdriver.io/docs/timeouts.html
+[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[21]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[21]: https://webdriver.io/docs/timeouts.html
 
-[22]: https://vuejs.org/v2/api/#Vue-nextTick
+[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[23]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[23]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[25]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[26]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[28]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[29]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

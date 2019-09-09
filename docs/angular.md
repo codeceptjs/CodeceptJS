@@ -139,6 +139,7 @@ exports.config = {
   // inside condecept.conf.js
   plugins: {
     wdio: {
+        enabled: true,
         services: ['selenium-standalone']
     }
   }
@@ -150,12 +151,12 @@ exports.config = {
 Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:
 
 ```js
-"helpers": {
-  "Protractor": {
-    "url": "http://todomvc.com/examples/angularjs/",
-    "driver": "hosted",
-    "browser": "firefox",
-    "angular": false
+helpers: {
+  Protractor: {
+    url: "http://todomvc.com/examples/angularjs/",
+    driver: "hosted",
+    browser: "firefox",
+    angular: false
   }
 }
 ```
@@ -304,9 +305,6 @@ Scenario('create todo item', (I) => {
 
 To learn more about refactoring options in CodeceptJS read [PageObjects guide](http://codecept.io/pageobjects/).
 
-## Multiple Sessions
-
-To run several browsers in one test see [multiple session](https://codecept.io/acceptance/#multiple-sessions) chapter.
 
 ## Extending
 

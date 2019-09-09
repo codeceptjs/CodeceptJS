@@ -39,6 +39,9 @@ const quickstart = `
 class Index extends React.Component {
   render() {
     return (<div>
+      <div style={{backgroundColor: '#fff573', textAlign: 'center', padding: '10px'}}>
+      Training: Web test automation with CodeceptJS - 11.09.2019-12.09.2019 <a href="https://sdclabs.com/trainings/schedule">Buy now!</a>
+      </div>
     <div className="jumbotron">
   <div className="container">
     <h1 className="motto">Effective <span className="name">End 2 End</span> Testing <div className="small">for NodeJS</div></h1>
@@ -73,7 +76,7 @@ class Index extends React.Component {
     <div className="col-md-4">
       <img src="/img/Mind-Map-Paper.svg" alt="" />
       <h5>Driver Agnostic</h5>
-        Run your tests via <b>WebDriver, Puppeteer, Protractor, Appium</b>. The code is the same.
+        Run your tests via <b>WebDriver, Puppeteer, TestCafe, Protractor, Appium</b>. The code is the same.
         <a href="/basics#architecture" className="btn btn-light btn-sm">Learn More</a>
     </div>
     <div className="col-md-4">
@@ -101,7 +104,8 @@ class Index extends React.Component {
     <div className="col-md-4">
       <img src="/img/Prism-3.svg" style={{filter: 'hue-rotate(90deg)', transform: 'rotate(180deg)'}} alt="" />
       <h5>Web & Mobile Testing</h5>
-      Write your tests for web and and mobile applications using same API.
+      Test native mobile apps using <b>Appium</b> or <b>Detox</b>.
+      <a href="/mobile" className="btn btn-light btn-sm">Learn More</a>
     </div>
   </div>
 

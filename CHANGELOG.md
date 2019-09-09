@@ -1,7 +1,78 @@
+## 2.3.1
+
+* [MockRequest] Polly helper was renamed to MockRequest.
+* [MockRequest][WebDriver] [Mocking requests](https://codecept.io/webdriver#mocking-requests) is now available in WebDriver. Thanks @radhey1851
+* [Puppeteer] Ensure configured user agent and/or window size is applied to all pages. See #1862 by @martomo
+* Improve handling of xpath locators with round brackets by @nitschSB. See #1870
+* Use WebDriver capabilities config in wdio plugin. #1869 by @quekshuy
+
+## 2.3.0
+
+
+* **[Parallel testing by workers](https://codecept.io/parallel#parallel-execution-by-workers) introduced** by @VikalpP and @davertmik. Use `run-workers` command as faster and simpler alternative to `run-multiple`. Requires NodeJS v12
+
+```
+# run all tests in parallel using 3 workers
+npx codeceptjs run-workers 3
+```
+* [GraphQL][GraphQLDataFactory] **Helpers for data management over GraphQL** APIs added. By @radhey1851.
+  * Learn how to [use GraphQL helper](https://codecept.io/data#graphql) to access GarphQL API
+  * And how to combine it with [GraphQLDataFactory](https://codecept.io/data#graphql-data-factory) to generate and persist test data.
+* **Updated to use Mocha 6**. See #1802 by @elukoyanov
+* Added `dry-run` command to print steps of test scenarios without running them. Fails to execute scenarios with `grab*` methods or custom code. See #1825 for more details.
+
+```
+npx codeceptjs dry-run
+```
+
+* [Appium] Optimization when clicking, searching for fields by accessibility id. See #1777 by @gagandeepsingh26
+* [TestCafe] Fixed `switchTo` by @KadoBOT
+* [WebDriver] Added geolocation actions by @PeterNgTr
+    * `grabGeoLocation()`
+    * `setGeoLocation()`
+* [Polly] Check typeof arguments for mock requests by @VikalpP. Fixes #1815
+* CLI improvements by @jamesgeorge007
+  * `codeceptjs` command prints list of all available commands
+  * added `codeceptjs -V` flag to print version information
+  * warns on unknown command
+* Added TypeScript files support to `run-multiple` by @z4o4z
+* Fixed element position bug in locator builder. See #1829 by @AnotherAnkor
+* Various TypeScript typings updates by @elukoyanov and @Vorobeyko
+* Added `event.step.comment` event for all comment steps like `I.say` or gherking steps.
+
+## 2.2.1
+
+* [WebDriver] A [dedicated guide](https://codecept.io/webdriver) written.
+* [TestCafe] A [dedicated guide](https://codecept.io/testcafe) written.
+* [Puppeteer] A [chapter on mocking](https://codecept.io/puppeteer#mocking-requests) written
+* [Puppeteer][Nightmare][TestCafe] Window mode is enabled by default on `codeceptjs init`.
+* [TestCafe] Actions implemented by @hubidu
+  * `grabPageScrollPosition`
+  * `scrollPageToTop`
+  * `scrollPageToBottom`
+  * `scrollTo`
+  * `switchTo`
+* Intellisense improvements. Renamed `tsconfig.json` to `jsconfig.json` on init. Fixed autocompletion for Visual Studio Code.
+* [Polly] Take configuration values from Puppeteer. Fix #1766 by @VikalpP
+* [Polly] Add preconditions to check for puppeteer page availability by @VikalpP. Fixes #1767
+* [WebDriver] Use filename for `uploadFile` by @VikalpP. See #1797
+* [Puppeteer] Configure speed of input with `pressKeyDelay` option. By @hubidu
+* Fixed recursive loading of support objects by @davertmik.
+* Fixed support object definitions in steps.d.ts by @johnyb. Fixes #1795
+* Fixed `Data().Scenario().injectDependencies()` is not a function by @andrerleao
+* Fixed crash when using xScenario & Scenario.skip with tag by @VikalpP. Fixes #1751
+* Dynamic configuration of helpers can be performed with async function. See #1786 by @cviejo
+* Added TS definitions for internal objects by @Vorobeyko
+* BDD improvements:
+  * Fix for snippets command with a .feature file that has special characters by @asselin
+  * Fix `--path` option on `gherkin:snippets` command by @asselin. See #1790
+  * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See #1803 by @asselin.
+* Fixed: dynamic configs not reset after test. Fixes #1776 by @cviejo.
+
 ## 2.2.0
 
 * **EXPERIMENTAL** [**TestCafe** helper](https://codecept.io/helpers/TestCafe) introduced. TestCafe allows to run cross-browser tests it its own very fast engine. Supports all browsers including mobile. Thanks to @hubidu for implementation! Please test it and send us feedback.
-* [Puppeteer] Mocking requests enabled by introducing [Polly.js helper](https://codecept.io/helpers/Polly)
+* [Puppeteer] Mocking requests enabled by introducing [Polly.js helper](https://codecept.io/helpers/Polly). Thanks @VikalpP
 
 ```js
 // use Polly & Puppeteer helpers

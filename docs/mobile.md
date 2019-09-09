@@ -173,6 +173,8 @@ In both Android and iPhone elements are defined in XML format and can be searche
 I.seeElement('//android.widget.ScrollView/android.widget.LinearLayout')'
 ```
 
+> Despite showing XPath in this guide we **do not recommend using XPath for testing iOS native apps. XPath runs very slow on iOS. Consider using ID or Accessibility ID locators instead.
+
 CSS locators are not supported in native mobile apps, you need to switch to web context to use them.
 
 Elements can also be located by their accessability id, available both at Android and iOS.
@@ -181,7 +183,9 @@ Accessibility id is recommended to use for locating element, as it rarely change
 * iOS uses [UIAccessibilityIdentification](https://developer.apple.com/documentation/uikit/uiaccessibilityidentification)
 * Android `accessibility id` matches the content-description
 * Web view uses `[aria-label]` attribute as accessibility id
-* ReactNative for Android has some caveats you could find more [here](mobile-react-native-locators.md)
+* For [React Native for Android see our special guide](mobile-react-native-locators.md).
+
+> If you test React Native application, consider using [Detox helper](/detox) for faster tests.
 
 Add `~` prefix to search for element by its accessibility id:
 
