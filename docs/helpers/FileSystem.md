@@ -28,7 +28,7 @@ Starts from a current directory
 
 #### Parameters
 
--   `openPath`  
+-   `openPath` [string][1] 
 
 ### dontSeeFileContentsEqual
 
@@ -36,8 +36,8 @@ Checks that contents of file found by `seeFile` doesn't equal to text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` [string][1] 
+-   `encoding` [string][1] 
 
 ### dontSeeInThisFile
 
@@ -45,8 +45,8 @@ Checks that file found by `seeFile` doesn't include text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` [string][1] 
+-   `encoding` [string][1] 
 
 ### seeFile
 
@@ -54,7 +54,7 @@ Checks that file exists
 
 #### Parameters
 
--   `name`  
+-   `name` [string][1] 
 
 ### seeFileContentsEqual
 
@@ -62,8 +62,8 @@ Checks that contents of file found by `seeFile` equal to text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` [string][1] 
+-   `encoding` [string][1] 
 
 ### seeInThisFile
 
@@ -71,8 +71,8 @@ Checks that file found by `seeFile` includes a text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` [string][1] 
+-   `encoding` [string][1] 
 
 ### writeToFile
 
@@ -80,5 +80,7 @@ Writes test to file
 
 #### Parameters
 
--   `name`  
--   `text`  
+-   `name` [string][1] 
+-   `text` [string][1] 
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

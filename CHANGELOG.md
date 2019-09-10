@@ -1,16 +1,24 @@
+## 2.3.1
+
+* [MockRequest] Polly helper was renamed to MockRequest.
+* [MockRequest][WebDriver] [Mocking requests](https://codecept.io/webdriver#mocking-requests) is now available in WebDriver. Thanks @radhey1851
+* [Puppeteer] Ensure configured user agent and/or window size is applied to all pages. See #1862 by @martomo
+* Improve handling of xpath locators with round brackets by @nitschSB. See #1870
+* Use WebDriver capabilities config in wdio plugin. #1869 by @quekshuy
+
 ## 2.3.0
 
-* [GraphQL][GraphQLDataFactory] **Helpers for data management over GraphQL** APIs added. By @radhey1851.
-  * Learn how to [use GraphQL helper](https://codecept.io/data#graphql) to access GarphQL API
-  * And how to combine it with [GraphQLDataFactory](https://codecept.io/data#graphql-data-factory) to generate and persist test data.
-* **Updated to use Mocha 6**. See #1802 by @elukoyanov
-* **Parallel testing by workers introduced** by @VikalpP and @davertmik. Use `run-workers` command as faster and simpler alternative to `run-multiple`. Requires NodeJS v12
+
+* **[Parallel testing by workers](https://codecept.io/parallel#parallel-execution-by-workers) introduced** by @VikalpP and @davertmik. Use `run-workers` command as faster and simpler alternative to `run-multiple`. Requires NodeJS v12
 
 ```
 # run all tests in parallel using 3 workers
 npx codeceptjs run-workers 3
 ```
-
+* [GraphQL][GraphQLDataFactory] **Helpers for data management over GraphQL** APIs added. By @radhey1851.
+  * Learn how to [use GraphQL helper](https://codecept.io/data#graphql) to access GarphQL API
+  * And how to combine it with [GraphQLDataFactory](https://codecept.io/data#graphql-data-factory) to generate and persist test data.
+* **Updated to use Mocha 6**. See #1802 by @elukoyanov
 * Added `dry-run` command to print steps of test scenarios without running them. Fails to execute scenarios with `grab*` methods or custom code. See #1825 for more details.
 
 ```
@@ -19,7 +27,7 @@ npx codeceptjs dry-run
 
 * [Appium] Optimization when clicking, searching for fields by accessibility id. See #1777 by @gagandeepsingh26
 * [TestCafe] Fixed `switchTo` by @KadoBOT
-* [WebDrover] Added geolocation actions by @PeterNgTr
+* [WebDriver] Added geolocation actions by @PeterNgTr
     * `grabGeoLocation()`
     * `setGeoLocation()`
 * [Polly] Check typeof arguments for mock requests by @VikalpP. Fixes #1815

@@ -376,6 +376,58 @@ Scenario('should open main page of configured site, open a popup, switch to main
 });
 ```
 
+## Mocking Requests
+
+When testing web application you can disable some of external requests calls by enabling HTTP mocking.
+This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
+
+  > **WebDriver has limited ability to mock requests**, so you can only mock only requests performed after page is loaded. This means that you can't block Google Analytics, or CDN calls, but you can mock API requests performed on user action.
+
+To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
+
+```js
+helpers: {
+   WebDriver: {
+     // regular WebDriver config here
+   },
+   MockRequest: {}
+}
+```
+
+
+The function `mockRequest` will be added to `I` object. You can use it to explicitly define which requests to block and which response they should return instead:
+
+```js
+// block all Google Analytics calls
+I.mockRequest('/google-analytics/*path', 200);
+// return an empty successful response
+I.mockRequest('GET', '/api/users', 200);
+// block post requests to /api/users and return predefined object
+I.mockRequest('POST', '/api/users', { user: 'davert' });
+// return error request with body
+I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
+```
+
+> In WebDriver mocking is disabled every time a new page is loaded. Hence, `startMocking` method should be called and the mocks should be updated, after navigating to a new page. This is a limitation of WebDriver. Consider using Puppeteer with MockRequest instead.
+
+```js
+I.amOnPage('/xyz');
+I.mockRequest({ ... })
+I.click('Go to Next Page');
+// new page is loaded, mocking is disabled now. We need to set it up again
+// in WebDriver as we can't detect that the page was reloaded, so no mocking :(
+```
+
+> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
+
+To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
+
+```
+npx codeceptjs def
+```
+
+Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
+
 ## Extending WebDriver
 
 CodeceptJS doesn't aim to embrace all possible functionality of WebDriver. At some points you may find that some actions do not exist, however it is easy to add one. You will need to use WebDriver API from [webdriver.io](https://webdriver.io) library.

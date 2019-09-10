@@ -6,7 +6,7 @@ const fetchComments = response => response.url() === 'https://jsonplaceholder.ty
 
 const fetchUsers = response => response.url() === 'https://jsonplaceholder.typicode.com/users/1';
 
-Scenario('change statusCode @Puppeteer', (I) => {
+Scenario('change statusCode @Puppeteer @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', 404);
   I.click('GET POSTS');
@@ -14,7 +14,7 @@ Scenario('change statusCode @Puppeteer', (I) => {
   I.stopMocking();
 });
 
-Scenario('change response data @Puppeteer', (I) => {
+Scenario('change response data @Puppeteer @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', {
     modified: 'This is modified from mocking',
@@ -24,7 +24,7 @@ Scenario('change response data @Puppeteer', (I) => {
   I.stopMocking();
 });
 
-Scenario('change response data for multiple requests @Puppeteer', (I) => {
+Scenario('change response data for multiple requests @Puppeteer @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest(
     'GET',
@@ -47,7 +47,7 @@ Scenario('change response data for multiple requests @Puppeteer', (I) => {
 });
 
 Scenario(
-  'should request for original data after mocking stopped @Puppeteer',
+  'should request for original data after mocking stopped @Puppeteer @WebDriver',
   (I) => {
     I.amOnPage('/form/fetch_call');
     I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', {

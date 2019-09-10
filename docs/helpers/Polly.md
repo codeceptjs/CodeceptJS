@@ -7,11 +7,12 @@ title: Polly
 
 ## Polly
 
-Extends Helper
+Extends MockRequest
 
-This helper allows to mock requests while running tests in Puppeteer.
-For instance, you can block calls to 3rd-party services like Google Analytics, CDNs.
-Another way of using is to emulate requests from server by passing prepared data.
+This helper works the same as MockRequest helper. It has been included for backwards compatibility
+reasons. So use MockRequest helper instead of this.
+
+Please refer to MockRequest helper documentation for details.
 
 ### Installations
 
@@ -19,7 +20,7 @@ Requires [Polly.js][1] library by Netflix installed
 
     npm i @pollyjs/core @pollyjs/adapter-puppeteer --save-dev
 
-Requires Puppeteer helper enabled
+Requires Puppeteer helper or WebDriver helper enabled
 
 ### Configuration
 
@@ -34,52 +35,10 @@ helpers: {
 }
 ```
 
+The same can be done when using WebDriver helper..
+
 ### Usage
 
 Use `I.mockRequest` to intercept and mock requests.
 
-### Parameters
-
--   `config`  
-
-### \_checkAndStartMocking
-
-Starts mocking if it's not started yet.
-
-### mockRequest
-
-Mock response status
-
-```js
-I.mockRequest('GET', '/api/users', 200);
-I.mockRequest('ANY', '/secretsRoutes/', 403);
-I.mockRequest('POST', '/secrets', { secrets: 'fakeSecrets' });
-I.mockRequest('GET', '/api/users/1', 404, 'User not found');
-```
-
-Multiple requests
-
-```js
-I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
-```
-
-#### Parameters
-
--   `method` [string][2] request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
--   `oneOrMoreUrls` ([string][2] \| [array][3]) url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
--   `dataOrStatusCode` ([number][4] \| [string][2] \| [object][5]) status code when number provided. A response body otherwise
--   `additionalData` ([string][2] \| [object][5]) response body when a status code is set by previous parameter. 
-
-### stopMocking
-
-Stops mocking requests.
-
 [1]: https://netflix.github.io/pollyjs/#/
-
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object

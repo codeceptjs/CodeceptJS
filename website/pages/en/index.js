@@ -39,6 +39,9 @@ const quickstart = `
 class Index extends React.Component {
   render() {
     return (<div>
+      <div style={{backgroundColor: '#fff573', textAlign: 'center', padding: '10px'}}>
+      Training: Web test automation with CodeceptJS - 11.09.2019-12.09.2019 <a href="https://sdclabs.com/trainings/schedule">Buy now!</a>
+      </div>
     <div className="jumbotron">
   <div className="container">
     <h1 className="motto">Effective <span className="name">End 2 End</span> Testing <div className="small">for NodeJS</div></h1>
