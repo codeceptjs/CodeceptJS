@@ -10,7 +10,7 @@ declare namespace CodeceptJS {
 
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
-  interface I extends WithTranslation<Methods> {}
+  interface I {}
   interface IHook {}
   interface IScenario {}
   interface CallbackOrder extends Array<any> {}
@@ -34,7 +34,7 @@ declare namespace CodeceptJS {
 
   // Types who are not be defined by JSDoc
   type actor = <T extends { [action: string]: Function }>(
-    customSteps: T & ThisType<WithTranslation<Methods & T>>
+    customSteps?: T & ThisType<WithTranslation<Methods & T>>
   ) => WithTranslation<Methods & T>;
 
   type ILocator =

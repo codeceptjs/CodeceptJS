@@ -968,32 +968,44 @@ declare namespace CodeceptJS {
         /**
          * Enters a directory In local filesystem.
          * Starts from a current directory
+         * @param {string} openPath
          */
-        amInPath(): void;
+        amInPath(openPath: string): void;
         /**
          * Writes test to file
+         * @param {string} name
+         * @param {string} text
          */
-        writeToFile(): void;
+        writeToFile(name: string, text: string): void;
         /**
          * Checks that file exists
+         * @param {string} name
          */
-        seeFile(): void;
+        seeFile(name: string): void;
         /**
          * Checks that file found by `seeFile` includes a text.
+         * @param {string} text
+         * @param {string} encoding
          */
-        seeInThisFile(): void;
+        seeInThisFile(text: string, encoding: string): void;
         /**
          * Checks that file found by `seeFile` doesn't include text.
+         * @param {string} text
+         * @param {string} encoding
          */
-        dontSeeInThisFile(): void;
+        dontSeeInThisFile(text: string, encoding: string): void;
         /**
          * Checks that contents of file found by `seeFile` equal to text.
+         * @param {string} text
+         * @param {string} encoding
          */
-        seeFileContentsEqual(): void;
+        seeFileContentsEqual(text: string, encoding: string): void;
         /**
          * Checks that contents of file found by `seeFile` doesn't equal to text.
+         * @param {string} text
+         * @param {string} encoding
          */
-        dontSeeFileContentsEqual(): void;
+        dontSeeFileContentsEqual(text: string, encoding: string): void;
     }
     class GraphQL {
         /**
@@ -2151,7 +2163,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -2167,7 +2179,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -2184,7 +2196,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -2213,7 +2225,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -2284,11 +2296,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
          * ```
-         * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
          * {--end--}
          */
-        selectOption(select: string | any, option: string | any[]): void;
+        selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
          * Fills a text field or textarea, after clearing its value, with the given string.
          * Field is located by name, label, CSS, or XPath.
@@ -2403,11 +2415,11 @@ declare namespace CodeceptJS {
          * I.checkOption('I Agree to Terms and Conditions');
          * I.checkOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          */
-        checkOption(field: string | any, context?: string): void;
+        checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Unselects a checkbox or radio button.
          * Element is located by label or name or CSS or XPath.
@@ -2419,11 +2431,11 @@ declare namespace CodeceptJS {
          * I.uncheckOption('I Agree to Terms and Conditions');
          * I.uncheckOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          */
-        uncheckOption(field: string | any, context?: string): void;
+        uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Verifies that the specified checkbox is checked.
          *
@@ -2825,7 +2837,7 @@ declare namespace CodeceptJS {
          * I.clearCookie('test');
          * ```
          *
-         * @param {string} [cookie=null] (optional, `null` by default) cookie name
+         * @param {?string} [cookie=null] (optional, `null` by default) cookie name
          * {--end--}
          */
         clearCookie(cookie?: string): void;
@@ -2861,7 +2873,7 @@ declare namespace CodeceptJS {
          * assert(cookie.value, '123456');
          * ```
          *
-         * @param {string} [name=null] cookie name.
+         * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
          * {--end--}
          *
@@ -2978,10 +2990,10 @@ declare namespace CodeceptJS {
          * I.switchTo(); // switch back to main page
          * ```
          *
-         * @param {string|object} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          */
-        switchTo(locator?: string | any): void;
+        switchTo(locator?: CodeceptJS.LocatorOrString): void;
         /**
          * Pauses execution for a number of seconds.
          *
@@ -3133,7 +3145,7 @@ declare namespace CodeceptJS {
          * @param {function|string} fn function which is executed in browser context.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
-         * @param {number} [interval=null]
+         * @param {?number} [interval=null]
          * {--end--}
          */
         waitUntil(fn: ((...params: any[]) => any) | string, sec?: number, timeoutMsg?: string, interval?: number): void;
@@ -4774,7 +4786,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          */
@@ -4847,18 +4859,21 @@ declare namespace CodeceptJS {
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Appends text to a input field or textarea.
-         * Field is located by name, label, CSS or XPath
+         * Attaches a file to element located by label, name, CSS or XPath
+         * Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+         * File will be uploaded to remote system (if tests are running remotely).
          *
          * ```js
-         * I.appendField('#myTextField', 'appended');
+         * I.attachFile('Avatar', 'data/avatar.jpg');
+         * I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
          * ```
-         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
-         * @param {string} value text value to append.
+         *
+         * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
+         * @param {string} pathToFile local file path relative to codecept.json config file.
          * {--end--}
          *
          */
-        attachFile(field: CodeceptJS.LocatorOrString, value: string): void;
+        attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
         /**
          * Presses a key on a focused element.
          * Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
@@ -4904,7 +4919,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          */
@@ -4922,7 +4937,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          */
@@ -4938,11 +4953,11 @@ declare namespace CodeceptJS {
          * I.checkOption('I Agree to Terms and Conditions');
          * I.checkOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          */
-        checkOption(field: string | any, context?: string): void;
+        checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Unselects a checkbox or radio button.
          * Element is located by label or name or CSS or XPath.
@@ -4954,11 +4969,11 @@ declare namespace CodeceptJS {
          * I.uncheckOption('I Agree to Terms and Conditions');
          * I.uncheckOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          */
-        uncheckOption(field: string | any, context?: string): void;
+        uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Verifies that the specified checkbox is checked.
          *
@@ -5004,11 +5019,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
          * ```
-         * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
          * {--end--}
          */
-        selectOption(select: string | any, option: string | any[]): void;
+        selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
          * Checks that current url contains a provided fragment.
          *
@@ -5064,7 +5079,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          */
@@ -5398,10 +5413,10 @@ declare namespace CodeceptJS {
          * I.switchTo(); // switch back to main page
          * ```
          *
-         * @param {string|object} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          */
-        switchTo(locator?: string | any): void;
+        switchTo(locator?: CodeceptJS.LocatorOrString): void;
         /**
          * Sets a cookie.
          *
@@ -5446,7 +5461,7 @@ declare namespace CodeceptJS {
          * assert(cookie.value, '123456');
          * ```
          *
-         * @param {string} [name=null] cookie name.
+         * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
          * {--end--}
          *
@@ -5462,7 +5477,7 @@ declare namespace CodeceptJS {
          * I.clearCookie('test');
          * ```
          *
-         * @param {string} [cookie=null] (optional, `null` by default) cookie name
+         * @param {?string} [cookie=null] (optional, `null` by default) cookie name
          * {--end--}
          */
         clearCookie(cookie?: string): void;
@@ -5677,7 +5692,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -5695,7 +5710,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -5714,7 +5729,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          * {{ react }}
@@ -5786,11 +5801,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
          * ```
-         * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
          * {--end--}
          */
-        selectOption(select: string | any, option: string | any[]): void;
+        selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
          * Attaches a file to element located by label, name, CSS or XPath
          * Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
@@ -5818,12 +5833,12 @@ declare namespace CodeceptJS {
          * I.checkOption('I Agree to Terms and Conditions');
          * I.checkOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          * Appium: not tested
          */
-        checkOption(field: string | any, context?: string): void;
+        checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Unselects a checkbox or radio button.
          * Element is located by label or name or CSS or XPath.
@@ -5835,12 +5850,12 @@ declare namespace CodeceptJS {
          * I.uncheckOption('I Agree to Terms and Conditions');
          * I.uncheckOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          * Appium: not tested
          */
-        uncheckOption(field: string | any, context?: string): void;
+        uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Retrieves a text from an element located by CSS or XPath and returns it to test.
          * Resumes test execution, so **should be used inside async with `await`** operator.
@@ -5970,7 +5985,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          * {{ react }}
@@ -6415,7 +6430,7 @@ declare namespace CodeceptJS {
          * I.clearCookie('test');
          * ```
          *
-         * @param {string} [cookie=null] (optional, `null` by default) cookie name
+         * @param {?string} [cookie=null] (optional, `null` by default) cookie name
          * {--end--}
          *
          */
@@ -6454,7 +6469,7 @@ declare namespace CodeceptJS {
          * assert(cookie.value, '123456');
          * ```
          *
-         * @param {string} [name=null] cookie name.
+         * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
          * {--end--}
          *
@@ -6574,7 +6589,7 @@ declare namespace CodeceptJS {
          * // ... do something
          * await I.switchToWindow( windows[0] );
          *
-         * const window = await.grabCurrentWindowHandle();
+         * const window = await I.grabCurrentWindowHandle();
          * // ... do something
          * await I.switchToWindow( window );
          * ```
@@ -6781,7 +6796,7 @@ declare namespace CodeceptJS {
          * @param {function|string} fn function which is executed in browser context.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
-         * @param {number} [interval=null]
+         * @param {?number} [interval=null]
          * {--end--}
          *
          */
@@ -6794,11 +6809,11 @@ declare namespace CodeceptJS {
          * I.switchTo(); // switch back to main page
          * ```
          *
-         * @param {string|object} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          *
          */
-        switchTo(locator?: string | any): void;
+        switchTo(locator?: CodeceptJS.LocatorOrString): void;
         /**
          * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
          *
