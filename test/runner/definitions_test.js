@@ -29,7 +29,7 @@ describe('Definitions', function () {
   });
 
   describe('Static files', () => {
-    it.only('should have internal object that is available as variable codeceptjs', (done) => {
+    it('should have internal object that is available as variable codeceptjs', (done) => {
       exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
         const types = typesFrom(`${codecept_dir}/steps.d.ts`);
         types.should.be.valid;
