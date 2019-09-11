@@ -17,7 +17,7 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 chai.use(chaiSubset);
 
 describe('Definitions', function () {
-  this.timeout(5000);
+  this.timeout(10000);
   this.retries(4);
   afterEach(() => {
     try {
