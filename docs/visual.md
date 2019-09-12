@@ -183,3 +183,9 @@ Scenario('Compare CodeceptIO Home Page @visual-test', async (I, adminPage) => {
 Depending of your configuration this test will fail if no baseline exists and log the link to the image to accept or automatically accept the first run as baseline.
 > You can accept the first image as baseline automatically via ```autoBaseline: true``` _default is false_
 
+### Q & A
+
+Q: Will this package supports Fullpagescreenshot?
+A: Yes - Only with Puppeteer.
+
+
