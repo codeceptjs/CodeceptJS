@@ -357,7 +357,6 @@ npx codeceptjs run-workers 3
 ```
 
 Tests are split by scenarios, not by files. Results are aggregated and shown in the main process.
-If
 
 ## Debug
 
