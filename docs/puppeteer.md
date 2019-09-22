@@ -125,6 +125,29 @@ I.fillField({name: 'user[email]'},'miles@davis.com');
 I.seeElement({xpath: '//body/header'});
 ```
 
+### Interactive Pause
+
+It's easy to start writing a test if you use [interactive pause](https://codecept.io/basics#debug). Just open a web page and pause execution.
+
+```js
+Feature('Sample Test');
+
+Scenario('open my website', (I) => {
+  I.amOnPage('http://todomvc.com/examples/react/');
+  pause();
+});
+```
+
+This is just enough to run a test, open a browser, and think what to do next to write a test case.
+
+When you execute such test with `codeceptjs run` command you may see the browser is started
+
+```
+npx codeceptjs run --steps
+```
+
+After a page is opened a full control of a browser is given to a terminal. Type in different commands such as `click`, `see`, `fillField` to write the test. A successful commands will be saved to `./output/cli-history` file and can be copied into a test.
+
 A complete ToDo-MVC test may look like:
 
 ```js
@@ -220,6 +243,52 @@ npx codeceptjs def
 ```
 
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
+
+
+## Cloud Browsers
+
+Puppeteer browser can be executed locally or remotely.
+If you want to run your tests in parallel you may face problem of maintaining infrastructure for Puppeteer tests.
+
+That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. At this moment, this is the only cloud provider that can launch multiple puppeteer sessions for you.
+
+To start with Aerokube Browsers you need to register at [Aerokube Browsers](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
+
+```
+npm i @codeceptjs/aerokube-plugin --save-dev
+```
+
+And add this plugin to a config. Please provide Aerokube credentials in configuration:
+
+```js
+// codecept.conf.js config
+exports.config = {
+  helpers: {
+    Puppeteer: {
+     // regular Puppeteer config goes here
+     // no need to change anything here
+    }
+  },
+  // ....
+  plugins: {
+    aerokube: {
+      // uncomment next line to permanently enable this plugin
+      // enabled: true,
+       require: '@codeceptjs/aerokube-plugin',
+       user: '<username from aerokube>',
+       password: '<password from aerokube>',
+     }
+  }
+}
+```
+
+To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
+
+```
+npx codeceptjs run --plugins aerokube
+```
+
+> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
 
 ## Extending
 

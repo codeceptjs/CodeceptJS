@@ -3,6 +3,14 @@ id: changelog
 title: Releases
 ---
 
+## 2.3.1
+
+* **[MockRequest]** Polly helper was renamed to MockRequest.
+* [MockRequest][WebDriver] [Mocking requests](https://codecept.io/webdriver#mocking-requests) is now available in WebDriver. Thanks **[radhey1851](https://github.com/radhey1851)**
+* **[Puppeteer]** Ensure configured user agent and/or window size is applied to all pages. See [#1862](https://github.com/Codeception/CodeceptJS/issues/1862) by **[martomo](https://github.com/martomo)**
+* Improve handling of xpath locators with round brackets by **[nitschSB](https://github.com/nitschSB)**. See [#1870](https://github.com/Codeception/CodeceptJS/issues/1870)
+* Use WebDriver capabilities config in wdio plugin. [#1869](https://github.com/Codeception/CodeceptJS/issues/1869) by **[quekshuy](https://github.com/quekshuy)**
+
 ## 2.3.0
 
 
