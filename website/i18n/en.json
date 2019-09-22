@@ -161,9 +161,6 @@
       "puppeteer": {
         "title": "Testing with Puppeteer"
       },
-      "quickstart_webdriver": {
-        "title": "Quickstart"
-      },
       "react": {
         "title": "Testing React Applications"
       },

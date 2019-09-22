@@ -11,7 +11,6 @@ Please **add your own** by editing this page.
 ## Email Checking
 
 * [MailCatcher](https://gist.github.com/schmkr/026732dfa1627b927ff3a08dc31ee884) - to check emails via Mailcatcher locally.
-* [MailSlurp](https://github.com/wwerner/codeceptjs-mailslurp-helper) - provides access to randomly generated email address inboxes and retrieve emails from these inboxes.
 
 ## Data Sources
 

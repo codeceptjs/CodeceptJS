@@ -120,27 +120,36 @@ My First Test --
 
 
       <div className="col-lg-4 col pt-4">
-        <h3>Alternative Installations</h3>
+        <h3>Alternative Setup</h3>
 
+        <div class="card">
+        <div class="card-body">
         <p><b>Use WebDriver for classical Selenium setup.</b> This gives you access to rich Selenium ecosystem and cross-browser support for majority of browsers and devices.</p>
 
         <p>WebDriver support is implemented via <a href="https://webdriver.io">webdriverio</a> library</p>
+        <a href="/quickstart-webdriver" class="btn btn-warning btn-block card-link btn-lg">Start with WebDriver &raquo;</a>
+        </div>
+        </div>
 
-        <a href="/quickstart-webdriver" class="btn btn-warning btn-block  btn-lg">Start with WebDriver &raquo;</a>
 
-        <p className="mt-4"><b>TestCafe provides cross-browser support without Selenium</b>. TestCafe tests are faster, require no extra tooling and faster than regular Selenium.
+        <div class="card mt-4">
+        <div class="card-body">
+        <p><b>TestCafe provides cross-browser support without Selenium</b>. TestCafe tests are faster, require no extra tooling and faster than regular Selenium.
         However, can be less stable.</p>
 
         <a href="https://codecept.io/testcafe/" class="btn btn-light btn-block  btn-lg">Use TestCafe &raquo;</a>
+        </div></div>
 
-        <p className="mt-4"><b>Test native mobile apps with Appium</b>.
+        <div class="card mt-4">
+        <div class="card-body">
+        <p><b>Test native mobile apps with Appium</b>.
           Android and iOS are tested via standard Appium tool.
         </p>
 
         <p>Appium support is implemented via <a href="https://webdriver.io">webdriverio</a> library</p>
 
         <a href="https://codecept.io/mobile/" class="btn btn-light btn-block  btn-lg">Use Appium &raquo;</a>
-
+        </div></div>
 
         <a href="https://codecept.io/angular/" class="btn mt-4 btn-light btn-block">Use Protractor &raquo;</a>
         <a href="https://codecept.io/nightmare/" class="btn btn-light btn-block">Use NightmareJS &raquo;</a>
