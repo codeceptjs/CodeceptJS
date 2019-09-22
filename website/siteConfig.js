@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: 'CodeceptJS', // Title for your website.
-  tagline: 'Modern End 2 End Testing Framework for NodeJS',
+  tagline: 'SuperCharged End 2 End Testing with WebDriver & Puppeteer',
   url: 'https://codecept.io', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
