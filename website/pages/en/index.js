@@ -227,7 +227,7 @@ class Index extends React.Component {
 
 
 <div className="page demo">
-<div className="d-flex" style={{alignItems: 'center'}} >
+<div className="d-flex" style={{alignItems: 'center', margin: '100px 0 50px 0'}} >
 <div className="col-md-6">
   <img src="/img/pause.gif"></img>
 </div>
@@ -235,7 +235,7 @@ class Index extends React.Component {
 
 </div>
 </div>
-<div className="d-flex" style={{alignItems: 'center'}}>
+<div className="d-flex" style={{alignItems: 'center', margin: '50px 0 100px 0', paddingTop: '50px', borderTop: '10px solid #633d82'}}>
 <div className="col-md-6">
   <img src="/img/test.gif"></img>
 </div>
@@ -280,7 +280,6 @@ class Index extends React.Component {
       </p>
       <p>
 
-  <a href="/quickstart" className="btn btn-secondary btn-lg btn-expanded">Quick Start &raquo;</a>
   </p>
 
     </div>
@@ -305,7 +304,6 @@ class Index extends React.Component {
           <br/><br/>
             With MailSlurp you can easily receive and send emails inside your end 2 end tests.
 
-            <br/><br/>
             <a href="/email" className="btn btn-light btn-small">Learn More</a>
         </p>
       </div>
@@ -357,9 +355,6 @@ class Index extends React.Component {
       </div>
     </div>
   </div>
-  <div className="action-wrapper">
-  <a href="/quickstart" className="btn btn-danger btn-lg install-label">Quickstart &raquo;</a>
-</div>
 
   <div className="row d-none">
       <h3 className="col-12 text-center m-2 text-muted">Follow for updates &nbsp;
@@ -370,6 +365,9 @@ class Index extends React.Component {
 
   </div>
 
+  <div className="action-wrapper">
+  <a href="/quickstart" className="btn btn-danger btn-lg install-label">Quickstart &raquo;</a>
+</div>
 
 
 </div>);
