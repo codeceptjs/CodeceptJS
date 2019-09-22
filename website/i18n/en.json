@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Modern End 2 End Testing Framework for NodeJS",
+    "tagline": "SuperCharged End 2 End Testing with WebDriver & Puppeteer",
     "docs": {
       "acceptance": {
         "title": "Acceptance Testing"
