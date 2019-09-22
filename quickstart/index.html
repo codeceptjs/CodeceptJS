@@ -1,69 +1,14 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Quickstart · CodeceptJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;&lt;strong&gt;NodeJS v 8.9&lt;/strong&gt; and higher required to start.&lt;/p&gt;
-"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Quickstart · CodeceptJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="&lt;p&gt;&lt;strong&gt;NodeJS v 8.9&lt;/strong&gt; and higher required to start.&lt;/p&gt;
-"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-30075781-3"></script><script>
+<!DOCTYPE html><html lang=""><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>CodeceptJS · Modern End 2 End Testing Framework for NodeJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Modern End 2 End Testing Framework for NodeJS"/><meta property="og:title" content="CodeceptJS · Modern End 2 End Testing Framework for NodeJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://codecept.io/index.html"/><meta property="og:description" content="Modern End 2 End Testing Framework for NodeJS"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-30075781-3"></script><script>
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments); }
               gtag('js', new Date());
               gtag('config', 'UA-30075781-3');
-            </script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive siteNavItemActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class="siteNavGroupActive"><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">API</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class=""><a href="https://github.com/Codeception/CodeceptJS" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Quickstart</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Quickstart</h3><ul><li class="navListItem navListItemActive"><a class="navItem" href="/quickstart">Quickstart</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Web Testing</h3><ul><li class="navListItem"><a class="navItem" href="/basics">Basics</a></li><li class="navListItem"><a class="navItem" href="/webdriver">Testing with WebDriver</a></li><li class="navListItem"><a class="navItem" href="/puppeteer">Testing with Puppeteer</a></li><li class="navListItem"><a class="navItem" href="/testcafe">Testing with TestCafe</a></li><li class="navListItem"><a class="navItem" href="/angular">Testing with Protractor</a></li><li class="navListItem"><a class="navItem" href="/nightmare">Testing with Nightmare</a></li><li class="navListItem"><a class="navItem" href="/visual">Visual Testing</a></li><li class="navListItem"><a class="navItem" href="/email">Email Testing</a></li><li class="navListItem"><a class="navItem" href="/react">Testing React Applications</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Mobile Testing</h3><ul><li class="navListItem"><a class="navItem" href="/mobile">Mobile Testing with Appium</a></li><li class="navListItem"><a class="navItem" href="/detox">Testing React Native with Detox</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Organizing Tests</h3><ul><li class="navListItem"><a class="navItem" href="/best">Best Practices</a></li><li class="navListItem"><a class="navItem" href="/locators">Locators</a></li><li class="navListItem"><a class="navItem" href="/pageobjects">Reusing Code with Page Objects</a></li><li class="navListItem"><a class="navItem" href="/helpers">Custom Helpers</a></li><li class="navListItem"><a class="navItem" href="/bdd">Behavior Driven Development</a></li><li class="navListItem"><a class="navItem" href="/data">Data Management</a></li><li class="navListItem"><a class="navItem" href="/parallel">Parallel Execution</a></li><li class="navListItem"><a class="navItem" href="/reports">Reporters</a></li><li class="navListItem"><a class="navItem" href="/advanced">Advanced Usage</a></li><li class="navListItem"><a class="navItem" href="/hooks">Bootstrap / Teardown / Plugins</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Tutorials</h3><ul><li class="navListItem"><a class="navItem" href="/books">Books &amp; Posts</a></li><li class="navListItem"><a class="navItem" href="/videos">Videos</a></li><li class="navListItem"><a class="navItem" href="/examples">Examples</a></li></ul></div></div></section></div><script>
-            document.addEventListener('DOMContentLoaded', function() {
-              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
-              createToggler('#tocToggler', 'body', 'tocActive');
-
-              const headings = document.querySelector('.toc-headings');
-              headings && headings.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A') {
-                  document.body.classList.remove('tocActive');
-                }
-              }, false);
-
-              function createToggler(togglerSelector, targetSelector, className) {
-                var toggler = document.querySelector(togglerSelector);
-                var target = document.querySelector(targetSelector);
-
-                if (!toggler) {
-                  return;
-                }
-
-                toggler.onclick = function(event) {
-                  event.preventDefault();
-
-                  target.classList.toggle(className);
-                };
-              }
-            });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/Codeception/CodeceptJS/blob/master/docs/quickstart.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Quickstart</h1></header><article><div><span><p><strong>NodeJS v 8.9</strong> and higher required to start.
-CodeceptJS is an end 2 end testing framework which supports multiple browser drivers like WebDriver, Puppeteer, Protractor, TestCafe etc.</p>
-<blockquote>
-<p><strong>⬇️ TLDR <a href="#using-puppeteer">Fastest and simplest setup with Puppeteer and CodeceptJS</a> ⬇️</strong></p>
+            </script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"/><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.svg" alt="CodeceptJS"/><h2 class="headerTitleWithLogo">CodeceptJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavItemActive"><a href="/quickstart" target="_self">Quickstart</a></li><li class=""><a href="/basics" target="_self">Guides</a></li><li class=""><a href="/reference" target="_self">API</a></li><li class=""><a href="/changelog" target="_self">Releases</a></li><li class=""><a href="/help" target="_self">Support</a></li><li class=""><a href="https://github.com/Codeception/CodeceptJS" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div><div class="jumbotron"><h1 class="text-center motto"><span class="name">Quickstart</span></h1></div><div class="container-fluid page"><div class="row"><div class="col-lg-8 col"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Start with Puppeteer</h1></header><article><div><span><blockquote>
+<p>Puppeteer is a great way to start if you need fast end 2 end tests in Chrome browser. No Selenium required!
+<br />If you need cross-browser support check alternative installations with WebDriver or TestCafe →</p>
 </blockquote>
-<p>How to choose the right driver for your web application?
-Here is a brief comparison of all tools you can use with CodeceptJS.</p>
-<table>
-<thead>
-<tr><th>Driver</th><th>Cross-Browser</th><th>Limitations</th><th>Headless</th><th>Selenuim</th><th>Speed</th></tr>
-</thead>
-<tbody>
-<tr><td>WebDriver</td><td>✔️</td><td>headers, downloads</td><td>⁉</td><td>✔️</td><td>normal</td></tr>
-<tr><td>Puppeteer</td><td>chrome</td><td>cross-browser support</td><td>✔️</td><td></td><td>fast</td></tr>
-<tr><td>Protractor</td><td>✔️</td><td>headers, downloads</td><td>⁉</td><td>✔️</td><td>normal</td></tr>
-<tr><td>TestCafe</td><td>✔️</td><td>multiple tabs</td><td>✔️</td><td></td><td>fast</td></tr>
-<tr><td>Nightmare</td><td>electron (chromium)</td><td>multiple tabs, cross-browser</td><td>✔️</td><td></td><td>fast</td></tr>
-</tbody>
-</table>
-<p>⁉ - headless mode requires additional tools and configuration.</p>
-<h4><a class="anchor" aria-hidden="true" id="how-to-choose-browser-driver"></a><a href="#how-to-choose-browser-driver" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How to choose browser driver</h4>
-<ul>
-<li><strong><a href="#Using-Puppeteer">Choose Puppeteer</a></strong> for simplest setup, fast tests, full browser control. Limited to Chrome and Firefox only. Cloud browsers via browserless.io.</li>
-<li><strong><a href="#Using-WebDriver">Choose WebDriver</a></strong> or Protractor for classical Selenium. Rich ecosystem and cross browser support with cloud browsers via Sauce Labs, BrowserStack, TestingBot. <strong>Selenium server requried</strong> for local start.</li>
-<li><strong><a href="#Using-TestCafe">Choose TestCafe</a></strong> for cheap and fast cross-browser tests. Has stability and feature limitation comparing to WebDriver.</li>
-</ul>
-<p>Each driver has its own pros and cons which can't be described in this paragraph. However, in CodeceptJS it is easy to switch between them. In most cases you just need to update a config to run tests differently.</p>
-<h2><a class="anchor" aria-hidden="true" id="using-puppeteer"></a><a href="#using-puppeteer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Puppeteer</h2>
-<video onclick="this.paused ? this.play() : this.pause();" src="/img/codeceptjs-install.mp4" style="width: 100%" controls></video>
-<ol>
-<li>If you start an empty project, initialize npm first:</li>
-</ol>
+<video onclick="this.paused ? this.play() : this.pause();" src="/img/install.mp4" style="width: 100%" controls></video>
+<p>If you start with empty project initialize npm first:</p>
 <pre><code class="hljs">npm init -y
 </code></pre>
 <ol>
@@ -74,13 +19,13 @@ Here is a brief comparison of all tools you can use with CodeceptJS.</p>
 <ol start="2">
 <li>Initialize CodeceptJS in current directory by running:</li>
 </ol>
-<pre><code class="hljs css language-sh">npx codeceptjs init
+<pre><code class="hljs">npx codeceptjs init
 </code></pre>
 <p>(use <code>node node_modules/.bin/codeceptjs</code> if you have issues with npx)</p>
 <ol start="3">
 <li>Answer questions. Agree on defaults, when asked to select helpers choose <strong>Puppeteer</strong>.</li>
 </ol>
-<pre><code class="hljs css language-sh">? What helpers <span class="hljs-keyword">do</span> you want to use?
+<pre><code class="hljs">? What helpers <span class="hljs-keyword">do</span> you want to use?
  ◯ WebDriver
  ◯ Protractor
 ❯◉ Puppeteer
@@ -91,7 +36,7 @@ Here is a brief comparison of all tools you can use with CodeceptJS.</p>
 <ol start="4">
 <li>Create First Test.</li>
 </ol>
-<pre><code class="hljs css language-bash">npx codeceptjs gt
+<pre><code class="hljs">npx codeceptjs gt
 </code></pre>
 <ol start="5">
 <li>Enter a test name. Open a generated file in your favorite JavaScript editor.</li>
@@ -120,136 +65,17 @@ Here is a brief comparison of all tools you can use with CodeceptJS.</p>
 <p>The output should be similar to this:</p>
 <pre><code class="hljs css language-bash">My First Test --
   <span class="hljs-built_in">test</span> something
-   • I am on page <span class="hljs-string">"https://github.com"</span>
-   • I see <span class="hljs-string">"GitHub"</span>
+     I am on page <span class="hljs-string">"https://github.com"</span>
+     I see <span class="hljs-string">"GitHub"</span>
  ✓ OK
 </code></pre>
-<p>Puppeteer starts a browser without showing its window. To see the browser, edit <code>codecept.json</code> config and set <code>show: true</code> for Puppeteer:</p>
-<pre><code class="hljs css language-js">{
-  <span class="hljs-string">"helpers"</span>: {
-    <span class="hljs-string">"Puppeteer"</span>: {
-      <span class="hljs-string">"url"</span>: <span class="hljs-string">"http://localhost"</span>,
-      <span class="hljs-string">"show"</span>: <span class="hljs-literal">true</span>,
-    }
-  }
-}
-</code></pre>
-<p>Rerun the test to see the browser.</p>
 <blockquote>
 <p><a href="https://codecept.io/basics/">▶ Next: CodeceptJS Basics</a></p>
 </blockquote>
 <blockquote>
 <p><a href="https://codecept.io/puppeteer/">▶ Next: CodeceptJS with Puppeteer</a></p>
 </blockquote>
-<hr>
-<h2><a class="anchor" aria-hidden="true" id="using-selenium-webdriver"></a><a href="#using-selenium-webdriver" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Selenium WebDriver</h2>
-<ol>
-<li>If you start an empty project, initialize npm first:</li>
-</ol>
-<pre><code class="hljs">npm init -y
-</code></pre>
-<ol>
-<li>Install CodeceptJS with webdriverio library</li>
-</ol>
-<pre><code class="hljs">npm install codeceptjs webdriverio --save-dev
-</code></pre>
-<ol start="2">
-<li>Initialize CodeceptJS in current directory by running:</li>
-</ol>
-<pre><code class="hljs css language-sh">npx codeceptjs init
-</code></pre>
-<p>(use <code>node node_modules/.bin/codeceptjs init</code> if you have issues with npx)</p>
-<ol start="3">
-<li>Answer questions. Agree on defaults, when asked to select helpers choose <strong>WebDriver</strong>.</li>
-</ol>
-<pre><code class="hljs css language-sh">? What helpers <span class="hljs-keyword">do</span> you want to use?
-❯◉ WebDriver
- ◯ Protractor
- ◯ Puppeteer
- ◯ Appium
- ◯ Nightmare
- ◯ FileSystem
-</code></pre>
-<ol start="4">
-<li>Create First Test.</li>
-</ol>
-<pre><code class="hljs css language-bash">npx codeceptjs gt
-</code></pre>
-<ol start="5">
-<li>Enter a test name. Open a generated file in your favorite JavaScript editor.</li>
-</ol>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'My First Test'</span>);
-
-<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test something'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
-
-});
-</code></pre>
-<ol start="6">
-<li>Write a simple scenario</li>
-</ol>
-<pre><code class="hljs css language-js"><span class="hljs-keyword">Feature</span>(<span class="hljs-string">'My First Test'</span>);
-
-<span class="hljs-keyword">Scenario</span>(<span class="hljs-string">'test something'</span>, (<span class="hljs-built_in">I</span>) =&gt; {
-  <span class="hljs-built_in">I</span>.amOnPage(<span class="hljs-string">'https://github.com'</span>);
-  <span class="hljs-built_in">I</span>.see(<span class="hljs-string">'GitHub'</span>);
-});
-</code></pre>
-<ol start="7">
-<li>Prepare Selenium Server</li>
-</ol>
-<p>Install <code>@wdio/selenium-standalone-service</code> package to automatically start and stop selenium service.</p>
-<pre><code class="hljs">npm i @wdio/selenium-standalone-service --save
-</code></pre>
-<p>Enable it in config inside plugins section:</p>
-<pre><code class="hljs css language-js">exports.config = {
-  <span class="hljs-comment">// ...</span>
-  <span class="hljs-comment">// inside condecept.conf.js</span>
-  plugins: {
-    <span class="hljs-attr">wdio</span>: {
-      <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
-      <span class="hljs-attr">services</span>: [<span class="hljs-string">'selenium-standalone'</span>]
-    }
-  }
-}
-</code></pre>
-<blockquote>
-<p>Alternatively, use <a href="https://www.npmjs.com/package/selenium-standalone">selenium-standalone</a> to install, start and stop Selenium Server manually.</p>
-</blockquote>
-<ol start="8">
-<li>Run a test:</li>
-</ol>
-<pre><code class="hljs">npx codeceptjs run --steps
-</code></pre>
-<p>If everything is done right, you will see in console:</p>
-<pre><code class="hljs css language-bash">My First Test --
-  <span class="hljs-built_in">test</span> something
-   • I am on page <span class="hljs-string">"https://github.com"</span>
-   • I see <span class="hljs-string">"GitHub"</span>
- ✓ OK
-</code></pre>
-<blockquote>
-<p><a href="https://codecept.io/basics/">▶ Next: CodeceptJS Basics</a></p>
-</blockquote>
-<blockquote>
-<p><a href="https://codecept.io/webdriver/">▶ Next: WebDriver Testing</a></p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="using-protractor"></a><a href="#using-protractor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Protractor</h2>
-<blockquote>
-<p><a href="https://codecept.io/angular/">▶ Follow corresponding guide</a></p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="using-appium"></a><a href="#using-appium" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Appium</h2>
-<blockquote>
-<p><a href="https://codecept.io/mobile/">▶ Follow corresponding guide</a></p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="using-nightmarejs"></a><a href="#using-nightmarejs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using NightmareJS</h2>
-<blockquote>
-<p><a href="https://codecept.io/nightmare/">▶ Follow corresponding guide</a></p>
-</blockquote>
-<h2><a class="anchor" aria-hidden="true" id="using-testcafe"></a><a href="#using-testcafe" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using TestCafe</h2>
-<blockquote>
-<p><a href="https://codecept.io/testcafe/">▶ Follow corresponding guide</a></p>
-</blockquote>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/29/2019</em></div><div class="docs-prevnext"><a class="docs-next button" href="/basics"><span>Basics</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#using-puppeteer">Using Puppeteer</a></li><li><a href="#using-selenium-webdriver">Using Selenium WebDriver</a></li><li><a href="#using-protractor">Using Protractor</a></li><li><a href="#using-appium">Using Appium</a></li><li><a href="#using-nightmarejs">Using NightmareJS</a></li><li><a href="#using-testcafe">Using TestCafe</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div></div><div class="col-lg-4 col pt-4"><h3>Alternative Installations</h3><p><b>Use WebDriver for classical Selenium setup.</b> This gives you access to rich Selenium ecosystem and cross-browser support for majority of browsers and devices.</p><p>WebDriver support is implemented via <a href="https://webdriver.io">webdriverio</a> library</p><a href="/quickstart-webdriver" class="btn btn-warning btn-block  btn-lg">Start with WebDriver »</a><p class="mt-4"><b>TestCafe provides cross-browser support without Selenium</b>. TestCafe tests are faster, require no extra tooling and faster than regular Selenium. However, can be less stable.</p><a href="https://codecept.io/testcafe/" class="btn btn-light btn-block  btn-lg">Use TestCafe »</a><p class="mt-4"><b>Test native mobile apps with Appium</b>. Android and iOS are tested via standard Appium tool.</p><p>Appium support is implemented via <a href="https://webdriver.io">webdriverio</a> library</p><a href="https://codecept.io/mobile/" class="btn btn-light btn-block  btn-lg">Use Appium »</a><a href="https://codecept.io/angular/" class="btn mt-4 btn-light btn-block">Use Protractor »</a><a href="https://codecept.io/nightmare/" class="btn btn-light btn-block">Use NightmareJS »</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.svg" alt="CodeceptJS" width="66" height="58"/></a><div><h5>Docs</h5><a href="/quickstart">QuickStart</a><a href="/basics">Guides</a><a href="/reference">Reference</a></div><div><h5>Community</h5><a href="https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI">Slack Chat</a><a href="https://codecept.discourse.group" target="_blank" rel="noreferrer noopener">Community Forum</a><a href="http://stackoverflow.com/questions/tagged/codeceptjs" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://twitter.com/codeceptjs" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/Codeception/CodeceptJS">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/codeception/codeceptjs/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&amp;utm_medium=footer&amp;utm_term=link&amp;utm_campaign=reference">Commercial Support</a><a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&amp;utm_medium=top_menu&amp;utm_term=link&amp;utm_campaign=reference">Trainings</a></div></section><section class="copyright">Copyright © 2019 CodeceptJS</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
