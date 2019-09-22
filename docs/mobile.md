@@ -58,7 +58,7 @@ To run mobile test you need either an device emulator (available with Android SD
 CodeceptJS should be installed with webdriverio support:
 
 ```bash
-npm install -g codeceptjs webdriverio
+npm install codeceptjs webdriverio --save
 ```
 
 ## Configuring
@@ -66,7 +66,7 @@ npm install -g codeceptjs webdriverio
 Initialize CodeceptJS with `init` command:
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
 
 Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
@@ -91,11 +91,11 @@ Check the newly created `codecept.conf.js` configuration file.
 You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/docs/en/writing-running-appium/caps/)
 
 ```js
-"helpers": {
-  "Appium": {
-    "app": "my_app.apk",
-    "platform": "Android",
-    "desiredCapabilities": {}
+helpers: {
+  Appium: {
+    app: "my_app.apk",
+    platform: "Android",
+    desiredCapabilities: {}
   }
 }
 ```
@@ -103,7 +103,7 @@ You may want to set some additional Appium settings via [desiredCapabilities](ht
 Once you configured Appium, create the first test by running
 
 ```sh
-codeceptjs gt
+npx codeceptjs gt
 ```
 
 ## BrowserStack Configuration
@@ -111,14 +111,14 @@ codeceptjs gt
 If you wish to use BrowserStack's [Automated Mobile App Testing](https://www.browserstack.com/app-automate) platform. Configure the Appium helper like this:
 
 ```js
-"helpers": {
-  "Appium":
-    "app": "bs://<hashed app-id>",
-    "host": "hub-cloud.browserstack.com",
-    "port": 4444,
-    "user": "BROWSERSTACK_USER",
-    "key": "BROWSERSTACK_KEY",
-    "device": "iPhone 7"
+helpers: {
+  Appium:
+    app: "bs://<hashed app-id>",
+    host: "hub-cloud.browserstack.com",
+    port: 4444,
+    user: "BROWSERSTACK_USER",
+    key: "BROWSERSTACK_KEY",
+    device: "iPhone 7"
 }
 ```
 Here is the full list of [capabilities](https://www.browserstack.com/app-automate/capabilities).

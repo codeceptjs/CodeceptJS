@@ -65,6 +65,9 @@
       "docker": {
         "title": "Docker"
       },
+      "email": {
+        "title": "Email Testing"
+      },
       "examples": {
         "title": "Examples"
       },
@@ -91,6 +94,9 @@
       },
       "helpers/Mochawesome": {
         "title": "Mochawesome"
+      },
+      "helpers/MockRequest": {
+        "title": "MockRequest"
       },
       "helpers/Nightmare": {
         "title": "Nightmare"
@@ -155,7 +161,7 @@
       "puppeteer": {
         "title": "Testing with Puppeteer"
       },
-      "quickstart": {
+      "quickstart_webdriver": {
         "title": "Quickstart"
       },
       "react": {
@@ -189,7 +195,6 @@
       "GitHub": "GitHub"
     },
     "categories": {
-      "Quickstart": "Quickstart",
       "Web Testing": "Web Testing",
       "Mobile Testing": "Mobile Testing",
       "Organizing Tests": "Organizing Tests",

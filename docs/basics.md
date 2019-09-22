@@ -602,6 +602,33 @@ I.say('This is blue', 'blue'); //blue is used
 I.say('This is by default'); //cyan is used
 ```
 
+
+## IntelliSense
+
+![](/img/edit.gif)
+
+To get autocompletion when working with CodeceptJS use  Visual Studio Code or other IDE that supports TypeScript Definitions.
+
+Generate step definitions with
+
+```sh
+npx codeceptjs def
+```
+
+Create `jsconfig.json` in your project root directory unless it is already there.
+
+```jsconfig.json
+{
+  "compilerOptions": {
+    "allowJs": true,
+  }
+}
+```
+
+Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
+to get method autocompletion while writing tests.
+
+
 ## Multiple Sessions
 
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
@@ -674,29 +701,6 @@ This function can also be declared as async (but doesn't work as generator).
 
 Also, you can use `within` inside a session but you can't call session from inside `within`.
 
-
-## IntelliSense
-
-If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
-you can generate step definitions with
-
-```sh
-codeceptjs def
-```
-
-Now you should create `jsconfig.json` in your project root directory.
-
-```jsconfig.json
-{
-  "compilerOptions": {
-    "allowJs": true,
-  }
-}
-```
-but in usually case, this file has already generated when you execute `codeceptjs init`.
-
-Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
-to get method autocompletion while writing tests.
 
 ## Skipping
 
