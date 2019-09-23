@@ -36,6 +36,35 @@ describe('CodeceptJS Interface', () => {
   });
 
 
+  it('should use retryFailedStep plugin for failed steps', (done) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test1`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.include('Retries: 5'); // test name
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should not retry wait* steps in retryFailedStep plugin', (done) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test2`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.not.include('Retries: 5');
+      stdout.should.include('Retries: 1');
+      assert(err);
+      done();
+    });
+  });
+
+  it('should not retry steps if retryFailedStep plugin disabled', (done) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test3`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.not.include('Retries: 5');
+      stdout.should.include('Retries: 1');
+      assert(err);
+      done();
+    });
+  });
+
   it('should include grep option tests', (done) => {
     exec(config_run_config('codecept.grep.json'), (err, stdout, stderr) => {
       stdout.should.include('Got login davert and password'); // feature
