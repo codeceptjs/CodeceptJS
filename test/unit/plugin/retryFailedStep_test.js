@@ -80,6 +80,53 @@ describe('retryFailedStep', () => {
     // expects to retry only once
   });
 
+  it('should not retry steps with amOnPage', async () => {
+    retryFailedStep({ retries: 2, minTimeout: 1 });
+    event.dispatcher.emit(event.test.before, {});
+
+    let counter = 0;
+    event.dispatcher.emit(event.step.started, { name: 'amOnPage' });
+    try {
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error();
+        }
+      });
+      await recorder.promise();
+    } catch (e) {
+      recorder.catchWithoutStop((err) => {
+      });
+    }
+
+    counter.should.equal(1);
+    // expects to retry only once
+  });
+
+
+  it('should add custom steps to ignore', async () => {
+    retryFailedStep({ retries: 2, minTimeout: 1, ignoredSteps: ['somethingNew*'] });
+    event.dispatcher.emit(event.test.before, {});
+
+    let counter = 0;
+    event.dispatcher.emit(event.step.started, { name: 'somethingNew' });
+    try {
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error();
+        }
+      });
+      await recorder.promise();
+    } catch (e) {
+      recorder.catchWithoutStop((err) => {
+      });
+    }
+
+    counter.should.equal(1);
+    // expects to retry only once
+  });
+
   it('should not retry session', async () => {
     retryFailedStep({ retries: 1, minTimeout: 1 });
     event.dispatcher.emit(event.test.before, {});
