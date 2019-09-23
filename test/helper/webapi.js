@@ -377,6 +377,14 @@ module.exports.tests = function () {
       assert.equal(val, 10);
     });
 
+
+    it('should return value from sync script in iframe', async () => {
+      await I.amOnPage('/iframe');
+      await I.switchTo('iframe');
+      const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
+      assert.equal(val, 'Information');
+    });
+
     it('should execute async script', async () => {
       if (isHelper('TestCafe')) return; // TODO Not yet implemented
 
