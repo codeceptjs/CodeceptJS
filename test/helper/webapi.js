@@ -372,6 +372,7 @@ module.exports.tests = function () {
     });
 
     it('should return value from sync script', async () => {
+      if (isHelper('TestCafe') || isHelper('Nightmare')) return; // TODO Not yet implemented
       await I.amOnPage('/');
       const val = await I.executeScript(a => a + 5, 5);
       assert.equal(val, 10);
