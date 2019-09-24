@@ -1,15 +1,16 @@
+const { I } = inject();
+
 class PageObject {
   constructor() {
     this.method1 = () => { console.log(123); };
   }
 
-  type(s) {
-    console.log(s);
+  async type(s) {
+    await I.printMessage(s);
   }
 
-  purgeDomains(s) {
-    console.log('purgeDomains');
-    console.log(s);
+  purgeDomains() {
+    I.printMessage('purgeDomains');
   }
 }
 

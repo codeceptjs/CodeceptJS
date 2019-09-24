@@ -1,6 +1,8 @@
+const { I } = inject();
+
 class Base {
-  type(s) {
-    console.log(s);
+  async type(s) {
+    await I.printMessage(s);
   }
 }
 
@@ -10,9 +12,8 @@ class PageObject extends Base {
     this.method1 = () => { console.log(123); };
   }
 
-  purgeDomains(s) {
-    console.log('purgeDomains');
-    console.log(s);
+  purgeDomains() {
+    I.printMessage('purgeDomains');
   }
 }
 

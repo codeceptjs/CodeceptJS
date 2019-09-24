@@ -2,6 +2,9 @@ exports.config = {
   tests: './*_test.js',
   output: './output',
   helpers: {
+    CustomHelper: {
+      require: './customHelper.js',
+    },
   },
   include: {
     classpage: './pages/classpage.js',
