@@ -1,3 +1,14 @@
+## 2.3.2
+
+* [Puppeteer] Fixed Puppeteer 1.20 support by @davertmik
+* Fixed `run-workers` to run with complex configs. See #1887 by @nitschSB
+* Added `--suites` option to `run-workers` to split suites by workers (tests of the same suite goes to teh same worker). Thanks @nitschSB.
+* Added a guide on [Email Testing](https://codecept.io/email).
+* [retryFailedStepPlugin] Improved to ignore wait* steps and others. Also added option to ignore this plugin per test bases. See [updated documentation](https://codecept.io/plugins#retryfailedstep). By @davertmik
+* Fixed using PageObjects as classes by @Vorobeyko. See #1896
+* [WebDriver] Fixed opening more than one tab. See #1875 by @jplegoff. Fixes #1874
+* Fixed #1891 when `I.retry()` affected retries of next steps. By @davertmik
+
 ## 2.3.1
 
 * [MockRequest] Polly helper was renamed to MockRequest.

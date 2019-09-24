@@ -357,7 +357,7 @@ plugins: {
 
 Run tests with plugin enabled:
 
-    codeceptjs run --plugins retryFailedStep
+    npx codeceptjs run --plugins retryFailedStep
 
 ##### Configuration:
 
@@ -367,8 +367,42 @@ Run tests with plugin enabled:
 -   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
 -   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
 -   `randomize` - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.
+-   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
+    -   `amOnPage`
+    -   `wait*`
+    -   `send*`
+    -   `execute*`
+    -   `run*`
+    -   `have*`
+-   `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+    To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 
-This plugin is very basic so it's recommended to improve it to match your custom needs.
+##### Example
+
+```js
+plugins: {
+    retryFailedStep: {
+        enabled: true,
+        ignoreSteps: [
+          'scroll*', // ignore all scroll steps
+          /Cookie/, // ignore all steps with a Cookie in it (by regexp)
+        ]
+    }
+}
+```
+
+##### Disable Per Test
+
+This plugin can be disabled per test. In this case you will need to stet `I.retry()` to all flaky steps:
+
+Use scenario configuration to disable plugin for a test
+
+```js
+Scenario('scenario tite', () => {
+   // test goes here
+}).config(test => test.disableRetryFailedStep = true)
+```
 
 ### Parameters
 

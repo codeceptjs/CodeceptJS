@@ -1129,6 +1129,11 @@ Open new tab and switch to it.
 I.openNewTab();
 ```
 
+#### Parameters
+
+-   `url`   
+-   `windowName`   
+
 ### pressKey
 
 Presses a key on a focused element.
