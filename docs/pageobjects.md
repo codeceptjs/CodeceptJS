@@ -156,6 +156,7 @@ Page Objects can be be functions, arrays or classes. When declared page objects 
 Here is an example of declaring page object as a class:
 
 ```js
+const { expect } = require('chai');
 const { I } = inject();
 
 class AttachFile {

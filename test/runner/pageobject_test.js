@@ -18,7 +18,6 @@ describe('CodeceptJS Interface', () => {
       stdout.should.not.include('classpage.type is not a function');
       stdout.should.include('classpage: type');
       stdout.should.include('I print message "Class Page Type"');
-      stdout.should.include('user => User1');
       stdout.should.include('classpage: purgeDomains');
       stdout.should.include('I print message "purgeDomains"');
       stdout.should.include('Class Page Type');
