@@ -1,3 +1,9 @@
+const { useHeadlessWhen, useSharedCookies } = require('@codeceptjs/config-hooks');
+
+useHeadlessWhen(process.env.headless);
+useSharedCookies();
+useWindowSize(1600, 1000);
+
 exports.config = {
   output: './output',
   helpers: {
