@@ -150,7 +150,7 @@
         "title": "Testing with Nightmare"
       },
       "pageobjects": {
-        "title": "Reusing Code with Page Objects"
+        "title": "Page Objects"
       },
       "parallel": {
         "title": "Parallel Execution"
