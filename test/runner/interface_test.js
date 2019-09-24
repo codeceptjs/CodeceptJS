@@ -27,7 +27,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should rerun retried steps', (done) => {
-    exec(config_run_config('codecept.retry.json'), (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retry.json')} --grep @test1`, (err, stdout, stderr) => {
       stdout.should.include('Retry'); // feature
       stdout.should.include('Retries: 4'); // test name
       assert(!err);
@@ -35,6 +35,14 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should not propagate retries to non retried steps', (done) => {
+    exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.include('Retries: 1'); // test name
+      assert(err);
+      done();
+    });
+  });
 
   it('should use retryFailedStep plugin for failed steps', (done) => {
     exec(`${config_run_config('codecept.retryFailed.json')} --grep @test1`, (err, stdout, stderr) => {
