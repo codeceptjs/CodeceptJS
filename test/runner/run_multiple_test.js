@@ -176,7 +176,6 @@ describe('CodeceptJS Multiple Runner', function () {
     const _codecept_run = `run-multiple --config ${codecept_dir}`;
     it('should be executed from async function in config', (done) => {
       exec(`${runner} ${_codecept_run}/codecept.async.bootstrapall.multiple.code.js default`, (err, stdout, stderr) => {
-        console.log(stdout);
         stdout.should.include('CodeceptJS'); // feature
         stdout.should.include('Results: inside Promise\n"event.multiple.before" is called');
         stdout.should.include('"teardownAll" is called.');
