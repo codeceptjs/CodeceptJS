@@ -25,7 +25,7 @@ Then enable a helper in `codecept.conf.js`:
 helpers: {
 
   MailSlurp: {
-    require: '@codeceptjs/mailsluep-helper',
+    require: '@codeceptjs/mailslurp-helper',
     apiKey: '<apiKeyFromMailSlurp>'
   }
 }
