@@ -188,7 +188,7 @@ autoLogin: {
          I.fillField('email', 'user@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
          I.see('User', '.navbar');
@@ -200,7 +200,7 @@ autoLogin: {
          I.fillField('email', 'admin@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
          I.see('Admin', '.navbar'),
