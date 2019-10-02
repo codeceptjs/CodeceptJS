@@ -17,7 +17,7 @@ if [[ -d "/tests/" ]]; then
 			codeceptjs run-multiple "$CODECEPT_ARGS"
 		fi
 	else
-		if [ "$NO_OF_WORKERS" -gt 0 ]; then
+		if [ "$NO_OF_WORKERS" != 0 ]; then
 		        codeceptjs run-workers "$NO_OF_WORKERS"
 		else
 		        codeceptjs run "$CODECEPT_ARGS"
