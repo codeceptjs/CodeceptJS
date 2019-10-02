@@ -94,6 +94,12 @@ docker build -t codeception/codeceptjs .
 * tests directory is expected to be mounted as `/tests`
 * `codeceptjs` is a synlink to `/codecept/bin/codecept.js`
 
+To build this image with your desired Node version:
+
+```sh
+docker build -t codeception/codeceptjs . --build-arg NODE_VERSION=12.10.0
+```
+
 ### Passing Options
 
 Options can be passed by calling `codeceptjs`:

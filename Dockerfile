@@ -50,6 +50,7 @@ WORKDIR /tests
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
+ENV NO_OF_WORKERS=0
 
 # Set HOST ENV variable for Selenium Server
 ENV HOST=selenium
