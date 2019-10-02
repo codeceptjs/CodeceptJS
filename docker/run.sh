@@ -14,13 +14,13 @@ if [[ -d "/tests/" ]]; then
 			echo "No CODECEPT_ARGS provided. Tests will procceed with --all option to run all configured runs"
 			codeceptjs run-multiple --all
 		else		
-			codeceptjs run-multiple "$CODECEPT_ARGS"
+			codeceptjs run-multiple $CODECEPT_ARGS
 		fi
 	else
 		if [ ! "$NO_OF_WORKERS" ]; then
-			codeceptjs run "$CODECEPT_ARGS"
+			codeceptjs run $CODECEPT_ARGS
 		else
-		    codeceptjs run-workers "$NO_OF_WORKERS"
+		    codeceptjs run-workers $NO_OF_WORKERS
 		fi
 	fi
 else
