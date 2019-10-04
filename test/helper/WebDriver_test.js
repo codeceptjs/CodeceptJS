@@ -905,4 +905,25 @@ describe('WebDriver', function () {
       assert.equal(geoLocation.longitude, -122.0748, 'The longitude is not properly set');
     });
   });
+
+  describe('#grabElementSize', () => {
+    it('should get the element size', async () => {
+      await wd.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
+      const size = await wd.grabElementSize('h2[class="headerTitle"]');
+      assert.equal(size[0].width, 167);
+      assert.equal(size[0].height, 32);
+    });
+
+    it('should get the element width', async () => {
+      await wd.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
+      const size = await wd.grabElementSize('h2[class="headerTitle"]', 'width');
+      assert.equal(size[0], 167);
+    });
+
+    it('should get the element height', async () => {
+      await wd.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
+      const size = await wd.grabElementSize('h2[class="headerTitle"]', 'height');
+      assert.equal(size[0], 32);
+    });
+  });
 });

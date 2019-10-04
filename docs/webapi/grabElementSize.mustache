@@ -1,0 +1,14 @@
+Grab the width and height of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const value = await I.grabElementSize('h3');
+const value = await I.grabElementSize('h3', 'width');
+```
+
+If multiple elements found returns an array of texts.
+
+@param {string|object} locator element located by CSS|XPath|strict locator.
+@param {string} elementSize the width or height of the given element.
+@returns {Promise<array>} Element size
