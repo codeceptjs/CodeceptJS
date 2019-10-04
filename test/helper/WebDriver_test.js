@@ -906,24 +906,26 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('#grabElementSize', () => {
+  describe('#grabElementBoundingRect', () => {
     it('should get the element size', async () => {
-      await wd.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
-      const size = await wd.grabElementSize('h2[class="headerTitle"]');
-      assert.equal(size[0].width, 167);
-      assert.equal(size[0].height, 32);
+      await wd.amOnPage('https://www.google.com');
+      const size = await wd.grabElementBoundingRect('#hplogo');
+      assert.equal(size[0].x, 354);
+      assert.equal(size[0].y, 89);
+      assert.equal(size[0].width, 272);
+      assert.equal(size[0].height, 201);
     });
 
     it('should get the element width', async () => {
-      await wd.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
-      const size = await wd.grabElementSize('h2[class="headerTitle"]', 'width');
-      assert.equal(size[0], 167);
+      await wd.amOnPage('https://www.google.com');
+      const size = await wd.grabElementBoundingRect('#hplogo', 'width');
+      assert.equal(size[0], 272);
     });
 
     it('should get the element height', async () => {
-      await wd.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
-      const size = await wd.grabElementSize('h2[class="headerTitle"]', 'height');
-      assert.equal(size[0], 32);
+      await wd.amOnPage('https://www.google.com');
+      const size = await wd.grabElementBoundingRect('#hplogo', 'height');
+      assert.equal(size[0], 201);
     });
   });
 });

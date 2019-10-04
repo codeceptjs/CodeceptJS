@@ -586,24 +586,26 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#grabElementSize', () => {
-    it('should get the element size', async () => {
-      await I.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
-      const size = await I.grabElementSize('h2[class="headerTitle"]');
-      assert.equal(size[0].width, 167);
-      assert.equal(size[0].height, 32);
+  describe('#grabElementBoundingRect', () => {
+    it('should get the element bounding rectangle', async () => {
+      await I.amOnPage('https://www.google.com');
+      const size = await I.grabElementBoundingRect('#hplogo');
+      assert.equal(size[0].x, 354);
+      assert.equal(size[0].y, 89);
+      assert.equal(size[0].width, 272);
+      assert.equal(size[0].height, 201);
     });
 
     it('should get the element width', async () => {
-      await I.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
-      const size = await I.grabElementSize('h2[class="headerTitle"]', 'width');
-      assert.equal(size[0], 167);
+      await I.amOnPage('https://www.google.com');
+      const size = await I.grabElementBoundingRect('#hplogo', 'width');
+      assert.equal(size[0], 272);
     });
 
     it('should get the element height', async () => {
-      await I.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
-      const size = await I.grabElementSize('h2[class="headerTitle"]', 'height');
-      assert.equal(size[0], 32);
+      await I.amOnPage('https://www.google.com');
+      const size = await I.grabElementBoundingRect('#hplogo', 'height');
+      assert.equal(size[0], 201);
     });
   });
 
