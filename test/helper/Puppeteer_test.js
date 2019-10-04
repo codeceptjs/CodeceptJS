@@ -590,14 +590,14 @@ describe('Puppeteer', function () {
     it('should get the element size', async () => {
       await I.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
       const size = await I.grabElementSize('h2[class="headerTitle"]');
-      assert.equal(size[0].width, 165.640625);
+      assert.equal(size[0].width, 167);
       assert.equal(size[0].height, 32);
     });
 
     it('should get the element width', async () => {
       await I.amOnPage('https://webdriver.io/docs/api/element/getSize.html');
       const size = await I.grabElementSize('h2[class="headerTitle"]', 'width');
-      assert.equal(size[0], 165.640625);
+      assert.equal(size[0], 167);
     });
 
     it('should get the element height', async () => {
