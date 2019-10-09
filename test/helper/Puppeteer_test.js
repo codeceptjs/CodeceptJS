@@ -314,7 +314,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
@@ -427,7 +426,6 @@ describe('Puppeteer', function () {
     });
   });
 
-
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
       .then(() => I.waitForEnabled('#text', 2))
@@ -476,7 +474,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#text', 'Brisbane'))
       .then(() => I.seeInField('#text2', 'London')));
   });
-
 
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
@@ -583,6 +580,14 @@ describe('Puppeteer', function () {
       // Unchecking again should not affect the current 'unchecked' status
       await I.uncheckOption('interesting');
       await I.dontSeeCheckboxIsChecked('interesting');
+    });
+  });
+
+  describe('#grabLighthouseScores', () => {
+    it('should return the Lighthouse scores', async () => {
+      await I.amOnPage('https://www.google.com');
+      const scores = await I.grabLighthouseScores('https://www.google.com');
+      expect(scores).to.contain('Lighthouse scores:');
     });
   });
 
