@@ -110,7 +110,7 @@ npx codeceptjs dry-run --steps -p allure
 To enable bootstrap script in dry-run mode, pass in `--bootstrap` option when running with `--steps` or `--debug`
 
 ```
-nox codeceptjs dry-run --steps --bootstrap
+npx codeceptjs dry-run --steps --bootstrap
 ```
 
 ## Run Multiple
