@@ -17,7 +17,7 @@ Here is an overview of available options with their defaults:
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/advanced/#multiple-browsers-execution)
+* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/parallel#multiple-browsers-execution)
 * **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
 * **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
 * **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
