@@ -427,6 +427,157 @@ describe('Puppeteer', function () {
     });
   });
 
+  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+    it('should be able to send special keys to element', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '-');
+
+      await I.pressKey(['Right Shift', 'Home']);
+      await I.pressKey('Delete');
+
+      // Sequence only executes up to first non-modifier key ('Digit1')
+      await I.pressKey(['SHIFT_RIGHT', 'Digit1', 'Digit4']);
+      await I.pressKey('1');
+      await I.pressKey('2');
+      await I.pressKey('3');
+      await I.pressKey('ArrowLeft');
+      await I.pressKey('Left Arrow');
+      await I.pressKey('arrow_left');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('a');
+      await I.pressKey('KeyB');
+      await I.pressKeyUp('ShiftLeft');
+      await I.pressKey('C');
+      await I.seeInField('Name', '!ABC123');
+    });
+
+    it('should not change operator modifier key', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '-');
+
+      // Does nothing, because operator modifier key is not changed for operating system
+      await I.pressKey(['Right Meta', 'a'], false); // Select all
+      await I.pressKey('Backspace');
+      await I.seeInField('Name', 'OLD_VALUE');
+
+      await I.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
+      await I.pressKey('Backspace');
+      await I.dontSeeInField('Name', 'OLD_VALUE');
+    });
+
+    it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
+      await I.amOnPage('/form/field');
+      await I.clearField('Name');
+
+      await I.pressKey(';');
+      await I.pressKey(['Shift', ';']);
+      await I.pressKey(['Shift', 'Semicolon']);
+      await I.pressKey('=');
+      await I.pressKey(['Shift', '=']);
+      await I.pressKey(['Shift', 'Equal']);
+      await I.pressKey('*');
+      await I.pressKey(['Shift', '*']);
+      await I.pressKey(['Shift', 'Multiply']);
+      await I.pressKey('+');
+      await I.pressKey(['Shift', '+']);
+      await I.pressKey(['Shift', 'Add']);
+      await I.pressKey(',');
+      await I.pressKey(['Shift', ',']);
+      await I.pressKey(['Shift', 'Comma']);
+      await I.pressKey(['Shift', 'NumpadComma']);
+      await I.pressKey(['Shift', 'Separator']);
+      await I.pressKey('-');
+      await I.pressKey(['Shift', '-']);
+      await I.pressKey(['Shift', 'Subtract']);
+      await I.pressKey('.');
+      await I.pressKey(['Shift', '.']);
+      await I.pressKey(['Shift', 'Decimal']);
+      await I.pressKey(['Shift', 'Period']);
+      await I.pressKey('/');
+      await I.pressKey(['Shift', '/']);
+      await I.pressKey(['Shift', 'Divide']);
+      await I.pressKey(['Shift', 'Slash']);
+
+      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
+    });
+
+    it('should show correct number key when Shift modifier is active', async () => {
+      await I.amOnPage('/form/field');
+      await I.clearField('Name');
+
+      await I.pressKey('0');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('0');
+      await I.pressKey('Digit0');
+      await I.pressKey('Numpad0');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('1');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('1');
+      await I.pressKey('Digit1');
+      await I.pressKey('Numpad1');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('2');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('2');
+      await I.pressKey('Digit2');
+      await I.pressKey('Numpad2');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('3');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('3');
+      await I.pressKey('Digit3');
+      await I.pressKey('Numpad3');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('4');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('4');
+      await I.pressKey('Digit4');
+      await I.pressKey('Numpad4');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('5');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('5');
+      await I.pressKey('Digit5');
+      await I.pressKey('Numpad5');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('6');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('6');
+      await I.pressKey('Digit6');
+      await I.pressKey('Numpad6');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('7');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('7');
+      await I.pressKey('Digit7');
+      await I.pressKey('Numpad7');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('8');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('8');
+      await I.pressKey('Digit8');
+      await I.pressKey('Numpad8');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('9');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('9');
+      await I.pressKey('Digit9');
+      await I.pressKey('Numpad9');
+      await I.pressKeyUp('Shift');
+
+      await I.seeInField('Name', '0))01!!12@@23##34$$45%%56^^67&&78**89((9');
+    });
+  });
 
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
