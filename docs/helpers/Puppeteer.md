@@ -32,6 +32,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
 -   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][3]. Array values are accepted as well.
 -   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
+-   `detectOS`:  - replace `Meta` &lt;=> `Control` keys based on current OS.
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait\ timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -833,6 +834,36 @@ let data = await I.grabDataFromPerformanceTiming();
 
 
 
+### grabElementBoundingRect
+
+Grab the width, height, location of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+Returns an object with `x`, `y`, `width`, `hegith` keys.
+
+```js
+const value = await I.grabElementBoundingRect('h3');
+// value is like { x: 226.5, y: 89, width: 527, height: 220 }
+```
+
+To get only one metric use second parameter:
+
+```js
+const width = await I.grabElementBoundingRect('h3', 'width');
+// width == 527
+```
+
+#### Parameters
+
+-   `locator` ([string][8] \| [object][6]) element located by CSS|XPath|strict locator.
+-   `prop`  
+-   `elementSize` [string][8] x, y, width or height of the given element.
+
+Returns [object][6] Element bounding rectangle
+
+
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
@@ -1052,15 +1083,12 @@ To press a key in combination with modifier keys, pass the sequence as an array.
 I.pressKey(['Control', 'Z']);
 ```
 
-By default `pressKey` will change operation modifier key based on operating system.
-Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines.
-
-In order to use disable changing of operation modifier key based on operating system, specify the second argument as `false`.
+> You can automatically change operation modifier key based on operating system.
+> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
 
 ```js
-// On macOS this will actually press 'Control + Z' instead of
-// default behavior which would change keys to 'Meta + Z'
-I.pressKey(['Control', 'Z'], false);
+// when `detectOS: true` on macOS this will actually press 'Meta + Z' instead
+I.pressKey(['Control', 'Z']);
 ```
 
 Some of the supported key names are:
@@ -1102,15 +1130,14 @@ Some of the supported key names are:
 #### Parameters
 
 -   `key` ([string][8] \| [array][15]) key or array of keys to press.
--   `detectOS` [boolean][16] (optional, `true` by default) change operation modifier key based on operating system.
     
-_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
+_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][16]).
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][18]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][17]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1118,10 +1145,12 @@ I.click('#element');
 I.pressKeyUp('Control');
 ```
 
+> You can automatically change operation modifier key based on operating system.
+> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
+
 #### Parameters
 
 -   `key` [string][8] name of key to press down.
--   `detectOS` [boolean][16] (optional, `true` by default) change operation modifier key based on operating system.
     
 
 
@@ -1129,7 +1158,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][18]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][17]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1137,10 +1166,12 @@ I.click('#element');
 I.pressKeyUp('Control');
 ```
 
+> You can automatically change operation modifier key based on operating system.
+> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
+
 #### Parameters
 
 -   `key` [string][8] name of key to release.
--   `detectOS` [boolean][16] (optional, `true` by default) change operation modifier key based on operating system.
     
 
 
@@ -1207,7 +1238,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` [string][8] file name to save.
--   `fullPage` [boolean][16] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` [boolean][18] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
 
 
@@ -1940,10 +1971,10 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[16]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[17]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[17]: #click
 
-[18]: #click
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
 [19]: https://codecept.io/react

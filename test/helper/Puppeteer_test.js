@@ -428,6 +428,10 @@ describe('Puppeteer', function () {
   });
 
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+    beforeEach(() => {
+      I.options.detectOS = false;
+    });
+
     it('should be able to send special keys to element', async () => {
       await I.amOnPage('/form/field');
       await I.appendField('Name', '-');
@@ -451,15 +455,16 @@ describe('Puppeteer', function () {
       await I.seeInField('Name', '!ABC123');
     });
 
-    it('should not change operator modifier key', async () => {
+    it('should change operator modifier key', async () => {
       await I.amOnPage('/form/field');
       await I.appendField('Name', '-');
 
       // Does nothing, because operator modifier key is not changed for operating system
-      await I.pressKey(['Right Meta', 'a'], false); // Select all
+      await I.pressKey(['Right Meta', 'a']); // Select all
       await I.pressKey('Backspace');
       await I.seeInField('Name', 'OLD_VALUE');
 
+      I.options.detectOS = true;
       await I.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
       await I.pressKey('Backspace');
       await I.dontSeeInField('Name', 'OLD_VALUE');

@@ -27,7 +27,6 @@ describe('WebDriver', function () {
       url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
-      remoteFileUpload: true,
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
@@ -167,6 +166,10 @@ describe('WebDriver', function () {
   });
 
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+    beforeEach(() => {
+      I.options.detectOS = false;
+    });
+
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
       await wd.appendField('Name', '-');
@@ -190,18 +193,19 @@ describe('WebDriver', function () {
       await wd.seeInField('Name', '!ABC123');
     });
 
-    it('should not change operator modifier key', async () => {
-      await wd.amOnPage('/form/field');
-      await wd.appendField('Name', '-');
+    it('should change operator modifier key', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '-');
 
       // Does nothing, because operator modifier key is not changed for operating system
-      await wd.pressKey(['Right Meta', 'a'], false); // Select all
-      await wd.pressKey('Backspace');
-      await wd.seeInField('Name', 'OLD_VALUE');
+      await I.pressKey(['Right Meta', 'a']); // Select all
+      await I.pressKey('Backspace');
+      await I.seeInField('Name', 'OLD_VALUE');
 
-      await wd.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
-      await wd.pressKey('Backspace');
-      await wd.dontSeeInField('Name', 'OLD_VALUE');
+      I.options.detectOS = true;
+      await I.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
+      await I.pressKey('Backspace');
+      await I.dontSeeInField('Name', 'OLD_VALUE');
     });
 
     it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
