@@ -1,0 +1,13 @@
+Run the Lighthouse tool and return either calculated scores or HTML report
+
+```js
+// the URL will be grabbed in the current session
+// return the scores
+// Lighthouse scores of Performance, Accessibility, Best Practices and SEO accordingly: 0.97, 0.86, 0.93, 0.83, 0.56
+const scores = await I.calculateLighthouseScores();
+
+//return the HTML report
+const scores = await I.calculateLighthouseScores(true);
+```
+
+@param {boolean} return HTML report option. Default is `false`

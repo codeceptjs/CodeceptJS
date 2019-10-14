@@ -583,11 +583,11 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#grabLighthouseScores', () => {
-    it('should return the Lighthouse scores', async () => {
+  describe.only('#calculateLighthouseScores', () => {
+    it('should return the calculated Lighthouse scores', async () => {
       await I.amOnPage('https://www.google.com');
-      const scores = await I.grabLighthouseScores('https://www.google.com');
-      expect(scores).to.contain('Lighthouse scores:');
+      const scores = await I.calculateLighthouseScores();
+      expect(scores).to.contain('Lighthouse scores of Performance, Accessibility, Best Practices and SEO accordingly');
     });
   });
 
