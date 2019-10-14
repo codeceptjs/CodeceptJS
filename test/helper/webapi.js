@@ -213,6 +213,12 @@ module.exports.tests = function () {
       assert.ok(err);
     });
 
+    it('should should click by aria-label', async () => {
+      await I.amOnPage('/form/aria');
+      await I.click('get info');
+      await I.seeInCurrentUrl('/info');
+    });
+
     it('should click link with inner span', async () => {
       await I.amOnPage('/form/example7');
       await I.click('Buy Chocolate Bar');
@@ -453,6 +459,15 @@ module.exports.tests = function () {
       await I.fillField('Description', 'Nothing special');
       await I.click('Submit');
       assert.equal(formContents('description'), 'Nothing special');
+    });
+
+    it('should fill input by aria-label and aria-labelledby', async () => {
+      await I.amOnPage('/form/aria');
+      await I.fillField('My Address', 'Home Sweet Home');
+      await I.fillField('Phone', '123456');
+      await I.click('Submit');
+      assert.equal(formContents('my-form-phone'), '123456');
+      assert.equal(formContents('my-form-address'), 'Home Sweet Home');
     });
 
     it('should fill textarea by overwritting the existing value', async () => {
