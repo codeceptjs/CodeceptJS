@@ -340,6 +340,11 @@ background: #2ecc71;
   color: #333;
 }
 
+.navSearchWrapper:before {
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
