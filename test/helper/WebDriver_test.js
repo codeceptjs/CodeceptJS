@@ -205,7 +205,7 @@ describe('WebDriver', function () {
 
     it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
       await wd.amOnPage('/form/field');
-      await wd.clearField('Name');
+      await wd.fillField('Name', '');
 
       await wd.pressKey(';');
       await wd.pressKey(['Shift', ';']);
@@ -241,7 +241,7 @@ describe('WebDriver', function () {
 
     it('should show correct number key when Shift modifier is active', async () => {
       await wd.amOnPage('/form/field');
-      await wd.clearField('Name');
+      await wd.fillField('Name', '');
 
       await wd.pressKey('0');
       await wd.pressKeyDown('Shift');

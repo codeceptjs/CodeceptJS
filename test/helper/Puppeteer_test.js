@@ -467,7 +467,7 @@ describe('Puppeteer', function () {
 
     it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
       await I.amOnPage('/form/field');
-      await I.clearField('Name');
+      await I.fillField('Name', '');
 
       await I.pressKey(';');
       await I.pressKey(['Shift', ';']);
@@ -503,7 +503,7 @@ describe('Puppeteer', function () {
 
     it('should show correct number key when Shift modifier is active', async () => {
       await I.amOnPage('/form/field');
-      await I.clearField('Name');
+      await I.fillField('Name', '');
 
       await I.pressKey('0');
       await I.pressKeyDown('Shift');
