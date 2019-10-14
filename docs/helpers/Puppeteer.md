@@ -203,9 +203,8 @@ libraries][7].
 
 ### amAcceptingPopups
 
-\[existingPages.length -1
-\[existingPages.length -1
-\[existingPages.length -1
+Set the automatic popup response to Accept.
+This must be set before a popup is triggered.
 
 ```js
 I.amAcceptingPopups();
@@ -432,9 +431,9 @@ This action supports [React locators](https://codecept.io/react#locators)
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -518,7 +517,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js
@@ -587,7 +586,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### downloadFile
 
-This method is depreacted.
+This method is deprecated.
 
 Please use `handleDownloads()` instead.
 
@@ -1039,54 +1038,111 @@ I.openNewTab();
 
 ### pressKey
 
-Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][14]
-will be replaced with corresponding unicode.
-If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+Presses a key in the browser (on a focused element).
+
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][14].
 
 ```js
-I.pressKey('Enter');
-I.pressKey(['Control','a']);
+I.pressKey('Backspace');
 ```
+
+To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+
+```js
+I.pressKey(['Control', 'Z']);
+```
+
+By default `pressKey` will change operation modifier key based on operating system.
+Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines.
+
+In order to use disable changing of operation modifier key based on operating system, specify the second argument as `false`.
+
+```js
+// On macOS this will actually press 'Control + Z' instead of
+// default behavior which would change keys to 'Meta + Z'
+I.pressKey(['Control', 'Z'], false);
+```
+
+Some of the supported key names are:
+
+-   `'AltLeft'` or `'Alt'`
+-   `'AltRight'`
+-   `'ArrowDown'`
+-   `'ArrowLeft'`
+-   `'ArrowRight'`
+-   `'ArrowUp'`
+-   `'Backspace'`
+-   `'Clear'`
+-   `'ControlLeft'` or `'Control'`
+-   `'ControlRight'`
+-   `'Delete'`
+-   `'End'`
+-   `'Enter'`
+-   `'Escape'`
+-   `'F1'` to `'F12'`
+-   `'Home'`
+-   `'Insert'`
+-   `'MetaLeft'` or `'Meta'`
+-   `'MetaRight'`
+-   `'Numpad0'` to `'Numpad9'`
+-   `'NumpadAdd'`
+-   `'NumpadDecimal'`
+-   `'NumpadDivide'`
+-   `'NumpadMultiply'`
+-   `'NumpadSubtract'`
+-   `'PageDown'`
+-   `'PageUp'`
+-   `'Pause'`
+-   `'Return'`
+-   `'ShiftLeft'` or `'Shift'`
+-   `'ShiftRight'`
+-   `'Space'`
+-   `'Tab'`
 
 #### Parameters
 
 -   `key` ([string][8] \| [array][15]) key or array of keys to press.
+-   `detectOS` [boolean][16] (optional, `true` by default) change operation modifier key based on operating system.
+    
+_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
+
+### pressKeyDown
+
+Presses a key in the browser and leaves it in a down state.
+
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][18]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][8] name of key to press down.
+-   `detectOS` [boolean][16] (optional, `true` by default) change operation modifier key based on operating system.
     
 
 
+### pressKeyUp
 
-[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+Releases a key in the browser which was previously set to a down state.
 
-- `'Add'`,
-- `'Alt'`,
-- `'ArrowDown'` or `'Down arrow'`,
-- `'ArrowLeft'` or `'Left arrow'`,
-- `'ArrowRight'` or `'Right arrow'`,
-- `'ArrowUp'` or `'Up arrow'`,
-- `'Backspace'`,
-- `'Command'`,
-- `'Control'`,
-- `'Del'`,
-- `'Divide'`,
-- `'End'`,
-- `'Enter'`,
-- `'Equals'`,
-- `'Escape'`,
-- `'F1 to F12'`,
-- `'Home'`,
-- `'Insert'`,
-- `'Meta'`,
-- `'Multiply'`,
-- `'Numpad 0'` to `'Numpad 9'`,
-- `'Pagedown'` or `'PageDown'`,
-- `'Pageup'` or `'PageUp'`,
-- `'Pause'`,
-- `'Semicolon'`,
-- `'Shift'`,
-- `'Space'`,
-- `'Subtract'`,
-- `'Tab'`.
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][18]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][8] name of key to release.
+-   `detectOS` [boolean][16] (optional, `true` by default) change operation modifier key based on operating system.
+    
+
 
 ### refreshPage
 
@@ -1767,7 +1823,7 @@ I.waitForVisible('#popup');
 -   `locator` ([string][8] \| [object][6]) element located by CSS|XPath|strict locator.
 -   `sec` [number][9] (optional, `1` by default) time in seconds to wait
     
-This method accepts [React selectors][17].
+This method accepts [React selectors][19].
 
 ### waitInUrl
 
@@ -1880,10 +1936,14 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [13]: https://codecept.io/helpers/FileSystem
 
-[14]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[14]: #fillfield
 
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[17]: https://codecept.io/react
+[17]: https://github.com/GoogleChrome/puppeteer/issues/1313
+
+[18]: #click
+
+[19]: https://codecept.io/react

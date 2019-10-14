@@ -1,7 +1,3 @@
-const { useHeadlessWhen } = require('@codeceptjs/configure');
-
-useHeadlessWhen(process.env.HEADLESS);
-
 exports.config = {
   output: './output',
   helpers: {

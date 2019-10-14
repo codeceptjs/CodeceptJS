@@ -1,0 +1,31 @@
+Grab the width, height, location of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+/**
+* return an object
+* one found element
+* { x: 226.5, y: 89, width: 527, height: 220 }
+*
+* multiple found elements
+* {
+*  '0': { x: 296, y: 322.5, width: 387, height: 34 },
+*  '1': { x: 350.734375, y: 393, width: 127.40625, height: 36 },
+*  '2': { x: 489.765625, y: 393, width: 142.5, height: 36 }
+* }
+*/
+const value = await I.grabElementBoundingRect('h3');
+/**
+* return only the width
+* value = 200
+*/
+value = {x: 1, y: 2, width: 200, height: 200}
+const value = await I.grabElementBoundingRect('h3', 'width');
+```
+
+If multiple elements found returns an object.
+
+@param {string|object} locator element located by CSS|XPath|strict locator.
+@param {string} elementSize the width or height of the given element.
+@returns {object|number} Element bounding rectangle
