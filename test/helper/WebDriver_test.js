@@ -1,4 +1,5 @@
 const assert = require('assert');
+const expect = require('chai').expect;
 const path = require('path');
 const fs = require('fs');
 
@@ -1033,6 +1034,29 @@ describe('WebDriver', function () {
       const geoLocation = await wd.grabGeoLocation();
       assert.equal(geoLocation.latitude, 37.4043, 'The latitude is not properly set');
       assert.equal(geoLocation.longitude, -122.0748, 'The longitude is not properly set');
+    });
+  });
+
+  describe('#grabElementBoundingRect', () => {
+    it('should get the element size', async () => {
+      await wd.amOnPage('https://www.google.com');
+      const size = await wd.grabElementBoundingRect('#hplogo');
+      expect(size.x).is.greaterThan(0);
+      expect(size.y).is.greaterThan(0);
+      expect(size.width).is.greaterThan(0);
+      expect(size.height).is.greaterThan(0);
+    });
+
+    it('should get the element width', async () => {
+      await wd.amOnPage('https://www.google.com');
+      const width = await wd.grabElementBoundingRect('#hplogo', 'width');
+      expect(width).is.greaterThan(0);
+    });
+
+    it('should get the element height', async () => {
+      await wd.amOnPage('https://www.google.com');
+      const height = await wd.grabElementBoundingRect('#hplogo', 'height');
+      expect(height).is.greaterThan(0);
     });
   });
 });
