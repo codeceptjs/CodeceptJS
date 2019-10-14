@@ -583,7 +583,7 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe.only('#calculateLighthouseScores', () => {
+  describe('#calculateLighthouseScores', () => {
     it('should return the calculated Lighthouse scores', async () => {
       await I.amOnPage('https://www.google.com');
       const scores = await I.calculateLighthouseScores();
