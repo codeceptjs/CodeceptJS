@@ -167,7 +167,7 @@ describe('WebDriver', function () {
 
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     beforeEach(() => {
-      I.options.detectOS = false;
+      wd.options.detectOS = false;
     });
 
     it('should be able to send special keys to element', async () => {
@@ -194,18 +194,18 @@ describe('WebDriver', function () {
     });
 
     it('should change operator modifier key', async () => {
-      await I.amOnPage('/form/field');
-      await I.appendField('Name', '-');
+      await wd.amOnPage('/form/field');
+      await wd.appendField('Name', '-');
 
       // Does nothing, because operator modifier key is not changed for operating system
-      await I.pressKey(['Right Meta', 'a']); // Select all
-      await I.pressKey('Backspace');
-      await I.seeInField('Name', 'OLD_VALUE');
+      await wd.pressKey(['Right Meta', 'a']); // Select all
+      await wd.pressKey('Backspace');
+      await wd.seeInField('Name', 'OLD_VALUE');
 
-      I.options.detectOS = true;
-      await I.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
-      await I.pressKey('Backspace');
-      await I.dontSeeInField('Name', 'OLD_VALUE');
+      wd.options.detectOS = true;
+      await wd.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
+      await wd.pressKey('Backspace');
+      await wd.dontSeeInField('Name', 'OLD_VALUE');
     });
 
     it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
