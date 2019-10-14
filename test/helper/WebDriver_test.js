@@ -1,4 +1,5 @@
 const assert = require('assert');
+const expect = require('chai').expect;
 const path = require('path');
 const fs = require('fs');
 
@@ -910,22 +911,22 @@ describe('WebDriver', function () {
     it('should get the element size', async () => {
       await wd.amOnPage('https://www.google.com');
       const size = await wd.grabElementBoundingRect('#hplogo');
-      assert.equal(size[0].x, 354);
-      assert.equal(size[0].y, 89);
-      assert.equal(size[0].width, 272);
-      assert.equal(size[0].height, 201);
+      expect(size.x).is.greaterThan(0);
+      expect(size.y).is.greaterThan(0);
+      expect(size.width).is.greaterThan(0);
+      expect(size.height).is.greaterThan(0);
     });
 
     it('should get the element width', async () => {
       await wd.amOnPage('https://www.google.com');
-      const size = await wd.grabElementBoundingRect('#hplogo', 'width');
-      assert.equal(size[0], 272);
+      const width = await wd.grabElementBoundingRect('#hplogo', 'width');
+      expect(width).is.greaterThan(0);
     });
 
     it('should get the element height', async () => {
       await wd.amOnPage('https://www.google.com');
-      const size = await wd.grabElementBoundingRect('#hplogo', 'height');
-      assert.equal(size[0], 201);
+      const height = await wd.grabElementBoundingRect('#hplogo', 'height');
+      expect(height).is.greaterThan(0);
     });
   });
 });
