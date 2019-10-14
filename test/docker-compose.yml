@@ -126,7 +126,7 @@ services:
       - node_modules:/node_modules
 
   selenium.chrome:
-    image: selenium/standalone-chrome:3.9.1-actinium
+    image: selenium/standalone-chrome:3.141.59-oxygen
     shm_size: 2g
     ports:
       - 4444:4444
