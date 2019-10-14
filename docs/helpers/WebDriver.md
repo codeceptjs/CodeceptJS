@@ -592,9 +592,9 @@ This action supports [React locators](https://codecept.io/react#locators)
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -679,7 +679,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js
@@ -1136,59 +1136,111 @@ I.openNewTab();
 
 ### pressKey
 
-Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][26]
-will be replaced with corresponding unicode.
-If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+Presses a key in the browser (on a focused element).
+
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][26].
 
 ```js
-I.pressKey('Enter');
-I.pressKey(['Control','a']);
+I.pressKey('Backspace');
 ```
+
+To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+
+```js
+I.pressKey(['Control', 'Z']);
+```
+
+By default `pressKey` will change operation modifier key based on operating system.
+Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines.
+
+In order to use disable changing of operation modifier key based on operating system, specify the second argument as `false`.
+
+```js
+// On macOS this will actually press 'Control + Z' instead of
+// default behavior which would change keys to 'Meta + Z'
+I.pressKey(['Control', 'Z'], false);
+```
+
+Some of the supported key names are:
+
+-   `'AltLeft'` or `'Alt'`
+-   `'AltRight'`
+-   `'ArrowDown'`
+-   `'ArrowLeft'`
+-   `'ArrowRight'`
+-   `'ArrowUp'`
+-   `'Backspace'`
+-   `'Clear'`
+-   `'ControlLeft'` or `'Control'`
+-   `'ControlRight'`
+-   `'Delete'`
+-   `'End'`
+-   `'Enter'`
+-   `'Escape'`
+-   `'F1'` to `'F12'`
+-   `'Home'`
+-   `'Insert'`
+-   `'MetaLeft'` or `'Meta'`
+-   `'MetaRight'`
+-   `'Numpad0'` to `'Numpad9'`
+-   `'NumpadAdd'`
+-   `'NumpadDecimal'`
+-   `'NumpadDivide'`
+-   `'NumpadMultiply'`
+-   `'NumpadSubtract'`
+-   `'PageDown'`
+-   `'PageUp'`
+-   `'Pause'`
+-   `'Return'`
+-   `'ShiftLeft'` or `'Shift'`
+-   `'ShiftRight'`
+-   `'Space'`
+-   `'Tab'`
 
 #### Parameters
 
 -   `key` ([string][19] \| [array][27]) key or array of keys to press.
+-   `detectOS` [boolean][28] (optional, `true` by default) change operation modifier key based on operating system.
+    
+_Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+
+### pressKeyDown
+
+Presses a key in the browser and leaves it in a down state.
+
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][29]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][19] name of key to press down.
+-   `detectOS` [boolean][28] (optional, `true` by default) change operation modifier key based on operating system.
     
 
+
+### pressKeyUp
+
+Releases a key in the browser which was previously set to a down state.
+
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][29]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][19] name of key to release.
+-   `detectOS` [boolean][28] (optional, `true` by default) change operation modifier key based on operating system.
     
 
-
-[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
-
-- `'Add'`,
-- `'Alt'`,
-- `'ArrowDown'` or `'Down arrow'`,
-- `'ArrowLeft'` or `'Left arrow'`,
-- `'ArrowRight'` or `'Right arrow'`,
-- `'ArrowUp'` or `'Up arrow'`,
-- `'Backspace'`,
-- `'Command'`,
-- `'Control'`,
-- `'Del'`,
-- `'Divide'`,
-- `'End'`,
-- `'Enter'`,
-- `'Equals'`,
-- `'Escape'`,
-- `'F1 to F12'`,
-- `'Home'`,
-- `'Insert'`,
-- `'Meta'`,
-- `'Multiply'`,
-- `'Numpad 0'` to `'Numpad 9'`,
-- `'Pagedown'` or `'PageDown'`,
-- `'Pageup'` or `'PageUp'`,
-- `'Pause'`,
-- `'Semicolon'`,
-- `'Shift'`,
-- `'Space'`,
-- `'Subtract'`,
-- `'Tab'`.To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.```js
-    I.pressKey('Control');
-    I.click('#someelement');
-    I.pressKey('Control');
-    ```
 
 ### refreshPage
 
@@ -1635,7 +1687,7 @@ I.setCookie({name: 'auth', value: true});
 -   `cookie` [object][20] a cookie object.
     
 Uses Selenium's JSON [cookie
-    format][29].
+    format][30].
 
 ### setGeoLocation
 
@@ -2016,10 +2068,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[26]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[26]: #fillfield
 
 [27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[29]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[29]: #click
+
+[30]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

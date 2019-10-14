@@ -11,7 +11,7 @@ CodeceptJS provides API to run custom code before and after the test and inject 
 In case you need to execute arbitrary code before or after the tests,
 you can use `bootstrap` and `teardown` config. Use it to start and stop webserver, Selenium, etc.
 
-When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [BootstrapAll & TeardownAll](#bootstrapall--teardownall) for more information.
+When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [BootstrapAll & TeardownAll](#bootstrapall-teardownall) for more information.
 
 There are different ways to define bootstrap and teardown functions:
 

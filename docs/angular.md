@@ -7,22 +7,22 @@ title: Testing with Protractor
 
 ## Introduction
 
-CodeceptJS is an acceptance testing framework. In diversified world of JavaScript testing libraries it aims to create a unified high level API for end-to-end testing, powered by different backends.
-CodeceptJS allows you to write a test and switch in config execution drivers: will it be *wedriverio*, *puppeteer*, or *protractor* depends on you.
-This way you aren't be bound to implementation, and your acceptance tests will work no matter of framework running them.
+CodeceptJS is an acceptance testing framework. In the diversified world of JavaScript testing libraries, it aims to create a unified high-level API for end-to-end testing, powered by a variety of backends.
+CodeceptJS allows you to write a test and switch the execution driver via config: whether it's *wedriverio*, *puppeteer*, or *protractor* depends on you.
+This way you aren't bound to a specific implementation, and your acceptance tests will work no matter what framework is running them.
 
-As you know, [Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
-CodeceptJS should not be considered as alternative to Protractor but a testing framework utilizing this powerful library.
+[Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
+CodeceptJS should not be considered as alternative to Protractor, but rather a testing framework that leverages this powerful library.
 
 ![angular-protractor](https://codecept.io/img/angular-protractor.png)
 
-So there is no magic in testing of AngularJS application in CodeceptJS.
-You just execute regular Protractor commands, packed in a simple high-level API.
+There is no magic in testing of AngularJS application in CodeceptJS.
+You just execute regular Protractor commands, packaged into a simple, high-level API.
 
 ![todo-mvc](https://codecept.io/img/todo.png)
 
-As an example we will use popular [TodoMVC application](http://todomvc.com/examples/angularjs/#/).
-How would we test creating a new todo item in CodeceptJS?
+As an example, we will use the popular [TodoMVC application](http://todomvc.com/examples/angularjs/#/).
+How would we test creating a new todo item using CodeceptJS?
 
 ```js
 Scenario('create todo item', (I) => {
@@ -35,7 +35,7 @@ Scenario('create todo item', (I) => {
 });
 ```
 
-The similar test written in native syntax of Protractor (inherited from selenium-webdriver) would look like this:
+A similar test written using Protractor's native syntax (inherited from selenium-webdriver) would look like this:
 
 ```js
 it('should create todo item', (I) => {
@@ -50,16 +50,15 @@ it('should create todo item', (I) => {
 });
 ```
 
-Comparing to the API proposed by CodeceptJS, this code looks a bit more complicated.
-But what the more important, it's really really hard to read and follow its logic.
-Readability is the most crucial part in acceptance testing.
-You should easily change tests when changes specification or design.
-Probably, only a person who writes Protractor tests in your company,
-could do those changes, while CodeceptJS allows anyone to work with tests.
-Contrary, CodeceptJS provides CodeceptJS provides scenario-driven approach, so test is just a step-by-step representation of real user actions.
-This way you can easily read, and follow test scenario, and edit it when you need it to be changed.
+Compared to the API proposed by CodeceptJS, the Protractor code looks more complicated.
+Even more important, it's harder to read and follow the logic of the Protractor test.
+Readability is a crucial part of acceptance testing.
+Tests should be easy to modify when there are changes in the specification or design.
+If the test is written in Protractor, it would likely require someone familiar with Protractor to make the change, whereas CodeceptJS allows anyone to understand and modify the test.
+CodeceptJS provides scenario-driven approach, so a test is just a step-by-step representation of real user actions.
+This means you can easily read and understand the steps in a test scenario, and edit the steps when the test needs to be changed.
 
-In this way CodeceptJS is more similar to Cucumber, so if you run a test with `--steps` option you will see this output:
+In this way, CodeceptJS is similar to Cucumber. If you run a test with `--steps` option you will see this output:
 
 ```bash
 TodoMvc --
@@ -73,24 +72,24 @@ TodoMvc --
  ✓ OK in 968ms
 ```
 
-Unlike Cucumber, CodeceptJS is not about writing test scenarios above for business rules.
-To say it again, its **goal is to provide standard action steps you can use for testing applications**.
-Surely, it can't cover 100% of cases but it aims for 90%, for others you can write your own steps inside a [custom Helper](http://codecept.io/helpers/) using API of Protractor
+Unlike Cucumber, CodeceptJS is not about writing test scenarios to satisfy business rules or requirements.
+Instead, its **goal is to provide standard action steps you can use for testing applications**.
+Although it can't cover 100% of use cases, CodeceptJS aims for 90%. For the remainder, you can write your own steps inside a [custom Helper](http://codecept.io/helpers/) using Protractor's API.
 
 ### Setting up CodeceptJS with Protractor
 
-To start using CodeceptJS you will need to install it via NPM and initialize it in directory with tests.
+To start using CodeceptJS you will need to install it via NPM and initialize it in a directory with tests.
 
 ```bash
 npm install codeceptjs --save
 npx codeceptjs init
 ```
 
-You will be asked questions about initial configuration, make sure you select Protractor helper.
-If you didn't have Protractor library it **will be installed**.
-Please agree to extend steps, and use `http://todomvc.com/examples/angularjs/` as a url for Protractor helper.
+You will be asked questions about the initial configuration, make sure you select the Protractor helper.
+If your project didn't already have the Protractor library, it **will be installed** as part of this process.
+Please agree to extend steps, and use `http://todomvc.com/examples/angularjs/` as the url for Protractor helper.
 
-For TodoMVC application you will have following config created in `codecept.conf.js` file:
+For TodoMVC application, you will have following config created in the `codecept.conf.js` file:
 
 ```js
 exports.config = { tests: './*_test.js',
@@ -109,15 +108,15 @@ exports.config = { tests: './*_test.js',
 }
 ```
 
-First test can be generated with `gt` command:
+Your first test can be generated with the `gt` command:
 
 ```bash
 npx codeceptjs gt
 ```
 
-After that you can start writing your first CodeceptJS/Angular tests.
-Please look into the reference of [Protractor helper](http://codecept.io/helpers/Protractor/) for all available actions.
-You can also run `list` command to see methods of I:
+After that, you can start writing your first CodeceptJS/Angular tests.
+Please refer to the [Protractor helper](http://codecept.io/helpers/Protractor/) documentation for a list of all available actions.
+You can also run the `list` command to see methods of I:
 
 ```bash
 npx codeceptjs list
@@ -131,12 +130,12 @@ Protractor requires Selenium Server to be started and running. To start and stop
 npm i @wdio/selenium-standalone-service --save
 ```
 
-Enable it in config inside plugins section:
+Enable it in the `codecept.conf.js` file, inside the plugins section:
 
 ```js
 exports.config = {
   // ...
-  // inside condecept.conf.js
+  // inside codecept.conf.js
   plugins: {
     wdio: {
         enabled: true,
@@ -148,7 +147,7 @@ exports.config = {
 
 ## Testing non-Angular Applications
 
-Sure, Protractor can be used to test applications built without AngularJS. In this case you need to disable angular synchronization feature in config:
+Protractor can also be used to test applications built without AngularJS. In this case, you need to disable the angular synchronization feature inside the config:
 
 ```js
 helpers: {
@@ -161,12 +160,11 @@ helpers: {
 }
 ```
 
-## Writing First Test
+## Writing Your First Test
 
-Test scenario should always use `I` object to execute commands.
-This is important as all methods of `I` are running in global promise chain, this way CodeceptJS makes sure everything is executed in right order.
-At first a page should be opened to proceed, we use `amOnPage` command for that. As we already specified full URL to TodoMVC app,
-we can pass relative path into it instead of absolute url:
+Your test scenario should always use the `I` object to execute commands.
+This is important, as all methods of `I` are running in the global promise chain. This way, CodeceptJS makes sure everything is executed in right order.
+To start with opening a webpage, use the `amOnPage` command for. Since we already specified the full URL to the TodoMVC app, we can pass the relative path for our url, instead of the absolute url:
 
 ```js
 Feature('Todo MVC');
@@ -176,7 +174,7 @@ Scenario('create todo item', (I) => {
 });
 ```
 
-All scenarios should describe actions on site and assertions taken in the end. In CodeceptJS assertion commands have `see` or `dontSee` prefix:
+All scenarios should describe actions on the site, with assertions at the end. In CodeceptJS, assertion commands have the `see` or `dontSee` prefix:
 
 ```js
 Feature('Todo MVC');
@@ -187,7 +185,7 @@ Scenario('create todo item', (I) => {
 });
 ```
 
-A test can be executed with `run` command, we recommend to use `--steps` options to follow step-by-step execution:
+A test can be executed with the `run` command, we recommend using the `--steps` option to print out the step-by-step execution:
 
 ```sh
 npx codeceptjs run --steps
@@ -205,11 +203,10 @@ TodoMvc --
 
 ## Running Several Scenarios
 
-By writing a test in similar manner we will have a test shown in the beginning of this guide. Probably we would like not to finish with one test,
-but have more, for testing editing of todo items, checking todo items, and more.
+By now, you should have a test similar to the one shown in the beginning of this guide. We probably want to have multiple tests though, like testing the editing of todo items, checking todo items, etc.
 
-Let's prepare our test for multiple scenarios. All test scenarios will need to open main page of application, so `amOnPage` can be moved into the `Before` hook:
-Scenarios will probably deal with created todo items, so we can move logic of crating new todo into a function.
+Let's prepare our test to contain multiple scenarios. All of our test scenarios will need to to start with with the main page of application open, so `amOnPage` can be moved into the `Before` hook:
+Our scenarios will also probably deal with created todo items, so we can move the logic of creating a new todo into a function.
 
 ```js
 Feature('TodoMvc');
@@ -231,7 +228,7 @@ Scenario('create todo item', (I) => {
 });
 ```
 
-and so we can add even more tests!
+and now we can add even more tests!
 
 ```js
 Scenario('edit todo', (I) => {
@@ -257,9 +254,8 @@ Scenario('check todo item', (I) => {
 
 ## Locators
 
-Like you may have noticed, CodeceptJS doesn't use `by.*` locators similar to Protractor or Selenium Webdriver.
-Instead most of methods expect you to pass valid CSS or XPath. In case you don't want CodeceptJS to guess the type of locator,
-you can specify them using so-called strict locators. This is an absolute analogy of `by`, so you can use angular specific locators (like models, repeaters, bindings, etc) in it:
+You may have noticed that CodeceptJS doesn't use `by.*` locators which are common in Protractor or Selenium Webdriver.
+Instead, most methods expect you to pass valid CSS selectors or XPath. If you don't want CodeceptJS to guess the locator type, then you can specify the type using *strict locators*. This is the CodeceptJS version of `by`, so you can also reuse your angular specific locators (like models, repeaters, bindings, etc):
 
 ```sh
 {css: 'button'}
@@ -267,17 +263,17 @@ you can specify them using so-called strict locators. This is an absolute analog
 {binding: 'latest'}
 ```
 
-When we deal with clicks, CodeceptJS can take a text and search a web page for a valid clickable element with that text.
-So links and buttons can be searched by their text.
+When dealing with clicks, we can specify a text value. CodeceptJS will use that value to search the web page for a valid clickable element containing our specified text.
+This enables us to search for links and buttons by their text.
 
-Same thing happens for form fields: they are searched by field names, labels, and so on.
+The same is true for form fields: they can be searched by field name, label, and so on.
 
-Using such smart locators makes tests easy to write, however, searching an element by text is slower than using CSS|XPath and much slower than using strict locators.
+Using smart locators makes tests easier to write, however searching an element by text is slower than searching via CSS|XPath, and is much slower than using strict locators.
 
 ## Refactoring
 
-In previous examples, we've moved actions into `createTodo` function. Is there a more elegant way of refactoring?
-Can we have something like `I.createTodo()` to be used in code? Sure, we can do so by editing `steps_file.js` created by init command.
+In the previous examples, we moved actions into the `createTodo` function. Is there a more elegant way of refactoring?
+Can we instead write a function like `I.createTodo()` which we can reuse? In fact, we can do so by editing the `steps_file.js` file created by the init command.
 
 ```js
 // in this file you can append custom step methods to 'I' object
@@ -292,7 +288,7 @@ module.exports = function() {
 }
 ```
 
-And that's all, method is available to use as `I.createTodo(title)`:
+That's it, our method is now available to use as `I.createTodo(title)`:
 
 ```js
 Scenario('create todo item', (I) => {
@@ -308,11 +304,10 @@ To learn more about refactoring options in CodeceptJS read [PageObjects guide](h
 
 ## Extending
 
-What if CodeceptJS doesn't provide some of Protractor functionality you actually need? Sure its API is to general,
-and this case is possible. If you don't know how to do something with CodeceptJS - revert back to Protractor syntax!
+What if CodeceptJS doesn't provide some specific Protractor functionality you need? If you don't know how to do something with CodeceptJS, you can simply revert back to using Protractor syntax!
 
-Create custom helper, define methods for it, and use it inside the I object. Your Helper can access `browser` from Protractor
-by accessing Protractor helper:
+Create a custom helper, define methods for it, and use it inside the I object. Your Helper can access `browser` from Protractor
+by accessing the Protractor helper:
 
 ```js
 let browser = this.helpers['Protractor'].browser;
@@ -324,7 +319,7 @@ or use global `element` and `by` variables to locate elements:
 element.all(by.repeater('result in memory'));
 ```
 
-This way we recommend to implement all custom logic using low-level Protractor syntax and using it inside scenario tests.
-Please see an [example of such helper](http://codecept.io/helpers/#protractor-example).
+This is the recommended way to implement all custom logic using low-level Protractor syntax in order to reuse it inside of test scenarios.
+For more information, see an [example of such a helper](http://codecept.io/helpers/#protractor-example).
 
 

@@ -114,17 +114,20 @@ Please try to add corresponding testcase to runner or unit.
 
 Documentation is stored in `/docs` directory in markdown format.
 
-**Documentation for helpers is a part of a source code**. Whenever you need to update docs for a helper do it inside a .js file. Then run
+**Documentation for helpers is a part of a source code**.
+Whenever you need to update docs for a helper do it inside a .js file.
+
+In order to generate new documentation from source code run the following command with [Robo](https://robo.li/):
 
 ```
-npm run docs
+robo docs:helpers
 ```
 
 To update markdown documentation. Shared documentation for helpers are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
 
 ```js
   /**
-   * {{> ../webapi/click }}
+   * {{> click }}
    */
   click() {
     // ...
