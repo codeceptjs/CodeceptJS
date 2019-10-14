@@ -737,6 +737,29 @@ describe('Puppeteer', function () {
     });
   });
 
+  describe('#grabElementBoundingRect', () => {
+    it('should get the element bounding rectangle', async () => {
+      await I.amOnPage('https://www.google.com');
+      const size = await I.grabElementBoundingRect('#hplogo');
+      expect(size.x).is.greaterThan(0);
+      expect(size.y).is.greaterThan(0);
+      expect(size.width).is.greaterThan(0);
+      expect(size.height).is.greaterThan(0);
+    });
+
+    it('should get the element width', async () => {
+      await I.amOnPage('https://www.google.com');
+      const width = await I.grabElementBoundingRect('#hplogo', 'width');
+      expect(width).is.greaterThan(0);
+    });
+
+    it('should get the element height', async () => {
+      await I.amOnPage('https://www.google.com');
+      const height = await I.grabElementBoundingRect('#hplogo', 'height');
+      expect(height).is.greaterThan(0);
+    });
+  });
+
   describe('#handleDownloads', () => {
     before(() => {
       // create download folder;
