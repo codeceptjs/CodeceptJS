@@ -165,15 +165,145 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('#pressKey', () => {
+  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
       await wd.appendField('Name', '-');
-      await wd.pressKey(['Control', 'a']);
+
+      await wd.pressKey(['Right Shift', 'Home']);
       await wd.pressKey('Delete');
-      await wd.pressKey(['Shift', '111']);
+
+      // Sequence only executes up to first non-modifier key ('Digit1')
+      await wd.pressKey(['SHIFT_RIGHT', 'Digit1', 'Digit4']);
       await wd.pressKey('1');
-      await wd.seeInField('Name', '!!!1');
+      await wd.pressKey('2');
+      await wd.pressKey('3');
+      await wd.pressKey('ArrowLeft');
+      await wd.pressKey('Left Arrow');
+      await wd.pressKey('arrow_left');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('a');
+      await wd.pressKey('KeyB');
+      await wd.pressKeyUp('ShiftLeft');
+      await wd.pressKey('C');
+      await wd.seeInField('Name', '!ABC123');
+    });
+
+    it('should not change operator modifier key', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.appendField('Name', '-');
+
+      // Does nothing, because operator modifier key is not changed for operating system
+      await wd.pressKey(['Right Meta', 'a'], false); // Select all
+      await wd.pressKey('Backspace');
+      await wd.seeInField('Name', 'OLD_VALUE');
+
+      await wd.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
+      await wd.pressKey('Backspace');
+      await wd.dontSeeInField('Name', 'OLD_VALUE');
+    });
+
+    it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.fillField('Name', '');
+
+      await wd.pressKey(';');
+      await wd.pressKey(['Shift', ';']);
+      await wd.pressKey(['Shift', 'Semicolon']);
+      await wd.pressKey('=');
+      await wd.pressKey(['Shift', '=']);
+      await wd.pressKey(['Shift', 'Equal']);
+      await wd.pressKey('*');
+      await wd.pressKey(['Shift', '*']);
+      await wd.pressKey(['Shift', 'Multiply']);
+      await wd.pressKey('+');
+      await wd.pressKey(['Shift', '+']);
+      await wd.pressKey(['Shift', 'Add']);
+      await wd.pressKey(',');
+      await wd.pressKey(['Shift', ',']);
+      await wd.pressKey(['Shift', 'Comma']);
+      await wd.pressKey(['Shift', 'NumpadComma']);
+      await wd.pressKey(['Shift', 'Separator']);
+      await wd.pressKey('-');
+      await wd.pressKey(['Shift', '-']);
+      await wd.pressKey(['Shift', 'Subtract']);
+      await wd.pressKey('.');
+      await wd.pressKey(['Shift', '.']);
+      await wd.pressKey(['Shift', 'Decimal']);
+      await wd.pressKey(['Shift', 'Period']);
+      await wd.pressKey('/');
+      await wd.pressKey(['Shift', '/']);
+      await wd.pressKey(['Shift', 'Divide']);
+      await wd.pressKey(['Shift', 'Slash']);
+
+      await wd.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
+    });
+
+    it('should show correct number key when Shift modifier is active', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.fillField('Name', '');
+
+      await wd.pressKey('0');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('0');
+      await wd.pressKey('Digit0');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('1');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('1');
+      await wd.pressKey('Digit1');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('2');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('2');
+      await wd.pressKey('Digit2');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('3');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('3');
+      await wd.pressKey('Digit3');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('4');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('4');
+      await wd.pressKey('Digit4');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('5');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('5');
+      await wd.pressKey('Digit5');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('6');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('6');
+      await wd.pressKey('Digit6');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('7');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('7');
+      await wd.pressKey('Digit7');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('8');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('8');
+      await wd.pressKey('Digit8');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('9');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('9');
+      await wd.pressKey('Digit9');
+      await wd.pressKeyUp('Shift');
+
+      await wd.seeInField('Name', '0))1!!2@@3##4$$5%%6^^7&&8**9((');
     });
   });
 

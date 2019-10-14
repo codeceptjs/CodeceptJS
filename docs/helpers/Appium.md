@@ -252,7 +252,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js

@@ -1,0 +1,62 @@
+Presses a key in the browser (on a focused element).
+
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`](#fillfield).
+
+```js
+I.pressKey('Backspace');
+```
+
+To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+
+```js
+I.pressKey(['Control', 'Z']);
+```
+
+By default `pressKey` will change operation modifier key based on operating system.
+Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines.
+
+In order to use disable changing of operation modifier key based on operating system, specify the second argument as `false`.
+
+```js
+// On macOS this will actually press 'Control + Z' instead of
+// default behavior which would change keys to 'Meta + Z'
+I.pressKey(['Control', 'Z'], false);
+```
+
+Some of the supported key names are:
+- `'AltLeft'` or `'Alt'`
+- `'AltRight'`
+- `'ArrowDown'`
+- `'ArrowLeft'`
+- `'ArrowRight'`
+- `'ArrowUp'`
+- `'Backspace'`
+- `'Clear'`
+- `'ControlLeft'` or `'Control'`
+- `'ControlRight'`
+- `'Delete'`
+- `'End'`
+- `'Enter'`
+- `'Escape'`
+- `'F1'` to `'F12'`
+- `'Home'`
+- `'Insert'`
+- `'MetaLeft'` or `'Meta'`
+- `'MetaRight'`
+- `'Numpad0'` to `'Numpad9'`
+- `'NumpadAdd'`
+- `'NumpadDecimal'`
+- `'NumpadDivide'`
+- `'NumpadMultiply'`
+- `'NumpadSubtract'`
+- `'PageDown'`
+- `'PageUp'`
+- `'Pause'`
+- `'Return'`
+- `'ShiftLeft'` or `'Shift'`
+- `'ShiftRight'`
+- `'Space'`
+- `'Tab'`
+
+@param {string|array} key key or array of keys to press.
+@param {boolean} detectOS (optional, `true` by default) change operation modifier key based on operating system.
