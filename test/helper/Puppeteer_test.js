@@ -1,15 +1,10 @@
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 const puppeteer = require('puppeteer');
-const should = require('chai').should();
 const expect = require('chai').expect;
 const assert = require('assert');
 const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
@@ -33,7 +28,7 @@ describe('Puppeteer - BasicAuth', () => {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
       defaultPopupAction: 'accept',
-      basicAuth: 'postman, password',
+      basicAuth: { username: 'postman', password: 'password' },
     });
     I._init();
     return I._beforeSuite();
@@ -115,7 +110,7 @@ describe('Puppeteer', function () {
       return url.should.eql(`${siteUrl}/`);
     });
 
-    it('should be authenticated ', async () => {
+    it('should be unauthenticated ', async () => {
       await I.amOnPage('https://postman-echo.com/basic-auth');
       await I.see('Unauthorized');
     });
