@@ -358,6 +358,52 @@ npx codeceptjs run-workers 3
 
 Tests are split by scenarios, not by files. Results are aggregated and shown in the main process.
 
+## Configuration
+
+Configuration is set in `codecept.conf.js` file which was created during `init` process.
+Inside config file you can enable and configure helpers, plugins, set bootstrap and teardown scripts.
+
+```js
+exports.config = {
+  helpers: {
+    // enabled helpers with their configs
+  },
+  plugins: {
+    // list of used plugins
+  },
+  include: {
+    // current actor and page objects
+  }
+}
+```
+
+> ▶ See complete [configuration reference](https://codecept.io/configuration).
+
+You can have multiple configuration files for a one project. In this case specify a config file to be used with `-c` when running.
+
+```
+npx codeceptjs run -c codecept.ci.conf.js
+```
+
+Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how those technologies work. Use [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with common configuration recipes.
+
+For instance, you can set window size or toggle headless mode no matter of which helpers are actually used.
+
+```js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+// run headless when CI environment variable set
+setHeadlessWhen(process.env.CI);
+// set window size for any helper: Puppeteer, WebDriver, TestCafe
+setWindowSize(1600, 1200);
+
+exports.config = {
+  // ...
+}
+```
+
+> ▶ See more [configuration recipes](https://github.com/codecept-js/configure)
+
 ## Debug
 
 CodeceptJS allows to write and debug tests on the fly while keeping your browser opened.
@@ -417,7 +463,6 @@ This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/
 ### Step By Step Report
 
 To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
-
 
 ## Retries
 
