@@ -12,15 +12,11 @@ To press a key in combination with modifier keys, pass the sequence as an array.
 I.pressKey(['Control', 'Z']);
 ```
 
-By default `pressKey` will change operation modifier key based on operating system.
-Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines.
-
-In order to use disable changing of operation modifier key based on operating system, specify the second argument as `false`.
+For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
 
 ```js
-// On macOS this will actually press 'Control + Z' instead of
-// default behavior which would change keys to 'Meta + Z'
-I.pressKey(['Control', 'Z'], false);
+I.pressKey(['CommandOrControl', 'Z']);
 ```
 
 Some of the supported key names are:
@@ -34,6 +30,8 @@ Some of the supported key names are:
 - `'Clear'`
 - `'ControlLeft'` or `'Control'`
 - `'ControlRight'`
+- `'Command'`
+- `'CommandOrControl'`
 - `'Delete'`
 - `'End'`
 - `'Enter'`
