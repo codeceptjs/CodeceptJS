@@ -20,7 +20,7 @@ if [[ -d "/tests/" ]]; then
 		if [ ! "$NO_OF_WORKERS" ]; then
 			codeceptjs run $CODECEPT_ARGS
 		else
-		    codeceptjs run-workers $NO_OF_WORKERS
+		    codeceptjs run-workers $NO_OF_WORKERS $CODECEPT_ARGS
 		fi
 	fi
 else

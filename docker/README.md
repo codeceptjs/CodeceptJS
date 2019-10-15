@@ -121,3 +121,17 @@ services:
     volumes:
       - .:/tests
 ```
+
+You can also use `run-workers`to run tests by passing `NO_OF_WORKERS`, additionally, you can pass more params like showing the debug info as the following example:
+
+```yaml
+version: '2'
+services:
+  codeceptjs:
+    image: codeception/codeceptjs
+    environment:
+      - NO_OF_WORKERS=3
+      - CODECEPT_ARGS=--debug
+    volumes:
+      - .:/tests
+```
