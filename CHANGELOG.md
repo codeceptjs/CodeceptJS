@@ -16,7 +16,6 @@ Changed pressKey method to resolve issues and extend functionality.
   * 'Shift' + <key> combination would not reflect actual keyboard behavior.
   * Respect sequence with multiple modifier keys passed to pressKey.
   * Added support to automatic change operation modifier key based on operating system.
-* [Puppeteer][WebDriver] Added `detectOS` config parameter which automatically changes `Control` to `Meta` when pressing key on macOS. And changes `Meta` to `Control` when running on Windows or Linux.
 * [Puppeteer][WebDriver] Added `pressKeyUp` and `pressKeyDown` to press and release modifier keys like `Control` or `Shift`. By @martomo.
 * [Puppeteer][WebDriver] Added `grabElementBoundingRect` by @PeterNgTr.
 * [Puppeteer] Fixed speed degradation introduced in #1306 with accessibility locators support. See #1953.

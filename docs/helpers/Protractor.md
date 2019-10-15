@@ -357,9 +357,9 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -438,7 +438,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js

@@ -188,11 +188,11 @@ autoLogin: {
          I.fillField('email', 'user@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
          I.see('User', '.navbar');
-      }
+      },
     },
     admin: {
       login: (I) => {
@@ -200,10 +200,11 @@ autoLogin: {
          I.fillField('email', 'admin@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
-         I.see('Admin', '.navbar'),
+         I.see('Admin', '.navbar');
+      },
     },
   }
 }
@@ -253,7 +254,7 @@ plugins: {
    autoLogin: {
     admin: {
       login: (I) => I.loginAsAdmin(),
-      check: (I) => I.see('Admin', '.navbar');
+      check: (I) => I.see('Admin', '.navbar'),
       fetch: (I) => {
         return I.executeScript(() => localStorage.getItem('session_id'));
       },
@@ -286,7 +287,7 @@ autoLogin: {
       check: (I) => {
          I.amOnPage('/');
          I.see('Admin');
-      }
+      },
     }
   }
 }
