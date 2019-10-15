@@ -19,6 +19,48 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
+describe('Puppeteer - BasicAuth', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Puppeteer({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      defaultPopupAction: 'accept',
+      basicAuth: 'postman, password',
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  describe('open page with provided basic auth', () => {
+    it.only('should be authenticated ', async () => {
+      await I.amOnPage('https://postman-echo.com/basic-auth');
+      await I.see('{"authenticated":true}');
+    });
+  });
+});
+
 describe('Puppeteer', function () {
   this.timeout(35000);
   this.retries(1);
@@ -29,7 +71,7 @@ describe('Puppeteer', function () {
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
-      show: false,
+      show: true,
       waitForTimeout: 5000,
       waitForAction: 500,
       chrome: {
@@ -71,6 +113,11 @@ describe('Puppeteer', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
+    });
+
+    it.only('should be authenticated ', async () => {
+      await I.amOnPage('https://postman-echo.com/basic-auth');
+      await I.see('Unauthorized');
     });
   });
 
