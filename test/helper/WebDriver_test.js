@@ -25,6 +25,7 @@ describe('WebDriver', function () {
 
     wd = new WebDriver({
       url: siteUrl,
+      basicAuth: { username: 'postman', password: 'password' },
       browser: 'chrome',
       windowSize: '500x700',
       smartWait: 0, // just to try
@@ -66,6 +67,11 @@ describe('WebDriver', function () {
       await wd.amOnPage(siteUrl);
       const url = await wd.grabCurrentUrl();
       url.should.eql(`${siteUrl}/`);
+    });
+
+    it('should be authenticated', async () => {
+      await wd.amOnPage('https://postman-echo.com/basic-auth');
+      await wd.see('{"authenticated":true}');
     });
   });
 
