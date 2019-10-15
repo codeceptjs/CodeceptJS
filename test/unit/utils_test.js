@@ -1,5 +1,7 @@
 const utils = require('../../lib/utils');
 const assert = require('assert');
+const os = require('os');
+const sinon = require('sinon');
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -266,6 +268,22 @@ describe('utils', () => {
       utils.getNormalizedKeyAttributeValue('Divide').should.equal('NumpadDivide');
       utils.getNormalizedKeyAttributeValue('Multiply').should.equal('NumpadMultiply');
       utils.getNormalizedKeyAttributeValue('Subtract').should.equal('NumpadSubtract');
+    });
+
+    it('should normalize modifier key based on operating system', () => {
+      sinon.stub(os, 'platform', () => { return 'notdarwin'; });
+      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
+      os.platform.restore();
+
+      sinon.stub(os, 'platform', () => { return 'darwin'; });
+      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight');
+      os.platform.restore();
     });
   });
 });
