@@ -26,7 +26,7 @@ describe('Puppeteer - BasicAuth', () => {
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
-      show: true,
+      show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
       chrome: {
@@ -54,7 +54,7 @@ describe('Puppeteer - BasicAuth', () => {
   });
 
   describe('open page with provided basic auth', () => {
-    it.only('should be authenticated ', async () => {
+    it('should be authenticated ', async () => {
       await I.amOnPage('https://postman-echo.com/basic-auth');
       await I.see('{"authenticated":true}');
     });
@@ -71,7 +71,7 @@ describe('Puppeteer', function () {
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
-      show: true,
+      show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
       chrome: {
@@ -115,7 +115,7 @@ describe('Puppeteer', function () {
       return url.should.eql(`${siteUrl}/`);
     });
 
-    it.only('should be authenticated ', async () => {
+    it('should be authenticated ', async () => {
       await I.amOnPage('https://postman-echo.com/basic-auth');
       await I.see('Unauthorized');
     });
