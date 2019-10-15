@@ -22,6 +22,7 @@ Changed pressKey method to resolve issues and extend functionality.
 * Added `Config.addHook` to add a function that will update configuration on load.
 * Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
 * [TestCafe] port's management removed (left on TestCafe itself) by @orihomie. Fixes #1934.
+* [REST] Headers are no more declared as singleton variable. Fixes #1959
 
 ## 2.3.2
 
