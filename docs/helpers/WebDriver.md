@@ -25,7 +25,6 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `protocol`:  - protocol for WebDriver server.
 -   `path`:  - path to WebDriver server,
 -   `restart`:  - restart browser between tests.
--   `detectOS`:  - replace `Meta` &lt;=> `Control` keys based on current OS.
 -   `smartWait`: (optional) enables [SmartWait][3]; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`:  - don't save screenshots on failure.
 -   `fullPageScreenshots`  - make full page screenshots on failure.
@@ -1180,12 +1179,11 @@ To press a key in combination with modifier keys, pass the sequence as an array.
 I.pressKey(['Control', 'Z']);
 ```
 
-> You can automatically change operation modifier key based on operating system.
-> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
+For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
 
 ```js
-// when `detectOS: true` on macOS this will actually press 'Meta + Z' instead
-I.pressKey(['Control', 'Z']);
+I.pressKey(['CommandOrControl', 'Z']);
 ```
 
 Some of the supported key names are:
@@ -1200,6 +1198,8 @@ Some of the supported key names are:
 -   `'Clear'`
 -   `'ControlLeft'` or `'Control'`
 -   `'ControlRight'`
+-   `'Command'`
+-   `'CommandOrControl'`
 -   `'Delete'`
 -   `'End'`
 -   `'Enter'`
@@ -1242,9 +1242,6 @@ I.click('#element');
 I.pressKeyUp('Control');
 ```
 
-> You can automatically change operation modifier key based on operating system.
-> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
-
 #### Parameters
 
 -   `key` [string][19] name of key to press down.
@@ -1262,9 +1259,6 @@ I.pressKeyDown('Control');
 I.click('#element');
 I.pressKeyUp('Control');
 ```
-
-> You can automatically change operation modifier key based on operating system.
-> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
 
 #### Parameters
 
