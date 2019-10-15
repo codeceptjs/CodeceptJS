@@ -1089,9 +1089,6 @@ describe('WebDriver - Basic Authentication', () => {
 
   afterEach(() => wd._after());
 
-  // load common test suite
-  webApiTests.tests();
-
   describe('open page : #amOnPage', () => {
     it('should be authenticated', async () => {
       await wd.amOnPage('https://postman-echo.com/basic-auth');
