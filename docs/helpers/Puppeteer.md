@@ -32,7 +32,6 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
 -   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][3]. Array values are accepted as well.
 -   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
--   `detectOS`:  - replace `Meta` &lt;=> `Control` keys based on current OS.
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait\ timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -1083,12 +1082,11 @@ To press a key in combination with modifier keys, pass the sequence as an array.
 I.pressKey(['Control', 'Z']);
 ```
 
-> You can automatically change operation modifier key based on operating system.
-> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
+For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
 
 ```js
-// when `detectOS: true` on macOS this will actually press 'Meta + Z' instead
-I.pressKey(['Control', 'Z']);
+I.pressKey(['CommandOrControl', 'Z']);
 ```
 
 Some of the supported key names are:
@@ -1103,6 +1101,8 @@ Some of the supported key names are:
 -   `'Clear'`
 -   `'ControlLeft'` or `'Control'`
 -   `'ControlRight'`
+-   `'Command'`
+-   `'CommandOrControl'`
 -   `'Delete'`
 -   `'End'`
 -   `'Enter'`
@@ -1145,9 +1145,6 @@ I.click('#element');
 I.pressKeyUp('Control');
 ```
 
-> You can automatically change operation modifier key based on operating system.
-> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
-
 #### Parameters
 
 -   `key` [string][8] name of key to press down.
@@ -1165,9 +1162,6 @@ I.pressKeyDown('Control');
 I.click('#element');
 I.pressKeyUp('Control');
 ```
-
-> You can automatically change operation modifier key based on operating system.
-> Mapping `'Control'` to `'Meta'` (also known as `'Command'`) on macOS machines or mapping `'Meta'` to `'Control'` on non-macOS machines. In order to use this feature set `detectOS: true` config in helper's config.
 
 #### Parameters
 
