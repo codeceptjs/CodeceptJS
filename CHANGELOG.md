@@ -23,6 +23,7 @@ Changed pressKey method to resolve issues and extend functionality.
 * Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
 * [TestCafe] port's management removed (left on TestCafe itself) by @orihomie. Fixes #1934.
 * [REST] Headers are no more declared as singleton variable. Fixes #1959
+* Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By @PeterNgTr.
 
 ## 2.3.2
 
