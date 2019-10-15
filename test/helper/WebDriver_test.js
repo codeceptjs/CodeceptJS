@@ -67,11 +67,6 @@ describe('WebDriver', function () {
       const url = await wd.grabCurrentUrl();
       url.should.eql(`${siteUrl}/`);
     });
-
-    it('should be authenticated', async () => {
-      await wd.amOnPage('https://postman-echo.com/basic-auth');
-      await wd.see('{"authenticated":true}');
-    });
   });
 
   describe('see text : #see', () => {
