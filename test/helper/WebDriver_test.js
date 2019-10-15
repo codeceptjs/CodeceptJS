@@ -25,7 +25,6 @@ describe('WebDriver', function () {
 
     wd = new WebDriver({
       url: siteUrl,
-      basicAuth: { username: 'postman', password: 'password' },
       browser: 'chrome',
       windowSize: '500x700',
       smartWait: 0, // just to try
@@ -1057,6 +1056,51 @@ describe('WebDriver', function () {
       await wd.amOnPage('https://www.google.com');
       const height = await wd.grabElementBoundingRect('#hplogo', 'height');
       expect(height).is.greaterThan(0);
+    });
+  });
+});
+
+describe('WebDriver - Basic Authentication', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    try {
+      fs.unlinkSync(dataFile);
+    } catch (err) {
+      // continue regardless of error
+    }
+
+    wd = new WebDriver({
+      url: siteUrl,
+      basicAuth: { username: 'postman', password: 'password' },
+      browser: 'chrome',
+      windowSize: '500x700',
+      remoteFileUpload: true,
+      smartWait: 0, // just to try
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort(),
+      waitForTimeout: 5000,
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
+    });
+  });
+
+  beforeEach(() => {
+    webApiTests.init({ I: wd, siteUrl });
+    return wd._before();
+  });
+
+  afterEach(() => wd._after());
+
+  // load common test suite
+  webApiTests.tests();
+
+  describe('open page : #amOnPage', () => {
+    it('should be authenticated', async () => {
+      await wd.amOnPage('https://postman-echo.com/basic-auth');
+      await wd.see('{"authenticated":true}');
     });
   });
 });
