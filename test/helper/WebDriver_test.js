@@ -27,7 +27,6 @@ describe('WebDriver', function () {
       url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
-      remoteFileUpload: true,
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
@@ -190,18 +189,13 @@ describe('WebDriver', function () {
       await wd.seeInField('Name', '!ABC123');
     });
 
-    it('should not change operator modifier key', async () => {
+    it('should use modifier key based on operating system', async () => {
       await wd.amOnPage('/form/field');
-      await wd.appendField('Name', '-');
+      await wd.fillField('Name', 'value that is cleared using select all shortcut');
 
-      // Does nothing, because operator modifier key is not changed for operating system
-      await wd.pressKey(['Right Meta', 'a'], false); // Select all
+      await wd.pressKey(['CommandOrControl', 'A']);
       await wd.pressKey('Backspace');
-      await wd.seeInField('Name', 'OLD_VALUE');
-
-      await wd.pressKey(['Right Meta', 'a']); // Select all ('Meta' is changed to 'Control')
-      await wd.pressKey('Backspace');
-      await wd.dontSeeInField('Name', 'OLD_VALUE');
+      await wd.dontSeeInField('Name', 'value that is cleared using select all shortcut');
     });
 
     it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
