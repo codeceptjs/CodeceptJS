@@ -93,7 +93,24 @@ exports.config = {
 If you prefer to store your configuration files in a different location, or with a different name, you can do that with `--config` or `-c:
 
 ```sh
-codeceptjs run --config=./path/to/my/config.json
+codeceptjs run --config=./path/to/my/config.js
+```
+
+## Common Configuration Patterns
+
+[`@codeceptjs/configure` package](https://github.com/codecept-js/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
+
+Install it and enable to easily switch to headless/window mode, change window size, etc.
+
+```js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+setHeadlessWhen(process.env.CI);
+setWindowSize(1600, 1200);
+
+exports.config = {
+  // ...
+}
 ```
 
 ## Profile
