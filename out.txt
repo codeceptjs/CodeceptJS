@@ -1,0 +1,310 @@
+http://identity.qa.sravni-team.ru/
+http://identity.qa.sravni-team.ru/about/
+http://identity.qa.sravni-team.ru/about/#contacts
+http://identity.qa.sravni-team.ru/about/privacy-policy/
+http://identity.qa.sravni-team.ru/avtokredity/vse-produkty/
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/megapolis-region/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/megapolis-region/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/perspektiva-region/?creditAmount=6500000
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/perspektiva-region/?creditAmount=6500000
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/perspektiva-region/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/perspektiva-region/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/ak-bars/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+%
+HTTP/1.1 503 Service Temporarily Unavailable
+Server: openresty/1.15.8.2
+Date: Fri, 18 Oct 2019 12:06:07 GMT
+Content-Type: text/html
+Content-Length: 203
+Connection: keep-alive
+Cache-Control: private
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:07 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=5ZHM011DC0lfbb7O7nde6a2sLdNSpwstS7G9u1ja_kEEaC0Hfy2Vj79sU-ErQ5JvRvhvshTW55UdEY9_JEs0yeLztn7tWrsD8Jez-BbM-LwOhLaL7OkIuRM8PkMX1CZOcwHCsQ2; expires=Sat, 17-Oct-2020 12:06:07 GMT; path=/; HttpOnly
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:07 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=5ZHM011DC0lfbb7O7nde6a2sLdNSpwstS7G9u1ja_kEEaC0Hfy2Vj79sU-ErQ5JvRvhvshTW55UdEY9_JEs0yeLztn7tWrsD8Jez-BbM-LwOhLaL7OkIuRM8PkMX1CZOcwHCsQ2; expires=Sat, 17-Oct-2020 12:06:07 GMT; path=/; HttpOnly
+Set-Cookie: _XUserId_=5b171e67-0693-4337-8b23-681d6fe565dc; expires=Sun, 18-Oct-2020 12:06:07 GMT; path=/
+Set-Cookie: show_mobile_form=show_mobile_form; expires=Sun, 18-Oct-2020 12:06:07 GMT; path=/
+X-Powered-By: ARR/3.0
+X-UA-Compatible: IE=Edge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+
+http://identity.qa.sravni-team.ru/bank/akibank/ipoteka/kreditovanie%20poslednix%20doley/komnat%20i%20otdelinix%20komnat/?creditAmount=3000000
+http://identity.qa.sravni-team.ru/bank/alfa-bank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+%
+http://identity.qa.sravni-team.ru/bank/alfa-bank/ipoteka/na-gotovoe-zhile/?adv_sub=c73ef9b1-f328-4142-9b51-2690bdd33264
+http://identity.qa.sravni-team.ru/bank/alfa-bank/ipoteka/na-refinansirovanie/?adv_sub=4ee42a93-4fe3-4b5f-8570-2a9621ca556a
+%
+%
+http://identity.qa.sravni-team.ru/bank/alfa-bank/ipoteka/na-strojashheesja-zhile/?adv_sub=b53f3122-b146-49df-86d7-5467fc98cb0e
+http://identity.qa.sravni-team.ru/bank/alfa-bank/ipoteka/na-strojashheesja-zhile/?adv_sub=dffa1d79-c96d-4c6d-a61b-c860b5e280bb
+http://identity.qa.sravni-team.ru/bank/alfa-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/avangard/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/aziatskotikhookeanskij-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/gotovoe-zhile/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/gotovoe-zhile/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/gotovoe-zhile/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/gotovoe-zhile/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/semejnaja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/semejnaja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/urban-group/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-domrf/ipoteka/urban-group/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-ekaterinburg/kredit/standartnyj-dlja-pensionerov/
+HTTP/1.1 503 Service Temporarily Unavailable
+Server: openresty/1.15.8.2
+Date: Fri, 18 Oct 2019 12:06:09 GMT
+Content-Type: text/html
+Content-Length: 203
+Connection: keep-alive
+Cache-Control: private
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=tTuX-u6-XKMsaCWJtYdPOARoZ3rWXP0gXtTCjJ4JHtGlzSWyzujtUP8wX1HCKzxHlnWFbqL-UlTn_0Y-chot2G6aRxGFSPNlOaPJ5qjLIzPWRCa7KJUxgfv4iJoMDvfAB2lI7w2; expires=Sat, 17-Oct-2020 12:06:08 GMT; path=/; HttpOnly
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=tTuX-u6-XKMsaCWJtYdPOARoZ3rWXP0gXtTCjJ4JHtGlzSWyzujtUP8wX1HCKzxHlnWFbqL-UlTn_0Y-chot2G6aRxGFSPNlOaPJ5qjLIzPWRCa7KJUxgfv4iJoMDvfAB2lI7w2; expires=Sat, 17-Oct-2020 12:06:08 GMT; path=/; HttpOnly
+Set-Cookie: _XUserId_=ecf3669e-03ed-4b52-ac8b-0f5f95fd86b0; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+Set-Cookie: show_mobile_form=show_mobile_form; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+X-Powered-By: ARR/3.0
+X-UA-Compatible: IE=Edge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+
+HTTP/1.1 503 Service Temporarily Unavailable
+Server: openresty/1.15.8.2
+Date: Fri, 18 Oct 2019 12:06:09 GMT
+Content-Type: text/html
+Content-Length: 203
+Connection: keep-alive
+Cache-Control: private
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=CvB2pZ5XAA4vsOb69abc8v09Gcai4OJ36QBRk8VcI18CqQdY7IVHc6RgBz0PChDFce3VmUWWnIxbGKyzntJ725iOdUB-zfwKo3c8PCTRbS65mgmBBpHP4EEym1-RMGL7w5SWjw2; expires=Sat, 17-Oct-2020 12:06:08 GMT; path=/; HttpOnly
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=CvB2pZ5XAA4vsOb69abc8v09Gcai4OJ36QBRk8VcI18CqQdY7IVHc6RgBz0PChDFce3VmUWWnIxbGKyzntJ725iOdUB-zfwKo3c8PCTRbS65mgmBBpHP4EEym1-RMGL7w5SWjw2; expires=Sat, 17-Oct-2020 12:06:08 GMT; path=/; HttpOnly
+Set-Cookie: _XUserId_=6d8b1006-6e32-4c4a-8a10-c41e28d44896; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+Set-Cookie: show_mobile_form=show_mobile_form; expires=Sun, 18-Oct-2020 12:06:08 GMT; path=/
+X-Powered-By: ARR/3.0
+X-UA-Compatible: IE=Edge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+
+HTTP/1.1 500 Internal Server Error
+http://identity.qa.sravni-team.ru/bank/bank-ekaterinburg/kredit/standartnyj-dlja-zarplatnykh-klientov/
+HTTP/1.1 500 Internal Server Error
+http://identity.qa.sravni-team.ru/bank/bank-sankt-peterburg/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/bank-sankt-peterburg/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-sankt-peterburg/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/bank-sankt-peterburg/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/bank-zenit/ipoteka/kvartira-na-vtorichnom-rynke/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/bank-zenit/ipoteka/kvartira-na-vtorichnom-rynke/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/bm-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/ipoteka-pljus/?creditAmount=1000000
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/ipoteka-pljus/?creditAmount=1000000
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/kvartira---materinskij-kapital/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/kvartira---materinskij-kapital/?creditAmount=10000000
+%
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/novostroyka/?adv_sub=208ef5d8-f83d-4ecc-bfeb-18a7889a85d2
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/refinansirovanie-voennosluzhashhim/?adv_sub=a6ea5f5c-8fbe-4c66-b603-85970f117302
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/vtorichnoe-zhile/?adv_sub=e87a5b2b-c84e-405f-b2ad-8e6cba8c730f
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/ipoteka/vtorichnoe-zhile/?adv_sub=eec760ac-ebdc-4c42-b5ab-88c62f2c8c86
+http://identity.qa.sravni-team.ru/bank/fk-otkrytie/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/forbank/ipoteka/gotovoe-zhile/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/forbank/ipoteka/gotovoe-zhile/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?creditAmount=3000000
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?creditAmount=3000000
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/novosely/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/gazprombank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+Server: openresty/1.15.8.2
+Date: Fri, 18 Oct 2019 12:06:13 GMT
+Content-Type: text/html
+Content-Length: 203
+Connection: keep-alive
+Cache-Control: private
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:12 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=ESNXxgvEYF8XBckuMyyPV9N1BZAnzLCIrGv07BohofkeGWvZsl6ar2DPiBRMbIODzr1MtMcZtg5II7q2EUE3BzzIwkOk2AlYgRr8bT0XDFYJ4WG0gahKgVYS8ZZYN06OSOZyAA2; expires=Sat, 17-Oct-2020 12:06:12 GMT; path=/; HttpOnly
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:12 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=ESNXxgvEYF8XBckuMyyPV9N1BZAnzLCIrGv07BohofkeGWvZsl6ar2DPiBRMbIODzr1MtMcZtg5II7q2EUE3BzzIwkOk2AlYgRr8bT0XDFYJ4WG0gahKgVYS8ZZYN06OSOZyAA2; expires=Sat, 17-Oct-2020 12:06:12 GMT; path=/; HttpOnly
+Set-Cookie: _XUserId_=ccce8e97-a3f4-4dd7-b5d6-b86429fb282a; expires=Sun, 18-Oct-2020 12:06:12 GMT; path=/
+Set-Cookie: show_mobile_form=show_mobile_form; expires=Sun, 18-Oct-2020 12:06:12 GMT; path=/
+X-Powered-By: ARR/3.0
+X-UA-Compatible: IE=Edge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/investtorgbank/ipoteka/refinansirovanie-kvartira-i-apartamenty/?adv_sub=b7bd047c-74c2-4841-b9ab-6ef615afea30
+http://identity.qa.sravni-team.ru/bank/investtorgbank/ipoteka/refinansirovanie-kvartira-i-apartamenty/?adv_sub=d4610019-53b5-4aa0-b2ac-dbef57ed5781
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/ipoteka-pod-6/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/ipoteka-pod-6/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/na-kvartiru-msk/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/na-kvartiru-msk/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/novostrojka-msk/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/novostrojka-msk/?customerType=0
+HTTP/1.1 503 Service Temporarily Unavailable
+Server: openresty/1.15.8.2
+Date: Fri, 18 Oct 2019 12:06:13 GMT
+Content-Type: text/html
+Content-Length: 203
+Connection: keep-alive
+Cache-Control: private
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:13 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=8umue0E-LRbHX4djNURq16akRNYsw5O8OC7qJYoK_a_iHeXQh2-x2t3FHjUmRq9ccpb8fQT4Ls-_kOFifHkly9d3qvhWHtOzfgD4-y3Kp2uuMLtipA-_NeuWMKKuk9CQvyQm1g2; expires=Sat, 17-Oct-2020 12:06:13 GMT; path=/; HttpOnly
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:13 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=8umue0E-LRbHX4djNURq16akRNYsw5O8OC7qJYoK_a_iHeXQh2-x2t3FHjUmRq9ccpb8fQT4Ls-_kOFifHkly9d3qvhWHtOzfgD4-y3Kp2uuMLtipA-_NeuWMKKuk9CQvyQm1g2; expires=Sat, 17-Oct-2020 12:06:13 GMT; path=/; HttpOnly
+Set-Cookie: _XUserId_=f06b41ce-f5fe-4539-baa8-77f7fcb6d5f1; expires=Sun, 18-Oct-2020 12:06:13 GMT; path=/
+Set-Cookie: show_mobile_form=show_mobile_form; expires=Sun, 18-Oct-2020 12:06:13 GMT; path=/
+X-Powered-By: ARR/3.0
+X-UA-Compatible: IE=Edge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/refinansirovanie-na-pervichnom-runke-region-msk/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/ipoteka/refinansirovanie-na-pervichnom-runke-region-msk/?customerType=0
+http://identity.qa.sravni-team.ru/bank/junikredit-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/kamskij-kommercheskij-bank/kredit/na-ljubye-celi-pod-zalog-nedvizhimosti-dlja-vladelcev-biznesa/
+http://identity.qa.sravni-team.ru/bank/kamskij-kommercheskij-bank/kredit/na-ljubye-celi-pod-zalog-nedvizhimosti/
+http://identity.qa.sravni-team.ru/bank/kamskij-kommercheskij-bank/kredit/na-ljubye-celi-pod-zalog-transportnogo-sredstva-dlja-vladelcev-biznesa/
+http://identity.qa.sravni-team.ru/bank/kamskij-kommercheskij-bank/kredit/na-ljubye-celi-pod-zalog-transportnogo-sredstva/
+http://identity.qa.sravni-team.ru/bank/kamskij-kommercheskij-bank/kredit/vam-doverjaem-dlja-klientov/
+HTTP/1.1 500 Internal Server Error
+http://identity.qa.sravni-team.ru/bank/kamskij-kommercheskij-bank/kredit/vam-doverjaem/
+HTTP/1.1 500 Internal Server Error
+http://identity.qa.sravni-team.ru/bank/khoum-kredit-ehnd-finans-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/kredit-evropa-bank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/kredit-evropa-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/kurskprombank/kredit/pod-zalog-vklada-dlja-klientov/
+HTTP/1.1 500 Internal Server Error
+http://identity.qa.sravni-team.ru/bank/lipeckkombank/ipoteka/vtorichnyj-rynok/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/lipeckkombank/ipoteka/vtorichnyj-rynok/?creditAmount=10000000
+%
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/gotovaya-kvartira/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/gotovaya-kvartira/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/gotovaya-kvartira/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-industrialnyj-bank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-kreditnyj-bank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/moskovskij-kreditnyj-bank/ipoteka/priobretenie--nedvizhimosti/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-kreditnyj-bank/ipoteka/priobretenie--nedvizhimosti/?customerType=0
+http://identity.qa.sravni-team.ru/bank/moskovskij-kreditnyj-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/mosoblbank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/otp-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/pochta-bank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/bez-pervonachalnogo-vznosa-v-novostroyke/?creditAmount=1000000
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/bez-pervonachalnogo-vznosa-v-novostroyke/?creditAmount=1000000
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/promsvjazbank/ipoteka/novostrojka/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/ipoteka-s-gospodderzhkoj-dlja-semej-s-detmi/?customerType=0
+HTTP/1.1 503 Service Temporarily Unavailable
+Server: openresty/1.15.8.2
+Date: Fri, 18 Oct 2019 12:06:18 GMT
+Content-Type: text/html
+Content-Length: 203
+Connection: keep-alive
+Cache-Control: private
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:17 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=GSWJygMTYQ-IEo5h1uRszIoOYTlwItM0aI5XOK_FZ6s5-IM_myoc83jflabUTjtVAQsSw070qhABeB-jojwGLWg9jw7v7Hw-aSQy1sXDFRIzxt2dCDUW9Rlkb6VdxtJ03EkuwA2; expires=Sat, 17-Oct-2020 12:06:17 GMT; path=/; HttpOnly
+Set-Cookie: _SL_=6.83.; expires=Sun, 18-Oct-2020 12:06:17 GMT; path=/
+Set-Cookie: .ASPXANONYMOUS=GSWJygMTYQ-IEo5h1uRszIoOYTlwItM0aI5XOK_FZ6s5-IM_myoc83jflabUTjtVAQsSw070qhABeB-jojwGLWg9jw7v7Hw-aSQy1sXDFRIzxt2dCDUW9Rlkb6VdxtJ03EkuwA2; expires=Sat, 17-Oct-2020 12:06:17 GMT; path=/; HttpOnly
+Set-Cookie: _XUserId_=7cb98be5-237c-4c48-81dd-c6550257a711; expires=Sun, 18-Oct-2020 12:06:17 GMT; path=/
+Set-Cookie: show_mobile_form=show_mobile_form; expires=Sun, 18-Oct-2020 12:06:17 GMT; path=/
+X-Powered-By: ARR/3.0
+X-UA-Compatible: IE=Edge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/ipoteka-s-gospodderzhkoj-dlja-semej-s-detmi/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-na-vtorichnom-rynke/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-na-vtorichnom-rynke/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-na-vtorichnom-rynke/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-na-vtorichnom-rynke/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-v-novostrojke/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-v-novostrojke/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-v-novostrojke/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/kvartira-v-novostrojke/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/nedvizhimost-pod-zalog-imejushhegosja-zhilja/?creditAmount=1000000
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/nedvizhimost-pod-zalog-imejushhegosja-zhilja/?creditAmount=1000000
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rajffajzenbank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/renessans-kredit/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rnkb/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rnkb/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/kvartira-ili-dolya/?adv_sub=1c357b12-dac1-4a06-bed5-70c63a1531b8
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/kvartira-ili-dolya/?adv_sub=2bb685c3-da13-4878-92b8-531b8796cdf7
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/kvartira-ili-dolya/?adv_sub=62dda5f2-8fd0-408d-aad9-539af381b967
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/kvartira-ili-dolya/?adv_sub=753cee28-33d9-4315-ad39-18dd5c5f72ac
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/kvartira-ili-dolya/?adv_sub=d5230972-a9b4-4661-a384-9bd928f94646
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosbank-dom/ipoteka/refinansirovanie/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosbank/vklady/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/
+HTTP/1.1 503 Service Temporarily Unavailable
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?creditAmount=10000000
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?customerType=0
+http://identity.qa.sravni-team.ru/bank/rosselkhozbank/ipoteka/mechty-sbyvajutsja/?customerType=0
