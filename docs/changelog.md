@@ -3,6 +3,33 @@ id: changelog
 title: Releases
 ---
 
+## 2.3.3
+
+* **[customLocator plugin](#customlocator) introduced**. Adds a locator strategy for special test attributes on elements.
+
+```js
+// when data-test-id is a special test attribute
+// enable and configure plugin to replace this
+I.click({ css: '[data-test-id=register_button]');
+// with this
+I.click('$register_button');
+```
+* [Puppeteer][WebDriver] `pressKey` improvements by **[martomo](https://github.com/martomo)**:
+Changed pressKey method to resolve issues and extend functionality.
+  * Did not properly recognize 'Meta' (or 'Command') as modifier key.
+  * Right modifier keys did not work in WebDriver using JsonWireProtocol.
+  * 'Shift' + <key> combination would not reflect actual keyboard behavior.
+  * Respect sequence with multiple modifier keys passed to pressKey.
+  * Added support to automatic change operation modifier key based on operating system.
+* [Puppeteer][WebDriver] Added `pressKeyUp` and `pressKeyDown` to press and release modifier keys like `Control` or `Shift`. By **[martomo](https://github.com/martomo)**.
+* [Puppeteer][WebDriver] Added `grabElementBoundingRect` by **[PeterNgTr](https://github.com/PeterNgTr)**.
+* **[Puppeteer]** Fixed speed degradation introduced in [#1306](https://github.com/Codeception/CodeceptJS/issues/1306) with accessibility locators support. See [#1953](https://github.com/Codeception/CodeceptJS/issues/1953).
+* Added `Config.addHook` to add a function that will update configuration on load.
+* Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
+* **[TestCafe]** port's management removed (left on TestCafe itself) by **[orihomie](https://github.com/orihomie)**. Fixes [#1934](https://github.com/Codeception/CodeceptJS/issues/1934).
+* **[REST]** Headers are no more declared as singleton variable. Fixes [#1959](https://github.com/Codeception/CodeceptJS/issues/1959)
+* Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By **[PeterNgTr](https://github.com/PeterNgTr)**.
+
 ## 2.3.2
 
 * **[Puppeteer]** Fixed Puppeteer 1.20 support by **[davertmik](https://github.com/davertmik)**
