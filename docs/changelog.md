@@ -3,6 +3,13 @@ id: changelog
 title: Releases
 ---
 
+## 2.3.4
+
+* Fixed installation error "Cannot find module '@babel/runtime/helpers/interopRequireDefault'". The issue came from `parse-function` package. Fixed by **[pablopaul](https://github.com/pablopaul)**.
+* **[Puppeteer]** Fixed switching to iframe without an ID by **[johnyb](https://github.com/johnyb)**. See [#1974](https://github.com/Codeception/CodeceptJS/issues/1974)
+* Added `--profile` option to `run-workers` by **[orihomie](https://github.com/orihomie)**
+* Added a tag definition to `FeatureConfig` and `ScenarioConfig` by **[sseliverstov](https://github.com/sseliverstov)**
+
 ## 2.3.3
 
 * **[customLocator plugin](#customlocator) introduced**. Adds a locator strategy for special test attributes on elements.
