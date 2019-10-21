@@ -25,6 +25,7 @@ A book by **Paul Vincent Beigang**
 
 A list of good educational posts about CodeceptJS
 
+* [QA Automation From Zero-to-Hero with CodeceptJS End-to-End Testing](https://medium.com/@dan.ryan.emmons/qa-automation-from-zero-to-hero-with-codeceptjs-end-to-end-testing-719db9d6ff5c) by Dan Emmons
 * [Effective End2End Tests with CodeceptJS](https://hackernoon.com/effective-end-2-end-testing-in-javascript-with-codeceptjs-37c8d7d6a928) by @davertmik
 * [Running End to End tests as Google Cloud Functions](https://hackernoon.com/running-end-to-end-tests-as-google-cloud-functions-f5e34ffc3984)
 * [End-To-End Testing With CodeceptJS](https://www.monterail.com/blog/end-to-end-testing-with-codeceptjs) by Piotr Michalski
