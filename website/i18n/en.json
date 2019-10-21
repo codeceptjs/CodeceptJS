@@ -63,7 +63,7 @@
         "title": "Testing React Native with Detox"
       },
       "docker": {
-        "title": "Docker"
+        "title": "docker"
       },
       "email": {
         "title": "Email Testing"

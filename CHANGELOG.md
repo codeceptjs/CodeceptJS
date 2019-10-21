@@ -1,3 +1,10 @@
+## 2.3.4
+
+* Fixed installation error "Cannot find module '@babel/runtime/helpers/interopRequireDefault'". The issue came from `parse-function` package. Fixed by @pablopaul.
+* [Puppeteer] Fixed switching to iframe without an ID by @johnyb. See #1974
+* Added `--profile` option to `run-workers` by @orihomie
+* Added a tag definition to `FeatureConfig` and `ScenarioConfig` by @sseliverstov
+
 ## 2.3.3
 
 * **[customLocator plugin](#customlocator) introduced**. Adds a locator strategy for special test attributes on elements.
