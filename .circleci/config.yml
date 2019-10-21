@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   machine:
     image: circleci/classic:201710-02
-    docker_layer_caching: true
+    docker_layer_caching: false
   steps:
     - checkout
     - run: .circleci/build.sh
