@@ -1,3 +1,7 @@
+## 2.3.5
+
+* Set "parse-function" dependency to "5.2.11" to avoid further installation errors.
+
 ## 2.3.4
 
 * Fixed installation error "Cannot find module '@babel/runtime/helpers/interopRequireDefault'". The issue came from `parse-function` package. Fixed by @pablopaul.
