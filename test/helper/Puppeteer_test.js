@@ -19,7 +19,7 @@ describe('Puppeteer - BasicAuth', () => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
     I = new Puppeteer({
-      url: siteUrl,
+      url: 'https://postman-echo.com',
       windowSize: '500x700',
       show: false,
       waitForTimeout: 5000,
@@ -50,7 +50,7 @@ describe('Puppeteer - BasicAuth', () => {
 
   describe('open page with provided basic auth', () => {
     it('should be authenticated ', async () => {
-      await I.amOnPage('https://postman-echo.com/basic-auth');
+      await I.amOnPage('/basic-auth');
       await I.see('{"authenticated":true}');
     });
   });
