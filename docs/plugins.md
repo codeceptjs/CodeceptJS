@@ -29,7 +29,7 @@ Add this plugin to config file:
 
 Run tests with allure plugin enabled:
 
-    codeceptjs run --plugins allure
+    npx codeceptjs run --plugins allure
 
 By default, allure reports are saved to `output` directory.
 Launch Allure server and see the report like on a screenshot above:
@@ -69,7 +69,7 @@ const allure = codeceptjs.container.plugins('allure');
 ## autoDelay
 
 Sometimes it takes some time for a page to respond to user's actions.
-Depending on app's perfromance this can be either slow or fast.
+Depending on app's performance this can be either slow or fast.
 
 For instance, if you click a button and nothing happens - probably JS event is not attached to this button yet
 Also, if you fill field and input validation doesn't accept your input - maybe because you typed value too fast.
@@ -89,9 +89,9 @@ Commands affected (by default):
 ##### Configuration
 
 ```js
-"plugins": {
-   "autoDelay": {
-     "enabled": true
+plugins: {
+   autoDelay: {
+     enabled: true
    }
 }
 ```
@@ -188,11 +188,11 @@ autoLogin: {
          I.fillField('email', 'user@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
          I.see('User', '.navbar');
-      }
+      },
     },
     admin: {
       login: (I) => {
@@ -200,10 +200,11 @@ autoLogin: {
          I.fillField('email', 'admin@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
-         I.see('Admin', '.navbar'),
+         I.see('Admin', '.navbar');
+      },
     },
   }
 }
@@ -253,7 +254,7 @@ plugins: {
    autoLogin: {
     admin: {
       login: (I) => I.loginAsAdmin(),
-      check: (I) => I.see('Admin', '.navbar');
+      check: (I) => I.see('Admin', '.navbar'),
       fetch: (I) => {
         return I.executeScript(() => localStorage.getItem('session_id'));
       },
@@ -286,7 +287,7 @@ autoLogin: {
       check: (I) => {
          I.amOnPage('/');
          I.see('Admin');
-      }
+      },
     }
   }
 }
@@ -302,6 +303,75 @@ Scenario('login', async (I, login) => {
 
 -   `config`  
 
+## customLocator
+
+Creates a [custom locator][3] by using special attributes in HTML.
+
+If you have a convention to use `data-test-id` or `data-qa` attributes to mark active elements for e2e tests,
+you can enable this plugin to simplify matching elements with these attributes:
+
+```js
+// replace this:
+I.click({ css: '[data-test-id=register_button]');
+// with this:
+I.click('$register_button');
+```
+
+This plugin will create a valid XPath locator for you.
+
+#### Configuration
+
+-   `enabled` (default: `false`) should a locator be enabled
+-   `prefix` (default: `$`) sets a prefix for a custom locator.
+-   `attribute` (default: `data-test-id`) to set an attribute to be matched.
+-   `strategy` (default: `xpath`) actual locator strategy to use in query (`css` or `xpath`).
+-   `showActual` (default: false) show in the output actually produced XPath or CSS locator. By default shows custom locator value.
+
+#### Examples:
+
+Using `data-test` attribute with `$` prefix:
+
+```js
+// in codecept.conf.js
+plugins: {
+ customLocator: {
+   enabled: true
+   attribute: 'data-test'
+ }
+}
+```
+
+In a test:
+
+```js
+I.seeElement('$user'); // matches => [data-test=user]
+I.click('$sign-up'); // matches => [data-test=sign-up]
+```
+
+Using `data-qa` attribute with `=` prefix:
+
+```js
+// in codecept.conf.js
+plugins: {
+ customLocator: {
+   enabled: true
+   prefix: '=',
+   attribute: 'data-qa'
+ }
+}
+```
+
+In a test:
+
+```js
+I.seeElement('=user'); // matches => [data-qa=user]
+I.click('=sign-up'); // matches => [data-qa=sign-up]
+```
+
+### Parameters
+
+-   `config`  
+
 ## puppeteerCoverage
 
 Dumps puppeteers code coverage after every test.
@@ -311,16 +381,16 @@ Dumps puppeteers code coverage after every test.
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
 ```js
-"plugins": {
-   "puppeteerCoverage": {
-     "enabled": true
+plugins: {
+   puppeteerCoverage: {
+     enabled: true
    }
 }
 ```
 
 Possible config options:
 
--   `outputDir`: directory to dump coverage files
+-   `coverageDir`: directory to dump coverage files
 -   `uniqueFileName`: generate a unique filename by adding uuid
 
     First of all, your mileage may vary!
@@ -333,9 +403,9 @@ Possible config options:
 
     Links:
 
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][3]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][4]
--   [https://github.com/gotwarlost/istanbul][5]
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][4]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][5]
+-   [https://github.com/gotwarlost/istanbul][6]
 
 ### Parameters
 
@@ -348,16 +418,16 @@ Retries each failed step in a test.
 Add this plugin to config file:
 
 ```js
-"plugins": {
-    "retryFailedStep": {
-       "enabled": true
+plugins: {
+    retryFailedStep: {
+       enabled: true
     }
 }
 ```
 
 Run tests with plugin enabled:
 
-    codeceptjs run --plugins retryFailedStep
+    npx codeceptjs run --plugins retryFailedStep
 
 ##### Configuration:
 
@@ -367,8 +437,42 @@ Run tests with plugin enabled:
 -   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
 -   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
 -   `randomize` - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.
+-   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
+    -   `amOnPage`
+    -   `wait*`
+    -   `send*`
+    -   `execute*`
+    -   `run*`
+    -   `have*`
+-   `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+    To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 
-This plugin is very basic so it's recommended to improve it to match your custom needs.
+##### Example
+
+```js
+plugins: {
+    retryFailedStep: {
+        enabled: true,
+        ignoreSteps: [
+          'scroll*', // ignore all scroll steps
+          /Cookie/, // ignore all steps with a Cookie in it (by regexp)
+        ]
+    }
+}
+```
+
+##### Disable Per Test
+
+This plugin can be disabled per test. In this case you will need to stet `I.retry()` to all flaky steps:
+
+Use scenario configuration to disable plugin for a test
+
+```js
+Scenario('scenario tite', () => {
+   // test goes here
+}).config(test => test.disableRetryFailedStep = true)
+```
 
 ### Parameters
 
@@ -387,9 +491,9 @@ This plugin is **enabled by default**.
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
 ```js
-"plugins": {
-   "screenshotOnFail": {
-     "enabled": true
+plugins: {
+   screenshotOnFail: {
+     enabled: true
    }
 }
 ```
@@ -405,7 +509,7 @@ Possible config options:
 
 ## stepByStepReport
 
-![step-by-step-report][6]
+![step-by-step-report][7]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -413,7 +517,7 @@ By default, reports are generated only for failed tests.
 
 Run tests with plugin enabled:
 
-    codeceptjs run --plugins stepByStepReport
+    npx codeceptjs run --plugins stepByStepReport
 
 ##### Configuration
 
@@ -450,7 +554,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][7].
+A complete list of all available services can be found on [webdriverio website][8].
 
 ###### Setup
 
@@ -462,7 +566,7 @@ See examples below:
 
 ###### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][8].
+Install `@wdio/selenium-standalone-service` package, as [described here][9].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -481,7 +585,7 @@ Please note, this service can be used with Protractor helper as well!
 
 ##### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][9].
+Install `@wdio/sauce-service` package, as [described here][10].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -515,16 +619,18 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
 
-[3]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[3]: https://codecept.io/locators#custom-locators
 
-[4]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[4]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
 
-[5]: https://github.com/gotwarlost/istanbul
+[5]: https://github.com/istanbuljs/puppeteer-to-istanbul
 
-[6]: https://codecept.io/img/codeceptjs-slideshow.gif
+[6]: https://github.com/gotwarlost/istanbul
 
-[7]: https://webdriver.io
+[7]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[8]: https://webdriver.io/docs/selenium-standalone-service.html
+[8]: https://webdriver.io
 
-[9]: https://webdriver.io/docs/sauce-service.html
+[9]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[10]: https://webdriver.io/docs/sauce-service.html

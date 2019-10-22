@@ -15,7 +15,7 @@ module.exports.config = {
         ],
       },
     },
-    Polly: {},
+    MockRequest: {},
   },
   include: {},
   bootstrap: false,

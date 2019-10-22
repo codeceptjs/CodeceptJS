@@ -44,7 +44,7 @@ This helper should be configured in codecept.json or codecept.conf.js
     -   `app` - The absolute local path or remote http URL to an .ipa or .apk file, or a .zip containing one of these. Appium will attempt to install this app binary on the appropriate device first.
     -   `browserName`: Name of mobile web browser to automate. Should be an empty string if automating an app instead.
 
-Example:
+Example Android App:
 
 ```js
 {
@@ -59,6 +59,47 @@ Example:
           }
       }
     }
+}
+```
+
+Example iOS Mobile Web with local Appium:
+
+```js
+{
+helpers: {
+  Appium: {
+    platform: "iOS",
+    url: "https://the-internet.herokuapp.com/",
+    desiredCapabilities: {
+      deviceName: "iPhone X",
+      platformVersion: "12.0",
+      browserName: "safari"
+    }
+  }
+}
+}
+```
+
+Example iOS Mobile Web on BrowserStack:
+
+```js
+{
+helpers: {
+  Appium: {
+    host: "hub-cloud.browserstack.com",
+    port: 4444,
+    user: process.env.BROWSERSTACK_USER,
+    key: process.env.BROWSERSTACK_KEY,
+    platform: "iOS",
+    url: "https://the-internet.herokuapp.com/",
+    desiredCapabilities: {
+      realMobile: "true",
+      device: "iPhone 8",
+      os_version: "12",
+      browserName: "safari"
+    }
+  }
+}
 }
 ```
 
@@ -184,9 +225,9 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -211,7 +252,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js

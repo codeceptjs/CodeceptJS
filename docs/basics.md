@@ -40,7 +40,7 @@ Refer to following guides to more information on:
 * [▶ Protractor](https://codecept.io/angular)
 * [▶ Puppeteer](https://codecept.io/puppeteer)
 * [▶ Nightmare](https://codecept.io/nightmare)
-* TestCafe
+* [▶ TestCafe](https://codecept.io/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
 
@@ -308,19 +308,19 @@ To launch tests use `run` command. To execute tests in [multiple browsers](https
 To see step-by-step output of running tests, add `--steps` flag:
 
 ```
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 To see more detailed output add `--debug` flag:
 
 ```
-codeceptjs run --debug
+npx codeceptjs run --debug
 ```
 
 To see very detailed output system use `--verbose` flag:
 
 ```
-codeceptjs run --verbose
+npx codeceptjs run --verbose
 ```
 
 ### Filter
@@ -328,11 +328,11 @@ codeceptjs run --verbose
 A single test file can be executed if you provide a relative path to such file:
 
 ```
-codeceptjs run github_test.js
+npx codeceptjs run github_test.js
 
 # or
 
-codeceptjs run admin/login_test.js
+npx codeceptjs run admin/login_test.js
 ```
 
 To filter a test by name use `--grep` parameter. Which will execute all tests with names matching the regex pattern.
@@ -340,7 +340,7 @@ To filter a test by name use `--grep` parameter. Which will execute all tests wi
 To run all tests with `slow` word in it
 
 ```
-codeceptjs run --grep "slow"
+npx codeceptjs run --grep "slow"
 ```
 
 It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
@@ -348,6 +348,61 @@ It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
 
 > For more options see [full reference of `run` command](https://codecept.io/commands/#run).
 
+### Parallel Run
+
+Since CodeceptJS 2.3 you can run tests in parallel by using NodeJS workers. This feature requires NodeJS >= 11.6. Use `run-workers` command with the number of workers (threads) to split tests.
+
+```
+npx codeceptjs run-workers 3
+```
+
+Tests are split by scenarios, not by files. Results are aggregated and shown in the main process.
+
+## Configuration
+
+Configuration is set in `codecept.conf.js` file which was created during `init` process.
+Inside config file you can enable and configure helpers, plugins, set bootstrap and teardown scripts.
+
+```js
+exports.config = {
+  helpers: {
+    // enabled helpers with their configs
+  },
+  plugins: {
+    // list of used plugins
+  },
+  include: {
+    // current actor and page objects
+  }
+}
+```
+
+> ▶ See complete [configuration reference](https://codecept.io/configuration).
+
+You can have multiple configuration files for a one project. In this case specify a config file to be used with `-c` when running.
+
+```
+npx codeceptjs run -c codecept.ci.conf.js
+```
+
+Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how those technologies work. Use [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with common configuration recipes.
+
+For instance, you can set window size or toggle headless mode no matter of which helpers are actually used.
+
+```js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+// run headless when CI environment variable set
+setHeadlessWhen(process.env.CI);
+// set window size for any helper: Puppeteer, WebDriver, TestCafe
+setWindowSize(1600, 1200);
+
+exports.config = {
+  // ...
+}
+```
+
+> ▶ See more [configuration recipes](https://github.com/codecept-js/configure)
 
 ## Debug
 
@@ -408,7 +463,6 @@ This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/
 ### Step By Step Report
 
 To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
-
 
 ## Retries
 
@@ -592,6 +646,33 @@ I.say('This is blue', 'blue'); //blue is used
 I.say('This is by default'); //cyan is used
 ```
 
+
+## IntelliSense
+
+![](/img/edit.gif)
+
+To get autocompletion when working with CodeceptJS use  Visual Studio Code or other IDE that supports TypeScript Definitions.
+
+Generate step definitions with
+
+```sh
+npx codeceptjs def
+```
+
+Create `jsconfig.json` in your project root directory unless it is already there.
+
+```jsconfig.json
+{
+  "compilerOptions": {
+    "allowJs": true,
+  }
+}
+```
+
+Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
+to get method autocompletion while writing tests.
+
+
 ## Multiple Sessions
 
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
@@ -664,29 +745,6 @@ This function can also be declared as async (but doesn't work as generator).
 
 Also, you can use `within` inside a session but you can't call session from inside `within`.
 
-
-## IntelliSense
-
-If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
-you can generate step definitions with
-
-```sh
-codeceptjs def
-```
-
-Now you should create `jsconfig.json` in your project root directory.
-
-```jsconfig.json
-{
-  "compilerOptions": {
-    "allowJs": true,
-  }
-}
-```
-but in usually case, this file has already generated when you execute `codeceptjs init`.
-
-Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
-to get method autocompletion while writing tests.
 
 ## Skipping
 

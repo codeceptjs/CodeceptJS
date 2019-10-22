@@ -17,7 +17,6 @@ module.exports.config = {
       //   },
       // },
     },
-
   },
   include: {},
   bootstrap: done => setTimeout(done, 5000), // let's wait for selenium

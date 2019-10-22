@@ -24,7 +24,6 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `port`:  - WebDriver port to connect.
 -   `protocol`:  - protocol for WebDriver server.
 -   `path`:  - path to WebDriver server,
--   `remoteFileUpload`:  - upload file to remote server when running `attachFile`.
 -   `restart`:  - restart browser between tests.
 -   `smartWait`: (optional) enables [SmartWait][3]; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots`:  - don't save screenshots on failure.
@@ -592,9 +591,9 @@ This action supports [React locators](https://codecept.io/react#locators)
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -679,7 +678,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js
@@ -963,6 +962,47 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 const window = await I.grabCurrentWindowHandle();
 ```
 
+### grabElementBoundingRect
+
+Grab the width, height, location of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+Returns an object with `x`, `y`, `width`, `height` keys.
+
+```js
+const value = await I.grabElementBoundingRect('h3');
+// value is like { x: 226.5, y: 89, width: 527, height: 220 }
+```
+
+To get only one metric use second parameter:
+
+```js
+const width = await I.grabElementBoundingRect('h3', 'width');
+// width == 527
+```
+
+#### Parameters
+
+-   `locator` ([string][19] \| [object][20]) element located by CSS|XPath|strict locator.
+-   `prop`  
+-   `elementSize` [string][19] x, y, width or height of the given element.
+
+Returns [object][20] Element bounding rectangle
+
+
+
+### grabGeoLocation
+
+Return the current geo location 
+
+```js
+let geoLocation = await I.grabGeoLocation();
+```
+
+
+
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
@@ -1118,61 +1158,113 @@ Open new tab and switch to it.
 I.openNewTab();
 ```
 
+#### Parameters
+
+-   `url`   
+-   `windowName`   
+
 ### pressKey
 
-Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][26]
-will be replaced with corresponding unicode.
-If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+Presses a key in the browser (on a focused element).
+
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][26].
 
 ```js
-I.pressKey('Enter');
-I.pressKey(['Control','a']);
+I.pressKey('Backspace');
 ```
+
+To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+
+```js
+I.pressKey(['Control', 'Z']);
+```
+
+For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+
+```js
+I.pressKey(['CommandOrControl', 'Z']);
+```
+
+Some of the supported key names are:
+
+-   `'AltLeft'` or `'Alt'`
+-   `'AltRight'`
+-   `'ArrowDown'`
+-   `'ArrowLeft'`
+-   `'ArrowRight'`
+-   `'ArrowUp'`
+-   `'Backspace'`
+-   `'Clear'`
+-   `'ControlLeft'` or `'Control'`
+-   `'ControlRight'`
+-   `'Command'`
+-   `'CommandOrControl'`
+-   `'Delete'`
+-   `'End'`
+-   `'Enter'`
+-   `'Escape'`
+-   `'F1'` to `'F12'`
+-   `'Home'`
+-   `'Insert'`
+-   `'MetaLeft'` or `'Meta'`
+-   `'MetaRight'`
+-   `'Numpad0'` to `'Numpad9'`
+-   `'NumpadAdd'`
+-   `'NumpadDecimal'`
+-   `'NumpadDivide'`
+-   `'NumpadMultiply'`
+-   `'NumpadSubtract'`
+-   `'PageDown'`
+-   `'PageUp'`
+-   `'Pause'`
+-   `'Return'`
+-   `'ShiftLeft'` or `'Shift'`
+-   `'ShiftRight'`
+-   `'Space'`
+-   `'Tab'`
 
 #### Parameters
 
 -   `key` ([string][19] \| [array][27]) key or array of keys to press.
     
+_Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
 
+### pressKeyDown
+
+Presses a key in the browser and leaves it in a down state.
+
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][19] name of key to press down.
     
 
 
-[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+### pressKeyUp
 
-- `'Add'`,
-- `'Alt'`,
-- `'ArrowDown'` or `'Down arrow'`,
-- `'ArrowLeft'` or `'Left arrow'`,
-- `'ArrowRight'` or `'Right arrow'`,
-- `'ArrowUp'` or `'Up arrow'`,
-- `'Backspace'`,
-- `'Command'`,
-- `'Control'`,
-- `'Del'`,
-- `'Divide'`,
-- `'End'`,
-- `'Enter'`,
-- `'Equals'`,
-- `'Escape'`,
-- `'F1 to F12'`,
-- `'Home'`,
-- `'Insert'`,
-- `'Meta'`,
-- `'Multiply'`,
-- `'Numpad 0'` to `'Numpad 9'`,
-- `'Pagedown'` or `'PageDown'`,
-- `'Pageup'` or `'PageUp'`,
-- `'Pause'`,
-- `'Semicolon'`,
-- `'Shift'`,
-- `'Space'`,
-- `'Subtract'`,
-- `'Tab'`.To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.```js
-    I.pressKey('Control');
-    I.click('#someelement');
-    I.pressKey('Control');
-    ```
+Releases a key in the browser which was previously set to a down state.
+
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][19] name of key to release.
+    
+
 
 ### refreshPage
 
@@ -1262,7 +1354,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` [string][19] file name to save.
--   `fullPage` [boolean][28] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` [boolean][29] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
  
 
@@ -1619,7 +1711,24 @@ I.setCookie({name: 'auth', value: true});
 -   `cookie` [object][20] a cookie object.
     
 Uses Selenium's JSON [cookie
-    format][29].
+    format][30].
+
+### setGeoLocation
+
+Set the current geo location
+
+```js
+I.setGeoLocation(121.21, 11.56);
+I.setGeoLocation(121.21, 11.56, 10);
+```
+
+#### Parameters
+
+-   `latitude` [number][22] to set.
+-   `longitude` [number][22] to set
+-   `altitude` [number][22] (optional, null by default) to set
+    
+ 
 
 ### switchTo
 
@@ -1673,7 +1782,7 @@ const windows = await I.grabAllWindowHandles();
 // ... do something
 await I.switchToWindow( windows[0] );
 
-const window = await.grabCurrentWindowHandle();
+const window = await I.grabCurrentWindowHandle();
 // ... do something
 await I.switchToWindow( window );
 ```
@@ -1983,10 +2092,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[26]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[26]: #fillfield
 
 [27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[28]: #click
 
-[29]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[30]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

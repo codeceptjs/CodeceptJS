@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 const envinfo = require('envinfo');
 const program = require('commander');
-const path = require('path');
-const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
 
@@ -123,6 +121,20 @@ program.command('run [test]')
 
   .action(require('../lib/command/run'));
 
+program.command('run-workers <workers>')
+  .description('Executes tests in workers')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-o, --override [value]', 'override current config options')
+  .option('--suites', 'parallel execution of suites not single tests')
+  .option('--debug', 'output additional information')
+  .option('--verbose', 'output internal logging information')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
+  .option('--profile [value]', 'configuration profile to be used')
+  .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .action(require('../lib/command/run-workers'));
+
 program.command('run-multiple [suites...]')
   .description('Executes tests multiple')
   .option('-c, --config [file]', 'configuration file to be used')
@@ -158,10 +170,27 @@ program.command('info')
       .then(console.log);
   });
 
+program.command('dry-run [test]')
+  .description('Prints step-by-step scenario for a test without actually running it')
+  .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .option('--bootstrap', 'enable bootstrap script for dry-run')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('--all', 'run all suites')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-f, --fgrep <string>', 'only run tests containing <string>')
+  .option('-i, --invert', 'inverts --grep and --fgrep matches')
+  .option('--steps', 'show step-by-step execution')
+  .option('--verbose', 'output internal logging information')
+  .option('--debug', 'output additional information')
+  .action(require('../lib/command/dryRun'));
+
 program.on('command:*', (cmd) => {
   console.log(`\nUnknown command ${cmd}\n`);
   program.outputHelp();
 });
+
 
 if (process.argv.length <= 2) {
   program.outputHelp();

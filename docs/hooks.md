@@ -11,7 +11,7 @@ CodeceptJS provides API to run custom code before and after the test and inject 
 In case you need to execute arbitrary code before or after the tests,
 you can use `bootstrap` and `teardown` config. Use it to start and stop webserver, Selenium, etc.
 
-When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [BootstrapAll & TeardownAll](#bootstrapall--teardownall) for more information.
+When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [BootstrapAll & TeardownAll](#bootstrapall-teardownall) for more information.
 
 There are different ways to define bootstrap and teardown functions:
 
@@ -115,16 +115,22 @@ exports.config = {
 
 ## BootstrapAll & TeardownAll
 
-There are two additional hooks for [multiple browser execution](http://codecept.io/advanced/#multiple-execution) mode.
-These hooks are only called once each; before all of the multiple runs are start (`bootstrapAll`) and after all of the multiple runs have finished (`teardownAll`).
-Unlike them, the `bootstrap` and `teardown` hooks are called between and after each of multiple runs respectively.
+There are two additional hooks for [parallel execution](http://codecept.io/parallel) in `run-multiple` or `run-workers` commands.
 
-For example, you use Firefox and Chrome browsers in multiple run.
-First, `bootstrapAll` is called. Then two `bootstrap` runs: first is for Firefox and second - for Chrome.
-Then tests in Chrome end, so `teardown` for Chrome runs. Same for Firefox, after tests `teardown` is executed.
-Finally, `teardownAll` runs.
+These hooks are only called in the parent process. Before child processes start (`bootstrapAll`) and after all of runs have finished (`teardownAll`). Unlike them, the `bootstrap` and `teardown` hooks are called between and after each of child processes respectively.
+
+For example, when you run tests in 2 workers using the following command:
+
+```
+npx codeceptjs run-workers 2
+```
+
+First, `bootstrapAll` is called. Then two `bootstrap` runs in each of workers. Then tests in worker #1 ends and `teardown` is called. Same for worker #2. Finally, `teardownAll` runs in the main process.
+
+> The same behavior is set for `run-multiple` command
 
 The `bootstrapAll` and `teardownAll` hooks are preferred to use for setting up common logic of tested project: to start application server or database, to start webdriver's grid.
+
 The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](https://codecept.io/helpers/WebDriverIO#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
 
 Same as `bootstrap` and `teardown`, there are 3 ways to define `bootstrapAll` and `teardownAll` functions:
@@ -372,6 +378,7 @@ Available events:
 * `event.step.passed(step)` - *sync* when step passed.
 * `event.step.failed(step, err)` - *sync* when step failed.
 * `event.step.finished(step)` - *sync* when step finishes.
+* `event.step.comment(step)` - *sync* fired for comments like `I.say`.
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed
@@ -546,13 +553,15 @@ Container.create(config, opts);
 codecept.runHooks();
 
 // run bootstrap function from config
-codecept.runBootstrap();
+codecept.runBootstrap((err) => {
 
-// load tests
-codecept.loadTests('*_test.js');
+  // load tests
+  codecept.loadTests('*_test.js');
 
-// run tests
-codecept.run();
+  // run tests
+  codecept.run();
+});
+
 ```
 
 In this way Codecept runner class can be extended.

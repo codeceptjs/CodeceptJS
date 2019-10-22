@@ -15,7 +15,7 @@ This helper works with a browser out of the box with no additional tools require
 
 Requires `puppeteer` package to be installed.
 
-> Experiemental Firefox support [can be activated][2].
+> Experimental Firefox support [can be activated][2].
 
 ## Configuration
 
@@ -31,6 +31,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `keepCookies`:  - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
 -   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][3]. Array values are accepted as well.
+-   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait\ timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
@@ -41,14 +42,14 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #1: Wait for 0 network connections.
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "restart": false,
-       "waitForNavigation": "networkidle0",
-       "waitForAction": 500
+   helpers: {
+     Puppeteer : {
+       url: "http://localhost",
+       restart: false,
+       waitForNavigation: "networkidle0",
+       waitForAction: 500
      }
    }
 }
@@ -56,14 +57,14 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #2: Wait for DOMContentLoaded event and 0 network connections
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "restart": false,
-       "waitForNavigation": [ "domcontentloaded", "networkidle0" ],
-       "waitForAction": 500
+   helpers: {
+     Puppeteer : {
+       url: "http://localhost",
+       restart: false,
+       waitForNavigation: [ "domcontentloaded", "networkidle0" ],
+       waitForAction: 500
      }
    }
 }
@@ -71,12 +72,12 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #3: Debug in window mode
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "show": true
+   helpers: {
+     Puppeteer : {
+       url: "http://localhost",
+       show: true
      }
    }
 }
@@ -84,13 +85,13 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 #### Example #4: Connect to remote browser by specifying [websocket endpoint][5]
 
-```json
+```js
 {
-   "helpers": {
-     "Puppeteer" : {
-       "url": "http://localhost",
-       "chrome": {
-         "browserWSEndpoint": "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
+   helpers: {
+     Puppeteer: {
+       url: "http://localhost",
+       chrome: {
+         browserWSEndpoint: "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
        }
      }
    }
@@ -104,11 +105,11 @@ Note: When connecting to remote browser `show` and specific `chrome` options (e.
 Receive Puppeteer client from a custom helper by accessing `browser` for the Browser object or `page` for the current Page object:
 
 ```js
-const browser = this.helpers['Puppeteer'].browser;
+const { browser } = this.helpers.Puppeteer;
 await browser.pages(); // List of pages in the browser
 
-const currentPage = this.helpers['Puppeteer'].page;
-await currentPage.url(); // Get the url of the current page
+const { page } = this.helpers.Puppeteer;
+await page.url(); // Get the url of the current page
 ```
 
 ## Methods
@@ -202,9 +203,8 @@ libraries][7].
 
 ### amAcceptingPopups
 
-\[existingPages.length -1
-\[existingPages.length -1
-\[existingPages.length -1
+Set the automatic popup response to Accept.
+This must be set before a popup is triggered.
 
 ```js
 I.amAcceptingPopups();
@@ -431,9 +431,9 @@ This action supports [React locators](https://codecept.io/react#locators)
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -517,7 +517,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js
@@ -586,7 +586,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### downloadFile
 
-This method is depreacted.
+This method is deprecated.
 
 Please use `handleDownloads()` instead.
 
@@ -833,6 +833,36 @@ let data = await I.grabDataFromPerformanceTiming();
 
 
 
+### grabElementBoundingRect
+
+Grab the width, height, location of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so should be used inside an async function with `await` operator.
+
+Returns an object with `x`, `y`, `width`, `height` keys.
+
+```js
+const value = await I.grabElementBoundingRect('h3');
+// value is like { x: 226.5, y: 89, width: 527, height: 220 }
+```
+
+To get only one metric use second parameter:
+
+```js
+const width = await I.grabElementBoundingRect('h3', 'width');
+// width == 527
+```
+
+#### Parameters
+
+-   `locator` ([string][8] \| [object][6]) element located by CSS|XPath|strict locator.
+-   `prop`  
+-   `elementSize` [string][8] x, y, width or height of the given element.
+
+Returns [object][6] Element bounding rectangle
+
+
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
@@ -1038,54 +1068,106 @@ I.openNewTab();
 
 ### pressKey
 
-Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][14]
-will be replaced with corresponding unicode.
-If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+Presses a key in the browser (on a focused element).
+
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][14].
 
 ```js
-I.pressKey('Enter');
-I.pressKey(['Control','a']);
+I.pressKey('Backspace');
 ```
+
+To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+
+```js
+I.pressKey(['Control', 'Z']);
+```
+
+For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+
+```js
+I.pressKey(['CommandOrControl', 'Z']);
+```
+
+Some of the supported key names are:
+
+-   `'AltLeft'` or `'Alt'`
+-   `'AltRight'`
+-   `'ArrowDown'`
+-   `'ArrowLeft'`
+-   `'ArrowRight'`
+-   `'ArrowUp'`
+-   `'Backspace'`
+-   `'Clear'`
+-   `'ControlLeft'` or `'Control'`
+-   `'ControlRight'`
+-   `'Command'`
+-   `'CommandOrControl'`
+-   `'Delete'`
+-   `'End'`
+-   `'Enter'`
+-   `'Escape'`
+-   `'F1'` to `'F12'`
+-   `'Home'`
+-   `'Insert'`
+-   `'MetaLeft'` or `'Meta'`
+-   `'MetaRight'`
+-   `'Numpad0'` to `'Numpad9'`
+-   `'NumpadAdd'`
+-   `'NumpadDecimal'`
+-   `'NumpadDivide'`
+-   `'NumpadMultiply'`
+-   `'NumpadSubtract'`
+-   `'PageDown'`
+-   `'PageUp'`
+-   `'Pause'`
+-   `'Return'`
+-   `'ShiftLeft'` or `'Shift'`
+-   `'ShiftRight'`
+-   `'Space'`
+-   `'Tab'`
 
 #### Parameters
 
 -   `key` ([string][8] \| [array][15]) key or array of keys to press.
     
+_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][16]).
+
+### pressKeyDown
+
+Presses a key in the browser and leaves it in a down state.
+
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][17]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][8] name of key to press down.
+    
 
 
+### pressKeyUp
 
-[Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
+Releases a key in the browser which was previously set to a down state.
 
-- `'Add'`,
-- `'Alt'`,
-- `'ArrowDown'` or `'Down arrow'`,
-- `'ArrowLeft'` or `'Left arrow'`,
-- `'ArrowRight'` or `'Right arrow'`,
-- `'ArrowUp'` or `'Up arrow'`,
-- `'Backspace'`,
-- `'Command'`,
-- `'Control'`,
-- `'Del'`,
-- `'Divide'`,
-- `'End'`,
-- `'Enter'`,
-- `'Equals'`,
-- `'Escape'`,
-- `'F1 to F12'`,
-- `'Home'`,
-- `'Insert'`,
-- `'Meta'`,
-- `'Multiply'`,
-- `'Numpad 0'` to `'Numpad 9'`,
-- `'Pagedown'` or `'PageDown'`,
-- `'Pageup'` or `'PageUp'`,
-- `'Pause'`,
-- `'Semicolon'`,
-- `'Shift'`,
-- `'Space'`,
-- `'Subtract'`,
-- `'Tab'`.
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][17]).
+
+```js
+I.pressKeyDown('Control');
+I.click('#element');
+I.pressKeyUp('Control');
+```
+
+#### Parameters
+
+-   `key` [string][8] name of key to release.
+    
+
 
 ### refreshPage
 
@@ -1150,7 +1232,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` [string][8] file name to save.
--   `fullPage` [boolean][16] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` [boolean][18] (optional, `false` by default) flag to enable fullscreen screenshot mode.
     
 
 
@@ -1766,7 +1848,7 @@ I.waitForVisible('#popup');
 -   `locator` ([string][8] \| [object][6]) element located by CSS|XPath|strict locator.
 -   `sec` [number][9] (optional, `1` by default) time in seconds to wait
     
-This method accepts [React selectors][17].
+This method accepts [React selectors][19].
 
 ### waitInUrl
 
@@ -1879,10 +1961,14 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [13]: https://codecept.io/helpers/FileSystem
 
-[14]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[14]: #fillfield
 
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[16]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[17]: https://codecept.io/react
+[17]: #click
+
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[19]: https://codecept.io/react

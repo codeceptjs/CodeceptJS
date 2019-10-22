@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Modern End 2 End Testing Framework for NodeJS",
+    "tagline": "SuperCharged End 2 End Testing with WebDriver & Puppeteer",
     "docs": {
       "acceptance": {
         "title": "Acceptance Testing"
@@ -63,7 +63,10 @@
         "title": "Testing React Native with Detox"
       },
       "docker": {
-        "title": "Docker"
+        "title": "docker"
+      },
+      "email": {
+        "title": "Email Testing"
       },
       "examples": {
         "title": "Examples"
@@ -83,8 +86,17 @@
       "helpers/FileSystem": {
         "title": "FileSystem"
       },
+      "helpers/GraphQL": {
+        "title": "GraphQL"
+      },
+      "helpers/GraphQLDataFactory": {
+        "title": "GraphQLDataFactory"
+      },
       "helpers/Mochawesome": {
         "title": "Mochawesome"
+      },
+      "helpers/MockRequest": {
+        "title": "MockRequest"
       },
       "helpers/Nightmare": {
         "title": "Nightmare"
@@ -138,16 +150,16 @@
         "title": "Testing with Nightmare"
       },
       "pageobjects": {
-        "title": "Reusing Code with Page Objects"
+        "title": "Page Objects"
+      },
+      "parallel": {
+        "title": "Parallel Execution"
       },
       "plugins": {
         "title": "Plugins"
       },
       "puppeteer": {
         "title": "Testing with Puppeteer"
-      },
-      "quickstart": {
-        "title": "Quickstart"
       },
       "react": {
         "title": "Testing React Applications"
@@ -156,7 +168,7 @@
         "title": "Reporters"
       },
       "testcafe": {
-        "title": "testcafe"
+        "title": "Testing with TestCafe"
       },
       "translation": {
         "title": "Translation"
@@ -180,7 +192,6 @@
       "GitHub": "GitHub"
     },
     "categories": {
-      "Quickstart": "Quickstart",
       "Web Testing": "Web Testing",
       "Mobile Testing": "Mobile Testing",
       "Organizing Tests": "Organizing Tests",

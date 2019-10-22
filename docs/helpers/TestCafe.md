@@ -108,20 +108,22 @@ I.appendField('#myTextField', 'appended');
 
 ### attachFile
 
-Appends text to a input field or textarea.
-Field is located by name, label, CSS or XPath
+Attaches a file to element located by label, name, CSS or XPath
+Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+File will be uploaded to remote system (if tests are running remotely).
 
 ```js
-I.appendField('#myTextField', 'appended');
+I.attachFile('Avatar', 'data/avatar.jpg');
+I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
 
 #### Parameters
 
--   `field` ([string][3] \| [object][4]) located by label|name|CSS|XPath|strict locator
--   `pathToFile`  
--   `value` [string][3] text value to append.
+-   `field`  
+-   `pathToFile` [string][3] local file path relative to codecept.json config file.
     
 
+-   `locator` ([string][3] \| [object][4]) field located by label|name|CSS|XPath|strict locator.
 
 ### checkOption
 
@@ -229,9 +231,9 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -310,7 +312,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js

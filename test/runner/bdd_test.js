@@ -47,6 +47,20 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should print events in verbose mode', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --verbose --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Emitted | step.start (I add product "Harry Potter", 5)');
+      stdout.should.include('Emitted | step.comment (Given I have products in my cart');
+      stdout.should.include('name            | category        | price');
+      stdout.should.include('Harry Potter    | Books           | 5');
+      stdout.should.include('iPhone 5        | Smartphones     | 1200 ');
+      stdout.should.include('Nuclear Bomb    | Weapons         | 100000');
+      stdout.should.include(')');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should obfuscate secret substeps in debug mode', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --debug --grep "Secrets"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I login'); // feature

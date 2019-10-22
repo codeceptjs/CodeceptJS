@@ -125,6 +125,29 @@ I.fillField({name: 'user[email]'},'miles@davis.com');
 I.seeElement({xpath: '//body/header'});
 ```
 
+### Interactive Pause
+
+It's easy to start writing a test if you use [interactive pause](https://codecept.io/basics#debug). Just open a web page and pause execution.
+
+```js
+Feature('Sample Test');
+
+Scenario('open my website', (I) => {
+  I.amOnPage('http://todomvc.com/examples/react/');
+  pause();
+});
+```
+
+This is just enough to run a test, open a browser, and think what to do next to write a test case.
+
+When you execute such test with `codeceptjs run` command you may see the browser is started
+
+```
+npx codeceptjs run --steps
+```
+
+After a page is opened a full control of a browser is given to a terminal. Type in different commands such as `click`, `see`, `fillField` to write the test. A successful commands will be saved to `./output/cli-history` file and can be copied into a test.
+
 A complete ToDo-MVC test may look like:
 
 ```js
@@ -181,14 +204,14 @@ When you run tests with Puppeteer you can control those requests by mocking them
 
 Also you can replace real request with a one explicitly defined. This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
 
-To mock requests enable additional helper [Polly](https://codecept.io/helpers/Polly) (which is based on Polly.js).
+To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
 
 ```js
 helpers: {
    Puppeteer: {
      // regular Puppeteer config here
    },
-   Polly: {}
+   MockRequest: {}
 }
 ```
 
@@ -211,7 +234,7 @@ I.mockRequest('POST', '/api/users', { user: 'davert' });
 I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
 ```
 
-> See [`mockRequest` API](https://codecept.io/helpers/Polly#mockrequest)
+> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
 
 To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
 
@@ -220,6 +243,52 @@ npx codeceptjs def
 ```
 
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
+
+
+## Cloud Browsers
+
+Puppeteer browser can be executed locally or remotely.
+If you want to run your tests in parallel you may face problem of maintaining infrastructure for Puppeteer tests.
+
+That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. At this moment, this is the only cloud provider that can launch multiple puppeteer sessions for you.
+
+To start with Aerokube Browsers you need to register at [Aerokube Browsers](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
+
+```
+npm i @codeceptjs/aerokube-plugin --save-dev
+```
+
+And add this plugin to a config. Please provide Aerokube credentials in configuration:
+
+```js
+// codecept.conf.js config
+exports.config = {
+  helpers: {
+    Puppeteer: {
+     // regular Puppeteer config goes here
+     // no need to change anything here
+    }
+  },
+  // ....
+  plugins: {
+    aerokube: {
+      // uncomment next line to permanently enable this plugin
+      // enabled: true,
+       require: '@codeceptjs/aerokube-plugin',
+       user: '<username from aerokube>',
+       password: '<password from aerokube>',
+     }
+  }
+}
+```
+
+To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
+
+```
+npx codeceptjs run --plugins aerokube
+```
+
+> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
 
 ## Extending
 

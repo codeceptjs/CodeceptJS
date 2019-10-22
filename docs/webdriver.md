@@ -149,16 +149,6 @@ keepCookies: true,
 
 > ▶ More config options available on [WebDriver helper reference](https://codecept.io/helpers/WebDriver#configuration)
 
-### Configuring CI
-
-To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
-
-There are following options available:
-
-* Use headless Chrome or Firefox (see configuration above).
-* Use [Selenoid](https://codecept.io/helpers/WebDriver#selenoid-options) to run browsers inside Docker containers.
-* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](https://codecept.io/helpers/WebDriver#cloud-providers).
-
 ## Writing Tests
 
 CodeceptJS provides high-level API on top of WebDriver protocol. While most standard implementations focus on dealing with WebElements on page, CodeceptJS is about user scenarios and interactions. That's why you don't have a direct access to web elements inside a test, but it is proved that in majority of cases you don't need it. Tests written from user's perspective are simpler to write, understand, log and debug.
@@ -199,8 +189,6 @@ Scenario('open my website', (I) => {
 ```
 
 This is just enough to run a test, open a browser, and think what to do next to write a test case.
-
-Let's execute a test.
 
 When you execute such test with `codeceptjs run` command you may see the browser is started
 
@@ -315,6 +303,61 @@ I.click('#click-me');
 
 If it's hard to define what to wait, it is recommended to use [retries](https://codecept.io/basics/#retries) to rerun flaky steps.
 
+## Configuring CI
+
+To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
+
+There are following options available:
+
+* Use headless Chrome or Firefox.
+* Use [Selenoid](https://codecept.io/helpers/WebDriver#selenoid-options) to run browsers inside Docker containers.
+* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](https://codecept.io/helpers/WebDriver#cloud-providers).
+
+### Aerokube Cloud Browsers
+
+Installing & managing browsers on CI environment can be complicated. Especially if you need mobile browsers, Internet Explorer or Safari. Maintaing infrastructure for tests and browsers can be very expensive.
+
+A better deal would be to use a cloud service that runs a browsers for you.
+That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. It is also a way cheaper than all similar services.
+
+To start with Aerokube Browsers you need to register at [browsers.aerokube](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
+
+```
+npm i @codeceptjs/aerokube-plugin --save-dev
+```
+
+And add this plugin to a config. Please provide Aerokube credentials in configuration:
+
+```js
+// codecept.conf.js config
+exports.config = {
+  helpers: {
+    WebDriver: {
+     // regular WebDriver config goes here
+     // no need to change anything here
+    }
+  },
+  // ....
+  plugins: {
+    aerokube: {
+      // uncomment next line to permanently enable this plugin
+      // enabled: true,
+       require: '@codeceptjs/aerokube-plugin',
+       user: '<username from aerokube>',
+       password: '<password from aerokube>',
+     }
+  }
+}
+```
+
+To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
+
+```
+npx codeceptjs run --plugins aerokube
+```
+
+> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
+
 ## Auto Login
 
 To share the same user session across different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
@@ -375,6 +418,58 @@ Scenario('should open main page of configured site, open a popup, switch to main
 
 });
 ```
+
+## Mocking Requests
+
+When testing web application you can disable some of external requests calls by enabling HTTP mocking.
+This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
+
+  > **WebDriver has limited ability to mock requests**, so you can only mock only requests performed after page is loaded. This means that you can't block Google Analytics, or CDN calls, but you can mock API requests performed on user action.
+
+To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
+
+```js
+helpers: {
+   WebDriver: {
+     // regular WebDriver config here
+   },
+   MockRequest: {}
+}
+```
+
+
+The function `mockRequest` will be added to `I` object. You can use it to explicitly define which requests to block and which response they should return instead:
+
+```js
+// block all Google Analytics calls
+I.mockRequest('/google-analytics/*path', 200);
+// return an empty successful response
+I.mockRequest('GET', '/api/users', 200);
+// block post requests to /api/users and return predefined object
+I.mockRequest('POST', '/api/users', { user: 'davert' });
+// return error request with body
+I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
+```
+
+> In WebDriver mocking is disabled every time a new page is loaded. Hence, `startMocking` method should be called and the mocks should be updated, after navigating to a new page. This is a limitation of WebDriver. Consider using Puppeteer with MockRequest instead.
+
+```js
+I.amOnPage('/xyz');
+I.mockRequest({ ... })
+I.click('Go to Next Page');
+// new page is loaded, mocking is disabled now. We need to set it up again
+// in WebDriver as we can't detect that the page was reloaded, so no mocking :(
+```
+
+> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
+
+To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
+
+```
+npx codeceptjs def
+```
+
+Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
 
 ## Extending WebDriver
 
