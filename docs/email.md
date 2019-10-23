@@ -53,7 +53,7 @@ mailbox object contains:
 * `id` - which is used in next commands
 * `emailAddress` - randomly generated address of a created mailbox.
 
-> See [Mailslsurp Guide](https://www.mailslurp.com/developers/guides/#create-email-addresses) for details.
+> See [MailSlurp's guide](https://www.mailslurp.com/guides/getting-started/#create-email-addresses) for details.
 
 Mailbox is opened on creation. If you need more than one mailboxes and you want to switch between them use `openMailbox` method:
 
