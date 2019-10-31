@@ -506,9 +506,9 @@ You can auto-retry a failed step by enabling [retryFailedStep Plugin](https://co
 
 ### Retry Scenario
 
-When you need to rerun scenarios few times just add `retries` option added to `Scenario` declaration.
+When you need to rerun a scenario a few times just add the `retries` option added to the `Scenario` declaration.
 
-CodeceptJS implements retries the same way [Mocha do](https://mochajs.org#retry-tests);
+CodeceptJS implements retries the same way [Mocha does](https://mochajs.org#retry-tests).
 You can set number of a retries for a feature:
 
 ```js
@@ -521,6 +521,7 @@ Scenario('Really complex', { retries: 2 }, (I) => {});
 ```
 
 This scenario will be restarted two times on a failure.
+Unlike retry step, there is no `when` condition supported for retries on a scenario level.
 
 ### Retry Feature
 
