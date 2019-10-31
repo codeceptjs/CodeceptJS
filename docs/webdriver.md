@@ -9,7 +9,7 @@ End to End tests can cover standard but complex scenarios from a user's perspect
 
 ## What is Selenium WebDriver
 
-The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the clooud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](https://codecept.io/mobile).
+The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](https://codecept.io/mobile).
 
 Let's clarify the terms:
 
