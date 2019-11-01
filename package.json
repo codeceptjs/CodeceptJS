@@ -1,7 +1,7 @@
 {
-  "name": "codeceptjs",
+  "name": "codeceptjs-sravniru",
   "version": "2.3.5",
-  "description": "Modern Era Acceptance Testing Framework for NodeJS",
+  "description": "Modern Era Acceptance Testing Framework for NodeJS tailored for sravni.ru company",
   "keywords": [
     "acceptance",
     "end2end",
@@ -12,8 +12,8 @@
   "homepage": "https://codecept.io",
   "license": "MIT",
   "author": {
-    "name": "DavertMik",
-    "email": "davert@codegyre.com",
+    "name": "VladislavP",
+    "email": "vladislav888@gmail.com",
     "url": "http://codegyre.com"
   },
   "files": [
