@@ -345,6 +345,13 @@ background: #2ecc71;
   box-sizing: content-box;
 }
 
+@media only screen and (max-width: 1024px) {
+  .reactNavSearchWrapper input#search_input_react:active,
+  .reactNavSearchWrapper input#search_input_react:focus {
+    background-color: hsla(17,71%,82%,.25);
+  }
+}
+
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
