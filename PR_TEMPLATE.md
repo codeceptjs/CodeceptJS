@@ -10,7 +10,7 @@ Applicable helpers:
 [ ] Protractor
 [ ] TestCafe
 
-- Description of this PR, which problem does it solve
+- Description of this PR, which problem it solves
 - A link to the corresponding issue (if applicable).
 
 ## Type of change
