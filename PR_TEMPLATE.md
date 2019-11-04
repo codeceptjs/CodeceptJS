@@ -5,7 +5,7 @@
 
 ## Type of change
 
-- [ ] Breaking change (loosing support of old ruby versions, incompatibility with previous templates or config files)
+- [ ] Breaking changes
 - [ ] New functionnality
 - [ ] Bug fix
 - [ ] Documentation change/update
