@@ -357,7 +357,52 @@ npx codeceptjs run-workers 3
 ```
 
 Tests are split by scenarios, not by files. Results are aggregated and shown in the main process.
-If
+
+## Configuration
+
+Configuration is set in `codecept.conf.js` file which was created during `init` process.
+Inside config file you can enable and configure helpers, plugins, set bootstrap and teardown scripts.
+
+```js
+exports.config = {
+  helpers: {
+    // enabled helpers with their configs
+  },
+  plugins: {
+    // list of used plugins
+  },
+  include: {
+    // current actor and page objects
+  }
+}
+```
+
+> ▶ See complete [configuration reference](https://codecept.io/configuration).
+
+You can have multiple configuration files for a one project. In this case specify a config file to be used with `-c` when running.
+
+```
+npx codeceptjs run -c codecept.ci.conf.js
+```
+
+Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how those technologies work. Use [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with common configuration recipes.
+
+For instance, you can set window size or toggle headless mode no matter of which helpers are actually used.
+
+```js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+// run headless when CI environment variable set
+setHeadlessWhen(process.env.CI);
+// set window size for any helper: Puppeteer, WebDriver, TestCafe
+setWindowSize(1600, 1200);
+
+exports.config = {
+  // ...
+}
+```
+
+> ▶ See more [configuration recipes](https://github.com/codecept-js/configure)
 
 ## Debug
 
@@ -419,7 +464,6 @@ This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/
 
 To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
-
 ## Retries
 
 ### Retry Step
@@ -462,9 +506,9 @@ You can auto-retry a failed step by enabling [retryFailedStep Plugin](https://co
 
 ### Retry Scenario
 
-When you need to rerun scenarios few times just add `retries` option added to `Scenario` declaration.
+When you need to rerun a scenario a few times just add the `retries` option added to the `Scenario` declaration.
 
-CodeceptJS implements retries the same way [Mocha do](https://mochajs.org#retry-tests);
+CodeceptJS implements retries the same way [Mocha does](https://mochajs.org#retry-tests).
 You can set number of a retries for a feature:
 
 ```js
@@ -477,6 +521,7 @@ Scenario('Really complex', { retries: 2 }, (I) => {});
 ```
 
 This scenario will be restarted two times on a failure.
+Unlike retry step, there is no `when` condition supported for retries on a scenario level.
 
 ### Retry Feature
 
@@ -602,6 +647,33 @@ I.say('This is blue', 'blue'); //blue is used
 I.say('This is by default'); //cyan is used
 ```
 
+
+## IntelliSense
+
+![](/img/edit.gif)
+
+To get autocompletion when working with CodeceptJS use  Visual Studio Code or other IDE that supports TypeScript Definitions.
+
+Generate step definitions with
+
+```sh
+npx codeceptjs def
+```
+
+Create `jsconfig.json` in your project root directory unless it is already there.
+
+```jsconfig.json
+{
+  "compilerOptions": {
+    "allowJs": true,
+  }
+}
+```
+
+Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
+to get method autocompletion while writing tests.
+
+
 ## Multiple Sessions
 
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a system, for instance in chats. To open another browser use `session()` function as shown in example:
@@ -674,29 +746,6 @@ This function can also be declared as async (but doesn't work as generator).
 
 Also, you can use `within` inside a session but you can't call session from inside `within`.
 
-
-## IntelliSense
-
-If you are using Visual Studio Code or other IDE that supports TypeScript Definitions,
-you can generate step definitions with
-
-```sh
-codeceptjs def
-```
-
-Now you should create `jsconfig.json` in your project root directory.
-
-```jsconfig.json
-{
-  "compilerOptions": {
-    "allowJs": true,
-  }
-}
-```
-but in usually case, this file has already generated when you execute `codeceptjs init`.
-
-Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
-to get method autocompletion while writing tests.
 
 ## Skipping
 

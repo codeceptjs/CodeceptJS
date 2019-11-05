@@ -3,6 +3,59 @@ id: changelog
 title: Releases
 ---
 
+## 2.3.4
+
+* Fixed installation error "Cannot find module '@babel/runtime/helpers/interopRequireDefault'". The issue came from `parse-function` package. Fixed by **[pablopaul](https://github.com/pablopaul)**.
+* **[Puppeteer]** Fixed switching to iframe without an ID by **[johnyb](https://github.com/johnyb)**. See [#1974](https://github.com/Codeception/CodeceptJS/issues/1974)
+* Added `--profile` option to `run-workers` by **[orihomie](https://github.com/orihomie)**
+* Added a tag definition to `FeatureConfig` and `ScenarioConfig` by **[sseliverstov](https://github.com/sseliverstov)**
+
+## 2.3.3
+
+* **[customLocator plugin](#customlocator) introduced**. Adds a locator strategy for special test attributes on elements.
+
+```js
+// when data-test-id is a special test attribute
+// enable and configure plugin to replace this
+I.click({ css: '[data-test-id=register_button]');
+// with this
+I.click('$register_button');
+```
+* [Puppeteer][WebDriver] `pressKey` improvements by **[martomo](https://github.com/martomo)**:
+Changed pressKey method to resolve issues and extend functionality.
+  * Did not properly recognize 'Meta' (or 'Command') as modifier key.
+  * Right modifier keys did not work in WebDriver using JsonWireProtocol.
+  * 'Shift' + <key> combination would not reflect actual keyboard behavior.
+  * Respect sequence with multiple modifier keys passed to pressKey.
+  * Added support to automatic change operation modifier key based on operating system.
+* [Puppeteer][WebDriver] Added `pressKeyUp` and `pressKeyDown` to press and release modifier keys like `Control` or `Shift`. By **[martomo](https://github.com/martomo)**.
+* [Puppeteer][WebDriver] Added `grabElementBoundingRect` by **[PeterNgTr](https://github.com/PeterNgTr)**.
+* **[Puppeteer]** Fixed speed degradation introduced in [#1306](https://github.com/Codeception/CodeceptJS/issues/1306) with accessibility locators support. See [#1953](https://github.com/Codeception/CodeceptJS/issues/1953).
+* Added `Config.addHook` to add a function that will update configuration on load.
+* Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
+* **[TestCafe]** port's management removed (left on TestCafe itself) by **[orihomie](https://github.com/orihomie)**. Fixes [#1934](https://github.com/Codeception/CodeceptJS/issues/1934).
+* **[REST]** Headers are no more declared as singleton variable. Fixes [#1959](https://github.com/Codeception/CodeceptJS/issues/1959)
+* Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By **[PeterNgTr](https://github.com/PeterNgTr)**.
+
+## 2.3.2
+
+* **[Puppeteer]** Fixed Puppeteer 1.20 support by **[davertmik](https://github.com/davertmik)**
+* Fixed `run-workers` to run with complex configs. See [#1887](https://github.com/Codeception/CodeceptJS/issues/1887) by **[nitschSB](https://github.com/nitschSB)**
+* Added `--suites` option to `run-workers` to split suites by workers (tests of the same suite goes to teh same worker). Thanks **[nitschSB](https://github.com/nitschSB)**.
+* Added a guide on [Email Testing](https://codecept.io/email).
+* **[retryFailedStepPlugin]** Improved to ignore wait* steps and others. Also added option to ignore this plugin per test bases. See [updated documentation](https://codecept.io/plugins#retryfailedstep). By **[davertmik](https://github.com/davertmik)**
+* Fixed using PageObjects as classes by **[Vorobeyko](https://github.com/Vorobeyko)**. See [#1896](https://github.com/Codeception/CodeceptJS/issues/1896)
+* **[WebDriver]** Fixed opening more than one tab. See [#1875](https://github.com/Codeception/CodeceptJS/issues/1875) by **[jplegoff](https://github.com/jplegoff)**. Fixes [#1874](https://github.com/Codeception/CodeceptJS/issues/1874)
+* Fixed [#1891](https://github.com/Codeception/CodeceptJS/issues/1891) when `I.retry()` affected retries of next steps. By **[davertmik](https://github.com/davertmik)**
+
+## 2.3.1
+
+* **[MockRequest]** Polly helper was renamed to MockRequest.
+* [MockRequest][WebDriver] [Mocking requests](https://codecept.io/webdriver#mocking-requests) is now available in WebDriver. Thanks **[radhey1851](https://github.com/radhey1851)**
+* **[Puppeteer]** Ensure configured user agent and/or window size is applied to all pages. See [#1862](https://github.com/Codeception/CodeceptJS/issues/1862) by **[martomo](https://github.com/martomo)**
+* Improve handling of xpath locators with round brackets by **[nitschSB](https://github.com/nitschSB)**. See [#1870](https://github.com/Codeception/CodeceptJS/issues/1870)
+* Use WebDriver capabilities config in wdio plugin. [#1869](https://github.com/Codeception/CodeceptJS/issues/1869) by **[quekshuy](https://github.com/quekshuy)**
+
 ## 2.3.0
 
 

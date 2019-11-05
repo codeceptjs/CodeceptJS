@@ -131,8 +131,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `field` ([string][3] \| [object][4]) checkbox located by label | name | CSS | XPath | strict locator.
--   `context` [string][3] (optional, `null` by default) element located by CSS | XPath | strict locator.
+-   `field` CodeceptJS.LocatorOrString checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS | XPath | strict locator.
     
  
 
@@ -148,7 +148,7 @@ I.clearCookie('test');
 
 #### Parameters
 
--   `cookie` [string][3] (optional, `null` by default) cookie name
+-   `cookie` [string][3]? (optional, `null` by default) cookie name
     
  
 
@@ -196,7 +196,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` CodeceptJS.LocatorOrString clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` CodeceptJS.LocatorOrString (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element to search in CSS|XPath|Strict locator.
     
  
 
@@ -222,9 +222,9 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 Verifies that the specified checkbox is not checked.
 
 ```js
-I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+I.dontSeeCheckboxIsChecked('agree'); // located by name
 ```
 
 #### Parameters
@@ -303,7 +303,7 @@ Checks that current url does not contain a provided fragment.
 
 ### dontSeeInField
 
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js
@@ -362,7 +362,7 @@ I.doubleClick('.btn.edit');
 #### Parameters
 
 -   `locator` CodeceptJS.LocatorOrString clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` CodeceptJS.LocatorOrString (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element to search in CSS|XPath|Strict locator.
     
  
 
@@ -486,7 +486,7 @@ assert(cookie.value, '123456');
 
 #### Parameters
 
--   `name` [string][3] cookie name. 
+-   `name` [string][3]? cookie name. 
 
 Returns [Promise][9]&lt;[string][3]> attribute value
 
@@ -696,7 +696,7 @@ I.rightClick('Click me', '.context');
 #### Parameters
 
 -   `locator` CodeceptJS.LocatorOrString clickable element located by CSS|XPath|strict locator.
--   `context` CodeceptJS.LocatorOrString (optional, `null` by default) element located by CSS|XPath|strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS|XPath|strict locator.
     
  
 
@@ -772,7 +772,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 #### Parameters
 
 -   `text` [string][3] expected on page.
--   `context` CodeceptJS.LocatorOrString (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
     
  
 
@@ -969,7 +969,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` ([string][3] \| [object][4]) field located by label|name|CSS|XPath|strict locator.
+-   `select` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
 -   `option` ([string][3] \| [Array][11]&lt;any>) visible text or value of option.
     
 
@@ -1019,8 +1019,8 @@ I.uncheckOption('agree', '//form');
 
 #### Parameters
 
--   `field` ([string][3] \| [object][4]) checkbox located by label | name | CSS | XPath | strict locator.
--   `context` [string][3] (optional, `null` by default) element located by CSS | XPath | strict locator.
+-   `field` CodeceptJS.LocatorOrString checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS | XPath | strict locator.
     
  
 

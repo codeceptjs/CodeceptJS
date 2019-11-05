@@ -9,7 +9,7 @@ End to End tests can cover standard but complex scenarios from a user's perspect
 
 ## What is Selenium WebDriver
 
-The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the clooud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](https://codecept.io/mobile).
+The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](https://codecept.io/mobile).
 
 Let's clarify the terms:
 
@@ -149,16 +149,6 @@ keepCookies: true,
 
 > ▶ More config options available on [WebDriver helper reference](https://codecept.io/helpers/WebDriver#configuration)
 
-### Configuring CI
-
-To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
-
-There are following options available:
-
-* Use headless Chrome or Firefox (see configuration above).
-* Use [Selenoid](https://codecept.io/helpers/WebDriver#selenoid-options) to run browsers inside Docker containers.
-* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](https://codecept.io/helpers/WebDriver#cloud-providers).
-
 ## Writing Tests
 
 CodeceptJS provides high-level API on top of WebDriver protocol. While most standard implementations focus on dealing with WebElements on page, CodeceptJS is about user scenarios and interactions. That's why you don't have a direct access to web elements inside a test, but it is proved that in majority of cases you don't need it. Tests written from user's perspective are simpler to write, understand, log and debug.
@@ -199,8 +189,6 @@ Scenario('open my website', (I) => {
 ```
 
 This is just enough to run a test, open a browser, and think what to do next to write a test case.
-
-Let's execute a test.
 
 When you execute such test with `codeceptjs run` command you may see the browser is started
 
@@ -314,6 +302,61 @@ I.click('#click-me');
 ```
 
 If it's hard to define what to wait, it is recommended to use [retries](https://codecept.io/basics/#retries) to rerun flaky steps.
+
+## Configuring CI
+
+To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
+
+There are following options available:
+
+* Use headless Chrome or Firefox.
+* Use [Selenoid](https://codecept.io/helpers/WebDriver#selenoid-options) to run browsers inside Docker containers.
+* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](https://codecept.io/helpers/WebDriver#cloud-providers).
+
+### Aerokube Cloud Browsers
+
+Installing & managing browsers on CI environment can be complicated. Especially if you need mobile browsers, Internet Explorer or Safari. Maintaing infrastructure for tests and browsers can be very expensive.
+
+A better deal would be to use a cloud service that runs a browsers for you.
+That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. It is also a way cheaper than all similar services.
+
+To start with Aerokube Browsers you need to register at [browsers.aerokube](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
+
+```
+npm i @codeceptjs/aerokube-plugin --save-dev
+```
+
+And add this plugin to a config. Please provide Aerokube credentials in configuration:
+
+```js
+// codecept.conf.js config
+exports.config = {
+  helpers: {
+    WebDriver: {
+     // regular WebDriver config goes here
+     // no need to change anything here
+    }
+  },
+  // ....
+  plugins: {
+    aerokube: {
+      // uncomment next line to permanently enable this plugin
+      // enabled: true,
+       require: '@codeceptjs/aerokube-plugin',
+       user: '<username from aerokube>',
+       password: '<password from aerokube>',
+     }
+  }
+}
+```
+
+To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
+
+```
+npx codeceptjs run --plugins aerokube
+```
+
+> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
 
 ## Auto Login
 

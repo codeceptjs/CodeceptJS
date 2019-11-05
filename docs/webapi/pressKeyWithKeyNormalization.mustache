@@ -1,0 +1,59 @@
+Presses a key in the browser (on a focused element).
+
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`](#fillfield).
+
+```js
+I.pressKey('Backspace');
+```
+
+To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+
+```js
+I.pressKey(['Control', 'Z']);
+```
+
+For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+
+```js
+I.pressKey(['CommandOrControl', 'Z']);
+```
+
+Some of the supported key names are:
+- `'AltLeft'` or `'Alt'`
+- `'AltRight'`
+- `'ArrowDown'`
+- `'ArrowLeft'`
+- `'ArrowRight'`
+- `'ArrowUp'`
+- `'Backspace'`
+- `'Clear'`
+- `'ControlLeft'` or `'Control'`
+- `'ControlRight'`
+- `'Command'`
+- `'CommandOrControl'`
+- `'Delete'`
+- `'End'`
+- `'Enter'`
+- `'Escape'`
+- `'F1'` to `'F12'`
+- `'Home'`
+- `'Insert'`
+- `'MetaLeft'` or `'Meta'`
+- `'MetaRight'`
+- `'Numpad0'` to `'Numpad9'`
+- `'NumpadAdd'`
+- `'NumpadDecimal'`
+- `'NumpadDivide'`
+- `'NumpadMultiply'`
+- `'NumpadSubtract'`
+- `'PageDown'`
+- `'PageUp'`
+- `'Pause'`
+- `'Return'`
+- `'ShiftLeft'` or `'Shift'`
+- `'ShiftRight'`
+- `'Space'`
+- `'Tab'`
+
+@param {string|array} key key or array of keys to press.

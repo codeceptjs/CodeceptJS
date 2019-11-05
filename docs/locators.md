@@ -223,7 +223,27 @@ ID locators are best to select the exact semantic element in web and mobile test
 
 CodeceptJS allows to create custom locator strategies and use them in tests. This way you can define your own handling of elements using specially prepared attributes of elements.
 
-For instance, if you have site-wide policy of placing locators to data attribute `data-element` you can easily implement a strategy, which will allow you to use `{ data: 'my-element' }` as a valid locator.
+What if you use special test attributes for locators such as `data-qa`, `data-test`, `test-id`, etc.
+We created [customLocator plugin](https://codecept.io/plugins#customlocator) to declare rules for locating element.
+
+Instead of writing a full CSS locator like `[data-qa-id=user_name]` simplify it to `$user_name`.
+
+```js
+// replace this:
+I.click({ css: '[data-test-id=register_button]');
+// with this:
+I.click('$register_button');
+```
+
+This plugin requires two options: locator prefix and actual attribute to match.
+
+> ℹ See [customLocator Plugin](https://codecept.io/plugins#customlocator) reference to learn how to set it up.
+
+If you need more control over custom locators see how declare them manually without using a customLocator plugin.
+
+#### Custom Strict Locators
+
+If use locators of `data-element` attribute you can implement a strategy, which will allow you to use `{ data: 'my-element' }` as a valid locator.
 
 Custom locators should be implemented in a plugin or a bootstrap script using internal CodeceptJS API:
 
@@ -242,10 +262,12 @@ codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
 That's all. New locator type is ready to use:
 
 ```js
-I.click({data: 'user-login'});
+I.click({ data: 'user-login' });
 ```
 
-How about handling custom string locators? What if we want to locators prefixed with `=` to match elements with exact text value.
+#### Custom String Locators
+
+What if we want to locators prefixed with `=` to match elements with exact text value.
 We can do that too:
 
 ```js

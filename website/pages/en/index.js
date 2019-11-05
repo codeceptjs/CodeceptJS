@@ -8,6 +8,38 @@
 const React = require('react');
 const Doc = require('../../core/Doc.js');
 
+const pause = `
+Pause a test after opening a first page.
+Use a terminal to control browser from the console.<br/> Successful commands will be saved into a file.
+
+\`\`\`js
+Scenario('Checkout test', () => {
+  I.amOnPage('/checkout');
+  pause();
+})
+\`\`\`
+Copy commands from a file into a test. A test is ready!
+`;
+
+const test = `
+Each executed step will be printed on screen when running with \`--steps\`
+\`\`\`js
+Scenario('Checkout test', () => {
+  I.amOnPage('/checkout');
+  I.fillField('First name', 'davert');
+  I.fillField('#lastName', 'mik');
+  I.fillField('Promo code', '123345')
+  I.click('Redeem')
+  I.click(locate('h6').withText('Third item'))
+  I.checkOption('#same-address')
+  I.see('Payment')
+  I.click('Paypal')
+  I.click('Checkout');
+  I.see('Thank you!');
+})
+\`\`\`
+`;
+
 const code = `\`\`\`js
 const faker = require('faker');                               // Use 3rd-party JS code
 
@@ -15,7 +47,7 @@ Feature('Store');
 
 Scenario('Create a new store', (I, login, SettingsPage) => {
   const storeName = faker.lorem.slug();
-  login();                                                    // Login once for all tests
+  login('customer');                                          // Login customer from saved cookies
   SettingsPage.open();                                        // Use Page objects
   I.dontSee(storeName, '.settings');                          // Assert text not present inside an element (located by CSS)
   I.click('Add', '.settings');                                // Click link by text inside element (located by CSS)
@@ -33,22 +65,51 @@ const quickstart = `
 <div className="action-wrapper">
   <a href="/quickstart" className="btn btn-danger btn-lg install-label">Quickstart &raquo;</a>
 </div>
-`
+`;
+
+const bugira =   <div className="bugira d-none d-lg-block">
+<a href="https://www.bugira.com">
+<div className="container w-50">
+  <div className="row">
+  <div className="col-md-5">
+    <h3 className="">Not sure what to test?
+    </h3>
+    <p>
+    Let your users tell you!
+    </p>
+  </div>
+  <div className="col-md-2 text-center">
+    <img src="/img/bugira.svg"></img>
+  </div>
+  <div className="col-md-5 text-center">
+    <h3 className="">Turn user feedback into tests</h3>
+    <p>with <b>Bugira</b> Bugtracker</p>
+  </div>
+  </div>
+</div>
+</a>
+</div>
+
+
+{/* <div style={{backgroundColor: '#fff573', textAlign: 'center', padding: '10px'}}>
+Training: Web test automation with CodeceptJS - 11.09.2019-12.09.2019 <a href="https://sdclabs.com/trainings/schedule">Buy now!</a>
+</div> */}
 
 
 class Index extends React.Component {
   render() {
     return (<div>
-      <div style={{backgroundColor: '#fff573', textAlign: 'center', padding: '10px'}}>
-      Training: Web test automation with CodeceptJS - 11.09.2019-12.09.2019 <a href="https://sdclabs.com/trainings/schedule">Buy now!</a>
-      </div>
     <div className="jumbotron">
   <div className="container">
-    <h1 className="motto">Effective <span className="name">End 2 End</span> Testing <div className="small">for NodeJS</div></h1>
+    <h1 className="motto">Supercharged <br/><span className="name">End 2 End</span> Testing </h1>
     <img src="/img/code.png" style={{width: '600px'}} alt="" />
 
+      <h3><div>With a focus on readable and stable tests</div></h3>
+
+
     <div className="motto">
-      Write tests once, run in different engines
+
+      & easy switch between WebDriver or Puppeteer.
     </div>
 
   </div>
@@ -65,6 +126,7 @@ class Index extends React.Component {
 
 
 <div className="container page">
+
   <div className="row features">
 
     <div className="col-md-4">
@@ -161,6 +223,38 @@ class Index extends React.Component {
     </div>
   </div>
 
+</div>
+
+
+<div className="page demo">
+<div className="d-flex" style={{alignItems: 'center', margin: '100px 0 50px 0'}} >
+<div className="col-md-6">
+  <img src="/img/pause.gif"></img>
+</div>
+<div className="col-md-6"><Doc title='Write a test without closing a browser' content={pause} config={{ editUrl: '' }} metadata={{ editUrl: '' }} ></Doc>
+
+</div>
+</div>
+<div className="d-flex" style={{alignItems: 'center', margin: '50px 0 100px 0', paddingTop: '50px', borderTop: '10px solid #633d82'}}>
+<div className="col-md-6">
+  <img src="/img/test.gif"></img>
+</div>
+<div className="col-md-6"><Doc title='Follow a test step-by-step' content={test} config={{ editUrl: '' }} metadata={{ editUrl: '' }} ></Doc></div>
+
+</div>
+</div>
+
+<div className="container page">
+  <div className="row">
+  <div className="col-md-12">
+  <h2 className="text-center">Check a Real World Example</h2>
+  <Doc content={code} config={{ editUrl: '' }} metadata={{ editUrl: '' }} ></Doc>
+  <div className="text-center mb-4">
+    <a href="https://codecept.io/examples" className="btn btn-light">See more examples &raquo;</a>
+  </div>
+  </div>
+  </div>
+
 
   <div className="row" style={{background: '#eef'}}>
 
@@ -184,18 +278,59 @@ class Index extends React.Component {
       <p>
         <small className="text-muted">Don't turn off your music. The video is muted :)</small>
       </p>
+      <p>
+
+  </p>
+
     </div>
   </div>
 
-  <div className="row">
-  <div className="col-md-12">
-  <h2 className="text-center">Readability First</h2>
-  <Doc content={code} config={{ editUrl: '' }} metadata={{ editUrl: '' }} ></Doc>
-  </div>
+
   </div>
 
-  <div className="row">
-      <h2 className="col-12 text-center">Ready For Enterprise</h2>
+  <div className="container page">
+
+    <h2 className="text-center">Powerful Ecosystem</h2>
+
+      <div className="row ecosystem">
+        <div className="col-lg-6 col">
+          <a href="https://mailslurp.com" target="blank">
+          <img src="/img/mailslurp.svg" ></img>
+          <h3>MailSlurp</h3>
+          </a>
+        <p>
+          How would you test email interactions? Like resetting passwords, activating user account. We got you covered!
+
+          <br/><br/>
+            With MailSlurp you can easily receive and send emails inside your end 2 end tests.
+
+            <a href="/email" className="btn btn-light btn-small">Learn More</a>
+        </p>
+      </div>
+
+
+      <div className="col-lg-6 col">
+      <a href="https://browsers.aerokube.com" target="blank">
+          <img src="/img/aerokube.png" ></img>
+          <h3>Aerokube Browsers</h3>
+          </a>
+        <p>
+        Run your tests in a cloud without pain of maintaining your own browsers infrastructure.
+        Use WebDriver or Puppeteer to control a browser.
+        <br/>
+        <br/>
+
+        <a href="/webdriver#aerokube-cloud-browsers" className="btn btn-light btn-sml">Use with WebDriver</a>
+        <a href="/puppeteer#cloud-browsers" className="btn btn-light btn-sml">Use with Puppeteer</a>
+        </p>
+      </div>
+
+
+    </div>
+
+
+    <div className="row">
+      <h2 className="col-12 text-center">Trusted By Enterprises</h2>
   </div>
   <div className="row testimonials">
     <div className="col-lg-6">
@@ -220,45 +355,19 @@ class Index extends React.Component {
       </div>
     </div>
   </div>
+
   <div className="row d-none">
       <h3 className="col-12 text-center m-2 text-muted">Follow for updates &nbsp;
         <a href="https://twitter.com/CodeceptJS"><i className="fab fa-twitter"></i></a> &nbsp;
         <a href="https://github.com/Codeception/CodeceptJS"><i className="fab fa-github"></i></a>
         </h3>
   </div>
-  </div>
 
+  </div>
 
   <div className="action-wrapper">
-
-  <p>
-  <a href="/quickstart" className="btn btn-secondary btn-lg">Quick Start &raquo;</a>
-  </p>
-  <p>Start testing in 5 mins! Minimal JS skills required.</p>
+  <a href="/quickstart" className="btn btn-danger btn-lg install-label">Quickstart &raquo;</a>
 </div>
-
-  <div className="bugira d-none d-lg-block">
-  <a href="https://www.bugira.com">
-  <div className="container w-50">
-    <div className="row">
-    <div className="col-md-5">
-      <h3 className="">Not sure what to test?
-      </h3>
-      <p>
-      Let your users tell you!
-      </p>
-    </div>
-    <div className="col-md-2 text-center">
-      <img src="/img/bugira.svg"></img>
-    </div>
-    <div className="col-md-5 text-center">
-      <h3 className="">Turn user feedback into tests</h3>
-      <p>with <b>Bugira</b> Bugtracker</p>
-    </div>
-    </div>
-  </div>
-  </a>
-  </div>
 
 
 </div>);

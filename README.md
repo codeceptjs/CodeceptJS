@@ -3,11 +3,11 @@
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
-## Modern Era Acceptance Testing Framework for NodeJS
+## Supercharged End 2 End Testing
 
 CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others).
 It abstracts browser interaction to simple steps which is written from a user perspective.
-A simple test that verifies that "Welcome" text is present on a main page of a site will look like:
+A simple test that verifies the "Welcome" text is present on a main page of a site will look like:
 
 ```js
 Feature('CodeceptJS demo');
@@ -32,6 +32,7 @@ CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently C
 * [**TestCafe**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
 * [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - uses Electron and NightmareJS to run tests.
 * [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
+* [**Detox**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimied to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially good for React Native apps.
 
 And more to come...
 
@@ -39,8 +40,7 @@ And more to come...
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, Protractor, TestCafe etc,
-as CodeceptJS unifies them and makes them work as they were synchronous.
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, Protractor, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
 
 ## Features
 
@@ -118,7 +118,7 @@ In this examples all methods of `I` are taken from WebDriver helper, see [refere
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
 ```sh
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 This will produce an output:
@@ -144,7 +144,7 @@ Just add `pause()` call at any place in a test and run it.
 Interactive shell can be started outside test context by running:
 
 ```sh
-codeceptjs shell
+npx codeceptjs shell
 ```
 
 ### Actions
@@ -182,13 +182,13 @@ In case you need to return a value from a webpage and use it directly in test, y
 They are expected to be used inside async/await functions, and their results will be available in test:
 
 ```js
-var assert = require('assert');
+let assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
 Scenario('test page title', async (I) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
-  var title = await I.grabTitle();
+  let title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
 });
 ```

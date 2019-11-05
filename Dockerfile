@@ -1,4 +1,4 @@
-ARG NODE_VERSION=10.14.0
+ARG NODE_VERSION=12.10.0
 FROM node:${NODE_VERSION}
 
 # Add our user and group first to make sure their IDs get assigned consistently,
@@ -50,6 +50,7 @@ WORKDIR /tests
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
+ENV NO_OF_WORKERS=""
 
 # Set HOST ENV variable for Selenium Server
 ENV HOST=selenium

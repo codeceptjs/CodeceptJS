@@ -1,5 +1,7 @@
 const utils = require('../../lib/utils');
 const assert = require('assert');
+const os = require('os');
+const sinon = require('sinon');
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -231,6 +233,57 @@ describe('utils', () => {
           },
         },
       });
+    });
+  });
+
+  describe('#getNormalizedKeyAttributeValue', () => {
+    it('should normalize key (alias) to key attribute value', () => {
+      utils.getNormalizedKeyAttributeValue('Arrow down').should.equal('ArrowDown');
+      utils.getNormalizedKeyAttributeValue('RIGHT_ARROW').should.equal('ArrowRight');
+      utils.getNormalizedKeyAttributeValue('leftarrow').should.equal('ArrowLeft');
+      utils.getNormalizedKeyAttributeValue('Up arrow').should.equal('ArrowUp');
+
+      utils.getNormalizedKeyAttributeValue('Left Alt').should.equal('AltLeft');
+      utils.getNormalizedKeyAttributeValue('RIGHT_ALT').should.equal('AltRight');
+      utils.getNormalizedKeyAttributeValue('alt').should.equal('Alt');
+
+      utils.getNormalizedKeyAttributeValue('oPTION left').should.equal('AltLeft');
+      utils.getNormalizedKeyAttributeValue('ALTGR').should.equal('AltGraph');
+      utils.getNormalizedKeyAttributeValue('alt graph').should.equal('AltGraph');
+
+      utils.getNormalizedKeyAttributeValue('Control Left').should.equal('ControlLeft');
+      utils.getNormalizedKeyAttributeValue('RIGHT_CTRL').should.equal('ControlRight');
+      utils.getNormalizedKeyAttributeValue('Ctrl').should.equal('Control');
+
+      utils.getNormalizedKeyAttributeValue('Cmd').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('LeftCommand').should.equal('MetaLeft');
+      utils.getNormalizedKeyAttributeValue('os right').should.equal('MetaRight');
+      utils.getNormalizedKeyAttributeValue('SUPER').should.equal('Meta');
+
+      utils.getNormalizedKeyAttributeValue('NumpadComma').should.equal('Comma');
+      utils.getNormalizedKeyAttributeValue('Separator').should.equal('Comma');
+
+      utils.getNormalizedKeyAttributeValue('Add').should.equal('NumpadAdd');
+      utils.getNormalizedKeyAttributeValue('Decimal').should.equal('NumpadDecimal');
+      utils.getNormalizedKeyAttributeValue('Divide').should.equal('NumpadDivide');
+      utils.getNormalizedKeyAttributeValue('Multiply').should.equal('NumpadMultiply');
+      utils.getNormalizedKeyAttributeValue('Subtract').should.equal('NumpadSubtract');
+    });
+
+    it('should normalize modifier key based on operating system', () => {
+      sinon.stub(os, 'platform', () => { return 'notdarwin'; });
+      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
+      os.platform.restore();
+
+      sinon.stub(os, 'platform', () => { return 'darwin'; });
+      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight');
+      os.platform.restore();
     });
   });
 });
