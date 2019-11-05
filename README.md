@@ -13,10 +13,10 @@ A simple test that verifies the "Welcome" text is present on a main page of a si
 ```js
 Feature('CodeceptJS demo');
 
-  Scenario('check Welcome page on site', (I) => {
-    I.amOnPage('/');
-    I.see('Welcome');
-  });
+Scenario('check Welcome page on site', (I) => {
+  I.amOnPage('/');
+  I.see('Welcome');
+});
 ```
 
 CodeceptJS tests are:
@@ -87,7 +87,7 @@ npx codeceptjs def .
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
-Note that CodeceptJS requires Node.js version 8+ or later.
+Note that CodeceptJS requires Node.js version `8.9.1+` or later.
 
 ## Usage
 
@@ -100,16 +100,16 @@ Let's see how we can handle basic form testing:
 ```js
 Feature('CodeceptJS Demonstration');
 
-  Scenario('test some forms', (I) => {
-    I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
-    I.fillField('Email', 'hello@world.com');
-    I.fillField('Password', '123456');
-    I.checkOption('Active');
-    I.checkOption('Male');
-    I.click('Create User');
-    I.see('User is valid');
-    I.dontSeeInCurrentUrl('/documentation');
-  });
+Scenario('test some forms', (I) => {
+  I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
+  I.fillField('Email', 'hello@world.com');
+  I.fillField('Password', '123456');
+  I.checkOption('Active');
+  I.checkOption('Male');
+  I.click('Create User');
+  I.see('User is valid');
+  I.dontSeeInCurrentUrl('/documentation');
+});
 ```
 
 All actions are performed by I object; assertions functions start with `see` function.
