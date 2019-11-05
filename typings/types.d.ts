@@ -683,12 +683,12 @@ declare namespace CodeceptJS {
          * I.checkOption('I Agree to Terms and Conditions');
          * I.checkOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          *
          */
-        checkOption(field: string | any, context?: string): void;
+        checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Perform a click on a link or a button, given by a locator.
          * If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
@@ -713,7 +713,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          *
          */
@@ -722,9 +722,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -744,7 +744,7 @@ declare namespace CodeceptJS {
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -872,7 +872,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          *
          */
@@ -896,13 +896,13 @@ declare namespace CodeceptJS {
          * ```js
          * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
          * ```
-         * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
          * {--end--}
          *
          * * Supported on only for web testing!
          */
-        selectOption(select: string | any, option: string | any[]): void;
+        selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
          * Waits for element to be present on page (by default waits for 1sec).
          * Element can be located by CSS or XPath.
@@ -1119,6 +1119,59 @@ declare namespace CodeceptJS {
          */
         _requestDelete(operation: string, data: any): void;
     }
+    class MockRequest {
+        /**
+         * Starts mocking of http requests.
+         * Used by mockRequest method to automatically start
+         * mocking requests.
+         *
+         * @param {*} title
+         */
+        startMocking(title?: any): void;
+        /**
+         * Creates a polly instance by registering puppeteer adapter with the instance
+         *
+         * @param {*} title
+         */
+        _connectPuppeteer(title: any): void;
+        /**
+         * Creates polly object in the browser window context using xhr and fetch adapters,
+         * after loading PollyJs and adapter scripts.
+         *
+         * @param {*} title
+         */
+        _connectWebDriver(title: any): void;
+        /**
+         * Mock response status
+         *
+         * ```js
+         * I.mockRequest('GET', '/api/users', 200);
+         * I.mockRequest('ANY', '/secretsRoutes/*', 403);
+         * I.mockRequest('POST', '/secrets', { secrets: 'fakeSecrets' });
+         * I.mockRequest('GET', '/api/users/1', 404, 'User not found');
+         * ```
+         *
+         * Multiple requests
+         *
+         * ```js
+         * I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
+         * ```
+         * @param {string} method request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+         * @param {string|array} oneOrMoreUrls url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+         * @param {number|string|object} dataOrStatusCode status code when number provided. A response body otherwise
+         * @param {string|object} additionalData response body when a status code is set by previous parameter.
+         *
+         */
+        mockRequest(method: string, oneOrMoreUrls: string | array, dataOrStatusCode: number | string | any, additionalData: string | any): void;
+        /**
+         * Starts mocking if it's not started yet.
+         */
+        _checkAndStartMocking(): void;
+        /**
+         * Stops mocking requests.
+         */
+        stopMocking(): void;
+    }
     class Nightmare {
         /**
          * Get HAR
@@ -1276,7 +1329,7 @@ declare namespace CodeceptJS {
          * I.see('Register', {css: 'form.register'}); // use strict locator
          * ```
          * @param {string} text expected on page.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
          * {--end--}
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -1422,7 +1475,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -1438,7 +1491,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
          * {--end--}
          */
         doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -1455,7 +1508,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
-         * @param {CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
          * {--end--}
          */
         rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -1555,11 +1608,11 @@ declare namespace CodeceptJS {
          * I.checkOption('I Agree to Terms and Conditions');
          * I.checkOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          */
-        checkOption(field: string | any, context?: string): void;
+        checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Unselects a checkbox or radio button.
          * Element is located by label or name or CSS or XPath.
@@ -1571,11 +1624,11 @@ declare namespace CodeceptJS {
          * I.uncheckOption('I Agree to Terms and Conditions');
          * I.uncheckOption('agree', '//form');
          * ```
-         * @param {string|object} field checkbox located by label | name | CSS | XPath | strict locator.
-         * @param {string} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
          * {--end--}
          */
-        uncheckOption(field: string | any, context?: string): void;
+        uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Fills a text field or textarea, after clearing its value, with the given string.
          * Field is located by name, label, CSS, or XPath.
@@ -1635,7 +1688,7 @@ declare namespace CodeceptJS {
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -1681,9 +1734,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -1780,11 +1833,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
          * ```
-         * @param {string|object} select field located by label|name|CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
          * {--end--}
          */
-        selectOption(select: string | any, option: string | any[]): void;
+        selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
          * Sets a cookie.
          *
@@ -1832,7 +1885,7 @@ declare namespace CodeceptJS {
          * assert(cookie.value, '123456');
          * ```
          *
-         * @param {string} [name=null] cookie name.
+         * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
          * {--end--}
          *
@@ -1850,7 +1903,7 @@ declare namespace CodeceptJS {
          * I.clearCookie('test');
          * ```
          *
-         * @param {string} [cookie=null] (optional, `null` by default) cookie name
+         * @param {?string} [cookie=null] (optional, `null` by default) cookie name
          * {--end--}
          */
         clearCookie(cookie?: string): void;
@@ -2043,37 +2096,42 @@ declare namespace CodeceptJS {
             [key: string]: any;
         }>;
     }
+    /**
+     * This helper works the same as MockRequest helper. It has been included for backwards compatibility
+     * reasons. So use MockRequest helper instead of this.
+     *
+     * Please refer to MockRequest helper documentation for details.
+     *
+     * ### Installations
+     *
+     * Requires [Polly.js](https://netflix.github.io/pollyjs/#/) library by Netflix installed
+     *
+     * ```
+     * npm i @pollyjs/core @pollyjs/adapter-puppeteer --save-dev
+     * ```
+     *
+     * Requires Puppeteer helper or WebDriver helper enabled
+     *
+     * ### Configuration
+     *
+     * Just enable helper in config file:
+     *
+     * ```js
+     * helpers: {
+     *    Puppeteer: {
+     *      // regular Puppeteer config here
+     *    },
+     *    Polly: {}
+     * }
+     * ```
+     * The same can be done when using WebDriver helper..
+     *
+     * ### Usage
+     *
+     * Use `I.mockRequest` to intercept and mock requests.
+     *
+     */
     class Polly {
-        /**
-         * Mock response status
-         *
-         * ```js
-         * I.mockRequest('GET', '/api/users', 200);
-         * I.mockRequest('ANY', '/secretsRoutes/*', 403);
-         * I.mockRequest('POST', '/secrets', { secrets: 'fakeSecrets' });
-         * I.mockRequest('GET', '/api/users/1', 404, 'User not found');
-         * ```
-         *
-         * Multiple requests
-         *
-         * ```js
-         * I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
-         * ```
-         * @param {string} method request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
-         * @param {string|Array<*>} oneOrMoreUrls url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
-         * @param {number|string|object} dataOrStatusCode status code when number provided. A response body otherwise
-         * @param {string|object} additionalData response body when a status code is set by previous parameter.
-         *
-         */
-        mockRequest(method: string, oneOrMoreUrls: string | any[], dataOrStatusCode: number | string | any, additionalData: string | any): void;
-        /**
-         * Starts mocking if it's not started yet.
-         */
-        _checkAndStartMocking(): void;
-        /**
-         * Stops mocking requests.
-         */
-        stopMocking(): void;
     }
     class Protractor {
         /**
@@ -2367,7 +2425,7 @@ declare namespace CodeceptJS {
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -2453,9 +2511,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -3286,9 +3344,9 @@ declare namespace CodeceptJS {
         setCookie(cookie: any): void;
     }
     class Puppeteer {
-        /** [existingPages.length -1
-         * [existingPages.length -1
-         * [existingPages.length -1
+        /**
+         * Set the automatic popup response to Accept.
+         * This must be set before a popup is triggered.
          *
          * ```js
          * I.amAcceptingPopups();
@@ -3714,7 +3772,7 @@ declare namespace CodeceptJS {
          */
         handleDownloads(downloadPath?: string): void;
         /**
-         * This method is **depreacted**.
+         * This method is **deprecated**.
          *
          * Please use `handleDownloads()` instead.
          */
@@ -3805,9 +3863,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -3815,22 +3873,100 @@ declare namespace CodeceptJS {
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
-         * Presses a key on a focused element.
-         * Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
-         * will be replaced with corresponding unicode.
-         * If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+         * Presses a key in the browser and leaves it in a down state.
+         *
+         * To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`](#click)).
          *
          * ```js
-         * I.pressKey('Enter');
-         * I.pressKey(['Control','a']);
+         * I.pressKeyDown('Control');
+         * I.click('#element');
+         * I.pressKeyUp('Control');
          * ```
          *
-         * @param {string|string[]} key key or array of keys to press.
+         * @param {string} key name of key to press down.
+         * {--end--}
+         */
+        pressKeyDown(key: string): void;
+        /**
+         * Releases a key in the browser which was previously set to a down state.
+         *
+         * To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`](#click)).
+         *
+         * ```js
+         * I.pressKeyDown('Control');
+         * I.click('#element');
+         * I.pressKeyUp('Control');
+         * ```
+         *
+         * @param {string} key name of key to release.
+         * {--end--}
+         */
+        pressKeyUp(key: string): void;
+        /**
+         * Presses a key in the browser (on a focused element).
+         *
+         * _Hint:_ For populating text field or textarea, it is recommended to use [`fillField`](#fillfield).
+         *
+         * ```js
+         * I.pressKey('Backspace');
+         * ```
+         *
+         * To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+         *
+         * ```js
+         * I.pressKey(['Control', 'Z']);
+         * ```
+         *
+         * For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+         * This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+         *
+         * ```js
+         * I.pressKey(['CommandOrControl', 'Z']);
+         * ```
+         *
+         * Some of the supported key names are:
+         * - `'AltLeft'` or `'Alt'`
+         * - `'AltRight'`
+         * - `'ArrowDown'`
+         * - `'ArrowLeft'`
+         * - `'ArrowRight'`
+         * - `'ArrowUp'`
+         * - `'Backspace'`
+         * - `'Clear'`
+         * - `'ControlLeft'` or `'Control'`
+         * - `'ControlRight'`
+         * - `'Command'`
+         * - `'CommandOrControl'`
+         * - `'Delete'`
+         * - `'End'`
+         * - `'Enter'`
+         * - `'Escape'`
+         * - `'F1'` to `'F12'`
+         * - `'Home'`
+         * - `'Insert'`
+         * - `'MetaLeft'` or `'Meta'`
+         * - `'MetaRight'`
+         * - `'Numpad0'` to `'Numpad9'`
+         * - `'NumpadAdd'`
+         * - `'NumpadDecimal'`
+         * - `'NumpadDivide'`
+         * - `'NumpadMultiply'`
+         * - `'NumpadSubtract'`
+         * - `'PageDown'`
+         * - `'PageUp'`
+         * - `'Pause'`
+         * - `'Return'`
+         * - `'ShiftLeft'` or `'Shift'`
+         * - `'ShiftRight'`
+         * - `'Space'`
+         * - `'Tab'`
+         *
+         * @param {string|array} key key or array of keys to press.
          * {--end--}
          *
-         * {{ keys }}
+         * _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313](https://github.com/GoogleChrome/puppeteer/issues/1313)).
          */
-        pressKey(key: string | string[]): void;
+        pressKey(key: string | array): void;
         /**
          * Fills a text field or textarea, after clearing its value, with the given string.
          * Field is located by name, label, CSS, or XPath.
@@ -3893,7 +4029,7 @@ declare namespace CodeceptJS {
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -4640,6 +4776,30 @@ declare namespace CodeceptJS {
          * {--end--}
          */
         grabDataFromPerformanceTiming(): void;
+        /**
+         * Grab the width, height, location of given locator.
+         * Provide `width` or `height`as second param to get your desired prop.
+         * Resumes test execution, so **should be used inside an async function with `await`** operator.
+         *
+         * Returns an object with `x`, `y`, `width`, `height` keys.
+         *
+         * ```js
+         * const value = await I.grabElementBoundingRect('h3');
+         * // value is like { x: 226.5, y: 89, width: 527, height: 220 }
+         * ```
+         *
+         * To get only one metric use second parameter:
+         *
+         * ```js
+         * const width = await I.grabElementBoundingRect('h3', 'width');
+         * // width == 527
+         * ```
+         * @param {string|object} locator element located by CSS|XPath|strict locator.
+         * @param {string} elementSize x, y, width or height of the given element.
+         * @returns {object} Element bounding rectangle
+         * {--end--}
+         */
+        grabElementBoundingRect(locator: string | any, elementSize: string): any;
     }
     class REST {
         /**
@@ -4991,9 +5151,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -5185,7 +5345,7 @@ declare namespace CodeceptJS {
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -6035,7 +6195,7 @@ declare namespace CodeceptJS {
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -6067,9 +6227,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -6502,30 +6662,100 @@ declare namespace CodeceptJS {
          */
         grabPopupText(): void;
         /**
-         * Presses a key on a focused element.
-         * Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
-         * will be replaced with corresponding unicode.
-         * If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+         * Presses a key in the browser and leaves it in a down state.
+         *
+         * To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`](#click)).
          *
          * ```js
-         * I.pressKey('Enter');
-         * I.pressKey(['Control','a']);
+         * I.pressKeyDown('Control');
+         * I.click('#element');
+         * I.pressKeyUp('Control');
          * ```
          *
-         * @param {string|string[]} key key or array of keys to press.
+         * @param {string} key name of key to press down.
          * {--end--}
-         * {{ keys }}
+         */
+        pressKeyDown(key: string): void;
+        /**
+         * Releases a key in the browser which was previously set to a down state.
          *
-         * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-         *
+         * To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`](#click)).
          *
          * ```js
-         * I.pressKey('Control');
-         * I.click('#someelement');
-         * I.pressKey('Control');
+         * I.pressKeyDown('Control');
+         * I.click('#element');
+         * I.pressKeyUp('Control');
          * ```
+         *
+         * @param {string} key name of key to release.
+         * {--end--}
          */
-        pressKey(key: string | string[]): void;
+        pressKeyUp(key: string): void;
+        /**
+         * Presses a key in the browser (on a focused element).
+         *
+         * _Hint:_ For populating text field or textarea, it is recommended to use [`fillField`](#fillfield).
+         *
+         * ```js
+         * I.pressKey('Backspace');
+         * ```
+         *
+         * To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+         *
+         * ```js
+         * I.pressKey(['Control', 'Z']);
+         * ```
+         *
+         * For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+         * This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+         *
+         * ```js
+         * I.pressKey(['CommandOrControl', 'Z']);
+         * ```
+         *
+         * Some of the supported key names are:
+         * - `'AltLeft'` or `'Alt'`
+         * - `'AltRight'`
+         * - `'ArrowDown'`
+         * - `'ArrowLeft'`
+         * - `'ArrowRight'`
+         * - `'ArrowUp'`
+         * - `'Backspace'`
+         * - `'Clear'`
+         * - `'ControlLeft'` or `'Control'`
+         * - `'ControlRight'`
+         * - `'Command'`
+         * - `'CommandOrControl'`
+         * - `'Delete'`
+         * - `'End'`
+         * - `'Enter'`
+         * - `'Escape'`
+         * - `'F1'` to `'F12'`
+         * - `'Home'`
+         * - `'Insert'`
+         * - `'MetaLeft'` or `'Meta'`
+         * - `'MetaRight'`
+         * - `'Numpad0'` to `'Numpad9'`
+         * - `'NumpadAdd'`
+         * - `'NumpadDecimal'`
+         * - `'NumpadDivide'`
+         * - `'NumpadMultiply'`
+         * - `'NumpadSubtract'`
+         * - `'PageDown'`
+         * - `'PageUp'`
+         * - `'Pause'`
+         * - `'Return'`
+         * - `'ShiftLeft'` or `'Shift'`
+         * - `'ShiftRight'`
+         * - `'Space'`
+         * - `'Tab'`
+         *
+         * @param {string|array} key key or array of keys to press.
+         * {--end--}
+         *
+         * _Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+         */
+        pressKey(key: string | array): void;
         /**
          * Resize the current window to provided width and height.
          * First parameter can be set to `maximize`.
@@ -6933,6 +7163,30 @@ declare namespace CodeceptJS {
          *
          */
         grabGeoLocation(): void;
+        /**
+         * Grab the width, height, location of given locator.
+         * Provide `width` or `height`as second param to get your desired prop.
+         * Resumes test execution, so **should be used inside an async function with `await`** operator.
+         *
+         * Returns an object with `x`, `y`, `width`, `height` keys.
+         *
+         * ```js
+         * const value = await I.grabElementBoundingRect('h3');
+         * // value is like { x: 226.5, y: 89, width: 527, height: 220 }
+         * ```
+         *
+         * To get only one metric use second parameter:
+         *
+         * ```js
+         * const width = await I.grabElementBoundingRect('h3', 'width');
+         * // width == 527
+         * ```
+         * @param {string|object} locator element located by CSS|XPath|strict locator.
+         * @param {string} elementSize x, y, width or height of the given element.
+         * @returns {object} Element bounding rectangle
+         * {--end--}
+         */
+        grabElementBoundingRect(locator: string | any, elementSize: string): any;
         /**
          * Placeholder for ~ locator only test case write once run on both Appium and WebDriver.
          */
@@ -7349,7 +7603,7 @@ declare namespace CodeceptJS {
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
-         * Checks that value of input field or textare doesn't equal to given value
+         * Checks that value of input field or textarea doesn't equal to given value
          * Opposite to `seeInField`.
          *
          * ```js
@@ -7381,9 +7635,9 @@ declare namespace CodeceptJS {
          * Verifies that the specified checkbox is not checked.
          *
          * ```js
-         * I.dontSeeeCheckboxIsChedcked('#agree'); // located by ID
-         * I.dontSeeeCheckboxIsChedcked('I agree to terms'); // located by label
-         * I.dontSeeeCheckboxIsChedcked('agree'); // located by name
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
@@ -8306,6 +8560,10 @@ declare namespace CodeceptJS {
             [key: string]: any;
         }): void;
     }
+    /**
+     * Method collect own property and prototype
+     */
+    function getObjectMethods(): void;
     /** @param {Array<*>} array
      */
     class DataTable {
@@ -8704,10 +8962,10 @@ declare namespace CodeceptJS {
         }): this;
         /**
          * Append a tag name to scenario title
-         * @param {*} tagName
+         * @param {string} tagName
          * @returns {this}
          */
-        tag(tagName: any): this;
+        tag(tagName: string): this;
     }
     class ScenarioConfig {
         /**
@@ -8761,10 +9019,10 @@ declare namespace CodeceptJS {
         }): this;
         /**
          * Append a tag name to scenario title
-         * @param {*} tagName
+         * @param {string} tagName
          * @returns {this}
          */
-        tag(tagName: any): this;
+        tag(tagName: string): this;
         /**
          * Dynamically injects dependencies, see https://codecept.io/pageobjects/#dynamic-injection
          * @param {Object<string, *>} dependencies
@@ -9048,7 +9306,7 @@ declare namespace CodeceptJS {
          * Adds a promise to a chain.
          * Promise description should be passed as first parameter.
          *
-         * @param {*} taskName
+         * @param {string} taskName
          * @param {function} [fn]
          * @param {boolean} [force=false]
          * @param {boolean} [retry=true] -
@@ -9056,7 +9314,7 @@ declare namespace CodeceptJS {
          *     false: ignore `retryOpts` and won't retry.
          * @return {Promise<*> | undefined}
          */
-        add(taskName: any, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
+        add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
         /**
          * @param {*} opts
          * @return {*}
