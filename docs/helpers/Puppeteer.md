@@ -1141,7 +1141,7 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` ([string][8] \| [array][13]) key or array of keys to press.
+-   `key` ([string][8] \| [Array][13]&lt;[string][8]>) key or array of keys to press.
     
 _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][16]).
 

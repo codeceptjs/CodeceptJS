@@ -1236,7 +1236,7 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` ([string][19] \| [array][28]) key or array of keys to press.
+-   `key` ([string][19] \| [Array][28]&lt;[string][19]>) key or array of keys to press.
     
 _Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
 

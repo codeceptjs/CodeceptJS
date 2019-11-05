@@ -1157,12 +1157,12 @@ declare namespace CodeceptJS {
          * I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
          * ```
          * @param {string} method request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
-         * @param {string|array} oneOrMoreUrls url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+         * @param {string|string[]} oneOrMoreUrls url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
          * @param {number|string|object} dataOrStatusCode status code when number provided. A response body otherwise
          * @param {string|object} additionalData response body when a status code is set by previous parameter.
          *
          */
-        mockRequest(method: string, oneOrMoreUrls: string | array, dataOrStatusCode: number | string | any, additionalData: string | any): void;
+        mockRequest(method: string, oneOrMoreUrls: string | string[], dataOrStatusCode: number | string | any, additionalData: string | any): void;
         /**
          * Starts mocking if it's not started yet.
          */
@@ -3961,12 +3961,12 @@ declare namespace CodeceptJS {
          * - `'Space'`
          * - `'Tab'`
          *
-         * @param {string|array} key key or array of keys to press.
+         * @param {string|string[]} key key or array of keys to press.
          * {--end--}
          *
          * _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313](https://github.com/GoogleChrome/puppeteer/issues/1313)).
          */
-        pressKey(key: string | array): void;
+        pressKey(key: string | string[]): void;
         /**
          * Fills a text field or textarea, after clearing its value, with the given string.
          * Field is located by name, label, CSS, or XPath.
@@ -6750,12 +6750,12 @@ declare namespace CodeceptJS {
          * - `'Space'`
          * - `'Tab'`
          *
-         * @param {string|array} key key or array of keys to press.
+         * @param {string|string[]} key key or array of keys to press.
          * {--end--}
          *
          * _Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
          */
-        pressKey(key: string | array): void;
+        pressKey(key: string | string[]): void;
         /**
          * Resize the current window to provided width and height.
          * First parameter can be set to `maximize`.
