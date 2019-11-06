@@ -8,7 +8,7 @@ To start you need:
 2.  Run `npm install` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
-5. Update documentation
+5.  Update documentation
 6.  Commit and Push to your fork
 7.  Make Pull Request
 
@@ -20,7 +20,6 @@ node bin/codecept.js
 
 To run examples:
 
-
 ```
 node bin/codecept.js run -c examples
 ```
@@ -30,9 +29,9 @@ Depending on a type of a change you should do the following.
 
 ## Helpers
 
-Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, SeleniumWebdriver, Nightmare. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happen. If, for instance, WebDriverIO have method XXX and SeleniumWebDriver doesn't, you can implement XXX inside SeleniumWebDriver using the same method signature.
+Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
 
-### Updating a WebDriverIO | SeleniumWebdriver | Nightmare
+### Updating a WebDriverIO | Nightmare
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
@@ -75,7 +74,7 @@ http://localhost:8000/form/myexample
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
-Protractor Helper extends SeleniumWebdriver. For non-protractor specific changes you will need to update SeleniumWebdriver helper instead. See section above.
+Protractor helper is based on [Protractor library](http://www.protractortest.org)
 
 In case you do Protractor-specific change, please add a test:To run the test suite you need:
 
@@ -191,7 +190,7 @@ docker-compose run --rm test-acceptance.protractor
 
 #### Running against specific Node version
 
-By default dockerized tests are run against node 8.9.1, you can run it against
+By default dockerized tests are run against node 12.10.0, you can run it against
 specific version as long as there is Docker container available for such
 version. To do that you need to build codecept's Docker image prior to running
 tests and pass `NODE_VERSION` as build argument.
