@@ -29,9 +29,9 @@ Depending on a type of a change you should do the following.
 
 ## Helpers
 
-Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, SeleniumWebdriver, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and SeleniumWebDriver doesn't, you can implement XXX inside SeleniumWebDriver using the same method signature.
+Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
 
-### Updating a WebDriverIO | SeleniumWebdriver | Nightmare
+### Updating a WebDriverIO | Nightmare
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
@@ -74,7 +74,7 @@ http://localhost:8000/form/myexample
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
-Protractor Helper extends SeleniumWebdriver. For non-protractor specific changes you will need to update SeleniumWebdriver helper instead. See section above.
+Protractor helper is based on [Protractor library](http://www.protractortest.org)
 
 In case you do Protractor-specific change, please add a test:To run the test suite you need:
 
