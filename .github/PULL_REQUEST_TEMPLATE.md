@@ -2,13 +2,13 @@
 
 Applicable helpers:
 
-[ ] Webdriver
-[ ] Puppeteer
-[ ] Nightmare
-[ ] REST
-[ ] Appium
-[ ] Protractor
-[ ] TestCafe
+- [ ] Webdriver
+- [ ] Puppeteer
+- [ ] Nightmare
+- [ ] REST
+- [ ] Appium
+- [ ] Protractor
+- [ ] TestCafe
 
 - Description of this PR, which problem it solves
 - A link to the corresponding issue (if applicable).
@@ -16,9 +16,9 @@ Applicable helpers:
 ## Type of change
 
 - [ ] Breaking changes
-- [ ] New functionnality
+- [ ] New functionality
 - [ ] Bug fix
-- [ ] Documentation change/update
+- [ ] Documentation changes/updates
 - [ ] Hot fix
 - [ ] Markdown files fix - not related to source code
 
