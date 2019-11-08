@@ -798,6 +798,12 @@ module.exports.tests = function () {
       await I.waitForText('Timeout text', 31, '#text');
       await I.see('Timeout text');
     });
+
+    it('should wait for text located by XPath', async () => {
+      await I.amOnPage('/dynamic');
+      await I.dontSee('Dynamic text');
+      await I.waitForText('Dynamic text', 5, '//div[@id="text"]');
+    });
   });
 
   describe('#waitForElement', () => {
