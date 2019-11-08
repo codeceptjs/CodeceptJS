@@ -277,3 +277,6 @@ _before() {
 
 Retry rules are available in array `recorder.retries`. The last retry rule can be disabled by running `recorder.retries.pop()`;
 
+## Using Typescript
+
+When using typescript, replace `module.exports` with `export` for autocompletion.
