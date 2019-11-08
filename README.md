@@ -263,6 +263,8 @@ Scenario('test some forms', (I, docsPage) => {
 });
 ```
 
+When using typescript, replace `module.exports` with `export` for autocompletion.
+
 ## License
 
 MIT © [CodeceptJS Team](http://codecept.io)
