@@ -7,7 +7,7 @@ title: Appium
 
 ## Appium
 
-Extends Webdriver
+**Extends Webdriver**
 
 Appium helper extends [Webriver][1] helper.
  It supports all browser methods and also includes special methods for mobile apps testing.
@@ -35,7 +35,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `port`: (default: '4723') Appium port
 -   `platform`: (Android or IOS), which mobile OS to use; alias to desiredCapabilities.platformName
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
--   `desiredCapabilities`: \[], Appium capabilities, see below
+-   `desiredCapabilities`: [], Appium capabilities, see below
     -   `platformName` - Which mobile OS platform to use
     -   `appPackage` - Java package of the Android app you want to run
     -   `appActivity` - Activity name for the Android activity you want to launch from your package.
@@ -119,7 +119,7 @@ let browser = this.helpers['Appium'].browser
 
 -   `config`  
 
-### \_switchToContext
+### _switchToContext
 
 Switch to the specified context.
 
@@ -138,10 +138,8 @@ I.appendField('#myTextField', 'appended');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator
--   `value` [string][4] text value to append.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator
+-   `value` **[string][4]** text value to append.
 
 ### checkOption
 
@@ -158,10 +156,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) checkbox located by label | name | CSS | XPath | strict locator.
--   `context` [string][4] (optional, `null` by default) element located by CSS | XPath | strict locator.
-    
-
+-   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` **[string][4]** (optional, `null` by default) element located by CSS | XPath | strict locator.
 
 ### click
 
@@ -180,7 +176,7 @@ I.click('Submit');
 // CSS button
 I.click('#form input[type=submit]');
 // XPath
-I.click('//form/[@type=submit]');
+I.click('//form/*[@type=submit]');
 // link in context
 I.click('Logout', '#nav');
 // using strict locator
@@ -189,10 +185,8 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` ([string][4] \| [object][5]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-    
-
+-   `locator` **([string][4] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][4] | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
 
 ### closeApp
 
@@ -216,9 +210,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
--   `text` [string][4] which is not present.
--   `context` ([string][4] \| [object][5]) (optional) element located by CSS|XPath|strict locator in which to perfrom search.
- 
+-   `text` **[string][4]** which is not present.
+-   `context` **([string][4] | [object][5])** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
 
 ### dontSeeCheckboxIsChecked
 
@@ -232,9 +225,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 
 ### dontSeeElement
 
@@ -246,9 +237,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) located by CSS|XPath|Strict locator.
-    
-
+-   `locator` **([string][4] | [object][5])** located by CSS|XPath|Strict locator.
 
 ### dontSeeInField
 
@@ -262,10 +251,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] value to check.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][4]** value to check.
 
 ### fillField
 
@@ -285,10 +272,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] text value to fill.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][4]** text value to fill.
 
 ### grabAllContexts
 
@@ -353,7 +338,7 @@ Appium: support Android and iOS
 ### grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so should be used inside async with `await` operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let pin = await I.grabTextFrom('#pin');
@@ -365,14 +350,12 @@ If multiple elements found returns an array of texts.
 
 -   `locator`  element located by CSS|XPath|strict locator.
 
-Returns [Promise][6]&lt;[string][4]> attribute value
-
-
+Returns **[Promise][6]&lt;[string][4]>** attribute value
 
 ### grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so should be used inside async function with `await` operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -380,11 +363,9 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) field located by label|name|CSS|XPath|strict locator.
+-   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns [Promise][6]&lt;[string][4]> attribute value
-
-
+Returns **[Promise][6]&lt;[string][4]>** attribute value
 
 ### hideDeviceKeyboard
 
@@ -522,7 +503,7 @@ I.runInWeb(() => {
 
 #### Parameters
 
--   `fn` any 
+-   `fn` **any** 
 
 ### runOnAndroid
 
@@ -557,8 +538,8 @@ I.runOnAndroid((caps) => {
 
 #### Parameters
 
--   `caps` any 
--   `fn` any 
+-   `caps` **any** 
+-   `fn` **any** 
 
 ### runOnIOS
 
@@ -593,8 +574,8 @@ I.runOnAndroid((caps) => {
 
 #### Parameters
 
--   `caps` any 
--   `fn` any 
+-   `caps` **any** 
+-   `fn` **any** 
 
 ### see
 
@@ -609,10 +590,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
--   `text` [string][4] expected on page.
--   `context` ([string][4] \| [object][5]) (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-    
-
+-   `text` **[string][4]** expected on page.
+-   `context` **([string][4] | [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
 
 ### seeAppIsInstalled
 
@@ -650,9 +629,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 
 ### seeCurrentActivityIs
 
@@ -699,9 +676,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) located by CSS|XPath|strict locator.
-    
-
+-   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 
 ### seeInField
 
@@ -717,10 +692,8 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] value to check.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][4]** value to check.
 
 ### seeOrientationIs
 
@@ -758,10 +731,8 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` ([string][4] \| [object][5]) field located by label|name|CSS|XPath|strict locator.
--   `option` ([string][4] \| [array][9]) visible text or value of option.
-    
--   Supported on only for web testing!
+-   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `option` **([string][4] | [array][9])** visible text or value of option.-   Supported on only for web testing!
 
 ### sendDeviceKeyEvent
 
@@ -1003,7 +974,7 @@ I.switchToNative('SOME_OTHER_CONTEXT');
 
 #### Parameters
 
--   `context` any  
+-   `context` **any**  
 
 ### switchToWeb
 
@@ -1020,7 +991,7 @@ I.switchToWeb('WEBVIEW_io.selendroid.testapp');
 
 #### Parameters
 
--   `context` [string][4]? 
+-   `context` **[string][4]?** 
 
 ### tap
 
@@ -1034,7 +1005,7 @@ Shortcut for `makeTouchAction`
 
 #### Parameters
 
--   `locator` any 
+-   `locator` **any** 
 
 ### touchPerform
 
@@ -1079,10 +1050,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) element located by CSS|XPath|strict locator.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait
-    
- 
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
@@ -1095,10 +1064,8 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) element located by CSS|XPath|strict locator.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait
-    
- 
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForText
 
@@ -1113,11 +1080,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
--   `text` [string][4] to wait for.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait 
--   `context` ([string][4] \| [object][5]) (optional) element located by CSS|XPath|strict locator.
-    
- 
+-   `text` **[string][4]** to wait for.
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
+-   `context` **([string][4] | [object][5])** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
 
@@ -1130,10 +1095,8 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) element located by CSS|XPath|strict locator.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait
-    
- 
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
 
 [1]: http://codecept.io/helpers/WebDriver/
 

@@ -74,8 +74,14 @@
       "helpers": {
         "title": "Custom Helpers"
       },
+      "helpers/ApiDataFactory.js": {
+        "title": "ApiDataFactory.js"
+      },
       "helpers/ApiDataFactory": {
         "title": "ApiDataFactory"
+      },
+      "helpers/Appium.js": {
+        "title": "Appium.js"
       },
       "helpers/Appium": {
         "title": "Appium"
@@ -83,26 +89,50 @@
       "helpers/Detox": {
         "title": "Detox"
       },
+      "helpers/FileSystem.js": {
+        "title": "FileSystem.js"
+      },
       "helpers/FileSystem": {
         "title": "FileSystem"
+      },
+      "helpers/GraphQL.js": {
+        "title": "GraphQL.js"
       },
       "helpers/GraphQL": {
         "title": "GraphQL"
       },
+      "helpers/GraphQLDataFactory.js": {
+        "title": "GraphQLDataFactory.js"
+      },
       "helpers/GraphQLDataFactory": {
         "title": "GraphQLDataFactory"
+      },
+      "helpers/Mochawesome.js": {
+        "title": "Mochawesome.js"
       },
       "helpers/Mochawesome": {
         "title": "Mochawesome"
       },
+      "helpers/MockRequest.js": {
+        "title": "MockRequest.js"
+      },
       "helpers/MockRequest": {
         "title": "MockRequest"
+      },
+      "helpers/Nightmare.js": {
+        "title": "Nightmare.js"
       },
       "helpers/Nightmare": {
         "title": "Nightmare"
       },
+      "helpers/Polly.js": {
+        "title": "Polly.js"
+      },
       "helpers/Polly": {
         "title": "Polly"
+      },
+      "helpers/Protractor.js": {
+        "title": "Protractor.js"
       },
       "helpers/Protractor": {
         "title": "Protractor"
@@ -110,20 +140,38 @@
       "helpers/Puppeteer-firefox": {
         "title": "helpers/Puppeteer-firefox"
       },
+      "helpers/Puppeteer.js": {
+        "title": "Puppeteer.js"
+      },
       "helpers/Puppeteer": {
         "title": "Puppeteer"
+      },
+      "helpers/REST.js": {
+        "title": "REST.js"
       },
       "helpers/REST": {
         "title": "REST"
       },
+      "helpers/SeleniumWebdriver.js": {
+        "title": "SeleniumWebdriver.js"
+      },
       "helpers/SeleniumWebdriver": {
         "title": "SeleniumWebdriver"
+      },
+      "helpers/TestCafe.js": {
+        "title": "TestCafe.js"
       },
       "helpers/TestCafe": {
         "title": "TestCafe"
       },
+      "helpers/WebDriver.js": {
+        "title": "WebDriver.js"
+      },
       "helpers/WebDriver": {
         "title": "WebDriver"
+      },
+      "helpers/WebDriverIO.js": {
+        "title": "WebDriverIO.js"
       },
       "helpers/WebDriverIO": {
         "title": "WebDriverIO"

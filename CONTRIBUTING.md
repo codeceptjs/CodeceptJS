@@ -115,15 +115,16 @@ Please try to add corresponding testcase to runner or unit.
 Documentation is stored in `/docs` directory in markdown format.
 
 **Documentation for helpers is a part of a source code**.
-Whenever you need to update docs for a helper do it inside a .js file.
 
-In order to generate new documentation from source code run the following command with [Robo](https://robo.li/):
+> **Whenever you need to update docs for a helper do it inside a .js file.**
+
+After you updated docblock in JS file, generate markdown files with next command:
 
 ```
-robo docs:helpers
+./runio.js docs:helpers
 ```
 
-To update markdown documentation. Shared documentation for helpers are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
+Documentation parts can be shared accross helpers. Those parts are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
 
 ```js
   /**

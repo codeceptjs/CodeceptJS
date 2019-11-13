@@ -7,7 +7,7 @@ title: REST
 
 ## REST
 
-Extends Helper
+**Extends Helper**
 
 REST helper allows to send additional requests to the REST API during acceptance tests.
 [Axios][1] library is used to perform requests.
@@ -47,21 +47,21 @@ this.helpers['REST']._executeRequest({
 
 -   `config`  
 
-### \_executeRequest
+### _executeRequest
 
 Executes axios request
 
 #### Parameters
 
--   `request` any 
+-   `request` **any** 
 
-### \_url
+### _url
 
 Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 
 #### Parameters
 
--   `url` any 
+-   `url` **any** 
 
 ### sendDeleteRequest
 
@@ -73,8 +73,8 @@ I.sendDeleteRequest('/api/users/1');
 
 #### Parameters
 
--   `url` any 
--   `headers` [object][2]  
+-   `url` **any** 
+-   `headers` **[object][2]**  
 
 ### sendGetRequest
 
@@ -86,8 +86,8 @@ I.sendGetRequest('/api/users.json');
 
 #### Parameters
 
--   `url` any 
--   `headers` [object][2]  
+-   `url` **any** 
+-   `headers` **[object][2]**  
 
 ### sendPatchRequest
 
@@ -99,9 +99,9 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 
 #### Parameters
 
--   `url` [string][3] 
--   `payload` [object][2] 
--   `headers` [object][2]  
+-   `url` **[string][3]** 
+-   `payload` **[object][2]** 
+-   `headers` **[object][2]**  
 
 ### sendPostRequest
 
@@ -113,9 +113,9 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 
 #### Parameters
 
--   `url` any 
--   `payload` any  
--   `headers` [object][2]  
+-   `url` **any** 
+-   `payload` **any**  
+-   `headers` **[object][2]**  
 
 ### sendPutRequest
 
@@ -127,9 +127,9 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 
 #### Parameters
 
--   `url` [string][3] 
--   `payload` [object][2]  
--   `headers` [object][2]  
+-   `url` **[string][3]** 
+-   `payload` **[object][2]**  
+-   `headers` **[object][2]**  
 
 ### setRequestTimeout
 

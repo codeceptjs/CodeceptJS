@@ -7,9 +7,9 @@ title: MockRequest
 
 ## MockRequest
 
-Extends Helper
+**Extends Helper**
 
-This helper allows to mock requests while running tests in Puppeteer or WebDriver.
+This helper allows to **mock requests while running tests in Puppeteer or WebDriver**.
 For instance, you can block calls to 3rd-party services like Google Analytics, CDNs.
 Another way of using is to emulate requests from server by passing prepared data.
 
@@ -44,26 +44,26 @@ Use `I.mockRequest` to intercept and mock requests.
 
 -   `config`  
 
-### \_checkAndStartMocking
+### _checkAndStartMocking
 
 Starts mocking if it's not started yet.
 
-### \_connectPuppeteer
+### _connectPuppeteer
 
 Creates a polly instance by registering puppeteer adapter with the instance
 
 #### Parameters
 
--   `title` any 
+-   `title` **any** 
 
-### \_connectWebDriver
+### _connectWebDriver
 
 Creates polly object in the browser window context using xhr and fetch adapters,
 after loading PollyJs and adapter scripts.
 
 #### Parameters
 
--   `title` any 
+-   `title` **any** 
 
 ### mockRequest
 
@@ -71,7 +71,7 @@ Mock response status
 
 ```js
 I.mockRequest('GET', '/api/users', 200);
-I.mockRequest('ANY', '/secretsRoutes/', 403);
+I.mockRequest('ANY', '/secretsRoutes/*', 403);
 I.mockRequest('POST', '/secrets', { secrets: 'fakeSecrets' });
 I.mockRequest('GET', '/api/users/1', 404, 'User not found');
 ```
@@ -84,10 +84,10 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
 
 #### Parameters
 
--   `method` [string][2] request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
--   `oneOrMoreUrls` ([string][2] \| [array][3]) url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
--   `dataOrStatusCode` ([number][4] \| [string][2] \| [object][5]) status code when number provided. A response body otherwise
--   `additionalData` ([string][2] \| [object][5]) response body when a status code is set by previous parameter. 
+-   `method` **[string][2]** request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+-   `oneOrMoreUrls` **([string][2] | [array][3])** url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+-   `dataOrStatusCode` **([number][4] | [string][2] | [object][5])** status code when number provided. A response body otherwise
+-   `additionalData` **([string][2] | [object][5])** response body when a status code is set by previous parameter. 
 
 ### startMocking
 
@@ -97,7 +97,7 @@ mocking requests.
 
 #### Parameters
 
--   `title` any  
+-   `title` **any**  
 
 ### stopMocking
 
