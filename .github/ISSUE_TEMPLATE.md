@@ -19,9 +19,9 @@
 * CodeceptJS version:
 * NodeJS Version:
 * Operating System:
-* Protractor || WebDriverIO || Nightmare version (if related)
+* puppeteer || webdriverio || protractor || testcafe version (if related)
 * Configuration file:
 
 ```js
-# paste suite config here
+# paste config here
 ```
