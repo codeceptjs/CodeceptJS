@@ -1003,7 +1003,7 @@ Returns [object][20] Element bounding rectangle
 
 ### grabGeoLocation
 
-Return the current geo location 
+Return the current geo location
 
 ```js
 let geoLocation = await I.grabGeoLocation();
@@ -1834,6 +1834,29 @@ I.wait(2); // wait 2 secs
 
 -   `sec` [number][22] number of second to wait.
     
+
+
+### waitForClickable
+
+Waits for element to be clickable (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitForClickable('.btn.continue');
+I.waitForClickable('.btn.continue', 5); // wait for 5 secs
+```
+
+#### Parameters
+
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `waitTimeout`  
+-   `sec` [number][22]? (optional, `1` by default) time in seconds to wait
+    
+
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
 
 
 ### waitForDetached

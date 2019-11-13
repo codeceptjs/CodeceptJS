@@ -775,12 +775,26 @@ describe('Puppeteer', function () {
       await I.waitForClickable({ css: 'input#text' });
     });
 
+    it('should wait for clickable by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
     it('should fail for disabled element', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
         if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
       });
     });
 

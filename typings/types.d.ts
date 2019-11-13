@@ -6886,6 +6886,21 @@ declare namespace CodeceptJS {
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
+         * Waits for element to be clickable (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForClickable('.btn.continue');
+         * I.waitForClickable('.btn.continue', 5); // wait for 5 secs
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+         * {--end--}
+         * {{ react }}
+         */
+        waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
          * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
          *
          * ```js
