@@ -22,4 +22,5 @@ let date = await I.executeScript(function(el) {
 ```
 
 @param {string|function} fn function to be executed in browser context.
-@param ...args args to be passed to function.
+@param {...any} args to be passed to function.
+@return {Promise<any>}

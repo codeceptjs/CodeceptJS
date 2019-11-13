@@ -71,7 +71,7 @@ website][6].
        browser: "chrome",
        desiredCapabilities: {
          chromeOptions: {
-           args: [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+           args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
          }
        }
      }
@@ -340,7 +340,7 @@ this.helpers['WebDriver']._locate({name: 'password'}).then //...
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 -   `smartWait`   
 
 ### _locateCheckable
@@ -353,7 +353,7 @@ this.helpers['WebDriver']._locateCheckable('I agree with terms and conditions').
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 
 ### _locateClickable
 
@@ -365,7 +365,7 @@ this.helpers['WebDriver']._locateClickable('Next page').then // ...
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 
 ### _locateFields
 
@@ -377,7 +377,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 
 ### acceptPopup
 
@@ -411,8 +411,15 @@ I.appendField('#myTextField', 'appended');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][19]** text value to append.
+=======
+-   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator
+-   `value` [string][19] text value to append.
+    
+
+>>>>>>> master
     
 
 
@@ -432,8 +439,15 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** field located by label|name|CSS|XPath|strict locator.
 -   `pathToFile` **[string][19]** local file path relative to codecept.json config file.
+=======
+-   `locator` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
+-   `pathToFile` [string][19] local file path relative to codecept.json config file.
+    
+
+>>>>>>> master
     Appium: not tested
 
 ### cancelPopup
@@ -455,8 +469,15 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **[string][19]** (optional, `null` by default) element located by CSS | XPath | strict locator.
+=======
+-   `field` CodeceptJS.LocatorOrString checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS | XPath | strict locator.
+    
+
+>>>>>>> master
     Appium: not tested 
 
 ### clearCookie
@@ -471,7 +492,13 @@ I.clearCookie('test');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `cookie` **[string][19]** (optional, `null` by default) cookie name
+=======
+-   `cookie` [string][19]? (optional, `null` by default) cookie name
+    
+ 
+>>>>>>> master
 
 ### clearField
 
@@ -514,8 +541,15 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][19] | [object][20])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    
+
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -550,7 +584,7 @@ I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
 
 #### Parameters
 
--   `timeouts`  WebDriver timeouts object.
+-   `timeouts` WebdriverIO.Timeouts WebDriver timeouts object.
 
 ### dontSee
 
@@ -564,8 +598,15 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `text` **[string][19]** which is not present.
 -   `context` **([string][19] | [object][20])** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+=======
+-   `text` [string][19] which is not present.
+-   `context` CodeceptJS.LocatorOrString? (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+    
+
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -583,7 +624,14 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator.Appium: not tested
+=======
+-   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
+    
+
+    Appium: not tested
+>>>>>>> master
 
 ### dontSeeCookie
 
@@ -621,7 +669,13 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|Strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|Strict locator.
+    
+
+>>>>>>> master
     
 
 
@@ -638,7 +692,13 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|Strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|Strict locator.
+    
+
+>>>>>>> master
 
 ### dontSeeInCurrentUrl
 
@@ -660,8 +720,15 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][19]** value to check.
+=======
+-   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
+-   `value` [string][19] value to check.
+    
+
+>>>>>>> master
 
 ### dontSeeInSource
 
@@ -702,8 +769,15 @@ I.doubleClick('.btn.edit');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][19] | [object][20])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    
+
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -735,8 +809,15 @@ I.dragSlider('#slider', -70);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator.
 -   `offsetX` **[number][22]** position to drag. 
+=======
+-   `locator` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
+-   `offsetX` [number][22] position to drag.
+    
+ 
+>>>>>>> master
 
 ### executeAsyncScript
 
@@ -763,7 +844,14 @@ $.ajax(url, { success: (data) => done(data); }
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `fn` **([string][19] | [function][24])** function to be executed in browser context.
+=======
+-   `fn` ([string][19] \| [function][24]) function to be executed in browser context.
+-   `args` ...any to be passed to function.
+    
+
+>>>>>>> master
 
 ### executeScript
 
@@ -793,7 +881,14 @@ return $(el).datetimepicker('getDate').toString();
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `fn` **([string][19] | [function][24])** function to be executed in browser context.
+=======
+-   `fn` ([string][19] \| [function][24]) function to be executed in browser context.
+-   `args` ...any to be passed to function.
+    
+Wraps [execute][25] command.
+>>>>>>> master
 
 ### fillField
 
@@ -813,8 +908,16 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][19]** text value to fill.
+=======
+-   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
+-   `value` [string][19] text value to fill.
+    
+
+    
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -841,8 +944,16 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][19]** attribute name.
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `attr` [string][19] attribute name.
+
+Returns [Promise][26]&lt;[string][19]> attribute value
+
+>>>>>>> master
 
 Returns **[Promise][25]&lt;[string][19]>** attribute value
 Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
@@ -855,6 +966,8 @@ Get JS log from browser. Log buffer is reset after each request.
 let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
+
+Returns [Promise][26]&lt;([string][19] \| [undefined][27])> 
 
 ### grabCookie
 
@@ -869,9 +982,15 @@ assert(cookie.value, '123456');
 
 #### Parameters
 
--   `name`  cookie name. 
+-   `name` [string][19]? cookie name. 
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[string][19]>** attribute value
+=======
+Returns [Promise][26]&lt;[string][19]> attribute value
+
+
+>>>>>>> master
 
 ### grabCssPropertyFrom
 
@@ -884,8 +1003,16 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][19]** CSS property name.
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `cssProperty` [string][19] CSS property name.
+
+Returns [Promise][26]&lt;[string][19]> CSS value
+
+>>>>>>> master
 
 Returns **[Promise][25]&lt;[string][19]>** CSS value
 
@@ -899,7 +1026,13 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[string][19]>** current URL
+=======
+Returns [Promise][26]&lt;[string][19]> current URL
+
+
+>>>>>>> master
 
 ### grabCurrentWindowHandle
 
@@ -958,9 +1091,16 @@ let postHTML = await I.grabHTMLFrom('#post');
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator`  
+-   `element` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[string][19]>** HTML code for an element
+=======
+Returns [Promise][26]&lt;[string][19]> HTML code for an element
+
+
+>>>>>>> master
 
 ### grabNumberOfOpenTabs
 
@@ -970,7 +1110,13 @@ Grab number of open tabs.
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[number][22]>** number of open tabs
+=======
+Returns [Promise][26]&lt;[number][22]> number of open tabs
+
+
+>>>>>>> master
 
 ### grabNumberOfVisibleElements
 
@@ -982,7 +1128,14 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
+
+Returns [Promise][26]&lt;[number][22]> number of visible elements
+
+>>>>>>> master
 
 Returns **[Promise][25]&lt;[number][22]>** number of visible elements
 
@@ -995,7 +1148,13 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[object][20]>** scroll position
+=======
+Returns [Promise][26]&lt;[Object][20]&lt;[string][19], any>> scroll position
+
+
+>>>>>>> master
 
 ### grabPopupText
 
@@ -1014,7 +1173,13 @@ Resumes test execution, so should be used inside an async function.
 let pageSource = await I.grabSource();
 ```
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[string][19]>** source code
+=======
+Returns [Promise][26]&lt;[string][19]> source code
+
+
+>>>>>>> master
 
 ### grabTextFrom
 
@@ -1029,9 +1194,15 @@ If multiple elements found returns an array of texts.
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[string][19]>** attribute value
+=======
+Returns [Promise][26]&lt;([string][19] \| [Array][28]&lt;[string][19]>)> attribute value
+
+
+>>>>>>> master
 
 ### grabTitle
 
@@ -1042,7 +1213,13 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
+<<<<<<< HEAD
 Returns **[Promise][25]&lt;[string][19]>** title
+=======
+Returns [Promise][26]&lt;[string][19]> title
+
+
+>>>>>>> master
 
 ### grabValueFrom
 
@@ -1055,7 +1232,14 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** field located by label|name|CSS|XPath|strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
+
+Returns [Promise][26]&lt;[string][19]> attribute value
+
+>>>>>>> master
 
 Returns **[Promise][25]&lt;[string][19]>** attribute value
 
@@ -1071,9 +1255,17 @@ I.moveCursorTo('#submit', 5,5);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][22]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][22]** (optional, `0` by default) Y-axis offset. 
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
+-   `offsetX` [number][22] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][22] (optional, `0` by default) Y-axis offset.
+    
+ 
+>>>>>>> master
 
 ### openNewTab
 
@@ -1092,7 +1284,7 @@ I.openNewTab();
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][26].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][29].
 
 ```js
 I.pressKey('Backspace');
@@ -1151,13 +1343,19 @@ Some of the supported key names are:
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `key` **([string][19] | [array][27])** key or array of keys to press._Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+=======
+-   `key` ([string][19] \| [Array][28]&lt;[string][19]>) key or array of keys to press.
+    
+_Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+>>>>>>> master
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][30]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1173,7 +1371,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][30]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1219,12 +1417,19 @@ I.rightClick('Click me', '.context');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][19] | [object][20])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString clickable element located by CSS|XPath|strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS|XPath|strict locator.
+    
+
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
-
+ 
 
 ### runInWeb
 
@@ -1265,8 +1470,15 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `fileName` **[string][19]** file name to save.
 -   `fullPage` **[boolean][29]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+=======
+-   `fileName` [string][19] file name to save.
+-   `fullPage` [boolean][31] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+    
+ 
+>>>>>>> master
 
 ### scrollPageToBottom
 
@@ -1296,9 +1508,17 @@ I.scrollTo('#submit', 5, 5);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][22]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][22]** (optional, `0` by default) Y-axis offset. 
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
+-   `offsetX` [number][22] (optional, `0` by default) X-axis offset. 
+-   `offsetY` [number][22] (optional, `0` by default) Y-axis offset.
+    
+ 
+>>>>>>> master
 
 ### see
 
@@ -1313,8 +1533,15 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `text` **[string][19]** expected on page.
 -   `context` **([string][19] | [object][20])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+=======
+-   `text` [string][19] expected on page.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+    
+
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1330,8 +1557,15 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|strict locator.
 -   `attributes` **[object][20]** attributes and their values to check.
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
+-   `attributes` [object][20] attributes and their values to check.
+    
+
+>>>>>>> master
 
 ### seeCheckboxIsChecked
 
@@ -1345,7 +1579,14 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator.Appium: not tested
+=======
+-   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
+    
+
+    Appium: not tested
+>>>>>>> master
 
 ### seeCookie
 
@@ -1369,8 +1610,15 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|strict locator.
 -   `cssProperties` **[object][20]** object with CSS properties and their values to check.
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
+-   `cssProperties` [object][20] object with CSS properties and their values to check.
+    
+
+>>>>>>> master
 
 ### seeCurrentUrlEquals
 
@@ -1398,7 +1646,13 @@ I.seeElement('#modal');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** located by CSS|XPath|strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
+    
+
+>>>>>>> master
     
 
 
@@ -1416,7 +1670,13 @@ I.seeElementInDOM('#modal');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+    
+
+>>>>>>> master
 
 ### seeInCurrentUrl
 
@@ -1444,8 +1704,15 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][19]** value to check.
+=======
+-   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
+-   `value` [string][19] value to check.
+    
+
+>>>>>>> master
 
 ### seeInPopup
 
@@ -1454,7 +1721,7 @@ given string.
 
 #### Parameters
 
--   `text`  value to check.
+-   `text` [string][19] value to check.
 
 ### seeInSource
 
@@ -1491,8 +1758,16 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `num` **[number][22]** number of elements.
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `num` [number][22] number of elements.
+    
+
+    
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1509,8 +1784,16 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `num` **[number][22]** number of elements.
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `num` [number][22] number of elements.
+    
+
+    
+>>>>>>> master
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1526,8 +1809,8 @@ I.seeTextEquals('text', 'h1');
 
 #### Parameters
 
--   `text`  element value to check.
--   `context`  (optional) element located by CSS|XPath|strict locator.
+-   `text` [string][19] element value to check.
+-   `context` CodeceptJS.LocatorOrString?? (optional) element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 
@@ -1539,7 +1822,7 @@ I.seeTitleEquals('Test title.');
 
 #### Parameters
 
--   `text`  value to check.
+-   `text` [string][19] value to check.
 
 ### selectOption
 
@@ -1564,8 +1847,15 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `select` **([string][19] | [object][20])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][19] | [array][27])** visible text or value of option.
+=======
+-   `select` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
+-   `option` ([string][19] \| [Array][28]&lt;any>) visible text or value of option.
+    
+
+>>>>>>> master
 
 ### setCookie
 
@@ -1577,8 +1867,15 @@ I.setCookie({name: 'auth', value: true});
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `cookie` **[object][20]** a cookie object.Uses Selenium's JSON [cookie
     format][30].
+=======
+-   `cookie` [object][20] a cookie object.
+    
+Uses Selenium's JSON [cookie
+    format][32].
+>>>>>>> master
 
 ### setGeoLocation
 
@@ -1606,7 +1903,13 @@ I.switchTo(); // switch back to main page
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+=======
+-   `locator` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS|XPath|strict locator.
+    
+ 
+>>>>>>> master
 
 ### switchToNextTab
 
@@ -1619,8 +1922,8 @@ I.switchToNextTab(2);
 
 #### Parameters
 
--   `num`  (optional) number of tabs to switch forward, default: 1.
--   `sec`  (optional) time in seconds to wait.
+-   `num` [number][22]? (optional) number of tabs to switch forward, default: 1. 
+-   `sec` [number][22]? (optional) time in seconds to wait. 
 
 ### switchToPreviousTab
 
@@ -1633,8 +1936,8 @@ I.switchToPreviousTab(2);
 
 #### Parameters
 
--   `num`  (optional) number of tabs to switch backward, default: 1.
--   `sec`  (optional) time in seconds to wait.
+-   `num` [number][22]? (optional) number of tabs to switch backward, default: 1. 
+-   `sec` [number][22]?? (optional) time in seconds to wait. 
 
 ### switchToWindow
 
@@ -1669,8 +1972,15 @@ I.uncheckOption('agree', '//form');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `field` **([string][19] | [object][20])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **[string][19]** (optional, `null` by default) element located by CSS | XPath | strict locator.
+=======
+-   `field` CodeceptJS.LocatorOrString checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS | XPath | strict locator.
+    
+
+>>>>>>> master
     Appium: not tested 
 
 ### wait
@@ -1696,8 +2006,15 @@ I.waitForDetached('#popup');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitForElement
 
@@ -1711,8 +2028,15 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `sec` [number][22]? (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitForEnabled
 
@@ -1721,8 +2045,15 @@ Element can be located by CSS or XPath.
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `sec`  (optional) time in seconds to wait, 1 by default.
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional) time in seconds to wait, 1 by default.
+    
+ 
+>>>>>>> master
 
 ### waitForFunction
 
@@ -1741,9 +2072,17 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `fn` **([string][19] | [function][24])** to be executed in browser context.
 -   `argsOrSec` **([array][27] | [number][22])** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `fn` ([string][19] \| [function][24]) to be executed in browser context.
+-   `argsOrSec` ([Array][28]&lt;any> | [number][22])? (optional, `1` by default) arguments for function or seconds. 
+-   `sec` [number][22]? (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitForInvisible
 
@@ -1756,8 +2095,15 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitForText
 
@@ -1772,9 +2118,17 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `text` **[string][19]** to wait for.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][19] | [object][20])** (optional) element located by CSS|XPath|strict locator. 
+=======
+-   `text` [string][19] to wait for.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait 
+-   `context` CodeceptJS.LocatorOrString? (optional) element located by CSS|XPath|strict locator.
+    
+ 
+>>>>>>> master
 
 ### waitForValue
 
@@ -1801,8 +2155,15 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitInUrl
 
@@ -1827,9 +2188,17 @@ I.waitNumberOfVisibleElements('a', 3);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `num` **[number][22]** number of elements.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `num` [number][22] number of elements.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitToHide
 
@@ -1842,8 +2211,15 @@ I.waitToHide('#popup');
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `locator` **([string][19] | [object][20])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
+=======
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait
+    
+ 
+>>>>>>> master
 
 ### waitUntil
 
@@ -1856,10 +2232,18 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `fn` **([function][24] | [string][19])** function which is executed in browser context.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 -   `timeoutMsg` **[string][19]** message to show in case of timeout fail. 
 -   `interval`   
+=======
+-   `fn` ([function][24] \| [string][19]) function which is executed in browser context.
+-   `sec` [number][22] (optional, `1` by default) time in seconds to wait 
+-   `timeoutMsg` [string][19] message to show in case of timeout fail. 
+-   `interval` [number][22]? 
+ 
+>>>>>>> master
 
 ### waitUrlEquals
 
@@ -1923,14 +2307,18 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[25]: http://webdriver.io/api/protocol/execute.html
 
-[26]: #fillfield
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[28]: #click
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[29]: #fillfield
 
-[30]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[30]: #click
+
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[32]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

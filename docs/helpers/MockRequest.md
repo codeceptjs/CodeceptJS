@@ -84,10 +84,17 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
 
 #### Parameters
 
+<<<<<<< HEAD
 -   `method` **[string][2]** request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
 -   `oneOrMoreUrls` **([string][2] | [array][3])** url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
 -   `dataOrStatusCode` **([number][4] | [string][2] | [object][5])** status code when number provided. A response body otherwise
 -   `additionalData` **([string][2] | [object][5])** response body when a status code is set by previous parameter. 
+=======
+-   `method` [string][2] request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+-   `oneOrMoreUrls` ([string][2] \| [Array][3]&lt;[string][2]>) url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+-   `dataOrStatusCode` ([number][4] \| [string][2] \| [object][5]) status code when number provided. A response body otherwise
+-   `additionalData` ([string][2] \| [object][5]) response body when a status code is set by previous parameter. 
+>>>>>>> master
 
 ### startMocking
 
