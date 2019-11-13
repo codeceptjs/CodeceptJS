@@ -78,7 +78,7 @@
     "@wdio/sauce-service": "^5.13.2",
     "@wdio/selenium-standalone-service": "^5.13.2",
     "@wdio/utils": "^5.13.2",
-    "apollo-server-express": "^2.9.4",
+    "apollo-server-express": "^2.9.9",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "chai-subset": "^1.6.0",

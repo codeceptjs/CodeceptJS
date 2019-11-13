@@ -155,8 +155,8 @@ module.exports = {
 
   async release() {
     // publish a new release on npm. Update version in package.json!
-    const package = JSON.parse(fs.readFileSync('package.json'));
-    const version = package.version;
+    const packageInfo = JSON.parse(fs.readFileSync('package.json'));
+    const version = packageInfo.version;
     await this.docs();
     await this.publishSite();
     await this.git(cmd => {
