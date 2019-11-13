@@ -71,7 +71,7 @@ website][6].
        "browser": "chrome",
        "desiredCapabilities": {
          "chromeOptions": {
-           "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+           "args": [ "--headless", "--disable-gpu", "--no-sandbox" ]
          }
        }
      }
