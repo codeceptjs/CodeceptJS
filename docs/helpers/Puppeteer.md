@@ -1684,6 +1684,29 @@ I.wait(2); // wait 2 secs
     
 
 
+### waitForClickable
+
+Waits for element to be clickable (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+```js
+I.waitForClickable('.btn.continue');
+I.waitForClickable('.btn.continue', 5); // wait for 5 secs
+```
+
+#### Parameters
+
+-   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `waitTimeout`  
+-   `sec` [number][9]? (optional, `1` by default) time in seconds to wait
+    
+
+    
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
 ### waitForDetached
 
 Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).

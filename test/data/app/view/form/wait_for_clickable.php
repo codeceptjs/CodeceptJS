@@ -23,5 +23,12 @@
 <div id="notInViewportLeft">Div not in viewport by left</div>
 <div id="notInViewportRight">Div not in viewport by right</div>
 
+<div id="div1" style="position:absolute; top:100; left:0;">
+  <button id="div1_button" type="button" name="button1" value="first">First Button</button>
+</div>
+<div id="div2" style="position:absolute; top:100; left:0;">
+  <button id="div2_button" type="button" name="button1" value="first">Second Button</button>
+</div>
+
 </body>
 </html>

@@ -778,7 +778,7 @@ describe('Puppeteer', function () {
     it('should fail for disabled element', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clicable, but must be unclickable');
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
       });
@@ -787,7 +787,7 @@ describe('Puppeteer', function () {
     it('should fail for element not in viewport by top', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clicable, but must be unclickable');
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
       });
@@ -796,7 +796,7 @@ describe('Puppeteer', function () {
     it('should fail for element not in viewport by bottom', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clicable, but must be unclickable');
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
       });
@@ -805,18 +805,28 @@ describe('Puppeteer', function () {
     it('should fail for element not in viewport by left', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clicable, but must be unclickable');
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
       });
     });
 
-    it('should fail for element not in viewport by left', async () => {
+    it('should fail for element not in viewport by right', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clicable, but must be unclickable');
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#div2_button' }, 0.1);
+      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
       });
     });
   });
