@@ -125,7 +125,7 @@ Switch to the specified context.
 
 #### Parameters
 
--   `context` any the context to switch to
+-   `context` **any** the context to switch to
 
 ### appendField
 
@@ -138,15 +138,8 @@ I.appendField('#myTextField', 'appended');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator
+-   `field` **CodeceptJS.LocatorOrString** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][4]** text value to append.
-=======
--   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator
--   `value` [string][4] text value to append.
-    
-
->>>>>>> master
 
 ### checkOption
 
@@ -163,15 +156,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **[string][4]** (optional, `null` by default) element located by CSS | XPath | strict locator.
-=======
--   `field` CodeceptJS.LocatorOrString checkbox located by label | name | CSS | XPath | strict locator.
--   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS | XPath | strict locator.
-    
- 
->>>>>>> master
+-   `field` **CodeceptJS.LocatorOrString** checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` **CodeceptJS.LocatorOrString?** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 ### click
 
@@ -199,15 +185,8 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][4] | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-=======
--   `locator` CodeceptJS.LocatorOrString clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-    
- 
->>>>>>> master
+-   `locator` **CodeceptJS.LocatorOrString** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **CodeceptJS.LocatorOrString?** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 ### closeApp
 
@@ -231,15 +210,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
-<<<<<<< HEAD
 -   `text` **[string][4]** which is not present.
--   `context` **([string][4] | [object][5])** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
-=======
--   `text` [string][4] which is not present.
--   `context` CodeceptJS.LocatorOrString? (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-    
- 
->>>>>>> master
+-   `context` **CodeceptJS.LocatorOrString?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
 
 ### dontSeeCheckboxIsChecked
 
@@ -253,13 +225,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
-=======
--   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
-    
-
->>>>>>> master
+-   `field` **CodeceptJS.LocatorOrString** located by label|name|CSS|XPath|strict locator.
 
 ### dontSeeElement
 
@@ -271,13 +237,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** located by CSS|XPath|Strict locator.
-=======
--   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|Strict locator.
-    
-
->>>>>>> master
+-   `locator` **CodeceptJS.LocatorOrString** located by CSS|XPath|Strict locator.
 
 ### dontSeeInField
 
@@ -291,15 +251,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `field` **CodeceptJS.LocatorOrString** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][4]** value to check.
-=======
--   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] value to check.
-    
-
->>>>>>> master
 
 ### fillField
 
@@ -319,15 +272,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `field` **CodeceptJS.LocatorOrString** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][4]** text value to fill.
-=======
--   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] text value to fill.
-    
-
->>>>>>> master
 
 ### grabAllContexts
 
@@ -402,15 +348,9 @@ If multiple elements found returns an array of texts.
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `locator` **CodeceptJS.LocatorOrString** element located by CSS|XPath|strict locator.
 
-<<<<<<< HEAD
-Returns **[Promise][6]&lt;[string][4]>** attribute value
-=======
-Returns [Promise][5]&lt;([string][4] \| [Array][6]&lt;[string][4]>)> attribute value
-
-
->>>>>>> master
+Returns **[Promise][5]&lt;([string][4] | [Array][6]&lt;[string][4]>)>** attribute value
 
 ### grabValueFrom
 
@@ -423,16 +363,9 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
-=======
--   `locator` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
+-   `locator` **CodeceptJS.LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 
-Returns [Promise][5]&lt;[string][4]> attribute value
-
->>>>>>> master
-
-Returns **[Promise][6]&lt;[string][4]>** attribute value
+Returns **[Promise][5]&lt;[string][4]>** attribute value
 
 ### hideDeviceKeyboard
 
@@ -449,7 +382,7 @@ I.hideDeviceKeyboard('pressKey', 'Done');
 
 #### Parameters
 
--   `strategy` (`"tapOutside"` \| `"pressKey"`) desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)Appium: support Android and iOS
+-   `strategy` **(`"tapOutside"` | `"pressKey"`)** desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)Appium: support Android and iOS
 -   `key`  
 
 ### installApp
@@ -462,7 +395,7 @@ I.installApp('/path/to/file.apk');
 
 #### Parameters
 
--   `path` [string][4] path to apk fileAppium: support only Android
+-   `path` **[string][4]** path to apk fileAppium: support only Android
 
 ### makeTouchAction
 
@@ -503,8 +436,8 @@ I.performswipe(100,200);
 
 #### Parameters
 
--   `from` [number][8] 
--   `to` [number][8] Appium: support Android and iOS
+-   `from` **[number][8]** 
+-   `to` **[number][8]** Appium: support Android and iOS
 
 ### pullFile
 
@@ -533,8 +466,8 @@ I.removeApp('appName', 'com.example.android.apis');
 
 #### Parameters
 
--   `appId` [string][4] 
--   `bundleId` [string][4] String  ID of bundleAppium: support only Android
+-   `appId` **[string][4]** 
+-   `bundleId` **[string][4]** String  ID of bundleAppium: support only Android
 
 ### rotate
 
@@ -657,15 +590,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
-<<<<<<< HEAD
 -   `text` **[string][4]** expected on page.
--   `context` **([string][4] | [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-=======
--   `text` [string][4] expected on page.
--   `context` CodeceptJS.LocatorOrString? (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-    
- 
->>>>>>> master
+-   `context` **CodeceptJS.LocatorOrString?** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
 
 ### seeAppIsInstalled
 
@@ -677,7 +603,7 @@ I.seeAppIsInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId` [string][4] String  ID of bundled appAppium: support only Android
+-   `bundleId` **[string][4]** String  ID of bundled appAppium: support only Android
 
 ### seeAppIsNotInstalled
 
@@ -689,7 +615,7 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId` [string][4] String  ID of bundled appAppium: support only Android
+-   `bundleId` **[string][4]** String  ID of bundled appAppium: support only Android
 
 ### seeCheckboxIsChecked
 
@@ -703,13 +629,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
-=======
--   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
-    
-
->>>>>>> master
+-   `field` **CodeceptJS.LocatorOrString** located by label|name|CSS|XPath|strict locator.
 
 ### seeCurrentActivityIs
 
@@ -721,7 +641,7 @@ I.seeCurrentActivityIs(".HomeScreenActivity")
 
 #### Parameters
 
--   `currentActivity` [string][4] Appium: support only Android
+-   `currentActivity` **[string][4]** Appium: support only Android
 
 ### seeDeviceIsLocked
 
@@ -754,13 +674,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
-=======
--   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
-    
-
->>>>>>> master
+-   `locator` **CodeceptJS.LocatorOrString** located by CSS|XPath|strict locator.
 
 ### seeInField
 
@@ -776,15 +690,8 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `field` **CodeceptJS.LocatorOrString** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][4]** value to check.
-=======
--   `field` CodeceptJS.LocatorOrString located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] value to check.
-    
-
->>>>>>> master
 
 ### seeOrientationIs
 
@@ -797,7 +704,7 @@ I.seeOrientationIs('LANDSCAPE')
 
 #### Parameters
 
--   `orientation` (`"LANDSCAPE"` \| `"PORTRAIT"`) LANDSCAPE or PORTRAITAppium: support Android and iOS
+-   `orientation` **(`"LANDSCAPE"` | `"PORTRAIT"`)** LANDSCAPE or PORTRAITAppium: support Android and iOS
 
 ### selectOption
 
@@ -822,15 +729,8 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
-<<<<<<< HEAD
--   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] | [array][9])** visible text or value of option.-   Supported on only for web testing!
-=======
--   `select` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
--   `option` ([string][4] \| [Array][6]&lt;any>) visible text or value of option.
-    
--   Supported on only for web testing!
->>>>>>> master
+-   `select` **CodeceptJS.LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `option` **([string][4] | [Array][6]&lt;any>)** visible text or value of option.-   Supported on only for web testing!
 
 ### sendDeviceKeyEvent
 
@@ -843,7 +743,7 @@ I.sendDeviceKeyEvent(3);
 
 #### Parameters
 
--   `keyValue` [number][8] Device specific key valueAppium: support only Android
+-   `keyValue` **[number][8]** Device specific key valueAppium: support only Android
 
 ### setImmediateValue
 
@@ -893,7 +793,7 @@ I.setOrientation('LANDSCAPE')
 
 #### Parameters
 
--   `orientation` (`"LANDSCAPE"` \| `"PORTRAIT"`) LANDSCAPE or PORTRAITAppium: support Android and iOS
+-   `orientation` **(`"LANDSCAPE"` | `"PORTRAIT"`)** LANDSCAPE or PORTRAITAppium: support Android and iOS
 
 ### setSettings
 
@@ -905,7 +805,7 @@ I.setSettings({cyberdelia: 'open'});
 
 #### Parameters
 
--   `settings` [object][13] objectAppium: support Android and iOS
+-   `settings` **[object][13]** objectAppium: support Android and iOS
 
 ### shakeDevice
 
@@ -962,10 +862,10 @@ I.swipe(locator, 800, 1200, 1000);
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString 
--   `xoffset` [number][8] 
--   `yoffset` [number][8] 
--   `speed` [number][8] (optional), 1000 by defaultAppium: support Android and iOS 
+-   `locator` **CodeceptJS.LocatorOrString** 
+-   `xoffset` **[number][8]** 
+-   `yoffset` **[number][8]** 
+-   `speed` **[number][8]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeDown
 
@@ -980,9 +880,9 @@ I.swipeDown(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString 
--   `yoffset` [number][8]? (optional) 
--   `speed` [number][8] (optional), 1000 by defaultAppium: support Android and iOS 
+-   `locator` **CodeceptJS.LocatorOrString** 
+-   `yoffset` **[number][8]?** (optional) 
+-   `speed` **[number][8]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeLeft
 
@@ -997,9 +897,9 @@ I.swipeLeft(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString 
--   `xoffset` [number][8]? (optional) 
--   `speed` [number][8] (optional), 1000 by defaultAppium: support Android and iOS 
+-   `locator` **CodeceptJS.LocatorOrString** 
+-   `xoffset` **[number][8]?** (optional) 
+-   `speed` **[number][8]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeRight
 
@@ -1014,9 +914,9 @@ I.swipeRight(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString 
--   `xoffset` [number][8]? (optional) 
--   `speed` [number][8] (optional), 1000 by defaultAppium: support Android and iOS 
+-   `locator` **CodeceptJS.LocatorOrString** 
+-   `xoffset` **[number][8]?** (optional) 
+-   `speed` **[number][8]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeTo
 
@@ -1034,12 +934,12 @@ I.swipeTo(
 
 #### Parameters
 
--   `searchableLocator` [string][4] 
--   `scrollLocator` [string][4] 
--   `direction` [string][4] 
--   `timeout` [number][8] 
--   `offset` [number][8] 
--   `speed` [number][8] Appium: support Android and iOS
+-   `searchableLocator` **[string][4]** 
+-   `scrollLocator` **[string][4]** 
+-   `direction` **[string][4]** 
+-   `timeout` **[number][8]** 
+-   `offset` **[number][8]** 
+-   `speed` **[number][8]** Appium: support Android and iOS
 
 ### swipeUp
 
@@ -1054,9 +954,9 @@ I.swipeUp(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString 
--   `yoffset` [number][8]? (optional) 
--   `speed` [number][8] (optional), 1000 by defaultAppium: support Android and iOS 
+-   `locator` **CodeceptJS.LocatorOrString** 
+-   `yoffset` **[number][8]?** (optional) 
+-   `speed` **[number][8]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### switchToNative
 
@@ -1148,15 +1048,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
-=======
--   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
--   `sec` [number][8]? (optional, `1` by default) time in seconds to wait
-    
- 
->>>>>>> master
+-   `locator` **CodeceptJS.LocatorOrString** element located by CSS|XPath|strict locator.
+-   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
@@ -1169,15 +1062,8 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
-=======
--   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
--   `sec` [number][8] (optional, `1` by default) time in seconds to wait
-    
- 
->>>>>>> master
+-   `locator` **CodeceptJS.LocatorOrString** element located by CSS|XPath|strict locator.
+-   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForText
 
@@ -1192,17 +1078,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
-<<<<<<< HEAD
 -   `text` **[string][4]** to wait for.
--   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
--   `context` **([string][4] | [object][5])** (optional) element located by CSS|XPath|strict locator. 
-=======
--   `text` [string][4] to wait for.
--   `sec` [number][8] (optional, `1` by default) time in seconds to wait 
--   `context` CodeceptJS.LocatorOrString? (optional) element located by CSS|XPath|strict locator.
-    
- 
->>>>>>> master
+-   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `context` **CodeceptJS.LocatorOrString?** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
 
@@ -1215,15 +1093,8 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
-<<<<<<< HEAD
--   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait 
-=======
--   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
--   `sec` [number][8] (optional, `1` by default) time in seconds to wait
-    
- 
->>>>>>> master
+-   `locator` **CodeceptJS.LocatorOrString** element located by CSS|XPath|strict locator.
+-   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 
 [1]: http://codecept.io/helpers/WebDriver/
 
