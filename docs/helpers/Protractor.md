@@ -79,7 +79,7 @@ other options are the same as in [Protractor config][6].
        "browser": "chrome",
        "capabilities": {
          "chromeOptions": {
-           "args": [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+           "args": [ "--headless", "--disable-gpu", "--no-sandbox" ]
          }
        }
      }
