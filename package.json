@@ -1,7 +1,7 @@
 {
   "name": "codeceptjs",
-  "version": "2.3.5",
-  "description": "Modern Era Acceptance Testing Framework for NodeJS",
+  "version": "2.3.6",
+  "description": "Modern Era Acceptance Testing Framework for NodeJS, Forked by Ilrilan",
   "keywords": [
     "acceptance",
     "end2end",
