@@ -9672,10 +9672,10 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
-         * @param {num} sec number of seconds to hold tap
+         * @param {number} sec number of seconds to hold tap
          * @param {CodeceptJS.LocatorOrString} context context element
          */
-        longPress(locator: CodeceptJS.LocatorOrString, sec: num, context: CodeceptJS.LocatorOrString): void;
+        longPress(locator: CodeceptJS.LocatorOrString, sec: number, context: CodeceptJS.LocatorOrString): void;
         /**
          * Clicks on an element.
          * Element can be located by its text or id or accessibility id
