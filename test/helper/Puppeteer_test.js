@@ -1,15 +1,10 @@
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 const puppeteer = require('puppeteer');
-const should = require('chai').should();
 const expect = require('chai').expect;
 const assert = require('assert');
 const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
@@ -771,6 +766,82 @@ describe('Puppeteer', function () {
       await I.click('Download file');
       await I.wait(5);
       await FS.seeFile('downloads/avatar.jpg');
+    });
+  });
+
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#div2_button' }, 0.1);
+      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
+      });
     });
   });
 });

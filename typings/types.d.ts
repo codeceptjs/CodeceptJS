@@ -4565,6 +4565,20 @@ declare namespace CodeceptJS {
          */
         waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
         /**
+         * Waits for element to be clickable (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForClickable('.btn.continue');
+         * I.waitForClickable('.btn.continue', 5); // wait for 5 secs
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+         * {--end--}
+         */
+        waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
          * Waits for element to be present on page (by default waits for 1sec).
          * Element can be located by CSS or XPath.
          *
@@ -6870,6 +6884,20 @@ declare namespace CodeceptJS {
          * {--end--}
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waits for element to be clickable (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForClickable('.btn.continue');
+         * I.waitForClickable('.btn.continue', 5); // wait for 5 secs
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+         * {--end--}
+         */
+        waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
          * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
          *
