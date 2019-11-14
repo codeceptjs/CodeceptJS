@@ -1003,7 +1003,7 @@ Returns [object][20] Element bounding rectangle
 
 ### grabGeoLocation
 
-Return the current geo location
+Return the current geo location 
 
 ```js
 let geoLocation = await I.grabGeoLocation();
@@ -1852,11 +1852,6 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 -   `waitTimeout`  
 -   `sec` [number][22]? (optional, `1` by default) time in seconds to wait
     
-
-    
-
-
-This action supports [React locators](https://codecept.io/react#locators)
 
 
 ### waitForDetached

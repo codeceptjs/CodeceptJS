@@ -4576,7 +4576,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
          * {--end--}
-         * {{ react }}
          */
         waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -6897,7 +6896,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
          * {--end--}
-         * {{ react }}
          */
         waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**

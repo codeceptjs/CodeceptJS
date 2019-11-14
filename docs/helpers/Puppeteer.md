@@ -1701,11 +1701,6 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 -   `sec` [number][9]? (optional, `1` by default) time in seconds to wait
     
 
-    
-
-
-This action supports [React locators](https://codecept.io/react#locators)
-
 
 ### waitForDetached
 
