@@ -45,6 +45,7 @@ declare namespace CodeceptJS {
     | { frame: string }
     | { android: string }
     | { ios: string }
+    | { android: string, ios: string }
     | { react: string };
 
   type LocatorOrString = string | ILocator | Locator;
