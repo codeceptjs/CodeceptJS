@@ -625,9 +625,10 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 -   `fn` ([string][10] \| [function][13]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
 
-    Appium: support only web testing
+Returns [Promise][14]&lt;any> 
+
+Appium: support only web testing
 
 ### executeScript
 
@@ -659,9 +660,10 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` ([string][10] \| [function][13]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
 
-    Appium: support only web testingWraps [execute][14] command.
+Returns [Promise][14]&lt;any> 
+
+Appium: support only web testingWraps [execute][15] command.
 
 ### fillField
 
@@ -702,7 +704,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 -   `attr` [string][10] attribute name.
 
-Returns [Promise][15]&lt;[string][10]> attribute value
+Returns [Promise][14]&lt;[string][10]> attribute value
 
 
 Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
@@ -739,7 +741,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 -   `cssProperty` [string][10] CSS property name.
 
-Returns [Promise][15]&lt;[string][10]> CSS value
+Returns [Promise][14]&lt;[string][10]> CSS value
 
 
 
@@ -753,7 +755,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns [Promise][15]&lt;[string][10]> current URL
+Returns [Promise][14]&lt;[string][10]> current URL
 
 
 
@@ -772,7 +774,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
 
-Returns [Promise][15]&lt;[string][10]> HTML code for an element
+Returns [Promise][14]&lt;[string][10]> HTML code for an element
 
 
 Appium: support only web testing
@@ -785,7 +787,7 @@ Grab number of open tabs.
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns [Promise][15]&lt;[number][16]> number of open tabs
+Returns [Promise][14]&lt;[number][16]> number of open tabs
 
 
 
@@ -801,7 +803,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
 
-Returns [Promise][15]&lt;[number][16]> number of visible elements
+Returns [Promise][14]&lt;[number][16]> number of visible elements
 
 
 
@@ -826,7 +828,7 @@ Resumes test execution, so should be used inside an async function.
 let pageSource = await I.grabSource();
 ```
 
-Returns [Promise][15]&lt;[string][10]> source code
+Returns [Promise][14]&lt;[string][10]> source code
 
 
 Appium: support
@@ -846,7 +848,7 @@ If multiple elements found returns an array of texts.
 
 -   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 
-Returns [Promise][15]&lt;([string][10] \| [Array][17]&lt;[string][10]>)> attribute value
+Returns [Promise][14]&lt;([string][10] \| [Array][17]&lt;[string][10]>)> attribute value
 
 
 Appium: support
@@ -860,7 +862,7 @@ Resumes test execution, so should be used inside async with `await` operator.
 let title = await I.grabTitle();
 ```
 
-Returns [Promise][15]&lt;[string][10]> title
+Returns [Promise][14]&lt;[string][10]> title
 
 
 Appium: support only web testing
@@ -878,7 +880,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
 
-Returns [Promise][15]&lt;[string][10]> attribute value
+Returns [Promise][14]&lt;[string][10]> attribute value
 
 
 Appium: support only web testing
@@ -1669,9 +1671,9 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[14]: http://webdriver.io/api/protocol/execute.html
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[15]: http://webdriver.io/api/protocol/execute.html
 
 [16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 

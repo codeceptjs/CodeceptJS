@@ -2796,9 +2796,10 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -2823,9 +2824,10 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Checks that current url contains a provided fragment.
          *
@@ -4356,11 +4358,12 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          *
          * If a function returns a Promise It will wait for it resolution.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -4385,11 +4388,12 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          *
          * Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Retrieves a text from an element located by CSS or XPath and returns it to test.
          * Resumes test execution, so **should be used inside async with `await`** operator.
@@ -6484,12 +6488,13 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          *
          *
          * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -6514,10 +6519,11 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          *
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Scrolls to element matched by locator.
          * Extra shift can be set with offsetX and offsetY options.
@@ -7881,12 +7887,13 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          * Appium: support only web testing
          *
          * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -7911,10 +7918,11 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
          * {--end--}
          * Appium: support only web testing
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Scrolls to element matched by locator.
          * Extra shift can be set with offsetX and offsetY options.
@@ -9531,9 +9539,9 @@ declare namespace CodeceptJS {
          * I.saveScreenshot('main-window.png');
          * ```
          *
-         * @param string name
+         * @param {string} name
          */
-        saveScreenshot(string: any): void;
+        saveScreenshot(name: string): void;
         /**
          * Relaunches an application.
          *
@@ -9600,9 +9608,9 @@ declare namespace CodeceptJS {
          *    I.see('Hi, IOS');
          * });
          * ```
-         * @param fn a function which will be executed on iOS
+         * @param {Function} fn a function which will be executed on iOS
          */
-        runOnIOS(fn: any): void;
+        runOnIOS(fn: (...params: any[]) => any): void;
         /**
          * Execute code only on Android
          *
@@ -9612,9 +9620,9 @@ declare namespace CodeceptJS {
          *    I.see('Hi, Android');
          * });
          * ```
-         * @param fn a function which will be executed on android
+         * @param {Function} fn a function which will be executed on android
          */
-        runOnAndroid(fn: any): void;
+        runOnAndroid(fn: (...params: any[]) => any): void;
         /**
          * Taps on an element.
          * Element can be located by its text or id or accessibility id.
@@ -9664,10 +9672,10 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
-         * @param {number} sec number of seconds to hold tap
+         * @param {num} sec number of seconds to hold tap
          * @param {CodeceptJS.LocatorOrString} context context element
          */
-        longPress(locator: CodeceptJS.LocatorOrString, sec: number, context: CodeceptJS.LocatorOrString): void;
+        longPress(locator: CodeceptJS.LocatorOrString, sec: num, context: CodeceptJS.LocatorOrString): void;
         /**
          * Clicks on an element.
          * Element can be located by its text or id or accessibility id
@@ -9727,9 +9735,9 @@ declare namespace CodeceptJS {
          * I.dontSee('Record deleted', '~message');
          * ```
          * @param {string} text to check invisibility
-         * @param {CodeceptJS.LocatorOrString} context element in which to search for text
+         * @param {string|object} context element in which to search for text
          */
-        dontSee(text: string, context: CodeceptJS.LocatorOrString): void;
+        dontSee(text: string, context: string | any): void;
         /**
          * Checks for visibility of an element.
          * Use second parameter to narrow down the search.
@@ -9791,10 +9799,10 @@ declare namespace CodeceptJS {
          * I.fillField({ android: 'NAME', ios: 'name' }, 'davert');
          * ```
          *
-         * @param {CodeceptJS.LocatorOrString} field an input element to fill in
+         * @param {string|object} field an input element to fill in
          * @param {string} value value to fill
          */
-        fillField(field: CodeceptJS.LocatorOrString, value: string): void;
+        fillField(field: string | any, value: string): void;
         /**
          * Clears a text field.
          * A field can be located by text, accessibility id, id.
@@ -9803,9 +9811,9 @@ declare namespace CodeceptJS {
          * I.clearField('~name');
          * ```
          *
-         * @param {CodeceptJS.LocatorOrString} field an input element to clear
+         * @param {string|object} field an input element to clear
          */
-        clearField(field: CodeceptJS.LocatorOrString): void;
+        clearField(field: string | any): void;
         /**
          * Appends text into the field.
          * A field can be located by text, accessibility id, id.
@@ -9814,10 +9822,10 @@ declare namespace CodeceptJS {
          * I.appendField('name', 'davert');
          * ```
          *
-         * @param {CodeceptJS.LocatorOrString} field
+         * @param {string|object} field
          * @param {string} value
          */
-        appendField(field: CodeceptJS.LocatorOrString, value: string): void;
+        appendField(field: string | any, value: string): void;
         /**
          * Scrolls to the top of an element.
          *

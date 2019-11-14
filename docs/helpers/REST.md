@@ -22,11 +22,14 @@ REST helper allows to send additional requests to the REST API during acceptance
 ## Example
 
 ```js
-REST: {
-   endpoint: 'http://site.com/api',
-   onRequest: (request) => {
-     request.headers.auth = '123';
-   }
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      onRequest: (request) => {
+      request.headers.auth = '123';
+    }
+  }
 }
 ```
 

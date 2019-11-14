@@ -544,7 +544,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 -   `fn` ([string][9] \| [function][12]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
+
+Returns [Promise][13]&lt;any> 
 
 
 ### executeScript
@@ -577,7 +578,8 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` ([string][9] \| [function][12]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
+
+Returns [Promise][13]&lt;any> 
 
 
 ### fillField
