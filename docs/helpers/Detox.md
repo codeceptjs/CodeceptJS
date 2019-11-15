@@ -83,7 +83,7 @@ I.appendField('name', 'davert');
 
 #### Parameters
 
--   `field` **CodeceptJS.LocatorOrString** 
+-   `field` **([string][6] \| [object][7])** 
 -   `value` **[string][6]** 
 
 ### clearField
@@ -97,7 +97,7 @@ I.clearField('~name');
 
 #### Parameters
 
--   `field` **CodeceptJS.LocatorOrString** an input element to clear
+-   `field` **([string][6] \| [object][7])** an input element to clear
 
 ### click
 
@@ -106,7 +106,7 @@ Element can be located by its text or id or accessibility id
 
 The second parameter is a context (id | type | accessibility id) to narrow the search.
 
-Same as [tap][7]
+Same as [tap][8]
 
 ```js
 I.click('Login'); // locate by text
@@ -118,8 +118,8 @@ I.click({ ios: 'Save', android: 'SAVE' }, '#main'); // different texts on iOS an
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
--   `context` **CodeceptJS.LocatorOrString?**  (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** 
+-   `context` **([string][6] \| [object][7])**  (optional, default `null`)
 
 ### clickAtPoint
 
@@ -133,9 +133,9 @@ I.clickAtPoint('~save', 10, 10); // locate by accessibility id
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
--   `x` **[number][8]** horizontal offset (optional, default `0`)
--   `y` **[number][8]** vertical offset (optional, default `0`)
+-   `locator` **([string][6] \| [object][7])** 
+-   `x` **int** horizontal offset (optional, default `0`)
+-   `y` **int** vertical offset (optional, default `0`)
 
 ### dontSee
 
@@ -151,7 +151,7 @@ I.dontSee('Record deleted', '~message');
 #### Parameters
 
 -   `text` **[string][6]** to check invisibility
--   `context` **CodeceptJS.LocatorOrString** element in which to search for text (optional, default `null`)
+-   `context` **([string][6] \| [object][7])** element in which to search for text (optional, default `null`)
 
 ### dontSeeElement
 
@@ -165,8 +165,8 @@ I.dontSeeElement('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** element to locate
--   `context` **CodeceptJS.LocatorOrString?** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### dontSeeElementExists
 
@@ -180,8 +180,8 @@ I.dontSeeElementExist('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** element to locate
--   `context` **CodeceptJS.LocatorOrString** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### fillField
 
@@ -196,7 +196,7 @@ I.fillField({ android: 'NAME', ios: 'name' }, 'davert');
 
 #### Parameters
 
--   `field` **CodeceptJS.LocatorOrString** an input element to fill in
+-   `field` **([string][6] \| [object][7])** an input element to fill in
 -   `value` **[string][6]** value to fill
 
 ### goBack
@@ -236,9 +236,9 @@ I.longPress('Update', 2, '#menu'); // locate by text inside #menu, hold for 2 se
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** element to locate
--   `sec` **[number][8]** number of seconds to hold tap
--   `context` **CodeceptJS.LocatorOrString** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `sec` **num** number of seconds to hold tap
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### multiTap
 
@@ -257,9 +257,9 @@ I.multiTap('Update', 2, '#menu'); // locate by id
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** element to locate
--   `num` **[number][8]** number of taps
--   `context` **CodeceptJS.LocatorOrString?** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `num` **int** number of taps
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### relaunchApp
 
@@ -322,7 +322,7 @@ I.scrollDown('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### scrollLeft
 
@@ -334,7 +334,7 @@ I.scrollLeft('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### scrollRight
 
@@ -346,7 +346,7 @@ I.scrollRight('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### scrollUp
 
@@ -358,7 +358,7 @@ I.scrollUp('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
+-   `locator` **([string][6] \| [object][7])** 
 
 ### see
 
@@ -374,7 +374,7 @@ I.see('Record deleted', '~message');
 #### Parameters
 
 -   `text` **[string][6]** to check visibility
--   `context` **CodeceptJS.LocatorOrString?** element inside which to search for text (optional, default `null`)
+-   `context` **([string][6] \| [object][7])** element inside which to search for text (optional, default `null`)
 
 ### seeElement
 
@@ -388,8 +388,8 @@ I.seeElement('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** element to locate
--   `context` **CodeceptJS.LocatorOrString?** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### seeElementExists
 
@@ -403,8 +403,8 @@ I.seeElementExists('~edit', '#menu'); // element inside #menu
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** element to locate
--   `context` **CodeceptJS.LocatorOrString** context element (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** element to locate
+-   `context` **([string][6] \| [object][7])** context element (optional, default `null`)
 
 ### setLandscapeOrientation
 
@@ -441,7 +441,7 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element on which to perform swipe
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
 -   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### swipeLeft
@@ -455,7 +455,7 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element on which to perform swipe
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
 -   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### swipeRight
@@ -469,7 +469,7 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element on which to perform swipe
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
 -   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### swipeUp
@@ -483,7 +483,7 @@ I.swipeUp('#container');
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element on which to perform swipe
+-   `locator` **([string][6] \| [object][7])** an element on which to perform swipe
 -   `speed` **[string][6]** a speed to perform: `slow` or `fast`. (optional, default `'slow'`)
 
 ### tap
@@ -505,8 +505,8 @@ I.tap({ ios: 'Save', android: 'SAVE' }, '#main'); // different texts on iOS and 
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** 
--   `context` **CodeceptJS.LocatorOrString?**  (optional, default `null`)
+-   `locator` **([string][6] \| [object][7])** 
+-   `context` **([string][6] \| [object][7])**  (optional, default `null`)
 
 ### wait
 
@@ -518,7 +518,7 @@ I.wait(2); // waits for 2 seconds
 
 #### Parameters
 
--   `sec` **[number][8]** number of seconds to wait
+-   `sec` **int** number of seconds to wait
 
 ### waitForElement
 
@@ -530,8 +530,8 @@ I.waitForElement('#message', 1); // wait for 1 second
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element to wait for
--   `sec` **[number][8]** number of seconds to wait, 5 by default (optional, default `5`)
+-   `locator` **([string][6] \| [object][7])** an element to wait for
+-   `sec` **int** number of seconds to wait, 5 by default (optional, default `5`)
 
 ### waitForElementVisible
 
@@ -543,8 +543,8 @@ I.waitForElementVisible('#message', 1); // wait for 1 second
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element to wait for
--   `sec` **[number][8]** number of seconds to wait (optional, default `5`)
+-   `locator` **([string][6] \| [object][7])** an element to wait for
+-   `sec` **int** number of seconds to wait (optional, default `5`)
 
 ### waitToHide
 
@@ -556,8 +556,8 @@ I.waitToHide('#message', 2); // wait for 2 seconds
 
 #### Parameters
 
--   `locator` **CodeceptJS.LocatorOrString** an element to wait for
--   `sec` **[number][8]** number of seconds to wait (optional, default `5`)
+-   `locator` **([string][6] \| [object][7])** an element to wait for
+-   `sec` **int** number of seconds to wait (optional, default `5`)
 
 [1]: https://github.com/wix/Detox
 
@@ -571,9 +571,9 @@ I.waitToHide('#message', 2); // wait for 2 seconds
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[7]: #tap
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[8]: #tap
 
 [9]: #relaunchApp
 

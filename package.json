@@ -35,7 +35,7 @@
     "json-server:graphql": "node test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ runio.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runio.js --fix",
-    "docs": "robo docs",
+    "docs": "./runio.js docs",
     "test": "mocha test/unit --recursive && mocha test/runner --recursive",
     "def": "jsdoc -c typings/jsdoc.conf.js",
     "dev:graphql": "nodemon test/data/graphql/index.js"

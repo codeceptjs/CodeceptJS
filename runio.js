@@ -154,7 +154,17 @@ module.exports = {
     ]);
   },
 
-  async release() {
+  async release(releaseType = null) {
+    // Releases CodeceptJS. You can pass in argument "patch", "minor", "major" to update package.json
+    if (releaseType) {
+      const packageInfo = JSON.parse(fs.readFileSync('package.json'));
+      packageInfo.version = semver.inc(packageInfo.version, releaseType);
+      fs.writeFileSync('package.json', JSON.stringify(packageInfo));
+      await git((cmd) => {
+        cmd.add('package.json');
+        cmd.commit('version bump');
+      });
+    }
     // publish a new release on npm. Update version in package.json!
     const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;

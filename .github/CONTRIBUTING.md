@@ -120,7 +120,7 @@ Documentation is stored in `/docs` directory in markdown format.
 After you updated docblock in JS file, generate markdown files with next command:
 
 ```
-./runio.js docs:helpers
+npm run docs
 ```
 
 Documentation parts can be shared accross helpers. Those parts are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
