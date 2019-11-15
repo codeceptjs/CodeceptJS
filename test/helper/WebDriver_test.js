@@ -1022,6 +1022,82 @@ describe('WebDriver', function () {
     });
   });
 
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #button still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element .//button[@id="button"] still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportTop still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportBottom still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportLeft still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportRight still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#div2_button' }, 0.1);
+      await wd.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #div1_button still not clickable after 0.1 sec');
+      });
+    });
+  });
+
   describe('GeoLocation', () => {
     it('should set the geoLocation', async () => {
       await wd.setGeoLocation(37.4043, -122.0748);
