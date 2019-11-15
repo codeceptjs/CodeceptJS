@@ -17,11 +17,11 @@ Scenario('check Welcome page on site', (I) => {
 Tests are expected to be written in **ECMAScript 7**.
 
 Each test is described inside a `Scenario` function with the `I` object passed into it.
-I object is an **actor**, an abstraction for a testing user. The I is a proxy object for currently enabled **Helpers**.
+The `I` object is an **actor**, an abstraction for a testing user. The `I` is a proxy object for currently enabled **Helpers**.
 
 ## Architecture
 
-CodeceptJS bypasses execution commands to helpers. Depending on the helpers enabled state, your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or Protractor, if you are interested in speed - you should use Chrome-based Puppeteer, or Electron-based Nightmare. Those engines can run tests in window mode or headlessly and doesn't require additional tools to be installed.
+CodeceptJS bypasses execution commands to helpers. Depending on the helper enabled, your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or TestCafé. If you are interested in speed - you should use Chrome-based Puppeteer.
 
 The following is a diagram of the CodeceptJS architecture:
 
@@ -30,7 +30,7 @@ The following is a diagram of the CodeceptJS architecture:
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
 However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
 
-**Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another, but don't use too many helpers of same kind at once.
+**Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another.
 
 ---
 
