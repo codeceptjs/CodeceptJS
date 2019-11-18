@@ -22,6 +22,14 @@ describe('FileSystem', () => {
     fs.dir.should.eql(path.join(global.codecept_dir, '/data'));
   });
 
+  it('should see file', () => {
+    fs.seeFile('data/fs_sample.txt');
+    fs.amInPath('data');
+    fs.seeFile('fs_sample.txt');
+    fs.getFileNames().should.contain('fs_sample.txt');
+    fs.seeFileNameMatching('sample');
+  });
+
   it('should check file contents', () => {
     fs.seeFile('data/fs_sample.txt');
     fs.seeInThisFile('FileSystem');
