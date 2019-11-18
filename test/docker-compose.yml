@@ -9,6 +9,15 @@ services:
       - ..:/codecept
       - node_modules:/codecept/node_modules
 
+  test-runner:
+    image: node:12.13-slim
+    entrypoint: /codecept/node_modules/.bin/mocha
+    command: test/runner
+    working_dir: /codecept
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
   test-helpers:
     build: ..
     entrypoint: /codecept/node_modules/.bin/mocha --invert --fgrep Appium
