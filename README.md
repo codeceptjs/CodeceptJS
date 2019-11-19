@@ -1,13 +1,14 @@
-# CodeceptJS [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg?branch=master)](https://travis-ci.org/Codeception/CodeceptJS) [![Join the chat at https://gitter.im/Codeception/CodeceptJS](https://badges.gitter.im/Codeception/CodeceptJS.svg)](https://gitter.im/Codeception/CodeceptJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1823c38c74e44724b5555e3641f72621)](https://www.codacy.com/app/DavertMik/CodeceptJS?utm_source=github.com&utm_medium=referral&utm_content=Codeception/CodeceptJS&utm_campaign=badger) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+[<img src="https://img.shields.io/badge/slack-@codeceptjs-purple.svg?logo=slack">](https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ) [<img src="https://img.shields.io/badge/discourse-codeceptjs-purple">](https://codecept.discourse.group) [![NPM version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/Codeception/CodeceptJS.svg?branch=master)](https://travis-ci.org/Codeception/CodeceptJS) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1823c38c74e44724b5555e3641f72621)](https://www.codacy.com/app/DavertMik/CodeceptJS?utm_source=github.com&utm_medium=referral&utm_content=Codeception/CodeceptJS&utm_campaign=badger) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
+# CodeceptJS
 
 Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
 
-## Modern Era Acceptance Testing Framework for NodeJS
+## Supercharged E2E Testing
 
 CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others).
-It abstracts browser interaction to simple steps which is written from a user perspective.
-A simple test that verifies that "Welcome" text is present on a main page of a site will look like:
+It abstracts browser interaction to simple steps that are written from a user perspective.
+A simple test that verifies the "Welcome" text is present on a main page of a site will look like:
 
 ```js
 Feature('CodeceptJS demo');
@@ -18,19 +19,21 @@ Scenario('check Welcome page on site', (I) => {
 });
 ```
 
-Codeception tests are:
+CodeceptJS tests are:
 
 * **Synchronous**. You don't need to care about callbacks, or promises, test scenarios are linear, your test should be too.
 * Written from **user's perspective**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
 * Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
 
-Codeception uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
+CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
 
-* [**WebDriverIO**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) - wrapper on top of Selenium bindings library [WebDriverIO](http://webdriver.io/)
-* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) framework for AngularJS testing
-* [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - helper which for testing web applications indi Electron  using NightmareJS.
-* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 * [**Puppeteer**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
+* [**WebDriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
+* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) to run tests via WebDriver protocol.
+* [**TestCafe**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
+* [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - uses Electron and NightmareJS to run tests.
+* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
+* [**Detox**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimied to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially good for React Native apps.
 
 And more to come...
 
@@ -38,8 +41,7 @@ And more to come...
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, PhantomJS, Protractor, etc,
-as CodeceptJS unifies them and makes them work as they were synchronous.
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, Protractor, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
 
 ## Features
 
@@ -47,7 +49,6 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 * Designed for scenario driven acceptance testing in BDD-style
 * Uses ES6 natively without transpiler.
 * Also plays nice with TypeScript.
-* Selenium WebDriver integration using [webdriverio](http://webdriver.io).
 * Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 * Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
@@ -55,39 +56,38 @@ as CodeceptJS unifies them and makes them work as they were synchronous.
 ## Install
 
 ```sh
-npm install -g codeceptjs
+npm install codeceptjs --save
 ```
 
 Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
 
-to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers,
-if you need to write Selenium WebDriver tests.
+to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers, if you need to write Selenium WebDriver tests.
 
 After that create your first test by executing:
 
 ```sh
-codeceptjs generate:test
+npx codeceptjs generate:test
 ```
 
 Now test is created and can be executed with
 
 ```sh
-codeceptjs run
+npx codeceptjs run
 ```
 
 If you want to write your tests using TypeScript just generate standard Type Definitions by executing:
 
 ```sh
-codeceptjs def .
+npx codeceptjs def .
 ```
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
-Note that CodeceptJS requires Node.js version 6.11 or later.
+Note that CodeceptJS requires Node.js version `8.9.1+` or later.
 
 ## Usage
 
@@ -113,12 +113,12 @@ Scenario('test some forms', (I) => {
 ```
 
 All actions are performed by I object; assertions functions start with `see` function.
-In this examples all methods of `I` are taken from WebDriverIO helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriverIO.md) to learn how to use them.
+In this examples all methods of `I` are taken from WebDriver helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriver.md) to learn how to use them.
 
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
 ```sh
-codeceptjs run --steps
+npx codeceptjs run --steps
 ```
 
 This will produce an output:
@@ -144,7 +144,7 @@ Just add `pause()` call at any place in a test and run it.
 Interactive shell can be started outside test context by running:
 
 ```sh
-codeceptjs shell
+npx codeceptjs shell
 ```
 
 ### Actions
@@ -182,13 +182,13 @@ In case you need to return a value from a webpage and use it directly in test, y
 They are expected to be used inside async/await functions, and their results will be available in test:
 
 ```js
-var assert = require('assert');
+let assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
 Scenario('test page title', async (I) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
-  var title = await I.grabTitle();
+  let title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
 });
 ```
@@ -230,16 +230,9 @@ It will create a page object file for you and add it to config.
 Let's assume we created one named `docsPage`:
 
 ```js
-'use strict';
-
-let I;
+const { I } = inject();
 
 module.exports = {
-
-  _init() {
-    I = actor();
-  },
-
   fields: {
     email: '#user_basic_email',
     password: '#user_basic_password'
@@ -269,6 +262,8 @@ Scenario('test some forms', (I, docsPage) => {
   I.dontSeeInCurrentUrl('/documentation');
 });
 ```
+
+When using typescript, replace `module.exports` with `export` for autocompletion.
 
 ## License
 

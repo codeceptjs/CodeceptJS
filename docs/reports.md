@@ -1,11 +1,9 @@
 ---
-id: reporters
+id: reports
 title: Reporters
 ---
 
 ## Cli
-
-(default)
 
 By default CodeceptJS provides cli reporter with console output.
 Test names and failures will be printed to screen.
@@ -31,9 +29,15 @@ GitHub --
 
 
   Run with --verbose flag to see NodeJS stacktrace
+
+```
+npx codeceptjs run --stepsutput add `--steps` option to `run` command:
+```
+```
+npx codeceptjs run --steps
 ```
 
-For dynamic step-by-step output add `--steps` option to `run` command:
+Output:
 
 ```sh
 GitHub --
@@ -65,9 +69,21 @@ GitHub --
  ✖ FAILED in 1260ms
 ```
 
-To get additional information about test execution use `--debug` option. This will show execution steps
+To get additional information about test execution use `--debug` option.
+
+
+```
+npx codeceptjs run --debug
+```
+
+
+This will show execution steps
 as well as notices from test runner. To get even more information with more technical details like error stack traces,
 and global promises, or events use `--verbose` mode.
+
+```
+npx codeceptjs run --verbose
+```
 
 ```sh
 GitHub --
@@ -86,11 +102,46 @@ GitHub --
 
 Please use verbose output when reporting issues to GitHub.
 
+### Dry Run
+
+There is a way to list all tests and their steps without actually executing them. Execute tests in `dry-run` mode to see all available tests:
+
+```
+npx codeceptjs dry-run
+```
+
+Output:
+
+```
+Tests from /home/davert/projects/codeceptjs/examples:
+
+Business rules --
+  ☐ do something
+Google --
+  ☐ test @123
+GitHub -- /home/davert/projects/codeceptjs/examples/github_test.js
+  ☐ Visit Home Page @retry
+  ☐ search @grop
+  ☐ signin @normal @important @slow
+  ☐ signin2
+  ☐ register
+
+  Total: 3 suites | 7 tests
+
+--- DRY MODE: No tests were executed ---
+```
+
+Pass `--steps` or `--debug` option as in `run` command to also get steps and substeps to be printed. In this mode **tests will be executed** but all helpers and plugins disabled, so no real actions will be performed.
+
+```
+npx codecepjs dry-run --debug
+```
+
+> ℹ If you use custom JavaScript code inside tests, or rely on values from `grab*` commands, dry-run may produce error output.
 
 ## Allure
 
-(recommended)
-
+> ℹ  We recommend using Allure reports on CI. Allure is one of the best open-source reporters designed to collect and show test reports in nicest way.
 
 [Allure reporter](http://allure.qatools.ru/#) is a tool to store and display test reports.
 It provides nice web UI which contains all important information on test execution.
@@ -98,7 +149,7 @@ CodeceptJS has built-in support for Allure reports. Inside reports you will have
 
 ![](https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png)
 
-*Disclaimer: Allure is a standalone tool. Please refer to [Allure documentation](https://docs.qameta.io/allure/) to learn more about using Allure reports.*
+> ▶ Allure is a standalone tool. Please refer to [Allure documentation](https://docs.qameta.io/allure/) to learn more about using Allure reports.
 
 Allure requires **Java 8** to work. Then Allure can be installed via NPM:
 
@@ -109,16 +160,16 @@ npm install -g allure-commandline --save-dev
 Add [Allure plugin](https://codecept.io/plugins/#allure) in config under `plugins` section.
 
 ```js
-"plugins": {
-    "allure": {
-    }
+plugins: {
+    allure: {
+  }
 }
 ```
 
 Run tests with allure plugin enabled:
 
 ```
-codeceptjs run --plugins allure
+npx codeceptjs run --plugins allure
 ```
 
 (optionally) To enable allure plugin permanently include `"enabled": true` into plugin config:
@@ -140,6 +191,11 @@ allure serve output
 
 Allure reporter aggregates data from other plugins like [*stepByStepReport*](https://codecept.io/plugins/#stepByStepReport) and [*screenshotOnFail*](https://codecept.io/plugins/#screenshotOnFail)
 
+Allure reports can also be generated for `dry-run` command. So you can get the first report with no tests actually being executed. Enable allure plugin in dry-run options, and pass `--debug` option to print all tests on screen.
+
+```
+npx codeceptjs dry-run --debug -p allure
+```
 
 ## XML
 
@@ -291,7 +347,8 @@ Configure mocha-multi with reports that you want:
         "stdout": "./output/console.log",
         "options": {
           "mochaFile": "./output/result.xml"
-        }
+        },
+        "attachments": true //add screenshot for a failed test
       }
     }
   }
@@ -300,7 +357,7 @@ Configure mocha-multi with reports that you want:
 Execute CodeceptJS with mocha-multi reporter:
 
 ```sh
-codeceptjs run --reporter mocha-multi
+npx codeceptjs run --reporter mocha-multi
 ```
 
 This will give you cli with steps in console and HTML report in `output` directory.

@@ -1,9 +1,9 @@
 Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
-```
+```js
 I.waitForInvisible('#popup');
 ```
 
-@param locator element located by CSS|XPath|strict locator.
-@param sec (optional) time in seconds to wait, 1 by default.
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+@param {number} [sec=1] (optional, `1` by default) time in seconds to wait

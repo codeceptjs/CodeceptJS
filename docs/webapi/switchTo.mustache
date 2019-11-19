@@ -1,3 +1,8 @@
 Switches frame or in case of null locator reverts to parent.
 
-@param locator element located by CSS|XPath|strict locator.
+```js
+I.switchTo('iframe'); // switch to first iframe
+I.switchTo(); // switch back to main page
+```
+
+@param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.

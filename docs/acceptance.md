@@ -8,7 +8,7 @@ How does your client, manager, or tester, or any other non-technical person, kno
 Acceptance (also called End to End) tests can cover standard but complex scenarios from a user's perspective. With acceptance tests you can be confident that users, following all defined scenarios, won't get errors. We check **not just functionality of application but a user interface** (UI) as well.
 
 By default CodeceptJS uses [WebDriver](/helpers/WebDriver/) helper and **Selenium** to automate browser. Within web page you can locate elements, interact with them, and check that expected elements are present on a page.
-However, you can also choose [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
+However, you can also choose [Puppeteer](/helpers/Puppeteer), [Nightmare](/helpers/Nightmare) or [Protractor](/helpers/Protractor) helpers, driven by corresponding libraries.
 No matter of helper and library you use for acceptance testing, CodeceptJS should execute same actions in similar manner.
 
 In case of CodeceptJS you can be sure that in code it will be as easy as it sounds. You just describe a test scenario with JavaScript DSL and allow the framework to handle the rest.
@@ -135,6 +135,12 @@ I.fillField('#user_email','miles@davis.com');
 I.selectOption('#user_gender','m');
 // click 'Update' button, found by name
 I.click('submitButton', '#update_form');
+```
+
+To fill in sensitive data use `secret` function:
+
+```js
+I.fillField('password', secret('123456'));
 ```
 
 ## Assertions
@@ -271,7 +277,7 @@ within({frame: [".content", "#editor"]}, () => {
 
 ## Auto Login
 
-To share the same user session accoross different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
+To share the same user session across different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
 
 This plugin requires some configuration but is very simple in use:
 
@@ -358,3 +364,46 @@ Function passed into session can use `I`, page objects, and any objects declared
 This function can also be declared as async (but doesn't work as generator).
 
 Also, you can use `within` inside a session but you can't call session from inside `within`.
+
+## Multiple Windows
+
+CodeceptJS allows to use several browser windows inside a test. Sometimes we are testing the functionality of websites that we cannot control, such as a closed-source managed package, and there are popups that either remain open for configuring data on the screen, or close as a result of clicking a window. We can use these functions in order to gain more control over which page is being tested with Codecept at any given time. For example:
+
+```js
+const assert = require('assert');
+
+Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async (I) => {
+    I.amOnPage('/');
+    const handleBeforePopup = await I.grabCurrentWindowHandle();
+    const urlBeforePopup = await I.grabCurrentUrl();
+    const allHandlesBeforePopup = await I.grabAllWindowHandles();
+    assert.equal(allHandlesBeforePopup.length, 1, 'Single Window');
+
+    await I.executeScript(() => {
+        window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400');
+    });
+
+    const allHandlesAfterPopup = await I.grabAllWindowHandles();    
+    assert.equal(allHandlesAfterPopup.length, 2, 'Two Windows');
+
+    await I.switchToWindow(allHandlesAfterPopup[1]);
+    const urlAfterPopup = await I.grabCurrentUrl();    
+    assert.equal(urlAfterPopup, 'https://www.w3schools.com/', 'Expected URL: Popup');
+    
+    assert.equal(handleBeforePopup, allHandlesAfterPopup[0], 'Expected Window: Main Window');
+    await I.switchToWindow(handleBeforePopup);
+    const currentURL = await I.grabCurrentUrl();
+    assert.equal(currentURL, urlBeforePopup, 'Expected URL: Main URL');    
+
+    await I.switchToWindow(allHandlesAfterPopup[1]);
+    const urlAfterSwitchBack = await I.grabCurrentUrl();
+    assert.equal(urlAfterSwitchBack, 'https://www.w3schools.com/', 'Expected URL: Popup');        
+    await I.closeCurrentTab();
+
+    const allHandlesAfterPopupClosed = await I.grabAllWindowHandles();    
+    assert.equal(allHandlesAfterPopupClosed.length, 1, 'Single Window');
+    const currentWindowHandle = await I.grabCurrentWindowHandle();    
+    assert.equal(currentWindowHandle, allHandlesAfterPopup[0], 'Expected Window: Main Window');
+
+}).tag('@ProofOfConcept').tag('@grabAllWindowHandles').tag('@grabCurrentWindowHandle').tag('@switchToWindow');
+```

@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   machine:
     image: circleci/classic:201710-02
-    docker_layer_caching: true
+    docker_layer_caching: false
   steps:
     - checkout
     - run: .circleci/build.sh
@@ -13,6 +13,10 @@ defaults: &defaults
         when: always
     - run:
         command: docker-compose run --rm test-rest
+        working_directory: test
+        when: always
+    - run:
+        command: docker-compose run --rm test-graphql
         working_directory: test
         when: always
     - run:
@@ -36,7 +40,7 @@ jobs:
   docker:
     <<: *defaults
     environment:
-      - NODE_VERSION: 9.2.0
+      - NODE_VERSION: 12.8.0
 
 workflows:
   version: 2

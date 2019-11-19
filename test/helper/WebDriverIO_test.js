@@ -79,69 +79,69 @@ describe('WebDriverIO', function () {
         e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
       }));
 
-    it('should check values in checkboxes', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.dontSeeInField('checkbox[]', 'not seen one');
-      yield wd.seeInField('checkbox[]', 'see test one');
-      yield wd.dontSeeInField('checkbox[]', 'not seen two');
-      yield wd.seeInField('checkbox[]', 'see test two');
-      yield wd.dontSeeInField('checkbox[]', 'not seen three');
-      return wd.seeInField('checkbox[]', 'see test three');
+    it('should check values in checkboxes', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.dontSeeInField('checkbox[]', 'not seen one');
+      await wd.seeInField('checkbox[]', 'see test one');
+      await wd.dontSeeInField('checkbox[]', 'not seen two');
+      await wd.seeInField('checkbox[]', 'see test two');
+      await wd.dontSeeInField('checkbox[]', 'not seen three');
+      await wd.seeInField('checkbox[]', 'see test three');
     });
 
-    it('should check values with boolean', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.seeInField('checkbox1', true);
-      yield wd.dontSeeInField('checkbox1', false);
-      yield wd.seeInField('checkbox2', false);
-      yield wd.dontSeeInField('checkbox2', true);
-      yield wd.seeInField('radio2', true);
-      yield wd.dontSeeInField('radio2', false);
-      yield wd.seeInField('radio3', false);
-      return wd.dontSeeInField('radio3', true);
+    it('should check values with boolean', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('checkbox1', true);
+      await wd.dontSeeInField('checkbox1', false);
+      await wd.seeInField('checkbox2', false);
+      await wd.dontSeeInField('checkbox2', true);
+      await wd.seeInField('radio2', true);
+      await wd.dontSeeInField('radio2', false);
+      await wd.seeInField('radio3', false);
+      await wd.dontSeeInField('radio3', true);
     });
 
-    it('should check values in radio', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.seeInField('radio1', 'see test one');
-      yield wd.dontSeeInField('radio1', 'not seen one');
-      yield wd.dontSeeInField('radio1', 'not seen two');
-      return wd.dontSeeInField('radio1', 'not seen three');
+    it('should check values in radio', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('radio1', 'see test one');
+      await wd.dontSeeInField('radio1', 'not seen one');
+      await wd.dontSeeInField('radio1', 'not seen two');
+      await wd.dontSeeInField('radio1', 'not seen three');
     });
 
-    it('should check values in select', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.seeInField('select1', 'see test one');
-      yield wd.dontSeeInField('select1', 'not seen one');
-      yield wd.dontSeeInField('select1', 'not seen two');
-      return wd.dontSeeInField('select1', 'not seen three');
+    it('should check values in select', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('select1', 'see test one');
+      await wd.dontSeeInField('select1', 'not seen one');
+      await wd.dontSeeInField('select1', 'not seen two');
+      await wd.dontSeeInField('select1', 'not seen three');
     });
 
-    it('should check for empty select field', function* () {
-      yield wd.amOnPage('/form/field_values');
-      return wd.seeInField('select3', '');
+    it('should check for empty select field', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('select3', '');
     });
 
-    it('should check for select multiple field', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.dontSeeInField('select2', 'not seen one');
-      yield wd.seeInField('select2', 'see test one');
-      yield wd.dontSeeInField('select2', 'not seen two');
-      yield wd.seeInField('select2', 'see test two');
-      yield wd.dontSeeInField('select2', 'not seen three');
-      return wd.seeInField('select2', 'see test three');
+    it('should check for select multiple field', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.dontSeeInField('select2', 'not seen one');
+      await wd.seeInField('select2', 'see test one');
+      await wd.dontSeeInField('select2', 'not seen two');
+      await wd.seeInField('select2', 'see test two');
+      await wd.dontSeeInField('select2', 'not seen three');
+      await wd.seeInField('select2', 'see test three');
     });
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element', function* () {
-      yield wd.amOnPage('/form/field');
-      yield wd.appendField('Name', '-');
-      yield wd.pressKey(['Control', 'a']);
-      yield wd.pressKey('Delete');
-      yield wd.pressKey(['Shift', '111']);
-      yield wd.pressKey('1');
-      return wd.seeInField('Name', '!!!1');
+    it('should be able to send special keys to element', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.appendField('Name', '-');
+      await wd.pressKey(['Control', 'a']);
+      await wd.pressKey('Delete');
+      await wd.pressKey(['Shift', '111']);
+      await wd.pressKey('1');
+      await wd.seeInField('Name', '!!!1');
     });
   });
 
@@ -460,8 +460,18 @@ describe('WebDriverIO', function () {
       .then(() => wd.click('Submit', '//form'))
       .then(() => wd.waitInUrl('/form/complex')));
 
+    it('should click by aria-label', () => wd.amOnPage('/info')
+      .then(() => wd.click('index via aria-label'))
+      .then(() => wd.see('Welcome to test app!')));
+    it('should click by title', () => wd.amOnPage('/info')
+      .then(() => wd.click('index via title'))
+      .then(() => wd.see('Welcome to test app!')));
+    it('should click by aria-labelledby', () => wd.amOnPage('/info')
+      .then(() => wd.click('index via labelledby'))
+      .then(() => wd.see('Welcome to test app!')));
+
     it('should click by accessibility_id', () => wd.amOnPage('/info')
-      .then(() => wd.click('~index'))
+      .then(() => wd.click('~index via aria-label'))
       .then(() => wd.see('Welcome to test app!')));
   });
 

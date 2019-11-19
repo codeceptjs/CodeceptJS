@@ -6,5 +6,5 @@ I.see('Welcome'); // text welcome on a page
 I.see('Welcome', '.content'); // text inside .content div
 I.see('Register', {css: 'form.register'}); // use strict locator
 ```
-@param text expected on page.
-@param context (optional) element located by CSS|Xpath|strict locator in which to search for text.
+@param {string} text expected on page.
+@param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.

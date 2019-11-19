@@ -11,6 +11,6 @@ I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
 I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
-@param fn to be executed in browser context.
-@param argsOrSec (optional) arguments for function or seconds.
-@param sec (optional) time in seconds to wait, 1 by default.
+@param {string|function} fn to be executed in browser context.
+@param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
+@param {number} [sec] (optional, `1` by default) time in seconds to wait

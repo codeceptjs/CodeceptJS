@@ -1,19 +1,17 @@
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 const puppeteer = require('puppeteer');
-const should = require('chai').should();
+const expect = require('chai').expect;
 const assert = require('assert');
 const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
+const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
 let browser;
 let page;
+let FS;
 const siteUrl = TestHelper.siteUrl();
 
 describe('Puppeteer', function () {
@@ -22,6 +20,7 @@ describe('Puppeteer', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
+
     I = new Puppeteer({
       url: siteUrl,
       windowSize: '500x700',
@@ -67,6 +66,17 @@ describe('Puppeteer', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
+    });
+  });
+
+  describe('grabDataFromPerformanceTiming', () => {
+    it('should return data from performance timing', async () => {
+      await I.amOnPage('/');
+      const res = await I.grabDataFromPerformanceTiming();
+      expect(res).to.have.property('responseEnd');
+      expect(res).to.have.property('domInteractive');
+      expect(res).to.have.property('domContentLoadedEventEnd');
+      expect(res).to.have.property('loadEventEnd');
     });
   });
 
@@ -337,11 +347,7 @@ describe('Puppeteer', function () {
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
-      .then(res => res.length.should.be.equal(1)));
-
-    it('should not locate a non-existing checkbox', () => I.amOnPage('/form/checkbox')
-      .then(() => I._locateCheckable('I disagree'))
-      .then(res => res.length.should.be.equal(0)));
+      .then(res => res.should.be.defined));
   });
 
   describe('#_locateFields', () => {
@@ -369,53 +375,199 @@ describe('Puppeteer', function () {
       await I.dontSeeInField('checkbox[]', 'not seen two');
       await I.seeInField('checkbox[]', 'see test two');
       await I.dontSeeInField('checkbox[]', 'not seen three');
-      return I.seeInField('checkbox[]', 'see test three');
+      await I.seeInField('checkbox[]', 'see test three');
     });
 
-    it('should check values with boolean', function* () {
-      yield I.amOnPage('/form/field_values');
-      yield I.seeInField('checkbox1', true);
-      yield I.dontSeeInField('checkbox1', false);
-      yield I.seeInField('checkbox2', false);
-      yield I.dontSeeInField('checkbox2', true);
-      yield I.seeInField('radio2', true);
-      yield I.dontSeeInField('radio2', false);
-      yield I.seeInField('radio3', false);
-      return I.dontSeeInField('radio3', true);
+    it('should check values with boolean', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.seeInField('checkbox1', true);
+      await I.dontSeeInField('checkbox1', false);
+      await I.seeInField('checkbox2', false);
+      await I.dontSeeInField('checkbox2', true);
+      await I.seeInField('radio2', true);
+      await I.dontSeeInField('radio2', false);
+      await I.seeInField('radio3', false);
+      await I.dontSeeInField('radio3', true);
     });
 
-    it('should check values in radio', function* () {
-      yield I.amOnPage('/form/field_values');
-      yield I.seeInField('radio1', 'see test one');
-      yield I.dontSeeInField('radio1', 'not seen one');
-      yield I.dontSeeInField('radio1', 'not seen two');
-      return I.dontSeeInField('radio1', 'not seen three');
+    it('should check values in radio', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.seeInField('radio1', 'see test one');
+      await I.dontSeeInField('radio1', 'not seen one');
+      await I.dontSeeInField('radio1', 'not seen two');
+      await I.dontSeeInField('radio1', 'not seen three');
     });
 
-    it('should check values in select', function* () {
-      yield I.amOnPage('/form/field_values');
-      yield I.seeInField('select1', 'see test one');
-      yield I.dontSeeInField('select1', 'not seen one');
-      yield I.dontSeeInField('select1', 'not seen two');
-      return I.dontSeeInField('select1', 'not seen three');
+    it('should check values in select', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.seeInField('select1', 'see test one');
+      await I.dontSeeInField('select1', 'not seen one');
+      await I.dontSeeInField('select1', 'not seen two');
+      await I.dontSeeInField('select1', 'not seen three');
     });
 
-    it('should check for empty select field', function* () {
-      yield I.amOnPage('/form/field_values');
-      return I.seeInField('select3', '');
+    it('should check for empty select field', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.seeInField('select3', '');
     });
 
-    it('should check for select multiple field', function* () {
-      yield I.amOnPage('/form/field_values');
-      yield I.dontSeeInField('select2', 'not seen one');
-      yield I.seeInField('select2', 'see test one');
-      yield I.dontSeeInField('select2', 'not seen two');
-      yield I.seeInField('select2', 'see test two');
-      yield I.dontSeeInField('select2', 'not seen three');
-      return I.seeInField('select2', 'see test three');
+    it('should check for select multiple field', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.dontSeeInField('select2', 'not seen one');
+      await I.seeInField('select2', 'see test one');
+      await I.dontSeeInField('select2', 'not seen two');
+      await I.seeInField('select2', 'see test two');
+      await I.dontSeeInField('select2', 'not seen three');
+      await I.seeInField('select2', 'see test three');
     });
   });
 
+  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+    it('should be able to send special keys to element', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '-');
+
+      await I.pressKey(['Right Shift', 'Home']);
+      await I.pressKey('Delete');
+
+      // Sequence only executes up to first non-modifier key ('Digit1')
+      await I.pressKey(['SHIFT_RIGHT', 'Digit1', 'Digit4']);
+      await I.pressKey('1');
+      await I.pressKey('2');
+      await I.pressKey('3');
+      await I.pressKey('ArrowLeft');
+      await I.pressKey('Left Arrow');
+      await I.pressKey('arrow_left');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('a');
+      await I.pressKey('KeyB');
+      await I.pressKeyUp('ShiftLeft');
+      await I.pressKey('C');
+      await I.seeInField('Name', '!ABC123');
+    });
+
+    it('should use modifier key based on operating system', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', 'value that is cleared using select all shortcut');
+
+      await I.pressKey(['ControlOrCommand', 'a']);
+      await I.pressKey('Backspace');
+      await I.dontSeeInField('Name', 'value that is cleared using select all shortcut');
+    });
+
+    it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+
+      await I.pressKey(';');
+      await I.pressKey(['Shift', ';']);
+      await I.pressKey(['Shift', 'Semicolon']);
+      await I.pressKey('=');
+      await I.pressKey(['Shift', '=']);
+      await I.pressKey(['Shift', 'Equal']);
+      await I.pressKey('*');
+      await I.pressKey(['Shift', '*']);
+      await I.pressKey(['Shift', 'Multiply']);
+      await I.pressKey('+');
+      await I.pressKey(['Shift', '+']);
+      await I.pressKey(['Shift', 'Add']);
+      await I.pressKey(',');
+      await I.pressKey(['Shift', ',']);
+      await I.pressKey(['Shift', 'Comma']);
+      await I.pressKey(['Shift', 'NumpadComma']);
+      await I.pressKey(['Shift', 'Separator']);
+      await I.pressKey('-');
+      await I.pressKey(['Shift', '-']);
+      await I.pressKey(['Shift', 'Subtract']);
+      await I.pressKey('.');
+      await I.pressKey(['Shift', '.']);
+      await I.pressKey(['Shift', 'Decimal']);
+      await I.pressKey(['Shift', 'Period']);
+      await I.pressKey('/');
+      await I.pressKey(['Shift', '/']);
+      await I.pressKey(['Shift', 'Divide']);
+      await I.pressKey(['Shift', 'Slash']);
+
+      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
+    });
+
+    it('should show correct number key when Shift modifier is active', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+
+      await I.pressKey('0');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('0');
+      await I.pressKey('Digit0');
+      await I.pressKey('Numpad0');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('1');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('1');
+      await I.pressKey('Digit1');
+      await I.pressKey('Numpad1');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('2');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('2');
+      await I.pressKey('Digit2');
+      await I.pressKey('Numpad2');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('3');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('3');
+      await I.pressKey('Digit3');
+      await I.pressKey('Numpad3');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('4');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('4');
+      await I.pressKey('Digit4');
+      await I.pressKey('Numpad4');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('5');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('5');
+      await I.pressKey('Digit5');
+      await I.pressKey('Numpad5');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('6');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('6');
+      await I.pressKey('Digit6');
+      await I.pressKey('Numpad6');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('7');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('7');
+      await I.pressKey('Digit7');
+      await I.pressKey('Numpad7');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('8');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('8');
+      await I.pressKey('Digit8');
+      await I.pressKey('Numpad8');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('9');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('9');
+      await I.pressKey('Digit9');
+      await I.pressKey('Numpad9');
+      await I.pressKeyUp('Shift');
+
+      await I.seeInField('Name', '0))01!!12@@23##34$$45%%56^^67&&78**89((9');
+    });
+  });
 
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
@@ -556,6 +708,140 @@ describe('Puppeteer', function () {
       await I.dragSlider('#slidecontainer input', 20);
       const after = await I.grabValueFrom('#slidecontainer input');
       assert.notEqual(before, after);
+    });
+  });
+
+  describe('#uncheckOption', () => {
+    it('should uncheck option that is currently checked', async () => {
+      await I.amOnPage('/info');
+      await I.uncheckOption('interesting');
+      await I.dontSeeCheckboxIsChecked('interesting');
+    });
+
+    it('should NOT uncheck option that is NOT currently checked', async () => {
+      await I.amOnPage('/info');
+      await I.uncheckOption('interesting');
+      // Unchecking again should not affect the current 'unchecked' status
+      await I.uncheckOption('interesting');
+      await I.dontSeeCheckboxIsChecked('interesting');
+    });
+  });
+
+  describe('#grabElementBoundingRect', () => {
+    it('should get the element bounding rectangle', async () => {
+      await I.amOnPage('https://www.google.com');
+      const size = await I.grabElementBoundingRect('#hplogo');
+      expect(size.x).is.greaterThan(0);
+      expect(size.y).is.greaterThan(0);
+      expect(size.width).is.greaterThan(0);
+      expect(size.height).is.greaterThan(0);
+    });
+
+    it('should get the element width', async () => {
+      await I.amOnPage('https://www.google.com');
+      const width = await I.grabElementBoundingRect('#hplogo', 'width');
+      expect(width).is.greaterThan(0);
+    });
+
+    it('should get the element height', async () => {
+      await I.amOnPage('https://www.google.com');
+      const height = await I.grabElementBoundingRect('#hplogo', 'height');
+      expect(height).is.greaterThan(0);
+    });
+  });
+
+  describe('#handleDownloads', () => {
+    before(() => {
+      // create download folder;
+      global.output_dir = path.join(`${__dirname}/../data/output`);
+
+      FS = new FileSystem();
+      FS._before();
+      FS.amInPath('output');
+    });
+
+    it('should dowload file', async () => {
+      await I.amOnPage('/form/download');
+      await I.handleDownloads();
+      await I.click('Download file');
+      await I.wait(5);
+      await FS.seeFile('downloads/avatar.jpg');
+    });
+  });
+
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#div2_button' }, 0.1);
+      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
+      });
     });
   });
 });

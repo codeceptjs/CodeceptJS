@@ -2,14 +2,21 @@ const container = require('../../lib/container');
 const assert = require('assert');
 const path = require('path');
 const FileSystem = require('../../lib/helper/FileSystem');
+const actor = require('../../lib/actor');
 
 describe('Container', () => {
   before(() => {
     global.codecept_dir = path.join(__dirname, '/..');
+    global.inject = container.support;
+    global.actor = actor;
   });
 
   afterEach(() => {
     container.clear();
+    ['I', 'dummy_page'].forEach((po) => {
+      const name = require.resolve(path.join(__dirname, `../data/${po}`));
+      delete require.cache[name];
+    });
   });
 
 
@@ -114,6 +121,16 @@ describe('Container', () => {
       assert.ok(container.support('I'));
     });
 
+    it('should load DI and return a reference to the module', () => {
+      container.create({
+        include: {
+          dummyPage: './data/dummy_page',
+        },
+      });
+      const dummyPage = require('../data/dummy_page');
+      container.support('dummyPage').should.be.eql(dummyPage);
+    });
+
     it('should load I from path and execute _init', () => {
       container.create({
         include: {
@@ -121,7 +138,7 @@ describe('Container', () => {
         },
       });
       assert.ok(container.support('I'));
-      container.support('I').should.have.keys('_init', 'doSomething');
+      container.support('I').should.include.keys('_init', 'doSomething');
       assert(global.I_initialized);
     });
 
@@ -129,6 +146,44 @@ describe('Container', () => {
       container.create({
         include: {
           dummyPage: './data/dummy_page',
+        },
+      });
+      assert.ok(container.support('dummyPage'));
+      container.support('dummyPage').should.include.keys('openDummyPage');
+    });
+
+    it('should load DI and inject I into PO', () => {
+      container.create({
+        include: {
+          dummyPage: './data/dummy_page',
+        },
+      });
+      assert.ok(container.support('dummyPage'));
+      assert.ok(container.support('I'));
+      container.support('dummyPage').should.include.keys('openDummyPage');
+      container.support('dummyPage').getI().should.have.keys(Object.keys(container.support('I')));
+    });
+
+
+    it('should load DI and inject custom I into PO', () => {
+      container.create({
+        include: {
+          dummyPage: './data/dummy_page',
+          I: './data/I',
+        },
+      });
+      assert.ok(container.support('dummyPage'));
+      assert.ok(container.support('I'));
+      container.support('dummyPage').should.include.keys('openDummyPage');
+      container.support('dummyPage').getI().should.include.keys(Object.keys(container.support('I')));
+    });
+
+    it('should load DI includes provided as objects', () => {
+      container.create({
+        include: {
+          dummyPage: {
+            openDummyPage: () => 'dummy page opened',
+          },
         },
       });
       assert.ok(container.support('dummyPage'));

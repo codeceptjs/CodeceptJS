@@ -10,14 +10,14 @@ After running `codeceptjs init` it should be saved in test root.
 
 Here is an overview of available options with their defaults:
 
-* **tests**: `"./*_test.js"` - pattern to locate tests
-* **grep**: - patern to filter tests by name
+* **tests**: `"./*_test.js"` - pattern to locate tests. Allows to enter [glob pattern](https://github.com/isaacs/node-glob). 
+* **grep**: - pattern to filter tests by name
 * **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require` paths
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
 * **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/advanced/#multiple-browsers-execution)
+* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/parallel#multiple-browsers-execution)
 * **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
 * **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
 * **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
@@ -93,7 +93,24 @@ exports.config = {
 If you prefer to store your configuration files in a different location, or with a different name, you can do that with `--config` or `-c:
 
 ```sh
-codeceptjs run --config=./path/to/my/config.json
+codeceptjs run --config=./path/to/my/config.js
+```
+
+## Common Configuration Patterns
+
+[`@codeceptjs/configure` package](https://github.com/codecept-js/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
+
+Install it and enable to easily switch to headless/window mode, change window size, etc.
+
+```js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+setHeadlessWhen(process.env.CI);
+setWindowSize(1600, 1200);
+
+exports.config = {
+  // ...
+}
 ```
 
 ## Profile

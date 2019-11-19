@@ -15,6 +15,7 @@ module.exports.config = {
         ],
       },
     },
+    MockRequest: {},
   },
   include: {},
   bootstrap: false,

@@ -24,22 +24,20 @@ codeceptjs gh
 
 This command generates a basic helper and appends it to `helpers` section of config file:
 
-```json
-"helpers": {
-  "WebDriver": {  },
-  "MyHelper": {
-    "require": "./path/to/module.js"
+```js
+helpers: {
+  WebDriver: {  },
+  MyHelper: {
+    require: './path/to/module'
   }
 }
 ```
 
 Helpers are ES6 classes inherited from [corresponding abstract class](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js).
-Generated Helper will be added to `codecept.json` config. It should look like this:
+Generated Helper will be added to `codecept.conf.js` config. It should look like this:
 
 ```js
-'use strict';
-
-let Helper = codecept_helper;
+const Helper = codecept_helper;
 
 class MyHelper extends Helper {
 
@@ -79,11 +77,10 @@ Method `seeAuthentication` will use `client` instance of WebDriver to get access
 Standard NodeJS assertion library will be used (you can use any).
 
 ```js
-'use strict';
-let Helper = codecept_helper;
+const Helper = codecept_helper;
 
 // use any assertion library you like
-let assert = require('assert');
+const assert = require('assert');
 
 class MyHelper extends Helper {
   /**
@@ -111,6 +108,29 @@ class MyHelper extends Helper {
 module.exports = MyHelper;
 ```
 
+## Puppeteer Example
+
+Puppteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
+
+Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
+
+```js
+const Helper = codecept_helper;
+const puppeteer = require('puppeteer');
+const iPhone = puppeteer.devices['iPhone 6'];
+
+class MyHelper extends Helper {
+
+  async emulateIPhone() {
+    const { page } = this.helpers.Puppeteer;
+    await page.emulate(iPhone);
+  }
+
+}
+
+module.exports = MyHelper;
+```
+
 ## Protractor Example
 
 Protractor example demonstrates usage of global `element` and `by` objects.
@@ -118,14 +138,13 @@ However `browser` should be accessed from a helper instance via `this.helpers['P
 We also use `chai-as-promised` library to have nice assertions with promises.
 
 ```js
-'use strict';
-let Helper = codecept_helper;
+const Helper = codecept_helper;
 
 // use any assertion library you like
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
-var expect = chai.expect;
+const expect = chai.expect;
 
 class MyHelper extends Helper {
   /**
@@ -136,7 +155,7 @@ class MyHelper extends Helper {
     this.helpers['Protractor'].browser.refresh();
 
     // you can use `element` as well as in protractor
-    var history = element.all(by.repeater('result in memory'));
+    const history = element.all(by.repeater('result in memory'));
 
     // use chai as promised for better assertions
     // end your method with `return` to handle promises
@@ -188,6 +207,7 @@ Helpers may contain several hooks you can use to handle events of a test.
 Implement corresponding methods to them.
 
 * `_init` - before all tests
+* `_finishTest` - after all tests
 * `_before` - before a test
 * `_beforeStep` - before each step
 * `_afterStep` - after each step
@@ -257,3 +277,6 @@ _before() {
 
 Retry rules are available in array `recorder.retries`. The last retry rule can be disabled by running `recorder.retries.pop()`;
 
+## Using Typescript
+
+When using typescript, replace `module.exports` with `export` for autocompletion.

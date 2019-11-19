@@ -61,6 +61,64 @@ describe('Locator', () => {
     doc = new Dom().parseFromString(xml);
   });
 
+  describe('constructor', () => {
+    describe('with string argument', () => {
+      it('should create css locator', () => {
+        const l = new Locator('#foo');
+        expect(l.type).to.equal('css');
+        expect(l.value).to.equal('#foo');
+        expect(l.toString()).to.equal('#foo');
+      });
+
+      it('should create xpath locator', () => {
+        const l = new Locator('//foo[@bar="baz"]/*');
+        expect(l.type).to.equal('xpath');
+        expect(l.value).to.equal('//foo[@bar="baz"]/*');
+        expect(l.toString()).to.equal('//foo[@bar="baz"]/*');
+      });
+
+      it('should create fuzzy locator', () => {
+        const l = new Locator('foo');
+        expect(l.type).to.equal('fuzzy');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('foo');
+      });
+
+      it('should create described custom default type locator', () => {
+        const l = new Locator('foo', 'defaultLocator');
+        expect(l.type).to.equal('defaultLocator');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('foo');
+      });
+    });
+
+    describe('with object argument', () => {
+      it('should create id locator', () => {
+        const l = new Locator({ id: 'foo' });
+        expect(l.type).to.equal('id');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('{id: foo}');
+      });
+
+      it('should create described custom locator', () => {
+        const l = new Locator({ customLocator: '=foo' });
+        expect(l.type).to.equal('customLocator');
+        expect(l.value).to.equal('=foo');
+        expect(l.toString()).to.equal('{customLocator: =foo}');
+      });
+    });
+
+    describe('with Locator object argument', () => {
+      it('should create id locator', () => {
+        const l = new Locator(new Locator({ id: 'foo' }));
+        expect(l).to.eql(new Locator({ id: 'foo' }));
+        expect(l.type).to.equal('id');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('{id: foo}');
+      });
+    });
+  });
+
   it('should transform CSS to xpath', () => {
     const l = new Locator('p > #user', 'css');
     const nodes = xpath.select(l.toXPath(), doc);
@@ -98,7 +156,7 @@ describe('Locator', () => {
       .find('td')
       .first();
     const nodes = xpath.select(l.toXPath(), doc);
-    expect(nodes).to.have.length(1);
+    expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Show');
   });
 
@@ -123,11 +181,30 @@ describe('Locator', () => {
 
   it('should select element by siblings', () => {
     const l = Locator.build('//table')
-      .withChild('td')
-      .withText('Also Edit')
-      .first();
+      .withChild(Locator.build('tr')
+        .withChild('td')
+        .withText('Also Edit'));
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
+  });
+
+  it('should throw an error when xpath with round brackets is nested', () => {
+    assert.throws(() => {
+      Locator.build('tr').find('(./td)[@id="id"]');
+    }, /round brackets/);
+  });
+
+  it('should throw an error when locator with specific position is nested', () => {
+    assert.throws(() => {
+      Locator.build('tr').withChild(Locator.build('td').first());
+    }, /round brackets/);
+  });
+
+  it('should not select element by deep nested siblings', () => {
+    const l = Locator.build('//table')
+      .withChild('td');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(0, l.toXPath());
   });
 
   it('should select element by siblings', () => {

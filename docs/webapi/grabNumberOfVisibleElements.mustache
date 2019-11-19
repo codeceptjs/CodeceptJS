@@ -1,7 +1,8 @@
 Grab number of visible elements by locator.
 
 ```js
-I.grabNumberOfVisibleElements('p');
+let numOfElements = await I.grabNumberOfVisibleElements('p');
 ```
 
-@param locator located by CSS|XPath|strict locator.
+@param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+@returns {Promise<number>} number of visible elements

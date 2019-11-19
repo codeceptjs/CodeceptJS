@@ -264,3 +264,22 @@ class timeout {
         include __DIR__.'/view/timeout.php';
     }
 }
+
+class download {
+    function GET()
+    {
+        $file_url = __DIR__ . '/avatar.jpg';
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="avatar.jpg"');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file_url)); //Absolute URL
+        ob_clean();
+        flush();
+        readfile($file_url); //Absolute URL
+        exit();
+    }
+}

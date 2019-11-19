@@ -1,3 +1,13 @@
-Performs right click on an element matched by CSS or XPath.
+Performs right click on a clickable element matched by semantic locator, CSS or XPath.
 
-@param locator element located by CSS|XPath|strict locator.
+```js
+// right click element with id el
+I.rightClick('#el');
+// right click link or button with text "Click me"
+I.rightClick('Click me');
+// right click button with text "Click me" inside .context
+I.rightClick('Click me', '.context');
+```
+
+@param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
+@param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.

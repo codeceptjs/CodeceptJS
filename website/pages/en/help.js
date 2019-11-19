@@ -20,7 +20,7 @@ function Help(props) {
   const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
 
   const forumUrl = 'https://codecept.discourse.group';
-  const slackUrl = 'https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LTNiMTE5YzNlMjQyNWYwZjAzODE3ZTI1MmVkYjY0YTYyNDZmMWJjM2VlODg3NTQzYzM2OGE5ZmIwODFjODk1MzI';
+  const slackUrl = 'https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ';
   const commercialSupport = 'http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=top_2&utm_term=link&utm_campaign=reference';
   const issues = 'https://github.com/Codeception/CodeceptJS/issues';
 
@@ -32,7 +32,7 @@ function Help(props) {
       title: 'Discussion Board',
     },
     {
-      content: `[Do you want to chat? Come to us!](${slackUrl}) Please be polite, try not just to ask but to help others. Also we have dedicated channels for each of driver helpers in CodeceptJS.`,
+      content: `[Do you want to chat? Come to us!](${slackUrl}) Please be polite, try not just to ask but to help others`,
       title: 'Join our Slack',
     },
     {

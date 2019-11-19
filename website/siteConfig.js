@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: 'CodeceptJS', // Title for your website.
-  tagline: 'Modern End 2 End Testing Framework for NodeJS',
+  tagline: 'SuperCharged End 2 End Testing with WebDriver & Puppeteer',
   url: 'https://codecept.io', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
@@ -41,12 +41,12 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'quickstart', label: 'Quickstart'},
+    {page: 'quickstart', label: 'Quickstart'},
     {doc: 'basics', label: 'Guides'},
-    {page: 'reference', label: 'Reference'},
+    {page: 'reference', label: 'API'},
     {page: 'changelog', label: 'Releases'},
     {page: 'help', label: 'Support'},
-    { href: 'https://codecept.discourse.group', label: 'Forum' },
+    { href: 'https://github.com/Codeception/CodeceptJS', label: 'GitHub' },
 
     // {doc: 'changelog', label: 'Reference'},
     // {blog: true, label: 'Blog'},
@@ -103,11 +103,15 @@ const siteConfig = {
   },
 
   // Add custom scripts here that would be placed in <script> tags.
-  scripts: ['https://buttons.github.io/buttons.js'],
+  scripts: [
+    'https://buttons.github.io/buttons.js',
+    'https://platform.twitter.com/widgets.js',
+  ],
 
   // <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
   stylesheets: [
+    'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
     'https://fonts.googleapis.com/css?family=IBM+Plex+Sans',
     'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
     // {
@@ -130,6 +134,9 @@ const siteConfig = {
     indexName: 'codecept',
     algoliaOptions: {} // Optional, if provided by Algolia
   },
+
+  gaTrackingId: 'UA-30075781-3',
+  gaGtag: true,
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,

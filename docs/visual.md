@@ -62,7 +62,7 @@ Lets consider visual testing for [CodeceptJS Home](http://codecept.io)
 ```js
 Feature('To test screen comparison with resemble Js Example test');
 
-Scenario('Compare CodeceptIO Home Page @visual-test', async (I, adminPage) => {
+Scenario('Compare CodeceptIO Home Page @visual-test', async (I) => {
     I.amOnPage("/");
     I.saveScreenshot("Codecept_IO_Screenshot_Image.png");
     I.seeVisualDiff("Codecept_IO_Screenshot_Image.png", {tolerance: 2, prepareBaseImage: false});
@@ -182,4 +182,92 @@ Scenario('Compare CodeceptIO Home Page @visual-test', async (I, adminPage) => {
 
 Depending of your configuration this test will fail if no baseline exists and log the link to the image to accept or automatically accept the first run as baseline.
 > You can accept the first image as baseline automatically via ```autoBaseline: true``` _default is false_
+
+## Using Applitools
+
+Applitools helps Test Automation engineers, DevOps, and FrontEnd Developers continuously test and validate visually perfect mobile, web, and native apps. Now it can be used with CodeceptJS.
+
+### Setup
+
+Create an account at [Applitools](https://applitools.com/users/register) and install the npm packages
+
+```
+npm i codeceptjs-applitoolshelper --save
+npm i webdriverio@5 --save
+```
+
+### Configuring
+
+```js
+...
+  helpers: {
+    WebDriver: {
+      url: 'https://applitools.com/helloworld',
+      browser: 'chrome',
+      desiredCapabilities: {
+        chromeOptions: {
+          args: [ '--headless', '--disable-extensions', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage']
+        }
+      },
+      windowSize: '1920x600',
+      smartWait: 5000,
+      timeouts: {
+        'script': 60000,
+        'page load': 10000
+      },
+    },
+    ApplitoolsHelper: {
+      require: 'codeceptjs-applitoolshelper',
+      applitoolsKey: 'YOUR_API_KEY'
+    }
+  },
+...
+```
+
+#### To use this helper you need to provide the following info:
+
+- applitoolsKey (Required): You can find your API key under the user menu located at the right hand side of the test manager toolbar
+- windowSize (Optional): the windows size as for instance 1440x700, if not provided, the default 1920x600 will be used. The windowSize will follow this precedence: ApplitoolsHelper, Webdriver.
+- appName (Optional): you can either provide your desired application name, if not provided, the default 'Application Under Test' will be used.
+
+### Usage
+
+```javascript
+/**
+ * @param pageToCheck {string} Name of page you want to check
+ */
+I.eyeCheck(pageToCheck);
+
+```
+
+The first time you run this test a new baseline will be created, and subsequent test runs will be compared to this baseline. If any screenshot mismatch its baseline image in a perceptible way, there will be a `DiffsFoundException` which includes a URL that points to a detailed report where you can see the detected differences and take appropriate actions such as reporting bugs, updating the baseline and more.
+
+```js
+-- FAILURES:
+
+  1) Applitools functionality
+       Check home page @test:
+     Test 'Applitools functionality' of 'Application Under Test' detected differences!. See details at: https://eyes.applitools.com/app/batches/00000251831777088983/00000251831777088717?accountId=KO-Oh9tXI0e8VF8Ha_GLVA~~
+```
+
+> You can find the latest documentation here [Applitools Docs](https://applitools.com/tutorials/webdriverio5.html#run-your-first-test)
+
+### Example
+
+Lets consider visual testing for [CodeceptJS Home](http://codecept.io).
+You can also find example repo here: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
+
+```js
+const { I } = inject();
+
+Feature('Applitools functionality');
+
+Before(() => {
+    I.amOnPage('https://applitools.com/helloworld');
+});
+
+Scenario('Check home page @test', async () => {
+    await I.eyeCheck('Homepage');
+});
+```
 

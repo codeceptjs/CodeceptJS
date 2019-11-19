@@ -4,6 +4,7 @@ coverage
 coverage
 site
 website/build
+website/wiki
 .idea
 docs/build
 test/data/output

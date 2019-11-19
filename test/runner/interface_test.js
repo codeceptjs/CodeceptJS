@@ -27,7 +27,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should rerun retried steps', (done) => {
-    exec(config_run_config('codecept.retry.json'), (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retry.json')} --grep @test1`, (err, stdout, stderr) => {
       stdout.should.include('Retry'); // feature
       stdout.should.include('Retries: 4'); // test name
       assert(!err);
@@ -35,6 +35,43 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should not propagate retries to non retried steps', (done) => {
+    exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.include('Retries: 1'); // test name
+      assert(err);
+      done();
+    });
+  });
+
+  it('should use retryFailedStep plugin for failed steps', (done) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test1`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.include('Retries: 5'); // test name
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should not retry wait* steps in retryFailedStep plugin', (done) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test2`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.not.include('Retries: 5');
+      stdout.should.include('Retries: 1');
+      assert(err);
+      done();
+    });
+  });
+
+  it('should not retry steps if retryFailedStep plugin disabled', (done) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test3`, (err, stdout, stderr) => {
+      stdout.should.include('Retry'); // feature
+      stdout.should.not.include('Retries: 5');
+      stdout.should.include('Retries: 1');
+      assert(err);
+      done();
+    });
+  });
 
   it('should include grep option tests', (done) => {
     exec(config_run_config('codecept.grep.json'), (err, stdout, stderr) => {
@@ -145,7 +182,6 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-
   it('should display meta steps and substeps', (done) => {
     exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
@@ -159,6 +195,36 @@ describe('CodeceptJS Interface', () => {
         '      I see file "codecept.po.json"',
         '    I see file "codecept.po.json"',
       ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should work with inject() keyword', (done) => {
+    exec(`${config_run_config('codecept.inject.po.json')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      stdout.should.include('injected');
+      lines.should.include.members([
+        '  check current dir',
+        '    I: openDir ',
+        '      I am in path "."',
+        '      I see file "codecept.json"',
+        '    MyPage: hasFile ',
+        '      I see file "codecept.json"',
+        '      I see file "codecept.po.json"',
+        '    I see file "codecept.po.json"',
+      ]);
+      stdout.should.include('OK  | 1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should inject page objects via proxy', (done) => {
+    exec(`${config_run_config('../inject-fail-example')} --debug`, (err, stdout) => {
+      stdout.should.include('newdomain');
+      stdout.should.include("[ 'veni', 'vedi', 'vici' ]", 'array objects work');
       stdout.should.include('OK  | 1 passed');
       assert(!err);
       done();

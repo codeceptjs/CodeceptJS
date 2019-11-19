@@ -5,5 +5,6 @@ Resumes test execution, so **should be used inside an async function with `await
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 ```
 
-@param locator element located by CSS|XPath|strict locator.
-@param cssProperty CSS property name.
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+@param {string} cssProperty CSS property name.
+@returns {Promise<string>} CSS value

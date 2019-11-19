@@ -1,0 +1,19 @@
+{
+  "tests": "./*_test.retryFailed.js",
+  "timeout": 10000,
+  "output": "./output",
+  "helpers": {
+    "Retry": {
+      "require": "./retry_helper.js"
+    }
+  },
+  "plugins": {
+    "retryFailedStep": {
+      "enabled": true,
+      "retries": 5
+    }
+  },
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}

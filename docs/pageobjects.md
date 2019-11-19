@@ -1,10 +1,37 @@
 ---
 id: pageobjects
-title: Reusing Code with Page Objects
+title: Page Objects
 ---
 
 UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.
+
+## Dependency Injection
+
+All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework. If you want an object to be injected in scenario by its name add it to configuration:
+
+```js
+  include: {
+    I: "./custom_steps.js",
+    Smth: "./pages/Smth.js",
+    loginPage: "./pages/Login.js",
+    signinFragment: "./fragments/Signin.js"
+  }
+```
+
+Now this objects can be retrieved by the name specified in configuration.
+
+Required objects can be obtained via parameters in tests or via global `inject()` call.
+
+```js
+// globally inject objects by name
+const { I, myPage, mySteps } = inject();
+
+// inject objects for a test by name
+Scenario('sample test', (I, myPage, mySteps) => {
+  // ...
+})
+```
 
 ## Actor
 
@@ -23,7 +50,7 @@ module.exports = function() {
 }
 ```
 
-Please notice that instead of `I` you should use `this` in current context.
+> ℹ Instead of `I` you should use `this` in current context.
 
 ## PageObject
 
@@ -31,13 +58,13 @@ In case an application has different pages (login, admin, etc) you should use a 
 CodeceptJS can generate a template for it with the command:
 
 ```sh
-codeceptjs gpo
+npx codeceptjs gpo
 ```
 
 This will create a sample template for a page object and include it into `codecept.json` config.
 
 ```js
-const I = actor();
+const { I, otherPage } = inject();
 
 module.exports = {
 
@@ -49,7 +76,8 @@ As you see, `I` object is available there so you can use it as you do in tests.
 General page object for a login page may look like this:
 
 ```js
-const I = actor();
+// enable I and another page object
+const { I, registerPage } = inject();
 
 module.exports = {
 
@@ -65,6 +93,11 @@ module.exports = {
     I.fillField(this.fields.email, email);
     I.fillField(this.fields.password, password);
     I.click(this.submitButton);
+  },
+
+  register(email, password) {
+    // use another page object inside current one
+    registerPage.registerUser({ email, password });
   }
 }
 ```
@@ -82,7 +115,7 @@ Scenario('login', (I, loginPage) => {
 Also you can use `async/await` inside PageObject:
 
 ```js
-const I = actor();
+const { I } = inject();
 
 module.exports = {
 
@@ -94,7 +127,7 @@ module.exports = {
   },
 
   // introducing methods
-  openMainArticle: async () => {
+  async openMainArticle() {
     I.waitForVisible(this.container)
     let _this = this
     let title;
@@ -118,13 +151,51 @@ Scenario('login2', async (I, loginPage, basePage) => {
 });
 ```
 
+Page Objects can be be functions, arrays or classes. When declared page objects as classes you can easily extend them in other page objects.
+
+Here is an example of declaring page object as a class:
+
+```js
+const { expect } = require('chai');
+const { I } = inject();
+
+class AttachFile {
+  constructor() {
+    this.inputFileField = 'input[name=fileUpload]';
+    this.fileSize = '.file-size';
+    this.fileName = '.file-name'
+  }
+
+  async attachFileFrom(path) {
+    await I.waitForVisible(this.inputFileField)
+    await I.attachFile(this.inputFileField, path)
+  }
+
+  async hasFileSize(fileSizeText) {
+    await I.waitForElement(this.fileSize)
+    const size = await I.grabTextFrom(this.fileSize)
+    expect(size).toEqual(fileSizeText)
+  }
+
+  async hasFileSizeInPosition(fileNameText, position) {
+    await I.waitNumberOfVisibleElements(this.fileName, position)
+    const text = await I.grabTextFrom(this.fileName)
+    expect(text[position - 1]).toEqual(fileNameText)
+  }
+}
+
+// For inheritance
+exports.AttachFile = AttachFile
+module.exports = new AttachFile();
+```
+
 ## Page Fragments
 
 In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
 by running `go` command with `--type` (or `-t`) option:
 
 ```sh
-codeceptjs go --type fragment
+npx codeceptjs go --type fragment
 ```
 
 Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
@@ -133,7 +204,7 @@ For instance, it is recommended that Page Fragment to include a root locator of 
 Methods of page fragment can use `within` block to narrow scope to a root locator:
 
 ```js
-const I = actor();
+const { I } = inject();
 // fragments/modal.js
 module.exports = {
 
@@ -160,11 +231,10 @@ Scenario('failed_login', async (I, loginPage, modal) => {
 });
 ```
 
-To use a Page Fragment within a Page Object, you need to `require` it on top of the Page Object file:
+To use a Page Fragment within a Page Object, you can use `inject` method to get it by its name.
 
 ```js
-const I = actor();
-const modal = require('../fragments/modal');
+const { I, modal } = inject();
 
 module.exports = {
   doStuff() {
@@ -173,8 +243,9 @@ module.exports = {
     ...
   }
 }
-
 ```
+
+> PageObject and PageFragment names are declared inside `include` section of `codecept.conf.js`. See [Dependency Injection](#dependency-injection)
 
 ## StepObjects
 
@@ -182,15 +253,13 @@ StepObjects represent complex actions which involve usage of multiple web pages.
 StepObject can be created similarly to PageObjects or PageFragments:
 
 ```sh
-codeceptjs go --type step
+npx codeceptjs go --type step
 ```
 
 Technically they are the same as PageObjects. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:
 
 ```js
-const I = actor();
-const userPage = require('../pages/user');
-const permissionPage = require('../pages/permissions');
+const { I, userPage, permissionPage } = inject();
 
 module.exports = {
 
@@ -204,26 +273,7 @@ module.exports = {
 };
 ```
 
-## Dependency Injection
-
-### Configuration
-
-All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework.
-If you want an object to be injected in scenario by its name add it to configuration:
-
-```js
-  "include": {
-    "I": "./custom_steps.js",
-    "Smth": "./pages/Smth.js",
-    "loginPage": "./pages/Login.js",
-    "signinFragment": "./fragments/Signin.js"
-  }
-```
-
-Now this objects can be retrieved by the name specified in configuration.
-CodeceptJS generator commands (like `codeceptjs gpo`) will update configuration for you.
-
-### Dynamic Injection
+## Dynamic Injection
 
 You can inject objects per test by calling `injectDependencies` function on Scenario:
 
@@ -235,4 +285,3 @@ Scenario('search @grop', (I, Data) => {
 ```
 
 This requires `./data.js` module and assigns it to `Data` argument in a test.
-

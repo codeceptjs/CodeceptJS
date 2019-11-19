@@ -4,4 +4,5 @@ Resumes test execution, so **should be used inside async function with `await`**
 ```js
 let email = await I.grabValueFrom('input[name=email]');
 ```
-@param locator field located by label|name|CSS|XPath|strict locator.
+@param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
+@returns {Promise<string>} attribute value

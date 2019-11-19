@@ -78,5 +78,21 @@ describe('ui', () => {
 
       dataScenarioConfig.scenarios.forEach(scenario => should.equal(helper, scenario.test.config[helperName]));
     });
+
+    it("should shows object's toString() method in each scenario's name if the toString() method is overrided", () => {
+      const data = [
+        {
+          toString: () => 'test case title',
+        },
+      ];
+      const dataScenarioConfig = context.Data(data).Scenario('scenario', () => {});
+      should.equal('scenario | test case title', dataScenarioConfig.scenarios[0].test.title);
+    });
+
+    it("should shows JSON.stringify() in each scenario's name if the toString() method isn't overrided", () => {
+      const data = [{ name: 'John Do' }];
+      const dataScenarioConfig = context.Data(data).Scenario('scenario', () => {});
+      should.equal(`scenario | ${JSON.stringify(data[0])}`, dataScenarioConfig.scenarios[0].test.title);
+    });
   });
 });

@@ -15,7 +15,7 @@ let started;
 
 describe('Scenario', () => {
   beforeEach(() => {
-    test = {};
+    test = { timeout: () => { } };
     fn = sinon.spy();
     test.fn = fn;
   });

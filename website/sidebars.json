@@ -1,19 +1,19 @@
 {
   "docs": {
-    "Quickstart": [
-      "quickstart",
-      "basics",
-      "video"
-    ],
     "Web Testing": [
-      "acceptance",
+      "basics",
+      "webdriver",
       "puppeteer",
+      "testcafe",
       "angular",
       "nightmare",
-      "visual"
+      "visual",
+      "email",
+      "react"
     ],
     "Mobile Testing": [
-      "mobile"
+      "mobile",
+      "detox"
     ],
     "Organizing Tests": [
       "best",
@@ -22,32 +22,43 @@
       "helpers",
       "bdd",
       "data",
-      "hooks",
+      "parallel",
       "reports",
-      "advanced"
+      "advanced",
+      "hooks"
+    ],
+    "Tutorials": [
+      "books",
+      "videos",
+      "examples"
     ]
   },
   "reference": {
-    "Reference": [
+    "API": [
       "installation",
       "commands",
       "configuration",
       "plugins",
       "docker",
-      "reports",
       "translation"
     ],
     "Driver Helpers": [
       "helpers/WebDriver",
       "helpers/Puppeteer",
       "helpers/Protractor",
+      "helpers/TestCafe",
       "helpers/Nightmare",
-      "helpers/Appium"
+      "helpers/Appium",
+      "helpers/Detox"
     ],
-    "Data Helpers": [
+    "Additional Helpers": [
       "helpers/REST",
       "helpers/ApiDataFactory",
-      "helpers/FileSystem"
+      "helpers/GraphQL",
+      "helpers/GraphQLDataFactory",
+      "helpers/MockRequest",
+      "helpers/FileSystem",
+      "community-helpers"
     ]
   }
 }

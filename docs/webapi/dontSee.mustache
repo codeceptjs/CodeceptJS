@@ -2,7 +2,9 @@ Opposite to `see`. Checks that a text is not present on a page.
 Use context parameter to narrow down the search.
 
 ```js
-I.dontSee('Login'); // assume we are already logged in
+I.dontSee('Login'); // assume we are already logged in.
+I.dontSee('Login', '.nav'); // no login inside .nav element
 ```
-@param text is not present.
-@param context (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+
+@param {string} text which is not present.
+@param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.

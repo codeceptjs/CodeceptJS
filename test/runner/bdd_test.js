@@ -16,6 +16,8 @@ describe('BDD Gherkin', () => {
   it('should run feature files', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Checkout process'); // feature
+      stdout.should.include('-- before checkout --');
+      stdout.should.include('-- after checkout --');
       // stdout.should.include('In order to buy products'); // test name
       stdout.should.include('Given I have product with $600 price');
       stdout.should.include('And I have product with $1000 price');
@@ -45,6 +47,29 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should print events in verbose mode', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --verbose --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Emitted | step.start (I add product "Harry Potter", 5)');
+      stdout.should.include('Emitted | step.comment (Given I have products in my cart');
+      stdout.should.include('name            | category        | price');
+      stdout.should.include('Harry Potter    | Books           | 5');
+      stdout.should.include('iPhone 5        | Smartphones     | 1200 ');
+      stdout.should.include('Nuclear Bomb    | Weapons         | 100000');
+      stdout.should.include(')');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should obfuscate secret substeps in debug mode', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --debug --grep "Secrets"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Given I login'); // feature
+      stdout.should.not.include('password');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run feature with examples files', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout examples"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(' order discount {"price":"10","total":"10.0"}');
@@ -61,6 +86,17 @@ describe('BDD Gherkin', () => {
 
       stdout.should.include(' order discount {"price":"50","total":"45.0"}');
       stdout.should.include(' Given I have product with price 50$ in my cart');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should run feature with table and examples files', (done) => {
+    exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Include Examples in dataTtable placeholder"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('name            | Nuclear Bomb ');
+      stdout.should.include('price           | 20 ');
+      stdout.should.include('name            | iPhone 5 ');
+      stdout.should.include('price           | 10 ');
       assert(!err);
       done();
     });
@@ -197,6 +233,46 @@ When('I submit {int} form', () => {
 
 Then('I should log in', () => {
   // From "support/dummy.feature" {"line":8,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with an opening paren \\( only$/, () => {
+  // From "support/dummy.feature" {"line":9,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a closing paren \\) only$/, () => {
+  // From "support/dummy.feature" {"line":10,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a opening brace \\{ only$/, () => {
+  // From "support/dummy.feature" {"line":11,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a closing brace \\} only$/, () => {
+  // From "support/dummy.feature" {"line":12,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a slash http:\\/\\/example\\.com\\/foo$/, () => {
+  // From "support/dummy.feature" {"line":13,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \\( paren and an (\\d+) int$/, () => {
+  // From "support/dummy.feature" {"line":14,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \\( paren and a (\\d+\\.\\d+) float$/, () => {
+  // From "support/dummy.feature" {"line":15,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
+  // From "support/dummy.feature" {"line":16,"column":5}
   throw new Error('Not implemented yet');
 });`);
       assert(!err);

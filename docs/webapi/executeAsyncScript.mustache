@@ -19,5 +19,6 @@ let val = await I.executeAsyncScript(function(url, done) {
 }, 'http://ajax.callback.url/');
 ```
 
-@param fn function to be executed in browser context.
-@param ...args args to be passed to function.
+@param {string|function} fn function to be executed in browser context.
+@param {...any} args to be passed to function.
+@return {Promise<any>}

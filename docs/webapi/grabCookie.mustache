@@ -7,4 +7,5 @@ let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 
-@param name (optional) cookie name.
+@param {?string} [name=null] cookie name.
+@returns {Promise<string>} attribute value

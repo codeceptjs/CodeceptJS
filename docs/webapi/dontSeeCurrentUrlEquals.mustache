@@ -1,4 +1,9 @@
 Checks that current url is not equal to provided one.
 If a relative url provided, a configured url will be prepended to it.
 
-@param url value to check.
+```js
+I.dontSeeCurrentUrlEquals('/login'); // relative url are ok
+I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also ok
+```
+
+@param {string} url value to check.

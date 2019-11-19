@@ -1,5 +1,5 @@
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
-Filename is relative to output folder. 
+Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
@@ -7,5 +7,5 @@ I.saveScreenshot('debug.png');
 I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 
-@param fileName file name to save. 
-@param fullPage (optional) flag to enable fullscreen screenshot mode.
+@param {string} fileName file name to save.
+@param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
