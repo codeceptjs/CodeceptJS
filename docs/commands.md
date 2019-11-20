@@ -203,5 +203,5 @@ npx codeceptjs list
 Prints debugging information concerning the local environment
 
 ```sh
-codeceptjs info
+npx codeceptjs info
 ```
