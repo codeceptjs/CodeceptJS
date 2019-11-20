@@ -22,7 +22,7 @@ module.exports = {
       './lib/store.js',
       './lib/ui.js',
       './lib/within.js',
-      require.resolve('@codeceptjs/detox-helper')
+      require.resolve('@codeceptjs/detox-helper'),
     ],
   },
   opts: {

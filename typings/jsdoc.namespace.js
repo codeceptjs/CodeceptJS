@@ -19,11 +19,13 @@ module.exports = {
         doclet.memberof ||
         !kinds.includes(doclet.kind) ||
         (doclet.kind === 'namespace' && doclet.longname === 'CodeceptJS')
-      )
+      ) {
         return;
+      }
+
       doclet.memberof = namespace;
       doclet.longname = `${doclet.memberof}.${doclet.longname}`;
       if (doclet.scope === 'global') doclet.scope = 'static';
-    }
-  }
+    },
+  },
 };
