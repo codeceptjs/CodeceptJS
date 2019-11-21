@@ -16,7 +16,7 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 
 chai.use(chaiSubset);
 
-describe('Definitions', function () {
+describe.only('Definitions', function () {
   this.timeout(10000);
   this.retries(4);
   afterEach(() => {
@@ -69,6 +69,21 @@ describe('Definitions', function () {
           parameters: [{ name: 'name', type: 'string' }],
         }],
       }]);
+      assert(!err);
+      done();
+    });
+  });
+
+  it.only('def should create definition file with correct page def', (done) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err, stdout) => {
+      stdout.should.include('Definitions were generated in steps.d.ts');
+      const types = typesFrom(`${codecept_dir}/steps.d.ts`);
+      types.should.be.valid;
+
+      const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
+      const extend = definitionFile.getFullText();
+
+      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js');");
       assert(!err);
       done();
     });
