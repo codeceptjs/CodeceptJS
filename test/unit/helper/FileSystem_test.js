@@ -26,7 +26,7 @@ describe('FileSystem', () => {
     fs.seeFile('data/fs_sample.txt');
     fs.amInPath('data');
     fs.seeFile('fs_sample.txt');
-    fs.getFileNames().should.contain('fs_sample.txt');
+    fs.grabFileNames().should.contain('fs_sample.txt');
     fs.seeFileNameMatching('sample');
   });
 
