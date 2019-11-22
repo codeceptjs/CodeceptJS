@@ -156,9 +156,10 @@ program.command('run-multiple [suites...]')
 
   .action(require('../lib/command/run-multiple'));
 
-program.command('info')
+program.command('info [path]')
   .description('Print debugging information concerning the local environment')
-  .action(async () => {
+  .option('-p, --path', 'your config file path')
+  .action(async (path) => {
     const info = {};
     console.log('\n Environment information:-\n');
     info.codeceptVersion = Codecept.version();
@@ -170,11 +171,12 @@ program.command('info')
     info.firefoxInfo = await envinfo.helpers.getFirefoxInfo();
     info.safariInfo = await envinfo.helpers.getSafariInfo();
     const fs = require('fs');
-    const config_path = `${process.cwd()}/codecept.conf.js`;
-    if (fs.existsSync(config_path)) {
-      const { helpers, plugins } = require(`${process.cwd()}/codecept.conf.js`).config;
+
+    const configPath = path ? `${process.cwd()}/${path}` : `${process.cwd()}/codecept.conf.js`;
+    if (fs.existsSync(configPath)) {
+      const { helpers, plugins } = require(configPath).config;
       info.helpers = helpers;
-      info.plugins = plugins || 'You don\'t have any enabled plugins';
+      info.plugins = plugins || "You don't have any enabled plugins";
     }
     for (const [key, value] of Object.entries(info)) {
       if (Array.isArray(value)) {
