@@ -50,6 +50,19 @@ describe('Puppeteer', function () {
     return I._after();
   });
 
+  describe('Session', () => {
+    it('should not fail for localStorage.clear() on about:blank', async () => {
+      I.options.restart = false;
+      return I.page.goto('about:blank')
+        .then(() => I._after())
+        .then(() => { I.options.restart = true; })
+        .catch((e) => {
+          I.options.restart = true;
+          throw new Error(e);
+        });
+    });
+  });
+
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
