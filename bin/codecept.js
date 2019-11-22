@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const envinfo = require('envinfo');
 const program = require('commander');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
@@ -154,6 +155,20 @@ program.command('run-multiple [suites...]')
   .option('--recursive', 'include sub directories')
 
   .action(require('../lib/command/run-multiple'));
+
+program.command('info')
+  .description('Print debugging information concerning the local environment')
+  .action(() => {
+    console.log('\n Environment information:-\n');
+    envinfo
+      .run({
+        System: ['OS', 'CPU'],
+        Binaries: ['Node', 'Yarn', 'npm'],
+        Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
+        npmGlobalPackages: ['codeceptjs'],
+      })
+      .then(console.log);
+  });
 
 program.command('dry-run [test]')
   .description('Prints step-by-step scenario for a test without actually running it')
