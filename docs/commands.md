@@ -197,3 +197,11 @@ Prints all available methods of `I` to console
 ```sh
 npx codeceptjs list
 ```
+
+## Local Environment Information
+
+Prints debugging information concerning the local environment
+
+```sh
+npx codeceptjs info
+```
