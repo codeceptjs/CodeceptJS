@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const envinfo = require('envinfo');
 const program = require('commander');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
@@ -158,38 +157,8 @@ program.command('run-multiple [suites...]')
 
 program.command('info [path]')
   .description('Print debugging information concerning the local environment')
-  .option('-p, --path', 'your config file path')
-  .action(async (path) => {
-    const info = {};
-    console.log('\n Environment information:-\n');
-    info.codeceptVersion = Codecept.version();
-    info.nodeInfo = await envinfo.helpers.getNodeInfo();
-    info.osInfo = await envinfo.helpers.getOSInfo();
-    info.cpuInfo = await envinfo.helpers.getCPUInfo();
-    info.chromeInfo = await envinfo.helpers.getChromeInfo();
-    info.edgeInfo = await envinfo.helpers.getEdgeInfo();
-    info.firefoxInfo = await envinfo.helpers.getFirefoxInfo();
-    info.safariInfo = await envinfo.helpers.getSafariInfo();
-    const fs = require('fs');
-
-    const configPath = path ? `${process.cwd()}/${path}` : `${process.cwd()}/codecept.conf.js`;
-    if (fs.existsSync(configPath)) {
-      const { helpers, plugins } = require(configPath).config;
-      info.helpers = helpers || "You don't use any helpers";
-      info.plugins = plugins || "You don't have any enabled plugins";
-    }
-    for (const [key, value] of Object.entries(info)) {
-      if (Array.isArray(value)) {
-        console.log(`${key}:  ${value[1]}`);
-      } else {
-        console.log(`${key}:  ${JSON.stringify(value, null, ' ')}`);
-      }
-    }
-    console.log('***************************************');
-    console.log(`\nIf you have questions ask them in our Slack: shorturl.at/cuKU8
-    \nOr ask them on our discussion board: https://codecept.discourse.group/
-    \nIf you found a bug, an improvements, you can report it to GitHub issues: https://github.com/Codeception/CodeceptJS/issues`);
-  });
+  .option('-c, --config', 'your config file path')
+  .action(require('../lib/command/info'));
 
 program.command('dry-run [test]')
   .description('Prints step-by-step scenario for a test without actually running it')
