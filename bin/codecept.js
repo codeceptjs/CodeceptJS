@@ -175,7 +175,7 @@ program.command('info [path]')
     const configPath = path ? `${process.cwd()}/${path}` : `${process.cwd()}/codecept.conf.js`;
     if (fs.existsSync(configPath)) {
       const { helpers, plugins } = require(configPath).config;
-      info.helpers = helpers;
+      info.helpers = helpers || "You don't use any helpers";
       info.plugins = plugins || "You don't have any enabled plugins";
     }
     for (const [key, value] of Object.entries(info)) {
