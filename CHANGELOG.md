@@ -1,3 +1,23 @@
+## 2.4.0
+
+* Create better Typescript definition file through JSDoc. By @lemnis
+* `run-workers` now can use glob pattern. By @Ilrilan
+```js
+// Example:
+exports.config = {
+  tests: '{./workers/base_test.workers.js,./workers/test_grep.workers.js}',
+}
+```
+* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By @jamesgeorge007 
+* Fixed some typos in documantation. By @pablopaul @atomicpages @EricTendian
+* Added PULL_REQUEST template.
+* [Puppeteer][WebDriver] Added `waitForClickable` for waiting clickable element on page.
+* [TestCafe] Added support for remote connection. By @jvdieten
+* [Puppeteer] Fixed `waitForText` XPath context now works correctly. By @Heavik
+* [TestCafe] Fixed `clearField` clear field now awaits TestCafe's promise. By @orihomie
+* [Puppeteer] Fixed fails when executing localStorage on services pages. See #2026
+* Fixed empty tags in test name. See #2038
+
 ## 2.3.5
 
 * Set "parse-function" dependency to "5.2.11" to avoid further installation errors.

@@ -393,9 +393,10 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 -   `fn` ([string][3] \| [function][7]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
-Wrapper for asynchronous [evaluate][8].
-    Unlike NightmareJS implementation calling `done` will return its first argument.
+
+Returns [Promise][8]&lt;any> 
+Wrapper for asynchronous [evaluate][9].
+Unlike NightmareJS implementation calling `done` will return its first argument.
 
 ### executeScript
 
@@ -427,8 +428,9 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` ([string][3] \| [function][7]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
-Wrapper for synchronous [evaluate][8]
+
+Returns [Promise][8]&lt;any> 
+Wrapper for synchronous [evaluate][9]
 
 ### fillField
 
@@ -468,7 +470,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 -   `attr` [string][3] attribute name.
 
-Returns [Promise][9]&lt;[string][3]> attribute value
+Returns [Promise][8]&lt;[string][3]> attribute value
 
 
 
@@ -488,7 +490,7 @@ assert(cookie.value, '123456');
 
 -   `name` [string][3]? cookie name. 
 
-Returns [Promise][9]&lt;[string][3]> attribute value
+Returns [Promise][8]&lt;[string][3]> attribute value
 
 Cookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
@@ -502,7 +504,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns [Promise][9]&lt;[string][3]> current URL
+Returns [Promise][8]&lt;[string][3]> current URL
 
 
 
@@ -530,7 +532,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
 
-Returns [Promise][9]&lt;[string][3]> HTML code for an element
+Returns [Promise][8]&lt;[string][3]> HTML code for an element
 
 
 
@@ -546,7 +548,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` CodeceptJS.LocatorOrString located by CSS|XPath|strict locator.
 
-Returns [Promise][9]&lt;[number][10]> number of visible elements
+Returns [Promise][8]&lt;[number][10]> number of visible elements
 
 
 
@@ -559,7 +561,7 @@ Resumes test execution, so should be used inside an async function with `await` 
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns [Promise][9]&lt;[Object][4]&lt;[string][3], any>> scroll position
+Returns [Promise][8]&lt;[Object][4]&lt;[string][3], any>> scroll position
 
 
 
@@ -578,7 +580,7 @@ If multiple elements found returns an array of texts.
 
 -   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
 
-Returns [Promise][9]&lt;([string][3] \| [Array][11]&lt;[string][3]>)> attribute value
+Returns [Promise][8]&lt;([string][3] \| [Array][11]&lt;[string][3]>)> attribute value
 
 
 
@@ -591,7 +593,7 @@ Resumes test execution, so should be used inside async with `await` operator.
 let title = await I.grabTitle();
 ```
 
-Returns [Promise][9]&lt;[string][3]> title
+Returns [Promise][8]&lt;[string][3]> title
 
 
 
@@ -608,7 +610,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` CodeceptJS.LocatorOrString field located by label|name|CSS|XPath|strict locator.
 
-Returns [Promise][9]&lt;[string][3]> attribute value
+Returns [Promise][8]&lt;[string][3]> attribute value
 
 
 
@@ -1175,9 +1177,9 @@ I.waitToHide('#popup');
 
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[8]: https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[9]: https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2
 
 [10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
