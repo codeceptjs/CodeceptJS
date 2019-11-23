@@ -644,6 +644,11 @@ describe('Puppeteer', function () {
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('//a'))
       .then(html => assert.equal(html.length, 5)));
+
+    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo({ frame: 'iframe' }))
+      .then(() => I.grabHTMLFrom('#new-tab'))
+      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
