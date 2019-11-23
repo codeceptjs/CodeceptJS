@@ -1,4 +1,4 @@
-## 2.4.0
+## 2.3.6
 
 * Create better Typescript definition file through JSDoc. By @lemnis
 * `run-workers` now can use glob pattern. By @Ilrilan
