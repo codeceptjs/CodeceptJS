@@ -660,7 +660,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 -   `fn` ([string][8] \| [function][11]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
+
+Returns [Promise][12]&lt;any> 
 Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 
 ### executeScript
@@ -693,7 +694,8 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` ([string][8] \| [function][11]) function to be executed in browser context.
 -   `args` ...any to be passed to function.
-    
+
+Returns [Promise][12]&lt;any> 
 If a function returns a Promise It will wait for it resolution.
 
 ### fillField
