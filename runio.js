@@ -165,12 +165,12 @@ module.exports = {
         cmd.commit('version bump');
       });
     }
-    // publish a new release on npm. Update version in package.json!
+    // // publish a new release on npm. Update version in package.json!
     const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;
     await this.docs();
     await this.publishSite();
-    await this.git((cmd) => {
+    await git((cmd) => {
       cmd.tag(version);
       cmd.push('origin master --tags');
     });
