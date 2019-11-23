@@ -74,6 +74,21 @@ describe('Definitions', function () {
     });
   });
 
+  it('def should create definition file with correct page def', (done) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err, stdout) => {
+      stdout.should.include('Definitions were generated in steps.d.ts');
+      const types = typesFrom(`${codecept_dir}/steps.d.ts`);
+      types.should.be.valid;
+
+      const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
+      const extend = definitionFile.getFullText();
+
+      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js');");
+      assert(!err);
+      done();
+    });
+  });
+
   it('def should create definition file given a config file', (done) => {
     exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.json`, (err, stdout, stderr) => {
       stdout.should.include('Definitions were generated in steps.d.ts');

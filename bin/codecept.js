@@ -155,6 +155,11 @@ program.command('run-multiple [suites...]')
 
   .action(require('../lib/command/run-multiple'));
 
+program.command('info [path]')
+  .description('Print debugging information concerning the local environment')
+  .option('-c, --config', 'your config file path')
+  .action(require('../lib/command/info'));
+
 program.command('dry-run [test]')
   .description('Prints step-by-step scenario for a test without actually running it')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')

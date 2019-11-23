@@ -96,6 +96,7 @@ describe('ui', () => {
       scenarioConfig = context.Scenario('scenario');
       assert.equal(scenarioConfig.test.title, 'scenario');
       assert.equal(scenarioConfig.test.fullTitle(), 'suite: scenario');
+      assert.equal(scenarioConfig.test.tags.length, 0);
     });
 
     it('should contain tags', () => {
