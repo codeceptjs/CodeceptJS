@@ -1557,11 +1557,9 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
--   `locator` CodeceptJS.LocatorOrString element located by CSS|XPath|strict locator.
+-   `locator` **CodeceptJS.LocatorOrString** element located by CSS|XPath|strict locator.
 -   `waitTimeout`  
--   `sec` [number][9]? (optional, `1` by default) time in seconds to wait
-    
-
+-   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait
 
 ### waitForDetached
 
