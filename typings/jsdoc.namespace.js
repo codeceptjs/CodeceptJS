@@ -15,10 +15,10 @@ module.exports = {
     },
     newDoclet: ({ doclet }) => {
       if (
-        doclet.undocumented ||
-        doclet.memberof ||
-        !kinds.includes(doclet.kind) ||
-        (doclet.kind === 'namespace' && doclet.longname === 'CodeceptJS')
+        doclet.undocumented
+        || doclet.memberof
+        || !kinds.includes(doclet.kind)
+        || (doclet.kind === 'namespace' && doclet.longname === 'CodeceptJS')
       ) {
         return;
       }
