@@ -19,7 +19,7 @@ describe('Puppeteer - BasicAuth', () => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
     I = new Puppeteer({
-      url: 'https://postman-echo.com',
+      url: 'http://localhost:8000',
       windowSize: '500x700',
       show: false,
       waitForTimeout: 5000,
@@ -28,7 +28,7 @@ describe('Puppeteer - BasicAuth', () => {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
       defaultPopupAction: 'accept',
-      basicAuth: { username: 'postman', password: 'password' },
+      basicAuth: { username: 'admin', password: 'admin' },
     });
     I._init();
     return I._beforeSuite();
@@ -50,8 +50,8 @@ describe('Puppeteer - BasicAuth', () => {
 
   describe('open page with provided basic auth', () => {
     it('should be authenticated ', async () => {
-      await I.amOnPage('/basic-auth');
-      await I.see('{"authenticated":true}');
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
     });
   });
 });
@@ -111,8 +111,8 @@ describe('Puppeteer', function () {
     });
 
     it('should be unauthenticated ', async () => {
-      await I.amOnPage('https://postman-echo.com/basic-auth');
-      await I.see('Unauthorized');
+      await I.amOnPage('/basic_auth');
+      await I.dontSee('You entered admin as your password.');
     });
   });
 

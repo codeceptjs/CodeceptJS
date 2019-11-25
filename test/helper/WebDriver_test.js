@@ -1066,7 +1066,7 @@ describe('WebDriver - Basic Authentication', () => {
 
     wd = new WebDriver({
       url: siteUrl,
-      basicAuth: { username: 'postman', password: 'password' },
+      basicAuth: { username: 'admin', password: 'admin' },
       browser: 'chrome',
       windowSize: '500x700',
       remoteFileUpload: true,
@@ -1082,17 +1082,17 @@ describe('WebDriver - Basic Authentication', () => {
     });
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     webApiTests.init({ I: wd, siteUrl });
-    return wd._before();
+    await wd._before();
   });
 
   afterEach(() => wd._after());
 
   describe('open page : #amOnPage', () => {
     it('should be authenticated', async () => {
-      await wd.amOnPage('https://postman-echo.com/basic-auth');
-      await wd.see('{"authenticated":true}');
+      await wd.amOnPage('/basic_auth');
+      await wd.see('You entered admin as your password.');
     });
   });
 });
