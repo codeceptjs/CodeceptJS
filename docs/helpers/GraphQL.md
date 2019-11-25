@@ -7,7 +7,7 @@ title: GraphQL
 
 ## GraphQL
 
-Extends Helper
+**Extends Helper**
 
 GraphQL helper allows to send additional requests to a GraphQl endpoint during acceptance tests.
 [Axios][1] library is used to perform requests.
@@ -47,22 +47,22 @@ this.helpers['GraphQL']._executeQuery({
 
 -   `config`  
 
-### \_executeQuery
+### _executeQuery
 
 Executes query via axios call
 
 #### Parameters
 
--   `request` [object][2] 
+-   `request` **[object][2]** 
 
-### \_prepareGraphQLRequest
+### _prepareGraphQLRequest
 
 Prepares request for axios call
 
 #### Parameters
 
--   `operation` [object][2] 
--   `headers` [object][2] 
+-   `operation` **[object][2]** 
+-   `headers` **[object][2]** 
 
 ### sendMutation
 
@@ -88,10 +88,10 @@ I.sendMutation(`
 
 #### Parameters
 
--   `mutation` [String][3] 
--   `variables` [object][2] that may go along with the mutation
--   `options` [object][2] are additional query options 
--   `headers` [object][2]  
+-   `mutation` **[String][3]** 
+-   `variables` **[object][2]** that may go along with the mutation
+-   `options` **[object][2]** are additional query options 
+-   `headers` **[object][2]**  
 
 ### sendQuery
 
@@ -110,10 +110,10 @@ const user = response.data.data;
 
 #### Parameters
 
--   `query` [String][3] 
--   `variables` [object][2] that may go along with the query
--   `options` [object][2] are additional query options 
--   `headers` [object][2]  
+-   `query` **[String][3]** 
+-   `variables` **[object][2]** that may go along with the query
+-   `options` **[object][2]** are additional query options 
+-   `headers` **[object][2]**  
 
 [1]: https://github.com/axios/axios
 

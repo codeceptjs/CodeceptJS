@@ -35,5 +35,10 @@ Please **add your own** by editing this page.
 
 ## Page Object Code Generator
 * [codeceptjs-CodeGenerator](https://github.com/senthillkumar/CodeCeptJS-PageObject) is a CodeceptJS custom wrapper which can create page class with action methods from the page object file(JSON) and project setup(Folder Structure).
+
+## Browser request control
+* [codeceptjs-resources-check](https://github.com/luarmr/codeceptjs-resources-check) Load a URL with Puppeteer and listen to the requests while the page is loading. Enabling count the number or check the sizes of the requests.
+
 ## Other
 
+* [eslint-plugin-codeceptjs](https://www.npmjs.com/package/eslint-plugin-codeceptjs) Eslint rules for CodeceptJS.

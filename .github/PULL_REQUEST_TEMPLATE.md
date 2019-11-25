@@ -27,6 +27,6 @@ Applicable helpers:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 - [ ] Tests have been added
-- [ ] Documentation has been added (Run `robo docs`)
+- [ ] Documentation has been added (Run `./runio docs`)
 - [ ] Lint checking (Run `npm run lint`)
 - [ ] Local tests are passed (Run `npm test`)
