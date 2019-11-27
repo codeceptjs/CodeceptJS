@@ -17,6 +17,20 @@ module.exports = {
     ]);
   },
 
+  async def() {
+    await Promise.all([
+      this.buildLibWithDocs(true),
+      this.docsPlugins(),
+      this.docsExternalHelpers(),
+    ]);
+    await this.defTypings();
+  },
+
+  async defTypings() {
+    console.log('Generate TypeScript definition');
+    await npx('jsdoc -c typings/jsdoc.conf.js');
+  },
+
   async docsPlugins() {
     // generate documentation for plugins
     await npx('documentation build lib/plugin/*.js -o docs/plugins.md -f md --shallow --markdown-toc=false --sort-order=alpha');
@@ -36,6 +50,31 @@ module.exports = {
     });
   },
 
+  async buildLibWithDocs(forTypings = false) {
+    // generate documentation for helpers
+    const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
+
+    const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache');
+    const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
+    const templates = partials
+      .map(file => fs.readFileSync(`docs/webapi/${file}`).toString())
+      .map(template => template.replace(/^/gm, '   * ').replace(/^/, '\n'));
+
+    for (const file of files) {
+      const name = path.basename(file, '.js');
+      console.log(`Building helpers with docs for ${name}`);
+      copy(`lib/helper/${file}`, `docs/build/${file}`);
+      replaceInFile(`docs/build/${file}`, (cfg) => {
+        for (const i in placeholders) {
+          cfg.replace(placeholders[i], templates[i]);
+        }
+        if (!forTypings) {
+          cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+        }
+      });
+    }
+  },
+
   async docsHelpers() {
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
@@ -44,7 +83,7 @@ module.exports = {
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
     const templates = partials
       .map(file => fs.readFileSync(`docs/webapi/${file}`).toString())
-      .map(template => template.replace(/^/m, '\n   * '));
+      .map(template => template.replace(/^/gm, '   * ').replace(/^/, '\n'));
 
     const sharedPartials = fs.readdirSync('docs/shared').filter(f => path.extname(f) === '.mustache');
     const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`);
@@ -60,6 +99,7 @@ module.exports = {
         for (const i in placeholders) {
           cfg.replace(placeholders[i], templates[i]);
         }
+        cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
       });
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
       replaceInFile(`docs/helpers/${name}.md`, (cfg) => {
@@ -84,7 +124,7 @@ module.exports = {
     // publish wiki pages to website
     if (!fs.existsSync('website/wiki/Home.md')) {
       await git((fn) => {
-        fn.cloneShallow('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki');
+        fn.clone('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki');
       });
     }
     await chdir('website/wiki', () => git(cfg => cfg.pull('origin master')));
