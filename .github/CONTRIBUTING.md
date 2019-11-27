@@ -134,6 +134,16 @@ Documentation parts can be shared accross helpers. Those parts are located in `d
   }
 ```
 
+## Typings
+
+Typings is generated in `typings/` directory via `jsdoc`
+
+After you updated docblock in JS file, generate typing files with next command:
+
+```
+npm run def
+```
+
 ## Testing
 
 Whenever you implemented a feature/bugfix
