@@ -436,6 +436,14 @@ describe('Puppeteer', function () {
   });
 
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+    it('should be able to send multiple keys as single string', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+
+      await I.pressKey('abc');
+      await I.seeInField('Name', 'abc');
+    });
+
     it('should be able to send special keys to element', async () => {
       await I.amOnPage('/form/field');
       await I.appendField('Name', '-');
