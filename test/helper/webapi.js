@@ -605,7 +605,6 @@ module.exports.tests = function () {
     });
 
     it('should grab attribute from element', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/search');
       const val = await I.grabAttributeFrom({
         css: 'form',
@@ -614,8 +613,6 @@ module.exports.tests = function () {
     });
 
     it('should grab custom attribute from element', async () => {
-      if (isHelper('TestCafe')) return;
-
       await I.amOnPage('/form/example4');
       const val = await I.grabAttributeFrom({
         css: '.navbar-toggle',
@@ -1010,8 +1007,6 @@ module.exports.tests = function () {
     });
 
     it('should execute within block 2', async () => {
-      if (isHelper('TestCafe')) return;
-
       await I.amOnPage('/form/example4');
       await I.fillField('Hasło', '12345');
       await I._withinBegin({ xpath: '//div[@class="form-group"][2]' });
