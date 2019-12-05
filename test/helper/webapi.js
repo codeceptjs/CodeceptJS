@@ -50,8 +50,8 @@ module.exports.tests = function () {
   });
 
   describe('#waitInUrl, #waitUrlEquals', () => {
-    it('should wait part of the URL to match the expected', async function () {
-      if (isHelper('Nightmare')) this.skip();
+    it('should wait part of the URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
 
       try {
         await I.amOnPage('/info');
@@ -62,8 +62,8 @@ module.exports.tests = function () {
       }
     });
 
-    it('should wait for the entire URL to match the expected', async function () {
-      if (isHelper('Nightmare')) this.skip();
+    it('should wait for the entire URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
 
       try {
         await I.amOnPage('/info');
@@ -387,7 +387,8 @@ module.exports.tests = function () {
 
 
     it('should return value from sync script in iframe', async function () {
-      if (isHelper('TestCafe') || isHelper('Nightmare')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Nightmare')) return; // TODO Not yet implemented
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
 
       await I.amOnPage('/iframe');
       await I.switchTo('iframe');
@@ -655,8 +656,8 @@ module.exports.tests = function () {
       formContents().files.avatar.type.should.eql('image/jpeg');
     });
 
-    it('should upload file located by label', async function () {
-      if (isHelper('Nightmare')) this.skip();
+    it('should upload file located by label', async () => {
+      if (isHelper('Nightmare')) return;
 
       await I.amOnPage('/form/file');
       await I.attachFile('Avatar', 'app/avatar.jpg');
@@ -1060,7 +1061,7 @@ module.exports.tests = function () {
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     it('should scroll inside an iframe', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/iframe');
@@ -1122,7 +1123,7 @@ module.exports.tests = function () {
 
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/doubleclick');
@@ -1133,7 +1134,7 @@ module.exports.tests = function () {
 
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1155,7 +1156,7 @@ module.exports.tests = function () {
     });
 
     it('should check attributes values for several elements', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1180,7 +1181,7 @@ module.exports.tests = function () {
 
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1203,7 +1204,7 @@ module.exports.tests = function () {
 
 
     it('should check css property for several elements', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1230,7 +1231,7 @@ module.exports.tests = function () {
     });
 
     it('should normalize css color properties for given element', async function () {
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/css_colors');
