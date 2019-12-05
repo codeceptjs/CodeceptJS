@@ -672,18 +672,14 @@ module.exports.tests = function () {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
 
-    it('should create a screenshot file in output dir', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('should create a screenshot file in output dir', async () => {
       const sec = (new Date()).getUTCMilliseconds();
       await I.amOnPage('/');
       await I.saveScreenshot(`screenshot_${sec}.png`);
       assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists');
     });
 
-    it('should create a full page screenshot file in output dir', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('should create a full page screenshot file in output dir', async () => {
       const sec = (new Date()).getUTCMilliseconds();
       await I.amOnPage('/');
       await I.saveScreenshot(`screenshot_full_${+sec}.png`, true);
@@ -751,9 +747,7 @@ module.exports.tests = function () {
       await I.see('Dynamic text');
     });
 
-    it('should fail if no context', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('should fail if no context', async () => {
       let failed = false;
       await I.amOnPage('/dynamic');
       await I.dontSee('Dynamic text');
@@ -765,9 +759,7 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should fail if text doesn\'t contain', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('should fail if text doesn\'t contain', async () => {
       let failed = false;
       await I.amOnPage('/dynamic');
       try {
@@ -778,9 +770,7 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should fail if text is not in element', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('should fail if text is not in element', async () => {
       let failed = false;
       await I.amOnPage('/dynamic');
       try {
@@ -791,9 +781,7 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should wait for text after timeout', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('should wait for text after timeout', async () => {
       await I.amOnPage('/timeout');
       await I.dontSee('Timeout text');
       await I.waitForText('Timeout text', 31, '#text');
@@ -1024,9 +1012,7 @@ module.exports.tests = function () {
       assert.equal(input, '12345');
     });
 
-    it('within should respect context in see', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
+    it('within should respect context in see', async () => {
       await I.amOnPage('/form/example4');
       await I.see('Rejestracja', 'fieldset');
       await I._withinBegin({ css: '.navbar-header' });
