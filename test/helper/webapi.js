@@ -1143,6 +1143,15 @@ module.exports.tests = function () {
       const css = await I.grabCssPropertyFrom('#block', 'height');
       assert.equal(css, '100px');
     });
+
+    it('should grab camelcased css properies', async () => {
+      if (isHelper('Nightmare')) return;
+      if (isHelper('TestCafe')) return;
+
+      await I.amOnPage('/form/doubleclick');
+      const css = await I.grabCssPropertyFrom('#block', 'user-select');
+      assert.equal(css, 'text');
+    });
   });
 
   describe('#seeAttributesOnElements', () => {
