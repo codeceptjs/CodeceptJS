@@ -286,4 +286,32 @@ describe('utils', () => {
       os.platform.restore();
     });
   });
+
+  describe('#screenshotOutputFolder', () => {
+    let _oldGlobalOutputDir;
+    let _oldGlobalCodeceptDir;
+
+    before(() => {
+      _oldGlobalOutputDir = global.output_dir;
+      _oldGlobalCodeceptDir = global.codecept_dir;
+
+      global.output_dir = '/Users/someuser/workbase/project1/test_output';
+      global.codecept_dir = '/Users/someuser/workbase/project1/tests/e2e';
+    });
+
+    after(() => {
+      global.output_dir = _oldGlobalOutputDir;
+      global.codecept_dir = _oldGlobalCodeceptDir;
+    });
+
+    it('returns the joined filename for filename only', () => {
+      const _path = utils.screenshotOutputFolder('screenshot1.failed.png');
+      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+    });
+
+    it('returns the given filename for absolute one', () => {
+      const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+    });
+  });
 });
