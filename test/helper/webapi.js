@@ -750,7 +750,7 @@ module.exports.tests = function () {
       await I.see('Dynamic text');
     });
 
-    it('should fail if no context', async () => {
+    it('should fail if no context', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       let failed = false;
@@ -764,7 +764,7 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should fail if text doesn\'t contain', async () => {
+    it('should fail if text doesn\'t contain', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       let failed = false;
@@ -777,7 +777,7 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should fail if text is not in element', async () => {
+    it('should fail if text is not in element', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       let failed = false;
@@ -1021,7 +1021,7 @@ module.exports.tests = function () {
       assert.equal(input, '12345');
     });
 
-    it('within should respect context in see', async () => {
+    it('within should respect context in see', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/example4');
