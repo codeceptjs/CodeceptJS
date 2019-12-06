@@ -308,6 +308,8 @@ module.exports.tests = function () {
     // testcafe always says "xpath is not defined"
     // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
     it.skip('should check option by context', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       await I.amOnPage('/form/example1');
       await I.checkOption('Remember me next time', '.rememberMe');
       await I.click('Login');
@@ -749,6 +751,8 @@ module.exports.tests = function () {
     });
 
     it('should fail if no context', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       let failed = false;
       await I.amOnPage('/dynamic');
       await I.dontSee('Dynamic text');
@@ -761,6 +765,8 @@ module.exports.tests = function () {
     });
 
     it('should fail if text doesn\'t contain', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       let failed = false;
       await I.amOnPage('/dynamic');
       try {
@@ -772,6 +778,8 @@ module.exports.tests = function () {
     });
 
     it('should fail if text is not in element', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       let failed = false;
       await I.amOnPage('/dynamic');
       try {
@@ -1014,6 +1022,8 @@ module.exports.tests = function () {
     });
 
     it('within should respect context in see', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       await I.amOnPage('/form/example4');
       await I.see('Rejestracja', 'fieldset');
       await I._withinBegin({ css: '.navbar-header' });
