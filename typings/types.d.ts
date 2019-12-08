@@ -668,7 +668,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          *
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -685,7 +684,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          *
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -714,7 +712,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -728,7 +726,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          *
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
@@ -740,7 +738,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -754,7 +751,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          *
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -769,7 +765,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          */
         dontSee(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -788,7 +784,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          *
          */
         fillField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -803,7 +799,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          *
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
@@ -816,7 +811,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
@@ -830,7 +824,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          *
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
@@ -842,7 +836,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          *
          */
         seeElement(locator: CodeceptJS.LocatorOrString): void;
@@ -858,7 +851,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          *
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -873,7 +866,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          *
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -898,7 +890,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
-         * {--end--}
          *
          * * Supported on only for web testing!
          */
@@ -914,7 +905,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -928,7 +918,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -942,7 +931,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -959,7 +947,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          *
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
@@ -1222,7 +1209,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url url path or global url.
-         * {--end--}
          * @param {?object} headers list of request headers can be passed
          *
          */
@@ -1235,7 +1221,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text text value to check.
-         * {--end--}
          */
         seeInTitle(text: string): void;
         /**
@@ -1246,7 +1231,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text value to check.
-         * {--end--}
          */
         dontSeeInTitle(text: string): void;
         /**
@@ -1258,7 +1242,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} title
-         * {--end--}
          */
         grabTitle(): Promise<string>;
         /**
@@ -1271,7 +1254,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} current URL
-         * {--end--}
          */
         grabCurrentUrl(): Promise<string>;
         /**
@@ -1282,14 +1264,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url a fragment to check
-         * {--end--}
          */
         seeInCurrentUrl(url: string): void;
         /**
          * Checks that current url does not contain a provided fragment.
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeInCurrentUrl(url: string): void;
         /**
@@ -1303,7 +1283,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         seeCurrentUrlEquals(url: string): void;
         /**
@@ -1316,7 +1295,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeCurrentUrlEquals(url: string): void;
         /**
@@ -1330,7 +1308,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1344,7 +1321,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          */
         dontSee(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1355,7 +1332,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          */
         seeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -1366,7 +1342,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -1377,7 +1352,7 @@ declare namespace CodeceptJS {
          * I.seeElementInDOM('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -1388,7 +1363,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -1398,7 +1372,6 @@ declare namespace CodeceptJS {
          * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
          * ```
          * @param {string} text value to check.
-         * {--end--}
          */
         seeInSource(text: string): void;
         /**
@@ -1409,7 +1382,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} value to check.
-         * {--end--}
+         *
          */
         dontSeeInSource(value: string): void;
         /**
@@ -1423,7 +1396,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          */
         seeNumberOfElements(locator: CodeceptJS.LocatorOrString, num: number): void;
         /**
@@ -1436,7 +1409,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          */
         seeNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number): void;
         /**
@@ -1448,7 +1421,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @returns {Promise<number>} number of visible elements
-         * {--end--}
          */
         grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
         /**
@@ -1476,7 +1448,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1492,7 +1464,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          */
         doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1509,7 +1481,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1524,7 +1496,7 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
+         *
          */
         moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
@@ -1553,11 +1525,12 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          * Wrapper for synchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2)
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -1582,19 +1555,19 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          * Wrapper for asynchronous [evaluate](https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2).
          * Unlike NightmareJS implementation calling `done` will return its first argument.
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Resize the current window to provided width and height.
          * First parameter can be set to `maximize`.
          *
          * @param {number} width width in pixels or `maximize`.
          * @param {number} height height in pixels.
-         * {--end--}
          */
         resizeWindow(width: number, height: number): void;
         /**
@@ -1610,7 +1583,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1626,7 +1598,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1645,7 +1616,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          */
         fillField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -1657,7 +1628,6 @@ declare namespace CodeceptJS {
          * I.clearField('#email');
          * ```
          * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
          */
         clearField(editable: string | any): void;
         /**
@@ -1669,7 +1639,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -1684,7 +1653,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -1698,7 +1667,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -1727,7 +1695,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -1740,7 +1708,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -1755,7 +1723,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @param {string} pathToFile local file path relative to codecept.json config file.
-         * {--end--}
          *
          * Doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. [See more](https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs))
          */
@@ -1771,7 +1738,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
         /**
@@ -1783,7 +1749,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -1797,7 +1762,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} attr attribute name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
         /**
@@ -1811,7 +1775,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
          * @returns {Promise<string>} HTML code for an element
-         * {--end--}
          */
         grabHTMLFrom(element: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -1835,7 +1798,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
-         * {--end--}
          */
         selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
@@ -1846,7 +1808,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {object} cookie a cookie object.
-         * {--end--}
          *
          * Wrapper for `.cookies.set(cookie)`.
          * [See more](https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie)
@@ -1860,7 +1821,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
+         *
          *
          */
         seeCookie(name: string): void;
@@ -1872,13 +1833,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
          */
         dontSeeCookie(name: string): void;
         /**
          * Gets a cookie object by name.
          * If none provided gets all cookies.
-         * * Resumes test execution, so **should be used inside async with `await`** operator.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
          *
          * ```js
          * let cookie = await I.grabCookie('auth');
@@ -1887,7 +1847,6 @@ declare namespace CodeceptJS {
          *
          * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          * Cookie in JSON format. If name not passed returns all cookies for this domain.
          *
@@ -1904,7 +1863,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?string} [cookie=null] (optional, `null` by default) cookie name
-         * {--end--}
          */
         clearCookie(cookie?: string): void;
         /**
@@ -1924,7 +1882,7 @@ declare namespace CodeceptJS {
          * @param {string|function} fn to be executed in browser context.
          * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
+         *
          */
         waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
         /**
@@ -1935,7 +1893,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} sec number of second to wait.
-         * {--end--}
          */
         wait(sec: number): void;
         /**
@@ -1951,7 +1908,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -1964,7 +1920,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -1977,7 +1932,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -1990,7 +1944,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -2004,7 +1957,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -2017,7 +1969,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForDetached(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -2026,7 +1977,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.refreshPage();
          * ```
-         * {--end--}
+         *
          */
         refreshPage(): void;
         /**
@@ -2045,7 +1996,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} fileName file name to save.
          * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
-         * {--end--}
          */
         saveScreenshot(fileName: string, fullPage?: boolean): void;
         /**
@@ -2060,7 +2010,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
@@ -2069,7 +2018,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToTop();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToTop(): void;
         /**
@@ -2078,7 +2027,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToBottom();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToBottom(): void;
         /**
@@ -2090,7 +2039,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<Object<string, *>>} scroll position
-         * {--end--}
          */
         grabPageScrollPosition(): Promise<{
             [key: string]: any;
@@ -2194,7 +2142,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url url path or global url.
-         * {--end--}
          */
         amOnPage(url: string): void;
         /**
@@ -2222,7 +2169,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2238,7 +2185,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          */
         doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2255,7 +2202,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2270,7 +2217,7 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
+         *
          */
         moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
@@ -2284,7 +2231,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2306,7 +2252,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          */
         dontSee(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2319,7 +2265,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<Array<*>>} all browser logs
-         * {--end--}
          */
         grabBrowserLogs(): Promise<any[]>;
         /**
@@ -2332,7 +2277,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} current URL
-         * {--end--}
          */
         grabCurrentUrl(): Promise<string>;
         /**
@@ -2356,7 +2300,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
-         * {--end--}
          */
         selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
@@ -2375,7 +2318,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          */
         fillField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -2390,7 +2333,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|string[]} key key or array of keys to press.
-         * {--end--}
          * {{ keys }}
          */
         pressKey(key: string | string[]): void;
@@ -2406,7 +2348,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @param {string} pathToFile local file path relative to codecept.json config file.
-         * {--end--}
          */
         attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
         /**
@@ -2421,7 +2362,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -2435,7 +2376,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -2447,7 +2387,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -2459,7 +2398,6 @@ declare namespace CodeceptJS {
          * I.clearField('#email');
          * ```
          * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
          */
         clearField(editable: string | any): void;
         /**
@@ -2475,7 +2413,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2491,7 +2428,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -2504,7 +2440,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -2517,7 +2453,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -2531,7 +2467,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
         /**
@@ -2545,7 +2480,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
          * @returns {Promise<string>} HTML code for an element
-         * {--end--}
          */
         grabHTMLFrom(element: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -2557,7 +2491,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -2571,7 +2504,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} cssProperty CSS property name.
          * @returns {Promise<string>} CSS value
-         * {--end--}
          */
         grabCssPropertyFrom(locator: CodeceptJS.LocatorOrString, cssProperty: string): Promise<string>;
         /**
@@ -2585,7 +2517,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} attr attribute name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
         /**
@@ -2596,7 +2527,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text text value to check.
-         * {--end--}
          */
         seeInTitle(text: string): void;
         /**
@@ -2615,7 +2545,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text value to check.
-         * {--end--}
          */
         dontSeeInTitle(text: string): void;
         /**
@@ -2627,7 +2556,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} title
-         * {--end--}
          */
         grabTitle(): Promise<string>;
         /**
@@ -2638,7 +2566,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          */
         seeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -2649,7 +2576,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -2660,7 +2586,7 @@ declare namespace CodeceptJS {
          * I.seeElementInDOM('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -2671,7 +2597,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -2681,7 +2606,6 @@ declare namespace CodeceptJS {
          * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
          * ```
          * @param {string} text value to check.
-         * {--end--}
          */
         seeInSource(text: string): void;
         /**
@@ -2693,7 +2617,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} source code
-         * {--end--}
          */
         grabSource(): Promise<string>;
         /**
@@ -2704,7 +2627,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} value to check.
-         * {--end--}
+         *
          */
         dontSeeInSource(value: string): void;
         /**
@@ -2718,7 +2641,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          */
         seeNumberOfElements(locator: CodeceptJS.LocatorOrString, num: number): void;
         /**
@@ -2731,7 +2654,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          */
         seeNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number): void;
         /**
@@ -2743,7 +2666,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @returns {Promise<number>} number of visible elements
-         * {--end--}
          */
         grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
         /**
@@ -2755,7 +2677,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} cssProperties object with CSS properties and their values to check.
-         * {--end--}
          */
         seeCssPropertiesOnElements(locator: CodeceptJS.LocatorOrString, cssProperties: any): void;
         /**
@@ -2767,7 +2688,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} attributes attributes and their values to check.
-         * {--end--}
          */
         seeAttributesOnElements(locator: CodeceptJS.LocatorOrString, attributes: any): void;
         /**
@@ -2796,9 +2716,10 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -2823,9 +2744,10 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Checks that current url contains a provided fragment.
          *
@@ -2834,14 +2756,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url a fragment to check
-         * {--end--}
          */
         seeInCurrentUrl(url: string): void;
         /**
          * Checks that current url does not contain a provided fragment.
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeInCurrentUrl(url: string): void;
         /**
@@ -2855,7 +2775,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         seeCurrentUrlEquals(url: string): void;
         /**
@@ -2868,7 +2787,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeCurrentUrlEquals(url: string): void;
         /**
@@ -2883,7 +2801,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} fileName file name to save.
          * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
-         * {--end--}
          */
         saveScreenshot(fileName: string, fullPage?: boolean): void;
         /**
@@ -2896,7 +2813,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?string} [cookie=null] (optional, `null` by default) cookie name
-         * {--end--}
          */
         clearCookie(cookie?: string): void;
         /**
@@ -2907,7 +2823,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
+         *
          */
         seeCookie(name: string): void;
         /**
@@ -2918,13 +2834,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
          */
         dontSeeCookie(name: string): void;
         /**
          * Gets a cookie object by name.
          * If none provided gets all cookies.
-         * * Resumes test execution, so **should be used inside async with `await`** operator.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
          *
          * ```js
          * let cookie = await I.grabCookie('auth');
@@ -2933,7 +2848,6 @@ declare namespace CodeceptJS {
          *
          * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          * Returns cookie in JSON [format](https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object).
          */
@@ -2967,7 +2881,6 @@ declare namespace CodeceptJS {
          *
          * @param {number} width width in pixels or `maximize`.
          * @param {number} height height in pixels.
-         * {--end--}
          */
         resizeWindow(width: number, height: number): void;
         /**
@@ -2979,7 +2892,6 @@ declare namespace CodeceptJS {
          *
          * @param {string|object} srcElement located by CSS|XPath|strict locator.
          * @param {string|object} destElement located by CSS|XPath|strict locator.
-         * {--end--}
          */
         dragAndDrop(srcElement: string | any, destElement: string | any): void;
         /**
@@ -3037,7 +2949,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<number>} number of open tabs
-         * {--end--}
          */
         grabNumberOfOpenTabs(): Promise<number>;
         /**
@@ -3049,7 +2960,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
          */
         switchTo(locator?: CodeceptJS.LocatorOrString): void;
         /**
@@ -3060,7 +2970,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} sec number of second to wait.
-         * {--end--}
          */
         wait(sec: number): void;
         /**
@@ -3074,7 +2983,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -3087,7 +2995,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForDetached(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -3108,7 +3015,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -3121,7 +3027,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -3134,7 +3039,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -3147,7 +3051,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
         /**
@@ -3156,7 +3059,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
-         * {--end--}
          */
         waitForEnabled(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -3169,7 +3071,6 @@ declare namespace CodeceptJS {
          * @param {string|object} field input field.
          * @param {string }value expected value.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForValue(field: string | any, value: string, sec?: number): void;
         /**
@@ -3189,7 +3090,7 @@ declare namespace CodeceptJS {
          * @param {string|function} fn to be executed in browser context.
          * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
+         *
          */
         waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
         /**
@@ -3204,7 +3105,6 @@ declare namespace CodeceptJS {
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
          * @param {?number} [interval=null]
-         * {--end--}
          */
         waitUntil(fn: ((...params: any[]) => any) | string, sec?: number, timeoutMsg?: string, interval?: number): void;
         /**
@@ -3216,7 +3116,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitInUrl(urlPart: string, sec?: number): void;
         /**
@@ -3229,7 +3128,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitUrlEquals(urlPart: string, sec?: number): void;
         /**
@@ -3245,7 +3143,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -3258,7 +3155,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.refreshPage();
          * ```
-         * {--end--}
+         *
          */
         refreshPage(): void;
         /**
@@ -3277,7 +3174,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
@@ -3286,7 +3182,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToTop();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToTop(): void;
         /**
@@ -3295,7 +3191,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToBottom();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToBottom(): void;
         /**
@@ -3307,7 +3203,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<Object<string, *>>} scroll position
-         * {--end--}
          */
         grabPageScrollPosition(): Promise<{
             [key: string]: any;
@@ -3339,7 +3234,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {object} cookie a cookie object.
-         * {--end--}
          */
         setCookie(cookie: any): void;
     }
@@ -3418,7 +3312,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url url path or global url.
-         * {--end--}
          */
         amOnPage(url: string): void;
         /**
@@ -3427,7 +3320,6 @@ declare namespace CodeceptJS {
          *
          * @param {number} width width in pixels or `maximize`.
          * @param {number} height height in pixels.
-         * {--end--}
          *
          * Unlike other drivers Puppeteer changes the size of a viewport, not the window!
          * Puppeteer does not control the window of a browser so it can't adjust its real size.
@@ -3458,7 +3350,7 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
+         *
          * {{ react }}
          */
         moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
@@ -3471,7 +3363,6 @@ declare namespace CodeceptJS {
          *
          * @param {string|object} srcElement located by CSS|XPath|strict locator.
          * @param {string|object} destElement located by CSS|XPath|strict locator.
-         * {--end--}
          */
         dragAndDrop(srcElement: string | any, destElement: string | any): void;
         /**
@@ -3480,7 +3371,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.refreshPage();
          * ```
-         * {--end--}
+         *
          */
         refreshPage(): void;
         /**
@@ -3489,7 +3380,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToTop();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToTop(): void;
         /**
@@ -3498,7 +3389,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToBottom();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToBottom(): void;
         /**
@@ -3513,7 +3404,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
@@ -3524,7 +3414,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text text value to check.
-         * {--end--}
          */
         seeInTitle(text: string): void;
         /**
@@ -3536,7 +3425,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<Object<string, *>>} scroll position
-         * {--end--}
          */
         grabPageScrollPosition(): Promise<{
             [key: string]: any;
@@ -3557,7 +3445,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text value to check.
-         * {--end--}
          */
         dontSeeInTitle(text: string): void;
         /**
@@ -3569,7 +3456,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} title
-         * {--end--}
          */
         grabTitle(): Promise<string>;
         /**
@@ -3661,7 +3547,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<number>} number of open tabs
-         * {--end--}
          */
         grabNumberOfOpenTabs(): Promise<number>;
         /**
@@ -3672,7 +3557,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          * {{ react }}
          */
         seeElement(locator: CodeceptJS.LocatorOrString): void;
@@ -3684,7 +3568,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          * {{ react }}
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
@@ -3696,7 +3579,7 @@ declare namespace CodeceptJS {
          * I.seeElementInDOM('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -3707,7 +3590,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -3735,7 +3617,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -3748,7 +3630,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator
-         * {--end--}
          *
          * {{ react }}
          */
@@ -3790,7 +3671,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -3809,7 +3690,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -3827,7 +3708,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -3843,7 +3723,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -3856,7 +3735,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -3869,7 +3748,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -3884,7 +3763,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} key name of key to press down.
-         * {--end--}
+         *
          */
         pressKeyDown(key: string): void;
         /**
@@ -3899,7 +3778,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} key name of key to release.
-         * {--end--}
+         *
          */
         pressKeyUp(key: string): void;
         /**
@@ -3962,7 +3841,7 @@ declare namespace CodeceptJS {
          * - `'Tab'`
          *
          * @param {string|string[]} key key or array of keys to press.
-         * {--end--}
+         *
          *
          * _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313](https://github.com/GoogleChrome/puppeteer/issues/1313)).
          */
@@ -3983,7 +3862,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          * {{ react }}
          */
         fillField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -3996,7 +3875,6 @@ declare namespace CodeceptJS {
          * I.clearField('#email');
          * ```
          * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
          */
         clearField(editable: string | any): void;
         /**
@@ -4008,7 +3886,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          *
          * {{ react }}
          */
@@ -4025,7 +3902,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -4039,7 +3916,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -4054,7 +3930,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @param {string} pathToFile local file path relative to codecept.json config file.
-         * {--end--}
          */
         attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
         /**
@@ -4078,7 +3953,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
-         * {--end--}
          */
         selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
@@ -4090,7 +3964,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @returns {Promise<number>} number of visible elements
-         * {--end--}
          * {{ react }}
          */
         grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
@@ -4102,14 +3975,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url a fragment to check
-         * {--end--}
          */
         seeInCurrentUrl(url: string): void;
         /**
          * Checks that current url does not contain a provided fragment.
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeInCurrentUrl(url: string): void;
         /**
@@ -4123,7 +3994,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         seeCurrentUrlEquals(url: string): void;
         /**
@@ -4136,7 +4006,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeCurrentUrlEquals(url: string): void;
         /**
@@ -4150,7 +4019,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          *
          * {{ react }}
          */
@@ -4174,7 +4042,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -4188,7 +4056,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} source code
-         * {--end--}
          */
         grabSource(): Promise<string>;
         /**
@@ -4211,7 +4078,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} current URL
-         * {--end--}
          */
         grabCurrentUrl(): Promise<string>;
         /**
@@ -4221,7 +4087,6 @@ declare namespace CodeceptJS {
          * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
          * ```
          * @param {string} text value to check.
-         * {--end--}
          */
         seeInSource(text: string): void;
         /**
@@ -4232,7 +4097,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} value to check.
-         * {--end--}
+         *
          */
         dontSeeInSource(value: string): void;
         /**
@@ -4246,7 +4111,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -4261,7 +4126,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -4274,7 +4139,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {object} cookie a cookie object.
-         * {--end--}
          */
         setCookie(cookie: any): void;
         /**
@@ -4285,7 +4149,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
+         *
          *
          */
         seeCookie(name: string): void;
@@ -4297,13 +4161,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
          */
         dontSeeCookie(name: string): void;
         /**
          * Gets a cookie object by name.
          * If none provided gets all cookies.
-         * * Resumes test execution, so **should be used inside async with `await`** operator.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
          *
          * ```js
          * let cookie = await I.grabCookie('auth');
@@ -4312,7 +4175,6 @@ declare namespace CodeceptJS {
          *
          * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          * Returns cookie in JSON format. If name not passed returns all cookies for this domain.
          */
@@ -4327,7 +4189,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?string} [cookie=null] (optional, `null` by default) cookie name
-         * {--end--}
          */
         clearCookie(cookie?: string): void;
         /**
@@ -4356,11 +4217,12 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          * If a function returns a Promise It will wait for it resolution.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -4385,11 +4247,12 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          * Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Retrieves a text from an element located by CSS or XPath and returns it to test.
          * Resumes test execution, so **should be used inside async with `await`** operator.
@@ -4401,7 +4264,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          * {{ react }}
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
@@ -4414,7 +4276,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -4428,7 +4289,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
          * @returns {Promise<string>} HTML code for an element
-         * {--end--}
          */
         grabHTMLFrom(element: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -4442,7 +4302,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} cssProperty CSS property name.
          * @returns {Promise<string>} CSS value
-         * {--end--}
          * {{ react }}
          */
         grabCssPropertyFrom(locator: CodeceptJS.LocatorOrString, cssProperty: string): Promise<string>;
@@ -4455,7 +4314,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} cssProperties object with CSS properties and their values to check.
-         * {--end--}
          * {{ react }}
          */
         seeCssPropertiesOnElements(locator: CodeceptJS.LocatorOrString, cssProperties: any): void;
@@ -4468,7 +4326,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} attributes attributes and their values to check.
-         * {--end--}
          * {{ react }}
          */
         seeAttributesOnElements(locator: CodeceptJS.LocatorOrString, attributes: any): void;
@@ -4483,7 +4340,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by label|name|CSS|XPath|strict locator.
          * @param {number} offsetX position to drag.
-         * {--end--}
          * {{ react }}
          */
         dragSlider(locator: CodeceptJS.LocatorOrString, offsetX: number): void;
@@ -4498,7 +4354,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} attr attribute name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          * {{ react }}
          */
         grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
@@ -4514,7 +4369,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} fileName file name to save.
          * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
-         * {--end--}
          */
         saveScreenshot(fileName: string, fullPage?: boolean): void;
         /**
@@ -4525,7 +4379,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} sec number of second to wait.
-         * {--end--}
          */
         wait(sec: number): void;
         /**
@@ -4534,7 +4387,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
-         * {--end--}
          */
         waitForEnabled(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -4547,7 +4399,6 @@ declare namespace CodeceptJS {
          * @param {string|object} field input field.
          * @param {string }value expected value.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForValue(field: string | any, value: string, sec?: number): void;
         /**
@@ -4560,7 +4411,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * {{ react }}
          */
         waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
@@ -4575,7 +4425,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -4589,7 +4438,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * {{ react }}
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -4603,7 +4451,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          * This method accepts [React selectors](https://codecept.io/react).
          */
@@ -4618,7 +4465,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -4631,7 +4477,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -4643,7 +4488,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitInUrl(urlPart: string, sec?: number): void;
         /**
@@ -4656,7 +4500,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitUrlEquals(urlPart: string, sec?: number): void;
         /**
@@ -4672,7 +4515,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -4708,7 +4550,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
          */
         switchTo(locator?: CodeceptJS.LocatorOrString): void;
         /**
@@ -4728,7 +4569,7 @@ declare namespace CodeceptJS {
          * @param {string|function} fn to be executed in browser context.
          * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
+         *
          */
         waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
         /**
@@ -4751,7 +4592,6 @@ declare namespace CodeceptJS {
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
          * @param {?number} [interval=null]
-         * {--end--}
          */
         waitUntil(fn: ((...params: any[]) => any) | string, sec?: number, timeoutMsg?: string, interval?: number): void;
         /**
@@ -4764,7 +4604,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForDetached(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -4787,7 +4626,6 @@ declare namespace CodeceptJS {
          *   loadEventEnd: 241
          * }
          * ```
-         * {--end--}
          */
         grabDataFromPerformanceTiming(): void;
         /**
@@ -4811,7 +4649,6 @@ declare namespace CodeceptJS {
          * @param {string|object} locator element located by CSS|XPath|strict locator.
          * @param {string} elementSize x, y, width or height of the given element.
          * @returns {object} Element bounding rectangle
-         * {--end--}
          */
         grabElementBoundingRect(locator: string | any, elementSize: string): any;
     }
@@ -4924,7 +4761,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url url path or global url.
-         * {--end--}
          */
         amOnPage(url: string): void;
         /**
@@ -4933,7 +4769,6 @@ declare namespace CodeceptJS {
          *
          * @param {number} width width in pixels or `maximize`.
          * @param {number} height height in pixels.
-         * {--end--}
          */
         resizeWindow(width: number, height: number): void;
         /**
@@ -4961,7 +4796,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -4971,7 +4806,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.refreshPage();
          * ```
-         * {--end--}
+         *
          */
         refreshPage(): void;
         /**
@@ -4984,7 +4819,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -5004,7 +4838,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          */
         fillField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -5016,7 +4850,6 @@ declare namespace CodeceptJS {
          * I.clearField('#email');
          * ```
          * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
          */
         clearField(editable: string | any): void;
         /**
@@ -5028,7 +4861,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          *
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -5044,7 +4876,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @param {string} pathToFile local file path relative to codecept.json config file.
-         * {--end--}
          *
          */
         attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
@@ -5060,7 +4891,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string|string[]} key key or array of keys to press.
-         * {--end--}
          *
          * {{ keys }}
          */
@@ -5077,7 +4907,7 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
+         *
          *
          */
         moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
@@ -5094,7 +4924,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          */
         doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -5112,7 +4942,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          *
          */
         rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -5129,7 +4959,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -5145,7 +4974,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          */
         uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -5158,7 +4986,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -5171,7 +4999,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
         /**
@@ -5195,7 +5023,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
-         * {--end--}
          */
         selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
@@ -5206,14 +5033,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url a fragment to check
-         * {--end--}
          */
         seeInCurrentUrl(url: string): void;
         /**
          * Checks that current url does not contain a provided fragment.
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeInCurrentUrl(url: string): void;
         /**
@@ -5227,7 +5052,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         seeCurrentUrlEquals(url: string): void;
         /**
@@ -5240,7 +5064,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          */
         dontSeeCurrentUrlEquals(url: string): void;
         /**
@@ -5254,7 +5077,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          *
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -5269,7 +5091,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          *
          */
         dontSee(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -5281,7 +5103,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          */
         seeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -5292,7 +5113,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -5303,7 +5123,7 @@ declare namespace CodeceptJS {
          * I.seeElementInDOM('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          */
         seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -5314,7 +5134,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          */
         dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
         /**
@@ -5327,7 +5146,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          *
          */
         seeNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number): void;
@@ -5340,7 +5159,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @returns {Promise<number>} number of visible elements
-         * {--end--}
          */
         grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
         /**
@@ -5355,7 +5173,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -5369,7 +5187,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
@@ -5387,7 +5204,6 @@ declare namespace CodeceptJS {
          * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
          * ```
          * @param {string} text value to check.
-         * {--end--}
          */
         seeInSource(text: string): void;
         /**
@@ -5398,7 +5214,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} value to check.
-         * {--end--}
+         *
          */
         dontSeeInSource(value: string): void;
         /**
@@ -5413,7 +5229,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} fileName file name to save.
          * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
-         * {--end--}
          */
         saveScreenshot(fileName: string, fullPage?: boolean): void;
         /**
@@ -5424,7 +5239,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} sec number of second to wait.
-         * {--end--}
          */
         wait(sec: number): void;
         /**
@@ -5453,11 +5267,12 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          * If a function returns a Promise It will wait for it resolution.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Retrieves a text from an element located by CSS or XPath and returns it to test.
          * Resumes test execution, so **should be used inside async with `await`** operator.
@@ -5469,7 +5284,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
         /**
@@ -5483,7 +5297,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} attr attribute name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
         /**
@@ -5495,7 +5308,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
         /**
@@ -5507,7 +5319,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} source code
-         * {--end--}
          */
         grabSource(): Promise<string>;
         /**
@@ -5529,7 +5340,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} current URL
-         * {--end--}
          */
         grabCurrentUrl(): Promise<string>;
         /**
@@ -5541,7 +5351,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<Object<string, *>>} scroll position
-         * {--end--}
          */
         grabPageScrollPosition(): Promise<{
             [key: string]: any;
@@ -5552,7 +5361,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToTop();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToTop(): void;
         /**
@@ -5561,7 +5370,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToBottom();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToBottom(): void;
         /**
@@ -5576,7 +5385,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
@@ -5588,7 +5396,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
          */
         switchTo(locator?: CodeceptJS.LocatorOrString): void;
         /**
@@ -5599,7 +5406,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {object} cookie a cookie object.
-         * {--end--}
          */
         setCookie(cookie: any): void;
         /**
@@ -5610,7 +5416,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
+         *
          *
          */
         seeCookie(name: string): void;
@@ -5622,13 +5428,12 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
          */
         dontSeeCookie(name: string): void;
         /**
          * Gets a cookie object by name.
          * If none provided gets all cookies.
-         * * Resumes test execution, so **should be used inside async with `await`** operator.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
          *
          * ```js
          * let cookie = await I.grabCookie('auth');
@@ -5637,7 +5442,6 @@ declare namespace CodeceptJS {
          *
          * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          * Returns cookie in JSON format. If name not passed returns all cookies for this domain.
          */
@@ -5652,7 +5456,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?string} [cookie=null] (optional, `null` by default) cookie name
-         * {--end--}
          */
         clearCookie(cookie?: string): void;
         /**
@@ -5664,7 +5467,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitInUrl(urlPart: string, sec?: number): void;
         /**
@@ -5677,7 +5479,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitUrlEquals(urlPart: string, sec?: number): void;
         /**
@@ -5697,7 +5498,7 @@ declare namespace CodeceptJS {
          * @param {string|function} fn to be executed in browser context.
          * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
+         *
          */
         waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
         /**
@@ -5710,7 +5511,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
         /**
@@ -5724,7 +5524,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -5737,7 +5536,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -5750,7 +5548,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -5766,7 +5563,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          *
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
@@ -5838,7 +5634,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url url path or global url.
-         * {--end--}
          *
          */
         amOnPage(url: string): void;
@@ -5867,7 +5662,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -5885,7 +5680,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -5904,7 +5699,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -5925,7 +5720,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          * {{ react }}
          *
          */
@@ -5939,7 +5734,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          * {{ react }}
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -5952,7 +5746,6 @@ declare namespace CodeceptJS {
          * I.clearField('#email');
          * ```
          * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
          *
          */
         clearField(editable: string | any): void;
@@ -5977,7 +5770,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
-         * {--end--}
          */
         selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
@@ -5992,7 +5784,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @param {string} pathToFile local file path relative to codecept.json config file.
-         * {--end--}
          * Appium: not tested
          */
         attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
@@ -6009,7 +5800,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          * Appium: not tested
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -6026,7 +5816,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          * Appium: not tested
          */
         uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -6041,7 +5830,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          *
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
@@ -6056,7 +5844,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
          * @returns {Promise<string>} HTML code for an element
-         * {--end--}
          *
          */
         grabHTMLFrom(element: CodeceptJS.LocatorOrString): Promise<string>;
@@ -6069,7 +5856,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
@@ -6084,7 +5870,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} cssProperty CSS property name.
          * @returns {Promise<string>} CSS value
-         * {--end--}
          */
         grabCssPropertyFrom(locator: CodeceptJS.LocatorOrString, cssProperty: string): Promise<string>;
         /**
@@ -6098,7 +5883,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} attr attribute name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          * Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
          */
         grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
@@ -6110,7 +5894,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text text value to check.
-         * {--end--}
          *
          */
         seeInTitle(text: string): void;
@@ -6132,7 +5915,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text value to check.
-         * {--end--}
          *
          */
         dontSeeInTitle(text: string): void;
@@ -6145,7 +5927,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} title
-         * {--end--}
          *
          */
         grabTitle(): Promise<string>;
@@ -6160,7 +5941,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          *
          * {{ react }}
          */
@@ -6187,7 +5967,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          *
          * {{ react }}
          */
@@ -6204,7 +5984,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          *
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -6219,7 +5999,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          *
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -6233,7 +6012,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          * Appium: not tested
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
@@ -6247,7 +6026,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          * Appium: not tested
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
@@ -6259,7 +6038,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          * {{ react }}
          *
          */
@@ -6272,7 +6050,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          * {{ react }}
          */
         dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
@@ -6284,7 +6061,7 @@ declare namespace CodeceptJS {
          * I.seeElementInDOM('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          *
          */
         seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
@@ -6296,7 +6073,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          *
          */
         dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
@@ -6307,7 +6083,6 @@ declare namespace CodeceptJS {
          * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
          * ```
          * @param {string} text value to check.
-         * {--end--}
          *
          */
         seeInSource(text: string): void;
@@ -6320,7 +6095,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} source code
-         * {--end--}
          *
          */
         grabSource(): Promise<string>;
@@ -6344,7 +6118,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} current URL
-         * {--end--}
          */
         grabCurrentUrl(): Promise<string>;
         /**
@@ -6355,7 +6128,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} value to check.
-         * {--end--}
+         *
          */
         dontSeeInSource(value: string): void;
         /**
@@ -6369,7 +6142,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          * {{ react }}
          */
         seeNumberOfElements(locator: CodeceptJS.LocatorOrString, num: number): void;
@@ -6383,7 +6156,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          * {{ react }}
          */
         seeNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number): void;
@@ -6396,7 +6169,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} cssProperties object with CSS properties and their values to check.
-         * {--end--}
          */
         seeCssPropertiesOnElements(locator: CodeceptJS.LocatorOrString, cssProperties: any): void;
         /**
@@ -6408,7 +6180,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} attributes attributes and their values to check.
-         * {--end--}
          */
         seeAttributesOnElements(locator: CodeceptJS.LocatorOrString, attributes: any): void;
         /**
@@ -6420,7 +6191,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @returns {Promise<number>} number of visible elements
-         * {--end--}
          */
         grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
         /**
@@ -6431,7 +6201,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url a fragment to check
-         * {--end--}
          *
          */
         seeInCurrentUrl(url: string): void;
@@ -6439,7 +6208,6 @@ declare namespace CodeceptJS {
          * Checks that current url does not contain a provided fragment.
          *
          * @param {string} url value to check.
-         * {--end--}
          *
          */
         dontSeeInCurrentUrl(url: string): void;
@@ -6454,7 +6222,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          *
          */
         seeCurrentUrlEquals(url: string): void;
@@ -6468,7 +6235,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          *
          */
         dontSeeCurrentUrlEquals(url: string): void;
@@ -6498,12 +6264,13 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          *
          * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -6528,10 +6295,11 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          *
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Scrolls to element matched by locator.
          * Extra shift can be set with offsetX and offsetY options.
@@ -6544,7 +6312,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
          *
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
@@ -6560,7 +6327,7 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
+         *
          *
          */
         moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
@@ -6576,7 +6343,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} fileName file name to save.
          * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
-         * {--end--}
          *
          */
         saveScreenshot(fileName: string, fullPage?: boolean): void;
@@ -6588,7 +6354,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {object} cookie a cookie object.
-         * {--end--}
          *
          *
          * Uses Selenium's JSON [cookie
@@ -6605,7 +6370,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?string} [cookie=null] (optional, `null` by default) cookie name
-         * {--end--}
          *
          */
         clearCookie(cookie?: string): void;
@@ -6617,7 +6381,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
+         *
          *
          */
         seeCookie(name: string): void;
@@ -6629,14 +6393,13 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} name cookie name.
-         * {--end--}
          *
          */
         dontSeeCookie(name: string): void;
         /**
          * Gets a cookie object by name.
          * If none provided gets all cookies.
-         * * Resumes test execution, so **should be used inside async with `await`** operator.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
          *
          * ```js
          * let cookie = await I.grabCookie('auth');
@@ -6645,7 +6408,6 @@ declare namespace CodeceptJS {
          *
          * @param {?string} [name=null] cookie name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          *
          */
         grabCookie(name?: string): Promise<string>;
@@ -6687,7 +6449,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} key name of key to press down.
-         * {--end--}
+         *
          */
         pressKeyDown(key: string): void;
         /**
@@ -6702,7 +6464,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} key name of key to release.
-         * {--end--}
+         *
          */
         pressKeyUp(key: string): void;
         /**
@@ -6765,7 +6527,7 @@ declare namespace CodeceptJS {
          * - `'Tab'`
          *
          * @param {string|string[]} key key or array of keys to press.
-         * {--end--}
+         *
          *
          * _Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
          */
@@ -6776,7 +6538,6 @@ declare namespace CodeceptJS {
          *
          * @param {number} width width in pixels or `maximize`.
          * @param {number} height height in pixels.
-         * {--end--}
          * Appium: not tested in web, in apps doesn't work
          */
         resizeWindow(width: number, height: number): void;
@@ -6789,7 +6550,6 @@ declare namespace CodeceptJS {
          *
          * @param {string|object} srcElement located by CSS|XPath|strict locator.
          * @param {string|object} destElement located by CSS|XPath|strict locator.
-         * {--end--}
          * Appium: not tested
          */
         dragAndDrop(srcElement: string | any, destElement: string | any): void;
@@ -6804,7 +6564,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by label|name|CSS|XPath|strict locator.
          * @param {number} offsetX position to drag.
-         * {--end--}
          */
         dragSlider(locator: CodeceptJS.LocatorOrString, offsetX: number): void;
         /**
@@ -6856,7 +6615,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} sec number of second to wait.
-         * {--end--}
          *
          */
         wait(sec: number): void;
@@ -6866,7 +6624,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
-         * {--end--}
          *
          */
         waitForEnabled(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -6881,7 +6638,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -6895,7 +6651,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
@@ -6907,7 +6662,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitInUrl(urlPart: string, sec?: number): void;
         /**
@@ -6920,7 +6674,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitUrlEquals(urlPart: string, sec?: number): void;
         /**
@@ -6936,7 +6689,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          *
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
@@ -6950,7 +6702,6 @@ declare namespace CodeceptJS {
          * @param {string|object} field input field.
          * @param {string }value expected value.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForValue(field: string | any, value: string, sec?: number): void;
         /**
@@ -6963,7 +6714,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -6977,7 +6727,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
         /**
@@ -6990,7 +6739,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -7004,7 +6752,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -7018,7 +6765,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          *
          */
         waitForDetached(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -7039,7 +6785,7 @@ declare namespace CodeceptJS {
          * @param {string|function} fn to be executed in browser context.
          * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
+         *
          *
          */
         waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
@@ -7055,7 +6801,6 @@ declare namespace CodeceptJS {
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
          * @param {?number} [interval=null]
-         * {--end--}
          *
          */
         waitUntil(fn: ((...params: any[]) => any) | string, sec?: number, timeoutMsg?: string, interval?: number): void;
@@ -7068,7 +6813,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
          *
          */
         switchTo(locator?: CodeceptJS.LocatorOrString): void;
@@ -7120,7 +6864,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<number>} number of open tabs
-         * {--end--}
          */
         grabNumberOfOpenTabs(): Promise<number>;
         /**
@@ -7129,7 +6872,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.refreshPage();
          * ```
-         * {--end--}
+         *
          */
         refreshPage(): void;
         /**
@@ -7138,7 +6881,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToTop();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToTop(): void;
         /**
@@ -7147,7 +6890,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToBottom();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToBottom(): void;
         /**
@@ -7159,7 +6902,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<Object<string, *>>} scroll position
-         * {--end--}
          */
         grabPageScrollPosition(): Promise<{
             [key: string]: any;
@@ -7176,7 +6918,6 @@ declare namespace CodeceptJS {
          * @param {number} latitude to set.
          * @param {number} longitude to set
          * @param {number} altitude (optional, null by default) to set
-         * {--end--}
          *
          */
         setGeoLocation(latitude: number, longitude: number, altitude: number): void;
@@ -7187,7 +6928,7 @@ declare namespace CodeceptJS {
          * ```js
          * let geoLocation = await I.grabGeoLocation();
          * ```
-         * {--end--}
+         *
          *
          */
         grabGeoLocation(): void;
@@ -7212,7 +6953,6 @@ declare namespace CodeceptJS {
          * @param {string|object} locator element located by CSS|XPath|strict locator.
          * @param {string} elementSize x, y, width or height of the given element.
          * @returns {object} Element bounding rectangle
-         * {--end--}
          */
         grabElementBoundingRect(locator: string | any, elementSize: string): any;
         /**
@@ -7294,7 +7034,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url url path or global url.
-         * {--end--}
          * Appium: support only web testing
          */
         amOnPage(url: string): void;
@@ -7323,7 +7062,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          * Appium: support
          */
         click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -7340,7 +7079,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-         * {--end--}
+         *
          * Appium: support only web testing
          */
         doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -7358,7 +7097,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          * Appium: support, but in apps works as usual click
          */
         rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -7378,7 +7117,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value text value to fill.
-         * {--end--}
+         *
          * Appium: support
          */
         fillField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -7391,7 +7130,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
          * @param {string} value text value to append.
-         * {--end--}
          * Appium: support, but it's clear a field before insert in apps
          */
         appendField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -7416,7 +7154,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @param {string} pathToFile local file path relative to codecept.json config file.
-         * {--end--}
          * Appium: not tested
          */
         attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
@@ -7433,7 +7170,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          * Appium: not tested
          */
         checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -7450,7 +7186,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
-         * {--end--}
          * Appium: not tested
          */
         uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
@@ -7465,7 +7200,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @returns {Promise<string|string[]>} attribute value
-         * {--end--}
          * Appium: support
          */
         grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
@@ -7480,7 +7214,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
          * @returns {Promise<string>} HTML code for an element
-         * {--end--}
          * Appium: support only web testing
          */
         grabHTMLFrom(element: CodeceptJS.LocatorOrString): Promise<string>;
@@ -7493,7 +7226,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          * Appium: support only web testing
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
@@ -7508,7 +7240,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} cssProperty CSS property name.
          * @returns {Promise<string>} CSS value
-         * {--end--}
          */
         grabCssPropertyFrom(locator: CodeceptJS.LocatorOrString, cssProperty: string): Promise<string>;
         /**
@@ -7522,7 +7253,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {string} attr attribute name.
          * @returns {Promise<string>} attribute value
-         * {--end--}
          * Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
          */
         grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
@@ -7534,7 +7264,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text text value to check.
-         * {--end--}
          * Appium: support only web testing
          */
         seeInTitle(text: string): void;
@@ -7556,7 +7285,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text value to check.
-         * {--end--}
          * Appium: support only web testing
          */
         dontSeeInTitle(text: string): void;
@@ -7569,7 +7297,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} title
-         * {--end--}
          * Appium: support only web testing
          */
         grabTitle(): Promise<string>;
@@ -7584,7 +7311,6 @@ declare namespace CodeceptJS {
          * ```
          * @param {string} text expected on page.
          * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-         * {--end--}
          * Appium: support with context in apps
          */
         see(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -7610,7 +7336,7 @@ declare namespace CodeceptJS {
          *
          * @param {string} text which is not present.
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-         * {--end--}
+         *
          * Appium: support with context in apps
          */
         dontSee(text: string, context?: CodeceptJS.LocatorOrString): void;
@@ -7626,7 +7352,7 @@ declare namespace CodeceptJS {
          * ```
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
+         *
          * Appium: support only web testing
          */
         seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -7641,7 +7367,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
          * @param {string} value value to check.
-         * {--end--}
          * Appium: support only web testing
          */
         dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
@@ -7655,7 +7380,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          * Appium: not tested
          */
         seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
@@ -7669,7 +7394,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
-         * {--end--}
+         *
          * Appium: not tested
          */
         dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
@@ -7681,7 +7406,6 @@ declare namespace CodeceptJS {
          * I.seeElement('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
-         * {--end--}
          * Appium: support
          */
         seeElement(locator: CodeceptJS.LocatorOrString): void;
@@ -7698,7 +7422,7 @@ declare namespace CodeceptJS {
          * I.seeElementInDOM('#modal');
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-         * {--end--}
+         *
          * Appium: support
          */
         seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
@@ -7710,7 +7434,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
-         * {--end--}
          * Appium: support
          */
         dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
@@ -7721,7 +7444,6 @@ declare namespace CodeceptJS {
          * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
          * ```
          * @param {string} text value to check.
-         * {--end--}
          * Appium: support
          */
         seeInSource(text: string): void;
@@ -7734,7 +7456,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} source code
-         * {--end--}
          * Appium: support
          */
         grabSource(): Promise<string>;
@@ -7757,7 +7478,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<string>} current URL
-         * {--end--}
          */
         grabCurrentUrl(): Promise<string>;
         /**
@@ -7768,7 +7488,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} value to check.
-         * {--end--}
+         *
          * Appium: support
          */
         dontSeeInSource(value: string): void;
@@ -7795,7 +7515,7 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
-         * {--end--}
+         *
          */
         seeNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number): void;
         /**
@@ -7807,7 +7527,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} cssProperties object with CSS properties and their values to check.
-         * {--end--}
          */
         seeCssPropertiesOnElements(locator: CodeceptJS.LocatorOrString, cssProperties: any): void;
         /**
@@ -7819,7 +7538,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {object} attributes attributes and their values to check.
-         * {--end--}
          */
         seeAttributesOnElements(locator: CodeceptJS.LocatorOrString, attributes: any): void;
         /**
@@ -7831,7 +7549,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @returns {Promise<number>} number of visible elements
-         * {--end--}
          */
         grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
         /**
@@ -7842,7 +7559,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url a fragment to check
-         * {--end--}
          * Appium: support only web testing
          */
         seeInCurrentUrl(url: string): void;
@@ -7850,7 +7566,6 @@ declare namespace CodeceptJS {
          * Checks that current url does not contain a provided fragment.
          *
          * @param {string} url value to check.
-         * {--end--}
          * Appium: support only web testing
          */
         dontSeeInCurrentUrl(url: string): void;
@@ -7865,7 +7580,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          * Appium: support only web testing
          */
         seeCurrentUrlEquals(url: string): void;
@@ -7879,7 +7593,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} url value to check.
-         * {--end--}
          * Appium: support only web testing
          */
         dontSeeCurrentUrlEquals(url: string): void;
@@ -7909,12 +7622,13 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          * Appium: support only web testing
          *
          * Wraps [execute](http://webdriver.io/api/protocol/execute.html) command.
          */
-        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Executes async script on page.
          * Provided function should execute a passed callback (as first argument) to signal it is finished.
@@ -7939,10 +7653,11 @@ declare namespace CodeceptJS {
          *
          * @param {string|function} fn function to be executed in browser context.
          * @param {...any} args to be passed to function.
-         * {--end--}
+         * @return {Promise<any>}
+         *
          * Appium: support only web testing
          */
-        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): void;
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
          * Scrolls to element matched by locator.
          * Extra shift can be set with offsetX and offsetY options.
@@ -7955,7 +7670,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
          * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
          * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
-         * {--end--}
          * Appium: support only web testing
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
@@ -8024,28 +7738,66 @@ declare namespace CodeceptJS {
          */
         grabPopupText(): void;
         /**
-         * Presses a key on a focused element.
-         * Special keys like 'Enter', 'Control', [etc](https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value)
-         * will be replaced with corresponding unicode.
-         * If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
+         * Presses a key in the browser (on a focused element).
+         *
+         * _Hint:_ For populating text field or textarea, it is recommended to use [`fillField`](#fillfield).
          *
          * ```js
-         * I.pressKey('Enter');
-         * I.pressKey(['Control','a']);
+         * I.pressKey('Backspace');
          * ```
+         *
+         * To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+         *
+         * ```js
+         * I.pressKey(['Control', 'Z']);
+         * ```
+         *
+         * For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+         * This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+         *
+         * ```js
+         * I.pressKey(['CommandOrControl', 'Z']);
+         * ```
+         *
+         * Some of the supported key names are:
+         * - `'AltLeft'` or `'Alt'`
+         * - `'AltRight'`
+         * - `'ArrowDown'`
+         * - `'ArrowLeft'`
+         * - `'ArrowRight'`
+         * - `'ArrowUp'`
+         * - `'Backspace'`
+         * - `'Clear'`
+         * - `'ControlLeft'` or `'Control'`
+         * - `'ControlRight'`
+         * - `'Command'`
+         * - `'CommandOrControl'`
+         * - `'Delete'`
+         * - `'End'`
+         * - `'Enter'`
+         * - `'Escape'`
+         * - `'F1'` to `'F12'`
+         * - `'Home'`
+         * - `'Insert'`
+         * - `'MetaLeft'` or `'Meta'`
+         * - `'MetaRight'`
+         * - `'Numpad0'` to `'Numpad9'`
+         * - `'NumpadAdd'`
+         * - `'NumpadDecimal'`
+         * - `'NumpadDivide'`
+         * - `'NumpadMultiply'`
+         * - `'NumpadSubtract'`
+         * - `'PageDown'`
+         * - `'PageUp'`
+         * - `'Pause'`
+         * - `'Return'`
+         * - `'ShiftLeft'` or `'Shift'`
+         * - `'ShiftRight'`
+         * - `'Space'`
+         * - `'Tab'`
          *
          * @param {string|string[]} key key or array of keys to press.
-         * {--end--}
-         * {{> _keys }}
          *
-         * To make combinations with modifier and mouse clicks (like Ctrl+Click) press a modifier, click, then release it.
-         * Appium: support, but clear field before pressing in apps:
-         *
-         * ```js
-         * I.pressKey('Control');
-         * I.click('#someelement');
-         * I.pressKey('Control');
-         * ```
          */
         pressKey(key: string | string[]): void;
         /**
@@ -8054,7 +7806,6 @@ declare namespace CodeceptJS {
          *
          * @param {number} width width in pixels or `maximize`.
          * @param {number} height height in pixels.
-         * {--end--}
          * Appium: not tested in web, in apps doesn't work
          */
         resizeWindow(width: number, height: number): void;
@@ -8067,7 +7818,6 @@ declare namespace CodeceptJS {
          *
          * @param {string|object} srcElement located by CSS|XPath|strict locator.
          * @param {string|object} destElement located by CSS|XPath|strict locator.
-         * {--end--}
          * Appium: not tested
          */
         dragAndDrop(srcElement: string | any, destElement: string | any): void;
@@ -8088,7 +7838,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} sec number of second to wait.
-         * {--end--}
          * Appium: support
          */
         wait(sec: number): void;
@@ -8098,7 +7847,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
-         * {--end--}
          * Appium: support
          */
         waitForEnabled(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -8113,7 +7861,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * Appium: support
          */
         waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -8126,7 +7873,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitInUrl(urlPart: string, sec?: number): void;
         /**
@@ -8139,7 +7885,6 @@ declare namespace CodeceptJS {
          *
          * @param {string} urlPart value to check.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitUrlEquals(urlPart: string, sec?: number): void;
         /**
@@ -8155,7 +7900,6 @@ declare namespace CodeceptJS {
          * @param {string }text to wait for.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-         * {--end--}
          * Appium: support
          */
         waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
@@ -8169,7 +7913,6 @@ declare namespace CodeceptJS {
          * @param {string|object} field input field.
          * @param {string }value expected value.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitForValue(field: string | any, value: string, sec?: number): void;
         /**
@@ -8182,7 +7925,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * Appium: support
          */
         waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -8196,7 +7938,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} num number of elements.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          */
         waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
         /**
@@ -8209,7 +7950,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * Appium: support
          */
         waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -8223,7 +7963,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * Appium: support
          */
         waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -8237,7 +7976,6 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
-         * {--end--}
          * Appium: support
          */
         waitForDetached(locator: CodeceptJS.LocatorOrString, sec?: number): void;
@@ -8258,7 +7996,7 @@ declare namespace CodeceptJS {
          * @param {string|function} fn to be executed in browser context.
          * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
          * @param {number} [sec] (optional, `1` by default) time in seconds to wait
-         * {--end--}
+         *
          * Appium: support
          */
         waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
@@ -8274,7 +8012,6 @@ declare namespace CodeceptJS {
          * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
          * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
          * @param {?number} [interval=null]
-         * {--end--}
          * * *Appium*: supported
          */
         waitUntil(fn: ((...params: any[]) => any) | string, sec?: number, timeoutMsg?: string, interval?: number): void;
@@ -8287,7 +8024,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
-         * {--end--}
          * Appium: support only web testing
          */
         switchTo(locator?: CodeceptJS.LocatorOrString): void;
@@ -8339,7 +8075,6 @@ declare namespace CodeceptJS {
          * ```
          *
          * @returns {Promise<number>} number of open tabs
-         * {--end--}
          */
         grabNumberOfOpenTabs(): Promise<number>;
         /**
@@ -8348,7 +8083,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.refreshPage();
          * ```
-         * {--end--}
+         *
          */
         refreshPage(): void;
         /**
@@ -8357,7 +8092,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToTop();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToTop(): void;
         /**
@@ -8366,7 +8101,7 @@ declare namespace CodeceptJS {
          * ```js
          * I.scrollPageToBottom();
          * ```
-         * {--end--}
+         *
          */
         scrollPageToBottom(): void;
         /**
