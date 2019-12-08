@@ -58,7 +58,7 @@ module.exports = {
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
     const templates = partials
       .map(file => fs.readFileSync(`docs/webapi/${file}`).toString())
-      .map(template => template.replace(/^/gm, '   * ').replace(/^/, '\n'));
+      .map(template => template.replace(/^/gm, '   * ').replace(/^/, '\n').replace(/\s*\* /, ''));
 
     for (const file of files) {
       const name = path.basename(file, '.js');
@@ -83,7 +83,7 @@ module.exports = {
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
     const templates = partials
       .map(file => fs.readFileSync(`docs/webapi/${file}`).toString())
-      .map(template => template.replace(/^/gm, '   * ').replace(/^/, '\n'));
+      .map(template => template.replace(/^/gm, '   * ').replace(/^/, '\n').replace(/\s*\* /, ''));
 
     const sharedPartials = fs.readdirSync('docs/shared').filter(f => path.extname(f) === '.mustache');
     const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`);
