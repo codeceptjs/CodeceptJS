@@ -205,7 +205,7 @@ module.exports = {
         cmd.commit('version bump');
       });
     }
-    // // publish a new release on npm. Update version in package.json!
+    // publish a new release on npm. Update version in package.json!
     const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;
     await this.docs();
