@@ -209,6 +209,7 @@ Implement corresponding methods to them.
 * `_init` - before all tests
 * `_finishTest` - after all tests
 * `_before` - before a test
+* `_after` - after a test
 * `_beforeStep` - before each step
 * `_afterStep` - after each step
 * `_beforeSuite` - before each suite
