@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const {
-  stopOnFail, chdir, git, copy, exec, replaceInFile, npmRun, npx, writeToFile, runio,
+  stopOnFail, chdir, git, copy, exec, replaceInFile, npmInstall, npmRun, npx, writeToFile, runio,
 } = require('runio.js');
 
 stopOnFail();
@@ -212,7 +212,10 @@ title: ${name}
     await processChangelog();
     copy('docker/README.md', 'docs/docker.md');
     await this.wiki();
-    await chdir('docs', () => npx('vuepress build'));
+    await chdir('docs', async () => {
+      await npmInstall();
+      await npx('vuepress build');
+    });
     await chdir('docs/.vuepress/dist', async () => {
       writeToFile('CNAME', cfg => cfg.line('codecept.io'));
       stopOnFail(false);
@@ -274,9 +277,13 @@ async function processChangelog() {
 
   writeToFile('docs/changelog.md', (cfg) => {
     cfg.line('---');
-    cfg.line('id: changelog');
+    cfg.line('permalink: /changelog');
     cfg.line('title: Releases');
+    cfg.line('sidebar: false');
+    cfg.line('layout: Section');
     cfg.line('---');
+    cfg.line('');
+    cfg.line('# Releases');
     cfg.line('');
     cfg.line(changelog);
   });

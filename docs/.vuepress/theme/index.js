@@ -27,10 +27,10 @@ module.exports = (options, ctx) => {
       ['@vuepress/active-header-links', options.activeHeaderLinks],
       '@vuepress/search',
       '@vuepress/plugin-nprogress',
-      '@vuepress/google-analytics',
+      ['@vuepress/google-analytics',
       {
         'ga': 'UA-30075781-3' // UA-00000000-0
-      }
+      }],
       ['container', {
         type: 'tip',
         defaultTitle: {

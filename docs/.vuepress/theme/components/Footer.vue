@@ -87,4 +87,10 @@ export default {
 
     // @apply bg-purple-800;
   }
+
+@media(max-width: 600px) {
+  footer section {
+    display: block;
+  }
+}
 </style>

@@ -6,7 +6,7 @@ module.exports = {
   ],
 
   themeConfig: {
-
+    lastUpdated: 'Last Updated',
     docsRepo: 'codeception/codeceptjs',
     // if your docs are not at the root of the repo:
     docsDir: 'docs',
@@ -17,6 +17,7 @@ module.exports = {
     // custom text for edit link. Defaults to "Edit this page"
     editLinkText: 'Help us improve this page!',
     logo: '/logo.svg',
+    searchPlaceholder: 'Search...',
     algolia: {
       apiKey: '0cc13a0af567a05fc38790be681b1491',
       indexName: 'codecept'
@@ -234,11 +235,19 @@ module.exports = {
       ]
     }
   },
+
+
   postcss: {
 
     plugins: [
       require("autoprefixer"),
       require("tailwindcss")("./tailwind.config.js")
     ]
+  },
+
+  plugins: {
+    'sitemap': {
+      hostname: 'https://codecept.io'
+    }
   }
 }

@@ -73,7 +73,6 @@ export default {
   },
   mounted () {
     import('vue-carousel').then(module => {
-      console.log(module);
       this.slideComp = module.Slide;
       this.carouselComp = module.Carousel;
     });

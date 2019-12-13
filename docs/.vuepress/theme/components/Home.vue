@@ -249,7 +249,8 @@ export default {
 
 <style lang="scss" scoped>
 .mountains {
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1900' height='650' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%2376509a' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%2332184b' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%237b53a0' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%233c1d5a' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%237e59a1' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%2347236a' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23815ea6' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%2352277a' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%238661ab' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%235b2d88' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%238c61b4' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%2367329b' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
+  background:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1900' height='650' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%2376509a' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%2332184b' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%237b53a0' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%233c1d5a' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%237e59a1' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%2347236a' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23815ea6' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%2352277a' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%238661ab' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%235b2d88' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%238c61b4' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%2367329b' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
+  background-position: bottom left;
 }
 
 .content {
@@ -363,9 +364,37 @@ export default {
 
 @media(max-width: 600px) {
 
-  .feature {
-    width: 100%;
-    padding: 0;
+  .frameworks {
+    display: none;
+  }
+
+  .home {
+    .content {
+      padding-top: 0;
+      max-width: 100%;
+      @apply text-sm px-1;
+    }
+  }
+
+  body .features {
+    .feature {
+      width: 100%;
+      @apply px-1 mb-0 text-sm;
+
+      img {
+        width: 48px;
+        height: 48px;
+        margin-right: 5px;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  body .testimonials {
+    .row {
+      display: block !important;
+    }
+    @apply px-1;
   }
 }
 @media(max-width: 1200px) {
@@ -418,7 +447,6 @@ export default {
 
     img
       max-width: 600px
-      transform perspective(240px) rotate3d(90,280,0,5deg)
       display block
       margin 3rem auto 1.5rem
       margin-top 0
@@ -471,11 +499,12 @@ export default {
 
 @media (max-width: $MQMobileNarrow)
   .home
-
-    padding-left 1.5rem
-    padding-right 1.5rem
+    padding: 0
     .hero
+      .video
+        margin-top 20px
       img
+        display none
         max-height 210px
         margin 2rem auto 1.2rem
       h1

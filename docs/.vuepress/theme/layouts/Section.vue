@@ -13,10 +13,10 @@
     <section class="hero"></section>
 
 
-    <section class="container">
-      <div class="content">
+    <section class="container post">
+      <article class="content">
         <Content ></Content>
-      </div>
+      </article>
     </section>
 
     <section class="sidebar" v-if="$frontmatter.sidebar">
@@ -79,7 +79,28 @@
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
+  .hero {
+    display: none;
+  }
+  .container {
+    @apply px-0 text-sm;
+    width: 100%;
+    padding-left: 0 !important;
+
+    .content {
+      @apply px-1;
+      margin-top: 0px;
+    }
+
+  }
+  .sidebar {
+    position: relative;
+    width: 100%;
+  }
+}
+
+@media (max-width: 1100px) {
   .hero {
     display: none;
   }

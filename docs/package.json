@@ -13,7 +13,8 @@
     "autoprefixer": "^9.7.3",
     "tailwindcss": "^1.1.4",
     "vue-carousel": "^0.18.0",
-    "vuepress": "^1.2.0"
+    "vuepress": "^1.2.0",
+    "vuepress-plugin-sitemap": "^2.3.1"
   },
   "devDependencies": {
     "@vuepress/plugin-google-analytics": "^1.2.0"

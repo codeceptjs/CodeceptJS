@@ -6,7 +6,11 @@
 
     <slot name="top" />
 
-    <Content class="theme-default-content" />
+    <div class="post">
+      <article>
+        <Content class="theme-default-content" />
+      </article>
+    </div>
     <PageEdit />
     <PageNav v-bind="{ sidebarItems }" />
 
