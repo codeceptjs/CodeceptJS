@@ -1,7 +1,9 @@
 ---
-id: visual
+permalink: /visual
 title: Visual Testing
 ---
+
+# Visual Testing
 
 How does one test if the UI being rendered appears correctly to the users or how to test if each UI element appears in the right position and size? The traditional way to test the UI of the application has always been manually, which is time consuming.
 

@@ -1,7 +1,9 @@
 ---
-id: parallel
+permalink: /parallel
 title: Parallel Execution
 ---
+
+# Parallel Execution
 
 CodeceptJS has two engines for running tests in parallel:
 

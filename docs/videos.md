@@ -1,7 +1,9 @@
 ---
-id: videos
+permalink: /videos
 title: Videos
 ---
+
+# Videos
 
 > Add your own videos to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Videos)
 ## [Introductory Videos](https://www.youtube.com/watch?v=FPFG1rBNJ64&list=PLcFXthgti9Lt4SjSvL1ALDg6dOeTC0TvT)

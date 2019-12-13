@@ -1,8 +1,9 @@
 ---
-id: commands
+permalink: /commands
 title: Commands
 ---
 
+# Commands
 
 ## Run
 

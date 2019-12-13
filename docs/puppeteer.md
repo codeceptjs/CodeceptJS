@@ -1,7 +1,9 @@
 ---
-id: puppeteer
+permalink: /puppeteer
 title: Testing with Puppeteer
 ---
+
+# Testing with Puppeteer
 
 Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer). It operates over Google Chrome directly without requiring additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
 

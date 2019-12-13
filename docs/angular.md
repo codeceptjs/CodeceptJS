@@ -1,5 +1,5 @@
 ---
-id: angular
+permalink: /angular
 title: Testing with Protractor
 ---
 

@@ -1,7 +1,9 @@
 ---
-id: reports
+permalink: /reports
 title: Reporters
 ---
+
+# Reporters
 
 ## Cli
 

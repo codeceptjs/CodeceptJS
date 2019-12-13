@@ -1,7 +1,9 @@
 ---
-id: best
+permalink: /best
 title: Best Practices
 ---
+
+# Best Practices
 
 ## Focus on Readability
 

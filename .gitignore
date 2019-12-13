@@ -3,6 +3,9 @@ coverage
 .vscode
 coverage
 site
+docs/.vuepress/dist
+docs/node_modules
+docs/wiki
 website/build
 website/wiki
 .idea

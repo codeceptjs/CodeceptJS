@@ -1,7 +1,9 @@
 ---
-id: basics
+permalink: /basics
 title: Basics
 ---
+
+# Getting Started
 
 CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The tests are written as a linear scenario of the user's action on a site.
 
@@ -100,7 +102,7 @@ Strict locators allow to specify additional locator types:
 // locate form element by name
 I.seeElement({name: 'password'});
 // locate element by id
-I.seeElement({id: 'users'});
+I.seeElement({permalink: /'users'});
 // locate element by React component and props
 I.seeElement({react: 'user-profile', props: {name: 'davert'}});
 ```

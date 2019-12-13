@@ -1,5 +1,5 @@
 ---
-id: books
+permalink: /books
 title: Books & Posts
 ---
 

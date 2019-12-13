@@ -1,5 +1,5 @@
 ---
-id: changelog
+permalink: /changelog
 title: Releases
 ---
 
@@ -13,7 +13,7 @@ exports.config = {
   tests: '{./workers/base_test.workers.js,./workers/test_grep.workers.js}',
 }
 ```
-* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By **[jamesgeorge007](https://github.com/jamesgeorge007)** 
+* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By **[jamesgeorge007](https://github.com/jamesgeorge007)**
 * Fixed some typos in documantation. By **[pablopaul](https://github.com/pablopaul)** **[atomicpages](https://github.com/atomicpages)** **[EricTendian](https://github.com/EricTendian)**
 * Added PULL_REQUEST template.
 * [Puppeteer][WebDriver] Added `waitForClickable` for waiting clickable element on page.
@@ -942,7 +942,7 @@ I.dontSee('Email Address');
   * `addMochawesomeContext` method to add custom data to mochawesome reports
   * Fixed Mochawesome context for failed screenshots.
 * **[WebDriverIO]** improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/Codeception/CodeceptJS/issues/647)* **[Nightmare]** Added `refresh` function by **[awhanks](https://github.com/awhanks)**
-* fixed `Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad`
+* fixed `Unhandled promise rejection (rejection permalink: /1): Error: Unknown wait type: pageLoad`
 * support for tests with retries in html report
 * be sure that change window size and timeouts completes before test
 * **[Nightmare]** Fixed `[Wrapped Error] "codeceptjs is not defined"`; Reinjectiing client scripts to a webpage on changes.
@@ -1057,7 +1057,7 @@ Special thanks to **Andrey Pshenkin** for his work on this release and the major
 * Allowed to set custom test options:
 
 ```js
-Scenario('My scenario', { build_id: 123, type: 'slow' }, function (I)
+Scenario('My scenario', { build_permalink: /123, type: 'slow' }, function (I)
 ```
 those options can be accessed as `opts` property inside a `test` object. Can be used in custom listeners.
 

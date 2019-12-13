@@ -1,7 +1,9 @@
 ---
-id: acceptance
+permalink: /acceptance
 title: Acceptance Testing
 ---
+
+# Acceptance Testing
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
@@ -50,7 +52,7 @@ Strict locators allow to specify additional locator types:
 // locate form element by name
 I.seeElement({name: 'password'});
 // locate element by id
-I.seeElement({id: 'users'});
+I.seeElement({permalink: /'users'});
 ```
 
 In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~` to specify accessibility id to locate an element. In web application you can locate element by their `aria-label` value.
@@ -383,26 +385,26 @@ Scenario('should open main page of configured site, open a popup, switch to main
         window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400');
     });
 
-    const allHandlesAfterPopup = await I.grabAllWindowHandles();    
+    const allHandlesAfterPopup = await I.grabAllWindowHandles();
     assert.equal(allHandlesAfterPopup.length, 2, 'Two Windows');
 
     await I.switchToWindow(allHandlesAfterPopup[1]);
-    const urlAfterPopup = await I.grabCurrentUrl();    
+    const urlAfterPopup = await I.grabCurrentUrl();
     assert.equal(urlAfterPopup, 'https://www.w3schools.com/', 'Expected URL: Popup');
-    
+
     assert.equal(handleBeforePopup, allHandlesAfterPopup[0], 'Expected Window: Main Window');
     await I.switchToWindow(handleBeforePopup);
     const currentURL = await I.grabCurrentUrl();
-    assert.equal(currentURL, urlBeforePopup, 'Expected URL: Main URL');    
+    assert.equal(currentURL, urlBeforePopup, 'Expected URL: Main URL');
 
     await I.switchToWindow(allHandlesAfterPopup[1]);
     const urlAfterSwitchBack = await I.grabCurrentUrl();
-    assert.equal(urlAfterSwitchBack, 'https://www.w3schools.com/', 'Expected URL: Popup');        
+    assert.equal(urlAfterSwitchBack, 'https://www.w3schools.com/', 'Expected URL: Popup');
     await I.closeCurrentTab();
 
-    const allHandlesAfterPopupClosed = await I.grabAllWindowHandles();    
+    const allHandlesAfterPopupClosed = await I.grabAllWindowHandles();
     assert.equal(allHandlesAfterPopupClosed.length, 1, 'Single Window');
-    const currentWindowHandle = await I.grabCurrentWindowHandle();    
+    const currentWindowHandle = await I.grabCurrentWindowHandle();
     assert.equal(currentWindowHandle, allHandlesAfterPopup[0], 'Expected Window: Main Window');
 
 }).tag('@ProofOfConcept').tag('@grabAllWindowHandles').tag('@grabCurrentWindowHandle').tag('@switchToWindow');

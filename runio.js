@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const {
   stopOnFail, chdir, git, copy, exec, replaceInFile, npmRun, npx, writeToFile, runio,
 } = require('runio.js');
@@ -35,7 +36,7 @@ module.exports = {
     // generate documentation for plugins
     await npx('documentation build lib/plugin/*.js -o docs/plugins.md -f md --shallow --markdown-toc=false --sort-order=alpha');
     await replaceInFile('docs/plugins.md', (cfg) => {
-      cfg.replace(/^/, '---\nid: plugins\ntitle: Plugins\n---\n\n');
+      cfg.replace(/^/, '---\npermalink: plugins\nsidebarDepth: \nsidebar: auto\ntitle: Plugins\n---\n\n');
     });
   },
 
@@ -45,8 +46,20 @@ module.exports = {
     const helper = 'Detox';
     await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
     await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
-      cfg.line(`---\nid: ${helper}\ntitle: ${helper}\n---\n\n`);
+      cfg.line(`---\npermalink: helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
       cfg.textFromFile(`docs/helpers/${helper}.md`);
+    });
+  },
+
+  async docsExternalPlugins() {
+    // generate documentation for helpers outside of main repo
+    console.log('Building Vue plugin docs');
+    const resp = await axios.get('https://raw.githubusercontent.com/codecept-js/vue-cli-plugin-codeceptjs-puppeteer/master/README.md');
+
+    if (!resp.data) return;
+    writeToFile('docs/vue.md', (cfg) => {
+      cfg.line('---\npermalink: /vue\nlayout: Section\nsidebar: false\ntitle: Testing Vue Apps\n---\n\n');
+      cfg.line(resp.data);
     });
   },
 
@@ -79,6 +92,8 @@ module.exports = {
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
 
+    const ignoreList = ['WebDriverIO', 'SeleniumWebdriver', 'Polly']; // WebDriverIO won't be documented and should be removed
+
     const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache');
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
     const templates = partials
@@ -93,6 +108,7 @@ module.exports = {
 
     for (const file of files) {
       const name = path.basename(file, '.js');
+      if (ignoreList.indexOf(name) >= 0) continue;
       console.log(`Writing documentation for ${name}`);
       copy(`lib/helper/${file}`, `docs/build/${file}`);
       replaceInFile(`docs/build/${file}`, (cfg) => {
@@ -114,7 +130,14 @@ module.exports = {
       });
 
       await writeToFile(`docs/helpers/${name}.md`, (cfg) => {
-        cfg.append(`---\nid: ${name}\ntitle: ${name}\n---\n\n`);
+        cfg.append(`---
+permalink: helpers/${name}
+editLink: false
+sidebar: auto
+title: ${name}
+---
+
+`);
         cfg.textFromFile(`docs/helpers/${name}.md`);
       });
     }
@@ -122,7 +145,7 @@ module.exports = {
 
   async wiki() {
     // publish wiki pages to website
-    if (!fs.existsSync('website/wiki/Home.md')) {
+    if (!fs.existsSync('docs/wiki/Home.md')) {
       await git((fn) => {
         fn.clone('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki');
       });
@@ -131,10 +154,12 @@ module.exports = {
 
     await writeToFile('docs/community-helpers.md', (cfg) => {
       cfg.line('---');
-      cfg.line('id: community-helpers');
+      cfg.line('permalink: /community-helpers');
       cfg.line('title: Community Helpers');
+      cfg.line('editLink: false');
       cfg.line('---');
       cfg.line('');
+      cfg.line('# Community Helpers');
       cfg.line('> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)');
       cfg.line('');
       cfg.textFromFile('website/wiki/Community-Helpers.md');
@@ -142,28 +167,39 @@ module.exports = {
 
     writeToFile('docs/examples.md', (cfg) => {
       cfg.line('---');
-      cfg.line('id: examples');
+      cfg.line('permalink: /examples');
+      cfg.line('layout: Section');
+      cfg.line('sidebar: false');
       cfg.line('title: Examples');
+      cfg.line('editLink: false');
       cfg.line('---');
       cfg.line('');
+      cfg.line('# Examples');
       cfg.line('> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)');
       cfg.textFromFile('website/wiki/Examples.md');
     });
 
     writeToFile('docs/books.md', (cfg) => {
       cfg.line('---');
-      cfg.line('id: books');
+      cfg.line('permalink: /books');
+      cfg.line('layout: Section');
+      cfg.line('sidebar: false');
       cfg.line('title: Books & Posts');
+      cfg.line('editLink: false');
       cfg.line('---');
       cfg.line('');
+      cfg.line('# Books & Posts');
       cfg.line('> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)');
       cfg.textFromFile('website/wiki/Books-&-Posts.md');
     });
 
     writeToFile('docs/videos.md', (cfg) => {
       cfg.line('---');
-      cfg.line('id: videos');
+      cfg.line('permalink: /videos');
+      cfg.line('layout: Section');
+      cfg.line('sidebar: false');
       cfg.line('title: Videos');
+      cfg.line('editLink: false');
       cfg.line('---');
       cfg.line('');
       cfg.line('> Add your own videos to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Videos)');

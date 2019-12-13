@@ -1,8 +1,9 @@
 ---
-id: hooks
+permalink: /hooks
 title: Bootstrap / Teardown / Plugins
 ---
 
+# Bootstrap / Teardown / Plugins
 
 CodeceptJS provides API to run custom code before and after the test and inject custom listeners into the event system.
 
