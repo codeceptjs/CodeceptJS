@@ -1,10 +1,9 @@
 module.exports = {
-  title: 'CodeceptJS - Supercharged End 2 End Testing with WebDriver & Puppeteer', // Title for your website.
+  title: 'CodeceptJS', // Title for your website.
   description: 'SuperCharged End 2 End Testing with WebDriver & Puppeteer',
   head: [
     ['link', { rel: 'icon', href: '/favicon/favicon.png' }],
   ],
-
 
   themeConfig: {
 
@@ -236,6 +235,7 @@ module.exports = {
     }
   },
   postcss: {
+
     plugins: [
       require("autoprefixer"),
       require("tailwindcss")("./tailwind.config.js")

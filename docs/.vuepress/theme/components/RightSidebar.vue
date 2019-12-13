@@ -13,10 +13,10 @@
         <router-link to="/examples">Examples</router-link>
       </p>
       <p>
-        <a href="https://codecept.discourse.group/c/cookbook" class="dashed" >Cookbook &rarr;</a>
+        <a href="https://codecept.discourse.group/c/cookbook" >Cookbook &rarr;</a>
       </p>
 
-      <h4>Also by CodeceptJS Team</h4>
+      <h4>More from CodeceptJS Team</h4>
 
       <p>
         <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference" class="dashed">

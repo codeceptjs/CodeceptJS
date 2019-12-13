@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vue-carousel": "^0.18.0",
-    "vuepress": "^1.2.0",
+    "autoprefixer": "^9.7.3",
     "tailwindcss": "^1.1.4",
-    "autoprefixer": "^9.7.3"
+    "vue-carousel": "^0.18.0",
+    "vuepress": "^1.2.0"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-google-analytics": "^1.2.0"
   }
 }

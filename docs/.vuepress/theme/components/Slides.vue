@@ -1,12 +1,12 @@
 <template>
   <div class="slider">
-    <carousel
+    <carousel v-if="carouselComp" :is="carouselComp"
       :navigationEnabled="true"
       :autoplayTimeout="10000"
       :autoplay="true"
       :per-page="1"
       :center-mode="true" >
-      <slide>
+      <slide :is="slideComp">
         <div class="slide">
           <img src="/img/pause.gif" alt="">
           <div>
@@ -14,25 +14,25 @@
           </div>
         </div>
       </slide>
-      <slide>
+      <slide :is="slideComp">
 
-        <div class="slide">
+        <div class="slide" >
           <img src="/img/test.gif" alt="">
           <div>
             <Content slot-key="run"/>
           </div>
         </div>
       </slide>
-      <slide>
-        <div class="slide">
+      <slide :is="slideComp">
+        <div class="slide" >
           <img src="/img/edit.gif" alt="">
           <div>
             <Content slot-key="autocomplete"/>
           </div>
         </div>
       </slide>
-      <slide>
-        <div class="slide">
+      <slide :is="slideComp">
+        <div class="slide" >
           <img src="/img/codeceptui.gif" alt="">
           <div>
             <Content slot-key="ui"/>
@@ -43,7 +43,7 @@
 
 
 
-      <slide>
+      <slide :is="slideComp">
         <div class="slide">
           <img src="/img/new-test.gif" alt="">
           <div>
@@ -58,13 +58,26 @@
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel';
+// import { Carousel, Slide } from 'vue-carousel';
 
 export default {
-  components: {
-    Carousel,
-    Slide
+  // components: {
+  //   Carousel,
+  //   Slide
+  // },
+  data() {
+    return {
+      slideComp: null,
+      carouselComp: null,
+    }
   },
+  mounted () {
+    import('vue-carousel').then(module => {
+      console.log(module);
+      this.slideComp = module.Slide;
+      this.carouselComp = module.Carousel;
+    });
+  }
 }
 </script>
 

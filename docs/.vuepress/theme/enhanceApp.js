@@ -1,5 +1,5 @@
-// import VueCarousel from 'vue-carousel';
 // import { Carousel, Slide } from 'vue-carousel';
+// import VueCarousel from 'vue-carousel';
 
 export default ({
   Vue, // the version of Vue being used in the VuePress app

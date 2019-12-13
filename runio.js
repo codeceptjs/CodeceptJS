@@ -147,10 +147,10 @@ title: ${name}
     // publish wiki pages to website
     if (!fs.existsSync('docs/wiki/Home.md')) {
       await git((fn) => {
-        fn.clone('git@github.com:Codeception/CodeceptJS.wiki.git', 'website/wiki');
+        fn.clone('git@github.com:Codeception/CodeceptJS.wiki.git', 'docs/wiki');
       });
     }
-    await chdir('website/wiki', () => git(cfg => cfg.pull('origin master')));
+    await chdir('docs/wiki', () => git(cfg => cfg.pull('origin master')));
 
     await writeToFile('docs/community-helpers.md', (cfg) => {
       cfg.line('---');
@@ -162,7 +162,7 @@ title: ${name}
       cfg.line('# Community Helpers');
       cfg.line('> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)');
       cfg.line('');
-      cfg.textFromFile('website/wiki/Community-Helpers.md');
+      cfg.textFromFile('docs/wiki/Community-Helpers.md');
     });
 
     writeToFile('docs/examples.md', (cfg) => {
@@ -176,7 +176,7 @@ title: ${name}
       cfg.line('');
       cfg.line('# Examples');
       cfg.line('> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)');
-      cfg.textFromFile('website/wiki/Examples.md');
+      cfg.textFromFile('docs/wiki/Examples.md');
     });
 
     writeToFile('docs/books.md', (cfg) => {
@@ -190,7 +190,7 @@ title: ${name}
       cfg.line('');
       cfg.line('# Books & Posts');
       cfg.line('> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)');
-      cfg.textFromFile('website/wiki/Books-&-Posts.md');
+      cfg.textFromFile('docs/wiki/Books-&-Posts.md');
     });
 
     writeToFile('docs/videos.md', (cfg) => {
@@ -203,24 +203,27 @@ title: ${name}
       cfg.line('---');
       cfg.line('');
       cfg.line('> Add your own videos to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Videos)');
-      cfg.textFromFile('website/wiki/Videos.md');
+      cfg.textFromFile('docs/wiki/Videos.md');
     });
   },
 
-  async publishSite(user = 'davertmik') {
+  async publishSite() {
     // updates codecept.io website
     await processChangelog();
     copy('docker/README.md', 'docs/docker.md');
     await this.wiki();
-    await chdir('website', async () => {
-      await exec('npm install');
-      await npmRun('publish-gh-pages', (cfg) => {
-        cfg.env('USE_SSH', 'true');
-        cfg.env('GIT_USER', process.env.GIT_USER || user);
-      });
+    await chdir('docs', () => npx('vuepress build'));
+    await chdir('docs/.vuepress/dist', async () => {
+      writeToFile('CNAME', cfg => cfg.line('codecept.io'));
+      stopOnFail(false);
+      await exec('git init');
+      await exec('git checkout -b gh-pages');
+      stopOnFail(true);
+      await exec('git add -A');
+      await exec('git commit -m "deploy"');
+      await exec('git push -f git@github.com:Codeception/CodeceptJS.git gh-pages:gh-pages');
     });
   },
-
 
   async server() {
     // run test server. Warning! PHP required!

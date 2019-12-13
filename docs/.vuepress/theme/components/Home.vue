@@ -90,10 +90,9 @@
       Test native mobile apps using <b>Appium</b> or <b>Detox</b>.
       <router-link to="/mobile">Learn More</router-link></div>
     </div>
+
   </div>
-
-  <div class="flex w-full features">
-
+  <div class="features">
 
 
     <div class="feature">
@@ -119,9 +118,10 @@
       <router-link to="/data">Learn More </router-link>
       </div >
     </div>
-  </div>
 
-  <div class="row features">
+  </div>
+  <div class="features">
+
     <div class="feature">
       <img src="/img/Prism-3.svg" style="transform: rotate(90deg); filter: hue-rotate(60deg) saturate(20%)" alt="" />
       <div class="inner"><h5>Parallel Testing</h5>
@@ -155,7 +155,7 @@
 
 <div class="demos">
 <ClientOnly>
-  <Slides></Slides>
+  <Slides />
 </ClientOnly>
 </div>
 
@@ -260,7 +260,7 @@ export default {
   border-top: 5px dashed;
   @apply bg-white my-4 py-8 border-gray-200;
   .inner {
-    width: 960px;
+    max-width: 960px;
     margin: 0 auto;
 
     .commercial {
@@ -359,6 +359,23 @@ export default {
 .features h5 {
   font-size: 100%;
   line-height: 1.5;
+}
+
+@media(max-width: 600px) {
+
+  .feature {
+    width: 100%;
+    padding: 0;
+  }
+}
+@media(max-width: 1200px) {
+  .demos {
+    display: none;
+  }
+  .feature {
+    padding: 0;
+  }
+
 }
 
 </style>

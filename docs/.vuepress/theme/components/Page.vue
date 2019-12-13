@@ -1,7 +1,7 @@
 <template>
   <main class="page">
 
-
+    <RightSidebar />
 
 
     <slot name="top" />
@@ -12,15 +12,18 @@
 
     <slot name="bottom" />
 
+    <Footer/>
   </main>
 </template>
 
 <script>
 import PageEdit from '@theme/components/PageEdit.vue'
 import PageNav from '@theme/components/PageNav.vue'
+import Footer from './Footer.vue'
+import RightSidebar from './RightSidebar.vue'
 
 export default {
-  components: { PageEdit, PageNav },
+  components: { PageEdit, PageNav, Footer, RightSidebar },
   props: ['sidebarItems']
 }
 </script>

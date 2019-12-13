@@ -1,6 +1,6 @@
 ---
 permalink: /basics
-title: Basics
+title: Getting Started
 ---
 
 # Getting Started

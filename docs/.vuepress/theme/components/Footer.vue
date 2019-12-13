@@ -77,7 +77,7 @@ export default {
       @apply mb-4 text-xs uppercase;
     }
     section {
-      width: 960px;
+      max-width: 960px;
       margin: 0 auto;
       @apply flex;
       .col {
