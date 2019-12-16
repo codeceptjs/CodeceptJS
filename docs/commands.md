@@ -117,7 +117,7 @@ npx codeceptjs dry-run --steps --bootstrap
 ## Run Multiple
 
 Run multiple suites. Unlike `run-workers` spawns processes to execute tests.
-[Requires additional configuration](https://codecept.io/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
+[Requires additional configuration](/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
 
 ```sh
 npx codeceptjs run-multiple smoke:chrome regression:firefox

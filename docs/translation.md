@@ -28,7 +28,7 @@ Add to config:
 
 when running with `--steps` option steps output will be translated:
 
-![steps-in-russian](https://codecept.io/img/translate-ru1.png)
+![steps-in-russian](/img/translate-ru1.png)
 
 This also enables localized method names for actor object.
 

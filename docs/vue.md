@@ -19,12 +19,12 @@ I.amOnPage('/');
 I.click('My Component Button');
 I.see('My Component');
 I.say('I am happy!');
-// that's right, this is a valid test! 
+// that's right, this is a valid test!
 ```
 
 ## How to try it?
 
-**Requirements:** 
+**Requirements:**
 
 * NodeJS >= 8.9
 * NPM / Yarn
@@ -51,18 +51,18 @@ We added npm scripts:
 
 * `test:e2e` - will execute tests with browser opened. If you installed test component, and started a test server, running this command will show you a brower window passed test.
   * Use `--headless` option to run browser headlessly
-  * Use `--serve` option to start a dev server before tests 
+  * Use `--serve` option to start a dev server before tests
 
 
 Examples:
 
 ```
-npm run test:e2e 
+npm run test:e2e
 npm run test:e2e -- --headless
-npm run test:e2e -- --serve 
+npm run test:e2e -- --serve
 ```
 
-> This command is a wrapper for `codecept run --steps`. You can use the [Run arguments and options](https://codecept.io/commands#run) here.
+> This command is a wrapper for `codecept run --steps`. You can use the [Run arguments and options](/commands#run) here.
 
 * `test:e2e:parallel` - will execute tests headlessly in parallel processes (workers). By default runs tests in 2 workers.
   * Use an argument to set number of workers
@@ -76,7 +76,7 @@ npm run test:e2e:parallel -- 3
 npm run test:e2e:parallel -- 3 --serve
 ```
 
-> This command is a wrapper for `codecept run-workers 2`. You can use the [Run arguments and options](https://codecept.io/commands#run-workers) here.
+> This command is a wrapper for `codecept run-workers 2`. You can use the [Run arguments and options](/commands#run-workers) here.
 
 * `test:e2e:open` - this opens interactive web test runner. So you could see, review & run your tests from a browser.
 
@@ -108,14 +108,14 @@ If you agreed to create a demo component, you will also see `TestMe` component i
 
 * Open `tests/e2e/app_js` and see the demo test
 * Execute a test & use interactive pause to see how CodeceptJS works
-* [Learn CodeceptJS basics](https://codecept.io/basics)
-* [Learn how to write CodeceptJS tests with Puppeteer](https://codecept.io/puppeteer)
-* [See full reference for CodeceptJS Puppeteer Helper](https://codecept.io/helpers/Puppeteer)
+* [Learn CodeceptJS basics](/basics)
+* [Learn how to write CodeceptJS tests with Puppeteer](/puppeteer)
+* [See full reference for CodeceptJS Puppeteer Helper](/helpers/Puppeteer)
 * Ask your questions in [Slack](http://bit.ly/chat-codeceptjs) & [Forum](https://codecept.discourse.group/)
 
 ## Enjoy testing!
 
-Testing is simple & fun, enjoy it! 
+Testing is simple & fun, enjoy it!
 
 With ❤ [CodeceptJS Team](https://codecept.io)
 

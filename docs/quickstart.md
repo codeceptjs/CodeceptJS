@@ -124,7 +124,7 @@ My First Test --
  ✓ OK
  ```
 
-> [▶ Next: CodeceptJS Basics](https://codecept.io/basics/)
+> [▶ Next: CodeceptJS Basics](/basics/)
 
-> [▶ Next: CodeceptJS with Puppeteer](https://codecept.io/puppeteer/)
+> [▶ Next: CodeceptJS with Puppeteer](/puppeteer/)
 

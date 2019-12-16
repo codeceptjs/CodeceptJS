@@ -226,7 +226,7 @@ ID locators are best to select the exact semantic element in web and mobile test
 CodeceptJS allows to create custom locator strategies and use them in tests. This way you can define your own handling of elements using specially prepared attributes of elements.
 
 What if you use special test attributes for locators such as `data-qa`, `data-test`, `test-id`, etc.
-We created [customLocator plugin](https://codecept.io/plugins#customlocator) to declare rules for locating element.
+We created [customLocator plugin](/plugins#customlocator) to declare rules for locating element.
 
 Instead of writing a full CSS locator like `[data-qa-id=user_name]` simplify it to `$user_name`.
 
@@ -239,7 +239,7 @@ I.click('$register_button');
 
 This plugin requires two options: locator prefix and actual attribute to match.
 
-> ℹ See [customLocator Plugin](https://codecept.io/plugins#customlocator) reference to learn how to set it up.
+> ℹ See [customLocator Plugin](/plugins#customlocator) reference to learn how to set it up.
 
 If you need more control over custom locators see how declare them manually without using a customLocator plugin.
 

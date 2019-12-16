@@ -254,7 +254,7 @@ Usage example:
 I.click('#click-me');
 ```
 
-If it's hard to define what to wait, it is recommended to use [retries](https://codecept.io/basics/#retries) to rerun flaky steps.
+If it's hard to define what to wait, it is recommended to use [retries](/basics/#retries) to rerun flaky steps.
 
 ## IFrames
 
@@ -279,7 +279,7 @@ within({frame: [".content", "#editor"]}, () => {
 
 ## Auto Login
 
-To share the same user session across different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
+To share the same user session across different tests CodeceptJS provides [autoLogin plugin](/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
 
 This plugin requires some configuration but is very simple in use:
 
@@ -292,7 +292,7 @@ Scenario('do something with logged in user', (I, login)) => {
 
 With `autoLogin` plugin you can save cookies into a file and reuse same session on different runs.
 
-> Read more about setting up [autoLogin](https://codecept.io/plugins#autologin)
+> Read more about setting up [autoLogin](/plugins#autologin)
 
 
 ## Multiple Sessions

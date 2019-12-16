@@ -16,26 +16,27 @@
         <a href="https://codecept.discourse.group/c/cookbook" >Cookbook &rarr;</a>
       </p>
 
-      <h4>More from CodeceptJS Team</h4>
+      <hr>
 
-      <p>
+      <p class="border">
         <a href="http://sdclabs.com/codeceptjs?utm_source=codecept.io&utm_medium=right&utm_term=link&utm_campaign=reference" class="dashed">
           Commercial Services &rarr;
         </a>
       </p>
 
-      <p>
+      <p class="border">
         <a href="http://sdclabs.com/trainings/web-automation-codeceptjs?utm_source=codecept.io&utm_medium=rigth&utm_term=link&utm_campaign=reference" class="dashed">
           Trainings &rarr;
         </a>
       </p>
 
 
-      <p>
+      <p class="border">
         <a href="https://testomat.io" class="dashed">
           Testomat.io &rarr;
         </a><br>
-        <small>Plan your automated tests with ease</small>
+        <small><b>Plan your end 2 end tests</b>, collaborate, synchronize with code & get reports!<br>
+        Join Testomat.io while it is in beta and get a huge discount!</small>
       </p>
 
     </section>
@@ -53,6 +54,10 @@
   opacity: 0.7;
   @apply text-sm bg-yellow-100 rounded px-8 py-4;
 
+  &:hover {
+    opacity: 1;
+  }
+
   p {
     @apply my-4;
   }
@@ -61,13 +66,18 @@
     @apply text-blue-600;
   }
 
+  .border {
+    border: 2px solid;
+    @apply border-gray-400 px-4 py-2;
+  }
+
   a.dashed {
     @apply border-gray-200 text-blue-600;
     border-bottom: 1px dashed;
   }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
   .sidebar {
     display: none;
   }

@@ -258,7 +258,7 @@ module.exports = JSWait;
 It is possible to execute global conditional retries to handle unforseen errors.
 Lost connections and network issues are good candidates to be retried whenever they appear.
 
-This can be done inside a helper using the global [promise recorder](https://codecept.io/hooks/#api):
+This can be done inside a helper using the global [promise recorder](/hooks/#api):
 
 Example: Retrying rendering errors in Puppeteer.
 
