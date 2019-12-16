@@ -101,8 +101,6 @@ Strict locators allow to specify additional locator types:
 ```js
 // locate form element by name
 I.seeElement({name: 'password'});
-// locate element by id
-I.seeElement({permalink: /'users'});
 // locate element by React component and props
 I.seeElement({react: 'user-profile', props: {name: 'davert'}});
 ```

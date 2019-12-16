@@ -219,6 +219,7 @@ module.exports = {
             "data",
             "parallel",
             "reports",
+            "continuous-itegration",
           ]
         },
         {

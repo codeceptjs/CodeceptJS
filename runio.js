@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const {
-  stopOnFail, chdir, git, copy, exec, replaceInFile, npmInstall, npmRun, npx, writeToFile, runio,
+  stopOnFail, chdir, git, copy, exec, replaceInFile, npmRun, npx, writeToFile, runio,
 } = require('runio.js');
 
 stopOnFail();
@@ -40,13 +40,42 @@ module.exports = {
     });
   },
 
+  async docsCi() {
+    // generate docs for CI services
+    stopOnFail();
+    let body = `---
+permalink: /continuous-integration
+title: Continuous Integration
+---
+
+<!-- this file is auto generated from CI category https://codecept.discourse.group/c/CodeceptJS-issues-in-general/ci/9 -->
+
+# Continuous Integration
+
+> Help us improve this article. [Write how did you set up CodeceptJS for CI](https://codecept.discourse.group/c/CodeceptJS-issues-in-general/ci/9) and see your post listed here!
+
+Continuous Integration services allows you to delegate the control of running tests to external system.
+CodeceptJS plays well with all types of CI even when there is no documentation on this topic, it is still easy to set up with any kind of hosted or cloud CI.
+Our community prepared some valuable recipes for setting up CI systems with CodeceptJS.
+
+## Recipes
+
+`;
+    const res = await axios.get('https://codecept.discourse.group/search.json?q=category%3A9');
+    for (const topic of res.data.topics) {
+      if (topic.slug === 'about-the-continuous-integration-category') continue;
+      body += `* ### [${topic.title}](https://codecept.discourse.group/t/${topic.slug}/)\n`;
+    }
+    writeToFile('docs/continuous-integration.md', cfg => cfg.line(body));
+  },
+
   async docsExternalHelpers() {
     // generate documentation for helpers outside of main repo
     console.log('Building @codecepjs/detox helper docs');
     const helper = 'Detox';
     await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
     await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
-      cfg.line(`---\npermalink: helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
+      cfg.line(`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
       cfg.textFromFile(`docs/helpers/${helper}.md`);
     });
   },
@@ -213,7 +242,7 @@ title: ${name}
     copy('docker/README.md', 'docs/docker.md');
     await this.wiki();
     await chdir('docs', async () => {
-      await npmInstall();
+      await exec('npm i');
       await npx('vuepress build');
     });
     await chdir('docs/.vuepress/dist', async () => {

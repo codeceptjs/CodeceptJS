@@ -93,7 +93,7 @@ export default {
 .slide {
   @apply flex items-center;
   img {
-    border-right: 5px solid;
+    border: 5px solid;
     width: 50%;
     height: 50%;
     @apply mr-4 border-gray-200 shadow-md rounded-lg;
