@@ -185,8 +185,8 @@ class AttachFile {
 }
 
 // For inheritance
-module.exports = new AttachFile()	
-module.exports.AttachFile = AttachFile
+module.exports = new AttachFile();
+module.exports.AttachFile = AttachFile;
 ```
 
 ## Page Fragments
