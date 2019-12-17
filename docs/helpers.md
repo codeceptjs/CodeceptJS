@@ -4,11 +4,13 @@ title: Custom Helpers
 ---
 
 
-Helpers is a core concept of CodeceptJS. Helper is a wrapper around various libraries providing unified interface around them.
-Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easy switching between backends.
+Helpers is a core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them.
+
+Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easily switching between backends.
+
 Functionality of CodeceptJS should be extended by writing a custom helpers.
 
-Helpers can also be installed as Node packages and required by corresponding Node modules
+Helpers can also be installed as Node packages and required by corresponding Node modules.
 
 You can either access core Helpers (and underlying libraries) or create a new from scratch.
 
@@ -17,7 +19,7 @@ You can either access core Helpers (and underlying libraries) or create a new fr
 Helpers can be created by running a generator command:
 
 ```bash
-codeceptjs gh
+npx codeceptjs gh
 ```
 
 *(or `generate helper`)*
@@ -65,7 +67,7 @@ Every method should return a value in order to be appended into promise chain.
 After writing your own custom helpers here you can always update CodeceptJS TypeScript Type Definitions running:
 
 ```sh
-codeceptjs def .
+npx codeceptjs def .
 ```
 
 This way, if your tests are written with TypeScript, your IDE will be able to leverage features like autocomplete and so on.
@@ -110,7 +112,7 @@ module.exports = MyHelper;
 
 ## Puppeteer Example
 
-Puppteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
+Puppteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can be used inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
 
 Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
 
@@ -221,7 +223,7 @@ Each implemented method should return a value as they will be added to global pr
 
 ### Hook Usage Examples
 
-1)  Failing if JS error occur in WebDriver:
+1)  Failing if JS error occurs in WebDriver:
 
 ```js
 class JSFailure extends codecept_helper {
@@ -232,7 +234,7 @@ class JSFailure extends codecept_helper {
   }
 
   _afterStep() {
-    if (this.err) throw new Error('Browser JS error '+this.err);
+    if (this.err) throw new Error('Browser JS error '+ this.err);
   }
 }
 
