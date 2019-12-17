@@ -234,7 +234,7 @@ class JSFailure extends codecept_helper {
   }
 
   _afterStep() {
-    if (this.err) throw new Error('Browser JS error '+ this.err);
+    if (this.err) throw new Error(`Browser JS error ${this.err}`);
   }
 }
 
