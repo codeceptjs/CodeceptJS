@@ -112,7 +112,7 @@ module.exports = MyHelper;
 
 ## Puppeteer Example
 
-Puppteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can be used inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
+Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
 
 Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
 
