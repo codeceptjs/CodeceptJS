@@ -87,6 +87,27 @@ Run tests in parallel threads.
 npx codeceptjs run-workers 3
 ```
 
+## Run Rerun
+
+Run tests with rerun of all suite some cycles. Use config.rerun params:
+
+```
+{
+...
+rerun: {
+  //how many times all tests in suite must pass 
+    minSuccess: 2,
+  //how many times we can try to rerun all test suite for reaching minSuccess count of passed test suite  
+    maxReruns: 4,
+  }
+}
+```
+
+For example: 
+ - minSuccess 1, maxReruns 5 - CodeceptJS will run all test suite no more than 5 times, until first successful run
+ - minSuccess 3, maxReruns 5 - CodeceptJS will run all test suite no more than 5 times, until reaching 3 successfull runs
+ - minSuccess 10, maxReruns 10 - CodeceptJS will run all test suite 10 times, and if any one test in any run will fail - all suite is failed.
+
 ## Dry Run
 
 Prints test scenarios without executing them
