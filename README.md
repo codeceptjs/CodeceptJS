@@ -269,7 +269,7 @@ When using typescript, replace `module.exports` with `export` for autocompletion
 
 Thanks all to those who are and will have contributing to this awesome project!
 
-<a href="https://github.com/Codeception/CodeceptJS/graphs/contributors"><img src="https://opencollective.com/codeception/contributors.svg?width=890" /></a>
+![](https://opencollective.com/codeception/contributors.svg?width=890)
 
 ## License
 
