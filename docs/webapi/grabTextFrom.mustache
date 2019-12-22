@@ -4,7 +4,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 ```js
 let pin = await I.grabTextFrom('#pin');
 ```
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
-@returns {Promise<string|string[]>} attribute value
+@returns {Promise<string>} attribute value

@@ -560,6 +560,16 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#grabTextFromAll, #grabHTMLFromAll, #grabValueFromAll, #grabAttributeFromAll', () => {
+    it('should grab multiple texts from page', async () => {
+      await I.amOnPage('/info');
+      const vals = await I.grabTextFromAll('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+    });
+  });
+
   describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
     it('should grab text from page', async () => {
       await I.amOnPage('/');
@@ -568,14 +578,6 @@ module.exports.tests = function () {
 
       val = await I.grabTextFrom('//h1');
       assert.equal(val, 'Welcome to test app!');
-    });
-
-    it('should grab multiple texts from page', async () => {
-      await I.amOnPage('/info');
-      const vals = await I.grabTextFrom('#grab-multiple a');
-      assert.equal(vals[0], 'First');
-      assert.equal(vals[1], 'Second');
-      assert.equal(vals[2], 'Third');
     });
 
     it('should grab html from page', async function () {
