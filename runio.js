@@ -85,11 +85,12 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     console.log('Building Vue plugin docs');
     const resp = await axios.get('https://raw.githubusercontent.com/codecept-js/vue-cli-plugin-codeceptjs-puppeteer/master/README.md');
 
-    if (!resp.data) return;
     writeToFile('docs/vue.md', (cfg) => {
       cfg.line('---\npermalink: /vue\nlayout: Section\nsidebar: false\ntitle: Testing Vue Apps\n---\n\n');
       cfg.line(resp.data);
     });
+
+    this.docsCi();
   },
 
   async buildLibWithDocs(forTypings = false) {

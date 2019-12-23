@@ -15,6 +15,8 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 
 ## Recipes
 
+* ### [CodeceptJS - Codefresh Integration](https://codecept.discourse.group/t/codeceptjs-codefresh-integration/)
+* ### [CodeceptJS GitLab Integration](https://codecept.discourse.group/t/codeceptjs-gitlab-integration/)
 * ### [CodeceptJS - Jenkins Integration](https://codecept.discourse.group/t/codeceptjs-jenkins-integration/)
 * ### [CodeceptJS Integration with TeamCity](https://codecept.discourse.group/t/codeceptjs-integration-with-teamcity/)
 
