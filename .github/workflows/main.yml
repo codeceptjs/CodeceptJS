@@ -14,4 +14,3 @@ jobs:
         tests: "./test/**/*_test.js"
         token: ${{ secrets.GITHUB_TOKEN }}
         has-tests-label: true
-
