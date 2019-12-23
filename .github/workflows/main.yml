@@ -1,6 +1,5 @@
 on: [push]
 
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,4 +13,5 @@ jobs:
         framework: mocha
         tests: "./test/**/*_test.js"
         token: ${{ secrets.GITHUB_TOKEN }}
+        has-tests-label: true
 
