@@ -11,5 +11,5 @@ jobs:
     - uses: testomatio/check-tests@master
       with:
         framework: mocha
-        tests: "./test/**_test.js"
+        tests: "./test/**/*_test.js"
         token: ${{ secrets.GITHUB_TOKEN }}
