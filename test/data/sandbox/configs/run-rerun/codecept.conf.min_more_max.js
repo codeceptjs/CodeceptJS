@@ -7,7 +7,7 @@ exports.config = {
     },
   },
   rerun: {
-    minSuccess: 3,
+    minSuccess: 4,
     maxReruns: 3,
   },
   bootstrap: null,

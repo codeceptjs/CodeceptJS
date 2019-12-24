@@ -1,5 +1,5 @@
 exports.config = {
-  tests: './*_test.js',
+  tests: './*_ftest.js',
   output: './output',
   helpers: {
     CustomHelper: {
@@ -7,7 +7,7 @@ exports.config = {
     },
   },
   rerun: {
-    minSuccess: 3,
+    minSuccess: 2,
     maxReruns: 3,
   },
   bootstrap: null,
