@@ -36,10 +36,6 @@ Launch Allure server and see the report like on a screenshot above:
 
     allure serve output
 
-If you skip your test through method `Skip({message:''})`, then message for skipping will be added to allure report.
-
-(https://codecept.io/img/Allure-skip-msg.png)
-
 ##### Configuration
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
