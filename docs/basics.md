@@ -788,7 +788,7 @@ Example #2 - without callback:
 Scenario.todo('Test')
 ```
 
-And when you will be used events you will be have access to the test.opts.skipInfo for `message`
+And you can access the `message` of `test.opts.skipInfo` in the events
 
 Example #3 - access into event hooks
 ```js
