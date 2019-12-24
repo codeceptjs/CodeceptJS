@@ -36,7 +36,7 @@
     "lint": "eslint bin/ examples/ lib/ test/ translations/ runio.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runio.js --fix",
     "docs": "./runio.js docs",
-    "test": "mocha test/unit --recursive && mocha test/runner --recursive",
+    "test": "mocha test/runner --recursive",
     "def": "./runio.js def",
     "dev:graphql": "nodemon test/data/graphql/index.js",
     "publish:site": "./runio.js publish:site"
