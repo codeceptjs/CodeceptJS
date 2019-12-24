@@ -568,6 +568,11 @@ module.exports.tests = function () {
       assert.equal(vals[1], 'Second');
       assert.equal(vals[2], 'Third');
     });
+    it('should return empty array if no texts is available', async () => {
+      await I.amOnPage('/info');
+      const vals = await I.grabTextFromAll('#invalid-id a');
+      assert.equal(vals.length, 0);
+    });
   });
 
   describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
