@@ -573,7 +573,7 @@ module.exports.tests = function () {
       assert.equal(vals.length, 0);
     });
 
-    it('should grab multiple html from page', async () => {
+    it('should grab multiple html from page', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/info');
