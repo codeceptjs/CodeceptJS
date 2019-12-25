@@ -563,14 +563,60 @@ module.exports.tests = function () {
   describe('#grabTextFromAll, #grabHTMLFromAll, #grabValueFromAll, #grabAttributeFromAll', () => {
     it('should grab multiple texts from page', async () => {
       await I.amOnPage('/info');
-      const vals = await I.grabTextFromAll('#grab-multiple a');
+      let vals = await I.grabTextFromAll('#grab-multiple a');
       assert.equal(vals[0], 'First');
       assert.equal(vals[1], 'Second');
       assert.equal(vals[2], 'Third');
-    });
-    it('should return empty array if no texts is available', async () => {
+
       await I.amOnPage('/info');
-      const vals = await I.grabTextFromAll('#invalid-id a');
+      vals = await I.grabTextFromAll('#invalid-id a');
+      assert.equal(vals.length, 0);
+    });
+
+    it('should grab multiple html from page', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/info');
+      let vals = await I.grabHTMLFromAll('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+
+      await I.amOnPage('/info');
+      vals = await I.grabHTMLFromAll('#invalid-id a');
+      assert.equal(vals.length, 0);
+    });
+
+    it('should grab multiple attribute from element', async () => {
+      await I.amOnPage('/form/empty');
+      const vals = await I.grabAttributeFromAll({
+        css: 'input',
+      }, 'name');
+      assert.equal(vals[0], 'text');
+      assert.equal(vals[1], 'empty_input');
+    });
+
+    it('Should return empty array if no attribute found', async () => {
+      await I.amOnPage('/form/empty');
+      const vals = await I.grabAttributeFromAll({
+        css: 'div',
+      }, 'test');
+      assert.equal(vals.length, 0);
+    });
+
+    it('should grab values if multiple field matches', async () => {
+      await I.amOnPage('/form/hidden');
+      let vals = await I.grabValueFromAll('//form/input');
+      assert.equal(vals[0], 'kill_people');
+      assert.equal(vals[1], 'Submit');
+
+      vals = await I.grabValueFromAll("//form/input[@name='action']");
+      assert.equal(vals[0], 'kill_people');
+    });
+
+    it('Should return empty array if no value found', async () => {
+      await I.amOnPage('/');
+      const vals = await I.grabValueFromAll('//form/input');
       assert.equal(vals.length, 0);
     });
   });
@@ -595,11 +641,6 @@ module.exports.tests = function () {
     <a id="second-link">Second</a>
     <a id="third-link">Third</a>
 `, val);
-
-      const vals = await I.grabHTMLFrom('#grab-multiple a');
-      assert.equal(vals[0], 'First');
-      assert.equal(vals[1], 'Second');
-      assert.equal(vals[2], 'Third');
     });
 
 
@@ -1155,6 +1196,16 @@ module.exports.tests = function () {
       await I.amOnPage('/form/doubleclick');
       const css = await I.grabCssPropertyFrom('#block', 'user-select');
       assert.equal(css, 'text');
+    });
+
+    it('should grab multiple values if more than one matching element found', async () => {
+      if (isHelper('Nightmare')) return;
+      if (isHelper('TestCafe')) return;
+
+      await I.amOnPage('/info');
+      const css = await I.grabCssPropertyFromAll('.span', 'height');
+      assert.equal(css[0], '12px');
+      assert.equal(css[1], '15px');
     });
   });
 
