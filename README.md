@@ -265,6 +265,13 @@ Scenario('test some forms', (I, docsPage) => {
 
 When using typescript, replace `module.exports` with `export` for autocompletion.
 
+
+## Contributing
+
+ - ### [Contributing Guide](https://github.com/Codeception/CodeceptJS/blob/master/.github/CONTRIBUTING.md)
+ - ### [Code of conduct](https://github.com/Codeception/CodeceptJS/blob/master/.github/CODE_OF_CONDUCT.md) 
+
+
 ## Contributors
 
 Thanks all to those who are and will have contributing to this awesome project!
