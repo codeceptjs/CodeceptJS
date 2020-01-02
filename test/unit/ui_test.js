@@ -1,8 +1,8 @@
-const Mocha = require('mocha/lib/mocha');
-const makeUI = require('../../lib/ui');
 const assert = require('assert');
+const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
-const should = require('chai').should();
+
+const makeUI = require('../../lib/ui');
 
 describe('ui', () => {
   let suite;

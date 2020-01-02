@@ -1,11 +1,11 @@
+const path = require('path');
+const fs = require('fs');
+
 require('../support/setup');
 const TestHelper = require('../support/TestHelper');
-
 const ApiDataFactory = require('../../lib/helper/ApiDataFactory');
 
 const api_url = TestHelper.jsonServerUrl();
-const path = require('path');
-const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');

@@ -1,6 +1,6 @@
-const parser = require('../../lib/parser');
-const assert = require('assert');
 const chai = require('chai');
+
+const parser = require('../../lib/parser');
 
 const expect = chai.expect;
 
