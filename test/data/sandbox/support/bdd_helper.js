@@ -23,7 +23,7 @@ class CheckoutHelper extends Helper {
   haveDiscountForPrice(price, discount) {
     this.discountCalc = () => {
       if (this.sum > price) {
-        this.sum = this.sum - this.sum * discount / 100;
+        this.sum -= this.sum * discount / 100;
       }
     };
   }
