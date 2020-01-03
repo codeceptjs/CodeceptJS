@@ -64,6 +64,8 @@
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
+    "mocha-multi": "1.1.3",
+    "mochawesome": "^4.1.0",
     "ms": "^2.1.2",
     "parse-function": "5.4.4",
     "promise-retry": "^1.1.1",
