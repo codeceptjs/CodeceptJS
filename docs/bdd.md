@@ -221,14 +221,14 @@ Steps in background are defined the same way as in scenarios.
 Scenarios can become more descriptive when you represent repeating data as tables. Instead of writing several steps "I have product with :num1 $ price in my cart" we can have one step with multiple values in it.
 
 ```gherkin
-  Given i have products in my cart
+  Given I have products in my cart
     | name         | category    | price  |
     | Harry Potter | Books       | 5      |
     | iPhone 5     | Smartphones | 1200   |
     | Nuclear Bomb | Weapons     | 100000 |
 ```
 
-Tables is a recommended ways to pass arrays into test scenarios.
+Tables are the recommended way to pass arrays into test scenarios.
 Inside a step definition data is stored in argument passed as `DataTable` JavaScript object.
 You can iterate on it like this:
 
@@ -245,7 +245,29 @@ Given('I have products in my cart', (table) => { // eslint-disable-line
     // take values
     const name = cells[0].value;
     const category = cells[1].value;
-    const price = cells[1].value;
+    const price = cells[2].value;
+    // ...
+  }
+});
+```
+
+You can also use the parse() function to obtain an object that allow you to get a simple version of the table parsed by column or row, with header (or not) : 
+- raw(): returns the table as a 2-D array
+- rows(): returns the table as a 2-D array, without the first row
+- hashes(): returns an array of objects where each row is converted to an object (column header is the key)
+
+If we use hashes() with the previous exemple :
+
+```js
+Given('I have products in my cart', (table) => { // eslint-disable-line
+  //parse the table by header
+  const tableByHeader = table.parse().hashes();
+  for (const row in tableByHeader) {
+
+    // take values
+    const name = row.name;
+    const category = row.category;
+    const price = row.price;
     // ...
   }
 });
