@@ -1,5 +1,7 @@
 ---
-id: Appium
+permalink: helpers/Appium
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Appium.js
+sidebar: auto
 title: Appium
 ---
 

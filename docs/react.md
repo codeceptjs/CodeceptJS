@@ -1,7 +1,9 @@
 ---
-id: react
+permalink: /react
 title: Testing React Applications
 ---
+
+# Testing React Applications
 
 React applications require some additional love for end to end testing.
 At first, it is very hard to test an application which was never designed to be tested!
@@ -34,7 +36,7 @@ However, if you can't update the code you can go to the second option. In this c
 //*[@id="document"]/div[2]/div/div[2]/div
 ```
 
-use [Locator Builder](https://codecept.io/locators#locator-builder) to make clean semantic locator:
+use [Locator Builder](/locators#locator-builder) to make clean semantic locator:
 
 ```js
 locate('[role=tab]').withText('Click Me!');

@@ -1,5 +1,7 @@
 ---
-id: ApiDataFactory
+permalink: helpers/ApiDataFactory
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/ApiDataFactory.js
+sidebar: auto
 title: ApiDataFactory
 ---
 

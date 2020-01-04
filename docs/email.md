@@ -1,7 +1,9 @@
 ---
-id: email
+permalink: /email
 title: Email Testing
 ---
+
+# Email Testing
 
 In End 2 End testing we need to interact with emails.
 Email delivery can't tested locally or mocked while testing.
