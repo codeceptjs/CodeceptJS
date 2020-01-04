@@ -99,6 +99,8 @@ codeceptjs run --config=./path/to/my/config.js
 
 ## Common Configuration Patterns
 
+> 📺 [Watch this material](https://www.youtube.com/watch?v=onBnfo_rJa4&t=4s) on YouTube
+
 [`@codeceptjs/configure` package](https://github.com/codecept-js/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
 
 Install it and enable to easily switch to headless/window mode, change window size, etc.

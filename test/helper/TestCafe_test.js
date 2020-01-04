@@ -63,5 +63,17 @@ describe('TestCafe', function () {
     });
   });
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(() => window.__waitJs, 3));
+    });
+
+    it('should pass arguments and wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3));
+    });
+  });
+
   webApiTests.tests();
 });

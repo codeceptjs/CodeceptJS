@@ -301,7 +301,7 @@ title: ${name}
     const version = packageInfo.version;
     await this.docs();
     await this.publishSite();
-    await this.git((cmd) => {
+    await git((cmd) => {
       cmd.tag(version);
       cmd.push('origin master --tags');
     });
