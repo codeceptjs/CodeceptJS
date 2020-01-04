@@ -1,7 +1,9 @@
 ---
-id: pageobjects
+permalink: /pageobjects
 title: Page Objects
 ---
+
+# Page Objects
 
 UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.

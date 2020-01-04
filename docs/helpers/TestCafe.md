@@ -1,5 +1,7 @@
 ---
-id: TestCafe
+permalink: helpers/TestCafe
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/TestCafe.js
+sidebar: auto
 title: TestCafe
 ---
 

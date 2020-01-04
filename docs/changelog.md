@@ -1,7 +1,11 @@
 ---
-id: changelog
+permalink: /changelog
 title: Releases
+sidebar: false
+layout: Section
 ---
+
+# Releases
 
 ## 2.3.6
 

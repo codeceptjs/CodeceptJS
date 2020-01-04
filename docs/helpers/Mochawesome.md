@@ -1,5 +1,7 @@
 ---
-id: Mochawesome
+permalink: helpers/Mochawesome
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Mochawesome.js
+sidebar: auto
 title: Mochawesome
 ---
 

@@ -1,5 +1,7 @@
 ---
-id: WebDriver
+permalink: helpers/WebDriver
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/WebDriver.js
+sidebar: auto
 title: WebDriver
 ---
 
