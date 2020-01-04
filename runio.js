@@ -43,6 +43,19 @@ module.exports = {
   async docsCi() {
     // generate docs for CI services
     stopOnFail();
+
+    writeToFile('docs/docker.md', (cfg) => {
+      cfg.line('---');
+      cfg.line('permalink: /docker');
+      cfg.line('layout: Section');
+      cfg.line('sidebar: false');
+      cfg.line('title: Docker');
+      cfg.line('editLink: false');
+      cfg.line('---');
+      cfg.line('');
+      cfg.textFromFile('docker/README.md');
+    });
+
     let body = `---
 permalink: /continuous-integration
 title: Continuous Integration
@@ -240,21 +253,27 @@ title: ${name}
   async publishSite() {
     // updates codecept.io website
     await processChangelog();
-    copy('docker/README.md', 'docs/docker.md');
     await this.wiki();
-    await chdir('docs', async () => {
-      await exec('npm i');
-      await npx('vuepress build');
+
+    const dir = 'website';
+    await git((fn) => {
+      if (!fs.existsSync(dir)) {
+        fn.clone('git@github.com:codecept-js/website.git', dir);
+      } else {
+        fn.pull();
+      }
     });
-    await chdir('docs/.vuepress/dist', async () => {
-      writeToFile('CNAME', cfg => cfg.line('codecept.io'));
-      stopOnFail(false);
-      await exec('git init');
-      await exec('git checkout -b gh-pages');
-      stopOnFail(true);
-      await exec('git add -A');
-      await exec('git commit -m "deploy"');
-      await exec('git push -f git@github.com:Codeception/CodeceptJS.git gh-pages:gh-pages');
+
+    await copy('docs', 'website/docs');
+
+    await chdir(dir, async () => {
+      await git((fn) => {
+        fn.add('-A');
+        fn.commit('synchronized with docs');
+        fn.push();
+      });
+
+      await exec('./runio.js publish');
     });
   },
 

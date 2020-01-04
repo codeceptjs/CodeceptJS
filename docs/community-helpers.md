@@ -41,6 +41,10 @@ Please **add your own** by editing this page.
 ## Browser request control
 * [codeceptjs-resources-check](https://github.com/luarmr/codeceptjs-resources-check) Load a URL with Puppeteer and listen to the requests while the page is loading. Enabling count the number or check the sizes of the requests.
 
+## Assertion & Validations
+* [codeceptjs-chai](https://www.npmjs.com/package/codeceptjs-chai) is a CodeceptJS helper which wraps
+[chai](https://www.chaijs.com/) library to complete chai assertion steps with CodeceptJS logging.
+
 ## Other
 
 * [eslint-plugin-codeceptjs](https://www.npmjs.com/package/eslint-plugin-codeceptjs) Eslint rules for CodeceptJS.
