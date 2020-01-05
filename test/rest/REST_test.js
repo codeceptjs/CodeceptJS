@@ -142,4 +142,41 @@ describe('REST', () => {
       I._url('/blabla&p=http://bla.bla').should.eql(`${api_url}/blabla&p=http://bla.bla`);
     });
   });
+
+  describe('response codes', () => {
+    it('should check correct response code', () => {
+      I.response = { status: 200 };
+      I.seeResponseCodeIs(200);
+    });
+
+    it('should check for incorrect response code', () => {
+      I.response = { status: 200 };
+      I.dontSeeResponseCodeIs(500);
+    });
+
+    it('should check information response code', () => {
+      I.response = { status: 100 };
+      I.seeResponseWasInformation();
+    });
+
+    it('should check sucessful response code', () => {
+      I.response = { status: 200 };
+      I.seeResponseWasSucessful();
+    });
+
+    it('should check redirect response code', () => {
+      I.response = { status: 300 };
+      I.seeResponseWasRedirected();
+    });
+
+    it('should check client error response code', () => {
+      I.response = { status: 400 };
+      I.seeResponseWasClientError();
+    });
+
+    it('should check server error response code', () => {
+      I.response = { status: 500 };
+      I.seeResponseWasServerError();
+    });
+  });
 });
