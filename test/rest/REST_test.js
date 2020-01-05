@@ -209,4 +209,12 @@ describe('REST', () => {
       I.seeResponseWasServerError();
     });
   });
+
+  describe('response body', () => {
+    it('should check correct response code', () => {
+      I.response = { data: { author: 'John Mayer', book: 'How to slow dance in a burning room', rel: { author: 'Jerry Garcia' } } };
+      const expectedObj = { author: 'John Mayer', book: 'How to slow dance in a burning room', rel: { author: 'Jerry Garcia' } };
+      I.seeCorrectResponseBodyIs(expectedObj);
+    });
+  });
 });
