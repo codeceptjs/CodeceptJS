@@ -162,7 +162,7 @@ describe('REST', () => {
     });
 
     it('should return correct header from response object', () => {
-      I.headers = { 'content-type': 'application/json' }
+      I.headers = { 'content-type': 'application/json' };
       const headers = I.grabHeader('content-type');
       headers.should.eql('application/json');
     });
