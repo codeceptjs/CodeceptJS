@@ -1,9 +1,8 @@
-const Helper = require('../../../lib/helper');
 const assert = require('assert');
+const Helper = require('../../../lib/helper');
 
 class CustomWorkers extends Helper {
   sayCustomMessage() {
-    console.log('hello');
     assert(true, 'this is a custom message');
   }
 }
