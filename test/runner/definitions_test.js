@@ -37,7 +37,7 @@ describe('Definitions', function () {
         const definitionsFile = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
         const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('index').getStructure();
         index.properties.should.containSubset([
-          { name: 'recorder', type: 'CodeceptJS.recorder' },
+          { name: 'recorder', type: 'CodeceptJS.Recorder' },
           { name: 'event', type: 'CodeceptJS.event' },
           { name: 'output', type: 'CodeceptJS.output' },
           { name: 'config', type: 'typeof CodeceptJS.Config' },

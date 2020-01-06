@@ -8662,10 +8662,10 @@ declare namespace CodeceptJS {
          */
         event: CodeceptJS.event;
         /**
-         * @type {CodeceptJS.recorder}
+         * @type {CodeceptJS.Recorder}
          * @inner
          */
-        recorder: CodeceptJS.recorder;
+        recorder: CodeceptJS.Recorder;
         /**
          * @type {Class<CodeceptJS.Config>}
          * @inner
@@ -9021,14 +9021,30 @@ declare namespace CodeceptJS {
      */
     function pause(): void;
     /**
-     * Singleton object to record all test steps as promises and run them in chain.
-     * @alias recorder
-     * @interface
+     * @inner
      */
-    interface recorder {
+    class RecorderSession {
+        /**
+         * @type {boolean}
+         * @inner
+         */
+        running: boolean;
+        /** @param {string} name
+         */
+        static start(name: string): void;
+        /** @param {string} name
+         */
+        static restore(name: string): void;
+        /** @param {function} fn
+         */
+        static catch(fn: (...params: any[]) => any): void;
+    }
+    /**
+     * Singleton object to record all test steps as promises and run them in chain.
+     */
+    class Recorder {
         /**
          * @type {Array<Object<string, *>>}
-         * @inner
          */
         retries: {
             [key: string]: any;
@@ -9038,33 +9054,27 @@ declare namespace CodeceptJS {
          *
          * @api
          */
-        start(): void;
+        static start(): void;
         /** @return {boolean}
          */
-        isRunning(): boolean;
+        static isRunning(): boolean;
         /** @return {void}
          */
-        startUnlessRunning(): void;
+        static startUnlessRunning(): void;
         /**
          * Add error handler to catch rejected promises
          *
          * @api
          * @param {function} fn
          */
-        errHandler(fn: (...params: any[]) => any): void;
+        static errHandler(fn: (...params: any[]) => any): void;
         /**
          * Stops current promise chain, calls `catch`.
          * Resets recorder to initial state.
          *
          * @api
          */
-        reset(): void;
-        /**
-         * @name CodeceptJS.recorder~session
-         * @type {CodeceptJS.RecorderSession}
-         * @inner
-         */
-        session: CodeceptJS.RecorderSession;
+        static reset(): void;
         /**
          * Adds a promise to a chain.
          * Promise description should be passed as first parameter.
@@ -9077,80 +9087,60 @@ declare namespace CodeceptJS {
          *     false: ignore `retryOpts` and won't retry.
          * @return {Promise<*> | undefined}
          */
-        add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
+        static add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
         /**
          * @param {*} opts
          * @return {*}
          */
-        retry(opts: any): any;
+        static retry(opts: any): any;
         /**
          * @param {function} [customErrFn]
          * @return {Promise<*>}
          */
-        catch(customErrFn?: (...params: any[]) => any): Promise<any>;
+        static catch(customErrFn?: (...params: any[]) => any): Promise<any>;
         /**
          * @param {function} customErrFn
          * @return {Promise<*>}
          */
-        catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
+        static catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
         /**
          * Adds a promise which throws an error into a chain
          *
          * @api
          * @param {*} err
          */
-        throw(err: any): void;
+        static throw(err: any): void;
         /** @param {*} err
          */
-        saveFirstAsyncError(err: any): void;
+        static saveFirstAsyncError(err: any): void;
         /** @return {*}
          */
-        getAsyncErr(): any;
+        static getAsyncErr(): any;
         /** @return {void}
          */
-        cleanAsyncErr(): void;
+        static cleanAsyncErr(): void;
         /**
          * Stops recording promises
          * @api
          */
-        stop(): void;
+        static stop(): void;
         /**
          * Get latest promise in chain.
          *
          * @api
          * @return {Promise<*>}
          */
-        promise(): Promise<any>;
+        static promise(): Promise<any>;
         /**
          * Get a list of all chained tasks
          * @return {string}
          */
-        scheduled(): string;
+        static scheduled(): string;
         /**
          * Get a state of current queue and tasks
          * @return {string}
          */
-        toString(): string;
-    }
-    /**
-     * @alias RecorderSession
-     * @interface
-     */
-    interface RecorderSession {
-        /**
-         * @type {boolean}
-         * @inner
-         */
-        running: boolean;
-        /** @param {string} name
-         */
-        start(name: string): void;
-        /** @param {string} name
-         */
-        restore(name: string): void;
-        /** @param {function} fn
-         */
-        catch(fn: (...params: any[]) => any): void;
+        static toString(): string;
     }
     class Secret {
         constructor(secret: string);
