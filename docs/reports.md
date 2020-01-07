@@ -1,7 +1,9 @@
 ---
-id: reports
+permalink: /reports
 title: Reporters
 ---
+
+# Reporters
 
 ## Cli
 
@@ -157,7 +159,7 @@ Allure requires **Java 8** to work. Then Allure can be installed via NPM:
 npm install -g allure-commandline --save-dev
 ```
 
-Add [Allure plugin](https://codecept.io/plugins/#allure) in config under `plugins` section.
+Add [Allure plugin](/plugins/#allure) in config under `plugins` section.
 
 ```js
 plugins: {
@@ -189,7 +191,7 @@ Launch Allure server and see the report like on a screenshot above:
 allure serve output
 ```
 
-Allure reporter aggregates data from other plugins like [*stepByStepReport*](https://codecept.io/plugins/#stepByStepReport) and [*screenshotOnFail*](https://codecept.io/plugins/#screenshotOnFail)
+Allure reporter aggregates data from other plugins like [*stepByStepReport*](/plugins/#stepByStepReport) and [*screenshotOnFail*](/plugins/#screenshotOnFail)
 
 Allure reports can also be generated for `dry-run` command. So you can get the first report with no tests actually being executed. Enable allure plugin in dry-run options, and pass `--debug` option to print all tests on screen.
 
@@ -231,7 +233,7 @@ Result will be located at `output/result.xml` file.
 
 Best HTML reports could be produced with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
 
-![mochawesome](https://codecept.io/img/mochawesome.png)
+![mochawesome](/img/mochawesome.png)
 
 Install it via NPM:
 

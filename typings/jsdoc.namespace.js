@@ -14,7 +14,7 @@ module.exports = {
       }
     },
     newDoclet: ({ doclet }) => {
-      if (doclet.undocumented || doclet.memberof || !kinds.includes(doclet.kind)) return;
+      if (doclet.undocumented || doclet.memberof || doclet.ignore || doclet.private || !kinds.includes(doclet.kind)) return;
       doclet.memberof = namespace;
       doclet.longname = `${doclet.memberof}.${doclet.longname}`;
       if (doclet.scope === 'global') doclet.scope = 'static';

@@ -1,5 +1,7 @@
 ---
-id: REST
+permalink: helpers/REST
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/REST.js
+sidebar: auto
 title: REST
 ---
 

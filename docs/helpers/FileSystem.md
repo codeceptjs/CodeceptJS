@@ -1,5 +1,7 @@
 ---
-id: FileSystem
+permalink: helpers/FileSystem
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/FileSystem.js
+sidebar: auto
 title: FileSystem
 ---
 

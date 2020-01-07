@@ -1,5 +1,7 @@
 ---
-id: Puppeteer
+permalink: helpers/Puppeteer
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Puppeteer.js
+sidebar: auto
 title: Puppeteer
 ---
 

@@ -3,8 +3,10 @@ coverage
 .vscode
 coverage
 site
-website/build
-website/wiki
+docs/.vuepress/dist
+docs/node_modules
+docs/wiki
+website
 .idea
 docs/build
 test/data/output

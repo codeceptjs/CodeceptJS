@@ -1,7 +1,9 @@
 ---
-id: advanced
+permalink: /advanced
 title: Advanced Usage
 ---
+
+# Advanced Usage
 
 ## Data Driven Tests
 
