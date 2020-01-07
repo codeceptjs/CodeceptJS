@@ -150,6 +150,13 @@ describe('REST', () => {
       response.config.headers['Content-Type'].should.eql('application/json');
     });
     
+    it('should return all headers', () => {
+      I.response = { headers: { 'content-type': 'application/json', 'x-auth': 'auth' } };
+      const headers = I.grabHeaders();
+      headers.should.have.property('content-type');
+      headers.should.have.property('x-auth');
+    });
+
     it('should see correct header', () => {
       I.response = { headers: { 'content-type': 'application/json' } };
       I.seeHeader('content-type');
@@ -236,7 +243,7 @@ describe('REST', () => {
     it('should check correct response code', () => {
       I.response = { data: { author: 'John Mayer', book: 'How to slow dance in a burning room', rel: { author: 'Jerry Garcia' } } };
       const expectedObj = { author: 'John Mayer', book: 'How to slow dance in a burning room', rel: { author: 'Jerry Garcia' } };
-      I.seeCorrectResponseBodyIs(expectedObj);
+      I.seeResponseBody(expectedObj);
     });
   });
 });
