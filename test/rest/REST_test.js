@@ -151,7 +151,10 @@ describe('REST', () => {
     });
     
     it('should return all headers', () => {
-      I.response = { headers: { 'content-type': 'application/json', 'x-auth': 'auth' } };
+      I.headers = {
+        'content-type': 'application/json',
+        'x-auth': 'auth',
+      };
       const headers = I.grabHeaders();
       headers.should.have.property('content-type');
       headers.should.have.property('x-auth');
