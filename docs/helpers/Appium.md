@@ -573,11 +573,19 @@ I.runOnAndroid((caps) => {
    // ...
 });
 ```
-
 #### Parameters
 
 -   `caps` **any** 
 -   `fn` **any** 
+
+
+### saveScreenshot
+
+Saves a screenshot to the output dir
+
+```js
+I.saveScreenshot("my_image.png");
+```
 
 ### see
 
