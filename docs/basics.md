@@ -755,3 +755,35 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
+
+## Todo test
+
+You can use `Scenario.todo` when you are planning on writing tests. This test will be skipped like with usual `skip`.
+But this method to adds skip-message: `Test not implemented!` to test instance.
+
+Example #1 - with callback:
+```js
+Scenario.todo('Test',  I => {
+/**
+ * 1. Click to field
+ * 2. Fill field
+ * 
+ * Result:
+ * 3. Field contains text
+ */
+})
+```
+
+Example #2 - without callback:
+```js
+Scenario.todo('Test')
+```
+
+And you can access the `message` of `test.opts.skipInfo` in the events
+
+Example #3 - access into event hooks
+```js
+  event.dispatcher.on(event.test.before, (test) => {
+    test.opts.skipInfo //  contains {message and description}
+  });
+```

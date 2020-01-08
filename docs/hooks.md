@@ -400,7 +400,9 @@ Test events provide a test object with following fields:
 * `tags` array of tags for this test
 * `file` path to a file with a test.
 * `steps` array of executed steps (available only in `test.passed`, `test.failed`, `test.finished` event)
-
+* `skipInfo` additional test options when test skipped 
+* * `message` string with reason for skip
+* * `description` string with test body
 and others
 
 #### Step Object
