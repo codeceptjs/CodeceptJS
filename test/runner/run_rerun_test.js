@@ -78,10 +78,10 @@ RunRerun
     });
   });
 
-  it.skip('should display error if minSuccess more then maxReruns', (done) => {
+  it('should display error if minSuccess more then maxReruns', (done) => {
     exec(`${codecept_run_config('codecept.conf.min_more_max.js')} --debug`, (err, stdout) => {
-      stdout.should.include('minSuccess must be less then maxReruns ');
-      assert(!err);
+      stdout.should.include('minSuccess must be less then maxReruns');
+      assert(err);
       done();
     });
   });
