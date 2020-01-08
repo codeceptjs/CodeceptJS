@@ -1,9 +1,10 @@
+const assert = require('assert');
+const expect = require('chai').expect;
+const path = require('path');
+const puppeteer = require('puppeteer');
+
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
-const puppeteer = require('puppeteer');
-const expect = require('chai').expect;
-const assert = require('assert');
-const path = require('path');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');

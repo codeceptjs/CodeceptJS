@@ -1,5 +1,6 @@
-const recorder = require('../../lib/recorder');
 const assert = require('assert');
+
+const recorder = require('../../lib/recorder');
 
 describe('Recorder', () => {
   beforeEach(() => recorder.start());
