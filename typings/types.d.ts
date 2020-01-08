@@ -970,6 +970,17 @@ declare namespace CodeceptJS {
          */
         seeFile(name: string): void;
         /**
+         * Checks that file with a name including given text exists in the current directory.
+         *
+         *```js
+         * I.handleDownloads();
+         * I.click('Download as PDF');
+         * I.amInPath('output/downloads');
+         * I.seeFileNameMatching('.pdf');
+         * ```
+         */
+        seeFileNameMatching(): void;
+        /**
          * Checks that file found by `seeFile` includes a text.
          * @param {string} text
          * @param {string} encoding
@@ -993,6 +1004,17 @@ declare namespace CodeceptJS {
          * @param {string} encoding
          */
         dontSeeFileContentsEqual(text: string, encoding: string): void;
+        /**
+         * Returns file names in current directory.
+         *
+         * ```js
+         * I.handleDownloads();
+         * I.click('Download Files');
+         * I.amInPath('output/downloads');
+         * const downloadedFileNames = I.grabFileNames();
+         * ```
+         */
+        grabFileNames(): void;
     }
     class GraphQL {
         /**
@@ -6825,9 +6847,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} [num] (optional) number of tabs to switch forward, default: 1.
-         * @param {number} [sec] (optional) time in seconds to wait.
+         * @param {number | null} [sec] (optional) time in seconds to wait.
          */
-        switchToNextTab(num?: number, sec?: number): void;
+        switchToNextTab(num?: number, sec?: number | null): void;
         /**
          * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
          *
@@ -8647,6 +8669,11 @@ declare namespace CodeceptJS {
          */
         codecept: typeof CodeceptJS.Codecept;
         /**
+         * @type {Class<CodeceptJS.Codecept>}
+         * @inner
+         */
+        Codecept: typeof CodeceptJS.Codecept;
+        /**
          * @type {CodeceptJS.output}
          * @inner
          */
@@ -8676,6 +8703,11 @@ declare namespace CodeceptJS {
          * @inner
          */
         helper: typeof CodeceptJS.Helper;
+        /**
+         * @type {Class<CodeceptJS.Helper>}
+         * @inner
+         */
+        Helper: typeof CodeceptJS.Helper;
         /**
          * @type {Class<CodeceptJS.DataTable>}
          * @inner
@@ -9279,7 +9311,7 @@ declare namespace CodeceptJS {
      * @kind constant
      * @type {CodeceptJS.IScenario}
      */
-    var xScenario: CodeceptJS.IScenario;
+    const xScenario: CodeceptJS.IScenario;
     /**
      * @param {CodeceptJS.LocatorOrString}  context
      * @param {Function}  fn

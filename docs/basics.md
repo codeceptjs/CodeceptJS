@@ -1,7 +1,9 @@
 ---
-id: basics
-title: Basics
+permalink: /basics
+title: Getting Started
 ---
+
+# Getting Started
 
 CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The tests are written as a linear scenario of the user's action on a site.
 
@@ -25,7 +27,7 @@ CodeceptJS bypasses execution commands to helpers. Depending on the helper enabl
 
 The following is a diagram of the CodeceptJS architecture:
 
-![architecture](https://codecept.io/img/architecture.svg)
+![architecture](/img/architecture.svg)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
 However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
@@ -36,11 +38,11 @@ However, because of the difference in backends and their limitations, they are n
 
 Refer to following guides to more information on:
 
-* [▶ WebDriver](https://codecept.io/webdriver)
-* [▶ Protractor](https://codecept.io/angular)
-* [▶ Puppeteer](https://codecept.io/puppeteer)
-* [▶ Nightmare](https://codecept.io/nightmare)
-* [▶ TestCafe](https://codecept.io/testcafe)
+* [▶ WebDriver](/webdriver)
+* [▶ Protractor](/angular)
+* [▶ Puppeteer](/puppeteer)
+* [▶ Nightmare](/nightmare)
+* [▶ TestCafe](/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
 
@@ -99,8 +101,6 @@ Strict locators allow to specify additional locator types:
 ```js
 // locate form element by name
 I.seeElement({name: 'password'});
-// locate element by id
-I.seeElement({id: 'users'});
 // locate element by React component and props
 I.seeElement({react: 'user-profile', props: {name: 'davert'}});
 ```
@@ -113,7 +113,7 @@ In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~
 I.seeElement('~username');
 ```
 
-> [▶ Learn more about using locators in CodeceptJS](https://codecept.io/locators).
+> [▶ Learn more about using locators in CodeceptJS](/locators).
 
 ### Clicking
 
@@ -273,7 +273,7 @@ I.waitForElement('#agree_button', 30); // secs
 I.click('#agree_button');
 ```
 
-> ℹ See [helpers reference](https://codecept.io/reference) for a complete list of all available commands for the helper you use.
+> ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works
 
@@ -303,7 +303,7 @@ assert.equal(title, 'CodeceptJS');
 
 ## Running Tests
 
-To launch tests use the `run` command, and to execute tests in [multiple browsers](https://codecept.io/advanced/#multiple-browsers-execution) or [multiple threads](https://codecept.io/advanced/#parallel-execution) use the `run-multiple` command.
+To launch tests use the `run` command, and to execute tests in [multiple browsers](/advanced/#multiple-browsers-execution) or [multiple threads](/advanced/#parallel-execution) use the `run-multiple` command.
 
 ### Level of Detail
 
@@ -345,10 +345,10 @@ To run all tests with the `slow` word in it:
 npx codeceptjs run --grep "slow"
 ```
 
-It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
+It is recommended to [filter tests by tags](/advanced/#tags).
 
 
-> For more options see [full reference of `run` command](https://codecept.io/commands/#run).
+> For more options see [full reference of `run` command](/commands/#run).
 
 ### Parallel Run
 
@@ -379,7 +379,7 @@ exports.config = {
 }
 ```
 
-> ▶ See complete [configuration reference](https://codecept.io/configuration).
+> ▶ See complete [configuration reference](/configuration).
 
 You can have multiple configuration files for a the same project, in this case you can specify a config file to be used with `-c` when running.
 
@@ -460,11 +460,11 @@ codeceptjs shell
 ### Screenshot on failure
 
 By default CodeceptJS saves a screenshot of a failed test.
-This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/#screenshotonfail)
+This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
 
 ### Step By Step Report
 
-To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
+To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
 ## Retries
 
@@ -504,7 +504,7 @@ Pass a function to the `when` option to retry only when an error matches the exp
 
 ### Auto Retry
 
-You can auto-retry a failed step by enabling [retryFailedStep Plugin](https://codecept.io/plugins/#retryfailedstep).
+You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
 
 ### Retry Scenario
 
@@ -618,7 +618,7 @@ within({frame: [".content", "#editor"]}, () => {
 
 When running steps inside, a within block will be shown with a shift:
 
-![within](https://codecept.io/img/within.png)
+![within](/img/within.png)
 
 Within can return a value, which can be used in a scenario:
 

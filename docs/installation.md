@@ -1,7 +1,9 @@
 ---
-id: installation
+permalink: /installation
 title: Installation
 ---
+
+# Installation
 
 ## Local
 

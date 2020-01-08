@@ -1,5 +1,7 @@
 ---
-id: MockRequest
+permalink: helpers/MockRequest
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/MockRequest.js
+sidebar: auto
 title: MockRequest
 ---
 

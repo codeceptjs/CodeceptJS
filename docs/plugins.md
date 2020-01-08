@@ -1,5 +1,7 @@
 ---
-id: plugins
+permalink: plugins
+sidebarDepth: 1
+sidebar: auto
 title: Plugins
 ---
 

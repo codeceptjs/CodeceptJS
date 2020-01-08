@@ -1,8 +1,9 @@
 const assert = require('assert');
 const chai = require('chai');
-const Locator = require('../../lib/locator');
-const xpath = require('xpath');
 const Dom = require('xmldom').DOMParser;
+const xpath = require('xpath');
+
+const Locator = require('../../lib/locator');
 
 const expect = chai.expect;
 
