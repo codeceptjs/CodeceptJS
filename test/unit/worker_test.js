@@ -156,10 +156,10 @@ describe('Workers', () => {
     const testGroups = workers.createGroupsOfSuites(2);
 
     const workerOne = workers.spawn();
-    workerOne._addTests(testGroups[0]);
+    workerOne.addTests(testGroups[0]);
 
     const workerTwo = workers.spawn();
-    workerTwo._addTests(testGroups[1]);
+    workerTwo.addTests(testGroups[1]);
 
     for (const worker of workers.getWorkers()) {
       worker.addConfig({
