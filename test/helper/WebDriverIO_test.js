@@ -1,12 +1,12 @@
-const TestHelper = require('../support/TestHelper');
+const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
 
+const TestHelper = require('../support/TestHelper');
 const WebDriverIO = require('../../lib/helper/WebDriverIO');
 
 let wd;
 const siteUrl = TestHelper.siteUrl();
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');

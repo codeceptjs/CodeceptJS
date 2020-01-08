@@ -115,4 +115,3 @@ Scenario('should return a value @WebDriverIO @Puppeteer @Protractor @Nightmare',
   I.pressKey('Enter');
   I.see('[rus] => First');
 }).retry(0);
-

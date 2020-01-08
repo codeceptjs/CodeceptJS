@@ -1,9 +1,10 @@
+const path = require('path');
+const fs = require('fs');
+
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
 
 const api_url = TestHelper.jsonServerUrl();
-const path = require('path');
-const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');

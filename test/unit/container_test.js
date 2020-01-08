@@ -1,8 +1,9 @@
-const container = require('../../lib/container');
 const assert = require('assert');
 const path = require('path');
+
 const FileSystem = require('../../lib/helper/FileSystem');
 const actor = require('../../lib/actor');
+const container = require('../../lib/container');
 
 describe('Container', () => {
   before(() => {

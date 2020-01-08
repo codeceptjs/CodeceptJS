@@ -1,8 +1,9 @@
 const assert = require('assert');
+const sinon = require('sinon');
+
 const Step = require('../../lib/step');
 const event = require('../../lib/event');
 const secret = require('../../lib/secret').secret;
-const sinon = require('sinon');
 
 let step;
 let action;
