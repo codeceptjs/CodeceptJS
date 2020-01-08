@@ -216,7 +216,7 @@ describe('REST', () => {
 
     it('should check response code is between range', () => {
       I.response = { status: 205 };
-      I.seeResponseCodeBetween(200 - 210);
+      I.seeResponseCodeBetween(200, 210);
     });
   });
 
