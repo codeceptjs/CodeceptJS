@@ -124,7 +124,7 @@ describe('ui', () => {
 
         assert.equal(scenarioConfig.test.pending, true, 'Todo Scenario must be contain pending === true');
         assert.equal(scenarioConfig.test.opts.skipInfo.message, 'Test not implemented!');
-        assert.equal(scenarioConfig.test.opts.skipInfo.description, "()=> {console.log('Scenario Body')}");
+        assert.equal(scenarioConfig.test.opts.skipInfo.description, "() => { console.log('Scenario Body'); }");
       });
 
       it('should contain empty description in skipInfo and empty body', () => {
