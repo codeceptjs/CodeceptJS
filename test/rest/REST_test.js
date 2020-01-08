@@ -194,11 +194,6 @@ describe('REST', () => {
       I.dontSeeResponseCodeIs(500);
     });
 
-    it('should check information response code', () => {
-      I.response = { status: 100 };
-      I.seeResponseWasInformation();
-    });
-
     it('should check sucessful response code', () => {
       I.response = { status: 200 };
       I.seeResponseWasSucessful();
@@ -217,6 +212,11 @@ describe('REST', () => {
     it('should check server error response code', () => {
       I.response = { status: 500 };
       I.seeResponseWasServerError();
+    });
+
+    it('should check response code is between range', () => {
+      I.response = { status: 205 };
+      I.seeResponseCodeBetween(200 - 210);
     });
   });
 
