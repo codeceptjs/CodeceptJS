@@ -8716,69 +8716,54 @@ declare namespace CodeceptJS {
      *
      * Includes Public API objects
      * @alias index
-     * @interface
+     * @namespace
      */
-    interface index {
-        /**
-         * @type {Class<CodeceptJS.Codecept>}
-         * @inner
+    namespace index {
+        /** @type {Class<CodeceptJS.Codecept>}
          */
-        codecept: typeof CodeceptJS.Codecept;
-        /**
-         * @type {Class<CodeceptJS.Codecept>}
-         * @inner
+        var codecept: typeof CodeceptJS.Codecept;
+        /** @type {Class<CodeceptJS.Codecept>}
          */
-        Codecept: typeof CodeceptJS.Codecept;
-        /**
-         * @type {CodeceptJS.output}
-         * @inner
+        var Codecept: typeof CodeceptJS.Codecept;
+        /** @type {Class<CodeceptJS.output>}
          */
-        output: CodeceptJS.output;
-        /**
-         * @type {Class<CodeceptJS.Container>}
-         * @inner
+        var output: typeof CodeceptJS.output;
+        /** @type {Class<CodeceptJS.Container>}
          */
-        container: typeof CodeceptJS.Container;
-        /**
-         * @type {CodeceptJS.event}
-         * @inner
+        var container: typeof CodeceptJS.Container;
+        /** @type {Class<CodeceptJS.event>}
          */
-        event: CodeceptJS.event;
-        /**
-         * @type {CodeceptJS.recorder}
-         * @inner
+        var event: typeof CodeceptJS.event;
+        /** @type {CodeceptJS.recorder}
          */
-        recorder: CodeceptJS.recorder;
-        /**
-         * @type {Class<CodeceptJS.Config>}
-         * @inner
+        var recorder: CodeceptJS.recorder;
+        /** @type {Class<CodeceptJS.Config>}
          */
-        config: typeof CodeceptJS.Config;
-        /**
-         * @type {Class<CodeceptJS.Helper>}
-         * @inner
+        var config: typeof CodeceptJS.Config;
+        /** @type {CodeceptJS.actor}
          */
-        helper: typeof CodeceptJS.Helper;
-        /**
-         * @type {Class<CodeceptJS.Helper>}
-         * @inner
+        var actor: CodeceptJS.actor;
+        /** @type {Class<CodeceptJS.Helper>}
          */
-        Helper: typeof CodeceptJS.Helper;
-        /**
-         * @type {Class<CodeceptJS.DataTable>}
-         * @inner
+        var helper: typeof CodeceptJS.Helper;
+        /** @type {Class<CodeceptJS.Helper>}
          */
-        dataTable: typeof CodeceptJS.DataTable;
-        /**
-         * @type {CodeceptJS.store}
-         * @inner
+        var Helper: typeof CodeceptJS.Helper;
+        /** @type {Class<CodeceptJS.pause>}
          */
-        store: CodeceptJS.store;
-        /**
-         * @type {Class<CodeceptJS.Locator>}
-         * @inner
+        var pause: typeof CodeceptJS.pause;
+        /** @type {Class<CodeceptJS.within>}
          */
-        locator: typeof CodeceptJS.Locator;
+        var within: typeof CodeceptJS.within;
+        /**  @type {Class<CodeceptJS.DataTable>}
+         */
+        var dataTable: typeof CodeceptJS.DataTable;
+        /** @type {Class<CodeceptJS.store>}
+         */
+        var store: typeof CodeceptJS.store;
+        /** @type {Class<CodeceptJS.Locator>}
+         */
+        var locator: typeof CodeceptJS.Locator;
     }
     /**
      * @param {*} step
@@ -8973,9 +8958,7 @@ declare namespace CodeceptJS {
      * @namespace
      */
     namespace output {
-        /**
-         * @type {number}
-         * @inner
+        /** @type {number}
          */
         var stepShift: number;
         /**
@@ -9080,6 +9063,17 @@ declare namespace CodeceptJS {
          */
         function result(passed: number, failed: number, skipped: number, duration: number): void;
     }
+    /**
+     * Pauses test execution and starts interactive shell
+     */
+    function pause(): void;
+    /**
+     * Singleton object to record all test steps as promises and run them in chain.
+     * @alias recorder
+     * @interface
+     */
+    interface recorder {
+        /**
          * @type {Array<Object<string, *>>}
          * @inner
          */
@@ -9090,12 +9084,17 @@ declare namespace CodeceptJS {
          * Start recording promises
          *
          * @api
+         * @inner
          */
         start(): void;
-        /** @return {boolean}
+        /**
+         * @return {boolean}
+         * @inner
          */
         isRunning(): boolean;
-        /** @return {void}
+        /**
+         * @return {void}
+         * @inner
          */
         startUnlessRunning(): void;
         /**
@@ -9103,6 +9102,7 @@ declare namespace CodeceptJS {
          *
          * @api
          * @param {function} fn
+         * @inner
          */
         errHandler(fn: (...params: any[]) => any): void;
         /**
@@ -9110,6 +9110,7 @@ declare namespace CodeceptJS {
          * Resets recorder to initial state.
          *
          * @api
+         * @inner
          */
         reset(): void;
         /**
@@ -9129,21 +9130,25 @@ declare namespace CodeceptJS {
          *     true: it will retries if `retryOpts` set.
          *     false: ignore `retryOpts` and won't retry.
          * @return {Promise<*> | undefined}
+         * @inner
          */
         add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
         /**
          * @param {*} opts
          * @return {*}
+         * @inner
          */
         retry(opts: any): any;
         /**
          * @param {function} [customErrFn]
          * @return {Promise<*>}
+         * @inner
          */
         catch(customErrFn?: (...params: any[]) => any): Promise<any>;
         /**
          * @param {function} customErrFn
          * @return {Promise<*>}
+         * @inner
          */
         catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
         /**
@@ -9151,20 +9156,28 @@ declare namespace CodeceptJS {
          *
          * @api
          * @param {*} err
+         * @inner
          */
         throw(err: any): void;
-        /** @param {*} err
+        /**
+         * @param {*} err
+         * @inner
          */
         saveFirstAsyncError(err: any): void;
-        /** @return {*}
+        /**
+         * @return {*}
+         * @inner
          */
         getAsyncErr(): any;
-        /** @return {void}
+        /**
+         * @return {void}
+         * @inner
          */
         cleanAsyncErr(): void;
         /**
          * Stops recording promises
          * @api
+         * @inner
          */
         stop(): void;
         /**
@@ -9172,16 +9185,19 @@ declare namespace CodeceptJS {
          *
          * @api
          * @return {Promise<*>}
+         * @inner
          */
         promise(): Promise<any>;
         /**
          * Get a list of all chained tasks
          * @return {string}
+         * @inner
          */
         scheduled(): string;
         /**
          * Get a state of current queue and tasks
          * @return {string}
+         * @inner
          */
         toString(): string;
     }
@@ -9195,13 +9211,19 @@ declare namespace CodeceptJS {
          * @inner
          */
         running: boolean;
-        /** @param {string} name
+        /**
+         * @param {string} name
+         * @inner
          */
         start(name: string): void;
-        /** @param {string} name
+        /**
+         * @param {string} name
+         * @inner
          */
         restore(name: string): void;
-        /** @param {function} fn
+        /**
+         * @param {function} fn
+         * @inner
          */
         catch(fn: (...params: any[]) => any): void;
     }
@@ -9305,14 +9327,12 @@ declare namespace CodeceptJS {
     }
     /**
      * global values for current session
-     * @interface
+     * @namespace
      */
-    interface store {
-        /**
-         * @type {boolean}
-         * @inner
+    namespace store {
+        /** @type {boolean}
          */
-        debugMode: boolean;
+        var debugMode: boolean;
     }
     /**
      * Describe a "suite" with the given `title`

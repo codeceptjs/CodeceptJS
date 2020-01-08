@@ -35,16 +35,16 @@ describe('Definitions', function () {
         types.should.be.valid;
 
         const definitionsFile = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
-        const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('index').getStructure();
-        index.properties.should.containSubset([
-          { name: 'recorder', type: 'CodeceptJS.recorder' },
-          { name: 'event', type: 'CodeceptJS.event' },
-          { name: 'output', type: 'CodeceptJS.output' },
-          { name: 'config', type: 'typeof CodeceptJS.Config' },
-          { name: 'container', type: 'typeof CodeceptJS.Container' },
+        const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getNamespaceOrThrow('index').getStructure();
+        index.statements.should.containSubset([
+          { declarations: [{ name: 'recorder', type: 'CodeceptJS.recorder' }] },
+          { declarations: [{ name: 'event', type: 'typeof CodeceptJS.event' }] },
+          { declarations: [{ name: 'output', type: 'typeof CodeceptJS.output' }] },
+          { declarations: [{ name: 'config', type: 'typeof CodeceptJS.Config' }] },
+          { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
         ]);
         const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure();
-        codeceptjs.type.should.equal('CodeceptJS.index');
+        codeceptjs.type.should.equal('typeof CodeceptJS.index');
         done();
       });
     });
