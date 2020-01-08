@@ -1,11 +1,12 @@
 require('../support/setup');
+const path = require('path');
+const fs = require('fs');
+
 const TestHelper = require('../support/TestHelper');
 
 const GraphQLDataFactory = require('../../lib/helper/GraphQLDataFactory');
 
 const graphql_url = TestHelper.graphQLServerUrl();
-const path = require('path');
-const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/graphql/db.json');

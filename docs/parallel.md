@@ -1,7 +1,9 @@
 ---
-id: parallel
+permalink: /parallel
 title: Parallel Execution
 ---
+
+# Parallel Execution
 
 CodeceptJS has two engines for running tests in parallel:
 
@@ -134,7 +136,7 @@ Output is printed for all running processes. Each line is tagged with a suite an
 
 ### Hooks
 
-Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown) for an example.
+Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](/hooks/#bootstrap-teardown) for an example.
 
 
 ### Parallel Execution

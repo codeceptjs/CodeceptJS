@@ -1,9 +1,10 @@
-const Protractor = require('../../lib/helper/Protractor');
-const TestHelper = require('../support/TestHelper');
 const assert = require('assert');
-const path = require('path');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const path = require('path');
+
+const Protractor = require('../../lib/helper/Protractor');
+const TestHelper = require('../support/TestHelper');
 const AssertionFailedError = require('../../lib/assert/error');
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 const fileExists = require('../../lib/utils').fileExists;
