@@ -1,6 +1,6 @@
 ---
 permalink: plugins
-sidebarDepth: 1
+sidebarDepth: 
 sidebar: auto
 title: Plugins
 ---
