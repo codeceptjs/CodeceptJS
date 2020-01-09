@@ -2277,8 +2277,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.seeTextEquals('text', 'h1');
          * ```
+         *
+         * @param {string} text element value to check.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
          */
-        seeTextEquals(): void;
+        seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Opposite to `see`. Checks that a text is not present on a page.
          * Use context parameter to narrow down the search.
@@ -4067,8 +4070,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.seeTextEquals('text', 'h1');
          * ```
+         *
+         * @param {string} text element value to check.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
          */
-        seeTextEquals(): void;
+        seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Opposite to `see`. Checks that a text is not present on a page.
          * Use context parameter to narrow down the search.
@@ -5991,7 +5997,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text element value to check.
-         * @param {CodeceptJS.LocatorOrString?} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
          */
         seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -8222,6 +8228,7 @@ declare namespace CodeceptJS {
          * @param {string} msg
          * @param {string} color
          * @return {Promise<any> | undefined}
+         * @inner
          */
         function say(msg: string, color: string): Promise<any> | undefined;
     }
@@ -8449,17 +8456,19 @@ declare namespace CodeceptJS {
         function cleanDispatcher(): void;
     }
     /**
-     * @interface
+     * @namespace
      * @alias event
      */
-    interface event {
+    namespace event {
         /**
          * @type {NodeJS.EventEmitter}
+         * @constant
          * @inner
          */
-        dispatcher: NodeJS.EventEmitter;
+        const dispatcher: NodeJS.EventEmitter;
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'test.start'} started
          * @property {'test.before'} before
@@ -8468,7 +8477,7 @@ declare namespace CodeceptJS {
          * @property {'test.failed'} failed
          * @property {'test.finish'} finished
          */
-        test: {
+        const test: {
             started: 'test.start';
             before: 'test.before';
             after: 'test.after';
@@ -8478,26 +8487,29 @@ declare namespace CodeceptJS {
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'suite.before'} before
          * @property {'suite.after'} after
          */
-        suite: {
+        const suite: {
             before: 'suite.before';
             after: 'suite.after';
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'hook.start'} started
          * @property {'hook.passed'} passed
          */
-        hook: {
+        const hook: {
             started: 'hook.start';
             passed: 'hook.passed';
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'step.start'} started
          * @property {'step.before'} before
@@ -8506,7 +8518,7 @@ declare namespace CodeceptJS {
          * @property {'step.failed'} failed
          * @property {'step.finish'} finished
          */
-        step: {
+        const step: {
             started: 'step.start';
             before: 'step.before';
             after: 'step.after';
@@ -8516,26 +8528,36 @@ declare namespace CodeceptJS {
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'global.before'} before
          * @property {'global.after'} after
          * @property {'global.result'} result
          */
-        all: {
+        const all: {
             before: 'global.before';
             after: 'global.after';
             result: 'global.result';
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'multiple.before'} before
          * @property {'multiple.after'} after
          */
-        multiple: {
+        const multiple: {
             before: 'multiple.before';
             after: 'multiple.after';
         };
+        /**
+         * @param {string} event
+         * @param {*} param
+         */
+        function emit(event: string, param: any): void;
+        /** for testing only!
+         */
+        function cleanDispatcher(): void;
     }
     class Helper {
         /**
@@ -8648,7 +8670,24 @@ declare namespace CodeceptJS {
          */
         debugSection(section: string, msg: string): void;
     }
+
+    /**
+     * @alias CodeceptJS.browserCodecept
+     * @namespace
+     */
     namespace browserCodecept {
+        /**
+         * all found elements are stored here for reuse
+         * @inner
+         * @type {Node[]}
+         */
+        var elements: Node[];
+        /**
+         * global context changer
+         * @inner
+         * @type {?Node}
+         */
+        var within: Node;
         /**
          * finders
          * @param {number} id
@@ -8715,93 +8754,62 @@ declare namespace CodeceptJS {
          * @return {boolean}
          */
         function unCheckEl(el: number): boolean;
-    }
-    /**
-     * @alias CodeceptJS.browserCodecept
-     * @interface
-     */
-    interface browserCodecept {
-        /**
-         * all found elements are stored here for reuse
-         * @inner
-         * @type {Node[]}
-         */
-        elements: Node[];
-        /**
-         * global context changer
-         * @inner
-         * @type {?Node}
-         */
-        within: Node;
+
+
     }
     /**
      * Index file for loading CodeceptJS programmatically.
      *
      * Includes Public API objects
      * @alias index
-     * @interface
+     * @namespace
      */
-    interface index {
-        /**
-         * @type {Class<CodeceptJS.Codecept>}
-         * @inner
+    namespace index {
+        /** @type {Class<CodeceptJS.Codecept>}
          */
-        codecept: typeof CodeceptJS.Codecept;
-        /**
-         * @type {Class<CodeceptJS.Codecept>}
-         * @inner
+        var codecept: typeof CodeceptJS.Codecept;
+        /** @type {Class<CodeceptJS.Codecept>}
          */
-        Codecept: typeof CodeceptJS.Codecept;
-        /**
-         * @type {CodeceptJS.output}
-         * @inner
+        var Codecept: typeof CodeceptJS.Codecept;
+        /** @type {Class<CodeceptJS.output>}
          */
-        output: CodeceptJS.output;
-        /**
-         * @type {Class<CodeceptJS.Container>}
-         * @inner
+        var output: typeof CodeceptJS.output;
+        /** @type {Class<CodeceptJS.Container>}
          */
-        container: typeof CodeceptJS.Container;
-        /**
-         * @type {CodeceptJS.event}
-         * @inner
+        var container: typeof CodeceptJS.Container;
+        /** @type {Class<CodeceptJS.event>}
          */
-        event: CodeceptJS.event;
-        /**
-         * @type {CodeceptJS.recorder}
-         * @inner
+        var event: typeof CodeceptJS.event;
+        /** @type {CodeceptJS.recorder}
          */
-        recorder: CodeceptJS.recorder;
-        /**
-         * @type {Class<CodeceptJS.Config>}
-         * @inner
+        var recorder: CodeceptJS.recorder;
+        /** @type {Class<CodeceptJS.Config>}
          */
-        config: typeof CodeceptJS.Config;
-        /**
-         * @type {Class<CodeceptJS.Helper>}
-         * @inner
+        var config: typeof CodeceptJS.Config;
+        /** @type {CodeceptJS.actor}
          */
-        helper: typeof CodeceptJS.Helper;
-        /**
-         * @type {Class<CodeceptJS.Helper>}
-         * @inner
+        var actor: CodeceptJS.actor;
+        /** @type {Class<CodeceptJS.Helper>}
          */
-        Helper: typeof CodeceptJS.Helper;
-        /**
-         * @type {Class<CodeceptJS.DataTable>}
-         * @inner
+        var helper: typeof CodeceptJS.Helper;
+        /** @type {Class<CodeceptJS.Helper>}
          */
-        dataTable: typeof CodeceptJS.DataTable;
-        /**
-         * @type {CodeceptJS.store}
-         * @inner
+        var Helper: typeof CodeceptJS.Helper;
+        /** @type {Class<CodeceptJS.pause>}
          */
-        store: CodeceptJS.store;
-        /**
-         * @type {Class<CodeceptJS.Locator>}
-         * @inner
+        var pause: typeof CodeceptJS.pause;
+        /** @type {Class<CodeceptJS.within>}
          */
-        locator: typeof CodeceptJS.Locator;
+        var within: typeof CodeceptJS.within;
+        /**  @type {Class<CodeceptJS.DataTable>}
+         */
+        var dataTable: typeof CodeceptJS.DataTable;
+        /** @type {Class<CodeceptJS.store>}
+         */
+        var store: typeof CodeceptJS.store;
+        /** @type {Class<CodeceptJS.Locator>}
+         */
+        var locator: typeof CodeceptJS.Locator;
     }
     /**
      * @param {*} step
@@ -8991,7 +8999,15 @@ declare namespace CodeceptJS {
          */
         static build(locator: CodeceptJS.LocatorOrString): Locator;
     }
+
+    /**
+     * @alias output
+     * @namespace
+     */
     namespace output {
+        /** @type {number}
+         */
+        var stepShift: number;
         /**
          * Set or return current verbosity level
          * @param {number} level
@@ -9035,6 +9051,66 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.Step} step
          */
         function step(step: CodeceptJS.Step): void;
+
+        /** @namespace
+         */
+        namespace suite {
+            /**
+             * @param {Mocha.Suite} suite
+             */
+            function started(suite: Mocha.Suite): void;
+        }
+        /** @namespace
+         */
+        namespace test {
+            /**
+             * @param {Mocha.Test} test
+             */
+            function started(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function passed(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function failed(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function skipped(test: Mocha.Test): void;
+        }
+        /** @namespace
+         */
+        namespace scenario {
+            /**
+             * @param {Mocha.Test} test
+             */
+            function started(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function passed(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function failed(test: Mocha.Test): void;
+        }
+        /**
+         *
+         * Print a text in console log
+         * @param {string} message
+         * @param {string} [color]
+         */
+        function say(message: string, color?: string): void;
+        /**
+         * @param {number} passed
+         * @param {number} failed
+         * @param {number} skipped
+         * @param {number} duration
+         */
+        function result(passed: number, failed: number, skipped: number, duration: number): void;
+
         /**
          *
          * Print a text in console log
@@ -9128,6 +9204,7 @@ declare namespace CodeceptJS {
          * @param {Mocha.Test} test
          */
         function failed(test: Mocha.Test): void;
+
     }
     /**
      * @alias OutputScenario
@@ -9144,12 +9221,18 @@ declare namespace CodeceptJS {
          * Start recording promises
          *
          * @api
+         * @inner
          */
-        function start(): void;
-        /** @return {boolean}
+
+        start(): void;
+        /**
+         * @return {boolean}
+         * @inner
          */
-        function isRunning(): boolean;
-        /** @return {void}
+        isRunning(): boolean;
+        /**
+         * @return {void}
+         * @inner
          */
         function startUnlessRunning(): void;
         /**
@@ -9157,6 +9240,7 @@ declare namespace CodeceptJS {
          *
          * @api
          * @param {function} fn
+         * @inner
          */
         function errHandler(fn: (...params: any[]) => any): void;
         /**
@@ -9164,6 +9248,7 @@ declare namespace CodeceptJS {
          * Resets recorder to initial state.
          *
          * @api
+         * @inner
          */
         function reset(): void;
         /**
@@ -9177,21 +9262,25 @@ declare namespace CodeceptJS {
          *     true: it will retries if `retryOpts` set.
          *     false: ignore `retryOpts` and won't retry.
          * @return {Promise<*> | undefined}
+         * @inner
          */
         function add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
         /**
          * @param {*} opts
          * @return {*}
+         * @inner
          */
         function retry(opts: any): any;
         /**
          * @param {function} [customErrFn]
          * @return {Promise<*>}
+         * @inner
          */
         function catch(customErrFn?: (...params: any[]) => any): Promise<any>;
         /**
          * @param {function} customErrFn
          * @return {Promise<*>}
+         * @inner
          */
         function catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
         /**
@@ -9199,20 +9288,30 @@ declare namespace CodeceptJS {
          *
          * @api
          * @param {*} err
+         * @inner
          */
-        function throw(err: any): void;
-        /** @param {*} err
+
+        throw(err: any): void;
+        /**
+         * @param {*} err
+         * @inner
          */
-        function saveFirstAsyncError(err: any): void;
-        /** @return {*}
+        saveFirstAsyncError(err: any): void;
+        /**
+         * @return {*}
+         * @inner
          */
-        function getAsyncErr(): any;
-        /** @return {void}
+        getAsyncErr(): any;
+        /**
+         * @return {void}
+         * @inner
+
          */
         function cleanAsyncErr(): void;
         /**
          * Stops recording promises
          * @api
+         * @inner
          */
         function stop(): void;
         /**
@@ -9220,16 +9319,19 @@ declare namespace CodeceptJS {
          *
          * @api
          * @return {Promise<*>}
+         * @inner
          */
         function promise(): Promise<any>;
         /**
          * Get a list of all chained tasks
          * @return {string}
+         * @inner
          */
         function scheduled(): string;
         /**
          * Get a state of current queue and tasks
          * @return {string}
+         * @inner
          */
         function toString(): string;
     }
@@ -9243,24 +9345,21 @@ declare namespace CodeceptJS {
          * @type {Array<Object<string, *>>}
          * @inner
          */
-        retries: {
-            [key: string]: any;
-        }[];
+        running: boolean;
         /**
-         * @name CodeceptJS.recorder~session
-         * @type {CodeceptJS.RecorderSession}
+         * @param {string} name
          * @inner
          */
-        session: CodeceptJS.RecorderSession;
-    }
-    namespace RecorderSession {
-        /** @param {string} name
+        start(name: string): void;
+        /**
+         * @param {string} name
+         * @inner
          */
-        function start(name: string): void;
-        /** @param {string} name
-         */
-        function restore(name: string): void;
-        /** @param {function} fn
+        restore(name: string): void;
+        /**
+         * @param {function} fn
+         * @inner
+
          */
         function catch(fn: (...params: any[]) => any): void;
     }
@@ -9375,14 +9474,12 @@ declare namespace CodeceptJS {
     }
     /**
      * global values for current session
-     * @interface
+     * @namespace
      */
-    interface store {
-        /**
-         * @type {boolean}
-         * @inner
+    namespace store {
+        /** @type {boolean}
          */
-        debugMode: boolean;
+        var debugMode: boolean;
     }
     /**
      * Describe a "suite" with the given `title`
@@ -9417,9 +9514,9 @@ declare namespace CodeceptJS {
          * I.saveScreenshot('main-window.png');
          * ```
          *
-         * @param string name
+         * @param {string} name
          */
-        saveScreenshot(string: any): void;
+        saveScreenshot(name: string): void;
         /**
          * Relaunches an application.
          *
@@ -9486,9 +9583,9 @@ declare namespace CodeceptJS {
          *    I.see('Hi, IOS');
          * });
          * ```
-         * @param fn a function which will be executed on iOS
+         * @param {Function} fn a function which will be executed on iOS
          */
-        runOnIOS(fn: any): void;
+        runOnIOS(fn: (...params: any[]) => any): void;
         /**
          * Execute code only on Android
          *
@@ -9498,9 +9595,9 @@ declare namespace CodeceptJS {
          *    I.see('Hi, Android');
          * });
          * ```
-         * @param fn a function which will be executed on android
+         * @param {Function} fn a function which will be executed on android
          */
-        runOnAndroid(fn: any): void;
+        runOnAndroid(fn: (...params: any[]) => any): void;
         /**
          * Taps on an element.
          * Element can be located by its text or id or accessibility id.
@@ -9517,10 +9614,10 @@ declare namespace CodeceptJS {
          * I.tap({ ios: 'Save', android: 'SAVE' }, '#main'); // different texts on iOS and Android
          * ```
          *
-         * @param {string|object} locator
-         * @param {string|object} [context=null]
+         * @param {CodeceptJS.LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString | null} [context=null]
          */
-        tap(locator: string | any, context?: string | any): void;
+        tap(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Multi taps on an element.
          * Element can be located by its text or id or accessibility id.
@@ -9535,11 +9632,12 @@ declare namespace CodeceptJS {
          * I.multiTap('Update', 2, '#menu'); // locate by id
          * ```
          *
-         * @param {string|object} locator element to locate
-         * @param {int} num number of taps
-         * @param {string|object} [context=null] context element
+         * @param {CodeceptJS.LocatorOrString} locator element to locate
+         * @param {number} num number of taps
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        multiTap(locator: string | any, num: int, context?: string | any): void;
+        multiTap(locator: CodeceptJS.LocatorOrString, num: number, context?: CodeceptJS.LocatorOrString | null): void;
+
         /**
          * Taps an element and holds for a requested time.
          *
@@ -9549,11 +9647,12 @@ declare namespace CodeceptJS {
          * I.longPress('Update', 2, '#menu'); // locate by text inside #menu, hold for 2 seconds
          * ```
          *
-         * @param {string|object} locator element to locate
-         * @param {num} sec number of seconds to hold tap
-         * @param {string|object} context context element
+         * @param {CodeceptJS.LocatorOrString} locator element to locate
+         * @param {number} sec number of seconds to hold tap
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        longPress(locator: string | any, sec: num, context: string | any): void;
+        longPress(locator: CodeceptJS.LocatorOrString, sec: number, context?: CodeceptJS.LocatorOrString | null): void;
+
         /**
          * Clicks on an element.
          * Element can be located by its text or id or accessibility id
@@ -9570,10 +9669,10 @@ declare namespace CodeceptJS {
          * I.click({ ios: 'Save', android: 'SAVE' }, '#main'); // different texts on iOS and Android
          * ```
          *
-         * @param {string|object} locator
-         * @param {string|object} [context=null]
+         * @param {CodeceptJS.LocatorOrString} locator
+         * @param {CodeceptJS.LocatorOrString | null} [context=null]
          */
-        click(locator: string | any, context?: string | any): void;
+        click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Performs click on element with horizontal and vertical offset.
          * An element is located by text, id, accessibility id.
@@ -9583,10 +9682,9 @@ declare namespace CodeceptJS {
          * I.clickAtPoint('~save', 10, 10); // locate by accessibility id
          * ```
          *
-         * @param {string|object} locator
-         * @param {int} [x=0] horizontal offset
-         * @param {int} [y=0] vertical offset
-         *
+         * @param {CodeceptJS.LocatorOrString} locator
+         * @param {number} [x=0] horizontal offset
+         * @param {number} [y=0] vertical offset
          */
         clickAtPoint(locator: string | any, x?: int, y?: int): void;
         /**
@@ -9600,9 +9698,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text to check visibility
-         * @param {string|object} [context=null] element inside which to search for text
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] element inside which to search for text
          */
-        see(text: string, context?: string | any): void;
+        see(text: string, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks text not to be visible.
          * Use second parameter to narrow down the search.
@@ -9613,9 +9711,9 @@ declare namespace CodeceptJS {
          * I.dontSee('Record deleted', '~message');
          * ```
          * @param {string} text to check invisibility
-         * @param {string|object} context element in which to search for text
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] element in which to search for text
          */
-        dontSee(text: string, context: string | any): void;
+        dontSee(text: string, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks for visibility of an element.
          * Use second parameter to narrow down the search.
@@ -9625,10 +9723,10 @@ declare namespace CodeceptJS {
          * I.seeElement('~edit', '#menu'); // element inside #menu
          * ```
          *
-         * @param {string|object} locator element to locate
-         * @param {string|object} [context=null] context element
+         * @param {CodeceptJS.LocatorOrString} locator element to locate
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        seeElement(locator: string | any, context?: string | any): void;
+        seeElement(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks that element is not visible.
          * Use second parameter to narrow down the search.
@@ -9637,10 +9735,11 @@ declare namespace CodeceptJS {
          * I.dontSeeElement('~edit'); // located by accessibility id
          * I.dontSeeElement('~edit', '#menu'); // element inside #menu
          * ```
-         * @param {string|object} locator element to locate
-         * @param {string|object} [context=null] context element
+
+         * @param {CodeceptJS.LocatorOrString} locator element to locate
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        dontSeeElement(locator: string | any, context?: string | any): void;
+        dontSeeElement(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks for existence of an element. An element can be visible or not.
          * Use second parameter to narrow down the search.
@@ -9650,10 +9749,10 @@ declare namespace CodeceptJS {
          * I.seeElementExists('~edit', '#menu'); // element inside #menu
          * ```
          *
-         * @param {string|object} locator element to locate
-         * @param {string|object} context  context element
+         * @param {CodeceptJS.LocatorOrString} locator element to locate
+         * @param {CodeceptJS.LocatorOrString} [context=null]  context element
          */
-        seeElementExists(locator: string | any, context: string | any): void;
+        seeElementExists(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Checks that element not exists.
          * Use second parameter to narrow down the search.
@@ -9663,10 +9762,11 @@ declare namespace CodeceptJS {
          * I.dontSeeElementExist('~edit', '#menu'); // element inside #menu
          * ```
          *
-         * @param {string|object} locator element to locate
-         * @param {string|object} context context element
+         * @param {CodeceptJS.LocatorOrString} locator element to locate
+         * @param {CodeceptJS.LocatorOrString} [context=null] context element
          */
-        dontSeeElementExists(locator: string | any, context: string | any): void;
+        dontSeeElementExists(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+
         /**
          * Fills in text field in an app.
          * A field can be located by text, accessibility id, id.
