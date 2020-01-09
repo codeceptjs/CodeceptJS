@@ -1,6 +1,7 @@
+const path = require('path');
+
 const TestHelper = require('../support/TestHelper');
 const TestCafe = require('../../lib/helper/TestCafe');
-const path = require('path');
 const webApiTests = require('./webapi');
 
 let I;

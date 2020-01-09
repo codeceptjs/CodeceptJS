@@ -1,5 +1,7 @@
 ---
-id: Protractor
+permalink: helpers/Protractor
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Protractor.js
+sidebar: auto
 title: Protractor
 ---
 

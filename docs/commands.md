@@ -1,8 +1,9 @@
 ---
-id: commands
+permalink: /commands
 title: Commands
 ---
 
+# Commands
 
 ## Run
 
@@ -87,6 +88,27 @@ Run tests in parallel threads.
 npx codeceptjs run-workers 3
 ```
 
+## Run Rerun
+
+Run tests with rerun of all suite some cycles. Use config.rerun params:
+
+```
+{
+...
+rerun: {
+  //how many times all tests in suite must pass 
+    minSuccess: 2,
+  //how many times we can try to rerun all test suite for reaching minSuccess count of passed test suite  
+    maxReruns: 4,
+  }
+}
+```
+
+For example: 
+ - minSuccess 1, maxReruns 5 - CodeceptJS will run all test suite no more than 5 times, until first successful run
+ - minSuccess 3, maxReruns 5 - CodeceptJS will run all test suite no more than 5 times, until reaching 3 successfull runs
+ - minSuccess 10, maxReruns 10 - CodeceptJS will run all test suite 10 times, and if any one test in any run will fail - all suite is failed.
+
 ## Dry Run
 
 Prints test scenarios without executing them
@@ -116,7 +138,7 @@ npx codeceptjs dry-run --steps --bootstrap
 ## Run Multiple
 
 Run multiple suites. Unlike `run-workers` spawns processes to execute tests.
-[Requires additional configuration](https://codecept.io/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
+[Requires additional configuration](/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
 
 ```sh
 npx codeceptjs run-multiple smoke:chrome regression:firefox

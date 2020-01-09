@@ -1,5 +1,7 @@
 ---
-id: Appium
+permalink: helpers/Appium
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Appium.js
+sidebar: auto
 title: Appium
 ---
 
@@ -577,6 +579,22 @@ I.runOnAndroid((caps) => {
 -   `caps` **any** 
 -   `fn` **any** 
 
+### scrollIntoView
+
+Scroll element into viewport.
+
+```js
+I.scrollIntoView('#submit');
+I.scrollIntoView('#submit', true);
+I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
+-   `scrollIntoViewOptions`  
+-   `alignToTop` **([boolean][11] | [object][5])** (optional) or scrollIntoViewOptions (optional), see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][12].Supported only for web testing
+
 ### see
 
 Checks that a page contains a visible text.
@@ -730,12 +748,12 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] | [Array][7]&lt;any>)** visible text or value of option.-   Supported on only for web testing!
+-   `option` **([string][4] | [Array][7]&lt;any>)** visible text or value of option.Supported only for web testing
 
 ### sendDeviceKeyEvent
 
 Send a key event to the device.
-List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][11]
+List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][13]
 
 ```js
 I.sendDeviceKeyEvent(3);
@@ -749,7 +767,7 @@ I.sendDeviceKeyEvent(3);
 
 Set immediate value in app.
 
-See corresponding [webdriverio reference][12].
+See corresponding [webdriverio reference][14].
 
 Appium: support only iOS
 
@@ -774,7 +792,7 @@ I.setNetworkConnection(4) // airplane mode off, wifi off, data on
 I.setNetworkConnection(6) // airplane mode off, wifi on, data on
 ```
 
-See corresponding [webdriverio reference][13].
+See corresponding [webdriverio reference][15].
 
 Appium: support only Android
 
@@ -858,7 +876,7 @@ let locator = "#io.selendroid.testapp:id/LinearLayout1";
 I.swipe(locator, 800, 1200, 1000);
 ```
 
-[See complete reference][14]
+[See complete reference][16]
 
 #### Parameters
 
@@ -1116,10 +1134,14 @@ I.waitForVisible('#popup');
 
 [10]: http://webdriver.io/api/mobile/rotate.html
 
-[11]: https://developer.android.com/reference/android/view/KeyEvent.html
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[12]: http://webdriver.io/api/mobile/setImmediateValue.html
+[12]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[13]: http://webdriver.io/api/mobile/setNetworkConnection.html
+[13]: https://developer.android.com/reference/android/view/KeyEvent.html
 
-[14]: http://webdriver.io/api/mobile/swipe.html
+[14]: http://webdriver.io/api/mobile/setImmediateValue.html
+
+[15]: http://webdriver.io/api/mobile/setNetworkConnection.html
+
+[16]: http://webdriver.io/api/mobile/swipe.html

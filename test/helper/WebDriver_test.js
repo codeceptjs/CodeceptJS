@@ -1129,4 +1129,14 @@ describe('WebDriver', function () {
       expect(height).is.greaterThan(0);
     });
   });
+
+  describe('#scrollIntoView', () => {
+    it('should scroll element into viewport', async () => {
+      await wd.amOnPage('/form/scroll_into_view');
+      const element = await wd.browser.$('#notInViewportByDefault');
+      expect(await element.isDisplayedInViewport()).to.be.false;
+      await wd.scrollIntoView('#notInViewportByDefault');
+      expect(await element.isDisplayedInViewport()).to.be.true;
+    });
+  });
 });

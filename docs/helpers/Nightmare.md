@@ -1,5 +1,7 @@
 ---
-id: Nightmare
+permalink: helpers/Nightmare
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Nightmare.js
+sidebar: auto
 title: Nightmare
 ---
 

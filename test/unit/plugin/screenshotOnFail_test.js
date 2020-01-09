@@ -1,9 +1,10 @@
-const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail');
+const assert = require('assert');
 const sinon = require('sinon');
+
+const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail');
 const container = require('../../../lib/container');
 const event = require('../../../lib/event');
 const recorder = require('../../../lib/recorder');
-const assert = require('assert');
 
 let screenshotSaved;
 
