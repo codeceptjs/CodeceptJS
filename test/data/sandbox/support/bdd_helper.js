@@ -16,6 +16,7 @@ class CheckoutHelper extends Helper {
   seeNum(num) {
     assert.equal(num, this.num);
   }
+
   seeSum(sum) {
     assert.equal(sum, this.sum);
   }
@@ -23,7 +24,7 @@ class CheckoutHelper extends Helper {
   haveDiscountForPrice(price, discount) {
     this.discountCalc = () => {
       if (this.sum > price) {
-        this.sum = this.sum - this.sum * discount / 100;
+        this.sum -= this.sum * discount / 100;
       }
     };
   }

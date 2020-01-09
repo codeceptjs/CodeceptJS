@@ -1,11 +1,9 @@
 const retryFailedStep = require('../../../lib/plugin/retryFailedStep');
-const sinon = require('sinon');
 const within = require('../../../lib/within');
 const session = require('../../../lib/session');
 const container = require('../../../lib/container');
 const event = require('../../../lib/event');
 const recorder = require('../../../lib/recorder');
-const assert = require('assert');
 
 describe('retryFailedStep', () => {
   beforeEach(() => {

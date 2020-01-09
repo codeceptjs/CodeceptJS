@@ -1,7 +1,8 @@
-const utils = require('../../lib/utils');
 const assert = require('assert');
 const os = require('os');
 const sinon = require('sinon');
+
+const utils = require('../../lib/utils');
 
 describe('utils', () => {
   describe('#fileExists', () => {

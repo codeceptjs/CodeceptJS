@@ -1129,4 +1129,56 @@ describe('WebDriver', function () {
       expect(height).is.greaterThan(0);
     });
   });
+
+  describe('#scrollIntoView', () => {
+    it('should scroll element into viewport', async () => {
+      await wd.amOnPage('/form/scroll_into_view');
+      const element = await wd.browser.$('#notInViewportByDefault');
+      expect(await element.isDisplayedInViewport()).to.be.false;
+      await wd.scrollIntoView('#notInViewportByDefault');
+      expect(await element.isDisplayedInViewport()).to.be.true;
+    });
+  });
+});
+
+describe('WebDriver - Basic Authentication', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    try {
+      fs.unlinkSync(dataFile);
+    } catch (err) {
+      // continue regardless of error
+    }
+
+    wd = new WebDriver({
+      url: siteUrl,
+      basicAuth: { username: 'admin', password: 'admin' },
+      browser: 'chrome',
+      windowSize: '500x700',
+      remoteFileUpload: true,
+      smartWait: 0, // just to try
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort(),
+      waitForTimeout: 5000,
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
+    });
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({ I: wd, siteUrl });
+    await wd._before();
+  });
+
+  afterEach(() => wd._after());
+
+  describe('open page : #amOnPage', () => {
+    it('should be authenticated', async () => {
+      await wd.amOnPage('/basic_auth');
+      await wd.see('You entered admin as your password.');
+    });
+  });
 });
