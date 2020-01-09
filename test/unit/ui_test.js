@@ -117,5 +117,35 @@ describe('ui', () => {
       scenarioConfig.injectDependencies({ Data: 'data' });
       assert.equal(scenarioConfig.test.inject.Data, 'data');
     });
+
+    describe('todo', () => {
+      it('should inject skipInfo to opts', () => {
+        scenarioConfig = context.Scenario.todo('scenario', () => { console.log('Scenario Body'); });
+
+        assert.equal(scenarioConfig.test.pending, true, 'Todo Scenario must be contain pending === true');
+        assert.equal(scenarioConfig.test.opts.skipInfo.message, 'Test not implemented!');
+        assert.equal(scenarioConfig.test.opts.skipInfo.description, "() => { console.log('Scenario Body'); }");
+      });
+
+      it('should contain empty description in skipInfo and empty body', () => {
+        scenarioConfig = context.Scenario.todo('scenario');
+
+        assert.equal(scenarioConfig.test.pending, true, 'Todo Scenario must be contain pending === true');
+        assert.equal(scenarioConfig.test.opts.skipInfo.description, '');
+        assert.equal(scenarioConfig.test.body, '');
+      });
+
+      it('should inject custom opts to opts and without callback', () => {
+        scenarioConfig = context.Scenario.todo('scenario', { customOpts: 'Custom Opts' });
+
+        assert.equal(scenarioConfig.test.opts.customOpts, 'Custom Opts');
+      });
+
+      it('should inject custom opts to opts and with callback', () => {
+        scenarioConfig = context.Scenario.todo('scenario', { customOpts: 'Custom Opts' }, () => { console.log('Scenario Body'); });
+
+        assert.equal(scenarioConfig.test.opts.customOpts, 'Custom Opts');
+      });
+    });
   });
 });

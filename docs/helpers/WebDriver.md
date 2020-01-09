@@ -1279,6 +1279,22 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fileName` **[string][18]** file name to save.
 -   `fullPage` **[boolean][31]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
+### scrollIntoView
+
+Scroll element into viewport.
+
+```js
+I.scrollIntoView('#submit');
+I.scrollIntoView('#submit', true);
+I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+```
+
+#### Parameters
+
+-   `locator` **([string][18] | [object][19])** located by CSS|XPath|strict locator.
+-   `scrollIntoViewOptions`  
+-   `alignToTop` **([boolean][31] | [object][19])** (optional) or scrollIntoViewOptions (optional), see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][32].
+
 ### scrollPageToBottom
 
 Scroll page to the bottom.
@@ -1589,7 +1605,7 @@ I.setCookie({name: 'auth', value: true});
 #### Parameters
 
 -   `cookie` **[object][19]** a cookie object.Uses Selenium's JSON [cookie
-    format][32].
+    format][33].
 
 ### setGeoLocation
 
@@ -1964,4 +1980,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[32]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[32]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+
+[33]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

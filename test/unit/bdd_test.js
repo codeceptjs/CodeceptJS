@@ -251,4 +251,45 @@ describe('BDD', () => {
       });
     });
   });
+
+  it('should provide a parsed DataTable', (done) => {
+    const text = `
+    @awesome @cool
+    Feature: checkout process
+
+    @super
+    Scenario: order products
+      Given I have the following products :
+        | label   | price  |
+        | beer    | 9      |
+        | cookies | 12     |
+      Then I should see the following products :
+        | label   | price  |
+        | beer    | 9      |
+        | cookies | 12     |
+    `;
+
+    let givenParsedRows;
+    let thenParsedRows;
+
+    Given('I have the following products :', (products) => {
+      givenParsedRows = products.parse();
+    });
+    Then('I should see the following products :', (products) => {
+      thenParsedRows = products.parse();
+    });
+
+    const suite = run(text);
+
+    const expectedParsedDataTable = [
+      ['label', 'price'],
+      ['beer', '9'],
+      ['cookies', '12'],
+    ];
+    suite.tests[0].fn(() => {
+      assert.deepEqual(givenParsedRows.rawData, expectedParsedDataTable);
+      assert.deepEqual(thenParsedRows.rawData, expectedParsedDataTable);
+      done();
+    });
+  });
 });
