@@ -1,5 +1,5 @@
 ---
-id: angular
+permalink: /angular
 title: Testing with Protractor
 ---
 
@@ -14,12 +14,12 @@ This way you aren't bound to a specific implementation, and your acceptance test
 [Protractor](http://www.protractortest.org/#/) is an official tool for testing AngularJS applications.
 CodeceptJS should not be considered as alternative to Protractor, but rather a testing framework that leverages this powerful library.
 
-![angular-protractor](https://codecept.io/img/angular-protractor.png)
+![angular-protractor](/img/angular-protractor.png)
 
 There is no magic in testing of AngularJS application in CodeceptJS.
 You just execute regular Protractor commands, packaged into a simple, high-level API.
 
-![todo-mvc](https://codecept.io/img/todo.png)
+![todo-mvc](/img/todo.png)
 
 As an example, we will use the popular [TodoMVC application](http://todomvc.com/examples/angularjs/#/).
 How would we test creating a new todo item using CodeceptJS?

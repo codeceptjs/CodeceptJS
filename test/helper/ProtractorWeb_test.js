@@ -1,15 +1,14 @@
-const TestHelper = require('../support/TestHelper');
 const assert = require('assert');
-const path = require('path');
 const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
+const path = require('path');
+
+const TestHelper = require('../support/TestHelper');
 const Protractor = require('../../lib/helper/Protractor');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 
 let I;
 let browser;
-const should = require('chai').should();
 
 const siteUrl = TestHelper.siteUrl();
 const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));

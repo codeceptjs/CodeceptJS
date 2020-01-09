@@ -1,5 +1,7 @@
 ---
-id: ApiDataFactory
+permalink: helpers/ApiDataFactory
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/ApiDataFactory.js
+sidebar: auto
 title: ApiDataFactory
 ---
 
@@ -7,7 +9,7 @@ title: ApiDataFactory
 
 ## ApiDataFactory
 
-Extends Helper
+**Extends Helper**
 
 Helper for managing remote data using REST API.
 Uses data generators like [rosie][1] or factory girl to create new record.
@@ -189,25 +191,25 @@ By default `id` property of response is taken. This behavior can be changed by s
 
 -   `config`  
 
-### \_requestCreate
+### _requestCreate
 
 Executes request to create a record in API.
 Can be replaced from a in custom helper.
 
 #### Parameters
 
--   `factory` any 
--   `data` any 
+-   `factory` **any** 
+-   `data` **any** 
 
-### \_requestDelete
+### _requestDelete
 
 Executes request to delete a record in API
 Can be replaced from a custom helper.
 
 #### Parameters
 
--   `factory` any 
--   `id` any 
+-   `factory` **any** 
+-   `id` **any** 
 
 ### have
 
@@ -223,8 +225,8 @@ const user = await I.have('user', { email: 'user@user.com'});
 
 #### Parameters
 
--   `factory` any factory to use
--   `params` any predefined parameters
+-   `factory` **any** factory to use
+-   `params` **any** predefined parameters
 
 ### haveMultiple
 
@@ -240,9 +242,9 @@ I.haveMultiple('post', 3, { author: 'davert' });
 
 #### Parameters
 
--   `factory` any 
--   `times` any 
--   `params` any 
+-   `factory` **any** 
+-   `times` **any** 
+-   `params` **any** 
 
 [1]: https://github.com/rosiejs/rosie
 

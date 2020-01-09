@@ -1,5 +1,7 @@
 ---
-id: FileSystem
+permalink: helpers/FileSystem
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/FileSystem.js
+sidebar: auto
 title: FileSystem
 ---
 
@@ -7,7 +9,7 @@ title: FileSystem
 
 ## FileSystem
 
-Extends Helper
+**Extends Helper**
 
 Helper for testing filesystem.
 Can be easily used to check file structures:
@@ -28,7 +30,7 @@ Starts from a current directory
 
 #### Parameters
 
--   `openPath`  
+-   `openPath` **[string][1]** 
 
 ### dontSeeFileContentsEqual
 
@@ -36,8 +38,8 @@ Checks that contents of file found by `seeFile` doesn't equal to text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` **[string][1]** 
+-   `encoding` **[string][1]** 
 
 ### dontSeeInThisFile
 
@@ -45,8 +47,19 @@ Checks that file found by `seeFile` doesn't include text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` **[string][1]** 
+-   `encoding` **[string][1]** 
+
+### grabFileNames
+
+Returns file names in current directory.
+
+```js
+I.handleDownloads();
+I.click('Download Files');
+I.amInPath('output/downloads');
+const downloadedFileNames = I.grabFileNames();
+```
 
 ### seeFile
 
@@ -54,7 +67,7 @@ Checks that file exists
 
 #### Parameters
 
--   `name`  
+-   `name` **[string][1]** 
 
 ### seeFileContentsEqual
 
@@ -62,8 +75,23 @@ Checks that contents of file found by `seeFile` equal to text.
 
 #### Parameters
 
+-   `text` **[string][1]** 
+-   `encoding` **[string][1]** 
+
+### seeFileNameMatching
+
+Checks that file with a name including given text exists in the current directory.
+
+```js
+I.handleDownloads();
+I.click('Download as PDF');
+I.amInPath('output/downloads');
+I.seeFileNameMatching('.pdf');
+```
+
+#### Parameters
+
 -   `text`  
--   `encoding`  
 
 ### seeInThisFile
 
@@ -71,8 +99,8 @@ Checks that file found by `seeFile` includes a text.
 
 #### Parameters
 
--   `text`  
--   `encoding`  
+-   `text` **[string][1]** 
+-   `encoding` **[string][1]** 
 
 ### writeToFile
 
@@ -80,5 +108,7 @@ Writes test to file
 
 #### Parameters
 
--   `name`  
--   `text`  
+-   `name` **[string][1]** 
+-   `text` **[string][1]** 
+
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

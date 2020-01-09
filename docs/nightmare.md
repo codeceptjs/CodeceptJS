@@ -1,8 +1,9 @@
 ---
-id: nightmare
+permalink: /nightmare
 title: Testing with Nightmare
 ---
 
+# Testing with Nightmare
 
 Selenium WebDriver is considered to be standard for end to end testing of web applications.
 Despite its popularity it have its drawbacks, it requires a real browser and Selenium server to control it.

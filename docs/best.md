@@ -1,7 +1,9 @@
 ---
-id: best
+permalink: /best
 title: Best Practices
 ---
+
+# Best Practices
 
 ## Focus on Readability
 
@@ -22,7 +24,7 @@ Even a text on the button changes its much easier to update it.
 
 > If your code goes beyond using `I` object or page objects, you are probably doing something wrong.
 
-When it's hard to match text to element we recommend using [locator builder](https://codecept.io/locators#locator-builder). It allows to build complex locators via fluent API.
+When it's hard to match text to element we recommend using [locator builder](/locators#locator-builder). It allows to build complex locators via fluent API.
 So if you want to click an element which is not a button or a link and use its text you can use `locate()` to build a readable locator:
 
 ```js
@@ -35,10 +37,10 @@ I.click(locate('.button').withText('Click me'));
 To write simpler and effective tests we encourage to use short cuts.
 Make test be focused on one feature and try to simplify everything that is not related directly to test.
 
-* If data is required for a test, try to create that data via API. See how to do it in [Data Management](https://codecept.io/data) chapter.
-* If user login is required, use [autoLogin plugin](https://codecept.io/plugins#autoLogin) instead of putting login steps inside a test.
+* If data is required for a test, try to create that data via API. See how to do it in [Data Management](/data) chapter.
+* If user login is required, use [autoLogin plugin](/plugins#autoLogin) instead of putting login steps inside a test.
 * Break a long test into few. Long test can be fragile and complicated to follow and update.
-* Use [custom steps and page objects](https://codecept.io/pageobjects) to hide steps which are not relevant to current test.
+* Use [custom steps and page objects](/pageobjects) to hide steps which are not relevant to current test.
 
 Make test as simple as:
 
@@ -70,7 +72,7 @@ Here is a recommended strategy what to store where:
 * When site-wide widgets are used, interactions with them should be placed in **Page Fragments**. This should be applied to global navigation, modals, widgets.
 * A custom action that require some low-level driver access, should be placed into a **Helper**. For instance, database connections, complex mouse actions, email testing, filesystem, services access.
 
-> [Learn more](https://codecept.io/pageobjects) about different refactoring options
+> [Learn more](/pageobjects) about different refactoring options
 
 However, it's recommended to not overengineer and keep tests simple. If a test code doesn't require reusage at this point it should not be transformed to use page objects.
 

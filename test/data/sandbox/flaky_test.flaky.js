@@ -23,4 +23,3 @@ Scenario('Old style flaky', { retries: 1 }, () => {
   assert.equal(tries3, 1);
   console.log(`[T3] Retries: ${tries3}`);
 });
-

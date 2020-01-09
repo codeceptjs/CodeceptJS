@@ -1,5 +1,7 @@
 ---
-id: GraphQLDataFactory
+permalink: helpers/GraphQLDataFactory
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/GraphQLDataFactory.js
+sidebar: auto
 title: GraphQLDataFactory
 ---
 
@@ -7,7 +9,7 @@ title: GraphQLDataFactory
 
 ## GraphQLDataFactory
 
-Extends Helper
+**Extends Helper**
 
 Helper for managing remote data using GraphQL queries.
 Uses data generators like [rosie][1] or factory girl to create new record.
@@ -158,25 +160,25 @@ Data of created records are collected and used in the end of a test for the clea
 
 -   `config`  
 
-### \_requestCreate
+### _requestCreate
 
 Executes request to create a record to the GraphQL endpoint.
 Can be replaced from a custom helper.
 
 #### Parameters
 
--   `operation` [string][4] 
--   `variables` any to be sent along with the query
+-   `operation` **[string][4]** 
+-   `variables` **any** to be sent along with the query
 
-### \_requestDelete
+### _requestDelete
 
 Executes request to delete a record to the GraphQL endpoint.
 Can be replaced from a custom helper.
 
 #### Parameters
 
--   `operation` [string][4] 
--   `data` any of the record to be deleted.
+-   `operation` **[string][4]** 
+-   `data` **any** of the record to be deleted.
 
 ### mutateData
 
@@ -192,8 +194,8 @@ const user = await I.mutateData('createUser', { email: 'user@user.com'});
 
 #### Parameters
 
--   `operation` [string][4] to be performed
--   `params` any predefined parameters
+-   `operation` **[string][4]** to be performed
+-   `params` **any** predefined parameters
 
 ### mutateMultiple
 
@@ -209,9 +211,9 @@ I.mutateMultiple('createUser', 3, { age: 25 });
 
 #### Parameters
 
--   `operation` [string][4] 
--   `times` [number][5] 
--   `params` any 
+-   `operation` **[string][4]** 
+-   `times` **[number][5]** 
+-   `params` **any** 
 
 [1]: https://github.com/rosiejs/rosie
 

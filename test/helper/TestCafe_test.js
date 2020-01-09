@@ -1,6 +1,7 @@
+const path = require('path');
+
 const TestHelper = require('../support/TestHelper');
 const TestCafe = require('../../lib/helper/TestCafe');
-const path = require('path');
 const webApiTests = require('./webapi');
 
 let I;
@@ -60,6 +61,18 @@ describe('TestCafe', function () {
       await I.amOnPage(siteUrl);
       const url = await I.grabCurrentUrl();
       return url.should.eql(`${siteUrl}/`);
+    });
+  });
+
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(() => window.__waitJs, 3));
+    });
+
+    it('should pass arguments and wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3));
     });
   });
 

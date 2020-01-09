@@ -1,5 +1,7 @@
 ---
-id: Appium
+permalink: helpers/Appium
+editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Appium.js
+sidebar: auto
 title: Appium
 ---
 
@@ -7,7 +9,7 @@ title: Appium
 
 ## Appium
 
-Extends Webdriver
+**Extends Webdriver**
 
 Appium helper extends [Webriver][1] helper.
  It supports all browser methods and also includes special methods for mobile apps testing.
@@ -35,7 +37,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `port`: (default: '4723') Appium port
 -   `platform`: (Android or IOS), which mobile OS to use; alias to desiredCapabilities.platformName
 -   `restart`: restart browser or app between tests (default: true), if set to false cookies will be cleaned but browser window will be kept and for apps nothing will be changed.
--   `desiredCapabilities`: \[], Appium capabilities, see below
+-   `desiredCapabilities`: [], Appium capabilities, see below
     -   `platformName` - Which mobile OS platform to use
     -   `appPackage` - Java package of the Android app you want to run
     -   `appActivity` - Activity name for the Android activity you want to launch from your package.
@@ -119,13 +121,13 @@ let browser = this.helpers['Appium'].browser
 
 -   `config`  
 
-### \_switchToContext
+### _switchToContext
 
 Switch to the specified context.
 
 #### Parameters
 
--   `context`  the context to switch to
+-   `context` **any** the context to switch to
 
 ### appendField
 
@@ -138,10 +140,8 @@ I.appendField('#myTextField', 'appended');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator
--   `value` [string][4] text value to append.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator
+-   `value` **[string][4]** text value to append.
 
 ### checkOption
 
@@ -158,10 +158,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) checkbox located by label | name | CSS | XPath | strict locator.
--   `context` [string][4] (optional, `null` by default) element located by CSS | XPath | strict locator.
-    
-
+-   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 ### click
 
@@ -180,7 +178,7 @@ I.click('Submit');
 // CSS button
 I.click('#form input[type=submit]');
 // XPath
-I.click('//form/[@type=submit]');
+I.click('//form/*[@type=submit]');
 // link in context
 I.click('Logout', '#nav');
 // using strict locator
@@ -189,10 +187,8 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` ([string][4] \| [object][5]) (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-    
-
+-   `locator` **([string][4] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 ### closeApp
 
@@ -216,9 +212,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
--   `text` [string][4] which is not present.
--   `context` ([string][4] \| [object][5]) (optional) element located by CSS|XPath|strict locator in which to perfrom search.
- 
+-   `text` **[string][4]** which is not present.
+-   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
 
 ### dontSeeCheckboxIsChecked
 
@@ -232,9 +227,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 
 ### dontSeeElement
 
@@ -246,9 +239,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) located by CSS|XPath|Strict locator.
-    
-
+-   `locator` **([string][4] | [object][5])** located by CSS|XPath|Strict locator.
 
 ### dontSeeInField
 
@@ -262,10 +253,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] value to check.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][4]** value to check.
 
 ### fillField
 
@@ -285,10 +274,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] text value to fill.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][4]** text value to fill.
 
 ### grabAllContexts
 
@@ -353,7 +340,7 @@ Appium: support Android and iOS
 ### grabTextFrom
 
 Retrieves a text from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so should be used inside async with `await` operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
 
 ```js
 let pin = await I.grabTextFrom('#pin');
@@ -363,16 +350,14 @@ If multiple elements found returns an array of texts.
 
 #### Parameters
 
--   `locator`  element located by CSS|XPath|strict locator.
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns [Promise][6]&lt;[string][4]> attribute value
-
-
+Returns **[Promise][6]&lt;([string][4] | [Array][7]&lt;[string][4]>)>** attribute value
 
 ### grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
-Resumes test execution, so should be used inside async function with `await` operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -380,11 +365,9 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) field located by label|name|CSS|XPath|strict locator.
+-   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns [Promise][6]&lt;[string][4]> attribute value
-
-
+Returns **[Promise][6]&lt;[string][4]>** attribute value
 
 ### hideDeviceKeyboard
 
@@ -401,7 +384,7 @@ I.hideDeviceKeyboard('pressKey', 'Done');
 
 #### Parameters
 
--   `strategy`  desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)Appium: support Android and iOS
+-   `strategy` **(`"tapOutside"` | `"pressKey"`)** desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)Appium: support Android and iOS
 -   `key`  
 
 ### installApp
@@ -414,7 +397,7 @@ I.installApp('/path/to/file.apk');
 
 #### Parameters
 
--   `path`  path to apk fileAppium: support only Android
+-   `path` **[string][4]** path to apk fileAppium: support only Android
 
 ### makeTouchAction
 
@@ -422,7 +405,7 @@ The Touch Action API provides the basis of all gestures that can be
 automated in Appium. At its core is the ability to chain together ad hoc
 individual actions, which will then be applied to an element in the
 application on the device.
-[See complete documentation][7]
+[See complete documentation][8]
 
 ```js
 I.makeTouchAction("~buttonStartWebviewCD", 'tap');
@@ -455,8 +438,8 @@ I.performswipe(100,200);
 
 #### Parameters
 
--   `from`  
--   `to`  Appium: support Android and iOS
+-   `from` **[number][9]** 
+-   `to` **[number][9]** Appium: support Android and iOS
 
 ### pullFile
 
@@ -485,8 +468,8 @@ I.removeApp('appName', 'com.example.android.apis');
 
 #### Parameters
 
--   `appId`  
--   `bundleId`  String  ID of bundleAppium: support only Android
+-   `appId` **[string][4]** 
+-   `bundleId` **[string][4]** String  ID of bundleAppium: support only Android
 
 ### rotate
 
@@ -496,7 +479,7 @@ Perform a rotation gesture centered on the specified element.
 I.rotate(120, 120)
 ```
 
-See corresponding [webdriverio reference][8].
+See corresponding [webdriverio reference][10].
 
 Appium: support only iOS
 
@@ -522,7 +505,7 @@ I.runInWeb(() => {
 
 #### Parameters
 
--   `fn` any 
+-   `fn` **any** 
 
 ### runOnAndroid
 
@@ -557,8 +540,8 @@ I.runOnAndroid((caps) => {
 
 #### Parameters
 
--   `caps` any 
--   `fn` any 
+-   `caps` **any** 
+-   `fn` **any** 
 
 ### runOnIOS
 
@@ -593,8 +576,24 @@ I.runOnAndroid((caps) => {
 
 #### Parameters
 
--   `caps` any 
--   `fn` any 
+-   `caps` **any** 
+-   `fn` **any** 
+
+### scrollIntoView
+
+Scroll element into viewport.
+
+```js
+I.scrollIntoView('#submit');
+I.scrollIntoView('#submit', true);
+I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
+-   `scrollIntoViewOptions`  
+-   `alignToTop` **([boolean][11] | [object][5])** (optional) or scrollIntoViewOptions (optional), see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][12].Supported only for web testing
 
 ### see
 
@@ -609,10 +608,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
--   `text` [string][4] expected on page.
--   `context` ([string][4] \| [object][5]) (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-    
-
+-   `text` **[string][4]** expected on page.
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
 
 ### seeAppIsInstalled
 
@@ -624,7 +621,7 @@ I.seeAppIsInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId`  String  ID of bundled appAppium: support only Android
+-   `bundleId` **[string][4]** String  ID of bundled appAppium: support only Android
 
 ### seeAppIsNotInstalled
 
@@ -636,7 +633,7 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId`  String  ID of bundled appAppium: support only Android
+-   `bundleId` **[string][4]** String  ID of bundled appAppium: support only Android
 
 ### seeCheckboxIsChecked
 
@@ -650,9 +647,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 
 ### seeCurrentActivityIs
 
@@ -662,11 +657,9 @@ Check current activity on an Android device.
 I.seeCurrentActivityIs(".HomeScreenActivity")
 ```
 
-Appium: support only Android
-
 #### Parameters
 
--   `currentActivity`  
+-   `currentActivity` **[string][4]** Appium: support only Android
 
 ### seeDeviceIsLocked
 
@@ -699,9 +692,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) located by CSS|XPath|strict locator.
-    
-
+-   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 
 ### seeInField
 
@@ -717,10 +708,8 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
--   `field` ([string][4] \| [object][5]) located by label|name|CSS|XPath|strict locator.
--   `value` [string][4] value to check.
-    
-
+-   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][4]** value to check.
 
 ### seeOrientationIs
 
@@ -733,7 +722,7 @@ I.seeOrientationIs('LANDSCAPE')
 
 #### Parameters
 
--   `orientation`  LANDSCAPE or PORTRAITAppium: support Android and iOS
+-   `orientation` **(`"LANDSCAPE"` | `"PORTRAIT"`)** LANDSCAPE or PORTRAITAppium: support Android and iOS
 
 ### selectOption
 
@@ -758,15 +747,13 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` ([string][4] \| [object][5]) field located by label|name|CSS|XPath|strict locator.
--   `option` ([string][4] \| [array][9]) visible text or value of option.
-    
--   Supported on only for web testing!
+-   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `option` **([string][4] | [Array][7]&lt;any>)** visible text or value of option.Supported only for web testing
 
 ### sendDeviceKeyEvent
 
 Send a key event to the device.
-List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][10]
+List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][13]
 
 ```js
 I.sendDeviceKeyEvent(3);
@@ -774,13 +761,13 @@ I.sendDeviceKeyEvent(3);
 
 #### Parameters
 
--   `keyValue`  Device specific key valueAppium: support only Android
+-   `keyValue` **[number][9]** Device specific key valueAppium: support only Android
 
 ### setImmediateValue
 
 Set immediate value in app.
 
-See corresponding [webdriverio reference][11].
+See corresponding [webdriverio reference][14].
 
 Appium: support only iOS
 
@@ -805,7 +792,7 @@ I.setNetworkConnection(4) // airplane mode off, wifi off, data on
 I.setNetworkConnection(6) // airplane mode off, wifi on, data on
 ```
 
-See corresponding [webdriverio reference][12].
+See corresponding [webdriverio reference][15].
 
 Appium: support only Android
 
@@ -824,7 +811,7 @@ I.setOrientation('LANDSCAPE')
 
 #### Parameters
 
--   `orientation`  LANDSCAPE or PORTRAITAppium: support Android and iOS
+-   `orientation` **(`"LANDSCAPE"` | `"PORTRAIT"`)** LANDSCAPE or PORTRAITAppium: support Android and iOS
 
 ### setSettings
 
@@ -836,7 +823,7 @@ I.setSettings({cyberdelia: 'open'});
 
 #### Parameters
 
--   `settings`  objectAppium: support Android and iOS
+-   `settings` **[object][5]** objectAppium: support Android and iOS
 
 ### shakeDevice
 
@@ -889,14 +876,14 @@ let locator = "#io.selendroid.testapp:id/LinearLayout1";
 I.swipe(locator, 800, 1200, 1000);
 ```
 
-[See complete reference][13]
+[See complete reference][16]
 
 #### Parameters
 
--   `locator`  
--   `xoffset`  
--   `yoffset`  
--   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
+-   `locator` **([string][4] | [object][5])** 
+-   `xoffset` **[number][9]** 
+-   `yoffset` **[number][9]** 
+-   `speed` **[number][9]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeDown
 
@@ -911,9 +898,9 @@ I.swipeDown(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator`  
--   `yoffset`  (optional)
--   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
+-   `locator` **([string][4] | [object][5])** 
+-   `yoffset` **[number][9]?** (optional) 
+-   `speed` **[number][9]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeLeft
 
@@ -928,9 +915,9 @@ I.swipeLeft(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator`  
--   `xoffset`  (optional)
--   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
+-   `locator` **([string][4] | [object][5])** 
+-   `xoffset` **[number][9]?** (optional) 
+-   `speed` **[number][9]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeRight
 
@@ -945,9 +932,9 @@ I.swipeRight(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator`  
--   `xoffset`  (optional)
--   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
+-   `locator` **([string][4] | [object][5])** 
+-   `xoffset` **[number][9]?** (optional) 
+-   `speed` **[number][9]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### swipeTo
 
@@ -965,12 +952,12 @@ I.swipeTo(
 
 #### Parameters
 
--   `searchableLocator`  
--   `scrollLocator`  
--   `direction`  
--   `timeout`  
--   `offset`  
--   `speed`  Appium: support Android and iOS
+-   `searchableLocator` **[string][4]** 
+-   `scrollLocator` **[string][4]** 
+-   `direction` **[string][4]** 
+-   `timeout` **[number][9]** 
+-   `offset` **[number][9]** 
+-   `speed` **[number][9]** Appium: support Android and iOS
 
 ### swipeUp
 
@@ -985,9 +972,9 @@ I.swipeUp(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator`  
--   `yoffset`  (optional)
--   `speed`  (optional), 1000 by defaultAppium: support Android and iOS
+-   `locator` **([string][4] | [object][5])** 
+-   `yoffset` **[number][9]?** (optional) 
+-   `speed` **[number][9]** (optional), 1000 by defaultAppium: support Android and iOS 
 
 ### switchToNative
 
@@ -1003,7 +990,7 @@ I.switchToNative('SOME_OTHER_CONTEXT');
 
 #### Parameters
 
--   `context` any  
+-   `context` **any**  
 
 ### switchToWeb
 
@@ -1020,7 +1007,7 @@ I.switchToWeb('WEBVIEW_io.selendroid.testapp');
 
 #### Parameters
 
--   `context` [string][4]? 
+-   `context` **[string][4]?** 
 
 ### tap
 
@@ -1034,7 +1021,7 @@ Shortcut for `makeTouchAction`
 
 #### Parameters
 
--   `locator` any 
+-   `locator` **any** 
 
 ### touchPerform
 
@@ -1079,10 +1066,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) element located by CSS|XPath|strict locator.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait
-    
- 
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
@@ -1095,10 +1080,8 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) element located by CSS|XPath|strict locator.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait
-    
- 
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForText
 
@@ -1113,11 +1096,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
--   `text` [string][4] to wait for.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait 
--   `context` ([string][4] \| [object][5]) (optional) element located by CSS|XPath|strict locator.
-    
- 
+-   `text` **[string][4]** to wait for.
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
 
@@ -1130,10 +1111,8 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
--   `locator` ([string][4] \| [object][5]) element located by CSS|XPath|strict locator.
--   `sec` [number][14] (optional, `1` by default) time in seconds to wait
-    
- 
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 [1]: http://codecept.io/helpers/WebDriver/
 
@@ -1147,18 +1126,22 @@ I.waitForVisible('#popup');
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[7]: http://webdriver.io/api/mobile/touchAction.html
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[8]: http://webdriver.io/api/mobile/rotate.html
+[8]: http://webdriver.io/api/mobile/touchAction.html
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[10]: https://developer.android.com/reference/android/view/KeyEvent.html
+[10]: http://webdriver.io/api/mobile/rotate.html
 
-[11]: http://webdriver.io/api/mobile/setImmediateValue.html
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[12]: http://webdriver.io/api/mobile/setNetworkConnection.html
+[12]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[13]: http://webdriver.io/api/mobile/swipe.html
+[13]: https://developer.android.com/reference/android/view/KeyEvent.html
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[14]: http://webdriver.io/api/mobile/setImmediateValue.html
+
+[15]: http://webdriver.io/api/mobile/setNetworkConnection.html
+
+[16]: http://webdriver.io/api/mobile/swipe.html
