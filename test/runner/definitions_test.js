@@ -21,7 +21,7 @@ describe('Definitions', function () {
   this.timeout(20000);
   this.retries(4);
   before(() => {
-    execSync('npx jsdoc -c typings/jsdoc.conf.js', { cwd: pathToRootOfProject });
+    execSync('npm def', { cwd: pathToRootOfProject });
   });
   afterEach(() => {
     try {
