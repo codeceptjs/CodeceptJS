@@ -88,7 +88,7 @@ Run tests in parallel threads.
 npx codeceptjs run-workers 3
 ```
 
-## Run Rerun
+## Run Rerun <Badge text="Since 2.4" type="warning"/>
 
 Run tests multiple times to detect and fix flaky tests.
 

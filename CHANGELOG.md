@@ -7,9 +7,9 @@
   * removed question on "steps file", create it by default.
 * Added [pauseOnFail plugin](/plugins/#pauseonfail). *Sponsored by Paul Vincent Beigang and his book "[Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)"*.
 * Added [`run-rerun` command](/commands/#run-rerun) to run tests multiple times to detect and fix flaky tests. By @Ilrilan and @Vorobeyko.
-* Added [`Scenario.todo()` to declare tests as pending](/basics#todo). See []()
+* Added [`Scenario.todo()` to declare tests as pending](/basics#todo). See #2100 by @Vorobeyko
 * Added support for absolute path for `output` dir. See #2049 by @elukoyanov
-* Fixed error in `npxcodecept init` caused by calling `console.print`. See #2071 by @Atinux.
+* Fixed error in `npx codecept init` caused by calling `console.print`. See #2071 by @Atinux.
 * [Filesystem] Methods added by @aefluke:
   * `seeFileNameMatching`
   * `grabFileNames`
@@ -17,7 +17,7 @@
 * [TestCafe] Fixed `grabAttributeFrom` method by @elukoyanov
 * [MockRequest] Added support for [Polly config options](https://netflix.github.io/pollyjs/#/configuration?id=configuration) by @ecrmnn
 * [TestCafe] Fixes exiting with zero code on failure. Fixed #2090 with #2106 by @koushikmohan1996
-* [WebDriver][Puppeteer] Added basicAuth support via config. Example: ` basicAuth: {username: 'username', password: 'password'}`. See #1962 by @PeterNgTr
+* [WebDriver][Puppeteer] Added basicAuth support via config. Example: `basicAuth: {username: 'username', password: 'password'}`. See #1962 by @PeterNgTr
 * [WebDriver][Appium] Added `scrollIntoView` by @pablopaul
 * Fixed #2118: No error stack trace for syntax error by @senthillkumar
 * Added `parse()` method to data table inside Cucumber tests. Use it to obtain rows and hashes for test data. See #2082 by @Sraime

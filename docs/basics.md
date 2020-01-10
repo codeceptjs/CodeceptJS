@@ -460,7 +460,7 @@ This is an **essential feature to debug flaky tests**, as you can analyze them i
 > ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
 
 
-### Screenshot on Failure <Badge text="Enabled by default"/>
+### Screenshot on Failure
 
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
@@ -544,7 +544,7 @@ Feature('Complex JS Stuff').retry(3);
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
 
-### Rerunning Flaky Tests Multiple Times
+### Rerunning Flaky Tests Multiple Times <Badge text="Since 2.4" type="warning"/>
 
 End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
 
@@ -810,7 +810,7 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
 
-## Todo
+## Todo <Badge text="Since 2.4" type="warning"/>
 
 You can use `Scenario.todo` when you are planning on writing tests.
 
