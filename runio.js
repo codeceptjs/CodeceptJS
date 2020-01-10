@@ -349,6 +349,7 @@ title: ${name}
     const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;
     await this.docs();
+    await this.defTypings();
     await this.publishSite();
     await git((cmd) => {
       cmd.tag(version);

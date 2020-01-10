@@ -2,6 +2,7 @@ const fs = require('fs');
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const chai = require('chai');
 const chaiSubset = require('chai-subset');
 const { Project, StructureKind, ts } = require('ts-morph');
@@ -19,6 +20,9 @@ chai.use(chaiSubset);
 describe('Definitions', function () {
   this.timeout(20000);
   this.retries(4);
+  before(() => {
+    execSync(path.join(pathToRootOfProject, 'runio.js def'));
+  })
   afterEach(() => {
     try {
       fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
