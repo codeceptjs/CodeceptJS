@@ -22,7 +22,7 @@ describe('Definitions', function () {
   this.retries(4);
   before(() => {
     execSync(path.join(pathToRootOfProject, 'runio.js def'));
-  })
+  });
   afterEach(() => {
     try {
       fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
