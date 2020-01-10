@@ -1,6 +1,6 @@
 ---
-permalink: helpers/Nightmare
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Nightmare.js
+permalink: /helpers/Nightmare
+editLink: false
 sidebar: auto
 title: Nightmare
 ---

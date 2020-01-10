@@ -1,6 +1,6 @@
 ---
-permalink: helpers/MockRequest
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/MockRequest.js
+permalink: /helpers/MockRequest
+editLink: false
 sidebar: auto
 title: MockRequest
 ---
@@ -36,7 +36,21 @@ helpers: {
 }
 ```
 
-The same can be done when using WebDriver helper..
+> Partially works with WebDriver helper
+
+[Polly config options][2] can be passed as well:
+
+```js
+// enable replay mode
+helpers: {
+ Puppeteer: {
+   // regular Puppeteer config here
+ },
+ MockRequest: {
+    mode: 'replay',
+ },
+}
+```
 
 ### Usage
 
@@ -86,10 +100,10 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
 
 #### Parameters
 
--   `method` **[string][2]** request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
--   `oneOrMoreUrls` **([string][2] | [Array][3]&lt;[string][2]>)** url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
--   `dataOrStatusCode` **([number][4] | [string][2] | [object][5])** status code when number provided. A response body otherwise
--   `additionalData` **([string][2] | [object][5])** response body when a status code is set by previous parameter. 
+-   `method` **[string][3]** request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+-   `oneOrMoreUrls` **([string][3] | [Array][4]&lt;[string][3]>)** url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+-   `dataOrStatusCode` **([number][5] | [string][3] | [object][6])** status code when number provided. A response body otherwise
+-   `additionalData` **([string][3] | [object][6])** response body when a status code is set by previous parameter. 
 
 ### startMocking
 
@@ -107,10 +121,12 @@ Stops mocking requests.
 
 [1]: https://netflix.github.io/pollyjs/#/
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[2]: https://netflix.github.io/pollyjs/#/configuration?id=configuration
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
