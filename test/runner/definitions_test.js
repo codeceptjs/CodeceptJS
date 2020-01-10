@@ -21,7 +21,7 @@ describe('Definitions', function () {
   this.timeout(20000);
   this.retries(4);
   before(() => {
-    execSync(path.join(pathToRootOfProject, 'runio.js def'));
+    execSync('npx jsdoc -c typings/jsdoc.conf.js', { cwd: pathToRootOfProject });
   });
   afterEach(() => {
     try {
