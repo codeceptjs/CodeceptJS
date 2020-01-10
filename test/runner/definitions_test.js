@@ -21,7 +21,7 @@ describe('Definitions', function () {
   this.timeout(20000);
   this.retries(4);
   before(() => {
-    execSync('npm def', { cwd: pathToRootOfProject });
+    execSync('npm run def', { cwd: pathToRootOfProject });
   });
   afterEach(() => {
     try {
