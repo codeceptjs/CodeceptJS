@@ -546,47 +546,6 @@ Feature('Complex JS Stuff').retry(3);
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
 
-### Rerunning Flaky Tests Multiple Times <Badge text="Since 2.4" type="warning"/>
-
-End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
-
-* Detect flaky tests in our suite
-* Fix flaky tests by rerunning them.
-
-Both tasks can be achieved with [`run-rerun` command](/commands/#run-rerun) which runs tests multiple times until all tests are passed.
-
-You should set min and max runs boundaries so when few tests fail in a row you can rerun them until they are succeeded.
-
-```js
-// inside to codecept.conf.js
-exports.config = { // ...
-  rerun: {
-    // run 4 times until 1st success
-    minSuccess: 1,
-    maxReruns: 4,
-  }
-}
-```
-
-If you want to check all your tests for stability you can set high boundaries for minimal success:
-
-```js
-// inside to codecept.conf.js
-exports.config = { // ...
-  rerun: {
-    // run all tests must pass exactly 5 times
-    minSuccess: 5,
-    maxReruns: 5,
-  }
-}
-```
-
-Now execute tests with `run-rerun` command:
-
-```
-npx codeceptjs run-rerun
-```
-
 
 ## Before
 
