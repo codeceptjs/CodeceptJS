@@ -1,6 +1,6 @@
 ---
-permalink: helpers/GraphQL
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/GraphQL.js
+permalink: /helpers/GraphQL
+editLink: false
 sidebar: auto
 title: GraphQL
 ---

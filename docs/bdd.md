@@ -11,7 +11,7 @@ Behavior Driven Development (BDD) is a popular software development methodology.
 
 BDD was introduced by [Dan North](https://dannorth.net/introducing-bdd/). He described it as:
 
->  outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.
+> outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.
 
 BDD has its own evolution from the days it was born, started by replacing "test" to "should" in unit tests, and moving towards powerful tools like Cucumber and Behat, which made user stories (human readable text) to be executed as an acceptance test.
 
@@ -253,10 +253,11 @@ Given('I have products in my cart', (table) => { // eslint-disable-line
 });
 ```
 
-You can also use the parse() function to obtain an object that allow you to get a simple version of the table parsed by column or row, with header (or not) : 
-- raw(): returns the table as a 2-D array
-- rows(): returns the table as a 2-D array, without the first row
-- hashes(): returns an array of objects where each row is converted to an object (column header is the key)
+You can also use the `parse()` method to obtain an object that allow you to get a simple version of the table parsed by column or row, with header (or not):
+
+- `raw()` - returns the table as a 2-D array
+- `rows()` - returns the table as a 2-D array, without the first row
+- `hashes()` - returns an array of objects where each row is converted to an object (column header is the key)
 
 If we use hashes() with the previous exemple :
 

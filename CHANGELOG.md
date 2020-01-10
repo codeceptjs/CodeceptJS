@@ -1,3 +1,27 @@
+## 2.4.0
+
+* Improved setup wizard with `npx codecept init`:
+  * **enabled [retryFailedStep](/plugins/#retryfailedstep) plugin for new setups**.
+  * enabled [@codeceptjs/configure](/configuration/#common-configuration-patterns) to toggle headless/window mode via env variable
+  * creates a new test on init
+  * removed question on "steps file", create it by default.
+* Added [pauseOnFail plugin](/plugins/#pauseonfail). *Sponsored by Paul Vincent Beigang and his book "[Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)"*.
+* Added [`run-rerun` command](/commands/#run-rerun) to run tests multiple times to detect and fix flaky tests. By @Ilrilan and @Vorobeyko.
+* Added [`Scenario.todo()` to declare tests as pending](/basics#todotest). See #2100 by @Vorobeyko
+* Added support for absolute path for `output` dir. See #2049 by @elukoyanov
+* Fixed error in `npx codecept init` caused by calling `console.print`. See #2071 by @Atinux.
+* [Filesystem] Methods added by @aefluke:
+  * `seeFileNameMatching`
+  * `grabFileNames`
+* [Puppeteer] Fixed grabbing attributes with hyphen by @Holorium
+* [TestCafe] Fixed `grabAttributeFrom` method by @elukoyanov
+* [MockRequest] Added support for [Polly config options](https://netflix.github.io/pollyjs/#/configuration?id=configuration) by @ecrmnn
+* [TestCafe] Fixes exiting with zero code on failure. Fixed #2090 with #2106 by @koushikmohan1996
+* [WebDriver][Puppeteer] Added basicAuth support via config. Example: `basicAuth: {username: 'username', password: 'password'}`. See #1962 by @PeterNgTr
+* [WebDriver][Appium] Added `scrollIntoView` by @pablopaul
+* Fixed #2118: No error stack trace for syntax error by @senthillkumar
+* Added `parse()` method to data table inside Cucumber tests. Use it to obtain rows and hashes for test data. See #2082 by @Sraime
+
 ## 2.3.6
 
 * Create better Typescript definition file through JSDoc. By @lemnis
@@ -8,7 +32,7 @@ exports.config = {
   tests: '{./workers/base_test.workers.js,./workers/test_grep.workers.js}',
 }
 ```
-* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By @jamesgeorge007 
+* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By @jamesgeorge007
 * Fixed some typos in documantation. By @pablopaul @atomicpages @EricTendian
 * Added PULL_REQUEST template.
 * [Puppeteer][WebDriver] Added `waitForClickable` for waiting clickable element on page.
