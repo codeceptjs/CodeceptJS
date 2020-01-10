@@ -8222,7 +8222,11 @@ declare namespace CodeceptJS {
          */
         runInWeb(): void;
     }
-    namespace ActorStatic {
+    /**
+     * @interface
+     * @alias ActorStatic
+     */
+    interface ActorStatic {
         /**
          * add print comment method`
          * @param {string} msg
@@ -8230,13 +8234,7 @@ declare namespace CodeceptJS {
          * @return {Promise<any> | undefined}
          * @inner
          */
-        function say(msg: string, color: string): Promise<any> | undefined;
-    }
-    /**
-     * @interface
-     * @alias ActorStatic
-     */
-    interface ActorStatic {
+        say(msg: string, color: string): Promise<any> | undefined;
         /**
          * @function
          * @param {*} opts
@@ -8444,16 +8442,6 @@ declare namespace CodeceptJS {
         /** @param {Function} func
          */
         filter(func: (...params: any[]) => any): void;
-    }
-    namespace event {
-        /**
-         * @param {string} event
-         * @param {*} param
-         */
-        function emit(event: string, param: any): void;
-        /** for testing only!
-         */
-        function cleanDispatcher(): void;
     }
     /**
      * @namespace
@@ -8670,7 +8658,6 @@ declare namespace CodeceptJS {
          */
         debugSection(section: string, msg: string): void;
     }
-
     /**
      * @alias CodeceptJS.browserCodecept
      * @namespace
@@ -8754,8 +8741,6 @@ declare namespace CodeceptJS {
          * @return {boolean}
          */
         function unCheckEl(el: number): boolean;
-
-
     }
     /**
      * Index file for loading CodeceptJS programmatically.
@@ -8999,7 +8984,6 @@ declare namespace CodeceptJS {
          */
         static build(locator: CodeceptJS.LocatorOrString): Locator;
     }
-
     /**
      * @alias output
      * @namespace
@@ -9051,7 +9035,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.Step} step
          */
         function step(step: CodeceptJS.Step): void;
-
         /** @namespace
          */
         namespace suite {
@@ -9110,120 +9093,30 @@ declare namespace CodeceptJS {
          * @param {number} duration
          */
         function result(passed: number, failed: number, skipped: number, duration: number): void;
-
-        /**
-         *
-         * Print a text in console log
-         * @param {string} message
-         * @param {string} [color]
-         */
-        function say(message: string, color?: string): void;
-        /**
-         * @param {number} passed
-         * @param {number} failed
-         * @param {number} skipped
-         * @param {number} duration
-         */
-        function result(passed: number, failed: number, skipped: number, duration: number): void;
-    }
-    /**
-     * @alias output
-     * @interface
-     */
-    interface output {
-        /**
-         * @type {number}
-         * @inner
-         */
-        stepShift: number;
-        /**
-         * @name CodeceptJS.output~suite
-         * @type {CodeceptJS.OutputSuite}
-         * @inner
-         */
-        suite: CodeceptJS.OutputSuite;
-        /**
-         * @name CodeceptJS.output~test
-         * @type {CodeceptJS.OutputTest}
-         * @inner
-         */
-        test: CodeceptJS.OutputTest;
-        /**
-         * @name CodeceptJS.output~scenario
-         * @type {CodeceptJS.OutputScenario}
-         * @inner
-         */
-        scenario: CodeceptJS.OutputScenario;
-    }
-    namespace OutputSuite {
-        /**
-         * @param {Mocha.Suite} suite
-         */
-        function started(suite: Mocha.Suite): void;
-    }
-    /**
-     * @alias OutputSuite
-     * @interface
-     */
-    interface OutputSuite {
-    }
-    namespace OutputTest {
-        /**
-         * @param {Mocha.Test} test
-         */
-        function started(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        function passed(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        function failed(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        function skipped(test: Mocha.Test): void;
-    }
-    /**
-     * @alias OutputTest
-     * @interface
-     */
-    interface OutputTest {
-    }
-    namespace OutputScenario {
-        /**
-         * @param {Mocha.Test} test
-         */
-        function started(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        function passed(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        function failed(test: Mocha.Test): void;
-
-    }
-    /**
-     * @alias OutputScenario
-     * @interface
-     */
-    interface OutputScenario {
     }
     /**
      * Pauses test execution and starts interactive shell
      */
     function pause(): void;
-    namespace recorder {
+    /**
+     * Singleton object to record all test steps as promises and run them in chain.
+     * @alias recorder
+     * @interface
+     */
+    interface recorder {
+        /**
+         * @type {Array<Object<string, *>>}
+         * @inner
+         */
+        retries: {
+            [key: string]: any;
+        }[];
         /**
          * Start recording promises
          *
          * @api
          * @inner
          */
-
         start(): void;
         /**
          * @return {boolean}
@@ -9234,7 +9127,7 @@ declare namespace CodeceptJS {
          * @return {void}
          * @inner
          */
-        function startUnlessRunning(): void;
+        startUnlessRunning(): void;
         /**
          * Add error handler to catch rejected promises
          *
@@ -9242,7 +9135,7 @@ declare namespace CodeceptJS {
          * @param {function} fn
          * @inner
          */
-        function errHandler(fn: (...params: any[]) => any): void;
+        errHandler(fn: (...params: any[]) => any): void;
         /**
          * Stops current promise chain, calls `catch`.
          * Resets recorder to initial state.
@@ -9250,7 +9143,13 @@ declare namespace CodeceptJS {
          * @api
          * @inner
          */
-        function reset(): void;
+        reset(): void;
+        /**
+         * @name CodeceptJS.recorder~session
+         * @type {CodeceptJS.RecorderSession}
+         * @inner
+         */
+        session: CodeceptJS.RecorderSession;
         /**
          * Adds a promise to a chain.
          * Promise description should be passed as first parameter.
@@ -9264,25 +9163,25 @@ declare namespace CodeceptJS {
          * @return {Promise<*> | undefined}
          * @inner
          */
-        function add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
+        add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
         /**
          * @param {*} opts
          * @return {*}
          * @inner
          */
-        function retry(opts: any): any;
+        retry(opts: any): any;
         /**
          * @param {function} [customErrFn]
          * @return {Promise<*>}
          * @inner
          */
-        function catch(customErrFn?: (...params: any[]) => any): Promise<any>;
+        catch(customErrFn?: (...params: any[]) => any): Promise<any>;
         /**
          * @param {function} customErrFn
          * @return {Promise<*>}
          * @inner
          */
-        function catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
+        catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
         /**
          * Adds a promise which throws an error into a chain
          *
@@ -9290,7 +9189,6 @@ declare namespace CodeceptJS {
          * @param {*} err
          * @inner
          */
-
         throw(err: any): void;
         /**
          * @param {*} err
@@ -9305,15 +9203,14 @@ declare namespace CodeceptJS {
         /**
          * @return {void}
          * @inner
-
          */
-        function cleanAsyncErr(): void;
+        cleanAsyncErr(): void;
         /**
          * Stops recording promises
          * @api
          * @inner
          */
-        function stop(): void;
+        stop(): void;
         /**
          * Get latest promise in chain.
          *
@@ -9321,28 +9218,27 @@ declare namespace CodeceptJS {
          * @return {Promise<*>}
          * @inner
          */
-        function promise(): Promise<any>;
+        promise(): Promise<any>;
         /**
          * Get a list of all chained tasks
          * @return {string}
          * @inner
          */
-        function scheduled(): string;
+        scheduled(): string;
         /**
          * Get a state of current queue and tasks
          * @return {string}
          * @inner
          */
-        function toString(): string;
+        toString(): string;
     }
     /**
-     * Singleton object to record all test steps as promises and run them in chain.
-     * @alias recorder
+     * @alias RecorderSession
      * @interface
      */
-    interface recorder {
+    interface RecorderSession {
         /**
-         * @type {Array<Object<string, *>>}
+         * @type {boolean}
          * @inner
          */
         running: boolean;
@@ -9359,20 +9255,8 @@ declare namespace CodeceptJS {
         /**
          * @param {function} fn
          * @inner
-
          */
-        function catch(fn: (...params: any[]) => any): void;
-    }
-    /**
-     * @alias RecorderSession
-     * @interface
-     */
-    interface RecorderSession {
-        /**
-         * @type {boolean}
-         * @inner
-         */
-        running: boolean;
+        catch(fn: (...params: any[]) => any): void;
     }
     class Secret {
         constructor(secret: string);
@@ -9500,6 +9384,13 @@ declare namespace CodeceptJS {
      * @type {CodeceptJS.IScenario}
      */
     const xScenario: CodeceptJS.IScenario;
+    /**
+     * Pending test case with message: 'Test not implemented!'.
+     * @global
+     * @kind constant
+     * @type {CodeceptJS.IScenario}
+     */
+    const todo: CodeceptJS.IScenario;
     /**
      * @param {CodeceptJS.LocatorOrString}  context
      * @param {Function}  fn
@@ -9637,7 +9528,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
         multiTap(locator: CodeceptJS.LocatorOrString, num: number, context?: CodeceptJS.LocatorOrString | null): void;
-
         /**
          * Taps an element and holds for a requested time.
          *
@@ -9652,7 +9542,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
         longPress(locator: CodeceptJS.LocatorOrString, sec: number, context?: CodeceptJS.LocatorOrString | null): void;
-
         /**
          * Clicks on an element.
          * Element can be located by its text or id or accessibility id
@@ -9686,7 +9575,7 @@ declare namespace CodeceptJS {
          * @param {number} [x=0] horizontal offset
          * @param {number} [y=0] vertical offset
          */
-        clickAtPoint(locator: string | any, x?: int, y?: int): void;
+        clickAtPoint(locator: CodeceptJS.LocatorOrString, x?: number, y?: number): void;
         /**
          * Checks text to be visible.
          * Use second parameter to narrow down the search.
@@ -9735,7 +9624,6 @@ declare namespace CodeceptJS {
          * I.dontSeeElement('~edit'); // located by accessibility id
          * I.dontSeeElement('~edit', '#menu'); // element inside #menu
          * ```
-
          * @param {CodeceptJS.LocatorOrString} locator element to locate
          * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
@@ -9766,7 +9654,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} [context=null] context element
          */
         dontSeeElementExists(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
-
         /**
          * Fills in text field in an app.
          * A field can be located by text, accessibility id, id.
@@ -9777,10 +9664,10 @@ declare namespace CodeceptJS {
          * I.fillField({ android: 'NAME', ios: 'name' }, 'davert');
          * ```
          *
-         * @param {string|object} field an input element to fill in
+         * @param {CodeceptJS.LocatorOrString} field an input element to fill in
          * @param {string} value value to fill
          */
-        fillField(field: string | any, value: string): void;
+        fillField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
          * Clears a text field.
          * A field can be located by text, accessibility id, id.
@@ -9789,9 +9676,9 @@ declare namespace CodeceptJS {
          * I.clearField('~name');
          * ```
          *
-         * @param {string|object} field an input element to clear
+         * @param {CodeceptJS.LocatorOrString} field an input element to clear
          */
-        clearField(field: string | any): void;
+        clearField(field: CodeceptJS.LocatorOrString): void;
         /**
          * Appends text into the field.
          * A field can be located by text, accessibility id, id.
@@ -9800,10 +9687,10 @@ declare namespace CodeceptJS {
          * I.appendField('name', 'davert');
          * ```
          *
-         * @param {string|object} field
+         * @param {CodeceptJS.LocatorOrString} field
          * @param {string} value
          */
-        appendField(field: string | any, value: string): void;
+        appendField(field: CodeceptJS.LocatorOrString, value: string): void;
         /**
          * Scrolls to the top of an element.
          *
@@ -9811,9 +9698,9 @@ declare namespace CodeceptJS {
          * I.scrollUp('#container');
          * ```
          *
-         * @param {string|object} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          */
-        scrollUp(locator: string | any): void;
+        scrollUp(locator: CodeceptJS.LocatorOrString): void;
         /**
          * Scrolls to the bottom of an element.
          *
@@ -9821,9 +9708,9 @@ declare namespace CodeceptJS {
          * I.scrollDown('#container');
          * ```
          *
-         * @param {string|object} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          */
-        scrollDown(locator: string | any): void;
+        scrollDown(locator: CodeceptJS.LocatorOrString): void;
         /**
          * Scrolls to the left of an element.
          *
@@ -9831,9 +9718,9 @@ declare namespace CodeceptJS {
          * I.scrollLeft('#container');
          * ```
          *
-         * @param {string|object} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          */
-        scrollLeft(locator: string | any): void;
+        scrollLeft(locator: CodeceptJS.LocatorOrString): void;
         /**
          * Scrolls to the right of an element.
          *
@@ -9841,9 +9728,9 @@ declare namespace CodeceptJS {
          * I.scrollRight('#container');
          * ```
          *
-         * @param {string|object} locator
+         * @param {CodeceptJS.LocatorOrString} locator
          */
-        scrollRight(locator: string | any): void;
+        scrollRight(locator: CodeceptJS.LocatorOrString): void;
         /**
          * Performs a swipe up inside an element.
          * Can be `slow` or `fast` swipe.
@@ -9852,10 +9739,10 @@ declare namespace CodeceptJS {
          * I.swipeUp('#container');
          * ```
          *
-         * @param {string|object} locator an element on which to perform swipe
+         * @param {CodeceptJS.LocatorOrString} locator an element on which to perform swipe
          * @param {string} [speed='slow'] a speed to perform: `slow` or `fast`.
          */
-        swipeUp(locator: string | any, speed?: string): void;
+        swipeUp(locator: CodeceptJS.LocatorOrString, speed?: string): void;
         /**
          * Performs a swipe up inside an element.
          * Can be `slow` or `fast` swipe.
@@ -9864,10 +9751,10 @@ declare namespace CodeceptJS {
          * I.swipeUp('#container');
          * ```
          *
-         * @param {string|object} locator an element on which to perform swipe
+         * @param {CodeceptJS.LocatorOrString} locator an element on which to perform swipe
          * @param {string} [speed='slow'] a speed to perform: `slow` or `fast`.
          */
-        swipeDown(locator: string | any, speed?: string): void;
+        swipeDown(locator: CodeceptJS.LocatorOrString, speed?: string): void;
         /**
          * Performs a swipe up inside an element.
          * Can be `slow` or `fast` swipe.
@@ -9876,10 +9763,10 @@ declare namespace CodeceptJS {
          * I.swipeUp('#container');
          * ```
          *
-         * @param {string|object} locator an element on which to perform swipe
+         * @param {CodeceptJS.LocatorOrString} locator an element on which to perform swipe
          * @param {string} [speed='slow'] a speed to perform: `slow` or `fast`.
          */
-        swipeLeft(locator: string | any, speed?: string): void;
+        swipeLeft(locator: CodeceptJS.LocatorOrString, speed?: string): void;
         /**
          * Performs a swipe up inside an element.
          * Can be `slow` or `fast` swipe.
@@ -9888,10 +9775,10 @@ declare namespace CodeceptJS {
          * I.swipeUp('#container');
          * ```
          *
-         * @param {string|object} locator an element on which to perform swipe
+         * @param {CodeceptJS.LocatorOrString} locator an element on which to perform swipe
          * @param {string} [speed='slow'] a speed to perform: `slow` or `fast`.
          */
-        swipeRight(locator: string | any, speed?: string): void;
+        swipeRight(locator: CodeceptJS.LocatorOrString, speed?: string): void;
         /**
          * Waits for number of seconds
          *
@@ -9899,9 +9786,9 @@ declare namespace CodeceptJS {
          * I.wait(2); // waits for 2 seconds
          * ```
          *
-         * @param {int} sec number of seconds to wait
+         * @param {number} sec number of seconds to wait
          */
-        wait(sec: int): void;
+        wait(sec: number): void;
         /**
          * Waits for an element to exist on page.
          *
@@ -9909,10 +9796,10 @@ declare namespace CodeceptJS {
          * I.waitForElement('#message', 1); // wait for 1 second
          * ```
          *
-         * @param {string|object} locator an element to wait for
-         * @param {int} [sec=5] number of seconds to wait, 5 by default
+         * @param {CodeceptJS.LocatorOrString} locator an element to wait for
+         * @param {number} [sec=5] number of seconds to wait, 5 by default
          */
-        waitForElement(locator: string | any, sec?: int): void;
+        waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
          * Waits for an element to be visible on page.
          *
@@ -9920,10 +9807,10 @@ declare namespace CodeceptJS {
          * I.waitForElementVisible('#message', 1); // wait for 1 second
          * ```
          *
-         * @param {string|object} locator an element to wait for
-         * @param {int} [sec=5] number of seconds to wait
+         * @param {CodeceptJS.LocatorOrString} locator an element to wait for
+         * @param {number} [sec=5] number of seconds to wait
          */
-        waitForElementVisible(locator: string | any, sec?: int): void;
+        waitForElementVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
         /**
          * Waits an elment to become not visible.
          *
@@ -9931,10 +9818,10 @@ declare namespace CodeceptJS {
          * I.waitToHide('#message', 2); // wait for 2 seconds
          * ```
          *
-         * @param {string|object} locator  an element to wait for
-         * @param {int} [sec=5] number of seconds to wait
+         * @param {CodeceptJS.LocatorOrString} locator  an element to wait for
+         * @param {number} [sec=5] number of seconds to wait
          */
-        waitToHide(locator: string | any, sec?: int): void;
+        waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
     }
 }
 
