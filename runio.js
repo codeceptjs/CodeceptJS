@@ -316,11 +316,13 @@ title: ${name}
     await copy('docs', 'website/docs');
 
     await chdir(dir, async () => {
+      stopOnFail(false);
       await git((fn) => {
         fn.add('-A');
-        fn.commit('synchronized with docs');
-        fn.push();
+        fn.commit('-m "synchronized with docs"');
+        fn.push('--no-verify');
       });
+      stopOnFail(true);
 
       await exec('./runio.js publish');
     });
@@ -342,16 +344,17 @@ title: ${name}
       fs.writeFileSync('package.json', JSON.stringify(packageInfo));
       await git((cmd) => {
         cmd.add('package.json');
-        cmd.commit('version bump');
+        cmd.commit('-m "version bump"');
       });
     }
     // publish a new release on npm. Update version in package.json!
     const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;
     await this.docs();
-    await this.defTypings();
+    await this.def();
     await this.publishSite();
     await git((cmd) => {
+      cmd.pull();
       cmd.tag(version);
       cmd.push('origin master --tags');
     });
