@@ -1,6 +1,6 @@
 ---
-permalink: helpers/WebDriver
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/WebDriver.js
+permalink: /helpers/WebDriver
+editLink: false
 sidebar: auto
 title: WebDriver
 ---
@@ -21,6 +21,7 @@ WebDriver requires [Selenium Server and ChromeDriver/GeckoDriver to be installed
 This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url`: base url of website to be tested.
+-   `basicAuth`: (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `browser`: browser in which to perform testing.
 -   `host`:  - WebDriver host to connect.
 -   `port`:  - WebDriver port to connect.
@@ -49,6 +50,26 @@ Example:
      WebDriver : {
        smartWait: 5000,
        browser: "chrome",
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
+}
+```
+
+Example with basic authentication
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       basicAuth: {username: 'username', password: 'password'},
        restart: false,
        windowSize: "maximize",
        timeouts: {
@@ -1554,7 +1575,7 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][18]** element value to check.
--   `context` **([string][18] | [object][19]?)?** (optional) element located by CSS|XPath|strict locator. 
+-   `context` **([string][18] | [object][19]?)** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 
@@ -1647,7 +1668,7 @@ I.switchToNextTab(2);
 #### Parameters
 
 -   `num` **[number][22]?** (optional) number of tabs to switch forward, default: 1. 
--   `sec` **[number][22]?** (optional) time in seconds to wait. 
+-   `sec` **([number][22] | null)?** (optional) time in seconds to wait. 
 
 ### switchToPreviousTab
 

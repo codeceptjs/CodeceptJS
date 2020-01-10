@@ -1,6 +1,6 @@
 ---
-permalink: helpers/REST
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/REST.js
+permalink: /helpers/REST
+editLink: false
 sidebar: auto
 title: REST
 ---

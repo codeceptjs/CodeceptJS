@@ -450,7 +450,7 @@ The interactive shell can be started outside of test context by running
 npx codeceptjs shell
 ```
 
-### Pause on Failure
+### Pause on Failure <Badge text="Since 2.4" type="warning"/>
 
 To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
 When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
@@ -460,7 +460,7 @@ This is an **essential feature to debug flaky tests**, as you can analyze them i
 > ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
 
 
-### Screenshot on Failure
+### Screenshot on Failure <Badge text="Enabled by default"/>
 
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
@@ -471,7 +471,15 @@ To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepby
 
 ## Retries
 
+### Auto Retry
+
+You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
+
+> **autoRetry plugin is enabled by default** for new setups since CodeceptJS 2.4
+
 ### Retry Step
+
+Unless you use retryFailedStep plugin you can manually control retries in your project.
 
 If you have a step which often fails, you can retry execution for this single step.
 Use the `retry()` function before an action to ask CodeceptJS to retry it on failure:
@@ -505,9 +513,6 @@ I.retry({
 
 Pass a function to the `when` option to retry only when an error matches the expected one.
 
-### Auto Retry
-
-You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
 
 ### Retry Scenario
 
@@ -538,6 +543,47 @@ Feature('Complex JS Stuff').retry(3);
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
+
+### Rerunning Flaky Tests Multiple Times
+
+End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
+
+* Detect flaky tests in our suite
+* Fix flaky tests by rerunning them.
+
+Both tasks can be achieved with [`run-rerun` command](/commands/#run-rerun) which runs tests multiple times until all tests are passed.
+
+You should set min and max runs boundaries so when few tests fail in a row you can rerun them until they are succeeded.
+
+```js
+// inside to codecept.conf.js
+exports.config = { // ...
+  rerun: {
+    // run 4 times until 1st success
+    minSuccess: 1,
+    maxReruns: 4,
+  }
+}
+```
+
+If you want to check all your tests for stability you can set high boundaries for minimal success:
+
+```js
+// inside to codecept.conf.js
+exports.config = { // ...
+  rerun: {
+    // run all tests must pass exactly 5 times
+    minSuccess: 5,
+    maxReruns: 5,
+  }
+}
+```
+
+Now execute tests with `run-rerun` command:
+
+```
+npx codeceptjs run-rerun
+```
 
 
 ## Before
@@ -601,7 +647,10 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
+> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
+
 
 See example:
 
@@ -610,6 +659,8 @@ within({frame: "#editor"}, () => {
   I.see('Page');
 });
 ```
+
+> ℹ IFrames can also be accessed via `I.switchTo` command of a corresponding helper.
 
 Nested IFrames can be set by passing an array *(WebDriver, Nightmare & Puppeteer only)*:
 
