@@ -444,20 +444,23 @@ To **debug test step-by-step** press Enter, the next step will be executed and i
 
 To see all available commands, press TAB two times to see list of all actions included in the `I` object.
 
-If a test is failing you can prevent the browser from closing by putting the `pause()` command into an `After()` hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get an idea about what went wrong.
-
-```js
-After(pause);
-```
-
 The interactive shell can be started outside of test context by running
 
 ```bash
-codeceptjs shell
+npx codeceptjs shell
 ```
 
+### Pause on Failure
 
-### Screenshot on failure
+To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
+When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
+
+This is an **essential feature to debug flaky tests**, as you can analyze them in the moment of failure.
+
+> ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
+
+
+### Screenshot on Failure
 
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
@@ -767,7 +770,7 @@ Scenario.todo('Test',  I => {
 /**
  * 1. Click to field
  * 2. Fill field
- * 
+ *
  * Result:
  * 3. Field contains text
  */
