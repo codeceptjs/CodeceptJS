@@ -90,24 +90,33 @@ npx codeceptjs run-workers 3
 
 ## Run Rerun
 
-Run tests with rerun of all suite some cycles. Use config.rerun params:
+Run tests multiple times to detect and fix flaky tests.
 
 ```
+npx codeceptjs run-rerun
+```
+
+For this command configuration is required:
+
+```js
 {
-...
-rerun: {
-  //how many times all tests in suite must pass 
+  // inside to codecept.conf.js
+  rerun: {
+    // how many times all tests should pass
     minSuccess: 2,
-  //how many times we can try to rerun all test suite for reaching minSuccess count of passed test suite  
+
+    // how many times to try to rerun all tests
     maxReruns: 4,
   }
 }
 ```
 
-For example: 
- - minSuccess 1, maxReruns 5 - CodeceptJS will run all test suite no more than 5 times, until first successful run
- - minSuccess 3, maxReruns 5 - CodeceptJS will run all test suite no more than 5 times, until reaching 3 successfull runs
- - minSuccess 10, maxReruns 10 - CodeceptJS will run all test suite 10 times, and if any one test in any run will fail - all suite is failed.
+Use Cases:
+
+* `minSuccess: 1, maxReruns: 5` - run all tests no more than 5 times, until first successful run.
+* `minSuccess: 3, maxReruns: 5` - run all tests no more than 5 times, until reaching 3 successfull runs.
+* `minSuccess: 10, maxReruns: 10` - run all tests exactly 10 times, to check their stability.
+
 
 ## Dry Run
 
