@@ -228,14 +228,15 @@ Please note that some config changes can't be applied on the fly. For instance, 
 
 Configuration changes will be reverted after a test or a suite.
 
-## Detecting and Rerunning Flaky Tests
+
+### Rerunning Flaky Tests Multiple Times <Badge text="Since 2.4" type="warning"/>
 
 End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
 
 * Detect flaky tests in our suite
 * Fix flaky tests by rerunning them.
 
-Both tasks can be achieved with [`run-rerun` command](commands/#run-multiple) which runs tests multiple times until all tests are passed.
+Both tasks can be achieved with [`run-rerun` command](/commands/#run-rerun) which runs tests multiple times until all tests are passed.
 
 You should set min and max runs boundaries so when few tests fail in a row you can rerun them until they are succeeded.
 
@@ -268,3 +269,4 @@ Now execute tests with `run-rerun` command:
 ```
 npx codeceptjs run-rerun
 ```
+

@@ -100,7 +100,7 @@ For this command configuration is required:
 
 ```js
 {
-  // inside to codecept.conf.js
+  // inside codecept.conf.js
   rerun: {
     // how many times all tests should pass
     minSuccess: 2,

@@ -465,6 +465,8 @@ This is an **essential feature to debug flaky tests**, as you can analyze them i
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
 
+> **screenshotOnFail plugin is enabled by default** for new setups
+
 ### Step By Step Report
 
 To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
@@ -810,7 +812,7 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
 
-## Todo <Badge text="Since 2.4" type="warning"/>
+## Todo Test <Badge text="Since 2.4" type="warning"/>
 
 You can use `Scenario.todo` when you are planning on writing tests.
 
