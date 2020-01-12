@@ -444,23 +444,28 @@ To **debug test step-by-step** press Enter, the next step will be executed and i
 
 To see all available commands, press TAB two times to see list of all actions included in the `I` object.
 
-If a test is failing you can prevent the browser from closing by putting the `pause()` command into an `After()` hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get an idea about what went wrong.
-
-```js
-After(pause);
-```
-
 The interactive shell can be started outside of test context by running
 
 ```bash
-codeceptjs shell
+npx codeceptjs shell
 ```
 
+### Pause on Failure <Badge text="Since 2.4" type="warning"/>
 
-### Screenshot on failure
+To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
+When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
+
+This is an **essential feature to debug flaky tests**, as you can analyze them in the moment of failure.
+
+> ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
+
+
+### Screenshot on Failure
 
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
+
+> **screenshotOnFail plugin is enabled by default** for new setups
 
 ### Step By Step Report
 
@@ -468,7 +473,15 @@ To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepby
 
 ## Retries
 
+### Auto Retry
+
+You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
+
+> **autoRetry plugin is enabled by default** for new setups since CodeceptJS 2.4
+
 ### Retry Step
+
+Unless you use retryFailedStep plugin you can manually control retries in your project.
 
 If you have a step which often fails, you can retry execution for this single step.
 Use the `retry()` function before an action to ask CodeceptJS to retry it on failure:
@@ -502,9 +515,6 @@ I.retry({
 
 Pass a function to the `when` option to retry only when an error matches the expected one.
 
-### Auto Retry
-
-You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
 
 ### Retry Scenario
 
@@ -598,7 +608,10 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
+> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
+
 
 See example:
 
@@ -607,6 +620,8 @@ within({frame: "#editor"}, () => {
   I.see('Page');
 });
 ```
+
+> ℹ IFrames can also be accessed via `I.switchTo` command of a corresponding helper.
 
 Nested IFrames can be set by passing an array *(WebDriver, Nightmare & Puppeteer only)*:
 
@@ -756,34 +771,28 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
 
-## Todo test
+## Todo Test <Badge text="Since 2.4" type="warning"/>
 
-You can use `Scenario.todo` when you are planning on writing tests. This test will be skipped like with usual `skip`.
-But this method to adds skip-message: `Test not implemented!` to test instance.
+You can use `Scenario.todo` when you are planning on writing tests.
 
-Example #1 - with callback:
+This test will be skipped like with regular `Scenario.skip` but with additional message "Test not implemented!":
+
+Use it with a test body as a test plan:
+
 ```js
 Scenario.todo('Test',  I => {
 /**
  * 1. Click to field
  * 2. Fill field
- * 
+ *
  * Result:
  * 3. Field contains text
  */
-})
+});
 ```
 
-Example #2 - without callback:
-```js
-Scenario.todo('Test')
-```
+Or even without a test body:
 
-And you can access the `message` of `test.opts.skipInfo` in the events
-
-Example #3 - access into event hooks
 ```js
-  event.dispatcher.on(event.test.before, (test) => {
-    test.opts.skipInfo //  contains {message and description}
-  });
+Scenario.todo('Test');
 ```

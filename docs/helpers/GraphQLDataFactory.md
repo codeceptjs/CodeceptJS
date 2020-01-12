@@ -1,6 +1,6 @@
 ---
-permalink: helpers/GraphQLDataFactory
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/GraphQLDataFactory.js
+permalink: /helpers/GraphQLDataFactory
+editLink: false
 sidebar: auto
 title: GraphQLDataFactory
 ---

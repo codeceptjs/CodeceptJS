@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const documentation = require('documentation');
 const {
   stopOnFail, chdir, git, copy, exec, replaceInFile, npmRun, npx, writeToFile, runio,
 } = require('runio.js');
@@ -86,10 +87,18 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     // generate documentation for helpers outside of main repo
     console.log('Building @codecepjs/detox helper docs');
     const helper = 'Detox';
+    replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
+      cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+    });
     await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
+
     await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
       cfg.line(`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
       cfg.textFromFile(`docs/helpers/${helper}.md`);
+    });
+
+    replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
+      cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
     });
   },
 
@@ -160,6 +169,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         }
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
       });
+
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
       replaceInFile(`docs/helpers/${name}.md`, (cfg) => {
         cfg.replace(/\(optional, default.*?\)/gm, '');
@@ -174,7 +184,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 
       await writeToFile(`docs/helpers/${name}.md`, (cfg) => {
         cfg.append(`---
-permalink: helpers/${name}
+permalink: /helpers/${name}
 editLink: false
 sidebar: auto
 title: ${name}
@@ -184,6 +194,8 @@ title: ${name}
         cfg.textFromFile(`docs/helpers/${name}.md`);
       });
     }
+
+    await this.docsAppium();
   },
 
   async wiki() {
@@ -250,6 +262,43 @@ title: ${name}
     });
   },
 
+
+  async docsAppium() {
+    // generates docs for appium
+    const onlyWeb = [
+      /Title/,
+      /Popup/,
+      /Cookie/,
+      /Url/,
+      /^press/,
+      /^refreshPage/,
+      /^resizeWindow/,
+      /Script$/,
+      /cursor/,
+      /Css/,
+      /Tab$/,
+      /^wait/,
+    ];
+    const webdriverDoc = await documentation.build(['docs/build/WebDriver.js'], {
+      shallow: true,
+      order: 'asc',
+    });
+    const doc = await documentation.build(['docs/build/Appium.js'], {
+      shallow: true,
+      order: 'asc',
+    });
+
+    // copy all public methods from webdriver
+    for (const method of webdriverDoc[0].members.instance) {
+      if (onlyWeb.filter(f => method.name.match(f)).length) continue;
+      if (doc[0].members.instance.filter(m => m.name === method.name).length) continue;
+      doc[0].members.instance.push(method);
+    }
+    const output = await documentation.formats.md(doc);
+    // output is a string of Markdown data
+    fs.writeFileSync('docs/helpers/Appium.md', output);
+  },
+
   async publishSite() {
     // updates codecept.io website
     await processChangelog();
@@ -267,11 +316,13 @@ title: ${name}
     await copy('docs', 'website/docs');
 
     await chdir(dir, async () => {
+      stopOnFail(false);
       await git((fn) => {
         fn.add('-A');
-        fn.commit('synchronized with docs');
-        fn.push();
+        fn.commit('-m "synchronized with docs"');
+        fn.push('--no-verify');
       });
+      stopOnFail(true);
 
       await exec('./runio.js publish');
     });
@@ -293,15 +344,17 @@ title: ${name}
       fs.writeFileSync('package.json', JSON.stringify(packageInfo));
       await git((cmd) => {
         cmd.add('package.json');
-        cmd.commit('version bump');
+        cmd.commit('-m "version bump"');
       });
     }
     // publish a new release on npm. Update version in package.json!
     const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;
     await this.docs();
+    await this.def();
     await this.publishSite();
     await git((cmd) => {
+      cmd.pull();
       cmd.tag(version);
       cmd.push('origin master --tags');
     });
@@ -310,6 +363,7 @@ title: ${name}
   },
 
 };
+
 
 async function processChangelog() {
   const file = 'CHANGELOG.md';
