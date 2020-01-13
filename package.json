@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -89,6 +89,7 @@
     "@wdio/selenium-standalone-service": "^5.16.10",
     "@wdio/utils": "^5.16.15",
     "apollo-server-express": "^2.9.16",
+    "arrify": "^2.0.1",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "chai-subset": "^1.6.0",
