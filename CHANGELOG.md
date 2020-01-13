@@ -1,3 +1,7 @@
+## 2.4.1
+
+* [Hotfix] - Add missing lib that prevents codeceptjs from initializing.
+
 ## 2.4.0
 
 * Improved setup wizard with `npx codecept init`:
