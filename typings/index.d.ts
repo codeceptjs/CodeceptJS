@@ -26,12 +26,6 @@ declare namespace CodeceptJS {
     isMetaStep(): this is MetaStep;
   }
 
-  interface index {
-    actor: CodeceptJS.actor;
-    pause: typeof CodeceptJS.pause;
-    within: typeof CodeceptJS.within;
-  }
-
   // Types who are not be defined by JSDoc
   type actor = <T extends { [action: string]: Function }>(
     customSteps?: T & ThisType<WithTranslation<Methods & T>>
@@ -45,6 +39,7 @@ declare namespace CodeceptJS {
     | { frame: string }
     | { android: string }
     | { ios: string }
+    | { android: string, ios: string }
     | { react: string };
 
   type LocatorOrString = string | ILocator | Locator;
@@ -85,7 +80,7 @@ declare const pause: typeof CodeceptJS.pause;
 declare const within: typeof CodeceptJS.within;
 declare const session: typeof CodeceptJS.session;
 declare const DataTable: typeof CodeceptJS.DataTable;
-declare const codeceptjs: CodeceptJS.index;
+declare const codeceptjs: typeof CodeceptJS.index;
 declare const locate: typeof CodeceptJS.Locator.build;
 declare function inject(): CodeceptJS.SupportObject;
 declare function inject<T extends keyof CodeceptJS.SupportObject>(
@@ -112,7 +107,7 @@ declare const Before: CodeceptJS.IHook;
 declare const After: CodeceptJS.IHook;
 
 interface Window {
-  codeceptjs: CodeceptJS.browserCodecept;
+  codeceptjs: typeof CodeceptJS.browserCodecept;
   resq: any;
 }
 

@@ -1,5 +1,7 @@
 ---
-id: GraphQLDataFactory
+permalink: /helpers/GraphQLDataFactory
+editLink: false
+sidebar: auto
 title: GraphQLDataFactory
 ---
 

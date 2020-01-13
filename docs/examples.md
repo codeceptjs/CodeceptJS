@@ -1,9 +1,28 @@
 ---
-id: examples
+permalink: /examples
+layout: Section
+sidebar: false
 title: Examples
+editLink: false
 ---
 
+# Examples
 > Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)
+## [TodoMVC Examples](https://github.com/codecept-js/examples)
+
+![](https://github.com/codecept-js/examples/raw/master/todo.png)
+
+Playground repository where you can run tests in different helpers on a basic single-page website.
+
+Tests repository demonstrate usage of
+
+* Puppeteer helper
+* WebDriver helper
+* TestCafe plugin
+* Toggle headless mode with env variables
+* PageObjects
+* Cucumber syntax
+
 ## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
@@ -14,9 +33,9 @@ Our team uses it to test new features and run simple scenarios.
 
 ![](https://user-images.githubusercontent.com/220264/56353972-56975080-61db-11e9-8b23-06e8b4620995.png)
 
-End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application which helps to collect user feedback and transform it into professional bugreports.
+End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps collecting users' feedbacks and transforming them into professional bug reports.
 
-Tests repository deomstrate usage of
+Tests repository demonstrate usage of
 
 * Puppeteer helper
 * ApiDataFactory helper

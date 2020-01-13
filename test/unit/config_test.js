@@ -1,5 +1,6 @@
-const config = require('../../lib/config');
 const { expect } = require('chai');
+
+const config = require('../../lib/config');
 
 describe('Config', () => {
   beforeEach(() => config.reset());

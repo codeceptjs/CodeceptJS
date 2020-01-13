@@ -1,5 +1,5 @@
-const Helper = require('../lib/helper');
 const assert = require('assert');
+const Helper = require('../lib/helper');
 
 class User extends Helper {
   // before/after hooks

@@ -1,5 +1,7 @@
 ---
-id: FileSystem
+permalink: /helpers/FileSystem
+editLink: false
+sidebar: auto
 title: FileSystem
 ---
 
@@ -48,6 +50,17 @@ Checks that file found by `seeFile` doesn't include text.
 -   `text` **[string][1]** 
 -   `encoding` **[string][1]** 
 
+### grabFileNames
+
+Returns file names in current directory.
+
+```js
+I.handleDownloads();
+I.click('Download Files');
+I.amInPath('output/downloads');
+const downloadedFileNames = I.grabFileNames();
+```
+
 ### seeFile
 
 Checks that file exists
@@ -64,6 +77,21 @@ Checks that contents of file found by `seeFile` equal to text.
 
 -   `text` **[string][1]** 
 -   `encoding` **[string][1]** 
+
+### seeFileNameMatching
+
+Checks that file with a name including given text exists in the current directory.
+
+```js
+I.handleDownloads();
+I.click('Download as PDF');
+I.amInPath('output/downloads');
+I.seeFileNameMatching('.pdf');
+```
+
+#### Parameters
+
+-   `text`  
 
 ### seeInThisFile
 

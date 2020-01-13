@@ -1,5 +1,6 @@
-const FileSystem = require('../../../lib/helper/FileSystem');
 const path = require('path');
+
+const FileSystem = require('../../../lib/helper/FileSystem');
 
 let fs;
 

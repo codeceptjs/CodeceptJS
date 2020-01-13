@@ -283,3 +283,9 @@ class download {
         exit();
     }
 }
+
+class basic_auth {
+    function GET() {
+        include __DIR__.'/view/basic_auth.php';
+    }
+}

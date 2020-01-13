@@ -1,5 +1,7 @@
 ---
-id: plugins
+permalink: plugins
+sidebarDepth: 
+sidebar: auto
 title: Plugins
 ---
 
@@ -372,6 +374,28 @@ I.click('=sign-up'); // matches => [data-qa=sign-up]
 
 -   `config`  
 
+## pauseOnFail
+
+Automatically launches [interactive pause][4] when a test fails.
+
+Useful for debugging flaky tests on local environment.
+Add this plugin to config file:
+
+```js
+plugins: {
+  pauseOnFail: {},
+}
+```
+
+Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
+Enable it manually on each run via `-p` option:
+
+    npx codeceptjs run -p pauseOnFail
+
+### Parameters
+
+-   `config`  
+
 ## puppeteerCoverage
 
 Dumps puppeteers code coverage after every test.
@@ -403,9 +427,9 @@ Possible config options:
 
     Links:
 
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][4]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][5]
--   [https://github.com/gotwarlost/istanbul][6]
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][5]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][6]
+-   [https://github.com/gotwarlost/istanbul][7]
 
 ### Parameters
 
@@ -509,7 +533,7 @@ Possible config options:
 
 ## stepByStepReport
 
-![step-by-step-report][7]
+![step-by-step-report][8]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -554,7 +578,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][8].
+A complete list of all available services can be found on [webdriverio website][9].
 
 ###### Setup
 
@@ -566,7 +590,7 @@ See examples below:
 
 ###### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][9].
+Install `@wdio/selenium-standalone-service` package, as [described here][10].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -585,7 +609,7 @@ Please note, this service can be used with Protractor helper as well!
 
 ##### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][10].
+Install `@wdio/sauce-service` package, as [described here][11].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -621,16 +645,18 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [3]: https://codecept.io/locators#custom-locators
 
-[4]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[4]: /basics/#pause
 
-[5]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[5]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
 
-[6]: https://github.com/gotwarlost/istanbul
+[6]: https://github.com/istanbuljs/puppeteer-to-istanbul
 
-[7]: https://codecept.io/img/codeceptjs-slideshow.gif
+[7]: https://github.com/gotwarlost/istanbul
 
-[8]: https://webdriver.io
+[8]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[9]: https://webdriver.io/docs/selenium-standalone-service.html
+[9]: https://webdriver.io
 
-[10]: https://webdriver.io/docs/sauce-service.html
+[10]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[11]: https://webdriver.io/docs/sauce-service.html

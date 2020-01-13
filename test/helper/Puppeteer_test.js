@@ -1,9 +1,12 @@
+const assert = require('assert');
+const expect = require('chai').expect;
+const path = require('path');
+
+const puppeteer = require('puppeteer');
+
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
-const puppeteer = require('puppeteer');
-const expect = require('chai').expect;
-const assert = require('assert');
-const path = require('path');
+
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
@@ -13,6 +16,48 @@ let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
+
+describe('Puppeteer - BasicAuth', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Puppeteer({
+      url: 'http://localhost:8000',
+      windowSize: '500x700',
+      show: false,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      defaultPopupAction: 'accept',
+      basicAuth: { username: 'admin', password: 'admin' },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  describe('open page with provided basic auth', () => {
+    it('should be authenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+  });
+});
 
 describe('Puppeteer', function () {
   this.timeout(35000);
@@ -79,6 +124,11 @@ describe('Puppeteer', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
+    });
+
+    it('should be unauthenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.dontSee('You entered admin as your password.');
     });
   });
 

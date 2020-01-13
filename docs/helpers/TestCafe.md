@@ -1,5 +1,7 @@
 ---
-id: TestCafe
+permalink: /helpers/TestCafe
+editLink: false
+sidebar: auto
 title: TestCafe
 ---
 

@@ -1,5 +1,7 @@
 ---
-id: Nightmare
+permalink: /helpers/Nightmare
+editLink: false
+sidebar: auto
 title: Nightmare
 ---
 
