@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -52,6 +52,7 @@
     "@codeceptjs/configure": "^0.4.0",
     "@types/mocha": "^5.2.7",
     "allure-js-commons": "^1.3.2",
+    "arrify": "^2.0.1",
     "axios": "^0.19.1",
     "chalk": "^1.1.3",
     "commander": "^2.20.3",
