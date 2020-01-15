@@ -26,8 +26,9 @@ before_script:
 - docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-oxygen
 - export DBUS_SESSION_BUS_ADDRESS=/dev/null
 - export DISPLAY=:99.0
+- sleep 3
 - chmod -R 777 test/data
 - php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &
 script:
-- npm test
-- './node_modules/.bin/mocha test/helper/${HELPER}_test.js'
+- npm i mocha-parallel-tests
+- './node_modules/.bin/mocha-parallel-tests test/helper/${HELPER}_test.js'

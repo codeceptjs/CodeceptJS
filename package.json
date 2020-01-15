@@ -72,6 +72,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
+    "mocha-parallel-tests": "^2.2.2",
     "ms": "^2.1.2",
     "parse-function": "^5.5.0",
     "promise-retry": "^1.1.1",
