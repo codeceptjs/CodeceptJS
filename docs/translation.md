@@ -75,7 +75,7 @@ Add to config
 Now you can write test like this:
 
 ```js
-Scenario('Effettuare il Login su GitHub', (io) => {
+Caratteristica('Effettuare il Login su GitHub', (io) => {
     io.sono_sulla_pagina('https://github.com/login');
     io.compilo_il_campo("Username or email address", "giuseppe-santoro");
     io.compilo_il_campo("Password", "*********");
@@ -177,6 +177,14 @@ Create translation file like this:
 ```js
 module.exports = {
   I: '',
+  contexts: {
+    Feature: 'Feature',
+    Scenario: 'Szenario',
+    Before: 'Vor',
+    After: 'Nach',
+    BeforeSuite: 'vor_der_suite',
+    AfterSuite: 'nach_der_suite',
+  },
   actions: {
     click: 'Klicken',
     wait: 'Wartenn',

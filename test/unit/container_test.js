@@ -38,6 +38,13 @@ describe('Container', () => {
       container.translation().I.should.eql('Я');
       container.translation().actionAliasFor('see').should.eql('вижу');
     });
+    it('should have translations for context', () => {
+      container.create({ translation: 'it-IT' });
+      container.translation().should.be.instanceOf(Translation);
+      container.translation().loaded.should.be.true;
+      container.translation().I.should.eql('io');
+      container.translation().value('contexts').Feature.should.eql('Caratteristica');
+    });
   });
 
   describe('#helpers', () => {

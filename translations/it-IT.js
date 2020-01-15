@@ -1,5 +1,13 @@
 module.exports = {
   I: 'io',
+  contexts: {
+    Feature: 'Caratteristica',
+    Scenario: 'lo_scenario',
+    Before: 'Prima',
+    After: 'Dopo',
+    BeforeSuite: 'Prima_della_suite',
+    AfterSuite: 'Dopo_la_suite',
+  },
   actions: {
     amOutsideAngularApp: 'sono_fuori_dalla_applicazione_angular',
     amInsideAngularApp: 'sono_dentro_la_applicazione_angular',
