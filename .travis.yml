@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- 10
+- 8
 - 12
 sudo: required
 dist: trusty
@@ -29,6 +29,7 @@ before_script:
 - sleep 3
 - chmod -R 777 test/data
 - php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &
+install: travis_wait mvn install
 script:
 - npm i mocha-parallel-tests
 - './node_modules/.bin/mocha-parallel-tests test/helper/${HELPER}_test.js'
