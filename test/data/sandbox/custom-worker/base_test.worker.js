@@ -2,7 +2,6 @@ Feature('Workers');
 
 Scenario('say something', (I) => {
   I.say('Hello Workers');
-  console.log('hii');
   share({ fromWorker: true });
 });
 
