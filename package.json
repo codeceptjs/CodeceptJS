@@ -121,7 +121,8 @@
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^5.18.4",
     "xmldom": "^0.1.31",
-    "xpath": "0.0.27"
+    "xpath": "0.0.27",
+    "mocha-parallel-tests": "^2.2.2"
   },
   "engines": {
     "node": ">=8.9.1",
