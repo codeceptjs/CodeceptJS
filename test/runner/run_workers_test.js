@@ -49,6 +49,21 @@ describe('CodeceptJS Workers Runner', function () {
     });
   });
 
+  it('should pass retried test', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    exec(`${codecept_run} 2 --grep "Workers Retry"`, (err, stdout, stderr) => {
+      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Running tests in 2 workers');
+      stdout.should.include('should pass on third time');
+      stdout.should.not.include('this is running inside worker');
+      stdout.should.not.include('failed');
+      stdout.should.not.include('FAILURES');
+      stdout.should.include('1 passed');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should show failures when suite is failing', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout, stderr) => {
