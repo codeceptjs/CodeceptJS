@@ -11,7 +11,7 @@ Applicable helpers:
 - [ ] TestCafe
 
 - Description of this PR, which problem it solves
-- A link to the corresponding issue (if applicable).
+- Resolves #issueId (if applicable).
 
 ## Type of change
 
