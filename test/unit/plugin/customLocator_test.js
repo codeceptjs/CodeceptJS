@@ -1,7 +1,15 @@
 const { expect } = require('chai');
 const assert = require('assert');
+const path = require('path');
+const { exec } = require('child_process');
+
 const customLocatorPlugin = require('../../../lib/plugin/customLocator');
 const Locator = require('../../../lib/locator');
+
+const runner = path.join(__dirname, '../../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '/../../data/sandbox');
+const codecept_run = `${runner} run`;
+const codecept_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
 
 describe('customLocator', () => {
   beforeEach(() => {
@@ -53,5 +61,27 @@ describe('customLocator', () => {
     const l = new Locator('$user');
     assert(l.isCSS());
     expect(l.simplify()).to.eql('[data-test=user]');
+  });
+});
+
+describe('showActual on steps output', function () {
+  this.timeout(40000);
+
+  before(() => {
+    process.chdir(codecept_dir);
+  });
+
+  it('should show actual locator', (done) => {
+    exec(`${codecept_run_config('codecept.customLocator.showActualTrue.js')} --steps`, (err, stdout, stderr) => {
+      stdout.should.include('.//*[@data-qa=\'carrier-bag-charge-label\']');
+      done();
+    });
+  });
+
+  it('should not show actual locator', (done) => {
+    exec(`${codecept_run_config('codecept.customLocator.showActualFalse.js')} --steps`, (err, stdout, stderr) => {
+      stdout.should.include('$carrier-bag-charge-label');
+      done();
+    });
   });
 });
