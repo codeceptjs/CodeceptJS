@@ -1,5 +1,5 @@
 Feature('CustomLocator plugin');
 
 Scenario('showActual on steps', (I) => {
-  I.dontSee('$carrier-bag-charge-label');
+  I.dontSee('abc', '$carrier-bag-charge-label');
 });
