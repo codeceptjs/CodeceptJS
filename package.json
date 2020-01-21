@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs-sravniru",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "Modern Era Acceptance Testing Framework for NodeJS tailored for sravni.ru company",
   "keywords": [
     "acceptance",
@@ -96,7 +96,7 @@
     "rosie": "^1.6.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.14.0",
-    "testcafe": "^1.5.0",
+    "testcafe": "^1.8.0",
     "typescript": "^2.9.2",
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^5.13.2",
