@@ -69,6 +69,7 @@ services:
     build: ..
     env_file: .env
     environment:
+      - NO_OF_WORKERS=3
       - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
     depends_on:
       - php
@@ -83,6 +84,7 @@ services:
     build: ..
     env_file: .env
     environment:
+      - NO_OF_WORKERS=3
       - CODECEPT_ARGS=-c codecept.Nightmare.js --grep @Nightmare
     depends_on:
       - php
@@ -97,6 +99,7 @@ services:
     build: ..
     env_file: .env
     environment:
+      - NO_OF_WORKERS=3
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
     depends_on:
       - php
@@ -111,6 +114,7 @@ services:
     env_file: .env
     environment:
       # TODO Add a testcafe tag
+      - NO_OF_WORKERS=3
       - CODECEPT_ARGS=-c codecept.Testcafe.js --grep @Puppeteer
     depends_on:
       - php
@@ -124,6 +128,7 @@ services:
     build: ..
     env_file: .env
     environment:
+      - NO_OF_WORKERS=3
       - CODECEPT_ARGS=-c codecept.Protractor.js --grep @Protractor --verbose
     depends_on:
       - php
