@@ -8,7 +8,6 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run-workers --config ${codecept_dir}/codecept.workers.conf.js `;
 const codecept_run_glob = config => `${runner} run-workers --config ${codecept_dir}/${config} `;
 
-
 describe('CodeceptJS Workers Runner', function () {
   this.timeout(40000);
 
@@ -108,6 +107,15 @@ describe('CodeceptJS Workers Runner', function () {
     exec(`${codecept_run} 2 --grep "retry"`, (err, stdout, stderr) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('OK  | 1 passed');
+      done();
+    });
+  });
+
+  it('should create output folder with custom name', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    exec(`${codecept_run_glob('codecept.workers-custom-output-folder-name.conf.js')} 1 --grep "grep" --debug`, (err, stdout, stderr) => {
+      stdout.should.include('customOutput_'); // feature
+      assert(!err);
       done();
     });
   });
