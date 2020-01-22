@@ -422,7 +422,8 @@ Try to perform your scenario step by step. Then copy succesful commands and inse
 
 ### Pause
 
-Test execution can be paused in any place of a test with `pause()` call.
+Test execution can be paused in any place of a test with `pause()` call. 
+Variables can also be passed to `pause({data: 'hi', func: () => console.log('hello')})` which can be accessed in Interactive shell.
 
 This launches the interactive console where you can call any action from the `I` object.
 
@@ -433,8 +434,7 @@ This launches the interactive console where you can call any action from the `I`
  - Press TAB twice to see all available commands
  - Enter next to run the next step
 
- I.click
- I.see(data)
+ I.
 ```
 
 Type in different actions to try them, copy and paste successful ones into the test file.
