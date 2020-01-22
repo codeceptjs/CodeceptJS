@@ -114,7 +114,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should create output folder with custom name', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run_glob('codecept.workers-custom-output-folder-name.conf.js')} 1 --grep "grep" --debug`, (err, stdout, stderr) => {
-      stdout.should.include('customOutput_'); // feature
+      stdout.should.include('customOutput_');
       assert(!err);
       done();
     });
