@@ -1,9 +1,7 @@
-const currentTimestamp = Math.floor(Date.now() / 1000);
-
 exports.config = {
   tests: './workers/*.js',
   timeout: 10000,
-  output: `./customOutput_${currentTimestamp}`,
+  output: './thisIsCustomOutputFolderName',
   helpers: {
     FileSystem: {},
     Workers: {

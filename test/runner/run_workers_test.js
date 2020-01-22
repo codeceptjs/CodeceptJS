@@ -112,9 +112,23 @@ describe('CodeceptJS Workers Runner', function () {
   });
 
   it('should create output folder with custom name', function (done) {
+    const fs = require('fs');
+    const customName = 'thisIsCustomOutputFolderName';
+    const outputDir = `${codecept_dir}/${customName}`;
+    let createdOutput = false;
+
+    if (fs.existsSync(outputDir)) {
+      fs.rmdirSync(outputDir, { recursive: true });
+    }
+
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run_glob('codecept.workers-custom-output-folder-name.conf.js')} 1 --grep "grep" --debug`, (err, stdout, stderr) => {
-      stdout.should.include('customOutput_');
+    const configFileName = 'codecept.workers-custom-output-folder-name.conf.js';
+    exec(`${codecept_run_glob(configFileName)} 2 --grep "grep" --debug`, (err, stdout, stderr) => {
+      stdout.should.include(customName);
+      if (fs.existsSync(outputDir)) {
+        createdOutput = true;
+      }
+      assert(createdOutput, 'The output folder is not created');
       assert(!err);
       done();
     });
