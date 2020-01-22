@@ -58,7 +58,7 @@ Scenario(
     I.stopMocking();
 
     I.click('GET COMMENTS');
-    I.waitForText('laudantium');
+    I.waitForText('laudantium', 3);
     I.dontSee('_uniqueId_u4805sd23', '#data');
   },
 );
