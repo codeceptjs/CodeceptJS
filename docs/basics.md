@@ -433,17 +433,8 @@ This launches the interactive console where you can call any action from the `I`
  - Use JavaScript syntax to try steps in action
  - Press TAB twice to see all available commands
  - Enter next to run the next step
- - Prefix => to run js commands
 
- Registered variables : data, func
-
- I.click
- I.see(data)
-```
-
-To run any JS commands prefix `=>` and execute the command.
-```
-I.=> func()
+ I.
 ```
 
 Type in different actions to try them, copy and paste successful ones into the test file.
@@ -454,10 +445,21 @@ To **debug test step-by-step** press Enter, the next step will be executed and i
 
 To see all available commands, press TAB two times to see list of all actions included in the `I` object.
 
-The interactive shell can be started outside of test context by running
+> The interactive shell can be started outside of test context by running `npx codeceptjs shell`
 
-```bash
-npx codeceptjs shell
+PageObjects and other variables can also be passed to as object:
+
+```js
+pause({ loginPage, data: 'hi', func: () => console.log('hello') });
+```
+
+Inside a pause mode you can use `loginPage`, `data`, `func` variables.
+Arbitrary JavaScript code can be executed when used `=> ` prefix:
+
+```js
+I.=> loginPage.open()
+I.=> func()
+I.=> 2 + 5
 ```
 
 ### Pause on Failure <Badge text="Since 2.4" type="warning"/>
