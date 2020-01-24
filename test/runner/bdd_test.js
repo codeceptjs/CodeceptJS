@@ -50,7 +50,6 @@ describe('BDD Gherkin', () => {
   it('should print events in verbose mode', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --verbose --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Emitted | step.start (I add product "Harry Potter", 5)');
-      stdout.should.include('Emitted | step.comment (Given I have products in my cart');
       stdout.should.include('name            | category        | price');
       stdout.should.include('Harry Potter    | Books           | 5');
       stdout.should.include('iPhone 5        | Smartphones     | 1200 ');
