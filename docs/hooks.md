@@ -539,7 +539,7 @@ CodeceptJS can be imported and used in custom runners.
 To initialize Codecept you need to create Config and Container objects.
 
 ```js
-const { container: Container, codecept: Codecept } = require('codeceptjs').container;
+const { container: Container, codecept: Codecept } = require('codeceptjs');
 
 const config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
 const opts = { steps: true };
