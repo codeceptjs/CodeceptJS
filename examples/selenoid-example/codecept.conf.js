@@ -18,6 +18,9 @@ exports.config = {
       enableVideo: true,
       enableLog: true,
     },
+    allure: {
+      enabled: false,
+    },
   },
   include: {},
   bootstrap: null,

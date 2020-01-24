@@ -53,6 +53,7 @@ exports.config = {
 }
 ```
 
+
 ## Configuring WebDriver
 
 WebDriver can be configured to run browser tests in window, headlessly, on a remote server or in a cloud.
@@ -72,16 +73,26 @@ Configuration for WebDriver should be provided inside `codecept.conf.js` file un
       windowSize: '1920x1680',
       desiredCapabilities: {
         chromeOptions: {
-          args: [ /*"--headless",*/ "--disable-gpu", "--window-size=1200,1000", "--no-sandbox" ]
+          args: [ /*"--headless",*/ "--disable-gpu", "--no-sandbox" ]
         }
       }
     },
   }
 ```
 
-WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
+By default CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
 
-By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Services](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
+```js
+// change to true to restart browser between tests
+restart: false,
+// don't change browser state and not clear cookies between tests
+keepBrowserState: true,
+keepCookies: true,
+```
+
+> ▶ More config options available on [WebDriver helper reference](/helpers/WebDriver#configuration)
+
+### ChromeDriver without Selenium
 
 If you want to run tests using raw ChromeDriver (which also supports WebDriver protocol) avoiding Selenium Server, you should provide following configuration:
 
@@ -93,7 +104,32 @@ path: '/',
 
 > If you face issues connecting to WebDriver, please check that corresponding server is running on a specified port. If host is other than `localhost` or port is other than `4444`, update the configuration.
 
-Additional parameters for a specific browser can be set via `desiredCapabilities` options. For instance, this is how we can set to **run headless Chrome**:
+### Selenium in Docker
+
+Browsers can be executed in Docker containers. This is useful when testing on Continous Integration server.
+We recommend using [Selenoid](https://aerokube.com/selenoid/) to run browsers in container.
+
+CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load browser container setup.
+
+
+### Headless Mode
+
+It is recommended to use `@codeceptjs/configure` package to easily toggle headless mode for WebDriver:
+
+```js
+// inside codecept.conf.js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+setHeadlessWhen(process.env.HEADLESS); // enables headless mode when HEADLESS environment variable exists
+```
+This requires `@codeceptjs/configure` package to be installed.
+
+Alternatively, you can enable headless mode manually via desired capabilities.
+
+### Desired Capabilities
+
+Additional configuration can be passed via `desiredCapabilities` option.
+For instance, this is how we can set to **run headless Chrome**:
 
 ```js
 desiredCapabilities: {
@@ -111,6 +147,12 @@ desiredCapabilities: {
   unexpectedAlertBehaviour: 'dismiss',
 }
 ```
+
+### Cloud Providers
+
+WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
+
+By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
@@ -139,17 +181,6 @@ Here is a sample BrowserStack config for running tests on iOS mobile browser:
    }
 ```
 
-There are also options specific to CodeceptJS. By default CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
-
-```js
-// change to true to restart browser between tests
-restart: false,
-// don't change browser state and not clear cookies between tests
-keepBrowserState: true,
-keepCookies: true,
-```
-
-> ▶ More config options available on [WebDriver helper reference](/helpers/WebDriver#configuration)
 
 ## Writing Tests
 
@@ -312,53 +343,12 @@ To develop tests it's fine to use local Selenium Server and window mode. Setting
 There are following options available:
 
 * Use headless Chrome or Firefox.
-* Use [Selenoid](/helpers/WebDriver#selenoid-options) to run browsers inside Docker containers.
+* Use [Selenoid](/plugins/selenoid) to run browsers inside Docker containers.
 * Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](/helpers/WebDriver#cloud-providers).
 
-### Aerokube Cloud Browsers
+## Video Recording
 
-Installing & managing browsers on CI environment can be complicated. Especially if you need mobile browsers, Internet Explorer or Safari. Maintaing infrastructure for tests and browsers can be very expensive.
-
-A better deal would be to use a cloud service that runs a browsers for you.
-That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. It is also a way cheaper than all similar services.
-
-To start with Aerokube Browsers you need to register at [browsers.aerokube](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
-
-```
-npm i @codeceptjs/aerokube-plugin --save-dev
-```
-
-And add this plugin to a config. Please provide Aerokube credentials in configuration:
-
-```js
-// codecept.conf.js config
-exports.config = {
-  helpers: {
-    WebDriver: {
-     // regular WebDriver config goes here
-     // no need to change anything here
-    }
-  },
-  // ....
-  plugins: {
-    aerokube: {
-      // uncomment next line to permanently enable this plugin
-      // enabled: true,
-       require: '@codeceptjs/aerokube-plugin',
-       user: '<username from aerokube>',
-       password: '<password from aerokube>',
-     }
-  }
-}
-```
-
-To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
-
-```
-npx codeceptjs run --plugins aerokube
-```
-
-> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
+When [Selenoid Plugin](/plugins#selenoid) is enabled video can be automatically recorded for each test.
 
 ## Auto Login
 
