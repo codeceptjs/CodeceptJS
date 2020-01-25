@@ -832,8 +832,7 @@ describe('Puppeteer', function () {
       await I.amOnPage('/form/download');
       await I.handleDownloads();
       await I.click('Download file');
-      await I.wait(5);
-      await FS.seeFile('downloads/avatar.jpg');
+      await FS.waitForFile('downloads/avatar.jpg', 5);
     });
   });
 

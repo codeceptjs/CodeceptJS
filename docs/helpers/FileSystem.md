@@ -39,7 +39,7 @@ Checks that contents of file found by `seeFile` doesn't equal to text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]?** (optional, `utf8` by default) 
 
 ### dontSeeInThisFile
 
@@ -48,7 +48,7 @@ Checks that file found by `seeFile` doesn't include text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]?** (optional, `utf8` by default) 
 
 ### grabFileNames
 
@@ -76,7 +76,17 @@ Checks that contents of file found by `seeFile` equal to text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]?** (optional, `utf8` by default) 
+
+### seeFileContentsEqualReferenceFile
+
+Checks that contents of the file found by `seeFile` equal to contents of the file at `pathToReferenceFile`.
+
+#### Parameters
+
+-   `pathToReferenceFile` **[string][1]** 
+-   `encoding` **[string][1]?** (optional, `utf8` by default) 
+-   `encodingReference` **[string][1]?** (optional, `utf8` by default) 
 
 ### seeFileNameMatching
 
@@ -100,7 +110,23 @@ Checks that file found by `seeFile` includes a text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]?** (optional, `utf8` by default) 
+
+### waitForFile
+
+Waits for file to be present in current directory.
+
+```js
+I.handleDownloads();
+I.click('Download large File');
+I.amInPath('output/downloads');
+I.waitForFile('largeFilesName.txt');
+```
+
+#### Parameters
+
+-   `name` **[string][1]** 
+-   `sec` **[number][2]?** seconds to wait 
 
 ### writeToFile
 
@@ -112,3 +138,5 @@ Writes test to file
 -   `text` **[string][1]** 
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
