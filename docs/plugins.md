@@ -531,9 +531,98 @@ Possible config options:
 
 -   `config`  
 
+## selenoid
+
+# Selenoid
+
+ Selenoid plugin with for recording video recording and logs
+
+## Prerequisite
+
+-   Docker
+
+    ## How to ?
+
+    Selenoid plugin can be enabled in two ways.
+
+1.  **Automatic** - Codecept will create and manage selenoid container for you.
+2.  **Manual** - You can create the conatainer and configure the details in codecept
+
+    ### 1. Automatic
+
+    Add plugin configuration in codecept conf and run codecept.
+
+```js
+plugins: {
+    selenoid: {
+      enabled: true,
+      deletePassed: true,
+      autoCreate: true,
+      autoStart: true,
+      sessionTimeout: '30m',
+      enableVideo: true,
+      enableLog: true,
+    },
+  }
+```
+
+### 2. Manual
+
+Simplest way to to this is enabling `autoCreate` and it will be taken care by codecept itself.
+**If you are using windows machine or if `autoCreate` does not work properly, create container manually**
+
+#### 1. Add browsers.json parallel to codecept conf location. [Refer here][8] to know more about browsers.json.
+
+ _Sample browsers.json_
+
+    {
+     "chrome": {
+       "default": "latest",
+       "versions": {
+         "latest": {
+           "image": "selenoid/chrome:latest",
+           "port": "4444",
+           "path": "/"
+         }
+       }
+     }
+    }
+
+**Note** : _You can download the sample json from example._
+
+#### Options:
+
+| Param            | Description                                                                    |
+| ---------------- | ------------------------------------------------------------------------------ |
+| name             | Name of the container (default : selenoid)                                     |
+| port             | Port of selenium server (default : 4444)                                       |
+| deletePassed     | Delete video and logs of passed tests (default : true)                         |
+| autoCreate       | Will automatically create container (Linux only) (default : true)              |
+| autoStart        | If disabled start the container manually before running tests (default : true) |
+| enableVideo      | Enable video recording (`video` folder of output)                              |
+| enableLog        | Enable video recording (`logs` folder of output)                               |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][9] to know more    |
+
+#### 2. Create selenoid container
+
+ Run the following command to create one. To know more [refer here][10]
+
+    docker create                                    \
+    --name selenoid                                  \
+    -p 4444:4444                                     \
+    -v /var/run/docker.sock:/var/run/docker.sock     \
+    -v `pwd`/:/etc/selenoid/:ro                      \
+    -v `pwd`/output/video/:/opt/selenoid/video/      \
+    -e OVERRIDE_VIDEO_OUTPUT_DIR=`pwd`/output/video/ \
+    aerokube/selenoid:latest-release
+
+### Parameters
+
+-   `config`  
+
 ## stepByStepReport
 
-![step-by-step-report][8]
+![step-by-step-report][11]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -578,7 +667,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][9].
+A complete list of all available services can be found on [webdriverio website][12].
 
 ###### Setup
 
@@ -590,7 +679,7 @@ See examples below:
 
 ###### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][10].
+Install `@wdio/selenium-standalone-service` package, as [described here][13].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -609,7 +698,7 @@ Please note, this service can be used with Protractor helper as well!
 
 ##### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][11].
+Install `@wdio/sauce-service` package, as [described here][14].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -653,10 +742,16 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [7]: https://github.com/gotwarlost/istanbul
 
-[8]: https://codecept.io/img/codeceptjs-slideshow.gif
+[8]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[9]: https://webdriver.io
+[9]: https://docs.docker.com/engine/reference/commandline/create/
 
-[10]: https://webdriver.io/docs/selenium-standalone-service.html
+[10]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[11]: https://webdriver.io/docs/sauce-service.html
+[11]: https://codecept.io/img/codeceptjs-slideshow.gif
+
+[12]: https://webdriver.io
+
+[13]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[14]: https://webdriver.io/docs/sauce-service.html
