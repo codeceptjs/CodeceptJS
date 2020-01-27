@@ -533,24 +533,27 @@ Possible config options:
 
 ## selenoid
 
-# Selenoid
+[Selenoid][8] plugin automatically starts browsers and video recording.
+Works with WebDriver helper.
 
- Selenoid plugin with for recording video recording and logs
+### Prerequisite
 
-## Prerequisite
+This plugin **requires Docker** to be installed.
 
--   Docker
+> If you have issues starting Selenoid with this plugin consider using official [Configuration Manager][9] tool from Selenoid
 
-    ## How to ?
+### Usage
 
-    Selenoid plugin can be enabled in two ways.
+Selenoid plugin can be started in two ways:
 
-1.  **Automatic** - Codecept will create and manage selenoid container for you.
-2.  **Manual** - You can create the conatainer and configure the details in codecept
+1.  **Automatic** - this plugin will create and manage selenoid container for you.
+2.  **Manual** - you create the conatainer and configure it with a plugin (recommended).
 
-    ### 1. Automatic
+#### Automatic
 
-    Add plugin configuration in codecept conf and run codecept.
+If you are new to Selenoid and you want plug and play setup use automatic mode.
+
+Add plugin configuration in `codecept.conf.js`:
 
 ```js
 plugins: {
@@ -566,55 +569,78 @@ plugins: {
   }
 ```
 
-### 2. Manual
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][10] and start Selenoid automatically.
+It will also create `browsers.json` file required by Selenoid.
 
-Simplest way to to this is enabling `autoCreate` and it will be taken care by codecept itself.
-**If you are using windows machine or if `autoCreate` does not work properly, create container manually**
+In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
 
-#### 1. Add browsers.json parallel to codecept conf location. [Refer here][8] to know more about browsers.json.
+> **If you are using Windows machine or if `autoCreate` does not work properly, create container manually**
 
- _Sample browsers.json_
+#### Manual
 
-    {
-     "chrome": {
-       "default": "latest",
-       "versions": {
-         "latest": {
-           "image": "selenoid/chrome:latest",
-           "port": "4444",
-           "path": "/"
-         }
-       }
+While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
+This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
+
+> Use [Selenoid Configuration Manager][9] to create and start containers semi-automatically.
+
+1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
+    [Refer to Selenoid documentation][11] to know more about browsers.json.
+
+_Sample browsers.json_
+
+```js
+{
+ "chrome": {
+   "default": "latest",
+   "versions": {
+     "latest": {
+       "image": "selenoid/chrome:latest",
+       "port": "4444",
+       "path": "/"
      }
-    }
+   }
+ }
+}
+```
 
-**Note** : _You can download the sample json from example._
+> It is recommended to use specific versions of browsers in `browsers.json` instead of latest. This will prevent tests fail when browsers will be updated.
 
-#### Options:
+2.  Create Selenoid container
+
+Run the following command to create a container. To know more [refer here][12]
+
+```bash
+docker create                                    \
+--name selenoid                                  \
+-p 4444:4444                                     \
+-v /var/run/docker.sock:/var/run/docker.sock     \
+-v `pwd`/:/etc/selenoid/:ro                      \
+-v `pwd`/output/video/:/opt/selenoid/video/      \
+-e OVERRIDE_VIDEO_OUTPUT_DIR=`pwd`/output/video/ \
+aerokube/selenoid:latest-release
+```
+
+### Video Recording
+
+This plugin allows to record and save video per each executed tests.
+
+When `enableVideo` is `true` this plugin saves video in `output/videos` directory with each test by name
+To save space videos for all succesful tests are deleted. This can be changed by `deletePassed` option.
+
+When `allure` plugin is enabled a video is attached to report automatically.
+
+### Options:
 
 | Param            | Description                                                                    |
 | ---------------- | ------------------------------------------------------------------------------ |
 | name             | Name of the container (default : selenoid)                                     |
 | port             | Port of selenium server (default : 4444)                                       |
-| deletePassed     | Delete video and logs of passed tests (default : true)                         |
 | autoCreate       | Will automatically create container (Linux only) (default : true)              |
 | autoStart        | If disabled start the container manually before running tests (default : true) |
-| enableVideo      | Enable video recording (`video` folder of output)                              |
-| enableLog        | Enable video recording (`logs` folder of output)                               |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][9] to know more    |
-
-#### 2. Create selenoid container
-
- Run the following command to create one. To know more [refer here][10]
-
-    docker create                                    \
-    --name selenoid                                  \
-    -p 4444:4444                                     \
-    -v /var/run/docker.sock:/var/run/docker.sock     \
-    -v `pwd`/:/etc/selenoid/:ro                      \
-    -v `pwd`/output/video/:/opt/selenoid/video/      \
-    -e OVERRIDE_VIDEO_OUTPUT_DIR=`pwd`/output/video/ \
-    aerokube/selenoid:latest-release
+| enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
+| enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
+| deletePassed     | Delete video and logs of passed tests (default : true)                         |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][13] to know more   |
 
 ### Parameters
 
@@ -622,7 +648,7 @@ Simplest way to to this is enabling `autoCreate` and it will be taken care by co
 
 ## stepByStepReport
 
-![step-by-step-report][11]
+![step-by-step-report][14]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -667,7 +693,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][12].
+A complete list of all available services can be found on [webdriverio website][15].
 
 ###### Setup
 
@@ -679,7 +705,7 @@ See examples below:
 
 ###### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][13].
+Install `@wdio/selenium-standalone-service` package, as [described here][16].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -698,7 +724,7 @@ Please note, this service can be used with Protractor helper as well!
 
 ##### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][14].
+Install `@wdio/sauce-service` package, as [described here][17].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -742,16 +768,22 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [7]: https://github.com/gotwarlost/istanbul
 
-[8]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[8]: https://aerokube.com/selenoid/
 
-[9]: https://docs.docker.com/engine/reference/commandline/create/
+[9]: https://aerokube.com/cm/latest/
 
-[10]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[10]: https://hub.docker.com/u/selenoid
 
-[11]: https://codecept.io/img/codeceptjs-slideshow.gif
+[11]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[12]: https://webdriver.io
+[12]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[13]: https://webdriver.io/docs/selenium-standalone-service.html
+[13]: https://docs.docker.com/engine/reference/commandline/create/
 
-[14]: https://webdriver.io/docs/sauce-service.html
+[14]: https://codecept.io/img/codeceptjs-slideshow.gif
+
+[15]: https://webdriver.io
+
+[16]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[17]: https://webdriver.io/docs/sauce-service.html
