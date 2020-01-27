@@ -1,6 +1,6 @@
 Feature('Filesystem').tag('main');
 
-Scenario('see file in current dir and assert content', (I) => {
+Scenario('see content in file', (I) => {
   I.amInPath('.');
   I.say('hello world');
   I.seeFile('fs_test.js');
