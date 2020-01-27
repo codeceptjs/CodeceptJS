@@ -3,6 +3,8 @@ permalink: /translation
 title: Translation
 ---
 
+> 🌍 Since CodeceptJS 2.4.2 you can use translation for `Scenario`, `Before`, and other keywords within your tests. Please help us to update language definition files to include the best translation for your language!
+
 # Translation
 
 Test output and the way tests are written can be localized.
@@ -15,7 +17,7 @@ Please refer to translated steps inside translation files and send Pull Requests
 To get autocompletion for localized method names generate definitions by running
 
 ```sh
-codeceptjs def
+тзч codeceptjs def
 ```
 
 ## Russian
@@ -35,7 +37,7 @@ This also enables localized method names for actor object.
 This way tests can be written in native language while it is still JavaScript:
 
 ```js
-Scenario('пробую написать реферат', (Я) => {
+Сценарий('пробую написать реферат', (Я) => {
     Я.на_странице('http://yandex.ru/referats');
     Я.вижу("Написать реферат по");
     Я.выбираю_опцию('Психологии');
