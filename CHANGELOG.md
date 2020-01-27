@@ -1,3 +1,7 @@
+## 2.4.3
+
+* Hotfix for interactive pause
+
 ## 2.4.2
 
 * **Interactive pause improvements** by @koushikmohan1996
