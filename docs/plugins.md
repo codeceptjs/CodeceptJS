@@ -540,7 +540,7 @@ Works with WebDriver helper.
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using official [Configuration Manager][9] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][9] tool from Selenoid
 
 ### Usage
 
@@ -604,6 +604,8 @@ _Sample browsers.json_
 ```
 
 > It is recommended to use specific versions of browsers in `browsers.json` instead of latest. This will prevent tests fail when browsers will be updated.
+
+**⚠ At first launch selenoid plugin takes extra time to download all Docker images before tests starts**.
 
 2.  Create Selenoid container
 
