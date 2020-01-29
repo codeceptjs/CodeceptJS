@@ -648,7 +648,7 @@ module.exports.tests = function () {
   });
 
   describe('#attachFile', () => {
-    it.only('should upload file located by CSS', async () => {
+    it('should upload file located by CSS', async () => {
       await I.amOnPage('/form/file');
       await I.attachFile('#avatar', 'app/avatar.jpg');
       await I.click('Submit');
