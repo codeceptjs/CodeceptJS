@@ -697,7 +697,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost'
+        url: 'http://localhost',
       });
       await I.seeCookie('auth');
       await I.dontSeeCookie('auuth');
@@ -714,12 +714,12 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost'
+        url: 'http://localhost',
       });
       await I.setCookie({
         name: 'user',
         value: 'davert',
-        url: 'http://localhost'
+        url: 'http://localhost',
       });
 
       const cookies = await I.grabCookie();
@@ -733,7 +733,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost'
+        url: 'http://localhost',
       });
       await I.clearCookie();
       await I.dontSeeCookie('auth');
