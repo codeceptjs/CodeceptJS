@@ -56,6 +56,10 @@ describe('Puppeteer - BasicAuth', () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
+    it('should be authenticated on second run', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
   });
 });
 
