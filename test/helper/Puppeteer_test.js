@@ -22,7 +22,7 @@ describe('Puppeteer - BasicAuth', () => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
     I = new Puppeteer({
-      url: 'http://localhost:8000',
+      url: siteUrl,
       windowSize: '500x700',
       show: false,
       waitForTimeout: 5000,
