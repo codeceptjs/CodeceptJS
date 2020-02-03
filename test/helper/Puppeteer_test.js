@@ -651,9 +651,8 @@ describe('Puppeteer', function () {
 
   describe('#waitForText', () => {
     it('should wait for text after load body', () => I.amOnPage('/redirect_long')
-      .then(() => I.waitForText('Hi there and greetings!', 5))
-    );
-  })
+      .then(() => I.waitForText('Hi there and greetings!', 5)));
+  });
 
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => I.amOnPage('/info')
