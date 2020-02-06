@@ -75,7 +75,11 @@ Make sure `Playwright` helper is enabled in `codecept.conf.js` config:
 
 Playwright uses different strategies to detect if a page is loaded. In configuration use `waitForNavigation` option for that:
 
-By default it is set to `domcontentloaded` which waits for `DOMContentLoaded` event being fired. However, for Single Page Applications it's more useful to set this value to `networkidle0` which waits for all network connections to be finished.
+When to consider navigation succeeded, defaults to `load`. Given an array of event strings, navigation is considered to be successful after all events have been fired. Events can be either:
+- `load` - consider navigation to be finished when the load event is fired.
+- `domcontentloaded` - consider navigation to be finished when the DOMContentLoaded event is fired.
+- `networkidle0` - consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
+- `networkidle2` - consider navigation to be finished when there are no more than 2 network connections for at least 500 ms.
 
 ```js
   helpers: {
@@ -225,9 +229,9 @@ Let's say you want to create `I.grabDimensionsOfCurrentPage` action. In this cas
 ```js
 // inside a MyPlaywright helper
 async grabDimensionsOfCurrentPage() {
-  const page = this.helpers['Playwright'].page;
+  const page = this.helpers.Playwright.page;
   await page.goto('https://www.example.com/');
-  return await page.evaluate(() => {
+  return page.evaluate(() => {
     return {
       width: document.documentElement.clientWidth,
       height: document.documentElement.clientHeight,
@@ -237,7 +241,17 @@ async grabDimensionsOfCurrentPage() {
 }
 ```
 
-The same way you can also access `browser` object to implement more actions or handle events.
+The same way you can also access `browser` object to implement more actions or handle events. For instance, you want to set the permissions, you can approach it with:
+
+```js
+// inside a MyPlaywright helper
+async setPermissions() {
+  const browser = this.helpers.Playwright.browser;
+  const context = browser.defaultContext()
+  return context.setPermissions('https://html5demos.com', ['geolocation']);
+}
+
+> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext)
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
 
