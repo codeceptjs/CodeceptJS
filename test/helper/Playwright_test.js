@@ -17,7 +17,7 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-xdescribe('Playwright - BasicAuth', () => {
+describe('Playwright - BasicAuth', () => {
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
