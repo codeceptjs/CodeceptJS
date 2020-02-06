@@ -28,8 +28,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install libgbm-dev
         sudo apt-get install xvfb
+        sudo apt-get install php
     - name: npm install
       run: |
         npm install
+    - name: start a server
+      run: "php -S 127.0.0.1:8000 -t test/data/app"
     - name: run chromium tests
       run: " ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
