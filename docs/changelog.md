@@ -7,6 +7,30 @@ layout: Section
 
 # Releases
 
+## 2.4.2
+
+* **Interactive pause improvements** by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+  * allows using in page objects and variables: `pause({ loginPage, a })`
+  * enables custom commands inside pause with `=>` prefix: `=> loginPage.open()`
+* [Selenoid plugin](/plugins#selenoid) added by by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+  * uses Selenoid to launch browsers inside Docker containers
+  * automatically **records videos** and attaches them to allure reports
+  * can delete videos for successful tests
+  * can automatically pull in and start Selenoid containers
+  * works with WebDriver helper
+* Avoid failiure report on successful retry in worker by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* Added translation ability to Scenario, Feature and other context methods by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/Codeception/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/Codeception/CodeceptJS/tree/master/translations).
+* allurePlugin: Added `say` comments to allure reports by **[PeterNgTr](https://github.com/PeterNgTr)**.
+* Fixed no custom output folder created when executed with run-worker. Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Puppeteer]** Fixed error description for context element not found. See [#2065](https://github.com/Codeception/CodeceptJS/issues/2065). Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[WebDriver]** Fixed `waitForClickable` to wait for exact number of seconds by **[mirao](https://github.com/mirao)**. Resolves [#2166](https://github.com/Codeception/CodeceptJS/issues/2166)
+* Fixed setting `compilerOptions` in `jsconfig.json` file on init by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Filesystem]** Added method by **[nitschSB](https://github.com/nitschSB)**
+  * `seeFileContentsEqualReferenceFile`
+  * `waitForFile`
+
+
 ## 2.4.1
 
 * **[Hotfix]** - Add missing lib that prevents codeceptjs from initializing.

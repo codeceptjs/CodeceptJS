@@ -1,3 +1,7 @@
+## 2.4.3
+
+* Hotfix for interactive pause
+
 ## 2.4.2
 
 * **Interactive pause improvements** by @koushikmohan1996
@@ -15,6 +19,11 @@
 * allurePlugin: Added `say` comments to allure reports by @PeterNgTr.
 * Fixed no custom output folder created when executed with run-worker. Fix by @PeterNgTr
 * [Puppeteer] Fixed error description for context element not found. See #2065. Fix by @PeterNgTr
+* [WebDriver] Fixed `waitForClickable` to wait for exact number of seconds by @mirao. Resolves #2166
+* Fixed setting `compilerOptions` in `jsconfig.json` file on init by @PeterNgTr
+* [Filesystem] Added method by @nitschSB
+  * `seeFileContentsEqualReferenceFile`
+  * `waitForFile`
 
 
 ## 2.4.1

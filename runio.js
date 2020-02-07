@@ -358,6 +358,7 @@ title: ${name}
       cmd.tag(version);
       cmd.push('origin master --tags');
     });
+    await exec('rm -rf docs/wiki/.git');
     await exec('npm publish');
     console.log('-- RELEASED --');
   },

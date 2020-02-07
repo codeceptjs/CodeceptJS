@@ -39,7 +39,7 @@ Checks that contents of file found by `seeFile` doesn't equal to text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]**  
 
 ### dontSeeInThisFile
 
@@ -48,7 +48,7 @@ Checks that file found by `seeFile` doesn't include text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]**  
 
 ### grabFileNames
 
@@ -76,7 +76,17 @@ Checks that contents of file found by `seeFile` equal to text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]**  
+
+### seeFileContentsEqualReferenceFile
+
+Checks that contents of the file found by `seeFile` equal to contents of the file at `pathToReferenceFile`.
+
+#### Parameters
+
+-   `pathToReferenceFile` **[string][1]** 
+-   `encoding` **[string][1]**  
+-   `encodingReference` **[string][1]**  
 
 ### seeFileNameMatching
 
@@ -100,7 +110,23 @@ Checks that file found by `seeFile` includes a text.
 #### Parameters
 
 -   `text` **[string][1]** 
--   `encoding` **[string][1]** 
+-   `encoding` **[string][1]**  
+
+### waitForFile
+
+Waits for file to be present in current directory.
+
+```js
+I.handleDownloads();
+I.click('Download large File');
+I.amInPath('output/downloads');
+I.waitForFile('largeFilesName.txt', 10); // wait 10 seconds for file
+```
+
+#### Parameters
+
+-   `name` **[string][1]** 
+-   `sec` **[number][2]** seconds to wait 
 
 ### writeToFile
 
@@ -111,4 +137,26 @@ Writes test to file
 -   `name` **[string][1]** 
 -   `text` **[string][1]** 
 
+## getFileContents
+
+### Parameters
+
+-   `file` **[string][1]** 
+-   `encoding` **[string][1]**  
+
+Returns **[string][1]** 
+
+## isFileExists
+
+### Parameters
+
+-   `file` **[string][1]** 
+-   `timeout` **[number][2]** 
+
+Returns **[Promise][3]&lt;any>** 
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
