@@ -650,8 +650,10 @@ describe('Puppeteer', function () {
   });
 
   describe('#waitForText', () => {
-    it('should wait for text after load body', () => I.amOnPage('/redirect_long')
-      .then(() => I.waitForText('Hi there and greetings!', 5)));
+    it('should wait for text after load body', async () => {
+      await I.amOnPage('/redirect_long');
+      await I.waitForText('Hi there and greetings!', 5);
+    });
   });
 
   describe('#waitForValue', () => {
