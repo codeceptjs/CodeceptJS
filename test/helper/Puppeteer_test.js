@@ -653,6 +653,13 @@ describe('Puppeteer', function () {
       .then(() => I.see('button was clicked', '#message')));
   });
 
+  describe('#waitForText', () => {
+    it('should wait for text after load body', async () => {
+      await I.amOnPage('/redirect_long');
+      await I.waitForText('Hi there and greetings!', 5);
+    });
+  });
+
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => I.amOnPage('/info')
       .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно'))
