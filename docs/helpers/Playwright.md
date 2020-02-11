@@ -19,7 +19,9 @@ Uses [Playwright][1] library to run tests inside:
 
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `playwright` package to be installed.
+Requires `playwright` package version ^0.10.0 to be installed:
+
+    npm i playwright@^0.10.0 --save
 
 ## Configuration
 
