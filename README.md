@@ -226,7 +226,7 @@ You can create one by running
 codeceptjs generate pageobject
 ```
 
-It will create a page object file for you and add it to config.
+It will create a page object file for you and add it to your config file.
 Let's assume we created one named `docsPage`:
 
 ```js
