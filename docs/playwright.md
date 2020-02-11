@@ -3,13 +3,11 @@ permalink: /playwright
 title: Testing with Playwright
 ---
 
-# Testing with Playwright
+# Testing with Playwright <Badge text="Since 2.5" type="warning"/>
 
 Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
 
-The primary goal with Playwright is to improve automated UI testing by eliminating flakiness, improving the speed of execution and offering insights into the browser operation.
-
-CodeceptJS uses Playwright to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
+Playwright was built similarly to [Puppeteer](https://github.com/puppeteer/puppeteer), using its API and so is very different in usage. However, Playwright has cross browser support with better design for test automaiton.
 
 Take a look at a sample test:
 
@@ -30,7 +28,7 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright --save
+npm install codeceptjs playwright@^0.10.0 --save
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
@@ -44,15 +42,6 @@ npx codeceptjs init
 ```
 
 You will be asked for a Helper to use, you should select Playwright and provide url of a website you are testing.
-
-> Puppeteer can also work with Firefox, Webkit
-
-|          | ver | Linux | macOS | Win |
-|   ---:   | :---: | :---: | :---:  | :---: |
-| Chromium| 81.0.4044 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| WebKit | 13.0.4 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| Firefox |73.0b3 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-- Headless is supported for all the browsers on all platforms.
 
 ## Configuring
 
@@ -83,7 +72,7 @@ When to consider navigation succeeded, defaults to `load`. Given an array of eve
 
 ```js
   helpers: {
-    Puppeteer: {
+    Playwright: {
       url: "http://localhost",
       show: true,
       waitForNavigation: "networkidle0"
@@ -211,8 +200,6 @@ I.see('0 items left', '.todo-count');
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
 
-> TO DO [▶ Demo project is available on GitHub]()
-
 ## Extending
 
 Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
@@ -229,7 +216,7 @@ Let's say you want to create `I.grabDimensionsOfCurrentPage` action. In this cas
 ```js
 // inside a MyPlaywright helper
 async grabDimensionsOfCurrentPage() {
-  const page = this.helpers.Playwright.page;
+  const { page } = this.helpers.Playwright;
   await page.goto('https://www.example.com/');
   return page.evaluate(() => {
     return {
@@ -246,7 +233,7 @@ The same way you can also access `browser` object to implement more actions or h
 ```js
 // inside a MyPlaywright helper
 async setPermissions() {
-  const browser = this.helpers.Playwright.browser;
+  const { browser } = this.helpers.Playwright;
   const context = browser.defaultContext()
   return context.setPermissions('https://html5demos.com', ['geolocation']);
 }
