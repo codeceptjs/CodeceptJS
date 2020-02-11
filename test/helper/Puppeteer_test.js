@@ -22,7 +22,7 @@ describe('Puppeteer - BasicAuth', () => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
     I = new Puppeteer({
-      url: 'http://localhost:8000',
+      url: siteUrl,
       windowSize: '500x700',
       show: false,
       waitForTimeout: 5000,
@@ -53,6 +53,10 @@ describe('Puppeteer - BasicAuth', () => {
 
   describe('open page with provided basic auth', () => {
     it('should be authenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+    it('should be authenticated on second run', async () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
@@ -647,6 +651,13 @@ describe('Puppeteer', function () {
       .then(() => I.waitForEnabled('#text', 2))
       .then(() => I.click('#button'))
       .then(() => I.see('button was clicked', '#message')));
+  });
+
+  describe('#waitForText', () => {
+    it('should wait for text after load body', async () => {
+      await I.amOnPage('/redirect_long');
+      await I.waitForText('Hi there and greetings!', 5);
+    });
   });
 
   describe('#waitForValue', () => {
