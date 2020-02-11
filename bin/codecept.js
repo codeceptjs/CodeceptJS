@@ -190,6 +190,9 @@ program.command('run-multiple [suites...]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('--recursive', 'include sub directories')
 
+  // mocha options
+  .option('--colors', 'force enabling of colors')
+
   .action(require('../lib/command/run-multiple'));
 
 program.command('info [path]')

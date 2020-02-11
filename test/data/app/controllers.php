@@ -24,6 +24,12 @@ class redirect {
     }
 }
 
+class redirect_long {
+    function GET() {
+        include __DIR__.'/view/redirect_long.php';
+    }
+}
+
 class redirect4 {
     function GET() {
         header('Location: /search?ln=test@gmail.com&sn=testnumber');
