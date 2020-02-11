@@ -41,6 +41,7 @@ Refer to following guides to more information on:
 * [▶ WebDriver](/webdriver)
 * [▶ Protractor](/angular)
 * [▶ Puppeteer](/puppeteer)
+* [▶ Playwright](/playwright)
 * [▶ Nightmare](/nightmare)
 * [▶ TestCafe](/testcafe)
 
@@ -422,7 +423,7 @@ Try to perform your scenario step by step. Then copy succesful commands and inse
 
 ### Pause
 
-Test execution can be paused in any place of a test with `pause()` call. 
+Test execution can be paused in any place of a test with `pause()` call.
 Variables can also be passed to `pause({data: 'hi', func: () => console.log('hello')})` which can be accessed in Interactive shell.
 
 This launches the interactive console where you can call any action from the `I` object.
