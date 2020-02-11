@@ -220,10 +220,10 @@ Scenario('test title', (I) => {
 ## PageObjects
 
 CodeceptJS provides the most simple way to create and use page objects in your test.
-You can create one by running
+You can create one by running this command:
 
 ```sh
-codeceptjs generate pageobject
+npx codeceptjs generate pageobject
 ```
 
 It will create a page object file for you and add it to config.
