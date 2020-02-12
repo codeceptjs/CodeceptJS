@@ -305,7 +305,7 @@ describe('WebDriver', function () {
   describe('#type', () => {
     it('should type into a field', async () => {
       await wd.amOnPage('/form/field');
-      await wd.fillField('Name', '');
+      await wd.click('Name');
 
       await wd.type('Type Test');
       await wd.seeInField('Name', 'Type Test');
