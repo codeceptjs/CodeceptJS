@@ -1496,6 +1496,24 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fileName` **[string][4]** file name to save.
 -   `fullPage` **[boolean][15]** (optional, `false` by default) flag to enable fullscreen screenshot mode. (optional, default `false`)
 
+### type
+
+Types out the given string or the array of keys provided.
+_Note:_ Should only be used when using [`fillField`][19] is not an option.
+
+```js
+// When passing in a string
+I.type('Type this out.');
+// When passing in an array
+I.type(['T', 'E', 'X', 'T']);
+```
+
+#### Parameters
+
+-   `keys`  
+-   `key` **([string][4] \| [Array][14]&lt;[string][4]>)** or array of keys to type.
+    Type out given array of keys or a string of text
+
 ### dragAndDrop
 
 Drag an item to a destination element.
@@ -1705,3 +1723,5 @@ Returns **[object][6]** Element bounding rectangle
 [17]: https://webdriver.io/docs/timeouts.html
 
 [18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+
+[19]: #fillfield
