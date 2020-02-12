@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-- 11
 - 12
 sudo: required
 dist: trusty
