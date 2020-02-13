@@ -140,7 +140,7 @@ This scenarios are nice as live documentation but they do not test anything yet.
 Steps can be defined by executing `gherkin:snippets` command:
 
 ```bash
-codeceptjs gherkin:snippets [--path=PATH] [--feature=PATH]
+npx codeceptjs gherkin:snippets [--path=PATH] [--feature=PATH]
 ```
 
 This will produce code templates for all undefined steps in the .feature files.
@@ -329,7 +329,7 @@ Then('Then i see in file {string}', (file, text) => {
 Gherkin scenarios and features can contain tags marked with `@`. Tags are appended to feature titles so you can easily filter by them when running tests:
 
 ```bash
-codeceptjs run --grep "@important"
+npx codeceptjs run --grep "@important"
 ```
 
 Tag should be placed before *Scenario:* or before *Feature:* keyword. In the last case all scenarios of that feature will be added to corresponding group.
@@ -406,7 +406,7 @@ In CodeceptJS you can combine tests written in Gherkin format with classical acc
 To run only features use `--features` option:
 
 ```
-codeceptjs run --features
+npx codeceptjs run --features
 ```
 
 You can run a specific feature file by its filename or by grepping by name or tag.
@@ -414,6 +414,6 @@ You can run a specific feature file by its filename or by grepping by name or ta
 To run only tests without features use `--tests` option:
 
 ```
-codeceptjs run --tests
+npx codeceptjs run --tests
 ```
 

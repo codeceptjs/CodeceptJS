@@ -1702,6 +1702,24 @@ await I.switchToWindow( window );
 
 -   `window`  
 
+### type
+
+Types out the given string or the array of keys provided.
+_Note:_ Should only be used when using [`fillField`][29] is not an option.
+
+```js
+// When passing in a string
+I.type('Type this out.');
+// When passing in an array
+I.type(['T', 'E', 'X', 'T']);
+```
+
+#### Parameters
+
+-   `keys`  
+-   `key` **([string][18] | [Array][28]&lt;[string][18]>)** or array of keys to type.
+    Type out given array of keys or a string of text
+
 ### uncheckOption
 
 Unselects a checkbox or radio button.
