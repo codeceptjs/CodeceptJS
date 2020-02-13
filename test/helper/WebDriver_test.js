@@ -302,6 +302,21 @@ describe('WebDriver', function () {
     });
   });
 
+  describe('#type', () => {
+    it('should type into a field', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.click('Name');
+
+      await wd.type('Type Test');
+      await wd.seeInField('Name', 'Type Test');
+
+      await wd.fillField('Name', '');
+
+      await wd.type(['T', 'y', 'p', 'e', '2']);
+      await wd.seeInField('Name', 'Type2');
+    });
+  });
+
   describe('#seeInSource, #grabSource', () => {
     it('should check for text to be in HTML source', async () => {
       await wd.amOnPage('/');
