@@ -2,7 +2,7 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
-/// <reference types="Mocha" />
+/// <reference path="./Mocha.d.ts" />
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
@@ -157,14 +157,14 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite {
+  interface Suite extends SuiteRunnable{
     tags: any[]
     comment: string
     feature: any
   }
 
-  interface Test {
-    tags: any[]
+  interface Test  extends Runnable{
+    tags: any[];
   }
 }
 
