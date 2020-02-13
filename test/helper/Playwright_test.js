@@ -71,8 +71,6 @@ describe('Playwright', function () {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
-      browser: 'firefox',
-      show: true,
       waitForTimeout: 5000,
       waitForAction: 500,
       restart: true,
