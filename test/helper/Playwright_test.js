@@ -70,7 +70,7 @@ describe('Playwright', function () {
     I = new Playwright({
       url: siteUrl,
       windowSize: '500x700',
-      show: false,
+      show: true,
       waitForTimeout: 5000,
       waitForAction: 500,
       restart: true,
@@ -259,10 +259,8 @@ describe('Playwright', function () {
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.amOnPage('/info'))
-      .then(() => I.click('New tab'))
-      .then(() => I.switchToNextTab())
-      .then(() => I.wait(2))
-      .then(() => I.seeInCurrentUrl('/login'))
+      .then(() => I.openNewTab())
+      .then(() => I.amOnPage('/login'))
       .then(() => I.closeOtherTabs())
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/login'))
@@ -712,22 +710,6 @@ describe('Playwright', function () {
       .then((logs) => {
         const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
         assert.equal(matchingLogs.length, 1);
-      }));
-
-    it('should grab browser logs across pages', () => I.amOnPage('/')
-      .then(() => I.executeScript(() => {
-        console.log('Test log entry 1');
-      }))
-      .then(() => I.openNewTab())
-      .then(() => I.wait(1))
-      .then(() => I.amOnPage('/info'))
-      .then(() => I.executeScript(() => {
-        console.log('Test log entry 2');
-      }))
-      .then(() => I.grabBrowserLogs())
-      .then((logs) => {
-        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
-        assert.equal(matchingLogs.length, 2);
       }));
   });
 

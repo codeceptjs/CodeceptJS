@@ -19,9 +19,9 @@ Uses [Playwright][1] library to run tests inside:
 
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `playwright` package version ^0.10.0 to be installed:
+Requires `playwright` package version ^0.11.0 to be installed:
 
-    npm i playwright@^0.10.0 --save
+    npm i playwright@^0.11.0 --save
 
 ## Configuration
 
@@ -1705,7 +1705,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [3]: https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target
 
-[4]: https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#working-with-chrome-extensions
+[4]: https://github.com/microsoft/playwright/blob/v0.11.0/docs/api.md#working-with-chrome-extensions
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
