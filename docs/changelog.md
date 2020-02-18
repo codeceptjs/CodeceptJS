@@ -7,6 +7,25 @@ layout: Section
 
 # Releases
 
+## 2.5.0
+
+* **Experimental: [Playwright](/playwright) helper introduced**.
+
+> [Playwright](https://github.com/microsoft/playwright/) is an alternative to Puppeteer which works very similarly to it but adds cross-browser support with Firefox and Webkit. Until v1.0 Playwright API is not stable but we introduce it to CodeceptJS so you could try it.
+
+* **[Puppeteer]** Fixed basic auth support when running in multiple sessions. See [#2178](https://github.com/Codeception/CodeceptJS/issues/2178) by **[ian-bartholomew](https://github.com/ian-bartholomew)**
+* **[Puppeteer]** Fixed `waitForText` when there is no `body` element on page (redirect). See [#2181](https://github.com/Codeception/CodeceptJS/issues/2181) by **[Vorobeyko](https://github.com/Vorobeyko)**
+* [Selenoid plugin] Fixed overriding current capabilities by adding deepMerge. Fixes [#2183](https://github.com/Codeception/CodeceptJS/issues/2183) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* Added types for `Scenario.todo` by **[Vorobeyko](https://github.com/Vorobeyko)**
+* Added types for Mocha by **[Vorobeyko](https://github.com/Vorobeyko)**. Fixed typing conflicts with Jest
+* **[FileSystem]** Added methods by **[nitschSB](https://github.com/nitschSB)**
+  * `waitForFile`
+  * `seeFileContentsEqualReferenceFile`
+* Added `--colors` option to `run` and `run-multiple` so you force colored output in dockerized environment. See [#2189](https://github.com/Codeception/CodeceptJS/issues/2189) by **[mirao](https://github.com/mirao)**
+* **[WebDriver]** Added `type` command to enter value without focusing on a field. See [#2198](https://github.com/Codeception/CodeceptJS/issues/2198) by **[xMutaGenx](https://github.com/xMutaGenx)**
+* Fixed `codeceptjs gt` command to respect config pattern for tests. See [#2200](https://github.com/Codeception/CodeceptJS/issues/2200) and [#2204](https://github.com/Codeception/CodeceptJS/issues/2204) by **[matheo](https://github.com/matheo)**
+
+
 ## 2.4.3
 
 * Hotfix for interactive pause

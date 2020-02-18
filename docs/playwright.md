@@ -28,7 +28,7 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright@^0.10.0 --save
+npm install codeceptjs playwright@^0.11.0 --save-dev
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
@@ -237,6 +237,7 @@ async setPermissions() {
   const context = browser.defaultContext()
   return context.setPermissions('https://html5demos.com', ['geolocation']);
 }
+```
 
 > [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext)
 

@@ -305,14 +305,11 @@ title: ${name}
     await this.wiki();
 
     const dir = 'website';
-    await git((fn) => {
-      if (!fs.existsSync(dir)) {
-        fn.clone('git@github.com:codecept-js/website.git', dir);
-      } else {
-        fn.pull();
-      }
-    });
+    if (fs.existsSync(dir)) {
+      await exec('rm -rf ' + dir);
+    }
 
+    await git((fn) => fn.clone('git@github.com:codecept-js/website.git', dir));
     await copy('docs', 'website/docs');
 
     await chdir(dir, async () => {
@@ -320,7 +317,8 @@ title: ${name}
       await git((fn) => {
         fn.add('-A');
         fn.commit('-m "synchronized with docs"');
-        fn.push('--no-verify');
+        fn.pull();
+        fn.push();
       });
       stopOnFail(true);
 
