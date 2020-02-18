@@ -17,49 +17,6 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Playwright - BasicAuth', () => {
-  before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data');
-
-    I = new Playwright({
-      url: 'http://localhost:8000',
-      browser: 'chromium',
-      windowSize: '500x700',
-      show: false,
-      waitForTimeout: 5000,
-      waitForAction: 500,
-      chrome: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      },
-      defaultPopupAction: 'accept',
-      basicAuth: { username: 'admin', password: 'admin' },
-    });
-    I._init();
-    return I._beforeSuite();
-  });
-
-  beforeEach(() => {
-    webApiTests.init({
-      I, siteUrl,
-    });
-    return I._before().then(() => {
-      page = I.page;
-      browser = I.browser;
-    });
-  });
-
-  afterEach(() => {
-    return I._after();
-  });
-
-  describe('open page with provided basic auth', () => {
-    it('should be authenticated ', async () => {
-      await I.amOnPage('/basic_auth');
-      await I.see('You entered admin as your password.');
-    });
-  });
-});
-
 describe('Playwright', function () {
   this.timeout(35000);
   this.retries(1);
@@ -988,6 +945,50 @@ xdescribe('Playwright (remote browser) - not supported disconnection yet', funct
 
       currentPages = await context.pages();
       assert.equal(currentPages.length, 2);
+    });
+  });
+});
+
+describe('Playwright - BasicAuth', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      defaultPopupAction: 'accept',
+      basicAuth: { username: 'admin', password: 'admin' },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  describe('open page with provided basic auth', () => {
+    it('should be authenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
     });
   });
 });
