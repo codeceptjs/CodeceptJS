@@ -14,7 +14,7 @@
   * `seeFileContentsEqualReferenceFile`
 * Added `--colors` option to `run` and `run-multiple` so you force colored output in dockerized environment. See #2189 by @mirao
 * [WebDriver] Added `type` command to enter value without focusing on a field. See #2198 by @xMutaGenx
-* Fixed `codeceptjs gt` command to respect config pattern for tests. See #2200 by @matheo
+* Fixed `codeceptjs gt` command to respect config pattern for tests. See #2200 and #2204 by @matheo
 
 
 ## 2.4.3
