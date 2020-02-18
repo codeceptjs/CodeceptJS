@@ -25,6 +25,7 @@ const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
 
 describe('ApiDataFactory', function () {
   this.timeout(20000);
+  this.retries(1);
 
   before(() => {
     I = new ApiDataFactory({
