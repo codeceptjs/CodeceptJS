@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.4.3",
+  "version": "2.5.0",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -107,7 +107,7 @@
     "mocha-parallel-tests": "^2.2.2",
     "nightmare": "^3.0.2",
     "nodemon": "^1.19.4",
-    "playwright": "^0.10.0",
+    "playwright": "^0.11.0",
     "protractor": "^5.4.1",
     "puppeteer": "^1.20.0",
     "qrcode-terminal": "^0.12.0",
@@ -132,7 +132,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint",
-      "pre-push": "npm run lint && npm run test"
+      "pre-push": "npm run lint && npm run test:unit"
     }
   }
 }
