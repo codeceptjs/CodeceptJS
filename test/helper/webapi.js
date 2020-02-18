@@ -655,7 +655,7 @@ module.exports.tests = function () {
       await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
-      isHelper('Playwright') ? formContents().files.avatar.type.should.eql('application/octet-stream') : formContents().files.avatar.type.should.eql('image/jpeg');
+      formContents().files.avatar.type.should.eql('image/jpeg');
     });
 
     it('should upload file located by label', async () => {
@@ -667,7 +667,7 @@ module.exports.tests = function () {
       await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
-      isHelper('Playwright') ? formContents().files.avatar.type.should.eql('application/octet-stream') : formContents().files.avatar.type.should.eql('image/jpeg');
+      formContents().files.avatar.type.should.eql('image/jpeg');
     });
   });
 
