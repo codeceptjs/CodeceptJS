@@ -86,8 +86,13 @@ describe('Playwright', function () {
     });
 
     it('should be unauthenticated ', async () => {
-      await I.amOnPage('/basic_auth');
-      await I.dontSee('You entered admin as your password.');
+      let err = true;
+      try {
+        await I.amOnPage('/basic_auth');
+      } catch (e) {
+        err = false;
+      }
+      if (err) throw new Error('Should fail at auth page');
     });
   });
 
