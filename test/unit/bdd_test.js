@@ -214,10 +214,15 @@ describe('BDD', () => {
       Given I have product with price <price>$ in my cart
       And discount is 10 %
       Then I should see price is "<total>" $
-
+      
       Examples:
         | price | total |
         | 10    | 9     |
+
+      @exampleTag1
+      @exampleTag2
+      Examples:
+        | price | total |
         | 20    | 18    |
     `;
     let cart = 0;
@@ -235,9 +240,8 @@ describe('BDD', () => {
     const suite = run(text);
 
     assert.ok(suite.tests[0].tags);
-    assert.equal('@awesome', suite.tests[0].tags[0]);
-    assert.equal('@cool', suite.tests[0].tags[1]);
-    assert.equal('@super', suite.tests[0].tags[2]);
+    assert.deepEqual(['@awesome', '@cool', '@super'], suite.tests[0].tags);
+    assert.deepEqual(['@awesome', '@cool', '@super', '@exampleTag1', '@exampleTag2'], suite.tests[1].tags);
 
     assert.equal(2, suite.tests.length);
     suite.tests[0].fn(() => {
