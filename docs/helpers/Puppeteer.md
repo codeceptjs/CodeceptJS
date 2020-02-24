@@ -1368,7 +1368,7 @@ given string.
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][8]** value to check.
 
 ### seeInSource
 

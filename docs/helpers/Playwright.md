@@ -1269,7 +1269,7 @@ given string.
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][7]** value to check.
 
 ### seeInSource
 
