@@ -1,5 +1,7 @@
 ---
-id: ApiDataFactory
+permalink: /helpers/ApiDataFactory
+editLink: false
+sidebar: auto
 title: ApiDataFactory
 ---
 

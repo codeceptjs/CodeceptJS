@@ -45,4 +45,3 @@ Scenario('Check within with async/await. Await is second in order', async (I) =>
     console.log(testWithin, 'await');
   });
 });
-

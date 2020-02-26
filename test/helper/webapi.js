@@ -700,7 +700,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/file');
       await I.attachFile('#avatar', 'app/avatar.jpg');
       await I.click('Submit');
-      await I.amOnPage('/');
+      await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
@@ -712,6 +712,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/file');
       await I.attachFile('Avatar', 'app/avatar.jpg');
       await I.click('Submit');
+      await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
@@ -744,6 +745,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.seeCookie('auth');
       await I.dontSeeCookie('auuth');
@@ -760,10 +762,12 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.setCookie({
         name: 'user',
         value: 'davert',
+        url: 'http://localhost',
       });
 
       const cookies = await I.grabCookie();
@@ -777,6 +781,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.clearCookie();
       await I.dontSeeCookie('auth');

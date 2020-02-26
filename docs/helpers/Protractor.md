@@ -1,5 +1,7 @@
 ---
-id: Protractor
+permalink: /helpers/Protractor
+editLink: false
+sidebar: auto
 title: Protractor
 ---
 
@@ -1158,8 +1160,8 @@ I.seeTextEquals('text', 'h1');
 
 #### Parameters
 
--   `text`  
--   `context`   
+-   `text` **[string][9]** element value to check.
+-   `context` **([string][9] | [object][10]?)** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 

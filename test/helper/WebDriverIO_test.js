@@ -1,12 +1,12 @@
-const TestHelper = require('../support/TestHelper');
+const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
 
+const TestHelper = require('../support/TestHelper');
 const WebDriverIO = require('../../lib/helper/WebDriverIO');
 
 let wd;
 const siteUrl = TestHelper.siteUrl();
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
 const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
@@ -287,7 +287,7 @@ describe('WebDriverIO', function () {
   });
 
   describe('#waitForInvisible', () => {
-    it.only('should be no [object Object] in the error message', () => wd.amOnPage('/info')
+    it('should be no [object Object] in the error message', () => wd.amOnPage('/info')
       .then(() => wd.waitForInvisible('//div[@id = "grab-multiple"]//a', 3))
       .then(() => {
         throw Error('It should never get this far');
@@ -296,7 +296,7 @@ describe('WebDriverIO', function () {
         e.message.should.not.include('[object Object]');
       }));
 
-    it.only('should wait for a specified element to be invisible', () => wd.amOnPage('https://www.google.de/')
+    it('should wait for a specified element to be invisible', () => wd.amOnPage('https://www.google.de/')
       .then(() => wd.fillField('input[type="text"]', 'testing'))
       .then(() => wd.click('input[type="submit"]'))
       .then(() => wd.waitForInvisible('input[type="submit"]', 5, 3))

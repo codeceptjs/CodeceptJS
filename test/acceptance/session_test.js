@@ -2,7 +2,7 @@ const assert = require('assert');
 
 Feature('Session');
 
-Scenario('simple session @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/info');
   session('john', () => {
     I.amOnPage('https://github.com');
@@ -13,7 +13,7 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer', (I) => {
   I.seeInCurrentUrl('/info');
 });
 
-Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Puppeteer', async (I) => {
+Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Playwright @Puppeteer', async (I) => {
   const cookiePage = 'https://www.microsoft.com/en-au/';
   const cookieName = 'MUID';
   const cookies = {};
@@ -45,7 +45,7 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pup
   assert.notEqual(cookies.john, cookies.mary);
 });
 
-Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', () => {
@@ -67,7 +67,7 @@ Scenario('async/await @WebDriverIO @Protractor', (I) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 });
 
-Scenario('exception on async/await @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('exception on async/await @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', async () => {
@@ -78,7 +78,7 @@ Scenario('exception on async/await @WebDriverIO @Protractor @Puppeteer', (I) => 
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 }).throws(/to be checked/);
 
-Scenario('should work with within @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('should work with within @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467');
   session('john', () => {
     I.amOnPage('/form/bug1467');
@@ -99,7 +99,7 @@ Scenario('should work with within @WebDriverIO @Protractor @Puppeteer', (I) => {
   });
 });
 
-xScenario('should use different base URL @Protractor @Puppeteer', (I) => { // nah, that's broken
+xScenario('should use different base URL @Protractor @Puppeteer @Playwright', (I) => { // nah, that's broken
   I.amOnPage('/');
   I.see('Welcome to test app');
   session('john', { url: 'https://github.com' }, () => {
@@ -125,7 +125,7 @@ xScenario('should start firefox', async (I) => { // requires firefox :)
   assert(isChrome);
 });
 
-Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer', async (I) => {
+Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer @Playwright', async (I) => {
   I.amOnPage('/form/textarea');
   const val = await session('john', () => {
     I.amOnPage('/info');
@@ -137,7 +137,7 @@ Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer', async (
 });
 
 
-Scenario('should return a value @WebDriverIO @Protractor @Puppeteer in async', async (I) => {
+Scenario('should return a value @WebDriverIO @Protractor @Puppeteer @Playwright in async', async (I) => {
   I.amOnPage('/form/textarea');
   const val = await session('john', async () => {
     I.amOnPage('/info');

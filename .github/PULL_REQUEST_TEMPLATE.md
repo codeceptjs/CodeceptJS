@@ -1,31 +1,45 @@
 ## Motivation/Description of the PR
+- Description of this PR, which problem it solves
+- Resolves #issueId (if applicable).
 
 Applicable helpers:
 
-- [ ] Webdriver
+- [ ] WebDriver
 - [ ] Puppeteer
 - [ ] Nightmare
 - [ ] REST
+- [ ] FileHelper
 - [ ] Appium
 - [ ] Protractor
 - [ ] TestCafe
+- [ ] Playwright
 
-- Description of this PR, which problem it solves
-- A link to the corresponding issue (if applicable).
+Applicable plugins:
+
+- [ ] allure
+- [ ] autoDelay
+- [ ] autoLogin
+- [ ] customLocator
+- [ ] pauseOnFail
+- [ ] puppeteerCoverage
+- [ ] retryFailedStep
+- [ ] screenshotOnFail
+- [ ] selenoid
+- [ ] stepByStepReport
+- [ ] wdio
 
 ## Type of change
 
-- [ ] Breaking changes
-- [ ] New functionality
-- [ ] Bug fix
-- [ ] Documentation changes/updates
-- [ ] Hot fix
-- [ ] Markdown files fix - not related to source code
+- [ ] :fire: Breaking changes
+- [ ] :rocket: New functionality
+- [ ] :bug: Bug fix
+- [ ] :clipboard: Documentation changes/updates
+- [ ] :hotsprings: Hot fix
+- [ ] :hammer: Markdown files fix - not related to source code
+- [ ] :nail_care: Polish code
 
 ## Checklist:
 
-<!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
-<!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 - [ ] Tests have been added
 - [ ] Documentation has been added (Run `npm run docs`)
 - [ ] Lint checking (Run `npm run lint`)
