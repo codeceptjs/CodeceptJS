@@ -27,10 +27,11 @@ describe('Workers', () => {
       passedCount += 1;
     });
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, (status, _, stats) => {
+      console.log(stats);
       expect(status).equal(false);
-      expect(passedCount).equal(4);
-      expect(failedCount).equal(2);
+      expect(passedCount).equal(5);
+      expect(failedCount).equal(3);
       done();
     });
   });
