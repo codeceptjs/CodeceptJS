@@ -32,166 +32,65 @@ By default the tests are assigned one by one to the avaible workers this may lea
 npx codeceptjs run-workers --suites 2
 ```
 
+## Custom Parallel Execution
 
-## Multiple Browsers Execution
+To get a full control of parallelization create a custom execution script to match your needs.
+This way you can configure which tests are matched, how the groups are formed, and with which configuration each worker is executed.
 
-This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel.
+Start with creating file `bin/parallel.js`.
 
-Create `multiple` section in configuration file, and fill it with run suites. Each suite should have `browser` array with browser names or driver helper's configuration:
-```js
-multiple: {
-  basic: {
-    // run all tests in chrome and firefox
-    browsers: ["chrome", "firefox"]
-  },
+On MacOS/Linux run following commands:
 
-  smoke: {
-    browsers: [
-      firefox,
-      // replace any config values from WebDriver helper
-      {
-        browser: "chrome",
-        windowSize: "maximize",
-        desiredCapabilities: {
-          acceptSslCerts: true
-        }
-      },
-    ]
-  },
-}
+```
+mkdir bin
+touch bin/parallel.js
+chmod +x bin/parallel.js
 ```
 
-You can use `grep` and `outputName` params to filter tests and output directory for suite:
+> Filename or directory can be customized. You are creating your own custom runner so take this paragraph as an example.
+
+Create a placeholder in file:
+
 ```js
-"multiple": {
-  "smoke": {
-    // run only tests containing "@smoke" in name
-    "grep": "@smoke",
+#!/usr/bin/env node
+const { Workers } = require('codeceptjs');
+// here will go magic
+```
 
-    // store results into `output/smoke` directory
-    "outputName": "smoke",
+Now let's see how to update this file for different parallelization modes:
 
-    "browsers": [
-      "firefox",
-      {"browser": "chrome", "windowSize": "maximize"}
-    ]
+### Example: Running tests in 2 browsers in 4 threads
+
+```js
+const workerConfig = {
+  testConfig: './test/data/sandbox/codecept.customworker.js',
+};
+
+// don't initialize workers in constructor
+const workers = new Workers(null, workerConfig);
+// split tests by suites in 2 groups
+const testGroups = workers.createGroupsOfSuites(2);
+
+const browsers = ['firefox', 'chrome'];
+
+const configs = browsers.map(browser => {
+  return helpers: { 
+    WebDriver: { browser }
+  }
+});
+
+for (const config of configs) {
+  for (group of groupOfTests) {
+    const worker = workers.spawn();
+    worker.addTests(group);
+    worker.addConfig(config);
   }
 }
-```
 
-Then tests can be executed using `run-multiple` command.
+workers.run();
 
-Run all suites for all browsers:
-
-```sh
-codeceptjs run-multiple --all
-```
-
-Run `basic` suite for all browsers
-
-```sh
-codeceptjs run-multiple basic
-```
-
-Run `basic` suite for chrome only:
-
-```sh
-codeceptjs run-multiple basic:chrome
-```
-
-Run `basic` suite for chrome and `smoke` for firefox
-
-```sh
-codeceptjs run-multiple basic:chrome smoke:firefox
-```
-
-Run basic tests with grep and junit reporter
-
-```sh
-codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
-```
-
-Run regression tests specifying different config path:
-
-```sh
-codeceptjs run-multiple regression -c path/to/config
-```
-
-Each executed process uses custom folder for reports and output. It is stored in subfolder inside an output directory. Subfolders will be named in `suite_browser` format.
-
-Output is printed for all running processes. Each line is tagged with a suite and browser name:
-
-```sh
-[basic:firefox] GitHub --
-[basic:chrome] GitHub --
-[basic:chrome]    it should not enter
-[basic:chrome]  ✓ signin in 2869ms
-
-[basic:chrome]   OK  | 1 passed   // 30s
-[basic:firefox]    it should not enter
-[basic:firefox]  ✖ signin in 2743ms
-
-[basic:firefox] -- FAILURES:
-```
-
-### Hooks
-
-Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](/hooks/#bootstrap-teardown) for an example.
-
-
-### Parallel Execution
-
-CodeceptJS can be configured to run tests in parallel.
-
-When enabled, it collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (`a_test.js`,`b_test.js`,`c_test.js`,`d_test.js` and `e_test.js`), by setting `"chunks": 2` we tell the runner to run two suites in parallel. The first suite will run `a_test.js`,`b_test.js` and `c_test.js`, the second suite will run `d_test.js` and `e_test.js`.
-
-
-```js
-multiple: {
-  parallel: {
-    // Splits tests into 2 chunks
-    chunks: 2
-  }
-}
-```
-
-To execute them use `run-multiple` command passing configured suite, which is `parallel` in this example:
+workers.on(event.all.result, (status, completed, workerStats) => {
+  // print output
+});
 
 ```
-codeceptjs run-multiple parallel
-```
-
-Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.
-
-```js
-multiple: {
-  // 2x chunks + 2x browsers = 4
-  parallel: {
-    // Splits tests into chunks
-    chunks: 2,
-    // run all tests in chrome and firefox
-    browsers: ["chrome", "firefox"]
-  },
-}
-```
-
-Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.
-
-```js
-multiple: {
-  parallel: {
-    // Splits tests into chunks by passing an anonymous function,
-    // only execute first and last found test file
-    chunks: (files) => {
-      return [
-        [ files[0] ], // chunk 1
-        [ files[files.length-1] ], // chunk 2
-      ]
-    },
-    // run all tests in chrome and firefox
-    browsers: ["chrome", "firefox"]
-  }
-}
-```
-
-> Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.
