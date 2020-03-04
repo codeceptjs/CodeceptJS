@@ -1,5 +1,7 @@
 ---
-id: Puppeteer
+permalink: /helpers/Puppeteer
+editLink: false
+sidebar: auto
 title: Puppeteer
 ---
 
@@ -22,6 +24,7 @@ Requires `puppeteer` package to be installed.
 This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url`: base url of website to be tested
+-   `basicAuth`: (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `show`:  - show Google Chrome window for debug.
 -   `restart`:  - restart browser between tests.
 -   `disableScreenshots`:   - don't save screenshot on failure.
@@ -93,6 +96,20 @@ This helper should be configured in codecept.json or codecept.conf.js
        chrome: {
          browserWSEndpoint: "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
        }
+     }
+   }
+}
+```
+
+#### Example #5: Target URL with provided basic authentication
+
+```js
+{
+   helpers: {
+     Puppeteer : {
+       url: 'http://localhost',
+       basicAuth: {username: 'username', password: 'password'},
+       show: true
      }
    }
 }
@@ -1349,9 +1366,13 @@ I.seeInField('#searchform input','Search');
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
 given string.
 
+```js
+I.seeInPopup('Popup text');
+```
+
 #### Parameters
 
--   `text`  
+-   `text` **[string][8]** value to check.
 
 ### seeInSource
 
@@ -1423,8 +1444,8 @@ I.seeTextEquals('text', 'h1');
 
 #### Parameters
 
--   `text`  
--   `context`   
+-   `text` **[string][8]** element value to check.
+-   `context` **([string][8] | [object][6]?)** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 

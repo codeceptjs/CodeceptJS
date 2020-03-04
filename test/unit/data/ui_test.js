@@ -1,9 +1,10 @@
+const should = require('chai').should();
 const Mocha = require('mocha/lib/mocha');
+const Suite = require('mocha/lib/suite');
+
 const makeUI = require('../../../lib/ui');
 const addData = require('../../../lib/data/context');
 const DataTable = require('../../../lib/data/table');
-const Suite = require('mocha/lib/suite');
-const should = require('chai').should();
 
 describe('ui', () => {
   let suite;

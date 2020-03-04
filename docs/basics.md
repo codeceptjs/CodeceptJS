@@ -1,7 +1,9 @@
 ---
-id: basics
-title: Basics
+permalink: /basics
+title: Getting Started
 ---
+
+# Getting Started
 
 CodeceptJS is a modern end to end testing framework with a special BDD-style syntax. The tests are written as a linear scenario of the user's action on a site.
 
@@ -25,7 +27,7 @@ CodeceptJS bypasses execution commands to helpers. Depending on the helper enabl
 
 The following is a diagram of the CodeceptJS architecture:
 
-![architecture](https://codecept.io/img/architecture.svg)
+![architecture](/img/architecture.svg)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
 However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
@@ -36,11 +38,12 @@ However, because of the difference in backends and their limitations, they are n
 
 Refer to following guides to more information on:
 
-* [▶ WebDriver](https://codecept.io/webdriver)
-* [▶ Protractor](https://codecept.io/angular)
-* [▶ Puppeteer](https://codecept.io/puppeteer)
-* [▶ Nightmare](https://codecept.io/nightmare)
-* [▶ TestCafe](https://codecept.io/testcafe)
+* [▶ WebDriver](/webdriver)
+* [▶ Protractor](/angular)
+* [▶ Puppeteer](/puppeteer)
+* [▶ Playwright](/playwright)
+* [▶ Nightmare](/nightmare)
+* [▶ TestCafe](/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
 
@@ -99,8 +102,6 @@ Strict locators allow to specify additional locator types:
 ```js
 // locate form element by name
 I.seeElement({name: 'password'});
-// locate element by id
-I.seeElement({id: 'users'});
 // locate element by React component and props
 I.seeElement({react: 'user-profile', props: {name: 'davert'}});
 ```
@@ -113,7 +114,7 @@ In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~
 I.seeElement('~username');
 ```
 
-> [▶ Learn more about using locators in CodeceptJS](https://codecept.io/locators).
+> [▶ Learn more about using locators in CodeceptJS](/locators).
 
 ### Clicking
 
@@ -273,7 +274,7 @@ I.waitForElement('#agree_button', 30); // secs
 I.click('#agree_button');
 ```
 
-> ℹ See [helpers reference](https://codecept.io/reference) for a complete list of all available commands for the helper you use.
+> ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works
 
@@ -303,7 +304,7 @@ assert.equal(title, 'CodeceptJS');
 
 ## Running Tests
 
-To launch tests use the `run` command, and to execute tests in [multiple browsers](https://codecept.io/advanced/#multiple-browsers-execution) or [multiple threads](https://codecept.io/advanced/#parallel-execution) use the `run-multiple` command.
+To launch tests use the `run` command, and to execute tests in [multiple browsers](/advanced/#multiple-browsers-execution) or [multiple threads](/advanced/#parallel-execution) use the `run-multiple` command.
 
 ### Level of Detail
 
@@ -345,10 +346,10 @@ To run all tests with the `slow` word in it:
 npx codeceptjs run --grep "slow"
 ```
 
-It is recommended to [filter tests by tags](https://codecept.io/advanced/#tags).
+It is recommended to [filter tests by tags](/advanced/#tags).
 
 
-> For more options see [full reference of `run` command](https://codecept.io/commands/#run).
+> For more options see [full reference of `run` command](/commands/#run).
 
 ### Parallel Run
 
@@ -379,7 +380,7 @@ exports.config = {
 }
 ```
 
-> ▶ See complete [configuration reference](https://codecept.io/configuration).
+> ▶ See complete [configuration reference](/configuration).
 
 You can have multiple configuration files for a the same project, in this case you can specify a config file to be used with `-c` when running.
 
@@ -423,6 +424,7 @@ Try to perform your scenario step by step. Then copy succesful commands and inse
 ### Pause
 
 Test execution can be paused in any place of a test with `pause()` call.
+Variables can also be passed to `pause({data: 'hi', func: () => console.log('hello')})` which can be accessed in Interactive shell.
 
 This launches the interactive console where you can call any action from the `I` object.
 
@@ -432,8 +434,8 @@ This launches the interactive console where you can call any action from the `I`
  - Use JavaScript syntax to try steps in action
  - Press TAB twice to see all available commands
  - Enter next to run the next step
- I.click
 
+ I.
 ```
 
 Type in different actions to try them, copy and paste successful ones into the test file.
@@ -444,31 +446,55 @@ To **debug test step-by-step** press Enter, the next step will be executed and i
 
 To see all available commands, press TAB two times to see list of all actions included in the `I` object.
 
-If a test is failing you can prevent the browser from closing by putting the `pause()` command into an `After()` hook. This is very helpful to debug failing tests. This way you can keep the same session and try different actions on a page to get an idea about what went wrong.
+> The interactive shell can be started outside of test context by running `npx codeceptjs shell`
+
+PageObjects and other variables can also be passed to as object:
 
 ```js
-After(pause);
+pause({ loginPage, data: 'hi', func: () => console.log('hello') });
 ```
 
-The interactive shell can be started outside of test context by running
+Inside a pause mode you can use `loginPage`, `data`, `func` variables.
+Arbitrary JavaScript code can be executed when used `=> ` prefix:
 
-```bash
-codeceptjs shell
+```js
+I.=> loginPage.open()
+I.=> func()
+I.=> 2 + 5
 ```
 
+### Pause on Failure <Badge text="Since 2.4" type="warning"/>
 
-### Screenshot on failure
+To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
+When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
+
+This is an **essential feature to debug flaky tests**, as you can analyze them in the moment of failure.
+
+> ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
+
+
+### Screenshot on Failure
 
 By default CodeceptJS saves a screenshot of a failed test.
-This can be configured in [screenshotOnFail Plugin](https://codecept.io/plugins/#screenshotonfail)
+This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
+
+> **screenshotOnFail plugin is enabled by default** for new setups
 
 ### Step By Step Report
 
-To see how the test was executed, use [stepByStepReport Plugin](https://codecept.io/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
+To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
 ## Retries
 
+### Auto Retry
+
+You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
+
+> **autoRetry plugin is enabled by default** for new setups since CodeceptJS 2.4
+
 ### Retry Step
+
+Unless you use retryFailedStep plugin you can manually control retries in your project.
 
 If you have a step which often fails, you can retry execution for this single step.
 Use the `retry()` function before an action to ask CodeceptJS to retry it on failure:
@@ -502,9 +528,6 @@ I.retry({
 
 Pass a function to the `when` option to retry only when an error matches the expected one.
 
-### Auto Retry
-
-You can auto-retry a failed step by enabling [retryFailedStep Plugin](https://codecept.io/plugins/#retryfailedstep).
 
 ### Retry Scenario
 
@@ -598,7 +621,10 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
+> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
+
 
 See example:
 
@@ -607,6 +633,8 @@ within({frame: "#editor"}, () => {
   I.see('Page');
 });
 ```
+
+> ℹ IFrames can also be accessed via `I.switchTo` command of a corresponding helper.
 
 Nested IFrames can be set by passing an array *(WebDriver, Nightmare & Puppeteer only)*:
 
@@ -618,7 +646,7 @@ within({frame: [".content", "#editor"]}, () => {
 
 When running steps inside, a within block will be shown with a shift:
 
-![within](https://codecept.io/img/within.png)
+![within](/img/within.png)
 
 Within can return a value, which can be used in a scenario:
 
@@ -755,3 +783,29 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 
 * `xScenario` - skips current test
 * `Scenario.only` - executes only the current test
+
+## Todo Test <Badge text="Since 2.4" type="warning"/>
+
+You can use `Scenario.todo` when you are planning on writing tests.
+
+This test will be skipped like with regular `Scenario.skip` but with additional message "Test not implemented!":
+
+Use it with a test body as a test plan:
+
+```js
+Scenario.todo('Test',  I => {
+/**
+ * 1. Click to field
+ * 2. Fill field
+ *
+ * Result:
+ * 3. Field contains text
+ */
+});
+```
+
+Or even without a test body:
+
+```js
+Scenario.todo('Test');
+```

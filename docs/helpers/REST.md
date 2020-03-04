@@ -1,5 +1,7 @@
 ---
-id: REST
+permalink: /helpers/REST
+editLink: false
+sidebar: auto
 title: REST
 ---
 

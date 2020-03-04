@@ -1,3 +1,78 @@
+## 2.5.0
+
+* **Experimental: [Playwright](/playwright) helper introduced**.
+
+> [Playwright](https://github.com/microsoft/playwright/) is an alternative to Puppeteer which works very similarly to it but adds cross-browser support with Firefox and Webkit. Until v1.0 Playwright API is not stable but we introduce it to CodeceptJS so you could try it.
+
+* [Puppeteer] Fixed basic auth support when running in multiple sessions. See #2178 by @ian-bartholomew
+* [Puppeteer] Fixed `waitForText` when there is no `body` element on page (redirect). See #2181 by @Vorobeyko
+* [Selenoid plugin] Fixed overriding current capabilities by adding deepMerge. Fixes #2183 by @koushikmohan1996
+* Added types for `Scenario.todo` by @Vorobeyko
+* Added types for Mocha by @Vorobeyko. Fixed typing conflicts with Jest
+* [FileSystem] Added methods by @nitschSB
+  * `waitForFile`
+  * `seeFileContentsEqualReferenceFile`
+* Added `--colors` option to `run` and `run-multiple` so you force colored output in dockerized environment. See #2189 by @mirao
+* [WebDriver] Added `type` command to enter value without focusing on a field. See #2198 by @xMutaGenx
+* Fixed `codeceptjs gt` command to respect config pattern for tests. See #2200 and #2204 by @matheo
+
+
+## 2.4.3
+
+* Hotfix for interactive pause
+
+## 2.4.2
+
+* **Interactive pause improvements** by @koushikmohan1996
+  * allows using in page objects and variables: `pause({ loginPage, a })`
+  * enables custom commands inside pause with `=>` prefix: `=> loginPage.open()`
+* [Selenoid plugin](/plugins#selenoid) added by by @koushikmohan1996
+  * uses Selenoid to launch browsers inside Docker containers
+  * automatically **records videos** and attaches them to allure reports
+  * can delete videos for successful tests
+  * can automatically pull in and start Selenoid containers
+  * works with WebDriver helper
+* Avoid failiure report on successful retry in worker by @koushikmohan1996
+* Added translation ability to Scenario, Feature and other context methods by @koushikmohan1996
+  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/Codeception/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/Codeception/CodeceptJS/tree/master/translations).
+* allurePlugin: Added `say` comments to allure reports by @PeterNgTr.
+* Fixed no custom output folder created when executed with run-worker. Fix by @PeterNgTr
+* [Puppeteer] Fixed error description for context element not found. See #2065. Fix by @PeterNgTr
+* [WebDriver] Fixed `waitForClickable` to wait for exact number of seconds by @mirao. Resolves #2166
+* Fixed setting `compilerOptions` in `jsconfig.json` file on init by @PeterNgTr
+* [Filesystem] Added method by @nitschSB
+  * `seeFileContentsEqualReferenceFile`
+  * `waitForFile`
+
+
+## 2.4.1
+
+* [Hotfix] - Add missing lib that prevents codeceptjs from initializing.
+
+## 2.4.0
+
+* Improved setup wizard with `npx codecept init`:
+  * **enabled [retryFailedStep](/plugins/#retryfailedstep) plugin for new setups**.
+  * enabled [@codeceptjs/configure](/configuration/#common-configuration-patterns) to toggle headless/window mode via env variable
+  * creates a new test on init
+  * removed question on "steps file", create it by default.
+* Added [pauseOnFail plugin](/plugins/#pauseonfail). *Sponsored by Paul Vincent Beigang and his book "[Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)"*.
+* Added [`run-rerun` command](/commands/#run-rerun) to run tests multiple times to detect and fix flaky tests. By @Ilrilan and @Vorobeyko.
+* Added [`Scenario.todo()` to declare tests as pending](/basics#todotest). See #2100 by @Vorobeyko
+* Added support for absolute path for `output` dir. See #2049 by @elukoyanov
+* Fixed error in `npx codecept init` caused by calling `console.print`. See #2071 by @Atinux.
+* [Filesystem] Methods added by @aefluke:
+  * `seeFileNameMatching`
+  * `grabFileNames`
+* [Puppeteer] Fixed grabbing attributes with hyphen by @Holorium
+* [TestCafe] Fixed `grabAttributeFrom` method by @elukoyanov
+* [MockRequest] Added support for [Polly config options](https://netflix.github.io/pollyjs/#/configuration?id=configuration) by @ecrmnn
+* [TestCafe] Fixes exiting with zero code on failure. Fixed #2090 with #2106 by @koushikmohan1996
+* [WebDriver][Puppeteer] Added basicAuth support via config. Example: `basicAuth: {username: 'username', password: 'password'}`. See #1962 by @PeterNgTr
+* [WebDriver][Appium] Added `scrollIntoView` by @pablopaul
+* Fixed #2118: No error stack trace for syntax error by @senthillkumar
+* Added `parse()` method to data table inside Cucumber tests. Use it to obtain rows and hashes for test data. See #2082 by @Sraime
+
 ## 2.3.6
 
 * Create better Typescript definition file through JSDoc. By @lemnis
@@ -8,7 +83,7 @@ exports.config = {
   tests: '{./workers/base_test.workers.js,./workers/test_grep.workers.js}',
 }
 ```
-* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By @jamesgeorge007 
+* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By @jamesgeorge007
 * Fixed some typos in documantation. By @pablopaul @atomicpages @EricTendian
 * Added PULL_REQUEST template.
 * [Puppeteer][WebDriver] Added `waitForClickable` for waiting clickable element on page.

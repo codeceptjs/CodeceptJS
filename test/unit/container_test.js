@@ -1,8 +1,9 @@
-const container = require('../../lib/container');
 const assert = require('assert');
 const path = require('path');
+
 const FileSystem = require('../../lib/helper/FileSystem');
 const actor = require('../../lib/actor');
+const container = require('../../lib/container');
 
 describe('Container', () => {
   before(() => {
@@ -36,6 +37,13 @@ describe('Container', () => {
       container.translation().loaded.should.be.true;
       container.translation().I.should.eql('Я');
       container.translation().actionAliasFor('see').should.eql('вижу');
+    });
+    it('should have translations for context', () => {
+      container.create({ translation: 'it-IT' });
+      container.translation().should.be.instanceOf(Translation);
+      container.translation().loaded.should.be.true;
+      container.translation().I.should.eql('io');
+      container.translation().value('contexts').Feature.should.eql('Caratteristica');
     });
   });
 

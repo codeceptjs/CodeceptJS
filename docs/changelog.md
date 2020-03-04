@@ -1,7 +1,67 @@
 ---
-id: changelog
+permalink: /changelog
 title: Releases
+sidebar: false
+layout: Section
 ---
+
+# Releases
+
+## 2.4.3
+
+* Hotfix for interactive pause
+
+## 2.4.2
+
+* **Interactive pause improvements** by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+  * allows using in page objects and variables: `pause({ loginPage, a })`
+  * enables custom commands inside pause with `=>` prefix: `=> loginPage.open()`
+* [Selenoid plugin](/plugins#selenoid) added by by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+  * uses Selenoid to launch browsers inside Docker containers
+  * automatically **records videos** and attaches them to allure reports
+  * can delete videos for successful tests
+  * can automatically pull in and start Selenoid containers
+  * works with WebDriver helper
+* Avoid failiure report on successful retry in worker by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* Added translation ability to Scenario, Feature and other context methods by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/Codeception/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/Codeception/CodeceptJS/tree/master/translations).
+* allurePlugin: Added `say` comments to allure reports by **[PeterNgTr](https://github.com/PeterNgTr)**.
+* Fixed no custom output folder created when executed with run-worker. Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Puppeteer]** Fixed error description for context element not found. See [#2065](https://github.com/Codeception/CodeceptJS/issues/2065). Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[WebDriver]** Fixed `waitForClickable` to wait for exact number of seconds by **[mirao](https://github.com/mirao)**. Resolves [#2166](https://github.com/Codeception/CodeceptJS/issues/2166)
+* Fixed setting `compilerOptions` in `jsconfig.json` file on init by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Filesystem]** Added method by **[nitschSB](https://github.com/nitschSB)**
+  * `seeFileContentsEqualReferenceFile`
+  * `waitForFile`
+
+
+## 2.4.1
+
+* **[Hotfix]** - Add missing lib that prevents codeceptjs from initializing.
+
+## 2.4.0
+
+* Improved setup wizard with `npx codecept init`:
+  * **enabled [retryFailedStep](/plugins/#retryfailedstep) plugin for new setups**.
+  * enabled [@codeceptjs/configure](/configuration/#common-configuration-patterns) to toggle headless/window mode via env variable
+  * creates a new test on init
+  * removed question on "steps file", create it by default.
+* Added [pauseOnFail plugin](/plugins/#pauseonfail). *Sponsored by Paul Vincent Beigang and his book "[Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)"*.
+* Added [`run-rerun` command](/commands/#run-rerun) to run tests multiple times to detect and fix flaky tests. By **[Ilrilan](https://github.com/Ilrilan)** and **[Vorobeyko](https://github.com/Vorobeyko)**.
+* Added [`Scenario.todo()` to declare tests as pending](/basics#todotest). See [#2100](https://github.com/Codeception/CodeceptJS/issues/2100) by **[Vorobeyko](https://github.com/Vorobeyko)**
+* Added support for absolute path for `output` dir. See [#2049](https://github.com/Codeception/CodeceptJS/issues/2049) by **[elukoyanov](https://github.com/elukoyanov)**
+* Fixed error in `npx codecept init` caused by calling `console.print`. See [#2071](https://github.com/Codeception/CodeceptJS/issues/2071) by **[Atinux](https://github.com/Atinux)**.
+* **[Filesystem]** Methods added by **[aefluke](https://github.com/aefluke)**:
+  * `seeFileNameMatching`
+  * `grabFileNames`
+* **[Puppeteer]** Fixed grabbing attributes with hyphen by **[Holorium](https://github.com/Holorium)**
+* **[TestCafe]** Fixed `grabAttributeFrom` method by **[elukoyanov](https://github.com/elukoyanov)**
+* **[MockRequest]** Added support for [Polly config options](https://netflix.github.io/pollyjs/#/configuration?id=configuration) by **[ecrmnn](https://github.com/ecrmnn)**
+* **[TestCafe]** Fixes exiting with zero code on failure. Fixed [#2090](https://github.com/Codeception/CodeceptJS/issues/2090) with [#2106](https://github.com/Codeception/CodeceptJS/issues/2106) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* [WebDriver][Puppeteer] Added basicAuth support via config. Example: `basicAuth: {username: 'username', password: 'password'}`. See [#1962](https://github.com/Codeception/CodeceptJS/issues/1962) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* [WebDriver][Appium] Added `scrollIntoView` by **[pablopaul](https://github.com/pablopaul)**
+* Fixed [#2118](https://github.com/Codeception/CodeceptJS/issues/2118): No error stack trace for syntax error by **[senthillkumar](https://github.com/senthillkumar)**
+* Added `parse()` method to data table inside Cucumber tests. Use it to obtain rows and hashes for test data. See [#2082](https://github.com/Codeception/CodeceptJS/issues/2082) by **[Sraime](https://github.com/Sraime)**
 
 ## 2.3.6
 
@@ -13,7 +73,7 @@ exports.config = {
   tests: '{./workers/base_test.workers.js,./workers/test_grep.workers.js}',
 }
 ```
-* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By **[jamesgeorge007](https://github.com/jamesgeorge007)** 
+* Added new command `npx codeceptjs info` which print information about your environment and CodeceptJS configs. By **[jamesgeorge007](https://github.com/jamesgeorge007)**
 * Fixed some typos in documantation. By **[pablopaul](https://github.com/pablopaul)** **[atomicpages](https://github.com/atomicpages)** **[EricTendian](https://github.com/EricTendian)**
 * Added PULL_REQUEST template.
 * [Puppeteer][WebDriver] Added `waitForClickable` for waiting clickable element on page.

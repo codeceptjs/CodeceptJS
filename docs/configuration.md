@@ -1,8 +1,9 @@
 ---
-id: configuration
+permalink: /configuration
 title: Configuration
 ---
 
+# Configuration
 
 CodeceptJS configuration is set in `codecept.conf.js` file.
 

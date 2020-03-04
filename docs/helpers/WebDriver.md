@@ -1,5 +1,7 @@
 ---
-id: WebDriver
+permalink: /helpers/WebDriver
+editLink: false
+sidebar: auto
 title: WebDriver
 ---
 
@@ -19,6 +21,7 @@ WebDriver requires [Selenium Server and ChromeDriver/GeckoDriver to be installed
 This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url`: base url of website to be tested.
+-   `basicAuth`: (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `browser`: browser in which to perform testing.
 -   `host`:  - WebDriver host to connect.
 -   `port`:  - WebDriver port to connect.
@@ -47,6 +50,26 @@ Example:
      WebDriver : {
        smartWait: 5000,
        browser: "chrome",
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
+}
+```
+
+Example with basic authentication
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       basicAuth: {username: 'username', password: 'password'},
        restart: false,
        windowSize: "maximize",
        timeouts: {
@@ -1277,6 +1300,22 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fileName` **[string][18]** file name to save.
 -   `fullPage` **[boolean][31]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
+### scrollIntoView
+
+Scroll element into viewport.
+
+```js
+I.scrollIntoView('#submit');
+I.scrollIntoView('#submit', true);
+I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+```
+
+#### Parameters
+
+-   `locator` **([string][18] | [object][19])** located by CSS|XPath|strict locator.
+-   `scrollIntoViewOptions`  
+-   `alignToTop` **([boolean][31] | [object][19])** (optional) or scrollIntoViewOptions (optional), see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][32].
+
 ### scrollPageToBottom
 
 Scroll page to the bottom.
@@ -1536,7 +1575,7 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][18]** element value to check.
--   `context` **([string][18] | [object][19]?)?** (optional) element located by CSS|XPath|strict locator. 
+-   `context` **([string][18] | [object][19]?)** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 
@@ -1587,7 +1626,7 @@ I.setCookie({name: 'auth', value: true});
 #### Parameters
 
 -   `cookie` **[object][19]** a cookie object.Uses Selenium's JSON [cookie
-    format][32].
+    format][33].
 
 ### setGeoLocation
 
@@ -1629,7 +1668,7 @@ I.switchToNextTab(2);
 #### Parameters
 
 -   `num` **[number][22]?** (optional) number of tabs to switch forward, default: 1. 
--   `sec` **[number][22]?** (optional) time in seconds to wait. 
+-   `sec` **([number][22] | null)?** (optional) time in seconds to wait. 
 
 ### switchToPreviousTab
 
@@ -1662,6 +1701,24 @@ await I.switchToWindow( window );
 #### Parameters
 
 -   `window`  
+
+### type
+
+Types out the given string or the array of keys provided.
+_Note:_ Should only be used when using [`fillField`][29] is not an option.
+
+```js
+// When passing in a string
+I.type('Type this out.');
+// When passing in an array
+I.type(['T', 'E', 'X', 'T']);
+```
+
+#### Parameters
+
+-   `keys`  
+-   `key` **([string][18] | [Array][28]&lt;[string][18]>)** or array of keys to type.
+    Type out given array of keys or a string of text
 
 ### uncheckOption
 
@@ -1962,4 +2019,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[32]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[32]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+
+[33]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object

@@ -2,6 +2,7 @@ const fs = require('fs');
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const chai = require('chai');
 const chaiSubset = require('chai-subset');
 const { Project, StructureKind, ts } = require('ts-morph');
@@ -17,8 +18,11 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 chai.use(chaiSubset);
 
 describe('Definitions', function () {
-  this.timeout(10000);
+  this.timeout(20000);
   this.retries(4);
+  before(() => {
+    execSync('npm run def', { cwd: pathToRootOfProject });
+  });
   afterEach(() => {
     try {
       fs.unlinkSync(`${codecept_dir}/steps.d.ts`);
@@ -34,17 +38,16 @@ describe('Definitions', function () {
         const types = typesFrom(`${codecept_dir}/steps.d.ts`);
         types.should.be.valid;
 
-        const definitionsFile = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
-        const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('index').getStructure();
-        index.properties.should.containSubset([
-          { name: 'recorder', type: 'CodeceptJS.Recorder' },
-          { name: 'event', type: 'CodeceptJS.event' },
-          { name: 'output', type: 'CodeceptJS.output' },
-          { name: 'config', type: 'typeof CodeceptJS.Config' },
-          { name: 'container', type: 'typeof CodeceptJS.Container' },
+        const index = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
+        index.statements.should.containSubset([
+          { declarations: [{ name: 'recorder', type: 'CodeceptJS.Recorder' }] },
+          { declarations: [{ name: 'event', type: 'typeof CodeceptJS.event' }] },
+          { declarations: [{ name: 'output', type: 'typeof CodeceptJS.output' }] },
+          { declarations: [{ name: 'config', type: 'typeof CodeceptJS.Config' }] },
+          { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
         ]);
         const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure();
-        codeceptjs.type.should.equal('CodeceptJS.index');
+        codeceptjs.type.should.equal('typeof CodeceptJS.index');
         done();
       });
     });

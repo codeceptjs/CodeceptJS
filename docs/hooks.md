@@ -1,8 +1,9 @@
 ---
-id: hooks
+permalink: /hooks
 title: Bootstrap / Teardown / Plugins
 ---
 
+# Bootstrap / Teardown / Plugins
 
 CodeceptJS provides API to run custom code before and after the test and inject custom listeners into the event system.
 
@@ -131,7 +132,7 @@ First, `bootstrapAll` is called. Then two `bootstrap` runs in each of workers. T
 
 The `bootstrapAll` and `teardownAll` hooks are preferred to use for setting up common logic of tested project: to start application server or database, to start webdriver's grid.
 
-The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](https://codecept.io/helpers/WebDriverIO#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
+The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](/helpers/WebDriverIO#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
 
 Same as `bootstrap` and `teardown`, there are 3 ways to define `bootstrapAll` and `teardownAll` functions:
 
@@ -239,7 +240,7 @@ module.exports = {
 
 Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.
 
-CodeceptJS includes [built-in plugins](https://codecept.io/plugins/) which extend basic functionality and can be turned on and off on purpose. Taking them as [examples](https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin) you can develop your custom plugins.
+CodeceptJS includes [built-in plugins](/plugins/) which extend basic functionality and can be turned on and off on purpose. Taking them as [examples](https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin) you can develop your custom plugins.
 
 A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:
 
@@ -284,7 +285,7 @@ Several plugins can be enabled as well:
 
 ### Example: Execute code for a specific group of tests
 
-If you need to execute some code before a group of tests, you can [mark these tests with a same tag](https://codecept.io/advanced/#tags). Then to listen for tests where this tag is included (see [test object api](#test-object)).
+If you need to execute some code before a group of tests, you can [mark these tests with a same tag](/advanced/#tags). Then to listen for tests where this tag is included (see [test object api](#test-object)).
 
 Let's say we need to populate database for a group of tests.
 
@@ -399,7 +400,9 @@ Test events provide a test object with following fields:
 * `tags` array of tags for this test
 * `file` path to a file with a test.
 * `steps` array of executed steps (available only in `test.passed`, `test.failed`, `test.finished` event)
-
+* `skipInfo` additional test options when test skipped 
+* * `message` string with reason for skip
+* * `description` string with test body
 and others
 
 #### Step Object
@@ -536,7 +539,7 @@ CodeceptJS can be imported and used in custom runners.
 To initialize Codecept you need to create Config and Container objects.
 
 ```js
-const { container: Container, codecept: Codecept } = require('codeceptjs').container;
+const { container: Container, codecept: Codecept } = require('codeceptjs');
 
 const config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
 const opts = { steps: true };

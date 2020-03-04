@@ -1,8 +1,12 @@
 ---
-id: examples
+permalink: /examples
+layout: Section
+sidebar: false
 title: Examples
+editLink: false
 ---
 
+# Examples
 > Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)
 ## [TodoMVC Examples](https://github.com/codecept-js/examples)
 
@@ -17,7 +21,7 @@ Tests repository demonstrate usage of
 * TestCafe plugin
 * Toggle headless mode with env variables
 * PageObjects
-* Cucumber Syntax
+* Cucumber syntax
 
 ## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
 
@@ -29,7 +33,7 @@ Our team uses it to test new features and run simple scenarios.
 
 ![](https://user-images.githubusercontent.com/220264/56353972-56975080-61db-11e9-8b23-06e8b4620995.png)
 
-End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps to collect user feedback and transform it into professional bugreports.
+End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps collecting users' feedbacks and transforming them into professional bug reports.
 
 Tests repository demonstrate usage of
 

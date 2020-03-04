@@ -1,7 +1,9 @@
 ---
-id: mobile
+permalink: /mobile
 title: Mobile Testing with Appium
 ---
+
+# Mobile Testing with Appium
 
 CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.
 Such tests are executed using [Appium](http://appium.io) on emulated or physical devices. Also, Appium allows to test web application on mobile devices.
@@ -17,7 +19,7 @@ I.see('davert@codecept.io', '~email of the customer'));
 I.clearField('~email of the customer'));
 I.dontSee('Nothing special', '~email of the customer'));
 I.seeElement({
-  android: 'android.widget.Button',
+  andropermalink: /'android.widget.Button',
   ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'
 });
 ```
@@ -260,7 +262,7 @@ It is often happen that mobile applications behave similarly on different platfo
 CodeceptJS provides a way to specify different locators for Android and iOS platforms:
 
 ```js
-I.click({android: '//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
+I.click({andropermalink: /'//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
 
 In case some code should be executed on one platform and ignored on others use `runOnAndroid` and `runOnIOS` methods:

@@ -1,5 +1,7 @@
 ---
-id: Protractor
+permalink: /helpers/Protractor
+editLink: false
+sidebar: auto
 title: Protractor
 ---
 
@@ -1092,9 +1094,13 @@ I.seeInField('#searchform input','Search');
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
 given string.
 
+```js
+I.seeInPopup('Popup text');
+```
+
 #### Parameters
 
--   `text`  
+-   `text` **[string][9]** value to check.
 
 ### seeInSource
 
@@ -1158,8 +1164,8 @@ I.seeTextEquals('text', 'h1');
 
 #### Parameters
 
--   `text`  
--   `context`   
+-   `text` **[string][9]** element value to check.
+-   `context` **([string][9] | [object][10]?)** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 

@@ -815,6 +815,22 @@ declare namespace CodeceptJS {
          */
         grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
         /**
+         * Scroll element into viewport.
+         *
+         * ```js
+         * I.scrollIntoView('#submit');
+         * I.scrollIntoView('#submit', true);
+         * I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+         * ```
+         *
+         * @param {string|object} locator located by CSS|XPath|strict locator.
+         * @param {boolean|object} alignToTop (optional) or scrollIntoViewOptions (optional), see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView.
+         *
+         *
+         * Supported only for web testing
+         */
+        scrollIntoView(locator: string | any, alignToTop: boolean | any): void;
+        /**
          * Verifies that the specified checkbox is checked.
          *
          * ```js
@@ -891,7 +907,7 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
          * @param {string|Array<*>} option visible text or value of option.
          *
-         * * Supported on only for web testing!
+         * Supported only for web testing
          */
         selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
         /**
@@ -970,30 +986,84 @@ declare namespace CodeceptJS {
          */
         seeFile(name: string): void;
         /**
+         * Waits for file to be present in current directory.
+         *
+         * ```js
+         * I.handleDownloads();
+         * I.click('Download large File');
+         * I.amInPath('output/downloads');
+         * I.waitForFile('largeFilesName.txt', 10); // wait 10 seconds for file
+         * ```
+         * @param {string} name
+         * @param {number} [sec=1] seconds to wait
+         */
+        waitForFile(name: string, sec?: number): void;
+        /**
+         * Checks that file with a name including given text exists in the current directory.
+         *
+         *```js
+         * I.handleDownloads();
+         * I.click('Download as PDF');
+         * I.amInPath('output/downloads');
+         * I.seeFileNameMatching('.pdf');
+         * ```
+         */
+        seeFileNameMatching(): void;
+        /**
          * Checks that file found by `seeFile` includes a text.
          * @param {string} text
-         * @param {string} encoding
+         * @param {string} [encoding='utf8']
          */
-        seeInThisFile(text: string, encoding: string): void;
+        seeInThisFile(text: string, encoding?: string): void;
         /**
          * Checks that file found by `seeFile` doesn't include text.
          * @param {string} text
-         * @param {string} encoding
+         * @param {string} [encoding='utf8']
          */
-        dontSeeInThisFile(text: string, encoding: string): void;
+        dontSeeInThisFile(text: string, encoding?: string): void;
         /**
          * Checks that contents of file found by `seeFile` equal to text.
          * @param {string} text
-         * @param {string} encoding
+         * @param {string} [encoding='utf8']
          */
-        seeFileContentsEqual(text: string, encoding: string): void;
+        seeFileContentsEqual(text: string, encoding?: string): void;
+        /**
+         * Checks that contents of the file found by `seeFile` equal to contents of the file at `pathToReferenceFile`.
+         * @param {string} pathToReferenceFile
+         * @param {string} [encoding='utf8']
+         * @param {string} [encodingReference='utf8']
+         */
+        seeFileContentsEqualReferenceFile(pathToReferenceFile: string, encoding?: string, encodingReference?: string): void;
         /**
          * Checks that contents of file found by `seeFile` doesn't equal to text.
          * @param {string} text
-         * @param {string} encoding
+         * @param {string} [encoding='utf8']
          */
-        dontSeeFileContentsEqual(text: string, encoding: string): void;
+        dontSeeFileContentsEqual(text: string, encoding?: string): void;
+        /**
+         * Returns file names in current directory.
+         *
+         * ```js
+         * I.handleDownloads();
+         * I.click('Download Files');
+         * I.amInPath('output/downloads');
+         * const downloadedFileNames = I.grabFileNames();
+         * ```
+         */
+        grabFileNames(): void;
     }
+    /**
+     * @param {string} file
+     * @param {string} [encoding='utf8']
+     * @returns {string}
+     */
+    function getFileContents(file: string, encoding?: string): string;
+    /**
+     * @param {string} file
+     * @param {number} timeout
+     * @returns {Promise<any>}
+     */
+    function isFileExists(file: string, timeout: number): Promise<any>;
     class GraphQL {
         /**
          * Executes query via axios call
@@ -2044,6 +2114,1415 @@ declare namespace CodeceptJS {
             [key: string]: any;
         }>;
     }
+    class Playwright {
+        /**
+         * Set the automatic popup response to Accept.
+         * This must be set before a popup is triggered.
+         *
+         * ```js
+         * I.amAcceptingPopups();
+         * I.click('#triggerPopup');
+         * I.acceptPopup();
+         * ```
+         */
+        amAcceptingPopups(): void;
+        /**
+         * Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
+         * Don't confuse popups with modal windows, as created by [various
+         * libraries](http://jster.net/category/windows-modals-popups).
+         */
+        acceptPopup(): void;
+        /**
+         * Set the automatic popup response to Cancel/Dismiss.
+         * This must be set before a popup is triggered.
+         *
+         * ```js
+         * I.amCancellingPopups();
+         * I.click('#triggerPopup');
+         * I.cancelPopup();
+         * ```
+         */
+        amCancellingPopups(): void;
+        /**
+         * Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+         */
+        cancelPopup(): void;
+        /**
+         * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
+         * given string.
+         *
+         * ```js
+         * I.seeInPopup('Popup text');
+         * ```
+         * @param {string} text value to check.
+         *
+         */
+        seeInPopup(text: string): void;
+        /**
+         * Set current page
+         * @param {object} page page to set
+         */
+        _setPage(page: any): void;
+        /**
+         * Add the 'dialog' event listener to a page
+         * @page {playwright.Page}
+         *
+         * The popup listener handles the dialog with the predefined action when it appears on the page.
+         * It also saves a reference to the object which is used in seeInPopup.
+         */
+        _addPopupListener(): void;
+        /**
+         * Gets page URL including hash.
+         */
+        _getPageUrl(): void;
+        /**
+         * Grab the text within the popup. If no popup is visible then it will return null
+         *
+         * ```js
+         * await I.grabPopupText();
+         * ```
+         * @return {Promise<string | null>}
+         */
+        grabPopupText(): Promise<string | null>;
+        /**
+         * Opens a web page in a browser. Requires relative or absolute url.
+         * If url starts with `/`, opens a web page of a site defined in `url` config parameter.
+         *
+         * ```js
+         * I.amOnPage('/'); // opens main page of website
+         * I.amOnPage('https://github.com'); // opens github
+         * I.amOnPage('/login'); // opens a login page
+         * ```
+         *
+         * @param {string} url url path or global url.
+         */
+        amOnPage(url: string): void;
+        /**
+         * Resize the current window to provided width and height.
+         * First parameter can be set to `maximize`.
+         *
+         * @param {number} width width in pixels or `maximize`.
+         * @param {number} height height in pixels.
+         *
+         * Unlike other drivers Playwright changes the size of a viewport, not the window!
+         * Playwright does not control the window of a browser so it can't adjust its real size.
+         * It also can't maximize a window.
+         *
+         * Update configuration to change real window size on start:
+         *
+         * ```js
+         * // inside codecept.conf.js
+         * // @codeceptjs/configure package must be installed
+         * { setWindowSize } = require('@codeceptjs/configure');
+         * ````
+         */
+        resizeWindow(width: number, height: number): void;
+        /**
+         * Set headers for all next requests
+         *
+         * ```js
+         * I.haveRequestHeaders({
+         *    'X-Sent-By': 'CodeceptJS',
+         * });
+         * ```
+         *
+         * @param {object} customHeaders headers to set
+         */
+        haveRequestHeaders(customHeaders: any): void;
+        /**
+         * Moves cursor to element matched by locator.
+         * Extra shift can be set with offsetX and offsetY options.
+         *
+         * ```js
+         * I.moveCursorTo('.tooltip');
+         * I.moveCursorTo('#submit', 5,5);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
+         * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
+         *
+         *
+         */
+        moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
+        /**
+         * Drag an item to a destination element.
+         *
+         * ```js
+         * I.dragAndDrop('#dragHandle', '#container');
+         * ```
+         *
+         * @param {string|object} srcElement located by CSS|XPath|strict locator.
+         * @param {string|object} destElement located by CSS|XPath|strict locator.
+         */
+        dragAndDrop(srcElement: string | any, destElement: string | any): void;
+        /**
+         * Reload the current page.
+         *
+         * ```js
+         * I.refreshPage();
+         * ```
+         *
+         */
+        refreshPage(): void;
+        /**
+         * Scroll page to the top.
+         *
+         * ```js
+         * I.scrollPageToTop();
+         * ```
+         *
+         */
+        scrollPageToTop(): void;
+        /**
+         * Scroll page to the bottom.
+         *
+         * ```js
+         * I.scrollPageToBottom();
+         * ```
+         *
+         */
+        scrollPageToBottom(): void;
+        /**
+         * Scrolls to element matched by locator.
+         * Extra shift can be set with offsetX and offsetY options.
+         *
+         * ```js
+         * I.scrollTo('footer');
+         * I.scrollTo('#submit', 5, 5);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
+         * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
+         */
+        scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
+        /**
+         * Checks that title contains text.
+         *
+         * ```js
+         * I.seeInTitle('Home Page');
+         * ```
+         *
+         * @param {string} text text value to check.
+         */
+        seeInTitle(text: string): void;
+        /**
+         * Retrieves a page scroll position and returns it to test.
+         * Resumes test execution, so **should be used inside an async function with `await`** operator.
+         *
+         * ```js
+         * let { x, y } = await I.grabPageScrollPosition();
+         * ```
+         *
+         * @returns {Promise<Object<string, *>>} scroll position
+         */
+        grabPageScrollPosition(): Promise<{
+            [key: string]: any;
+        }>;
+        /**
+         * Checks that title is equal to provided one.
+         *
+         * ```js
+         * I.seeTitleEquals('Test title.');
+         * ```
+         */
+        seeTitleEquals(): void;
+        /**
+         * Checks that title does not contain text.
+         *
+         * ```js
+         * I.dontSeeInTitle('Error');
+         * ```
+         *
+         * @param {string} text value to check.
+         */
+        dontSeeInTitle(text: string): void;
+        /**
+         * Retrieves a page title and returns it to test.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
+         *
+         * ```js
+         * let title = await I.grabTitle();
+         * ```
+         *
+         * @returns {Promise<string>} title
+         */
+        grabTitle(): Promise<string>;
+        /**
+         * Get elements by different locator types, including strict locator
+         * Should be used in custom helpers:
+         *
+         * ```js
+         * const elements = await this.helpers['Playwright']._locate({name: 'password'});
+         * ```
+         *
+         *
+         */
+        _locate(): void;
+        /**
+         * Find a checkbox by providing human readable text:
+         * NOTE: Assumes the checkable element exists
+         *
+         * ```js
+         * this.helpers['Playwright']._locateCheckable('I agree with terms and conditions').then // ...
+         * ```
+         */
+        _locateCheckable(): void;
+        /**
+         * Find a clickable element by providing human readable text:
+         *
+         * ```js
+         * this.helpers['Playwright']._locateClickable('Next page').then // ...
+         * ```
+         */
+        _locateClickable(): void;
+        /**
+         * Find field elements by providing human readable text:
+         *
+         * ```js
+         * this.helpers['Playwright']._locateFields('Your email').then // ...
+         * ```
+         */
+        _locateFields(): void;
+        /**
+         * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+         *
+         * ```js
+         * I.switchToNextTab();
+         * I.switchToNextTab(2);
+         * ```
+         *
+         * @param {number} [num=1]
+         */
+        switchToNextTab(num?: number): void;
+        /**
+         * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+         *
+         * ```js
+         * I.switchToPreviousTab();
+         * I.switchToPreviousTab(2);
+         * ```
+         * @param {number} [num=1]
+         */
+        switchToPreviousTab(num?: number): void;
+        /**
+         * Close current tab and switches to previous.
+         *
+         * ```js
+         * I.closeCurrentTab();
+         * ```
+         */
+        closeCurrentTab(): void;
+        /**
+         * Close all tabs except for the current one.
+         *
+         * ```js
+         * I.closeOtherTabs();
+         * ```
+         */
+        closeOtherTabs(): void;
+        /**
+         * Open new tab and switch to it
+         *
+         * ```js
+         * I.openNewTab();
+         * ```
+         */
+        openNewTab(): void;
+        /**
+         * Grab number of open tabs.
+         *
+         * ```js
+         * let tabs = await I.grabNumberOfOpenTabs();
+         * ```
+         *
+         * @returns {Promise<number>} number of open tabs
+         */
+        grabNumberOfOpenTabs(): Promise<number>;
+        /**
+         * Checks that a given Element is visible
+         * Element is located by CSS or XPath.
+         *
+         * ```js
+         * I.seeElement('#modal');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         *
+         */
+        seeElement(locator: CodeceptJS.LocatorOrString): void;
+        /**
+         * Opposite to `seeElement`. Checks that element is not visible (or in DOM)
+         *
+         * ```js
+         * I.dontSeeElement('.modal'); // modal is not shown
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
+         *
+         */
+        dontSeeElement(locator: CodeceptJS.LocatorOrString): void;
+        /**
+         * Checks that a given Element is present in the DOM
+         * Element is located by CSS or XPath.
+         *
+         * ```js
+         * I.seeElementInDOM('#modal');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         *
+         */
+        seeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
+        /**
+         * Opposite to `seeElementInDOM`. Checks that element is not on page.
+         *
+         * ```js
+         * I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or not
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
+         */
+        dontSeeElementInDOM(locator: CodeceptJS.LocatorOrString): void;
+        /**
+         * Perform a click on a link or a button, given by a locator.
+         * If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+         * For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+         * For images, the "alt" attribute and inner text of any parent links are searched.
+         *
+         * The second parameter is a context (CSS or XPath locator) to narrow the search.
+         *
+         * ```js
+         * // simple link
+         * I.click('Logout');
+         * // button of form
+         * I.click('Submit');
+         * // CSS button
+         * I.click('#form input[type=submit]');
+         * // XPath
+         * I.click('//form/*[@type=submit]');
+         * // link in context
+         * I.click('Logout', '#nav');
+         * // using strict locator
+         * I.click({css: 'nav a.login'});
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         *
+         *
+         *
+         */
+        click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Performs a click on a link and waits for navigation before moving on.
+         *
+         * ```js
+         * I.clickLink('Logout', '#nav');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator
+         *
+         *
+         */
+        clickLink(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Performs a double-click on an element matched by link|button|label|CSS or XPath.
+         * Context can be specified as second parameter to narrow search.
+         *
+         * ```js
+         * I.doubleClick('Edit');
+         * I.doubleClick('Edit', '.actions');
+         * I.doubleClick({css: 'button.accept'});
+         * I.doubleClick('.btn.edit');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+         *
+         *
+         *
+         */
+        doubleClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Performs right click on a clickable element matched by semantic locator, CSS or XPath.
+         *
+         * ```js
+         * // right click element with id el
+         * I.rightClick('#el');
+         * // right click link or button with text "Click me"
+         * I.rightClick('Click me');
+         * // right click button with text "Click me" inside .context
+         * I.rightClick('Click me', '.context');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator clickable element located by CSS|XPath|strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         *
+         *
+         *
+         */
+        rightClick(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Selects a checkbox or radio button.
+         * Element is located by label or name or CSS or XPath.
+         *
+         * The second parameter is a context (CSS or XPath locator) to narrow the search.
+         *
+         * ```js
+         * I.checkOption('#agree');
+         * I.checkOption('I Agree to Terms and Conditions');
+         * I.checkOption('agree', '//form');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         */
+        checkOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Unselects a checkbox or radio button.
+         * Element is located by label or name or CSS or XPath.
+         *
+         * The second parameter is a context (CSS or XPath locator) to narrow the search.
+         *
+         * ```js
+         * I.uncheckOption('#agree');
+         * I.uncheckOption('I Agree to Terms and Conditions');
+         * I.uncheckOption('agree', '//form');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} field checkbox located by label | name | CSS | XPath | strict locator.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
+         */
+        uncheckOption(field: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Verifies that the specified checkbox is checked.
+         *
+         * ```js
+         * I.seeCheckboxIsChecked('Agree');
+         * I.seeCheckboxIsChecked('#agree'); // I suppose user agreed to terms
+         * I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
+         *
+         */
+        seeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
+        /**
+         * Verifies that the specified checkbox is not checked.
+         *
+         * ```js
+         * I.dontSeeCheckboxIsChecked('#agree'); // located by ID
+         * I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
+         * I.dontSeeCheckboxIsChecked('agree'); // located by name
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
+         *
+         */
+        dontSeeCheckboxIsChecked(field: CodeceptJS.LocatorOrString): void;
+        /**
+         * Presses a key in the browser and leaves it in a down state.
+         *
+         * To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`](#click)).
+         *
+         * ```js
+         * I.pressKeyDown('Control');
+         * I.click('#element');
+         * I.pressKeyUp('Control');
+         * ```
+         *
+         * @param {string} key name of key to press down.
+         *
+         */
+        pressKeyDown(key: string): void;
+        /**
+         * Releases a key in the browser which was previously set to a down state.
+         *
+         * To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`](#click)).
+         *
+         * ```js
+         * I.pressKeyDown('Control');
+         * I.click('#element');
+         * I.pressKeyUp('Control');
+         * ```
+         *
+         * @param {string} key name of key to release.
+         *
+         */
+        pressKeyUp(key: string): void;
+        /**
+         * Presses a key in the browser (on a focused element).
+         *
+         * _Hint:_ For populating text field or textarea, it is recommended to use [`fillField`](#fillfield).
+         *
+         * ```js
+         * I.pressKey('Backspace');
+         * ```
+         *
+         * To press a key in combination with modifier keys, pass the sequence as an array. All modifier keys (`'Alt'`, `'Control'`, `'Meta'`, `'Shift'`) will be released afterwards.
+         *
+         * ```js
+         * I.pressKey(['Control', 'Z']);
+         * ```
+         *
+         * For specifying operation modifier key based on operating system it is suggested to use `'CommandOrControl'`.
+         * This will press `'Command'` (also known as `'Meta'`) on macOS machines and `'Control'` on non-macOS machines.
+         *
+         * ```js
+         * I.pressKey(['CommandOrControl', 'Z']);
+         * ```
+         *
+         * Some of the supported key names are:
+         * - `'AltLeft'` or `'Alt'`
+         * - `'AltRight'`
+         * - `'ArrowDown'`
+         * - `'ArrowLeft'`
+         * - `'ArrowRight'`
+         * - `'ArrowUp'`
+         * - `'Backspace'`
+         * - `'Clear'`
+         * - `'ControlLeft'` or `'Control'`
+         * - `'ControlRight'`
+         * - `'Command'`
+         * - `'CommandOrControl'`
+         * - `'Delete'`
+         * - `'End'`
+         * - `'Enter'`
+         * - `'Escape'`
+         * - `'F1'` to `'F12'`
+         * - `'Home'`
+         * - `'Insert'`
+         * - `'MetaLeft'` or `'Meta'`
+         * - `'MetaRight'`
+         * - `'Numpad0'` to `'Numpad9'`
+         * - `'NumpadAdd'`
+         * - `'NumpadDecimal'`
+         * - `'NumpadDivide'`
+         * - `'NumpadMultiply'`
+         * - `'NumpadSubtract'`
+         * - `'PageDown'`
+         * - `'PageUp'`
+         * - `'Pause'`
+         * - `'Return'`
+         * - `'ShiftLeft'` or `'Shift'`
+         * - `'ShiftRight'`
+         * - `'Space'`
+         * - `'Tab'`
+         *
+         * @param {string|string[]} key key or array of keys to press.
+         *
+         *
+         * _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Playwright#1313](https://github.com/GoogleChrome/Playwright/issues/1313)).
+         */
+        pressKey(key: string | string[]): void;
+        /**
+         * Fills a text field or textarea, after clearing its value, with the given string.
+         * Field is located by name, label, CSS, or XPath.
+         *
+         * ```js
+         * // by label
+         * I.fillField('Email', 'hello@world.com');
+         * // by name
+         * I.fillField('password', secret('123456'));
+         * // by CSS
+         * I.fillField('form#login input[name=username]', 'John');
+         * // or by strict locator
+         * I.fillField({css: 'form#login input[name=username]'}, 'John');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
+         * @param {string} value text value to fill.
+         *
+         *
+         */
+        fillField(field: CodeceptJS.LocatorOrString, value: string): void;
+        /**
+         * Clears a `<textarea>` or text `<input>` element's value.
+         *
+         * ```js
+         * I.clearField('Email');
+         * I.clearField('user[email]');
+         * I.clearField('#email');
+         * ```
+         * @param {string|object} editable field located by label|name|CSS|XPath|strict locator.
+         */
+        clearField(editable: string | any): void;
+        /**
+         * Appends text to a input field or textarea.
+         * Field is located by name, label, CSS or XPath
+         *
+         * ```js
+         * I.appendField('#myTextField', 'appended');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
+         * @param {string} value text value to append.
+         *
+         *
+         */
+        appendField(field: CodeceptJS.LocatorOrString, value: string): void;
+        /**
+         * Checks that the given input field or textarea equals to given value.
+         * For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+         *
+         * ```js
+         * I.seeInField('Username', 'davert');
+         * I.seeInField({css: 'form textarea'},'Type your comment here');
+         * I.seeInField('form input[type=hidden]','hidden_value');
+         * I.seeInField('#searchform input','Search');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
+         * @param {string} value value to check.
+         *
+         */
+        seeInField(field: CodeceptJS.LocatorOrString, value: string): void;
+        /**
+         * Checks that value of input field or textarea doesn't equal to given value
+         * Opposite to `seeInField`.
+         *
+         * ```js
+         * I.dontSeeInField('email', 'user@user.com'); // field by name
+         * I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
+         * @param {string} value value to check.
+         */
+        dontSeeInField(field: CodeceptJS.LocatorOrString, value: string): void;
+        /**
+         * Attaches a file to element located by label, name, CSS or XPath
+         * Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+         * File will be uploaded to remote system (if tests are running remotely).
+         *
+         * ```js
+         * I.attachFile('Avatar', 'data/avatar.jpg');
+         * I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
+         * @param {string} pathToFile local file path relative to codecept.json config file.
+         *
+         */
+        attachFile(locator: CodeceptJS.LocatorOrString, pathToFile: string): void;
+        /**
+         * Selects an option in a drop-down select.
+         * Field is searched by label | name | CSS | XPath.
+         * Option is selected by visible text or by value.
+         *
+         * ```js
+         * I.selectOption('Choose Plan', 'Monthly'); // select by label
+         * I.selectOption('subscription', 'Monthly'); // match option by text
+         * I.selectOption('subscription', '0'); // or by value
+         * I.selectOption('//form/select[@name=account]','Premium');
+         * I.selectOption('form select[name=account]', 'Premium');
+         * I.selectOption({css: 'form select[name=account]'}, 'Premium');
+         * ```
+         *
+         * Provide an array for the second argument to select multiple options.
+         *
+         * ```js
+         * I.selectOption('Which OS do you use?', ['Android', 'iOS']);
+         * ```
+         * @param {CodeceptJS.LocatorOrString} select field located by label|name|CSS|XPath|strict locator.
+         * @param {string|Array<*>} option visible text or value of option.
+         */
+        selectOption(select: CodeceptJS.LocatorOrString, option: string | any[]): void;
+        /**
+         * Grab number of visible elements by locator.
+         *
+         * ```js
+         * let numOfElements = await I.grabNumberOfVisibleElements('p');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         * @returns {Promise<number>} number of visible elements
+         *
+         */
+        grabNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString): Promise<number>;
+        /**
+         * Checks that current url contains a provided fragment.
+         *
+         * ```js
+         * I.seeInCurrentUrl('/register'); // we are on registration page
+         * ```
+         *
+         * @param {string} url a fragment to check
+         */
+        seeInCurrentUrl(url: string): void;
+        /**
+         * Checks that current url does not contain a provided fragment.
+         *
+         * @param {string} url value to check.
+         */
+        dontSeeInCurrentUrl(url: string): void;
+        /**
+         * Checks that current url is equal to provided one.
+         * If a relative url provided, a configured url will be prepended to it.
+         * So both examples will work:
+         *
+         * ```js
+         * I.seeCurrentUrlEquals('/register');
+         * I.seeCurrentUrlEquals('http://my.site.com/register');
+         * ```
+         *
+         * @param {string} url value to check.
+         */
+        seeCurrentUrlEquals(url: string): void;
+        /**
+         * Checks that current url is not equal to provided one.
+         * If a relative url provided, a configured url will be prepended to it.
+         *
+         * ```js
+         * I.dontSeeCurrentUrlEquals('/login'); // relative url are ok
+         * I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also ok
+         * ```
+         *
+         * @param {string} url value to check.
+         */
+        dontSeeCurrentUrlEquals(url: string): void;
+        /**
+         * Checks that a page contains a visible text.
+         * Use context parameter to narrow down the search.
+         *
+         * ```js
+         * I.see('Welcome'); // text welcome on a page
+         * I.see('Welcome', '.content'); // text inside .content div
+         * I.see('Register', {css: 'form.register'}); // use strict locator
+         * ```
+         * @param {string} text expected on page.
+         * @param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+         *
+         *
+         */
+        see(text: string, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Checks that text is equal to provided one.
+         *
+         * ```js
+         * I.seeTextEquals('text', 'h1');
+         * ```
+         *
+         * @param {string} text element value to check.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
+         */
+        seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Opposite to `see`. Checks that a text is not present on a page.
+         * Use context parameter to narrow down the search.
+         *
+         * ```js
+         * I.dontSee('Login'); // assume we are already logged in.
+         * I.dontSee('Login', '.nav'); // no login inside .nav element
+         * ```
+         *
+         * @param {string} text which is not present.
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+         *
+         *
+         *
+         */
+        dontSee(text: string, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Retrieves page source and returns it to test.
+         * Resumes test execution, so should be used inside an async function.
+         *
+         * ```js
+         * let pageSource = await I.grabSource();
+         * ```
+         *
+         * @returns {Promise<string>} source code
+         */
+        grabSource(): Promise<string>;
+        /**
+         * Get JS log from browser.
+         *
+         * ```js
+         * let logs = await I.grabBrowserLogs();
+         * console.log(JSON.stringify(logs))
+         * ```
+         * @return {Promise<any[]>}
+         */
+        grabBrowserLogs(): Promise<any[]>;
+        /**
+         * Get current URL from browser.
+         * Resumes test execution, so should be used inside an async function.
+         *
+         * ```js
+         * let url = await I.grabCurrentUrl();
+         * console.log(`Current URL is [${url}]`);
+         * ```
+         *
+         * @returns {Promise<string>} current URL
+         */
+        grabCurrentUrl(): Promise<string>;
+        /**
+         * Checks that the current page contains the given string in its raw source code.
+         *
+         * ```js
+         * I.seeInSource('<h1>Green eggs &amp; ham</h1>');
+         * ```
+         * @param {string} text value to check.
+         */
+        seeInSource(text: string): void;
+        /**
+         * Checks that the current page does not contains the given string in its raw source code.
+         *
+         * ```js
+         * I.dontSeeInSource('<!--'); // no comments in source
+         * ```
+         *
+         * @param {string} value to check.
+         *
+         */
+        dontSeeInSource(value: string): void;
+        /**
+         * Asserts that an element appears a given number of times in the DOM.
+         * Element is located by label or name or CSS or XPath.
+         *
+         *
+         * ```js
+         * I.seeNumberOfElements('#submitBtn', 1);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} num number of elements.
+         *
+         *
+         *
+         */
+        seeNumberOfElements(locator: CodeceptJS.LocatorOrString, num: number): void;
+        /**
+         * Asserts that an element is visible a given number of times.
+         * Element is located by CSS or XPath.
+         *
+         * ```js
+         * I.seeNumberOfVisibleElements('.buttons', 3);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} num number of elements.
+         *
+         *
+         *
+         */
+        seeNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number): void;
+        /**
+         * Sets a cookie.
+         *
+         * ```js
+         * I.setCookie({name: 'auth', value: true});
+         * ```
+         *
+         * @param {object} cookie a cookie object.
+         */
+        setCookie(cookie: any): void;
+        /**
+         * Checks that cookie with given name exists.
+         *
+         * ```js
+         * I.seeCookie('Auth');
+         * ```
+         *
+         * @param {string} name cookie name.
+         *
+         *
+         */
+        seeCookie(name: string): void;
+        /**
+         * Checks that cookie with given name does not exist.
+         *
+         * ```js
+         * I.dontSeeCookie('auth'); // no auth cookie
+         * ```
+         *
+         * @param {string} name cookie name.
+         */
+        dontSeeCookie(name: string): void;
+        /**
+         * Gets a cookie object by name.
+         * If none provided gets all cookies.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
+         *
+         * ```js
+         * let cookie = await I.grabCookie('auth');
+         * assert(cookie.value, '123456');
+         * ```
+         *
+         * @param {?string} [name=null] cookie name.
+         * @returns {Promise<string>} attribute value
+         *
+         * Returns cookie in JSON format. If name not passed returns all cookies for this domain.
+         */
+        grabCookie(name?: string): Promise<string>;
+        /**
+         * Clears a cookie by name,
+         * if none provided clears all cookies.
+         *
+         * ```js
+         * I.clearCookie();
+         * I.clearCookie('test');
+         * ```
+         *
+         * @param {?string} [cookie=null] (optional, `null` by default) cookie name
+         */
+        clearCookie(cookie?: string): void;
+        /**
+         * Executes sync script on a page.
+         * Pass arguments to function as additional parameters.
+         * Will return execution result to a test.
+         * In this case you should use async function and await to receive results.
+         *
+         * Example with jQuery DatePicker:
+         *
+         * ```js
+         * // change date of jQuery DatePicker
+         * I.executeScript(function() {
+         *   // now we are inside browser context
+         *   $('date').datetimepicker('setDate', new Date());
+         * });
+         * ```
+         * Can return values. Don't forget to use `await` to get them.
+         *
+         * ```js
+         * let date = await I.executeScript(function(el) {
+         *   // only basic types can be returned
+         *   return $(el).datetimepicker('getDate').toString();
+         * }, '#date'); // passing jquery selector
+         * ```
+         *
+         * @param {string|function} fn function to be executed in browser context.
+         * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
+         *
+         *
+         * If a function returns a Promise It will wait for it resolution.
+         */
+        executeScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
+        /**
+         * Executes async script on page.
+         * Provided function should execute a passed callback (as first argument) to signal it is finished.
+         *
+         * Example: In Vue.js to make components completely rendered we are waiting for [nextTick](https://vuejs.org/v2/api/#Vue-nextTick).
+         *
+         * ```js
+         * I.executeAsyncScript(function(done) {
+         *   Vue.nextTick(done); // waiting for next tick
+         * });
+         * ```
+         *
+         * By passing value to `done()` function you can return values.
+         * Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
+         *
+         * ```js
+         * let val = await I.executeAsyncScript(function(url, done) {
+         *   // in browser context
+         *   $.ajax(url, { success: (data) => done(data); }
+         * }, 'http://ajax.callback.url/');
+         * ```
+         *
+         * @param {string|function} fn function to be executed in browser context.
+         * @param {...any} args to be passed to function.
+         * @return {Promise<any>}
+         *
+         *
+         * Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
+         */
+        executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
+        /**
+         * Retrieves a text from an element located by CSS or XPath and returns it to test.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
+         *
+         * ```js
+         * let pin = await I.grabTextFrom('#pin');
+         * ```
+         * If multiple elements found returns an array of texts.
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @returns {Promise<string|string[]>} attribute value
+         *
+         */
+        grabTextFrom(locator: CodeceptJS.LocatorOrString): Promise<string | string[]>;
+        /**
+         * Retrieves a value from a form element located by CSS or XPath and returns it to test.
+         * Resumes test execution, so **should be used inside async function with `await`** operator.
+         *
+         * ```js
+         * let email = await I.grabValueFrom('input[name=email]');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
+         * @returns {Promise<string>} attribute value
+         */
+        grabValueFrom(locator: CodeceptJS.LocatorOrString): Promise<string>;
+        /**
+         * Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
+         * Resumes test execution, so **should be used inside async function with `await`** operator.
+         * If more than one element is found - an array of HTMLs returned.
+         *
+         * ```js
+         * let postHTML = await I.grabHTMLFrom('#post');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
+         * @returns {Promise<string>} HTML code for an element
+         */
+        grabHTMLFrom(element: CodeceptJS.LocatorOrString): Promise<string>;
+        /**
+         * Grab CSS property for given locator
+         * Resumes test execution, so **should be used inside an async function with `await`** operator.
+         *
+         * ```js
+         * const value = await I.grabCssPropertyFrom('h3', 'font-weight');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {string} cssProperty CSS property name.
+         * @returns {Promise<string>} CSS value
+         *
+         */
+        grabCssPropertyFrom(locator: CodeceptJS.LocatorOrString, cssProperty: string): Promise<string>;
+        /**
+         * Checks that all elements with given locator have given CSS properties.
+         *
+         * ```js
+         * I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         * @param {object} cssProperties object with CSS properties and their values to check.
+         *
+         */
+        seeCssPropertiesOnElements(locator: CodeceptJS.LocatorOrString, cssProperties: any): void;
+        /**
+         * Checks that all elements with given locator have given attributes.
+         *
+         * ```js
+         * I.seeAttributesOnElements('//form', { method: "post"});
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         * @param {object} attributes attributes and their values to check.
+         *
+         */
+        seeAttributesOnElements(locator: CodeceptJS.LocatorOrString, attributes: any): void;
+        /**
+         * Drag the scrubber of a slider to a given position
+         * For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+         *
+         * ```js
+         * I.dragSlider('#slider', 30);
+         * I.dragSlider('#slider', -70);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by label|name|CSS|XPath|strict locator.
+         * @param {number} offsetX position to drag.
+         *
+         */
+        dragSlider(locator: CodeceptJS.LocatorOrString, offsetX: number): void;
+        /**
+         * Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+         * An array as a result will be returned if there are more than one matched element.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
+         *
+         * ```js
+         * let hint = await I.grabAttributeFrom('#tooltip', 'title');
+         * ```
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {string} attr attribute name.
+         * @returns {Promise<string>} attribute value
+         *
+         */
+        grabAttributeFrom(locator: CodeceptJS.LocatorOrString, attr: string): Promise<string>;
+        /**
+         * Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+         * Filename is relative to output folder.
+         * Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
+         *
+         * ```js
+         * I.saveScreenshot('debug.png');
+         * I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
+         * ```
+         *
+         * @param {string} fileName file name to save.
+         * @param {boolean} [fullPage=false] (optional, `false` by default) flag to enable fullscreen screenshot mode.
+         */
+        saveScreenshot(fileName: string, fullPage?: boolean): void;
+        /**
+         * Pauses execution for a number of seconds.
+         *
+         * ```js
+         * I.wait(2); // wait 2 secs
+         * ```
+         *
+         * @param {number} sec number of second to wait.
+         */
+        wait(sec: number): void;
+        /**
+         * Waits for element to become enabled (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
+         */
+        waitForEnabled(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waits for the specified value to be in value attribute.
+         *
+         * ```js
+         * I.waitForValue('//input', "GoodValue");
+         * ```
+         *
+         * @param {string|object} field input field.
+         * @param {string }value expected value.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         */
+        waitForValue(field: string | any, value: string, sec?: number): void;
+        /**
+         * Waits for a specified number of elements on the page.
+         *
+         * ```js
+         * I.waitNumberOfVisibleElements('a', 3);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} num number of elements.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         *
+         */
+        waitNumberOfVisibleElements(locator: CodeceptJS.LocatorOrString, num: number, sec?: number): void;
+        /**
+         * Waits for element to be clickable (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForClickable('.btn.continue');
+         * I.waitForClickable('.btn.continue', 5); // wait for 5 secs
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+         */
+        waitForClickable(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waits for element to be present on page (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForElement('.btn.continue');
+         * I.waitForElement('.btn.continue', 5); // wait for 5 secs
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+         *
+         */
+        waitForElement(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waits for an element to become visible on a page (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForVisible('#popup');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         *
+         * This method accepts [React selectors](https://codecept.io/react).
+         */
+        waitForVisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForInvisible('#popup');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         */
+        waitForInvisible(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waits for an element to hide (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitToHide('#popup');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         */
+        waitToHide(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Waiting for the part of the URL to match the expected. Useful for SPA to understand that page was changed.
+         *
+         * ```js
+         * I.waitInUrl('/info', 2);
+         * ```
+         *
+         * @param {string} urlPart value to check.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         */
+        waitInUrl(urlPart: string, sec?: number): void;
+        /**
+         * Waits for the entire URL to match the expected
+         *
+         * ```js
+         * I.waitUrlEquals('/info', 2);
+         * I.waitUrlEquals('http://127.0.0.1:8000/info');
+         * ```
+         *
+         * @param {string} urlPart value to check.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         */
+        waitUrlEquals(urlPart: string, sec?: number): void;
+        /**
+         * Waits for a text to appear (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         * Narrow down search results by providing context.
+         *
+         * ```js
+         * I.waitForText('Thank you, form has been submitted');
+         * I.waitForText('Thank you, form has been submitted', 5, '#modal');
+         * ```
+         *
+         * @param {string }text to wait for.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         * @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
+         */
+        waitForText(text: string, sec?: number, context?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Waits for a network request.
+         *
+         * ```js
+         * I.waitForRequest('http://example.com/resource');
+         * I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET');
+         * ```
+         *
+         * @param {string|function} urlOrPredicate
+         * @param {?number} [sec=null] seconds to wait
+         */
+        waitForRequest(urlOrPredicate: string | ((...params: any[]) => any), sec?: number): void;
+        /**
+         * Waits for a network request.
+         *
+         * ```js
+         * I.waitForResponse('http://example.com/resource');
+         * I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+         * ```
+         *
+         * @param {string|function} urlOrPredicate
+         * @param {?number} [sec=null] number of seconds to wait
+         */
+        waitForResponse(urlOrPredicate: string | ((...params: any[]) => any), sec?: number): void;
+        /**
+         * Switches frame or in case of null locator reverts to parent.
+         *
+         * ```js
+         * I.switchTo('iframe'); // switch to first iframe
+         * I.switchTo(); // switch back to main page
+         * ```
+         *
+         * @param {?CodeceptJS.LocatorOrString} [locator=null] (optional, `null` by default) element located by CSS|XPath|strict locator.
+         */
+        switchTo(locator?: CodeceptJS.LocatorOrString): void;
+        /**
+         * Waits for a function to return true (waits for 1 sec by default).
+         * Running in browser context.
+         *
+         * ```js
+         * I.waitForFunction(fn[, [args[, timeout]])
+         * ```
+         *
+         * ```js
+         * I.waitForFunction(() => window.requests == 0);
+         * I.waitForFunction(() => window.requests == 0, 5); // waits for 5 sec
+         * I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+         * ```
+         *
+         * @param {string|function} fn to be executed in browser context.
+         * @param {any[]|number} [argsOrSec] (optional, `1` by default) arguments for function or seconds.
+         * @param {number} [sec] (optional, `1` by default) time in seconds to wait
+         *
+         */
+        waitForFunction(fn: string | ((...params: any[]) => any), argsOrSec?: any[] | number, sec?: number): void;
+        /**
+         * Waits for navigation to finish. By default takes configured `waitForNavigation` option.
+         *
+         * See [Pupeteer's reference](https://github.com/GoogleChrome/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions)
+         *
+         * @param {*} opts
+         */
+        waitForNavigation(opts: any): void;
+        /**
+         * Waits for a function to return true (waits for 1sec by default).
+         *
+         * ```js
+         * I.waitUntil(() => window.requests == 0);
+         * I.waitUntil(() => window.requests == 0, 5);
+         * ```
+         *
+         * @param {function|string} fn function which is executed in browser context.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         * @param {string} [timeoutMsg=''] message to show in case of timeout fail.
+         * @param {?number} [interval=null]
+         */
+        waitUntil(fn: ((...params: any[]) => any) | string, sec?: number, timeoutMsg?: string, interval?: number): void;
+        /**
+         * Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
+         * Element can be located by CSS or XPath.
+         *
+         * ```js
+         * I.waitForDetached('#popup');
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+         * @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
+         */
+        waitForDetached(locator: CodeceptJS.LocatorOrString, sec?: number): void;
+        /**
+         * Grab the data from performance timing using Navigation Timing API.
+         * The returned data will contain following things in ms:
+         * - responseEnd,
+         * - domInteractive,
+         * - domContentLoadedEventEnd,
+         * - loadEventEnd
+         * Resumes test execution, so **should be used inside an async function with `await`** operator.
+         *
+         * ```js
+         * await I.amOnPage('https://example.com');
+         * let data = await I.grabDataFromPerformanceTiming();
+         * //Returned data
+         * { // all results are in [ms]
+         *   responseEnd: 23,
+         *   domInteractive: 44,
+         *   domContentLoadedEventEnd: 196,
+         *   loadEventEnd: 241
+         * }
+         * ```
+         */
+        grabDataFromPerformanceTiming(): void;
+        /**
+         * Grab the width, height, location of given locator.
+         * Provide `width` or `height`as second param to get your desired prop.
+         * Resumes test execution, so **should be used inside an async function with `await`** operator.
+         *
+         * Returns an object with `x`, `y`, `width`, `height` keys.
+         *
+         * ```js
+         * const value = await I.grabElementBoundingRect('h3');
+         * // value is like { x: 226.5, y: 89, width: 527, height: 220 }
+         * ```
+         *
+         * To get only one metric use second parameter:
+         *
+         * ```js
+         * const width = await I.grabElementBoundingRect('h3', 'width');
+         * // width == 527
+         * ```
+         * @param {string|object} locator element located by CSS|XPath|strict locator.
+         * @param {string} elementSize x, y, width or height of the given element.
+         * @returns {object} Element bounding rectangle
+         */
+        grabElementBoundingRect(locator: string | any, elementSize: string): any;
+    }
     /**
      * This helper works the same as MockRequest helper. It has been included for backwards compatibility
      * reasons. So use MockRequest helper instead of this.
@@ -2239,8 +3718,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.seeTextEquals('text', 'h1');
          * ```
+         *
+         * @param {string} text element value to check.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
          */
-        seeTextEquals(): void;
+        seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Opposite to `see`. Checks that a text is not present on a page.
          * Use context parameter to narrow down the search.
@@ -2865,8 +4347,14 @@ declare namespace CodeceptJS {
         /**
          * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
          * given string.
+         *
+         * ```js
+         * I.seeInPopup('Popup text');
+         * ```
+         * @param {string} text value to check.
+         *
          */
-        seeInPopup(): void;
+        seeInPopup(text: string): void;
         /**
          * Grab the text within the popup. If no popup is visible then it will return null
          *
@@ -3273,8 +4761,14 @@ declare namespace CodeceptJS {
         /**
          * Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
          * given string.
+         *
+         * ```js
+         * I.seeInPopup('Popup text');
+         * ```
+         * @param {string} text value to check.
+         *
          */
-        seeInPopup(): void;
+        seeInPopup(text: string): void;
         /**
          * Set current page
          * @param {object} page page to set
@@ -4029,8 +5523,11 @@ declare namespace CodeceptJS {
          * ```js
          * I.seeTextEquals('text', 'h1');
          * ```
+         *
+         * @param {string} text element value to check.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
          */
-        seeTextEquals(): void;
+        seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Opposite to `see`. Checks that a text is not present on a page.
          * Use context parameter to narrow down the search.
@@ -5953,7 +7450,7 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text element value to check.
-         * @param {CodeceptJS.LocatorOrString?} [context] (optional) element located by CSS|XPath|strict locator.
+         * @param {CodeceptJS.LocatorOrString?} [context=null]  element located by CSS|XPath|strict locator.
          */
         seeTextEquals(text: string, context?: CodeceptJS.LocatorOrString): void;
         /**
@@ -6301,6 +7798,21 @@ declare namespace CodeceptJS {
          */
         executeAsyncScript(fn: string | ((...params: any[]) => any), ...args: any[]): Promise<any>;
         /**
+         * Scroll element into viewport.
+         *
+         * ```js
+         * I.scrollIntoView('#submit');
+         * I.scrollIntoView('#submit', true);
+         * I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+         * ```
+         *
+         * @param {string|object} locator located by CSS|XPath|strict locator.
+         * @param {boolean|object} alignToTop (optional) or scrollIntoViewOptions (optional), see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView.
+         *
+         *
+         */
+        scrollIntoView(locator: string | any, alignToTop: boolean | any): void;
+        /**
          * Scrolls to element matched by locator.
          * Extra shift can be set with offsetX and offsetY options.
          *
@@ -6532,6 +8044,22 @@ declare namespace CodeceptJS {
          * _Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
          */
         pressKey(key: string | string[]): void;
+        /**
+         *
+         * Types out the given string or the array of keys provided.
+         * _Note:_ Should only be used when using [`fillField`](#fillfield) is not an option.
+         *
+         * ```js
+         * // When passing in a string
+         * I.type('Type this out.');
+         * // When passing in an array
+         * I.type(['T', 'E', 'X', 'T']);
+         * ```
+         *
+         * @param {string|string[]} key or array of keys to type.
+         * Type out given array of keys or a string of text
+         */
+        type(key: string | string[]): void;
         /**
          * Resize the current window to provided width and height.
          * First parameter can be set to `maximize`.
@@ -6825,9 +8353,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {number} [num] (optional) number of tabs to switch forward, default: 1.
-         * @param {number} [sec] (optional) time in seconds to wait.
+         * @param {number | null} [sec] (optional) time in seconds to wait.
          */
-        switchToNextTab(num?: number, sec?: number): void;
+        switchToNextTab(num?: number, sec?: number | null): void;
         /**
          * Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
          *
@@ -7674,10 +9202,21 @@ declare namespace CodeceptJS {
          */
         scrollTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
-         * {{> moveCursorTo}}
+         * Moves cursor to element matched by locator.
+         * Extra shift can be set with offsetX and offsetY options.
+         *
+         * ```js
+         * I.moveCursorTo('.tooltip');
+         * I.moveCursorTo('#submit', 5,5);
+         * ```
+         *
+         * @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+         * @param {number} [offsetX=0] (optional, `0` by default) X-axis offset.
+         * @param {number} [offsetY=0] (optional, `0` by default) Y-axis offset.
+         *
          * Appium: support only web testing
          */
-        moveCursorTo(): void;
+        moveCursorTo(locator: CodeceptJS.LocatorOrString, offsetX?: number, offsetY?: number): void;
         /**
          * {{> saveScreenshot}}
          * Appium: support
@@ -7692,25 +9231,56 @@ declare namespace CodeceptJS {
          */
         setCookie(): void;
         /**
-         * {{> clearCookie}}
+         * Clears a cookie by name,
+         * if none provided clears all cookies.
+         *
+         * ```js
+         * I.clearCookie();
+         * I.clearCookie('test');
+         * ```
+         *
+         * @param {?string} [cookie=null] (optional, `null` by default) cookie name
          * Appium: support only web testing
          */
-        clearCookie(): void;
+        clearCookie(cookie?: string): void;
         /**
-         * {{> seeCookie}}
+         * Checks that cookie with given name exists.
+         *
+         * ```js
+         * I.seeCookie('Auth');
+         * ```
+         *
+         * @param {string} name cookie name.
+         *
          * Appium: support only web testing
          */
-        seeCookie(): void;
+        seeCookie(name: string): void;
         /**
-         * {{> dontSeeCookie}}
+         * Checks that cookie with given name does not exist.
+         *
+         * ```js
+         * I.dontSeeCookie('auth'); // no auth cookie
+         * ```
+         *
+         * @param {string} name cookie name.
          * Appium: support only web testing
          */
-        dontSeeCookie(): void;
+        dontSeeCookie(name: string): void;
         /**
-         * {{> grabCookie}}
+         * Gets a cookie object by name.
+         * If none provided gets all cookies.
+         * Resumes test execution, so **should be used inside async with `await`** operator.
+         *
+         * ```js
+         * let cookie = await I.grabCookie('auth');
+         * assert(cookie.value, '123456');
+         * ```
+         *
+         * @param {?string} [name=null] cookie name.
+         * @returns {Promise<string>} attribute value
          * Appium: support only web testing
          */
-        grabCookie(): void;
+        grabCookie(name?: string): Promise<string>;
         /**
          * Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
          * Don't confuse popups with modal windows, as created by [various
@@ -8131,6 +9701,7 @@ declare namespace CodeceptJS {
          * @param {string} msg
          * @param {string} color
          * @return {Promise<any> | undefined}
+         * @inner
          */
         say(msg: string, color: string): Promise<any> | undefined;
         /**
@@ -8296,9 +9867,9 @@ declare namespace CodeceptJS {
          * Get Mocha instance
          *
          * @api
-         * @returns {Mocha | {}}
+         * @returns { * }
          */
-        static mocha(): Mocha | any;
+        static mocha(): any;
         /**
          * Append new services to container
          *
@@ -8342,17 +9913,19 @@ declare namespace CodeceptJS {
         filter(func: (...params: any[]) => any): void;
     }
     /**
-     * @interface
+     * @namespace
      * @alias event
      */
-    interface event {
+    namespace event {
         /**
          * @type {NodeJS.EventEmitter}
+         * @constant
          * @inner
          */
-        dispatcher: NodeJS.EventEmitter;
+        const dispatcher: NodeJS.EventEmitter;
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'test.start'} started
          * @property {'test.before'} before
@@ -8361,7 +9934,7 @@ declare namespace CodeceptJS {
          * @property {'test.failed'} failed
          * @property {'test.finish'} finished
          */
-        test: {
+        const test: {
             started: 'test.start';
             before: 'test.before';
             after: 'test.after';
@@ -8371,26 +9944,29 @@ declare namespace CodeceptJS {
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'suite.before'} before
          * @property {'suite.after'} after
          */
-        suite: {
+        const suite: {
             before: 'suite.before';
             after: 'suite.after';
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'hook.start'} started
          * @property {'hook.passed'} passed
          */
-        hook: {
+        const hook: {
             started: 'hook.start';
             passed: 'hook.passed';
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'step.start'} started
          * @property {'step.before'} before
@@ -8399,7 +9975,7 @@ declare namespace CodeceptJS {
          * @property {'step.failed'} failed
          * @property {'step.finish'} finished
          */
-        step: {
+        const step: {
             started: 'step.start';
             before: 'step.before';
             after: 'step.after';
@@ -8409,23 +9985,25 @@ declare namespace CodeceptJS {
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'global.before'} before
          * @property {'global.after'} after
          * @property {'global.result'} result
          */
-        all: {
+        const all: {
             before: 'global.before';
             after: 'global.after';
             result: 'global.result';
         };
         /**
          * @type {object}
+         * @constant
          * @inner
          * @property {'multiple.before'} before
          * @property {'multiple.after'} after
          */
-        multiple: {
+        const multiple: {
             before: 'multiple.before';
             after: 'multiple.after';
         };
@@ -8433,10 +10011,10 @@ declare namespace CodeceptJS {
          * @param {string} event
          * @param {*} param
          */
-        emit(event: string, param: any): void;
+        function emit(event: string, param: any): void;
         /** for testing only!
          */
-        cleanDispatcher(): void;
+        function cleanDispatcher(): void;
     }
     class Helper {
         /**
@@ -8551,146 +10129,143 @@ declare namespace CodeceptJS {
     }
     /**
      * @alias CodeceptJS.browserCodecept
-     * @interface
+     * @namespace
      */
-    interface browserCodecept {
+    namespace browserCodecept {
         /**
          * all found elements are stored here for reuse
          * @inner
          * @type {Node[]}
          */
-        elements: Node[];
+        var elements: Node[];
         /**
          * global context changer
          * @inner
          * @type {?Node}
          */
-        within: Node;
+        var within: Node;
         /**
          * finders
          * @param {number} id
          * @return {Node}
          */
-        fetchElement(id: number): Node;
+        function fetchElement(id: number): Node;
         /**
          * @param   {string}  by
          * @param   {CodeceptJS.ILocator}  locator
          * @param   {*}  [contextEl]
          * @return  {number[]}
          */
-        findAndStoreElements(by: string, locator: CodeceptJS.ILocator, contextEl?: any): number[];
+        function findAndStoreElements(by: string, locator: CodeceptJS.ILocator, contextEl?: any): number[];
         /**
          * @param   {string}  by
          * @param   {CodeceptJS.ILocator}  locator
          * @param   {*}  [contextEl]
          * @return  {number | undefined}
          */
-        findAndStoreElement(by: string, locator: CodeceptJS.ILocator, contextEl?: any): number | undefined;
+        function findAndStoreElement(by: string, locator: CodeceptJS.ILocator, contextEl?: any): number | undefined;
         /**
          * @param {string} by
          * @param {CodeceptJS.ILocator} locator
          */
-        setWithin(by: string, locator: CodeceptJS.ILocator): void;
+        function setWithin(by: string, locator: CodeceptJS.ILocator): void;
         /**
          * @param   {string}  by
          * @param   {CodeceptJS.ILocator}  locator
          * @param   {*}  [contextEl]
          * @return  {Node[]}
          */
-        findElements(by: string, locator: CodeceptJS.ILocator, contextEl?: any): Node[];
+        function findElements(by: string, locator: CodeceptJS.ILocator, contextEl?: any): Node[];
         /**
          * @param   {string}  by
          * @param   {CodeceptJS.ILocator}  locator
          * @param   {*}  [context]
          * @return  {?Node}
          */
-        findElement(by: string, locator: CodeceptJS.ILocator, context?: any): Node;
+        function findElement(by: string, locator: CodeceptJS.ILocator, context?: any): Node;
         /**
          * @param {number} el
          * @return {boolean}
          */
-        clickEl(el: number): boolean;
+        function clickEl(el: number): boolean;
         /** @param {number} el
          */
-        doubleClickEl(el: number): void;
+        function doubleClickEl(el: number): void;
         /**
          * @param {number} el
          * @param {number | undefined} x
          * @param {number | undefined} y
          */
-        hoverEl(el: number, x: number | undefined, y: number | undefined): void;
+        function hoverEl(el: number, x: number | undefined, y: number | undefined): void;
         /** @param {number} el
          */
-        rightClickEl(el: number): void;
+        function rightClickEl(el: number): void;
         /**
          * @param {number} el
          * @return {boolean  |  undefined}
          */
-        checkEl(el: number): boolean | undefined;
+        function checkEl(el: number): boolean | undefined;
         /**
          * @param {number} el
          * @return {boolean}
          */
-        unCheckEl(el: number): boolean;
+        function unCheckEl(el: number): boolean;
     }
     /**
      * Index file for loading CodeceptJS programmatically.
      *
      * Includes Public API objects
      * @alias index
-     * @interface
+     * @namespace
      */
-    interface index {
-        /**
-         * @type {Class<CodeceptJS.Codecept>}
-         * @inner
+    namespace index {
+        /** @type {Class<CodeceptJS.Codecept>}
          */
-        codecept: typeof CodeceptJS.Codecept;
-        /**
-         * @type {CodeceptJS.output}
-         * @inner
+        var codecept: typeof CodeceptJS.Codecept;
+        /** @type {Class<CodeceptJS.Codecept>}
          */
-        output: CodeceptJS.output;
-        /**
-         * @type {Class<CodeceptJS.Container>}
-         * @inner
+        var Codecept: typeof CodeceptJS.Codecept;
+        /** @type {Class<CodeceptJS.output>}
          */
-        container: typeof CodeceptJS.Container;
-        /**
-         * @type {CodeceptJS.event}
-         * @inner
+        var output: typeof CodeceptJS.output;
+        /** @type {Class<CodeceptJS.Container>}
          */
-        event: CodeceptJS.event;
+        var container: typeof CodeceptJS.Container;
+        /** @type {Class<CodeceptJS.event>}
+         */
+        var event: typeof CodeceptJS.event;
         /**
          * @type {CodeceptJS.Recorder}
          * @inner
          */
-        recorder: CodeceptJS.Recorder;
-        /**
-         * @type {Class<CodeceptJS.Config>}
-         * @inner
+        var recorder: CodeceptJS.Recorder;
+        /** @type {Class<CodeceptJS.Config>}
          */
-        config: typeof CodeceptJS.Config;
-        /**
-         * @type {Class<CodeceptJS.Helper>}
-         * @inner
+        var config: typeof CodeceptJS.Config;
+        /** @type {CodeceptJS.actor}
          */
-        helper: typeof CodeceptJS.Helper;
-        /**
-         * @type {Class<CodeceptJS.DataTable>}
-         * @inner
+        var actor: CodeceptJS.actor;
+        /** @type {Class<CodeceptJS.Helper>}
          */
-        dataTable: typeof CodeceptJS.DataTable;
-        /**
-         * @type {CodeceptJS.store}
-         * @inner
+        var helper: typeof CodeceptJS.Helper;
+        /** @type {Class<CodeceptJS.Helper>}
          */
-        store: CodeceptJS.store;
-        /**
-         * @type {Class<CodeceptJS.Locator>}
-         * @inner
+        var Helper: typeof CodeceptJS.Helper;
+        /** @type {Class<CodeceptJS.pause>}
          */
-        locator: typeof CodeceptJS.Locator;
+        var pause: typeof CodeceptJS.pause;
+        /** @type {Class<CodeceptJS.within>}
+         */
+        var within: typeof CodeceptJS.within;
+        /**  @type {Class<CodeceptJS.DataTable>}
+         */
+        var dataTable: typeof CodeceptJS.DataTable;
+        /** @type {Class<CodeceptJS.store>}
+         */
+        var store: typeof CodeceptJS.store;
+        /** @type {Class<CodeceptJS.Locator>}
+         */
+        var locator: typeof CodeceptJS.Locator;
     }
     /**
      * @param {*} step
@@ -8882,139 +10457,113 @@ declare namespace CodeceptJS {
     }
     /**
      * @alias output
-     * @interface
+     * @namespace
      */
-    interface output {
-        /**
-         * @type {number}
-         * @inner
+    namespace output {
+        /** @type {number}
          */
-        stepShift: number;
+        var stepShift: number;
         /**
          * Set or return current verbosity level
          * @param {number} level
          * @return {number}
          */
-        level(level: number): number;
+        function level(level: number): number;
         /**
          * Print information for a process
          * Used in multiple-run
          * @param {string} process
          * @return {string}
          */
-        process(process: string): string;
+        function process(process: string): string;
         /**
          * Print information in --debug mode
          * @param {string} msg
          */
-        debug(msg: string): void;
+        function debug(msg: string): void;
         /**
          * Print information in --verbose mode
          * @param {string} msg
          */
-        log(msg: string): void;
+        function log(msg: string): void;
         /**
          * Print error
          * @param {string} msg
          */
-        error(msg: string): void;
+        function error(msg: string): void;
         /**
          * Print a successful message
          * @param {string} msg
          */
-        success(msg: string): void;
+        function success(msg: string): void;
         /**
          * @param {string} name
          * @param {string} msg
          */
-        plugin(name: string, msg: string): void;
+        function plugin(name: string, msg: string): void;
         /**
          * Print a step
          * @param {CodeceptJS.Step} step
          */
-        step(step: CodeceptJS.Step): void;
-        /**
-         * @name CodeceptJS.output~suite
-         * @type {CodeceptJS.OutputSuite}
-         * @inner
+        function step(step: CodeceptJS.Step): void;
+        /** @namespace
          */
-        suite: CodeceptJS.OutputSuite;
-        /**
-         * @name CodeceptJS.output~test
-         * @type {CodeceptJS.OutputTest}
-         * @inner
+        namespace suite {
+            /**
+             * @param {Mocha.Suite} suite
+             */
+            function started(suite: Mocha.Suite): void;
+        }
+        /** @namespace
          */
-        test: CodeceptJS.OutputTest;
-        /**
-         * @name CodeceptJS.output~scenario
-         * @type {CodeceptJS.OutputScenario}
-         * @inner
+        namespace test {
+            /**
+             * @param {Mocha.Test} test
+             */
+            function started(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function passed(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function failed(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function skipped(test: Mocha.Test): void;
+        }
+        /** @namespace
          */
-        scenario: CodeceptJS.OutputScenario;
+        namespace scenario {
+            /**
+             * @param {Mocha.Test} test
+             */
+            function started(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function passed(test: Mocha.Test): void;
+            /**
+             * @param {Mocha.Test} test
+             */
+            function failed(test: Mocha.Test): void;
+        }
         /**
          *
          * Print a text in console log
          * @param {string} message
-         * @param {string} color
+         * @param {string} [color]
          */
-        say(message: string, color: string): void;
+        function say(message: string, color?: string): void;
         /**
          * @param {number} passed
          * @param {number} failed
          * @param {number} skipped
          * @param {number} duration
          */
-        result(passed: number, failed: number, skipped: number, duration: number): void;
-    }
-    /**
-     * @alias OutputSuite
-     * @interface
-     */
-    interface OutputSuite {
-        /**
-         * @param {Mocha.Suite} suite
-         */
-        started(suite: Mocha.Suite): void;
-    }
-    /**
-     * @alias OutputTest
-     * @interface
-     */
-    interface OutputTest {
-        /**
-         * @param {Mocha.Test} test
-         */
-        started(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        passed(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        failed(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        skipped(test: Mocha.Test): void;
-    }
-    /**
-     * @alias OutputScenario
-     * @interface
-     */
-    interface OutputScenario {
-        /**
-         * @param {Mocha.Test} test
-         */
-        started(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        passed(test: Mocha.Test): void;
-        /**
-         * @param {Mocha.Test} test
-         */
-        failed(test: Mocha.Test): void;
+        function result(passed: number, failed: number, skipped: number, duration: number): void;
     }
     /**
      * Pauses test execution and starts interactive shell
@@ -9053,8 +10602,9 @@ declare namespace CodeceptJS {
          * Start recording promises
          *
          * @api
+         * @inner
          */
-        static start(): void;
+        start(): void;
         /** @return {boolean}
          */
         static isRunning(): boolean;
@@ -9066,15 +10616,17 @@ declare namespace CodeceptJS {
          *
          * @api
          * @param {function} fn
+         * @inner
          */
-        static errHandler(fn: (...params: any[]) => any): void;
+        errHandler(fn: (...params: any[]) => any): void;
         /**
          * Stops current promise chain, calls `catch`.
          * Resets recorder to initial state.
          *
          * @api
+         * @inner
          */
-        static reset(): void;
+        reset(): void;
         /**
          * Adds a promise to a chain.
          * Promise description should be passed as first parameter.
@@ -9086,30 +10638,35 @@ declare namespace CodeceptJS {
          *     true: it will retries if `retryOpts` set.
          *     false: ignore `retryOpts` and won't retry.
          * @return {Promise<*> | undefined}
+         * @inner
          */
-        static add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
+        add(taskName: string, fn?: (...params: any[]) => any, force?: boolean, retry?: boolean): Promise<any> | undefined;
         /**
          * @param {*} opts
          * @return {*}
+         * @inner
          */
-        static retry(opts: any): any;
+        retry(opts: any): any;
         /**
          * @param {function} [customErrFn]
          * @return {Promise<*>}
+         * @inner
          */
-        static catch(customErrFn?: (...params: any[]) => any): Promise<any>;
+        catch(customErrFn?: (...params: any[]) => any): Promise<any>;
         /**
          * @param {function} customErrFn
          * @return {Promise<*>}
+         * @inner
          */
-        static catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
+        catchWithoutStop(customErrFn: (...params: any[]) => any): Promise<any>;
         /**
          * Adds a promise which throws an error into a chain
          *
          * @api
          * @param {*} err
+         * @inner
          */
-        static throw(err: any): void;
+        throw(err: any): void;
         /** @param {*} err
          */
         static saveFirstAsyncError(err: any): void;
@@ -9122,25 +10679,29 @@ declare namespace CodeceptJS {
         /**
          * Stops recording promises
          * @api
+         * @inner
          */
-        static stop(): void;
+        stop(): void;
         /**
          * Get latest promise in chain.
          *
          * @api
          * @return {Promise<*>}
+         * @inner
          */
-        static promise(): Promise<any>;
+        promise(): Promise<any>;
         /**
          * Get a list of all chained tasks
          * @return {string}
+         * @inner
          */
-        static scheduled(): string;
+        scheduled(): string;
         /**
          * Get a state of current queue and tasks
          * @return {string}
+         * @inner
          */
-        static toString(): string;
+        toString(): string;
     }
     class Secret {
         constructor(secret: string);
@@ -9242,14 +10803,12 @@ declare namespace CodeceptJS {
     }
     /**
      * global values for current session
-     * @interface
+     * @namespace
      */
-    interface store {
-        /**
-         * @type {boolean}
-         * @inner
+    namespace store {
+        /** @type {boolean}
          */
-        debugMode: boolean;
+        var debugMode: boolean;
     }
     /**
      * Describe a "suite" with the given `title`
@@ -9269,7 +10828,14 @@ declare namespace CodeceptJS {
      * @kind constant
      * @type {CodeceptJS.IScenario}
      */
-    var xScenario: CodeceptJS.IScenario;
+    const xScenario: CodeceptJS.IScenario;
+    /**
+     * Pending test case with message: 'Test not implemented!'.
+     * @global
+     * @kind constant
+     * @type {CodeceptJS.IScenario}
+     */
+    const todo: CodeceptJS.IScenario;
     /**
      * @param {CodeceptJS.LocatorOrString}  context
      * @param {Function}  fn
@@ -9284,9 +10850,9 @@ declare namespace CodeceptJS {
          * I.saveScreenshot('main-window.png');
          * ```
          *
-         * @param string name
+         * @param {string} name
          */
-        saveScreenshot(string: any): void;
+        saveScreenshot(name: string): void;
         /**
          * Relaunches an application.
          *
@@ -9353,9 +10919,9 @@ declare namespace CodeceptJS {
          *    I.see('Hi, IOS');
          * });
          * ```
-         * @param fn a function which will be executed on iOS
+         * @param {Function} fn a function which will be executed on iOS
          */
-        runOnIOS(fn: any): void;
+        runOnIOS(fn: (...params: any[]) => any): void;
         /**
          * Execute code only on Android
          *
@@ -9365,9 +10931,9 @@ declare namespace CodeceptJS {
          *    I.see('Hi, Android');
          * });
          * ```
-         * @param fn a function which will be executed on android
+         * @param {Function} fn a function which will be executed on android
          */
-        runOnAndroid(fn: any): void;
+        runOnAndroid(fn: (...params: any[]) => any): void;
         /**
          * Taps on an element.
          * Element can be located by its text or id or accessibility id.
@@ -9385,9 +10951,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator
-         * @param {?CodeceptJS.LocatorOrString} [context=null]
+         * @param {CodeceptJS.LocatorOrString | null} [context=null]
          */
-        tap(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        tap(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Multi taps on an element.
          * Element can be located by its text or id or accessibility id.
@@ -9404,9 +10970,9 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
          * @param {number} num number of taps
-         * @param {?CodeceptJS.LocatorOrString} [context=null] context element
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        multiTap(locator: CodeceptJS.LocatorOrString, num: number, context?: CodeceptJS.LocatorOrString): void;
+        multiTap(locator: CodeceptJS.LocatorOrString, num: number, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Taps an element and holds for a requested time.
          *
@@ -9418,9 +10984,9 @@ declare namespace CodeceptJS {
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
          * @param {number} sec number of seconds to hold tap
-         * @param {CodeceptJS.LocatorOrString} context context element
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        longPress(locator: CodeceptJS.LocatorOrString, sec: number, context: CodeceptJS.LocatorOrString): void;
+        longPress(locator: CodeceptJS.LocatorOrString, sec: number, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Clicks on an element.
          * Element can be located by its text or id or accessibility id
@@ -9438,9 +11004,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator
-         * @param {?CodeceptJS.LocatorOrString} [context=null]
+         * @param {CodeceptJS.LocatorOrString | null} [context=null]
          */
-        click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        click(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Performs click on element with horizontal and vertical offset.
          * An element is located by text, id, accessibility id.
@@ -9453,7 +11019,6 @@ declare namespace CodeceptJS {
          * @param {CodeceptJS.LocatorOrString} locator
          * @param {number} [x=0] horizontal offset
          * @param {number} [y=0] vertical offset
-         *
          */
         clickAtPoint(locator: CodeceptJS.LocatorOrString, x?: number, y?: number): void;
         /**
@@ -9467,9 +11032,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {string} text to check visibility
-         * @param {?CodeceptJS.LocatorOrString} [context=null] element inside which to search for text
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] element inside which to search for text
          */
-        see(text: string, context?: CodeceptJS.LocatorOrString): void;
+        see(text: string, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks text not to be visible.
          * Use second parameter to narrow down the search.
@@ -9480,9 +11045,9 @@ declare namespace CodeceptJS {
          * I.dontSee('Record deleted', '~message');
          * ```
          * @param {string} text to check invisibility
-         * @param {CodeceptJS.LocatorOrString} context element in which to search for text
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] element in which to search for text
          */
-        dontSee(text: string, context: CodeceptJS.LocatorOrString): void;
+        dontSee(text: string, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks for visibility of an element.
          * Use second parameter to narrow down the search.
@@ -9493,9 +11058,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
-         * @param {?CodeceptJS.LocatorOrString} [context=null] context element
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        seeElement(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        seeElement(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks that element is not visible.
          * Use second parameter to narrow down the search.
@@ -9505,9 +11070,9 @@ declare namespace CodeceptJS {
          * I.dontSeeElement('~edit', '#menu'); // element inside #menu
          * ```
          * @param {CodeceptJS.LocatorOrString} locator element to locate
-         * @param {?CodeceptJS.LocatorOrString} [context=null] context element
+         * @param {CodeceptJS.LocatorOrString | null} [context=null] context element
          */
-        dontSeeElement(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
+        dontSeeElement(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString | null): void;
         /**
          * Checks for existence of an element. An element can be visible or not.
          * Use second parameter to narrow down the search.
@@ -9518,9 +11083,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
-         * @param {CodeceptJS.LocatorOrString} context  context element
+         * @param {CodeceptJS.LocatorOrString} [context=null]  context element
          */
-        seeElementExists(locator: CodeceptJS.LocatorOrString, context: CodeceptJS.LocatorOrString): void;
+        seeElementExists(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Checks that element not exists.
          * Use second parameter to narrow down the search.
@@ -9531,9 +11096,9 @@ declare namespace CodeceptJS {
          * ```
          *
          * @param {CodeceptJS.LocatorOrString} locator element to locate
-         * @param {CodeceptJS.LocatorOrString} context context element
+         * @param {CodeceptJS.LocatorOrString} [context=null] context element
          */
-        dontSeeElementExists(locator: CodeceptJS.LocatorOrString, context: CodeceptJS.LocatorOrString): void;
+        dontSeeElementExists(locator: CodeceptJS.LocatorOrString, context?: CodeceptJS.LocatorOrString): void;
         /**
          * Fills in text field in an app.
          * A field can be located by text, accessibility id, id.

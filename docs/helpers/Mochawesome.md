@@ -1,5 +1,7 @@
 ---
-id: Mochawesome
+permalink: /helpers/Mochawesome
+editLink: false
+sidebar: auto
 title: Mochawesome
 ---
 
