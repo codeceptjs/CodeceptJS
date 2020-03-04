@@ -1,4 +1,4 @@
-Feature('failing setup');
+Feature('failing setup test suite');
 
 let number;
 BeforeSuite(async () => {

@@ -1,5 +1,5 @@
 exports.config = {
-  tests: './*_test_failed.js',
+  tests: './before_suite_test_failed.js',
   timeout: 10000,
   output: './output/failed',
   helpers: {
