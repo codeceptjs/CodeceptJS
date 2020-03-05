@@ -89,8 +89,66 @@ for (const config of configs) {
 
 workers.run();
 
-workers.on(event.all.result, (status, completed, workerStats) => {
-  // print output
+// Listen events for failed test
+workers.on(event.test.failed, (failedTest) => {
+  console.log('Failed : ', failedTest.title);
 });
 
+// Listen events for passed test
+workers.on(event.test.passed, (successTest) => {
+  console.log('Passed : ', successTest.title);
+});
+
+// test run status will also be available in event
+workers.on(event.all.result, (status, completedTests, workerStats) => {
+  // print output
+  console.log('Test status : ', status ? 'Passes' : 'Failed ');
+
+  // print stats
+  console.log(`Total tests : ${workerStats.tests}`);
+  console.log(`Passed tests : ${workerStats.passes}`);
+  console.log(`Failed test tests : ${workerStats.failures}`);
+
+  // If you don't want to listen for failed and passed test separately, use completedTests object
+  for (const test of Object.values(completedTests)) {
+    console.log(`Test status: ${test.err===null}, `, `Test : ${test.title}`);
+  }
+});
+
+```
+
+### Example: Running tests based on custom function
+
+If you want your tests to split according to your need this method is suited for you. For ex: If you have 4 long running test files and 4 normal test files there chance all 4 tests end up in same worker thread. For these cases custom function will be helpful.
+
+```js
+
+/*
+ Define a function to split your tests, Here its hardcoded, But you write a logic to split your tests 
+
+ function should return an array with this format [[file1, file2], [file3], ...]
+
+ where file1 and file2 will run in a worker thread and file3 will run in a worker thread
+*/
+const splitTests = () => {
+  const files = [
+    ['./test/data/sandbox/guthub_test.js', './test/data/sandbox/devto_test.js'],
+    ['./test/data/sandbox/longrunnig_test.js']
+  ];
+
+  return files;
+}
+
+const workerConfig = {
+  testConfig: './test/data/sandbox/codecept.customworker.js',
+  by: splitTests
+};
+
+// don't initialize workers in constructor
+const customWorkers = new Workers(null,  workerCOnfig);
+
+
+customWorkers.run();
+
+// You can use event listeners similar to above example.
 ```
