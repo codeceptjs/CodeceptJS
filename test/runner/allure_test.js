@@ -44,31 +44,29 @@ describe('CodeceptJS Allure Plugin', () => {
     });
   });
 
-  it('before suite errors are reported when running', (done) => {
+  it('should report BeforeSuite errors when executing via run command', (done) => {
     exec(codecept_run_config('before_suite_test_failed.conf.js'), (err, stdout) => {
-      stdout.should.not.include('OK  | 0 passed');
       stdout.should.include('FAIL  | 0 passed, 1 failed');
 
       const files = fs.readdirSync(path.join(codecept_dir, 'output/failed'));
       const testResultPath = files[0];
       assert(testResultPath.match(/\.xml$/), 'not a xml file');
       const file = fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
-      file.should.include('failing setup test suite: BeforeSuite failed');
+      file.should.include('BeforeSuite of suite failing setup test suite: failed.');
       file.should.include('the before suite setup failed');
       done();
     });
   });
 
-  it('before suite errors are reported when running in workers', (done) => {
+  it('should report BeforeSuite errors when executing via run-workers command', (done) => {
     exec(codecept_workers_config('before_suite_test_failed.conf.js'), (err, stdout) => {
-      stdout.should.not.include('OK  | 0 passed');
       stdout.should.include('FAIL  | 0 passed, 1 failed');
 
       const files = fs.readdirSync(path.join(codecept_dir, 'output/failed'));
       const testResultPath = files[0];
       assert(testResultPath.match(/\.xml$/), 'not a xml file');
       const file = fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
-      file.should.include('failing setup test suite: BeforeSuite failed');
+      file.should.include('BeforeSuite of suite failing setup test suite: failed.');
       file.should.include('the before suite setup failed');
       done();
     });
