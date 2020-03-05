@@ -27,8 +27,7 @@ describe('Workers', () => {
       passedCount += 1;
     });
 
-    workers.on(event.all.result, (status, _, stats) => {
-      console.log(stats);
+    workers.on(event.all.result, (status) => {
       expect(status).equal(false);
       expect(passedCount).equal(5);
       expect(failedCount).equal(3);
