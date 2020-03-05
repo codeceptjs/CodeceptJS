@@ -113,6 +113,9 @@ workers.on(event.all.result, (status, completedTests, workerStats) => {
   for (const test of Object.values(completedTests)) {
     console.log(`Test status: ${test.err===null}, `, `Test : ${test.title}`);
   }
+
+  // Alternatively use printResults() to display result with proper style
+  workers.printResults();
 });
 
 ```
@@ -151,4 +154,7 @@ const customWorkers = new Workers(null,  workerCOnfig);
 customWorkers.run();
 
 // You can use event listeners similar to above example.
+customWorkers.on(event.all.result, () => {
+  workers.printResults();
+});
 ```
