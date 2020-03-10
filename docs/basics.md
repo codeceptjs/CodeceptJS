@@ -431,10 +431,11 @@ This launches the interactive console where you can call any action from the `I`
 ```
  Interactive shell started
  Press ENTER to resume test
- - Use JavaScript syntax to try steps in action
+ Use JavaScript syntax to try steps in action
+ - Press ENTER to run the next step
  - Press TAB twice to see all available commands
- - Enter next to run the next step
-
+ - Type exit + Enter to exit the interactive shell
+ - Prefix => to run js commands 
  I.
 ```
 
