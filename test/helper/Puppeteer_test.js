@@ -110,6 +110,10 @@ describe('Puppeteer', function () {
   });
 
   describe('Session', () => {
+    before(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+
     it('should not fail for localStorage.clear() on about:blank', async () => {
       I.options.restart = false;
       return I.page.goto('about:blank')
