@@ -7,6 +7,10 @@ const puppeteer = require('puppeteer');
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 
+const container = require('../../lib/container');
+const session = require('../../lib/session');
+const recorder = require('../../lib/recorder');
+
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
