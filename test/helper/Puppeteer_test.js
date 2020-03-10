@@ -124,6 +124,23 @@ describe('Puppeteer', function () {
           throw new Error(e);
         });
     });
+
+    it('should take screenshot of current session\'s page', async () => {
+      // User 1 is default session
+      await I.amOnPage('/');
+      await I.saveScreenshot('session_user1_1.png', true);
+
+      await session('user2', async () => {
+        await I.amOnPage('/info');
+        await I.saveScreenshot('session_user2_1.png', true);
+      });
+
+      await I.saveScreenshot('session_user1_2.png', true);
+
+      await session('user2', async () => {
+        await I.saveScreenshot('session_user2_2.png', true);
+      });
+    });
   });
 
   describe('open page : #amOnPage', () => {
