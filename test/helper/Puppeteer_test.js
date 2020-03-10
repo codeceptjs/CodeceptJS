@@ -73,19 +73,25 @@ describe('Puppeteer', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
-
-    I = new Puppeteer({
-      url: siteUrl,
-      windowSize: '500x700',
-      show: false,
-      waitForTimeout: 5000,
-      waitForAction: 500,
-      chrome: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    recorder.start();
+    container.create({
+      helpers: {
+        Puppeteer: {
+          url: siteUrl,
+          windowSize: '500x700',
+          show: false,
+          waitForTimeout: 5000,
+          waitForAction: 500,
+          chrome: {
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          },
+          defaultPopupAction: 'accept',
+        },
       },
-      defaultPopupAction: 'accept',
     });
-    I._init();
+
+    I = container.helpers('Puppeteer');
+
     return I._beforeSuite();
   });
 
