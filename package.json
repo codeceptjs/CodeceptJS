@@ -67,6 +67,7 @@
     "inquirer": "^6.5.2",
     "js-beautify": "^1.10.2",
     "lodash.clonedeep": "^4.5.0",
+    "lodash.flatten": "^4.4.0",
     "lodash.merge": "^4.6.2",
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.2",
