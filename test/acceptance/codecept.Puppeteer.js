@@ -15,6 +15,9 @@ module.exports.config = {
         ],
       },
     },
+    DigestHelper: {
+      require: '../support/DigestHelper.js',
+    },
     MockRequest: {},
   },
   include: {},
