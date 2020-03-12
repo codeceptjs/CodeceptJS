@@ -2,12 +2,18 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 class DigestHelper {
-  static getMD5Digest(filePath) {
-    const hash = crypto.createHash('md5');
-    const data = fs.readFileSync(filePath);
-    hash.update(data);
+  static getMD5Digests(files = []) {
+    const digests = [];
 
-    return hash.digest('base64');
+    for (const file of files) {
+      const hash = crypto.createHash('md5');
+      const data = fs.readFileSync(file);
+      hash.update(data);
+
+      digests.push(hash.digest('base64'));
+    }
+
+    return digests;
   }
 }
 
