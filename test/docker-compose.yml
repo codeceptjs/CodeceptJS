@@ -70,7 +70,7 @@ services:
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
-      - OUTPUT_PATH=./output
+      - OUTPUT_PATH=/tests/output
     depends_on:
       - php
       - selenium.chrome
@@ -99,7 +99,7 @@ services:
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
-      - OUTPUT_PATH=./output
+      - OUTPUT_PATH=/tests/output
     depends_on:
       - php
     volumes:
@@ -127,7 +127,7 @@ services:
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.Protractor.js --grep @Protractor --verbose
-      - OUTPUT_PATH=./output
+      - OUTPUT_PATH=/tests/output
     depends_on:
       - php
       - selenium.chrome
