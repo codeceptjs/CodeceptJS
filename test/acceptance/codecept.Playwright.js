@@ -11,6 +11,9 @@ module.exports.config = {
       show: false,
       browser: process.env.BROWSER || 'chromium',
     },
+    DigestHelper: {
+      require: '../support/DigestHelper.js',
+    },
   },
   include: {},
   bootstrap: false,
