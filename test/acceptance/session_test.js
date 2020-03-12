@@ -1,5 +1,4 @@
 const assert = require('assert');
-const DigestHelper = require('../support/DigestHelper');
 
 Feature('Session');
 
@@ -14,7 +13,7 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
   I.seeInCurrentUrl('/info');
 });
 
-Scenario('screenshots reflect the current page of current session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
+Scenario('screenshots reflect the current page of current session @WebDriverIO @Protractor @Puppeteer @Playwright', async (I) => {
   const outputPath = process.env.OUTPUT_PATH;
 
   I.amOnPage('/');
@@ -31,24 +30,16 @@ Scenario('screenshots reflect the current page of current session @WebDriverIO @
     I.saveScreenshot('session_john_2.png');
   });
 
-  const [default1Digest, default2Digest, john1Digest, john2Digest] = DigestHelper.getMD5Digests([
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getMD5Digests([
     `${outputPath}/session_default_1.png`,
     `${outputPath}/session_default_2.png`,
     `${outputPath}/session_john_1.png`,
     `${outputPath}/session_john_2.png`,
   ]);
 
-  if (default1Digest !== default2Digest) {
-    throw new Error('Default session screenshots are not equivalent!');
-  }
-
-  if (john1Digest !== john2Digest) {
-    throw new Error('John session screenshots are not equivalent!');
-  }
-
-  if (default1Digest === john1Digest) {
-    throw new Error('Session screenshots are of same page!');
-  }
+  assert.equal(default1Digest, default2Digest);
+  assert.equal(john1Digest, john2Digest);
+  assert.notEqual(default1Digest, john1Digest);
 });
 
 Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Playwright @Puppeteer', async (I) => {
