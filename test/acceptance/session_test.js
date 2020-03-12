@@ -1,4 +1,5 @@
 const assert = require('assert');
+const DigestHelper = require('../support/DigestHelper');
 
 Feature('Session');
 
@@ -11,6 +12,43 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
   });
   I.dontSee('GitHub');
   I.seeInCurrentUrl('/info');
+});
+
+Scenario('Screenshots reflect the current page of current session @Puppeteer', (I) => {
+  const outputPath = './output';
+
+  I.amOnPage('/');
+  I.saveScreenshot('session_default_1.png');
+
+  session('john', () => {
+    I.amOnPage('/info');
+    I.saveScreenshot('session_john_1.png');
+  });
+
+  I.saveScreenshot('session_default_2.png');
+
+  session('john', () => {
+    I.saveScreenshot('session_john_2.png');
+  });
+
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = DigestHelper.getMD5Digests([
+    `${outputPath}/session_default_1.png`,
+    `${outputPath}/session_default_2.png`,
+    `${outputPath}/session_john_1.png`,
+    `${outputPath}/session_john_2.png`,
+  ]);
+
+  if (default1Digest !== default2Digest) {
+    throw new Error('Default session screenshots are not equivlant!');
+  }
+
+  if (john1Digest !== john2Digest) {
+    throw new Error('John session screenshots are not equivlant!');
+  }
+
+  if (default1Digest === john1Digest) {
+    throw new Error('Session screenshots are of same page!');
+  }
 });
 
 Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Playwright @Puppeteer', async (I) => {
