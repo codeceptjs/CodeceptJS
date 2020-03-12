@@ -1,4 +1,12 @@
 <html>
+<head>
+<script>
+ function setTimeout(() => {
+  const button = document.getElementById('publish_button');
+  button.removeAttribute('disabled');
+ }, 100)
+</script>
+</head>
 <body>
 <style>
 #notInViewportTop {
@@ -28,6 +36,14 @@
 </div>
 <div id="div2" style="position:absolute; top:100; left:0;">
   <button id="div2_button" type="button" name="button1" value="first">Second Button</button>
+</div>
+
+<div id="save_button" style="position:absolute; top:300; left:0;">
+  <button id="div2_button" type="button" name="button_save" value="first" onclick="setTimeout()">SAVE</button>
+</div>
+
+<div id="publish_button" style="position:absolute; top:400; left:0;">
+  <button id="div2_button" type="button" name="button_publish" value="first">PUBLISH</button>
 </div>
 
 </body>
