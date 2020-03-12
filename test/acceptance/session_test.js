@@ -14,7 +14,7 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
   I.seeInCurrentUrl('/info');
 });
 
-Scenario('Screenshots reflect the current page of current session @Puppeteer', (I) => {
+Scenario('screenshots reflect the current page of current session @Puppeteer', (I) => {
   const outputPath = './output';
 
   I.amOnPage('/');
