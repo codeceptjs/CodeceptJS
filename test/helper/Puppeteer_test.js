@@ -7,10 +7,6 @@ const puppeteer = require('puppeteer');
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 
-const container = require('../../lib/container');
-const session = require('../../lib/session');
-const recorder = require('../../lib/recorder');
-
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
@@ -73,25 +69,19 @@ describe('Puppeteer', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
-    recorder.start();
-    container.create({
-      helpers: {
-        Puppeteer: {
-          url: siteUrl,
-          windowSize: '500x700',
-          show: false,
-          waitForTimeout: 5000,
-          waitForAction: 500,
-          chrome: {
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-          },
-          defaultPopupAction: 'accept',
-        },
+
+    I = new Puppeteer({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
+      defaultPopupAction: 'accept',
     });
-
-    I = container.helpers('Puppeteer');
-
+    I._init();
     return I._beforeSuite();
   });
 
@@ -110,10 +100,6 @@ describe('Puppeteer', function () {
   });
 
   describe('Session', () => {
-    before(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output');
-    });
-
     it('should not fail for localStorage.clear() on about:blank', async () => {
       I.options.restart = false;
       return I.page.goto('about:blank')
@@ -123,23 +109,6 @@ describe('Puppeteer', function () {
           I.options.restart = true;
           throw new Error(e);
         });
-    });
-
-    it('should take screenshot of current session\'s page', async () => {
-      // User 1 is default session
-      await I.amOnPage('/');
-      await I.saveScreenshot('session_user1_1.png', true);
-
-      await session('user2', async () => {
-        await I.amOnPage('/info');
-        await I.saveScreenshot('session_user2_1.png', true);
-      });
-
-      await I.saveScreenshot('session_user1_2.png', true);
-
-      await session('user2', async () => {
-        await I.saveScreenshot('session_user2_2.png', true);
-      });
     });
   });
 
