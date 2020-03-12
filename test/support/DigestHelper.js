@@ -1,8 +1,10 @@
+const Helper = codecept_helper;
+
 const crypto = require('crypto');
 const fs = require('fs');
 
-class DigestHelper {
-  static getMD5Digests(files = []) {
+class DigestHelper extends Helper {
+  getMD5Digests(files = []) {
     const digests = [];
 
     for (const file of files) {
