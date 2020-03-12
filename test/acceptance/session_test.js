@@ -39,11 +39,11 @@ Scenario('Screenshots reflect the current page of current session @Puppeteer', (
   ]);
 
   if (default1Digest !== default2Digest) {
-    throw new Error('Default session screenshots are not equivlant!');
+    throw new Error('Default session screenshots are not equivalent!');
   }
 
   if (john1Digest !== john2Digest) {
-    throw new Error('John session screenshots are not equivlant!');
+    throw new Error('John session screenshots are not equivalent!');
   }
 
   if (default1Digest === john1Digest) {
