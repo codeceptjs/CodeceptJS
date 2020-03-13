@@ -3,7 +3,7 @@ const Helper = codecept_helper;
 const crypto = require('crypto');
 const fs = require('fs');
 
-class DigestHelper extends Helper {
+class ScreenshotSessionHelper extends Helper {
   _finishTest() {
     // Cleanup screenshots created by session screenshot test
     const screenshotDir = fs.readdirSync(this.outputPath, { withFileTypes: true })
@@ -36,4 +36,4 @@ class DigestHelper extends Helper {
   }
 }
 
-module.exports = DigestHelper;
+module.exports = ScreenshotSessionHelper;

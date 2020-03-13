@@ -15,8 +15,8 @@ module.exports.config = {
         ],
       },
     },
-    DigestHelper: {
-      require: '../support/DigestHelper.js',
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
       outputPath: './output',
     },
     MockRequest: {},

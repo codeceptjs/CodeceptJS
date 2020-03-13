@@ -11,8 +11,8 @@ module.exports.config = {
       show: false,
       browser: process.env.BROWSER || 'chromium',
     },
-    DigestHelper: {
-      require: '../support/DigestHelper.js',
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
       outputPath: 'test/acceptance/output',
     },
   },
