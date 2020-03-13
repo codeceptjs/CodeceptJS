@@ -17,9 +17,6 @@ module.exports.config = {
       //   },
       // },
     },
-    DigestHelper: {
-      require: '../support/DigestHelper.js',
-    },
   },
   include: {},
   bootstrap: done => setTimeout(done, 5000), // let's wait for selenium
