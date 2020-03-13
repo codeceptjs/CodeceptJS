@@ -37,8 +37,11 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
     `${outputPath}/session_john_2.png`,
   ]);
 
+  // Assert that screenshots of same page in same session are equal
   assert.equal(default1Digest, default2Digest);
   assert.equal(john1Digest, john2Digest);
+
+  // Assert that screenshots of different pages in different sessions are not equal
   assert.notEqual(default1Digest, john1Digest);
 });
 
