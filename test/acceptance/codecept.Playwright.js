@@ -13,7 +13,7 @@ module.exports.config = {
     },
     DigestHelper: {
       require: '../support/DigestHelper.js',
-      outputPath: './output',
+      outputPath: 'test/acceptance/output',
     },
   },
   include: {},
