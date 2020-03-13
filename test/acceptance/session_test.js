@@ -13,7 +13,7 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
   I.seeInCurrentUrl('/info');
 });
 
-Scenario('screenshots reflect the current page of current session @WebDriverIO @Protractor @Puppeteer @Playwright', async (I) => {
+Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright', async (I) => {
   const outputPath = process.env.OUTPUT_PATH;
 
   I.amOnPage('/');
