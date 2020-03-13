@@ -4,6 +4,14 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 class DigestHelper extends Helper {
+  _finishTest() {
+    // Cleanup screenshots created by session screenshot test
+    const screenshotDir = fs.readdirSync(this.outputPath, { withFileTypes: true })
+      .filter(item => item.isFile() && item.name.includes('session'));
+
+    screenshotDir.forEach(file => fs.unlinkSync(`${this.outputPath}/${file.name}`));
+  }
+
   constructor(config) {
     super(config);
     this.outputPath = config.outputPath;
