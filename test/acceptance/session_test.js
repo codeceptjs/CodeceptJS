@@ -14,7 +14,7 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
 });
 
 Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright', async (I) => {
-  const outputPath = process.env.OUTPUT_PATH;
+  const outputPath = await I.getOutputPath();
 
   I.amOnPage('/');
   I.saveScreenshot('session_default_1.png');
