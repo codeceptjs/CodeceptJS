@@ -4,6 +4,11 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 class DigestHelper extends Helper {
+  constructor(config) {
+    super(config);
+    this.outputPath = config.outputPath;
+  }
+
   getMD5Digests(files = []) {
     const digests = [];
 
@@ -16,6 +21,10 @@ class DigestHelper extends Helper {
     }
 
     return digests;
+  }
+
+  getOutputPath() {
+    return this.outputPath;
   }
 }
 

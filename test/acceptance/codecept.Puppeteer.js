@@ -17,6 +17,7 @@ module.exports.config = {
     },
     DigestHelper: {
       require: '../support/DigestHelper.js',
+      outputPath: process.env.OUTPUT_PATH,
     },
     MockRequest: {},
   },
