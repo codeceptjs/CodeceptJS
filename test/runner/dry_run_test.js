@@ -8,7 +8,6 @@ const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} dry-run`;
 const codecept_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
-const config_run_override = config => `${codecept_run} --override '${JSON.stringify(config)}'`;
 const char = require('figures').checkboxOff;
 
 describe('dry-run command', () => {
@@ -18,7 +17,7 @@ describe('dry-run command', () => {
 
   it('should be executed with config path', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout, stderr) => {
+    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('check current dir'); // test name
       assert(!err);
@@ -28,7 +27,7 @@ describe('dry-run command', () => {
 
   it('should list all tests', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout, stderr) => {
+    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('check current dir'); // test name
       stdout.should.not.include('I am in path'); // step name
@@ -40,7 +39,7 @@ describe('dry-run command', () => {
   });
 
   it('should not run actual steps', (done) => {
-    exec(codecept_run_config('codecept.flaky.json'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.flaky.json'), (err, stdout) => {
       stdout.should.include('Flaky'); // feature
       stdout.should.include('Not so flaky test'); // test name
       stdout.should.include('Old style flaky'); // test name
@@ -100,7 +99,7 @@ describe('dry-run command', () => {
   });
 
   it('should run feature files', (done) => {
-    exec(codecept_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(codecept_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
       stdout.should.include('Checkout process'); // feature
       stdout.should.include('-- before checkout --');
       stdout.should.include('-- after checkout --');
@@ -118,7 +117,7 @@ describe('dry-run command', () => {
   });
 
   it('should print substeps in debug mode', (done) => {
-    exec(codecept_run_config('codecept.bdd.json') + ' --debug --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(codecept_run_config('codecept.bdd.json') + ' --debug --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
       stdout.should.include('Checkout process'); // feature
       // stdout.should.include('In order to buy products'); // test name
       stdout.should.include('Given I have product with $600 price');
@@ -136,7 +135,7 @@ describe('dry-run command', () => {
   });
 
   it('should run tests with different data', (done) => {
-    exec(codecept_run_config('codecept.ddt.json'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.ddt.json'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       output.should.include(`${char} Should log accounts1 | {"login":"davert","password":"123456"}`);
       output.should.include(`${char} Should log accounts1 | {"login":"admin","password":"666666"}`);

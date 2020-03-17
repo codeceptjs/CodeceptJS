@@ -6,7 +6,6 @@ const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run`;
 const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
-const config_run_override = config => `${codecept_run} --override '${JSON.stringify(config)}'`;
 
 describe('BDD Gherkin', () => {
   before(() => {

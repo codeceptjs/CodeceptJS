@@ -12,7 +12,6 @@ const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
-let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
@@ -43,7 +42,6 @@ describe('Puppeteer - BasicAuth', () => {
     });
     return I._before().then(() => {
       page = I.page;
-      browser = I.browser;
     });
   });
 

@@ -100,7 +100,7 @@ describe('ui', () => {
     });
 
     it('should contain tags', () => {
-      const suiteConfig = context.Feature('basic suite @cool');
+      context.Feature('basic suite @cool');
 
       scenarioConfig = context.Scenario('scenario @very @important');
 

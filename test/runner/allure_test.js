@@ -22,8 +22,9 @@ describe('CodeceptJS Allure Plugin', () => {
   });
 
   it('should enable allure reports', (done) => {
-    exec(codecept_run_config('allure.conf.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('allure.conf.js'), (err) => {
       const files = fs.readdirSync(path.join(codecept_dir, 'output/success'));
+      assert(!err);
       assert.equal(files.length, 1);
       assert(files[0].match(/\.xml$/), 'not a xml file');
       done();
@@ -31,7 +32,7 @@ describe('CodeceptJS Allure Plugin', () => {
   });
 
   it('should create xml file when assert message has ansi symbols', (done) => {
-    exec(codecept_run_config('failed_ansi.conf.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('failed_ansi.conf.js'), (err) => {
       assert(err);
       const files = fs.readdirSync(path.join(codecept_dir, 'output/ansi'));
       assert(files[0].match(/\.xml$/), 'not a xml file');
