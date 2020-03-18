@@ -182,13 +182,13 @@ In case you need to return a value from a webpage and use it directly in test, y
 They are expected to be used inside async/await functions, and their results will be available in test:
 
 ```js
-let assert = require('assert');
+const assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
 Scenario('test page title', async (I) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
-  let title = await I.grabTitle();
+  const title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
 });
 ```
