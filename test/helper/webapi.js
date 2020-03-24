@@ -1137,7 +1137,6 @@ module.exports.tests = function () {
 
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/doubleclick');
@@ -1146,7 +1145,6 @@ module.exports.tests = function () {
     });
 
     it('should grab camelcased css properies', async () => {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
 
       await I.amOnPage('/form/doubleclick');
