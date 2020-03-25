@@ -611,43 +611,6 @@ describe('Playwright', function () {
       .then(() => I.see('button was clicked', '#message')));
   });
 
-  describe('#waitForVisible', () => {
-    beforeEach(() => I.amOnPage('/form/wait_visible'));
-
-    it('wait for element', async () => {
-      await I.dontSee('Step One Button');
-      await I.dontSeeElement('#step_1');
-      await I.waitForVisible('#step_1', 2);
-      await I.seeElement('#step_1');
-      await I.click('#step_1');
-      await I.waitForVisible('#step_2', 2);
-      await I.see('Step Two Button');
-    });
-  });
-
-  describe('#waitForInvisible', () => {
-    beforeEach(() => I.amOnPage('/form/wait_invisible'));
-    it('should wait for a specified element to be invisible', async () => {
-      await I.waitForInvisible('#step1', 3);
-      await I.dontSeeElement('#step1');
-    });
-  });
-
-  describe('#waitToHide', () => {
-    beforeEach(() => I.amOnPage('/form/wait_invisible'));
-    it('should wait for a specified element to be hidden', async () => {
-      await I.waitToHide('#step1', 3);
-      await I.dontSeeElement('#step1');
-    });
-  });
-
-  describe('#waitForText', () => {
-    it('should wait for text after load body', async () => {
-      await I.amOnPage('/redirect_long');
-      await I.waitForText('Hi there and greetings!', 5);
-    });
-  });
-
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => I.amOnPage('/info')
       .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно'))
