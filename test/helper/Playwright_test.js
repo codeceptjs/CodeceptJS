@@ -27,7 +27,7 @@ describe('Playwright', function () {
     I = new Playwright({
       url: siteUrl,
       windowSize: '500x700',
-      show: false,
+      show: true,
       waitForTimeout: 5000,
       waitForAction: 500,
       restart: true,
