@@ -126,14 +126,12 @@ describe('CodeceptJS Interface', () => {
   it('should run all tests with data of array by only', (done) => {
     exec(config_run_config('codecept.addt.json'), (err, stdout, stderr) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
-      output.should.include(`Got array item 1
-  ✔ Should log array of strings | {"1"}`);
-
-      output.should.include(`Got array item 2
-  ✔ Should log array of strings | {"2"}`);
-
-      output.should.include(`Got array item 3
-  ✔ Should log array of strings | {"3"}`);
+      output.should.include(`Got array item 1`);
+      output.should.include(`Should log array of strings | {"1"}`);
+      output.should.include(`Got array item 2`);
+      output.should.include(`Should log array of strings | {"2"}`);
+      output.should.include(`Got array item 3`);
+      output.should.include(`Should log array of strings | {"3"}`);
       assert(!err);
       done();
     });
