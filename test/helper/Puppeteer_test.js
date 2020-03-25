@@ -921,6 +921,22 @@ describe('Puppeteer', function () {
         e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
       });
     });
+
+    it('should pass if element change class', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    it('should fail if element change class and not clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
+      });
+    });
   });
 });
 
