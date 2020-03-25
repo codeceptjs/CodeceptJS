@@ -69,6 +69,21 @@ describe('#transform JavaScript', () => {
     `;
     transform(source).should.contain('Scenario(\'@ClassPageObject\', ()');
   });
+
+  it("Data(accounts).Scenario('title', (I, pageObject, current) => {})", () => {
+    const source = `
+    let accounts = new DataTable(['login', 'password']);
+    accounts.add(['davert', '123456']);
+
+    Feature('PageObject');
+  
+    Data(accounts).Scenario('@ClassPageObject', (I, classpage, current) => {
+    classpage.type('Class Page Type');
+    classpage.purgeDomains();
+  });
+    `;
+    transform(source).should.contain('Scenario(\'@ClassPageObject\', ({ I, classpage, current })');
+  });
 });
 
 describe.skip('#transform TypeScript', () => {
