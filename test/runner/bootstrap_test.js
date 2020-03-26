@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/bootstrap');
 const codecept_run = `${runner} run`;
-const codecept_run_config = (config, grep) => `${codecept_run} --verbose --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
+const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
 const config_run_override = (config, override) => `${codecept_run} --config ${codecept_dir}/${config} --override '${JSON.stringify(override)}'`;
 
 
