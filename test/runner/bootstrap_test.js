@@ -11,7 +11,7 @@ const config_run_override = (config, override) => `${codecept_run} --config ${co
 
 describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
-  it.only('should run bootstrap', (done) => {
+  it('should run bootstrap', (done) => {
     exec(codecept_run_config('sync.json', '@important'), (err, stdout, stderr) => {
       console.log(stdout);
       stdout.should.include('Filesystem'); // feature
