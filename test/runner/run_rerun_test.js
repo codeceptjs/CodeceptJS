@@ -9,7 +9,7 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/run-rerun/')
 const codecept_run = `${runner} run-rerun`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} --grep "${grep || ''}"`;
 
-describe.only('run-rerun command', () => {
+describe('run-rerun command', () => {
   before(() => {
     process.chdir(codecept_dir);
   });
