@@ -1,4 +1,4 @@
-const profile = process.profile;
+const profile = process.env.profile;
 
 exports.config = {
   tests: './*_test.js',
