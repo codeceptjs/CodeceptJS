@@ -21,8 +21,6 @@ const data = {
   ],
 };
 
-const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
-
 describe('ApiDataFactory', function () {
   this.timeout(20000);
   this.retries(1);
@@ -104,7 +102,7 @@ describe('ApiDataFactory', function () {
         factories: {
           post: {
             factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
-            create: data => ({ url: '/posts', method: 'post', data: { author: 'Yorik', title: 'xxx', body: 'yyy' } }),
+            create: () => ({ url: '/posts', method: 'post', data: { author: 'Yorik', title: 'xxx', body: 'yyy' } }),
             delete: id => ({ url: `/posts/${id}`, method: 'delete' }),
           },
         },

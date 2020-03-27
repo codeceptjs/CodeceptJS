@@ -1,6 +1,5 @@
 const assert = require('assert');
 const path = require('path');
-const expect = require('chai').expect;
 
 const exec = require('child_process').exec;
 

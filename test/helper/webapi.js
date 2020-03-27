@@ -1094,17 +1094,16 @@ module.exports.tests = function () {
     it('should scroll to an element', async () => {
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
+      const { y } = await I.grabPageScrollPosition();
       await I.scrollTo('.section3 input[name="test"]');
 
-      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
     });
 
     it('should scroll to coordinates', async () => {
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
       await I.scrollTo(50, 70);
 
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();

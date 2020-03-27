@@ -11,7 +11,6 @@ let I;
 let browser;
 
 const siteUrl = TestHelper.siteUrl();
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 
 describe('Protractor-NonAngular', function () {
   this.retries(3);
@@ -395,7 +394,7 @@ describe('Protractor-NonAngular', function () {
     it('should not locate a non-existing field', async () => {
       await I.amOnPage('/form/field');
       try {
-        const els = await I._locateFields('Mother-in-law');
+        await I._locateFields('Mother-in-law');
         throw Error('Should not get this far');
       } catch (e) {
         e.message.should.include = 'No element found using locator:';

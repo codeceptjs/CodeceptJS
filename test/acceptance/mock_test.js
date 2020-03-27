@@ -1,10 +1,5 @@
 Feature('Mocking');
 
-const fetchPost = response => response.url() === 'https://jsonplaceholder.typicode.com/posts/1';
-
-const fetchComments = response => response.url() === 'https://jsonplaceholder.typicode.com/comments/1';
-
-const fetchUsers = response => response.url() === 'https://jsonplaceholder.typicode.com/users/1';
 
 Scenario('change statusCode @Puppeteer @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');

@@ -8,19 +8,19 @@ Scenario('Check within without generator', (I) => {
 });
 
 
-Scenario('Check within with generator. Yield is first in order', (I) => {
+Scenario('Check within with generator. Yield is first in order', () => {
 });
 
-Scenario('Check within with generator. Yield is second in order', (I) => {
+Scenario('Check within with generator. Yield is second in order', () => {
 });
 
-Scenario('Check within with generator. Should complete test steps after within', (I) => {
+Scenario('Check within with generator. Should complete test steps after within', () => {
 });
 
-Scenario('Check within with generator. Should stop test execution after fail in within', (I) => {
+Scenario('Check within with generator. Should stop test execution after fail in within', () => {
 });
 
-Scenario('Check within with generator. Should stop test execution after fail in main block', (I) => {
+Scenario('Check within with generator. Should stop test execution after fail in main block', () => {
   throw new Error('fail');
 });
 

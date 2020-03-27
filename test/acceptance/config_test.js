@@ -33,7 +33,7 @@ Scenario('change config 5 @WebDriverIO @Puppeteer @Playwright @Protractor @Night
 Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', (I) => {
   I.amOnPage('/');
   I.seeInCurrentUrl('github.com');
-}).config(async (test) => {
+}).config(async () => {
   await new Promise(r => setTimeout(r, 50));
   return { url: 'https://github.com' };
 });
