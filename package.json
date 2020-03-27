@@ -68,7 +68,7 @@
     "js-beautify": "^1.10.2",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.3",
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
     "ms": "^2.1.2",
