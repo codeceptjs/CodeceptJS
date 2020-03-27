@@ -8,7 +8,6 @@ const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run`;
 const codecept_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
-const config_run_override = config => `${codecept_run} --config ${codecept_dir} --override '${JSON.stringify(config)}'`;
 
 describe('CodeceptJS Runner', () => {
   before(() => {
@@ -17,7 +16,7 @@ describe('CodeceptJS Runner', () => {
 
   it('should be executed in current dir', (done) => {
     process.chdir(codecept_dir);
-    exec(codecept_run, (err, stdout, stderr) => {
+    exec(codecept_run, (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('check current dir'); // test name
       assert(!err);
@@ -27,7 +26,7 @@ describe('CodeceptJS Runner', () => {
 
   it('should be executed with glob', (done) => {
     process.chdir(codecept_dir);
-    exec(codecept_run_config('codecept.glob.json'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.glob.json'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('glob current dir'); // test name
       assert(!err);
@@ -37,7 +36,7 @@ describe('CodeceptJS Runner', () => {
 
   it('should be executed with config path', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout, stderr) => {
+    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('check current dir'); // test name
       assert(!err);
@@ -46,7 +45,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should show failures and exit with 1 on fail', (done) => {
-    exec(codecept_run_config('codecept.failed.json'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.failed.json'), (err, stdout) => {
       stdout.should.include('Not-A-Filesystem');
       stdout.should.include('file is not in dir');
       stdout.should.include('FAILURES');
@@ -58,7 +57,7 @@ describe('CodeceptJS Runner', () => {
   describe('grep', () => {
     it('filter by scenario tags', (done) => {
       process.chdir(codecept_dir);
-      exec(`${codecept_run} --grep @slow`, (err, stdout, stderr) => {
+      exec(`${codecept_run} --grep @slow`, (err, stdout) => {
         stdout.should.include('Filesystem'); // feature
         stdout.should.include('check current dir'); // test name
         assert(!err);
@@ -68,7 +67,7 @@ describe('CodeceptJS Runner', () => {
 
     it('filter by scenario tags #2', (done) => {
       process.chdir(codecept_dir);
-      exec(`${codecept_run} --grep @important`, (err, stdout, stderr) => {
+      exec(`${codecept_run} --grep @important`, (err, stdout) => {
         stdout.should.include('Filesystem'); // feature
         stdout.should.include('check current dir'); // test name
         assert(!err);
@@ -78,7 +77,7 @@ describe('CodeceptJS Runner', () => {
 
     it('filter by feature tags', (done) => {
       process.chdir(codecept_dir);
-      exec(`${codecept_run} --grep @main`, (err, stdout, stderr) => {
+      exec(`${codecept_run} --grep @main`, (err, stdout) => {
         stdout.should.include('Filesystem'); // feature
         stdout.should.include('check current dir'); // test name
         assert(!err);
@@ -89,7 +88,7 @@ describe('CodeceptJS Runner', () => {
     describe('without "invert" option', () => {
       it('should filter by scenario tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 1');
           stdout.should.not.include('grep message 2');
@@ -100,7 +99,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by scenario tags #2', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 2');
           stdout.should.not.include('grep message 1');
@@ -111,7 +110,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by feature tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 1');
           stdout.should.include('grep message 2');
@@ -124,7 +123,7 @@ describe('CodeceptJS Runner', () => {
     describe('with "invert" option', () => {
       it('should filter by scenario tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep --invert`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep --invert`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.not.include('grep message 1');
           stdout.should.include('grep message 2');
@@ -135,7 +134,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by scenario tags #2', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep --invert`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep --invert`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.not.include('grep message 2');
           stdout.should.include('grep message 1');
@@ -146,7 +145,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by feature tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @main --invert`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @main --invert`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 1');
           stdout.should.include('grep message 2');
@@ -157,7 +156,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by feature tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep --invert`, (err, stdout, stderr) => {
+        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep --invert`, (err, stdout) => {
           stdout.should.not.include('@feature_grep'); // feature
           stdout.should.not.include('grep message 1');
           stdout.should.not.include('grep message 2');
@@ -169,7 +168,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run hooks', (done) => {
-    exec(codecept_run_config('codecept.hooks.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('codecept.hooks.js'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am function hook');
@@ -248,7 +247,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run dynamic config', (done) => {
-    exec(codecept_run_config('config.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('config.js'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       assert(!err);
       done();
@@ -256,7 +255,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run dynamic config with profile', (done) => {
-    exec(`${codecept_run_config('config.js')} --profile failed`, (err, stdout, stderr) => {
+    exec(`${codecept_run_config('config.js')} --profile failed`, (err, stdout) => {
       stdout.should.include('FAILURES');
       stdout.should.not.include('I am bootstrap');
       assert(err.code);
@@ -265,7 +264,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should run dynamic config with profile 2', (done) => {
-    exec(`${codecept_run_config('config.js')} --profile bootstrap`, (err, stdout, stderr) => {
+    exec(`${codecept_run_config('config.js')} --profile bootstrap`, (err, stdout) => {
       stdout.should.not.include('FAILURES'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
@@ -279,7 +278,7 @@ describe('CodeceptJS Runner', () => {
 
     it('should be executed with module when described', (done) => {
       process.chdir(codecept_dir);
-      exec(codecept_run_config('codecept.require.single.json'), (err, stdout, stderr) => {
+      exec(codecept_run_config('codecept.require.single.json'), (err, stdout) => {
         stdout.should.include(moduleOutput);
         stdout.should.not.include(moduleOutput2);
         assert(!err);
@@ -289,7 +288,7 @@ describe('CodeceptJS Runner', () => {
 
     it('should be executed with several modules when described', (done) => {
       process.chdir(codecept_dir);
-      exec(codecept_run_config('codecept.require.several.json'), (err, stdout, stderr) => {
+      exec(codecept_run_config('codecept.require.several.json'), (err, stdout) => {
         stdout.should.include(moduleOutput);
         stdout.should.include(moduleOutput2);
         assert(!err);
@@ -299,7 +298,7 @@ describe('CodeceptJS Runner', () => {
 
     it('should not be executed without module when not described', (done) => {
       process.chdir(codecept_dir);
-      exec(codecept_run_config('codecept.require.without.json'), (err, stdout, stderr) => {
+      exec(codecept_run_config('codecept.require.without.json'), (err, stdout) => {
         stdout.should.not.include(moduleOutput);
         stdout.should.not.include(moduleOutput2);
         assert(!err);

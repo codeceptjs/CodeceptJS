@@ -48,7 +48,7 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {});
+      recorder.catchWithoutStop((err) => err);
     }
 
     // expects to retry only once
@@ -70,8 +70,7 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {
-      });
+      recorder.catchWithoutStop((err) => err);
     }
 
     counter.should.equal(1);
@@ -93,8 +92,7 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {
-      });
+      recorder.catchWithoutStop((err) => err);
     }
 
     counter.should.equal(1);
@@ -117,8 +115,7 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {
-      });
+      recorder.catchWithoutStop((err) => err);
     }
 
     counter.should.equal(1);
@@ -140,7 +137,7 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {});
+      recorder.catchWithoutStop((err) => err);
     }
 
     // expects to retry only once

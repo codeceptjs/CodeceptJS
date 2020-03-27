@@ -14,7 +14,7 @@ describe('CodeceptJS session', function () {
   });
 
   it('should run with 3 sessions', (done) => {
-    exec(`${codecept_run} --steps --grep "@1"`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --steps --grep "@1"`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const list = grepLines(lines, 'basic session @1');
@@ -37,7 +37,7 @@ describe('CodeceptJS session', function () {
   });
 
   it('should run session defined before executing', (done) => {
-    exec(`${codecept_run} --steps --grep "@2"`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --steps --grep "@2"`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const list = grepLines(lines, 'session defined not used @2');
@@ -59,7 +59,7 @@ describe('CodeceptJS session', function () {
   });
 
   it('should run all session tests', (done) => {
-    exec(`${codecept_run} --steps`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --steps`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
       const testStatus = lines.pop();
       testStatus.should.include('passed');

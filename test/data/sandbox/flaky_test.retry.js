@@ -18,7 +18,7 @@ Scenario('flaky step @test1', async (I) => {
 Scenario('flaky step passed globally @test2', (I) => {
   recorder.retry({
     retries: 3,
-    when: err => false,
+    when: () => false,
   });
   I.retry(5).asyncStep();
   I.failWhen(() => {

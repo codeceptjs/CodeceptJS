@@ -7,7 +7,6 @@ const WebDriverIO = require('../../lib/helper/WebDriverIO');
 
 let wd;
 const siteUrl = TestHelper.siteUrl();
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 
