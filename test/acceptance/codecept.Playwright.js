@@ -11,6 +11,10 @@ module.exports.config = {
       show: false,
       browser: process.env.BROWSER || 'chromium',
     },
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
+      outputPath: 'test/acceptance/output',
+    },
   },
   include: {},
   bootstrap: false,
