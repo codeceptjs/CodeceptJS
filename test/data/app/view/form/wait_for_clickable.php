@@ -1,4 +1,15 @@
 <html>
+<head>
+<script>
+ function delay() {
+  setTimeout(() => {
+      const button = document.getElementById('publish_button');
+      button.removeAttribute('disabled');
+      button.classList.add('ooops');
+      }, 500);
+ }
+</script>
+</head>
 <body>
 <style>
 #notInViewportTop {
@@ -28,6 +39,14 @@
 </div>
 <div id="div2" style="position:absolute; top:100; left:0;">
   <button id="div2_button" type="button" name="button1" value="first">Second Button</button>
+</div>
+
+<div id="save_button" style="position:absolute; top:300; left:0;">
+  <button id="div2_button" type="button" name="button_save" value="first" onclick="delay()">SAVE</button>
+</div>
+
+<div id="some" style="position:absolute; top:400; left:0;">
+  <button class="some" id="publish_button" type="button" name="button_publish" disabled value="first">PUBLISH</button>
 </div>
 
 </body>
