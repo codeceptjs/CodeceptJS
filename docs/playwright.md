@@ -52,7 +52,8 @@ Make sure `Playwright` helper is enabled in `codecept.conf.js` config:
   helpers: {
     Playwright: {
       url: "http://localhost",
-      show: true
+      show: true,
+      browser: 'chromium'
     }
   }
   // ..
@@ -75,6 +76,7 @@ When to consider navigation succeeded, defaults to `load`. Given an array of eve
     Playwright: {
       url: "http://localhost",
       show: true,
+      browser: 'chromium',
       waitForNavigation: "networkidle0"
     }
   }
@@ -87,7 +89,7 @@ It will wait for a small amount of time (100ms) by default after each user actio
 
 ## Writing Tests
 
-CodeceptJS test should be created with `gt` command:
+Additional CodeceptJS tests should be created with `gt` command:
 
 ```sh
 npx codeceptjs gt
@@ -110,7 +112,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 
 > ℹ  All actions are listed in [Playwright helper reference](http://codecept.io/helpers/Playwright/).*
 
-All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
+All actions which interact with elements can use **[CSS or XPath locators](https://codecept.io/locators/#css-and-xpath)**. Actions like `click` or `fillField` can locate elements by their name or value on a page:
 
 ```js
 // search for link or button
