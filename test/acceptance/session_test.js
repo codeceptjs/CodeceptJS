@@ -13,6 +13,38 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
   I.seeInCurrentUrl('/info');
 });
 
+Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright', async (I) => {
+  const outputPath = await I.getOutputPath();
+
+  I.amOnPage('/');
+  I.saveScreenshot('session_default_1.png');
+
+  session('john', () => {
+    I.amOnPage('/info');
+    I.saveScreenshot('session_john_1.png');
+  });
+
+  I.saveScreenshot('session_default_2.png');
+
+  session('john', () => {
+    I.saveScreenshot('session_john_2.png');
+  });
+
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getMD5Digests([
+    `${outputPath}/session_default_1.png`,
+    `${outputPath}/session_default_2.png`,
+    `${outputPath}/session_john_1.png`,
+    `${outputPath}/session_john_2.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(default1Digest, default2Digest);
+  assert.equal(john1Digest, john2Digest);
+
+  // Assert that screenshots of different pages in different sessions are not equal
+  assert.notEqual(default1Digest, john1Digest);
+});
+
 Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Playwright @Puppeteer', async (I) => {
   const cookiePage = 'https://www.microsoft.com/en-au/';
   const cookieName = 'MUID';

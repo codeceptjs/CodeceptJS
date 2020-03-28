@@ -1094,7 +1094,7 @@ Returns **[Promise][25]&lt;[string][18]>** attribute value
 ### moveCursorTo
 
 Moves cursor to element matched by locator.
-Extra shift can be set with offsetX and offsetY options.
+Extra shift can be set with xOffset and yOffset options.
 
 ```js
 I.moveCursorTo('.tooltip');
@@ -1104,8 +1104,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][18] | [object][19])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][22]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][22]** (optional, `0` by default) Y-axis offset. 
+-   `offsetX` **[number][22]** (optional, `undefined` by default) X-axis offset. 
+-   `offsetY` **[number][22]** (optional, `undefined` by default) Y-axis offset. 
 
 ### openNewTab
 
