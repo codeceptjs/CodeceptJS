@@ -105,6 +105,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should retry test', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --grep "retry"`, (err, stdout, stderr) => {
+      console.log(stdout);
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('OK  | 1 passed');
       done();

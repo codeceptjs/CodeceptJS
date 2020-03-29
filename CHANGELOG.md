@@ -51,6 +51,8 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
 * [TestCafe] Updated `click` to take first visible element. Fixes #2226 by @theTainted
 * [Puppeteer][WebDriver] Updated `waitForClickable` method to check for element overlapping. See #2261 by @PiQx
 * [REST] Rrespect Content-Type header. See #2262 by @pmarshall-legacy
+* [allure plugin] Fixes BeforeSuite failures in allure reports. See #2248 by @Georgegriff
+* [WebDriver][Puppeteer][Playwright] A screenshot of for an active session is saved in multi-session mode. See #2253 by @ChexWarrior
 * [commentStep Plugin introduced](/plugins#commentstep). Allows to annotate logical parts of a test:
 
 ```js

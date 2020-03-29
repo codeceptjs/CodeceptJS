@@ -23,14 +23,9 @@ describe('CodeceptJS commentStep plugin', function () {
     exec(
       `${config_run_config('codecept.conf.js', 'global var')} --debug`,
       (err, stdout) => {
-        stdout.should.include(
-          `    Prepare user base
-      I print "other thins"
-    Update data
-      I print "do some things"
-    Check the result
-      I print "see everything works"`,
-        );
+        stdout.should.include('    Prepare user base  \n      I print "other thins"');
+        stdout.should.include('    Update data  \n      I print "do some things"');
+        stdout.should.include('    Check the result  \n      I print "see everything works"');
         assert(!err);
         done();
       },
@@ -41,14 +36,9 @@ describe('CodeceptJS commentStep plugin', function () {
     exec(
       `${config_run_config('codecept.conf.js', 'local var')} --debug`,
       (err, stdout) => {
-        stdout.should.include(
-          `    Prepare project
-      I print "other thins"
-    Update project
-      I print "do some things"
-    Check project
-      I print "see everything works"`,
-        );
+        stdout.should.include('    Prepare project  \n      I print "other thins"');
+        stdout.should.include('    Update project  \n      I print "do some things"');
+        stdout.should.include('    Check project  \n      I print "see everything works"');
         assert(!err);
         done();
       },
