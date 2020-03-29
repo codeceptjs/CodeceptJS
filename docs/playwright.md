@@ -232,7 +232,7 @@ const { devices } = require('playwright');
 helpers: {
   Playwright: {
     // regular config goes here
-    emulate: devices['iPhone 6']
+    emulate: devices['iPhone 6'],
   }
 }
 ```

@@ -1,3 +1,69 @@
+## 2.6.0
+
+* **[Playwright] Updated to Playwright 0.12** by @Georgegriff.
+
+Upgrade playwright to ^0.12:
+
+```
+npm i playwright@^0.12 --save
+```
+
+[Notable changes](https://github.com/microsoft/playwright/releases/tag/v0.12.0):
+  * Fixed opening two browsers on start
+  * `executeScript` - passed function now accepts only one argument. Pass in objects or arrays if you need multtple arguments:
+```js
+// Old style, does not work anymore:
+I.executeScript((x, y) => x + y, x, y);
+// New style, passing an object:
+I.executeScript(({x, y}) => x + y, {x, y});
+```
+  * `click` - automatically waits for element to become clickable (visible, not animated) and waits for navigation.
+  * `clickLink` - deprecated
+  * `waitForClickable` - deprecated
+  * Added support for custom locators. See #2277
+  * Introduced [device emulation](/playwright/#device-emulation):
+    * globally via `emulate` config option
+    * per session
+
+**[WebDriver] Updated to webdriverio v6** by @PeterNgTr.
+
+Read [release notes](https://webdriver.io/blog/2020/03/26/webdriverio-v6-released.html), then
+upgrade webdriverio to ^6.0:
+
+```
+npm i webdriverio@^6.0 --save
+```
+*(webdriverio v5 support is deprecated and will be removed in CodeceptJS 3.0)*
+
+[WebDriver] Introduced [Shadow DOM support](/shadow) by @gkushang
+
+```js
+I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
+```
+
+* **Fixed parallel execution of `run-workers` for Gherkin** scenarios by @koushikmohan1996
+* [MockRequest] Updated and **moved to [standalone package](https://github.com/codecept-js/mock-request)**:
+  * full support for record/replay mode for Puppeteer
+  * added `mockServer` method to use flexible PollyJS API to define mocks
+  * fixed stale browser screen in record mode.
+* [Playwright] Added support on for `screenshotOnFail` plugin by @amonkc
+* Gherkin improvement: setting different tags per examples. See #2208 by @acuper
+* [TestCafe] Updated `click` to take first visible element. Fixes #2226 by @theTainted
+* [Puppeteer][WebDriver] Updated `waitForClickable` method to check for element overlapping. See #2261 by @PiQx
+* [REST] Rrespect Content-Type header. See #2262 by @pmarshall-legacy
+* [commentStep Plugin introduced](/plugins#commentstep). Allows to annotate logical parts of a test:
+
+```js
+__`Given`;
+I.amOnPage('/profile')
+
+__`When`;
+I.click('Logout');
+
+__`Then`;
+I.see('You are logged out');
+```
+
 ## 2.5.0
 
 * **Experimental: [Playwright](/playwright) helper introduced**.
