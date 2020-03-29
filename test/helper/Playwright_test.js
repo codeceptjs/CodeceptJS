@@ -84,16 +84,6 @@ describe('Playwright', function () {
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
     });
-
-    it('should be unauthenticated ', async () => {
-      let err = true;
-      try {
-        await I.amOnPage('/basic_auth');
-      } catch (e) {
-        err = false;
-      }
-      if (err) throw new Error('Should fail at auth page');
-    });
   });
 
   describe('grabDataFromPerformanceTiming', () => {
