@@ -997,3 +997,43 @@ describe('Playwright - BasicAuth', () => {
     });
   });
 });
+
+describe('Playwright - Emulation', () => {
+  before(() => {
+    const { devices } = require('playwright');
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      emulate: devices['iPhone 6'],
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  it('should open page as iPhone ', async () => {
+    await I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.equal(width, 980);
+  });
+});

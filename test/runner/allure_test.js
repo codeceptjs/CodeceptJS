@@ -2,6 +2,7 @@ const assert = require('assert');
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
+const { satisfyNodeVersion } = require('../../lib/command/utils');
 const { deleteDir } = require('../../lib/utils');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
@@ -58,7 +59,13 @@ describe('CodeceptJS Allure Plugin', () => {
     });
   });
 
-  it('should report BeforeSuite errors when executing via run-workers command', (done) => {
+  it('should report BeforeSuite errors when executing via run-workers command', function (done) {
+    try {
+      satisfyNodeVersion('>=11.7.0');
+    } catch (err) {
+      this.skip();
+    }
+
     exec(codecept_workers_config('before_suite_test_failed.conf.js'), (err, stdout) => {
       stdout.should.include('FAIL  | 0 passed, 1 failed');
 

@@ -201,6 +201,65 @@ I.see('0 items left', '.todo-count');
 
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
+## Multi Session Testing
+
+TO launch additional browser context (or incognito window) use `session` command.
+
+```js
+Scenario('I try to open this site as anonymous user', () => {
+  I.amOnPage('/');
+  I.dontSee('Agree to cookies');
+  session('anonymous user', () => {
+    I.amOnPage('/');
+    I.see('Agree to cookies');
+  });
+})
+```
+
+> ℹ Learn more about [multi-session testing](/basics/#multiple-sessions)
+
+## Device Emulation
+
+Playwright can emulate browsers of mobile devices. Instead of paying for expensive devices for mobile tests you can adjust Playwright settings so it could emulate mobile browsers on iPhone, Samsung Galaxy, etc.
+
+Device emulation can be enabled in CodeceptJS globally in a config or per session.
+
+Playwright contains a [list of predefined devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+
+```js
+const { devices } = require('playwright');
+
+helpers: {
+  Playwright: {
+    // regular config goes here
+    emulate: devices['iPhone 6']
+  }
+}
+```
+To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewcontextoptions)
+
+```js
+helpers: {
+  Playwright: {
+    // regular config goes here
+    // put on mobile device
+    emulate: { isMobile: true, deviceScaleFactor: 2 }
+  }
+}
+```
+
+To enable device emulation for a specific test, create an additional browser session and pass in config as a second parameter:
+
+```js
+const { devices } = require('playwright');
+
+Scenario('website looks nice on iPhone', () => {
+  session('mobile user', devices['iPhone 6'], () => {
+    I.amOnPage('/');
+    I.see('Hello, iPhone user!')
+  })
+});
+```
 
 ## Extending
 
