@@ -809,68 +809,68 @@ const helperConfig = {
   windowSize: '500x700',
 };
 
-xdescribe('Playwright (remote browser) - not supported disconnection yet', function () {
-  this.timeout(35000);
-  this.retries(1);
+// xdescribe('Playwright (remote browser) - not supported disconnection yet', function () {
+//   this.timeout(35000);
+//   this.retries(1);
 
-  before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data');
-    I = new Playwright(helperConfig);
-    I._init();
-    return I._beforeSuite();
-  });
+//   before(() => {
+//     global.codecept_dir = path.join(__dirname, '/../data');
+//     I = new Playwright(helperConfig);
+//     I._init();
+//     return I._beforeSuite();
+//   });
 
-  beforeEach(async () => {
-    // Mimick remote session by creating another browser instance
-    await createRemoteBrowser();
-    // Set websocket endpoint to other browser instance
-    helperConfig.chromium = await remoteBrowser.connectOptions();
-    I._setConfig(helperConfig);
+//   beforeEach(async () => {
+//     // Mimick remote session by creating another browser instance
+//     await createRemoteBrowser();
+//     // Set websocket endpoint to other browser instance
+//     helperConfig.chromium = await remoteBrowser.connectOptions();
+//     I._setConfig(helperConfig);
 
-    return I._before();
-  });
+//     return I._before();
+//   });
 
-  afterEach(() => {
-    return I._after()
-      .then(() => {
-        remoteBrowser && remoteBrowser.close();
-      });
-  });
+//   afterEach(() => {
+//     return I._after()
+//       .then(() => {
+//         remoteBrowser && remoteBrowser.close();
+//       });
+//   });
 
-  describe('#_startBrowser', () => {
-    it('should throw an exception when endpoint is unreachable', async () => {
-      helperConfig.chromium.browserWSEndpoint = 'ws://unreachable/';
-      I._setConfig(helperConfig);
-      try {
-        await I._startBrowser();
-        throw Error('It should never get this far');
-      } catch (e) {
-        e.message.should.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.');
-      }
-    });
+//   describe('#_startBrowser', () => {
+//     it('should throw an exception when endpoint is unreachable', async () => {
+//       helperConfig.chromium.browserWSEndpoint = 'ws://unreachable/';
+//       I._setConfig(helperConfig);
+//       try {
+//         await I._startBrowser();
+//         throw Error('It should never get this far');
+//       } catch (e) {
+//         e.message.should.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.');
+//       }
+//     });
 
-    it('should manage pages in remote browser', async () => {
-      await I._startBrowser();
-      const context = await I.browserContext;
-      // Session was cleared
-      let currentPages = await context.pages();
-      assert.equal(currentPages.length, 1);
+//     it('should manage pages in remote browser', async () => {
+//       await I._startBrowser();
+//       const context = await I.browserContext;
+//       // Session was cleared
+//       let currentPages = await context.pages();
+//       assert.equal(currentPages.length, 1);
 
-      let numPages = await I.grabNumberOfOpenTabs();
-      assert.equal(numPages, 1);
+//       let numPages = await I.grabNumberOfOpenTabs();
+//       assert.equal(numPages, 1);
 
-      await I.openNewTab();
+//       await I.openNewTab();
 
-      numPages = await I.grabNumberOfOpenTabs();
-      assert.equal(numPages, 2);
+//       numPages = await I.grabNumberOfOpenTabs();
+//       assert.equal(numPages, 2);
 
-      await I._stopBrowser();
+//       await I._stopBrowser();
 
-      currentPages = await context.pages();
-      assert.equal(currentPages.length, 2);
-    });
-  });
-});
+//       currentPages = await context.pages();
+//       assert.equal(currentPages.length, 2);
+//     });
+//   });
+// });
 
 describe('Playwright - BasicAuth', () => {
   before(() => {
