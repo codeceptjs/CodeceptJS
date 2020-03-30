@@ -622,7 +622,7 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
-> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+> ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
 
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
 
