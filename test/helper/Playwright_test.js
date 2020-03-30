@@ -54,6 +54,10 @@ describe('Playwright', function () {
     return I._after();
   });
 
+  after(() => {
+    return I._stopBrowser();
+  });
+
   xdescribe('Session', () => {
     it('should not fail for localStorage.clear() on about:blank', async () => {
       I.options.restart = false;
