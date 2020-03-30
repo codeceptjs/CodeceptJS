@@ -1,0 +1,32 @@
+version: v1.0
+
+name: Appium tests for CodeceptJS
+
+agent:
+    machine:
+      type: e1-standard-2
+      os_image: ubuntu1804
+
+blocks:
+    - name: Install dependencies
+        task:
+        jobs:
+            - name: npm install
+            commands:
+                - checkout
+                - cache restore
+                - npm install
+
+    - name: Tests
+        task:
+        prologue:
+            commands:
+            - checkout
+            - cache restore
+        jobs:
+            - name: Appium tests - @quick
+            commands:
+                - ./node_modules/.bin/mocha test/helper/Appium_test.js --grep "quick"
+            - name: Appium tests - @second
+            commands:
+                - ./node_modules/.bin/mocha test/helper/Appium_test.js --grep "second"
