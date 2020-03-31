@@ -372,47 +372,47 @@ module.exports.tests = function () {
     });
   });
 
-  // describe('#executeScript', () => {
-  //   it('should execute synchronous script', async () => {
-  //     await I.amOnPage('/');
-  //     await I.executeScript(() => {
-  //       document.getElementById('link').innerHTML = 'Appended';
-  //     });
-  //     await I.see('Appended', 'a');
-  //   });
+  describe('#executeScript', () => {
+    it('should execute synchronous script', async () => {
+      await I.amOnPage('/');
+      await I.executeScript(() => {
+        document.getElementById('link').innerHTML = 'Appended';
+      });
+      await I.see('Appended', 'a');
+    });
 
-  //   it('should return value from sync script', async () => {
-  //     await I.amOnPage('/');
-  //     const val = await I.executeScript(a => a + 5, 5);
-  //     assert.equal(val, 10);
-  //   });
+    it('should return value from sync script', async () => {
+      await I.amOnPage('/');
+      const val = await I.executeScript(a => a + 5, 5);
+      assert.equal(val, 10);
+    });
 
 
-  //   it('should return value from sync script in iframe', async function () {
-  //     if (isHelper('Nightmare')) return; // TODO Not yet implemented
-  //     if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+    it('should return value from sync script in iframe', async function () {
+      if (isHelper('Nightmare')) return; // TODO Not yet implemented
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
 
-  //     await I.amOnPage('/iframe');
-  //     await I.switchTo('iframe');
-  //     const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
-  //     assert.equal(val, 'Information');
-  //   });
+      await I.amOnPage('/iframe');
+      await I.switchTo('iframe');
+      const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
+      assert.equal(val, 'Information');
+    });
 
-  //   it('should execute async script', async function () {
-  //     if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
-  //     if (isHelper('Playwright')) this.skip(); // TODO Not yet implemented
+    it('should execute async script', async function () {
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Playwright')) return; // TODO Not yet implemented
 
-  //     await I.amOnPage('/');
-  //     const val = await I.executeAsyncScript((val, done) => {
-  //       setTimeout(() => {
-  //         document.getElementById('link').innerHTML = val;
-  //         done(5);
-  //       }, 100);
-  //     }, 'Timeout');
-  //     assert.equal(val, 5);
-  //     await I.see('Timeout', 'a');
-  //   });
-  // });
+      await I.amOnPage('/');
+      const val = await I.executeAsyncScript((val, done) => {
+        setTimeout(() => {
+          document.getElementById('link').innerHTML = val;
+          done(5);
+        }, 100);
+      }, 'Timeout');
+      assert.equal(val, 5);
+      await I.see('Timeout', 'a');
+    });
+  });
 
   describe('#fillField, #appendField', () => {
     it('should fill input fields', async () => {
