@@ -33,8 +33,8 @@ jobs:
         npm install
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
-    # - name: run chromium tests
-    #   run: " ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+    - name: run chromium tests
+      run: xvfb-run --auto-servernum -- bash -c "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose"
     - name: run firefox tests
       run: "BROWSER=firefox ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests
