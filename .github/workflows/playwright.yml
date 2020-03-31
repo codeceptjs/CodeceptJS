@@ -36,6 +36,6 @@ jobs:
     - name: run chromium tests
       run: xvfb-run --auto-servernum -- bash -c "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose"
     - name: run firefox tests
-      run: "BROWSER=firefox ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+      run: xvfb-run --auto-servernum -- bash -c "BROWSER=firefox ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests
-      run: "BROWSER=webkit ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+      run: xvfb-run --auto-servernum -- bash -c "BROWSER=webkit ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
