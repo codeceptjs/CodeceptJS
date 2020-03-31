@@ -372,325 +372,325 @@ module.exports.tests = function () {
 //     });
 //   });
 
-//   describe('#executeScript', () => {
-//     it('should execute synchronous script', async () => {
-//       await I.amOnPage('/');
-//       await I.executeScript(() => {
-//         document.getElementById('link').innerHTML = 'Appended';
-//       });
-//       await I.see('Appended', 'a');
-//     });
+  describe('#executeScript', () => {
+    it('should execute synchronous script', async () => {
+      await I.amOnPage('/');
+      await I.executeScript(() => {
+        document.getElementById('link').innerHTML = 'Appended';
+      });
+      await I.see('Appended', 'a');
+    });
 
-//     it('should return value from sync script', async () => {
-//       await I.amOnPage('/');
-//       const val = await I.executeScript(a => a + 5, 5);
-//       assert.equal(val, 10);
-//     });
-
-
-//     it('should return value from sync script in iframe', async function () {
-//       if (isHelper('Nightmare')) return; // TODO Not yet implemented
-//       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
-
-//       await I.amOnPage('/iframe');
-//       await I.switchTo('iframe');
-//       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
-//       assert.equal(val, 'Information');
-//     });
-
-//     it('should execute async script', async function () {
-//       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
-//       if (isHelper('Playwright')) this.skip(); // TODO Not yet implemented
-
-//       await I.amOnPage('/');
-//       const val = await I.executeAsyncScript((val, done) => {
-//         setTimeout(() => {
-//           document.getElementById('link').innerHTML = val;
-//           done(5);
-//         }, 100);
-//       }, 'Timeout');
-//       assert.equal(val, 5);
-//       await I.see('Timeout', 'a');
-//     });
-//   });
-
-//   describe('#fillField, #appendField', () => {
-//     it('should fill input fields', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.fillField('Name', 'Nothing special');
-//       await I.click('Submit');
-//       assert.equal(formContents('name'), 'Nothing special');
-//     });
-
-//     it('should fill input fields with secrets', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.fillField('Name', secret('Something special'));
-//       await I.click('Submit');
-//       assert.equal(formContents('name'), 'Something special');
-//     });
-
-//     it('should fill field by css', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.fillField('#name', 'Nothing special');
-//       await I.click('Submit');
-//       assert.equal(formContents('name'), 'Nothing special');
-//     });
-
-//     it('should fill field by strict locator', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.fillField({
-//         id: 'name',
-//       }, 'Nothing special');
-//       await I.click('Submit');
-//       assert.equal(formContents('name'), 'Nothing special');
-//     });
-
-//     it('should fill field by name', async () => {
-//       await I.amOnPage('/form/example1');
-//       await I.fillField('LoginForm[username]', 'davert');
-//       await I.fillField('LoginForm[password]', '123456');
-//       await I.click('Login');
-//       assert.equal(formContents('LoginForm').username, 'davert');
-//       assert.equal(formContents('LoginForm').password, '123456');
-//     });
-
-//     it('should fill textarea by css', async () => {
-//       await I.amOnPage('/form/textarea');
-//       await I.fillField('textarea', 'Nothing special');
-//       await I.click('Submit');
-//       assert.equal(formContents('description'), 'Nothing special');
-//     });
-
-//     it('should fill textarea by label', async () => {
-//       await I.amOnPage('/form/textarea');
-//       await I.fillField('Description', 'Nothing special');
-//       await I.click('Submit');
-//       assert.equal(formContents('description'), 'Nothing special');
-//     });
-
-//     it('should fill input by aria-label and aria-labelledby', async () => {
-//       await I.amOnPage('/form/aria');
-//       await I.fillField('My Address', 'Home Sweet Home');
-//       await I.fillField('Phone', '123456');
-//       await I.click('Submit');
-//       assert.equal(formContents('my-form-phone'), '123456');
-//       assert.equal(formContents('my-form-address'), 'Home Sweet Home');
-//     });
-
-//     it('should fill textarea by overwritting the existing value', async () => {
-//       await I.amOnPage('/form/textarea');
-//       await I.fillField('Description', 'Nothing special');
-//       await I.fillField('Description', 'Some other text');
-//       await I.click('Submit');
-//       assert.equal(formContents('description'), 'Some other text');
-//     });
-
-//     it('should append field value', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.appendField('Name', '_AND_NEW');
-//       await I.click('Submit');
-//       assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
-//     });
-//   });
-
-//   describe('#clearField', () => {
-//     it('should clear a given element', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.fillField('#name', 'Nothing special');
-//       await I.seeInField('#name', 'Nothing special');
-//       await I.clearField('#name');
-//       await I.dontSeeInField('#name', 'Nothing special');
-//     });
-
-//     it('should clear field by name', async () => {
-//       await I.amOnPage('/form/example1');
-//       await I.clearField('LoginForm[username]');
-//       await I.click('Login');
-//       assert.equal(formContents('LoginForm').username, '');
-//     });
-
-//     it('should clear field by locator', async () => {
-//       await I.amOnPage('/form/example1');
-//       await I.clearField('#LoginForm_username');
-//       await I.click('Login');
-//       assert.equal(formContents('LoginForm').username, '');
-//     });
-//   });
-
-//   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
-//     it('should check for empty field', async () => {
-//       await I.amOnPage('/form/empty');
-//       await I.seeInField('#empty_input', '');
-//     });
-
-//     it('should check for empty textarea', async () => {
-//       await I.amOnPage('/form/empty');
-//       await I.seeInField('#empty_textarea', '');
-//     });
-
-//     it('should check field equals', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.seeInField('Name', 'OLD_VALUE');
-//       await I.seeInField('name', 'OLD_VALUE');
-//       await I.seeInField('//input[@id="name"]', 'OLD_VALUE');
-//       await I.dontSeeInField('//input[@id="name"]', 'NOtVALUE');
-//     });
-
-//     it('should check textarea equals', async () => {
-//       await I.amOnPage('/form/textarea');
-//       await I.seeInField('Description', 'sunrise');
-//       await I.seeInField('textarea', 'sunrise');
-//       await I.seeInField('//textarea[@id="description"]', 'sunrise');
-//       await I.dontSeeInField('//textarea[@id="description"]', 'sunset');
-//     });
-
-//     it('should check checkbox is checked :)', async () => {
-//       await I.amOnPage('/info');
-//       await I.seeCheckboxIsChecked('input[type=checkbox]');
-//     });
-
-//     it('should check checkbox is not checked', async () => {
-//       await I.amOnPage('/form/checkbox');
-//       await I.dontSeeCheckboxIsChecked('#checkin');
-//     });
-
-//     it('should match fields with the same name', async () => {
-//       await I.amOnPage('/form/example20');
-//       await I.seeInField("//input[@name='txtName'][2]", 'emma');
-//       await I.seeInField("input[name='txtName']:nth-child(2)", 'emma');
-//     });
-//   });
-
-//   describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
-//     it('should grab text from page', async () => {
-//       await I.amOnPage('/');
-//       let val = await I.grabTextFrom('h1');
-//       assert.equal(val, 'Welcome to test app!');
-
-//       val = await I.grabTextFrom('//h1');
-//       assert.equal(val, 'Welcome to test app!');
-//     });
-
-//     it('should grab multiple texts from page', async () => {
-//       await I.amOnPage('/info');
-//       const vals = await I.grabTextFrom('#grab-multiple a');
-//       assert.equal(vals[0], 'First');
-//       assert.equal(vals[1], 'Second');
-//       assert.equal(vals[2], 'Third');
-//     });
-
-//     it('should grab html from page', async function () {
-//       if (isHelper('TestCafe')) this.skip();
-
-//       await I.amOnPage('/info');
-//       const val = await I.grabHTMLFrom('#grab-multiple');
-//       assert.equal(`
-//     <a id="first-link">First</a>
-//     <a id="second-link">Second</a>
-//     <a id="third-link">Third</a>
-// `, val);
-
-//       const vals = await I.grabHTMLFrom('#grab-multiple a');
-//       assert.equal(vals[0], 'First');
-//       assert.equal(vals[1], 'Second');
-//       assert.equal(vals[2], 'Third');
-//     });
+    it('should return value from sync script', async () => {
+      await I.amOnPage('/');
+      const val = await I.executeScript(a => a + 5, 5);
+      assert.equal(val, 10);
+    });
 
 
-//     it('should grab value from field', async () => {
-//       await I.amOnPage('/form/hidden');
-//       let val = await I.grabValueFrom('#action');
-//       assert.equal(val, 'kill_people');
-//       val = await I.grabValueFrom("//form/input[@name='action']");
-//       assert.equal(val, 'kill_people');
-//       await I.amOnPage('/form/textarea');
-//       val = await I.grabValueFrom('#description');
-//       assert.equal(val, 'sunrise');
-//       await I.amOnPage('/form/select');
-//       val = await I.grabValueFrom('#age');
-//       assert.equal(val, 'oldfag');
-//     });
+    it('should return value from sync script in iframe', async function () {
+      if (isHelper('Nightmare')) return; // TODO Not yet implemented
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
 
-//     it('should grab attribute from element', async () => {
-//       await I.amOnPage('/search');
-//       const val = await I.grabAttributeFrom({
-//         css: 'form',
-//       }, 'method');
-//       assert.equal(val, 'get');
-//     });
+      await I.amOnPage('/iframe');
+      await I.switchTo('iframe');
+      const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
+      assert.equal(val, 'Information');
+    });
 
-//     it('should grab custom attribute from element', async () => {
-//       await I.amOnPage('/form/example4');
-//       const val = await I.grabAttributeFrom({
-//         css: '.navbar-toggle',
-//       }, 'data-toggle');
-//       assert.equal(val, 'collapse');
-//     });
-//   });
+    it('should execute async script', async function () {
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Playwright')) this.skip(); // TODO Not yet implemented
 
-//   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
-//     it('should check page title', async function () {
-//       if (isHelper('TestCafe')) this.skip();
+      await I.amOnPage('/');
+      const val = await I.executeAsyncScript((val, done) => {
+        setTimeout(() => {
+          document.getElementById('link').innerHTML = val;
+          done(5);
+        }, 100);
+      }, 'Timeout');
+      assert.equal(val, 5);
+      await I.see('Timeout', 'a');
+    });
+  });
 
-//       await I.amOnPage('/');
-//       await I.seeInTitle('TestEd Beta 2.0');
-//       await I.dontSeeInTitle('Welcome to test app');
-//       await I.amOnPage('/info');
-//       await I.dontSeeInTitle('TestEd Beta 2.0');
-//     });
+  describe('#fillField, #appendField', () => {
+    it('should fill input fields', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Nothing special');
+    });
 
-//     it('should grab page title', async function () {
-//       if (isHelper('TestCafe')) this.skip();
+    it('should fill input fields with secrets', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', secret('Something special'));
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Something special');
+    });
 
-//       await I.amOnPage('/');
-//       const val = await I.grabTitle();
-//       assert.equal(val, 'TestEd Beta 2.0');
-//     });
-//   });
+    it('should fill field by css', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('#name', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Nothing special');
+    });
 
-//   describe('#attachFile', () => {
-//     it('should upload file located by CSS', async () => {
-//       await I.amOnPage('/form/file');
-//       await I.attachFile('#avatar', 'app/avatar.jpg');
-//       await I.click('Submit');
-//       await I.see('Thank you');
-//       formContents().files.should.have.key('avatar');
-//       formContents().files.avatar.name.should.eql('avatar.jpg');
-//       formContents().files.avatar.type.should.eql('image/jpeg');
-//     });
+    it('should fill field by strict locator', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField({
+        id: 'name',
+      }, 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Nothing special');
+    });
 
-//     it('should upload file located by label', async () => {
-//       if (isHelper('Nightmare')) return;
+    it('should fill field by name', async () => {
+      await I.amOnPage('/form/example1');
+      await I.fillField('LoginForm[username]', 'davert');
+      await I.fillField('LoginForm[password]', '123456');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').username, 'davert');
+      assert.equal(formContents('LoginForm').password, '123456');
+    });
 
-//       await I.amOnPage('/form/file');
-//       await I.attachFile('Avatar', 'app/avatar.jpg');
-//       await I.click('Submit');
-//       await I.see('Thank you');
-//       formContents().files.should.have.key('avatar');
-//       formContents().files.avatar.name.should.eql('avatar.jpg');
-//       formContents().files.avatar.type.should.eql('image/jpeg');
-//     });
-//   });
+    it('should fill textarea by css', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('textarea', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('description'), 'Nothing special');
+    });
 
-//   describe('#saveScreenshot', () => {
-//     beforeEach(() => {
-//       global.output_dir = path.join(global.codecept_dir, 'output');
-//     });
+    it('should fill textarea by label', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('Description', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('description'), 'Nothing special');
+    });
 
-//     it('should create a screenshot file in output dir', async () => {
-//       const sec = (new Date()).getUTCMilliseconds();
-//       await I.amOnPage('/');
-//       await I.saveScreenshot(`screenshot_${sec}.png`);
-//       assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists');
-//     });
+    it('should fill input by aria-label and aria-labelledby', async () => {
+      await I.amOnPage('/form/aria');
+      await I.fillField('My Address', 'Home Sweet Home');
+      await I.fillField('Phone', '123456');
+      await I.click('Submit');
+      assert.equal(formContents('my-form-phone'), '123456');
+      assert.equal(formContents('my-form-address'), 'Home Sweet Home');
+    });
 
-//     it('should create a full page screenshot file in output dir', async () => {
-//       const sec = (new Date()).getUTCMilliseconds();
-//       await I.amOnPage('/');
-//       await I.saveScreenshot(`screenshot_full_${+sec}.png`, true);
-//       assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists');
-//     });
-//   });
+    it('should fill textarea by overwritting the existing value', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('Description', 'Nothing special');
+      await I.fillField('Description', 'Some other text');
+      await I.click('Submit');
+      assert.equal(formContents('description'), 'Some other text');
+    });
+
+    it('should append field value', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '_AND_NEW');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+    });
+  });
+
+  describe('#clearField', () => {
+    it('should clear a given element', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('#name', 'Nothing special');
+      await I.seeInField('#name', 'Nothing special');
+      await I.clearField('#name');
+      await I.dontSeeInField('#name', 'Nothing special');
+    });
+
+    it('should clear field by name', async () => {
+      await I.amOnPage('/form/example1');
+      await I.clearField('LoginForm[username]');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').username, '');
+    });
+
+    it('should clear field by locator', async () => {
+      await I.amOnPage('/form/example1');
+      await I.clearField('#LoginForm_username');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').username, '');
+    });
+  });
+
+  describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
+    it('should check for empty field', async () => {
+      await I.amOnPage('/form/empty');
+      await I.seeInField('#empty_input', '');
+    });
+
+    it('should check for empty textarea', async () => {
+      await I.amOnPage('/form/empty');
+      await I.seeInField('#empty_textarea', '');
+    });
+
+    it('should check field equals', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeInField('Name', 'OLD_VALUE');
+      await I.seeInField('name', 'OLD_VALUE');
+      await I.seeInField('//input[@id="name"]', 'OLD_VALUE');
+      await I.dontSeeInField('//input[@id="name"]', 'NOtVALUE');
+    });
+
+    it('should check textarea equals', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.seeInField('Description', 'sunrise');
+      await I.seeInField('textarea', 'sunrise');
+      await I.seeInField('//textarea[@id="description"]', 'sunrise');
+      await I.dontSeeInField('//textarea[@id="description"]', 'sunset');
+    });
+
+    it('should check checkbox is checked :)', async () => {
+      await I.amOnPage('/info');
+      await I.seeCheckboxIsChecked('input[type=checkbox]');
+    });
+
+    it('should check checkbox is not checked', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.dontSeeCheckboxIsChecked('#checkin');
+    });
+
+    it('should match fields with the same name', async () => {
+      await I.amOnPage('/form/example20');
+      await I.seeInField("//input[@name='txtName'][2]", 'emma');
+      await I.seeInField("input[name='txtName']:nth-child(2)", 'emma');
+    });
+  });
+
+  describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
+    it('should grab text from page', async () => {
+      await I.amOnPage('/');
+      let val = await I.grabTextFrom('h1');
+      assert.equal(val, 'Welcome to test app!');
+
+      val = await I.grabTextFrom('//h1');
+      assert.equal(val, 'Welcome to test app!');
+    });
+
+    it('should grab multiple texts from page', async () => {
+      await I.amOnPage('/info');
+      const vals = await I.grabTextFrom('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+    });
+
+    it('should grab html from page', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/info');
+      const val = await I.grabHTMLFrom('#grab-multiple');
+      assert.equal(`
+    <a id="first-link">First</a>
+    <a id="second-link">Second</a>
+    <a id="third-link">Third</a>
+`, val);
+
+      const vals = await I.grabHTMLFrom('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+    });
+
+
+    it('should grab value from field', async () => {
+      await I.amOnPage('/form/hidden');
+      let val = await I.grabValueFrom('#action');
+      assert.equal(val, 'kill_people');
+      val = await I.grabValueFrom("//form/input[@name='action']");
+      assert.equal(val, 'kill_people');
+      await I.amOnPage('/form/textarea');
+      val = await I.grabValueFrom('#description');
+      assert.equal(val, 'sunrise');
+      await I.amOnPage('/form/select');
+      val = await I.grabValueFrom('#age');
+      assert.equal(val, 'oldfag');
+    });
+
+    it('should grab attribute from element', async () => {
+      await I.amOnPage('/search');
+      const val = await I.grabAttributeFrom({
+        css: 'form',
+      }, 'method');
+      assert.equal(val, 'get');
+    });
+
+    it('should grab custom attribute from element', async () => {
+      await I.amOnPage('/form/example4');
+      const val = await I.grabAttributeFrom({
+        css: '.navbar-toggle',
+      }, 'data-toggle');
+      assert.equal(val, 'collapse');
+    });
+  });
+
+  describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
+    it('should check page title', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/');
+      await I.seeInTitle('TestEd Beta 2.0');
+      await I.dontSeeInTitle('Welcome to test app');
+      await I.amOnPage('/info');
+      await I.dontSeeInTitle('TestEd Beta 2.0');
+    });
+
+    it('should grab page title', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/');
+      const val = await I.grabTitle();
+      assert.equal(val, 'TestEd Beta 2.0');
+    });
+  });
+
+  describe('#attachFile', () => {
+    it('should upload file located by CSS', async () => {
+      await I.amOnPage('/form/file');
+      await I.attachFile('#avatar', 'app/avatar.jpg');
+      await I.click('Submit');
+      await I.see('Thank you');
+      formContents().files.should.have.key('avatar');
+      formContents().files.avatar.name.should.eql('avatar.jpg');
+      formContents().files.avatar.type.should.eql('image/jpeg');
+    });
+
+    it('should upload file located by label', async () => {
+      if (isHelper('Nightmare')) return;
+
+      await I.amOnPage('/form/file');
+      await I.attachFile('Avatar', 'app/avatar.jpg');
+      await I.click('Submit');
+      await I.see('Thank you');
+      formContents().files.should.have.key('avatar');
+      formContents().files.avatar.name.should.eql('avatar.jpg');
+      formContents().files.avatar.type.should.eql('image/jpeg');
+    });
+  });
+
+  describe('#saveScreenshot', () => {
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+
+    it('should create a screenshot file in output dir', async () => {
+      const sec = (new Date()).getUTCMilliseconds();
+      await I.amOnPage('/');
+      await I.saveScreenshot(`screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists');
+    });
+
+    it('should create a full page screenshot file in output dir', async () => {
+      const sec = (new Date()).getUTCMilliseconds();
+      await I.amOnPage('/');
+      await I.saveScreenshot(`screenshot_full_${+sec}.png`, true);
+      assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists');
+    });
+  });
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
     it('should do all cookie stuff', async () => {
