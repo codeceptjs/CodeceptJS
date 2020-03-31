@@ -307,7 +307,7 @@ module.exports.tests = function () {
     // cannot do Selector(css).find(elementByXPath(xpath))
     // testcafe always says "xpath is not defined"
     // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
-    it.skip('should check option by context', async () => {
+    it('should check option by context', async () => {
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/example1');

@@ -102,7 +102,7 @@ describe('Playwright', function () {
     });
   });
 
-  // webApiTests.tests();
+  webApiTests.tests();
 
   describe('#waitForFunction', () => {
     it('should wait for function returns true', () => {
