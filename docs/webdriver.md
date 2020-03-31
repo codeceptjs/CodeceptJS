@@ -204,7 +204,7 @@ Scenario('login test', (I) => {
 > ▶ Actions like `amOnPage`, `click`, `fillField` are not limited to WebDriver only. They work similarly for all available helpers. [Go to Basics guide to learn them](/basics#writing-tests).
 
 
-An empty test case can be created with `codeceptjs gt` command.
+An empty test case can be created with `npx codeceptjs gt` command.
 
 ```
 npx codeceptjs gt
@@ -223,7 +223,7 @@ Scenario('open my website', (I) => {
 
 This is just enough to run a test, open a browser, and think what to do next to write a test case.
 
-When you execute such test with `codeceptjs run` command you may see the browser is started
+When you execute such test with `npx codeceptjs run` command you may see the browser is started
 
 ```
 npx codeceptjs run --steps
@@ -263,6 +263,8 @@ Scenario('create todo item', (I) => {
 ```
 
 > [▶ Working example of CodeceptJS WebDriver tests](https://github.com/DavertMik/codeceptjs-webdriver-example) for TodoMVC application.
+
+WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as non-trivial [React locators](/react) and [Shadow DOM](/shadow).
 
 ## Waiting
 

@@ -18,6 +18,10 @@ module.exports.config = {
       // },
     },
     MockRequest: {},
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
+      outputPath: './output',
+    },
   },
   include: {},
   bootstrap: done => setTimeout(done, 5000), // let's wait for selenium

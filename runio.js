@@ -306,7 +306,7 @@ title: ${name}
 
     const dir = 'website';
     if (fs.existsSync(dir)) {
-      await exec('rm -rf ' + dir);
+      await exec(`rm -rf ${dir}`);
     }
 
     await git((fn) => fn.clone('git@github.com:codecept-js/website.git', dir));
