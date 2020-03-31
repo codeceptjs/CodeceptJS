@@ -414,108 +414,108 @@ module.exports.tests = function () {
   //   });
   // });
 
-  // describe('#fillField, #appendField', () => {
-  //   it('should fill input fields', async () => {
-  //     await I.amOnPage('/form/field');
-  //     await I.fillField('Name', 'Nothing special');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('name'), 'Nothing special');
-  //   });
+  describe('#fillField, #appendField', () => {
+    it('should fill input fields', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Nothing special');
+    });
 
-  //   it('should fill input fields with secrets', async () => {
-  //     await I.amOnPage('/form/field');
-  //     await I.fillField('Name', secret('Something special'));
-  //     await I.click('Submit');
-  //     assert.equal(formContents('name'), 'Something special');
-  //   });
+    it('should fill input fields with secrets', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', secret('Something special'));
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Something special');
+    });
 
-  //   it('should fill field by css', async () => {
-  //     await I.amOnPage('/form/field');
-  //     await I.fillField('#name', 'Nothing special');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('name'), 'Nothing special');
-  //   });
+    it('should fill field by css', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('#name', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Nothing special');
+    });
 
-  //   it('should fill field by strict locator', async () => {
-  //     await I.amOnPage('/form/field');
-  //     await I.fillField({
-  //       id: 'name',
-  //     }, 'Nothing special');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('name'), 'Nothing special');
-  //   });
+    it('should fill field by strict locator', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField({
+        id: 'name',
+      }, 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'Nothing special');
+    });
 
-  //   it('should fill field by name', async () => {
-  //     await I.amOnPage('/form/example1');
-  //     await I.fillField('LoginForm[username]', 'davert');
-  //     await I.fillField('LoginForm[password]', '123456');
-  //     await I.click('Login');
-  //     assert.equal(formContents('LoginForm').username, 'davert');
-  //     assert.equal(formContents('LoginForm').password, '123456');
-  //   });
+    it('should fill field by name', async () => {
+      await I.amOnPage('/form/example1');
+      await I.fillField('LoginForm[username]', 'davert');
+      await I.fillField('LoginForm[password]', '123456');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').username, 'davert');
+      assert.equal(formContents('LoginForm').password, '123456');
+    });
 
-  //   it('should fill textarea by css', async () => {
-  //     await I.amOnPage('/form/textarea');
-  //     await I.fillField('textarea', 'Nothing special');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('description'), 'Nothing special');
-  //   });
+    it('should fill textarea by css', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('textarea', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('description'), 'Nothing special');
+    });
 
-  //   it('should fill textarea by label', async () => {
-  //     await I.amOnPage('/form/textarea');
-  //     await I.fillField('Description', 'Nothing special');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('description'), 'Nothing special');
-  //   });
+    it('should fill textarea by label', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('Description', 'Nothing special');
+      await I.click('Submit');
+      assert.equal(formContents('description'), 'Nothing special');
+    });
 
-  //   it('should fill input by aria-label and aria-labelledby', async () => {
-  //     await I.amOnPage('/form/aria');
-  //     await I.fillField('My Address', 'Home Sweet Home');
-  //     await I.fillField('Phone', '123456');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('my-form-phone'), '123456');
-  //     assert.equal(formContents('my-form-address'), 'Home Sweet Home');
-  //   });
+    it('should fill input by aria-label and aria-labelledby', async () => {
+      await I.amOnPage('/form/aria');
+      await I.fillField('My Address', 'Home Sweet Home');
+      await I.fillField('Phone', '123456');
+      await I.click('Submit');
+      assert.equal(formContents('my-form-phone'), '123456');
+      assert.equal(formContents('my-form-address'), 'Home Sweet Home');
+    });
 
-  //   it('should fill textarea by overwritting the existing value', async () => {
-  //     await I.amOnPage('/form/textarea');
-  //     await I.fillField('Description', 'Nothing special');
-  //     await I.fillField('Description', 'Some other text');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('description'), 'Some other text');
-  //   });
+    it('should fill textarea by overwritting the existing value', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('Description', 'Nothing special');
+      await I.fillField('Description', 'Some other text');
+      await I.click('Submit');
+      assert.equal(formContents('description'), 'Some other text');
+    });
 
-  //   it('should append field value', async () => {
-  //     await I.amOnPage('/form/field');
-  //     await I.appendField('Name', '_AND_NEW');
-  //     await I.click('Submit');
-  //     assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
-  //   });
-  // });
+    it('should append field value', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '_AND_NEW');
+      await I.click('Submit');
+      assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+    });
+  });
 
-  // describe('#clearField', () => {
-  //   it('should clear a given element', async () => {
-  //     await I.amOnPage('/form/field');
-  //     await I.fillField('#name', 'Nothing special');
-  //     await I.seeInField('#name', 'Nothing special');
-  //     await I.clearField('#name');
-  //     await I.dontSeeInField('#name', 'Nothing special');
-  //   });
+  describe('#clearField', () => {
+    it('should clear a given element', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('#name', 'Nothing special');
+      await I.seeInField('#name', 'Nothing special');
+      await I.clearField('#name');
+      await I.dontSeeInField('#name', 'Nothing special');
+    });
 
-  //   it('should clear field by name', async () => {
-  //     await I.amOnPage('/form/example1');
-  //     await I.clearField('LoginForm[username]');
-  //     await I.click('Login');
-  //     assert.equal(formContents('LoginForm').username, '');
-  //   });
+    it('should clear field by name', async () => {
+      await I.amOnPage('/form/example1');
+      await I.clearField('LoginForm[username]');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').username, '');
+    });
 
-  //   it('should clear field by locator', async () => {
-  //     await I.amOnPage('/form/example1');
-  //     await I.clearField('#LoginForm_username');
-  //     await I.click('Login');
-  //     assert.equal(formContents('LoginForm').username, '');
-  //   });
-  // });
+    it('should clear field by locator', async () => {
+      await I.amOnPage('/form/example1');
+      await I.clearField('#LoginForm_username');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').username, '');
+    });
+  });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', async () => {
