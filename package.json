@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -109,7 +109,7 @@
     "nodemon": "^1.19.4",
     "playwright": "^0.12.1",
     "protractor": "^5.4.1",
-    "puppeteer": "^2.1.1",
+    "puppeteer": "^1.20.0",
     "qrcode-terminal": "^0.12.0",
     "rosie": "^1.6.0",
     "runio.js": "^1.0.20",

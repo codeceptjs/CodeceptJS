@@ -14,7 +14,7 @@ class ScreenshotSessionHelper extends Helper {
 
   constructor(config) {
     super(config);
-    this.outputPath = config.outputPath;
+    this.outputPath = output_dir;
   }
 
   getMD5Digests(files = []) {
