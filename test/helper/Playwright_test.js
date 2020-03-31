@@ -27,7 +27,7 @@ describe('Playwright', function () {
     I = new Playwright({
       url: siteUrl,
       windowSize: '500x700',
-      show: true,
+      show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
       restart: true,
@@ -54,19 +54,6 @@ describe('Playwright', function () {
     return I._after();
   });
 
-  xdescribe('Session', () => {
-    it('should not fail for localStorage.clear() on about:blank', async () => {
-      I.options.restart = false;
-      return I.page.goto('about:blank')
-        .then(() => I._after())
-        .then(() => { I.options.restart = true; })
-        .catch((e) => {
-          I.options.restart = true;
-          throw new Error(e);
-        });
-    });
-  });
-
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
@@ -83,16 +70,6 @@ describe('Playwright', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
-    });
-
-    it('should be unauthenticated ', async () => {
-      let err = true;
-      try {
-        await I.amOnPage('/basic_auth');
-      } catch (e) {
-        err = false;
-      }
-      if (err) throw new Error('Should fail at auth page');
     });
   });
 
@@ -781,82 +758,6 @@ describe('Playwright', function () {
       await FS.waitForFile('downloads/avatar.jpg', 5);
     });
   });
-
-  describe('#waitForClickable', () => {
-    it('should wait for clickable', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: 'input#text' });
-    });
-
-    it('should wait for clickable by XPath', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ xpath: './/input[@id="text"]' });
-    });
-
-    it('should fail for disabled element', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for disabled element by XPath', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by top', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by bottom', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by left', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by right', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for overlapping element', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#div2_button' }, 0.1);
-      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
-      });
-    });
-  });
 });
 
 let remoteBrowser;
@@ -995,5 +896,45 @@ describe('Playwright - BasicAuth', () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
+  });
+});
+
+describe('Playwright - Emulation', () => {
+  before(() => {
+    const { devices } = require('playwright');
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      emulate: devices['iPhone 6'],
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  it('should open page as iPhone ', async () => {
+    await I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.equal(width, 980);
   });
 });

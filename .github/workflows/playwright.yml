@@ -8,6 +8,11 @@ on:
     branches:
       - master
 
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
 jobs:
   build:
 
@@ -26,8 +31,7 @@ jobs:
     - name: install required packages
       run: |
         sudo apt-get update
-        sudo apt-get install libgbm-dev libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
-        sudo apt-get install xvfb
+        sudo apt-get install libgbm1 libgbm-dev libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
         sudo apt-get install php
     - name: npm install
       run: |
@@ -35,8 +39,8 @@ jobs:
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run chromium tests
-      run: " ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+      run: "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run firefox tests
-      run: "BROWSER=firefox ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+      run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests
-      run: "BROWSER=webkit ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+      run: "BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"

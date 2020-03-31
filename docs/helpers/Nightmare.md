@@ -876,15 +876,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][4]** a cookie object.Wrapper for `.cookies.set(cookie)`.
+-   `cookie` **([object][4] | [array][11])** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
     [See more][14]
 
 ### triggerMouseEvent

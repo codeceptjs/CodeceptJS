@@ -852,15 +852,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][5]** a cookie object.
+-   `cookie` **([object][5] | [array][9])** a cookie object or array of cookie objects.
 
 ### switchTo
 

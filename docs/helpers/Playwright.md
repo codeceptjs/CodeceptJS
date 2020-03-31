@@ -32,6 +32,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `show`:  - show browser window.
 -   `restart`:  - restart browser between tests.
 -   `disableScreenshots`:   - don't save screenshot on failure.
+-   `emulate`:  launch browser in device emulation mode.
 -   `fullPageScreenshots`  - make full page screenshots on failure.
 -   `uniqueScreenshotNames`:   - option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState`:  - keep browser state between tests when `restart` is set to false.
@@ -121,6 +122,21 @@ This helper should be configured in codecept.json or codecept.conf.js
           `--load-extension=${pathToExtension}`
        ]
      }
+   }
+ }
+}
+```
+
+#### Example #6: Lunach tests emulating iPhone 6
+
+```js
+const { devices } = require('playwright');
+
+{
+ helpers: {
+   Playwright: {
+     url: "http://localhost",
+     emulate: devices['iPhone 6'],
    }
  }
 }
@@ -376,16 +392,12 @@ I.click({css: 'nav a.login'});
 
 ### clickLink
 
-Performs a click on a link and waits for navigation before moving on.
-
-```js
-I.clickLink('Logout', '#nav');
-```
+Clicks link and waits for navigation (deprecated)
 
 #### Parameters
 
--   `locator` **([string][7] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator
--   `context` **([string][7]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator 
+-   `locator`  
+-   `context`   
 
 ### closeCurrentTab
 
@@ -575,68 +587,33 @@ I.dragSlider('#slider', -70);
 -   `locator` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `offsetX` **[number][8]** position to drag. 
 
-### executeAsyncScript
-
-Executes async script on page.
-Provided function should execute a passed callback (as first argument) to signal it is finished.
-
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][9].
-
-```js
-I.executeAsyncScript(function(done) {
-  Vue.nextTick(done); // waiting for next tick
-});
-```
-
-By passing value to `done()` function you can return values.
-Additional arguments can be passed as well, while `done` function is always last parameter in arguments list.
-
-```js
-let val = await I.executeAsyncScript(function(url, done) {
-  // in browser context
-  $.ajax(url, { success: (data) => done(data); }
-}, 'http://ajax.callback.url/');
-```
-
-#### Parameters
-
--   `fn` **([string][7] | [function][10])** function to be executed in browser context.
--   `args` **...any** to be passed to function.
-
-Returns **[Promise][11]&lt;any>** Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
-
 ### executeScript
 
-Executes sync script on a page.
-Pass arguments to function as additional parameters.
-Will return execution result to a test.
-In this case you should use async function and await to receive results.
-
-Example with jQuery DatePicker:
+Executes a script on the page:
 
 ```js
-// change date of jQuery DatePicker
-I.executeScript(function() {
-  // now we are inside browser context
-  $('date').datetimepicker('setDate', new Date());
-});
+I.executeScript(() => window.alert('Hello world'));
 ```
 
-Can return values. Don't forget to use `await` to get them.
+Additional parameters of the function can be passed as an object argument:
 
 ```js
-let date = await I.executeScript(function(el) {
-  // only basic types can be returned
-  return $(el).datetimepicker('getDate').toString();
-}, '#date'); // passing jquery selector
+I.executeScript(({x, y}) => x + y, {x, y});
 ```
+
+You can pass only one parameter into a function
+but you can pass in array or object.
+
+```js
+I.executeScript(([x, y]) => x + y, [x, y]);
+```
+
+If a function returns a Promise it will wait for its resolution.
 
 #### Parameters
 
--   `fn` **([string][7] | [function][10])** function to be executed in browser context.
--   `args` **...any** to be passed to function.
-
-Returns **[Promise][11]&lt;any>** If a function returns a Promise It will wait for it resolution.
+-   `fn`  
+-   `arg`  
 
 ### fillField
 
@@ -659,6 +636,20 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][7]** text value to fill.
 
+### forceClick
+
+Force clicks an element without waiting for it to become visible and not animating.
+
+```js
+I.forceClick('#hiddenButton');
+I.forceClick('Click me', '#hidden');
+```
+
+#### Parameters
+
+-   `locator`  
+-   `context`   
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -674,7 +665,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][7]** attribute name.
 
-Returns **[Promise][11]&lt;[string][7]>** attribute value
+Returns **[Promise][9]&lt;[string][7]>** attribute value
 
 ### grabBrowserLogs
 
@@ -685,7 +676,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][11]&lt;[Array][12]&lt;any>>** 
+Returns **[Promise][9]&lt;[Array][10]&lt;any>>** 
 
 ### grabCookie
 
@@ -702,7 +693,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][7]?** cookie name. 
 
-Returns **[Promise][11]&lt;[string][7]>** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **[Promise][9]&lt;[string][7]>** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -718,7 +709,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][7]** CSS property name.
 
-Returns **[Promise][11]&lt;[string][7]>** CSS value
+Returns **[Promise][9]&lt;[string][7]>** CSS value
 
 ### grabCurrentUrl
 
@@ -730,7 +721,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][11]&lt;[string][7]>** current URL
+Returns **[Promise][9]&lt;[string][7]>** current URL
 
 ### grabDataFromPerformanceTiming
 
@@ -798,7 +789,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][11]&lt;[string][7]>** HTML code for an element
+Returns **[Promise][9]&lt;[string][7]>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -808,7 +799,7 @@ Grab number of open tabs.
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][11]&lt;[number][8]>** number of open tabs
+Returns **[Promise][9]&lt;[number][8]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -822,7 +813,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][11]&lt;[number][8]>** number of visible elements
+Returns **[Promise][9]&lt;[number][8]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -833,7 +824,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][11]&lt;[Object][5]&lt;[string][7], any>>** scroll position
+Returns **[Promise][9]&lt;[Object][5]&lt;[string][7], any>>** scroll position
 
 ### grabPopupText
 
@@ -843,7 +834,7 @@ Grab the text within the popup. If no popup is visible then it will return null
 await I.grabPopupText();
 ```
 
-Returns **[Promise][11]&lt;([string][7] | null)>** 
+Returns **[Promise][9]&lt;([string][7] | null)>** 
 
 ### grabSource
 
@@ -854,7 +845,7 @@ Resumes test execution, so should be used inside an async function.
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][11]&lt;[string][7]>** source code
+Returns **[Promise][9]&lt;[string][7]>** source code
 
 ### grabTextFrom
 
@@ -871,7 +862,7 @@ If multiple elements found returns an array of texts.
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][11]&lt;([string][7] | [Array][12]&lt;[string][7]>)>** attribute value
+Returns **[Promise][9]&lt;([string][7] | [Array][10]&lt;[string][7]>)>** attribute value
 
 ### grabTitle
 
@@ -882,7 +873,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][11]&lt;[string][7]>** title
+Returns **[Promise][9]&lt;[string][7]>** title
 
 ### grabValueFrom
 
@@ -897,7 +888,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][11]&lt;[string][7]>** attribute value
+Returns **[Promise][9]&lt;[string][7]>** attribute value
 
 ### haveRequestHeaders
 
@@ -937,11 +928,22 @@ Open new tab and switch to it
 I.openNewTab();
 ```
 
+You can pass in [page options][11] to emulate device on this page
+
+```js
+// enable mobile
+I.openNewTab({ isMobile: true });
+```
+
+#### Parameters
+
+-   `options`  
+
 ### pressKey
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][13].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][12].
 
 ```js
 I.pressKey('Backspace');
@@ -1000,13 +1002,13 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][7] | [Array][12]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Playwright#1313][14]).
+-   `key` **([string][7] | [Array][10]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Playwright#1313][13]).
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][15]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][14]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1022,7 +1024,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][15]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][14]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1090,7 +1092,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][7]** file name to save.
--   `fullPage` **[boolean][16]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][15]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 ### scrollPageToBottom
 
@@ -1376,19 +1378,27 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][7] | [Array][12]&lt;any>)** visible text or value of option.
+-   `option` **([string][7] | [Array][10]&lt;any>)** visible text or value of option.
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][5]** a cookie object.
+-   `cookie` **([object][5] | [array][10])** a cookie object or array of cookie objects.
 
 ### switchTo
 
@@ -1531,8 +1541,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][7] | [function][10])** to be executed in browser context.
--   `argsOrSec` **([Array][12]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
+-   `fn` **([string][7] | [function][16])** to be executed in browser context.
+-   `argsOrSec` **([Array][10]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
@@ -1570,7 +1580,7 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][10])** 
+-   `urlOrPredicate` **([string][7] | [function][16])** 
 -   `sec` **[number][8]?** seconds to wait 
 
 ### waitForResponse
@@ -1584,7 +1594,7 @@ I.waitForResponse(request => request.url() === 'http://example.com' && request.m
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][10])** 
+-   `urlOrPredicate` **([string][7] | [function][16])** 
 -   `sec` **[number][8]?** number of seconds to wait 
 
 ### waitForText
@@ -1684,7 +1694,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
--   `fn` **([function][10] | [string][7])** function which is executed in browser context.
+-   `fn` **([function][16] | [string][7])** function which is executed in browser context.
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 -   `timeoutMsg` **[string][7]** message to show in case of timeout fail. 
 -   `interval` **[number][8]?**  
@@ -1719,20 +1729,20 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[9]: https://vuejs.org/v2/api/#Vue-nextTick
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[11]: https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewpageoptions
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[12]: #fillfield
 
-[13]: #fillfield
+[13]: https://github.com/GoogleChrome/Playwright/issues/1313
 
-[14]: https://github.com/GoogleChrome/Playwright/issues/1313
+[14]: #click
 
-[15]: #click
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [17]: https://codecept.io/react
