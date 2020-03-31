@@ -118,7 +118,7 @@ exports.config = {
 
 ## Profile
 
-Using `process.env.profile` you can change the config dynamically.
+Using values from `process.profile` you can change the config dynamically.
 It provides value of `--profile` option passed to runner.
 Use its value to change config value on the fly.
 
@@ -134,7 +134,7 @@ exports.config = {
     WebDriver: {
       url: 'http://localhost:3000',
       // load value from `profile`
-      browser: process.env.profile || 'firefox'
+      browser: process.profile || 'firefox'
 
     }
   }
