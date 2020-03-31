@@ -8,7 +8,7 @@ module.exports.config = {
   helpers: {
     Playwright: {
       url: TestHelper.siteUrl(),
-      show: true,
+      show: false,
       browser: process.env.BROWSER || 'chromium',
     },
     ScreenshotSessionHelper: {
