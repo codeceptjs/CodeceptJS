@@ -50,9 +50,18 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
 * Gherkin improvement: setting different tags per examples. See #2208 by @acuper
 * [TestCafe] Updated `click` to take first visible element. Fixes #2226 by @theTainted
 * [Puppeteer][WebDriver] Updated `waitForClickable` method to check for element overlapping. See #2261 by @PiQx
+* [Puppeteer] Dropped `puppeteer-firefox` support, as Puppeteer supports Firefox natively.
 * [REST] Rrespect Content-Type header. See #2262 by @pmarshall-legacy
 * [allure plugin] Fixes BeforeSuite failures in allure reports. See #2248 by @Georgegriff
 * [WebDriver][Puppeteer][Playwright] A screenshot of for an active session is saved in multi-session mode. See #2253 by @ChexWarrior
+* Fixed `--profile` option by @pablopaul. Profile value to be passed into `run-multiple` and `run-workers`:
+
+```
+npx codecept run-workers 2 --profile firefox
+```
+
+Value is available at `process.env.profile` (previously `process.profile`). See #2302. Fixes #1968 #1315
+
 * [commentStep Plugin introduced](/plugins#commentstep). Allows to annotate logical parts of a test:
 
 ```js
