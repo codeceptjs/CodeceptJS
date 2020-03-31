@@ -23,499 +23,499 @@ module.exports.tests = function () {
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
-//   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
-//     it('should check for url fragment', async () => {
-//       await I.amOnPage('/form/checkbox');
-//       await I.seeInCurrentUrl('/form');
-//       await I.dontSeeInCurrentUrl('/user');
-//     });
+  describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
+    it('should check for url fragment', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.seeInCurrentUrl('/form');
+      await I.dontSeeInCurrentUrl('/user');
+    });
 
-//     it('should check for equality', async () => {
-//       await I.amOnPage('/info');
-//       await I.seeCurrentUrlEquals('/info');
-//       await I.dontSeeCurrentUrlEquals('form');
-//     });
+    it('should check for equality', async () => {
+      await I.amOnPage('/info');
+      await I.seeCurrentUrlEquals('/info');
+      await I.dontSeeCurrentUrlEquals('form');
+    });
 
-//     it('should check for equality in absolute urls', async () => {
-//       await I.amOnPage('/info');
-//       await I.seeCurrentUrlEquals(`${siteUrl}/info`);
-//       await I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
-//     });
+    it('should check for equality in absolute urls', async () => {
+      await I.amOnPage('/info');
+      await I.seeCurrentUrlEquals(`${siteUrl}/info`);
+      await I.dontSeeCurrentUrlEquals(`${siteUrl}/form`);
+    });
 
-//     it('should grab browser url', async () => {
-//       await I.amOnPage('/info');
-//       const url = await I.grabCurrentUrl();
-//       assert.equal(url, `${siteUrl}/info`);
-//     });
-//   });
+    it('should grab browser url', async () => {
+      await I.amOnPage('/info');
+      const url = await I.grabCurrentUrl();
+      assert.equal(url, `${siteUrl}/info`);
+    });
+  });
 
-//   describe('#waitInUrl, #waitUrlEquals', () => {
-//     it('should wait part of the URL to match the expected', async () => {
-//       if (isHelper('Nightmare')) return;
+  describe('#waitInUrl, #waitUrlEquals', () => {
+    it('should wait part of the URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
 
-//       try {
-//         await I.amOnPage('/info');
-//         await I.waitInUrl('/info');
-//         await I.waitInUrl('/info2', 0.1);
-//       } catch (e) {
-//         assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
-//       }
-//     });
+      try {
+        await I.amOnPage('/info');
+        await I.waitInUrl('/info');
+        await I.waitInUrl('/info2', 0.1);
+      } catch (e) {
+        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
+      }
+    });
 
-//     it('should wait for the entire URL to match the expected', async () => {
-//       if (isHelper('Nightmare')) return;
+    it('should wait for the entire URL to match the expected', async () => {
+      if (isHelper('Nightmare')) return;
 
-//       try {
-//         await I.amOnPage('/info');
-//         await I.waitUrlEquals('/info');
-//         await I.waitUrlEquals(`${siteUrl}/info`);
-//         await I.waitUrlEquals('/info2', 0.1);
-//       } catch (e) {
-//         assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
-//       }
-//     });
-//   });
+      try {
+        await I.amOnPage('/info');
+        await I.waitUrlEquals('/info');
+        await I.waitUrlEquals(`${siteUrl}/info`);
+        await I.waitUrlEquals('/info2', 0.1);
+      } catch (e) {
+        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+      }
+    });
+  });
 
-//   describe('see text : #see', () => {
-//     it('should check text on site', async () => {
-//       await I.amOnPage('/');
-//       await I.see('Welcome to test app!');
-//       await I.see('A wise man said: "debug!"');
-//       await I.dontSee('Info');
-//     });
-
-//     it('should check text inside element', async () => {
-//       await I.amOnPage('/');
-//       await I.see('Welcome to test app!', 'h1');
-//       await I.amOnPage('/info');
-//       await I.see('valuable', { css: 'p' });
-//       await I.see('valuable', '//body/p');
-//       await I.dontSee('valuable', 'h1');
-//     });
-
-//     it('should verify non-latin chars', async () => {
-//       await I.amOnPage('/info');
-//       await I.see('на');
-//       await I.see("Don't do that at home!", 'h3');
-//       await I.see('Текст', 'p');
-//     });
-//   });
-
-//   describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
-//     it('should check visible elements on page', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.seeElement('input[name=name]');
-//       await I.seeElement({ name: 'name' });
-//       await I.seeElement('//input[@id="name"]');
-//       await I.dontSeeElement('#something-beyond');
-//       await I.dontSeeElement('//input[@id="something-beyond"]');
-//     });
-
-//     it('should check elements are in the DOM', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.seeElementInDOM('input[name=name]');
-//       await I.seeElementInDOM('//input[@id="name"]');
-//       await I.dontSeeElementInDOM('#something-beyond');
-//       await I.dontSeeElementInDOM('//input[@id="something-beyond"]');
-//     });
-
-//     it('should check elements are visible on the page', async () => {
-//       await I.amOnPage('/form/field');
-//       await I.seeElementInDOM('input[name=email]');
-//       await I.dontSeeElement('input[name=email]');
-//       await I.dontSeeElement('#something-beyond');
-//     });
-//   });
-
-//   describe('#seeNumberOfVisibleElements', () => {
-//     it('should check number of visible elements for given locator', async () => {
-//       await I.amOnPage('/info');
-//       await I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3);
-//     });
-//   });
-
-//   describe('#grabNumberOfVisibleElements', () => {
-//     it('should grab number of visible elements for given locator', async () => {
-//       await I.amOnPage('/info');
-//       const num = await I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a');
-//       assert.equal(num, 3);
-//     });
-
-//     it('should support locators like {xpath:"//div"}', async () => {
-//       await I.amOnPage('/info');
-//       const num = await I.grabNumberOfVisibleElements({
-//         xpath: '//div[@id = "grab-multiple"]//a',
-//       });
-//       assert.equal(num, 3);
-//     });
-
-//     it('should grab number of visible elements for given css locator', async () => {
-//       await I.amOnPage('/info');
-//       const num = await I.grabNumberOfVisibleElements('[id=grab-multiple] a');
-//       assert.equal(num, 3);
-//     });
-
-//     it('should return 0 for non-existing elements', async () => {
-//       await I.amOnPage('/info');
-//       const num = await I.grabNumberOfVisibleElements('button[type=submit]');
-//       assert.equal(num, 0);
-//     });
-//   });
-
-//   describe('#seeInSource, #dontSeeInSource', () => {
-//     it('should check meta of a page', async () => {
-//       await I.amOnPage('/info');
-//       await I.seeInSource('<body>');
-//       await I.dontSeeInSource('<meta>');
-//       await I.seeInSource('Invisible text');
-//       await I.seeInSource('content="text/html; charset=utf-8"');
-//     });
-//   });
-
-//   describe('#click', () => {
-//     it('should click by inner text', async () => {
-//       await I.amOnPage('/');
-//       await I.click('More info');
-//       await I.seeInCurrentUrl('/info');
-//     });
-
-//     it('should click by css', async () => {
-//       await I.amOnPage('/');
-//       await I.click('#link');
-//       await I.seeInCurrentUrl('/info');
-//     });
-
-//     it('should click by xpath', async () => {
-//       await I.amOnPage('/');
-//       await I.click('//a[@id="link"]');
-//       await I.seeInCurrentUrl('/info');
-//     });
-
-//     it('should click by name', async () => {
-//       await I.amOnPage('/form/button');
-//       await I.click('btn0');
-//       assert.equal(formContents('text'), 'val');
-//     });
-
-//     it('should click on context', async () => {
-//       await I.amOnPage('/');
-//       await I.click('More info', 'body>p');
-//       await I.seeInCurrentUrl('/info');
-//     });
-
-//     it('should not click wrong context', async () => {
-//       let err = false;
-//       await I.amOnPage('/');
-//       try {
-//         await I.click('More info', '#area1');
-//       } catch (e) {
-//         err = true;
-//       }
-
-//       assert.ok(err);
-//     });
-
-//     it('should should click by aria-label', async () => {
-//       await I.amOnPage('/form/aria');
-//       await I.click('get info');
-//       await I.seeInCurrentUrl('/info');
-//     });
-
-//     it('should click link with inner span', async () => {
-//       await I.amOnPage('/form/example7');
-//       await I.click('Buy Chocolate Bar');
-//       await I.seeCurrentUrlEquals('/');
-//     });
-
-//     it('should click link with xpath locator', async () => {
-//       await I.amOnPage('/form/example7');
-//       await I.click({
-//         xpath: '(//*[@title = "Chocolate Bar"])[1]',
-//       });
-//       await I.seeCurrentUrlEquals('/');
-//     });
-//   });
-
-//   // Could not get double click to work
-//   describe('#doubleClick', () => {
-//     it('it should doubleClick', async () => {
-//       await I.amOnPage('/form/doubleclick');
-//       await I.dontSee('Done');
-//       await I.doubleClick('#block');
-//       await I.see('Done');
-//     });
-//   });
-
-//   // rightClick does not seem to work either
-//   describe('#rightClick', () => {
-//     it('it should rightClick', async () => {
-//       await I.amOnPage('/form/rightclick');
-//       await I.dontSee('right clicked');
-//       await I.rightClick('Lorem Ipsum');
-//       await I.see('right clicked');
-//     });
-
-//     it('it should rightClick by locator', async () => {
-//       await I.amOnPage('/form/rightclick');
-//       await I.dontSee('right clicked');
-//       await I.rightClick('.context a');
-//       await I.see('right clicked');
-//     });
-
-//     it('it should rightClick by locator and context', async () => {
-//       await I.amOnPage('/form/rightclick');
-//       await I.dontSee('right clicked');
-//       await I.rightClick('Lorem Ipsum', '.context');
-//       await I.see('right clicked');
-//     });
-//   });
-
-
-//   describe('#checkOption', () => {
-//     it('should check option by css', async () => {
-//       await I.amOnPage('/form/checkbox');
-//       await I.checkOption('#checkin');
-//       await I.click('Submit');
-//       await I.wait(1);
-//       assert.equal(formContents('terms'), 'agree');
-//     });
-
-//     it('should check option by strict locator', async () => {
-//       await I.amOnPage('/form/checkbox');
-//       await I.checkOption({
-//         id: 'checkin',
-//       });
-//       await I.click('Submit');
-//       assert.equal(formContents('terms'), 'agree');
-//     });
-
-//     it('should check option by name', async () => {
-//       await I.amOnPage('/form/checkbox');
-//       await I.checkOption('terms');
-//       await I.click('Submit');
-//       assert.equal(formContents('terms'), 'agree');
-//     });
-
-//     it('should check option by label', async () => {
-//       await I.amOnPage('/form/checkbox');
-//       await I.checkOption('I Agree');
-//       await I.click('Submit');
-//       assert.equal(formContents('terms'), 'agree');
-//     });
-
-//     // TODO Having problems with functional style selectors in testcafe
-//     // cannot do Selector(css).find(elementByXPath(xpath))
-//     // testcafe always says "xpath is not defined"
-//     // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
-//     it.skip('should check option by context', async () => {
-//       if (isHelper('TestCafe')) this.skip();
-
-//       await I.amOnPage('/form/example1');
-//       await I.checkOption('Remember me next time', '.rememberMe');
-//       await I.click('Login');
-//       assert.equal(formContents('LoginForm').rememberMe, 1);
-//     });
-//   });
-
-//   describe('#uncheckOption', () => {
-//     it('should uncheck option that is currently checked', async () => {
-//       await I.amOnPage('/info');
-//       await I.uncheckOption('interesting');
-//       await I.dontSeeCheckboxIsChecked('interesting');
-//     });
-//   });
-
-//   describe('#selectOption', () => {
-//     it('should select option by css', async () => {
-//       await I.amOnPage('/form/select');
-//       await I.selectOption('form select[name=age]', 'adult');
-//       await I.click('Submit');
-//       assert.equal(formContents('age'), 'adult');
-//     });
-
-//     it('should select option by name', async () => {
-//       await I.amOnPage('/form/select');
-//       await I.selectOption('age', 'adult');
-//       await I.click('Submit');
-//       assert.equal(formContents('age'), 'adult');
-//     });
-
-//     it('should select option by label', async () => {
-//       await I.amOnPage('/form/select');
-//       await I.selectOption('Select your age', 'dead');
-//       await I.click('Submit');
-//       assert.equal(formContents('age'), 'dead');
-//     });
-
-//     it('should select option by label and option text', async () => {
-//       await I.amOnPage('/form/select');
-//       await I.selectOption('Select your age', '21-60');
-//       await I.click('Submit');
-//       assert.equal(formContents('age'), 'adult');
-//     });
-
-//     it('should select option by label and option text - with an onchange callback', async () => {
-//       await I.amOnPage('/form/select_onchange');
-//       await I.selectOption('Select a value', 'Option 2');
-//       await I.click('Submit');
-//       assert.equal(formContents('select'), 'option2');
-//     });
-
-//     // Could not get multiselect to work with testcafe
-//     it('should select multiple options', async function () {
-//       if (isHelper('TestCafe')) this.skip();
-
-//       await I.amOnPage('/form/select_multiple');
-//       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
-//       await I.click('Submit');
-//       assert.deepEqual(formContents('like'), ['play', 'adult']);
-//     });
-//   });
-
-  describe('#executeScript', () => {
-    it('should execute synchronous script', async () => {
+  describe('see text : #see', () => {
+    it('should check text on site', async () => {
       await I.amOnPage('/');
-      await I.executeScript(() => {
-        document.getElementById('link').innerHTML = 'Appended';
+      await I.see('Welcome to test app!');
+      await I.see('A wise man said: "debug!"');
+      await I.dontSee('Info');
+    });
+
+    it('should check text inside element', async () => {
+      await I.amOnPage('/');
+      await I.see('Welcome to test app!', 'h1');
+      await I.amOnPage('/info');
+      await I.see('valuable', { css: 'p' });
+      await I.see('valuable', '//body/p');
+      await I.dontSee('valuable', 'h1');
+    });
+
+    it('should verify non-latin chars', async () => {
+      await I.amOnPage('/info');
+      await I.see('на');
+      await I.see("Don't do that at home!", 'h3');
+      await I.see('Текст', 'p');
+    });
+  });
+
+  describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
+    it('should check visible elements on page', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElement('input[name=name]');
+      await I.seeElement({ name: 'name' });
+      await I.seeElement('//input[@id="name"]');
+      await I.dontSeeElement('#something-beyond');
+      await I.dontSeeElement('//input[@id="something-beyond"]');
+    });
+
+    it('should check elements are in the DOM', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElementInDOM('input[name=name]');
+      await I.seeElementInDOM('//input[@id="name"]');
+      await I.dontSeeElementInDOM('#something-beyond');
+      await I.dontSeeElementInDOM('//input[@id="something-beyond"]');
+    });
+
+    it('should check elements are visible on the page', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElementInDOM('input[name=email]');
+      await I.dontSeeElement('input[name=email]');
+      await I.dontSeeElement('#something-beyond');
+    });
+  });
+
+  describe('#seeNumberOfVisibleElements', () => {
+    it('should check number of visible elements for given locator', async () => {
+      await I.amOnPage('/info');
+      await I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3);
+    });
+  });
+
+  describe('#grabNumberOfVisibleElements', () => {
+    it('should grab number of visible elements for given locator', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a');
+      assert.equal(num, 3);
+    });
+
+    it('should support locators like {xpath:"//div"}', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements({
+        xpath: '//div[@id = "grab-multiple"]//a',
       });
-      await I.see('Appended', 'a');
+      assert.equal(num, 3);
     });
 
-    it('should return value from sync script', async () => {
-      await I.amOnPage('/');
-      const val = await I.executeScript(a => a + 5, 5);
-      assert.equal(val, 10);
+    it('should grab number of visible elements for given css locator', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('[id=grab-multiple] a');
+      assert.equal(num, 3);
     });
 
-
-    it('should return value from sync script in iframe', async function () {
-      if (isHelper('Nightmare')) return; // TODO Not yet implemented
-      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
-
-      await I.amOnPage('/iframe');
-      await I.switchTo('iframe');
-      const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
-      assert.equal(val, 'Information');
-    });
-
-    it('should execute async script', async function () {
-      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
-      if (isHelper('Playwright')) this.skip(); // TODO Not yet implemented
-
-      await I.amOnPage('/');
-      const val = await I.executeAsyncScript((val, done) => {
-        setTimeout(() => {
-          document.getElementById('link').innerHTML = val;
-          done(5);
-        }, 100);
-      }, 'Timeout');
-      assert.equal(val, 5);
-      await I.see('Timeout', 'a');
+    it('should return 0 for non-existing elements', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('button[type=submit]');
+      assert.equal(num, 0);
     });
   });
 
-  describe('#fillField, #appendField', () => {
-    it('should fill input fields', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField('Name', 'Nothing special');
-      await I.click('Submit');
-      assert.equal(formContents('name'), 'Nothing special');
+  describe('#seeInSource, #dontSeeInSource', () => {
+    it('should check meta of a page', async () => {
+      await I.amOnPage('/info');
+      await I.seeInSource('<body>');
+      await I.dontSeeInSource('<meta>');
+      await I.seeInSource('Invisible text');
+      await I.seeInSource('content="text/html; charset=utf-8"');
+    });
+  });
+
+  describe('#click', () => {
+    it('should click by inner text', async () => {
+      await I.amOnPage('/');
+      await I.click('More info');
+      await I.seeInCurrentUrl('/info');
     });
 
-    it('should fill input fields with secrets', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField('Name', secret('Something special'));
-      await I.click('Submit');
-      assert.equal(formContents('name'), 'Something special');
+    it('should click by css', async () => {
+      await I.amOnPage('/');
+      await I.click('#link');
+      await I.seeInCurrentUrl('/info');
     });
 
-    it('should fill field by css', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField('#name', 'Nothing special');
-      await I.click('Submit');
-      assert.equal(formContents('name'), 'Nothing special');
+    it('should click by xpath', async () => {
+      await I.amOnPage('/');
+      await I.click('//a[@id="link"]');
+      await I.seeInCurrentUrl('/info');
     });
 
-    it('should fill field by strict locator', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField({
-        id: 'name',
-      }, 'Nothing special');
-      await I.click('Submit');
-      assert.equal(formContents('name'), 'Nothing special');
+    it('should click by name', async () => {
+      await I.amOnPage('/form/button');
+      await I.click('btn0');
+      assert.equal(formContents('text'), 'val');
     });
 
-    it('should fill field by name', async () => {
-      await I.amOnPage('/form/example1');
-      await I.fillField('LoginForm[username]', 'davert');
-      await I.fillField('LoginForm[password]', '123456');
-      await I.click('Login');
-      assert.equal(formContents('LoginForm').username, 'davert');
-      assert.equal(formContents('LoginForm').password, '123456');
+    it('should click on context', async () => {
+      await I.amOnPage('/');
+      await I.click('More info', 'body>p');
+      await I.seeInCurrentUrl('/info');
     });
 
-    it('should fill textarea by css', async () => {
-      await I.amOnPage('/form/textarea');
-      await I.fillField('textarea', 'Nothing special');
-      await I.click('Submit');
-      assert.equal(formContents('description'), 'Nothing special');
+    it('should not click wrong context', async () => {
+      let err = false;
+      await I.amOnPage('/');
+      try {
+        await I.click('More info', '#area1');
+      } catch (e) {
+        err = true;
+      }
+
+      assert.ok(err);
     });
 
-    it('should fill textarea by label', async () => {
-      await I.amOnPage('/form/textarea');
-      await I.fillField('Description', 'Nothing special');
-      await I.click('Submit');
-      assert.equal(formContents('description'), 'Nothing special');
-    });
-
-    it('should fill input by aria-label and aria-labelledby', async () => {
+    it('should should click by aria-label', async () => {
       await I.amOnPage('/form/aria');
-      await I.fillField('My Address', 'Home Sweet Home');
-      await I.fillField('Phone', '123456');
-      await I.click('Submit');
-      assert.equal(formContents('my-form-phone'), '123456');
-      assert.equal(formContents('my-form-address'), 'Home Sweet Home');
+      await I.click('get info');
+      await I.seeInCurrentUrl('/info');
     });
 
-    it('should fill textarea by overwritting the existing value', async () => {
-      await I.amOnPage('/form/textarea');
-      await I.fillField('Description', 'Nothing special');
-      await I.fillField('Description', 'Some other text');
-      await I.click('Submit');
-      assert.equal(formContents('description'), 'Some other text');
+    it('should click link with inner span', async () => {
+      await I.amOnPage('/form/example7');
+      await I.click('Buy Chocolate Bar');
+      await I.seeCurrentUrlEquals('/');
     });
 
-    it('should append field value', async () => {
-      await I.amOnPage('/form/field');
-      await I.appendField('Name', '_AND_NEW');
-      await I.click('Submit');
-      assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+    it('should click link with xpath locator', async () => {
+      await I.amOnPage('/form/example7');
+      await I.click({
+        xpath: '(//*[@title = "Chocolate Bar"])[1]',
+      });
+      await I.seeCurrentUrlEquals('/');
     });
   });
 
-  describe('#clearField', () => {
-    it('should clear a given element', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField('#name', 'Nothing special');
-      await I.seeInField('#name', 'Nothing special');
-      await I.clearField('#name');
-      await I.dontSeeInField('#name', 'Nothing special');
-    });
-
-    it('should clear field by name', async () => {
-      await I.amOnPage('/form/example1');
-      await I.clearField('LoginForm[username]');
-      await I.click('Login');
-      assert.equal(formContents('LoginForm').username, '');
-    });
-
-    it('should clear field by locator', async () => {
-      await I.amOnPage('/form/example1');
-      await I.clearField('#LoginForm_username');
-      await I.click('Login');
-      assert.equal(formContents('LoginForm').username, '');
+  // Could not get double click to work
+  describe('#doubleClick', () => {
+    it('it should doubleClick', async () => {
+      await I.amOnPage('/form/doubleclick');
+      await I.dontSee('Done');
+      await I.doubleClick('#block');
+      await I.see('Done');
     });
   });
+
+  // rightClick does not seem to work either
+  describe('#rightClick', () => {
+    it('it should rightClick', async () => {
+      await I.amOnPage('/form/rightclick');
+      await I.dontSee('right clicked');
+      await I.rightClick('Lorem Ipsum');
+      await I.see('right clicked');
+    });
+
+    it('it should rightClick by locator', async () => {
+      await I.amOnPage('/form/rightclick');
+      await I.dontSee('right clicked');
+      await I.rightClick('.context a');
+      await I.see('right clicked');
+    });
+
+    it('it should rightClick by locator and context', async () => {
+      await I.amOnPage('/form/rightclick');
+      await I.dontSee('right clicked');
+      await I.rightClick('Lorem Ipsum', '.context');
+      await I.see('right clicked');
+    });
+  });
+
+
+  describe('#checkOption', () => {
+    it('should check option by css', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption('#checkin');
+      await I.click('Submit');
+      await I.wait(1);
+      assert.equal(formContents('terms'), 'agree');
+    });
+
+    it('should check option by strict locator', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption({
+        id: 'checkin',
+      });
+      await I.click('Submit');
+      assert.equal(formContents('terms'), 'agree');
+    });
+
+    it('should check option by name', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption('terms');
+      await I.click('Submit');
+      assert.equal(formContents('terms'), 'agree');
+    });
+
+    it('should check option by label', async () => {
+      await I.amOnPage('/form/checkbox');
+      await I.checkOption('I Agree');
+      await I.click('Submit');
+      assert.equal(formContents('terms'), 'agree');
+    });
+
+    // TODO Having problems with functional style selectors in testcafe
+    // cannot do Selector(css).find(elementByXPath(xpath))
+    // testcafe always says "xpath is not defined"
+    // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
+    it.skip('should check option by context', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/form/example1');
+      await I.checkOption('Remember me next time', '.rememberMe');
+      await I.click('Login');
+      assert.equal(formContents('LoginForm').rememberMe, 1);
+    });
+  });
+
+  describe('#uncheckOption', () => {
+    it('should uncheck option that is currently checked', async () => {
+      await I.amOnPage('/info');
+      await I.uncheckOption('interesting');
+      await I.dontSeeCheckboxIsChecked('interesting');
+    });
+  });
+
+  describe('#selectOption', () => {
+    it('should select option by css', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('form select[name=age]', 'adult');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'adult');
+    });
+
+    it('should select option by name', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('age', 'adult');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'adult');
+    });
+
+    it('should select option by label', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('Select your age', 'dead');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'dead');
+    });
+
+    it('should select option by label and option text', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('Select your age', '21-60');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'adult');
+    });
+
+    it('should select option by label and option text - with an onchange callback', async () => {
+      await I.amOnPage('/form/select_onchange');
+      await I.selectOption('Select a value', 'Option 2');
+      await I.click('Submit');
+      assert.equal(formContents('select'), 'option2');
+    });
+
+    // Could not get multiselect to work with testcafe
+    it('should select multiple options', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/form/select_multiple');
+      await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
+      await I.click('Submit');
+      assert.deepEqual(formContents('like'), ['play', 'adult']);
+    });
+  });
+
+  // describe('#executeScript', () => {
+  //   it('should execute synchronous script', async () => {
+  //     await I.amOnPage('/');
+  //     await I.executeScript(() => {
+  //       document.getElementById('link').innerHTML = 'Appended';
+  //     });
+  //     await I.see('Appended', 'a');
+  //   });
+
+  //   it('should return value from sync script', async () => {
+  //     await I.amOnPage('/');
+  //     const val = await I.executeScript(a => a + 5, 5);
+  //     assert.equal(val, 10);
+  //   });
+
+
+  //   it('should return value from sync script in iframe', async function () {
+  //     if (isHelper('Nightmare')) return; // TODO Not yet implemented
+  //     if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+
+  //     await I.amOnPage('/iframe');
+  //     await I.switchTo('iframe');
+  //     const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
+  //     assert.equal(val, 'Information');
+  //   });
+
+  //   it('should execute async script', async function () {
+  //     if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+  //     if (isHelper('Playwright')) this.skip(); // TODO Not yet implemented
+
+  //     await I.amOnPage('/');
+  //     const val = await I.executeAsyncScript((val, done) => {
+  //       setTimeout(() => {
+  //         document.getElementById('link').innerHTML = val;
+  //         done(5);
+  //       }, 100);
+  //     }, 'Timeout');
+  //     assert.equal(val, 5);
+  //     await I.see('Timeout', 'a');
+  //   });
+  // });
+
+  // describe('#fillField, #appendField', () => {
+  //   it('should fill input fields', async () => {
+  //     await I.amOnPage('/form/field');
+  //     await I.fillField('Name', 'Nothing special');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('name'), 'Nothing special');
+  //   });
+
+  //   it('should fill input fields with secrets', async () => {
+  //     await I.amOnPage('/form/field');
+  //     await I.fillField('Name', secret('Something special'));
+  //     await I.click('Submit');
+  //     assert.equal(formContents('name'), 'Something special');
+  //   });
+
+  //   it('should fill field by css', async () => {
+  //     await I.amOnPage('/form/field');
+  //     await I.fillField('#name', 'Nothing special');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('name'), 'Nothing special');
+  //   });
+
+  //   it('should fill field by strict locator', async () => {
+  //     await I.amOnPage('/form/field');
+  //     await I.fillField({
+  //       id: 'name',
+  //     }, 'Nothing special');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('name'), 'Nothing special');
+  //   });
+
+  //   it('should fill field by name', async () => {
+  //     await I.amOnPage('/form/example1');
+  //     await I.fillField('LoginForm[username]', 'davert');
+  //     await I.fillField('LoginForm[password]', '123456');
+  //     await I.click('Login');
+  //     assert.equal(formContents('LoginForm').username, 'davert');
+  //     assert.equal(formContents('LoginForm').password, '123456');
+  //   });
+
+  //   it('should fill textarea by css', async () => {
+  //     await I.amOnPage('/form/textarea');
+  //     await I.fillField('textarea', 'Nothing special');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('description'), 'Nothing special');
+  //   });
+
+  //   it('should fill textarea by label', async () => {
+  //     await I.amOnPage('/form/textarea');
+  //     await I.fillField('Description', 'Nothing special');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('description'), 'Nothing special');
+  //   });
+
+  //   it('should fill input by aria-label and aria-labelledby', async () => {
+  //     await I.amOnPage('/form/aria');
+  //     await I.fillField('My Address', 'Home Sweet Home');
+  //     await I.fillField('Phone', '123456');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('my-form-phone'), '123456');
+  //     assert.equal(formContents('my-form-address'), 'Home Sweet Home');
+  //   });
+
+  //   it('should fill textarea by overwritting the existing value', async () => {
+  //     await I.amOnPage('/form/textarea');
+  //     await I.fillField('Description', 'Nothing special');
+  //     await I.fillField('Description', 'Some other text');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('description'), 'Some other text');
+  //   });
+
+  //   it('should append field value', async () => {
+  //     await I.amOnPage('/form/field');
+  //     await I.appendField('Name', '_AND_NEW');
+  //     await I.click('Submit');
+  //     assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+  //   });
+  // });
+
+  // describe('#clearField', () => {
+  //   it('should clear a given element', async () => {
+  //     await I.amOnPage('/form/field');
+  //     await I.fillField('#name', 'Nothing special');
+  //     await I.seeInField('#name', 'Nothing special');
+  //     await I.clearField('#name');
+  //     await I.dontSeeInField('#name', 'Nothing special');
+  //   });
+
+  //   it('should clear field by name', async () => {
+  //     await I.amOnPage('/form/example1');
+  //     await I.clearField('LoginForm[username]');
+  //     await I.click('Login');
+  //     assert.equal(formContents('LoginForm').username, '');
+  //   });
+
+  //   it('should clear field by locator', async () => {
+  //     await I.amOnPage('/form/example1');
+  //     await I.clearField('#LoginForm_username');
+  //     await I.click('Login');
+  //     assert.equal(formContents('LoginForm').username, '');
+  //   });
+  // });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', async () => {
