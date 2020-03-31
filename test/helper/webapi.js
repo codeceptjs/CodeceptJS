@@ -307,7 +307,7 @@ module.exports.tests = function () {
     // cannot do Selector(css).find(elementByXPath(xpath))
     // testcafe always says "xpath is not defined"
     // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
-    it('should check option by context', async () => {
+    it.skip('should check option by context', async () => {
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/example1');
@@ -692,592 +692,592 @@ module.exports.tests = function () {
     });
   });
 
-  describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
-    it('should do all cookie stuff', async () => {
-      await I.amOnPage('/');
-      await I.setCookie({
-        name: 'auth',
-        value: '123456',
-        url: 'http://localhost',
-      });
-      await I.seeCookie('auth');
-      await I.dontSeeCookie('auuth');
-
-      const cookie = await I.grabCookie('auth');
-      assert.equal(cookie.value, '123456');
-
-      await I.clearCookie('auth');
-      await I.dontSeeCookie('auth');
-    });
-
-    it('should grab all cookies', async () => {
-      await I.amOnPage('/');
-      await I.setCookie({
-        name: 'auth',
-        value: '123456',
-        url: 'http://localhost',
-      });
-      await I.setCookie({
-        name: 'user',
-        value: 'davert',
-        url: 'http://localhost',
-      });
-
-      const cookies = await I.grabCookie();
-      assert.equal(cookies.length, 2);
-      assert(cookies[0].name);
-      assert(cookies[0].value);
-    });
-
-    it('should clear all cookies', async () => {
-      await I.amOnPage('/');
-      await I.setCookie({
-        name: 'auth',
-        value: '123456',
-        url: 'http://localhost',
-      });
-      await I.clearCookie();
-      await I.dontSeeCookie('auth');
-    });
-  });
-
-  describe('#waitForText', () => {
-    it('should wait for text', async () => {
-      await I.amOnPage('/dynamic');
-      await I.dontSee('Dynamic text');
-      await I.waitForText('Dynamic text', 2);
-      await I.see('Dynamic text');
-    });
-
-    it('should wait for text in context', async () => {
-      await I.amOnPage('/dynamic');
-      await I.dontSee('Dynamic text');
-      await I.waitForText('Dynamic text', 2, '#text');
-      await I.see('Dynamic text');
-    });
-
-    it('should fail if no context', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      let failed = false;
-      await I.amOnPage('/dynamic');
-      await I.dontSee('Dynamic text');
-      try {
-        await I.waitForText('Dynamic text', 1, '#fext');
-      } catch (e) {
-        failed = true;
-      }
-      assert.ok(failed);
-    });
-
-    it('should fail if text doesn\'t contain', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      let failed = false;
-      await I.amOnPage('/dynamic');
-      try {
-        await I.waitForText('Other text', 1);
-      } catch (e) {
-        failed = true;
-      }
-      assert.ok(failed);
-    });
-
-    it('should fail if text is not in element', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      let failed = false;
-      await I.amOnPage('/dynamic');
-      try {
-        await I.waitForText('Other text', 1, '#text');
-      } catch (e) {
-        failed = true;
-      }
-      assert.ok(failed);
-    });
-
-    it('should wait for text after timeout', async () => {
-      await I.amOnPage('/timeout');
-      await I.dontSee('Timeout text');
-      await I.waitForText('Timeout text', 31, '#text');
-      await I.see('Timeout text');
-    });
-
-    it('should wait for text located by XPath', async () => {
-      await I.amOnPage('/dynamic');
-      await I.dontSee('Dynamic text');
-      await I.waitForText('Dynamic text', 5, '//div[@id="text"]');
-    });
-  });
-
-  describe('#waitForElement', () => {
-    it('should wait for visible element', async () => {
-      await I.amOnPage('/form/wait_visible');
-      await I.dontSee('Step One Button');
-      await I.dontSeeElement('#step_1');
-      await I.waitForVisible('#step_1', 2);
-      await I.seeElement('#step_1');
-      await I.click('#step_1');
-      await I.waitForVisible('#step_2', 2);
-      await I.see('Step Two Button');
-    });
-
-    it('should wait for element in DOM', async () => {
-      await I.amOnPage('/form/wait_visible');
-      await I.waitForElement('#step_2');
-      await I.dontSeeElement('#step_2');
-      await I.seeElementInDOM('#step_2');
-    });
-
-    it('should wait for element by XPath', async () => {
-      await I.amOnPage('/form/wait_visible');
-      await I.waitForElement('//div[@id="step_2"]');
-      await I.dontSeeElement('//div[@id="step_2"]');
-      await I.seeElementInDOM('//div[@id="step_2"]');
-    });
-
-    it('should wait for element to appear', async () => {
-      await I.amOnPage('/form/wait_element');
-      await I.dontSee('Hello');
-      await I.dontSeeElement('h1');
-      await I.waitForElement('h1', 2);
-      await I.see('Hello');
-    });
-  });
-
-  describe('#waitForInvisible', () => {
-    it('should wait for element to be invisible', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.see('Step One Button');
-      await I.seeElement('#step_1');
-      await I.waitForInvisible('#step_1', 2);
-      await I.dontSeeElement('#step_1');
-    });
-
-    it('should wait for element to be invisible by XPath', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.seeElement('//div[@id="step_1"]');
-      await I.waitForInvisible('//div[@id="step_1"]');
-      await I.dontSeeElement('//div[@id="step_1"]');
-      await I.seeElementInDOM('//div[@id="step_1"]');
-    });
-
-    it('should wait for element to be removed', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.see('Step Two Button');
-      await I.seeElement('#step_2');
-      await I.waitForInvisible('#step_2', 2);
-      await I.dontSeeElement('#step_2');
-    });
-
-    it('should wait for element to be removed by XPath', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.see('Step Two Button');
-      await I.seeElement('//div[@id="step_2"]');
-      await I.waitForInvisible('//div[@id="step_2"]', 2);
-      await I.dontSeeElement('//div[@id="step_2"]');
-    });
-  });
-
-  describe('#waitToHide', () => {
-    it('should wait for element to be invisible', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.see('Step One Button');
-      await I.seeElement('#step_1');
-      await I.waitToHide('#step_1', 2);
-      await I.dontSeeElement('#step_1');
-    });
-
-    it('should wait for element to be invisible by XPath', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.seeElement('//div[@id="step_1"]');
-      await I.waitToHide('//div[@id="step_1"]');
-      await I.dontSeeElement('//div[@id="step_1"]');
-      await I.seeElementInDOM('//div[@id="step_1"]');
-    });
-
-    it('should wait for element to be removed', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.see('Step Two Button');
-      await I.seeElement('#step_2');
-      await I.waitToHide('#step_2', 2);
-      await I.dontSeeElement('#step_2');
-    });
-
-    it('should wait for element to be removed by XPath', async () => {
-      await I.amOnPage('/form/wait_invisible');
-      await I.see('Step Two Button');
-      await I.seeElement('//div[@id="step_2"]');
-      await I.waitToHide('//div[@id="step_2"]', 2);
-      await I.dontSeeElement('//div[@id="step_2"]');
-    });
-  });
-
-  describe('#waitForDetached', () => {
-    it('should throw an error if the element still exists in DOM', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/wait_detached');
-      await I.see('Step One Button');
-      await I.seeElement('#step_1');
-
-      try {
-        await I.waitForDetached('#step_1', 2);
-        throw Error('Should not get this far');
-      } catch (err) {
-        err.message.should.include('still on page after');
-      }
-    });
-
-    it('should throw an error if the element still exists in DOM by XPath', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/wait_detached');
-      await I.see('Step One Button');
-      await I.seeElement('#step_1');
-
-      try {
-        await I.waitForDetached('#step_1', 2);
-        throw Error('Should not get this far');
-      } catch (err) {
-        err.message.should.include('still on page after');
-      }
-    });
-
-    it('should wait for element to be removed from DOM', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/wait_detached');
-      await I.see('Step Two Button');
-      await I.seeElement('#step_2');
-      await I.waitForDetached('#step_2', 2);
-      await I.dontSeeElementInDOM('#step_2');
-    });
-
-    it('should wait for element to be removed from DOM by XPath', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/wait_detached');
-      await I.seeElement('//div[@id="step_2"]');
-      await I.waitForDetached('//div[@id="step_2"]');
-      await I.dontSeeElement('//div[@id="step_2"]');
-      await I.dontSeeElementInDOM('//div[@id="step_2"]');
-    });
-  });
-
-  describe('within tests', () => {
-    afterEach(() => I._withinEnd());
-
-    it('should execute within block', async () => {
-      await I.amOnPage('/form/example4');
-      await I.seeElement('#navbar-collapse-menu');
-      await I._withinBegin('#register');
-      await I.see('E-Mail');
-      await I.dontSee('Toggle navigation');
-      await I.dontSeeElement('#navbar-collapse-menu');
-    });
-
-    it('should respect form fields inside within block ', async () => {
-      let rethrow;
-
-      await I.amOnPage('/form/example4');
-      await I.seeElement('#navbar-collapse-menu');
-      await I.see('E-Mail');
-      await I.see('Hasło');
-      await I.fillField('Hasło', '12345');
-      await I.seeInField('Hasło', '12345');
-      await I.checkOption('terms');
-      await I.seeCheckboxIsChecked('terms');
-      await I._withinBegin({ css: '.form-group' });
-      await I.see('E-Mail');
-      await I.dontSee('Hasło');
-
-      try {
-        await I.dontSeeElement('#navbar-collapse-menu');
-      } catch (err) {
-        rethrow = err;
-      }
-
-      try {
-        await I.dontSeeCheckboxIsChecked('terms');
-      } catch (err) {
-        if (!err) assert.fail('seen checkbox');
-      }
-
-      try {
-        await I.seeInField('Hasło', '12345');
-      } catch (err) {
-        if (!err) assert.fail('seen field');
-      }
-
-      if (rethrow) throw rethrow;
-    });
-
-    it('should execute within block 2', async () => {
-      await I.amOnPage('/form/example4');
-      await I.fillField('Hasło', '12345');
-      await I._withinBegin({ xpath: '//div[@class="form-group"][2]' });
-      await I.dontSee('E-Mail');
-      await I.see('Hasło');
-
-      const label = await I.grabTextFrom('label');
-      assert.equal(label, 'Hasło');
-
-      const input = await I.grabValueFrom('input');
-      assert.equal(input, '12345');
-    });
-
-    it('within should respect context in see', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/example4');
-      await I.see('Rejestracja', 'fieldset');
-      await I._withinBegin({ css: '.navbar-header' });
-
-      try {
-        await I.see('Rejestracja', '.container fieldset');
-      } catch (err) {
-        if (!err) assert.fail('seen fieldset');
-      }
-
-      try {
-        await I.see('Toggle navigation', '.container fieldset');
-      } catch (err) {
-        if (!err) assert.fail('seen fieldset');
-      }
-    });
-
-    it('within should respect context in see when using nested frames', async function () {
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/iframe_nested');
-      await I._withinBegin({
-        frame: ['#wrapperId', '[name=content]'],
-      });
-
-      try {
-        await I.see('Kill & Destroy');
-      } catch (err) {
-        if (!err) assert.fail('seen "Kill & Destroy"');
-      }
-
-      try {
-        await I.dontSee('Nested Iframe test');
-      } catch (err) {
-        if (!err) assert.fail('seen "Nested Iframe test"');
-      }
-
-      try {
-        await I.dontSee('Iframe test');
-      } catch (err) {
-        if (!err) assert.fail('seen "Iframe test"');
-      }
-    });
-  });
-
-  describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
-    it('should scroll inside an iframe', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/iframe');
-      await I.resizeWindow(500, 700);
-      await I.switchTo(0);
-
-      const { x, y } = await I.grabPageScrollPosition();
-      await I.scrollTo('.sign');
-
-      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
-      assert.notEqual(afterScrollY, y);
-      assert.equal(afterScrollX, x);
-    });
-
-    it('should scroll to an element', async () => {
-      await I.amOnPage('/form/scroll');
-      await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
-      await I.scrollTo('.section3 input[name="test"]');
-
-      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
-      assert.notEqual(afterScrollY, y);
-    });
-
-    it('should scroll to coordinates', async () => {
-      await I.amOnPage('/form/scroll');
-      await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
-      await I.scrollTo(50, 70);
-
-      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
-      assert.equal(afterScrollX, 50);
-      assert.equal(afterScrollY, 70);
-    });
-
-    it('should scroll to bottom of page', async () => {
-      await I.amOnPage('/form/scroll');
-      await I.resizeWindow(500, 700);
-      const { y } = await I.grabPageScrollPosition();
-      await I.scrollPageToBottom();
-
-      const { y: afterScrollY } = await I.grabPageScrollPosition();
-      assert.notEqual(afterScrollY, y);
-      assert.notEqual(afterScrollY, 0);
-    });
-
-    it('should scroll to top of page', async () => {
-      await I.amOnPage('/form/scroll');
-      await I.resizeWindow(500, 700);
-      await I.scrollPageToBottom();
-      const { y } = await I.grabPageScrollPosition();
-      await I.scrollPageToTop();
-
-      const { y: afterScrollY } = await I.grabPageScrollPosition();
-      assert.notEqual(afterScrollY, y);
-      assert.equal(afterScrollY, 0);
-    });
-  });
-
-  describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/doubleclick');
-      const css = await I.grabCssPropertyFrom('#block', 'height');
-      assert.equal(css, '100px');
-    });
-
-    it('should grab camelcased css properies', async () => {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
-
-      await I.amOnPage('/form/doubleclick');
-      const css = await I.grabCssPropertyFrom('#block', 'user-select');
-      assert.equal(css, 'text');
-    });
-  });
-
-  describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      try {
-        await I.amOnPage('/info');
-        await I.seeAttributesOnElements('//form', {
-          method: 'post',
-        });
-        await I.seeAttributesOnElements('//form', {
-          method: 'post',
-          action: `${siteUrl}/`,
-        });
-        await I.seeAttributesOnElements('//form', {
-          method: 'get',
-        });
-        throw Error('It should never get this far');
-      } catch (e) {
-        e.message.should.include('all elements (//form) to have attributes {"method":"get"}');
-      }
-    });
-
-    it('should check attributes values for several elements', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      try {
-        await I.amOnPage('/');
-        await I.seeAttributesOnElements('a', {
-          'qa-id': 'test',
-          'qa-link': 'test',
-        });
-        await I.seeAttributesOnElements('//div', {
-          'qa-id': 'test',
-        });
-        await I.seeAttributesOnElements('a', {
-          'qa-id': 'test',
-          href: '/info',
-        });
-        throw new Error('It should never get this far');
-      } catch (e) {
-        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
-      }
-    });
-  });
-
-  describe('#seeCssPropertiesOnElements', () => {
-    it('should check css property for given element', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      try {
-        await I.amOnPage('/info');
-        await I.seeCssPropertiesOnElements('h3', {
-          'font-weight': 'bold',
-        });
-        await I.seeCssPropertiesOnElements('h3', {
-          'font-weight': 'bold',
-          display: 'block',
-        });
-        await I.seeCssPropertiesOnElements('h3', {
-          'font-weight': 'non-bold',
-        });
-        throw Error('It should never get this far');
-      } catch (e) {
-        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}');
-      }
-    });
-
-
-    it('should check css property for several elements', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      try {
-        await I.amOnPage('/');
-        await I.seeCssPropertiesOnElements('a', {
-          color: 'rgb(0, 0, 238)',
-          cursor: 'pointer',
-        });
-        await I.seeCssPropertiesOnElements('a', {
-          color: '#0000EE',
-          cursor: 'pointer',
-        });
-        await I.seeCssPropertiesOnElements('//div', {
-          display: 'block',
-        });
-        await I.seeCssPropertiesOnElements('a', {
-          'margin-top': '0em',
-          cursor: 'pointer',
-        });
-        throw Error('It should never get this far');
-      } catch (e) {
-        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
-      }
-    });
-
-    it('should normalize css color properties for given element', async function () {
-      if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) this.skip();
-
-      await I.amOnPage('/form/css_colors');
-      await I.seeCssPropertiesOnElements('#namedColor', {
-        'background-color': 'purple',
-        color: 'yellow',
-      });
-      await I.seeCssPropertiesOnElements('#namedColor', {
-        'background-color': '#800080',
-        color: '#ffff00',
-      });
-
-      await I.seeCssPropertiesOnElements('#namedColor', {
-        'background-color': 'rgb(128,0,128)',
-        color: 'rgb(255,255,0)',
-      });
-
-      await I.seeCssPropertiesOnElements('#namedColor', {
-        'background-color': 'rgba(128,0,128,1)',
-        color: 'rgba(255,255,0,1)',
-      });
-    });
-  });
+  // describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
+  //   it('should do all cookie stuff', async () => {
+  //     await I.amOnPage('/');
+  //     await I.setCookie({
+  //       name: 'auth',
+  //       value: '123456',
+  //       url: 'http://localhost',
+  //     });
+  //     await I.seeCookie('auth');
+  //     await I.dontSeeCookie('auuth');
+
+  //     const cookie = await I.grabCookie('auth');
+  //     assert.equal(cookie.value, '123456');
+
+  //     await I.clearCookie('auth');
+  //     await I.dontSeeCookie('auth');
+  //   });
+
+  //   it('should grab all cookies', async () => {
+  //     await I.amOnPage('/');
+  //     await I.setCookie({
+  //       name: 'auth',
+  //       value: '123456',
+  //       url: 'http://localhost',
+  //     });
+  //     await I.setCookie({
+  //       name: 'user',
+  //       value: 'davert',
+  //       url: 'http://localhost',
+  //     });
+
+  //     const cookies = await I.grabCookie();
+  //     assert.equal(cookies.length, 2);
+  //     assert(cookies[0].name);
+  //     assert(cookies[0].value);
+  //   });
+
+  //   it('should clear all cookies', async () => {
+  //     await I.amOnPage('/');
+  //     await I.setCookie({
+  //       name: 'auth',
+  //       value: '123456',
+  //       url: 'http://localhost',
+  //     });
+  //     await I.clearCookie();
+  //     await I.dontSeeCookie('auth');
+  //   });
+  // });
+
+  // describe('#waitForText', () => {
+  //   it('should wait for text', async () => {
+  //     await I.amOnPage('/dynamic');
+  //     await I.dontSee('Dynamic text');
+  //     await I.waitForText('Dynamic text', 2);
+  //     await I.see('Dynamic text');
+  //   });
+
+  //   it('should wait for text in context', async () => {
+  //     await I.amOnPage('/dynamic');
+  //     await I.dontSee('Dynamic text');
+  //     await I.waitForText('Dynamic text', 2, '#text');
+  //     await I.see('Dynamic text');
+  //   });
+
+  //   it('should fail if no context', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     let failed = false;
+  //     await I.amOnPage('/dynamic');
+  //     await I.dontSee('Dynamic text');
+  //     try {
+  //       await I.waitForText('Dynamic text', 1, '#fext');
+  //     } catch (e) {
+  //       failed = true;
+  //     }
+  //     assert.ok(failed);
+  //   });
+
+  //   it('should fail if text doesn\'t contain', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     let failed = false;
+  //     await I.amOnPage('/dynamic');
+  //     try {
+  //       await I.waitForText('Other text', 1);
+  //     } catch (e) {
+  //       failed = true;
+  //     }
+  //     assert.ok(failed);
+  //   });
+
+  //   it('should fail if text is not in element', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     let failed = false;
+  //     await I.amOnPage('/dynamic');
+  //     try {
+  //       await I.waitForText('Other text', 1, '#text');
+  //     } catch (e) {
+  //       failed = true;
+  //     }
+  //     assert.ok(failed);
+  //   });
+
+  //   it('should wait for text after timeout', async () => {
+  //     await I.amOnPage('/timeout');
+  //     await I.dontSee('Timeout text');
+  //     await I.waitForText('Timeout text', 31, '#text');
+  //     await I.see('Timeout text');
+  //   });
+
+  //   it('should wait for text located by XPath', async () => {
+  //     await I.amOnPage('/dynamic');
+  //     await I.dontSee('Dynamic text');
+  //     await I.waitForText('Dynamic text', 5, '//div[@id="text"]');
+  //   });
+  // });
+
+  // describe('#waitForElement', () => {
+  //   it('should wait for visible element', async () => {
+  //     await I.amOnPage('/form/wait_visible');
+  //     await I.dontSee('Step One Button');
+  //     await I.dontSeeElement('#step_1');
+  //     await I.waitForVisible('#step_1', 2);
+  //     await I.seeElement('#step_1');
+  //     await I.click('#step_1');
+  //     await I.waitForVisible('#step_2', 2);
+  //     await I.see('Step Two Button');
+  //   });
+
+  //   it('should wait for element in DOM', async () => {
+  //     await I.amOnPage('/form/wait_visible');
+  //     await I.waitForElement('#step_2');
+  //     await I.dontSeeElement('#step_2');
+  //     await I.seeElementInDOM('#step_2');
+  //   });
+
+  //   it('should wait for element by XPath', async () => {
+  //     await I.amOnPage('/form/wait_visible');
+  //     await I.waitForElement('//div[@id="step_2"]');
+  //     await I.dontSeeElement('//div[@id="step_2"]');
+  //     await I.seeElementInDOM('//div[@id="step_2"]');
+  //   });
+
+  //   it('should wait for element to appear', async () => {
+  //     await I.amOnPage('/form/wait_element');
+  //     await I.dontSee('Hello');
+  //     await I.dontSeeElement('h1');
+  //     await I.waitForElement('h1', 2);
+  //     await I.see('Hello');
+  //   });
+  // });
+
+  // describe('#waitForInvisible', () => {
+  //   it('should wait for element to be invisible', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.see('Step One Button');
+  //     await I.seeElement('#step_1');
+  //     await I.waitForInvisible('#step_1', 2);
+  //     await I.dontSeeElement('#step_1');
+  //   });
+
+  //   it('should wait for element to be invisible by XPath', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.seeElement('//div[@id="step_1"]');
+  //     await I.waitForInvisible('//div[@id="step_1"]');
+  //     await I.dontSeeElement('//div[@id="step_1"]');
+  //     await I.seeElementInDOM('//div[@id="step_1"]');
+  //   });
+
+  //   it('should wait for element to be removed', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.see('Step Two Button');
+  //     await I.seeElement('#step_2');
+  //     await I.waitForInvisible('#step_2', 2);
+  //     await I.dontSeeElement('#step_2');
+  //   });
+
+  //   it('should wait for element to be removed by XPath', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.see('Step Two Button');
+  //     await I.seeElement('//div[@id="step_2"]');
+  //     await I.waitForInvisible('//div[@id="step_2"]', 2);
+  //     await I.dontSeeElement('//div[@id="step_2"]');
+  //   });
+  // });
+
+  // describe('#waitToHide', () => {
+  //   it('should wait for element to be invisible', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.see('Step One Button');
+  //     await I.seeElement('#step_1');
+  //     await I.waitToHide('#step_1', 2);
+  //     await I.dontSeeElement('#step_1');
+  //   });
+
+  //   it('should wait for element to be invisible by XPath', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.seeElement('//div[@id="step_1"]');
+  //     await I.waitToHide('//div[@id="step_1"]');
+  //     await I.dontSeeElement('//div[@id="step_1"]');
+  //     await I.seeElementInDOM('//div[@id="step_1"]');
+  //   });
+
+  //   it('should wait for element to be removed', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.see('Step Two Button');
+  //     await I.seeElement('#step_2');
+  //     await I.waitToHide('#step_2', 2);
+  //     await I.dontSeeElement('#step_2');
+  //   });
+
+  //   it('should wait for element to be removed by XPath', async () => {
+  //     await I.amOnPage('/form/wait_invisible');
+  //     await I.see('Step Two Button');
+  //     await I.seeElement('//div[@id="step_2"]');
+  //     await I.waitToHide('//div[@id="step_2"]', 2);
+  //     await I.dontSeeElement('//div[@id="step_2"]');
+  //   });
+  // });
+
+  // describe('#waitForDetached', () => {
+  //   it('should throw an error if the element still exists in DOM', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/wait_detached');
+  //     await I.see('Step One Button');
+  //     await I.seeElement('#step_1');
+
+  //     try {
+  //       await I.waitForDetached('#step_1', 2);
+  //       throw Error('Should not get this far');
+  //     } catch (err) {
+  //       err.message.should.include('still on page after');
+  //     }
+  //   });
+
+  //   it('should throw an error if the element still exists in DOM by XPath', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/wait_detached');
+  //     await I.see('Step One Button');
+  //     await I.seeElement('#step_1');
+
+  //     try {
+  //       await I.waitForDetached('#step_1', 2);
+  //       throw Error('Should not get this far');
+  //     } catch (err) {
+  //       err.message.should.include('still on page after');
+  //     }
+  //   });
+
+  //   it('should wait for element to be removed from DOM', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/wait_detached');
+  //     await I.see('Step Two Button');
+  //     await I.seeElement('#step_2');
+  //     await I.waitForDetached('#step_2', 2);
+  //     await I.dontSeeElementInDOM('#step_2');
+  //   });
+
+  //   it('should wait for element to be removed from DOM by XPath', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/wait_detached');
+  //     await I.seeElement('//div[@id="step_2"]');
+  //     await I.waitForDetached('//div[@id="step_2"]');
+  //     await I.dontSeeElement('//div[@id="step_2"]');
+  //     await I.dontSeeElementInDOM('//div[@id="step_2"]');
+  //   });
+  // });
+
+  // describe('within tests', () => {
+  //   afterEach(() => I._withinEnd());
+
+  //   it('should execute within block', async () => {
+  //     await I.amOnPage('/form/example4');
+  //     await I.seeElement('#navbar-collapse-menu');
+  //     await I._withinBegin('#register');
+  //     await I.see('E-Mail');
+  //     await I.dontSee('Toggle navigation');
+  //     await I.dontSeeElement('#navbar-collapse-menu');
+  //   });
+
+  //   it('should respect form fields inside within block ', async () => {
+  //     let rethrow;
+
+  //     await I.amOnPage('/form/example4');
+  //     await I.seeElement('#navbar-collapse-menu');
+  //     await I.see('E-Mail');
+  //     await I.see('Hasło');
+  //     await I.fillField('Hasło', '12345');
+  //     await I.seeInField('Hasło', '12345');
+  //     await I.checkOption('terms');
+  //     await I.seeCheckboxIsChecked('terms');
+  //     await I._withinBegin({ css: '.form-group' });
+  //     await I.see('E-Mail');
+  //     await I.dontSee('Hasło');
+
+  //     try {
+  //       await I.dontSeeElement('#navbar-collapse-menu');
+  //     } catch (err) {
+  //       rethrow = err;
+  //     }
+
+  //     try {
+  //       await I.dontSeeCheckboxIsChecked('terms');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen checkbox');
+  //     }
+
+  //     try {
+  //       await I.seeInField('Hasło', '12345');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen field');
+  //     }
+
+  //     if (rethrow) throw rethrow;
+  //   });
+
+  //   it('should execute within block 2', async () => {
+  //     await I.amOnPage('/form/example4');
+  //     await I.fillField('Hasło', '12345');
+  //     await I._withinBegin({ xpath: '//div[@class="form-group"][2]' });
+  //     await I.dontSee('E-Mail');
+  //     await I.see('Hasło');
+
+  //     const label = await I.grabTextFrom('label');
+  //     assert.equal(label, 'Hasło');
+
+  //     const input = await I.grabValueFrom('input');
+  //     assert.equal(input, '12345');
+  //   });
+
+  //   it('within should respect context in see', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/example4');
+  //     await I.see('Rejestracja', 'fieldset');
+  //     await I._withinBegin({ css: '.navbar-header' });
+
+  //     try {
+  //       await I.see('Rejestracja', '.container fieldset');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen fieldset');
+  //     }
+
+  //     try {
+  //       await I.see('Toggle navigation', '.container fieldset');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen fieldset');
+  //     }
+  //   });
+
+  //   it('within should respect context in see when using nested frames', async function () {
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/iframe_nested');
+  //     await I._withinBegin({
+  //       frame: ['#wrapperId', '[name=content]'],
+  //     });
+
+  //     try {
+  //       await I.see('Kill & Destroy');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen "Kill & Destroy"');
+  //     }
+
+  //     try {
+  //       await I.dontSee('Nested Iframe test');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen "Nested Iframe test"');
+  //     }
+
+  //     try {
+  //       await I.dontSee('Iframe test');
+  //     } catch (err) {
+  //       if (!err) assert.fail('seen "Iframe test"');
+  //     }
+  //   });
+  // });
+
+  // describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
+  //   it('should scroll inside an iframe', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/iframe');
+  //     await I.resizeWindow(500, 700);
+  //     await I.switchTo(0);
+
+  //     const { x, y } = await I.grabPageScrollPosition();
+  //     await I.scrollTo('.sign');
+
+  //     const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+  //     assert.notEqual(afterScrollY, y);
+  //     assert.equal(afterScrollX, x);
+  //   });
+
+  //   it('should scroll to an element', async () => {
+  //     await I.amOnPage('/form/scroll');
+  //     await I.resizeWindow(500, 700);
+  //     const { x, y } = await I.grabPageScrollPosition();
+  //     await I.scrollTo('.section3 input[name="test"]');
+
+  //     const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+  //     assert.notEqual(afterScrollY, y);
+  //   });
+
+  //   it('should scroll to coordinates', async () => {
+  //     await I.amOnPage('/form/scroll');
+  //     await I.resizeWindow(500, 700);
+  //     const { x, y } = await I.grabPageScrollPosition();
+  //     await I.scrollTo(50, 70);
+
+  //     const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+  //     assert.equal(afterScrollX, 50);
+  //     assert.equal(afterScrollY, 70);
+  //   });
+
+  //   it('should scroll to bottom of page', async () => {
+  //     await I.amOnPage('/form/scroll');
+  //     await I.resizeWindow(500, 700);
+  //     const { y } = await I.grabPageScrollPosition();
+  //     await I.scrollPageToBottom();
+
+  //     const { y: afterScrollY } = await I.grabPageScrollPosition();
+  //     assert.notEqual(afterScrollY, y);
+  //     assert.notEqual(afterScrollY, 0);
+  //   });
+
+  //   it('should scroll to top of page', async () => {
+  //     await I.amOnPage('/form/scroll');
+  //     await I.resizeWindow(500, 700);
+  //     await I.scrollPageToBottom();
+  //     const { y } = await I.grabPageScrollPosition();
+  //     await I.scrollPageToTop();
+
+  //     const { y: afterScrollY } = await I.grabPageScrollPosition();
+  //     assert.notEqual(afterScrollY, y);
+  //     assert.equal(afterScrollY, 0);
+  //   });
+  // });
+
+  // describe('#grabCssPropertyFrom', () => {
+  //   it('should grab css property for given element', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/doubleclick');
+  //     const css = await I.grabCssPropertyFrom('#block', 'height');
+  //     assert.equal(css, '100px');
+  //   });
+
+  //   it('should grab camelcased css properies', async () => {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) return;
+
+  //     await I.amOnPage('/form/doubleclick');
+  //     const css = await I.grabCssPropertyFrom('#block', 'user-select');
+  //     assert.equal(css, 'text');
+  //   });
+  // });
+
+  // describe('#seeAttributesOnElements', () => {
+  //   it('should check attributes values for given element', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     try {
+  //       await I.amOnPage('/info');
+  //       await I.seeAttributesOnElements('//form', {
+  //         method: 'post',
+  //       });
+  //       await I.seeAttributesOnElements('//form', {
+  //         method: 'post',
+  //         action: `${siteUrl}/`,
+  //       });
+  //       await I.seeAttributesOnElements('//form', {
+  //         method: 'get',
+  //       });
+  //       throw Error('It should never get this far');
+  //     } catch (e) {
+  //       e.message.should.include('all elements (//form) to have attributes {"method":"get"}');
+  //     }
+  //   });
+
+  //   it('should check attributes values for several elements', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     try {
+  //       await I.amOnPage('/');
+  //       await I.seeAttributesOnElements('a', {
+  //         'qa-id': 'test',
+  //         'qa-link': 'test',
+  //       });
+  //       await I.seeAttributesOnElements('//div', {
+  //         'qa-id': 'test',
+  //       });
+  //       await I.seeAttributesOnElements('a', {
+  //         'qa-id': 'test',
+  //         href: '/info',
+  //       });
+  //       throw new Error('It should never get this far');
+  //     } catch (e) {
+  //       e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
+  //     }
+  //   });
+  // });
+
+  // describe('#seeCssPropertiesOnElements', () => {
+  //   it('should check css property for given element', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     try {
+  //       await I.amOnPage('/info');
+  //       await I.seeCssPropertiesOnElements('h3', {
+  //         'font-weight': 'bold',
+  //       });
+  //       await I.seeCssPropertiesOnElements('h3', {
+  //         'font-weight': 'bold',
+  //         display: 'block',
+  //       });
+  //       await I.seeCssPropertiesOnElements('h3', {
+  //         'font-weight': 'non-bold',
+  //       });
+  //       throw Error('It should never get this far');
+  //     } catch (e) {
+  //       e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}');
+  //     }
+  //   });
+
+
+  //   it('should check css property for several elements', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     try {
+  //       await I.amOnPage('/');
+  //       await I.seeCssPropertiesOnElements('a', {
+  //         color: 'rgb(0, 0, 238)',
+  //         cursor: 'pointer',
+  //       });
+  //       await I.seeCssPropertiesOnElements('a', {
+  //         color: '#0000EE',
+  //         cursor: 'pointer',
+  //       });
+  //       await I.seeCssPropertiesOnElements('//div', {
+  //         display: 'block',
+  //       });
+  //       await I.seeCssPropertiesOnElements('a', {
+  //         'margin-top': '0em',
+  //         cursor: 'pointer',
+  //       });
+  //       throw Error('It should never get this far');
+  //     } catch (e) {
+  //       e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
+  //     }
+  //   });
+
+  //   it('should normalize css color properties for given element', async function () {
+  //     if (isHelper('Nightmare')) return;
+  //     if (isHelper('TestCafe')) this.skip();
+
+  //     await I.amOnPage('/form/css_colors');
+  //     await I.seeCssPropertiesOnElements('#namedColor', {
+  //       'background-color': 'purple',
+  //       color: 'yellow',
+  //     });
+  //     await I.seeCssPropertiesOnElements('#namedColor', {
+  //       'background-color': '#800080',
+  //       color: '#ffff00',
+  //     });
+
+  //     await I.seeCssPropertiesOnElements('#namedColor', {
+  //       'background-color': 'rgb(128,0,128)',
+  //       color: 'rgb(255,255,0)',
+  //     });
+
+  //     await I.seeCssPropertiesOnElements('#namedColor', {
+  //       'background-color': 'rgba(128,0,128,1)',
+  //       color: 'rgba(255,255,0,1)',
+  //     });
+  //   });
+  // });
 };
