@@ -1,5 +1,5 @@
 version: v1.0
-name: Appium tests pipeline
+name: Initial Pipeline
 agent:
   machine:
     type: e1-standard-2
@@ -7,6 +7,8 @@ agent:
 blocks:
   - name: Appium tests
     task:
+      secrets:
+        - name: saucelabs
       prologue:
         commands:
           - checkout
