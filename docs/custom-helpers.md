@@ -3,13 +3,13 @@ permalink: /helpers
 title: Custom Helpers
 ---
 
-# Extending CodeceptJS with Custom Helopers
+# Extending CodeceptJS with custom helpers
 
-Helpers is a core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them.
+Helper is the core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them.
 
-Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easily switching between backends.
+Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows switching between backends seamlessly.
 
-Functionality of CodeceptJS should be extended by writing a custom helpers.
+Functionality of CodeceptJS could be extended by writing custom helpers.
 
 Helpers can also be installed as Node packages and required by corresponding Node modules.
 
@@ -37,7 +37,7 @@ helpers: {
 ```
 
 Helpers are ES6 classes inherited from [corresponding abstract class](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js).
-Generated Helper will be added to `codecept.conf.js` config. It should look like this:
+Generated Helper will be added to `codecept.conf.js` config file. It should look like this:
 
 ```js
 const Helper = codecept_helper;
@@ -113,7 +113,7 @@ module.exports = MyHelper;
 
 ## Puppeteer Example
 
-Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
+Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Accessing `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
 
 Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
 
@@ -327,4 +327,4 @@ Retry rules are available in array `recorder.retries`. The last retry rule can b
 
 ## Using Typescript
 
-When using typescript, replace `module.exports` with `export` for autocompletion.
+When using Typescript, replacing `module.exports` with `export` for autocompletion.
