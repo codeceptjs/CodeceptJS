@@ -46,7 +46,8 @@
     "test": "npm run test:unit && npm run test:runner",
     "def": "./runio.js def",
     "dev:graphql": "nodemon test/data/graphql/index.js",
-    "publish:site": "./runio.js publish:site"
+    "publish:site": "./runio.js publish:site",
+    "update-contributor-faces": "contributor-faces ."
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.4.0",
@@ -92,6 +93,7 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "chai-subset": "^1.6.0",
+    "contributor-faces": "^1.0.3",
     "documentation": "^12.1.4",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
