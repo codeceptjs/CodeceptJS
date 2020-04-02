@@ -54,6 +54,5 @@ describe('screenshotOnFail', () => {
     assert.equal(fileName.match(regexpFileName).length, 1);
   });
 
-
   // TODO: write more tests for different options
 });
