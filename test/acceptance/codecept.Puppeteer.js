@@ -24,6 +24,11 @@ module.exports.config = {
   include: {},
   bootstrap: false,
   mocha: {},
+  plugins: {
+    screenshotOnFail: {
+      enabled: true,
+    },
+  },
   name: 'acceptance',
   gherkin: {
     features: './gherkin/*.feature',

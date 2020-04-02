@@ -13,7 +13,7 @@ describe('screenshotOnFail', () => {
     recorder.reset();
     screenshotSaved = sinon.spy();
     container.clear({
-      WebDriverIO: {
+      WebDriver: {
         options: {},
         saveScreenshot: screenshotSaved,
       },

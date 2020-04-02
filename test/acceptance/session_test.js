@@ -1,5 +1,7 @@
 const assert = require('assert');
 const path = require('path');
+const event = require('../../lib/event');
+const { clearString } = require('../../lib/utils');
 
 Feature('Session');
 
@@ -85,7 +87,28 @@ Scenario('should throw exception and close correctly @WebDriverIO @Protractor @P
     I.seeCheckboxIsChecked({ css: 'input[value=No]' });
   });
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
+  I.amOnPage('/info');
 }).fails();
+
+Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
+  I.amOnPage('/info');
+  I.saveScreenshot('original.png');
+  I.amOnPage('/');
+  session('john', async () => {
+    await I.amOnPage('/info');
+    event.dispatcher.emit(event.test.failed, this);
+  });
+
+  const fileName = clearString(this.title);
+
+  const [original, failed] = await I.getMD5Digests([
+    `${output_dir}/original.png`,
+    `${output_dir}/${fileName}.failed.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(original, failed);
+});
 
 Scenario('async/await @WebDriverIO @Protractor', (I) => {
   I.amOnPage('/form/bug1467#session1');
