@@ -43,7 +43,7 @@ describe('screenshotOnFail', () => {
     assert.ok(screenshotSaved.called);
     assert.equal('test1_1.failed.png', screenshotSaved.getCall(0).args[0]);
   });
-  
+
   it('should create screenshot with unique name when uuid is null', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1' });
