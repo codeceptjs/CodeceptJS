@@ -3,7 +3,7 @@ permalink: /helpers
 title: Custom Helpers
 ---
 
-# Extending CodeceptJS with custom helpers
+# Extending CodeceptJS With Custom Helpers
 
 Helper is the core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them.
 
@@ -327,4 +327,4 @@ Retry rules are available in array `recorder.retries`. The last retry rule can b
 
 ## Using Typescript
 
-When using Typescript, replacing `module.exports` with `export` for autocompletion.
+With Typescript, just simply replacing `module.exports` with `export` for autocompletion.
