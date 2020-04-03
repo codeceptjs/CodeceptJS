@@ -1,7 +1,6 @@
 const assert = require('assert');
-const path = require('path');
-const event = require('../../lib/event');
-const { clearString } = require('../../lib/utils');
+
+const { event } = codeceptjs;
 
 Feature('Session');
 
@@ -91,11 +90,11 @@ Scenario('should throw exception and close correctly @WebDriverIO @Protractor @P
 }).fails();
 
 Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
-  I.amOnPage('/info');
+  I.amOnPage('/form/bug1467');
   I.saveScreenshot('original.png');
   I.amOnPage('/');
   session('john', async () => {
-    await I.amOnPage('/info');
+    await I.amOnPage('/form/bug1467');
     event.dispatcher.emit(event.test.failed, this);
   });
 
@@ -226,3 +225,11 @@ Scenario('should return a value @WebDriverIO @Protractor @Puppeteer @Playwright 
   I.click('Submit');
   I.see('[description] => Information');
 });
+
+function clearString(str) {
+  if (!str) return '';
+  /* Replace forbidden symbols in string
+     */
+  return str
+    .replace(/ /g, '_');
+}
