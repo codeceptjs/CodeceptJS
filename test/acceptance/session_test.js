@@ -1,5 +1,6 @@
 const assert = require('assert');
-const path = require('path');
+
+const { event } = codeceptjs;
 
 Feature('Session');
 
@@ -76,6 +77,28 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pla
   assert.notEqual(cookies.john, cookies.mary);
 });
 
+
+Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
+  I.amOnPage('/form/bug1467');
+  I.saveScreenshot('original.png');
+  I.amOnPage('/');
+  session('john', async () => {
+    await I.amOnPage('/form/bug1467');
+    event.dispatcher.emit(event.test.failed, this);
+  });
+
+  const fileName = clearString(this.title);
+
+  const [original, failed] = await I.getMD5Digests([
+    `${output_dir}/original.png`,
+    `${output_dir}/${fileName}.failed.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(original, failed);
+});
+
+
 Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
@@ -85,6 +108,7 @@ Scenario('should throw exception and close correctly @WebDriverIO @Protractor @P
     I.seeCheckboxIsChecked({ css: 'input[value=No]' });
   });
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
+  I.amOnPage('/info');
 }).fails();
 
 Scenario('async/await @WebDriverIO @Protractor', (I) => {
@@ -203,3 +227,11 @@ Scenario('should return a value @WebDriverIO @Protractor @Puppeteer @Playwright 
   I.click('Submit');
   I.see('[description] => Information');
 });
+
+function clearString(str) {
+  if (!str) return '';
+  /* Replace forbidden symbols in string
+     */
+  return str
+    .replace(/ /g, '_');
+}
