@@ -8,7 +8,7 @@
     }
   },
   "gherkin": {
-    "features": "./support/dummy.feature",
+    "features": "./support/duplicate.feature",
     "steps": [
       "./features/step_definitions/my_steps.js",
       "./features/step_definitions/my_other_steps.js"
