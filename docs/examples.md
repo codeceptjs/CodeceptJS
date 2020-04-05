@@ -52,21 +52,19 @@ This repository demonstrates usage of:
 * testing WYSIWYG editor
 * GitLab CI
 
-## [CodeceptJS Cucumber BDD E2E Framework](https://github.com/gkushang/codeceptjs-bdd)
+## [CodeceptJS Cucumber E2E Framework](https://github.com/gkushang/codeceptjs-e2e)
 
-This repository contains complete BDD E2E framework for CodeceptJS with Cucumber and SauceLabs Integration
+This repository contains complete E2E framework for CodeceptJS with Cucumber and SauceLabs Integration
 
-* CodeceptJS-Cucumber BDD Framework. Link to [docs](https://gkushang.github.io/)
-* [CLI](https://gkushang.github.io/1-getting-started/setup-framework/) to quick start
+* CodecepJS-Cucumber E2E Framework
 * Saucelabs Integration
 * Run Cross Browser tests in Parallel on SauceLabs with a simple command
 * Run tests on `chrome:headless`
 * Page Objects
 * `Should.js` Assertion Library
-* Soft Assertions
 * Uses `wdio` service (selenium-standalone, sauce)
 * Allure HTML Reports
-* Uses shared configuration
+* Uses shared Master configuration
 * Sample example and feature files of GitHub Features
 
 ## [Amazon Tests v2](https://gitlab.com/thanhnguyendh/codeceptjs-wdio-services)
