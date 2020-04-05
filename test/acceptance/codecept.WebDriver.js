@@ -27,6 +27,11 @@ module.exports.config = {
   bootstrap: done => setTimeout(done, 5000), // let's wait for selenium
   mocha: {},
   name: 'acceptance',
+  plugins: {
+    screenshotOnFail: {
+      enabled: true,
+    },
+  },
   gherkin: {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
