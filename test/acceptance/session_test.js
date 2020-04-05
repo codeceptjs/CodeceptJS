@@ -77,17 +77,6 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pla
   assert.notEqual(cookies.john, cookies.mary);
 });
 
-Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
-  I.amOnPage('/form/bug1467#session1');
-  I.checkOption('Yes');
-  session('john', () => {
-    I.amOnPage('/form/bug1467#session2');
-    I.checkOption('No1');
-    I.seeCheckboxIsChecked({ css: 'input[value=No]' });
-  });
-  I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
-  I.amOnPage('/info');
-}).fails();
 
 Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
   I.amOnPage('/form/bug1467');
@@ -108,6 +97,19 @@ Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Pla
   // Assert that screenshots of same page in same session are equal
   assert.equal(original, failed);
 });
+
+
+Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
+  I.amOnPage('/form/bug1467#session1');
+  I.checkOption('Yes');
+  session('john', () => {
+    I.amOnPage('/form/bug1467#session2');
+    I.checkOption('No1');
+    I.seeCheckboxIsChecked({ css: 'input[value=No]' });
+  });
+  I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
+  I.amOnPage('/info');
+}).fails();
 
 Scenario('async/await @WebDriverIO @Protractor', (I) => {
   I.amOnPage('/form/bug1467#session1');
