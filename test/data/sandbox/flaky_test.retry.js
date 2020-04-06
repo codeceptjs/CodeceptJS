@@ -6,7 +6,7 @@ let tries = 0;
 
 Feature('Retry');
 
-Scenario('flaky step @test1', async (I) => {
+Scenario('flaky step @test1', async ({ I }) => {
   tries++;
   await I.retry(3).failWhen(() => {
     tries++;
@@ -15,7 +15,7 @@ Scenario('flaky step @test1', async (I) => {
   assert.equal(tries, 4);
 });
 
-Scenario('flaky step passed globally @test2', (I) => {
+Scenario('flaky step passed globally @test2', ({ I }) => {
   recorder.retry({
     retries: 3,
     when: err => false,

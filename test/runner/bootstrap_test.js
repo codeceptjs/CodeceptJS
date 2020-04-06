@@ -13,6 +13,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
   it('should run bootstrap', (done) => {
     exec(codecept_run_config('sync.json', '@important'), (err, stdout, stderr) => {
+      console.log(stdout);
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
