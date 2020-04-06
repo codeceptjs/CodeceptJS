@@ -1,0 +1,14 @@
+{
+  "tests": "./configs/timeout/timeout_test.js",
+  "timeout": 1000,
+  "output": "./output",
+  "helpers": {
+    "SleepHelper": {
+      "require": "./configs/timeout/sleepHelper.js"
+    }
+  },
+  "include": {},
+  "bootstrap": false,
+  "mocha": {},
+  "name": "sandbox"
+}

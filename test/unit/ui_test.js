@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
+const container = require('../../lib/container');
 
 const makeUI = require('../../lib/ui');
 
@@ -11,6 +12,7 @@ describe('ui', () => {
   beforeEach(() => {
     context = {};
     suite = new Suite('empty');
+    container.create({});
     makeUI(suite);
     suite.emit('pre-require', context, {}, new Mocha());
   });
@@ -62,8 +64,9 @@ describe('ui', () => {
       assert.equal(3, suiteConfig.suite.retries());
     });
 
-    it('timeout can be set', () => {
+    it.only('timeout can be set', () => {
       suiteConfig = context.Feature('basic suite');
+      console.log(suiteConfig.suite.timeout());
       assert.equal(0, suiteConfig.suite.timeout());
       suiteConfig.timeout(3);
       assert.equal(3, suiteConfig.suite.timeout());

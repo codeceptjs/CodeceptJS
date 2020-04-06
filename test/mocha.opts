@@ -1,1 +1,2 @@
 --require ./test/support/setup
+--timeout 5000

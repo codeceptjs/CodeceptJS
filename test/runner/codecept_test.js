@@ -366,3 +366,22 @@ describe('Codeceptjs Events', () => {
     });
   });
 });
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+describe('CodeceptJS Default timeout', () => {
+  it.only('should fail if test running bigger then default timeout', (done) => {
+    process.chdir(codecept_dir);
+    console.log(`${codecept_run_config('codecept.timeout.json')} --verbose`);
+    exec(`${codecept_run_config('codecept.timeout.json')} --verbose`, (err, stdout, stderr) => {
+      console.log(stdout);
+      // stdout.should.include('Filesystem'); // feature
+      // stdout.should.include('check current dir'); // test name
+      assert(err);
+      done();
+    });
+  });
+});

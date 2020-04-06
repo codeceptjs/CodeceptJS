@@ -62,4 +62,9 @@ describe('Config', () => {
     expect(cfg).to.contain.key('additionalValue');
     expect(cfg.additionalValue).to.eql(true);
   });
+
+  it('default timout should be 10000 ms', () => {
+    const cfg = config.create({});
+    expect(cfg.timeout).to.eql(10000);
+  });
 });
