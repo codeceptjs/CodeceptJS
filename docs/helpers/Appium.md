@@ -1689,6 +1689,8 @@ Resumes test execution, so **should be used inside async function with `await`**
 let geoLocation = await I.grabGeoLocation();
 ```
 
+Returns **[Promise][13]&lt;{latitude: [number][8], longitude: [number][8], altitude: [number][8]}>** 
+
 ### grabElementBoundingRect
 
 Grab the width, height, location of given locator.
