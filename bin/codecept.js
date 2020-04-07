@@ -171,11 +171,6 @@ program.command('run-workers <workers>')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .action(require('../lib/command/run-workers'));
 
-program.command('transform [test]')
-  .description('Transform tests')
-  .option('-c, --config [file]', 'configuration file to be used')
-  .action(require('../lib/command/transform'));
-
 program.command('run-multiple [suites...]')
   .description('Executes tests multiple')
   .option('-c, --config [file]', 'configuration file to be used')
