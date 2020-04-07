@@ -1,5 +1,5 @@
 Feature('asdas');
 
-Scenario('qw', async ({ I, page }) => {
+Scenario('qw', async ({ page }) => {
   await page.type('asda');
 });

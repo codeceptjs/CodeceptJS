@@ -13,7 +13,7 @@ A simple test that verifies the "Welcome" text is present on a main page of a si
 ```js
 Feature('CodeceptJS demo');
 
-Scenario('check Welcome page on site', (I) => {
+Scenario('check Welcome page on site', ({ I }) => {
   I.amOnPage('/');
   I.see('Welcome');
 });
@@ -100,7 +100,7 @@ Let's see how we can handle basic form testing:
 ```js
 Feature('CodeceptJS Demonstration');
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   I.fillField('Email', 'hello@world.com');
   I.fillField('Password', '123456');
@@ -186,7 +186,7 @@ const assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
-Scenario('test page title', async (I) => {
+Scenario('test page title', async ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   const title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
@@ -202,17 +202,17 @@ Common preparation steps like opening a web page, logging in a user, can be plac
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', (I) => {
+Scenario('test title', ({ I }) => {
   I.seeInTitle('Example application');
 });
 ```
@@ -252,7 +252,7 @@ You can easily inject it to test by providing its name in test arguments:
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
