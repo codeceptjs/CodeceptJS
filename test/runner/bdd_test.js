@@ -277,4 +277,12 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
       done();
     });
   });
+
+  it('should not generate duplicated steps', (done) => {
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+      assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
+      assert(!err);
+      done();
+    });
+  });
 });

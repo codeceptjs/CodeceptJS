@@ -3,12 +3,13 @@ permalink: /helpers
 title: Custom Helpers
 ---
 
+# Extending CodeceptJS With Custom Helpers
 
-Helpers is a core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them.
+Helper is the core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them.
 
-Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows easily switching between backends.
+Methods of Helper class will be available in tests in `I` object. This abstracts test scenarios from the implementation and allows switching between backends seamlessly.
 
-Functionality of CodeceptJS should be extended by writing a custom helpers.
+Functionality of CodeceptJS could be extended by writing custom helpers.
 
 Helpers can also be installed as Node packages and required by corresponding Node modules.
 
@@ -36,7 +37,7 @@ helpers: {
 ```
 
 Helpers are ES6 classes inherited from [corresponding abstract class](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js).
-Generated Helper will be added to `codecept.conf.js` config. It should look like this:
+Generated Helper will be added to `codecept.conf.js` config file. It should look like this:
 
 ```js
 const Helper = codecept_helper;
@@ -112,7 +113,7 @@ module.exports = MyHelper;
 
 ## Puppeteer Example
 
-Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Access `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
+Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Accessing `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
 
 Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
 
@@ -168,6 +169,50 @@ class MyHelper extends Helper {
 module.exports = MyHelper;
 ```
 
+## Accessing Elements
+
+WebDriver, Puppeteer, Playwright, and Protractor drivers provide API for web elements.
+However, CodeceptJS do not expose them to tests by design, keeping test to be action focused.
+If you need to get access to web elements, it is recommended to implement operations for web elements in a custom helper.
+
+To get access for elements, connect to a corresponding helper and use `_locate` function to match web elements by CSS or XPath, like you usually do:
+
+### Acessing Elements in WebDriver
+
+```js
+// inside a custom helper
+async clickOnEveryElement(locator) {
+  const { WebDriver } = this.helpers;
+  const els = await WebDriver._locate(locator);
+
+  for (let el of els) {
+    await el.click();
+  }
+}
+```
+In this case an an instance of webdriverio element is used.
+To get a [complete API of an element](https://webdriver.io/docs/api/) refer to webdriverio docs.
+
+### Accessing Elements in Playwright & Puppeteer
+
+Similar method can be implemented for Playwright & Puppeteer:
+
+```js
+// inside a custom helper
+async clickOnEveryElement(locator) {
+  const { Playwright } = this.helpers;
+  const els = await Playwright._locate(locator);
+
+  for (let el of els) {
+    await el.click();
+  }
+}
+```
+
+In this case `el` will be an instance of [ElementHandle](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#class-elementhandle) which is similar for Playwright & [Puppeteer](https://pptr.dev/#?product=Puppeteer&version=v2.1.1&show=api-class-elementhandle).
+
+> ℹ There are more `_locate*` methods in each helper. Take a look on documentation of a helper you use to see which exact method it exposes.
+
 ## Configuration
 
 Helpers should be enabled inside `codecept.json` or `codecept.conf.js` files. Command `generate helper`
@@ -175,13 +220,13 @@ does that for you, however you can enable them manually by placing helper to `he
 You can also pass additional config options to your helper from a config - **(please note, this example contains comments, while JSON format doesn't support them)**:
 
 ```js
-"helpers": {
+helpers: {
   // here goes standard helpers:
   // WebDriver, Protractor, Nightmare, etc...
   // and their configuration
-  "MyHelper": {
-    "require": "./my_helper.js", // path to module
-    "defaultHost": "http://mysite.com" // custom config param
+  MyHelper: {
+    require: "./my_helper.js", // path to module
+    defaultHost: "http://mysite.com" // custom config param
   }
 
 }
@@ -282,4 +327,4 @@ Retry rules are available in array `recorder.retries`. The last retry rule can b
 
 ## Using Typescript
 
-When using typescript, replace `module.exports` with `export` for autocompletion.
+With Typescript, just simply replacing `module.exports` with `export` for autocompletion.

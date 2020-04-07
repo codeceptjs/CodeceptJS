@@ -1,5 +1,7 @@
 const assert = require('assert');
 
+const { event } = codeceptjs;
+
 Feature('Session');
 
 Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
@@ -11,6 +13,36 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) =
   });
   I.dontSee('GitHub');
   I.seeInCurrentUrl('/info');
+});
+
+Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright @WebDriver', async (I) => {
+  I.amOnPage('/');
+  I.saveScreenshot('session_default_1.png');
+
+  session('john', () => {
+    I.amOnPage('/info');
+    I.saveScreenshot('session_john_1.png');
+  });
+
+  I.saveScreenshot('session_default_2.png');
+
+  session('john', () => {
+    I.saveScreenshot('session_john_2.png');
+  });
+
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getMD5Digests([
+    `${output_dir}/session_default_1.png`,
+    `${output_dir}/session_default_2.png`,
+    `${output_dir}/session_john_1.png`,
+    `${output_dir}/session_john_2.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(default1Digest, default2Digest);
+  assert.equal(john1Digest, john2Digest);
+
+  // Assert that screenshots of different pages in different sessions are not equal
+  assert.notEqual(default1Digest, john1Digest);
 });
 
 Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Playwright @Puppeteer', async (I) => {
@@ -45,6 +77,28 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pla
   assert.notEqual(cookies.john, cookies.mary);
 });
 
+
+Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
+  I.amOnPage('/form/bug1467');
+  I.saveScreenshot('original.png');
+  I.amOnPage('/');
+  session('john', async () => {
+    await I.amOnPage('/form/bug1467');
+    event.dispatcher.emit(event.test.failed, this);
+  });
+
+  const fileName = clearString(this.title);
+
+  const [original, failed] = await I.getMD5Digests([
+    `${output_dir}/original.png`,
+    `${output_dir}/${fileName}.failed.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(original, failed);
+});
+
+
 Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
@@ -54,6 +108,7 @@ Scenario('should throw exception and close correctly @WebDriverIO @Protractor @P
     I.seeCheckboxIsChecked({ css: 'input[value=No]' });
   });
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
+  I.amOnPage('/info');
 }).fails();
 
 Scenario('async/await @WebDriverIO @Protractor', (I) => {
@@ -96,6 +151,31 @@ Scenario('should work with within @WebDriverIO @Protractor @Puppeteer @Playwrigh
   session('john', () => {
     I.seeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' });
     I.dontSeeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' });
+  });
+});
+
+Scenario('change page emulation @Playwright', async (I) => {
+  const assert = require('assert');
+  I.amOnPage('/');
+  session('mobile user', {
+    viewport: { width: 300, height: 500 },
+  }, async () => {
+    I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.equal(width, 300);
+  });
+});
+
+
+Scenario('emulate iPhone @Playwright', async (I) => {
+  const { devices } = require('playwright');
+  if (process.env.BROWSER === 'firefox') return;
+  const assert = require('assert');
+  I.amOnPage('/');
+  session('mobile user', devices['iPhone 6'], async () => {
+    I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.ok(width > 950 && width < 1000);
   });
 });
 
@@ -147,3 +227,11 @@ Scenario('should return a value @WebDriverIO @Protractor @Puppeteer @Playwright 
   I.click('Submit');
   I.see('[description] => Information');
 });
+
+function clearString(str) {
+  if (!str) return '';
+  /* Replace forbidden symbols in string
+     */
+  return str
+    .replace(/ /g, '_');
+}

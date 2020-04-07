@@ -400,6 +400,7 @@ module.exports.tests = function () {
 
     it('should execute async script', async function () {
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Playwright')) return; // It won't be implemented
 
       await I.amOnPage('/');
       const val = await I.executeAsyncScript((val, done) => {

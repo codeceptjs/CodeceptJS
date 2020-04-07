@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.5.0",
+  "version": "2.6.1",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -46,7 +46,8 @@
     "test": "npm run test:unit && npm run test:runner",
     "def": "./runio.js def",
     "dev:graphql": "nodemon test/data/graphql/index.js",
-    "publish:site": "./runio.js publish:site"
+    "publish:site": "./runio.js publish:site",
+    "update-contributor-faces": "contributor-faces ."
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.4.0",
@@ -68,13 +69,13 @@
     "js-beautify": "^1.10.2",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.3",
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
     "ms": "^2.1.2",
     "parse-function": "^5.5.0",
     "promise-retry": "^1.1.1",
-    "requireg": "^0.1.8",
+    "requireg": "^0.2.2",
     "resq": "^1.7.0",
     "semver": "^6.2.0",
     "sprintf-js": "^1.1.1"
@@ -92,6 +93,7 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "chai-subset": "^1.6.0",
+    "contributor-faces": "^1.0.3",
     "documentation": "^12.1.4",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
@@ -107,7 +109,7 @@
     "mocha-parallel-tests": "^2.2.2",
     "nightmare": "^3.0.2",
     "nodemon": "^1.19.4",
-    "playwright": "^0.11.0",
+    "playwright": "^0.12.1",
     "protractor": "^5.4.1",
     "puppeteer": "^1.20.0",
     "qrcode-terminal": "^0.12.0",
@@ -120,7 +122,7 @@
     "tsd-jsdoc": "^2.3.0",
     "typescript": "^2.9.2",
     "wdio-docker-service": "^1.5.0",
-    "webdriverio": "^5.18.4",
+    "webdriverio": "^6.0.4",
     "xmldom": "^0.1.31",
     "xpath": "0.0.27"
   },
