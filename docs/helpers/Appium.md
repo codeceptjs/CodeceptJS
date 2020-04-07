@@ -1107,6 +1107,30 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 -   `context` **([string][4] \| [object][6])?** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
 
+### \_isShadowLocator
+
+Check if locator is type of "Shadow"
+
+#### Parameters
+
+-   `locator` **[object][6]** 
+
+### \_locateShadow
+
+Locate Element within the Shadow Dom
+
+#### Parameters
+
+-   `locator` **[object][6]** 
+
+### \_smartWait
+
+Smart Wait to locate an element
+
+#### Parameters
+
+-   `locator` **[object][6]** 
+
 ### \_locate
 
 Get elements by different locator types, including strict locator.
@@ -1477,6 +1501,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
+-   `xOffset`  
+-   `yOffset`  
 -   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
 
