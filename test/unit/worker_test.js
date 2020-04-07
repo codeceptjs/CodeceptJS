@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const path = require('path');
 const semver = require('semver');
-
+const { Workers, event } = require('../../lib/index');
 
 describe('Workers', () => {
   before(() => {
