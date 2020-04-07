@@ -2,9 +2,8 @@ const { expect } = require('chai');
 const path = require('path');
 const semver = require('semver');
 
+
 describe('Workers', () => {
-  if (!semver.satisfies(process.version, '>=11.7.0')) return;
-  const { Workers, event } = require('../../lib/index');
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox');
   });
