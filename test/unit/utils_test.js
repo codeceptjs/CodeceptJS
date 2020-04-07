@@ -9,7 +9,7 @@ describe('utils', () => {
     it('exists', () => assert(utils.fileExists(__filename)));
     it('not exists', () => assert(!utils.fileExists('not_utils.js')));
   });
-
+  /* eslint-disable no-unused-vars */
   describe('#getParamNames', () => {
     it('fn#1', () => utils.getParamNames((a, b) => {}).should.eql(['a', 'b']));
     it('fn#2', () => utils.getParamNames((I, userPage) => { }).should.eql(['I', 'userPage']));
@@ -20,6 +20,7 @@ describe('utils', () => {
       comma,
     ) => {}).should.eql(['I', 'trailing', 'comma']));
   });
+  /* eslint-enable no-unused-vars */
 
   describe('#methodsOfObject', () => {
     it('should get methods', () => {

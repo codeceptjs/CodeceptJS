@@ -15,11 +15,20 @@ module.exports.config = {
         ],
       },
     },
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
+      outputPath: './output',
+    },
     MockRequest: {},
   },
   include: {},
   bootstrap: false,
   mocha: {},
+  plugins: {
+    screenshotOnFail: {
+      enabled: true,
+    },
+  },
   name: 'acceptance',
   gherkin: {
     features: './gherkin/*.feature',

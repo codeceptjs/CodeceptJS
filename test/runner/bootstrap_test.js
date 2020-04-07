@@ -12,8 +12,7 @@ const config_run_override = (config, override) => `${codecept_run} --config ${co
 describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
   it('should run bootstrap', (done) => {
-    exec(codecept_run_config('sync.json', '@important'), (err, stdout, stderr) => {
-      console.log(stdout);
+    exec(codecept_run_config('sync.json', '@important'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
@@ -22,7 +21,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should run teardown', (done) => {
-    exec(config_run_override('../../', { teardown: 'bootstrap.sync.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('../../', { teardown: 'bootstrap.sync.js' }), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
@@ -31,7 +30,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should run async bootstrap', (done) => {
-    exec(config_run_override('../../', { bootstrap: 'bootstrap.async.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('../../', { bootstrap: 'bootstrap.async.js' }), (err, stdout) => {
       stdout.should.include('Ready: 0');
       stdout.should.include('Go: 1');
       stdout.should.include('Filesystem'); // feature
@@ -41,7 +40,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should run bootstrap/teardown as object', (done) => {
-    exec(codecept_run_config('obj.json'), (err, stdout, stderr) => {
+    exec(codecept_run_config('obj.json'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am teardown');
@@ -51,7 +50,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should run async bootstrap function without args', (done) => {
-    exec(codecept_run_config('without.args.async.func.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('without.args.async.func.js'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
@@ -60,7 +59,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should run async bootstrap function with args', (done) => {
-    exec(codecept_run_config('with.args.async.func.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('with.args.async.func.js'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       assert(!err);
@@ -70,7 +69,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
 
   // failed test
   it('should fail with code 1 when test failed and async bootstrap function without args', (done) => {
-    exec(config_run_override('without.args.async.func.js', { tests: './failed_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('without.args.async.func.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Filesystem'); // feature
@@ -81,7 +80,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should fail with code 1 when test failed and async bootstrap function with args', (done) => {
-    exec(config_run_override('with.args.async.func.js', { tests: './failed_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('with.args.async.func.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Filesystem'); // feature
@@ -93,7 +92,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
 
   // failed bootstrap
   it('should fail with code 1 when async bootstrap function without args failed', (done) => {
-    exec(codecept_run_config('without.args.failed.bootstrap.async.func.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('without.args.failed.bootstrap.async.func.js'), (err, stdout) => {
       assert.equal(err.code, 1);
       stdout.should.include('Error from async bootstrap');
       stdout.should.not.include('✔ check current dir @slow @important in 2ms');
@@ -103,7 +102,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should fail with code 1 when async bootstrap function with args failed', (done) => {
-    exec(codecept_run_config('with.args.failed.bootstrap.async.func.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('with.args.failed.bootstrap.async.func.js'), (err, stdout) => {
       assert.equal(err.code, 1);
       stdout.should.include('Error from async bootstrap');
       stdout.should.not.include('✔ check current dir @slow @important in 2ms');
@@ -114,7 +113,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
 
   // failed in test file
   it('should fail with code 1 when raise exceptin in the test file and async bootstrap function with args', (done) => {
-    exec(config_run_override('with.args.async.func.js', { tests: './invalid_require_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('with.args.async.func.js', { tests: './invalid_require_test.js' }), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Cannot find module \'invalidRequire\'');
@@ -124,7 +123,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should fail with code 1 when raise exceptin in the test file and async bootstrap function without args', (done) => {
-    exec(config_run_override('without.args.async.func.js', { tests: './invalid_require_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('without.args.async.func.js', { tests: './invalid_require_test.js' }), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Cannot find module \'invalidRequire\'');
@@ -135,7 +134,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
 
   // with teardown
   it('should run async bootstrap/teardown with args', (done) => {
-    exec(config_run_override('with.args.bootstrap.teardown.js', { tests: './fs_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('with.args.bootstrap.teardown.js', { tests: './fs_test.js' }), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am teardown');
@@ -145,7 +144,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should run async bootstrap/teardown without args', (done) => {
-    exec(config_run_override('without.args.bootstrap.teardown.js', { tests: './fs_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('without.args.bootstrap.teardown.js', { tests: './fs_test.js' }), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('I am teardown');
@@ -156,7 +155,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
 
   // with teaedown - failed tests
   it('should fail with code 1 when test failed and async bootstrap/teardown function with args', (done) => {
-    exec(config_run_override('with.args.bootstrap.teardown.js', { tests: './failed_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('with.args.bootstrap.teardown.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Filesystem'); // feature
@@ -168,7 +167,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should fail with code 1 when test failed and async bootstrap/teardown function without args', (done) => {
-    exec(config_run_override('without.args.bootstrap.teardown.js', { tests: './failed_test.js' }), (err, stdout, stderr) => {
+    exec(config_run_override('without.args.bootstrap.teardown.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Filesystem'); // feature
@@ -181,7 +180,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
 
   // with teardown and fail bootstrap - teardown not call
   it('should fail with code 1 when async bootstrap with args failed and not call teardown', (done) => {
-    exec(codecept_run_config('with.args.failed.bootstrap.teardown.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('with.args.failed.bootstrap.teardown.js'), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Error from async bootstrap');
@@ -192,7 +191,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   });
 
   it('should fail with code 1 when async bootstrap without args failed and not call teardown', (done) => {
-    exec(codecept_run_config('without.args.failed.bootstrap.teardown.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('without.args.failed.bootstrap.teardown.js'), (err, stdout) => {
       assert(err);
       assert.equal(err.code, 1);
       stdout.should.include('Error from async bootstrap');

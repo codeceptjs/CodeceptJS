@@ -1094,9 +1094,13 @@ I.seeInField('#searchform input','Search');
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
 given string.
 
+```js
+I.seeInPopup('Popup text');
+```
+
 #### Parameters
 
--   `text`  
+-   `text` **[string][9]** value to check.
 
 ### seeInSource
 
@@ -1203,15 +1207,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][10]** a cookie object.
+-   `cookie` **([object][10] | [array][14])** a cookie object or array of cookie objects.
 
 ### switchTo
 

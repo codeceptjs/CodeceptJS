@@ -6,7 +6,7 @@ exports.config = {
     FileSystem: {},
   },
   include: {},
-  bootstrap: async (done) => {
+  bootstrap: async () => {
     console.log('I am bootstrap');
     throw new Error('Error from async bootstrap');
   },

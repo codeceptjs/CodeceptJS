@@ -400,6 +400,7 @@ module.exports.tests = function () {
 
     it('should execute async script', async function () {
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Playwright')) return; // It won't be implemented
 
       await I.amOnPage('/');
       const val = await I.executeAsyncScript((val, done) => {
@@ -1094,17 +1095,16 @@ module.exports.tests = function () {
     it('should scroll to an element', async () => {
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
+      const { y } = await I.grabPageScrollPosition();
       await I.scrollTo('.section3 input[name="test"]');
 
-      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
     });
 
     it('should scroll to coordinates', async () => {
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
       await I.scrollTo(50, 70);
 
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
@@ -1138,7 +1138,6 @@ module.exports.tests = function () {
 
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/doubleclick');
@@ -1147,7 +1146,6 @@ module.exports.tests = function () {
     });
 
     it('should grab camelcased css properies', async () => {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
 
       await I.amOnPage('/form/doubleclick');

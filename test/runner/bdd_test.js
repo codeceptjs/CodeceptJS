@@ -6,7 +6,6 @@ const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run`;
 const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
-const config_run_override = config => `${codecept_run} --override '${JSON.stringify(config)}'`;
 
 describe('BDD Gherkin', () => {
   before(() => {
@@ -274,6 +273,14 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
   // From "support/dummy.feature" {"line":16,"column":5}
   throw new Error('Not implemented yet');
 });`);
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should not generate duplicated steps', (done) => {
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+      assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
       assert(!err);
       done();
     });

@@ -4,6 +4,7 @@ const parser = require('../../lib/parser');
 
 const expect = chai.expect;
 
+/* eslint-disable no-unused-vars */
 class Obj {
   method1(locator, sec) {}
 

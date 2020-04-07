@@ -30,7 +30,6 @@ describe('Scenario', () => {
 
   it('should work with async func', () => {
     let counter = 0;
-    let error;
     test.fn = () => {
       recorder.add('test', async () => {
         await counter++;

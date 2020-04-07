@@ -431,10 +431,11 @@ This launches the interactive console where you can call any action from the `I`
 ```
  Interactive shell started
  Press ENTER to resume test
- - Use JavaScript syntax to try steps in action
+ Use JavaScript syntax to try steps in action
+ - Press ENTER to run the next step
  - Press TAB twice to see all available commands
- - Enter next to run the next step
-
+ - Type exit + Enter to exit the interactive shell
+ - Prefix => to run js commands 
  I.
 ```
 
@@ -621,7 +622,7 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
-> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+> ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
 
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
 
