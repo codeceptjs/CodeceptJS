@@ -17,7 +17,7 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 
 chai.use(chaiSubset);
 
-describe('Definitions', function () {
+describe.only('Definitions', function () {
   this.timeout(20000);
   this.retries(4);
   before(() => {
@@ -51,6 +51,15 @@ describe('Definitions', function () {
         codeceptjs.type.should.equal('typeof CodeceptJS.index');
         done();
       });
+    });
+  });
+
+  xit('callback order typings', (done) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err, stdout) => {
+      stdout.should.include('Definitions were generated in steps.d.ts');
+      // const types = typesFrom(`${codecept_dir}/steps.d.ts`);
+      assert(!err);
+      done();
     });
   });
 
@@ -178,17 +187,17 @@ describe('Definitions', function () {
     });
   });
 
-  it('def should create definition file with callback params', (done) => {
+  it.only('def should create definition file with callback params', (done) => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('CallbackOrder').getStructure();
+      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
-        { name: '[0]', type: 'CodeceptJS.I' },
-        { name: '[1]', type: 'MyPage' },
-        { name: '[2]', type: 'SecondPage' },
+        { name: 'I', type: 'CodeceptJS.I' },
+        { name: 'MyPage', type: 'MyPage' },
+        { name: 'SecondPage', type: 'SecondPage' },
       ]);
       done();
     });
