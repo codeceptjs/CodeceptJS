@@ -17,7 +17,7 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 
 chai.use(chaiSubset);
 
-describe.only('Definitions', function () {
+describe('Definitions', function () {
   this.timeout(20000);
   this.retries(4);
   before(() => {
@@ -187,7 +187,7 @@ describe.only('Definitions', function () {
     });
   });
 
-  it.only('def should create definition file with callback params', (done) => {
+  it('def should create definition file with callback params', (done) => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
