@@ -44,6 +44,8 @@
     "test:unit": "mocha test/unit --recursive",
     "test:runner": "mocha test/runner --recursive",
     "test": "npm run test:unit && npm run test:runner",
+    "test:appium-quick": "mocha test/helper/Appium_test.js --grep 'quick'",
+    "test:appium-other": "mocha test/helper/Appium_test.js --grep 'second'",
     "def": "./runio.js def",
     "dev:graphql": "nodemon test/data/graphql/index.js",
     "publish:site": "./runio.js publish:site",
