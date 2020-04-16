@@ -648,7 +648,8 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#attachFile', () => {
+  describe.skip('#attachFile', () => {
+    // Those tests are skipped due to bug https://github.com/puppeteer/puppeteer/issues/5543
     it('should upload file located by CSS', async () => {
       await I.amOnPage('/form/file');
       await I.attachFile('#avatar', 'app/avatar.jpg');

@@ -17,7 +17,9 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Puppeteer - BasicAuth', () => {
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(35000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
@@ -52,7 +54,7 @@ describe('Puppeteer - BasicAuth', () => {
   });
 
   describe('open page with provided basic auth', () => {
-    it('should be authenticated ', async () => {
+    it.only('should be authenticated ', async () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
