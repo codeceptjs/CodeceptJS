@@ -54,7 +54,7 @@ describe('Puppeteer - BasicAuth', function () {
   });
 
   describe('open page with provided basic auth', () => {
-    it.only('should be authenticated ', async () => {
+    it('should be authenticated ', async () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
