@@ -190,6 +190,7 @@ async clickOnEveryElement(locator) {
   }
 }
 ```
+
 In this case an an instance of webdriverio element is used.
 To get a [complete API of an element](https://webdriver.io/docs/api/) refer to webdriverio docs.
 
