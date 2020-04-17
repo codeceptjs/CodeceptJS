@@ -648,8 +648,10 @@ module.exports.tests = function () {
     });
   });
 
-  describe.skip('#attachFile', () => {
+  describe('#attachFile', () => {
     // TODO: Those tests are skipped due to bug https://github.com/puppeteer/puppeteer/issues/5543
+    if (isHelper('Puppeteer')) this.skip();
+    
     it('should upload file located by CSS', async () => {
       await I.amOnPage('/form/file');
       await I.attachFile('#avatar', 'app/avatar.jpg');
