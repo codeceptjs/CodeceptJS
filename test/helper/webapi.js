@@ -246,28 +246,28 @@ module.exports.tests = function () {
     it('should forceClick by inner text', async () => {
       await I.amOnPage('/');
       await I.forceClick('More info');
-      if (I.waitForNavigation) await I.waitForNavigation();
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
       await I.seeInCurrentUrl('/info');
     });
 
     it('should forceClick by css', async () => {
       await I.amOnPage('/');
       await I.forceClick('#link');
-      if (I.waitForNavigation) await I.waitForNavigation();
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
       await I.seeInCurrentUrl('/info');
     });
 
     it('should forceClick by xpath', async () => {
       await I.amOnPage('/');
       await I.forceClick('//a[@id="link"]');
-      if (I.waitForNavigation) await I.waitForNavigation();
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
       await I.seeInCurrentUrl('/info');
     });
 
     it('should forceClick on context', async () => {
       await I.amOnPage('/');
       await I.forceClick('More info', 'body>p');
-      if (I.waitForNavigation) await I.waitForNavigation();
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
       await I.seeInCurrentUrl('/info');
     });
   });
