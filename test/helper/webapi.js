@@ -239,11 +239,11 @@ module.exports.tests = function () {
   describe('#forceClick', () => {
     beforeEach(function () {
       if (isHelper('Protractor')) this.skip();
-      if (isHelper('Nightmare')) this.skip();
       if (isHelper('TestCafe')) this.skip();
     });
 
     it('should forceClick by inner text', async () => {
+      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('More info');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -251,6 +251,7 @@ module.exports.tests = function () {
     });
 
     it('should forceClick by css', async () => {
+      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('#link');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -258,6 +259,7 @@ module.exports.tests = function () {
     });
 
     it('should forceClick by xpath', async () => {
+      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('//a[@id="link"]');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -265,6 +267,7 @@ module.exports.tests = function () {
     });
 
     it('should forceClick on context', async () => {
+      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('More info', 'body>p');
       if (isHelper('Puppeteer')) await I.waitForNavigation();

@@ -691,6 +691,25 @@ describe('Playwright', function () {
       .then(() => I.dontSee('Iframe test', 'h1')));
   });
 
+  describe('#handleDownloads', () => {
+    before(() => {
+      // create download folder;
+      global.output_dir = path.join(`${__dirname}/../data/output`);
+
+      FS = new FileSystem();
+      FS._before();
+      FS.amInPath('output');
+    });
+
+    it('should dowload file', async () => {
+      await I.amOnPage('/form/download');
+      await I.handleDownloads();
+      await I.click('Download file');
+      await FS.waitForFile('downloads/avatar.jpg', 5);
+    });
+  });
+
+
   describe('#dragSlider', () => {
     it('should drag scrubber to given position', async () => {
       await I.amOnPage('/form/page_slider');
