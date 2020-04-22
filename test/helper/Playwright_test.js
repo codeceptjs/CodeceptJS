@@ -741,7 +741,7 @@ describe('Playwright', function () {
     });
   });
 
-  xdescribe('#handleDownloads', () => {
+  describe('#handleDownloads', () => {
     before(() => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -753,7 +753,7 @@ describe('Playwright', function () {
 
     it('should dowload file', async () => {
       await I.amOnPage('/form/download');
-      await I.handleDownloads();
+      await I.handleDownloads('downloads/avatar.jpg');
       await I.click('Download file');
       await FS.waitForFile('downloads/avatar.jpg', 5);
     });
