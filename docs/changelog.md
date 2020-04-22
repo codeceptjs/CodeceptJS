@@ -7,13 +7,6 @@ layout: Section
 
 # Releases
 
-## 2.6.1
-
-* [screenshotOnFail plugin] Fixed saving screenshot of active session.
-* [screenshotOnFail plugin] Fix issue [#2301](https://github.com/Codeception/CodeceptJS/issues/2301) when having the flag `uniqueScreenshotNames`=true results in `undefined` in screenshot file name by **[PeterNgTr](https://github.com/PeterNgTr)**
-* **[WebDriver]** Fixed `waitForElement` not applying the optional second argument to override the default timeout in webdriverio 6. Fix by **[Mooksc](https://github.com/Mooksc)**
-* **[WebDriver]** Updated `waitUntil` method which is used by all of the wait* functions. This updates the `waitForElement` by the same convention used to update `waitForVisible` and `waitInUrl` to be compatible with both WebDriverIO v5 & v6. See [#2313](https://github.com/Codeception/CodeceptJS/issues/2313) by **[Mooksc](https://github.com/Mooksc)**
-
 ## 2.6.0
 
 * **[Playwright] Updated to Playwright 0.12** by **[Georgegriff](https://github.com/Georgegriff)**.
@@ -36,7 +29,6 @@ I.executeScript(({x, y}) => x + y, {x, y});
   * `click` - automatically waits for element to become clickable (visible, not animated) and waits for navigation.
   * `clickLink` - deprecated
   * `waitForClickable` - deprecated
-  * `forceClick` - added
   * Added support for custom locators. See [#2277](https://github.com/Codeception/CodeceptJS/issues/2277)
   * Introduced [device emulation](/playwright/#device-emulation):
     * globally via `emulate` config option
