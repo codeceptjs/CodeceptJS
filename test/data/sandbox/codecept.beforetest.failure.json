@@ -1,5 +1,5 @@
 {
-  "tests": "./*before_failure_test.js",
+  "tests": "./*test_before_failure.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {
