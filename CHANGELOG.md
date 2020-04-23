@@ -1,3 +1,14 @@
+## 2.6.2
+
+* [WebDriver][Puppeteer] Added `forceClick` method to emulate click event instead of using native events.
+* [Playwright] Updated to 0.14
+* [Playwright] Introduced `handleDownloads` method to download file. Please note, this method has slightly different API than the same one in Puppeteer.
+* [allure] Fixed undefined output directory for allure plugin on using custom runner. Fix by @charliepradeep
+* [wdio] Fixed undefined output directory for wdio plugns. Fix By @PeterNgTr
+* [WebDriver] Fixed `waitForEnabled` fix for webdriver 6. Fix by @dsharapkou
+* [Puppeteer] Now tested with puppeteer v3.0
+* [Workers] Fixed negative failure result if use scenario with the same names. Fix by @Vorobeyko
+
 ## 2.6.1
 
 * [screenshotOnFail plugin] Fixed saving screenshot of active session.
