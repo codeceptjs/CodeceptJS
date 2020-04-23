@@ -199,6 +199,18 @@ Allure reports can also be generated for `dry-run` command. So you can get the f
 npx codeceptjs dry-run --debug -p allure
 ```
 
+## ReportPortal
+
+Allure is a great reportin tool, however, if you are running tests on different machines it is hard to merge its XML result files to build a proper report. So, for enterprise grade reporting we recommend using [ReportPortal](https://reportportal.io).
+
+![](https://camo.githubusercontent.com/6550c0365f1d0ce1e29c53f1860b12957d1fc529/68747470733a2f2f692e6962622e636f2f516d353247306e2f53637265656e73686f742d323031392d30342d31312d61742d31352d35372d34302e706e67)
+
+[ReportPortal](https://reportportal.io) is open-source self-hosted service for aggregating test execution reports.
+Think of it as Kibana but for test reports.
+
+Use official [CodeceptJS Agent for ReportPortal](https://github.com/reportportal/agent-js-codecept/) to start publishing your test results.
+
+
 ## XML
 
 Use default xunit reporter of Mocha to print xml reports. Provide `--reporter xunit` to get the report to screen.
