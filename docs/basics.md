@@ -147,6 +147,8 @@ I.click('#signup');
 I.click('//dev[@test-id="myid"]');
 ```
 
+> ℹ If click doesn't work in a test but works for user, it is possible that frontend application is not designed for automated testing. To overcome limitation of standard click in this edgecase use `forceClick` method. It will emulate click instead of sending native event. This command will click an element no matter if this element is visible or animating. It will send JavaScript "click" event to it.
+
 ### Filling Fields
 
 Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.
@@ -233,6 +235,8 @@ I.seeInTitle('My Website');
 ```
 
 To see all possible assertions, check the helper's reference.
+
+> ℹ If you need custom assertions, you can install an assertion libarary like `chai`, use grabbers to obtain information from a browser and perform assertions. However, it is recommended to put custom assertions into a helper for further reuse.
 
 ### Grabbing
 
@@ -435,7 +439,7 @@ This launches the interactive console where you can call any action from the `I`
  - Press ENTER to run the next step
  - Press TAB twice to see all available commands
  - Type exit + Enter to exit the interactive shell
- - Prefix => to run js commands 
+ - Prefix => to run js commands
  I.
 ```
 
