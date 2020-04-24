@@ -810,8 +810,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 
 Returns **[Promise][25]&lt;any>** 
 
@@ -843,8 +843,8 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 
 Returns **[Promise][25]&lt;any>** Wraps [execute][26] command.
 
@@ -1773,6 +1773,27 @@ I.uncheckOption('agree', '//form');
 -   `context` **([string][19]? | [object][18])** (optional, `null` by default) element located by CSS | XPath | strict locator.
     Appium: not tested 
 
+### useWebDriverTo
+
+Use [webdriverio][34] API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`browser`][34]) } object from WebDriver API is available.
+
+```js
+I.useWebDriverTo('open multiple windows', async ({ browser }) {
+   // create new window
+   await browser.newWindow('https://webdriver.io');
+});
+```
+
+#### Parameters
+
+-   `description` **[string][19]** used to show in logs.
+-   `fn` **[function][24]** async functuion that executed with WebDriver helper as argument
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -2056,3 +2077,5 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 [32]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
 [33]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+
+[34]: https://webdriver.io/docs/api.html

@@ -1457,6 +1457,26 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][7] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+### usePlaywrightTo
+
+Use Playwright API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`page`][16], [`context`][17] [`browser`][18] } objects from Playwright API are available.
+
+```js
+I.usePlaywrightTo('emulate offline mode', async ({ context }) {
+  await context.setOffline(true);
+});
+```
+
+#### Parameters
+
+-   `description` **[string][7]** used to show in logs.
+-   `fn` **[function][19]** async functuion that executed with Playwright helper as argument
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -1541,7 +1561,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][7] | [function][16])** to be executed in browser context.
+-   `fn` **([string][7] | [function][19])** to be executed in browser context.
 -   `argsOrSec` **([Array][10]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
 
@@ -1580,7 +1600,7 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][16])** 
+-   `urlOrPredicate` **([string][7] | [function][19])** 
 -   `sec` **[number][8]?** seconds to wait 
 
 ### waitForResponse
@@ -1594,7 +1614,7 @@ I.waitForResponse(request => request.url() === 'http://example.com' && request.m
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][16])** 
+-   `urlOrPredicate` **([string][7] | [function][19])** 
 -   `sec` **[number][8]?** number of seconds to wait 
 
 ### waitForText
@@ -1640,7 +1660,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][17]. 
+-   `sec` **[number][8]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][20]. 
 
 ### waitInUrl
 
@@ -1694,7 +1714,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
--   `fn` **([function][16] | [string][7])** function which is executed in browser context.
+-   `fn` **([function][19] | [string][7])** function which is executed in browser context.
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 -   `timeoutMsg` **[string][7]** message to show in case of timeout fail. 
 -   `interval` **[number][8]?**  
@@ -1743,6 +1763,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[16]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
 
-[17]: https://codecept.io/react
+[17]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context
+
+[18]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser
+
+[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[20]: https://codecept.io/react

@@ -465,6 +465,20 @@ npx codeceptjs def
 
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
 
+
+## Accessing webdriverio API
+
+To get [webdriverio browser API](https://webdriver.io/docs/api.html) inside a test use [`I.useWebDriverTo`](/helpers/WebDriver/#usewebdriverto) method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.useWebDriverTo('do some things using native webdriverio api', async ({ browser }) => {
+  // use browser object here
+});
+```
+
+Because all webdriverio commands are asynchronous a callback function must be async.
+
 ## Extending WebDriver
 
 CodeceptJS doesn't aim to embrace all possible functionality of WebDriver. At some points you may find that some actions do not exist, however it is easy to add one. You will need to use WebDriver API from [webdriver.io](https://webdriver.io) library.

@@ -36,7 +36,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `waitForTimeout`: (optional) sets default wait time in _ms_ for all `wait*` functions. 1000 by default.
 -   `scriptsTimeout`: (optional) timeout in milliseconds for each script run on the browser, 10000 by default.
 -   `windowSize`: (optional) default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `manualStart`  - do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriverIO"]._startBrowser()`
+-   `manualStart`  - do not start browser before a test, start it manually inside a helper with `this.helpers.WebDriver._startBrowser()`
 -   `capabilities`: {} - list of [Desired Capabilities][5]
 -   `proxy`: set proxy settings
 
@@ -1282,6 +1282,26 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][9] | [object][10])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][9]? | [object][10])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+### useProtractorTo
+
+Use [Protractor][18] API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`browser`][19]) } object from Protractor API is available.
+
+```js
+I.useProtractorTo('change url via in-page navigation', async ({ browser }) {
+   await browser.setLocation('api');
+});
+```
+
+#### Parameters
+
+-   `description` **[string][9]** used to show in logs.
+-   `fn` **[function][12]** async functuion that executed with Protractor helper as argument
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -1534,3 +1554,7 @@ just press button if no selector is given
 [16]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
 [17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[18]: https://www.protractortest.org/#/api
+
+[19]: https://www.protractortest.org/#/api?view=ProtractorBrowser

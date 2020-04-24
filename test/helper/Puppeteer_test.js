@@ -12,6 +12,7 @@ const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
+let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
@@ -42,6 +43,7 @@ describe('Puppeteer - BasicAuth', () => {
     });
     return I._before().then(() => {
       page = I.page;
+      browser = I.browser;
     });
   });
 
@@ -827,7 +829,7 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#handleDownloads', () => {
+  describe('#saveDownload', () => {
     before(() => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -839,8 +841,8 @@ describe('Puppeteer', function () {
 
     it('should dowload file', async () => {
       await I.amOnPage('/form/download');
-      await I.handleDownloads();
       await I.click('Download file');
+      await I.saveDownload();
       await FS.waitForFile('downloads/avatar.jpg', 5);
     });
   });
@@ -934,6 +936,16 @@ describe('Puppeteer', function () {
       }).catch((e) => {
         e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
       });
+    });
+  });
+
+  describe('#usePuppeteerTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePuppeteerTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
     });
   });
 });

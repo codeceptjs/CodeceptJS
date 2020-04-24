@@ -1154,6 +1154,16 @@ describe('WebDriver', function () {
       expect(await element.isDisplayedInViewport()).to.be.true;
     });
   });
+
+  describe('#useWebDriverTo', () => {
+    it('should return title', async () => {
+      await wd.amOnPage('/');
+      const title = await wd.useWebDriverTo('test', async ({ browser }) => {
+        return browser.getTitle();
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+  });
 });
 
 describe('WebDriver - Basic Authentication', () => {
