@@ -79,7 +79,7 @@ describe('Nightmare', function () {
     });
   });
 
-  // should work for webdriverio and seleniumwebdriver
+  // should work for webdriverio
   // but somehow fails on Travis CI :(
   describe('#moveCursorTo', () => {
     it('should trigger hover event', () => I.amOnPage('/form/hover')

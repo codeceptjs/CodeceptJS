@@ -160,7 +160,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
 
-    const ignoreList = ['WebDriverIO', 'SeleniumWebdriver', 'Polly', 'MockRequest']; // WebDriverIO won't be documented and should be removed
+    const ignoreList = ['Polly', 'MockRequest']; // WebDriverIO won't be documented and should be removed
 
     const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache');
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);

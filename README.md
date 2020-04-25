@@ -65,7 +65,7 @@ Move to directory where you'd like to have your tests (and codeceptjs config) st
 npx codeceptjs init
 ```
 
-to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers, if you need to write Selenium WebDriver tests.
+to create and configure test environment. It is recommended to select WebDriver from the list of helpers, if you need to write Selenium WebDriver tests.
 
 After that create your first test by executing:
 
@@ -91,7 +91,7 @@ Note that CodeceptJS requires Node.js version `8.9.1+` or later.
 
 ## Usage
 
-Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriverIO helper enabled.
+Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriver helper enabled.
 
 ### Basics
 
