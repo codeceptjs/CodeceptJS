@@ -7,7 +7,7 @@ exports.config = {
   timeout: 10000,
   output: './output',
   helpers: {
-    WebDriverIO: {
+    WebDriver: {
       url: 'http://localhost',
       browser: process.env.profile || 'firefox',
       restart: true,
