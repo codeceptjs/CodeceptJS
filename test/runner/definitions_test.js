@@ -54,15 +54,6 @@ describe('Definitions', function () {
     });
   });
 
-  xit('callback order typings', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err, stdout) => {
-      stdout.should.include('Definitions were generated in steps.d.ts');
-      // const types = typesFrom(`${codecept_dir}/steps.d.ts`);
-      assert(!err);
-      done();
-    });
-  });
-
   it('def should create definition file', (done) => {
     exec(`${runner} def ${codecept_dir}`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
