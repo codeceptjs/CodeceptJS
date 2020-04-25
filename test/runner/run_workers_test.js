@@ -34,10 +34,10 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should print positive or zero failures with same name tests', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run_glob('configs/workers/codecept.workers-negative.conf.js')} 2`, (err, stdout, stderr) => {
+    exec(`${codecept_run_glob('configs/workers/codecept.workers-negative.conf.js')} 2`, (err, stdout) => {
       stdout.should.include('Running tests in 2 workers...');
       stdout.should.not.include('FAIL  | 2 passed, -6 failed');
-      stdout.should.include('FAIL  | 2 passed, 8 failed');
+      stdout.should.include('FAIL  | 2 passed, 2 failed');
       assert(err);
       done();
     });
