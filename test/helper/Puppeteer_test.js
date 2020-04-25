@@ -16,7 +16,9 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Puppeteer - BasicAuth', () => {
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(10000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
