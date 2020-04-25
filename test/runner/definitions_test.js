@@ -184,11 +184,11 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('CallbackOrder').getStructure();
+      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
-        { name: '[0]', type: 'CodeceptJS.I' },
-        { name: '[1]', type: 'MyPage' },
-        { name: '[2]', type: 'SecondPage' },
+        { name: 'I', type: 'CodeceptJS.I' },
+        { name: 'MyPage', type: 'MyPage' },
+        { name: 'SecondPage', type: 'SecondPage' },
       ]);
       done();
     });

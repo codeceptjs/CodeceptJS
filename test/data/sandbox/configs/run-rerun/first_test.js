@@ -1,5 +1,5 @@
 Feature('Run Rerun - Command');
 
-Scenario('@RunRerun', (I) => {
+Scenario('@RunRerun', ({ I }) => {
   I.printMessage('RunRerun');
 });

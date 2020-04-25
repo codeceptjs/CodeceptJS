@@ -16,42 +16,42 @@ AfterSuite(() => {
   console.log('Test: I\'m simple AfterSuite hook');
 });
 
-BeforeSuite(async (I) => {
+BeforeSuite(async ({ I }) => {
   const text = await I.stringWithHook('BeforeSuite');
   console.log(text);
 });
 
-Before(async (I) => {
+Before(async ({ I }) => {
   const text = await I.stringWithHook('Before');
   console.log(text);
 });
 
-After(async (I) => {
+After(async ({ I }) => {
   const text = await I.stringWithHook('After');
   console.log(text);
 });
 
-AfterSuite(async (I) => {
+AfterSuite(async ({ I }) => {
   const text = await I.stringWithHook('AfterSuite');
   console.log(text);
 });
 
-BeforeSuite(async (I) => {
+BeforeSuite(async ({ I }) => {
   const text = await I.asyncStringWithHook('BeforeSuite');
   console.log(text);
 });
 
-Before(async (I) => {
+Before(async ({ I }) => {
   const text = await I.asyncStringWithHook('Before');
   console.log(text);
 });
 
-After(async (I) => {
+After(async ({ I }) => {
   const text = await I.asyncStringWithHook('After');
   console.log(text);
 });
 
-AfterSuite(async (I) => {
+AfterSuite(async ({ I }) => {
   const text = await I.asyncStringWithHook('AfterSuite');
   console.log(text);
 });
