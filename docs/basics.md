@@ -161,10 +161,10 @@ Let's submit this sample form for a test:
      <input type="text" name="user[name]" id="user_name" />
      <label for="user_email">Email</label>
      <input type="text" name="user[email]" id="user_email" />
-     <label for="user_gender">Gender</label>
-     <select id="user_gender" name="user[gender]">
-          <option value="m">Male</option>
-          <option value="f">Female</option>
+     <label for="user_role">Role</label>
+     <select id="user_role" name="user[role]">
+          <option value="0">Admin</option>
+          <option value="1">User</option>
      </select>
      <input type="submit" name="submitButton" value="Update" />
 </form>
@@ -178,7 +178,7 @@ I.fillField('Name', 'Miles');
 // we can use input name
 I.fillField('user[email]','miles@davis.com');
 // select element by label, choose option by text
-I.selectOption('Gender','Male');
+I.selectOption('Gender','Admin');
 // click 'Update' button, found by text
 I.click('Update');
 ```
@@ -190,12 +190,12 @@ Alternative scenario:
 I.fillField('#user_name', 'Miles');
 I.fillField('#user_email','miles@davis.com');
 // select element by label, option by value
-I.selectOption('#user_gender','m');
+I.selectOption('#user_role','1');
 // click 'Update' button, found by name
 I.click('submitButton', '#update_form');
 ```
 
-To fill in sensitive data use the `secret` function:
+To fill in sensitive data use the `secret` function, it won't expose actual value in logs.
 
 ```js
 I.fillField('password', secret('123456'));
