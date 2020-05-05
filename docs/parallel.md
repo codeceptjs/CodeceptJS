@@ -74,7 +74,7 @@ const testGroups = workers.createGroupsOfSuites(2);
 const browsers = ['firefox', 'chrome'];
 
 const configs = browsers.map(browser => {
-  return helpers: { 
+  return helpers: {
     WebDriver: { browser }
   }
 });
@@ -127,7 +127,7 @@ If you want your tests to split according to your need this method is suited for
 ```js
 
 /*
- Define a function to split your tests, Here its hardcoded, But you write a logic to split your tests 
+ Define a function to split your tests.
 
  function should return an array with this format [[file1, file2], [file3], ...]
 
