@@ -1352,7 +1352,7 @@ Returns **[Promise][13]&lt;[string][4]>** HTML code for an element
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 An array as a result will be returned if there are more than one matched element.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -1419,7 +1419,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 ### grabSource
 
 Retrieves page source and returns it to test.
-Resumes test execution, so should be used inside an async function.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let pageSource = await I.grabSource();
@@ -1495,6 +1495,7 @@ I.seeAttributesOnElements('//form', { method: "post"});
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -1663,6 +1664,7 @@ I.switchTo(); // switch back to main page
 ### grabNumberOfOpenTabs
 
 Grab number of open tabs.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let tabs = await I.grabNumberOfOpenTabs();
@@ -1715,10 +1717,13 @@ I.setGeoLocation(121.21, 11.56, 10);
 ### grabGeoLocation
 
 Return the current geo location 
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let geoLocation = await I.grabGeoLocation();
 ```
+
+Returns **[Promise][13]&lt;{latitude: [number][8], longitude: [number][8], altitude: [number][8]}>** 
 
 ### grabElementBoundingRect
 
