@@ -901,6 +901,26 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+### useTestCafeTo
+
+Use [TestCafe][12] API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`t`][13]) } object from TestCafe API is available.
+
+```js
+I.useTestCafeTo('handle browser dialog', async ({ t }) {
+  await t.setNativeDialogHandler(() => true);
+});
+```
+
+#### Parameters
+
+-   `description` **[string][4]** used to show in logs.
+-   `fn` **[function][6]** async functuion that executed with TestCafe helper as argument
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -1078,3 +1098,7 @@ Client Functions
 [10]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[12]: https://devexpress.github.io/testcafe/documentation/test-api/
+
+[13]: https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller

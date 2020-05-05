@@ -50,6 +50,8 @@ Refer to following guides to more information on:
 To list all available commands for the current configuration run `codeceptjs list`
 or enable [auto-completion by generating TypeScript definitions](#intellisense).
 
+> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/#extending-codeceptjs-with-custom-helpers). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
+
 
 ## Writing Tests
 
@@ -287,7 +289,6 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-
 > ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works

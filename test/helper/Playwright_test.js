@@ -618,6 +618,16 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#usePlaywrightTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePlaywrightTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+  });
+
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
       await I.amOnPage('https://www.google.com');

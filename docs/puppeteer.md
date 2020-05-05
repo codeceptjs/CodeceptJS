@@ -199,6 +199,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 > [▶ Demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
 
+
 ## Mocking Requests
 
 Web application sends various requests to local services (Rest API, GraphQL) or to 3rd party services (CDNS, Google Analytics, etc).
@@ -247,9 +248,23 @@ npx codeceptjs def
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
 
 
-## Extending
+## Accessing Puppeteer API
 
-Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+To get Puppeteer API inside a test use [`I.usePupepteerTo`](/helpers/Puppeteer/#usepuppeteerto) method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.usePuppeteerTo('emulate offline mode', async ({ page, browser }) => {
+  await page.setOfflineMode(true);
+});
+```
+
+Because all Puppeteer commands are asynchronous callback function must be async.
+
+
+## Extending Helper
+
+To create custom `I.*` commands using Playwright API you need to create a custom helper.
 
 Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` command:
 

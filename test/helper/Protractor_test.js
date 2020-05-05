@@ -572,4 +572,14 @@ describe('Protractor', function () {
       });
     });
   });
+
+  describe('#useProtractorTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.useProtractorTo('test', async ({ browser }) => {
+        return browser.getTitle();
+      });
+      assert.equal('Event App', title);
+    });
+  });
 });

@@ -633,8 +633,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 
 Returns **[Promise][13]&lt;any>** Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 
@@ -666,8 +666,8 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 
 Returns **[Promise][13]&lt;any>** If a function returns a Promise It will wait for it resolution.
 
@@ -1598,6 +1598,26 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][8] | [object][6])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+### usePuppeteerTo
+
+Use Puppeteer API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`page`][20], [`browser`][21] } from Puppeteer API are available.
+
+```js
+I.usePuppeteerTo('emulate offline mode', async ({ page }) {
+  await page.setOfflineMode(true);
+});
+```
+
+#### Parameters
+
+-   `description` **[string][8]** used to show in logs.
+-   `fn` **[function][12]** async function that is executed with Puppeteer as argument
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -1786,7 +1806,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][20]. 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][22]. 
 
 ### waitInUrl
 
@@ -1902,4 +1922,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[20]: https://codecept.io/react
+[20]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
+
+[21]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
+
+[22]: https://codecept.io/react

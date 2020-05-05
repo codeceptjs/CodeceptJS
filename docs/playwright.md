@@ -261,9 +261,24 @@ Scenario('website looks nice on iPhone', () => {
 });
 ```
 
-## Extending
+## Accessing Playwright API
 
-Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+To get [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) inside a test use `I.usePlaywrightTo` method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.usePlaywrightTo('emulate offline mode', async ({ browser, context, page }) => {
+  // use browser, page, context objects inside this function
+  await context.setOffline(true);
+});
+```
+
+Because all Playwright commands are asynchronous callback function must be async.
+
+
+## Extending Helper
+
+To create custom `I.*` commands using Playwright API you need to create a custom helper.
 
 Start with creating an `MyPlaywright` helper using `generate:helper` or `gh` command:
 

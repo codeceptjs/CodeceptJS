@@ -357,8 +357,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][3] | [function][7])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][3] | [function][7])** function to be executed in browser context.
 
 Returns **[Promise][8]&lt;any>** Wrapper for asynchronous [evaluate][9].
 Unlike NightmareJS implementation calling `done` will return its first argument.
@@ -391,8 +391,8 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][3] | [function][7])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][3] | [function][7])** function to be executed in browser context.
 
 Returns **[Promise][8]&lt;any>** Wrapper for synchronous [evaluate][9]
 
@@ -450,6 +450,22 @@ assert(cookie.value, '123456');
 -   `name` **[string][3]?** cookie name. 
 
 Returns **[Promise][8]&lt;[string][3]>** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+
+### grabCssPropertyFrom
+
+Grab CSS property for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const value = await I.grabCssPropertyFrom('h3', 'font-weight');
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+-   `cssProperty` **[string][3]** CSS property name.
+
+Returns **[Promise][8]&lt;[string][3]>** CSS value
 
 ### grabCurrentUrl
 
