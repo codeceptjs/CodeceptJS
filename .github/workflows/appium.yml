@@ -1,6 +1,12 @@
 name: Appium Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
 
 env:
   CI: true
@@ -23,6 +29,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: 'npm run test:appium-quick'
+      env: # Or as an environment variable
+        SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
 
 
   appium2:
@@ -41,3 +50,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: 'npm run test:appium-other'
+      env: # Or as an environment variable
+        SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
