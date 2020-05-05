@@ -1,3 +1,8 @@
+## 2.6.3
+
+* [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes #2337 by @mirao
+* [allure plugin] Fixed reporting of tests skipped by failure in before hook. Refer to #2349 & #2354. Fix by @koushikmohan1996
+
 ## 2.6.2
 
 * [WebDriver][Puppeteer] Added `forceClick` method to emulate click event instead of using native events.
