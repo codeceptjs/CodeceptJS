@@ -38,7 +38,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `keepBrowserState`:  - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`:  - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Playwright API][2]. Array values are accepted as well.
+-   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. Choose one of those options is possible. See [Playwright API][2].
 -   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
@@ -63,7 +63,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
-#### Example #2: Wait for DOMContentLoaded event and 0 network connections
+#### Example #2: Wait for DOMContentLoaded event
 
 ```js
 {
@@ -71,7 +71,7 @@ This helper should be configured in codecept.json or codecept.conf.js
      Playwright : {
        url: "http://localhost",
        restart: false,
-       waitForNavigation: [ "domcontentloaded", "networkidle0" ],
+       waitForNavigation: "domcontentloaded",
        waitForAction: 500
      }
    }
@@ -890,6 +890,24 @@ let email = await I.grabValueFrom('input[name=email]');
 
 Returns **[Promise][9]&lt;[string][7]>** attribute value
 
+### handleDownloads
+
+Handles a file download.Aa file name is required to save the file on disk.
+Files are saved to "output" directory.
+
+Should be used with [FileSystem helper][11] to check that file were downloaded correctly.
+
+```js
+I.handleDownloads('downloads/avatar.jpg');
+I.click('Download Avatar');
+I.amInPath('output/downloads');
+I.waitForFile('downloads/avatar.jpg', 5);
+```
+
+#### Parameters
+
+-   `fileName` **[string][7]?** set filename for downloaded file 
+
 ### haveRequestHeaders
 
 Set headers for all next requests
@@ -928,7 +946,7 @@ Open new tab and switch to it
 I.openNewTab();
 ```
 
-You can pass in [page options][11] to emulate device on this page
+You can pass in [page options][12] to emulate device on this page
 
 ```js
 // enable mobile
@@ -943,7 +961,7 @@ I.openNewTab({ isMobile: true });
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][12].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][13].
 
 ```js
 I.pressKey('Backspace');
@@ -1002,13 +1020,13 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][7] | [Array][10]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Playwright#1313][13]).
+-   `key` **([string][7] | [Array][10]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Playwright#1313][14]).
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][14]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][15]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1024,7 +1042,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][14]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][15]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1092,7 +1110,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][7]** file name to save.
--   `fullPage` **[boolean][15]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][16]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 ### scrollPageToBottom
 
@@ -1541,7 +1559,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][7] | [function][16])** to be executed in browser context.
+-   `fn` **([string][7] | [function][17])** to be executed in browser context.
 -   `argsOrSec` **([Array][10]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
 
@@ -1563,7 +1581,7 @@ I.waitForInvisible('#popup');
 
 Waits for navigation to finish. By default takes configured `waitForNavigation` option.
 
-See [Pupeteer's reference][2]
+See [Pupeteer's reference][18]
 
 #### Parameters
 
@@ -1580,7 +1598,7 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][16])** 
+-   `urlOrPredicate` **([string][7] | [function][17])** 
 -   `sec` **[number][8]?** seconds to wait 
 
 ### waitForResponse
@@ -1594,7 +1612,7 @@ I.waitForResponse(request => request.url() === 'http://example.com' && request.m
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][16])** 
+-   `urlOrPredicate` **([string][7] | [function][17])** 
 -   `sec` **[number][8]?** number of seconds to wait 
 
 ### waitForText
@@ -1640,7 +1658,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][17]. 
+-   `sec` **[number][8]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][19]. 
 
 ### waitInUrl
 
@@ -1694,7 +1712,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
--   `fn` **([function][16] | [string][7])** function which is executed in browser context.
+-   `fn` **([function][17] | [string][7])** function which is executed in browser context.
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 -   `timeoutMsg` **[string][7]** message to show in case of timeout fail. 
 -   `interval` **[number][8]?**  
@@ -1715,7 +1733,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [1]: https://github.com/microsoft/playwright
 
-[2]: https://github.com/GoogleChrome/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
+[2]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
 
 [3]: https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target
 
@@ -1733,16 +1751,20 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[11]: https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewpageoptions
+[11]: https://codecept.io/helpers/FileSystem
 
-[12]: #fillfield
+[12]: https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewpageoptions
 
-[13]: https://github.com/GoogleChrome/Playwright/issues/1313
+[13]: #fillfield
 
-[14]: #click
+[14]: https://github.com/GoogleChrome/Playwright/issues/1313
 
-[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[15]: #click
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[17]: https://codecept.io/react
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[18]: https://github.com/GoogleChrome/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
+
+[19]: https://codecept.io/react
