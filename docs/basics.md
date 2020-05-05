@@ -155,18 +155,23 @@ Clicking the links is not what takes the most time during testing a web site. If
 
 Let's submit this sample form for a test:
 
+![](https://user-images.githubusercontent.com/220264/80355863-494a8280-8881-11ea-9b41-ba1f07abf094.png)
+
 ```html
 <form method="post" action="/update" id="update_form">
      <label for="user_name">Name</label>
-     <input type="text" name="user[name]" id="user_name" />
+     <input type="text" name="user[name]" id="user_name" /><br>
      <label for="user_email">Email</label>
-     <input type="text" name="user[email]" id="user_email" />
+     <input type="text" name="user[email]" id="user_email" /><br>
      <label for="user_role">Role</label>
      <select id="user_role" name="user[role]">
           <option value="0">Admin</option>
           <option value="1">User</option>
-     </select>
-     <input type="submit" name="submitButton" value="Update" />
+     </select><br>
+     <input type="checkbox" id="accept" /> <label for="accept">Accept changes</label>
+     <div>
+     <input type="submit" name="submitButton" class="btn btn-primary" value="Save" />
+     </div>
 </form>
 ```
 
@@ -178,10 +183,15 @@ I.fillField('Name', 'Miles');
 // we can use input name
 I.fillField('user[email]','miles@davis.com');
 // select element by label, choose option by text
-I.selectOption('Gender','Admin');
-// click 'Update' button, found by text
-I.click('Update');
+I.selectOption('Role','Admin');
+// click 'Save' button, found by text
+I.checkOption('Accept');
+I.click('Save');
 ```
+
+> ℹ `selectOption` works only with standard `<select>` <select placeholder="select"></select> HTML elements. If your selectbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
+
+> ℹ `checkOption` also works only with standard `<input type="checkbox">` <input type="checkbox"> HTML elements. If your checkbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
 
 Alternative scenario:
 
