@@ -1,0 +1,9 @@
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+@returns {Promise<string[]>} attribute value

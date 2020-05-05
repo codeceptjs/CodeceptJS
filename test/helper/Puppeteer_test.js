@@ -12,12 +12,13 @@ const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
-let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Puppeteer - BasicAuth', () => {
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(10000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
@@ -43,7 +44,6 @@ describe('Puppeteer - BasicAuth', () => {
     });
     return I._before().then(() => {
       page = I.page;
-      browser = I.browser;
     });
   });
 
@@ -703,7 +703,7 @@ describe('Puppeteer', function () {
       .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
 
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//a'))
+      .then(() => I.grabHTMLFromAll('//a'))
       .then(html => assert.equal(html.length, 5)));
 
     it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
@@ -919,6 +919,22 @@ describe('Puppeteer', function () {
         if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should pass if element change class', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    it('should fail if element change class and not clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
       });
     });
   });

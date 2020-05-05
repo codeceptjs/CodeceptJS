@@ -1,6 +1,6 @@
 Feature('Session');
 
-Scenario('basic session @1', (I) => {
+Scenario('basic session @1', ({ I }) => {
   I.do('writing');
   session('davert', () => {
     I.do('reading');
@@ -22,7 +22,7 @@ Scenario('basic session @1', (I) => {
   I.do('waving');
 });
 
-Scenario('session defined not used @2', (I) => {
+Scenario('session defined not used @2', ({ I }) => {
   session('davert');
   I.do('writing');
   I.do('playing');

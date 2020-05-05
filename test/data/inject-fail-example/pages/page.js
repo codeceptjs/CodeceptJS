@@ -1,4 +1,4 @@
-const { I, notpage, arraypage } = inject();
+const { notpage, arraypage } = inject();
 
 module.exports = {
   type: (s) => {

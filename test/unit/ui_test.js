@@ -72,14 +72,14 @@ describe('ui', () => {
     it('helpers can be configured', () => {
       suiteConfig = context.Feature('basic suite');
       assert(!suiteConfig.suite.config);
-      suiteConfig.config('WebDriverIO', { browser: 'chrome' });
-      assert.equal('chrome', suiteConfig.suite.config.WebDriverIO.browser);
+      suiteConfig.config('WebDriver', { browser: 'chrome' });
+      assert.equal('chrome', suiteConfig.suite.config.WebDriver.browser);
       suiteConfig.config({ browser: 'firefox' });
       assert.equal('firefox', suiteConfig.suite.config[0].browser);
-      suiteConfig.config('WebDriverIO', () => {
+      suiteConfig.config('WebDriver', () => {
         return { browser: 'edge' };
       });
-      assert.equal('edge', suiteConfig.suite.config.WebDriverIO.browser);
+      assert.equal('edge', suiteConfig.suite.config.WebDriver.browser);
     });
   });
 
@@ -100,7 +100,7 @@ describe('ui', () => {
     });
 
     it('should contain tags', () => {
-      const suiteConfig = context.Feature('basic suite @cool');
+      context.Feature('basic suite @cool');
 
       scenarioConfig = context.Scenario('scenario @very @important');
 

@@ -1107,6 +1107,30 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 -   `context` **([string][4] \| [object][6])?** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
 
+### \_isShadowLocator
+
+Check if locator is type of "Shadow"
+
+#### Parameters
+
+-   `locator` **[object][6]** 
+
+### \_locateShadow
+
+Locate Element within the Shadow Dom
+
+#### Parameters
+
+-   `locator` **[object][6]** 
+
+### \_smartWait
+
+Smart Wait to locate an element
+
+#### Parameters
+
+-   `locator` **[object][6]** 
+
 ### \_locate
 
 Get elements by different locator types, including strict locator.
@@ -1138,12 +1162,14 @@ this.helpers['WebDriver']._locateCheckable('I agree with terms and conditions').
 Find a clickable element by providing human readable text:
 
 ```js
-this.helpers['WebDriver']._locateClickable('Next page').then // ...
+const els = await this.helpers.WebDriver._locateClickable('Next page');
+const els = await this.helpers.WebDriver._locateClickable('Next page', '.pages');
 ```
 
 #### Parameters
 
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
+-   `context`  
 
 ### \_locateFields
 
@@ -1186,6 +1212,38 @@ I.amOnPage('/login'); // opens a login page
 #### Parameters
 
 -   `url` **[string][4]** url path or global url.
+
+### forceClick
+
+Perform an emulated click on a link or a button, given by a locator.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
+
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.forceClick('Logout');
+// button of form
+I.forceClick('Submit');
+// CSS button
+I.forceClick('#form input[type=submit]');
+// XPath
+I.forceClick('//form/*[@type=submit]');
+// link in context
+I.forceClick('Logout', '#nav');
+// using strict locator
+I.forceClick({css: 'nav a.login'});
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][4]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.{{ react }} (optional, default `null`)
 
 ### doubleClick
 
@@ -1477,6 +1535,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
+-   `xOffset`  
+-   `yOffset`  
 -   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
 

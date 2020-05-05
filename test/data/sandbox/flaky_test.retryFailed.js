@@ -4,7 +4,7 @@ let tries = 0;
 
 Feature('Retry');
 
-Scenario('auto repeat failing step @test1', async (I) => {
+Scenario('auto repeat failing step @test1', async ({ I }) => {
   tries++;
   await I.failWhen(() => {
     tries++;
@@ -14,7 +14,7 @@ Scenario('auto repeat failing step @test1', async (I) => {
   console.log(`[T] Retries: ${tries}`);
 });
 
-Scenario('no repeat for waiter @test2', async (I) => {
+Scenario('no repeat for waiter @test2', async ({ I }) => {
   await I.waitForFail(() => {
     tries++;
     return tries < 5;
@@ -22,7 +22,7 @@ Scenario('no repeat for waiter @test2', async (I) => {
   assert.equal(tries, 1);
 });
 
-Scenario('no retries if disabled per test @test3', async (I) => {
+Scenario('no retries if disabled per test @test3', async ({ I }) => {
   await I.failWhen(() => {
     tries++;
     return tries < 5;

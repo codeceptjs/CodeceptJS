@@ -13,7 +13,7 @@ A simple test that verifies the "Welcome" text is present on a main page of a si
 ```js
 Feature('CodeceptJS demo');
 
-Scenario('check Welcome page on site', (I) => {
+Scenario('check Welcome page on site', ({ I }) => {
   I.amOnPage('/');
   I.see('Welcome');
 });
@@ -65,7 +65,7 @@ Move to directory where you'd like to have your tests (and codeceptjs config) st
 npx codeceptjs init
 ```
 
-to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers, if you need to write Selenium WebDriver tests.
+to create and configure test environment. It is recommended to select WebDriver from the list of helpers, if you need to write Selenium WebDriver tests.
 
 After that create your first test by executing:
 
@@ -91,7 +91,7 @@ Note that CodeceptJS requires Node.js version `8.9.1+` or later.
 
 ## Usage
 
-Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriverIO helper enabled.
+Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriver helper enabled.
 
 ### Basics
 
@@ -100,7 +100,7 @@ Let's see how we can handle basic form testing:
 ```js
 Feature('CodeceptJS Demonstration');
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   I.fillField('Email', 'hello@world.com');
   I.fillField('Password', '123456');
@@ -182,13 +182,13 @@ In case you need to return a value from a webpage and use it directly in test, y
 They are expected to be used inside async/await functions, and their results will be available in test:
 
 ```js
-let assert = require('assert');
+const assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
-Scenario('test page title', async (I) => {
+Scenario('test page title', async ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
-  let title = await I.grabTitle();
+  const title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
 });
 ```
@@ -202,17 +202,17 @@ Common preparation steps like opening a web page, logging in a user, can be plac
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', (I) => {
+Scenario('test title', ({ I }) => {
   I.seeInTitle('Example application');
 });
 ```
@@ -252,7 +252,7 @@ You can easily inject it to test by providing its name in test arguments:
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
@@ -277,11 +277,36 @@ When using typescript, replace `module.exports` with `export` for autocompletion
 Thanks all to those who are and will have contributing to this awesome project!
 
 [//]: contributor-faces
-<a href="https://github.com/DavertMik"><img src="https://avatars0.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a><a href="https://github.com/PeterNgTr"><img src="https://avatars0.githubusercontent.com/u/7845001?v=4" title="PeterNgTr" width="80" height="80"></a><a href="https://github.com/APshenkin"><img src="https://avatars1.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a><a href="https://github.com/reubenmiller"><img src="https://avatars0.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a><a href="https://github.com/fabioel"><img src="https://avatars1.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a><a href="https://github.com/Vorobeyko"><img src="https://avatars3.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a><a href="https://github.com/pablopaul"><img src="https://avatars1.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a><a href="https://github.com/tsuemura"><img src="https://avatars1.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
-<a href="https://github.com/VikalpP"><img src="https://avatars2.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a><a href="https://github.com/MercifulCode"><img src="https://avatars2.githubusercontent.com/u/1740822?v=4" title="MercifulCode" width="80" height="80"></a><a href="https://github.com/elukoyanov"><img src="https://avatars3.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a><a href="https://github.com/hubidu"><img src="https://avatars2.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a><a href="https://github.com/BorisOsipov"><img src="https://avatars0.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a><a href="https://github.com/jploskonka"><img src="https://avatars3.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a><a href="https://github.com/martomo"><img src="https://avatars2.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a><a href="https://github.com/denis-sokolov"><img src="https://avatars0.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
-<a href="https://github.com/lennym"><img src="https://avatars3.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a><a href="https://github.com/petehouston"><img src="https://avatars0.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a><a href="https://github.com/Holorium"><img src="https://avatars1.githubusercontent.com/u/10815542?v=4" title="Holorium" width="80" height="80"></a><a href="https://github.com/johnyb"><img src="https://avatars2.githubusercontent.com/u/86358?v=4" title="johnyb" width="80" height="80"></a><a href="https://github.com/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a><a href="https://github.com/jinjorge"><img src="https://avatars3.githubusercontent.com/u/2208083?v=4" title="jinjorge" width="80" height="80"></a>
-<a href="https://github.com/galkin"><img src="https://avatars3.githubusercontent.com/u/5930544?v=4" title="galkin" width="80" height="80"></a><a href="https://github.com/radhey1851"><img src="https://avatars2.githubusercontent.com/u/22446528?v=4" title="radhey1851" width="80" height="80"></a>
-<a href="https://github.com/nitschSB"><img src="https://avatars0.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a><a href="https://github.com/abner"><img src="https://avatars1.githubusercontent.com/u/42773?v=4" title="abner" width="80" height="80"></a><a href="https://github.com/Akxe"><img src="https://avatars3.githubusercontent.com/u/2001798?v=4" title="Akxe" width="80" height="80"></a><a href="https://github.com/Kalostrinho"><img src="https://avatars0.githubusercontent.com/u/19229249?v=4" title="Kalostrinho" width="80" height="80"></a><a href="https://github.com/asselin"><img src="https://avatars2.githubusercontent.com/u/911250?v=4" title="asselin" width="80" height="80"></a><a href="https://github.com/xt1"><img src="https://avatars2.githubusercontent.com/u/3820037?v=4" title="xt1" width="80" height="80"></a>
+<a href="https://github.com/DavertMik"><img src="https://avatars0.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a>
+<a href="https://github.com/PeterNgTr"><img src="https://avatars0.githubusercontent.com/u/7845001?v=4" title="PeterNgTr" width="80" height="80"></a>
+<a href="https://github.com/APshenkin"><img src="https://avatars1.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a>
+<a href="https://github.com/reubenmiller"><img src="https://avatars0.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a>
+<a href="https://github.com/Vorobeyko"><img src="https://avatars3.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
+<a href="https://github.com/fabioel"><img src="https://avatars1.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a>
+<a href="https://github.com/pablopaul"><img src="https://avatars1.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a>
+<a href="https://github.com/tsuemura"><img src="https://avatars1.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
+<a href="https://github.com/VikalpP"><img src="https://avatars2.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
+<a href="https://github.com/elukoyanov"><img src="https://avatars3.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
+<a href="https://github.com/MercifulCode"><img src="https://avatars2.githubusercontent.com/u/1740822?v=4" title="MercifulCode" width="80" height="80"></a>
+<a href="https://github.com/koushikmohan1996"><img src="https://avatars3.githubusercontent.com/u/24666922?v=4" title="koushikmohan1996" width="80" height="80"></a>
+<a href="https://github.com/hubidu"><img src="https://avatars2.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
+<a href="https://github.com/BorisOsipov"><img src="https://avatars0.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
+<a href="https://github.com/jploskonka"><img src="https://avatars3.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
+<a href="https://github.com/martomo"><img src="https://avatars2.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
+<a href="https://github.com/denis-sokolov"><img src="https://avatars0.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
+<a href="https://github.com/lennym"><img src="https://avatars3.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
+<a href="https://github.com/petehouston"><img src="https://avatars0.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a>
+<a href="https://github.com/Holorium"><img src="https://avatars1.githubusercontent.com/u/10815542?v=4" title="Holorium" width="80" height="80"></a>
+<a href="https://github.com/nitschSB"><img src="https://avatars0.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
+<a href="https://github.com/johnyb"><img src="https://avatars2.githubusercontent.com/u/86358?v=4" title="johnyb" width="80" height="80"></a>
+<a href="https://github.com/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a>
+<a href="https://github.com/jinjorge"><img src="https://avatars3.githubusercontent.com/u/2208083?v=4" title="jinjorge" width="80" height="80"></a>
+<a href="https://github.com/galkin"><img src="https://avatars3.githubusercontent.com/u/5930544?v=4" title="galkin" width="80" height="80"></a>
+<a href="https://github.com/orihomie"><img src="https://avatars2.githubusercontent.com/u/29889683?v=4" title="orihomie" width="80" height="80"></a>
+<a href="https://github.com/radhey1851"><img src="https://avatars2.githubusercontent.com/u/22446528?v=4" title="radhey1851" width="80" height="80"></a>
+<a href="https://github.com/abner"><img src="https://avatars1.githubusercontent.com/u/42773?v=4" title="abner" width="80" height="80"></a>
+<a href="https://github.com/Akxe"><img src="https://avatars3.githubusercontent.com/u/2001798?v=4" title="Akxe" width="80" height="80"></a>
+<a href="https://github.com/Kalostrinho"><img src="https://avatars0.githubusercontent.com/u/19229249?v=4" title="Kalostrinho" width="80" height="80"></a>
 
 [//]: contributor-faces
 

@@ -28,7 +28,7 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright@^0.10.0 --save
+npm install codeceptjs playwright@^0.12.1 --save
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
@@ -52,7 +52,8 @@ Make sure `Playwright` helper is enabled in `codecept.conf.js` config:
   helpers: {
     Playwright: {
       url: "http://localhost",
-      show: true
+      show: true,
+      browser: 'chromium'
     }
   }
   // ..
@@ -75,6 +76,7 @@ When to consider navigation succeeded, defaults to `load`. Given an array of eve
     Playwright: {
       url: "http://localhost",
       show: true,
+      browser: 'chromium',
       waitForNavigation: "networkidle0"
     }
   }
@@ -87,7 +89,7 @@ It will wait for a small amount of time (100ms) by default after each user actio
 
 ## Writing Tests
 
-CodeceptJS test should be created with `gt` command:
+Additional CodeceptJS tests should be created with `gt` command:
 
 ```sh
 npx codeceptjs gt
@@ -110,7 +112,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 
 > ℹ  All actions are listed in [Playwright helper reference](http://codecept.io/helpers/Playwright/).*
 
-All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
+All actions which interact with elements can use **[CSS or XPath locators](https://codecept.io/locators/#css-and-xpath)**. Actions like `click` or `fillField` can locate elements by their name or value on a page:
 
 ```js
 // search for link or button
@@ -199,10 +201,69 @@ I.see('0 items left', '.todo-count');
 
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
+## Multi Session Testing
+
+TO launch additional browser context (or incognito window) use `session` command.
+
+```js
+Scenario('I try to open this site as anonymous user', () => {
+  I.amOnPage('/');
+  I.dontSee('Agree to cookies');
+  session('anonymous user', () => {
+    I.amOnPage('/');
+    I.see('Agree to cookies');
+  });
+})
+```
+
+> ℹ Learn more about [multi-session testing](/basics/#multiple-sessions)
+
+## Device Emulation
+
+Playwright can emulate browsers of mobile devices. Instead of paying for expensive devices for mobile tests you can adjust Playwright settings so it could emulate mobile browsers on iPhone, Samsung Galaxy, etc.
+
+Device emulation can be enabled in CodeceptJS globally in a config or per session.
+
+Playwright contains a [list of predefined devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+
+```js
+const { devices } = require('playwright');
+
+helpers: {
+  Playwright: {
+    // regular config goes here
+    emulate: devices['iPhone 6'],
+  }
+}
+```
+To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewcontextoptions)
+
+```js
+helpers: {
+  Playwright: {
+    // regular config goes here
+    // put on mobile device
+    emulate: { isMobile: true, deviceScaleFactor: 2 }
+  }
+}
+```
+
+To enable device emulation for a specific test, create an additional browser session and pass in config as a second parameter:
+
+```js
+const { devices } = require('playwright');
+
+Scenario('website looks nice on iPhone', () => {
+  session('mobile user', devices['iPhone 6'], () => {
+    I.amOnPage('/');
+    I.see('Hello, iPhone user!')
+  })
+});
+```
 
 ## Extending
 
-Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
 
 Start with creating an `MyPlaywright` helper using `generate:helper` or `gh` command:
 
@@ -237,8 +298,9 @@ async setPermissions() {
   const context = browser.defaultContext()
   return context.setPermissions('https://html5demos.com', ['geolocation']);
 }
+```
 
-> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext)
+> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#class-browsercontext)
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
 
