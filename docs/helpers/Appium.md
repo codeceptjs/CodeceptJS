@@ -1107,6 +1107,27 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 -   `context` **([string][4] \| [object][6])?** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
 
+### useWebDriverTo
+
+Use [webdriverio][17] API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`browser`][17]) } object from WebDriver API is available.
+
+```js
+I.useWebDriverTo('open multiple windows', async ({ browser }) {
+   // create new window
+   await browser.newWindow('https://webdriver.io');
+});
+```
+
+#### Parameters
+
+-   `description` **[string][4]** used to show in logs.
+-   `fn` **[function][18]** async functuion that executed with WebDriver helper as argument
+
 ### \_isShadowLocator
 
 Check if locator is type of "Shadow"
@@ -1185,7 +1206,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 ### defineTimeout
 
-Set [WebDriver timeouts][17] in realtime.
+Set [WebDriver timeouts][19] in realtime.
 
 Timeouts are expected to be passed as object:
 
@@ -1436,7 +1457,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][13]&lt;([string][4] \| [undefined][18])>** 
+Returns **[Promise][13]&lt;([string][4] \| [undefined][20])>** 
 
 ### dontSeeInSource
 
@@ -1559,7 +1580,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 ### type
 
 Types out the given string or the array of keys provided.
-_Note:_ Should only be used when using [`fillField`][19] is not an option.
+_Note:_ Should only be used when using [`fillField`][21] is not an option.
 
 ```js
 // When passing in a string
@@ -1780,8 +1801,12 @@ Returns **[object][6]** Element bounding rectangle
 
 [16]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[17]: https://webdriver.io/docs/timeouts.html
+[17]: https://webdriver.io/docs/api.html
 
-[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[19]: #fillfield
+[19]: https://webdriver.io/docs/timeouts.html
+
+[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+
+[21]: #fillfield

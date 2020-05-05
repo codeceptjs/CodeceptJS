@@ -130,6 +130,21 @@ module.exports = {
 
 > [▶ Read more about PageObjects in CodeceptJS](/pageobjects)
 
+
+## Accessing TestCafe API
+
+To get [testController](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller))) inside a test use [`I.useTestCafeTo`](/helpers/TestCafe/#usetestcafeto) method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.useTestCafeTo('do some things using native webdriverio api', async ({ t }) => {
+  await t.click() // use testcafe api here
+});
+```
+
+Because all TestCafe commands are asynchronous a callback function must be async.
+
+
 ## Extending
 
 If you want to use TestCafe API inside your tests you can put them into actions of `I` object. To do so you can generate a new helper, access TestCafe helper, and get the test controller.
