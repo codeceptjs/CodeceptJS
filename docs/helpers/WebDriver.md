@@ -14,7 +14,7 @@ title: WebDriver
 WebDriver helper which wraps [webdriverio][1] library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-WebDriver requires [Selenium Server and ChromeDriver/GeckoDriver to be installed][2].
+WebDriver requires Selenium Server and ChromeDriver/GeckoDriver to be installed. Those tools can be easily installed via NPM. Please check [Testing with WebDriver][2] for more details.
 
 ### Configuration
 
@@ -2036,7 +2036,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [1]: http://webdriver.io/
 
-[2]: http://codecept.io/quickstart/#prepare-selenium-server
+[2]: https://codecept.io/webdriver/#testing-with-webdriver
 
 [3]: http://codecept.io/acceptance/#smartwait
 
