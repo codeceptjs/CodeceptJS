@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.6.1",
+  "version": "2.6.3",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -75,7 +75,7 @@
     "mocha": "^6.2.2",
     "mocha-junit-reporter": "^1.23.1",
     "ms": "^2.1.2",
-    "parse-function": "^5.5.0",
+    "parse-function": "^5.6.4",
     "promise-retry": "^1.1.1",
     "requireg": "^0.2.2",
     "resq": "^1.7.0",
@@ -84,13 +84,16 @@
   },
   "devDependencies": {
     "@codeceptjs/detox-helper": "^1.0.2",
+    "@codeceptjs/mock-request": "^0.3.0",
     "@pollyjs/adapter-puppeteer": "^2.6.3",
     "@pollyjs/core": "^2.6.3",
     "@types/inquirer": "^0.0.35",
+    "@types/jscodeshift": "^0.6.3",
     "@types/node": "^8.10.54",
     "@wdio/sauce-service": "^5.16.10",
     "@wdio/selenium-standalone-service": "^5.16.10",
     "@wdio/utils": "^5.16.15",
+    "acorn": "^7.1.0",
     "apollo-server-express": "^2.9.16",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
@@ -105,15 +108,16 @@
     "faker": "^4.1.0",
     "graphql": "^14.5.8",
     "husky": "^1.2.1",
+    "jscodeshift": "^0.7.0",
     "jsdoc": "^3.6.2",
     "jsdoc-typeof-plugin": "^1.0.0",
     "json-server": "^0.10.1",
     "mocha-parallel-tests": "^2.2.2",
     "nightmare": "^3.0.2",
     "nodemon": "^1.19.4",
-    "playwright": "^0.12.1",
+    "playwright": "^0.14.0",
     "protractor": "^5.4.1",
-    "puppeteer": "^1.20.0",
+    "puppeteer": "^3.0.0",
     "qrcode-terminal": "^0.12.0",
     "rosie": "^1.6.0",
     "runio.js": "^1.0.20",
@@ -136,7 +140,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint",
-      "pre-push": "npm run lint && npm run test:unit"
+      "pre-push": "npm run test:unit"
     }
   }
 }

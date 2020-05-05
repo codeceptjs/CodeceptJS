@@ -1,3 +1,21 @@
+## 2.6.3
+
+* [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes #2337 by @mirao
+* [allure plugin] Fixed reporting of tests skipped by failure in before hook. Refer to #2349 & #2354. Fix by @koushikmohan1996
+
+## 2.6.2
+
+* [WebDriver][Puppeteer] Added `forceClick` method to emulate click event instead of using native events.
+* [Playwright] Updated to 0.14
+* [Puppeteer] Updated to Puppeteer v3.0
+* [wdio] Fixed undefined output directory for wdio plugns. Fix By @PeterNgTr
+* [Playwright] Introduced `handleDownloads` method to download file. Please note, this method has slightly different API than the same one in Puppeteer.
+* [allure] Fixed undefined output directory for allure plugin on using custom runner. Fix by @charliepradeep
+* [WebDriver] Fixed `waitForEnabled` fix for webdriver 6. Fix by @dsharapkou
+* Workers: Fixed negative failure result if use scenario with the same names. Fix by @Vorobeyko
+* [MockRequest] Updated documentation to match new helper version
+* Fixed: skipped tests are not reported if a suite failed in `before`. Refer #2349 & #2354. Fix by @koushikmohan1996
+
 ## 2.6.1
 
 * [screenshotOnFail plugin] Fixed saving screenshot of active session.

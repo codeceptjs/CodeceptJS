@@ -7,7 +7,7 @@ module.exports.config = {
   helpers: {
     Puppeteer: {
       url: TestHelper.siteUrl(),
-      show: true,
+      show: false,
       chrome: {
         args: [
           '--no-sandbox',

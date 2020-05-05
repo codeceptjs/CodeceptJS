@@ -53,6 +53,8 @@ exports.config = {
 }
 ```
 
+> ⚠ It is not recommended to use wdio plugin & selenium-standalone when running tests in parallel. Consider **switching to Selenoid** if you need parallel run or using cloud services.
+
 
 ## Configuring WebDriver
 
@@ -104,7 +106,7 @@ path: '/',
 
 > If you face issues connecting to WebDriver, please check that corresponding server is running on a specified port. If host is other than `localhost` or port is other than `4444`, update the configuration.
 
-### Selenium in Docker
+### Selenium in Docker (Selenoid)
 
 Browsers can be executed in Docker containers. This is useful when testing on Continous Integration server.
 We recommend using [Selenoid](https://aerokube.com/selenoid/) to run browsers in container.
