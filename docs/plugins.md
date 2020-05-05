@@ -495,10 +495,6 @@ Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
 
-### Parameters
-
--   `config`  
-
 ## puppeteerCoverage
 
 Dumps puppeteers code coverage after every test.

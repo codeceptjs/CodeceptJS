@@ -86,7 +86,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
   async docsExternalHelpers() {
     // generate documentation for helpers outside of main repo
     console.log('Building @codecepjs/detox helper docs');
-    const helper = 'Detox';
+    let helper = 'Detox';
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
     });
@@ -98,6 +98,22 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     });
 
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
+      cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+    });
+
+    console.log('Building @codeceptjs/mock-request');
+    helper = 'MockRequest';
+    replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
+      cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+    });
+    await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
+
+    await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
+      cfg.line(`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
+      cfg.textFromFile(`docs/helpers/${helper}.md`);
+    });
+
+    replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
       cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
     });
   },
@@ -144,7 +160,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
 
-    const ignoreList = ['WebDriverIO', 'SeleniumWebdriver', 'Polly']; // WebDriverIO won't be documented and should be removed
+    const ignoreList = ['Polly', 'MockRequest']; // WebDriverIO won't be documented and should be removed
 
     const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache');
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);

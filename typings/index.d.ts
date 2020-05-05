@@ -13,7 +13,6 @@ declare namespace CodeceptJS {
   interface I {}
   interface IHook {}
   interface IScenario {}
-  interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
   }
@@ -44,28 +43,17 @@ declare namespace CodeceptJS {
 
   type LocatorOrString = string | ILocator | Locator;
 
-  interface HookCallback<U extends any[]> { (...args: U): void; }
+  interface HookCallback { (args: SupportObject): void; }
   interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
-    <T extends any[] = CallbackOrder>(
-      title: string
-    ): ScenarioConfig;
-    <T extends any[] = CallbackOrder>(
-      title: string,
-      callback: HookCallback<T>
-    ): ScenarioConfig;
-    <T extends any[] = CallbackOrder>(
-      title: string,
-      opts: { [key: string]: any },
-      callback: HookCallback<T>
-    ): ScenarioConfig;
+    (title: string): ScenarioConfig;
+    (title: string, callback: HookCallback): ScenarioConfig;
+    (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig;
   }
-  interface IHook {
-    <T extends any[] = CallbackOrder>(callback: HookCallback<T>): void;
-  }
+  interface IHook { (callback: HookCallback): void; }
 
   interface Globals {
     codeceptjs: typeof codeceptjs;

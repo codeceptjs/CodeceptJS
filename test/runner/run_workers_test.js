@@ -17,7 +17,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should run tests in 3 workers', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run} 3`, (err, stdout, stderr) => {
+    exec(`${codecept_run} 3`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('glob current dir');
       stdout.should.include('From worker @1_grep print message 1');
@@ -32,9 +32,20 @@ describe('CodeceptJS Workers Runner', function () {
     });
   });
 
+  it('should print positive or zero failures with same name tests', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    exec(`${codecept_run_glob('configs/workers/codecept.workers-negative.conf.js')} 2`, (err, stdout) => {
+      stdout.should.include('Running tests in 2 workers...');
+      stdout.should.not.include('FAIL  | 2 passed, -6 failed');
+      stdout.should.include('FAIL  | 2 passed, 2 failed');
+      assert(err);
+      done();
+    });
+  });
+
   it('should use grep', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run} 2 --grep "grep"`, (err, stdout, stderr) => {
+    exec(`${codecept_run} 2 --grep "grep"`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.not.include('glob current dir');
       stdout.should.include('From worker @1_grep print message 1');
@@ -50,7 +61,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should show failures when suite is failing', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout, stderr) => {
+    exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('Running tests in 2 workers');
       stdout.should.not.include('should not be executed');
@@ -65,7 +76,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should print stdout in debug mode and load bootstrap', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run} 1 --grep "grep" --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run} 1 --grep "grep" --debug`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('Running tests in 1 workers');
       stdout.should.include('bootstrap b1+b2');
@@ -79,7 +90,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should run tests with glob pattern', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run_glob('codecept.workers-glob.conf.js')} 1 --grep "grep" --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run_glob('codecept.workers-glob.conf.js')} 1 --grep "grep" --debug`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('Running tests in 1 workers');
       stdout.should.include('bootstrap b1+b2');
@@ -93,7 +104,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should print empty results with incorrect glob pattern', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run_glob('codecept.workers-incorrect-glob.conf.js')} 1 --grep "grep" --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run_glob('codecept.workers-incorrect-glob.conf.js')} 1 --grep "grep" --debug`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('Running tests in 1 workers');
       stdout.should.include('OK  | 0 passed');
@@ -104,7 +115,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should retry test', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run} 2 --grep "retry"`, (err, stdout, stderr) => {
+    exec(`${codecept_run} 2 --grep "retry"`, (err, stdout) => {
       stdout.should.include('CodeceptJS'); // feature
       stdout.should.include('OK  | 1 passed');
       done();
@@ -123,7 +134,7 @@ describe('CodeceptJS Workers Runner', function () {
 
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     const configFileName = 'codecept.workers-custom-output-folder-name.conf.js';
-    exec(`${codecept_run_glob(configFileName)} 2 --grep "grep" --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run_glob(configFileName)} 2 --grep "grep" --debug`, (err, stdout) => {
       stdout.should.include(customName);
       if (fs.existsSync(outputDir)) {
         createdOutput = true;

@@ -6,7 +6,6 @@ const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run`;
 const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
-const config_run_override = config => `${codecept_run} --override '${JSON.stringify(config)}'`;
 
 describe('CodeceptJS Interface', () => {
   before(() => {
@@ -14,7 +13,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should rerun flaky tests', (done) => {
-    exec(config_run_config('codecept.flaky.json'), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.flaky.json'), (err, stdout) => {
       stdout.should.include('Flaky'); // feature
       stdout.should.include('Not so flaky test'); // test name
       stdout.should.include('Old style flaky'); // test name
@@ -27,7 +26,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should rerun retried steps', (done) => {
-    exec(`${config_run_config('codecept.retry.json')} --grep @test1`, (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retry.json')} --grep @test1`, (err, stdout) => {
       stdout.should.include('Retry'); // feature
       stdout.should.include('Retries: 4'); // test name
       assert(!err);
@@ -36,7 +35,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should not propagate retries to non retried steps', (done) => {
-    exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout) => {
       stdout.should.include('Retry'); // feature
       stdout.should.include('Retries: 1'); // test name
       assert(err);
@@ -45,7 +44,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should use retryFailedStep plugin for failed steps', (done) => {
-    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test1`, (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test1`, (err, stdout) => {
       stdout.should.include('Retry'); // feature
       stdout.should.include('Retries: 5'); // test name
       assert(!err);
@@ -54,7 +53,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should not retry wait* steps in retryFailedStep plugin', (done) => {
-    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test2`, (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test2`, (err, stdout) => {
       stdout.should.include('Retry'); // feature
       stdout.should.not.include('Retries: 5');
       stdout.should.include('Retries: 1');
@@ -64,7 +63,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should not retry steps if retryFailedStep plugin disabled', (done) => {
-    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test3`, (err, stdout, stderr) => {
+    exec(`${config_run_config('codecept.retryFailed.json')} --grep @test3`, (err, stdout) => {
       stdout.should.include('Retry'); // feature
       stdout.should.not.include('Retries: 5');
       stdout.should.include('Retries: 1');
@@ -74,7 +73,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should include grep option tests', (done) => {
-    exec(config_run_config('codecept.grep.json'), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.grep.json'), (err, stdout) => {
       stdout.should.include('Got login davert and password'); // feature
       stdout.should.not.include('Got changed login'); // test name
       assert(!err);
@@ -83,7 +82,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should run tests with different data', (done) => {
-    exec(config_run_config('codecept.ddt.json'), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.ddt.json'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       output.should.include(`Got login davert and password 123456
   ✔ Should log accounts1 | {"login":"davert","password":"123456"}`);
@@ -124,23 +123,21 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should run all tests with data of array by only', (done) => {
-    exec(config_run_config('codecept.addt.json'), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.addt.json'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
-      output.should.include(`Got array item 1
-  ✔ Should log array of strings | {"1"}`);
-
-      output.should.include(`Got array item 2
-  ✔ Should log array of strings | {"2"}`);
-
-      output.should.include(`Got array item 3
-  ✔ Should log array of strings | {"3"}`);
+      output.should.include('Got array item 1');
+      output.should.include('Should log array of strings | {"1"}');
+      output.should.include('Got array item 2');
+      output.should.include('Should log array of strings | {"2"}');
+      output.should.include('Got array item 3');
+      output.should.include('Should log array of strings | {"3"}');
       assert(!err);
       done();
     });
   });
 
   it('should run all tests with data of generator by only', (done) => {
-    exec(config_run_config('codecept.gddt.json'), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.gddt.json'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       output.should.include(`Got generator login nick
   ✔ Should log generator of strings | {"user":"nick"}`);
@@ -153,7 +150,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should execute expected promise chain', (done) => {
-    exec(`${codecept_run} --verbose`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --verbose`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       // before hooks
