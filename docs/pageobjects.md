@@ -30,11 +30,8 @@ Required objects can be obtained via parameters in tests or via global `inject()
 const { I, myPage, mySteps } = inject();
 
 // inject objects for a test by name
-Scenario('sample test', (I, myPage, mySteps) => {
-  // ...
-})
-```
-
+Scenario('sample test', ({ I, myPage, mySteps }) => {
+  // ...\w+
 ## Actor
 
 At initialization you were asked to create custom steps file. If you accepted this option you may use `custom_steps.js` file to extend `I`. See how `login` method can be added to `I`:
@@ -108,9 +105,11 @@ You can include this pageobject in test by its name (defined in `codecept.json`)
 it should be added to list of test arguments to be included in test:
 
 ```js
-Scenario('login', (I, loginPage) => {
+Scenario('login', ({ I, loginPage }) => {
+
   loginPage.sendForm('john@doe.com','123456');
   I.see('Hello, John');
+
 });
 ```
 
@@ -147,7 +146,7 @@ module.exports = {
 and use them in your tests:
 
 ```js
-Scenario('login2', async (I, loginPage, basePage) => {
+Scenario('login2', async ({ I, loginPage, basePage }) => {
   let title = await mainPage.openMainArticle()
   basePage.pageShouldBeOpened(title)
 });
@@ -224,7 +223,7 @@ module.exports = {
 To use a Page Fragment within a Test Scenario just inject it into your Scenario:
 
 ```js
-Scenario('failed_login', async (I, loginPage, modal) => {
+Scenario('failed_login', async ({ I, loginPage, modal }) => {
   loginPage.sendForm('john@doe.com','wrong password');
   I.waitForVisible(modal.root);
   within(modal.root, function () {
@@ -280,7 +279,7 @@ module.exports = {
 You can inject objects per test by calling `injectDependencies` function on Scenario:
 
 ```js
-Scenario('search @grop', (I, Data) => {
+Scenario('search @grop', ({ I, Data }) => {
   I.fillField('Username', Data.username);
   I.pressKey('Enter');
 }).injectDependencies({ Data: require('./data.js') });

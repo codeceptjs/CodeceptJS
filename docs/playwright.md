@@ -138,7 +138,7 @@ It's easy to start writing a test if you use [interactive pause](/basics#debug).
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   pause();
 });
@@ -159,7 +159,7 @@ A complete ToDo-MVC test may look like:
 ```js
 Feature('ToDo');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   I.dontSeeElement('.todo-count');
   I.fillField('What needs to be done?', 'Write a guide');
@@ -175,7 +175,7 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 
 ```js
 const assert = require('assert');
-Scenario('get value of current tasks', async (I) => {
+Scenario('get value of current tasks', async ({ I }) => {
   I.createTodo('do 1');
   I.createTodo('do 2');
   let numTodos = await I.grabTextFrom('.todo-count strong');
@@ -206,7 +206,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 TO launch additional browser context (or incognito window) use `session` command.
 
 ```js
-Scenario('I try to open this site as anonymous user', () => {
+Scenario('I try to open this site as anonymous user', ({  }) => {
   I.amOnPage('/');
   I.dontSee('Agree to cookies');
   session('anonymous user', () => {
@@ -253,7 +253,7 @@ To enable device emulation for a specific test, create an additional browser ses
 ```js
 const { devices } = require('playwright');
 
-Scenario('website looks nice on iPhone', () => {
+Scenario('website looks nice on iPhone', ({  }) => {
   session('mobile user', devices['iPhone 6'], () => {
     I.amOnPage('/');
     I.see('Hello, iPhone user!')
@@ -273,7 +273,20 @@ I.usePlaywrightTo('emulate offline mode', async ({ browser, context, page }) => 
 });
 ```
 
-Because all Playwright commands are asynchronous callback function must be async.
+Playwright commands are asynchronous so a callback function must be async.
+
+A Playwright helper is passed as argument for callback, so you can combine Playwrigth API with CodeceptJS API:
+
+```js
+I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
+  // access internal objects browser, page, context of helper
+  await Playwright.context.setOffline(true);
+  // call a method of helper, await is required here
+  await Playwright.click('Reload');
+});
+
+```
+
 
 
 ## Extending Helper

@@ -782,6 +782,56 @@ Possible config options:
 
 -   `config` **any** 
 
+## tryTo
+
+Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
+
+```js
+const result = await tryTo(() => I.see('Welcome'));
+
+// if user is on page, result => true
+// if user is on page, result => false
+```
+
+Disables retryFailedStep plugin for steps inside a block;
+
+Use this plugin if:
+
+-   you need to perform multiple assertions inside a test
+-   there is A/B testing on a website you test
+-   there is "Accept Cookie" banner which may surprisingly appear on a page.
+
+#### Usage
+
+#### Multiple Conditional Assertions
+
+```js
+const result1 = await tryTo(() => I.see('Hello, user'));
+const result2 = await tryTo(() => I.seeElement('.welcome'));
+assert.ok(result1 && result2, 'Assertions were not succesful');
+```
+
+##### Optional click
+
+```js
+I.amOnPage('/');
+tryTo(() => I.click('Agree', '.cookies'));
+```
+
+#### Configuration
+
+-   `registerGlobal` - to register `tryTo` function globally, true by default
+
+If `registerGlobal` is false you can use tryTo from the plugin:
+
+```js
+const tryTo = codeceptjs.container.plugins('tryTo');
+```
+
+### Parameters
+
+-   `config`  
+
 ## wdio
 
 Webdriverio services runner.

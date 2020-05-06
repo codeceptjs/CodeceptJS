@@ -1,6 +1,6 @@
 Feature('Git');
 
-Scenario('Demo Test Github', (I) => {
+Scenario('Demo Test Github', ({ I }) => {
   I.amOnPage('https://github.com/login');
   I.see('GitHub');
   I.fillField('login', 'randomuser_kmk');
@@ -9,7 +9,7 @@ Scenario('Demo Test Github', (I) => {
   I.see('Repositories');
 });
 
-Scenario('Demo Test GitLab', (I) => {
+Scenario('Demo Test GitLab', ({ I }) => {
   I.amOnPage('https://gitlab.com');
   I.dontSee('GitHub');
   I.see('GitLab');

@@ -568,8 +568,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -581,6 +581,22 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `attr` **[string][9]** attribute name.
 
 Returns **[Promise][13]&lt;[string][9]>** attribute value
+
+### grabAttributeFromAll
+
+Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let hints = await I.grabAttributeFromAll('.tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][10])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][9]** attribute name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][9]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -615,6 +631,7 @@ Returns **[Promise][13]&lt;[string][9]>** attribute valueReturns cookie in JSON 
 
 Grab CSS property for given locator
 Resumes test execution, so **should be used inside an async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
@@ -626,6 +643,22 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `cssProperty` **[string][9]** CSS property name.
 
 Returns **[Promise][13]&lt;[string][9]>** CSS value
+
+### grabCssPropertyFromAll
+
+Grab array of CSS properties for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][10])** element located by CSS|XPath|strict locator.
+-   `cssProperty` **[string][9]** CSS property name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][9]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -643,7 +676,7 @@ Returns **[Promise][13]&lt;[string][9]>** current URL
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - an array of HTMLs returned.
+If more than one element is found - HTML of first element is returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -655,6 +688,22 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `element` **([string][9] | [object][10])** located by CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;[string][9]>** HTML code for an element
+
+### grabHTMLFromAll
+
+Retrieves all the innerHTML from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTMLs = await I.grabHTMLFromAll('.post');
+```
+
+#### Parameters
+
+-   `locator`  
+-   `element` **([string][9] | [object][10])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][9]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -719,13 +768,28 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 #### Parameters
 
 -   `locator` **([string][9] | [object][10])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;([string][9] | [Array][14]&lt;[string][9]>)>** attribute value
+Returns **[Promise][13]&lt;[string][9]>** attribute value
+
+### grabTextFromAll
+
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][10])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][9]>>** attribute value
 
 ### grabTitle
 
@@ -742,6 +806,7 @@ Returns **[Promise][13]&lt;[string][9]>** title
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -752,6 +817,21 @@ let email = await I.grabValueFrom('input[name=email]');
 -   `locator` **([string][9] | [object][10])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;[string][9]>** attribute value
+
+### grabValueFromAll
+
+Retrieves an array of value from a form located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let inputs = await I.grabValueFromAll('//form/input');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][10])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][9]>>** attribute value
 
 ### haveModule
 
