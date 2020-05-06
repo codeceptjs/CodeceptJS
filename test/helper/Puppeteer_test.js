@@ -912,7 +912,7 @@ describe('Puppeteer', function () {
       await I.waitForClickable('//button[@name="button_publish"]');
     });
 
-    it('should fail if element change class and not clickable', async () => {
+    xit('should fail if element change class and not clickable', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.click('button_save');
       await I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
