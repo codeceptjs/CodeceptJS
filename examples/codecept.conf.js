@@ -31,6 +31,9 @@ exports.config = {
     ],
   },
   plugins: {
+    tryTo: {
+      enabled: true,
+    },
     allure: {
       enabled: false,
     },
