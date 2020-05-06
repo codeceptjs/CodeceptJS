@@ -2,11 +2,12 @@
 
 > [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
 
+* **NodeJS 12+ required**
 * **BREAKING CHANGE:** Syntax for tests has changed.
 
 
 ```js
-// Previos
+// Previous
 Scenario('title', (I, loginPage) => {});
 
 // Current

@@ -9,7 +9,7 @@ exports.config = {
   plugins: {
     allure: {
       enabled: true,
-      output: './output/failed',
+      output: `./output/failed/allure${Math.random().toString()}`,
     },
   },
   mocha: {},
