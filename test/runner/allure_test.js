@@ -12,7 +12,9 @@ const codecept_run_config = (config, grep) => `${codecept_run} --config ${codece
 const codecept_workers_config = (config, grep) => `${codecept_workers} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
 
 
-describe('CodeceptJS Allure Plugin', () => {
+describe('CodeceptJS Allure Plugin', function () {
+  this.retries(2);
+
   beforeEach(() => {
     deleteDir(path.join(codecept_dir, 'output/ansi'));
     deleteDir(path.join(codecept_dir, 'output/success'));

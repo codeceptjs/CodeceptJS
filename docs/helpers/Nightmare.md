@@ -420,8 +420,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -433,6 +433,22 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `attr` **[string][3]** attribute name.
 
 Returns **[Promise][8]&lt;[string][3]>** attribute value
+
+### grabAttributeFromAll
+
+Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let hints = await I.grabAttributeFromAll('.tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][3]** attribute name.
+
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### grabCookie
 
@@ -455,6 +471,7 @@ Returns **[Promise][8]&lt;[string][3]>** attribute valueCookie in JSON format. I
 
 Grab CSS property for given locator
 Resumes test execution, so **should be used inside an async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
@@ -492,7 +509,7 @@ fs.writeFileSync('sample.har', JSON.stringify({log: har}));
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - an array of HTMLs returned.
+If more than one element is found - HTML of first element is returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -504,6 +521,22 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
 Returns **[Promise][8]&lt;[string][3]>** HTML code for an element
+
+### grabHTMLFromAll
+
+Retrieves all the innerHTML from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTMLs = await I.grabHTMLFromAll('.post');
+```
+
+#### Parameters
+
+-   `locator`  
+-   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** HTML code for an element
 
 ### grabNumberOfVisibleElements
 
@@ -517,7 +550,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[number][10]>** number of visible elements
+Returns **[Promise][8]&lt;[number][11]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -539,13 +572,28 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;([string][3] | [Array][11]&lt;[string][3]>)>** attribute value
+Returns **[Promise][8]&lt;[string][3]>** attribute value
+
+### grabTextFromAll
+
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### grabTitle
 
@@ -562,6 +610,23 @@ Returns **[Promise][8]&lt;[string][3]>** title
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
+
+```js
+let email = await I.grabValueFrom('input[name=email]');
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][8]&lt;[string][3]>** attribute value
+
+### grabValueFromAll
+
+Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -600,8 +665,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. 
+-   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset. 
 
 ### pressKey
 
@@ -631,8 +696,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][10]** width in pixels or `maximize`.
--   `height` **[number][10]** height in pixels.
+-   `width` **[number][11]** width in pixels or `maximize`.
+-   `height` **[number][11]** height in pixels.
 
 ### rightClick
 
@@ -697,8 +762,8 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. 
+-   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset. 
 
 ### see
 
@@ -848,7 +913,7 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.
+-   `num` **[number][11]** number of elements.
 
 ### seeNumberOfVisibleElements
 
@@ -862,7 +927,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.
+-   `num` **[number][11]** number of elements.
 
 ### selectOption
 
@@ -888,7 +953,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][3] | [Array][11]&lt;any>)** visible text or value of option.
+-   `option` **([string][3] | [Array][10]&lt;any>)** visible text or value of option.
 
 ### setCookie
 
@@ -908,7 +973,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][4] | [array][11])** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
+-   `cookie` **([object][4] | [array][10])** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
     [See more][14]
 
 ### triggerMouseEvent
@@ -954,7 +1019,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][10]** number of second to wait.
+-   `sec` **[number][11]** number of second to wait.
 
 ### waitForDetached
 
@@ -968,7 +1033,7 @@ I.waitForDetached('#popup');
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForElement
 
@@ -983,7 +1048,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
 
 ### waitForFunction
 
@@ -1003,8 +1068,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 -   `fn` **([string][3] | [function][7])** to be executed in browser context.
--   `argsOrSec` **([Array][11]&lt;any> | [number][10])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait 
+-   `argsOrSec` **([Array][10]&lt;any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
@@ -1018,7 +1083,7 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForText
 
@@ -1034,7 +1099,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][3]** to wait for.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][3] | [object][4])?** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
@@ -1049,7 +1114,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 
 ### waitToHide
 
@@ -1063,7 +1128,7 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 
 [1]: https://github.com/segmentio/nightmare
 
@@ -1083,9 +1148,9 @@ I.waitToHide('#popup');
 
 [9]: https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
 [12]: http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent
 

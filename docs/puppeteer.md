@@ -134,7 +134,7 @@ It's easy to start writing a test if you use [interactive pause](/basics#debug).
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   pause();
 });
@@ -155,7 +155,7 @@ A complete ToDo-MVC test may look like:
 ```js
 Feature('ToDo');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   I.dontSeeElement('.todo-count');
   I.fillField('What needs to be done?', 'Write a guide');
@@ -171,7 +171,7 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 
 ```js
 const assert = require('assert');
-Scenario('get value of current tasks', async (I) => {
+Scenario('get value of current tasks', async ({ I }) => {
   I.createTodo('do 1');
   I.createTodo('do 2');
   let numTodos = await I.grabTextFrom('.todo-count strong');
@@ -259,12 +259,23 @@ I.usePuppeteerTo('emulate offline mode', async ({ page, browser }) => {
 });
 ```
 
-Because all Puppeteer commands are asynchronous callback function must be async.
+> Puppeteer commands are asynchronous so a callback function must be async.
+
+A Puppeteer helper is passed as argument for callback, so you can combine Puppeteer API with CodeceptJS API:
+
+```js
+I.usePuppeteerTo('emulate offline mode', async (Puppeteer) => {
+  // access internal objects browser, page, context of helper
+  await Puppeteer.page.setOfflineMode(true);
+  // call a method of helper, await is required here
+  await Puppeteer.click('Reload');
+});
+```
 
 
 ## Extending Helper
 
-To create custom `I.*` commands using Playwright API you need to create a custom helper.
+To create custom `I.*` commands using Puppeteer API you need to create a custom helper.
 
 Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` command:
 
@@ -287,4 +298,3 @@ async renderPageToPdf() {
 The same way you can also access `browser` object to implement more actions or handle events.
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
-

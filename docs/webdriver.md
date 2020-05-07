@@ -195,7 +195,7 @@ A typical test case may look like this:
 ```js
 Feature('login');
 
-Scenario('login test', (I) => {
+Scenario('login test', ({ I }) => {
   I.amOnPage('/login');
   I.fillField('Username', 'john');
   I.fillField('Password', '123456');
@@ -217,7 +217,7 @@ It's easy to start writing a test if you use [interactive pause](/basics#debug).
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('/');
   pause();
 });
@@ -255,7 +255,7 @@ Here is a test checking basic [todo application](http://todomvc.com/).
 ```js
 Feature('TodoMVC');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('/examples/vue/');
   I.waitForElement('.new-todo');
   I.fillField('.new-todo', 'Write a test')
@@ -361,7 +361,7 @@ To share the same user session across different tests CodeceptJS provides [autoL
 This plugin requires some configuration but is very simple in use:
 
 ```js
-Scenario('do something with logged in user', (I, login)) => {
+Scenario('do something with logged in user', ({ I, login) }) => {
   login('user');
   I.see('Dashboard','h1');
 });
@@ -379,7 +379,7 @@ CodeceptJS allows to use several browser windows inside a test. Sometimes we are
 ```js
 const assert = require('assert');
 
-Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async (I) => {
+Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async ({ I }) => {
     I.amOnPage('/');
     const handleBeforePopup = await I.grabCurrentWindowHandle();
     const urlBeforePopup = await I.grabCurrentUrl();
@@ -474,12 +474,23 @@ To get [webdriverio browser API](https://webdriver.io/docs/api.html) inside a te
 To keep test readable provide a description of a callback inside the first parameter.
 
 ```js
-I.useWebDriverTo('do some things using native webdriverio api', async ({ browser }) => {
+I.useWebDriverTo('do something with native webdriverio api', async ({ browser }) => {
   // use browser object here
 });
 ```
 
-Because all webdriverio commands are asynchronous a callback function must be async.
+> webdriverio commands are asynchronous so a callback function must be async.
+
+WebDriver helper can be obtained in this function as well. Use this to get full access to webdriverio elements inside the test.
+
+```js
+I.useWebDriverTo('click all Save buttons', async (WebDriver) => {
+  const els = await WebDriver._locateClickable('Save');
+  for (let el of els) {
+    await el.click();
+  }
+});
+```
 
 ## Extending WebDriver
 
