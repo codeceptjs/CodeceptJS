@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.0.0-beta",
+  "version": "3.0.0-beta.2",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -56,6 +56,7 @@
     "allure-js-commons": "^1.3.2",
     "arrify": "^2.0.1",
     "axios": "^0.19.1",
+    "acorn": "^7.1.0",
     "chalk": "^1.1.3",
     "commander": "^2.20.3",
     "css-to-xpath": "^0.1.0",
@@ -92,7 +93,6 @@
     "@wdio/sauce-service": "^5.16.10",
     "@wdio/selenium-standalone-service": "^5.16.10",
     "@wdio/utils": "^5.16.15",
-    "acorn": "^7.1.0",
     "apollo-server-express": "^2.9.16",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
