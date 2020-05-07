@@ -266,7 +266,7 @@ A Puppeteer helper is passed as argument for callback, so you can combine Puppet
 ```js
 I.usePuppeteerTo('emulate offline mode', async (Puppeteer) => {
   // access internal objects browser, page, context of helper
-  await Puppeteer,page.setOfflineMode(true);
+  await Puppeteer.page.setOfflineMode(true);
   // call a method of helper, await is required here
   await Puppeteer.click('Reload');
 });
@@ -298,4 +298,3 @@ async renderPageToPdf() {
 The same way you can also access `browser` object to implement more actions or handle events.
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
-

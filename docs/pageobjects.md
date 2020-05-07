@@ -31,7 +31,8 @@ const { I, myPage, mySteps } = inject();
 
 // inject objects for a test by name
 Scenario('sample test', ({ I, myPage, mySteps }) => {
-  // ...\w+
+  // ...
+  }
 ## Actor
 
 At initialization you were asked to create custom steps file. If you accepted this option you may use `custom_steps.js` file to extend `I`. See how `login` method can be added to `I`:
@@ -106,10 +107,8 @@ it should be added to list of test arguments to be included in test:
 
 ```js
 Scenario('login', ({ I, loginPage }) => {
-
   loginPage.sendForm('john@doe.com','123456');
   I.see('Hello, John');
-
 });
 ```
 

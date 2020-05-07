@@ -206,7 +206,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 TO launch additional browser context (or incognito window) use `session` command.
 
 ```js
-Scenario('I try to open this site as anonymous user', ({  }) => {
+Scenario('I try to open this site as anonymous user', () => {
   I.amOnPage('/');
   I.dontSee('Agree to cookies');
   session('anonymous user', () => {
@@ -253,7 +253,7 @@ To enable device emulation for a specific test, create an additional browser ses
 ```js
 const { devices } = require('playwright');
 
-Scenario('website looks nice on iPhone', ({  }) => {
+Scenario('website looks nice on iPhone', () => {
   session('mobile user', devices['iPhone 6'], () => {
     I.amOnPage('/');
     I.see('Hello, iPhone user!')
@@ -331,4 +331,3 @@ async setPermissions() {
 > [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#class-browsercontext)
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
-
