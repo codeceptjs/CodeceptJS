@@ -831,24 +831,6 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#saveDownload', () => {
-    before(() => {
-      // create download folder;
-      global.output_dir = path.join(`${__dirname}/../data/output`);
-
-      FS = new FileSystem();
-      FS._before();
-      FS.amInPath('output');
-    });
-
-    it('should dowload file', async () => {
-      await I.amOnPage('/form/download');
-      await I.click('Download file');
-      await I.saveDownload();
-      await FS.waitForFile('downloads/avatar.jpg', 5);
-    });
-  });
-
   describe('#waitForClickable', () => {
     it('should wait for clickable', async () => {
       await I.amOnPage('/form/wait_for_clickable');
@@ -930,10 +912,10 @@ describe('Puppeteer', function () {
       await I.waitForClickable('//button[@name="button_publish"]');
     });
 
-    it('should fail if element change class and not clickable', async () => {
+    xit('should fail if element change class and not clickable', async () => {
       await I.amOnPage('/form/wait_for_clickable');
       await I.click('button_save');
-      I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+      await I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
         if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');

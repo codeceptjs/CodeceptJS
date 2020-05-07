@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "2.6.3",
+  "version": "3.0.0-beta",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -77,7 +77,6 @@
     "ms": "^2.1.2",
     "parse-function": "^5.6.4",
     "promise-retry": "^1.1.1",
-    "requireg": "^0.2.2",
     "resq": "^1.7.0",
     "semver": "^6.2.0",
     "sprintf-js": "^1.1.1"
@@ -128,7 +127,7 @@
     "tsd-jsdoc": "^2.3.0",
     "typescript": "^2.9.2",
     "wdio-docker-service": "^1.5.0",
-    "webdriverio": "^6.0.4",
+    "webdriverio": "^6.1.9",
     "xmldom": "^0.1.31",
     "xpath": "0.0.27"
   },

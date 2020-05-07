@@ -636,7 +636,7 @@ I.say('This is by default'); //cyan is used
 * Added `tag()` method to ScenarioConfig and FeatureConfig:
 
 ```js
-Scenario('update user profile', () => {
+Scenario('update user profile', ({  }) => {
   // test goes here
 }).tag('@slow');
 ```
@@ -775,7 +775,7 @@ This change allows using auto-completion when running a specific test.
 * [WebDriverIO][Protractor][Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
 
 ```js
-Scenario('run in different browsers', (I) => {
+Scenario('run in different browsers', ({ I }) => {
   I.amOnPage('/hello');
   I.see('Hello!');
   session('john', () => {
@@ -823,12 +823,12 @@ Feature('checkout')
   .timeout(3000)
   .retry(2);
 
-Scenario('user can order in firefox', (I) => {
+Scenario('user can order in firefox', ({ I }) => {
   // see dynamic configuration
 }).config({ browser: 'firefox' })
   .timeout(20000);
 
-Scenario('this test should throw error', (I) => {
+Scenario('this test should throw error', ({ I }) => {
   // I.amOnPage
 }).throws(new Error);
 ```

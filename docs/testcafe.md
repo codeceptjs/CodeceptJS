@@ -59,7 +59,7 @@ In the next example we will [TodoMVC application](http://todomvc.com/examples/an
 ```js
 Feature('TodoMVC');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/angularjs/#/');
   I.fillField('.new-todo', todo)
   I.pressKey('Enter');
@@ -77,7 +77,7 @@ Same syntax is the same for all helpers in CodeceptJS so to learn more about ava
 Multiple tests can be refactored to share some logic and locators. It is recommended to use PageObjects for this. For instance, in example above, we could create special actions for creating todos and checking them. If we move such methods in a corresponding object a test would look even clearer:
 
 ```js
-Scenario('Create a new todo item', async (I, TodosPage) => {
+Scenario('Create a new todo item', async ({ I, TodosPage }) => {
   I.say('Given I have an empty todo list')
 
   I.say('When I create a todo "foo"')
@@ -89,7 +89,7 @@ Scenario('Create a new todo item', async (I, TodosPage) => {
   I.saveScreenshot('create-todo-item.png')
 })
 
-Scenario('Create multiple todo items', async (I, TodosPage) => {
+Scenario('Create multiple todo items', async ({ I, TodosPage }) => {
   I.say('Given I have an empty todo list')
 
   I.say('When I create todos "foo", "bar" and "baz"')
