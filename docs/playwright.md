@@ -28,7 +28,7 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright@^1.0.1 --save
+npm install codeceptjs playwright@^1 --save
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
@@ -235,7 +235,7 @@ helpers: {
   }
 }
 ```
-To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/v1.0.1/docs/api.md#browsernewcontextoptions)
+To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions)
 
 ```js
 helpers: {
@@ -262,7 +262,7 @@ Scenario('website looks nice on iPhone', () => {
 
 ## Extending
 
-Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/v1.0.1/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
 
 Start with creating an `MyPlaywright` helper using `generate:helper` or `gh` command:
 
@@ -299,7 +299,6 @@ async setPermissions() {
 }
 ```
 
-> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v1.0.1/docs/api.md#class-browsercontext)
+> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext)
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
-

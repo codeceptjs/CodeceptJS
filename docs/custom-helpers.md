@@ -209,7 +209,7 @@ async clickOnEveryElement(locator) {
 }
 ```
 
-In this case `el` will be an instance of [ElementHandle](https://github.com/microsoft/playwright/blob/v1.0.1/docs/api.md#class-elementhandle) which is similar for Playwright & [Puppeteer](https://pptr.dev/#?product=Puppeteer&version=v2.1.1&show=api-class-elementhandle).
+In this case `el` will be an instance of [ElementHandle](https://playwright.dev/#version=master&path=docs%2Fapi.md&q=class-elementhandle) which is similar for Playwright & [Puppeteer](https://pptr.dev/#?product=Puppeteer&version=master&show=api-class-elementhandle).
 
 > ℹ There are more `_locate*` methods in each helper. Take a look on documentation of a helper you use to see which exact method it exposes.
 

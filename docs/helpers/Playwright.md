@@ -19,9 +19,9 @@ Uses [Playwright][1] library to run tests inside:
 
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `playwright` package version ^1.0.1 to be installed:
+Requires `playwright` package to be installed:
 
-    npm i playwright@^1.0.1 --save
+    npm i playwright@^1 --save
 
 ## Configuration
 
@@ -1755,7 +1755,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [11]: https://codecept.io/helpers/FileSystem
 
-[12]: https://github.com/microsoft/playwright/blob/v1.0.1/docs/api.md#browsernewpageoptions
+[12]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
 
 [13]: #fillfield
 
