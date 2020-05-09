@@ -28,9 +28,9 @@ describe('Failure in before', () => {
   });
 
   it('should trigger skipped events', (done) => {
-    exec(`${codecept_run} --verbose`, (err, stdout) => {
+    exec(`${codecept_run} --verbose`, { env: { DEBUG: 'codeceptjs:*' } }, (err, stdout, stderr) => {
       err.code.should.eql(1);
-      stdout.should.include('Emitted | test.skipped');
+      stderr.should.include('Emitted | test.skipped');
       done();
     });
   });

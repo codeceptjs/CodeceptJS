@@ -51,7 +51,6 @@ describe('Actor', () => {
       listeners++;
       step.endTime.should.not.be.null;
       step.startTime.should.not.be.null;
-      step.startTime.should.not.eql(step.endTime);
     });
 
     return I.hello().then(() => {
@@ -78,7 +77,6 @@ describe('Actor', () => {
       listeners++;
       step.endTime.should.not.be.null;
       step.startTime.should.not.be.null;
-      step.startTime.should.not.eql(step.endTime);
     });
 
     return I.die()

@@ -193,26 +193,6 @@ describe('CodeceptJS Multiple Runner', function () {
         done();
       });
     });
-
-    it('should be executed from function in file', (done) => {
-      exec(`${runner} ${_codecept_run}/codecept.bootstrapall.multiple.function.js default`, (err, stdout) => {
-        stdout.should.include('CodeceptJS'); // feature
-        stdout.should.include('"bootstrapAll" is called.');
-        stdout.should.include('"teardownAll" is called.');
-        assert(!err);
-        done();
-      });
-    });
-
-    it('should be executed from object in file', (done) => {
-      exec(`${runner} ${_codecept_run}/codecept.bootstrapall.multiple.object.js default`, (err, stdout) => {
-        stdout.should.include('CodeceptJS'); // feature
-        stdout.should.include('"bootstrapAll" is called.');
-        stdout.should.include('"teardownAll" is called.');
-        assert(!err);
-        done();
-      });
-    });
   });
 
   describe('with require parameter', () => {
