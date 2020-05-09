@@ -26,6 +26,11 @@ addons:
     - libgbm1
 services:
 - docker
+install:
+- npm ci
+cache:
+  directories:
+  - node_modules
 before_install:
 - docker pull selenium/standalone-chrome:3.141.59-oxygen
 before_script:
