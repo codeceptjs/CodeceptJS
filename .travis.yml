@@ -45,4 +45,4 @@ before_script:
 - chmod -R 777 test/data
 - php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &
 script:
-- mocha test/helper/${HELPER}_test.js
+- export DEBUG=pw:browser* && mocha test/helper/${HELPER}_test.js
