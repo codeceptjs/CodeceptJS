@@ -18,6 +18,8 @@ addons:
   apt:
     packages:
     - php5-cli
+    # This is required to run chromium
+    - libgbm1
 services:
 - docker
 before_install:
