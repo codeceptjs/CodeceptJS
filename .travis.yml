@@ -27,7 +27,7 @@ addons:
 services:
 - docker
 install:
-- npm ci
+- npm install
 cache:
   directories:
   - node_modules
