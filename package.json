@@ -64,7 +64,8 @@
     "requireg": "^0.1.8",
     "resq": "^1.6.0",
     "semver": "^6.2.0",
-    "sprintf-js": "^1.1.1"
+    "sprintf-js": "^1.1.1",
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "@codeceptjs/detox-helper": "^1.0.1",
