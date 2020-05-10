@@ -482,91 +482,12 @@ describe('Playwright', function () {
       await I.pressKey(['Shift', 'Subtract']);
       await I.pressKey('.');
       await I.pressKey(['Shift', '.']);
-      await I.pressKey(['Shift', 'Decimal']);
-      await I.pressKey(['Shift', 'Period']);
       await I.pressKey('/');
       await I.pressKey(['Shift', '/']);
       await I.pressKey(['Shift', 'Divide']);
       await I.pressKey(['Shift', 'Slash']);
 
-      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
-    });
-
-    it('should show correct number key when Shift modifier is active', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField('Name', '');
-
-      await I.pressKey('0');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('0');
-      await I.pressKey('Digit0');
-      await I.pressKey('Numpad0');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('1');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('1');
-      await I.pressKey('Digit1');
-      await I.pressKey('Numpad1');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('2');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('2');
-      await I.pressKey('Digit2');
-      await I.pressKey('Numpad2');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('3');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('3');
-      await I.pressKey('Digit3');
-      await I.pressKey('Numpad3');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('4');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('4');
-      await I.pressKey('Digit4');
-      await I.pressKey('Numpad4');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('5');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('5');
-      await I.pressKey('Digit5');
-      await I.pressKey('Numpad5');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('6');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('6');
-      await I.pressKey('Digit6');
-      await I.pressKey('Numpad6');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('7');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('7');
-      await I.pressKey('Digit7');
-      await I.pressKey('Numpad7');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('8');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('8');
-      await I.pressKey('Digit8');
-      await I.pressKey('Numpad8');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('9');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('9');
-      await I.pressKey('Digit9');
-      await I.pressKey('Numpad9');
-      await I.pressKeyUp('Shift');
-
-      await I.seeInField('Name', '0))01!!12@@23##34$$45%%56^^67&&78**89((9');
+      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>/?/?');
     });
   });
 
@@ -617,26 +538,6 @@ describe('Playwright', function () {
       .then(() => I.waitForValue('.inputbox', 'Brisbane', 4))
       .then(() => I.seeInField('#text', 'Brisbane'))
       .then(() => I.seeInField('#text2', 'London')));
-  });
-
-
-  describe('#grabHTMLFrom', () => {
-    it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//title'))
-      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
-
-    it('should grab inner html from an element using id query', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('#area1'))
-      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
-
-    it('should grab inner html from multiple elements', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//a'))
-      .then(html => assert.equal(html.length, 5)));
-
-    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo({ frame: 'iframe' }))
-      .then(() => I.grabHTMLFrom('#new-tab'))
-      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
@@ -717,6 +618,16 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#usePlaywrightTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePlaywrightTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+  });
+
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
       await I.amOnPage('https://www.google.com');
@@ -740,7 +651,7 @@ describe('Playwright', function () {
     });
   });
 
-  xdescribe('#handleDownloads', () => {
+  describe('#handleDownloads', () => {
     before(() => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -752,7 +663,7 @@ describe('Playwright', function () {
 
     it('should dowload file', async () => {
       await I.amOnPage('/form/download');
-      await I.handleDownloads();
+      await I.handleDownloads('downloads/avatar.jpg');
       await I.click('Download file');
       await FS.waitForFile('downloads/avatar.jpg', 5);
     });

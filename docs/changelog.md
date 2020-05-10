@@ -7,6 +7,26 @@ layout: Section
 
 # Releases
 
+## 2.6.2
+
+* [WebDriver][Puppeteer] Added `forceClick` method to emulate click event instead of using native events.
+* **[Playwright]** Updated to 0.14
+* **[Puppeteer]** Updated to Puppeteer v3.0
+* **[wdio]** Fixed undefined output directory for wdio plugns. Fix By **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Playwright]** Introduced `handleDownloads` method to download file. Please note, this method has slightly different API than the same one in Puppeteer.
+* **[allure]** Fixed undefined output directory for allure plugin on using custom runner. Fix by **[charliepradeep](https://github.com/charliepradeep)**
+* **[WebDriver]** Fixed `waitForEnabled` fix for webdriver 6. Fix by **[dsharapkou](https://github.com/dsharapkou)**
+* Workers: Fixed negative failure result if use scenario with the same names. Fix by **[Vorobeyko](https://github.com/Vorobeyko)**
+* **[MockRequest]** Updated documentation to match new helper version
+* Fixed: skipped tests are not reported if a suite failed in `before`. Refer [#2349](https://github.com/Codeception/CodeceptJS/issues/2349) & [#2354](https://github.com/Codeception/CodeceptJS/issues/2354). Fix by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+
+## 2.6.1
+
+* [screenshotOnFail plugin] Fixed saving screenshot of active session.
+* [screenshotOnFail plugin] Fix issue [#2301](https://github.com/Codeception/CodeceptJS/issues/2301) when having the flag `uniqueScreenshotNames`=true results in `undefined` in screenshot file name by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[WebDriver]** Fixed `waitForElement` not applying the optional second argument to override the default timeout in webdriverio 6. Fix by **[Mooksc](https://github.com/Mooksc)**
+* **[WebDriver]** Updated `waitUntil` method which is used by all of the wait* functions. This updates the `waitForElement` by the same convention used to update `waitForVisible` and `waitInUrl` to be compatible with both WebDriverIO v5 & v6. See [#2313](https://github.com/Codeception/CodeceptJS/issues/2313) by **[Mooksc](https://github.com/Mooksc)**
+
 ## 2.6.0
 
 * **[Playwright] Updated to Playwright 0.12** by **[Georgegriff](https://github.com/Georgegriff)**.
@@ -29,6 +49,7 @@ I.executeScript(({x, y}) => x + y, {x, y});
   * `click` - automatically waits for element to become clickable (visible, not animated) and waits for navigation.
   * `clickLink` - deprecated
   * `waitForClickable` - deprecated
+  * `forceClick` - added
   * Added support for custom locators. See [#2277](https://github.com/Codeception/CodeceptJS/issues/2277)
   * Introduced [device emulation](/playwright/#device-emulation):
     * globally via `emulate` config option
@@ -615,7 +636,7 @@ I.say('This is by default'); //cyan is used
 * Added `tag()` method to ScenarioConfig and FeatureConfig:
 
 ```js
-Scenario('update user profile', () => {
+Scenario('update user profile', ({  }) => {
   // test goes here
 }).tag('@slow');
 ```
@@ -754,7 +775,7 @@ This change allows using auto-completion when running a specific test.
 * [WebDriverIO][Protractor][Multiple Sessions](https://codecept.io/acceptance/#multiple-sessions). Run several browser sessions in one test. Introduced `session` command, which opens additional browser window and closes it after a test.
 
 ```js
-Scenario('run in different browsers', (I) => {
+Scenario('run in different browsers', ({ I }) => {
   I.amOnPage('/hello');
   I.see('Hello!');
   session('john', () => {
@@ -802,12 +823,12 @@ Feature('checkout')
   .timeout(3000)
   .retry(2);
 
-Scenario('user can order in firefox', (I) => {
+Scenario('user can order in firefox', ({ I }) => {
   // see dynamic configuration
 }).config({ browser: 'firefox' })
   .timeout(20000);
 
-Scenario('this test should throw error', (I) => {
+Scenario('this test should throw error', ({ I }) => {
   // I.amOnPage
 }).throws(new Error);
 ```

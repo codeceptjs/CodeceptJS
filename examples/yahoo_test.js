@@ -1,6 +1,6 @@
 Feature('Yahoo test');
 
-Scenario('Nightmare basic test', (I) => {
+Scenario('Nightmare basic test', ({ I }) => {
   I.amOnPage('http://yahoo.com');
   I.fillField('p', 'github nightmare');
   I.click('Search Web');

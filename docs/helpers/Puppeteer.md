@@ -633,8 +633,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 
 Returns **[Promise][13]&lt;any>** Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 
@@ -666,8 +666,8 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 
 Returns **[Promise][13]&lt;any>** If a function returns a Promise It will wait for it resolution.
 
@@ -696,11 +696,47 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 This action supports [React locators](https://codecept.io/react#locators)
 
 
+### forceClick
+
+Perform an emulated click on a link or a button, given by a locator.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
+
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.forceClick('Logout');
+// button of form
+I.forceClick('Submit');
+// CSS button
+I.forceClick('#form input[type=submit]');
+// XPath
+I.forceClick('//form/*[@type=submit]');
+// link in context
+I.forceClick('Logout', '#nav');
+// using strict locator
+I.forceClick({css: 'nav a.login'});
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+ 
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -713,6 +749,25 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 Returns **[Promise][13]&lt;[string][8]>** attribute value
 
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
+### grabAttributeFromAll
+
+Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let hints = await I.grabAttributeFromAll('.tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][8]** attribute name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -750,6 +805,7 @@ Returns **[Promise][13]&lt;[string][8]>** attribute valueReturns cookie in JSON 
 
 Grab CSS property for given locator
 Resumes test execution, so **should be used inside an async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
@@ -762,6 +818,25 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
 Returns **[Promise][13]&lt;[string][8]>** CSS value
 
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
+### grabCssPropertyFromAll
+
+Grab array of CSS properties for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+-   `cssProperty` **[string][8]** CSS property name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** CSS value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -834,7 +909,7 @@ Returns **[object][6]** Element bounding rectangle
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - an array of HTMLs returned.
+If more than one element is found - HTML of first element is returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -846,6 +921,22 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `element` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;[string][8]>** HTML code for an element
+
+### grabHTMLFromAll
+
+Retrieves all the innerHTML from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTMLs = await I.grabHTMLFromAll('.post');
+```
+
+#### Parameters
+
+-   `locator`  
+-   `element` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -917,14 +1008,32 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;([string][8] | [Array][14]&lt;[string][8]>)>** attribute value
+Returns **[Promise][13]&lt;[string][8]>** attribute value
 
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
+### grabTextFromAll
+
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -945,6 +1054,7 @@ Returns **[Promise][13]&lt;[string][8]>** title
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -955,6 +1065,21 @@ let email = await I.grabValueFrom('input[name=email]');
 -   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;[string][8]>** attribute value
+
+### grabValueFromAll
+
+Retrieves an array of value from a form located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let inputs = await I.grabValueFromAll('//form/input');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 ### handleDownloads
 
@@ -1562,6 +1687,26 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][8] | [object][6])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+### usePuppeteerTo
+
+Use Puppeteer API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`page`][20], [`browser`][21] } from Puppeteer API are available.
+
+```js
+I.usePuppeteerTo('emulate offline mode', async ({ page }) {
+  await page.setOfflineMode(true);
+});
+```
+
+#### Parameters
+
+-   `description` **[string][8]** used to show in logs.
+-   `fn` **[function][12]** async function that is executed with Puppeteer as argument
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -1750,7 +1895,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][20]. 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][22]. 
 
 ### waitInUrl
 
@@ -1866,4 +2011,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[20]: https://codecept.io/react
+[20]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
+
+[21]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
+
+[22]: https://codecept.io/react

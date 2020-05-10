@@ -1,3 +1,79 @@
+## 3.0.0-beta
+
+> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
+
+* **NodeJS 12+ required**
+* **BREAKING CHANGE:** Syntax for tests has changed.
+
+
+```js
+// Previous
+Scenario('title', (I, loginPage) => {});
+
+// Current
+Scenario('title', ({ I, loginPage }) => {});
+```
+
+* **BREAKING CHANGE:** [WebDriver][Protractor][Puppeteer][Playwright][Nightmare] `grab*` functions unified:
+  * `grab*From` => **returns single value** from element or throws error when no matchng elements found
+  * `grab*FromAll` => returns array of values, or empty array when no matching elements
+* Public API for workers introduced by @koushikmohan1996. [Customize parallel execution](https://github.com/Codeception/CodeceptJS/blob/codeceptjs-v3.0/docs/parallel.md#custom-parallel-execution) with workers by building custom scripts.
+
+* [Playwright] Added `usePlaywrightTo` method to access Playwright API in tests directly:
+
+```js
+I.usePlaywrightTo('do something special', async ({ page }) => {
+  // use page or browser objects here
+});
+```
+
+* [Puppeteer] Introduced `usePuppeteerTo` method to access Puppeteer API:
+
+```js
+I.usePuppeteerTo('do something special', async ({ page, browser }) => {
+  // use page or browser objects here
+});
+```
+
+* [WebDriver] Introduced `useWebDriverTo` method to access webdriverio API:
+
+```js
+I.useWebDriverTo('do something special', async ({ browser }) => {
+  // use browser object here
+});
+```
+
+* [Protractor] Introduced `useProtractorTo` method to access protractor API
+* `tryTo` plugin introduced. Allows conditional action execution:
+
+```js
+const isSeen = await tryTo(() => {
+  I.see('Some text');
+});
+// we are not sure if cookie bar is displayed, but if so - accept cookies
+tryTo(() => I.click('Accept', '.cookies'));
+```
+* **Possible breaking change** In semantic locators `[` char indicates CSS selector.
+
+
+## 2.6.3
+
+* [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes #2337 by @mirao
+* [allure plugin] Fixed reporting of tests skipped by failure in before hook. Refer to #2349 & #2354. Fix by @koushikmohan1996
+
+## 2.6.2
+
+* [WebDriver][Puppeteer] Added `forceClick` method to emulate click event instead of using native events.
+* [Playwright] Updated to 0.14
+* [Puppeteer] Updated to Puppeteer v3.0
+* [wdio] Fixed undefined output directory for wdio plugns. Fix By @PeterNgTr
+* [Playwright] Introduced `handleDownloads` method to download file. Please note, this method has slightly different API than the same one in Puppeteer.
+* [allure] Fixed undefined output directory for allure plugin on using custom runner. Fix by @charliepradeep
+* [WebDriver] Fixed `waitForEnabled` fix for webdriver 6. Fix by @dsharapkou
+* Workers: Fixed negative failure result if use scenario with the same names. Fix by @Vorobeyko
+* [MockRequest] Updated documentation to match new helper version
+* Fixed: skipped tests are not reported if a suite failed in `before`. Refer #2349 & #2354. Fix by @koushikmohan1996
+
 ## 2.6.1
 
 * [screenshotOnFail plugin] Fixed saving screenshot of active session.

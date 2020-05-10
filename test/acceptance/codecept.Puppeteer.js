@@ -7,7 +7,7 @@ module.exports.config = {
   helpers: {
     Puppeteer: {
       url: TestHelper.siteUrl(),
-      show: true,
+      show: false,
       chrome: {
         args: [
           '--no-sandbox',
@@ -19,7 +19,9 @@ module.exports.config = {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: './output',
     },
-    MockRequest: {},
+    MockRequest: {
+      require: '@codeceptjs/mock-request',
+    },
   },
   include: {},
   bootstrap: false,

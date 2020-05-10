@@ -14,7 +14,7 @@ Type in commands to complete the test scenario.
 Successful commands will be saved into a file.
 
 ```js
-Scenario('Checkout test', () => {
+Scenario('Checkout test', ({ I }) => {
   I.amOnPage('/checkout');
   pause();
 })
@@ -68,7 +68,7 @@ Features:
 
 Each executed step will be printed on screen when running with `--steps`
 ```js
-Scenario('Checkout test', () => {
+Scenario('Checkout test', ({ I }) => {
   I.amOnPage('/checkout');
   I.fillField('First name', 'davert');
   I.fillField('#lastName', 'mik');
@@ -90,7 +90,7 @@ const faker = require('faker');                               // Use 3rd-party J
 
 Feature('Store');
 
-Scenario('Create a new store', async (I, login, SettingsPage) => {
+Scenario('Create a new store', async ({ I, login, SettingsPage }) => {
   const storeName = faker.lorem.slug();
   login('customer');                                          // Login customer from saved cookies
   I.mockRequest('GET', '/support-chat');                      // Mock HTTP requests with Polly

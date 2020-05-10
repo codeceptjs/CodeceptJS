@@ -391,12 +391,14 @@ this.helpers['WebDriver']._locateCheckable('I agree with terms and conditions').
 Find a clickable element by providing human readable text:
 
 ```js
-this.helpers['WebDriver']._locateClickable('Next page').then // ...
+const els = await this.helpers.WebDriver._locateClickable('Next page');
+const els = await this.helpers.WebDriver._locateClickable('Next page', '.pages');
 ```
 
 #### Parameters
 
 -   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+-   `context`  
 
 ### _locateFields
 
@@ -810,8 +812,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 
 Returns **[Promise][25]&lt;any>** 
 
@@ -843,8 +845,8 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
+-   `fn` **([string][19] | [function][24])** function to be executed in browser context.
 
 Returns **[Promise][25]&lt;any>** Wraps [execute][26] command.
 
@@ -873,6 +875,42 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 This action supports [React locators](https://codecept.io/react#locators)
 
 
+### forceClick
+
+Perform an emulated click on a link or a button, given by a locator.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
+
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.forceClick('Logout');
+// button of form
+I.forceClick('Submit');
+// CSS button
+I.forceClick('#form input[type=submit]');
+// XPath
+I.forceClick('//form/*[@type=submit]');
+// link in context
+I.forceClick('Logout', '#nav');
+// using strict locator
+I.forceClick({css: 'nav a.login'});
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][19]? | [object][18])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+ 
+
 ### grabAllWindowHandles
 
 Get all Window Handles.
@@ -885,8 +923,8 @@ const windows = await I.grabAllWindowHandles();
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -897,8 +935,23 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][19]** attribute name.
 
-Returns **[Promise][25]&lt;[string][19]>** attribute value
-Appium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+Returns **[Promise][25]&lt;[string][19]>** attribute valueAppium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+
+### grabAttributeFromAll
+
+Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let hints = await I.grabAttributeFromAll('.tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][19]** attribute name.
+
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** attribute valueAppium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
 
 ### grabBrowserLogs
 
@@ -909,7 +962,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][25]&lt;([string][19] | [undefined][27])>** 
+Returns **[Promise][25]&lt;([string][19] | [undefined][28])>** 
 
 ### grabCookie
 
@@ -932,6 +985,7 @@ Returns **[Promise][25]&lt;[string][19]>** attribute value
 
 Grab CSS property for given locator
 Resumes test execution, so **should be used inside an async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
@@ -943,6 +997,22 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `cssProperty` **[string][19]** CSS property name.
 
 Returns **[Promise][25]&lt;[string][19]>** CSS value
+
+### grabCssPropertyFromAll
+
+Grab array of CSS properties for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+-   `cssProperty` **[string][19]** CSS property name.
+
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1005,7 +1075,7 @@ let geoLocation = await I.grabGeoLocation();
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - an array of HTMLs returned.
+If more than one element is found - HTML of first element is returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -1017,6 +1087,22 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `element` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
 
 Returns **[Promise][25]&lt;[string][19]>** HTML code for an element
+
+### grabHTMLFromAll
+
+Retrieves all the innerHTML from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTMLs = await I.grabHTMLFromAll('.post');
+```
+
+#### Parameters
+
+-   `locator`  
+-   `element` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1081,13 +1167,28 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 #### Parameters
 
 -   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][25]&lt;([string][19] | [Array][28]&lt;[string][19]>)>** attribute value
+Returns **[Promise][25]&lt;[string][19]>** attribute value
+
+### grabTextFromAll
+
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** attribute value
 
 ### grabTitle
 
@@ -1104,6 +1205,7 @@ Returns **[Promise][25]&lt;[string][19]>** title
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -1114,6 +1216,21 @@ let email = await I.grabValueFrom('input[name=email]');
 -   `locator` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][25]&lt;[string][19]>** attribute value
+
+### grabValueFromAll
+
+Retrieves an array of value from a form located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let inputs = await I.grabValueFromAll('//form/input');
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** attribute value
 
 ### moveCursorTo
 
@@ -1209,7 +1326,7 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][19] | [Array][28]&lt;[string][19]>)** key or array of keys to press._Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+-   `key` **([string][19] | [Array][27]&lt;[string][19]>)** key or array of keys to press._Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
 
 ### pressKeyDown
 
@@ -1639,7 +1756,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][19] | [Array][28]&lt;any>)** visible text or value of option.
+-   `option` **([string][19] | [Array][27]&lt;any>)** visible text or value of option.
 
 ### setCookie
 
@@ -1659,7 +1776,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][18] | [array][28])** a cookie object or array of cookie objects.Uses Selenium's JSON [cookie
+-   `cookie` **([object][18] | [array][27])** a cookie object or array of cookie objects.Uses Selenium's JSON [cookie
     format][33].
 
 ### setGeoLocation
@@ -1751,7 +1868,7 @@ I.type(['T', 'E', 'X', 'T']);
 #### Parameters
 
 -   `keys`  
--   `key` **([string][19] | [Array][28]&lt;[string][19]>)** or array of keys to type.
+-   `key` **([string][19] | [Array][27]&lt;[string][19]>)** or array of keys to type.
     Type out given array of keys or a string of text
 
 ### uncheckOption
@@ -1772,6 +1889,27 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][19] | [object][18])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][19]? | [object][18])** (optional, `null` by default) element located by CSS | XPath | strict locator.
     Appium: not tested 
+
+### useWebDriverTo
+
+Use [webdriverio][34] API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`browser`][34]) } object from WebDriver API is available.
+
+```js
+I.useWebDriverTo('open multiple windows', async ({ browser }) {
+   // create new window
+   await browser.newWindow('https://webdriver.io');
+});
+```
+
+#### Parameters
+
+-   `description` **[string][19]** used to show in logs.
+-   `fn` **[function][24]** async functuion that executed with WebDriver helper as argument
 
 ### wait
 
@@ -1858,7 +1996,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 -   `fn` **([string][19] | [function][24])** to be executed in browser context.
--   `argsOrSec` **([Array][28]&lt;any> | [number][22])?** (optional, `1` by default) arguments for function or seconds. 
+-   `argsOrSec` **([Array][27]&lt;any> | [number][22])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][22]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
@@ -2043,9 +2181,9 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [26]: http://webdriver.io/api/protocol/execute.html
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
 [29]: #fillfield
 
@@ -2056,3 +2194,5 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 [32]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
 [33]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+
+[34]: https://webdriver.io/docs/api.html

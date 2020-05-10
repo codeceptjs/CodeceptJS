@@ -1,6 +1,6 @@
 Feature('Within');
 
-Scenario('Check within without generator', (I) => {
+Scenario('Check within without generator', ({ I }) => {
   I.smallPromise();
   within('blabla', () => {
     I.smallPromise();
@@ -24,7 +24,7 @@ Scenario('Check within with generator. Should stop test execution after fail in 
   throw new Error('fail');
 });
 
-Scenario('Check within with async/await. Await is first in order', async (I) => {
+Scenario('Check within with async/await. Await is first in order', async ({ I }) => {
   I.smallPromise();
   const test = await I.smallYield();
   console.log(test, 'await');
@@ -35,7 +35,7 @@ Scenario('Check within with async/await. Await is first in order', async (I) => 
   });
 });
 
-Scenario('Check within with async/await. Await is second in order', async (I) => {
+Scenario('Check within with async/await. Await is second in order', async ({ I }) => {
   I.smallPromise();
   const test = await I.smallYield();
   console.log(test, 'await');

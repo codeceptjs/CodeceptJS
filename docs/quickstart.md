@@ -92,7 +92,7 @@ npx codeceptjs gt
 ```js
 Feature('My First Test');
 
-Scenario('test something', (I) => {
+Scenario('test something', ({ I }) => {
 
 });
 ```
@@ -102,7 +102,7 @@ Scenario('test something', (I) => {
 ```js
 Feature('My First Test');
 
-Scenario('test something', (I) => {
+Scenario('test something', ({ I }) => {
   I.amOnPage('https://github.com');
   I.see('GitHub');
 });
