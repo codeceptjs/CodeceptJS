@@ -8,8 +8,6 @@ title: Internal API
 In this guide we will overview internal API of CodeceptJS.
 This knowledge is required for customization, writing plugins, etc.
 
-> **Use local CodeceptJS installation to get access to `codeceptjs` module**
-
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally. Otherwise, you can load codeceptjs API via global `codeceptjs` object:
 
 ```js
@@ -240,7 +238,7 @@ const config = {
     WebDriver: { 
       browser: 'chrome', 
       url: 'http://localhost' 
-    } 
+    }
   }
 };
 
@@ -264,3 +262,5 @@ const opts = { steps: true };
   }    
 })();
 ```
+
+> Also, you can run tests inside workers in a custom scripts. Please refer to [parallel execution](/parallel) guide for more details.
