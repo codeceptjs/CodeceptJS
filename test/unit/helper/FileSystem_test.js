@@ -1,5 +1,6 @@
-const FileSystem = require('../../../lib/helper/FileSystem');
 const path = require('path');
+
+const FileSystem = require('../../../lib/helper/FileSystem');
 
 let fs;
 
@@ -20,6 +21,14 @@ describe('FileSystem', () => {
   it('should open dirs', () => {
     fs.amInPath('data');
     fs.dir.should.eql(path.join(global.codecept_dir, '/data'));
+  });
+
+  it('should see file', () => {
+    fs.seeFile('data/fs_sample.txt');
+    fs.amInPath('data');
+    fs.seeFile('fs_sample.txt');
+    fs.grabFileNames().should.contain('fs_sample.txt');
+    fs.seeFileNameMatching('sample');
   });
 
   it('should check file contents', () => {

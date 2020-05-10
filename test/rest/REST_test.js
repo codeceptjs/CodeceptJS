@@ -1,9 +1,10 @@
+const path = require('path');
+const fs = require('fs');
+
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
 
 const api_url = TestHelper.jsonServerUrl();
-const path = require('path');
-const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
@@ -126,6 +127,27 @@ describe('REST', () => {
 
       response.config.headers.should.have.property('HTTP_X_REQUESTED_WITH');
       response.config.headers.HTTP_X_REQUESTED_WITH.should.eql('xmlhttprequest');
+    });
+
+    it('should set Content-Type header if data is string and Content-Type is omitted', async () => {
+      const response = await I.sendPostRequest(
+        '/user',
+        'string of data',
+      );
+
+      response.config.headers.should.have.property('Content-Type');
+      response.config.headers['Content-Type'].should.eql('application/x-www-form-urlencoded');
+    });
+
+    it('should respect any passsed in Content-Type header', async () => {
+      const response = await I.sendPostRequest(
+        '/user',
+        'bad json data',
+        { 'Content-Type': 'application/json' },
+      );
+
+      response.config.headers.should.have.property('Content-Type');
+      response.config.headers['Content-Type'].should.eql('application/json');
     });
   });
 

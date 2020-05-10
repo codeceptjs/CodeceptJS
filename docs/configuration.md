@@ -1,8 +1,9 @@
 ---
-id: configuration
+permalink: /configuration
 title: Configuration
 ---
 
+# Configuration
 
 CodeceptJS configuration is set in `codecept.conf.js` file.
 
@@ -10,7 +11,7 @@ After running `codeceptjs init` it should be saved in test root.
 
 Here is an overview of available options with their defaults:
 
-* **tests**: `"./*_test.js"` - pattern to locate tests
+* **tests**: `"./*_test.js"` - pattern to locate tests. Allows to enter [glob pattern](https://github.com/isaacs/node-glob).
 * **grep**: - pattern to filter tests by name
 * **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require` paths
 * **timeout**: `10000` - default tests timeout
@@ -98,6 +99,8 @@ codeceptjs run --config=./path/to/my/config.js
 
 ## Common Configuration Patterns
 
+> 📺 [Watch this material](https://www.youtube.com/watch?v=onBnfo_rJa4&t=4s) on YouTube
+
 [`@codeceptjs/configure` package](https://github.com/codecept-js/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
 
 Install it and enable to easily switch to headless/window mode, change window size, etc.
@@ -115,7 +118,7 @@ exports.config = {
 
 ## Profile
 
-Using values from `process.profile` you can change the config dynamically.
+Using `process.env.profile` you can change the config dynamically.
 It provides value of `--profile` option passed to runner.
 Use its value to change config value on the fly.
 
@@ -131,7 +134,7 @@ exports.config = {
     WebDriver: {
       url: 'http://localhost:3000',
       // load value from `profile`
-      browser: process.profile || 'firefox'
+      browser: process.env.profile || 'firefox'
 
     }
   }

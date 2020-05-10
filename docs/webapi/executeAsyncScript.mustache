@@ -20,4 +20,5 @@ let val = await I.executeAsyncScript(function(url, done) {
 ```
 
 @param {string|function} fn function to be executed in browser context.
-@param ...args args to be passed to function.
+@param {...any} args to be passed to function.
+@return {Promise<any>}

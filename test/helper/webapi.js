@@ -52,6 +52,7 @@ module.exports.tests = function () {
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
       if (isHelper('Nightmare')) return;
+
       try {
         await I.amOnPage('/info');
         await I.waitInUrl('/info');
@@ -63,6 +64,7 @@ module.exports.tests = function () {
 
     it('should wait for the entire URL to match the expected', async () => {
       if (isHelper('Nightmare')) return;
+
       try {
         await I.amOnPage('/info');
         await I.waitUrlEquals('/info');
@@ -234,6 +236,46 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#forceClick', () => {
+    beforeEach(function () {
+      if (isHelper('Protractor')) this.skip();
+      if (isHelper('TestCafe')) this.skip();
+    });
+
+    it('should forceClick by inner text', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('More info');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+
+    it('should forceClick by css', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('#link');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+
+    it('should forceClick by xpath', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('//a[@id="link"]');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+
+    it('should forceClick on context', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('More info', 'body>p');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+  });
+
+
   // Could not get double click to work
   describe('#doubleClick', () => {
     it('it should doubleClick', async () => {
@@ -306,6 +348,8 @@ module.exports.tests = function () {
     // testcafe always says "xpath is not defined"
     // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
     it.skip('should check option by context', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       await I.amOnPage('/form/example1');
       await I.checkOption('Remember me next time', '.rememberMe');
       await I.click('Login');
@@ -358,8 +402,8 @@ module.exports.tests = function () {
     });
 
     // Could not get multiselect to work with testcafe
-    it('should select multiple options', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should select multiple options', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/select_multiple');
       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex']);
@@ -384,16 +428,19 @@ module.exports.tests = function () {
     });
 
 
-    it('should return value from sync script in iframe', async () => {
-      if (isHelper('TestCafe') || isHelper('Nightmare')) return; // TODO Not yet implemented
+    it('should return value from sync script in iframe', async function () {
+      if (isHelper('Nightmare')) return; // TODO Not yet implemented
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+
       await I.amOnPage('/iframe');
       await I.switchTo('iframe');
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
       assert.equal(val, 'Information');
     });
 
-    it('should execute async script', async () => {
-      if (isHelper('TestCafe')) return; // TODO Not yet implemented
+    it('should execute async script', async function () {
+      if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Playwright')) return; // It won't be implemented
 
       await I.amOnPage('/');
       const val = await I.executeAsyncScript((val, done) => {
@@ -572,8 +619,8 @@ module.exports.tests = function () {
       assert.equal(vals[2], 'Third');
     });
 
-    it('should grab html from page', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should grab html from page', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/info');
       const val = await I.grabHTMLFrom('#grab-multiple');
@@ -605,7 +652,6 @@ module.exports.tests = function () {
     });
 
     it('should grab attribute from element', async () => {
-      if (isHelper('TestCafe')) return;
       await I.amOnPage('/search');
       const val = await I.grabAttributeFrom({
         css: 'form',
@@ -614,8 +660,6 @@ module.exports.tests = function () {
     });
 
     it('should grab custom attribute from element', async () => {
-      if (isHelper('TestCafe')) return;
-
       await I.amOnPage('/form/example4');
       const val = await I.grabAttributeFrom({
         css: '.navbar-toggle',
@@ -625,8 +669,8 @@ module.exports.tests = function () {
   });
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
-    it('should check page title', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should check page title', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/');
       await I.seeInTitle('TestEd Beta 2.0');
@@ -635,8 +679,8 @@ module.exports.tests = function () {
       await I.dontSeeInTitle('TestEd Beta 2.0');
     });
 
-    it('should grab page title', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should grab page title', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/');
       const val = await I.grabTitle();
@@ -649,7 +693,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/file');
       await I.attachFile('#avatar', 'app/avatar.jpg');
       await I.click('Submit');
-      await I.amOnPage('/');
+      await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
@@ -657,9 +701,11 @@ module.exports.tests = function () {
 
     it('should upload file located by label', async () => {
       if (isHelper('Nightmare')) return;
+
       await I.amOnPage('/form/file');
       await I.attachFile('Avatar', 'app/avatar.jpg');
       await I.click('Submit');
+      await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
@@ -672,8 +718,6 @@ module.exports.tests = function () {
     });
 
     it('should create a screenshot file in output dir', async () => {
-      if (isHelper('TestCafe')) return;
-
       const sec = (new Date()).getUTCMilliseconds();
       await I.amOnPage('/');
       await I.saveScreenshot(`screenshot_${sec}.png`);
@@ -681,8 +725,6 @@ module.exports.tests = function () {
     });
 
     it('should create a full page screenshot file in output dir', async () => {
-      if (isHelper('TestCafe')) return;
-
       const sec = (new Date()).getUTCMilliseconds();
       await I.amOnPage('/');
       await I.saveScreenshot(`screenshot_full_${+sec}.png`, true);
@@ -696,6 +738,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.seeCookie('auth');
       await I.dontSeeCookie('auuth');
@@ -712,10 +755,12 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.setCookie({
         name: 'user',
         value: 'davert',
+        url: 'http://localhost',
       });
 
       const cookies = await I.grabCookie();
@@ -729,6 +774,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.clearCookie();
       await I.dontSeeCookie('auth');
@@ -750,8 +796,8 @@ module.exports.tests = function () {
       await I.see('Dynamic text');
     });
 
-    it('should fail if no context', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should fail if no context', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       let failed = false;
       await I.amOnPage('/dynamic');
@@ -764,8 +810,8 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should fail if text doesn\'t contain', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should fail if text doesn\'t contain', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       let failed = false;
       await I.amOnPage('/dynamic');
@@ -777,8 +823,8 @@ module.exports.tests = function () {
       assert.ok(failed);
     });
 
-    it('should fail if text is not in element', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should fail if text is not in element', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       let failed = false;
       await I.amOnPage('/dynamic');
@@ -791,12 +837,16 @@ module.exports.tests = function () {
     });
 
     it('should wait for text after timeout', async () => {
-      if (isHelper('TestCafe')) return;
-
       await I.amOnPage('/timeout');
       await I.dontSee('Timeout text');
       await I.waitForText('Timeout text', 31, '#text');
       await I.see('Timeout text');
+    });
+
+    it('should wait for text located by XPath', async () => {
+      await I.amOnPage('/dynamic');
+      await I.dontSee('Dynamic text');
+      await I.waitForText('Dynamic text', 5, '//div[@id="text"]');
     });
   });
 
@@ -904,8 +954,8 @@ module.exports.tests = function () {
   });
 
   describe('#waitForDetached', () => {
-    it('should throw an error if the element still exists in DOM', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should throw an error if the element still exists in DOM', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/wait_detached');
       await I.see('Step One Button');
@@ -919,8 +969,8 @@ module.exports.tests = function () {
       }
     });
 
-    it('should throw an error if the element still exists in DOM by XPath', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should throw an error if the element still exists in DOM by XPath', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/wait_detached');
       await I.see('Step One Button');
@@ -934,8 +984,8 @@ module.exports.tests = function () {
       }
     });
 
-    it('should wait for element to be removed from DOM', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should wait for element to be removed from DOM', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/wait_detached');
       await I.see('Step Two Button');
@@ -944,8 +994,8 @@ module.exports.tests = function () {
       await I.dontSeeElementInDOM('#step_2');
     });
 
-    it('should wait for element to be removed from DOM by XPath', async () => {
-      if (isHelper('TestCafe')) return;
+    it('should wait for element to be removed from DOM by XPath', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/wait_detached');
       await I.seeElement('//div[@id="step_2"]');
@@ -1004,8 +1054,6 @@ module.exports.tests = function () {
     });
 
     it('should execute within block 2', async () => {
-      if (isHelper('TestCafe')) return;
-
       await I.amOnPage('/form/example4');
       await I.fillField('Hasło', '12345');
       await I._withinBegin({ xpath: '//div[@class="form-group"][2]' });
@@ -1019,8 +1067,8 @@ module.exports.tests = function () {
       assert.equal(input, '12345');
     });
 
-    it('within should respect context in see', async () => {
-      if (isHelper('TestCafe')) return;
+    it('within should respect context in see', async function () {
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/example4');
       await I.see('Rejestracja', 'fieldset');
@@ -1041,6 +1089,7 @@ module.exports.tests = function () {
 
     it('within should respect context in see when using nested frames', async function () {
       if (isHelper('TestCafe')) this.skip();
+
       await I.amOnPage('/iframe_nested');
       await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
@@ -1067,9 +1116,9 @@ module.exports.tests = function () {
   });
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
-    it('should scroll inside an iframe', async () => {
+    it('should scroll inside an iframe', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/iframe');
       await I.resizeWindow(500, 700);
@@ -1129,20 +1178,29 @@ module.exports.tests = function () {
   });
 
   describe('#grabCssPropertyFrom', () => {
-    it('should grab css property for given element', async () => {
+    it('should grab css property for given element', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/doubleclick');
       const css = await I.grabCssPropertyFrom('#block', 'height');
       assert.equal(css, '100px');
     });
+
+    it('should grab camelcased css properies', async () => {
+      if (isHelper('Nightmare')) return;
+      if (isHelper('TestCafe')) return;
+
+      await I.amOnPage('/form/doubleclick');
+      const css = await I.grabCssPropertyFrom('#block', 'user-select');
+      assert.equal(css, 'text');
+    });
   });
 
   describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', async () => {
+    it('should check attributes values for given element', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       try {
         await I.amOnPage('/info');
@@ -1162,9 +1220,9 @@ module.exports.tests = function () {
       }
     });
 
-    it('should check attributes values for several elements', async () => {
+    it('should check attributes values for several elements', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       try {
         await I.amOnPage('/');
@@ -1187,9 +1245,9 @@ module.exports.tests = function () {
   });
 
   describe('#seeCssPropertiesOnElements', () => {
-    it('should check css property for given element', async () => {
+    it('should check css property for given element', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       try {
         await I.amOnPage('/info');
@@ -1210,9 +1268,9 @@ module.exports.tests = function () {
     });
 
 
-    it('should check css property for several elements', async () => {
+    it('should check css property for several elements', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       try {
         await I.amOnPage('/');
@@ -1237,9 +1295,9 @@ module.exports.tests = function () {
       }
     });
 
-    it('should normalize css color properties for given element', async () => {
+    it('should normalize css color properties for given element', async function () {
       if (isHelper('Nightmare')) return;
-      if (isHelper('TestCafe')) return;
+      if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/css_colors');
       await I.seeCssPropertiesOnElements('#namedColor', {

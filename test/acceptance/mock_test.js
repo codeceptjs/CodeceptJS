@@ -46,7 +46,8 @@ Scenario('change response data for multiple requests @Puppeteer @WebDriver', (I)
   I.stopMocking();
 });
 
-Scenario(
+// we should replace it with other service - https://jsonplaceholder.typicode.com not works
+xScenario(
   'should request for original data after mocking stopped @Puppeteer @WebDriver',
   (I) => {
     I.amOnPage('/form/fetch_call');
@@ -56,9 +57,10 @@ Scenario(
     I.click('GET COMMENTS');
     I.waitForText('_uniqueId_u4805sd23', 1, '#data');
     I.stopMocking();
+    pause();
 
     I.click('GET COMMENTS');
-    I.wait(2);
+    I.waitForText('laudantium', 10);
     I.dontSee('_uniqueId_u4805sd23', '#data');
   },
 );

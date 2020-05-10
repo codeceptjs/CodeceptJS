@@ -1,7 +1,9 @@
 ---
-id: webdriver
+permalink: /webdriver
 title: Testing with WebDriver
 ---
+
+# Testing with WebDriver
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
@@ -9,7 +11,7 @@ End to End tests can cover standard but complex scenarios from a user's perspect
 
 ## What is Selenium WebDriver
 
-The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](https://codecept.io/mobile).
+The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](/mobile).
 
 Let's clarify the terms:
 
@@ -19,9 +21,9 @@ Let's clarify the terms:
 
 We use [webdriverio](https://webdriver.io) library to run tests over WebDriver.
 
-> Popular tool [Protractor](https://codecept.io/angular) also uses WebDriver for running end 2 end tests.
+> Popular tool [Protractor](/angular) also uses WebDriver for running end 2 end tests.
 
-To proceed you need to have [CodeceptJS installed](https://codecept.io/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
+To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
 
 Selenium WebDriver may be complicated from start, as it requires following tools to be installed and started.
 
@@ -51,6 +53,9 @@ exports.config = {
 }
 ```
 
+> ⚠ It is not recommended to use wdio plugin & selenium-standalone when running tests in parallel. Consider **switching to Selenoid** if you need parallel run or using cloud services.
+
+
 ## Configuring WebDriver
 
 WebDriver can be configured to run browser tests in window, headlessly, on a remote server or in a cloud.
@@ -70,16 +75,26 @@ Configuration for WebDriver should be provided inside `codecept.conf.js` file un
       windowSize: '1920x1680',
       desiredCapabilities: {
         chromeOptions: {
-          args: [ /*"--headless",*/ "--disable-gpu", "--window-size=1200,1000", "--no-sandbox" ]
+          args: [ /*"--headless",*/ "--disable-gpu", "--no-sandbox" ]
         }
       }
     },
   }
 ```
 
-WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
+By default CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
 
-By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Services](https://codecept.io/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
+```js
+// change to true to restart browser between tests
+restart: false,
+// don't change browser state and not clear cookies between tests
+keepBrowserState: true,
+keepCookies: true,
+```
+
+> ▶ More config options available on [WebDriver helper reference](/helpers/WebDriver#configuration)
+
+### ChromeDriver without Selenium
 
 If you want to run tests using raw ChromeDriver (which also supports WebDriver protocol) avoiding Selenium Server, you should provide following configuration:
 
@@ -91,7 +106,32 @@ path: '/',
 
 > If you face issues connecting to WebDriver, please check that corresponding server is running on a specified port. If host is other than `localhost` or port is other than `4444`, update the configuration.
 
-Additional parameters for a specific browser can be set via `desiredCapabilities` options. For instance, this is how we can set to **run headless Chrome**:
+### Selenium in Docker (Selenoid)
+
+Browsers can be executed in Docker containers. This is useful when testing on Continous Integration server.
+We recommend using [Selenoid](https://aerokube.com/selenoid/) to run browsers in container.
+
+CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load browser container setup.
+
+
+### Headless Mode
+
+It is recommended to use `@codeceptjs/configure` package to easily toggle headless mode for WebDriver:
+
+```js
+// inside codecept.conf.js
+const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+
+setHeadlessWhen(process.env.HEADLESS); // enables headless mode when HEADLESS environment variable exists
+```
+This requires `@codeceptjs/configure` package to be installed.
+
+Alternatively, you can enable headless mode manually via desired capabilities.
+
+### Desired Capabilities
+
+Additional configuration can be passed via `desiredCapabilities` option.
+For instance, this is how we can set to **run headless Chrome**:
 
 ```js
 desiredCapabilities: {
@@ -109,6 +149,12 @@ desiredCapabilities: {
   unexpectedAlertBehaviour: 'dismiss',
 }
 ```
+
+### Cloud Providers
+
+WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or any other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
+
+By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
@@ -137,17 +183,6 @@ Here is a sample BrowserStack config for running tests on iOS mobile browser:
    }
 ```
 
-There are also options specific to CodeceptJS. By default CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
-
-```js
-// change to true to restart browser between tests
-restart: false,
-// don't change browser state and not clear cookies between tests
-keepBrowserState: true,
-keepCookies: true,
-```
-
-> ▶ More config options available on [WebDriver helper reference](https://codecept.io/helpers/WebDriver#configuration)
 
 ## Writing Tests
 
@@ -168,16 +203,16 @@ Scenario('login test', (I) => {
   I.see('Welcome, John');
 });
 ```
-> ▶ Actions like `amOnPage`, `click`, `fillField` are not limited to WebDriver only. They work similarly for all available helpers. [Go to Basics guide to learn them](https://codecept.io/basics#writing-tests).
+> ▶ Actions like `amOnPage`, `click`, `fillField` are not limited to WebDriver only. They work similarly for all available helpers. [Go to Basics guide to learn them](/basics#writing-tests).
 
 
-An empty test case can be created with `codeceptjs gt` command.
+An empty test case can be created with `npx codeceptjs gt` command.
 
 ```
 npx codeceptjs gt
 ```
 
-It's easy to start writing a test if you use [interactive pause](https://codecept.io/basics#debug). Just open a web page and pause execution.
+It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
 
 ```js
 Feature('Sample Test');
@@ -190,7 +225,7 @@ Scenario('open my website', (I) => {
 
 This is just enough to run a test, open a browser, and think what to do next to write a test case.
 
-When you execute such test with `codeceptjs run` command you may see the browser is started
+When you execute such test with `npx codeceptjs run` command you may see the browser is started
 
 ```
 npx codeceptjs run --steps
@@ -198,7 +233,7 @@ npx codeceptjs run --steps
 
 After a page is opened a full control of a browser is given to a terminal. Type in different commands such as `click`, `see`, `fillField` to write the test. A successful commands will be saved to `./output/cli-history` file and can be copied into a test.
 
-> ℹ  All actions are listed in [WebDriver helper reference](https://codecept.io/helpers/WebDriver).
+> ℹ  All actions are listed in [WebDriver helper reference](/helpers/WebDriver).
 
 An interactive shell output may look like this:
 
@@ -230,6 +265,8 @@ Scenario('create todo item', (I) => {
 ```
 
 > [▶ Working example of CodeceptJS WebDriver tests](https://github.com/DavertMik/codeceptjs-webdriver-example) for TodoMVC application.
+
+WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as non-trivial [React locators](/react) and [Shadow DOM](/shadow).
 
 ## Waiting
 
@@ -301,7 +338,7 @@ Usage example:
 I.click('#click-me');
 ```
 
-If it's hard to define what to wait, it is recommended to use [retries](https://codecept.io/basics/#retries) to rerun flaky steps.
+If it's hard to define what to wait, it is recommended to use [retries](/basics/#retries) to rerun flaky steps.
 
 ## Configuring CI
 
@@ -310,57 +347,16 @@ To develop tests it's fine to use local Selenium Server and window mode. Setting
 There are following options available:
 
 * Use headless Chrome or Firefox.
-* Use [Selenoid](https://codecept.io/helpers/WebDriver#selenoid-options) to run browsers inside Docker containers.
-* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](https://codecept.io/helpers/WebDriver#cloud-providers).
+* Use [Selenoid](/plugins/selenoid) to run browsers inside Docker containers.
+* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](/helpers/WebDriver#cloud-providers).
 
-### Aerokube Cloud Browsers
+## Video Recording
 
-Installing & managing browsers on CI environment can be complicated. Especially if you need mobile browsers, Internet Explorer or Safari. Maintaing infrastructure for tests and browsers can be very expensive.
-
-A better deal would be to use a cloud service that runs a browsers for you.
-That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. It is also a way cheaper than all similar services.
-
-To start with Aerokube Browsers you need to register at [browsers.aerokube](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
-
-```
-npm i @codeceptjs/aerokube-plugin --save-dev
-```
-
-And add this plugin to a config. Please provide Aerokube credentials in configuration:
-
-```js
-// codecept.conf.js config
-exports.config = {
-  helpers: {
-    WebDriver: {
-     // regular WebDriver config goes here
-     // no need to change anything here
-    }
-  },
-  // ....
-  plugins: {
-    aerokube: {
-      // uncomment next line to permanently enable this plugin
-      // enabled: true,
-       require: '@codeceptjs/aerokube-plugin',
-       user: '<username from aerokube>',
-       password: '<password from aerokube>',
-     }
-  }
-}
-```
-
-To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
-
-```
-npx codeceptjs run --plugins aerokube
-```
-
-> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
+When [Selenoid Plugin](/plugins#selenoid) is enabled video can be automatically recorded for each test.
 
 ## Auto Login
 
-To share the same user session across different tests CodeceptJS provides [autoLogin plugin](https://codecept.io/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
+To share the same user session across different tests CodeceptJS provides [autoLogin plugin](/plugins#autologin). It simplifies login management and reduces time consuming login operations. Instead of filling in login form before each test it saves the cookies of a valid user session and reuses it for next tests. If a session expires or doesn't exist, logs in a user again.
 
 This plugin requires some configuration but is very simple in use:
 
@@ -373,7 +369,7 @@ Scenario('do something with logged in user', (I, login)) => {
 
 With `autoLogin` plugin you can save cookies into a file and reuse same session on different runs.
 
-> [▶ How to set up autoLogin plugin](https://codecept.io/plugins#autologin)
+> [▶ How to set up autoLogin plugin](/plugins#autologin)
 
 
 ## Multiple Windows
@@ -426,7 +422,7 @@ This is useful when you want to isolate application testing from a backend. For 
 
   > **WebDriver has limited ability to mock requests**, so you can only mock only requests performed after page is loaded. This means that you can't block Google Analytics, or CDN calls, but you can mock API requests performed on user action.
 
-To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
+To mock requests enable additional helper [MockRequest](/helpers/MockRequest) (which is based on Polly.js).
 
 ```js
 helpers: {
@@ -461,7 +457,7 @@ I.click('Go to Next Page');
 // in WebDriver as we can't detect that the page was reloaded, so no mocking :(
 ```
 
-> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
+> See [`mockRequest` API](/helpers/MockRequest#mockrequest)
 
 To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
 
@@ -495,7 +491,7 @@ exports.config = {
 }
 ```
 
-> ℹ  See [Custom Helper](https://codecept.io/helpers) guide to see more examples.
+> ℹ  See [Custom Helper](/helpers) guide to see more examples.
 
 While implementing custom actions using WebDriver API please note that, there is two versions of protocol: WebDriver and JSON Wire. Depending on a browser version one of those protocols can be used. We can't know for sure which protocol is going to used, so we will need to implement an action using both APIs.
 
@@ -540,7 +536,7 @@ class Web extends Helper {
 }
 ```
 
-When a helper is created, regenerate your step definitions, so you could see those actions when using [intellisense](https://codecept.io/basics#intellisense):
+When a helper is created, regenerate your step definitions, so you could see those actions when using [intellisense](/basics#intellisense):
 
 ```
 npx codeceptjs def

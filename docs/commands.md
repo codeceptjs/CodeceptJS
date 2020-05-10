@@ -1,8 +1,9 @@
 ---
-id: commands
+permalink: /commands
 title: Commands
 ---
 
+# Commands
 
 ## Run
 
@@ -87,6 +88,36 @@ Run tests in parallel threads.
 npx codeceptjs run-workers 3
 ```
 
+## Run Rerun <Badge text="Since 2.4" type="warning"/>
+
+Run tests multiple times to detect and fix flaky tests.
+
+```
+npx codeceptjs run-rerun
+```
+
+For this command configuration is required:
+
+```js
+{
+  // inside codecept.conf.js
+  rerun: {
+    // how many times all tests should pass
+    minSuccess: 2,
+
+    // how many times to try to rerun all tests
+    maxReruns: 4,
+  }
+}
+```
+
+Use Cases:
+
+* `minSuccess: 1, maxReruns: 5` - run all tests no more than 5 times, until first successful run.
+* `minSuccess: 3, maxReruns: 5` - run all tests no more than 5 times, until reaching 3 successfull runs.
+* `minSuccess: 10, maxReruns: 10` - run all tests exactly 10 times, to check their stability.
+
+
 ## Dry Run
 
 Prints test scenarios without executing them
@@ -116,7 +147,7 @@ npx codeceptjs dry-run --steps --bootstrap
 ## Run Multiple
 
 Run multiple suites. Unlike `run-workers` spawns processes to execute tests.
-[Requires additional configuration](https://codecept.io/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
+[Requires additional configuration](/advanced#multiple-browsers-execution) and can be used to execute tests in multiple browsers.
 
 ```sh
 npx codeceptjs run-multiple smoke:chrome regression:firefox
@@ -196,4 +227,12 @@ Prints all available methods of `I` to console
 
 ```sh
 npx codeceptjs list
+```
+
+## Local Environment Information
+
+Prints debugging information concerning the local environment
+
+```sh
+npx codeceptjs info
 ```

@@ -1,8 +1,9 @@
+const assert = require('assert');
+const sinon = require('sinon');
+
 const scenario = require('../../lib/scenario');
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
-const assert = require('assert');
-const sinon = require('sinon');
 
 let test;
 let fn;

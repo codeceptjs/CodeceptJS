@@ -1,15 +1,13 @@
+const assert = require('assert');
+const expect = require('chai').expect;
+const path = require('path');
+
+const puppeteer = require('puppeteer');
+
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
-const puppeteer = require('puppeteer');
-const should = require('chai').should();
-const expect = require('chai').expect;
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
+
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
@@ -18,6 +16,54 @@ let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
+
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(10000);
+
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Puppeteer({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      defaultPopupAction: 'accept',
+      basicAuth: { username: 'admin', password: 'admin' },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  describe('open page with provided basic auth', () => {
+    it('should be authenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+    it('should be authenticated on second run', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+  });
+});
 
 describe('Puppeteer', function () {
   this.timeout(35000);
@@ -55,6 +101,19 @@ describe('Puppeteer', function () {
     return I._after();
   });
 
+  describe('Session', () => {
+    it('should not fail for localStorage.clear() on about:blank', async () => {
+      I.options.restart = false;
+      return I.page.goto('about:blank')
+        .then(() => I._after())
+        .then(() => { I.options.restart = true; })
+        .catch((e) => {
+          I.options.restart = true;
+          throw new Error(e);
+        });
+    });
+  });
+
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
@@ -71,6 +130,11 @@ describe('Puppeteer', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
+    });
+
+    it('should be unauthenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.dontSee('You entered admin as your password.');
     });
   });
 
@@ -591,6 +655,13 @@ describe('Puppeteer', function () {
       .then(() => I.see('button was clicked', '#message')));
   });
 
+  describe('#waitForText', () => {
+    it('should wait for text after load body', async () => {
+      await I.amOnPage('/redirect_long');
+      await I.waitForText('Hi there and greetings!', 5);
+    });
+  });
+
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => I.amOnPage('/info')
       .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно'))
@@ -636,6 +707,11 @@ describe('Puppeteer', function () {
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('//a'))
       .then(html => assert.equal(html.length, 5)));
+
+    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo({ frame: 'iframe' }))
+      .then(() => I.grabHTMLFrom('#new-tab'))
+      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
@@ -769,8 +845,99 @@ describe('Puppeteer', function () {
       await I.amOnPage('/form/download');
       await I.handleDownloads();
       await I.click('Download file');
-      await I.wait(5);
-      await FS.seeFile('downloads/avatar.jpg');
+      await FS.waitForFile('downloads/avatar.jpg', 5);
+    });
+  });
+
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#div2_button' }, 0.1);
+      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should pass if element change class', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    it('should fail if element change class and not clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
+      });
     });
   });
 });
