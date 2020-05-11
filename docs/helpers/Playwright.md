@@ -19,9 +19,9 @@ Uses [Playwright][1] library to run tests inside:
 
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `playwright` package version ^0.12.1 to be installed:
+Requires `playwright` package to be installed:
 
-    npm i playwright@^0.12.1 --save
+    npm i playwright@^1 --save
 
 ## Configuration
 
@@ -38,7 +38,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `keepBrowserState`:  - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`:  - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. Choose one of those options is possible. See [Playwright API][2].
+-   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][2].
 -   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
@@ -1755,7 +1755,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [11]: https://codecept.io/helpers/FileSystem
 
-[12]: https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewpageoptions
+[12]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
 
 [13]: #fillfield
 
