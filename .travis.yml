@@ -13,36 +13,20 @@ env:
   - HELPER=ProtractorWeb
   - HELPER=WebDriver
   - HELPER=TestCafe
-  - HELPER=Playwright
 addons:
   apt:
     packages:
-    # this is needed for running headful tests
-    - xvfb
-    # This is required to run new chrome on old trusty
-    - libnss3
     - php5-cli
-    # This is required to run chromium
-    - libgbm1
 services:
 - docker
-install:
-- npm install
-cache:
-  directories:
-  - node_modules
 before_install:
 - docker pull selenium/standalone-chrome:3.141.59-oxygen
 before_script:
-# Enable user namespace cloning
-- "sysctl kernel.unprivileged_userns_clone=1"
 - docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-oxygen
 - export DBUS_SESSION_BUS_ADDRESS=/dev/null
-# Launch XVFB
-- "sh -e /etc/init.d/xvfb start"
 - export DISPLAY=:99.0
 - sleep 3
 - chmod -R 777 test/data
 - php -S 127.0.0.1:8000 -t test/data/app >/dev/null 2>&1 &
 script:
-- export DEBUG=pw:browser* && mocha test/helper/${HELPER}_test.js
+- mocha test/helper/${HELPER}_test.js
