@@ -109,9 +109,6 @@ describe('ApiDataFactory', function () {
       });
       const post = await I.have('post');
       post.author.should.eql('Yorik');
-      await I._after();
-      resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(1);
     });
 
     it('should cleanup created data', async () => {
