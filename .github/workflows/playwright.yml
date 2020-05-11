@@ -45,4 +45,4 @@ jobs:
     - name: run webkit tests
       run: "BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run unit tests
-      run: mocha test/helper/Playwright_test.js
+      run: ./node_modules/.bin/mocha test/helper/Playwright_test.js
