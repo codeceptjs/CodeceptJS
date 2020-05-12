@@ -6,6 +6,9 @@ const formContents = require('../../lib/utils').test.submittedData(dataFile);
 const fileExists = require('../../lib/utils').fileExists;
 const secret = require('../../lib/secret').secret;
 
+const Locator = require('../../lib/locator');
+const customLocators = require('../../lib/plugin/customLocator');
+
 let I;
 let data;
 let siteUrl;
@@ -1318,6 +1321,57 @@ module.exports.tests = function () {
         'background-color': 'rgba(128,0,128,1)',
         color: 'rgba(255,255,0,1)',
       });
+    });
+  });
+
+  describe('#customLocators', () => {
+    beforeEach(() => {
+      // reset custom locators
+      Locator.filters = [];
+    });
+    it('should support xpath custom locator by default', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
+    });
+    it('can use css strategy for custom locator', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+        strategy: 'css',
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
+    });
+    it('can use xpath strategy for custom locator', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+        strategy: 'xpath',
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
     });
   });
 };
