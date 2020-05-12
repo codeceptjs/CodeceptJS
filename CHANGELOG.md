@@ -1,3 +1,7 @@
+## 2.6.4
+
+* [Playwright] **Playwright 1.0 support** by @Georgegriff.
+
 ## 2.6.3
 
 * [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes #2337 by @mirao
