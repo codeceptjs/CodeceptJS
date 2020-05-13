@@ -374,12 +374,14 @@ Available events:
 * `event.suite.before(suite)` - *async* before a suite
 * `event.suite.after(suite)` - *async* after a suite
 * `event.step.before(step)` - *async* when the step is scheduled for execution
-* `event.step.after(step)`- *async* after a step
+* `event.step.after(step)` - *async* after a step
 * `event.step.started(step)` - *sync* when step starts.
 * `event.step.passed(step)` - *sync* when step passed.
 * `event.step.failed(step, err)` - *sync* when step failed.
 * `event.step.finished(step)` - *sync* when step finishes.
 * `event.step.comment(step)` - *sync* fired for comments like `I.say`.
+* `event.bddStep.before(bddStep)` - *async* when the gherkin step is scheduled for execution
+* `event.bddStep.after(bddStep)` - *async* after a gherkin step
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed

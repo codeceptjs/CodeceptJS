@@ -14,7 +14,7 @@ title: WebDriver
 WebDriver helper which wraps [webdriverio][1] library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-WebDriver requires [Selenium Server and ChromeDriver/GeckoDriver to be installed][2].
+WebDriver requires Selenium Server and ChromeDriver/GeckoDriver to be installed. Those tools can be easily installed via NPM. Please check [Testing with WebDriver][2] for more details.
 
 ### Configuration
 
@@ -968,7 +968,7 @@ Returns **[Promise][25]&lt;([string][19] | [undefined][28])>**
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -1066,10 +1066,13 @@ Returns **[object][18]** Element bounding rectangle
 ### grabGeoLocation
 
 Return the current geo location 
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let geoLocation = await I.grabGeoLocation();
 ```
+
+Returns **[Promise][25]&lt;{latitude: [number][22], longitude: [number][22], altitude: [number][22]}>** 
 
 ### grabHTMLFrom
 
@@ -1107,6 +1110,7 @@ Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** HTML code for an elem
 ### grabNumberOfOpenTabs
 
 Grab number of open tabs.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let tabs = await I.grabNumberOfOpenTabs();
@@ -1117,6 +1121,7 @@ Returns **[Promise][25]&lt;[number][22]>** number of open tabs
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -1150,7 +1155,7 @@ await I.grabPopupText();
 ### grabSource
 
 Retrieves page source and returns it to test.
-Resumes test execution, so should be used inside an async function.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let pageSource = await I.grabSource();
@@ -2131,7 +2136,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [1]: http://webdriver.io/
 
-[2]: http://codecept.io/quickstart/#prepare-selenium-server
+[2]: https://codecept.io/webdriver/#testing-with-webdriver
 
 [3]: http://codecept.io/acceptance/#smartwait
 

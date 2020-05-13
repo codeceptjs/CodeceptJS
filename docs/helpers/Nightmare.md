@@ -454,7 +454,7 @@ Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -541,6 +541,7 @@ Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** HTML code for an elemen
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
