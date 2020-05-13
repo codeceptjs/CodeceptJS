@@ -9,6 +9,7 @@ const secret = require('../../lib/secret').secret;
 const Locator = require('../../lib/locator');
 const customLocators = require('../../lib/plugin/customLocator');
 
+let originalLocators;
 let I;
 let data;
 let siteUrl;
@@ -1325,9 +1326,13 @@ module.exports.tests = function () {
   });
 
   describe('#customLocators', () => {
+    beforeEach(() => {
+      originalLocators = Locator.filters;
+      Locator.filters = [];
+    });
     afterEach(() => {
       // reset custom locators
-      Locator.filters = [];
+      Locator.filters = originalLocators;
     });
     it('should support xpath custom locator by default', async () => {
       customLocators({
