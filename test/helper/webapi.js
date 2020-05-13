@@ -1325,7 +1325,7 @@ module.exports.tests = function () {
   });
 
   describe('#customLocators', () => {
-    beforeEach(() => {
+    afterEach(() => {
       // reset custom locators
       Locator.filters = [];
     });
