@@ -19,9 +19,9 @@ Uses [Playwright][1] library to run tests inside:
 
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `playwright` package version ^0.12.1 to be installed:
+Requires `playwright` package version ^1 to be installed:
 
-    npm i playwright@^0.12.1 --save
+    npm i playwright@^1 --save
 
 ## Configuration
 
@@ -38,7 +38,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `keepBrowserState`:  - keep browser state between tests when `restart` is set to false.
 -   `keepCookies`:  - keep cookies between tests when `restart` is set to false.
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. Choose one of those options is possible. See [Playwright API][2].
+-   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][2].
 -   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
@@ -698,7 +698,7 @@ Returns **[Promise][9]&lt;[Array][10]&lt;any>>**
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -843,6 +843,7 @@ Returns **[Promise][9]&lt;[Array][10]&lt;[string][7]>>** HTML code for an elemen
 ### grabNumberOfOpenTabs
 
 Grab number of open tabs.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let tabs = await I.grabNumberOfOpenTabs();
@@ -853,6 +854,7 @@ Returns **[Promise][9]&lt;[number][8]>** number of open tabs
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -888,7 +890,7 @@ Returns **[Promise][9]&lt;([string][7] | null)>**
 ### grabSource
 
 Retrieves page source and returns it to test.
-Resumes test execution, so should be used inside an async function.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let pageSource = await I.grabSource();
@@ -1600,6 +1602,7 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
+-   `waitTimeout`  
 -   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait
 
 ### waitForDetached
@@ -1852,7 +1855,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [11]: https://codecept.io/helpers/FileSystem
 
-[12]: https://github.com/microsoft/playwright/blob/v0.12.1/docs/api.md#browsernewpageoptions
+[12]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
 
 [13]: #fillfield
 
