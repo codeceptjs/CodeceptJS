@@ -119,7 +119,7 @@ async function runWorkers() {
 }
 ```
 
-Inside `event.all.result` you can obtain test results from all workers, so you can customize report:
+Inside `event.all.result` you can obtain test results from all workers, so you can customize the report:
 
 ```js
 workers.on(event.all.result, (status, completedTests, wotkerStats) => {
@@ -138,9 +138,9 @@ workers.on(event.all.result, (status, completedTests, wotkerStats) => {
 }
 ```
 
-### Example: Running Tests Splitted By Custom Function
+### Example: Running Tests Splitted By A Custom Function
 
-If you want your tests to split according to your need this method is suited for you. For ex: If you have 4 long running test files and 4 normal test files there chance all 4 tests end up in same worker thread. For these cases custom function will be helpful.
+If you want your tests to split according to your need this method is suited for you. For example: If you have 4 long running test files and 4 normal test files there chance all 4 tests end up in same worker thread. For these cases custom function will be helpful.
 
 ```js
 
@@ -180,7 +180,7 @@ customWorkers.on(event.all.result, () => {
 
 NodeJS Workers can communicate between each other via messaging system. It may happen that you want to pass some data from one of workers to other. For instance, you may want to share user credentials accross all tests. Data will be appended to a container.
 
-However, you can't access uninitialized data from a container, so to start, you need to initialized data first. Inside `bootstrap` function of config we execute `share` function with `local: true` to initialize value locally:
+However, you can't access uninitialized data from a container, so to start, you need to initialized data first. Inside `bootstrap` function of the config we execute the `share` function with `local: true` to initialize value locally:
 
 
 ```js
