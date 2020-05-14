@@ -1,3 +1,8 @@
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
+* [Playwright] Fixed calling `waitFor*` methods with custom locators #2314. Fix #2389 by @Georgegriff
+
 ## 2.6.4
 
 * [Playwright] **Playwright 1.0 support** by @Georgegriff.

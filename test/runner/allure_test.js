@@ -50,11 +50,14 @@ describe('CodeceptJS Allure Plugin', () => {
       stdout.should.include('FAIL  | 0 passed, 1 failed');
 
       const files = fs.readdirSync(path.join(codecept_dir, 'output/failed'));
-      const testResultPath = files[0];
-      assert(testResultPath.match(/\.xml$/), 'not a xml file');
-      const file = fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
-      file.should.include('BeforeSuite of suite failing setup test suite: failed.');
-      file.should.include('the before suite setup failed');
+      // join all reports together
+      const reports = files.map((testResultPath) => {
+        assert(testResultPath.match(/\.xml$/), 'not a xml file');
+        return fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
+      }).join(' ');
+      reports.should.include('BeforeSuite of suite failing setup test suite: failed.');
+      reports.should.include('the before suite setup failed');
+      reports.should.include('Skipped due to failure in \'before\' hook');
       done();
     });
   });
@@ -68,11 +71,14 @@ describe('CodeceptJS Allure Plugin', () => {
       stdout.should.include('FAIL  | 0 passed');
 
       const files = fs.readdirSync(path.join(codecept_dir, 'output/failed'));
-      const testResultPath = files[0];
-      assert(testResultPath.match(/\.xml$/), 'not a xml file');
-      const file = fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
-      file.should.include('BeforeSuite of suite failing setup test suite: failed.');
-      file.should.include('the before suite setup failed');
+      const reports = files.map((testResultPath) => {
+        assert(testResultPath.match(/\.xml$/), 'not a xml file');
+        return fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
+      }).join(' ');
+      reports.should.include('BeforeSuite of suite failing setup test suite: failed.');
+      reports.should.include('the before suite setup failed');
+      // the line below does not work in workers needs investigating https://github.com/Codeception/CodeceptJS/issues/2391
+      // reports.should.include('Skipped due to failure in \'before\' hook');
       done();
     });
   });
