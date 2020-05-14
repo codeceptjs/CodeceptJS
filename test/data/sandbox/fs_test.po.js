@@ -10,6 +10,7 @@ Scenario('check current dir', (I, MyPage) => {
   // fs.readFileSync()
   const fileName = path.join(process.cwd(), 'codecept.json');
   const stats = fs.statSync(fileName);
+  // eslint-disable-next-line no-buffer-constructor
   const buffer = new Buffer(stats.size);
   // MyPage.hasFile(buffer);
   I.seeFile({ name: 'asdas', buffer });
