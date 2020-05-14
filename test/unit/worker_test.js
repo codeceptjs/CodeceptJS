@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const path = require('path');
 const semver = require('semver');
-const { Workers, event } = require('../../lib/index');
+const { Workers, event, recorder } = require('../../lib/index');
 
 describe('Workers', () => {
   before(() => {
@@ -218,7 +218,8 @@ describe('Workers', () => {
       });
     }
 
-    workers.run().then(() => share({ fromMain: true }));
+    workers.run();
+    recorder.add(() => share({ fromMain: true }));
 
     workers.on(event.all.result, (status) => {
       expect(status).equal(true);

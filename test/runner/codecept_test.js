@@ -167,15 +167,6 @@ describe('CodeceptJS Runner', () => {
     });
   });
 
-  it('should run hooks', (done) => {
-    exec(codecept_run_config('codecept.hooks.js'), (err, stdout) => {
-      stdout.should.include('Filesystem'); // feature
-      stdout.should.include('I am bootstrap');
-      stdout.should.include('I am function hook');
-      assert(!err);
-      done();
-    });
-  });
 
   it('should run hooks from suites', (done) => {
     exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
@@ -259,15 +250,6 @@ describe('CodeceptJS Runner', () => {
       stdout.should.include('FAILURES');
       stdout.should.not.include('I am bootstrap');
       assert(err.code);
-      done();
-    });
-  });
-
-  it('should run dynamic config with profile 2', (done) => {
-    exec(`${codecept_run_config('config.js')} --profile bootstrap`, (err, stdout) => {
-      stdout.should.not.include('FAILURES'); // feature
-      stdout.should.include('I am bootstrap');
-      assert(!err);
       done();
     });
   });
