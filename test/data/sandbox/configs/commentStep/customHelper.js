@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // const Helper = require('../../lib/helper');
 
 class CustomHelper extends Helper {

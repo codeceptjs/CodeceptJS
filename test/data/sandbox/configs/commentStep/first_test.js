@@ -10,7 +10,7 @@ const pageObject = {
   },
 };
 
-Scenario('global var', (I) => {
+Scenario('global var', ({ I }) => {
   __`Prepare user base`;
   I.print('other thins');
 
@@ -21,7 +21,7 @@ Scenario('global var', (I) => {
   I.print('see everything works');
 });
 
-Scenario('local vars', (I) => {
+Scenario('local vars', ({ I }) => {
   given`Prepare project`;
   I.print('other thins');
 
@@ -32,7 +32,7 @@ Scenario('local vars', (I) => {
   I.print('see everything works');
 });
 
-Scenario('from page object', (I) => {
+Scenario('from page object', ({ I }) => {
   __`Prepare project`;
   I.print('other thins');
   pageObject.metaPrint('login user');

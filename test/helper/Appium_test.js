@@ -620,10 +620,7 @@ describe('Appium', function () {
     });
 
     it('should execute only on Android >= 5.0 @quick', () => {
-      let platform = null;
-      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {
-        platform = 'android';
-      });
+      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
     });
 
     it('should execute only in Web', () => {

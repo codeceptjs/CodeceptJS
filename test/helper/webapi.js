@@ -6,6 +6,10 @@ const formContents = require('../../lib/utils').test.submittedData(dataFile);
 const fileExists = require('../../lib/utils').fileExists;
 const secret = require('../../lib/secret').secret;
 
+const Locator = require('../../lib/locator');
+const customLocators = require('../../lib/plugin/customLocator');
+
+let originalLocators;
 let I;
 let data;
 let siteUrl;
@@ -601,6 +605,67 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#grabTextFromAll, #grabHTMLFromAll, #grabValueFromAll, #grabAttributeFromAll', () => {
+    it('should grab multiple texts from page', async () => {
+      await I.amOnPage('/info');
+      let vals = await I.grabTextFromAll('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+
+      await I.amOnPage('/info');
+      vals = await I.grabTextFromAll('#invalid-id a');
+      assert.equal(vals.length, 0);
+    });
+
+    it('should grab multiple html from page', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/info');
+      let vals = await I.grabHTMLFromAll('#grab-multiple a');
+      assert.equal(vals[0], 'First');
+      assert.equal(vals[1], 'Second');
+      assert.equal(vals[2], 'Third');
+
+      await I.amOnPage('/info');
+      vals = await I.grabHTMLFromAll('#invalid-id a');
+      assert.equal(vals.length, 0);
+    });
+
+    it('should grab multiple attribute from element', async () => {
+      await I.amOnPage('/form/empty');
+      const vals = await I.grabAttributeFromAll({
+        css: 'input',
+      }, 'name');
+      assert.equal(vals[0], 'text');
+      assert.equal(vals[1], 'empty_input');
+    });
+
+    it('Should return empty array if no attribute found', async () => {
+      await I.amOnPage('/form/empty');
+      const vals = await I.grabAttributeFromAll({
+        css: 'div',
+      }, 'test');
+      assert.equal(vals.length, 0);
+    });
+
+    it('should grab values if multiple field matches', async () => {
+      await I.amOnPage('/form/hidden');
+      let vals = await I.grabValueFromAll('//form/input');
+      assert.equal(vals[0], 'kill_people');
+      assert.equal(vals[1], 'Submit');
+
+      vals = await I.grabValueFromAll("//form/input[@name='action']");
+      assert.equal(vals[0], 'kill_people');
+    });
+
+    it('Should return empty array if no value found', async () => {
+      await I.amOnPage('/');
+      const vals = await I.grabValueFromAll('//form/input');
+      assert.equal(vals.length, 0);
+    });
+  });
+
   describe('#grabTextFrom, #grabHTMLFrom, #grabValueFrom, #grabAttributeFrom', () => {
     it('should grab text from page', async () => {
       await I.amOnPage('/');
@@ -609,14 +674,6 @@ module.exports.tests = function () {
 
       val = await I.grabTextFrom('//h1');
       assert.equal(val, 'Welcome to test app!');
-    });
-
-    it('should grab multiple texts from page', async () => {
-      await I.amOnPage('/info');
-      const vals = await I.grabTextFrom('#grab-multiple a');
-      assert.equal(vals[0], 'First');
-      assert.equal(vals[1], 'Second');
-      assert.equal(vals[2], 'Third');
     });
 
     it('should grab html from page', async function () {
@@ -629,11 +686,6 @@ module.exports.tests = function () {
     <a id="second-link">Second</a>
     <a id="third-link">Third</a>
 `, val);
-
-      const vals = await I.grabHTMLFrom('#grab-multiple a');
-      assert.equal(vals[0], 'First');
-      assert.equal(vals[1], 'Second');
-      assert.equal(vals[2], 'Third');
     });
 
 
@@ -1135,17 +1187,16 @@ module.exports.tests = function () {
     it('should scroll to an element', async () => {
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
+      const { y } = await I.grabPageScrollPosition();
       await I.scrollTo('.section3 input[name="test"]');
 
-      const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
+      const { y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
     });
 
     it('should scroll to coordinates', async () => {
       await I.amOnPage('/form/scroll');
       await I.resizeWindow(500, 700);
-      const { x, y } = await I.grabPageScrollPosition();
       await I.scrollTo(50, 70);
 
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
@@ -1179,7 +1230,6 @@ module.exports.tests = function () {
 
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/doubleclick');
@@ -1188,12 +1238,21 @@ module.exports.tests = function () {
     });
 
     it('should grab camelcased css properies', async () => {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
 
       await I.amOnPage('/form/doubleclick');
       const css = await I.grabCssPropertyFrom('#block', 'user-select');
       assert.equal(css, 'text');
+    });
+
+    it('should grab multiple values if more than one matching element found', async () => {
+      if (isHelper('Nightmare')) return;
+      if (isHelper('TestCafe')) return;
+
+      await I.amOnPage('/info');
+      const css = await I.grabCssPropertyFromAll('.span', 'height');
+      assert.equal(css[0], '12px');
+      assert.equal(css[1], '15px');
     });
   });
 
@@ -1318,6 +1377,61 @@ module.exports.tests = function () {
         'background-color': 'rgba(128,0,128,1)',
         color: 'rgba(255,255,0,1)',
       });
+    });
+  });
+
+  describe('#customLocators', () => {
+    beforeEach(() => {
+      originalLocators = Locator.filters;
+      Locator.filters = [];
+    });
+    afterEach(() => {
+      // reset custom locators
+      Locator.filters = originalLocators;
+    });
+    it('should support xpath custom locator by default', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
+    });
+    it('can use css strategy for custom locator', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+        strategy: 'css',
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
+    });
+    it('can use xpath strategy for custom locator', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+        strategy: 'xpath',
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
     });
   });
 };

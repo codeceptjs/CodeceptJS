@@ -10,7 +10,7 @@ CodeceptJS is a modern end to end testing framework with a special BDD-style syn
 ```js
 Feature('CodeceptJS demo');
 
-Scenario('check Welcome page on site', (I) => {
+Scenario('check Welcome page on site', ({ I }) => {
   I.amOnPage('/');
   I.see('Welcome');
 });
@@ -49,6 +49,8 @@ Refer to following guides to more information on:
 
 To list all available commands for the current configuration run `codeceptjs list`
 or enable [auto-completion by generating TypeScript definitions](#intellisense).
+
+> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/#extending-codeceptjs-with-custom-helpers). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
 
 
 ## Writing Tests
@@ -254,7 +256,7 @@ Sometimes you need to retrieve data from a page to use it in the following steps
 Imagine the application generates a password, and you want to ensure that user can login using this password.
 
 ```js
-Scenario('login with generated password', async (I) => {
+Scenario('login with generated password', async ({ I }) => {
   I.fillField('email', 'miles@davis.com');
   I.click('Generate Password');
   const password = await I.grabTextFrom('#password');
@@ -269,7 +271,7 @@ Scenario('login with generated password', async (I) => {
 The `grabTextFrom` action is used to retrieve the text from an element. All actions starting with the `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause the test execution with the `await` keyword of ES6. To make it work, your test should be written inside a async function (notice `async` in its definition).
 
 ```js
-Scenario('use page title', async (I) => {
+Scenario('use page title', async ({ I }) => {
   // ...
   const password = await I.grabTextFrom('#password');
   I.fillField('password', password);
@@ -287,7 +289,6 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-
 > ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works
@@ -303,7 +304,7 @@ However, behind the scenes **all actions are wrapped in promises**, inside of th
 If you want to get information from a running test you can use `await` inside the **async function**, and utilize special methods of helpers started with the `grab` prefix.
 
 ```js
-Scenario('try grabbers', async (I) => {
+Scenario('try grabbers', async ({ I }) => {
   let title = await I.grabTitle();
 });
 ```
@@ -552,7 +553,7 @@ CodeceptJS implements retries the same way [Mocha does](https://mochajs.org#retr
 You can set the number of a retries for a feature:
 
 ```js
-Scenario('Really complex', (I) => {
+Scenario('Really complex', ({ I }) => {
   // test goes here
 }).retry(2);
 
@@ -586,13 +587,13 @@ Before((I) => { // or Background
   I.amOnPage('/documentation');
 });
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', (I) => {
+Scenario('test title', ({ I }) => {
   I.seeInTitle('Example application');
 });
 ```
@@ -724,7 +725,7 @@ to get method autocompletion while writing tests.
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a chat or other systems. To open another browser use the `session()` function as shown in the example:
 
 ```js
-Scenario('test app', (I) => {
+Scenario('test app', ({ I }) => {
   I.amOnPage('/chat');
   I.fillField('name', 'davert');
   I.click('Sign In');
@@ -761,7 +762,7 @@ session('john', { browser: 'firefox' } , () => {
 or just start the session without switching to it. Call `session` passing only its name:
 
 ```js
-Scenario('test', (I) => {
+Scenario('test', ({ I }) => {
   // opens 3 additional browsers
   session('john');
   session('mary');

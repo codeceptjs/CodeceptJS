@@ -3,7 +3,7 @@ const path = require('path');
 
 Feature('Filesystem');
 
-Scenario('check current dir', (I, MyPage) => {
+Scenario('check current dir', ({ I, MyPage }) => {
   I.openDir('aaa');
   I.seeFile('codecept.json');
   MyPage.hasFile('First arg', 'Second arg');

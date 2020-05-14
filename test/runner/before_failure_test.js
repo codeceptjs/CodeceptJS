@@ -1,7 +1,5 @@
 const path = require('path');
 const exec = require('child_process').exec;
-const assert = require('assert');
-const event = require('../../lib').event;
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');

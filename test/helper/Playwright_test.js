@@ -12,7 +12,6 @@ const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
-let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
@@ -541,26 +540,6 @@ describe('Playwright', function () {
       .then(() => I.seeInField('#text2', 'London')));
   });
 
-
-  describe('#grabHTMLFrom', () => {
-    it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//title'))
-      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
-
-    it('should grab inner html from an element using id query', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('#area1'))
-      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
-
-    it('should grab inner html from multiple elements', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//a'))
-      .then(html => assert.equal(html.length, 5)));
-
-    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo({ frame: 'iframe' }))
-      .then(() => I.grabHTMLFrom('#new-tab'))
-      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
-  });
-
   describe('#grabBrowserLogs', () => {
     it('should grab browser logs', () => I.amOnPage('/')
       .then(() => I.executeScript(() => {
@@ -636,6 +615,16 @@ describe('Playwright', function () {
       // Unchecking again should not affect the current 'unchecked' status
       await I.uncheckOption('interesting');
       await I.dontSeeCheckboxIsChecked('interesting');
+    });
+  });
+
+  describe('#usePlaywrightTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePlaywrightTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
     });
   });
 
@@ -804,7 +793,6 @@ describe('Playwright - BasicAuth', () => {
     });
     return I._before().then(() => {
       page = I.page;
-      browser = I.browser;
     });
   });
 

@@ -45,7 +45,7 @@ Make test be focused on one feature and try to simplify everything that is not r
 Make test as simple as:
 
 ```js
-Scenario('editing a metric', async (I, loginAs, metricPage) => {
+Scenario('editing a metric', async ({ I, loginAs, metricPage }) => {
   // login via autoLogin
   loginAs('admin');
   // create data with ApiDataFactory

@@ -31,7 +31,7 @@ Depending on a type of a change you should do the following.
 
 Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
 
-### Updating a WebDriverIO | Nightmare
+### Updating a WebDriver | Nightmare
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
@@ -49,7 +49,7 @@ php -S 127.0.0.1:8000 -t test/data/app
 Execute test suite:
 
 ```sh
-mocha test/helper/WebDriverIO_test.js
+mocha test/helper/WebDriver_test.js
 mocha test/helper/Puppeteer_test.js
 mocha test/helper/Nightmare_test.js
 ```
@@ -180,8 +180,8 @@ docker-compose run --rm test-unit
 docker-compose run --rm test-helpers
 
 # or pass path to helper test to run specific helper,
-# for example to run only WebDriverIO tests:
-docker-compose run --rm test-helpers test/helper/WebDriverIO_test.js
+# for example to run only WebDriver tests:
+docker-compose run --rm test-helpers test/helper/WebDriver_test.js
 
 # Or to run only rest and ApiDataFactory tests
 docker-compose run --rm test-helpers test/rest
@@ -189,7 +189,7 @@ docker-compose run --rm test-helpers test/rest
 
 #### Run acceptance tests
 
-To that we provide three separate services respectively for WebDriverIO, Nightmare, Puppeteer and
+To that we provide three separate services respectively for WebDriver, Nightmare, Puppeteer and
 Protractor tests:
 
 ```sh

@@ -2,7 +2,6 @@ const assert = require('assert');
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
-const { satisfyNodeVersion } = require('../../lib/command/utils');
 const { deleteDir } = require('../../lib/utils');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
@@ -13,7 +12,9 @@ const codecept_run_config = (config, grep) => `${codecept_run} --config ${codece
 const codecept_workers_config = (config, grep) => `${codecept_workers} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
 
 
-describe('CodeceptJS Allure Plugin', () => {
+describe('CodeceptJS Allure Plugin', function () {
+  this.retries(2);
+
   beforeEach(() => {
     deleteDir(path.join(codecept_dir, 'output/ansi'));
     deleteDir(path.join(codecept_dir, 'output/success'));
@@ -27,8 +28,9 @@ describe('CodeceptJS Allure Plugin', () => {
   });
 
   it('should enable allure reports', (done) => {
-    exec(codecept_run_config('allure.conf.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('allure.conf.js'), (err) => {
       const files = fs.readdirSync(path.join(codecept_dir, 'output/success'));
+      assert(!err);
       assert.equal(files.length, 1);
       assert(files[0].match(/\.xml$/), 'not a xml file');
       done();
@@ -36,7 +38,7 @@ describe('CodeceptJS Allure Plugin', () => {
   });
 
   it('should create xml file when assert message has ansi symbols', (done) => {
-    exec(codecept_run_config('failed_ansi.conf.js'), (err, stdout, stderr) => {
+    exec(codecept_run_config('failed_ansi.conf.js'), (err) => {
       assert(err);
       const files = fs.readdirSync(path.join(codecept_dir, 'output/ansi'));
       assert(files[0].match(/\.xml$/), 'not a xml file');
@@ -50,11 +52,14 @@ describe('CodeceptJS Allure Plugin', () => {
       stdout.should.include('FAIL  | 0 passed, 1 failed');
 
       const files = fs.readdirSync(path.join(codecept_dir, 'output/failed'));
-      const testResultPath = files[0];
-      assert(testResultPath.match(/\.xml$/), 'not a xml file');
-      const file = fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
-      file.should.include('BeforeSuite of suite failing setup test suite: failed.');
-      file.should.include('the before suite setup failed');
+      // join all reports together
+      const reports = files.map((testResultPath) => {
+        assert(testResultPath.match(/\.xml$/), 'not a xml file');
+        return fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
+      }).join(' ');
+      reports.should.include('BeforeSuite of suite failing setup test suite: failed.');
+      reports.should.include('the before suite setup failed');
+      reports.should.include('Skipped due to failure in \'before\' hook');
       done();
     });
   });
@@ -68,11 +73,14 @@ describe('CodeceptJS Allure Plugin', () => {
       stdout.should.include('FAIL  | 0 passed');
 
       const files = fs.readdirSync(path.join(codecept_dir, 'output/failed'));
-      const testResultPath = files[0];
-      assert(testResultPath.match(/\.xml$/), 'not a xml file');
-      const file = fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
-      file.should.include('BeforeSuite of suite failing setup test suite: failed.');
-      file.should.include('the before suite setup failed');
+      const reports = files.map((testResultPath) => {
+        assert(testResultPath.match(/\.xml$/), 'not a xml file');
+        return fs.readFileSync(path.join(codecept_dir, 'output/failed', testResultPath), 'utf8');
+      }).join(' ');
+      reports.should.include('BeforeSuite of suite failing setup test suite: failed.');
+      reports.should.include('the before suite setup failed');
+      // the line below does not work in workers needs investigating https://github.com/Codeception/CodeceptJS/issues/2391
+      // reports.should.include('Skipped due to failure in \'before\' hook');
       done();
     });
   });
