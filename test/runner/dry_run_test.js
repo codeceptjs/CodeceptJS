@@ -11,7 +11,7 @@ const codecept_run_config = config => `${codecept_run} --config ${codecept_dir}/
 const config_run_override = config => `${codecept_run} --override '${JSON.stringify(config)}'`;
 const char = require('figures').checkboxOff;
 
-describe('dry-run command', () => {
+describe.only('dry-run command', () => {
   before(() => {
     process.chdir(codecept_dir);
   });
@@ -79,8 +79,9 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should display meta steps and substeps', (done) => {
+  it.only('should display meta steps and substeps', (done) => {
     exec(`${codecept_run_config('codecept.po.json')} --debug`, (err, stdout) => {
+      console.log(stdout);
       const lines = stdout.split('\n');
       lines.should.include.members([
         '  check current dir',

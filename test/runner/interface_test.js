@@ -182,8 +182,9 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
-  it('should display meta steps and substeps', (done) => {
+  it.only('should display meta steps and substeps', (done) => {
     exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
+      console.log(stdout);
       const lines = stdout.split('\n');
       lines.should.include.members([
         '  check current dir',
