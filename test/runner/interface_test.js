@@ -155,9 +155,6 @@ describe('CodeceptJS Interface', () => {
 
       // before hooks
       const beforeStep = [
-        'Emitted | step.before (I am in path ".")',
-        'Emitted | step.after (I am in path ".")',
-        'Emitted | step.start (I am in path ".")',
         'I am in path "."',
       ];
 
