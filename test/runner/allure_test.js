@@ -84,4 +84,6 @@ describe('CodeceptJS Allure Plugin', function () {
       done();
     });
   });
+
+  // @TODO: Нужно написать тестов с новыми MetaSteps
 });

@@ -1,14 +1,13 @@
 {
-  "tests": "./*_test.inject.po.js",
+  "tests": "./*_test.po.js",
   "timeout": 10000,
   "output": "./output",
   "helpers": {
     "FileSystem": {}
   },
   "include": {
-    "I": "./support/custom_steps.js",
-    "MyPage": "./support/my_page.js",
-    "SecondPage": "./support/second_page.js"
+    "I": "./pages/custom_steps.js",
+    "MyPage": "./pages/my_page.js"
   },
   "bootstrap": false,
   "mocha": {},

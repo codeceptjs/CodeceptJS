@@ -31,7 +31,7 @@ describe('Actor', () => {
     event.cleanDispatcher();
   });
 
-  it('should take all methods from helpers and built in', () => {
+  it.only('should take all methods from helpers and built in', () => {
     I.should.contain.keys(['hello', 'bye', 'die', 'greeting', 'say', 'failFirst']);
   });
 
