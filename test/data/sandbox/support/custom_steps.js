@@ -3,8 +3,5 @@ module.exports = () => {
     openDir() {
       this.amInPath('.');
     },
-    throw() {
-      assert.ok(false);
-    },
   });
 };
