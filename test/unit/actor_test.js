@@ -1,5 +1,5 @@
 const path = require('path');
-
+const expect = require('expect');
 const actor = require('../../lib/actor');
 const container = require('../../lib/container');
 const recorder = require('../../lib/recorder');
@@ -31,8 +31,10 @@ describe('Actor', () => {
     event.cleanDispatcher();
   });
 
-  it.only('should take all methods from helpers and built in', () => {
-    I.should.contain.keys(['hello', 'bye', 'die', 'greeting', 'say', 'failFirst']);
+  it('should take all methods from helpers and built in', () => {
+    ['hello', 'bye', 'die', 'failFirst', 'say', 'retry', 'greeting'].forEach(key => {
+      expect(I).toHaveProperty(key);
+    });
   });
 
   it('should return promise', () => {
