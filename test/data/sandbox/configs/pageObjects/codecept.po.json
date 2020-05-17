@@ -6,8 +6,8 @@
     "FileSystem": {}
   },
   "include": {
-    "I": "./support/custom_steps.js",
-    "MyPage": "./support/my_page.js"
+    "I": "./pages/custom_steps.js",
+    "MyPage": "./pages/my_page.js"
   },
   "bootstrap": false,
   "mocha": {},
