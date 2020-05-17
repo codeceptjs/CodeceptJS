@@ -2,7 +2,7 @@ Feature('Filesystem');
 
 Scenario('check current dir', ({ I, MyPage }) => {
   I.openDir('aaa');
-  I.seeFile('codecept.json');
-  MyPage.hasFile('uu');
+  I.seeFile('allure.conf.js');
+  MyPage.hasFile('First arg', 'Second arg');
   I.seeFile('codecept.po.json');
 });
