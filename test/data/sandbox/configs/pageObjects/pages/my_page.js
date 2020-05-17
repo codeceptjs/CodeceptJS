@@ -10,4 +10,8 @@ module.exports = {
     I.seeFile('codecept.class.js');
     I.seeFile('codecept.po.json');
   },
+
+  failedMethod() {
+    I.seeFile('notexistfile.js');
+  },
 };

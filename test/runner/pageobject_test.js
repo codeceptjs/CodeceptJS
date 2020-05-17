@@ -12,6 +12,26 @@ describe('CodeceptJS PageObject', () => {
     process.chdir(codecept_dir);
   });
 
+  describe('Failed PageObject', () => {
+    it('should fail if page objects was failed', (done) => {
+      exec(`${config_run_config('codecept.fail_po.json')} --debug`, (err, stdout) => {
+        const lines = stdout.split('\n');
+        expect(lines).toEqual(
+          expect.arrayContaining([
+            expect.stringContaining('File notexistfile.js not found in'),
+            expect.stringContaining('-- FAILURES'),
+            expect.stringContaining('- I.seeFile("notexistfile.js")'),
+            expect.stringContaining('- I.seeFile("codecept.class.js")'),
+            expect.stringContaining('- I.amInPath(".")'),
+          ]),
+        );
+        expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
+        expect(err).toBeTruthy();
+        done();
+      });
+    });
+  });
+
   describe('PageObject as Class', () => {
     it('should inject page objects by class', (done) => {
       exec(`${config_run_config('codecept.class.js', '@ClassPageObject')} --debug`, (err, stdout) => {

@@ -133,7 +133,7 @@ describe('Steps', () => {
       let fn;
       let boundedRun;
       beforeEach(() => {
-        metaStep = new MetaStep({ doSomething: action }, 'doSomething');
+        metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething');
         fn = (msg) => `result from callback = ${msg}`;
         boundedRun = metaStep.run.bind(metaStep, fn);
       });
@@ -168,6 +168,55 @@ describe('Steps', () => {
         boundedRun();
         expect(step1.metaStep).toEqual(metaStep);
         expect(step2.metaStep).toEqual(metaStep);
+      });
+
+      describe('Event Emiter', () => {
+        it('should emit failed events', () => {
+          let step;
+          const stepAction = sinon.spy(() => {
+            event.emit(event.step.before, step);
+            throw new Error('Error from step');
+          });
+          step = new Step({ doSomething: stepAction }, 'doSomething');
+          boundedRun = metaStep.run.bind(metaStep, () => step.run());
+          let msPassedEvent;
+          let msFailedEvent;
+          let msAfterEvent;
+          let msFinishedEvent;
+          event.dispatcher.on(event.metaStep.passed, (ms) => msPassedEvent = ms);
+          event.dispatcher.on(event.metaStep.failed, (ms) => msFailedEvent = ms);
+          event.dispatcher.on(event.metaStep.after, (ms) => msAfterEvent = ms);
+          event.dispatcher.on(event.metaStep.finished, (ms) => msFinishedEvent = ms);
+          boundedRun();
+
+          expect(step.metaStep).toEqual(metaStep);
+          expect(msPassedEvent).toBeFalsy();
+          expect(msFailedEvent).toEqual(metaStep);
+          expect(msAfterEvent).toEqual(metaStep);
+          expect(msFinishedEvent).toEqual(metaStep);
+        });
+
+        it('should emit passed events', () => {
+          let step;
+          const stepAction = sinon.spy(() => event.emit(event.step.before, step));
+          step = new Step({ doSomething: stepAction }, 'doSomething');
+          boundedRun = metaStep.run.bind(metaStep, () => step.run());
+          let msFailedEvent;
+          let msPassedEvent;
+          let msAfterEvent;
+          let msFinishedEvent;
+          event.dispatcher.on(event.metaStep.passed, (ms) => msPassedEvent = ms);
+          event.dispatcher.on(event.metaStep.failed, (ms) => msFailedEvent = ms);
+          event.dispatcher.on(event.metaStep.after, (ms) => msAfterEvent = ms);
+          event.dispatcher.on(event.metaStep.finished, (ms) => msFinishedEvent = ms);
+          boundedRun();
+
+          expect(step.metaStep).toEqual(metaStep);
+          expect(msFailedEvent).toBeFalsy();
+          expect(msPassedEvent).toEqual(metaStep);
+          expect(msAfterEvent).toEqual(metaStep);
+          expect(msFinishedEvent).toEqual(metaStep);
+        });
       });
     });
   });
