@@ -273,14 +273,14 @@ describe('utils', () => {
     });
 
     it('should normalize modifier key based on operating system', () => {
-      sinon.stub(os, 'platform', () => { return 'notdarwin'; });
+      sinon.stub(os, 'platform').returns('notdarwin');
       utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
       os.platform.restore();
 
-      sinon.stub(os, 'platform', () => { return 'darwin'; });
+      sinon.stub(os, 'platform').returns('darwin');
       utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
       utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
       utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');

@@ -1,9 +1,12 @@
 const path = require('path');
 const expect = require('expect');
+const sinon = require('sinon');
 const actor = require('../../lib/actor');
 const container = require('../../lib/container');
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
+const Step = require('../../lib/step');
+const { MetaStep } = require('../../lib/step');
 
 global.codecept_dir = path.join(__dirname, '/..');
 let I;
@@ -27,8 +30,52 @@ describe('Actor', () => {
         greeting: () => 'greetings, world',
       },
     });
+    container.translation().vocabulary.actions.hello = 'привет';
     I = actor();
     event.cleanDispatcher();
+  });
+
+  it('should init actor on store', () => {
+    const store = require('../../lib/store');
+    expect(store.actor).toBeTruthy();
+  });
+
+  it('should collect pageobject methods in actor', () => {
+    const poI = actor({
+      customStep: () => {},
+    });
+    expect(poI).toHaveProperty('customStep');
+    expect(I).toHaveProperty('customStep');
+  });
+
+  it('should correct run step from Helper inside PageObject', () => {
+    actor({
+      customStep() {
+        return this.hello();
+      },
+    });
+    recorder.start();
+    const promise = I.customStep();
+    return promise.then(val => expect(val).toEqual('hello world'));
+  });
+
+  it('should init pageobject methods as metastep', () => {
+    actor({
+      customStep: () => 3,
+    });
+    expect(I.customStep()).toEqual(3);
+  });
+
+  it('should correct add translation for step from Helper', () => {
+    expect(I).toHaveProperty('привет');
+  });
+
+  it('should correct add translation for step from PageObject', () => {
+    container.translation().vocabulary.actions.customStep = 'кастомный_шаг';
+    actor({
+      customStep: () => 3,
+    });
+    expect(I).toHaveProperty('кастомный_шаг');
   });
 
   it('should take all methods from helpers and built in', () => {
@@ -40,8 +87,8 @@ describe('Actor', () => {
   it('should return promise', () => {
     recorder.start();
     const promise = I.hello();
-    promise.should.be.instanceOf(Promise);
-    return promise.then(val => val.should.eql('hello world'));
+    expect(promise).toBeInstanceOf(Promise);
+    return promise.then(val => expect(val).toEqual('hello world'));
   });
 
   it('should produce step events', () => {
@@ -51,13 +98,13 @@ describe('Actor', () => {
     event.dispatcher.addListener(event.step.after, () => listeners++);
     event.dispatcher.addListener(event.step.passed, (step) => {
       listeners++;
-      step.endTime.should.not.be.null;
-      step.startTime.should.not.be.null;
-      step.startTime.should.not.eql(step.endTime);
+      expect(step.endTime).toBeTruthy();
+      expect(step.startTime).toBeTruthy();
+      expect(step.startTime).not.toEqual(step.endTime);
     });
 
     return I.hello().then(() => {
-      listeners.should.eql(3);
+      expect(listeners).toEqual(3);
     });
   });
 
@@ -78,16 +125,16 @@ describe('Actor', () => {
     event.dispatcher.addListener(event.step.after, () => listeners++);
     event.dispatcher.addListener(event.step.failed, (step) => {
       listeners++;
-      step.endTime.should.not.be.null;
-      step.startTime.should.not.be.null;
-      step.startTime.should.not.eql(step.endTime);
+      expect(step.endTime).toBeTruthy();
+      expect(step.startTime).toBeTruthy();
+      expect(step.startTime).not.toEqual(step.endTime);
     });
 
     return I.die()
       .then(() => listeners = 0)
       .catch(() => null)
       .then(() => {
-        listeners.should.eql(3);
+        expect(listeners).toEqual(3);
       });
   });
 });
