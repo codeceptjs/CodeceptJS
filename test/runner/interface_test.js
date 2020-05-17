@@ -175,4 +175,13 @@ describe('CodeceptJS Interface', () => {
       done();
     });
   });
+
+  it('should display steps and artifacts & error log', (done) => {
+    exec(`${config_run_config('./configs/testArtifacts')} --debug`, (err, stdout) => {
+      stdout.should.include('Scenario Steps:');
+      stdout.should.include('Artifacts');
+      stdout.should.include('- screenshot: [ SCREEENSHOT FILE ]');
+      done();
+    });
+  });
 });
