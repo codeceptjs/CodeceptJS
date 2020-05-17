@@ -1,7 +1,5 @@
-const assert = require('assert');
 const path = require('path');
-const expect = require('chai').expect;
-
+const expect = require('expect');
 const exec = require('child_process').exec;
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
@@ -18,9 +16,9 @@ describe('dry-run command', () => {
   it('should be executed with config path', (done) => {
     process.chdir(__dirname);
     exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
-      stdout.should.include('Filesystem'); // feature
-      stdout.should.include('check current dir'); // test name
-      assert(!err);
+      expect(stdout).toContain('Filesystem'); // feature
+      expect(stdout).toContain('check current dir'); // test name
+      expect(err).toBeFalsy();
       done();
     });
   });
@@ -28,26 +26,26 @@ describe('dry-run command', () => {
   it('should list all tests', (done) => {
     process.chdir(__dirname);
     exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
-      stdout.should.include('Filesystem'); // feature
-      stdout.should.include('check current dir'); // test name
-      stdout.should.not.include('I am in path'); // step name
-      stdout.should.not.include('I see file'); // step name
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(stdout).toContain('Filesystem'); // feature
+      expect(stdout).toContain('check current dir'); // test name
+      expect(stdout).not.toContain('I am in path'); // step name
+      expect(stdout).not.toContain('I see file'); // step name
+      expect(stdout).toContain('No tests were executed');
+      expect(err).toBeFalsy();
       done();
     });
   });
 
   it('should not run actual steps', (done) => {
     exec(codecept_run_config('codecept.flaky.json'), (err, stdout) => {
-      stdout.should.include('Flaky'); // feature
-      stdout.should.include('Not so flaky test'); // test name
-      stdout.should.include('Old style flaky'); // test name
-      stdout.should.not.include('[T1] Retries: 2');
-      stdout.should.not.include('[T2] Retries: 4');
-      stdout.should.not.include('[T3] Retries: 1');
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(stdout).toContain('Flaky'); // feature
+      expect(stdout).toContain('Not so flaky test'); // test name
+      expect(stdout).toContain('Old style flaky'); // test name
+      expect(stdout).not.toContain('[T1] Retries: 2');
+      expect(stdout).not.toContain('[T2] Retries: 4');
+      expect(stdout).not.toContain('[T3] Retries: 1');
+      expect(stdout).toContain('No tests were executed');
+      expect(err).toBeFalsy();
       done();
     });
   });
@@ -56,80 +54,86 @@ describe('dry-run command', () => {
     exec(`${codecept_run_config('codecept.testhooks.json')} --debug`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
-      expect(lines).to.not.include.members([
-        'Helper: I\'m initialized',
-        'Helper: I\'m simple BeforeSuite hook',
-        'Helper: I\'m simple Before hook',
-        'Helper: I\'m simple After hook',
-        'Helper: I\'m simple AfterSuite hook',
-      ]);
+      expect(lines).not.toEqual(
+        expect.arrayContaining([
+          'Helper: I\'m initialized',
+          'Helper: I\'m simple BeforeSuite hook',
+          'Helper: I\'m simple Before hook',
+          'Helper: I\'m simple After hook',
+          'Helper: I\'m simple AfterSuite hook',
+        ]),
+      );
 
-      expect(lines).to.include.members([
-        'Test: I\'m simple BeforeSuite hook',
-        'Test: I\'m simple Before hook',
-        'Test: I\'m simple After hook',
-        'Test: I\'m simple AfterSuite hook',
-      ]);
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          'Test: I\'m simple BeforeSuite hook',
+          'Test: I\'m simple Before hook',
+          'Test: I\'m simple After hook',
+          'Test: I\'m simple AfterSuite hook',
+        ]),
+      );
 
-      stdout.should.include('OK  | 1 passed');
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(stdout).toContain('No tests were executed');
+      expect(err).toBeFalsy();
       done();
     });
   });
 
   it('should display meta steps and substeps', (done) => {
-    exec(`${codecept_run_config('codecept.po.json')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('configs/pageObjects/codecept.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
-      lines.should.include.members([
-        '  check current dir',
-        '    I: openDir ',
-        '      I am in path "."',
-        '      I see file "codecept.json"',
-        '    MyPage: hasFile ',
-        '      I see file "codecept.json"',
-        '      I see file "codecept.po.json"',
-        '    I see file "codecept.po.json"',
-      ]);
-      stdout.should.include('OK  | 1 passed');
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          '  check current dir',
+          '    I: openDir "aaa"',
+          '      I am in path "."',
+          '      I see file "codecept.class.js"',
+          '    MyPage: hasFile "First arg", "Second arg"',
+          '      I see file "codecept.class.js"',
+          '      I see file "codecept.po.json"',
+          '    I see file "codecept.po.json"',
+        ]),
+      );
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(stdout).toContain('No tests were executed');
+      expect(err).toBeFalsy();
       done();
     });
   });
 
   it('should run feature files', (done) => {
     exec(codecept_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
-      stdout.should.include('Checkout process'); // feature
-      stdout.should.include('-- before checkout --');
-      stdout.should.include('-- after checkout --');
-      // stdout.should.include('In order to buy products'); // test name
-      stdout.should.include('Given I have product with $600 price');
-      stdout.should.include('And I have product with $1000 price');
-      stdout.should.include('Then I should see that total number of products is 2');
-      stdout.should.include('And my order amount is $1600');
-      stdout.should.not.include('I add item 600'); // 'Given' actor's non-gherkin step check
-      stdout.should.not.include('I see sum 1600'); // 'And' actor's non-gherkin step check
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(stdout).toContain('Checkout process'); // feature
+      expect(stdout).toContain('-- before checkout --');
+      expect(stdout).toContain('-- after checkout --');
+      // expect(stdout).toContain('In order to buy products'); // test name
+      expect(stdout).toContain('Given I have product with $600 price');
+      expect(stdout).toContain('And I have product with $1000 price');
+      expect(stdout).toContain('Then I should see that total number of products is 2');
+      expect(stdout).toContain('And my order amount is $1600');
+      expect(stdout).not.toContain('I add item 600'); // 'Given' actor's non-gherkin step check
+      expect(stdout).not.toContain('I see sum 1600'); // 'And' actor's non-gherkin step check
+      expect(stdout).toContain('No tests were executed');
+      expect(err).toBeFalsy();
       done();
     });
   });
 
   it('should print substeps in debug mode', (done) => {
     exec(codecept_run_config('codecept.bdd.json') + ' --debug --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
-      stdout.should.include('Checkout process'); // feature
-      // stdout.should.include('In order to buy products'); // test name
-      stdout.should.include('Given I have product with $600 price');
-      stdout.should.include('I add item 600');
-      stdout.should.include('And I have product with $1000 price');
-      stdout.should.include('I add item 1000');
-      stdout.should.include('Then I should see that total number of products is 2');
-      stdout.should.include('I see num 2');
-      stdout.should.include('And my order amount is $1600');
-      stdout.should.include('I see sum 1600');
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(stdout).toContain('Checkout process'); // feature
+      // expect(stdout).toContain('In order to buy products'); // test name
+      expect(stdout).toContain('Given I have product with $600 price');
+      expect(stdout).toContain('I add item 600');
+      expect(stdout).toContain('And I have product with $1000 price');
+      expect(stdout).toContain('I add item 1000');
+      expect(stdout).toContain('Then I should see that total number of products is 2');
+      expect(stdout).toContain('I see num 2');
+      expect(stdout).toContain('And my order amount is $1600');
+      expect(stdout).toContain('I see sum 1600');
+      expect(stdout).toContain('No tests were executed');
+      expect(err).toBeFalsy();
       done();
     });
   });
@@ -137,69 +141,51 @@ describe('dry-run command', () => {
   it('should run tests with different data', (done) => {
     exec(codecept_run_config('codecept.ddt.json'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
-      output.should.include(`${char} Should log accounts1 | {"login":"davert","password":"123456"}`);
-      output.should.include(`${char} Should log accounts1 | {"login":"admin","password":"666666"}`);
-      output.should.include(`${char} Should log accounts2 | {"login":"andrey","password":"555555"}`);
-      output.should.include(`${char} Should log accounts2 | {"login":"collaborator","password":"222222"}`);
-      output.should.include(`${char} Should log accounts3 | ["nick","pick"]`);
-      output.should.include(`${char} Should log accounts3 | ["jack","sacj"]`);
-      output.should.include(`${char} Should log accounts4 | {"user":"nick"}`);
-      output.should.include(`${char} Should log accounts4 | {"user":"pick"}`);
-      output.should.include(`${char} Should log array of strings | {"1"}`);
-      output.should.include(`${char} Should log array of strings | {"2"}`);
-      output.should.include(`${char} Should log array of strings | {"3"}`);
+      expect(output).toContain(`${char} Should log accounts1 | {"login":"davert","password":"123456"}`);
+      expect(output).toContain(`${char} Should log accounts1 | {"login":"admin","password":"666666"}`);
+      expect(output).toContain(`${char} Should log accounts2 | {"login":"andrey","password":"555555"}`);
+      expect(output).toContain(`${char} Should log accounts2 | {"login":"collaborator","password":"222222"}`);
+      expect(output).toContain(`${char} Should log accounts3 | ["nick","pick"]`);
+      expect(output).toContain(`${char} Should log accounts3 | ["jack","sacj"]`);
+      expect(output).toContain(`${char} Should log accounts4 | {"user":"nick"}`);
+      expect(output).toContain(`${char} Should log accounts4 | {"user":"pick"}`);
+      expect(output).toContain(`${char} Should log array of strings | {"1"}`);
+      expect(output).toContain(`${char} Should log array of strings | {"2"}`);
+      expect(output).toContain(`${char} Should log array of strings | {"3"}`);
 
-      assert(!err);
-      done();
-    });
-  });
-
-  it('should display meta steps and substeps', (done) => {
-    exec(`${codecept_run_config('codecept.po.json')} --debug`, (err, stdout) => {
-      const lines = stdout.split('\n');
-      lines.should.include.members([
-        '  check current dir',
-        '    I: openDir ',
-        '      I am in path "."',
-        '      I see file "codecept.json"',
-        '    MyPage: hasFile ',
-        '      I see file "codecept.json"',
-        '      I see file "codecept.po.json"',
-        '    I see file "codecept.po.json"',
-      ]);
-      stdout.should.include('OK  | 1 passed');
-      stdout.should.include('No tests were executed');
-      assert(!err);
+      expect(err).toBeFalsy();
       done();
     });
   });
 
   it('should work with inject() keyword', (done) => {
-    exec(`${codecept_run_config('codecept.inject.po.json')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.json')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
-      stdout.should.include('injected');
-      lines.should.include.members([
-        '  check current dir',
-        '    I: openDir ',
-        '      I am in path "."',
-        '      I see file "codecept.json"',
-        '    MyPage: hasFile ',
-        '      I see file "codecept.json"',
-        '      I see file "codecept.po.json"',
-        '    I see file "codecept.po.json"',
-      ]);
-      stdout.should.include('OK  | 1 passed');
-      assert(!err);
+      expect(stdout).toContain('injected');
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          '  check current dir',
+          '    I: openDir "aaa"',
+          '      I am in path "."',
+          '      I see file "codecept.class.js"',
+          '    MyPage: hasFile "uu"',
+          '      I see file "codecept.class.js"',
+          '      I see file "codecept.po.json"',
+          '    I see file "codecept.po.json"',
+        ]),
+      );
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(err).toBeFalsy();
       done();
     });
   });
 
   it('should inject page objects via proxy', (done) => {
     exec(`${codecept_run_config('../inject-fail-example')} --debug`, (err, stdout) => {
-      stdout.should.include('newdomain');
-      stdout.should.include("[ 'veni', 'vedi', 'vici' ]", 'array objects work');
-      stdout.should.include('OK  | 1 passed');
-      assert(!err);
+      expect(stdout).toContain('newdomain');
+      expect(stdout).toContain("[ 'veni', 'vedi', 'vici' ]", 'array objects work');
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(err).toBeFalsy();
       done();
     });
   });

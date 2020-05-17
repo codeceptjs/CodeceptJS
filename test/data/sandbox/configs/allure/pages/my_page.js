@@ -7,7 +7,11 @@ module.exports = {
   },
 
   hasFile(arg) {
-    I.seeFile('codecept.json');
+    I.seeFile('allure.conf.js');
     I.seeFile('codecept.po.json');
+  },
+
+  failedMethod() {
+    I.seeFile('notexistfile.js');
   },
 };
