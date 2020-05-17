@@ -155,21 +155,19 @@ describe('Steps', () => {
       });
 
       it('should init as metaStep in step', () => {
-        let step;
-        const stepAction = sinon.spy(() => {
-          event.emit(event.step.before, step);
-          'done';
+        let step1;
+        let step2;
+        const stepAction1 = sinon.spy(() => event.emit(event.step.before, step1));
+        const stepAction2 = sinon.spy(() => event.emit(event.step.before, step2));
+        step1 = new Step({ doSomething: stepAction1 }, 'doSomething');
+        step2 = new Step({ doSomething2: stepAction2 }, 'doSomething2');
+        boundedRun = metaStep.run.bind(metaStep, () => {
+          step1.run();
+          step2.run();
         });
-        step = new Step({ doSomething: stepAction }, 'doSomething');
-
-        fn = (msg) => {
-          step.run();
-          return `result from callback = ${msg}`;
-        };
-        boundedRun = metaStep.run.bind(metaStep, fn);
-        const msg = 'arg message';
-        boundedRun(msg);
-        expect(step.metaStep).toEqual(metaStep);
+        boundedRun();
+        expect(step1.metaStep).toEqual(metaStep);
+        expect(step2.metaStep).toEqual(metaStep);
       });
     });
   });
