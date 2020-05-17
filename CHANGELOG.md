@@ -1,3 +1,30 @@
+## 3.0.0-beta-3
+
+> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
+
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* Test artifacts introduced. Each test object has `artifacts` property, to keep attachment files. For instance, a screenshot of a failed test is attached to a test as artifact.
+* Improved output for test execution
+  * Changed colors for steps output, simplified
+  * Added stack trace for test failures
+  * Removed `Event emitted` from log in `--verbose` mode
+  * List artifacts of a failed tests
+
+![](https://user-images.githubusercontent.com/220264/82160052-397bf800-989b-11ea-81c0-8e58b3d33525.png)
+
+* Steps & metasteps refactored by @Vorobeyko. Logs to arguments passed to page objects:
+
+```js
+// TEST:
+MyPage.hasFiles('first arg', 'second arg');
+
+// OUTPUT:
+MyPage: hasFile "First arg", "Second arg"
+  I see file "codecept.json"
+  I see file "codecept.po.json"
+```
+* Introduced official [TypeScript boilerplate](https://github.com/codecept-js/typescript-boilerplate). Started by @Vorobeyko.
+
 ## 3.0.0-beta
 
 > [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)

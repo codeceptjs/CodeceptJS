@@ -11,7 +11,7 @@ Scenario('It should fill in checkout page', ({ I }) => {
   I.click('Redeem');
   I.click(locate('h6').withText('Third item'));
   I.checkOption('#same-address');
-  I.see('Payment');
+  I.see('Paymen1t');
   I.click('Paypal');
   I.click('Checkout');
   I.see('Thank you!');
