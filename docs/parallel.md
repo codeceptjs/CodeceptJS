@@ -87,8 +87,6 @@ for (const config of configs) {
   }
 }
 
-workers.run();
-
 // Listen events for failed test
 workers.on(event.test.failed, (failedTest) => {
   console.log('Failed : ', failedTest.title);
@@ -100,7 +98,31 @@ workers.on(event.test.passed, (successTest) => {
 });
 
 // test run status will also be available in event
-workers.on(event.all.result, (status, completedTests, workerStats) => {
+workers.on(event.all.result, () => {
+  // Use printResults() to display result with standard style
+  workers.printResults();
+});
+
+// run workers as async function
+runWorkers();
+
+async function runWorkers() {
+  try {
+    // run bootstrapAll
+    await workers.bootstrapAll();
+    // run tests
+    await workers.run();
+  } finally {
+    // run teardown All
+    await workers.teardownAll();
+  }
+}
+```
+
+Inside `event.all.result` you can obtain test results from all workers, so you can customize the report:
+
+```js
+workers.on(event.all.result, (status, completedTests, wotkerStats) => {
   // print output
   console.log('Test status : ', status ? 'Passes' : 'Failed ');
 
@@ -113,16 +135,12 @@ workers.on(event.all.result, (status, completedTests, workerStats) => {
   for (const test of Object.values(completedTests)) {
     console.log(`Test status: ${test.err===null}, `, `Test : ${test.title}`);
   }
-
-  // Alternatively use printResults() to display result with proper style
-  workers.printResults();
-});
-
+}
 ```
 
-### Example: Running tests based on custom function
+### Example: Running Tests Splitted By A Custom Function
 
-If you want your tests to split according to your need this method is suited for you. For ex: If you have 4 long running test files and 4 normal test files there chance all 4 tests end up in same worker thread. For these cases custom function will be helpful.
+If you want your tests to split according to your need this method is suited for you. For example: If you have 4 long running test files and 4 normal test files there chance all 4 tests end up in same worker thread. For these cases custom function will be helpful.
 
 ```js
 
@@ -150,11 +168,40 @@ const workerConfig = {
 // don't initialize workers in constructor
 const customWorkers = new Workers(null,  workerCOnfig);
 
-
 customWorkers.run();
 
 // You can use event listeners similar to above example.
 customWorkers.on(event.all.result, () => {
   workers.printResults();
 });
+```
+
+## Sharing Data Between Workers
+
+NodeJS Workers can communicate between each other via messaging system. It may happen that you want to pass some data from one of workers to other. For instance, you may want to share user credentials accross all tests. Data will be appended to a container.
+
+However, you can't access uninitialized data from a container, so to start, you need to initialized data first. Inside `bootstrap` function of the config we execute the `share` function with `local: true` to initialize value locally:
+
+
+```js
+// inside codecept.conf.js
+exports.config = {
+  bootstrap() {
+    // append empty userData to container for current worker
+    share({ userData: false }, { local: true });
+  }
+}
+```
+Now each worker has `userData` inside a container. However, it is empty.
+When you obtain real data in one of tests you can this data accross tests. Use `inject` function to access data inside a container:
+
+```js
+// get current value of userData
+let { userData } = inject();
+// if userData is still empty - update it
+if (!userData) {
+  userData = { name: 'user', password: '123456' };
+  // now new userData will be shared accross all workers
+  share(userData);
+}
 ```

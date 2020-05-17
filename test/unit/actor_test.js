@@ -100,7 +100,6 @@ describe('Actor', () => {
       listeners++;
       expect(step.endTime).toBeTruthy();
       expect(step.startTime).toBeTruthy();
-      expect(step.startTime).not.toEqual(step.endTime);
     });
 
     return I.hello().then(() => {
@@ -127,7 +126,6 @@ describe('Actor', () => {
       listeners++;
       expect(step.endTime).toBeTruthy();
       expect(step.startTime).toBeTruthy();
-      expect(step.startTime).not.toEqual(step.endTime);
     });
 
     return I.die()
