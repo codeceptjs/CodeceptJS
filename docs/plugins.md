@@ -799,7 +799,7 @@ Use this plugin if:
 
 -   you need to perform multiple assertions inside a test
 -   there is A/B testing on a website you test
--   there is "accept cookie" banner which may surprisingly appear on a page
+-   there is "Accept Cookie" banner which may surprisingly appear on a page.
 
 #### Usage
 

@@ -11,6 +11,7 @@ const run = require('../../lib/interfaces/gherkin');
 const recorder = require('../../lib/recorder');
 const container = require('../../lib/container');
 const actor = require('../../lib/actor');
+const event = require('../../lib/event');
 
 const text = `
   Feature: checkout process
@@ -168,6 +169,25 @@ describe('BDD', () => {
     assert.equal('bird', fn.params[0]);
   });
 
+  it('should produce step events', (done) => {
+    const text = `
+    Feature: Emit step event
+
+      Scenario:
+        Then I emit step events
+    `;
+    Then('I emit step events', () => {});
+    let listeners = 0;
+    event.dispatcher.addListener(event.bddStep.before, () => listeners++);
+    event.dispatcher.addListener(event.bddStep.after, () => listeners++);
+
+    const suite = run(text);
+    suite.tests[0].fn(() => {
+      listeners.should.eql(2);
+      done();
+    });
+  });
+
   it('should use shortened form for step definitions', () => {
     let fn;
     Given('I am a {word}', params => params[0]);
@@ -214,7 +234,7 @@ describe('BDD', () => {
       Given I have product with price <price>$ in my cart
       And discount is 10 %
       Then I should see price is "<total>" $
-      
+
       Examples:
         | price | total |
         | 10    | 9     |

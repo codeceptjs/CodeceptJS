@@ -17,7 +17,7 @@ Please refer to translated steps inside translation files and send Pull Requests
 To get autocompletion for localized method names generate definitions by running
 
 ```sh
-тзч codeceptjs def
+npx codeceptjs def
 ```
 
 ## Russian
