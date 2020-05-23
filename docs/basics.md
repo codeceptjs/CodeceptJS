@@ -695,7 +695,7 @@ I.say('This is by default'); //cyan is used
 
 ## IntelliSense
 
-![](/img/edit.gif)
+![Edit](/img/edit.gif)
 
 To get autocompletion when working with CodeceptJS, use Visual Studio Code or another IDE that supports TypeScript Definitions.
 
