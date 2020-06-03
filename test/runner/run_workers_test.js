@@ -8,7 +8,7 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run-workers --config ${codecept_dir}/codecept.workers.conf.js `;
 const codecept_run_glob = config => `${runner} run-workers --config ${codecept_dir}/${config} `;
 
-describe.only('CodeceptJS Workers Runner', function () {
+describe('CodeceptJS Workers Runner', function () {
   this.timeout(40000);
 
   before(() => {
