@@ -1,5 +1,6 @@
 const assert = require('assert');
 const os = require('os');
+const path = require('path');
 const sinon = require('sinon');
 
 const utils = require('../../lib/utils');
@@ -307,12 +308,14 @@ describe('utils', () => {
 
     it('returns the joined filename for filename only', () => {
       const _path = utils.screenshotOutputFolder('screenshot1.failed.png');
-      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+      _path.should.eql(
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace('/', path.sep),
+      );
     });
 
     it('returns the given filename for absolute one', () => {
       const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
-      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace('/', path.sep));
     });
   });
 });
