@@ -88,12 +88,35 @@ describe('CodeceptJS PageObject', () => {
 
   describe('Inject PO in Test', () => {
     it('should work with inject() keyword', (done) => {
-      exec(`${config_run_config('codecept.inject.po.json')} --debug`, (err, stdout) => {
+      exec(`${config_run_config('codecept.inject.po.json', 'check current dir')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(stdout).toContain('injected');
         expect(lines).toEqual(
           expect.arrayContaining([
             '  check current dir',
+            '    I: openDir "aaa"',
+            '      I am in path "."',
+            '      I see file "codecept.class.js"',
+            '    MyPage: hasFile "uu"',
+            '      I see file "codecept.class.js"',
+            '      I see file "codecept.po.json"',
+            '    I see file "codecept.po.json"',
+          ]),
+        );
+        expect(stdout).toContain('OK  | 1 passed');
+        expect(err).toBeFalsy();
+        done();
+      });
+    });
+  });
+
+  describe('PageObject with context', () => {
+    it('should work when used "this" context on method', (done) => {
+      exec(`${config_run_config('codecept.inject.po.json', 'pageobject with context')} --debug`, (err, stdout) => {
+        const lines = stdout.split('\n');
+        expect(lines).toEqual(
+          expect.arrayContaining([
+            '  pageobject with context',
             '    I: openDir "aaa"',
             '      I am in path "."',
             '      I see file "codecept.class.js"',
