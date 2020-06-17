@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2018"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": [
+    "**/*.ts",
+    "steps.d.ts"
+  ]
+}

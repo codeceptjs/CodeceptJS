@@ -1,4 +1,3 @@
-// Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />

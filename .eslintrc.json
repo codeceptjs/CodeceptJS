@@ -11,6 +11,7 @@
     "no-undef": 0,
     "prefer-destructuring": 0,
     "no-param-reassign": 0,
+    "no-multiple-empty-lines": 0,
     "max-len": 0,
     "camelcase": 0,
     "no-shadow": 0,
