@@ -97,5 +97,19 @@ wd.appendField({ android: 'div' }, 'value')
 wd.appendField({ ios: 'div' }, 'value')
 wd.appendField(locate('div'), 'value')
 
+wd.clearField() // $ExpectError
+wd.clearField('div')
+wd.clearField({ css: 'div' })
+wd.clearField({ xpath: '//div' })
+wd.clearField({ name: 'div' })
+wd.clearField({ id: 'div' })
+wd.clearField({ android: 'div' })
+wd.clearField({ ios: 'div' })
+
+wd.scrollIntoView('div', {behavior: "auto", block: "center", "inline": "center"})
+
+wd.setCookie({name: 'name', value: 'value'})
+wd.setCookie([{name: 'name', value: 'value'}])
+
 wd.grabAllWindowHandles() // $ExpectType string[]
 wd.grabCurrentWindowHandle() // $ExpectType string

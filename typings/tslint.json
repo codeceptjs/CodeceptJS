@@ -6,11 +6,11 @@
     "interface-name": false,
     "jsdoc-format": false,
     "max-line-length": false,
-    "no-single-declare-module": false
+    "no-single-declare-module": false,
+    "no-unnecessary-qualifier": false
   },
   "linterOptions": {
     "exclude": [
-      "./types.d.ts"
     ]
   }
 }

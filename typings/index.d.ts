@@ -7,6 +7,11 @@ declare namespace CodeceptJS {
   type WithTranslation<T> = T &
     import("./utils").Translate<T, Translation.Actions>;
 
+  type Cookie = {
+    name: string
+    value: string
+  }
+
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}
