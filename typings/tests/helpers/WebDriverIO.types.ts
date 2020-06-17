@@ -39,5 +39,63 @@ wd.forceClick('div', { id: '//div' })
 wd.forceClick('div', { android: '//div' })
 wd.forceClick('div', { ios: '//div' })
 
+wd.doubleClick() // $ExpectError
+wd.doubleClick('div') // $ExpectType void
+wd.doubleClick({ css: 'div' })
+wd.doubleClick({ xpath: '//div' })
+wd.doubleClick({ name: 'div' })
+wd.doubleClick({ id: 'div' })
+wd.doubleClick({ android: 'div' })
+wd.doubleClick({ ios: 'div' })
+wd.doubleClick(locate('div'))
+wd.doubleClick('div', 'body')
+wd.doubleClick('div', locate('div'))
+wd.doubleClick('div', { css: 'div' })
+wd.doubleClick('div', { xpath: '//div' })
+wd.doubleClick('div', { name: '//div' })
+wd.doubleClick('div', { id: '//div' })
+wd.doubleClick('div', { android: '//div' })
+wd.doubleClick('div', { ios: '//div' })
+
+wd.rightClick() // $ExpectError
+wd.rightClick('div') // $ExpectType void
+wd.rightClick({ css: 'div' })
+wd.rightClick({ xpath: '//div' })
+wd.rightClick({ name: 'div' })
+wd.rightClick({ id: 'div' })
+wd.rightClick({ android: 'div' })
+wd.rightClick({ ios: 'div' })
+wd.rightClick(locate('div'))
+wd.rightClick('div', 'body')
+wd.rightClick('div', locate('div'))
+wd.rightClick('div', { css: 'div' })
+wd.rightClick('div', { xpath: '//div' })
+wd.rightClick('div', { name: '//div' })
+wd.rightClick('div', { id: '//div' })
+wd.rightClick('div', { android: '//div' })
+wd.rightClick('div', { ios: '//div' })
+
+wd.fillField() // $ExpectError
+wd.fillField('div') // $ExpectError
+wd.fillField('div', 'value') // $ExpectType void
+wd.fillField({ css: 'div' }, 'value')
+wd.fillField({ xpath: '//div' }, 'value')
+wd.fillField({ name: 'div' }, 'value')
+wd.fillField({ id: 'div' }, 'value')
+wd.fillField({ android: 'div' }, 'value')
+wd.fillField({ ios: 'div' }, 'value')
+wd.fillField(locate('div'), 'value')
+
+wd.appendField() // $ExpectError
+wd.appendField('div') // $ExpectError
+wd.appendField('div', 'value') // $ExpectType void
+wd.appendField({ css: 'div' }, 'value')
+wd.appendField({ xpath: '//div' }, 'value')
+wd.appendField({ name: 'div' }, 'value')
+wd.appendField({ id: 'div' }, 'value')
+wd.appendField({ android: 'div' }, 'value')
+wd.appendField({ ios: 'div' }, 'value')
+wd.appendField(locate('div'), 'value')
+
 wd.grabAllWindowHandles() // $ExpectType string[]
 wd.grabCurrentWindowHandle() // $ExpectType string
