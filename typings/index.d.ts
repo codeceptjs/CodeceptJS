@@ -12,6 +12,11 @@ declare namespace CodeceptJS {
     value: string
   }
 
+  interface PageScrollPosition {
+    x: number,
+    y: number
+  }
+
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}

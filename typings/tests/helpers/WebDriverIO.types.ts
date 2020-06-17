@@ -116,8 +116,19 @@ wd.dragAndDrop(); // $ExpectError
 wd.dragAndDrop('#dragHandle'); // $ExpectError
 wd.dragAndDrop('#dragHandle', '#container');
 
+wd.grabCookie(); // $ExpectType string | string[]
+wd.grabCookie('name'); // $ExpectType string | string[]
+
+wd.grabPopupText() // $ExpectType string
+
 wd.grabAllWindowHandles() // $ExpectType string[]
 wd.grabCurrentWindowHandle() // $ExpectType string
+
+wd.grabNumberOfOpenTabs() // $ExpectType number | Promise<number>
+
+const psp = wd.grabPageScrollPosition() // $ExpectType PageScrollPosition
+psp.x // $ExpectType number
+psp.y // $ExpectType number
 
 wd.grabElementBoundingRect(); // $ExpectError
 wd.grabElementBoundingRect('h3'); // $ExpectType number | DOMRect
