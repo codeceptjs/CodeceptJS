@@ -1,3 +1,20 @@
 {
-  "extends": "dtslint/dtslint.json"
+  "extends": "dtslint/dtslint.json",
+  "rules": {
+    "semicolon": false,
+    "no-unnecessary-qualifier": false,
+    "interface-name": false,
+    "jsdoc-format": false,
+    "ban-types": false,
+    "no-any-union": false,
+    "max-line-length": false,
+    "no-single-declare-module": false,
+    "no-unnecessary-class": false,
+    "no-var-keyword": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "./types.d.ts"
+    ]
+  }
 }

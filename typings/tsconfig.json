@@ -11,7 +11,9 @@
     "noImplicitThis": true,
     "strictFunctionTypes": true,
     "skipLibCheck": true,
-    "types": []
+    "types": [],
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "**/*.ts",

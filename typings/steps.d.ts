@@ -1,5 +1,3 @@
-/// <reference types='codeceptjs' />
-
 declare namespace CodeceptJS {
   interface SupportObject { I: CodeceptJS.I }
   interface Methods extends CodeceptJS.WebDriver {}

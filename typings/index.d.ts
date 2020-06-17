@@ -43,13 +43,12 @@ declare namespace CodeceptJS {
   type LocatorOrString = string | ILocator | Locator;
 
   interface HookCallback { (args: SupportObject): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo: IScenario}
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
-    (title: string): ScenarioConfig;
-    (title: string, callback: HookCallback): ScenarioConfig;
+    (title: string, callback?: HookCallback): ScenarioConfig;
     (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig;
   }
   interface IHook { (callback: HookCallback): void; }
@@ -144,13 +143,13 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite extends SuiteRunnable{
+  interface Suite extends SuiteRunnable {
     tags: any[]
     comment: string
     feature: any
   }
 
-  interface Test  extends Runnable{
+  interface Test  extends Runnable {
     tags: any[];
   }
 }

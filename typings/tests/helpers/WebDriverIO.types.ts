@@ -1,3 +1,3 @@
-Scenario('', ({ I }) =>{
+Scenario('', ({ I }) => {
   I.grabAllWindowHandles() // $ExpectType string[]
 })

@@ -1,5 +1,0 @@
-Feature('')
-
-Scenario('', () => {
-  console.log('')
-})
