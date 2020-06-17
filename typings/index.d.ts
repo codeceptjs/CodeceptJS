@@ -5,7 +5,7 @@
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
-    import("./utils").Translate<T, CodeceptJS.Translation.Actions>;
+    import("./utils").Translate<T, Translation.Actions>;
 
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
@@ -13,7 +13,7 @@ declare namespace CodeceptJS {
   interface IHook {}
   interface IScenario {}
   interface SupportObject {
-    I: CodeceptJS.I;
+    I: I;
   }
   namespace Translation {
     interface Actions {}
@@ -25,7 +25,7 @@ declare namespace CodeceptJS {
   }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: Function }>(
+  type actor = <T extends { [action: string]: () => void }>(
     customSteps?: T & ThisType<WithTranslation<Methods & T>>
   ) => WithTranslation<Methods & T>;
 

@@ -1,6 +1,6 @@
 declare namespace CodeceptJS {
-  interface SupportObject { I: CodeceptJS.I }
-  interface Methods extends CodeceptJS.WebDriver {}
+  interface SupportObject { I: I }
+  interface Methods extends WebDriver {}
   interface I extends WithTranslation<Methods> {}
   namespace Translation {
     interface Actions {}

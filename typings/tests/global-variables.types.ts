@@ -29,14 +29,6 @@ Scenario('scenario',
   }
 )
 
-class CustomClass extends Helper {
-  constructor(config: any) {
-    super(
-      config // $ExpectType any
-    )
-  }
-}
-
 // Before((
 //   args // $ExpectType string
 //   ) => {})
