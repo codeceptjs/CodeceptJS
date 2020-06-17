@@ -15,6 +15,6 @@ To get only one metric use second parameter:
 const width = await I.grabElementBoundingRect('h3', 'width');
 // width == 527
 ```
-@param {string|object} locator element located by CSS|XPath|strict locator.
-@param {string} elementSize x, y, width or height of the given element.
-@returns {object} Element bounding rectangle
+@param {LocatorOrString} locator element located by CSS|XPath|strict locator.
+@param {string=} elementSize x, y, width or height of the given element.
+@returns {DOMRect|number} Element bounding rectangle

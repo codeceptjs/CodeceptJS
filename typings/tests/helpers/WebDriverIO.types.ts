@@ -106,10 +106,23 @@ wd.clearField({ id: 'div' })
 wd.clearField({ android: 'div' })
 wd.clearField({ ios: 'div' })
 
-wd.scrollIntoView('div', {behavior: "auto", block: "center", "inline": "center"})
+wd.scrollIntoView('div', {behavior: "auto", block: "center", inline: "center"})
 
+wd.setCookie() // $ExpectError
 wd.setCookie({name: 'name', value: 'value'})
 wd.setCookie([{name: 'name', value: 'value'}])
 
+wd.dragAndDrop(); // $ExpectError
+wd.dragAndDrop('#dragHandle'); // $ExpectError
+wd.dragAndDrop('#dragHandle', '#container');
+
 wd.grabAllWindowHandles() // $ExpectType string[]
 wd.grabCurrentWindowHandle() // $ExpectType string
+
+wd.grabElementBoundingRect(); // $ExpectError
+wd.grabElementBoundingRect('h3'); // $ExpectType number | DOMRect
+wd.grabElementBoundingRect('h3', 'width'); // $ExpectType number | DOMRect
+
+wd.waitForValue() // $ExpectError
+// wd.waitForValue('//input') // $ExpectError
+wd.waitForValue('//input', "GoodValue")

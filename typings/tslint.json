@@ -7,7 +7,13 @@
     "jsdoc-format": false,
     "max-line-length": false,
     "no-single-declare-module": false,
-    "no-unnecessary-qualifier": false
+    "no-unnecessary-qualifier": false,
+    "interface-over-type-literal": false,
+    "no-var-keyword": false,
+    "no-unnecessary-class": false,
+    "array-type": false,
+    "trim-file": false,
+    "no-consecutive-blank-lines": false
   },
   "linterOptions": {
     "exclude": [
