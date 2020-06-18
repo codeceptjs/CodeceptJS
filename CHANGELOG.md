@@ -1,5 +1,12 @@
 ## 2.6.6
 
+* Puppeteer 4.0 support
+* Added `xFeature` and `Feature.skip` to skip all tests in a suite. By @Georgegriff
+* [Appium] Fixed #2428 Android native locator support by @idxn
+* [WebDriver] Fixed `waitNumberOfVisibleElements` to actually filter visible elements. By @ilangv
+* [Puppeteer] Fixed handling error which is not an Error object. Fixes `cannot read property indexOf of undefined` error. Fix #2436 by @Georgegriff
+* [Puppeteer] Print error on page crash by @Georgegriff
+
 ## 2.6.5
 
 * Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
