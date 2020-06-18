@@ -17,4 +17,4 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 ```
 @param {LocatorOrString} locator element located by CSS|XPath|strict locator.
 @param {string=} elementSize x, y, width or height of the given element.
-@returns {DOMRect|number} Element bounding rectangle
+@returns {Promise<DOMRect>|Promise<number>} Element bounding rectangle
