@@ -6,7 +6,7 @@ const fetchComments = response => response.url() === 'https://jsonplaceholder.ty
 
 const fetchUsers = response => response.url() === 'https://jsonplaceholder.typicode.com/users/1';
 
-Scenario('change statusCode @Puppeteer @WebDriver', (I) => {
+Scenario('change statusCode @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', 404);
   I.click('GET POSTS');

@@ -1,6 +1,6 @@
 ## 2.6.6
 
-* Puppeteer 4.0 support
+* Puppeteer 4.0 support. Important: MockRequest helper won't work with Puppeter > 3.3
 * Added `xFeature` and `Feature.skip` to skip all tests in a suite. By @Georgegriff
 * [Appium] Fixed #2428 Android native locator support by @idxn
 * [WebDriver] Fixed `waitNumberOfVisibleElements` to actually filter visible elements. By @ilangv
