@@ -146,7 +146,6 @@ describe('GraphQLDataFactory', function () {
       resp.data.data.users.length.should.eql(1);
     });
 
-
     it('should not remove records if cleanup:false', async () => {
       I = new GraphQLDataFactory({
         endpoint: graphql_url,

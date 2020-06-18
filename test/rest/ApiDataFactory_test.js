@@ -154,7 +154,6 @@ describe('ApiDataFactory', function () {
       resp.data.length.should.eql(1);
     });
 
-
     it('should not remove records if cleanup:false', async () => {
       I = new ApiDataFactory({
         endpoint: api_url,

@@ -15,7 +15,6 @@ Scenario.todo('@todo', () => {
   console.log('todo test not passed');
 });
 
-
 Scenario.todo('@todo without function');
 
 Scenario.todo('@todo with opts', { customOpts: 'Custom options for todo' });

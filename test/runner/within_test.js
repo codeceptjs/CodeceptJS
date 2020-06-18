@@ -35,7 +35,6 @@ describe('CodeceptJS within', function () {
     });
   });
 
-
   it('should execute with async/await. Await is first in order', (done) => {
     exec(`${codecept_run} --debug`, (_err, stdout) => {
       const lines = stdout.match(/\S.+/g);
