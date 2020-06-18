@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "**/*.ts",
+    // "**/*.ts",
     "steps.d.ts"
   ]
 }

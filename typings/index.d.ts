@@ -23,7 +23,7 @@ declare namespace CodeceptJS {
   interface IHook {}
   interface IScenario {}
   interface SupportObject {
-    I: I;
+    I: CodeceptJS.I;
   }
   namespace Translation {
     interface Actions {}
