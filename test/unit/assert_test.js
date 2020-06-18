@@ -7,7 +7,6 @@ const comparator = (a, b) => a === b;
 
 let assertion;
 
-
 describe('Assertion', () => {
   beforeEach(() => {
     assertion = new Assertion(comparator);

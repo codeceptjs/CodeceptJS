@@ -12,7 +12,6 @@ Scenario('glob current dir', ({ I }) => {
   I.seeFile('codecept.glob.json');
 });
 
-
 Scenario('fail a test', ({ I }) => {
   I.amInPath('.');
   I.seeThisIsWorker();

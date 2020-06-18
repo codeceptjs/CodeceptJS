@@ -6,7 +6,6 @@ Scenario('@RunRerun - Fail all attempt', ({ I }) => {
   throw new Error('Test Error');
 });
 
-
 Scenario('@RunRerun - fail second test', ({ I }) => {
   I.printMessage('RunRerun');
   process.env.FAIL_ATTEMPT = parseInt(process.env.FAIL_ATTEMPT) + 1;

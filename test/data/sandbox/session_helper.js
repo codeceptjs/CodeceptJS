@@ -1,4 +1,3 @@
-
 const Helper = require('../../../lib/helper');
 
 let uniqueSessions = 0;

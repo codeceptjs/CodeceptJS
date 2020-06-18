@@ -848,7 +848,6 @@ describe('WebDriver', function () {
     });
   });
 
-
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', async () => {
       await wd.amOnPage('/form/checkbox');
@@ -969,7 +968,6 @@ describe('WebDriver', function () {
       await wd.attachFile('hidden', '/app/avatar.jpg');
     });
   });
-
 
   describe('#dragSlider', () => {
     it('should drag scrubber to given position', async () => {

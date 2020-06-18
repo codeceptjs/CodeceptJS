@@ -79,7 +79,6 @@ describe('Appium Web', function () {
     });
   });
 
-
   describe('#click', () => {
     it('should click by text', async () => {
       await I.amOnPage('/angular-demo-app/');
