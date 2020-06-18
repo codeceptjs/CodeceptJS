@@ -797,10 +797,10 @@ Also, you can use `within` inside a session, but you can't call session from ins
 Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 
 * `xScenario` - skips current test
-* `xScenario.skip` - skips current test
+* `Scenario.skip` - skips current test
 * `Scenario.only` - executes only the current test
-* `xFeature` - skips current suite <Badge text="Since 2.7" type="warning"/>
-* `Feature.skip` - skips the current suite <Badge text="Since 2.7" type="warning"/>
+* `xFeature` - skips current suite <Badge text="Since 2.6.6" type="warning"/>
+* `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
 
 
 ## Todo Test <Badge text="Since 2.4" type="warning"/>
