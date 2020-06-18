@@ -80,7 +80,12 @@ const isSeen = await tryTo(() => {
 // we are not sure if cookie bar is displayed, but if so - accept cookies
 tryTo(() => I.click('Accept', '.cookies'));
 ```
+
 * **Possible breaking change** In semantic locators `[` char indicates CSS selector.
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
+* [Playwright] Fixed calling `waitFor*` methods with custom locators #2314. Fix #2389 by @Georgegriff
 
 ## 2.6.4
 
