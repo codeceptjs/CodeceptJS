@@ -17,7 +17,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should run tests in 3 workers', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-    exec(`${codecept_run} 3`, (err, stdout) => {
+    exec(`${codecept_run} 3 --debug`, (err, stdout) => {
       expect(stdout).toContain('CodeceptJS'); // feature
       expect(stdout).toContain('glob current dir');
       expect(stdout).toContain('From worker @1_grep print message 1');
@@ -27,7 +27,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain('failed');
       expect(stdout).toContain('File notafile not found');
       expect(stdout).toContain('Scenario Steps:');
-      expect(err.code).toBe(1);
+      expect(err.code).toEqual(1);
       done();
     });
   });
@@ -38,7 +38,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain('Running tests in 2 workers...');
       expect(stdout).not.toContain('FAIL  | 2 passed, -6 failed');
       expect(stdout).toContain('FAIL  | 2 passed, 2 failed');
-      expect(err).toBeTruthy();
+      expect(err).not.toBe(null);
       done();
     });
   });
@@ -54,7 +54,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).not.toContain('this is running inside worker');
       expect(stdout).not.toContain('failed');
       expect(stdout).not.toContain('File notafile not found');
-      expect(err).toBeFalsy();
+      expect(err).toEqual(null);
       done();
     });
   });
@@ -68,8 +68,8 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).not.toContain('this is running inside worker');
       expect(stdout).toContain('failed');
       expect(stdout).toContain('FAILURES');
-      expect(stdout).toContain('worker has failed');
-      expect(err.code).toBe(1);
+      expect(stdout).toContain('Workers Failing');
+      expect(err.code).toEqual(1);
       done();
     });
   });
@@ -83,7 +83,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain('message 1');
       expect(stdout).toContain('message 2');
       expect(stdout).toContain('see this is worker');
-      expect(err).toBeFalsy();
+      expect(err).toEqual(null);
       done();
     });
   });
@@ -97,7 +97,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain('message 1');
       expect(stdout).toContain('message 2');
       expect(stdout).toContain('see this is worker');
-      expect(err).toBeFalsy();
+      expect(err).toEqual(null);
       done();
     });
   });
@@ -108,7 +108,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain('CodeceptJS'); // feature
       expect(stdout).toContain('Running tests in 1 workers');
       expect(stdout).toContain('OK  | 0 passed');
-      expect(err).toBeFalsy();
+      expect(err).toEqual(null);
       done();
     });
   });
@@ -139,8 +139,8 @@ describe('CodeceptJS Workers Runner', function () {
       if (fs.existsSync(outputDir)) {
         createdOutput = true;
       }
-      expect(createdOutput).toBeTruthy();
-      expect(err).toBeFalsy();
+      expect(createdOutput).toEqual(true);
+      expect(err).toEqual(null);
       done();
     });
   });
