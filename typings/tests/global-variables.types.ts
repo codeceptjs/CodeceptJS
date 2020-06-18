@@ -29,9 +29,22 @@ Scenario('scenario',
   }
 )
 
-// Before((
-//   args // $ExpectType string
-//   ) => {})
-// BeforeSuite() // $ExpectError
-// After() // $ExpectError
-// AfterSuite() // $ExpectError
+Before((args) => {
+  args // $ExpectType SupportObject
+  args.I // $ExpectType I
+})
+
+BeforeSuite((args) => {
+  args // $ExpectType SupportObject
+  args.I // $ExpectType I
+})
+
+After((args) => {
+  args // $ExpectType SupportObject
+  args.I // $ExpectType I
+})
+
+AfterSuite((args) => {
+  args // $ExpectType SupportObject
+  args.I // $ExpectType I
+})
