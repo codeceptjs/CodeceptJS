@@ -18,12 +18,14 @@ describe('CodeceptJS Allure Plugin', () => {
     deleteDir(path.join(codecept_dir, 'output/ansi'));
     deleteDir(path.join(codecept_dir, 'output/success'));
     deleteDir(path.join(codecept_dir, 'output/failed'));
+    deleteDir(path.join(codecept_dir, 'output/skipped'));
   });
 
   afterEach(() => {
     deleteDir(path.join(codecept_dir, 'output/ansi'));
     deleteDir(path.join(codecept_dir, 'output/success'));
     deleteDir(path.join(codecept_dir, 'output/failed'));
+    deleteDir(path.join(codecept_dir, 'output/skipped'));
   });
 
   it('should enable allure reports', (done) => {
@@ -41,6 +43,19 @@ describe('CodeceptJS Allure Plugin', () => {
       const files = fs.readdirSync(path.join(codecept_dir, 'output/ansi'));
       assert(files[0].match(/\.xml$/), 'not a xml file');
       assert.equal(files.length, 1);
+      done();
+    });
+  });
+
+  it('should report skipped features', (done) => {
+    exec(codecept_run_config('skipped_feature.conf.js'), (err, stdout) => {
+      stdout.should.include('OK  | 0 passed, 2 skipped');
+      const files = fs.readdirSync(path.join(codecept_dir, 'output/skipped'));
+      const reports = files.map((testResultPath) => {
+        assert(testResultPath.match(/\.xml$/), 'not a xml file');
+        return fs.readFileSync(path.join(codecept_dir, 'output/skipped', testResultPath), 'utf8');
+      }).join(' ');
+      reports.should.include('Skipped due to "skip" on Feature.');
       done();
     });
   });
