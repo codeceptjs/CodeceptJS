@@ -61,7 +61,6 @@ program.command('gherkin:snippets [path]')
   .option('--path [file]', 'file in which to place the new snippets')
   .action(require('../lib/command/gherkin/snippets'));
 
-
 program.command('generate:test [path]')
   .alias('gt')
   .description('Generates an empty test')
@@ -182,7 +181,6 @@ program.on('command:*', (cmd) => {
   console.log(`\nUnknown command ${cmd}\n`);
   program.outputHelp();
 });
-
 
 if (process.argv.length <= 2) {
   program.outputHelp();

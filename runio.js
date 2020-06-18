@@ -278,7 +278,6 @@ title: ${name}
     });
   },
 
-
   async docsAppium() {
     // generates docs for appium
     const onlyWeb = [
@@ -378,7 +377,6 @@ title: ${name}
   },
 
 };
-
 
 async function processChangelog() {
   const file = 'CHANGELOG.md';

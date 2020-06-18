@@ -107,7 +107,6 @@ describe('Actor', () => {
     });
   });
 
-
   it('should retry failed step with #retry', () => {
     return I.retry(2).failFirst();
   });
@@ -115,7 +114,6 @@ describe('Actor', () => {
   it('should retry once step with #retry', () => {
     return I.retry().failFirst();
   });
-
 
   it('should print handle failed steps', () => {
     recorder.start();

@@ -20,7 +20,6 @@ describe('Container', () => {
     });
   });
 
-
   describe('#translation', () => {
     const Translation = require('../../lib/translation');
 
@@ -171,7 +170,6 @@ describe('Container', () => {
       container.support('dummyPage').should.include.keys('openDummyPage');
       container.support('dummyPage').getI().should.have.keys(Object.keys(container.support('I')));
     });
-
 
     it('should load DI and inject custom I into PO', () => {
       container.create({

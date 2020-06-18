@@ -53,7 +53,6 @@ describe('utils', () => {
     });
   });
 
-
   describe('#xpathLocator', () => {
     it('combines xpaths', () => {
       utils.xpathLocator.combine(['//a', '//button'])

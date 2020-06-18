@@ -13,7 +13,6 @@ const codecept_workers = `${runner} run-workers 2`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
 const codecept_workers_config = (config, grep) => `${codecept_workers} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
 
-
 describe('CodeceptJS Allure Plugin', function () {
   this.retries(2);
 
