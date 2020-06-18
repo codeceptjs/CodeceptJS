@@ -14,7 +14,7 @@ Scenario('change statusCode @Puppeteer @WebDriver', (I) => {
   I.stopMocking();
 });
 
-Scenario('change response data @Puppeteer @WebDriver', (I) => {
+Scenario('change response data @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', {
     modified: 'This is modified from mocking',
@@ -24,7 +24,7 @@ Scenario('change response data @Puppeteer @WebDriver', (I) => {
   I.stopMocking();
 });
 
-Scenario('change response data for multiple requests @Puppeteer @WebDriver', (I) => {
+Scenario('change response data for multiple requests @WebDriver', (I) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest(
     'GET',

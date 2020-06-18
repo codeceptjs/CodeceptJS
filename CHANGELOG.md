@@ -1,3 +1,5 @@
+## 2.6.6
+
 ## 2.6.5
 
 * Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
