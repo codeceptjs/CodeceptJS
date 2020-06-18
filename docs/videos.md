@@ -7,7 +7,7 @@ editLink: false
 ---
 
 > Add your own videos to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Videos)
-[![](http://i3.ytimg.com/vi/BRMWstiOTks/maxresdefault.jpg)](https://www.youtube.com/watch?v=BRMWstiOTks)
+[![Maxresdefault](http://i3.ytimg.com/vi/BRMWstiOTks/maxresdefault.jpg)](https://www.youtube.com/watch?v=BRMWstiOTks)
 
 * ## [An Introduction, Getting started and working with CodeceptJS & Puppeteer (EAWeekend)](https://www.youtube.com/watch?v=BRMWstiOTks)
 

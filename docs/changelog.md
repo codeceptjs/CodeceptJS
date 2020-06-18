@@ -234,7 +234,7 @@ I.click('$register_button');
 Changed pressKey method to resolve issues and extend functionality.
   * Did not properly recognize 'Meta' (or 'Command') as modifier key.
   * Right modifier keys did not work in WebDriver using JsonWireProtocol.
-  * 'Shift' + <key> combination would not reflect actual keyboard behavior.
+  * 'Shift' + 'key' combination would not reflect actual keyboard behavior.
   * Respect sequence with multiple modifier keys passed to pressKey.
   * Added support to automatic change operation modifier key based on operating system.
 * [Puppeteer][WebDriver] Added `pressKeyUp` and `pressKeyDown` to press and release modifier keys like `Control` or `Shift`. By **[martomo](https://github.com/martomo)**.
