@@ -36,7 +36,7 @@ helpers: {
 }
 ```
 
-Helpers are ES6 classes inherited from [corresponding abstract class](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js).
+Helpers are ES6 classes inherited from [corresponding abstract class](https://github.com/codecept-js/CodeceptJS/blob/master/lib/helper.js).
 Generated Helper will be added to `codecept.conf.js` config file. It should look like this:
 
 ```js
