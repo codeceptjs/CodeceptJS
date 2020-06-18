@@ -17,9 +17,6 @@ module.exports.config = {
       //   },
       // },
     },
-    MockRequest: {
-      require: '@codeceptjs/mock-request',
-    },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: './output',

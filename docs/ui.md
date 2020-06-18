@@ -5,7 +5,7 @@ permalink: /ui
 ---
 
 
-<img src="/img/codeceptui.png" style="width: 100%; border-radius: 5px; box-shadow: 0px 5px 10px rgba(0,0,0,0.1)" />
+<img src="/img/codeceptui.png" alt="CodeceptUI" style="width: 100%; border-radius: 5px; box-shadow: 0px 5px 10px rgba(0,0,0,0.1)" />
 
 
 ## CodeceptUI <Badge text="beta" type="warn"/>

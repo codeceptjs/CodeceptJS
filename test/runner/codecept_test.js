@@ -167,7 +167,6 @@ describe('CodeceptJS Runner', () => {
     });
   });
 
-
   it('should run hooks from suites', (done) => {
     exec(codecept_run_config('codecept.testhooks.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);

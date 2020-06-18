@@ -279,7 +279,6 @@ module.exports.tests = function () {
     });
   });
 
-
   // Could not get double click to work
   describe('#doubleClick', () => {
     it('it should doubleClick', async () => {
@@ -313,7 +312,6 @@ module.exports.tests = function () {
       await I.see('right clicked');
     });
   });
-
 
   describe('#checkOption', () => {
     it('should check option by css', async () => {
@@ -430,7 +428,6 @@ module.exports.tests = function () {
       const val = await I.executeScript(a => a + 5, 5);
       assert.equal(val, 10);
     });
-
 
     it('should return value from sync script in iframe', async function () {
       if (isHelper('Nightmare')) return; // TODO Not yet implemented
@@ -687,7 +684,6 @@ module.exports.tests = function () {
     <a id="third-link">Third</a>
 `, val);
     });
-
 
     it('should grab value from field', async () => {
       await I.amOnPage('/form/hidden');
@@ -1325,7 +1321,6 @@ module.exports.tests = function () {
         e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}');
       }
     });
-
 
     it('should check css property for several elements', async function () {
       if (isHelper('Nightmare')) return;
