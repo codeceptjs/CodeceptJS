@@ -33,22 +33,22 @@ describe('Definitions', function () {
   });
 
   describe('Static files', () => {
-    it.only('should have internal object that is available as variable codeceptjs', (done) => {
+    it('should have internal object that is available as variable codeceptjs', (done) => {
       exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
         const types = typesFrom(`${codecept_dir}/steps.d.ts`);
         types.should.be.valid;
 
         const definitionsFile = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
-        // const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getNamespaceOrThrow('index').getStructure();
-        // index.statements.should.containSubset([
-        //   { declarations: [{ name: 'recorder', type: 'CodeceptJS.recorder' }] },
-        //   { declarations: [{ name: 'event', type: 'typeof CodeceptJS.event' }] },
-        //   { declarations: [{ name: 'output', type: 'typeof CodeceptJS.output' }] },
-        //   { declarations: [{ name: 'config', type: 'typeof CodeceptJS.Config' }] },
-        //   { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
-        // ]);
-        // const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure();
-        // codeceptjs.type.should.equal('typeof CodeceptJS.index');
+        const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getNamespaceOrThrow('index').getStructure();
+        index.statements.should.containSubset([
+          { declarations: [{ name: 'recorder', type: 'CodeceptJS.recorder' }] },
+          { declarations: [{ name: 'event', type: 'typeof CodeceptJS.event' }] },
+          { declarations: [{ name: 'output', type: 'typeof CodeceptJS.output' }] },
+          { declarations: [{ name: 'config', type: 'typeof CodeceptJS.Config' }] },
+          { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
+        ]);
+        const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure();
+        codeceptjs.type.should.equal('typeof CodeceptJS.index');
         done();
       });
     });
@@ -155,7 +155,7 @@ describe('Definitions', function () {
       returned.should.containSubset([
         {
           properties: [
-            { name: 'I', type: 'CodeceptJS.I' },
+            { name: 'I', type: 'I' },
             { name: 'MyPage', type: 'MyPage' },
           ],
         },
@@ -172,7 +172,7 @@ describe('Definitions', function () {
       const definitionsFile = types.getSourceFileOrThrow(pathOfStaticDefinitions);
       const returned = getReturnStructure(definitionsFile.getFunctionOrThrow('inject'));
       returned.should.containSubset([{
-        properties: [{ name: 'I', type: 'CodeceptJS.I' }],
+        properties: [{ name: 'I', type: 'I' }],
       }]);
       done();
     });
@@ -186,7 +186,7 @@ describe('Definitions', function () {
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
       const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
-        { name: 'I', type: 'CodeceptJS.I' },
+        { name: 'I', type: 'I' },
         { name: 'MyPage', type: 'MyPage' },
         { name: 'SecondPage', type: 'SecondPage' },
       ]);
