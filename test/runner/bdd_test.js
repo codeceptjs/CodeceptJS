@@ -181,7 +181,6 @@ describe('BDD Gherkin', () => {
     });
   });
 
-
   it('should run scenario and scenario outline by tags', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.not.include('0 passed');

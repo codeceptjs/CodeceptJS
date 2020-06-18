@@ -1,6 +1,5 @@
 Feature('Mocking');
 
-
 Scenario('change statusCode @Puppeteer @WebDriver', ({ I }) => {
   I.amOnPage('/form/fetch_call');
   I.mockRequest('GET', 'https://jsonplaceholder.typicode.com/*', 404);

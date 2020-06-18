@@ -35,7 +35,6 @@ describe('Workers', () => {
     });
   });
 
-
   it('should create worker by function', (done) => {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
 
@@ -74,7 +73,6 @@ describe('Workers', () => {
       done();
     });
   });
-
 
   it('should run worker with custom config', (done) => {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
@@ -116,7 +114,6 @@ describe('Workers', () => {
     });
   });
 
-
   it('should able to add tests to each worker', (done) => {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
 
@@ -137,7 +134,6 @@ describe('Workers', () => {
       path.join(codecept_dir, '/custom-worker/custom_test.worker.js'),
     ]);
 
-
     for (const worker of workers.getWorkers()) {
       worker.addConfig({
         helpers: {
@@ -157,7 +153,6 @@ describe('Workers', () => {
       done();
     });
   });
-
 
   it('should able to add tests to using createGroupsOfTests', (done) => {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
@@ -195,7 +190,6 @@ describe('Workers', () => {
       done();
     });
   });
-
 
   it('Should able to pass data from workers to main thread and vice versa', (done) => {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');

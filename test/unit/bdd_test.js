@@ -69,7 +69,6 @@ describe('BDD', () => {
     assert.equal('@super', suite.tests[0].tags[0]);
   });
 
-
   it('should load step definitions', (done) => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
@@ -82,7 +81,6 @@ describe('BDD', () => {
       done();
     });
   });
-
 
   it('should allow failed steps', (done) => {
     let sum = 0;
@@ -115,7 +113,6 @@ describe('BDD', () => {
       done();
     });
   });
-
 
   it('should execute scenarios step-by-step ', (done) => {
     printed = [];
