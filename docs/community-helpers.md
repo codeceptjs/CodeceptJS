@@ -5,7 +5,7 @@ editLink: false
 ---
 
 # Community Helpers
-> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)
+> Share your helpers at our [Wiki Page](https://github.com/codecept-js/CodeceptJS/wiki/Community-Helpers)
 
 Here is the list of helpers created by our community.
 Please **add your own** by editing this page.
