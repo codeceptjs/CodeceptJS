@@ -296,7 +296,7 @@ Tests are written in a synchronous way. This improves the readability and mainta
 While writing tests you should not think about promises, and instead should focus on the test scenario.
 
 However, behind the scenes **all actions are wrapped in promises**, inside of the `I` object.
-[Global promise](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
+[Global promise](https://github.com/codecept-js/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
 
 > 📺 [Learn how CodeceptJS](https://www.youtube.com/watch?v=MDLLpHAwy_s) works with promises by watching video on YouTube
 
@@ -616,7 +616,7 @@ AfterSuite((I) => {
 });
 ```
 
-[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
+[Here are some ideas](https://github.com/codecept-js/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
 
 ## Within
 
