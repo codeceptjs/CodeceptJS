@@ -81,6 +81,26 @@ describe('ui', () => {
       });
       assert.equal('edge', suiteConfig.suite.config.WebDriverIO.browser);
     });
+
+    it('Feature can be skipped', () => {
+      suiteConfig = context.Feature.skip('skipped suite');
+      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
+      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
+      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature can be skipped via xFeature', () => {
+      suiteConfig = context.xFeature('skipped suite');
+      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
+      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
+      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature are not skipped by default', () => {
+      suiteConfig = context.Feature('not skipped suite');
+      assert.equal(suiteConfig.suite.pending, false, 'Feature must not contain pending === true');
+      assert.equal(suiteConfig.suite.opts, undefined, 'Features should have no skip info');
+    });
   });
 
   describe('Scenario', () => {

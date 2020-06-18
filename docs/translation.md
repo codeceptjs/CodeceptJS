@@ -10,7 +10,7 @@ title: Translation
 Test output and the way tests are written can be localized.
 This way scenarios can be written in almost native language using UTF support of JavaScript.
 If you have non-English team and you work on non-English project consider enabling translation
-by setting translation to [one of available languages](https://github.com/Codeception/CodeceptJS/blob/master/translations).
+by setting translation to [one of available languages](https://github.com/codecept-js/CodeceptJS/blob/master/translations).
 
 Please refer to translated steps inside translation files and send Pull Requests to add missing.
 
