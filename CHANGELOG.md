@@ -2,8 +2,8 @@
 
 🐛 Bug Fix:
   * PageObject was broken when using "this" inside a simple object.
-  * The typings for all WebDriver methods work correctly, now.
-  * The typings for "this.helper" and helper constructor now work correctly, too.
+  * The typings for all WebDriver methods work correctly.
+  * The typings for "this.helper" and helper constructor work correctly, too.
 
 🧤 Internal:
  * Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
@@ -17,7 +17,7 @@
     }
   )
   ```
- * And last: Package size was decrease on 1.3Mb.
+ * And last: Reducing packing size from 3.3Mb to 2.0Mb
 
 ## 3.0.0-beta-3
 
