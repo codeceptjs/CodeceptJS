@@ -290,10 +290,6 @@ wd.waitForClickable() // $ExpectError
 wd.waitForClickable('div') // $ExpectType void
 wd.waitForClickable('div', num) // $ExpectType void
 
-wd.waitUntilExists() // $ExpectError
-wd.waitUntilExists('div') // $ExpectType void
-wd.waitUntilExists('div', num) // $ExpectType void
-
 wd.waitForVisible() // $ExpectError
 wd.waitForVisible('div') // $ExpectType void
 wd.waitForVisible('div', num) // $ExpectType void
@@ -344,7 +340,7 @@ wd.waitUntil(str) // $ExpectType void
 wd.waitUntil(str, num, str, num) // $ExpectType void
 wd.waitUntil(() => {}, num, str, num) // $ExpectType void
 
-wd.switchTo() // $ExpectError
+wd.switchTo() // $ExpectType void
 wd.switchTo('div') // $ExpectType void
 
 wd.switchToNextTab(num, num) // $ExpectType void
