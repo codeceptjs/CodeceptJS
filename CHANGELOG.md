@@ -17,7 +17,7 @@
     }
   )
   ```
- * And last: Reducing packing size from 3.3Mb to 2.0Mb
+ * And last: Reducing package size from 3.3Mb to 2.0Mb
 
 ## 3.0.0-beta-3
 
