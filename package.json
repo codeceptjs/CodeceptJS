@@ -23,10 +23,10 @@
   },
   "files": [
     "bin",
-    "docs",
+    "docs/**/*.md",
     "lib",
     "translations",
-    "typings"
+    "typings/**/*.d.ts"
   ],
   "main": "lib/index.js",
   "typings": "typings/index.d.ts",
