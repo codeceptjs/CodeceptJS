@@ -1,6 +1,5 @@
 const I = actor();
 
-
 Given('I opened website', () => {
   // From "gherkin/basic.feature" {"line":8,"column":5}
   I.amOnPage('/');

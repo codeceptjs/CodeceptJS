@@ -48,7 +48,6 @@ describe('Protractor-NonAngular', function () {
     }));
   });
 
-
   beforeEach(() => {
     webApiTests.init({
       I,
@@ -69,7 +68,6 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.see('Height 600', '#height'))
       .then(() => I.see('Width 950', '#width')));
   });
-
 
   after(() => I._after());
 
@@ -104,7 +102,6 @@ describe('Protractor-NonAngular', function () {
       await I.seeInField('Name', '!!!1');
     });
   });
-
 
   webApiTests.tests();
 
@@ -301,7 +298,6 @@ describe('Protractor-NonAngular', function () {
       .then(() => I.grabPopupText())
       .then(text => assert.equal(text, 'Really?'))
       .then(() => I.cancelPopup())); // TODO: Remove the cancelPopup line.
-
 
     it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
       .then(() => I.grabPopupText())

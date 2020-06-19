@@ -9,7 +9,6 @@ Before(() => {
   val++;
 });
 
-
 Scenario('First test will be passed @grep', () => {
   assert(true);
 });

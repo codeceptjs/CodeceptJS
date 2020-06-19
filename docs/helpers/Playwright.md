@@ -19,7 +19,7 @@ Uses [Playwright][1] library to run tests inside:
 
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `playwright` package to be installed:
+Requires `playwright` package version ^1 to be installed:
 
     npm i playwright@^1 --save
 
