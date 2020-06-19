@@ -87,6 +87,20 @@ tryTo(() => I.click('Accept', '.cookies'));
 * Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
 * [Playwright] Fixed calling `waitFor*` methods with custom locators #2314. Fix #2389 by @Georgegriff
 
+## 2.6.6
+
+* Puppeteer 4.0 support. Important: MockRequest helper won't work with Puppeter > 3.3
+* Added `xFeature` and `Feature.skip` to skip all tests in a suite. By @Georgegriff
+* [Appium] Fixed #2428 Android native locator support by @idxn
+* [WebDriver] Fixed `waitNumberOfVisibleElements` to actually filter visible elements. By @ilangv
+* [Puppeteer] Fixed handling error which is not an Error object. Fixes `cannot read property indexOf of undefined` error. Fix #2436 by @Georgegriff
+* [Puppeteer] Print error on page crash by @Georgegriff
+
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
+* [Playwright] Fixed calling `waitFor*` methods with custom locators #2314. Fix #2389 by @Georgegriff
+
 ## 2.6.4
 
 * [Playwright] **Playwright 1.0 support** by @Georgegriff.

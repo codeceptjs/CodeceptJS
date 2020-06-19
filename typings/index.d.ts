@@ -13,6 +13,8 @@ declare namespace CodeceptJS {
   interface I {}
   interface IHook {}
   interface IScenario {}
+  interface IFeature {}
+  interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
   }
@@ -45,6 +47,7 @@ declare namespace CodeceptJS {
 
   interface HookCallback { (args: SupportObject): void; }
   interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface Feature extends IFeature { skip: IFeature }
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
@@ -88,6 +91,7 @@ declare const Then: typeof CodeceptJS.addStep;
 declare const Feature: typeof CodeceptJS.Feature;
 declare const Scenario: CodeceptJS.Scenario;
 declare const xScenario: CodeceptJS.IScenario;
+declare const xFeature: CodeceptJS.IFeature;
 declare function Data(data: any): CodeceptJS.IData;
 declare function xData(data: any): CodeceptJS.IData;
 
@@ -135,6 +139,7 @@ declare namespace Mocha {
   interface MochaGlobals {
     Feature: typeof Feature;
     Scenario: typeof Scenario;
+    xFeature: typeof xFeature;
     xScenario: typeof xScenario;
     Data: typeof Data;
     xData: typeof xData;
