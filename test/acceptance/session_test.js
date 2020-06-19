@@ -77,7 +77,6 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pla
   assert.notEqual(cookies.john, cookies.mary);
 });
 
-
 Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
   I.amOnPage('/form/bug1467');
   I.saveScreenshot('original.png');
@@ -97,7 +96,6 @@ Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Pla
   // Assert that screenshots of same page in same session are equal
   assert.equal(original, failed);
 });
-
 
 Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
@@ -166,7 +164,6 @@ Scenario('change page emulation @Playwright', async (I) => {
   });
 });
 
-
 Scenario('emulate iPhone @Playwright', async (I) => {
   const { devices } = require('playwright');
   if (process.env.BROWSER === 'firefox') return;
@@ -215,7 +212,6 @@ Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer @Playwrig
   I.click('Submit');
   I.see('[description] => Information');
 });
-
 
 Scenario('should return a value @WebDriverIO @Protractor @Puppeteer @Playwright in async', async (I) => {
   I.amOnPage('/form/textarea');

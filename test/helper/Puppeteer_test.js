@@ -378,7 +378,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
@@ -693,7 +692,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#text', 'Brisbane'))
       .then(() => I.seeInField('#text2', 'London')));
   });
-
 
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')

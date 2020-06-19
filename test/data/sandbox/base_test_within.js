@@ -7,7 +7,6 @@ Scenario('Check within without generator', (I) => {
   });
 });
 
-
 Scenario('Check within with generator. Yield is first in order', (I) => {
 });
 
