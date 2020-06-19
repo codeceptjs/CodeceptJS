@@ -5,7 +5,7 @@
   * The typings for all WebDriver methods work correctly, now.
   * The typings for "this.helper" and helper constructor now work correctly, too.
 
-💅 Polish:
+🧤 Internal:
  * Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
  Example:
   ```ts
