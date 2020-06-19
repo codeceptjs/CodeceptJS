@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} dry-run`;
-const codecept_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
+const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
 const char = require('figures').checkboxOff;
 
 describe('dry-run command', () => {
@@ -159,7 +159,7 @@ describe('dry-run command', () => {
   });
 
   it('should work with inject() keyword', (done) => {
-    exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.json')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.json', 'check current dir')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(stdout).toContain('injected');
       expect(lines).toEqual(

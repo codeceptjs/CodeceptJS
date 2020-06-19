@@ -77,13 +77,13 @@ describe('CodeceptJS Allure Plugin', function () {
 
   it('should report skipped features', (done) => {
     exec(codecept_run_config('skipped_feature.conf.js'), (err, stdout) => {
-      stdout.should.include('OK  | 0 passed, 2 skipped');
+      expect(stdout).toContain('OK  | 0 passed, 2 skipped');
       const files = fs.readdirSync(path.join(codecept_dir, 'output/skipped'));
       const reports = files.map((testResultPath) => {
-        assert(testResultPath.match(/\.xml$/), 'not a xml file');
+        expect(testResultPath.match(/\.xml$/)).toBeTruthy();
         return fs.readFileSync(path.join(codecept_dir, 'output/skipped', testResultPath), 'utf8');
       }).join(' ');
-      reports.should.include('Skipped due to "skip" on Feature.');
+      expect(reports).toContain('Skipped due to "skip" on Feature.');
       done();
     });
   });

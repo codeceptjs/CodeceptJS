@@ -155,7 +155,7 @@ describe('Definitions', function () {
       returned.should.containSubset([
         {
           properties: [
-            { name: 'I', type: 'CodeceptJS.I' },
+            { name: 'I', type: 'I' },
             { name: 'MyPage', type: 'MyPage' },
           ],
         },
@@ -172,7 +172,7 @@ describe('Definitions', function () {
       const definitionsFile = types.getSourceFileOrThrow(pathOfStaticDefinitions);
       const returned = getReturnStructure(definitionsFile.getFunctionOrThrow('inject'));
       returned.should.containSubset([{
-        properties: [{ name: 'I', type: 'CodeceptJS.I' }],
+        properties: [{ name: 'I', type: 'I' }],
       }]);
       done();
     });
@@ -186,7 +186,7 @@ describe('Definitions', function () {
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
       const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
-        { name: 'I', type: 'CodeceptJS.I' },
+        { name: 'I', type: 'I' },
         { name: 'MyPage', type: 'MyPage' },
         { name: 'SecondPage', type: 'SecondPage' },
       ]);

@@ -1,4 +1,3 @@
-// Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
@@ -6,7 +5,17 @@
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
-    import("./utils").Translate<T, CodeceptJS.Translation.Actions>;
+    import("./utils").Translate<T, Translation.Actions>;
+
+  type Cookie = {
+    name: string
+    value: string
+  }
+
+  interface PageScrollPosition {
+    x: number,
+    y: number
+  }
 
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
@@ -28,7 +37,7 @@ declare namespace CodeceptJS {
   }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: Function }>(
+  type actor = <T extends { [action: string]: () => void }>(
     customSteps?: T & ThisType<WithTranslation<Methods & T>>
   ) => WithTranslation<Methods & T>;
 
@@ -46,14 +55,13 @@ declare namespace CodeceptJS {
   type LocatorOrString = string | ILocator | Locator;
 
   interface HookCallback { (args: SupportObject): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo: IScenario}
   interface Feature extends IFeature { skip: IFeature }
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
-    (title: string): ScenarioConfig;
-    (title: string, callback: HookCallback): ScenarioConfig;
+    (title: string, callback?: HookCallback): ScenarioConfig;
     (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig;
   }
   interface IHook { (callback: HookCallback): void; }
@@ -150,13 +158,13 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite extends SuiteRunnable{
+  interface Suite extends SuiteRunnable {
     tags: any[]
     comment: string
     feature: any
   }
 
-  interface Test  extends Runnable{
+  interface Test  extends Runnable {
     tags: any[];
   }
 }

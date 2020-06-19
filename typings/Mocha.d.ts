@@ -1,4 +1,4 @@
-declare module Mocha {
+declare namespace Mocha {
   class SuiteRunnable {
     private _beforeEach;
     private _beforeAll;
@@ -11,9 +11,9 @@ declare module Mocha {
     private _retries;
     private _onlyTests;
     private _onlySuites;
-  
+
     constructor(title: string, parentContext?: Context);
-  
+
     ctx: Context;
     suites: Suite[];
     tests: Test[];
@@ -23,7 +23,7 @@ declare module Mocha {
     delayed: boolean;
     parent: Suite | undefined;
     title: string;
-  
+
     /**
      * Create a new `Suite` with the given `title` and parent `Suite`. When a suite
      * with the same title is already present, that suite is returned to provide
@@ -32,217 +32,161 @@ declare module Mocha {
      * @see https://mochajs.org/api/mocha#.exports.create
      */
     static create(parent: Suite, title: string): Suite;
-  
+
     /**
      * Return a clone of this `Suite`.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#clone
      */
     clone(): Suite;
-  
+
     /**
      * Get timeout `ms`.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#timeout
      */
     timeout(): number;
-  
+
     /**
      * Set timeout `ms` or short-hand such as "2s".
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#timeout
      */
     timeout(ms: string | number): this;
-  
+
     /**
      * Get number of times to retry a failed test.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#retries
      */
     retries(): number;
-  
+
     /**
      * Set number of times to retry a failed test.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#retries
      */
     retries(n: string | number): this;
-  
+
     /**
      * Get whether timeouts are enabled.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#enableTimeouts
      */
     enableTimeouts(): boolean;
-  
+
     /**
      * Set whether timeouts are `enabled`.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#enableTimeouts
      */
     enableTimeouts(enabled: boolean): this;
-  
+
     /**
      * Get slow `ms`.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#slow
      */
     slow(): number;
-  
+
     /**
      * Set slow `ms` or short-hand such as "2s".
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#slow
      */
     slow(ms: string | number): this;
-  
+
     /**
      * Get whether to bail after first error.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#bail
      */
     bail(): boolean;
-  
+
     /**
      * Set whether to bail after first error.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#bail
      */
     bail(bail: boolean): this;
-  
+
     /**
      * Check if this suite or its parent suite is marked as pending.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#isPending
      */
     isPending(): boolean;
-  
+
     /**
      * Run `fn(test[, done])` before running tests.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#beforeAll
      */
-    beforeAll(fn?: Func): this;
-  
+    beforeAll(fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` before running tests.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#beforeAll
      */
-    beforeAll(fn?: AsyncFunc): this;
-  
-    /**
-     * Run `fn(test[, done])` before running tests.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#beforeAll
-     */
-    beforeAll(title: string, fn?: Func): this;
-  
-    /**
-     * Run `fn(test[, done])` before running tests.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#beforeAll
-     */
-    beforeAll(title: string, fn?: AsyncFunc): this;
-  
+    beforeAll(title: string, fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` after running tests.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#afterAll
      */
-    afterAll(fn?: Func): this;
-  
+    afterAll(fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` after running tests.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#afterAll
      */
-    afterAll(fn?: AsyncFunc): this;
-  
-    /**
-     * Run `fn(test[, done])` after running tests.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#afterAll
-     */
-    afterAll(title: string, fn?: Func): this;
-  
-    /**
-     * Run `fn(test[, done])` after running tests.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#afterAll
-     */
-    afterAll(title: string, fn?: AsyncFunc): this;
-  
+    afterAll(title: string, fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` before each test case.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#beforeEach
      */
-    beforeEach(fn?: Func): this;
-  
+    beforeEach(fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` before each test case.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#beforeEach
      */
-    beforeEach(fn?: AsyncFunc): this;
-  
-    /**
-     * Run `fn(test[, done])` before each test case.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#beforeEach
-     */
-    beforeEach(title: string, fn?: Func): this;
-  
-    /**
-     * Run `fn(test[, done])` before each test case.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#beforeEach
-     */
-    beforeEach(title: string, fn?: AsyncFunc): this;
-  
+    beforeEach(title: string, fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` after each test case.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#afterEach
      */
-    afterEach(fn?: Func): this;
-  
+    afterEach(fn?: Func | AsyncFunc): this;
+
     /**
      * Run `fn(test[, done])` after each test case.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#afterEach
      */
-    afterEach(fn?: AsyncFunc): this;
-  
-    /**
-     * Run `fn(test[, done])` after each test case.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#afterEach
-     */
-    afterEach(title: string, fn?: Func): this;
-  
-    /**
-     * Run `fn(test[, done])` after each test case.
-     *
-     * @see https://mochajs.org/api/Mocha.Suite.html#afterEach
-     */
-    afterEach(title: string, fn?: AsyncFunc): this;
-  
+    afterEach(title: string, fn?: Func | AsyncFunc): this;
+
     /**
      * Add a test `suite`.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#addSuite
      */
     addSuite(suite: Suite): this;
-  
+
     /**
      * Add a `test` to this suite.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#addTest
      */
     addTest(test: Test): this;
-  
+
     /**
      * Return the full title generated by recursively concatenating the parent's
      * full title.
@@ -250,7 +194,7 @@ declare module Mocha {
      * @see https://mochajs.org/api/Mocha.Suite.html#.Suite#fullTitle
      */
     fullTitle(): string;
-  
+
     /**
      * Return the title path generated by recursively concatenating the parent's
      * title path.
@@ -258,14 +202,14 @@ declare module Mocha {
      * @see https://mochajs.org/api/Mocha.Suite.html#.Suite#titlePath
      */
     titlePath(): string[];
-  
+
     /**
      * Return the total number of tests.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#.Suite#total
      */
     total(): number;
-  
+
     /**
      * Iterates through each suite recursively to find all tests. Applies a
      * function in the format `fn(test)`.
@@ -273,14 +217,14 @@ declare module Mocha {
      * @see https://mochajs.org/api/Mocha.Suite.html#eachTest
      */
     eachTest(fn: (test: Test) => void): this;
-  
+
     /**
      * This will run the root suite if we happen to be running in delayed mode.
      *
      * @see https://mochajs.org/api/Mocha.Suite.html#run
      */
     run(): void;
-  
+
     /**
      * Generic hook-creator.
      */
