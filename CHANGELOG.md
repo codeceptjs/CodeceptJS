@@ -17,7 +17,7 @@
     }
   )
   ```
- * And last: Package size was decrease on 1.2Mb.
+ * And last: Package size was decrease on 1.3Mb.
 
 ## 3.0.0-beta-3
 
