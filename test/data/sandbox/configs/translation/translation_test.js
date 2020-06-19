@@ -4,7 +4,6 @@ Prima((I) => {
   console.log('Before');
 });
 
-
 lo_scenario('Simple translation test', (io) => {
   console.log('Simple test');
 });

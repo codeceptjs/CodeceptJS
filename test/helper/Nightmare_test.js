@@ -101,7 +101,6 @@ describe('Nightmare', function () {
         e.inspect().should.include('web application');
       }));
 
-
     it('should fail when clickable element not found', () => I.amOnPage('/')
       .then(() => I.click('Welcome'))
       .catch((e) => {
@@ -158,7 +157,6 @@ describe('Nightmare', function () {
       .then(() => I.see('Height 600', '#height'))
       .then(() => I.see('Width 950', '#width')));
   });
-
 
   describe('refresh page', () => {
     it('should refresh the current page', async () => {
