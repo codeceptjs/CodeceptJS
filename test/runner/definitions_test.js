@@ -211,7 +211,6 @@ chai.use((chai, utils) => {
   });
 });
 
-
 /**
  * Resolves 'codeceptjs' type directive to the internal file,
  * and add resolves other files as normal.

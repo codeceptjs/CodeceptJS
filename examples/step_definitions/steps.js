@@ -1,7 +1,6 @@
 const assert = require('assert');
 const Smth = require('../pages/Smth');
 
-
 const I = actor();
 // Add in your custom step files
 

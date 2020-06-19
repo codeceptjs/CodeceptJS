@@ -101,7 +101,6 @@ describe('retryFailedStep', () => {
     // expects to retry only once
   });
 
-
   it('should add custom steps to ignore', async () => {
     retryFailedStep({ retries: 2, minTimeout: 1, ignoredSteps: ['somethingNew*'] });
     event.dispatcher.emit(event.test.before, {});
