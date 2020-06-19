@@ -1,3 +1,24 @@
+## 3.0.0-beta.4
+
+🐛 Bug Fix:
+  * PageObject was broken when using "this" inside a simple object.
+  * The typings for all WebDriver methods work correctly.
+  * The typings for "this.helper" and helper constructor work correctly, too.
+
+🧤 Internal:
+ * Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
+ Example:
+  ```ts
+  const psp = wd.grabPageScrollPosition() // $ExpectType Promise<PageScrollPosition>
+  psp.then(
+    result => {
+      result.x // $ExpectType number
+      result.y // $ExpectType number
+    }
+  )
+  ```
+ * And last: Reducing package size from 3.3Mb to 2.0Mb
+
 ## 3.0.0-beta-3
 
 > [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
