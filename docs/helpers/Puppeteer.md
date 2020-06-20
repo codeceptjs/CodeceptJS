@@ -339,7 +339,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -585,8 +585,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **LocatorOrString** located by CSS|XPath|strict locator.
--   `destElement` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `srcElement` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
+-   `destElement` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
 ### dragSlider
 
@@ -899,7 +899,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 #### Parameters
 
--   `locator` **LocatorOrString** element located by CSS|XPath|strict locator.
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `prop`  
 -   `elementSize` **[string][8]?** x, y, width or height of the given element.
 
@@ -1609,7 +1609,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `select` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][8] | [Array][14]&lt;any>)** visible text or value of option.
 
 ### setCookie
@@ -1881,7 +1881,7 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` **LocatorOrString** input field.
+-   `field` **([string][8] | [object][6])** input field.
 -   `value` **[string][8]** expected value.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
 

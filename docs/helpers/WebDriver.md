@@ -535,7 +535,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -768,8 +768,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **LocatorOrString** located by CSS|XPath|strict locator.
--   `destElement` **LocatorOrString** located by CSS|XPath|strict locator.Appium: not tested
+-   `srcElement` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
+-   `destElement` **([string][19] | [object][18])** located by CSS|XPath|strict locator.Appium: not tested
 
 ### dragSlider
 
@@ -1061,7 +1061,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 #### Parameters
 
--   `locator` **LocatorOrString** element located by CSS|XPath|strict locator.
+-   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
 -   `prop`  
 -   `elementSize` **[string][19]?** x, y, width or height of the given element.
 
@@ -1466,7 +1466,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 
 #### Parameters
 
--   `locator` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `locator` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
 -   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][32].
 
 ### scrollPageToBottom
@@ -1765,7 +1765,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `select` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][19] | [Array][27]&lt;any>)** visible text or value of option.
 
 ### setCookie
@@ -2050,7 +2050,7 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` **LocatorOrString** input field.
+-   `field` **([string][19] | [object][18])** input field.
 -   `value` **[string][19]** expected value.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 

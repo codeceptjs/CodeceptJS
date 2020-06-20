@@ -184,7 +184,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -896,7 +896,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][4] | [Array][8]&lt;any>)** visible text or value of option.
 
 ### setCookie

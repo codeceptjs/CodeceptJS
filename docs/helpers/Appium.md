@@ -988,7 +988,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 
 #### Parameters
 
--   `locator` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
 -   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][15].Supported only for web testing
 
 ### seeCheckboxIsChecked
@@ -1074,7 +1074,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `select` **([string][4] \| [object][6])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][4] \| [Array][14]&lt;any>)** visible text or value of option.Supported only for web testing
 
 ### waitForElement
@@ -1344,7 +1344,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **([string][4] \| [object][6])** field located by label|name|CSS|XPath|strict locator.
 
 ### attachFile
 
@@ -1668,8 +1668,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **LocatorOrString** located by CSS|XPath|strict locator.
--   `destElement` **LocatorOrString** located by CSS|XPath|strict locator.Appium: not tested
+-   `srcElement` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
+-   `destElement` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.Appium: not tested
 
 ### dragSlider
 
@@ -1833,7 +1833,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 #### Parameters
 
--   `locator` **LocatorOrString** element located by CSS|XPath|strict locator.
+-   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 -   `prop`  
 -   `elementSize` **[string][4]?** x, y, width or height of the given element.
 

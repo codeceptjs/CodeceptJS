@@ -89,6 +89,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     let helper = 'Detox';
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+      cfg.replace(/LocatorOrString/g, '*string | object*');
     });
     await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
 
@@ -99,12 +100,14 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
       cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+      cfg.replace(/string \| object/g, 'LocatorOrString');
     });
 
     console.log('Building @codeceptjs/mock-request');
     helper = 'MockRequest';
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+      cfg.replace(/LocatorOrString/g, 'string | object');
     });
     await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
 
@@ -115,6 +118,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
       cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+      cfg.replace(/string \| object/g, 'LocatorOrString');
     });
   },
 
@@ -151,6 +155,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         }
         if (!forTypings) {
           cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+          cfg.replace(/LocatorOrString/g, 'string | object');
         }
       });
     }
@@ -184,6 +189,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(placeholders[i], templates[i]);
         }
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+        cfg.replace(/LocatorOrString/g, 'string | object');
       });
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
