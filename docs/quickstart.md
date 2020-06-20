@@ -16,11 +16,7 @@ This gives you access to rich Selenium ecosystem and cross-browser support for m
 
 <a href="/webdriver" class="button extended" >Start with WebDriver &raquo;</a>
 
-<small>
-
-WebDriver support is implemented via [webdriverio](https://webdriver.io) library
-
-</small>
+<small> WebDriver support is implemented via [webdriverio](https://webdriver.io) library </small>
 
 ---
 
@@ -92,7 +88,7 @@ npx codeceptjs gt
 ```js
 Feature('My First Test');
 
-Scenario('test something', (I) => {
+Scenario('test something', ({ I }) => {
 
 });
 ```
@@ -102,7 +98,7 @@ Scenario('test something', (I) => {
 ```js
 Feature('My First Test');
 
-Scenario('test something', (I) => {
+Scenario('test something', ({ I }) => {
   I.amOnPage('https://github.com');
   I.see('GitHub');
 });

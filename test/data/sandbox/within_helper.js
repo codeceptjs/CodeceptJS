@@ -1,4 +1,3 @@
-
 const Helper = require('../../../lib/helper');
 const output = require('../../../lib/output');
 const Step = require('../../../lib/step');

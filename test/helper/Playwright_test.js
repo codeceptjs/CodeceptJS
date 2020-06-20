@@ -12,7 +12,6 @@ const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
 let I;
-let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
@@ -27,7 +26,7 @@ describe('Playwright', function () {
     I = new Playwright({
       url: siteUrl,
       windowSize: '500x700',
-      show: true,
+      show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
       restart: true,
@@ -54,19 +53,6 @@ describe('Playwright', function () {
     return I._after();
   });
 
-  xdescribe('Session', () => {
-    it('should not fail for localStorage.clear() on about:blank', async () => {
-      I.options.restart = false;
-      return I.page.goto('about:blank')
-        .then(() => I._after())
-        .then(() => { I.options.restart = true; })
-        .catch((e) => {
-          I.options.restart = true;
-          throw new Error(e);
-        });
-    });
-  });
-
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
@@ -83,16 +69,6 @@ describe('Playwright', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
-    });
-
-    it('should be unauthenticated ', async () => {
-      let err = true;
-      try {
-        await I.amOnPage('/basic_auth');
-      } catch (e) {
-        err = false;
-      }
-      if (err) throw new Error('Should fail at auth page');
     });
   });
 
@@ -334,7 +310,6 @@ describe('Playwright', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
@@ -506,91 +481,12 @@ describe('Playwright', function () {
       await I.pressKey(['Shift', 'Subtract']);
       await I.pressKey('.');
       await I.pressKey(['Shift', '.']);
-      await I.pressKey(['Shift', 'Decimal']);
-      await I.pressKey(['Shift', 'Period']);
       await I.pressKey('/');
       await I.pressKey(['Shift', '/']);
       await I.pressKey(['Shift', 'Divide']);
       await I.pressKey(['Shift', 'Slash']);
 
-      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
-    });
-
-    it('should show correct number key when Shift modifier is active', async () => {
-      await I.amOnPage('/form/field');
-      await I.fillField('Name', '');
-
-      await I.pressKey('0');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('0');
-      await I.pressKey('Digit0');
-      await I.pressKey('Numpad0');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('1');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('1');
-      await I.pressKey('Digit1');
-      await I.pressKey('Numpad1');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('2');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('2');
-      await I.pressKey('Digit2');
-      await I.pressKey('Numpad2');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('3');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('3');
-      await I.pressKey('Digit3');
-      await I.pressKey('Numpad3');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('4');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('4');
-      await I.pressKey('Digit4');
-      await I.pressKey('Numpad4');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('5');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('5');
-      await I.pressKey('Digit5');
-      await I.pressKey('Numpad5');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('6');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('6');
-      await I.pressKey('Digit6');
-      await I.pressKey('Numpad6');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('7');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('7');
-      await I.pressKey('Digit7');
-      await I.pressKey('Numpad7');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('8');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('8');
-      await I.pressKey('Digit8');
-      await I.pressKey('Numpad8');
-      await I.pressKeyUp('Shift');
-
-      await I.pressKey('9');
-      await I.pressKeyDown('Shift');
-      await I.pressKey('9');
-      await I.pressKey('Digit9');
-      await I.pressKey('Numpad9');
-      await I.pressKeyUp('Shift');
-
-      await I.seeInField('Name', '0))01!!12@@23##34$$45%%56^^67&&78**89((9');
+      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>/?/?');
     });
   });
 
@@ -641,26 +537,6 @@ describe('Playwright', function () {
       .then(() => I.waitForValue('.inputbox', 'Brisbane', 4))
       .then(() => I.seeInField('#text', 'Brisbane'))
       .then(() => I.seeInField('#text2', 'London')));
-  });
-
-
-  describe('#grabHTMLFrom', () => {
-    it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//title'))
-      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
-
-    it('should grab inner html from an element using id query', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('#area1'))
-      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
-
-    it('should grab inner html from multiple elements', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//a'))
-      .then(html => assert.equal(html.length, 5)));
-
-    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo({ frame: 'iframe' }))
-      .then(() => I.grabHTMLFrom('#new-tab'))
-      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
@@ -741,6 +617,16 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#usePlaywrightTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePlaywrightTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+  });
+
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
       await I.amOnPage('https://www.google.com');
@@ -764,7 +650,7 @@ describe('Playwright', function () {
     });
   });
 
-  xdescribe('#handleDownloads', () => {
+  describe('#handleDownloads', () => {
     before(() => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -776,85 +662,9 @@ describe('Playwright', function () {
 
     it('should dowload file', async () => {
       await I.amOnPage('/form/download');
-      await I.handleDownloads();
+      await I.handleDownloads('downloads/avatar.jpg');
       await I.click('Download file');
       await FS.waitForFile('downloads/avatar.jpg', 5);
-    });
-  });
-
-  describe('#waitForClickable', () => {
-    it('should wait for clickable', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: 'input#text' });
-    });
-
-    it('should wait for clickable by XPath', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ xpath: './/input[@id="text"]' });
-    });
-
-    it('should fail for disabled element', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for disabled element by XPath', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by top', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by bottom', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by left', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for element not in viewport by right', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
-      });
-    });
-
-    it('should fail for overlapping element', async () => {
-      await I.amOnPage('/form/wait_for_clickable');
-      await I.waitForClickable({ css: '#div2_button' }, 0.1);
-      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
-        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
-      }).catch((e) => {
-        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
-      });
     });
   });
 });
@@ -982,7 +792,6 @@ describe('Playwright - BasicAuth', () => {
     });
     return I._before().then(() => {
       page = I.page;
-      browser = I.browser;
     });
   });
 
@@ -995,5 +804,45 @@ describe('Playwright - BasicAuth', () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
+  });
+});
+
+describe('Playwright - Emulation', () => {
+  before(() => {
+    const { devices } = require('playwright');
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      emulate: devices['iPhone 6'],
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  it('should open page as iPhone ', async () => {
+    await I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.equal(width, 980);
   });
 });

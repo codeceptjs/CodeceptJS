@@ -7,7 +7,7 @@ module.exports.config = {
   helpers: {
     Puppeteer: {
       url: TestHelper.siteUrl(),
-      show: true,
+      show: false,
       chrome: {
         args: [
           '--no-sandbox',
@@ -15,11 +15,19 @@ module.exports.config = {
         ],
       },
     },
-    MockRequest: {},
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
+      outputPath: './output',
+    },
   },
   include: {},
   bootstrap: false,
   mocha: {},
+  plugins: {
+    screenshotOnFail: {
+      enabled: true,
+    },
+  },
   name: 'acceptance',
   gherkin: {
     features: './gherkin/*.feature',

@@ -55,7 +55,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file', (done) => {
-    exec(`${runner} def ${codecept_dir}`, (err, stdout, stderr) => {
+    exec(`${runner} def ${codecept_dir}`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
@@ -94,7 +94,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file given a config file', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.json`, (err, stdout, stderr) => {
+    exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.json`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/../../steps.d.ts`);
       types.should.be.valid;
@@ -145,7 +145,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with inject which contains I object', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err, stdout, stderr) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err) => {
       assert(!err);
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
@@ -155,7 +155,7 @@ describe('Definitions', function () {
       returned.should.containSubset([
         {
           properties: [
-            { name: 'I', type: 'CodeceptJS.I' },
+            { name: 'I', type: 'I' },
             { name: 'MyPage', type: 'MyPage' },
           ],
         },
@@ -172,7 +172,7 @@ describe('Definitions', function () {
       const definitionsFile = types.getSourceFileOrThrow(pathOfStaticDefinitions);
       const returned = getReturnStructure(definitionsFile.getFunctionOrThrow('inject'));
       returned.should.containSubset([{
-        properties: [{ name: 'I', type: 'CodeceptJS.I' }],
+        properties: [{ name: 'I', type: 'I' }],
       }]);
       done();
     });
@@ -184,11 +184,11 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('CallbackOrder').getStructure();
+      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
-        { name: '[0]', type: 'CodeceptJS.I' },
-        { name: '[1]', type: 'MyPage' },
-        { name: '[2]', type: 'SecondPage' },
+        { name: 'I', type: 'I' },
+        { name: 'MyPage', type: 'MyPage' },
+        { name: 'SecondPage', type: 'SecondPage' },
       ]);
       done();
     });
@@ -210,7 +210,6 @@ chai.use((chai, utils) => {
     if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics));
   });
 });
-
 
 /**
  * Resolves 'codeceptjs' type directive to the internal file,
@@ -268,7 +267,7 @@ function typesFrom(sourceFile) {
  * @param {import('ts-morph').Node} node
 */
 function getExtends(node) {
-  return node.getExtends().map((symbol) => {
+  return node.getExtends().map(() => {
     const result = {};
     /** @type {import('ts-morph').Type} */
     result.properties = result.properties || [];

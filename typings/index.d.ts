@@ -1,4 +1,3 @@
-// Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
@@ -6,13 +5,24 @@
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
-    import("./utils").Translate<T, CodeceptJS.Translation.Actions>;
+    import("./utils").Translate<T, Translation.Actions>;
+
+  type Cookie = {
+    name: string
+    value: string
+  }
+
+  interface PageScrollPosition {
+    x: number,
+    y: number
+  }
 
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}
   interface IHook {}
   interface IScenario {}
+  interface IFeature {}
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
@@ -27,7 +37,7 @@ declare namespace CodeceptJS {
   }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: Function }>(
+  type actor = <T extends { [action: string]: () => void }>(
     customSteps?: T & ThisType<WithTranslation<Methods & T>>
   ) => WithTranslation<Methods & T>;
 
@@ -44,28 +54,17 @@ declare namespace CodeceptJS {
 
   type LocatorOrString = string | ILocator | Locator;
 
-  interface HookCallback<U extends any[]> { (...args: U): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface HookCallback { (args: SupportObject): void; }
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo: IScenario}
+  interface Feature extends IFeature { skip: IFeature }
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
-    <T extends any[] = CallbackOrder>(
-      title: string
-    ): ScenarioConfig;
-    <T extends any[] = CallbackOrder>(
-      title: string,
-      callback: HookCallback<T>
-    ): ScenarioConfig;
-    <T extends any[] = CallbackOrder>(
-      title: string,
-      opts: { [key: string]: any },
-      callback: HookCallback<T>
-    ): ScenarioConfig;
+    (title: string, callback?: HookCallback): ScenarioConfig;
+    (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig;
   }
-  interface IHook {
-    <T extends any[] = CallbackOrder>(callback: HookCallback<T>): void;
-  }
+  interface IHook { (callback: HookCallback): void; }
 
   interface Globals {
     codeceptjs: typeof codeceptjs;
@@ -100,6 +99,7 @@ declare const Then: typeof CodeceptJS.addStep;
 declare const Feature: typeof CodeceptJS.Feature;
 declare const Scenario: CodeceptJS.Scenario;
 declare const xScenario: CodeceptJS.IScenario;
+declare const xFeature: CodeceptJS.IFeature;
 declare function Data(data: any): CodeceptJS.IData;
 declare function xData(data: any): CodeceptJS.IData;
 
@@ -147,6 +147,7 @@ declare namespace Mocha {
   interface MochaGlobals {
     Feature: typeof Feature;
     Scenario: typeof Scenario;
+    xFeature: typeof xFeature;
     xScenario: typeof xScenario;
     Data: typeof Data;
     xData: typeof xData;
@@ -157,13 +158,13 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite extends SuiteRunnable{
+  interface Suite extends SuiteRunnable {
     tags: any[]
     comment: string
     feature: any
   }
 
-  interface Test  extends Runnable{
+  interface Test  extends Runnable {
     tags: any[];
   }
 }

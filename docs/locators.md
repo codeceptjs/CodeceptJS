@@ -12,6 +12,8 @@ CodeceptJS provides flexible strategies for locating elements:
 * [Locator Builder](#locator-builder)
 * [ID locators](#id-locators): by CSS id or by accessibility id
 * [Custom Locator Strategies](#custom-locators): by data attributes or whatever you prefer.
+* [Shadow DOM](/shadow): to access shadow dom elements
+* [React](/react): to access React elements by component names and props
 
 Most methods in CodeceptJS use locators which can be either a string or an object.
 
@@ -299,4 +301,4 @@ New locator strategy is ready to use:
 I.click('=Login');
 ```
 
-> For more details on locator object see [Locator](https://github.com/Codeception/CodeceptJS/blob/master/lib/locator.js) class implementation.
+> For more details on locator object see [Locator](https://github.com/codecept-js/CodeceptJS/blob/master/lib/locator.js) class implementation.

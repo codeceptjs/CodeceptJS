@@ -404,8 +404,25 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
+
+```js
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][4]** attribute name.
+
+Returns **[Promise][7]&lt;[string][4]>** attribute value
+
+### grabAttributeFromAll
+
+Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -431,7 +448,7 @@ console.log(JSON.stringify(logs))
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -459,6 +476,7 @@ Returns **[Promise][7]&lt;[string][4]>** current URL
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -484,7 +502,7 @@ Returns **[Promise][7]&lt;[Object][5]&lt;[string][4], any>>** scroll position
 ### grabSource
 
 Retrieves page source and returns it to test.
-Resumes test execution, so should be used inside an async function.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let pageSource = await I.grabSource();
@@ -501,18 +519,34 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;([string][4] | [Array][9]&lt;[string][4]>)>** attribute value
+Returns **[Promise][7]&lt;[string][4]>** attribute value
+
+### grabTextFromAll
+
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][7]&lt;[Array][9]&lt;[string][4]>>** attribute value
 
 ### grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -523,6 +557,21 @@ let email = await I.grabValueFrom('input[name=email]');
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][7]&lt;[string][4]>** attribute value
+
+### grabValueFromAll
+
+Retrieves an array of value from a form located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let inputs = await I.grabValueFromAll('//form/input');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][7]&lt;[Array][9]&lt;[string][4]>>** attribute value
 
 ### moveCursorTo
 
@@ -852,15 +901,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][5]** a cookie object.
+-   `cookie` **([object][5] | [array][9])** a cookie object or array of cookie objects.
 
 ### switchTo
 
@@ -892,6 +949,26 @@ I.uncheckOption('agree', '//form');
 
 -   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+
+### useTestCafeTo
+
+Use [TestCafe][12] API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`t`][13]) } object from TestCafe API is available.
+
+```js
+I.useTestCafeTo('handle browser dialog', async ({ t }) {
+  await t.setNativeDialogHandler(() => true);
+});
+```
+
+#### Parameters
+
+-   `description` **[string][4]** used to show in logs.
+-   `fn` **[function][6]** async functuion that executed with TestCafe helper as argument
 
 ### wait
 
@@ -1070,3 +1147,7 @@ Client Functions
 [10]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[12]: https://devexpress.github.io/testcafe/documentation/test-api/
+
+[13]: https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller

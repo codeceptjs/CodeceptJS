@@ -21,7 +21,7 @@ If you want to use puppeteer-firefox, you should add it in Puppeteer section in 
 ```js
 helpers: {
         Puppeteer: {
-            browser: process.env.BROWSER || 'firefox',            
+            browser: process.env.BROWSER || 'firefox',
             url: process.env.BASE_URL || 'https://example.com',
             chrome: {
                 args: [
@@ -39,6 +39,7 @@ helpers: {
 ## Run-multiple
 
 Example multiple section in codecept.conf.js:
+
 ```js
  multiple: {
         parallel: {
@@ -52,4 +53,34 @@ Example multiple section in codecept.conf.js:
             }],
         },
     },
+```
+
+## Puppeteer v2.1.0 onwards
+
+Historically, Puppeteer supported Firefox indirectly through puppeteer-firefox, which relied on a custom, patched version of Firefox. This approach was also known as “Juggler”. After discussions with Mozilla, we collectively concluded that relying on custom patches was infeasible. Since then, we have been collaborating with Mozilla on supporting Puppeteer on “stock” Firefox. From Puppeteer v2.1.0 onwards, as an experimental feature, you can specify puppeteer.launch({product: 'firefox'}) to run your Puppeteer scripts in Firefox Nightly, without any additional custom patches.
+
+```sh
+npm i puppeteer@v2.1.0
+```
+
+If you want to try this expirement within CodeceptJS, you should add it in Puppeteer section in codecept.conf.js.
+
+- browser: 'chrome' OR 'firefox', 'chrome' is default value
+
+```js
+helpers: {
+        Puppeteer: {
+            browser: process.env.BROWSER || 'firefox',
+            url: process.env.BASE_URL || 'https://example.com',
+            chrome: {
+                args: [
+                    '--ignore-certificate-errors',
+                ],
+            },
+            firefox: {
+                args: [
+                    '--ignore-certificate-errors'
+                ],
+            },
+        },
 ```

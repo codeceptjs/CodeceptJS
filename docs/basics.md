@@ -10,7 +10,7 @@ CodeceptJS is a modern end to end testing framework with a special BDD-style syn
 ```js
 Feature('CodeceptJS demo');
 
-Scenario('check Welcome page on site', (I) => {
+Scenario('check Welcome page on site', ({ I }) => {
   I.amOnPage('/');
   I.see('Welcome');
 });
@@ -49,6 +49,8 @@ Refer to following guides to more information on:
 
 To list all available commands for the current configuration run `codeceptjs list`
 or enable [auto-completion by generating TypeScript definitions](#intellisense).
+
+> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/#extending-codeceptjs-with-custom-helpers). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
 
 
 ## Writing Tests
@@ -147,24 +149,31 @@ I.click('#signup');
 I.click('//dev[@test-id="myid"]');
 ```
 
+> ℹ If click doesn't work in a test but works for user, it is possible that frontend application is not designed for automated testing. To overcome limitation of standard click in this edgecase use `forceClick` method. It will emulate click instead of sending native event. This command will click an element no matter if this element is visible or animating. It will send JavaScript "click" event to it.
+
 ### Filling Fields
 
 Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.
 
 Let's submit this sample form for a test:
 
+![](https://user-images.githubusercontent.com/220264/80355863-494a8280-8881-11ea-9b41-ba1f07abf094.png)
+
 ```html
 <form method="post" action="/update" id="update_form">
      <label for="user_name">Name</label>
-     <input type="text" name="user[name]" id="user_name" />
+     <input type="text" name="user[name]" id="user_name" /><br>
      <label for="user_email">Email</label>
-     <input type="text" name="user[email]" id="user_email" />
-     <label for="user_gender">Gender</label>
-     <select id="user_gender" name="user[gender]">
-          <option value="m">Male</option>
-          <option value="f">Female</option>
-     </select>
-     <input type="submit" name="submitButton" value="Update" />
+     <input type="text" name="user[email]" id="user_email" /><br>
+     <label for="user_role">Role</label>
+     <select id="user_role" name="user[role]">
+          <option value="0">Admin</option>
+          <option value="1">User</option>
+     </select><br>
+     <input type="checkbox" id="accept" /> <label for="accept">Accept changes</label>
+     <div>
+     <input type="submit" name="submitButton" class="btn btn-primary" value="Save" />
+     </div>
 </form>
 ```
 
@@ -176,10 +185,15 @@ I.fillField('Name', 'Miles');
 // we can use input name
 I.fillField('user[email]','miles@davis.com');
 // select element by label, choose option by text
-I.selectOption('Gender','Male');
-// click 'Update' button, found by text
-I.click('Update');
+I.selectOption('Role','Admin');
+// click 'Save' button, found by text
+I.checkOption('Accept');
+I.click('Save');
 ```
+
+> ℹ `selectOption` works only with standard `<select>` <select></select> HTML elements. If your selectbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
+
+> ℹ `checkOption` also works only with standard `<input type="checkbox">` <input type="checkbox"> HTML elements. If your checkbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
 
 Alternative scenario:
 
@@ -188,12 +202,12 @@ Alternative scenario:
 I.fillField('#user_name', 'Miles');
 I.fillField('#user_email','miles@davis.com');
 // select element by label, option by value
-I.selectOption('#user_gender','m');
+I.selectOption('#user_role','1');
 // click 'Update' button, found by name
 I.click('submitButton', '#update_form');
 ```
 
-To fill in sensitive data use the `secret` function:
+To fill in sensitive data use the `secret` function, it won't expose actual value in logs.
 
 ```js
 I.fillField('password', secret('123456'));
@@ -234,13 +248,15 @@ I.seeInTitle('My Website');
 
 To see all possible assertions, check the helper's reference.
 
+> ℹ If you need custom assertions, you can install an assertion libarary like `chai`, use grabbers to obtain information from a browser and perform assertions. However, it is recommended to put custom assertions into a helper for further reuse.
+
 ### Grabbing
 
 Sometimes you need to retrieve data from a page to use it in the following steps of a scenario.
 Imagine the application generates a password, and you want to ensure that user can login using this password.
 
 ```js
-Scenario('login with generated password', async (I) => {
+Scenario('login with generated password', async ({ I }) => {
   I.fillField('email', 'miles@davis.com');
   I.click('Generate Password');
   const password = await I.grabTextFrom('#password');
@@ -255,7 +271,7 @@ Scenario('login with generated password', async (I) => {
 The `grabTextFrom` action is used to retrieve the text from an element. All actions starting with the `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause the test execution with the `await` keyword of ES6. To make it work, your test should be written inside a async function (notice `async` in its definition).
 
 ```js
-Scenario('use page title', async (I) => {
+Scenario('use page title', async ({ I }) => {
   // ...
   const password = await I.grabTextFrom('#password');
   I.fillField('password', password);
@@ -273,7 +289,6 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-
 > ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works
@@ -282,14 +297,14 @@ Tests are written in a synchronous way. This improves the readability and mainta
 While writing tests you should not think about promises, and instead should focus on the test scenario.
 
 However, behind the scenes **all actions are wrapped in promises**, inside of the `I` object.
-[Global promise](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
+[Global promise](https://github.com/codecept-js/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
 
 > 📺 [Learn how CodeceptJS](https://www.youtube.com/watch?v=MDLLpHAwy_s) works with promises by watching video on YouTube
 
 If you want to get information from a running test you can use `await` inside the **async function**, and utilize special methods of helpers started with the `grab` prefix.
 
 ```js
-Scenario('try grabbers', async (I) => {
+Scenario('try grabbers', async ({ I }) => {
   let title = await I.grabTitle();
 });
 ```
@@ -435,7 +450,7 @@ This launches the interactive console where you can call any action from the `I`
  - Press ENTER to run the next step
  - Press TAB twice to see all available commands
  - Type exit + Enter to exit the interactive shell
- - Prefix => to run js commands 
+ - Prefix => to run js commands
  I.
 ```
 
@@ -538,7 +553,7 @@ CodeceptJS implements retries the same way [Mocha does](https://mochajs.org#retr
 You can set the number of a retries for a feature:
 
 ```js
-Scenario('Really complex', (I) => {
+Scenario('Really complex', ({ I }) => {
   // test goes here
 }).retry(2);
 
@@ -572,13 +587,13 @@ Before((I) => { // or Background
   I.amOnPage('/documentation');
 });
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', (I) => {
+Scenario('test title', ({ I }) => {
   I.seeInTitle('Example application');
 });
 ```
@@ -602,7 +617,7 @@ AfterSuite((I) => {
 });
 ```
 
-[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
+[Here are some ideas](https://github.com/codecept-js/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
 
 ## Within
 
@@ -622,7 +637,7 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
-> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+> ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
 
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
 
@@ -681,7 +696,7 @@ I.say('This is by default'); //cyan is used
 
 ## IntelliSense
 
-![](/img/edit.gif)
+![Edit](/img/edit.gif)
 
 To get autocompletion when working with CodeceptJS, use Visual Studio Code or another IDE that supports TypeScript Definitions.
 
@@ -710,7 +725,7 @@ to get method autocompletion while writing tests.
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a chat or other systems. To open another browser use the `session()` function as shown in the example:
 
 ```js
-Scenario('test app', (I) => {
+Scenario('test app', ({ I }) => {
   I.amOnPage('/chat');
   I.fillField('name', 'davert');
   I.click('Sign In');
@@ -747,7 +762,7 @@ session('john', { browser: 'firefox' } , () => {
 or just start the session without switching to it. Call `session` passing only its name:
 
 ```js
-Scenario('test', (I) => {
+Scenario('test', ({ I }) => {
   // opens 3 additional browsers
   session('john');
   session('mary');
@@ -783,7 +798,11 @@ Also, you can use `within` inside a session, but you can't call session from ins
 Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 
 * `xScenario` - skips current test
+* `Scenario.skip` - skips current test
 * `Scenario.only` - executes only the current test
+* `xFeature` - skips current suite <Badge text="Since 2.6.6" type="warning"/>
+* `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
+
 
 ## Todo Test <Badge text="Since 2.4" type="warning"/>
 

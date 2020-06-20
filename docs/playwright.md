@@ -28,7 +28,7 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright@^0.11.1 --save
+npm install codeceptjs playwright@^1 --save
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)
@@ -68,8 +68,7 @@ Playwright uses different strategies to detect if a page is loaded. In configura
 When to consider navigation succeeded, defaults to `load`. Given an array of event strings, navigation is considered to be successful after all events have been fired. Events can be either:
 - `load` - consider navigation to be finished when the load event is fired.
 - `domcontentloaded` - consider navigation to be finished when the DOMContentLoaded event is fired.
-- `networkidle0` - consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
-- `networkidle2` - consider navigation to be finished when there are no more than 2 network connections for at least 500 ms.
+- `networkidle` - consider navigation to be finished when there are no network connections for at least 500 ms.
 
 ```js
   helpers: {
@@ -138,7 +137,7 @@ It's easy to start writing a test if you use [interactive pause](/basics#debug).
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   pause();
 });
@@ -159,7 +158,7 @@ A complete ToDo-MVC test may look like:
 ```js
 Feature('ToDo');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   I.dontSeeElement('.todo-count');
   I.fillField('What needs to be done?', 'Write a guide');
@@ -175,7 +174,7 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 
 ```js
 const assert = require('assert');
-Scenario('get value of current tasks', async (I) => {
+Scenario('get value of current tasks', async ({ I }) => {
   I.createTodo('do 1');
   I.createTodo('do 2');
   let numTodos = await I.grabTextFrom('.todo-count strong');
@@ -201,10 +200,97 @@ I.see('0 items left', '.todo-count');
 
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
+## Multi Session Testing
 
-## Extending
+TO launch additional browser context (or incognito window) use `session` command.
 
-Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+```js
+Scenario('I try to open this site as anonymous user', () => {
+  I.amOnPage('/');
+  I.dontSee('Agree to cookies');
+  session('anonymous user', () => {
+    I.amOnPage('/');
+    I.see('Agree to cookies');
+  });
+})
+```
+
+> ℹ Learn more about [multi-session testing](/basics/#multiple-sessions)
+
+## Device Emulation
+
+Playwright can emulate browsers of mobile devices. Instead of paying for expensive devices for mobile tests you can adjust Playwright settings so it could emulate mobile browsers on iPhone, Samsung Galaxy, etc.
+
+Device emulation can be enabled in CodeceptJS globally in a config or per session.
+
+Playwright contains a [list of predefined devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+
+```js
+const { devices } = require('playwright');
+
+helpers: {
+  Playwright: {
+    // regular config goes here
+    emulate: devices['iPhone 6'],
+  }
+}
+```
+To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions)
+
+```js
+helpers: {
+  Playwright: {
+    // regular config goes here
+    // put on mobile device
+    emulate: { isMobile: true, deviceScaleFactor: 2 }
+  }
+}
+```
+
+To enable device emulation for a specific test, create an additional browser session and pass in config as a second parameter:
+
+```js
+const { devices } = require('playwright');
+
+Scenario('website looks nice on iPhone', () => {
+  session('mobile user', devices['iPhone 6'], () => {
+    I.amOnPage('/');
+    I.see('Hello, iPhone user!')
+  })
+});
+```
+
+## Accessing Playwright API
+
+To get [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) inside a test use `I.usePlaywrightTo` method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.usePlaywrightTo('emulate offline mode', async ({ browser, context, page }) => {
+  // use browser, page, context objects inside this function
+  await context.setOffline(true);
+});
+```
+
+Playwright commands are asynchronous so a callback function must be async.
+
+A Playwright helper is passed as argument for callback, so you can combine Playwrigth API with CodeceptJS API:
+
+```js
+I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
+  // access internal objects browser, page, context of helper
+  await Playwright.context.setOffline(true);
+  // call a method of helper, await is required here
+  await Playwright.click('Reload');
+});
+
+```
+
+
+
+## Extending Helper
+
+To create custom `I.*` commands using Playwright API you need to create a custom helper.
 
 Start with creating an `MyPlaywright` helper using `generate:helper` or `gh` command:
 
@@ -239,8 +325,8 @@ async setPermissions() {
   const context = browser.defaultContext()
   return context.setPermissions('https://html5demos.com', ['geolocation']);
 }
+```
 
-> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/v0.10.0/docs/api.md#class-browsercontext)
+> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext)
 
 > [▶ Learn more about Helpers](http://codecept.io/helpers/)
-

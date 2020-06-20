@@ -305,6 +305,109 @@ Scenario('login', async (I, login) => {
 
 -   `config`  
 
+## commentStep
+
+Add descriptive nested steps for your tests:
+
+```js
+Scenario('project update test', async (I) => {
+  __`Given`;
+  const projectId = await I.have('project');
+
+  __`When`;
+  projectPage.update(projectId, { title: 'new title' });
+
+  __`Then`;
+  projectPage.open(projectId);
+  I.see('new title', 'h1');
+})
+```
+
+Steps prefixed with `__` will be printed as nested steps in `--steps` output:
+
+      Given
+        I have "project"
+      When
+        projectPage update
+      Then
+        projectPage open
+        I see "new title", "h1"
+
+Also those steps will be exported to allure reports.
+
+This plugin can be used
+
+### Config
+
+-   `enabled` - (default: false) enable a plugin
+-   `regusterGlobal` - (default: false) register `__` template literal function globally. You can override function global name by providing a name as a value.
+
+### Examples
+
+Registering `__` globally:
+
+```js
+plugins: {
+  commentStep: {
+    enabled: true,
+    registerGlobal: true
+  }
+}
+```
+
+Registering `Step` globally:
+
+```js
+plugins: {
+  commentStep: {
+    enabled: true,
+    registerGlobal: 'Step'
+  }
+}
+```
+
+Using only local function names:
+
+```js
+plugins: {
+  commentStep: {
+    enabled: true
+  }
+}
+```
+
+Then inside a test import a comment function from a plugin.
+For instance, you can prepare Given/When/Then functions to use them inside tests:
+
+```js
+// inside a test
+const step = codeceptjs.container.plugins('commentStep');
+
+const Given = () => step`Given`;
+const When = () => step`When`;
+const Then = () => step`Then`;
+```
+
+Scenario('project update test', async (I) => {
+  Given();
+  const projectId = await I.have('project');
+
+  When();
+  projectPage.update(projectId, { title: 'new title' });
+
+  Then();
+  projectPage.open(projectId);
+  I.see('new title', 'h1');
+});
+
+```
+
+```
+
+### Parameters
+
+-   `config`  
+
 ## customLocator
 
 Creates a [custom locator][3] by using special attributes in HTML.
@@ -391,10 +494,6 @@ Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
 Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
-
-### Parameters
-
--   `config`  
 
 ## puppeteerCoverage
 
@@ -682,6 +781,56 @@ Possible config options:
 ### Parameters
 
 -   `config` **any** 
+
+## tryTo
+
+Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
+
+```js
+const result = await tryTo(() => I.see('Welcome'));
+
+// if user is on page, result => true
+// if user is on page, result => false
+```
+
+Disables retryFailedStep plugin for steps inside a block;
+
+Use this plugin if:
+
+-   you need to perform multiple assertions inside a test
+-   there is A/B testing on a website you test
+-   there is "Accept Cookie" banner which may surprisingly appear on a page.
+
+#### Usage
+
+#### Multiple Conditional Assertions
+
+```js
+const result1 = await tryTo(() => I.see('Hello, user'));
+const result2 = await tryTo(() => I.seeElement('.welcome'));
+assert.ok(result1 && result2, 'Assertions were not succesful');
+```
+
+##### Optional click
+
+```js
+I.amOnPage('/');
+tryTo(() => I.click('Agree', '.cookies'));
+```
+
+#### Configuration
+
+-   `registerGlobal` - to register `tryTo` function globally, true by default
+
+If `registerGlobal` is false you can use tryTo from the plugin:
+
+```js
+const tryTo = codeceptjs.container.plugins('tryTo');
+```
+
+### Parameters
+
+-   `config`  
 
 ## wdio
 

@@ -1,6 +1,6 @@
 Feature('Yahoo test');
 
-Scenario('Nightmare basic test', (I) => {
+Scenario('Nightmare basic test', ({ I }) => {
   I.amOnPage('http://yahoo.com');
   I.fillField('p', 'github nightmare');
   I.click('Search Web');
@@ -9,7 +9,6 @@ Scenario('Nightmare basic test', (I) => {
   // I.seeElement("//a[contains(@href,'github.com/segmentio/nightmare')]");
   I.see('segmentio/nightmare', 'li a');
 });
-
 
 // Our implementation of:
 

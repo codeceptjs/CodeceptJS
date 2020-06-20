@@ -294,7 +294,6 @@ describe('Appium', function () {
       assert.equal(type, 'FLICK');
     });
 
-
     it('should react on swipeUp action', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
@@ -437,7 +436,6 @@ describe('Appium', function () {
       assert.ok(fileExists(savepath), null, 'file does not exists');
     });
   });
-
 
   describe('see text : #see', () => {
     it('should work inside elements @second', async () => {
@@ -620,10 +618,7 @@ describe('Appium', function () {
     });
 
     it('should execute only on Android >= 5.0 @quick', () => {
-      let platform = null;
-      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {
-        platform = 'android';
-      });
+      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
     });
 
     it('should execute only in Web', () => {

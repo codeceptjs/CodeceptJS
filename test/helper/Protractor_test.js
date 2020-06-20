@@ -6,7 +6,6 @@ const path = require('path');
 const Protractor = require('../../lib/helper/Protractor');
 const TestHelper = require('../support/TestHelper');
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
 const fileExists = require('../../lib/utils').fileExists;
 
 const web_app_url = TestHelper.siteUrl();
@@ -571,6 +570,16 @@ describe('Protractor', function () {
         await I.amOnPage('/');
         await I.seeNumberOfElements('h1', 1);
       });
+    });
+  });
+
+  describe('#useProtractorTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.useProtractorTo('test', async ({ browser }) => {
+        return browser.getTitle();
+      });
+      assert.equal('Event App', title);
     });
   });
 });

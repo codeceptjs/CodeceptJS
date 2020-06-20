@@ -1,3 +1,234 @@
+## 3.0.0-beta.4
+
+🐛 Bug Fix:
+  * PageObject was broken when using "this" inside a simple object.
+  * The typings for all WebDriver methods work correctly.
+  * The typings for "this.helper" and helper constructor work correctly, too.
+
+🧤 Internal:
+ * Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
+ Example:
+  ```ts
+  const psp = wd.grabPageScrollPosition() // $ExpectType Promise<PageScrollPosition>
+  psp.then(
+    result => {
+      result.x // $ExpectType number
+      result.y // $ExpectType number
+    }
+  )
+  ```
+ * And last: Reducing package size from 3.3Mb to 2.0Mb
+
+## 3.0.0-beta-3
+
+> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
+
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* Test artifacts introduced. Each test object has `artifacts` property, to keep attachment files. For instance, a screenshot of a failed test is attached to a test as artifact.
+* Improved output for test execution
+  * Changed colors for steps output, simplified
+  * Added stack trace for test failures
+  * Removed `Event emitted` from log in `--verbose` mode
+  * List artifacts of a failed tests
+
+![](https://user-images.githubusercontent.com/220264/82160052-397bf800-989b-11ea-81c0-8e58b3d33525.png)
+
+* Steps & metasteps refactored by @Vorobeyko. Logs to arguments passed to page objects:
+
+```js
+// TEST:
+MyPage.hasFiles('first arg', 'second arg');
+
+// OUTPUT:
+MyPage: hasFile "First arg", "Second arg"
+  I see file "codecept.json"
+  I see file "codecept.po.json"
+```
+* Introduced official [TypeScript boilerplate](https://github.com/codecept-js/typescript-boilerplate). Started by @Vorobeyko.
+
+## 3.0.0-beta
+
+> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
+
+* **NodeJS 12+ required**
+* **BREAKING CHANGE:** Syntax for tests has changed.
+
+
+```js
+// Previous
+Scenario('title', (I, loginPage) => {});
+
+// Current
+Scenario('title', ({ I, loginPage }) => {});
+```
+
+* **BREAKING CHANGE:** [WebDriver][Protractor][Puppeteer][Playwright][Nightmare] `grab*` functions unified:
+  * `grab*From` => **returns single value** from element or throws error when no matchng elements found
+  * `grab*FromAll` => returns array of values, or empty array when no matching elements
+* Public API for workers introduced by @koushikmohan1996. [Customize parallel execution](https://github.com/Codeception/CodeceptJS/blob/codeceptjs-v3.0/docs/parallel.md#custom-parallel-execution) with workers by building custom scripts.
+
+* [Playwright] Added `usePlaywrightTo` method to access Playwright API in tests directly:
+
+```js
+I.usePlaywrightTo('do something special', async ({ page }) => {
+  // use page or browser objects here
+});
+```
+
+* [Puppeteer] Introduced `usePuppeteerTo` method to access Puppeteer API:
+
+```js
+I.usePuppeteerTo('do something special', async ({ page, browser }) => {
+  // use page or browser objects here
+});
+```
+
+* [WebDriver] Introduced `useWebDriverTo` method to access webdriverio API:
+
+```js
+I.useWebDriverTo('do something special', async ({ browser }) => {
+  // use browser object here
+});
+```
+
+* [Protractor] Introduced `useProtractorTo` method to access protractor API
+* `tryTo` plugin introduced. Allows conditional action execution:
+
+```js
+const isSeen = await tryTo(() => {
+  I.see('Some text');
+});
+// we are not sure if cookie bar is displayed, but if so - accept cookies
+tryTo(() => I.click('Accept', '.cookies'));
+```
+
+* **Possible breaking change** In semantic locators `[` char indicates CSS selector.
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
+* [Playwright] Fixed calling `waitFor*` methods with custom locators #2314. Fix #2389 by @Georgegriff
+
+## 2.6.6
+
+* Puppeteer 4.0 support. Important: MockRequest helper won't work with Puppeter > 3.3
+* Added `xFeature` and `Feature.skip` to skip all tests in a suite. By @Georgegriff
+* [Appium] Fixed #2428 Android native locator support by @idxn
+* [WebDriver] Fixed `waitNumberOfVisibleElements` to actually filter visible elements. By @ilangv
+* [Puppeteer] Fixed handling error which is not an Error object. Fixes `cannot read property indexOf of undefined` error. Fix #2436 by @Georgegriff
+* [Puppeteer] Print error on page crash by @Georgegriff
+
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers #2391. Fix #2387 by @koushikmohan1996
+* [Playwright] Fixed calling `waitFor*` methods with custom locators #2314. Fix #2389 by @Georgegriff
+
+## 2.6.4
+
+* [Playwright] **Playwright 1.0 support** by @Georgegriff.
+
+## 2.6.3
+
+* [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes #2337 by @mirao
+* [allure plugin] Fixed reporting of tests skipped by failure in before hook. Refer to #2349 & #2354. Fix by @koushikmohan1996
+
+## 2.6.2
+
+* [WebDriver][Puppeteer] Added `forceClick` method to emulate click event instead of using native events.
+* [Playwright] Updated to 0.14
+* [Puppeteer] Updated to Puppeteer v3.0
+* [wdio] Fixed undefined output directory for wdio plugns. Fix By @PeterNgTr
+* [Playwright] Introduced `handleDownloads` method to download file. Please note, this method has slightly different API than the same one in Puppeteer.
+* [allure] Fixed undefined output directory for allure plugin on using custom runner. Fix by @charliepradeep
+* [WebDriver] Fixed `waitForEnabled` fix for webdriver 6. Fix by @dsharapkou
+* Workers: Fixed negative failure result if use scenario with the same names. Fix by @Vorobeyko
+* [MockRequest] Updated documentation to match new helper version
+* Fixed: skipped tests are not reported if a suite failed in `before`. Refer #2349 & #2354. Fix by @koushikmohan1996
+
+## 2.6.1
+
+* [screenshotOnFail plugin] Fixed saving screenshot of active session.
+* [screenshotOnFail plugin] Fix issue #2301 when having the flag `uniqueScreenshotNames`=true results in `undefined` in screenshot file name by @PeterNgTr
+* [WebDriver] Fixed `waitForElement` not applying the optional second argument to override the default timeout in webdriverio 6. Fix by @Mooksc
+* [WebDriver] Updated `waitUntil` method which is used by all of the wait* functions. This updates the `waitForElement` by the same convention used to update `waitForVisible` and `waitInUrl` to be compatible with both WebDriverIO v5 & v6. See #2313 by @Mooksc
+
+## 2.6.0
+
+* **[Playwright] Updated to Playwright 0.12** by @Georgegriff.
+
+Upgrade playwright to ^0.12:
+
+```
+npm i playwright@^0.12 --save
+```
+
+[Notable changes](https://github.com/microsoft/playwright/releases/tag/v0.12.0):
+  * Fixed opening two browsers on start
+  * `executeScript` - passed function now accepts only one argument. Pass in objects or arrays if you need multtple arguments:
+```js
+// Old style, does not work anymore:
+I.executeScript((x, y) => x + y, x, y);
+// New style, passing an object:
+I.executeScript(({x, y}) => x + y, {x, y});
+```
+  * `click` - automatically waits for element to become clickable (visible, not animated) and waits for navigation.
+  * `clickLink` - deprecated
+  * `waitForClickable` - deprecated
+  * `forceClick` - added
+  * Added support for custom locators. See #2277
+  * Introduced [device emulation](/playwright/#device-emulation):
+    * globally via `emulate` config option
+    * per session
+
+**[WebDriver] Updated to webdriverio v6** by @PeterNgTr.
+
+Read [release notes](https://webdriver.io/blog/2020/03/26/webdriverio-v6-released.html), then
+upgrade webdriverio to ^6.0:
+
+```
+npm i webdriverio@^6.0 --save
+```
+*(webdriverio v5 support is deprecated and will be removed in CodeceptJS 3.0)*
+
+[WebDriver] Introduced [Shadow DOM support](/shadow) by @gkushang
+
+```js
+I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
+```
+
+* **Fixed parallel execution of `run-workers` for Gherkin** scenarios by @koushikmohan1996
+* [MockRequest] Updated and **moved to [standalone package](https://github.com/codecept-js/mock-request)**:
+  * full support for record/replay mode for Puppeteer
+  * added `mockServer` method to use flexible PollyJS API to define mocks
+  * fixed stale browser screen in record mode.
+* [Playwright] Added support on for `screenshotOnFail` plugin by @amonkc
+* Gherkin improvement: setting different tags per examples. See #2208 by @acuper
+* [TestCafe] Updated `click` to take first visible element. Fixes #2226 by @theTainted
+* [Puppeteer][WebDriver] Updated `waitForClickable` method to check for element overlapping. See #2261 by @PiQx
+* [Puppeteer] Dropped `puppeteer-firefox` support, as Puppeteer supports Firefox natively.
+* [REST] Rrespect Content-Type header. See #2262 by @pmarshall-legacy
+* [allure plugin] Fixes BeforeSuite failures in allure reports. See #2248 by @Georgegriff
+* [WebDriver][Puppeteer][Playwright] A screenshot of for an active session is saved in multi-session mode. See #2253 by @ChexWarrior
+* Fixed `--profile` option by @pablopaul. Profile value to be passed into `run-multiple` and `run-workers`:
+
+```
+npx codecept run-workers 2 --profile firefox
+```
+
+Value is available at `process.env.profile` (previously `process.profile`). See #2302. Fixes #1968 #1315
+
+* [commentStep Plugin introduced](/plugins#commentstep). Allows to annotate logical parts of a test:
+
+```js
+__`Given`;
+I.amOnPage('/profile')
+
+__`When`;
+I.click('Logout');
+
+__`Then`;
+I.see('You are logged out');
+```
+
 ## 2.5.0
 
 * **Experimental: [Playwright](/playwright) helper introduced**.

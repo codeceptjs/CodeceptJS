@@ -79,7 +79,7 @@ describe('Nightmare', function () {
     });
   });
 
-  // should work for webdriverio and seleniumwebdriver
+  // should work for webdriverio
   // but somehow fails on Travis CI :(
   describe('#moveCursorTo', () => {
     it('should trigger hover event', () => I.amOnPage('/form/hover')
@@ -100,7 +100,6 @@ describe('Nightmare', function () {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('web application');
       }));
-
 
     it('should fail when clickable element not found', () => I.amOnPage('/')
       .then(() => I.click('Welcome'))
@@ -158,7 +157,6 @@ describe('Nightmare', function () {
       .then(() => I.see('Height 600', '#height'))
       .then(() => I.see('Width 950', '#width')));
   });
-
 
   describe('refresh page', () => {
     it('should refresh the current page', async () => {

@@ -848,7 +848,6 @@ describe('WebDriver', function () {
     });
   });
 
-
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', async () => {
       await wd.amOnPage('/form/checkbox');
@@ -969,7 +968,6 @@ describe('WebDriver', function () {
       await wd.attachFile('hidden', '/app/avatar.jpg');
     });
   });
-
 
   describe('#dragSlider', () => {
     it('should drag scrubber to given position', async () => {
@@ -1152,6 +1150,16 @@ describe('WebDriver', function () {
       expect(await element.isDisplayedInViewport()).to.be.false;
       await wd.scrollIntoView('#notInViewportByDefault');
       expect(await element.isDisplayedInViewport()).to.be.true;
+    });
+  });
+
+  describe('#useWebDriverTo', () => {
+    it('should return title', async () => {
+      await wd.amOnPage('/');
+      const title = await wd.useWebDriverTo('test', async ({ browser }) => {
+        return browser.getTitle();
+      });
+      assert.equal('TestEd Beta 2.0', title);
     });
   });
 });

@@ -132,7 +132,7 @@ First, `bootstrapAll` is called. Then two `bootstrap` runs in each of workers. T
 
 The `bootstrapAll` and `teardownAll` hooks are preferred to use for setting up common logic of tested project: to start application server or database, to start webdriver's grid.
 
-The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](/helpers/WebDriverIO#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
+The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](/helpers/WebDriver#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
 
 Same as `bootstrap` and `teardown`, there are 3 ways to define `bootstrapAll` and `teardownAll` functions:
 
@@ -240,7 +240,7 @@ module.exports = {
 
 Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.
 
-CodeceptJS includes [built-in plugins](/plugins/) which extend basic functionality and can be turned on and off on purpose. Taking them as [examples](https://github.com/Codeception/CodeceptJS/tree/master/lib/plugin) you can develop your custom plugins.
+CodeceptJS includes [built-in plugins](/plugins/) which extend basic functionality and can be turned on and off on purpose. Taking them as [examples](https://github.com/codecept-js/CodeceptJS/tree/master/lib/plugin) you can develop your custom plugins.
 
 A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:
 
@@ -255,7 +255,7 @@ module.exports = function(config) {
 }
 ```
 
-Plugin can register event listeners or hook into promise chain with recorder. See [API reference](https://github.com/Codeception/CodeceptJS/tree/master/lib/helper).
+Plugin can register event listeners or hook into promise chain with recorder. See [API reference](https://github.com/codecept-js/CodeceptJS/tree/master/lib/helper).
 
 To enable your custom plugin in config add it to `plugins` section. Specify path to node module using `require`.
 
@@ -332,21 +332,21 @@ module.exports = function(options) {
 CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
 These internal objects are available:
 
-* [`codecept`](https://github.com/Codeception/CodeceptJS/blob/master/lib/codecept.js): test runner class
-* [`config`](https://github.com/Codeception/CodeceptJS/blob/master/lib/config.js): current codecept config
-* [`event`](https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js): event listener
-* [`recorder`](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js): global promise chain
-* [`output`](https://github.com/Codeception/CodeceptJS/blob/master/lib/output.js): internal printer
-* [`container`](https://github.com/Codeception/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
-* [`helper`](https://github.com/Codeception/CodeceptJS/blob/master/lib/helper.js): basic helper class
-* [`actor`](https://github.com/Codeception/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
+* [`codecept`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/codecept.js): test runner class
+* [`config`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/config.js): current codecept config
+* [`event`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/event.js): event listener
+* [`recorder`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/recorder.js): global promise chain
+* [`output`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/output.js): internal printer
+* [`container`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
+* [`helper`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/helper.js): basic helper class
+* [`actor`](https://github.com/codecept-js/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
 
-[API reference](https://github.com/Codeception/CodeceptJS/tree/master/docs/api) is available on GitHub.
+[API reference](https://github.com/codecept-js/CodeceptJS/tree/master/docs/api) is available on GitHub.
 Also please check the source code of corresponding modules.
 
 ### Event Listeners
 
-CodeceptJS provides a module with [event dispatcher and set of predefined events](https://github.com/Codeception/CodeceptJS/blob/master/lib/event.js).
+CodeceptJS provides a module with [event dispatcher and set of predefined events](https://github.com/codecept-js/CodeceptJS/blob/master/lib/event.js).
 
 It can be required from codeceptjs package if it is installed locally.
 
@@ -374,12 +374,14 @@ Available events:
 * `event.suite.before(suite)` - *async* before a suite
 * `event.suite.after(suite)` - *async* after a suite
 * `event.step.before(step)` - *async* when the step is scheduled for execution
-* `event.step.after(step)`- *async* after a step
+* `event.step.after(step)` - *async* after a step
 * `event.step.started(step)` - *sync* when step starts.
 * `event.step.passed(step)` - *sync* when step passed.
 * `event.step.failed(step, err)` - *sync* when step failed.
 * `event.step.finished(step)` - *sync* when step finishes.
 * `event.step.comment(step)` - *sync* fired for comments like `I.say`.
+* `event.bddStep.before(bddStep)` - *async* when the gherkin step is scheduled for execution
+* `event.bddStep.after(bddStep)` - *async* after a gherkin step
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed
@@ -387,7 +389,7 @@ Available events:
 * *sync* - means that event is fired in the moment of action happens.
 * *async* - means that event is fired when an actions is scheduled. Use `recorder` to schedule your actions.
 
-For further reference look for [currently available listeners](https://github.com/Codeception/CodeceptJS/tree/master/lib/listener) using event system.
+For further reference look for [currently available listeners](https://github.com/codecept-js/CodeceptJS/tree/master/lib/listener) using event system.
 
 #### Test Object
 
@@ -419,7 +421,7 @@ Step events provide step objects with following fields:
 
 ### Recorder
 
-To inject asynchronous functions in a test or before/after a test you can subscribe to corresponding event and register a function inside a recorder object. [Recorder](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) represents a global promises chain.
+To inject asynchronous functions in a test or before/after a test you can subscribe to corresponding event and register a function inside a recorder object. [Recorder](https://github.com/codecept-js/CodeceptJS/blob/master/lib/recorder.js) represents a global promises chain.
 
 Provide a function description as a first parameter, function should return a promise:
 

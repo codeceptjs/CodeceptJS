@@ -16,7 +16,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute if no generators', (done) => {
-    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (_err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
@@ -35,9 +35,8 @@ describe('CodeceptJS within', function () {
     });
   });
 
-
   it('should execute with async/await. Await is first in order', (done) => {
-    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (_err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
@@ -62,7 +61,7 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute with async/await. Await is second in order', (done) => {
-    exec(`${codecept_run} --debug`, (err, stdout, stderr) => {
+    exec(`${codecept_run} --debug`, (_err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');

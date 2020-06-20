@@ -17,7 +17,9 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Puppeteer - BasicAuth', () => {
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(10000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
@@ -376,7 +378,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
@@ -692,7 +693,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#text2', 'London')));
   });
 
-
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('//title'))
@@ -703,7 +703,7 @@ describe('Puppeteer', function () {
       .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
 
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//a'))
+      .then(() => I.grabHTMLFromAll('//a'))
       .then(html => assert.equal(html.length, 5)));
 
     it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
@@ -829,24 +829,6 @@ describe('Puppeteer', function () {
     });
   });
 
-  describe('#handleDownloads', () => {
-    before(() => {
-      // create download folder;
-      global.output_dir = path.join(`${__dirname}/../data/output`);
-
-      FS = new FileSystem();
-      FS._before();
-      FS.amInPath('output');
-    });
-
-    it('should dowload file', async () => {
-      await I.amOnPage('/form/download');
-      await I.handleDownloads();
-      await I.click('Download file');
-      await FS.waitForFile('downloads/avatar.jpg', 5);
-    });
-  });
-
   describe('#waitForClickable', () => {
     it('should wait for clickable', async () => {
       await I.amOnPage('/form/wait_for_clickable');
@@ -920,6 +902,32 @@ describe('Puppeteer', function () {
       }).catch((e) => {
         e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
       });
+    });
+
+    it('should pass if element change class', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    xit('should fail if element change class and not clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
+      });
+    });
+  });
+
+  describe('#usePuppeteerTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePuppeteerTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
     });
   });
 });

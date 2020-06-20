@@ -7,7 +7,7 @@ editLink: false
 ---
 
 # Books & Posts
-> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)
+> Add your own books or posts to our [Wiki Page](https://github.com/codecept-js/CodeceptJS/wiki/Books-&-Posts)
 ### [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)
 
 A book by **Paul Vincent Beigang**
@@ -17,7 +17,7 @@ A book by **Paul Vincent Beigang**
 #### Contents:
 
 1. Preparation for End 2 End Testing with CodeceptJS
-1. Setup CodeceptJS with WebdriverIO
+1. Setup CodeceptJS with WebDriver helper
 1. Create Your First CodeceptJS Test
 1. Run Your First CodeceptJS Test Locally
 1. Run Test on BrowserStack Against with the Safari Browser

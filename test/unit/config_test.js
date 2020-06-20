@@ -17,7 +17,6 @@ describe('Config', () => {
     expect(config.get('tests', '**_test.js')).to.eql('**_test.js');
   });
 
-
   it('should be completely reset', () => {
     config.addHook((cfg) => {
       cfg.helpers.Puppeteer.show = true;
