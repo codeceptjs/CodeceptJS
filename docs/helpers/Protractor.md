@@ -277,7 +277,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **([string][9] | [object][10])** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -478,8 +478,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **([string][9] | [object][10])** located by CSS|XPath|strict locator.
--   `destElement` **([string][9] | [object][10])** located by CSS|XPath|strict locator.
+-   `srcElement` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `destElement` **LocatorOrString** located by CSS|XPath|strict locator.
 
 ### executeAsyncScript
 
@@ -608,7 +608,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][13]&lt;[Array][14]&lt;any>>** all browser logs
+Returns **([Promise][13]&lt;[Array][14]&lt;[object][10]>> | [undefined][15])** all browser logs
 
 ### grabCookie
 
@@ -625,7 +625,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][9]?** cookie name. 
 
-Returns **[Promise][13]&lt;[string][9]>** attribute valueReturns cookie in JSON [format][15].
+Returns **([Promise][13]&lt;[string][9]> | [Promise][13]&lt;[Array][14]&lt;[string][9]>>)** attribute valueReturns cookie in JSON [format][16].
 
 ### grabCssPropertyFrom
 
@@ -740,7 +740,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][13]&lt;[Object][10]&lt;[string][9], any>>** scroll position
+Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -885,7 +885,7 @@ I.openNewTab();
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][16]
+Special keys like 'Enter', 'Control', [etc][17]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -999,7 +999,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][9]** file name to save.
--   `fullPage` **[boolean][17]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][18]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 ### scrollPageToBottom
 
@@ -1284,7 +1284,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **([string][9] | [object][10])** field located by label|name|CSS|XPath|strict locator.
+-   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][9] | [Array][14]&lt;any>)** visible text or value of option.
 
 ### setCookie
@@ -1305,7 +1305,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][10] | [array][14])** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][14]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 ### switchTo
 
@@ -1366,12 +1366,12 @@ I.uncheckOption('agree', '//form');
 
 ### useProtractorTo
 
-Use [Protractor][18] API inside a test.
+Use [Protractor][19] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][19]) } object from Protractor API is available.
+{ [`browser`][20]) } object from Protractor API is available.
 
 ```js
 I.useProtractorTo('change url via in-page navigation', async ({ browser }) {
@@ -1510,7 +1510,7 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` **([string][9] | [object][10])** input field.
+-   `field` **LocatorOrString** input field.
 -   `value` **[string][9]** expected value.
 -   `sec` **[number][7]** (optional, `1` by default) time in seconds to wait 
 
@@ -1631,12 +1631,14 @@ just press button if no selector is given
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[15]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[16]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[16]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
 
-[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[17]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
-[18]: https://www.protractortest.org/#/api
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[19]: https://www.protractortest.org/#/api?view=ProtractorBrowser
+[19]: https://www.protractortest.org/#/api
+
+[20]: https://www.protractortest.org/#/api?view=ProtractorBrowser

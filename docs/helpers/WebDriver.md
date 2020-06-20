@@ -535,7 +535,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -768,9 +768,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
--   `destElement` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
-    Appium: not tested
+-   `srcElement` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `destElement` **LocatorOrString** located by CSS|XPath|strict locator.Appium: not tested
 
 ### dragSlider
 
@@ -920,6 +919,8 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** 
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -956,13 +957,14 @@ Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** attribute valueAppium
 ### grabBrowserLogs
 
 Get JS log from browser. Log buffer is reset after each request.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
 
 ```js
 let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][25]&lt;([string][19] | [undefined][28])>** 
+Returns **([Promise][25]&lt;[Array][27]&lt;[object][18]>> | [undefined][28])** all browser logs
 
 ### grabCookie
 
@@ -979,7 +981,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][19]?** cookie name. 
 
-Returns **[Promise][25]&lt;[string][19]>** attribute value
+Returns **([Promise][25]&lt;[string][19]> | [Promise][25]&lt;[Array][27]&lt;[string][19]>>)** attribute value
 
 ### grabCssPropertyFrom
 
@@ -1035,6 +1037,8 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 const window = await I.grabCurrentWindowHandle();
 ```
 
+Returns **[Promise][25]&lt;[string][19]>** 
+
 ### grabElementBoundingRect
 
 Grab the width, height, location of given locator.
@@ -1057,11 +1061,11 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 #### Parameters
 
--   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+-   `locator` **LocatorOrString** element located by CSS|XPath|strict locator.
 -   `prop`  
--   `elementSize` **[string][19]** x, y, width or height of the given element.
+-   `elementSize` **[string][19]?** x, y, width or height of the given element.
 
-Returns **[object][18]** Element bounding rectangle
+Returns **([Promise][25]&lt;DOMRect> | [Promise][25]&lt;[number][22]>)** Element bounding rectangle
 
 ### grabGeoLocation
 
@@ -1142,7 +1146,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][25]&lt;[Object][18]&lt;[string][19], any>>** scroll position
+Returns **[Promise][25]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1151,6 +1155,8 @@ Grab the text within the popup. If no popup is visible then it will return null.
 ```js
 await I.grabPopupText();
 ```
+
+Returns **[Promise][25]&lt;[string][19]>** 
 
 ### grabSource
 
@@ -1460,9 +1466,8 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 
 #### Parameters
 
--   `locator` **([string][19] | [object][18])** located by CSS|XPath|strict locator.
--   `scrollIntoViewOptions`  
--   `alignToTop` **([boolean][31] | [object][18])** (optional) or scrollIntoViewOptions (optional), see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][32].
+-   `locator` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][32].
 
 ### scrollPageToBottom
 
@@ -1760,7 +1765,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **([string][19] | [object][18])** field located by label|name|CSS|XPath|strict locator.
+-   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][19] | [Array][27]&lt;any>)** visible text or value of option.
 
 ### setCookie
@@ -1781,7 +1786,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][18] | [array][27])** a cookie object or array of cookie objects.Uses Selenium's JSON [cookie
+-   `cookie` **(Cookie | [Array][27]&lt;Cookie>)** a cookie object or array of cookie objects.Uses Selenium's JSON [cookie
     format][33].
 
 ### setGeoLocation
@@ -1797,7 +1802,7 @@ I.setGeoLocation(121.21, 11.56, 10);
 
 -   `latitude` **[number][22]** to set.
 -   `longitude` **[number][22]** to set
--   `altitude` **[number][22]** (optional, null by default) to set 
+-   `altitude` **[number][22]?** (optional, null by default) to set 
 
 ### switchTo
 
@@ -1856,7 +1861,7 @@ await I.switchToWindow( window );
 
 #### Parameters
 
--   `window`  
+-   `window` **[string][19]** name of window handle.
 
 ### type
 
@@ -2045,7 +2050,7 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` **([string][19] | [object][18])** input field.
+-   `field` **LocatorOrString** input field.
 -   `value` **[string][19]** expected value.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 

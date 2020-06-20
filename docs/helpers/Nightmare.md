@@ -157,7 +157,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -465,7 +465,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][3]?** cookie name. 
 
-Returns **[Promise][8]&lt;[string][3]>** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+Returns **([Promise][8]&lt;[string][3]> | [Promise][8]&lt;[Array][10]&lt;[string][3]>>)** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ### grabCssPropertyFrom
 
@@ -562,7 +562,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][8]&lt;[Object][4]&lt;[string][3], any>>** scroll position
+Returns **[Promise][8]&lt;PageScrollPosition>** scroll position
 
 ### grabTextFrom
 
@@ -953,7 +953,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
+-   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][3] | [Array][10]&lt;any>)** visible text or value of option.
 
 ### setCookie
@@ -974,7 +974,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][4] | [array][10])** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
+-   `cookie` **(Cookie | [Array][10]&lt;Cookie>)** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
     [See more][14]
 
 ### triggerMouseEvent

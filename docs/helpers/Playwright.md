@@ -359,7 +359,7 @@ I.clearField('#email');
 #### Parameters
 
 -   `field`  
--   `editable` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `editable` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 
 ### click
 
@@ -569,8 +569,8 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
--   `destElement` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
+-   `srcElement` **LocatorOrString** located by CSS|XPath|strict locator.
+-   `destElement` **LocatorOrString** located by CSS|XPath|strict locator.
 
 ### dragSlider
 
@@ -709,7 +709,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][7]?** cookie name. 
 
-Returns **[Promise][9]&lt;[string][7]>** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][9]&lt;[string][7]> | [Promise][9]&lt;[Array][10]&lt;[string][7]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -801,11 +801,11 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 #### Parameters
 
--   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
+-   `locator` **LocatorOrString** element located by CSS|XPath|strict locator.
 -   `prop`  
--   `elementSize` **[string][7]** x, y, width or height of the given element.
+-   `elementSize` **[string][7]?** x, y, width or height of the given element.
 
-Returns **[object][5]** Element bounding rectangle
+Returns **([Promise][9]&lt;DOMRect> | [Promise][9]&lt;[number][8]>)** Element bounding rectangle
 
 ### grabHTMLFrom
 
@@ -875,7 +875,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][9]&lt;[Object][5]&lt;[string][7], any>>** scroll position
+Returns **[Promise][9]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1477,7 +1477,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `select` **LocatorOrString** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][7] | [Array][10]&lt;any>)** visible text or value of option.
 
 ### setCookie
@@ -1498,7 +1498,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][5] | [array][10])** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][10]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 ### switchTo
 
@@ -1744,7 +1744,7 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
--   `field` **([string][7] | [object][5])** input field.
+-   `field` **LocatorOrString** input field.
 -   `value` **[string][7]** expected value.
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 
