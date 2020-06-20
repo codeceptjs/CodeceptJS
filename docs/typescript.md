@@ -34,14 +34,63 @@ For writing tests in TypeScript you`ll need to install TypeScript and ts-node in
 
 ### Configure codecept.conf.js
 
-Now, 
+To configure TypeScript in your project, you need to add [`ts-node/register`](https://github.com/TypeStrong/ts-node) on first line in your config. Like in the following config file:
+
+```js
+require('ts-node/register')
+
+exports.config = {
+  tests: './*_test.ts',
+  output: './output',
+  helpers: {
+    Puppeteer: {
+      url: 'http://example.com',
+    },
+  },
+  name: 'project name',
+}
+```
 
 ### Configure tsconfig.json
 
 We recommended the following configuration in a [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html):
 
 ```json
+{
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2018", "DOM"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strictNullChecks": true,
+    "types": ["codeceptjs"],
+  },
+}
 ```
 
+> You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codecept-js/typescript-boilerplate).
 
+### Set up steps.d.ts
 
+Not enough to configure `tsconfig.json` and `codecept.cong.js`. Also need to configure `steps.d.ts` file with custom steps. For it need to run def command:
+
+`npx codeceptjs def`
+
+As a result, a file will be created on your root folder with following content:
+
+```ts
+/// <reference types='codeceptjs' />
+
+declare namespace CodeceptJS {
+  interface SupportObject { I: I }
+  interface Methods extends Puppeteer {}
+  interface I extends WithTranslation<Methods> {}
+  namespace Translation {
+    interface Actions {}
+  }
+}
+
+```
