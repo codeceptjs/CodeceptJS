@@ -94,3 +94,56 @@ declare namespace CodeceptJS {
 }
 
 ```
+
+## Types for custom helper or page object
+
+If you want to gets types for your [custom helper](https://codecept.io/helpers/#configuration), you can add their automatically with CodeceptJS command `npx codeceptjs def`. 
+
+For example, if you add the new step `printMessage` for your custom helper like this:
+```js
+// customHelper.ts
+class CustomHelper extends Helper {
+  printMessage(msg: string) {
+    console.log(msg)
+  }
+}
+
+export = CustomHelper
+```
+
+Then you need to add this helper to your `codecept.conf.js` like in this [docs](https://codecept.io/helpers/#configuration).
+And then run to command `npx codeceptjs def`. 
+
+As result our `steps.d.ts` file will be updated like this: 
+```ts
+/// <reference types='codeceptjs' />
+type CustomHelper = import('./CustomHelper');
+
+declare namespace CodeceptJS {
+  interface SupportObject { I: I }
+  interface Methods extends Puppeteer, CustomHelper {}
+  interface I extends WithTranslation<Methods> {}
+  namespace Translation {
+    interface Actions {}
+  }
+}
+```
+
+And now you can use autocomplete on your test.
+
+Generation types for PageObject looks like for custom helper, but `steps.d.ts` will be looks like:
+```ts
+/// <reference types='codeceptjs' />
+type loginPage = typeof import('./loginPage');
+type homePage = typeof import('./homePage');
+type CustomHelper = import('./CustomHelper');
+
+declare namespace CodeceptJS {
+  interface SupportObject { I: I, loginPage: loginPage, homePage: homePage }
+  interface Methods extends Puppeteer, CustomHelper {}
+  interface I extends WithTranslation<Methods> {}
+  namespace Translation {
+    interface Actions {}
+  }
+}
+```
