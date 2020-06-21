@@ -5,12 +5,12 @@ title: TypeScript
 
 # Typescript
 
-CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that allow you to write your tests in TypeScript. Also, all of your custom steps could be write in TypeScript.
+CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means now you can write your tests in TS. Also, all of your custom steps could be written in TS
 
 # Why TypeScript?
 
-With the TypeScript writing CodeceptJS tests becomes much easier. If correctly configured TypeScript in your project and correctly configured your IDE, then you can get the following features as result:
-- [Autocomplete (with InteleSence)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that tries complete your thoughts for you and suggest you which function or property exist in class, what arguments can be passed to the method, what method return etc. 
+With the TypeScript writing CodeceptJS tests becomes much easier. If you configure TS properly in your project as well as your IDE, you will get the following features:
+- [Autocomplete (with InteleSence)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
 Example:
 
 ![Auto Complete](/img/Auto_comlete.gif)
@@ -75,7 +75,7 @@ We recommended the following configuration in a [tsconfig.json](https://www.type
 
 ### Set up steps.d.ts
 
-Not enough to configure `tsconfig.json` and `codecept.cong.js`. Also need to configure `steps.d.ts` file with custom steps. For it need to run def command:
+Configuring the `tsconfig.json` and `codecept.conf.js` is not enough, you will need to configure the `steps.d.ts` file for custom steps. Just simply do this by running this command::
 
 `npx codeceptjs def`
 
