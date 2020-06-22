@@ -131,7 +131,7 @@ declare namespace CodeceptJS {
 
 And now you can use autocomplete on your test.
 
-Generation types for PageObject looks like for custom helper, but `steps.d.ts` will be looks like:
+Generation types for PageObject looks like for a custom helper, but `steps.d.ts` will look like:
 ```ts
 /// <reference types='codeceptjs' />
 type loginPage = typeof import('./loginPage');
