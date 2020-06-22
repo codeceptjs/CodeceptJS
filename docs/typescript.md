@@ -73,7 +73,7 @@ We recommended the following configuration in a [tsconfig.json](https://www.type
 
 > You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codecept-js/typescript-boilerplate).
 
-### Set up steps.d.ts
+### Set Up steps.d.ts
 
 Configuring the `tsconfig.json` and `codecept.conf.js` is not enough, you will need to configure the `steps.d.ts` file for custom steps. Just simply do this by running this command::
 
