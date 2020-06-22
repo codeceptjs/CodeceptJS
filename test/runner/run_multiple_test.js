@@ -174,6 +174,15 @@ describe('CodeceptJS Multiple Runner', function () {
 
   describe('bootstrapAll and teardownAll', () => {
     const _codecept_run = `run-multiple --config ${codecept_dir}`;
+    it('should be executed from async function in config', (done) => {
+      exec(`${runner} ${_codecept_run}/codecept.async.bootstrapall.multiple.code.js default`, (err, stdout, stderr) => {
+        stdout.should.include('CodeceptJS'); // feature
+        stdout.should.include('Results: inside Promise\n"event.multiple.before" is called');
+        stdout.should.include('"teardownAll" is called.');
+        assert(!err);
+        done();
+      });
+    });
 
     it('should be executed from function in config', (done) => {
       exec(`${runner} ${_codecept_run}/codecept.bootstrapall.multiple.code.js default`, (err, stdout, stderr) => {

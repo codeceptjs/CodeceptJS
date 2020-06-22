@@ -168,34 +168,6 @@ describe('CodeceptJS Runner', () => {
     });
   });
 
-  it('should run bootstrap', (done) => {
-    exec(codecept_run_config('codecept.bootstrap.sync.json'), (err, stdout, stderr) => {
-      stdout.should.include('Filesystem'); // feature
-      stdout.should.include('I am bootstrap');
-      assert(!err);
-      done();
-    });
-  });
-
-  it('should run teardown', (done) => {
-    exec(config_run_override({ teardown: 'bootstrap.sync.js' }), (err, stdout, stderr) => {
-      stdout.should.include('Filesystem'); // feature
-      stdout.should.include('I am bootstrap');
-      assert(!err);
-      done();
-    });
-  });
-
-  it('should run async bootstrap', (done) => {
-    exec(config_run_override({ bootstrap: 'bootstrap.async.js' }), (err, stdout, stderr) => {
-      stdout.should.include('Ready: 0');
-      stdout.should.include('Go: 1');
-      stdout.should.include('Filesystem'); // feature
-      assert(!err);
-      done();
-    });
-  });
-
   it('should run hooks', (done) => {
     exec(codecept_run_config('codecept.hooks.js'), (err, stdout, stderr) => {
       stdout.should.include('Filesystem'); // feature
@@ -270,16 +242,6 @@ describe('CodeceptJS Runner', () => {
         'Test: I\'m asyncbrackets test',
       ]);
       stdout.should.include('OK  | 3 passed');
-      assert(!err);
-      done();
-    });
-  });
-
-  it('should run bootstrap/teardown as object', (done) => {
-    exec(codecept_run_config('codecept.bootstrap.obj.json'), (err, stdout, stderr) => {
-      stdout.should.include('Filesystem'); // feature
-      stdout.should.include('I am bootstrap');
-      stdout.should.include('I am teardown');
       assert(!err);
       done();
     });

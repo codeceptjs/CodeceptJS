@@ -6,5 +6,6 @@ I.waitUntil(() => window.requests == 0, 5);
 ```
 
 @param {function|string} fn function which is executed in browser context.
-@param {number} sec (optional, `1` by default) time in seconds to wait
+@param {number} [sec=1] (optional, `1` by default) time in seconds to wait
 @param {string} [timeoutMsg=''] message to show in case of timeout fail.
+@param {?number} [interval=null]

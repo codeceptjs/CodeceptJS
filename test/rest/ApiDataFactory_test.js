@@ -1,11 +1,11 @@
+const path = require('path');
+const fs = require('fs');
+
 require('../support/setup');
 const TestHelper = require('../support/TestHelper');
-
 const ApiDataFactory = require('../../lib/helper/ApiDataFactory');
 
 const api_url = TestHelper.jsonServerUrl();
-const path = require('path');
-const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
@@ -25,6 +25,7 @@ const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
 
 describe('ApiDataFactory', function () {
   this.timeout(20000);
+  this.retries(1);
 
   before(() => {
     I = new ApiDataFactory({
@@ -157,7 +158,6 @@ describe('ApiDataFactory', function () {
       resp = await I.restHelper.sendGetRequest('/comments');
       resp.data.length.should.eql(1);
     });
-
 
     it('should not remove records if cleanup:false', async () => {
       I = new ApiDataFactory({

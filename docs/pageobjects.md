@@ -1,10 +1,39 @@
 ---
-id: pageobjects
-title: Reusing Code with Page Objects
+permalink: /pageobjects
+title: Page Objects
 ---
+
+# Page Objects
 
 UI of your web application has interaction areas which can be shared across different tests.
 To avoid code duplication you can put common locators and methods into one place.
+
+## Dependency Injection
+
+All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework. If you want an object to be injected in scenario by its name add it to configuration:
+
+```js
+  include: {
+    I: "./custom_steps.js",
+    Smth: "./pages/Smth.js",
+    loginPage: "./pages/Login.js",
+    signinFragment: "./fragments/Signin.js"
+  }
+```
+
+Now this objects can be retrieved by the name specified in configuration.
+
+Required objects can be obtained via parameters in tests or via global `inject()` call.
+
+```js
+// globally inject objects by name
+const { I, myPage, mySteps } = inject();
+
+// inject objects for a test by name
+Scenario('sample test', (I, myPage, mySteps) => {
+  // ...
+})
+```
 
 ## Actor
 
@@ -23,7 +52,7 @@ module.exports = function() {
 }
 ```
 
-Please notice that instead of `I` you should use `this` in current context.
+> ℹ Instead of `I` you should use `this` in current context.
 
 ## PageObject
 
@@ -100,7 +129,7 @@ module.exports = {
   },
 
   // introducing methods
-  openMainArticle: async () => {
+  async openMainArticle() {
     I.waitForVisible(this.container)
     let _this = this
     let title;
@@ -122,6 +151,44 @@ Scenario('login2', async (I, loginPage, basePage) => {
   let title = await mainPage.openMainArticle()
   basePage.pageShouldBeOpened(title)
 });
+```
+
+Page Objects can be be functions, arrays or classes. When declared page objects as classes you can easily extend them in other page objects.
+
+Here is an example of declaring page object as a class:
+
+```js
+const { expect } = require('chai');
+const { I } = inject();
+
+class AttachFile {
+  constructor() {
+    this.inputFileField = 'input[name=fileUpload]';
+    this.fileSize = '.file-size';
+    this.fileName = '.file-name'
+  }
+
+  async attachFileFrom(path) {
+    await I.waitForVisible(this.inputFileField)
+    await I.attachFile(this.inputFileField, path)
+  }
+
+  async hasFileSize(fileSizeText) {
+    await I.waitForElement(this.fileSize)
+    const size = await I.grabTextFrom(this.fileSize)
+    expect(size).toEqual(fileSizeText)
+  }
+
+  async hasFileSizeInPosition(fileNameText, position) {
+    await I.waitNumberOfVisibleElements(this.fileName, position)
+    const text = await I.grabTextFrom(this.fileName)
+    expect(text[position - 1]).toEqual(fileNameText)
+  }
+}
+
+// For inheritance
+module.exports = new AttachFile();
+module.exports.AttachFile = AttachFile;
 ```
 
 ## Page Fragments
@@ -208,36 +275,7 @@ module.exports = {
 };
 ```
 
-## Dependency Injection
-
-### Configuration
-
-All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework. If you want an object to be injected in scenario by its name add it to configuration:
-
-```js
-  include: {
-    I: "./custom_steps.js",
-    Smth: "./pages/Smth.js",
-    loginPage: "./pages/Login.js",
-    signinFragment: "./fragments/Signin.js"
-  }
-```
-
-Now this objects can be retrieved by the name specified in configuration.
-
-Required objects can be obtained via parameters in tests or via global `inject()` call.
-
-```js
-// globally inject objects by name
-const { I, myPage, mySteps } = inject();
-
-// inject objects for a test by name
-Scenario('sample test', (I, myPage, mySteps) => {
-  // ...
-})
-```
-
-### Dynamic Injection
+## Dynamic Injection
 
 You can inject objects per test by calling `injectDependencies` function on Scenario:
 

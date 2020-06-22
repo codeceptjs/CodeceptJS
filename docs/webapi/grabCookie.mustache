@@ -1,11 +1,11 @@
 Gets a cookie object by name.
 If none provided gets all cookies.
-* Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
 assert(cookie.value, '123456');
 ```
 
-@param [name=null] cookie name.
+@param {?string} [name=null] cookie name.
 @returns {Promise<string>} attribute value

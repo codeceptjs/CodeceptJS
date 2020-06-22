@@ -1,21 +1,54 @@
 ---
-id: quickstart
+permalink: quickstart
 title: Quickstart
+layout: Section
+sidebar: true
 ---
 
-**NodeJS v 8.9** and higher required to start.
-CodeceptJS is multi-backend testing framework. It can execute tests using different libraries like webdriverio, Puppeteer, Protractor, etc.
+::: slot sidebar
 
-* In this guide we will use [Google Chrome **Puppeteer**](https://github.com/GoogleChrome/puppeteer) as a driver for browsers. This allows us to start in a minutes with no extra tools installed.
-* If you are familiar with Selenium, you can choose classical [**Selenium WebDriver** setup](#using-selenium-webdriver).
-* Also, look at [complete installation reference](https://codecept.io/installation/).
+#### Use WebDriver for classical Selenium setup
 
-
-## Using Puppeteer
+<small>
+This gives you access to rich Selenium ecosystem and cross-browser support for majority of browsers and devices.
+</small>
 
 
-<video onclick="this.paused ? this.play() : this.pause();" src="/img/codeceptjs-install.mp4" style="width: 100%" controls></video>
+<a href="/webdriver" class="button extended" >Start with WebDriver &raquo;</a>
 
+<small> WebDriver support is implemented via [webdriverio](https://webdriver.io) library </small>
+
+---
+
+#### Use TestCafe for cross-browser testing without Selenium
+
+<small>
+TestCafe provides cross-browser support without Selenium. TestCafe tests are faster, require no extra tooling and faster than regular Selenium. However, can be less stable.
+</small>
+
+<a href="/testcafe" class="button green extended" >Start with TestCafe &raquo;</a>
+
+---
+
+* [Mobile Testing with Appium »](/mobile)
+* [Testing with Protractor »](/angular)
+* [Testing with NigthmareJS »](/nightmare)
+
+:::
+
+# Quickstart
+
+> Puppeteer is a great way to start if you need fast end 2 end tests in Chrome browser. No Selenium required!
+
+If you need cross-browser support check alternative installations with WebDriver or TestCafe &rarr;
+
+<video onclick="this.paused ? this.play() : this.pause();" src="/img/install.mp4" style="width: 100%" controls></video>
+
+If you start with empty project initialize npm first:
+
+```
+npm init -y
+```
 
 1) Install CodeceptJS with Puppeteer
 
@@ -26,7 +59,7 @@ npm install codeceptjs puppeteer --save-dev
 
 2) Initialize CodeceptJS in current directory by running:
 
-```sh
+```
 npx codeceptjs init
 ```
 
@@ -34,7 +67,7 @@ npx codeceptjs init
 
 3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
 
-```sh
+```
 ? What helpers do you want to use?
  ◯ WebDriver
  ◯ Protractor
@@ -42,11 +75,11 @@ npx codeceptjs init
  ◯ Appium
  ◯ Nightmare
  ◯ FileSystem
-```
+ ```
 
 4) Create First Test.
 
-```bash
+```
 npx codeceptjs gt
 ```
 
@@ -82,146 +115,12 @@ The output should be similar to this:
 ```bash
 My First Test --
   test something
-   • I am on page "https://github.com"
-   • I see "GitHub"
+     I am on page "https://github.com"
+     I see "GitHub"
  ✓ OK
-```
+ ```
 
-Puppeteer starts a browser without showing its window. To see the browser, edit `codecept.json` config and set `show: true` for Puppeteer:
+> [▶ Next: CodeceptJS Basics](/basics/)
 
-```js
-{
-  "helpers": {
-    "Puppeteer": {
-      "url": "http://localhost",
-      "show": true,
-    }
-  }
-}
-```
+> [▶ Next: CodeceptJS with Puppeteer](/puppeteer/)
 
-Rerun the test to see the browser.
-
-> Next: [CodeceptJS with Puppeteer >>>](https://codecept.io/puppeteer/)
-
-> Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
-
-> Next: [Demo Project](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
-
-
----
-
-## Using Selenium WebDriver
-
-1) Install CodeceptJS with webdriverio library
-
-```
-npm install codeceptjs webdriverio --save-dev
-```
-
-2) Initialize CodeceptJS in current directory by running:
-
-```sh
-npx codeceptjs init
-```
-
-(use `node node_modules/.bin/codeceptjs init` if you have issues with npx)
-
-3) Answer questions. Agree on defaults, when asked to select helpers choose **WebDriver**.
-
-```sh
-? What helpers do you want to use?
-❯◉ WebDriver
- ◯ Protractor
- ◯ Puppeteer
- ◯ Appium
- ◯ Nightmare
- ◯ FileSystem
-```
-
-4) Create First Test.
-
-```bash
-npx codeceptjs gt
-```
-
-5) Enter a test name. Open a generated file in your favorite JavaScript editor.
-
-```js
-Feature('My First Test');
-
-Scenario('test something', (I) => {
-
-});
-```
-
-6) Write a simple scenario
-
-```js
-Feature('My First Test');
-
-Scenario('test something', (I) => {
-  I.amOnPage('https://github.com');
-  I.see('GitHub');
-});
-```
-
-7) Prepare Selenium Server
-
-Install `@wdio/selenium-standalone-service` package to automatically start and stop selenium service.
-
-```
-npm i @wdio/selenium-standalone-service --save
-```
-
-Enable it in config inside plugins section:
-
-```js
-exports.config = {
-  // ...
-  // inside condecept.conf.js
-  plugins: {
-    wdio: {
-      enabled: true,
-      services: ['selenium-standalone']
-    }
-  }
-}
-```
-
-> Alternatively, use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) to install, start and stop Selenium Server manually.
-
-
-8) Run a test:
-
-```
-npx codeceptjs run --steps
-```
-
-If everything is done right, you will see in console:
-
-```bash
-My First Test --
-  test something
-   • I am on page "https://github.com"
-   • I see "GitHub"
- ✓ OK
-```
-
-
-> Next: [CodeceptJS Basics >>>](https://codecept.io/basics/)
-
-> Next: [Acceptance Testing in CodeceptJS >>>](https://codecept.io/acceptance/)
-
-
-## Using Protractor
-
-> [**Follow corresponding guide >>**](https://codecept.io/angular/)
-
-## Using Appium
-
-> [**Follow corresponding guide >>**](https://codecept.io/mobile/)
-
-## Using NightmareJS
-
-> [**Follow corresponding guide >>**](https://codecept.io/nightmare/)

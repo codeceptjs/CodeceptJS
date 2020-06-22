@@ -1,13 +1,12 @@
-const TestHelper = require('../support/TestHelper');
+const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
 
+const TestHelper = require('../support/TestHelper');
 const WebDriverIO = require('../../lib/helper/WebDriverIO');
 
 let wd;
 const siteUrl = TestHelper.siteUrl();
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 
@@ -79,69 +78,161 @@ describe('WebDriverIO', function () {
         e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
       }));
 
-    it('should check values in checkboxes', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.dontSeeInField('checkbox[]', 'not seen one');
-      yield wd.seeInField('checkbox[]', 'see test one');
-      yield wd.dontSeeInField('checkbox[]', 'not seen two');
-      yield wd.seeInField('checkbox[]', 'see test two');
-      yield wd.dontSeeInField('checkbox[]', 'not seen three');
-      return wd.seeInField('checkbox[]', 'see test three');
+    it('should check values in checkboxes', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.dontSeeInField('checkbox[]', 'not seen one');
+      await wd.seeInField('checkbox[]', 'see test one');
+      await wd.dontSeeInField('checkbox[]', 'not seen two');
+      await wd.seeInField('checkbox[]', 'see test two');
+      await wd.dontSeeInField('checkbox[]', 'not seen three');
+      await wd.seeInField('checkbox[]', 'see test three');
     });
 
-    it('should check values with boolean', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.seeInField('checkbox1', true);
-      yield wd.dontSeeInField('checkbox1', false);
-      yield wd.seeInField('checkbox2', false);
-      yield wd.dontSeeInField('checkbox2', true);
-      yield wd.seeInField('radio2', true);
-      yield wd.dontSeeInField('radio2', false);
-      yield wd.seeInField('radio3', false);
-      return wd.dontSeeInField('radio3', true);
+    it('should check values with boolean', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('checkbox1', true);
+      await wd.dontSeeInField('checkbox1', false);
+      await wd.seeInField('checkbox2', false);
+      await wd.dontSeeInField('checkbox2', true);
+      await wd.seeInField('radio2', true);
+      await wd.dontSeeInField('radio2', false);
+      await wd.seeInField('radio3', false);
+      await wd.dontSeeInField('radio3', true);
     });
 
-    it('should check values in radio', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.seeInField('radio1', 'see test one');
-      yield wd.dontSeeInField('radio1', 'not seen one');
-      yield wd.dontSeeInField('radio1', 'not seen two');
-      return wd.dontSeeInField('radio1', 'not seen three');
+    it('should check values in radio', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('radio1', 'see test one');
+      await wd.dontSeeInField('radio1', 'not seen one');
+      await wd.dontSeeInField('radio1', 'not seen two');
+      await wd.dontSeeInField('radio1', 'not seen three');
     });
 
-    it('should check values in select', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.seeInField('select1', 'see test one');
-      yield wd.dontSeeInField('select1', 'not seen one');
-      yield wd.dontSeeInField('select1', 'not seen two');
-      return wd.dontSeeInField('select1', 'not seen three');
+    it('should check values in select', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('select1', 'see test one');
+      await wd.dontSeeInField('select1', 'not seen one');
+      await wd.dontSeeInField('select1', 'not seen two');
+      await wd.dontSeeInField('select1', 'not seen three');
     });
 
-    it('should check for empty select field', function* () {
-      yield wd.amOnPage('/form/field_values');
-      return wd.seeInField('select3', '');
+    it('should check for empty select field', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.seeInField('select3', '');
     });
 
-    it('should check for select multiple field', function* () {
-      yield wd.amOnPage('/form/field_values');
-      yield wd.dontSeeInField('select2', 'not seen one');
-      yield wd.seeInField('select2', 'see test one');
-      yield wd.dontSeeInField('select2', 'not seen two');
-      yield wd.seeInField('select2', 'see test two');
-      yield wd.dontSeeInField('select2', 'not seen three');
-      return wd.seeInField('select2', 'see test three');
+    it('should check for select multiple field', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.dontSeeInField('select2', 'not seen one');
+      await wd.seeInField('select2', 'see test one');
+      await wd.dontSeeInField('select2', 'not seen two');
+      await wd.seeInField('select2', 'see test two');
+      await wd.dontSeeInField('select2', 'not seen three');
+      await wd.seeInField('select2', 'see test three');
     });
   });
 
   describe('#pressKey', () => {
-    it('should be able to send special keys to element', function* () {
-      yield wd.amOnPage('/form/field');
-      yield wd.appendField('Name', '-');
-      yield wd.pressKey(['Control', 'a']);
-      yield wd.pressKey('Delete');
-      yield wd.pressKey(['Shift', '111']);
-      yield wd.pressKey('1');
-      return wd.seeInField('Name', '!!!1');
+    it('should be able to send special keys to element', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.appendField('Name', '-');
+      await wd.pressKey(['Control', 'a']);
+      await wd.pressKey('Delete');
+      await wd.pressKey(['Shift', '111']);
+      await wd.pressKey('1');
+      await wd.seeInField('Name', '!!!1');
+    });
+  });
+
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #button still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element .//button[@id="button"] still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportBottom still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportLeft still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportRight still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#div2_button' }, 0.1);
+      await wd.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #div1_button still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should pass if element change class', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.click('button_save');
+      await wd.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    it('should fail if element change class and not clickable', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.click('button_save');
+      wd.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
+      });
     });
   });
 
@@ -154,7 +245,6 @@ describe('WebDriverIO', function () {
       .then(() => wd.grabSource())
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
-
 
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => wd.amOnPage('/')
@@ -287,7 +377,7 @@ describe('WebDriverIO', function () {
   });
 
   describe('#waitForInvisible', () => {
-    it.only('should be no [object Object] in the error message', () => wd.amOnPage('/info')
+    it('should be no [object Object] in the error message', () => wd.amOnPage('/info')
       .then(() => wd.waitForInvisible('//div[@id = "grab-multiple"]//a', 3))
       .then(() => {
         throw Error('It should never get this far');
@@ -296,7 +386,7 @@ describe('WebDriverIO', function () {
         e.message.should.not.include('[object Object]');
       }));
 
-    it.only('should wait for a specified element to be invisible', () => wd.amOnPage('https://www.google.de/')
+    it('should wait for a specified element to be invisible', () => wd.amOnPage('https://www.google.de/')
       .then(() => wd.fillField('input[type="text"]', 'testing'))
       .then(() => wd.click('input[type="submit"]'))
       .then(() => wd.waitForInvisible('input[type="submit"]', 5, 3))
@@ -537,7 +627,6 @@ describe('WebDriverIO', function () {
       .then(() => wd._locateClickable('I disagree'))
       .then(res => res.length.should.be.equal(0)));
   });
-
 
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => wd.amOnPage('/form/checkbox')

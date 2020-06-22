@@ -7,7 +7,6 @@ Scenario('Check within without generator', (I) => {
   });
 });
 
-
 Scenario('Check within with generator. Yield is first in order', (I) => {
 });
 
@@ -45,4 +44,3 @@ Scenario('Check within with async/await. Await is second in order', async (I) =>
     console.log(testWithin, 'await');
   });
 });
-

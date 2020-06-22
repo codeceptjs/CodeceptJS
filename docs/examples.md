@@ -1,10 +1,29 @@
 ---
-id: examples
+permalink: /examples
+layout: Section
+sidebar: false
 title: Examples
+editLink: false
 ---
 
-> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)
-## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
+# Examples
+> Add your own examples to our [Wiki Page](https://github.com/codecept-js/CodeceptJS/wiki/Examples)
+## [TodoMVC Examples](https://github.com/codecept-js/examples)
+
+![](https://github.com/codecept-js/examples/raw/master/todo.png)
+
+Playground repository where you can run tests in different helpers on a basic single-page website.
+
+Tests repository demonstrate usage of
+
+* Puppeteer helper
+* WebDriver helper
+* TestCafe plugin
+* Toggle headless mode with env variables
+* PageObjects
+* Cucumber syntax
+
+## [Basic Examples](https://github.com/codecept-js/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
@@ -14,9 +33,9 @@ Our team uses it to test new features and run simple scenarios.
 
 ![](https://user-images.githubusercontent.com/220264/56353972-56975080-61db-11e9-8b23-06e8b4620995.png)
 
-End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application which helps to collect user feedback and transform it into professional bugreports.
+End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps collecting users' feedbacks and transforming them into professional bug reports.
 
-Tests repository deomstrate usage of
+Tests repository demonstrate usage of
 
 * Puppeteer helper
 * ApiDataFactory helper
@@ -33,13 +52,20 @@ This repository demonstrates usage of:
 * testing WYSIWYG editor
 * GitLab CI
 
-## [Quick Start with Cucumber/Gherkin](https://github.com/gkushang/codeceptjs-quick-start)
+## [CodeceptJS Cucumber E2E Framework](https://github.com/gkushang/codeceptjs-e2e)
 
-This repository demonstrates the CodeceptJS with Cucumber/Gherkin configuration
+This repository contains complete E2E framework for CodeceptJS with Cucumber and SauceLabs Integration
 
-* Easy 3-Steps process to colocate the CodeceptJS with Gherkin tests with your project
-* Quick Start with CodeceptJS wih Cucumber/Gherkin
-* Sample example and feature files to test GitHub Features
+* CodecepJS-Cucumber E2E Framework
+* Saucelabs Integration
+* Run Cross Browser tests in Parallel on SauceLabs with a simple command
+* Run tests on `chrome:headless`
+* Page Objects
+* `Should.js` Assertion Library
+* Uses `wdio` service (selenium-standalone, sauce)
+* Allure HTML Reports
+* Uses shared Master configuration
+* Sample example and feature files of GitHub Features
 
 ## [Amazon Tests v2](https://gitlab.com/thanhnguyendh/codeceptjs-wdio-services)
 
@@ -109,3 +135,14 @@ The purpose of this application is for learning the basics and how to use good p
 * Puppeteer helper
 * Working with gherkin, also it has type definitions and to be able to use them inside when, given and then make sure you add `declare function inject(): { I: CodeceptJS.I, [key: string]: any; };`in the `steps.d.ts`file 
 * Linting `airbnb-base`, `codeceptjs/codeceptjs` and full ES6 support
+
+## [Example for using: Puppeteer, Gherkin, Allure with parallel execution](https://github.com/SchnuckySchuster/codeceptJSExample)
+
+This is a ready to use example that shows how to integrate CodeceptJS with Puppeteer and Allure as reporting tool.
+
+* detailed ReadMe
+* tests written in cucumber alongside tests written in the codeceptJS DSL
+* puppeteer helper example
+* test steps, pages, fragments
+* examples for sequential and parallel execution
+* generation of allure test results  

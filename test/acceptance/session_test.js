@@ -1,8 +1,10 @@
 const assert = require('assert');
 
+const { event } = codeceptjs;
+
 Feature('Session');
 
-Scenario('simple session @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/info');
   session('john', () => {
     I.amOnPage('https://github.com');
@@ -13,7 +15,37 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer', (I) => {
   I.seeInCurrentUrl('/info');
 });
 
-Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Puppeteer', async (I) => {
+Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright @WebDriver', async (I) => {
+  I.amOnPage('/');
+  I.saveScreenshot('session_default_1.png');
+
+  session('john', () => {
+    I.amOnPage('/info');
+    I.saveScreenshot('session_john_1.png');
+  });
+
+  I.saveScreenshot('session_default_2.png');
+
+  session('john', () => {
+    I.saveScreenshot('session_john_2.png');
+  });
+
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getMD5Digests([
+    `${output_dir}/session_default_1.png`,
+    `${output_dir}/session_default_2.png`,
+    `${output_dir}/session_john_1.png`,
+    `${output_dir}/session_john_2.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(default1Digest, default2Digest);
+  assert.equal(john1Digest, john2Digest);
+
+  // Assert that screenshots of different pages in different sessions are not equal
+  assert.notEqual(default1Digest, john1Digest);
+});
+
+Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Playwright @Puppeteer', async (I) => {
   const cookiePage = 'https://www.microsoft.com/en-au/';
   const cookieName = 'MUID';
   const cookies = {};
@@ -45,7 +77,27 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pup
   assert.notEqual(cookies.john, cookies.mary);
 });
 
-Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function (I) {
+  I.amOnPage('/form/bug1467');
+  I.saveScreenshot('original.png');
+  I.amOnPage('/');
+  session('john', async () => {
+    await I.amOnPage('/form/bug1467');
+    event.dispatcher.emit(event.test.failed, this);
+  });
+
+  const fileName = clearString(this.title);
+
+  const [original, failed] = await I.getMD5Digests([
+    `${output_dir}/original.png`,
+    `${output_dir}/${fileName}.failed.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  assert.equal(original, failed);
+});
+
+Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', () => {
@@ -54,6 +106,7 @@ Scenario('should throw exception and close correctly @WebDriverIO @Protractor @P
     I.seeCheckboxIsChecked({ css: 'input[value=No]' });
   });
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
+  I.amOnPage('/info');
 }).fails();
 
 Scenario('async/await @WebDriverIO @Protractor', (I) => {
@@ -67,7 +120,7 @@ Scenario('async/await @WebDriverIO @Protractor', (I) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 });
 
-Scenario('exception on async/await @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('exception on async/await @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467#session1');
   I.checkOption('Yes');
   session('john', async () => {
@@ -78,7 +131,7 @@ Scenario('exception on async/await @WebDriverIO @Protractor @Puppeteer', (I) => 
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' });
 }).throws(/to be checked/);
 
-Scenario('should work with within @WebDriverIO @Protractor @Puppeteer', (I) => {
+Scenario('should work with within @WebDriverIO @Protractor @Puppeteer @Playwright', (I) => {
   I.amOnPage('/form/bug1467');
   session('john', () => {
     I.amOnPage('/form/bug1467');
@@ -99,7 +152,31 @@ Scenario('should work with within @WebDriverIO @Protractor @Puppeteer', (I) => {
   });
 });
 
-xScenario('should use different base URL @Protractor @Puppeteer', (I) => { // nah, that's broken
+Scenario('change page emulation @Playwright', async (I) => {
+  const assert = require('assert');
+  I.amOnPage('/');
+  session('mobile user', {
+    viewport: { width: 300, height: 500 },
+  }, async () => {
+    I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.equal(width, 300);
+  });
+});
+
+Scenario('emulate iPhone @Playwright', async (I) => {
+  const { devices } = require('playwright');
+  if (process.env.BROWSER === 'firefox') return;
+  const assert = require('assert');
+  I.amOnPage('/');
+  session('mobile user', devices['iPhone 6'], async () => {
+    I.amOnPage('/');
+    const width = await I.executeScript('window.innerWidth');
+    assert.ok(width > 950 && width < 1000);
+  });
+});
+
+xScenario('should use different base URL @Protractor @Puppeteer @Playwright', (I) => { // nah, that's broken
   I.amOnPage('/');
   I.see('Welcome to test app');
   session('john', { url: 'https://github.com' }, () => {
@@ -125,7 +202,7 @@ xScenario('should start firefox', async (I) => { // requires firefox :)
   assert(isChrome);
 });
 
-Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer', async (I) => {
+Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer @Playwright', async (I) => {
   I.amOnPage('/form/textarea');
   const val = await session('john', () => {
     I.amOnPage('/info');
@@ -136,8 +213,7 @@ Scenario('should return a value in @WebDriverIO @Protractor @Puppeteer', async (
   I.see('[description] => Information');
 });
 
-
-Scenario('should return a value @WebDriverIO @Protractor @Puppeteer in async', async (I) => {
+Scenario('should return a value @WebDriverIO @Protractor @Puppeteer @Playwright in async', async (I) => {
   I.amOnPage('/form/textarea');
   const val = await session('john', async () => {
     I.amOnPage('/info');
@@ -147,3 +223,11 @@ Scenario('should return a value @WebDriverIO @Protractor @Puppeteer in async', a
   I.click('Submit');
   I.see('[description] => Information');
 });
+
+function clearString(str) {
+  if (!str) return '';
+  /* Replace forbidden symbols in string
+     */
+  return str
+    .replace(/ /g, '_');
+}

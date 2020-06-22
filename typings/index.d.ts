@@ -1,95 +1,177 @@
-// Type definitions for CodeceptJS 1.0.2
+// Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
-// Definitions by: Michael Bodnarchuk <http://github.com/DavertMik>, Drew Diamantoukos <https://github.com/KennyRules>
+/// <reference path="./types.d.ts" />
+/// <reference types="webdriverio" />
+/// <reference path="./Mocha.d.ts" />
 
-declare class Locator {
-  or(locator): Locator;
-  find(locator): Locator;
-  withChild(locator): Locator;
-  find(locator): Locator;
-  at(position): Locator;
-  first(): Locator;
-  last(): Locator;
-  inside(locator): Locator;
-  before(locator): Locator;
-  after(locator): Locator;
-  withText(text): Locator;
-  withAttr(attr): Locator;
-  as(output): Locator;
+declare namespace CodeceptJS {
+  type WithTranslation<T> = T &
+    import("./utils").Translate<T, CodeceptJS.Translation.Actions>;
+
+  // Could get extended by user generated typings
+  interface Methods extends ActorStatic {}
+  interface I {}
+  interface IHook {}
+  interface IScenario {}
+  interface IFeature {}
+  interface CallbackOrder extends Array<any> {}
+  interface SupportObject {
+    I: CodeceptJS.I;
+  }
+  namespace Translation {
+    interface Actions {}
+  }
+
+  // Extending JSDoc generated typings
+  interface Step {
+    isMetaStep(): this is MetaStep;
+  }
+
+  // Types who are not be defined by JSDoc
+  type actor = <T extends { [action: string]: Function }>(
+    customSteps?: T & ThisType<WithTranslation<Methods & T>>
+  ) => WithTranslation<Methods & T>;
+
+  type ILocator =
+    | { id: string }
+    | { xpath: string }
+    | { css: string }
+    | { name: string }
+    | { frame: string }
+    | { android: string }
+    | { ios: string }
+    | { android: string, ios: string }
+    | { react: string };
+
+  type LocatorOrString = string | ILocator | Locator;
+
+  interface HookCallback<U extends any[]> { (...args: U): void; }
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface Feature extends IFeature { skip: IFeature }
+  interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
+
+  interface IScenario {
+    // Scenario.todo can be called only with a title.
+    <T extends any[] = CallbackOrder>(
+      title: string
+    ): ScenarioConfig;
+    <T extends any[] = CallbackOrder>(
+      title: string,
+      callback: HookCallback<T>
+    ): ScenarioConfig;
+    <T extends any[] = CallbackOrder>(
+      title: string,
+      opts: { [key: string]: any },
+      callback: HookCallback<T>
+    ): ScenarioConfig;
+  }
+  interface IHook {
+    <T extends any[] = CallbackOrder>(callback: HookCallback<T>): void;
+  }
+
+  interface Globals {
+    codeceptjs: typeof codeceptjs;
+  }
 }
 
-declare module NodeJS {
+// Globals
+declare const codecept_dir: string;
+declare const output_dir: string;
+
+declare const actor: CodeceptJS.actor;
+declare const codecept_actor: CodeceptJS.actor;
+declare const Helper: typeof CodeceptJS.Helper;
+declare const codecept_helper: typeof CodeceptJS.Helper;
+declare const pause: typeof CodeceptJS.pause;
+declare const within: typeof CodeceptJS.within;
+declare const session: typeof CodeceptJS.session;
+declare const DataTable: typeof CodeceptJS.DataTable;
+declare const codeceptjs: typeof CodeceptJS.index;
+declare const locate: typeof CodeceptJS.Locator.build;
+declare function inject(): CodeceptJS.SupportObject;
+declare function inject<T extends keyof CodeceptJS.SupportObject>(
+  name: T
+): CodeceptJS.SupportObject[T];
+declare const secret: typeof CodeceptJS.Secret.secret;
+
+// BDD
+declare const Given: typeof CodeceptJS.addStep;
+declare const When: typeof CodeceptJS.addStep;
+declare const Then: typeof CodeceptJS.addStep;
+
+declare const Feature: typeof CodeceptJS.Feature;
+declare const Scenario: CodeceptJS.Scenario;
+declare const xScenario: CodeceptJS.IScenario;
+declare const xFeature: CodeceptJS.IFeature;
+declare function Data(data: any): CodeceptJS.IData;
+declare function xData(data: any): CodeceptJS.IData;
+
+// Hooks
+declare const BeforeSuite: CodeceptJS.IHook;
+declare const AfterSuite: CodeceptJS.IHook;
+declare const Background: CodeceptJS.IHook;
+declare const Before: CodeceptJS.IHook;
+declare const After: CodeceptJS.IHook;
+
+interface Window {
+  codeceptjs: typeof CodeceptJS.browserCodecept;
+  resq: any;
+}
+
+declare namespace NodeJS {
   interface Process {
     profile: string;
   }
 
-  interface Global {
-    codecept_actor: any;
-    codecept_dir: string;
-    codecept_helper: any;
-    output_dir: string;
+  interface Global extends CodeceptJS.Globals {
+    codecept_dir: typeof codecept_dir;
+    output_dir: typeof output_dir;
 
-    actor: any;
-    Helper: any;
-    pause: any;
-    within: any;
-    session: any;
-    DataTable: any;
-    locate: Locator,
-    inject: any,
-    secret: any,
-    by: any;
+    actor: typeof actor;
+    codecept_actor: typeof codecept_actor;
+    Helper: typeof Helper;
+    codecept_helper: typeof codecept_helper;
+    pause: typeof pause;
+    within: typeof within;
+    session: typeof session;
+    DataTable: typeof DataTable;
+    locate: typeof locate;
+    inject: typeof inject;
+    secret: typeof secret;
 
-    // Used by Protractor helper
-    By: any;
-    ExpectedConditions: any;
-    element: any;
-    $: any;
-    $$: any;
-    browser: any;
+    // BDD
+    Given: typeof Given;
+    When: typeof When;
+    Then: typeof Then;
   }
 }
 
-declare interface Window {
-  codeceptjs: any;
-}
-
-declare var window: Window;
-
-
-/**
- * Special Mocha definitions for reporter Base and Suite.
- * The mocha type definitions on DefinitelyTyped are for an older version of Mocha!
- */
-
-declare module 'mocha/lib/reporters/base' {
-  class base {
-    constructor(runner: any);
-    static cursor: any;
-    static color: any;
-    static list(items: any);
-    static symbols: any;
-    failures: any;
-    stats: any;
+declare namespace Mocha {
+  interface MochaGlobals {
+    Feature: typeof Feature;
+    Scenario: typeof Scenario;
+    xFeature: typeof xFeature;
+    xScenario: typeof xScenario;
+    Data: typeof Data;
+    xData: typeof xData;
+    BeforeSuite: typeof BeforeSuite;
+    AfterSuite: typeof AfterSuite;
+    Background: typeof Background;
+    Before: typeof Before;
+    After: typeof After;
   }
 
-  export = base;
+  interface Suite extends SuiteRunnable{
+    tags: any[]
+    comment: string
+    feature: any
+  }
+
+  interface Test  extends Runnable{
+    tags: any[];
+  }
 }
 
-declare interface Suite {
-  addTest: any;
-  afterAll: any;
-  afterEach: any;
-  beforeAll: any;
-  beforeEach: any;
-  pending: any;
-  on: any;
-  timeout: any;
-  title: any;
-
-  create(suite: any, title: any): any;
-}
-
-declare module 'mocha/lib/suite' {
-  export = Suite;
+declare module "codeceptjs" {
+  export = codeceptjs;
 }

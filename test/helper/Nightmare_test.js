@@ -1,16 +1,15 @@
-const TestHelper = require('../support/TestHelper');
+const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
 
+const TestHelper = require('../support/TestHelper');
 const Nightmare = require('../../lib/helper/Nightmare');
+const AssertionFailedError = require('../../lib/assert/error');
+const webApiTests = require('./webapi');
 
 let I;
 let browser;
 const siteUrl = TestHelper.siteUrl();
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const AssertionFailedError = require('../../lib/assert/error');
-require('co-mocha')(require('mocha'));
-const webApiTests = require('./webapi');
 
 describe('Nightmare', function () {
   this.retries(3);
@@ -42,36 +41,42 @@ describe('Nightmare', function () {
   afterEach(() => I._after());
 
   describe('open page : #amOnPage', () => {
-    it('should open main page of configured site', function* () {
-      I.amOnPage('/');
-      const url = yield browser.url();
-      return url.should.eql(`${siteUrl}/`);
+    it('should open main page of configured site', async () => {
+      await I.amOnPage('/');
+      const url = await browser.url();
+      url.should.eql(`${siteUrl}/`);
     });
 
-    it('should open any page of configured site', function* () {
-      I.amOnPage('/info');
-      const url = yield browser.url();
-      return url.should.eql(`${siteUrl}/info`);
+    it('should open any page of configured site', async () => {
+      await I.amOnPage('/info');
+      const url = await browser.url();
+      url.should.eql(`${siteUrl}/info`);
     });
 
-    it('should open absolute url', function* () {
-      I.amOnPage(siteUrl);
-      const url = yield browser.url();
-      return url.should.eql(`${siteUrl}/`);
+    it('should open absolute url', async () => {
+      await I.amOnPage(siteUrl);
+      const url = await browser.url();
+      url.should.eql(`${siteUrl}/`);
     });
 
-    it('should open same page twice without error', () => I.amOnPage('/')
-      .then(() => I.amOnPage('/')));
+    it('should open same page twice without error', async () => {
+      await I.amOnPage('/');
+      await I.amOnPage('/');
+    });
   });
 
   webApiTests.tests();
 
   describe('#waitForFunction', () => {
-    it('should wait for function returns true', () => I.amOnPage('/form/wait_js')
-      .then(() => I.waitForFunction(() => window.__waitJs, 3)));
+    it('should wait for function returns true', async () => {
+      await I.amOnPage('/form/wait_js');
+      await I.waitForFunction(() => window.__waitJs, 3);
+    });
 
-    it('should pass arguments and wait for function returns true', () => I.amOnPage('/form/wait_js')
-      .then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3)));
+    it('should pass arguments and wait for function returns true', async () => {
+      await I.amOnPage('/form/wait_js');
+      await I.waitForFunction(varName => window[varName], ['__waitJs'], 3);
+    });
   });
 
   // should work for webdriverio and seleniumwebdriver
@@ -95,7 +100,6 @@ describe('Nightmare', function () {
         e.should.be.instanceOf(AssertionFailedError);
         e.inspect().should.include('web application');
       }));
-
 
     it('should fail when clickable element not found', () => I.amOnPage('/')
       .then(() => I.click('Welcome'))
@@ -154,21 +158,22 @@ describe('Nightmare', function () {
       .then(() => I.see('Width 950', '#width')));
   });
 
-
   describe('refresh page', () => {
-    it('should refresh the current page', function* () {
-      I.amOnPage(siteUrl);
-      const url = yield browser.url();
+    it('should refresh the current page', async () => {
+      await I.amOnPage(siteUrl);
+      const url = await browser.url();
       assert.equal(`${siteUrl}/`, url);
-      yield I.refreshPage();
-      const nextUrl = yield browser.url();
+      await I.refreshPage();
+      const nextUrl = await browser.url();
       // reloaded the page, check the url is the same
       assert.equal(url, nextUrl);
     });
   });
 
   describe('#seeNumberOfElements', () => {
-    it('should return 1 as count', () => I.amOnPage('/')
-      .then(() => I.seeNumberOfElements('#area1', 1)));
+    it('should return 1 as count', async () => {
+      await I.amOnPage('/');
+      await I.seeNumberOfElements('#area1', 1);
+    });
   });
 });
