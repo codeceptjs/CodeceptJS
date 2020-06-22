@@ -112,7 +112,7 @@ export = CustomHelper
 ```
 
 Then you need to add this helper to your `codecept.conf.js` like in this [docs](https://codecept.io/helpers/#configuration).
-And then run to command `npx codeceptjs def`. 
+And then run the command `npx codeceptjs def`. 
 
 As result our `steps.d.ts` file will be updated like this: 
 ```ts
