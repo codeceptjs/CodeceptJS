@@ -97,7 +97,7 @@ declare namespace CodeceptJS {
 
 ## Types for custom helper or page object
 
-If you want to gets types for your [custom helper](https://codecept.io/helpers/#configuration), you can add their automatically with CodeceptJS command `npx codeceptjs def`. 
+If you want to get types for your [custom helper](https://codecept.io/helpers/#configuration), you can add their automatically with CodeceptJS command `npx codeceptjs def`. 
 
 For example, if you add the new step `printMessage` for your custom helper like this:
 ```js
