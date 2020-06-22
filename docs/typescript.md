@@ -5,7 +5,7 @@ title: TypeScript
 
 # Typescript
 
-CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means now you can write your tests in TS. Also, all of your custom steps could be written in TS
+CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that you can write your tests in TS. Also, all of your custom steps can be written in TS
 
 # Why TypeScript?
 
