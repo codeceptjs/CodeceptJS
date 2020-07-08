@@ -358,6 +358,8 @@ describe('CodeceptJS Default timeout', () => {
     console.log(`${codecept_run_config('codecept.timeout.json')} --verbose`);
     exec(`${codecept_run_config('codecept.timeout.json')} --verbose`, (err, stdout, stderr) => {
       console.log(stdout);
+      stdout.should.not.include('I write file');
+      stdout.should.include('0 passed, 1 failed');
       // stdout.should.include('Filesystem'); // feature
       // stdout.should.include('check current dir'); // test name
       assert(err);
