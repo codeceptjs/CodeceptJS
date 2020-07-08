@@ -61,6 +61,15 @@ describe('CodeceptJS PageObject', () => {
         done();
       });
     });
+
+    it('should inject page objects by class which nested base clas', (done) => {
+      exec(`${config_run_config('codecept.logs.json')} --steps`, (err, stdout) => {
+        expect(stdout).toContain('I get humanize args Logs Page Value');
+        expect(stdout).toContain('OK  | 1 passed');
+        expect(err).toBeFalsy();
+        done();
+      });
+    });
   });
 
   describe('Show MetaSteps in Log', () => {

@@ -5,6 +5,10 @@ class CustomHelper extends Helper {
     // this.debug('Print message from CustomHelper');
     console.log(s);
   }
+
+  getHumanizeArgs(objectArgs) {
+    console.log(objectArgs.value);
+  }
 }
 
 module.exports = CustomHelper;
