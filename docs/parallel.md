@@ -122,7 +122,7 @@ async function runWorkers() {
 Inside `event.all.result` you can obtain test results from all workers, so you can customize the report:
 
 ```js
-workers.on(event.all.result, (status, completedTests, wotkerStats) => {
+workers.on(event.all.result, (status, completedTests, workerStats) => {
   // print output
   console.log('Test status : ', status ? 'Passes' : 'Failed ');
 
@@ -166,7 +166,7 @@ const workerConfig = {
 };
 
 // don't initialize workers in constructor
-const customWorkers = new Workers(null,  workerCOnfig);
+const customWorkers = new Workers(null,  workerConfig);
 
 customWorkers.run();
 
