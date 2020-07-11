@@ -10,7 +10,7 @@ module.exports = {
     I.printMessage('Logs Page Message');
   },
 
-  humanizeArgs() {
+  toString() {
     return this.value;
   },
 };
