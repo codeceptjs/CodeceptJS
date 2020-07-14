@@ -61,6 +61,25 @@ describe('CodeceptJS PageObject', () => {
         done();
       });
     });
+
+    it('should print pretty step log and pretty event log', (done) => {
+      exec(`${config_run_config('codecept.logs.json', 'Print correct arg message')} --steps`, (err, stdout) => {
+        expect(stdout).toContain('I get humanize args Logs Page Value');
+        expect(stdout).toContain('Start event step: I get humanize args Logs Page Valu');
+        expect(stdout).toContain('OK  | 1 passed');
+        expect(err).toBeFalsy();
+        done();
+      });
+    });
+
+    it('should print pretty failed step log on stack trace', (done) => {
+      exec(`${config_run_config('codecept.logs.json', 'Error print correct arg message')} --steps`, (err, stdout) => {
+        expect(stdout).toContain('I.errorMethodHumanizeArgs(Logs Page Value)');
+        expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
+        expect(err).toBeTruthy();
+        done();
+      });
+    });
   });
 
   describe('Show MetaSteps in Log', () => {
