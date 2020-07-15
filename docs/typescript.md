@@ -28,7 +28,7 @@ Example:
 ## Getting Started
 ### Install TypeScipt
 
-For writing tests in TypeScript you`ll need to install TypeScript and ts-node in your project.
+For writing tests in TypeScript you`ll need to install `typescript` and `ts-node` into your project.
 
 `npm install typescript ts-node`
 
