@@ -15,7 +15,7 @@ Example:
 
 ![Auto Complete](/img/Auto_comlete.gif)
 
-- Quick info about members - show info about each of your steps right in your tests. Example:
+- To show additional information for a step in a test. Example:
 
 ![Quick Info](/img/Quick_info.gif)
 
