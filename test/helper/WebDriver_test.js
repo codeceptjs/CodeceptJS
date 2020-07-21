@@ -165,6 +165,29 @@ describe('WebDriver', function () {
     });
   });
 
+  describe('Force Right Click: #forceRightClick', () => {
+    it('it should forceRightClick', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('Lorem Ipsum');
+      await wd.see('right clicked');
+    });
+
+    it('it should forceRightClick by locator', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('.context a');
+      await wd.see('right clicked');
+    });
+
+    it('it should forceRightClick by locator and context', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('Lorem Ipsum', '.context');
+      await wd.see('right clicked');
+    });
+  });
+  
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
