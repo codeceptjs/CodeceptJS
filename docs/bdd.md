@@ -185,6 +185,12 @@ To list all defined steps run `gherkin:steps` command:
 npx codeceptjs gherkin:steps
 ```
 
+Use `grep` to find steps in a list (grep works on Linux & MacOS):
+
+```
+npx codeceptjs gherkin:steps | grep user
+```
+
 To run tests and see step-by step output use `--steps` optoin:
 
 ```
