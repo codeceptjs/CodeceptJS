@@ -1280,6 +1280,17 @@ I.rightClick('Click me', '.context');
 -   `locator` **([string][4] \| [object][6])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][4]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator.{{ react }} (optional, default `null`)
 
+### forceRightClick
+
+{{> forceRightClick }}
+
+{{ react }}
+
+#### Parameters
+
+-   `locator`  
+-   `context`   (optional, default `null`)
+
 ### clearField
 
 Clears a `<textarea>` or text `<input>` element's value.
