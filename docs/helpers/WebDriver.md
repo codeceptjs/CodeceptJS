@@ -913,18 +913,29 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### forceRightClick
 
-{{> forceRightClick }}
+Emulates right click on an element.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
 
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
 
-
-This action supports [React locators](https://codecept.io/react#locators)
-
+```js
+// simple link
+I.forceRightClick('Menu');
+```
 
 #### Parameters
 
--   `locator`  
--   `context`   
+-   `locator` **([string][19] | [object][18])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][19]? | [object][18])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+ 
 
 ### grabAllWindowHandles
 
