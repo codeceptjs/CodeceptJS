@@ -1,8 +1,9 @@
 ## 2.6.7
+
 * Add REST helper into `standardActingHelpers` array #2474 by @PeterNgTr
 * Add missing `--invert` option for `run-workers` command #2504 by @pablopaul
-* [WebDriver][Appium] Introduce `forceRightClick` method #2485 bylsuniljaiswal01 
-* [Playwright] Fix setCookie` method #2491 by @bmbarker90
+* [WebDriver] Introduce `forceRightClick` method #2485 bylsuniljaiswal01
+* [Playwright] Fix `setCookie` method #2491 by @bmbarker90
 * [TypeScript] Update compilerOptions.target to es2017 #2483 by @shanplourde
 * [Mocha] Honor reporter configuration #2465 by @trinhpham
 
