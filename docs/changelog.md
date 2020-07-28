@@ -7,6 +7,29 @@ layout: Section
 
 # Releases
 
+## 2.6.7
+
+* Add REST helper into `standardActingHelpers` array [#2474](https://github.com/Codeception/CodeceptJS/issues/2474) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Add missing `--invert` option for `run-workers` command [#2504](https://github.com/Codeception/CodeceptJS/issues/2504) by **[pablopaul](https://github.com/pablopaul)**
+* **[WebDriver]** Introduce `forceRightClick` method [#2485](https://github.com/Codeception/CodeceptJS/issues/2485) bylsuniljaiswal01
+* **[Playwright]** Fix `setCookie` method [#2491](https://github.com/Codeception/CodeceptJS/issues/2491) by **[bmbarker90](https://github.com/bmbarker90)**
+* **[TypeScript]** Update compilerOptions.target to es2017 [#2483](https://github.com/Codeception/CodeceptJS/issues/2483) by **[shanplourde](https://github.com/shanplourde)**
+* **[Mocha]** Honor reporter configuration [#2465](https://github.com/Codeception/CodeceptJS/issues/2465) by **[trinhpham](https://github.com/trinhpham)**
+
+## 2.6.6
+
+* Puppeteer 4.0 support. Important: MockRequest helper won't work with Puppeter > 3.3
+* Added `xFeature` and `Feature.skip` to skip all tests in a suite. By **[Georgegriff](https://github.com/Georgegriff)**
+* **[Appium]** Fixed [#2428](https://github.com/Codeception/CodeceptJS/issues/2428) Android native locator support by **[idxn](https://github.com/idxn)**
+* **[WebDriver]** Fixed `waitNumberOfVisibleElements` to actually filter visible elements. By **[ilangv](https://github.com/ilangv)**
+* **[Puppeteer]** Fixed handling error which is not an Error object. Fixes `cannot read property indexOf of undefined` error. Fix [#2436](https://github.com/Codeception/CodeceptJS/issues/2436) by **[Georgegriff](https://github.com/Georgegriff)**
+* **[Puppeteer]** Print error on page crash by **[Georgegriff](https://github.com/Georgegriff)**
+
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers [#2391](https://github.com/Codeception/CodeceptJS/issues/2391). Fix [#2387](https://github.com/Codeception/CodeceptJS/issues/2387) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* **[Playwright]** Fixed calling `waitFor*` methods with custom locators [#2314](https://github.com/Codeception/CodeceptJS/issues/2314). Fix [#2389](https://github.com/Codeception/CodeceptJS/issues/2389) by **[Georgegriff](https://github.com/Georgegriff)**
+
 ## 2.6.4
 
 * **[Playwright]** **Playwright 1.0 support** by **[Georgegriff](https://github.com/Georgegriff)**.
@@ -27,14 +50,14 @@ layout: Section
 * **[WebDriver]** Fixed `waitForEnabled` fix for webdriver 6. Fix by **[dsharapkou](https://github.com/dsharapkou)**
 * Workers: Fixed negative failure result if use scenario with the same names. Fix by **[Vorobeyko](https://github.com/Vorobeyko)**
 * **[MockRequest]** Updated documentation to match new helper version
-* Fixed: skipped tests are not reported if a suite failed in `before`. Refer [#2349](https://github.com/codecept-js/CodeceptJS/issues/2349) & [#2354](https://github.com/codecept-js/CodeceptJS/issues/2354). Fix by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* Fixed: skipped tests are not reported if a suite failed in `before`. Refer [#2349](https://github.com/Codeception/CodeceptJS/issues/2349) & [#2354](https://github.com/Codeception/CodeceptJS/issues/2354). Fix by **[koushikmohan1996](https://github.com/koushikmohan1996)**
 
 ## 2.6.1
 
 * [screenshotOnFail plugin] Fixed saving screenshot of active session.
-* [screenshotOnFail plugin] Fix issue [#2301](https://github.com/codecept-js/CodeceptJS/issues/2301) when having the flag `uniqueScreenshotNames`=true results in `undefined` in screenshot file name by **[PeterNgTr](https://github.com/PeterNgTr)**
+* [screenshotOnFail plugin] Fix issue [#2301](https://github.com/Codeception/CodeceptJS/issues/2301) when having the flag `uniqueScreenshotNames`=true results in `undefined` in screenshot file name by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[WebDriver]** Fixed `waitForElement` not applying the optional second argument to override the default timeout in webdriverio 6. Fix by **[Mooksc](https://github.com/Mooksc)**
-* **[WebDriver]** Updated `waitUntil` method which is used by all of the wait* functions. This updates the `waitForElement` by the same convention used to update `waitForVisible` and `waitInUrl` to be compatible with both WebDriverIO v5 & v6. See [#2313](https://github.com/codecept-js/CodeceptJS/issues/2313) by **[Mooksc](https://github.com/Mooksc)**
+* **[WebDriver]** Updated `waitUntil` method which is used by all of the wait* functions. This updates the `waitForElement` by the same convention used to update `waitForVisible` and `waitInUrl` to be compatible with both WebDriverIO v5 & v6. See [#2313](https://github.com/Codeception/CodeceptJS/issues/2313) by **[Mooksc](https://github.com/Mooksc)**
 
 ## 2.6.0
 
@@ -59,7 +82,7 @@ I.executeScript(({x, y}) => x + y, {x, y});
   * `clickLink` - deprecated
   * `waitForClickable` - deprecated
   * `forceClick` - added
-  * Added support for custom locators. See [#2277](https://github.com/codecept-js/CodeceptJS/issues/2277)
+  * Added support for custom locators. See [#2277](https://github.com/Codeception/CodeceptJS/issues/2277)
   * Introduced [device emulation](/playwright/#device-emulation):
     * globally via `emulate` config option
     * per session
@@ -85,20 +108,20 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
   * added `mockServer` method to use flexible PollyJS API to define mocks
   * fixed stale browser screen in record mode.
 * **[Playwright]** Added support on for `screenshotOnFail` plugin by **[amonkc](https://github.com/amonkc)**
-* Gherkin improvement: setting different tags per examples. See [#2208](https://github.com/codecept-js/CodeceptJS/issues/2208) by **[acuper](https://github.com/acuper)**
-* **[TestCafe]** Updated `click` to take first visible element. Fixes [#2226](https://github.com/codecept-js/CodeceptJS/issues/2226) by **[theTainted](https://github.com/theTainted)**
-* [Puppeteer][WebDriver] Updated `waitForClickable` method to check for element overlapping. See [#2261](https://github.com/codecept-js/CodeceptJS/issues/2261) by **[PiQx](https://github.com/PiQx)**
+* Gherkin improvement: setting different tags per examples. See [#2208](https://github.com/Codeception/CodeceptJS/issues/2208) by **[acuper](https://github.com/acuper)**
+* **[TestCafe]** Updated `click` to take first visible element. Fixes [#2226](https://github.com/Codeception/CodeceptJS/issues/2226) by **[theTainted](https://github.com/theTainted)**
+* [Puppeteer][WebDriver] Updated `waitForClickable` method to check for element overlapping. See [#2261](https://github.com/Codeception/CodeceptJS/issues/2261) by **[PiQx](https://github.com/PiQx)**
 * **[Puppeteer]** Dropped `puppeteer-firefox` support, as Puppeteer supports Firefox natively.
-* **[REST]** Rrespect Content-Type header. See [#2262](https://github.com/codecept-js/CodeceptJS/issues/2262) by **[pmarshall-legacy](https://github.com/pmarshall-legacy)**
-* [allure plugin] Fixes BeforeSuite failures in allure reports. See [#2248](https://github.com/codecept-js/CodeceptJS/issues/2248) by **[Georgegriff](https://github.com/Georgegriff)**
-* [WebDriver][Puppeteer][Playwright] A screenshot of for an active session is saved in multi-session mode. See [#2253](https://github.com/codecept-js/CodeceptJS/issues/2253) by **[ChexWarrior](https://github.com/ChexWarrior)**
+* **[REST]** Rrespect Content-Type header. See [#2262](https://github.com/Codeception/CodeceptJS/issues/2262) by **[pmarshall-legacy](https://github.com/pmarshall-legacy)**
+* [allure plugin] Fixes BeforeSuite failures in allure reports. See [#2248](https://github.com/Codeception/CodeceptJS/issues/2248) by **[Georgegriff](https://github.com/Georgegriff)**
+* [WebDriver][Puppeteer][Playwright] A screenshot of for an active session is saved in multi-session mode. See [#2253](https://github.com/Codeception/CodeceptJS/issues/2253) by **[ChexWarrior](https://github.com/ChexWarrior)**
 * Fixed `--profile` option by **[pablopaul](https://github.com/pablopaul)**. Profile value to be passed into `run-multiple` and `run-workers`:
 
 ```
 npx codecept run-workers 2 --profile firefox
 ```
 
-Value is available at `process.env.profile` (previously `process.profile`). See [#2302](https://github.com/codecept-js/CodeceptJS/issues/2302). Fixes [#1968](https://github.com/codecept-js/CodeceptJS/issues/1968) [#1315](https://github.com/codecept-js/CodeceptJS/issues/1315)
+Value is available at `process.env.profile` (previously `process.profile`). See [#2302](https://github.com/Codeception/CodeceptJS/issues/2302). Fixes [#1968](https://github.com/Codeception/CodeceptJS/issues/1968) [#1315](https://github.com/Codeception/CodeceptJS/issues/1315)
 
 * [commentStep Plugin introduced](/plugins#commentstep). Allows to annotate logical parts of a test:
 
@@ -119,17 +142,17 @@ I.see('You are logged out');
 
 > [Playwright](https://github.com/microsoft/playwright/) is an alternative to Puppeteer which works very similarly to it but adds cross-browser support with Firefox and Webkit. Until v1.0 Playwright API is not stable but we introduce it to CodeceptJS so you could try it.
 
-* **[Puppeteer]** Fixed basic auth support when running in multiple sessions. See [#2178](https://github.com/codecept-js/CodeceptJS/issues/2178) by **[ian-bartholomew](https://github.com/ian-bartholomew)**
-* **[Puppeteer]** Fixed `waitForText` when there is no `body` element on page (redirect). See [#2181](https://github.com/codecept-js/CodeceptJS/issues/2181) by **[Vorobeyko](https://github.com/Vorobeyko)**
-* [Selenoid plugin] Fixed overriding current capabilities by adding deepMerge. Fixes [#2183](https://github.com/codecept-js/CodeceptJS/issues/2183) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* **[Puppeteer]** Fixed basic auth support when running in multiple sessions. See [#2178](https://github.com/Codeception/CodeceptJS/issues/2178) by **[ian-bartholomew](https://github.com/ian-bartholomew)**
+* **[Puppeteer]** Fixed `waitForText` when there is no `body` element on page (redirect). See [#2181](https://github.com/Codeception/CodeceptJS/issues/2181) by **[Vorobeyko](https://github.com/Vorobeyko)**
+* [Selenoid plugin] Fixed overriding current capabilities by adding deepMerge. Fixes [#2183](https://github.com/Codeception/CodeceptJS/issues/2183) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
 * Added types for `Scenario.todo` by **[Vorobeyko](https://github.com/Vorobeyko)**
 * Added types for Mocha by **[Vorobeyko](https://github.com/Vorobeyko)**. Fixed typing conflicts with Jest
 * **[FileSystem]** Added methods by **[nitschSB](https://github.com/nitschSB)**
   * `waitForFile`
   * `seeFileContentsEqualReferenceFile`
-* Added `--colors` option to `run` and `run-multiple` so you force colored output in dockerized environment. See [#2189](https://github.com/codecept-js/CodeceptJS/issues/2189) by **[mirao](https://github.com/mirao)**
-* **[WebDriver]** Added `type` command to enter value without focusing on a field. See [#2198](https://github.com/codecept-js/CodeceptJS/issues/2198) by **[xMutaGenx](https://github.com/xMutaGenx)**
-* Fixed `codeceptjs gt` command to respect config pattern for tests. See [#2200](https://github.com/codecept-js/CodeceptJS/issues/2200) and [#2204](https://github.com/codecept-js/CodeceptJS/issues/2204) by **[matheo](https://github.com/matheo)**
+* Added `--colors` option to `run` and `run-multiple` so you force colored output in dockerized environment. See [#2189](https://github.com/Codeception/CodeceptJS/issues/2189) by **[mirao](https://github.com/mirao)**
+* **[WebDriver]** Added `type` command to enter value without focusing on a field. See [#2198](https://github.com/Codeception/CodeceptJS/issues/2198) by **[xMutaGenx](https://github.com/xMutaGenx)**
+* Fixed `codeceptjs gt` command to respect config pattern for tests. See [#2200](https://github.com/Codeception/CodeceptJS/issues/2200) and [#2204](https://github.com/Codeception/CodeceptJS/issues/2204) by **[matheo](https://github.com/matheo)**
 
 
 ## 2.4.3
@@ -149,11 +172,11 @@ I.see('You are logged out');
   * works with WebDriver helper
 * Avoid failiure report on successful retry in worker by **[koushikmohan1996](https://github.com/koushikmohan1996)**
 * Added translation ability to Scenario, Feature and other context methods by **[koushikmohan1996](https://github.com/koushikmohan1996)**
-  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/codecept-js/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/codecept-js/CodeceptJS/tree/master/translations).
+  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/Codeception/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/Codeception/CodeceptJS/tree/master/translations).
 * allurePlugin: Added `say` comments to allure reports by **[PeterNgTr](https://github.com/PeterNgTr)**.
 * Fixed no custom output folder created when executed with run-worker. Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
-* **[Puppeteer]** Fixed error description for context element not found. See [#2065](https://github.com/codecept-js/CodeceptJS/issues/2065). Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
-* **[WebDriver]** Fixed `waitForClickable` to wait for exact number of seconds by **[mirao](https://github.com/mirao)**. Resolves [#2166](https://github.com/codecept-js/CodeceptJS/issues/2166)
+* **[Puppeteer]** Fixed error description for context element not found. See [#2065](https://github.com/Codeception/CodeceptJS/issues/2065). Fix by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[WebDriver]** Fixed `waitForClickable` to wait for exact number of seconds by **[mirao](https://github.com/mirao)**. Resolves [#2166](https://github.com/Codeception/CodeceptJS/issues/2166)
 * Fixed setting `compilerOptions` in `jsconfig.json` file on init by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[Filesystem]** Added method by **[nitschSB](https://github.com/nitschSB)**
   * `seeFileContentsEqualReferenceFile`
@@ -173,20 +196,20 @@ I.see('You are logged out');
   * removed question on "steps file", create it by default.
 * Added [pauseOnFail plugin](/plugins/#pauseonfail). *Sponsored by Paul Vincent Beigang and his book "[Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)"*.
 * Added [`run-rerun` command](/commands/#run-rerun) to run tests multiple times to detect and fix flaky tests. By **[Ilrilan](https://github.com/Ilrilan)** and **[Vorobeyko](https://github.com/Vorobeyko)**.
-* Added [`Scenario.todo()` to declare tests as pending](/basics#todotest). See [#2100](https://github.com/codecept-js/CodeceptJS/issues/2100) by **[Vorobeyko](https://github.com/Vorobeyko)**
-* Added support for absolute path for `output` dir. See [#2049](https://github.com/codecept-js/CodeceptJS/issues/2049) by **[elukoyanov](https://github.com/elukoyanov)**
-* Fixed error in `npx codecept init` caused by calling `console.print`. See [#2071](https://github.com/codecept-js/CodeceptJS/issues/2071) by **[Atinux](https://github.com/Atinux)**.
+* Added [`Scenario.todo()` to declare tests as pending](/basics#todotest). See [#2100](https://github.com/Codeception/CodeceptJS/issues/2100) by **[Vorobeyko](https://github.com/Vorobeyko)**
+* Added support for absolute path for `output` dir. See [#2049](https://github.com/Codeception/CodeceptJS/issues/2049) by **[elukoyanov](https://github.com/elukoyanov)**
+* Fixed error in `npx codecept init` caused by calling `console.print`. See [#2071](https://github.com/Codeception/CodeceptJS/issues/2071) by **[Atinux](https://github.com/Atinux)**.
 * **[Filesystem]** Methods added by **[aefluke](https://github.com/aefluke)**:
   * `seeFileNameMatching`
   * `grabFileNames`
 * **[Puppeteer]** Fixed grabbing attributes with hyphen by **[Holorium](https://github.com/Holorium)**
 * **[TestCafe]** Fixed `grabAttributeFrom` method by **[elukoyanov](https://github.com/elukoyanov)**
 * **[MockRequest]** Added support for [Polly config options](https://netflix.github.io/pollyjs/#/configuration?id=configuration) by **[ecrmnn](https://github.com/ecrmnn)**
-* **[TestCafe]** Fixes exiting with zero code on failure. Fixed [#2090](https://github.com/codecept-js/CodeceptJS/issues/2090) with [#2106](https://github.com/codecept-js/CodeceptJS/issues/2106) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
-* [WebDriver][Puppeteer] Added basicAuth support via config. Example: `basicAuth: {username: 'username', password: 'password'}`. See [#1962](https://github.com/codecept-js/CodeceptJS/issues/1962) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[TestCafe]** Fixes exiting with zero code on failure. Fixed [#2090](https://github.com/Codeception/CodeceptJS/issues/2090) with [#2106](https://github.com/Codeception/CodeceptJS/issues/2106) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* [WebDriver][Puppeteer] Added basicAuth support via config. Example: `basicAuth: {username: 'username', password: 'password'}`. See [#1962](https://github.com/Codeception/CodeceptJS/issues/1962) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * [WebDriver][Appium] Added `scrollIntoView` by **[pablopaul](https://github.com/pablopaul)**
-* Fixed [#2118](https://github.com/codecept-js/CodeceptJS/issues/2118): No error stack trace for syntax error by **[senthillkumar](https://github.com/senthillkumar)**
-* Added `parse()` method to data table inside Cucumber tests. Use it to obtain rows and hashes for test data. See [#2082](https://github.com/codecept-js/CodeceptJS/issues/2082) by **[Sraime](https://github.com/Sraime)**
+* Fixed [#2118](https://github.com/Codeception/CodeceptJS/issues/2118): No error stack trace for syntax error by **[senthillkumar](https://github.com/senthillkumar)**
+* Added `parse()` method to data table inside Cucumber tests. Use it to obtain rows and hashes for test data. See [#2082](https://github.com/Codeception/CodeceptJS/issues/2082) by **[Sraime](https://github.com/Sraime)**
 
 ## 2.3.6
 
@@ -205,8 +228,8 @@ exports.config = {
 * **[TestCafe]** Added support for remote connection. By **[jvdieten](https://github.com/jvdieten)**
 * **[Puppeteer]** Fixed `waitForText` XPath context now works correctly. By **[Heavik](https://github.com/Heavik)**
 * **[TestCafe]** Fixed `clearField` clear field now awaits TestCafe's promise. By **[orihomie](https://github.com/orihomie)**
-* **[Puppeteer]** Fixed fails when executing localStorage on services pages. See [#2026](https://github.com/codecept-js/CodeceptJS/issues/2026)
-* Fixed empty tags in test name. See [#2038](https://github.com/codecept-js/CodeceptJS/issues/2038)
+* **[Puppeteer]** Fixed fails when executing localStorage on services pages. See [#2026](https://github.com/Codeception/CodeceptJS/issues/2026)
+* Fixed empty tags in test name. See [#2038](https://github.com/Codeception/CodeceptJS/issues/2038)
 
 ## 2.3.5
 
@@ -215,7 +238,7 @@ exports.config = {
 ## 2.3.4
 
 * Fixed installation error "Cannot find module '@babel/runtime/helpers/interopRequireDefault'". The issue came from `parse-function` package. Fixed by **[pablopaul](https://github.com/pablopaul)**.
-* **[Puppeteer]** Fixed switching to iframe without an ID by **[johnyb](https://github.com/johnyb)**. See [#1974](https://github.com/codecept-js/CodeceptJS/issues/1974)
+* **[Puppeteer]** Fixed switching to iframe without an ID by **[johnyb](https://github.com/johnyb)**. See [#1974](https://github.com/Codeception/CodeceptJS/issues/1974)
 * Added `--profile` option to `run-workers` by **[orihomie](https://github.com/orihomie)**
 * Added a tag definition to `FeatureConfig` and `ScenarioConfig` by **[sseliverstov](https://github.com/sseliverstov)**
 
@@ -234,36 +257,36 @@ I.click('$register_button');
 Changed pressKey method to resolve issues and extend functionality.
   * Did not properly recognize 'Meta' (or 'Command') as modifier key.
   * Right modifier keys did not work in WebDriver using JsonWireProtocol.
-  * 'Shift' + 'key' combination would not reflect actual keyboard behavior.
+  * 'Shift' + <key> combination would not reflect actual keyboard behavior.
   * Respect sequence with multiple modifier keys passed to pressKey.
   * Added support to automatic change operation modifier key based on operating system.
 * [Puppeteer][WebDriver] Added `pressKeyUp` and `pressKeyDown` to press and release modifier keys like `Control` or `Shift`. By **[martomo](https://github.com/martomo)**.
 * [Puppeteer][WebDriver] Added `grabElementBoundingRect` by **[PeterNgTr](https://github.com/PeterNgTr)**.
-* **[Puppeteer]** Fixed speed degradation introduced in [#1306](https://github.com/codecept-js/CodeceptJS/issues/1306) with accessibility locators support. See [#1953](https://github.com/codecept-js/CodeceptJS/issues/1953).
+* **[Puppeteer]** Fixed speed degradation introduced in [#1306](https://github.com/Codeception/CodeceptJS/issues/1306) with accessibility locators support. See [#1953](https://github.com/Codeception/CodeceptJS/issues/1953).
 * Added `Config.addHook` to add a function that will update configuration on load.
 * Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
-* **[TestCafe]** port's management removed (left on TestCafe itself) by **[orihomie](https://github.com/orihomie)**. Fixes [#1934](https://github.com/codecept-js/CodeceptJS/issues/1934).
-* **[REST]** Headers are no more declared as singleton variable. Fixes [#1959](https://github.com/codecept-js/CodeceptJS/issues/1959)
+* **[TestCafe]** port's management removed (left on TestCafe itself) by **[orihomie](https://github.com/orihomie)**. Fixes [#1934](https://github.com/Codeception/CodeceptJS/issues/1934).
+* **[REST]** Headers are no more declared as singleton variable. Fixes [#1959](https://github.com/Codeception/CodeceptJS/issues/1959)
 * Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By **[PeterNgTr](https://github.com/PeterNgTr)**.
 
 ## 2.3.2
 
 * **[Puppeteer]** Fixed Puppeteer 1.20 support by **[davertmik](https://github.com/davertmik)**
-* Fixed `run-workers` to run with complex configs. See [#1887](https://github.com/codecept-js/CodeceptJS/issues/1887) by **[nitschSB](https://github.com/nitschSB)**
+* Fixed `run-workers` to run with complex configs. See [#1887](https://github.com/Codeception/CodeceptJS/issues/1887) by **[nitschSB](https://github.com/nitschSB)**
 * Added `--suites` option to `run-workers` to split suites by workers (tests of the same suite goes to teh same worker). Thanks **[nitschSB](https://github.com/nitschSB)**.
 * Added a guide on [Email Testing](https://codecept.io/email).
 * **[retryFailedStepPlugin]** Improved to ignore wait* steps and others. Also added option to ignore this plugin per test bases. See [updated documentation](https://codecept.io/plugins#retryfailedstep). By **[davertmik](https://github.com/davertmik)**
-* Fixed using PageObjects as classes by **[Vorobeyko](https://github.com/Vorobeyko)**. See [#1896](https://github.com/codecept-js/CodeceptJS/issues/1896)
-* **[WebDriver]** Fixed opening more than one tab. See [#1875](https://github.com/codecept-js/CodeceptJS/issues/1875) by **[jplegoff](https://github.com/jplegoff)**. Fixes [#1874](https://github.com/codecept-js/CodeceptJS/issues/1874)
-* Fixed [#1891](https://github.com/codecept-js/CodeceptJS/issues/1891) when `I.retry()` affected retries of next steps. By **[davertmik](https://github.com/davertmik)**
+* Fixed using PageObjects as classes by **[Vorobeyko](https://github.com/Vorobeyko)**. See [#1896](https://github.com/Codeception/CodeceptJS/issues/1896)
+* **[WebDriver]** Fixed opening more than one tab. See [#1875](https://github.com/Codeception/CodeceptJS/issues/1875) by **[jplegoff](https://github.com/jplegoff)**. Fixes [#1874](https://github.com/Codeception/CodeceptJS/issues/1874)
+* Fixed [#1891](https://github.com/Codeception/CodeceptJS/issues/1891) when `I.retry()` affected retries of next steps. By **[davertmik](https://github.com/davertmik)**
 
 ## 2.3.1
 
 * **[MockRequest]** Polly helper was renamed to MockRequest.
 * [MockRequest][WebDriver] [Mocking requests](https://codecept.io/webdriver#mocking-requests) is now available in WebDriver. Thanks **[radhey1851](https://github.com/radhey1851)**
-* **[Puppeteer]** Ensure configured user agent and/or window size is applied to all pages. See [#1862](https://github.com/codecept-js/CodeceptJS/issues/1862) by **[martomo](https://github.com/martomo)**
-* Improve handling of xpath locators with round brackets by **[nitschSB](https://github.com/nitschSB)**. See [#1870](https://github.com/codecept-js/CodeceptJS/issues/1870)
-* Use WebDriver capabilities config in wdio plugin. [#1869](https://github.com/codecept-js/CodeceptJS/issues/1869) by **[quekshuy](https://github.com/quekshuy)**
+* **[Puppeteer]** Ensure configured user agent and/or window size is applied to all pages. See [#1862](https://github.com/Codeception/CodeceptJS/issues/1862) by **[martomo](https://github.com/martomo)**
+* Improve handling of xpath locators with round brackets by **[nitschSB](https://github.com/nitschSB)**. See [#1870](https://github.com/Codeception/CodeceptJS/issues/1870)
+* Use WebDriver capabilities config in wdio plugin. [#1869](https://github.com/Codeception/CodeceptJS/issues/1869) by **[quekshuy](https://github.com/quekshuy)**
 
 ## 2.3.0
 
@@ -277,25 +300,25 @@ npx codeceptjs run-workers 3
 * [GraphQL][GraphQLDataFactory] **Helpers for data management over GraphQL** APIs added. By **[radhey1851](https://github.com/radhey1851)**.
   * Learn how to [use GraphQL helper](https://codecept.io/data#graphql) to access GarphQL API
   * And how to combine it with [GraphQLDataFactory](https://codecept.io/data#graphql-data-factory) to generate and persist test data.
-* **Updated to use Mocha 6**. See [#1802](https://github.com/codecept-js/CodeceptJS/issues/1802) by **[elukoyanov](https://github.com/elukoyanov)**
-* Added `dry-run` command to print steps of test scenarios without running them. Fails to execute scenarios with `grab*` methods or custom code. See [#1825](https://github.com/codecept-js/CodeceptJS/issues/1825) for more details.
+* **Updated to use Mocha 6**. See [#1802](https://github.com/Codeception/CodeceptJS/issues/1802) by **[elukoyanov](https://github.com/elukoyanov)**
+* Added `dry-run` command to print steps of test scenarios without running them. Fails to execute scenarios with `grab*` methods or custom code. See [#1825](https://github.com/Codeception/CodeceptJS/issues/1825) for more details.
 
 ```
 npx codeceptjs dry-run
 ```
 
-* **[Appium]** Optimization when clicking, searching for fields by accessibility id. See [#1777](https://github.com/codecept-js/CodeceptJS/issues/1777) by **[gagandeepsingh26](https://github.com/gagandeepsingh26)**
+* **[Appium]** Optimization when clicking, searching for fields by accessibility id. See [#1777](https://github.com/Codeception/CodeceptJS/issues/1777) by **[gagandeepsingh26](https://github.com/gagandeepsingh26)**
 * **[TestCafe]** Fixed `switchTo` by **[KadoBOT](https://github.com/KadoBOT)**
 * **[WebDriver]** Added geolocation actions by **[PeterNgTr](https://github.com/PeterNgTr)**
     * `grabGeoLocation()`
     * `setGeoLocation()`
-* **[Polly]** Check typeof arguments for mock requests by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1815](https://github.com/codecept-js/CodeceptJS/issues/1815)
+* **[Polly]** Check typeof arguments for mock requests by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1815](https://github.com/Codeception/CodeceptJS/issues/1815)
 * CLI improvements by **[jamesgeorge007](https://github.com/jamesgeorge007)**
   * `codeceptjs` command prints list of all available commands
   * added `codeceptjs -V` flag to print version information
   * warns on unknown command
 * Added TypeScript files support to `run-multiple` by **[z4o4z](https://github.com/z4o4z)**
-* Fixed element position bug in locator builder. See [#1829](https://github.com/codecept-js/CodeceptJS/issues/1829) by **[AnotherAnkor](https://github.com/AnotherAnkor)**
+* Fixed element position bug in locator builder. See [#1829](https://github.com/Codeception/CodeceptJS/issues/1829) by **[AnotherAnkor](https://github.com/AnotherAnkor)**
 * Various TypeScript typings updates by **[elukoyanov](https://github.com/elukoyanov)** and **[Vorobeyko](https://github.com/Vorobeyko)**
 * Added `event.step.comment` event for all comment steps like `I.say` or gherking steps.
 
@@ -312,21 +335,21 @@ npx codeceptjs dry-run
   * `scrollTo`
   * `switchTo`
 * Intellisense improvements. Renamed `tsconfig.json` to `jsconfig.json` on init. Fixed autocompletion for Visual Studio Code.
-* **[Polly]** Take configuration values from Puppeteer. Fix [#1766](https://github.com/codecept-js/CodeceptJS/issues/1766) by **[VikalpP](https://github.com/VikalpP)**
-* **[Polly]** Add preconditions to check for puppeteer page availability by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1767](https://github.com/codecept-js/CodeceptJS/issues/1767)
-* **[WebDriver]** Use filename for `uploadFile` by **[VikalpP](https://github.com/VikalpP)**. See [#1797](https://github.com/codecept-js/CodeceptJS/issues/1797)
+* **[Polly]** Take configuration values from Puppeteer. Fix [#1766](https://github.com/Codeception/CodeceptJS/issues/1766) by **[VikalpP](https://github.com/VikalpP)**
+* **[Polly]** Add preconditions to check for puppeteer page availability by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1767](https://github.com/Codeception/CodeceptJS/issues/1767)
+* **[WebDriver]** Use filename for `uploadFile` by **[VikalpP](https://github.com/VikalpP)**. See [#1797](https://github.com/Codeception/CodeceptJS/issues/1797)
 * **[Puppeteer]** Configure speed of input with `pressKeyDelay` option. By **[hubidu](https://github.com/hubidu)**
 * Fixed recursive loading of support objects by **[davertmik](https://github.com/davertmik)**.
-* Fixed support object definitions in steps.d.ts by **[johnyb](https://github.com/johnyb)**. Fixes [#1795](https://github.com/codecept-js/CodeceptJS/issues/1795)
+* Fixed support object definitions in steps.d.ts by **[johnyb](https://github.com/johnyb)**. Fixes [#1795](https://github.com/Codeception/CodeceptJS/issues/1795)
 * Fixed `Data().Scenario().injectDependencies()` is not a function by **[andrerleao](https://github.com/andrerleao)**
-* Fixed crash when using xScenario & Scenario.skip with tag by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1751](https://github.com/codecept-js/CodeceptJS/issues/1751)
-* Dynamic configuration of helpers can be performed with async function. See [#1786](https://github.com/codecept-js/CodeceptJS/issues/1786) by **[cviejo](https://github.com/cviejo)**
+* Fixed crash when using xScenario & Scenario.skip with tag by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1751](https://github.com/Codeception/CodeceptJS/issues/1751)
+* Dynamic configuration of helpers can be performed with async function. See [#1786](https://github.com/Codeception/CodeceptJS/issues/1786) by **[cviejo](https://github.com/cviejo)**
 * Added TS definitions for internal objects by **[Vorobeyko](https://github.com/Vorobeyko)**
 * BDD improvements:
   * Fix for snippets command with a .feature file that has special characters by **[asselin](https://github.com/asselin)**
-  * Fix `--path` option on `gherkin:snippets` command by **[asselin](https://github.com/asselin)**. See [#1790](https://github.com/codecept-js/CodeceptJS/issues/1790)
-  * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See [#1803](https://github.com/codecept-js/CodeceptJS/issues/1803) by **[asselin](https://github.com/asselin)**.
-* Fixed: dynamic configs not reset after test. Fixes [#1776](https://github.com/codecept-js/CodeceptJS/issues/1776) by **[cviejo](https://github.com/cviejo)**.
+  * Fix `--path` option on `gherkin:snippets` command by **[asselin](https://github.com/asselin)**. See [#1790](https://github.com/Codeception/CodeceptJS/issues/1790)
+  * Added `--feature` option to `gherkin:snippets` to enable creating snippets for a subset of .feature files. See [#1803](https://github.com/Codeception/CodeceptJS/issues/1803) by **[asselin](https://github.com/asselin)**.
+* Fixed: dynamic configs not reset after test. Fixes [#1776](https://github.com/Codeception/CodeceptJS/issues/1776) by **[cviejo](https://github.com/cviejo)**.
 
 ## 2.2.0
 
@@ -339,24 +362,24 @@ I.mockRequest('GET', '/api/users', 200);
 I.mockRequest('POST', '/users', { user: { name: 'fake' }});
 ```
 
-* **EXPERIMENTAL** **[Puppeteer]** [Firefox support](https://codecept.io/helpers/Puppeteer-firefox) introduced by **[ngadiyak](https://github.com/ngadiyak)**, see [#1740](https://github.com/codecept-js/CodeceptJS/issues/1740)
-* **[stepByStepReportPlugin]** use md5 hash to generate reports into unique folder. Fix [#1744](https://github.com/codecept-js/CodeceptJS/issues/1744) by **[chimurai](https://github.com/chimurai)**
+* **EXPERIMENTAL** **[Puppeteer]** [Firefox support](https://codecept.io/helpers/Puppeteer-firefox) introduced by **[ngadiyak](https://github.com/ngadiyak)**, see [#1740](https://github.com/Codeception/CodeceptJS/issues/1740)
+* **[stepByStepReportPlugin]** use md5 hash to generate reports into unique folder. Fix [#1744](https://github.com/Codeception/CodeceptJS/issues/1744) by **[chimurai](https://github.com/chimurai)**
 * Interactive pause improvements:
   * print result of `grab` commands
   * print message for successful assertions
 * `run-multiple` (parallel execution) improvements:
-  * `bootstrapAll` must be called before creating chunks. [#1741](https://github.com/codecept-js/CodeceptJS/issues/1741) by **[Vorobeyko](https://github.com/Vorobeyko)**
-  * Bugfix: If value in config has falsy value then multiple config does not overwrite original value. [#1756](https://github.com/codecept-js/CodeceptJS/issues/1756) by **[LukoyanovE](https://github.com/LukoyanovE)**
+  * `bootstrapAll` must be called before creating chunks. [#1741](https://github.com/Codeception/CodeceptJS/issues/1741) by **[Vorobeyko](https://github.com/Vorobeyko)**
+  * Bugfix: If value in config has falsy value then multiple config does not overwrite original value. [#1756](https://github.com/Codeception/CodeceptJS/issues/1756) by **[LukoyanovE](https://github.com/LukoyanovE)**
 * Fixed hooks broken in 2.1.5 by **[Vorobeyko](https://github.com/Vorobeyko)**
-* Fix references to support objects when using Dependency Injection. Fix by **[johnyb](https://github.com/johnyb)**. See [#1701](https://github.com/codecept-js/CodeceptJS/issues/1701)
-* Fix dynamic config applied for multiple helpers by **[VikalpP](https://github.com/VikalpP)** [#1743](https://github.com/codecept-js/CodeceptJS/issues/1743)
+* Fix references to support objects when using Dependency Injection. Fix by **[johnyb](https://github.com/johnyb)**. See [#1701](https://github.com/Codeception/CodeceptJS/issues/1701)
+* Fix dynamic config applied for multiple helpers by **[VikalpP](https://github.com/VikalpP)** [#1743](https://github.com/Codeception/CodeceptJS/issues/1743)
 
 
 ## 2.1.5
 
 * **EXPERIMENTAL** [Wix Detox support](https://github.com/Codeception/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
 * Saving successful commands inside interactive pause into `_output/cli-history` file. By **[hubidu](https://github.com/hubidu)**
-* Fixed hanging error handler inside scenario. See [#1721](https://github.com/codecept-js/CodeceptJS/issues/1721) by **[haily-lgc](https://github.com/haily-lgc)**.
+* Fixed hanging error handler inside scenario. See [#1721](https://github.com/Codeception/CodeceptJS/issues/1721) by **[haily-lgc](https://github.com/haily-lgc)**.
 * Fixed by **[Vorobeyko](https://github.com/Vorobeyko)**: tests did not fail when an exception was raised in async bootstrap.
 * **[WebDriver]** Added window control methods by **[emmonspired](https://github.com/emmonspired)**
   * `grabAllWindowHandles` returns all window handles
@@ -518,7 +541,7 @@ Use it with `FileSystem` helper to test availability of a file:
 * [allure plugin] Add skipped tests to allure reports by **[Vorobeyko](https://github.com/Vorobeyko)**
 * Fixed `Logged Test name | [object Object]` when used Data().Scenario(). By **[Vorobeyko](https://github.com/Vorobeyko)**
 * Fixed Data().only.Scenario() to run for all datasets. By **[Vorobeyko](https://github.com/Vorobeyko)**
-* **[WebDriver]** `attachFile` to work with hidden elements. Fixed in [#1460](https://github.com/codecept-js/CodeceptJS/issues/1460) by **[tsuemura](https://github.com/tsuemura)**
+* **[WebDriver]** `attachFile` to work with hidden elements. Fixed in [#1460](https://github.com/Codeception/CodeceptJS/issues/1460) by **[tsuemura](https://github.com/tsuemura)**
 
 
 
@@ -587,7 +610,7 @@ Use it with `FileSystem` helper to test availability of a file:
 * **Using `codecept.conf.js` as default configuration format**
 * Fixed "enametoolong" error when saving screenshots for data driven tests by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Updated NodeJS to 10 in Docker image
-* **[Pupeteer]** Add support to use WSEndpoint. Allows to execute tests remotely. [See [#1350](https://github.com/codecept-js/CodeceptJS/issues/1350)] by **[gabrielcaires](https://github.com/gabrielcaires)** (https://github.com/codecept-js/CodeceptJS/pull/1350)
+* **[Pupeteer]** Add support to use WSEndpoint. Allows to execute tests remotely. [See [#1350](https://github.com/Codeception/CodeceptJS/issues/1350)] by **[gabrielcaires](https://github.com/gabrielcaires)** (https://github.com/Codeception/CodeceptJS/pull/1350)
 * In interactive shell **[Enter]** goes to next step. Improvement by **[PeterNgTr](https://github.com/PeterNgTr)**.
 * `I.say` accepts second parameter as color to print colorful comments. Improvement by **[PeterNgTr](https://github.com/PeterNgTr)**.
 
@@ -603,12 +626,12 @@ I.say('This is by default'); //cyan is used
 
 * **[Puppeteer]** `dragSlider` action added by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[Puppeteer]** Fixed opening browser in shell mode by **[allenhwkim](https://github.com/allenhwkim)**
-* **[Puppeteer]** Fixed making screenshot on additional sessions by **[PeterNgTr](https://github.com/PeterNgTr)**. Fixes [#1266](https://github.com/codecept-js/CodeceptJS/issues/1266)
+* **[Puppeteer]** Fixed making screenshot on additional sessions by **[PeterNgTr](https://github.com/PeterNgTr)**. Fixes [#1266](https://github.com/Codeception/CodeceptJS/issues/1266)
 * Added `--invert` option to `run-multiple` command by **[LukoyanovE](https://github.com/LukoyanovE)**
 * Fixed steps in Allure reports by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Add option `output` to customize output directory in [stepByStepReport plugin](https://codecept.io/plugins/#stepbystepreport). By **[fpsthirty](https://github.com/fpsthirty)**
 * Changed type definition of PageObjects to get auto completion by **[rhicu](https://github.com/rhicu)**
-* Fixed steps output for async/arrow functions in CLI by **[LukoyanovE](https://github.com/LukoyanovE)**. See [#1329](https://github.com/codecept-js/CodeceptJS/issues/1329)
+* Fixed steps output for async/arrow functions in CLI by **[LukoyanovE](https://github.com/LukoyanovE)**. See [#1329](https://github.com/Codeception/CodeceptJS/issues/1329)
 
 ## 1.4.5
 
@@ -621,7 +644,7 @@ I.say('This is by default'); //cyan is used
 ```
 
 * **[WebDriverIO]** Fix timeouts definition to be compatible with W3C drivers. By **[LukoyanovE](https://github.com/LukoyanovE)**
-* Fixed: exception in Before block w/ Mocha causes test not to report failure. See [#1292](https://github.com/codecept-js/CodeceptJS/issues/1292) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Fixed: exception in Before block w/ Mocha causes test not to report failure. See [#1292](https://github.com/Codeception/CodeceptJS/issues/1292) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Command `run-parallel` now accepts `--override` flag. Thanks to **[ClemCB](https://github.com/ClemCB)**
 * Fixed Allure report with Before/BeforeSuite/After/AfterSuite steps. By **[PeterNgTr](https://github.com/PeterNgTr)**
 * Added `RUN_MULTIPLE` env variable to [Docker config](https://codecept.io/docker/). Allows to run tests in parallel inside a container. Thanks to **[PeterNgTr](https://github.com/PeterNgTr)**
@@ -652,7 +675,7 @@ Scenario('update user profile', () => {
 
 * Fixed attaching Allure screenshot on exception. Fix by **[DevinWatson](https://github.com/DevinWatson)**
 * Improved type definitions for custom steps. By **[Akxe](https://github.com/Akxe)**
-* Fixed setting `multiple.parallel.chunks` as environment variable in config. See [#1238](https://github.com/codecept-js/CodeceptJS/issues/1238) by **[ngadiyak](https://github.com/ngadiyak)**
+* Fixed setting `multiple.parallel.chunks` as environment variable in config. See [#1238](https://github.com/Codeception/CodeceptJS/issues/1238) by **[ngadiyak](https://github.com/ngadiyak)**
 
 ## 1.4.2
 
@@ -822,9 +845,9 @@ locate('//table')
 
 * [Dynamic configuration](https://codecept.io/advanced/#dynamic-configuration) to update helpers config per test or per suite.
 * Added `event.test.finished` which fires synchronously for both failed and passed tests.
-* [WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue[#1600](https://github.com/codecept-js/CodeceptJS/issues/1600). You can enabled them with `fullPageScreenshots: true`, however they may work unstable in Selenium.
+* [WebDriverIO][Protractor][Nightmare][Puppeteer] Full page screenshots on failure disabled by default. See [issue[#1600](https://github.com/Codeception/CodeceptJS/issues/1600). You can enabled them with `fullPageScreenshots: true`, however they may work unstable in Selenium.
 * `within` blocks can return values. See [updated documentation](https://codecept.io/basics/#within).
-* Removed doublt call to `_init` in helpers. Fixes issue [#1036](https://github.com/codecept-js/CodeceptJS/issues/1036)
+* Removed doublt call to `_init` in helpers. Fixes issue [#1036](https://github.com/Codeception/CodeceptJS/issues/1036)
 * Added scenario and feature configuration via fluent API:
 
 ```js
@@ -1088,7 +1111,7 @@ I.dontSee('Email Address');
 ↑ This element can be located with `~foobar` in WebDriverIO and Appium helpers. Thanks to **[flyskywhy](https://github.com/flyskywhy)**
 
 * Allow providing arbitrary objects in config includes by **[rlewan](https://github.com/rlewan)**
-* **[REST]** Prevent from mutating default headers by **[alexashley](https://github.com/alexashley)**. See [#789](https://github.com/codecept-js/CodeceptJS/issues/789)
+* **[REST]** Prevent from mutating default headers by **[alexashley](https://github.com/alexashley)**. See [#789](https://github.com/Codeception/CodeceptJS/issues/789)
 * **[REST]** Fixed sending empty helpers with `haveRequestHeaders` in `sendPostRequest`. By **[petrisorionel](https://github.com/petrisorionel)**
 * Fixed displaying undefined args in output by **[APshenkin](https://github.com/APshenkin)**
 * Fixed NaN instead of seconds in output by **[APshenkin](https://github.com/APshenkin)**
@@ -1100,7 +1123,7 @@ I.dontSee('Email Address');
 ## 1.0.3
 
 * [WebDriverIO][Protractor][Nightmare] method `waitUntilExists` implemented by **[sabau](https://github.com/sabau)**
-* Absolute path can be set for `output` dir by **[APshenkin](https://github.com/APshenkin)**. Fix [#571](https://github.com/codecept-js/CodeceptJS/issues/571)* Data table rows can be ignored by using `xadd`. By **[APhenkin](https://github.com/APhenkin)**
+* Absolute path can be set for `output` dir by **[APshenkin](https://github.com/APshenkin)**. Fix [#571](https://github.com/Codeception/CodeceptJS/issues/571)* Data table rows can be ignored by using `xadd`. By **[APhenkin](https://github.com/APhenkin)**
 * Added `Data(table).only.Scenario` to give ability to launch only Data tests. By **[APhenkin](https://github.com/APhenkin)**
 * Implemented `ElementNotFound` error by **[BorisOsipov](https://github.com/BorisOsipov)**.
 * Added TypeScript compiler / configs to check the JavaScript by **[KennyRules](https://github.com/KennyRules)**
@@ -1113,11 +1136,11 @@ I.dontSee('Email Address');
 
 * Introduced generators support in scenario hooks for `BeforeSuite`/`Before`/`AfterSuite`/`After`
 * **[ApiDataFactory]** Fixed loading helper; `requireg` package included.
-* Fix [#485](https://github.com/codecept-js/CodeceptJS/issues/485)`run-multiple`: the first browser-resolution combination was be used in all configurations
+* Fix [#485](https://github.com/Codeception/CodeceptJS/issues/485)`run-multiple`: the first browser-resolution combination was be used in all configurations
 * Fixed unique test names:
-  * Fixed [#447](https://github.com/codecept-js/CodeceptJS/issues/447) tests failed silently if they have the same name as other tests.
+  * Fixed [#447](https://github.com/Codeception/CodeceptJS/issues/447) tests failed silently if they have the same name as other tests.
   * Use uuid in screenshot names when `uniqueScreenshotNames: true`
-* **[Protractor]** Fixed testing non-angular application. `amOutsideAngularApp` is executed before each step. Fixes [#458](https://github.com/codecept-js/CodeceptJS/issues/458)* Added output for steps in hooks when they fail
+* **[Protractor]** Fixed testing non-angular application. `amOutsideAngularApp` is executed before each step. Fixes [#458](https://github.com/Codeception/CodeceptJS/issues/458)* Added output for steps in hooks when they fail
 
 ## 1.0.1
 
@@ -1126,7 +1149,7 @@ I.dontSee('Email Address');
   * Added [Mochawesome](http://codecept.io/helpers/Mochawesome/) helper
   * `addMochawesomeContext` method to add custom data to mochawesome reports
   * Fixed Mochawesome context for failed screenshots.
-* **[WebDriverIO]** improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/codecept-js/CodeceptJS/issues/647)* **[Nightmare]** Added `refresh` function by **[awhanks](https://github.com/awhanks)**
+* **[WebDriverIO]** improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/Codeception/CodeceptJS/issues/647)* **[Nightmare]** Added `refresh` function by **[awhanks](https://github.com/awhanks)**
 * fixed `Unhandled promise rejection (rejection id: 1): Error: Unknown wait type: pageLoad`
 * support for tests with retries in html report
 * be sure that change window size and timeouts completes before test
@@ -1191,16 +1214,16 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
 * [Data Driven Tests](http://codecept.io/advanced/#data-driven-tests) introduced.
-* Print execution time per step in `--debug` mode. [#591](https://github.com/codecept-js/CodeceptJS/issues/591) by **[APshenkin](https://github.com/APshenkin)**
+* Print execution time per step in `--debug` mode. [#591](https://github.com/Codeception/CodeceptJS/issues/591) by **[APshenkin](https://github.com/APshenkin)**
 * [WebDriverIO][Protractor][Nightmare] Added `disableScreenshots` option to disable screenshots on fail by **[Apshenkin](https://github.com/Apshenkin)**
 * [WebDriverIO][Protractor][Nightmare] Added `uniqueScreenshotNames` option to generate unique names for screenshots on failure by **[Apshenkin](https://github.com/Apshenkin)**
 * [WebDriverIO][Nightmare] Fixed click on context; `click('text', '#el')` will throw exception if text is not found inside `#el`.
 * [WebDriverIO][Protractor][SeleniumWebdriver] [SmartWait introduced](http://codecept.io/acceptance/#smartwait).
-* [WebDriverIO][Protractor][Nightmare]Fixed `saveScreenshot` for PhantomJS, `fullPageScreenshots` option introduced by **[HughZurname](https://github.com/HughZurname)** [#549](https://github.com/codecept-js/CodeceptJS/issues/549)
+* [WebDriverIO][Protractor][Nightmare]Fixed `saveScreenshot` for PhantomJS, `fullPageScreenshots` option introduced by **[HughZurname](https://github.com/HughZurname)** [#549](https://github.com/Codeception/CodeceptJS/issues/549)
 * **[Appium]** helper introduced by **[APshenkin](https://github.com/APshenkin)**
-* **[REST]** helper introduced by **[atrevino](https://github.com/atrevino)** in [#504](https://github.com/codecept-js/CodeceptJS/issues/504)
-* [WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version [#560](https://github.com/codecept-js/CodeceptJS/issues/560) by **[APshenkin](https://github.com/APshenkin)**
-* **[Nightmare]** Fixed restarting by **[APshenkin](https://github.com/APshenkin)** [#581](https://github.com/codecept-js/CodeceptJS/issues/581)
+* **[REST]** helper introduced by **[atrevino](https://github.com/atrevino)** in [#504](https://github.com/Codeception/CodeceptJS/issues/504)
+* [WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version [#560](https://github.com/Codeception/CodeceptJS/issues/560) by **[APshenkin](https://github.com/APshenkin)**
+* **[Nightmare]** Fixed restarting by **[APshenkin](https://github.com/APshenkin)** [#581](https://github.com/Codeception/CodeceptJS/issues/581)
 * **[WebDriverIO]** Methods added by **[APshenkin](https://github.com/APshenkin)**:
     * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
     * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seetitleequals)
@@ -1220,10 +1243,10 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
     * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
     * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
     * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
-* Use mkdirp to create output directory. [#592](https://github.com/codecept-js/CodeceptJS/issues/592) by **[vkramskikh](https://github.com/vkramskikh)**
-* **[WebDriverIO]** Fixed `seeNumberOfVisibleElements` by **[BorisOsipov](https://github.com/BorisOsipov)** [#574](https://github.com/codecept-js/CodeceptJS/issues/574)
-* Lots of fixes for promise chain by **[APshenkin](https://github.com/APshenkin)** [#568](https://github.com/codecept-js/CodeceptJS/issues/568)
-    * Fix [#543](https://github.com/codecept-js/CodeceptJS/issues/543)- After block not properly executed if Scenario fails
+* Use mkdirp to create output directory. [#592](https://github.com/Codeception/CodeceptJS/issues/592) by **[vkramskikh](https://github.com/vkramskikh)**
+* **[WebDriverIO]** Fixed `seeNumberOfVisibleElements` by **[BorisOsipov](https://github.com/BorisOsipov)** [#574](https://github.com/Codeception/CodeceptJS/issues/574)
+* Lots of fixes for promise chain by **[APshenkin](https://github.com/APshenkin)** [#568](https://github.com/Codeception/CodeceptJS/issues/568)
+    * Fix [#543](https://github.com/Codeception/CodeceptJS/issues/543)- After block not properly executed if Scenario fails
     * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
     * if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another
     * if during test we got error from Selenium server - stop complete this suite and go to another
@@ -1231,7 +1254,7 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
     * Complete `_after`, `_afterSuite` hooks even After/AfterSuite from test was failed
     * Don't close browser between suites, when `restart` option is false. We should start browser only one time and close it only after all tests.
     * Close tabs and clear local storage, if `keepCookies` flag is enabled
-* Fix TypeError when using babel-node or ts-node on node.js 7+ [#586](https://github.com/codecept-js/CodeceptJS/issues/586) by **[vkramskikh](https://github.com/vkramskikh)**
+* Fix TypeError when using babel-node or ts-node on node.js 7+ [#586](https://github.com/Codeception/CodeceptJS/issues/586) by **[vkramskikh](https://github.com/vkramskikh)**
 * **[Nightmare]** fixed usage of `_locate`
 
 Special thanks to **Andrey Pshenkin** for his work on this release and the major improvements.
@@ -1247,9 +1270,9 @@ Scenario('My scenario', { build_id: 123, type: 'slow' }, function (I)
 those options can be accessed as `opts` property inside a `test` object. Can be used in custom listeners.
 
 * Added `docs` directory to a package.
-* [WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when `restart: false` by **[tfiwm](https://github.com/tfiwm)** [#519](https://github.com/codecept-js/CodeceptJS/issues/519)
+* [WebDriverIO][Protractor][SeleniumWebdriver] Bugfix: cleaning session when `restart: false` by **[tfiwm](https://github.com/tfiwm)** [#519](https://github.com/Codeception/CodeceptJS/issues/519)
 * [WebDriverIO][Protractor][Nightmare] Added second parameter to `saveScreenshot` to allow a full page screenshot. By **[HughZurname](https://github.com/HughZurname)**
-* Added suite object to `suite.before` and `suite.after` events by **[implico](https://github.com/implico)**. [#496](https://github.com/codecept-js/CodeceptJS/issues/496)
+* Added suite object to `suite.before` and `suite.after` events by **[implico](https://github.com/implico)**. [#496](https://github.com/Codeception/CodeceptJS/issues/496)
 
 ## 0.6.2
 
@@ -1318,8 +1341,8 @@ codeceptjs run users_test.js -c tests
 ## 0.5.0
 
 * Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)
-* Fix 'fullTitle() is not a function' in exit.js by **[hubidu](https://github.com/hubidu)**. See [#388](https://github.com/codecept-js/CodeceptJS/issues/388).
-* **[Nightmare]** Fix for `waitTimeout` by **[HughZurname](https://github.com/HughZurname)**. See [#391](https://github.com/codecept-js/CodeceptJS/issues/391). Resolves [#236](https://github.com/codecept-js/CodeceptJS/issues/236)* Dockerized CodeceptJS setup by **[artiomnist](https://github.com/artiomnist)**. [See reference](https://github.com/codecept-js/CodeceptJS/blob/master/docker/README.md)
+* Fix 'fullTitle() is not a function' in exit.js by **[hubidu](https://github.com/hubidu)**. See [#388](https://github.com/Codeception/CodeceptJS/issues/388).
+* **[Nightmare]** Fix for `waitTimeout` by **[HughZurname](https://github.com/HughZurname)**. See [#391](https://github.com/Codeception/CodeceptJS/issues/391). Resolves [#236](https://github.com/Codeception/CodeceptJS/issues/236)* Dockerized CodeceptJS setup by **[artiomnist](https://github.com/artiomnist)**. [See reference](https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md)
 
 ## 0.4.16
 
@@ -1401,7 +1424,7 @@ Scenario('Not that complex', {timeout: 1000}, (I) => {
 });
 ```
 
-* **[WebDriverIO]** Added `uniqueScreenshotNames` option to set unique screenshot names for failed tests. By **[APshenkin](https://github.com/APshenkin)**. See [#299](https://github.com/codecept-js/CodeceptJS/issues/299)
+* **[WebDriverIO]** Added `uniqueScreenshotNames` option to set unique screenshot names for failed tests. By **[APshenkin](https://github.com/APshenkin)**. See [#299](https://github.com/Codeception/CodeceptJS/issues/299)
 * **[WebDriverIO]** `clearField` method improved to accept name/label locators and throw errors.
 * [Nightmare][SeleniumWebdriver][Protractor] `clearField` method added.
 * **[Nightmare]** Fixed `waitForElement`, and `waitForVisible` methods.
@@ -1418,12 +1441,12 @@ codeceptjs run -o '{ "bootstrap": "bootstrap.js"}'
 codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "chrome"}}}'
 ```
 
-* Added [regression tests](https://github.com/codecept-js/CodeceptJS/tree/master/test/runner) for codeceptjs tests runner.
+* Added [regression tests](https://github.com/Codeception/CodeceptJS/tree/master/test/runner) for codeceptjs tests runner.
 
 ## 0.4.11
 
 * Fixed regression in 0.4.10
-* Added `bootstrap`/`teardown` config options to accept functions as parameters by **[pscanf](https://github.com/pscanf)**. See updated [config reference](http://codecept.io/configuration/) [#319](https://github.com/codecept-js/CodeceptJS/issues/319)
+* Added `bootstrap`/`teardown` config options to accept functions as parameters by **[pscanf](https://github.com/pscanf)**. See updated [config reference](http://codecept.io/configuration/) [#319](https://github.com/Codeception/CodeceptJS/issues/319)
 
 ## 0.4.10
 
@@ -1438,26 +1461,26 @@ module.exports = function(done) {
 }
 ```
 
-* Changed 'pending' to 'skipped' in reports by **[timja-kainos](https://github.com/timja-kainos)**. See [#315](https://github.com/codecept-js/CodeceptJS/issues/315)
+* Changed 'pending' to 'skipped' in reports by **[timja-kainos](https://github.com/timja-kainos)**. See [#315](https://github.com/Codeception/CodeceptJS/issues/315)
 
 ## 0.4.9
 
 * [SeleniumWebdriver][Protractor][WebDriverIO][Nightmare] fixed `executeScript`, `executeAsyncScript` to work and return values.
 * [Protractor][SeleniumWebdriver][WebDriverIO] Added `waitForInvisible` and `waitForStalenessOf` methods by **[Nighthawk14](https://github.com/Nighthawk14)**.
 * Added `--config` option to `codeceptjs run` to manually specify config file by **[cnworks](https://github.com/cnworks)**
-* **[Protractor]** Simplified behavior of `amOutsideAngularApp` by using `ignoreSynchronization`. Fixes [#278](https://github.com/codecept-js/CodeceptJS/issues/278)
-* Set exit code to 1 when test fails at `Before`/`After` hooks. Fixes [#279](https://github.com/codecept-js/CodeceptJS/issues/279)
+* **[Protractor]** Simplified behavior of `amOutsideAngularApp` by using `ignoreSynchronization`. Fixes [#278](https://github.com/Codeception/CodeceptJS/issues/278)
+* Set exit code to 1 when test fails at `Before`/`After` hooks. Fixes [#279](https://github.com/Codeception/CodeceptJS/issues/279)
 
 
 ## 0.4.8
 
 * [Protractor][SeleniumWebdriver][Nightmare] added `moveCursorTo` method.
-* [Protractor][SeleniumWebdriver][WebDriverIO] Added `manualStart` option to start browser manually in the beginning of test. By **[cnworks](https://github.com/cnworks)**. [PR[#250](https://github.com/codecept-js/CodeceptJS/issues/250)
+* [Protractor][SeleniumWebdriver][WebDriverIO] Added `manualStart` option to start browser manually in the beginning of test. By **[cnworks](https://github.com/cnworks)**. [PR[#250](https://github.com/Codeception/CodeceptJS/issues/250)
 * Fixed `codeceptjs init` to work with nested directories and file masks.
 * Fixed `codeceptjs gt` to generate test with proper file name suffix. By **[Zougi](https://github.com/Zougi)**.
 * **[Nightmare]** Fixed: Error is thrown when clicking on element which can't be locate. By **[davetmik](https://github.com/davetmik)**
 * **[WebDriverIO]** Fixed `attachFile` for file upload. By **[giuband](https://github.com/giuband)** and **[davetmik](https://github.com/davetmik)**
-* **[WebDriverIO]** Add support for timeouts in config and with `defineTimeouts` method. By **[easternbloc](https://github.com/easternbloc)** [#258](https://github.com/codecept-js/CodeceptJS/issues/258) and [#267](https://github.com/codecept-js/CodeceptJS/issues/267) by **[davetmik](https://github.com/davetmik)**
+* **[WebDriverIO]** Add support for timeouts in config and with `defineTimeouts` method. By **[easternbloc](https://github.com/easternbloc)** [#258](https://github.com/Codeception/CodeceptJS/issues/258) and [#267](https://github.com/Codeception/CodeceptJS/issues/267) by **[davetmik](https://github.com/davetmik)**
 * Fixed hanging of CodeceptJS when error is thrown by event dispatcher. Fix by **[Zougi](https://github.com/Zougi)** and **[davetmik](https://github.com/davetmik)**
 
 
@@ -1474,7 +1497,7 @@ module.exports = function(done) {
 ## 0.4.5
 
 * Fixed running `codecept def` command by **[jankaspar](https://github.com/jankaspar)**
-* [Protractor][SeleniumWebdriver] Added support for special keys in `pressKey` method. Fixes [#216](https://github.com/codecept-js/CodeceptJS/issues/216)
+* [Protractor][SeleniumWebdriver] Added support for special keys in `pressKey` method. Fixes [#216](https://github.com/Codeception/CodeceptJS/issues/216)
 
 ## 0.4.4
 
@@ -1501,7 +1524,7 @@ exports.config = {
 
 ## 0.4.2
 
-* Added ability to localize tests with translation [#189](https://github.com/codecept-js/CodeceptJS/issues/189). Thanks to **[abner](https://github.com/abner)**
+* Added ability to localize tests with translation [#189](https://github.com/Codeception/CodeceptJS/issues/189). Thanks to **[abner](https://github.com/abner)**
   * **[Translation]** ru-RU translation added.
   * **[Translation]** pt-BR translation added.
 * **[Protractor]** Protractor 4.0.4 compatibility.
@@ -1512,8 +1535,8 @@ exports.config = {
 
 ## 0.4.1
 
-* Added custom steps to step definition list. See [#174](https://github.com/codecept-js/CodeceptJS/issues/174) by **[jayS-de](https://github.com/jayS-de)**
-* **[WebDriverIO]** Fixed using `waitForTimeout` option by **[stephane-ruhlmann](https://github.com/stephane-ruhlmann)**. See [#178](https://github.com/codecept-js/CodeceptJS/issues/178)
+* Added custom steps to step definition list. See [#174](https://github.com/Codeception/CodeceptJS/issues/174) by **[jayS-de](https://github.com/jayS-de)**
+* **[WebDriverIO]** Fixed using `waitForTimeout` option by **[stephane-ruhlmann](https://github.com/stephane-ruhlmann)**. See [#178](https://github.com/Codeception/CodeceptJS/issues/178)
 
 ## 0.4.0
 
@@ -1553,7 +1576,7 @@ Depending on installation type additional modules (webdriverio, protractor, ...)
 * [Protractor][SeleniumWebdriver] fixed closing browser instances
 * [Protractor][SeleniumWebdriver] `doubleClick` method added
 * [WebDriverIO][Protractor][SeleniumWebdriver] `doubleClick` method to locate clickable elements by text, `context` option added.
-* Fixed using assert in generator without yields [#89](https://github.com/codecept-js/CodeceptJS/issues/89)
+* Fixed using assert in generator without yields [#89](https://github.com/Codeception/CodeceptJS/issues/89)
 
 ## 0.3.1
 
@@ -1573,8 +1596,8 @@ Starting from 0.3.0 webdriverio is not the only backend for running selenium tes
 * **[WebDriverIO]** fixed `windowSize: maximize` option in config
 * **[WebDriverIO]** `seeElement` and `dontSeeElement` check element for visibility by **[fabioel](https://github.com/fabioel)** and **[davertmik](https://github.com/davertmik)**
 * **[WebDriverIO]** `seeElementInDOM`, `dontSeeElementInDOM` added to check element exists on page.
-* **[WebDriverIO]** fixed saving screenshots on failure. Fixes [#70](https://github.com/codecept-js/CodeceptJS/issues/70)
-* fixed `within` block doesn't end in output not [#79](https://github.com/codecept-js/CodeceptJS/issues/79)
+* **[WebDriverIO]** fixed saving screenshots on failure. Fixes [#70](https://github.com/Codeception/CodeceptJS/issues/70)
+* fixed `within` block doesn't end in output not [#79](https://github.com/Codeception/CodeceptJS/issues/79)
 
 
 ## 0.2.8
@@ -1583,20 +1606,20 @@ Starting from 0.3.0 webdriverio is not the only backend for running selenium tes
 
 ## 0.2.7
 
-* process ends with exit code 1 on error or failure [#49](https://github.com/codecept-js/CodeceptJS/issues/49)
-* fixed registereing global Helper [#57](https://github.com/codecept-js/CodeceptJS/issues/57)
-* fixed handling error in within block [#50](https://github.com/codecept-js/CodeceptJS/issues/50)
+* process ends with exit code 1 on error or failure [#49](https://github.com/Codeception/CodeceptJS/issues/49)
+* fixed registereing global Helper [#57](https://github.com/Codeception/CodeceptJS/issues/57)
+* fixed handling error in within block [#50](https://github.com/Codeception/CodeceptJS/issues/50)
 
 ## 0.2.6
 
 * Fixed `done() was called multiple times`
 * **[WebDriverIO]** added `waitToHide` method by **[fabioel](https://github.com/fabioel)**
-* Added global `Helper` (alias `codecept_helper)`, object use for writing custom Helpers. Generator updated. Changes to [#48](https://github.com/codecept-js/CodeceptJS/issues/48)
+* Added global `Helper` (alias `codecept_helper)`, object use for writing custom Helpers. Generator updated. Changes to [#48](https://github.com/Codeception/CodeceptJS/issues/48)
 
 ## 0.2.5
 
-* Fixed issues with using yield inside a test [#45](https://github.com/codecept-js/CodeceptJS/issues/45) [#47](https://github.com/codecept-js/CodeceptJS/issues/47) [#43](https://github.com/codecept-js/CodeceptJS/issues/43)
-* Fixed generating a custom helper. Helper class is now accessible with `codecept_helper` var. Fixes [#48](https://github.com/codecept-js/CodeceptJS/issues/48)
+* Fixed issues with using yield inside a test [#45](https://github.com/Codeception/CodeceptJS/issues/45) [#47](https://github.com/Codeception/CodeceptJS/issues/47) [#43](https://github.com/Codeception/CodeceptJS/issues/43)
+* Fixed generating a custom helper. Helper class is now accessible with `codecept_helper` var. Fixes [#48](https://github.com/Codeception/CodeceptJS/issues/48)
 
 ## 0.2.4
 
@@ -1629,7 +1652,7 @@ Whenever you need to create `I` object (in page objects, custom steps, but not i
   - mouse: `rightClick`
 * tests added
 * **[WebDriverIO]** proxy configuration added by **[petehouston](https://github.com/petehouston)**
-* **[WebDriverIO]** fixed `waitForText` method by **[roadhump](https://github.com/roadhump)**. Fixes [#11](https://github.com/codecept-js/CodeceptJS/issues/11)
+* **[WebDriverIO]** fixed `waitForText` method by **[roadhump](https://github.com/roadhump)**. Fixes [#11](https://github.com/Codeception/CodeceptJS/issues/11)
 * Fixed creating output dir when it already exists on init by **[alfirin](https://github.com/alfirin)**
 * Fixed loading of custom helpers
 
