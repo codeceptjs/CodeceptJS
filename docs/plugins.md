@@ -15,7 +15,7 @@ Allure reporter
 
 Enables Allure reporter.
 
-##### Usage
+#### Usage
 
 To start please install `allure-commandline` package (which requires Java 8)
 
@@ -38,7 +38,7 @@ Launch Allure server and see the report like on a screenshot above:
 
     allure serve output
 
-##### Configuration
+#### Configuration
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
 -   `enableScreenshotDiffPlugin` - a boolean flag for add screenshot diff to report.
@@ -88,7 +88,7 @@ Commands affected (by default):
 -   `doubleClick`
 -   `rightClick`
 
-##### Configuration
+#### Configuration
 
 ```js
 plugins: {
@@ -503,7 +503,7 @@ Enable it manually on each run via `-p` option:
 
 Dumps puppeteers code coverage after every test.
 
-##### Configuration
+#### Configuration
 
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
@@ -556,7 +556,7 @@ Run tests with plugin enabled:
 
     npx codeceptjs run --plugins retryFailedStep
 
-##### Configuration:
+#### Configuration:
 
 -   `retries` - number of retries (by default 5),
 -   `when` - function, when to perform a retry (accepts error as parameter)
@@ -575,7 +575,7 @@ Run tests with plugin enabled:
     You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
     To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 
-##### Example
+#### Example
 
 ```js
 plugins: {
@@ -589,7 +589,7 @@ plugins: {
 }
 ```
 
-##### Disable Per Test
+#### Disable Per Test
 
 This plugin can be disabled per test. In this case you will need to stet `I.retry()` to all flaky steps:
 
@@ -613,7 +613,7 @@ Initially this functionality was part of corresponding helper but has been moved
 
 This plugin is **enabled by default**.
 
-##### Configuration
+#### Configuration
 
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
@@ -763,7 +763,7 @@ Run tests with plugin enabled:
 
     npx codeceptjs run --plugins stepByStepReport
 
-##### Configuration
+#### Configuration
 
 ```js
 "plugins": {
@@ -800,7 +800,7 @@ This plugin allows to run webdriverio services like:
 
 A complete list of all available services can be found on [webdriverio website][15].
 
-###### Setup
+#### Setup
 
 1.  Install a webdriverio service
 2.  Enable `wdio` plugin in config
@@ -808,7 +808,7 @@ A complete list of all available services can be found on [webdriverio website][
 
 See examples below:
 
-###### Selenium Standalone Service
+#### Selenium Standalone Service
 
 Install `@wdio/selenium-standalone-service` package, as [described here][16].
 It is important to make sure it is compatible with current webdriverio version.
@@ -827,7 +827,7 @@ plugins: {
 
 Please note, this service can be used with Protractor helper as well!
 
-##### Sauce Service
+#### Sauce Service
 
 Install `@wdio/sauce-service` package, as [described here][17].
 It is important to make sure it is compatible with current webdriverio version.
