@@ -187,7 +187,7 @@ describe('WebDriver', function () {
       await wd.see('right clicked');
     });
   });
-  
+
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
