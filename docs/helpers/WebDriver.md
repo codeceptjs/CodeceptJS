@@ -1386,6 +1386,17 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 -   `caps`  
 -   `fn`  
 
+### saveElementScreenshot
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+#### Parameters
+-   `locator` **([string][19] | [object][18])** clickable element located by CSS|XPath|strict locator.  
+-   `fileName`  
+
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).

@@ -7,6 +7,7 @@ const TestHelper = require('../support/TestHelper');
 const WebDriver = require('../../lib/helper/WebDriver');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
+const fileExists = require('../../lib/utils').fileExists;
 
 const siteUrl = TestHelper.siteUrl();
 let wd;
@@ -162,6 +163,21 @@ describe('WebDriver', function () {
       } catch (e) {
         e.should.be.instanceOf(Error);
       }
+    });
+  });
+
+  describe('#saveElementScreenshot', () => {
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+
+    it('should create a screenshot file in output dir of element', async () => {
+
+      await wd.amOnPage('/form/field');
+      await wd.seeElement(`input[name='name']`);
+      const sec = (new Date()).getUTCMilliseconds();
+      await wd.saveElementScreenshot(`input[name='name']`,`element_screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists');
     });
   });
 
