@@ -165,22 +165,7 @@ describe('WebDriver', function () {
       }
     });
   });
-
-  describe('#saveElementScreenshot', () => {
-    beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output');
-    });
-
-    it('should create a screenshot file in output dir of element', async () => {
-
-      await wd.amOnPage('/form/field');
-      await wd.seeElement(`input[name='name']`);
-      const sec = (new Date()).getUTCMilliseconds();
-      await wd.saveElementScreenshot(`input[name='name']`,`element_screenshot_${sec}.png`);
-      assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists');
-    });
-  });
-
+  
   describe('Force Right Click: #forceRightClick', () => {
     it('it should forceRightClick', async () => {
       await wd.amOnPage('/form/rightclick');

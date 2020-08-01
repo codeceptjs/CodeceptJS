@@ -905,6 +905,18 @@ I.rightClick('Click me', '.context');
 -   `locator` **([string][9] | [object][10])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][9]? | [object][10])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
+
+### saveElementScreenshot
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+#### Parameters
+-   `locator` **([string][19] | [object][18])** clickable element located by CSS|XPath|strict locator.  
+-   `fileName`  
+
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
