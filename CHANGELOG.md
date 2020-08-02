@@ -164,7 +164,7 @@ I.see('You are logged out');
   * works with WebDriver helper
 * Avoid failiure report on successful retry in worker by @koushikmohan1996
 * Added translation ability to Scenario, Feature and other context methods by @koushikmohan1996
-  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/Codeception/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/Codeception/CodeceptJS/tree/master/translations).
+  * 📢 Please help us translate context methods to your language! See [italian translation](https://github.com/codeceptjs/CodeceptJS/blob/master/translations/it-IT.js#L3) as an example and send [patches to vocabularies](https://github.com/codeceptjs/CodeceptJS/tree/master/translations).
 * allurePlugin: Added `say` comments to allure reports by @PeterNgTr.
 * Fixed no custom output folder created when executed with run-worker. Fix by @PeterNgTr
 * [Puppeteer] Fixed error description for context element not found. See #2065. Fix by @PeterNgTr
@@ -249,7 +249,7 @@ I.click('$register_button');
 Changed pressKey method to resolve issues and extend functionality.
   * Did not properly recognize 'Meta' (or 'Command') as modifier key.
   * Right modifier keys did not work in WebDriver using JsonWireProtocol.
-  * 'Shift' + <key> combination would not reflect actual keyboard behavior.
+  * 'Shift' + 'key' combination would not reflect actual keyboard behavior.
   * Respect sequence with multiple modifier keys passed to pressKey.
   * Added support to automatic change operation modifier key based on operating system.
 * [Puppeteer][WebDriver] Added `pressKeyUp` and `pressKeyDown` to press and release modifier keys like `Control` or `Shift`. By @martomo.
@@ -369,7 +369,7 @@ I.mockRequest('POST', '/users', { user: { name: 'fake' }});
 
 ## 2.1.5
 
-* **EXPERIMENTAL** [Wix Detox support](https://github.com/Codeception/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
+* **EXPERIMENTAL** [Wix Detox support](https://github.com/codeceptjs/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
 * Saving successful commands inside interactive pause into `_output/cli-history` file. By @hubidu
 * Fixed hanging error handler inside scenario. See #1721 by @haily-lgc.
 * Fixed by @Vorobeyko: tests did not fail when an exception was raised in async bootstrap.
@@ -602,7 +602,7 @@ Use it with `FileSystem` helper to test availability of a file:
 * **Using `codecept.conf.js` as default configuration format**
 * Fixed "enametoolong" error when saving screenshots for data driven tests by @PeterNgTr
 * Updated NodeJS to 10 in Docker image
-* [Pupeteer] Add support to use WSEndpoint. Allows to execute tests remotely. [See #1350] by @gabrielcaires (https://github.com/Codeception/CodeceptJS/pull/1350)
+* [Pupeteer] Add support to use WSEndpoint. Allows to execute tests remotely. [See #1350] by @gabrielcaires (https://github.com/codeceptjs/CodeceptJS/pull/1350)
 * In interactive shell [Enter] goes to next step. Improvement by @PeterNgTr.
 * `I.say` accepts second parameter as color to print colorful comments. Improvement by @PeterNgTr.
 
@@ -1334,7 +1334,7 @@ codeceptjs run users_test.js -c tests
 
 * Protractor ^5.0.0 support (while keeping ^4.0.9 compatibility)
 * Fix 'fullTitle() is not a function' in exit.js by @hubidu. See #388.
-* [Nightmare] Fix for `waitTimeout` by @HughZurname. See #391. Resolves #236* Dockerized CodeceptJS setup by @artiomnist. [See reference](https://github.com/Codeception/CodeceptJS/blob/master/docker/README.md)
+* [Nightmare] Fix for `waitTimeout` by @HughZurname. See #391. Resolves #236* Dockerized CodeceptJS setup by @artiomnist. [See reference](https://github.com/codeceptjs/CodeceptJS/blob/master/docker/README.md)
 
 ## 0.4.16
 
@@ -1433,7 +1433,7 @@ codeceptjs run -o '{ "bootstrap": "bootstrap.js"}'
 codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "chrome"}}}'
 ```
 
-* Added [regression tests](https://github.com/Codeception/CodeceptJS/tree/master/test/runner) for codeceptjs tests runner.
+* Added [regression tests](https://github.com/codeceptjs/CodeceptJS/tree/master/test/runner) for codeceptjs tests runner.
 
 ## 0.4.11
 
