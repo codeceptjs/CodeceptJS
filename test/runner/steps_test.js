@@ -1,11 +1,8 @@
 const expect = require('expect');
-const path = require('path');
 const exec = require('child_process').exec;
+const { codecept_dir, codecept_run } = require('./consts');
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
-const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/steps');
-const codecept_run = `${runner} run`;
-const config_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
+const config_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/configs/steps/${config} ${grep ? `--grep "${grep}"` : ''}`;
 
 describe('CodeceptJS Steps', () => {
   it('should stop test, when step exceeded', (done) => {
