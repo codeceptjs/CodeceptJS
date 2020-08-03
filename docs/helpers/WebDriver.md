@@ -910,6 +910,7 @@ I.forceClick({css: 'nav a.login'});
 
 This action supports [React locators](https://codecept.io/react#locators)
  
+
 ### forceRightClick
 
 Perform an emulated right click on a link or a button, given by a locator.
@@ -936,12 +937,12 @@ I.forceRightClick('Logout', '#nav');
 // using strict locator
 I.forceRightClick({css: 'nav a.login'});
 ```
+This action supports [React locators](https://codecept.io/react#locators)
 
 #### Parameters
 
 -   `locator` **([string][19] | [object][18])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][19]? | [object][18])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-
 
 
 ### grabAllWindowHandles
@@ -1387,15 +1388,18 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 -   `fn`  
 
 ### saveElementScreenshot
+
 Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
 Filename is relative to output folder.
+
 ```js
 I.saveElementScreenshot(`#submit`,'debug.png');
 ```
-#### Parameters
--   `locator` **([string][19] | [object][18])** clickable element located by CSS|XPath|strict locator.  
--   `fileName`  
 
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][19]** file name to save.
 
 ### saveScreenshot
 

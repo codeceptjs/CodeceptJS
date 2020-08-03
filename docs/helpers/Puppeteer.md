@@ -1194,17 +1194,19 @@ I.rightClick('Click me', '.context');
 This action supports [React locators](https://codecept.io/react#locators)
  
 
-
 ### saveElementScreenshot
+
 Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
 Filename is relative to output folder.
+
 ```js
 I.saveElementScreenshot(`#submit`,'debug.png');
 ```
-#### Parameters
--   `locator` **([string][19] | [object][18])** clickable element located by CSS|XPath|strict locator.  
--   `fileName`  
 
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][8]** file name to save.
 
 ### saveScreenshot
 
