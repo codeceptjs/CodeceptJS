@@ -1,3 +1,8 @@
+## 2.6.8
+
+* Fix missing screenshot on failure when REST helper is in use #2513 by @PeterNgTr
+* Improve error logging in the `screenshotOnFail` plugin #2512 by @pablopaul
+
 ## 2.6.7
 
 * Add REST helper into `standardActingHelpers` array #2474 by @PeterNgTr
