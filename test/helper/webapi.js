@@ -573,10 +573,10 @@ module.exports.tests = function () {
   });
 
   describe('#type', () => {
-    if (isHelper('Nightmare')) return;
-    if (isHelper('TestCafe')) return;
+    it('should type into a field', async function () {
+      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('Nightmare')) this.skip();
 
-    it('should type into a field', async () => {
       await I.amOnPage('/form/field');
       await I.click('Name');
 
@@ -589,12 +589,15 @@ module.exports.tests = function () {
       await I.seeInField('Name', 'Type2');
     });
 
-    it('should use delay to slow down typing', async () => {
+    it('should use delay to slow down typing', async function () {
+      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('Nightmare')) this.skip();
+
       await I.amOnPage('/form/field');
-      await I.click('Name');
+      await I.fillField('Name', '');
       const time = Date.now();
       await I.type('12345', 100);
-      await I.seeInField('Name', 'Type2');
+      await I.seeInField('Name', '12345');
       assert(Date.now() - time > 500);
     });
   });
