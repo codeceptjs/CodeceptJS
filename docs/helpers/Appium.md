@@ -1563,6 +1563,20 @@ I.moveCursorTo('#submit', 5,5);
 -   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
 
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][4]** file name to save.
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
