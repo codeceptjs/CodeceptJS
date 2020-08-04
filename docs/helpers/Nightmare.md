@@ -463,6 +463,34 @@ console.log(`Current URL is [${url}]`);
 
 Returns **[Promise][8]&lt;[string][3]>** current URL
 
+### grabElementBoundingRect
+
+Grab the width, height, location of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+Returns an object with `x`, `y`, `width`, `height` keys.
+
+```js
+const value = await I.grabElementBoundingRect('h3');
+// value is like { x: 226.5, y: 89, width: 527, height: 220 }
+```
+
+To get only one metric use second parameter:
+
+```js
+const width = await I.grabElementBoundingRect('h3', 'width');
+// width == 527
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+-   `prop`  
+-   `elementSize` **[string][3]** x, y, width or height of the given element.
+
+Returns **[object][4]** Element bounding rectangle
+
 ### grabHAR
 
 Get HAR
@@ -636,6 +664,20 @@ I.rightClick('Click me', '.context');
 
 -   `locator` **([string][3] | [object][4])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][3]** file name to save.
 
 ### saveScreenshot
 
