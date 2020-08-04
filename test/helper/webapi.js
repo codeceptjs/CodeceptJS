@@ -27,6 +27,21 @@ module.exports.tests = function () {
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
   });
 
+  describe('#saveElementScreenshot', () => {
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+
+    it('should create a screenshot file in output dir of element', async () => {
+
+      await I.amOnPage('/form/field');
+      await I.seeElement(`input[name='name']`);
+      const sec = (new Date()).getUTCMilliseconds();
+      await I.saveElementScreenshot(`input[name='name']`,`element_screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists');
+    });
+  });
+
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
     it('should check for url fragment', async () => {
       await I.amOnPage('/form/checkbox');
