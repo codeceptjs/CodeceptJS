@@ -572,9 +572,9 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#type', function () {
-    if (isHelper('Nightmare')) this.skip();
-    if (isHelper('TestCafe')) this.skip();
+  describe('#type', () => {
+    if (isHelper('Nightmare')) return;
+    if (isHelper('TestCafe')) return;
 
     it('should type into a field', async () => {
       await I.amOnPage('/form/field');
