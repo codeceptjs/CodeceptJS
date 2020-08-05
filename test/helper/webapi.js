@@ -575,8 +575,8 @@ module.exports.tests = function () {
   describe('#type', () => {
     it('should type into a field', async function () {
       if (isHelper('TestCafe')) this.skip();
-      if (isHelper('Nightmare')) this.skip();
-      if (isHelper('ProtractorWeb')) this.skip();
+      if (isHelper('Nightmare')) return;
+      if (isHelper('Protractor-NonAngular')) this.skip();
 
       await I.amOnPage('/form/field');
       await I.click('Name');
