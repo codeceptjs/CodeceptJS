@@ -592,7 +592,8 @@ module.exports.tests = function () {
 
     it('should use delay to slow down typing', async function () {
       if (isHelper('TestCafe')) this.skip();
-      if (isHelper('Nightmare')) this.skip();
+      if (isHelper('Nightmare')) return;
+      if (isHelper('Protractor-NonAngular')) this.skip();
 
       await I.amOnPage('/form/field');
       await I.fillField('Name', '');
