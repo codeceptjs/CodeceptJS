@@ -1,7 +1,7 @@
 ## 2.6.8
 
 * [WebDriver][Protractor][Playwright][Puppeteer][Nightmare] `saveElementScreenshot` method added to make screenshot of an element. By @suniljaiswal01
-* [Playwright][Puppeteer][Protractor] Added `type` method to type a text using keyboard with an optional delay.
+* [Playwright][Puppeteer] Added `type` method to type a text using keyboard with an optional delay.
 * [WebDriver] Added optional `delay` argument to `type` method to slow down typing.
 * [Puppeteer] Fixed `amOnPage` freeze when `getPageTimeout` is 0"; set 30 sec as default timeout by @Vorobeyko.
 * Fixed printing step with null argument in custom helper by @sjana-aj. See #2494
