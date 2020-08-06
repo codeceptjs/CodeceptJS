@@ -1282,14 +1282,25 @@ I.rightClick('Click me', '.context');
 
 ### forceRightClick
 
-{{> forceRightClick }}
+Emulates right click on an element.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
 
-{{ react }}
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.forceRightClick('Menu');
+```
 
 #### Parameters
 
--   `locator`  
--   `context`   (optional, default `null`)
+-   `locator` **([string][4] \| [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][4]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.{{ react }} (optional, default `null`)
 
 ### clearField
 
@@ -1551,6 +1562,20 @@ I.moveCursorTo('#submit', 5,5);
 -   `yOffset`  
 -   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
+
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][4]** file name to save.
 
 ### saveScreenshot
 
