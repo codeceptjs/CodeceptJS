@@ -7,7 +7,7 @@ editLink: false
 ---
 
 # Books & Posts
-> Add your own books or posts to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Books-&-Posts)
+> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)
 ### [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)
 
 A book by **Paul Vincent Beigang**

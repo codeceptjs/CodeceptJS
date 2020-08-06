@@ -33,11 +33,10 @@ module.exports.tests = function () {
     });
 
     it('should create a screenshot file in output dir of element', async () => {
-
       await I.amOnPage('/form/field');
-      await I.seeElement(`input[name='name']`);
+      await I.seeElement('input[name=\'name\']');
       const sec = (new Date()).getUTCMilliseconds();
-      await I.saveElementScreenshot(`input[name='name']`,`element_screenshot_${sec}.png`);
+      await I.saveElementScreenshot('input[name=\'name\']', `element_screenshot_${sec}.png`);
       assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists');
     });
   });
@@ -570,6 +569,38 @@ module.exports.tests = function () {
       await I.clearField('#LoginForm_username');
       await I.click('Login');
       assert.equal(formContents('LoginForm').username, '');
+    });
+  });
+
+  describe('#type', () => {
+    it('should type into a field', async function () {
+      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('Nightmare')) return;
+      if (isHelper('Protractor')) this.skip();
+
+      await I.amOnPage('/form/field');
+      await I.click('Name');
+
+      await I.type('Type Test');
+      await I.seeInField('Name', 'Type Test');
+
+      await I.fillField('Name', '');
+
+      await I.type(['T', 'y', 'p', 'e', '2']);
+      await I.seeInField('Name', 'Type2');
+    });
+
+    it('should use delay to slow down typing', async function () {
+      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('Nightmare')) return;
+      if (isHelper('Protractor')) this.skip();
+
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+      const time = Date.now();
+      await I.type('12345', 100);
+      await I.seeInField('Name', '12345');
+      assert(Date.now() - time > 500);
     });
   });
 
