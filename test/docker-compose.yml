@@ -9,6 +9,15 @@ services:
       - ..:/codecept
       - node_modules:/codecept/node_modules
 
+  test-runner:
+    image: node:12.13-slim
+    entrypoint: /codecept/node_modules/.bin/mocha
+    command: test/runner
+    working_dir: /codecept
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
   test-helpers:
     build: ..
     entrypoint: /codecept/node_modules/.bin/mocha --invert --fgrep Appium
@@ -126,7 +135,7 @@ services:
       - node_modules:/node_modules
 
   selenium.chrome:
-    image: selenium/standalone-chrome:3.9.1-actinium
+    image: selenium/standalone-chrome:3.141.59-oxygen
     shm_size: 2g
     ports:
       - 4444:4444

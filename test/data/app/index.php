@@ -15,6 +15,7 @@ $urls = array(
     '/redirect' => 'redirect',
     '/redirect2' => 'redirect2',
     '/redirect3' => 'redirect3',
+    '/redirect_long' => 'redirect_long',
     '/redirect4' => 'redirect4',
     '/redirect_params' => 'redirect_params',
     '/redirect_interval' => 'redirect_interval',
@@ -42,6 +43,7 @@ $urls = array(
     '/dynamic' => 'dynamic',
     '/timeout' => 'timeout',
     '/download' => 'download',
+    '/basic_auth' => 'basic_auth'
 );
 
 glue::stick($urls);

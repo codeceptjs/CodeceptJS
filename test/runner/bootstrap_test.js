@@ -8,7 +8,6 @@ const codecept_run = `${runner} run`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`;
 const config_run_override = (config, override) => `${codecept_run} --config ${codecept_dir}/${config} --override '${JSON.stringify(override)}'`;
 
-
 describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
   it('should run bootstrap', (done) => {

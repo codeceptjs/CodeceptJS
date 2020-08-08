@@ -1,11 +1,11 @@
+const chai = require('chai');
+
 const Assertion = require('../../lib/assert');
 const AssertionError = require('../../lib/assert/error');
 
 const comparator = (a, b) => a === b;
-const chai = require('chai');
 
 let assertion;
-
 
 describe('Assertion', () => {
   beforeEach(() => {

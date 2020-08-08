@@ -1,7 +1,9 @@
 ---
-id: parallel
+permalink: /parallel
 title: Parallel Execution
 ---
+
+# Parallel Execution
 
 CodeceptJS has two engines for running tests in parallel:
 
@@ -23,6 +25,12 @@ npx codeceptjs run-workers 2
 This command is similar to `run`, however, steps output can't be shown in workers mode, as it is impossible to synchronize steps output from different processes.
 
 Each worker spins an instance of CodeceptJS, executes a group of tests, and sends back report to the main process.
+
+By default the tests are assigned one by one to the avaible workers this may lead to multiple execution of `BeforeSuite()`. Use the option `--suites` to assigne the suites one by one to the workers.
+
+```sh
+npx codeceptjs run-workers --suites 2
+```
 
 
 ## Multiple Browsers Execution
@@ -128,7 +136,7 @@ Output is printed for all running processes. Each line is tagged with a suite an
 
 ### Hooks
 
-Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown) for an example.
+Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](/hooks/#bootstrap-teardown) for an example.
 
 
 ### Parallel Execution

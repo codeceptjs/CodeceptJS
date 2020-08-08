@@ -1,5 +1,9 @@
-const utils = require('../../lib/utils');
 const assert = require('assert');
+const os = require('os');
+const path = require('path');
+const sinon = require('sinon');
+
+const utils = require('../../lib/utils');
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -47,7 +51,6 @@ describe('utils', () => {
 };`);
     });
   });
-
 
   describe('#xpathLocator', () => {
     it('combines xpaths', () => {
@@ -231,6 +234,106 @@ describe('utils', () => {
           },
         },
       });
+    });
+  });
+
+  describe('#getNormalizedKeyAttributeValue', () => {
+    it('should normalize key (alias) to key attribute value', () => {
+      utils.getNormalizedKeyAttributeValue('Arrow down').should.equal('ArrowDown');
+      utils.getNormalizedKeyAttributeValue('RIGHT_ARROW').should.equal('ArrowRight');
+      utils.getNormalizedKeyAttributeValue('leftarrow').should.equal('ArrowLeft');
+      utils.getNormalizedKeyAttributeValue('Up arrow').should.equal('ArrowUp');
+
+      utils.getNormalizedKeyAttributeValue('Left Alt').should.equal('AltLeft');
+      utils.getNormalizedKeyAttributeValue('RIGHT_ALT').should.equal('AltRight');
+      utils.getNormalizedKeyAttributeValue('alt').should.equal('Alt');
+
+      utils.getNormalizedKeyAttributeValue('oPTION left').should.equal('AltLeft');
+      utils.getNormalizedKeyAttributeValue('ALTGR').should.equal('AltGraph');
+      utils.getNormalizedKeyAttributeValue('alt graph').should.equal('AltGraph');
+
+      utils.getNormalizedKeyAttributeValue('Control Left').should.equal('ControlLeft');
+      utils.getNormalizedKeyAttributeValue('RIGHT_CTRL').should.equal('ControlRight');
+      utils.getNormalizedKeyAttributeValue('Ctrl').should.equal('Control');
+
+      utils.getNormalizedKeyAttributeValue('Cmd').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('LeftCommand').should.equal('MetaLeft');
+      utils.getNormalizedKeyAttributeValue('os right').should.equal('MetaRight');
+      utils.getNormalizedKeyAttributeValue('SUPER').should.equal('Meta');
+
+      utils.getNormalizedKeyAttributeValue('NumpadComma').should.equal('Comma');
+      utils.getNormalizedKeyAttributeValue('Separator').should.equal('Comma');
+
+      utils.getNormalizedKeyAttributeValue('Add').should.equal('NumpadAdd');
+      utils.getNormalizedKeyAttributeValue('Decimal').should.equal('NumpadDecimal');
+      utils.getNormalizedKeyAttributeValue('Divide').should.equal('NumpadDivide');
+      utils.getNormalizedKeyAttributeValue('Multiply').should.equal('NumpadMultiply');
+      utils.getNormalizedKeyAttributeValue('Subtract').should.equal('NumpadSubtract');
+    });
+
+    it('should normalize modifier key based on operating system', () => {
+      sinon.stub(os, 'platform', () => { return 'notdarwin'; });
+      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
+      os.platform.restore();
+
+      sinon.stub(os, 'platform', () => { return 'darwin'; });
+      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight');
+      os.platform.restore();
+    });
+  });
+
+  describe('#screenshotOutputFolder', () => {
+    let _oldGlobalOutputDir;
+    let _oldGlobalCodeceptDir;
+
+    before(() => {
+      _oldGlobalOutputDir = global.output_dir;
+      _oldGlobalCodeceptDir = global.codecept_dir;
+
+      global.output_dir = '/Users/someuser/workbase/project1/test_output';
+      global.codecept_dir = '/Users/someuser/workbase/project1/tests/e2e';
+    });
+
+    after(() => {
+      global.output_dir = _oldGlobalOutputDir;
+      global.codecept_dir = _oldGlobalCodeceptDir;
+    });
+
+    it('returns the joined filename for filename only', () => {
+      const _path = utils.screenshotOutputFolder('screenshot1.failed.png');
+      _path.should.eql(
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
+          /\//g,
+          path.sep,
+        ),
+      );
+    });
+
+    it('returns the given filename for absolute one', () => {
+      const _path = utils.screenshotOutputFolder(
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
+          /\//g,
+          path.sep,
+        ),
+      );
+      if (os.platform() === 'win32') {
+        _path.should.eql(
+          path.resolve(
+            global.codecept_dir,
+            '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
+          ),
+        );
+      } else {
+        _path.should.eql(
+          '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
+        );
+      }
     });
   });
 });

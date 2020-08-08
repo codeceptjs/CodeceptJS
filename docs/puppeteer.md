@@ -1,7 +1,9 @@
 ---
-id: puppeteer
+permalink: /puppeteer
 title: Testing with Puppeteer
 ---
+
+# Testing with Puppeteer
 
 Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer). It operates over Google Chrome directly without requiring additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
 
@@ -41,7 +43,7 @@ npx codeceptjs init
 
 You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.
 
-> Puppeteer can also work with Firefox. [Learn how to set it up](https://codecept.io/helpers/Puppeteer-firefox)
+> Puppeteer can also work with Firefox. [Learn how to set it up](/helpers/Puppeteer-firefox)
 
 ## Configuring
 
@@ -125,6 +127,29 @@ I.fillField({name: 'user[email]'},'miles@davis.com');
 I.seeElement({xpath: '//body/header'});
 ```
 
+### Interactive Pause
+
+It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
+
+```js
+Feature('Sample Test');
+
+Scenario('open my website', (I) => {
+  I.amOnPage('http://todomvc.com/examples/react/');
+  pause();
+});
+```
+
+This is just enough to run a test, open a browser, and think what to do next to write a test case.
+
+When you execute such test with `codeceptjs run` command you may see the browser is started
+
+```
+npx codeceptjs run --steps
+```
+
+After a page is opened a full control of a browser is given to a terminal. Type in different commands such as `click`, `see`, `fillField` to write the test. A successful commands will be saved to `./output/cli-history` file and can be copied into a test.
+
 A complete ToDo-MVC test may look like:
 
 ```js
@@ -168,7 +193,7 @@ within('.todoapp', () => {
 I.see('0 items left', '.todo-count');
 ```
 
-> [▶ Learn more about basic commands](https://codecept.io/basics#writing-tests)
+> [▶ Learn more about basic commands](/basics#writing-tests)
 
 CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
 
@@ -181,7 +206,7 @@ When you run tests with Puppeteer you can control those requests by mocking them
 
 Also you can replace real request with a one explicitly defined. This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
 
-To mock requests enable additional helper [MockRequest](https://codecept.io/helpers/MockRequest) (which is based on Polly.js).
+To mock requests enable additional helper [MockRequest](/helpers/MockRequest) (which is based on Polly.js).
 
 ```js
 helpers: {
@@ -211,7 +236,7 @@ I.mockRequest('POST', '/api/users', { user: 'davert' });
 I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
 ```
 
-> See [`mockRequest` API](https://codecept.io/helpers/MockRequest#mockrequest)
+> See [`mockRequest` API](/helpers/MockRequest#mockrequest)
 
 To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
 
@@ -220,6 +245,7 @@ npx codeceptjs def
 ```
 
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
+
 
 ## Extending
 

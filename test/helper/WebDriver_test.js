@@ -1,4 +1,5 @@
 const assert = require('assert');
+const expect = require('chai').expect;
 const path = require('path');
 const fs = require('fs');
 
@@ -26,7 +27,6 @@ describe('WebDriver', function () {
       url: siteUrl,
       browser: 'chrome',
       windowSize: '500x700',
-      remoteFileUpload: true,
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
@@ -165,15 +165,163 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('#pressKey', () => {
+  describe('Force Right Click: #forceRightClick', () => {
+    it('it should forceRightClick', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('Lorem Ipsum');
+      await wd.see('right clicked');
+    });
+
+    it('it should forceRightClick by locator', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('.context a');
+      await wd.see('right clicked');
+    });
+
+    it('it should forceRightClick by locator and context', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('Lorem Ipsum', '.context');
+      await wd.see('right clicked');
+    });
+  });
+
+  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
       await wd.appendField('Name', '-');
-      await wd.pressKey(['Control', 'a']);
+
+      await wd.pressKey(['Right Shift', 'Home']);
       await wd.pressKey('Delete');
-      await wd.pressKey(['Shift', '111']);
+
+      // Sequence only executes up to first non-modifier key ('Digit1')
+      await wd.pressKey(['SHIFT_RIGHT', 'Digit1', 'Digit4']);
       await wd.pressKey('1');
-      await wd.seeInField('Name', '!!!1');
+      await wd.pressKey('2');
+      await wd.pressKey('3');
+      await wd.pressKey('ArrowLeft');
+      await wd.pressKey('Left Arrow');
+      await wd.pressKey('arrow_left');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('a');
+      await wd.pressKey('KeyB');
+      await wd.pressKeyUp('ShiftLeft');
+      await wd.pressKey('C');
+      await wd.seeInField('Name', '!ABC123');
+    });
+
+    it('should use modifier key based on operating system', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.fillField('Name', 'value that is cleared using select all shortcut');
+
+      await wd.pressKey(['CommandOrControl', 'A']);
+      await wd.pressKey('Backspace');
+      await wd.dontSeeInField('Name', 'value that is cleared using select all shortcut');
+    });
+
+    it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.fillField('Name', '');
+
+      await wd.pressKey(';');
+      await wd.pressKey(['Shift', ';']);
+      await wd.pressKey(['Shift', 'Semicolon']);
+      await wd.pressKey('=');
+      await wd.pressKey(['Shift', '=']);
+      await wd.pressKey(['Shift', 'Equal']);
+      await wd.pressKey('*');
+      await wd.pressKey(['Shift', '*']);
+      await wd.pressKey(['Shift', 'Multiply']);
+      await wd.pressKey('+');
+      await wd.pressKey(['Shift', '+']);
+      await wd.pressKey(['Shift', 'Add']);
+      await wd.pressKey(',');
+      await wd.pressKey(['Shift', ',']);
+      await wd.pressKey(['Shift', 'Comma']);
+      await wd.pressKey(['Shift', 'NumpadComma']);
+      await wd.pressKey(['Shift', 'Separator']);
+      await wd.pressKey('-');
+      await wd.pressKey(['Shift', '-']);
+      await wd.pressKey(['Shift', 'Subtract']);
+      await wd.pressKey('.');
+      await wd.pressKey(['Shift', '.']);
+      await wd.pressKey(['Shift', 'Decimal']);
+      await wd.pressKey(['Shift', 'Period']);
+      await wd.pressKey('/');
+      await wd.pressKey(['Shift', '/']);
+      await wd.pressKey(['Shift', 'Divide']);
+      await wd.pressKey(['Shift', 'Slash']);
+
+      await wd.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
+    });
+
+    it('should show correct number key when Shift modifier is active', async () => {
+      await wd.amOnPage('/form/field');
+      await wd.fillField('Name', '');
+
+      await wd.pressKey('0');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('0');
+      await wd.pressKey('Digit0');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('1');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('1');
+      await wd.pressKey('Digit1');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('2');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('2');
+      await wd.pressKey('Digit2');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('3');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('3');
+      await wd.pressKey('Digit3');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('4');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('4');
+      await wd.pressKey('Digit4');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('5');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('5');
+      await wd.pressKey('Digit5');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('6');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('6');
+      await wd.pressKey('Digit6');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('7');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('7');
+      await wd.pressKey('Digit7');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('8');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('8');
+      await wd.pressKey('Digit8');
+      await wd.pressKeyUp('Shift');
+
+      await wd.pressKey('9');
+      await wd.pressKeyDown('Shift');
+      await wd.pressKey('9');
+      await wd.pressKey('Digit9');
+      await wd.pressKeyUp('Shift');
+
+      await wd.seeInField('Name', '0))1!!2@@3##4$$5%%6^^7&&8**9((');
     });
   });
 
@@ -708,7 +856,6 @@ describe('WebDriver', function () {
     });
   });
 
-
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', async () => {
       await wd.amOnPage('/form/checkbox');
@@ -830,7 +977,6 @@ describe('WebDriver', function () {
     });
   });
 
-
   describe('#dragSlider', () => {
     it('should drag scrubber to given position', async () => {
       await wd.amOnPage('/form/page_slider');
@@ -897,12 +1043,163 @@ describe('WebDriver', function () {
     });
   });
 
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #button still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element .//button[@id="button"] still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportTop still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportBottom still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportLeft still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #notInViewportRight still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await wd.amOnPage('/form/wait_for_clickable');
+      await wd.waitForClickable({ css: '#div2_button' }, 0.1);
+      await wd.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element #div1_button still not clickable after 0.1 sec');
+      });
+    });
+  });
+
   describe('GeoLocation', () => {
     it('should set the geoLocation', async () => {
       await wd.setGeoLocation(37.4043, -122.0748);
       const geoLocation = await wd.grabGeoLocation();
       assert.equal(geoLocation.latitude, 37.4043, 'The latitude is not properly set');
       assert.equal(geoLocation.longitude, -122.0748, 'The longitude is not properly set');
+    });
+  });
+
+  describe('#grabElementBoundingRect', () => {
+    it('should get the element size', async () => {
+      await wd.amOnPage('https://www.google.com');
+      const size = await wd.grabElementBoundingRect('#hplogo');
+      expect(size.x).is.greaterThan(0);
+      expect(size.y).is.greaterThan(0);
+      expect(size.width).is.greaterThan(0);
+      expect(size.height).is.greaterThan(0);
+    });
+
+    it('should get the element width', async () => {
+      await wd.amOnPage('https://www.google.com');
+      const width = await wd.grabElementBoundingRect('#hplogo', 'width');
+      expect(width).is.greaterThan(0);
+    });
+
+    it('should get the element height', async () => {
+      await wd.amOnPage('https://www.google.com');
+      const height = await wd.grabElementBoundingRect('#hplogo', 'height');
+      expect(height).is.greaterThan(0);
+    });
+  });
+
+  describe('#scrollIntoView', () => {
+    it('should scroll element into viewport', async () => {
+      await wd.amOnPage('/form/scroll_into_view');
+      const element = await wd.browser.$('#notInViewportByDefault');
+      expect(await element.isDisplayedInViewport()).to.be.false;
+      await wd.scrollIntoView('#notInViewportByDefault');
+      expect(await element.isDisplayedInViewport()).to.be.true;
+    });
+  });
+});
+
+describe('WebDriver - Basic Authentication', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    try {
+      fs.unlinkSync(dataFile);
+    } catch (err) {
+      // continue regardless of error
+    }
+
+    wd = new WebDriver({
+      url: siteUrl,
+      basicAuth: { username: 'admin', password: 'admin' },
+      browser: 'chrome',
+      windowSize: '500x700',
+      remoteFileUpload: true,
+      smartWait: 0, // just to try
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort(),
+      waitForTimeout: 5000,
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+        },
+      },
+    });
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({ I: wd, siteUrl });
+    await wd._before();
+  });
+
+  afterEach(() => wd._after());
+
+  describe('open page : #amOnPage', () => {
+    it('should be authenticated', async () => {
+      await wd.amOnPage('/basic_auth');
+      await wd.see('You entered admin as your password.');
     });
   });
 });

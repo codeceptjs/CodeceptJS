@@ -6,7 +6,7 @@ exports.config = {
       browser: 'chrome',
       restart: false,
       windowSize: '1600x1200',
-      show: false,
+      show: !process.env.HEADLESS,
     },
     REST: {},
   },

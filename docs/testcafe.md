@@ -1,11 +1,13 @@
 ---
-id: testcafe
+permalink: /testcafe
 title: Testing with TestCafe
 ---
 
-[TestCafe](https://devexpress.github.io/testcafe/) is another alternative engine for driving browsers. It is driven by unique technology which provides fast and simple cross browser testing for desktop and mobile browsers. Unlike WebDriver or Puppeteer, TestCafe doesn't control a browser at all. It is not a browser itself, like [Nightmare](https://codecept.io/nightmare) or Cypress. **TestCafe core is a proxy server** that runs behind the scene, and transforms all HTML and JS to include code that is needed for test automation.
+# Testing with TestCafe
 
-![](/img/testcafe.png)
+[TestCafe](https://devexpress.github.io/testcafe/) is another alternative engine for driving browsers. It is driven by unique technology which provides fast and simple cross browser testing for desktop and mobile browsers. Unlike WebDriver or Puppeteer, TestCafe doesn't control a browser at all. It is not a browser itself, like [Nightmare](/nightmare) or Cypress. **TestCafe core is a proxy server** that runs behind the scene, and transforms all HTML and JS to include code that is needed for test automation.
+
+![Testcafe](/img/testcafe.png)
 
 This is very smart idea. But to use TestCafe on daily basis you need to clearly understand its benefits and limitations:
 
@@ -25,9 +27,9 @@ Anyway, TestCafe is a good option to start if you need cross browser testing. An
 
 CodeceptJS is a rich testing frameworks which also provides features missing in original TestCafe:
 
-* [Cucumber integration](https://codecept.io/bdd)
-* [Real Page Objects](https://codecept.io/pageobjects)
-* [Data Management via API](https://codecept.io/data)
+* [Cucumber integration](/bdd)
+* [Real Page Objects](/pageobjects)
+* [Data Management via API](/data)
 * and others
 
 ## Writing Tests
@@ -66,9 +68,9 @@ Scenario('create todo item', (I) => {
 });
 ```
 
-Same syntax is the same for all helpers in CodeceptJS so to learn more about available commands learn [CodeceptJS Basics](https://codecept.io/basics).
+Same syntax is the same for all helpers in CodeceptJS so to learn more about available commands learn [CodeceptJS Basics](/basics).
 
-> [▶ Complete list of TestCafe actions](https://codecept.io/helpers/TestCafe)
+> [▶ Complete list of TestCafe actions](/helpers/TestCafe)
 
 ## Page Objects
 
@@ -126,7 +128,7 @@ module.exports = {
 }
 ```
 
-> [▶ Read more about PageObjects in CodeceptJS](https://codecept.io/pageobjects)
+> [▶ Read more about PageObjects in CodeceptJS](/pageobjects)
 
 ## Extending
 

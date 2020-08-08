@@ -14,10 +14,28 @@ Scenario('Visit Home Page @retry', async (I) => {
 
 Scenario('search @grop', (I) => {
   I.amOnPage('https://github.com/search');
-  pause();
+  const a = {
+    b: {
+      c: 'asdasdasd',
+    },
+  };
+  const b = {
+    users: {
+      admin: {
+        name: 'Admin',
+      },
+      user: {
+        name: 'user',
+      },
+      other: (world = '') => `Hello ${world}`,
+    },
+    urls: {},
+  };
   I.fillField('Search GitHub', 'CodeceptJS');
+  pause({ a, b });
   I.pressKey('Enter');
   I.wait(1);
+  pause();
   I.see('Codeception/CodeceptJS', locate('.repo-list .repo-list-item').first());
 });
 

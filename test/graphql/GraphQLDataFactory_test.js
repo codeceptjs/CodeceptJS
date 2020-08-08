@@ -1,11 +1,12 @@
 require('../support/setup');
+const path = require('path');
+const fs = require('fs');
+
 const TestHelper = require('../support/TestHelper');
 
 const GraphQLDataFactory = require('../../lib/helper/GraphQLDataFactory');
 
 const graphql_url = TestHelper.graphQLServerUrl();
-const path = require('path');
-const fs = require('fs');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/graphql/db.json');
@@ -144,7 +145,6 @@ describe('GraphQLDataFactory', function () {
       resp = await I.graphqlHelper.sendQuery('query { users { id } }');
       resp.data.data.users.length.should.eql(1);
     });
-
 
     it('should not remove records if cleanup:false', async () => {
       I = new GraphQLDataFactory({

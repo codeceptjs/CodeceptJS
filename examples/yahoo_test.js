@@ -10,7 +10,6 @@ Scenario('Nightmare basic test', (I) => {
   I.see('segmentio/nightmare', 'li a');
 });
 
-
 // Our implementation of:
 
 // nightmare

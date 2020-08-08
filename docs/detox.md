@@ -1,11 +1,11 @@
 ---
-id: detox
+permalink: /detox
 title: Testing React Native with Detox
 ---
 
-> Warning! Detox support in CodeceptJS is experimental. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/Codeception/detox-helper).
+> Warning! Detox support in CodeceptJS is experimental. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/codeceptjs/detox-helper).
 
-Automated mobile testing can be slow, hard, and ineffective. The price of it goes high, if we take into account fragility of applications, slowness of emulators, and the complexity of debug. [Appium](https://codecept.io/mobile) helps writing mobile tests but not all apps can be tested effectively with it. That's why you should consider using an alternative approach.
+Automated mobile testing can be slow, hard, and ineffective. The price of it goes high, if we take into account fragility of applications, slowness of emulators, and the complexity of debug. [Appium](/mobile) helps writing mobile tests but not all apps can be tested effectively with it. That's why you should consider using an alternative approach.
 
 Meet [Detox](https://github.com/wix/Detox) - grey-box testing solution for mobile testing by Wix.
 
@@ -30,8 +30,8 @@ CodeceptJS allows you to try different options and choose the one which works be
 CodeceptJS provides next features over standard Detox:
 
 * **Unified API**. The same test can be executed in Appium or Detox. Unified API helps different teams to use the same syntax and easy port tests from one engine to another.
-* [Interactive pause](https://codecept.io/basics#pause). When starting/stopping an application takes a long time, debugging and writing tests can be hard. CodeceptJS solves this by pausing an execution and letting you try different commands and locators. With this feature a test can be writtern during one running session.
-* [Auto-retries](https://codecept.io/basics#retries) using `retryFailedStepPlugin` and `I.retry()`
+* [Interactive pause](/basics#pause). When starting/stopping an application takes a long time, debugging and writing tests can be hard. CodeceptJS solves this by pausing an execution and letting you try different commands and locators. With this feature a test can be writtern during one running session.
+* [Auto-retries](/basics#retries) using `retryFailedStepPlugin` and `I.retry()`
 * **Cross-Platform testing** - one test can be executed on different engines. When needed, platform-specific actions and locators can be easily applied.
 
 ## A Test
@@ -119,7 +119,7 @@ There are also common assertions:
 * `seeElement` - to check visibility of element
 * `seeElementExists` - to check that element exists
 
-> For more details on actions refer to the [API reference of Detox helper](https://github.com/Codeception/detox-helper#api).
+> For more details on actions refer to the [API reference of Detox helper](https://github.com/codeceptjs/detox-helper#api).
 
 ## Locators
 
@@ -179,7 +179,7 @@ If element differs on on iOS and Android you can use **cross platform locators**
 ```js
 // locate element by text on Android
 // locate element by accessibility id on iOS
-I.click({ android: 'Start', ios: '~start' });
+I.click({ android: /'Start', ios: '~start' });
 ```
 
 When application behavior differs on Android and iOS use platform-specific actions:
@@ -207,7 +207,7 @@ Scenario('save in application', (I) => {
   I.fillField('#text', 'a new text');
   I.see('a new text', '#textValue');
   I.dontSeeElement('#createdAndVisibleText');
-  I.click({ ios: '#GoButton', android: 'Button' });
+  I.click({ ios: '#GoButton', android: /'Button' });
   I.waitForElement('#createdAndVisibleText', 20);
   I.seeElement('#createdAndVisibleText');
   I.runOnAndroid(() => {

@@ -1,15 +1,13 @@
+const assert = require('assert');
+const expect = require('chai').expect;
+const path = require('path');
+
+const puppeteer = require('puppeteer');
+
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
-const puppeteer = require('puppeteer');
-const should = require('chai').should();
-const expect = require('chai').expect;
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const fileExists = require('../../lib/utils').fileExists;
+
 const AssertionFailedError = require('../../lib/assert/error');
-const formContents = require('../../lib/utils').test.submittedData(path.join(__dirname, '/../data/app/db'));
-const expectError = require('../../lib/utils').test.expectError;
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 
@@ -18,6 +16,54 @@ let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
+
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(10000);
+
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Puppeteer({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      defaultPopupAction: 'accept',
+      basicAuth: { username: 'admin', password: 'admin' },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  describe('open page with provided basic auth', () => {
+    it('should be authenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+    it('should be authenticated on second run', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+  });
+});
 
 describe('Puppeteer', function () {
   this.timeout(35000);
@@ -55,6 +101,19 @@ describe('Puppeteer', function () {
     return I._after();
   });
 
+  describe('Session', () => {
+    it('should not fail for localStorage.clear() on about:blank', async () => {
+      I.options.restart = false;
+      return I.page.goto('about:blank')
+        .then(() => I._after())
+        .then(() => { I.options.restart = true; })
+        .catch((e) => {
+          I.options.restart = true;
+          throw new Error(e);
+        });
+    });
+  });
+
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
@@ -71,6 +130,11 @@ describe('Puppeteer', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
+    });
+
+    it('should be unauthenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.dontSee('You entered admin as your password.');
     });
   });
 
@@ -314,7 +378,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
@@ -427,6 +490,152 @@ describe('Puppeteer', function () {
     });
   });
 
+  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+    it('should be able to send special keys to element', async () => {
+      await I.amOnPage('/form/field');
+      await I.appendField('Name', '-');
+
+      await I.pressKey(['Right Shift', 'Home']);
+      await I.pressKey('Delete');
+
+      // Sequence only executes up to first non-modifier key ('Digit1')
+      await I.pressKey(['SHIFT_RIGHT', 'Digit1', 'Digit4']);
+      await I.pressKey('1');
+      await I.pressKey('2');
+      await I.pressKey('3');
+      await I.pressKey('ArrowLeft');
+      await I.pressKey('Left Arrow');
+      await I.pressKey('arrow_left');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('a');
+      await I.pressKey('KeyB');
+      await I.pressKeyUp('ShiftLeft');
+      await I.pressKey('C');
+      await I.seeInField('Name', '!ABC123');
+    });
+
+    it('should use modifier key based on operating system', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', 'value that is cleared using select all shortcut');
+
+      await I.pressKey(['ControlOrCommand', 'a']);
+      await I.pressKey('Backspace');
+      await I.dontSeeInField('Name', 'value that is cleared using select all shortcut');
+    });
+
+    it('should show correct numpad or punctuation key when Shift modifier is active', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+
+      await I.pressKey(';');
+      await I.pressKey(['Shift', ';']);
+      await I.pressKey(['Shift', 'Semicolon']);
+      await I.pressKey('=');
+      await I.pressKey(['Shift', '=']);
+      await I.pressKey(['Shift', 'Equal']);
+      await I.pressKey('*');
+      await I.pressKey(['Shift', '*']);
+      await I.pressKey(['Shift', 'Multiply']);
+      await I.pressKey('+');
+      await I.pressKey(['Shift', '+']);
+      await I.pressKey(['Shift', 'Add']);
+      await I.pressKey(',');
+      await I.pressKey(['Shift', ',']);
+      await I.pressKey(['Shift', 'Comma']);
+      await I.pressKey(['Shift', 'NumpadComma']);
+      await I.pressKey(['Shift', 'Separator']);
+      await I.pressKey('-');
+      await I.pressKey(['Shift', '-']);
+      await I.pressKey(['Shift', 'Subtract']);
+      await I.pressKey('.');
+      await I.pressKey(['Shift', '.']);
+      await I.pressKey(['Shift', 'Decimal']);
+      await I.pressKey(['Shift', 'Period']);
+      await I.pressKey('/');
+      await I.pressKey(['Shift', '/']);
+      await I.pressKey(['Shift', 'Divide']);
+      await I.pressKey(['Shift', 'Slash']);
+
+      await I.seeInField('Name', ';::=++***+++,<<<<-_-.>.>/?/?');
+    });
+
+    it('should show correct number key when Shift modifier is active', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+
+      await I.pressKey('0');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('0');
+      await I.pressKey('Digit0');
+      await I.pressKey('Numpad0');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('1');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('1');
+      await I.pressKey('Digit1');
+      await I.pressKey('Numpad1');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('2');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('2');
+      await I.pressKey('Digit2');
+      await I.pressKey('Numpad2');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('3');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('3');
+      await I.pressKey('Digit3');
+      await I.pressKey('Numpad3');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('4');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('4');
+      await I.pressKey('Digit4');
+      await I.pressKey('Numpad4');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('5');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('5');
+      await I.pressKey('Digit5');
+      await I.pressKey('Numpad5');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('6');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('6');
+      await I.pressKey('Digit6');
+      await I.pressKey('Numpad6');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('7');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('7');
+      await I.pressKey('Digit7');
+      await I.pressKey('Numpad7');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('8');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('8');
+      await I.pressKey('Digit8');
+      await I.pressKey('Numpad8');
+      await I.pressKeyUp('Shift');
+
+      await I.pressKey('9');
+      await I.pressKeyDown('Shift');
+      await I.pressKey('9');
+      await I.pressKey('Digit9');
+      await I.pressKey('Numpad9');
+      await I.pressKeyUp('Shift');
+
+      await I.seeInField('Name', '0))01!!12@@23##34$$45%%56^^67&&78**89((9');
+    });
+  });
 
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () => I.amOnPage('/form/wait_enabled')
@@ -443,6 +652,13 @@ describe('Puppeteer', function () {
       .then(() => I.waitForEnabled('#text', 2))
       .then(() => I.click('#button'))
       .then(() => I.see('button was clicked', '#message')));
+  });
+
+  describe('#waitForText', () => {
+    it('should wait for text after load body', async () => {
+      await I.amOnPage('/redirect_long');
+      await I.waitForText('Hi there and greetings!', 5);
+    });
   });
 
   describe('#waitForValue', () => {
@@ -477,7 +693,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#text2', 'London')));
   });
 
-
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('//title'))
@@ -490,6 +705,11 @@ describe('Puppeteer', function () {
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('//a'))
       .then(html => assert.equal(html.length, 5)));
+
+    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo({ frame: 'iframe' }))
+      .then(() => I.grabHTMLFrom('#new-tab'))
+      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
@@ -586,6 +806,29 @@ describe('Puppeteer', function () {
     });
   });
 
+  describe('#grabElementBoundingRect', () => {
+    it('should get the element bounding rectangle', async () => {
+      await I.amOnPage('https://www.google.com');
+      const size = await I.grabElementBoundingRect('#hplogo');
+      expect(size.x).is.greaterThan(0);
+      expect(size.y).is.greaterThan(0);
+      expect(size.width).is.greaterThan(0);
+      expect(size.height).is.greaterThan(0);
+    });
+
+    it('should get the element width', async () => {
+      await I.amOnPage('https://www.google.com');
+      const width = await I.grabElementBoundingRect('#hplogo', 'width');
+      expect(width).is.greaterThan(0);
+    });
+
+    it('should get the element height', async () => {
+      await I.amOnPage('https://www.google.com');
+      const height = await I.grabElementBoundingRect('#hplogo', 'height');
+      expect(height).is.greaterThan(0);
+    });
+  });
+
   describe('#handleDownloads', () => {
     before(() => {
       // create download folder;
@@ -600,8 +843,99 @@ describe('Puppeteer', function () {
       await I.amOnPage('/form/download');
       await I.handleDownloads();
       await I.click('Download file');
-      await I.wait(5);
-      await FS.seeFile('downloads/avatar.jpg');
+      await FS.waitForFile('downloads/avatar.jpg', 5);
+    });
+  });
+
+  describe('#waitForClickable', () => {
+    it('should wait for clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: 'input#text' });
+    });
+
+    it('should wait for clickable by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/input[@id="text"]' });
+    });
+
+    it('should fail for disabled element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for disabled element by XPath', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ xpath: './/button[@id="button"]' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by top', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportTop' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by bottom', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportBottom' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by left', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportLeft' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for element not in viewport by right', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#notInViewportRight' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should fail for overlapping element', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.waitForClickable({ css: '#div2_button' }, 0.1);
+      await I.waitForClickable({ css: '#div1_button' }, 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should pass if element change class', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    it('should fail if element change class and not clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
+      });
     });
   });
 });

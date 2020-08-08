@@ -7,7 +7,7 @@ title: Polly
 
 ## Polly
 
-Extends MockRequest
+**Extends MockRequest**
 
 This helper works the same as MockRequest helper. It has been included for backwards compatibility
 reasons. So use MockRequest helper instead of this.

@@ -1,0 +1,20 @@
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Check Tests
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: testomatio/check-tests@master
+      with:
+        framework: mocha
+        tests: "./test/**/*_test.js"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        has-tests-label: true
+        comment-on-empty: true
+        github-pat: ${{ secrets.GH_PAT }}
+        enable-documentation: true
+        documentation-branch: "master"

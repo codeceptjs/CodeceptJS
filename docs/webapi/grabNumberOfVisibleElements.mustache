@@ -1,8 +1,9 @@
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
 ```
 
-@param {string|object} locator located by CSS|XPath|strict locator.
+@param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
 @returns {Promise<number>} number of visible elements

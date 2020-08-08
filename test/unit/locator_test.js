@@ -1,8 +1,9 @@
 const assert = require('assert');
 const chai = require('chai');
-const Locator = require('../../lib/locator');
-const xpath = require('xpath');
 const Dom = require('xmldom').DOMParser;
+const xpath = require('xpath');
+
+const Locator = require('../../lib/locator');
 
 const expect = chai.expect;
 
@@ -169,7 +170,6 @@ describe('Locator', () => {
     expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath());
   });
-
 
   it('should select child element by name', () => {
     const l = Locator.build('.form-field')

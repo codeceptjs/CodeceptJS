@@ -1,19 +1,23 @@
 ---
-id: translation
+permalink: /translation
 title: Translation
 ---
+
+> 🌍 Since CodeceptJS 2.4.2 you can use translation for `Scenario`, `Before`, and other keywords within your tests. Please help us to update language definition files to include the best translation for your language!
+
+# Translation
 
 Test output and the way tests are written can be localized.
 This way scenarios can be written in almost native language using UTF support of JavaScript.
 If you have non-English team and you work on non-English project consider enabling translation
-by setting translation to [one of available languages](https://github.com/Codeception/CodeceptJS/blob/master/translations).
+by setting translation to [one of available languages](https://github.com/codecept-js/CodeceptJS/blob/master/translations).
 
 Please refer to translated steps inside translation files and send Pull Requests to add missing.
 
 To get autocompletion for localized method names generate definitions by running
 
 ```sh
-codeceptjs def
+тзч codeceptjs def
 ```
 
 ## Russian
@@ -26,14 +30,14 @@ Add to config:
 
 when running with `--steps` option steps output will be translated:
 
-![steps-in-russian](https://codecept.io/img/translate-ru1.png)
+![steps-in-russian](/img/translate-ru1.png)
 
 This also enables localized method names for actor object.
 
 This way tests can be written in native language while it is still JavaScript:
 
 ```js
-Scenario('пробую написать реферат', (Я) => {
+Сценарий('пробую написать реферат', (Я) => {
     Я.на_странице('http://yandex.ru/referats');
     Я.вижу("Написать реферат по");
     Я.выбираю_опцию('Психологии');
@@ -73,7 +77,7 @@ Add to config
 Now you can write test like this:
 
 ```js
-Scenario('Effettuare il Login su GitHub', (io) => {
+Caratteristica('Effettuare il Login su GitHub', (io) => {
     io.sono_sulla_pagina('https://github.com/login');
     io.compilo_il_campo("Username or email address", "giuseppe-santoro");
     io.compilo_il_campo("Password", "*********");
@@ -175,6 +179,14 @@ Create translation file like this:
 ```js
 module.exports = {
   I: '',
+  contexts: {
+    Feature: 'Feature',
+    Scenario: 'Szenario',
+    Before: 'Vor',
+    After: 'Nach',
+    BeforeSuite: 'vor_der_suite',
+    AfterSuite: 'nach_der_suite',
+  },
   actions: {
     click: 'Klicken',
     wait: 'Wartenn',

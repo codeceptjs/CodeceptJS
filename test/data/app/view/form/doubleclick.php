@@ -9,6 +9,7 @@
     color: white;
     height: 100px;
     width: 150px;
+    user-select: text;
  }
   div.dbl {
     background: yellow;

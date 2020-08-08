@@ -1,8 +1,9 @@
 ---
-id: data
+permalink: /data
 title: Data Management
 ---
 
+# Data Management
 
 > This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
 
@@ -137,7 +138,7 @@ Scenario('check post page', async (I)  => {
   // create a post and save its Id
   response = await I.sendMutation(
     'mutation createPost($input: PostInput!) { createPost(input: $input) { id }}',
-    { 
+    {
       input : {
         author: user.data.id,
         body: 'some text',
@@ -153,8 +154,8 @@ Scenario('check post page', async (I)  => {
 // cleanup created data
 After((I) => {
   I.sendMutation(
-    'mutation deletePost($id: ID!) { deletePost(id: $id) }',
-    { id: postData.id},
+    'mutation deletePost($permalink: /ID!) { deletePost(permalink: /$id) }',
+    { permalink: /postData.id},
   );
 });
 ```
@@ -163,13 +164,13 @@ After((I) => {
 
 ## Data Generation with Factories
 
-This concept is extended by: 
+This concept is extended by:
 - [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper, and,
 - [GraphQLDataFactory](http://codecept.io/helpers/GraphQLDataFactory/) helper.
 
 These helpers build data according to defined rules and use REST API or GraphQL mutations to store them and automatically clean them up after a test.
 
-Just define how many items of any kind you need and the data factory helper will create them for you. 
+Just define how many items of any kind you need and the data factory helper will create them for you.
 
 To make this work some preparations are required.
 
@@ -195,7 +196,7 @@ The way for setting data for a test is as simple as writing:
 ```js
 // inside async function
 let post = await I.have('post');
-I.haveMultiple('comment', 5, { postId: post.id});
+I.haveMultiple('comment', 5, { postpermalink: /post.id});
 ```
 
 After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
@@ -247,7 +248,7 @@ This way for setting data for a test is as simple as writing:
 ```js
 // inside async function
 let post = await I.mutateData('createPost');
-I.mutateMultiple('createComment', 5, { postId: post.id});
+I.mutateMultiple('createComment', 5, { postpermalink: /post.id});
 ```
 
 
@@ -287,7 +288,7 @@ GraphQLDataFactory: {
       query: 'mutation createUser($input: UserInput!) { createUser(input: $input) { id name }}',
       factory: './factories/users',
       revert: (data) => ({
-        query: 'mutation deleteUser($id: ID!) { deleteUser(id: $id) }',
+        query: 'mutation deleteUser($permalink: /ID!) { deleteUser(permalink: /$id) }',
         variables: { id : data.id},
       }),
     },
@@ -312,9 +313,33 @@ By doing this we can make requests within the current browser session without a 
 
 > Sharing browser session with ApiDataFactory or GraphQLDataFactory can be especially useful when you test Single Page Applications
 
-For example, let's see how to configure ApiDataFactory alongside with WebDriver to share cookies:
+Since CodeceptJS 2.3.3 there is a simple way to enable shared session for browser and data helpers.
+Install [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package:
+
+```
+npm i @codeceptjs/configure --save
+```
+
+Import `setSharedCookies` function and call it inside a config:
 
 ```js
+// in codecept.conf.js
+const { setSharedCookies } = require('@codeceptjs/configure');
+
+// share cookies between browser helpers and REST/GraphQL
+setSharedCookies();
+
+exports.config = {}
+```
+
+Without `setSharedCookies` you will need to update the config manually, so a data helper could receive cookies from a browser to make a request. If you would like to configure this process manually, here is an example of doing so:
+
+```js
+
+let cookies; // share cookies
+
+exports.config = {
+helpers: {
   ApiDataFactory: {
     endpoint: 'http://local.app/api',
     cleanup: true,
@@ -329,7 +354,9 @@ For example, let's see how to configure ApiDataFactory alongside with WebDriver 
       }
     },
     onRequest: async (request) => {
-      let cookies = await codeceptjs.container.helpers('WebDriver').grabCookie();
+      // get a cookie if it's not obtained yet
+      if (cookies) cookies = await codeceptjs.container.helpers('WebDriver').grabCookie();
+      // add cookies to request for a current request
       request.headers = { Cookie: cookies.map(c => `${c.name}=${c.value}`).join('; ') };
     },
   }
@@ -337,6 +364,7 @@ For example, let's see how to configure ApiDataFactory alongside with WebDriver 
     url: 'https://local.app/',
     browser: 'chrome',
   }
+}
 ```
 
 In this case we are accessing WebDriver helper. However, you can replace WebDriver with any helper you use.
