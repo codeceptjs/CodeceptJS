@@ -1596,6 +1596,29 @@ I.switchToPreviousTab(2);
 
 -   `num` **[number][10]**  
 
+### type
+
+Types out the given text into an active field.
+To slow down typing use a second parameter, to set interval between key presses.
+_Note:_ Should be used when [`fillField`][16] is not an option.
+
+```js
+// passing in a string
+I.type('Type this out.');
+
+// typing values with a 100ms interval
+I.type('4141555311111111', 100);
+
+// passing in an array
+I.type(['T', 'E', 'X', 'T']);
+```
+
+#### Parameters
+
+-   `keys`  
+-   `delay` **[number][10]?** (optional) delay in ms between key presses 
+-   `key` **([string][8] | [Array][14]&lt;[string][8]>)** or array of keys to type.
+
 ### uncheckOption
 
 Unselects a checkbox or radio button.
