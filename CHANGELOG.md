@@ -1,3 +1,9 @@
+## 2.6.9
+
+* [Puppeteer][Playwright] SessionStorage is now cleared in after hook
+* When helper load failed the error stack is now logged by @SkReD
+* Small documentation fixes.
+
 ## 2.6.8
 
 * [WebDriver][Protractor][Playwright][Puppeteer][Nightmare] `saveElementScreenshot` method added to make screenshot of an element. By @suniljaiswal01
