@@ -3,7 +3,7 @@ permalink: /detox
 title: Testing React Native with Detox
 ---
 
-> Warning! Detox support in CodeceptJS is experimental. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/Codeception/detox-helper).
+> Warning! Detox support in CodeceptJS is experimental. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/codecept-js/detox-helper).
 
 Automated mobile testing can be slow, hard, and ineffective. The price of it goes high, if we take into account fragility of applications, slowness of emulators, and the complexity of debug. [Appium](/mobile) helps writing mobile tests but not all apps can be tested effectively with it. That's why you should consider using an alternative approach.
 
@@ -119,7 +119,7 @@ There are also common assertions:
 * `seeElement` - to check visibility of element
 * `seeElementExists` - to check that element exists
 
-> For more details on actions refer to the [API reference of Detox helper](https://github.com/Codeception/detox-helper#api).
+> For more details on actions refer to the [API reference of Detox helper](https://github.com/codecept-js/detox-helper#api).
 
 ## Locators
 

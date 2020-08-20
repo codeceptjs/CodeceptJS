@@ -35,7 +35,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `waitForAction`: (optional) how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
 -   `waitForNavigation`: . When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][3]. Array values are accepted as well.
 -   `pressKeyDelay`: . Delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
--   `getPageTimeout`  config option to set maximum navigation time in milliseconds.
+-   `getPageTimeout`  config option to set maximum navigation time in milliseconds. If the timeout is set to 0, then timeout will be disabled.
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
 -   `userAgent`: (optional) user-agent string.
@@ -1283,6 +1283,20 @@ I.rightClick('Click me', '.context');
 This action supports [React locators](https://codecept.io/react#locators)
  
 
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][8]** file name to save.
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
@@ -1670,6 +1684,29 @@ I.switchToPreviousTab(2);
 #### Parameters
 
 -   `num` **[number][10]**  
+
+### type
+
+Types out the given text into an active field.
+To slow down typing use a second parameter, to set interval between key presses.
+_Note:_ Should be used when [`fillField`][16] is not an option.
+
+```js
+// passing in a string
+I.type('Type this out.');
+
+// typing values with a 100ms interval
+I.type('4141555311111111', 100);
+
+// passing in an array
+I.type(['T', 'E', 'X', 'T']);
+```
+
+#### Parameters
+
+-   `keys`  
+-   `delay` **[number][10]?** (optional) delay in ms between key presses 
+-   `key` **([string][8] | [Array][14]&lt;[string][8]>)** or array of keys to type.
 
 ### uncheckOption
 

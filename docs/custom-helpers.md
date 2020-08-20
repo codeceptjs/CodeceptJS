@@ -23,7 +23,7 @@ Helpers can be created by running a generator command:
 npx codeceptjs gh
 ```
 
-*(or `generate helper`)*
+*(or `npx codeceptjs generate:helper`)*
 
 This command generates a basic helper and appends it to `helpers` section of config file:
 

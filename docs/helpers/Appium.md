@@ -1332,6 +1332,28 @@ I.rightClick('Click me', '.context');
 -   `locator` **([string][4] \| [object][6])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][4]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator.{{ react }} (optional, default `null`)
 
+### forceRightClick
+
+Emulates right click on an element.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
+
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.forceRightClick('Menu');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][4]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.{{ react }} (optional, default `null`)
+
 ### clearField
 
 Clears a `<textarea>` or text `<input>` element's value.
@@ -1624,6 +1646,20 @@ I.moveCursorTo('#submit', 5,5);
 -   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
 
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][4]** file name to save.
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
@@ -1646,17 +1682,21 @@ Types out the given string or the array of keys provided.
 _Note:_ Should only be used when using [`fillField`][21] is not an option.
 
 ```js
-// When passing in a string
+// passing in a string
 I.type('Type this out.');
-// When passing in an array
+
+// typing values with a 100ms interval
+I.type('4141555311111111', 100);
+
+// passing in an array
 I.type(['T', 'E', 'X', 'T']);
 ```
 
 #### Parameters
 
 -   `keys`  
+-   `delay` **[number][8]?** (optional) delay in ms between key presses (optional, default `null`)
 -   `key` **([string][4] \| [Array][14]&lt;[string][4]>)** or array of keys to type.
-    Type out given array of keys or a string of text
 
 ### dragAndDrop
 

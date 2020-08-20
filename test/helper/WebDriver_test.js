@@ -165,6 +165,29 @@ describe('WebDriver', function () {
     });
   });
 
+  describe('Force Right Click: #forceRightClick', () => {
+    it('it should forceRightClick', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('Lorem Ipsum');
+      await wd.see('right clicked');
+    });
+
+    it('it should forceRightClick by locator', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('.context a');
+      await wd.see('right clicked');
+    });
+
+    it('it should forceRightClick by locator and context', async () => {
+      await wd.amOnPage('/form/rightclick');
+      await wd.dontSee('right clicked');
+      await wd.forceRightClick('Lorem Ipsum', '.context');
+      await wd.see('right clicked');
+    });
+  });
+
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
@@ -299,21 +322,6 @@ describe('WebDriver', function () {
       await wd.pressKeyUp('Shift');
 
       await wd.seeInField('Name', '0))1!!2@@3##4$$5%%6^^7&&8**9((');
-    });
-  });
-
-  describe('#type', () => {
-    it('should type into a field', async () => {
-      await wd.amOnPage('/form/field');
-      await wd.click('Name');
-
-      await wd.type('Type Test');
-      await wd.seeInField('Name', 'Type Test');
-
-      await wd.fillField('Name', '');
-
-      await wd.type(['T', 'y', 'p', 'e', '2']);
-      await wd.seeInField('Name', 'Type2');
     });
   });
 

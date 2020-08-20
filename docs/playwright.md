@@ -260,6 +260,19 @@ Scenario('website looks nice on iPhone', () => {
 });
 ```
 
+## Configuring CI
+
+### GitHub Actions
+
+Playwright can be added to GitHub Actions using [official action](https://github.com/microsoft/playwright-github-action). Use it before starting CodeceptJS tests to install all dependencies. It is important to run tests in headless mode ([otherwise you will need to enable xvfb to emulate desktop](https://github.com/microsoft/playwright-github-action#run-in-headful-mode)).
+
+```yml
+# from workflows/tests.yml
+- uses: microsoft/playwright-github-action@v1
+- name: run CodeceptJS tests
+  run: npx codeceptjs run
+```
+
 ## Accessing Playwright API
 
 To get [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) inside a test use `I.usePlaywrightTo` method with a callback.
@@ -285,8 +298,6 @@ I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
 });
 
 ```
-
-
 
 ## Extending Helper
 

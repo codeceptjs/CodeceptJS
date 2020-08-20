@@ -2,7 +2,7 @@
 
 # CodeceptJS
 
-Reference: [Helpers API](https://github.com/Codeception/CodeceptJS/blob/master/docs) | [Demo](https://github.com/Codeception/codeceptjs-demo)
+Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/blob/master/docs) | [Demo](https://github.com/codeceptjs/codeceptjs-demo)
 
 ## Supercharged E2E Testing
 
@@ -27,13 +27,13 @@ CodeceptJS tests are:
 
 CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
 
-* [**Puppeteer**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
-* [**WebDriver**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
-* [**Protractor**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) to run tests via WebDriver protocol.
-* [**TestCafe**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
-* [**Nightmare**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - uses Electron and NightmareJS to run tests.
-* [**Appium**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
-* [**Detox**](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimied to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially good for React Native apps.
+* [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
+* [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
+* [**Protractor**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) to run tests via WebDriver protocol.
+* [**TestCafe**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
+* [**Nightmare**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Nightmare.md) - uses Electron and NightmareJS to run tests.
+* [**Appium**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
+* [**Detox**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimied to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially good for React Native apps.
 
 And more to come...
 
@@ -113,7 +113,7 @@ Scenario('test some forms', ({ I }) => {
 ```
 
 All actions are performed by I object; assertions functions start with `see` function.
-In this examples all methods of `I` are taken from WebDriver helper, see [reference](https://github.com/Codeception/CodeceptJS/blob/master/docs/helpers/WebDriver.md) to learn how to use them.
+In this examples all methods of `I` are taken from WebDriver helper, see [reference](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) to learn how to use them.
 
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
@@ -268,8 +268,8 @@ When using typescript, replace `module.exports` with `export` for autocompletion
 
 ## Contributing
 
- - ### [Contributing Guide](https://github.com/Codeception/CodeceptJS/blob/master/.github/CONTRIBUTING.md)
- - ### [Code of conduct](https://github.com/Codeception/CodeceptJS/blob/master/.github/CODE_OF_CONDUCT.md) 
+ - ### [Contributing Guide](https://github.com/codeceptjs/CodeceptJS/blob/master/.github/CONTRIBUTING.md)
+ - ### [Code of conduct](https://github.com/codeceptjs/CodeceptJS/blob/master/.github/CODE_OF_CONDUCT.md) 
 
 
 ## Contributors

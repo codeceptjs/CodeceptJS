@@ -7,14 +7,37 @@ layout: Section
 
 # Releases
 
+## 2.6.7
+
+* Add REST helper into `standardActingHelpers` array [#2474](https://github.com/codecept-js/CodeceptJS/issues/2474) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Add missing `--invert` option for `run-workers` command [#2504](https://github.com/codecept-js/CodeceptJS/issues/2504) by **[pablopaul](https://github.com/pablopaul)**
+* **[WebDriver]** Introduce `forceRightClick` method [#2485](https://github.com/codecept-js/CodeceptJS/issues/2485) bylsuniljaiswal01
+* **[Playwright]** Fix `setCookie` method [#2491](https://github.com/codecept-js/CodeceptJS/issues/2491) by **[bmbarker90](https://github.com/bmbarker90)**
+* **[TypeScript]** Update compilerOptions.target to es2017 [#2483](https://github.com/codecept-js/CodeceptJS/issues/2483) by **[shanplourde](https://github.com/shanplourde)**
+* **[Mocha]** Honor reporter configuration [#2465](https://github.com/codecept-js/CodeceptJS/issues/2465) by **[trinhpham](https://github.com/trinhpham)**
+
+## 2.6.6
+
+* Puppeteer 4.0 support. Important: MockRequest helper won't work with Puppeter > 3.3
+* Added `xFeature` and `Feature.skip` to skip all tests in a suite. By **[Georgegriff](https://github.com/Georgegriff)**
+* **[Appium]** Fixed [#2428](https://github.com/codecept-js/CodeceptJS/issues/2428) Android native locator support by **[idxn](https://github.com/idxn)**
+* **[WebDriver]** Fixed `waitNumberOfVisibleElements` to actually filter visible elements. By **[ilangv](https://github.com/ilangv)**
+* **[Puppeteer]** Fixed handling error which is not an Error object. Fixes `cannot read property indexOf of undefined` error. Fix [#2436](https://github.com/codecept-js/CodeceptJS/issues/2436) by **[Georgegriff](https://github.com/Georgegriff)**
+* **[Puppeteer]** Print error on page crash by **[Georgegriff](https://github.com/Georgegriff)**
+
+## 2.6.5
+
+* Added `test.skipped` event to run-workers, fixing allure reports with skipped tests in workers [#2391](https://github.com/codecept-js/CodeceptJS/issues/2391). Fix [#2387](https://github.com/codecept-js/CodeceptJS/issues/2387) by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* **[Playwright]** Fixed calling `waitFor*` methods with custom locators [#2314](https://github.com/codecept-js/CodeceptJS/issues/2314). Fix [#2389](https://github.com/codecept-js/CodeceptJS/issues/2389) by **[Georgegriff](https://github.com/Georgegriff)**
+
 ## 2.6.4
 
 * **[Playwright]** **Playwright 1.0 support** by **[Georgegriff](https://github.com/Georgegriff)**.
 
 ## 2.6.3
 
-* [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes [#2337](https://github.com/Codeception/CodeceptJS/issues/2337) by **[mirao](https://github.com/mirao)**
-* [allure plugin] Fixed reporting of tests skipped by failure in before hook. Refer to [#2349](https://github.com/Codeception/CodeceptJS/issues/2349) & [#2354](https://github.com/Codeception/CodeceptJS/issues/2354). Fix by **[koushikmohan1996](https://github.com/koushikmohan1996)**
+* [stepByStepReport plugin] Fixed when using plugin with BeforeSuite. Fixes [#2337](https://github.com/codecept-js/CodeceptJS/issues/2337) by **[mirao](https://github.com/mirao)**
+* [allure plugin] Fixed reporting of tests skipped by failure in before hook. Refer to [#2349](https://github.com/codecept-js/CodeceptJS/issues/2349) & [#2354](https://github.com/codecept-js/CodeceptJS/issues/2354). Fix by **[koushikmohan1996](https://github.com/koushikmohan1996)**
 
 ## 2.6.2
 
@@ -354,7 +377,7 @@ I.mockRequest('POST', '/users', { user: { name: 'fake' }});
 
 ## 2.1.5
 
-* **EXPERIMENTAL** [Wix Detox support](https://github.com/Codeception/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
+* **EXPERIMENTAL** [Wix Detox support](https://github.com/codecept-js/detox-helper) introduced as standalone helper. Provides a faster alternative to Appium for mobile testing.
 * Saving successful commands inside interactive pause into `_output/cli-history` file. By **[hubidu](https://github.com/hubidu)**
 * Fixed hanging error handler inside scenario. See [#1721](https://github.com/codecept-js/CodeceptJS/issues/1721) by **[haily-lgc](https://github.com/haily-lgc)**.
 * Fixed by **[Vorobeyko](https://github.com/Vorobeyko)**: tests did not fail when an exception was raised in async bootstrap.
