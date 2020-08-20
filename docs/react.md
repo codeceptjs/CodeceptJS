@@ -64,6 +64,6 @@ I.seeElement({ react: 't', props: { title: 'Clicked' }});
 
 To find React element names and props in a tree use [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) extension.
 
-> Turn off minifcation for application builds otherwise component names will be uglified as well
+> Turn off minification for application builds otherwise component names will be uglified as well
 
 React locators work via [resq](https://github.com/baruchvlz/resq) library, which handles React 16 and above.

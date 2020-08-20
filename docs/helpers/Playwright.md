@@ -1102,7 +1102,7 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][7] | [Array][10]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Playwright#1313][14]).
+-   `key` **([string][7] | [Array][10]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][14]).
 
 ### pressKeyDown
 
@@ -1177,6 +1177,20 @@ I.rightClick('Click me', '.context');
 
 -   `locator` **([string][7] | [object][5])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][7]** file name to save.
 
 ### saveScreenshot
 
@@ -1539,6 +1553,29 @@ I.switchToPreviousTab(2);
 
 -   `num` **[number][8]**  
 
+### type
+
+Types out the given text into an active field.
+To slow down typing use a second parameter, to set interval between key presses.
+_Note:_ Should be used when [`fillField`][13] is not an option.
+
+```js
+// passing in a string
+I.type('Type this out.');
+
+// typing values with a 100ms interval
+I.type('4141555311111111', 100);
+
+// passing in an array
+I.type(['T', 'E', 'X', 'T']);
+```
+
+#### Parameters
+
+-   `keys`  
+-   `delay` **[number][8]?** (optional) delay in ms between key presses 
+-   `key` **([string][7] | [Array][10]&lt;[string][7]>)** or array of keys to type.
+
 ### uncheckOption
 
 Unselects a checkbox or radio button.
@@ -1859,7 +1896,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [13]: #fillfield
 
-[14]: https://github.com/GoogleChrome/Playwright/issues/1313
+[14]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
 [15]: #click
 
@@ -1873,6 +1910,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[21]: https://github.com/GoogleChrome/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
+[18]: https://github.com/microsoft/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
 
 [22]: https://codecept.io/react

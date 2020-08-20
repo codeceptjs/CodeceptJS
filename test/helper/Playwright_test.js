@@ -539,6 +539,25 @@ describe('Playwright', function () {
       .then(() => I.seeInField('#text2', 'London')));
   });
 
+  describe('#grabHTMLFrom', () => {
+    it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('//title'))
+      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
+
+    it('should grab inner html from an element using id query', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('#area1'))
+      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
+
+    it('should grab inner html from multiple elements', () => I.amOnPage('/')
+      .then(() => I.grabHTMLFrom('//a'))
+      .then(html => assert.equal(html.length, 5)));
+
+    it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
+      .then(() => I.switchTo({ frame: 'iframe' }))
+      .then(() => I.grabHTMLFrom('#new-tab'))
+      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
+  });
+
   describe('#grabBrowserLogs', () => {
     it('should grab browser logs', () => I.amOnPage('/')
       .then(() => I.executeScript(() => {

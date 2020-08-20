@@ -911,6 +911,32 @@ I.forceClick({css: 'nav a.login'});
 This action supports [React locators](https://codecept.io/react#locators)
  
 
+### forceRightClick
+
+Emulates right click on an element.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
+
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
+```js
+// simple link
+I.forceRightClick('Menu');
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][19]? | [object][18])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+ 
+
 ### grabAllWindowHandles
 
 Get all Window Handles.
@@ -1432,6 +1458,20 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 -   `caps`  
 -   `fn`  
 
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][19]** file name to save.
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
@@ -1860,13 +1900,18 @@ await I.switchToWindow( window );
 
 ### type
 
-Types out the given string or the array of keys provided.
-_Note:_ Should only be used when using [`fillField`][29] is not an option.
+Types out the given text into an active field.
+To slow down typing use a second parameter, to set interval between key presses.
+_Note:_ Should be used when [`fillField`][29] is not an option.
 
 ```js
-// When passing in a string
+// passing in a string
 I.type('Type this out.');
-// When passing in an array
+
+// typing values with a 100ms interval
+I.type('4141555311111111', 100);
+
+// passing in an array
 I.type(['T', 'E', 'X', 'T']);
 ```
 
