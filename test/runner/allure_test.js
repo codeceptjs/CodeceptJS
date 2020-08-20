@@ -88,19 +88,6 @@ describe('CodeceptJS Allure Plugin', function () {
     });
   });
 
-  it('should report skipped features', (done) => {
-    exec(codecept_run_config('skipped_feature.conf.js'), (err, stdout) => {
-      stdout.should.include('OK  | 0 passed, 2 skipped');
-      const files = fs.readdirSync(path.join(codecept_dir, 'output/skipped'));
-      const reports = files.map((testResultPath) => {
-        assert(testResultPath.match(/\.xml$/), 'not a xml file');
-        return fs.readFileSync(path.join(codecept_dir, 'output/skipped', testResultPath), 'utf8');
-      }).join(' ');
-      reports.should.include('Skipped due to "skip" on Feature.');
-      done();
-    });
-  });
-
   it('should report BeforeSuite errors when executing via run command', (done) => {
     exec(codecept_run_config('before_suite_test_failed.conf.js'), (err, stdout) => {
       expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
