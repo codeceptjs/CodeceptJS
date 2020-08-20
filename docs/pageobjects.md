@@ -5,12 +5,12 @@ title: Page Objects
 
 # Page Objects
 
-UI of your web application has interaction areas which can be shared across different tests.
-To avoid code duplication you can put common locators and methods into one place.
+The UI of your web application has interaction areas which can be shared across different tests.
+To avoid code duplication you can put common locators and methods in one place.
 
 ## Dependency Injection
 
-All objects described here are injected with Dependency Injection. The similar way it happens in AngularJS framework. If you want an object to be injected in scenario by its name add it to configuration:
+All objects described here are injected via Dependency Injection, in a similar way AngularJS does. If you want an object to be injected in a scenario by its name, you can add it to the configuration:
 
 ```js
   include: {
@@ -21,9 +21,9 @@ All objects described here are injected with Dependency Injection. The similar w
   }
 ```
 
-Now this objects can be retrieved by the name specified in configuration.
+These objects can now be retrieved by the name specified in the configuration.
 
-Required objects can be obtained via parameters in tests or via global `inject()` call.
+Required objects can be obtained via parameters in tests or via a global `inject()` call.
 
 ```js
 // globally inject objects by name
@@ -35,7 +35,7 @@ Scenario('sample test', ({ I, myPage, mySteps }) => {
   }
 ## Actor
 
-At initialization you were asked to create custom steps file. If you accepted this option you may use `custom_steps.js` file to extend `I`. See how `login` method can be added to `I`:
+During initialization you were asked to create a custom steps file. If you accepted this option, you are now able to use the `custom_steps.js` file to extend `I`. See how the `login` method can be added to `I`:
 
 ```js
 module.exports = function() {
@@ -50,18 +50,18 @@ module.exports = function() {
 }
 ```
 
-> ℹ Instead of `I` you should use `this` in current context.
+> ℹ Instead of `I` you should use `this` in the current context.
 
 ## PageObject
 
-In case an application has different pages (login, admin, etc) you should use a page object.
-CodeceptJS can generate a template for it with the command:
+If an application has different pages (login, admin, etc) you should use a page object.
+CodeceptJS can generate a template for it with the following command:
 
 ```sh
 npx codeceptjs gpo
 ```
 
-This will create a sample template for a page object and include it into `codecept.json` config.
+This will create a sample template for a page object and include it in the `codecept.json` config file.
 
 ```js
 const { I, otherPage } = inject();
@@ -72,8 +72,8 @@ module.exports = {
 }
 ```
 
-As you see, `I` object is available there so you can use it as you do in tests.
-General page object for a login page may look like this:
+As you see, the `I` object is available in scope, so you can use it just like you would do in tests.
+A general page object for a login page could look like this:
 
 ```js
 // enable I and another page object
@@ -102,8 +102,8 @@ module.exports = {
 }
 ```
 
-You can include this pageobject in test by its name (defined in `codecept.json`). In case you created a `loginPage` object
-it should be added to list of test arguments to be included in test:
+You can include this pageobject in a test by its name (defined in `codecept.json`). If you created a `loginPage` object,
+it should be added to the list of arguments to be included in the test:
 
 ```js
 Scenario('login', ({ I, loginPage }) => {
@@ -112,7 +112,7 @@ Scenario('login', ({ I, loginPage }) => {
 });
 ```
 
-Also you can use `async/await` inside PageObject:
+Also, you can use `async/await` inside a Page Object:
 
 ```js
 const { I } = inject();
@@ -151,7 +151,7 @@ Scenario('login2', async ({ I, loginPage, basePage }) => {
 });
 ```
 
-Page Objects can be be functions, arrays or classes. When declared page objects as classes you can easily extend them in other page objects.
+Page Objects can be be functions, arrays or classes. When declared as classes you can easily extend them in other page objects.
 
 Here is an example of declaring page object as a class:
 
@@ -191,17 +191,17 @@ module.exports.AttachFile = AttachFile;
 
 ## Page Fragments
 
-In a similar manner CodeceptJS allows you to generate **PageFragments** and any other are abstraction
-by running `go` command with `--type` (or `-t`) option:
+Similarly, CodeceptJS allows you to generate **PageFragments** and any other abstractions
+by running the `go` command with `--type` (or `-t`) option:
 
 ```sh
 npx codeceptjs go --type fragment
 ```
 
 Page Fragments represent autonomous parts of a page, like modal boxes, components, widgets.
-Technically they are the same as PageObject but conceptually they are a bit different.
-For instance, it is recommended that Page Fragment to include a root locator of a component.
-Methods of page fragment can use `within` block to narrow scope to a root locator:
+Technically, they are the same as PageObject but conceptually they are a bit different.
+For instance, it is recommended that Page Fragment includes a root locator of a component.
+Methods of page fragments can use `within` block to narrow scope to a root locator:
 
 ```js
 const { I } = inject();
@@ -219,7 +219,7 @@ module.exports = {
 }
 ```
 
-To use a Page Fragment within a Test Scenario just inject it into your Scenario:
+To use a Page Fragment within a Test Scenario, just inject it into your Scenario:
 
 ```js
 Scenario('failed_login', async ({ I, loginPage, modal }) => {
@@ -249,14 +249,14 @@ module.exports = {
 
 ## StepObjects
 
-StepObjects represent complex actions which involve usage of multiple web pages. For instance, creating users in backend, changing permissions, etc.
+StepObjects represent complex actions which involve the usage of multiple web pages. For instance, creating users in the backend, changing permissions, etc.
 StepObject can be created similarly to PageObjects or PageFragments:
 
 ```sh
 npx codeceptjs go --type step
 ```
 
-Technically they are the same as PageObjects. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:
+Technically, they are the same as PageObjects. StepObjects can inject PageObjects and use multiple POs to make a complex scenarios:
 
 ```js
 const { I, userPage, permissionPage } = inject();
@@ -275,7 +275,7 @@ module.exports = {
 
 ## Dynamic Injection
 
-You can inject objects per test by calling `injectDependencies` function on Scenario:
+You can inject objects per test by calling `injectDependencies` function in a Scenario:
 
 ```js
 Scenario('search @grop', ({ I, Data }) => {
@@ -284,4 +284,4 @@ Scenario('search @grop', ({ I, Data }) => {
 }).injectDependencies({ Data: require('./data.js') });
 ```
 
-This requires `./data.js` module and assigns it to `Data` argument in a test.
+This requires the `./data.js` module and assigns it to a `Data` argument in a test.
