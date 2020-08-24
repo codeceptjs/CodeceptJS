@@ -36,8 +36,7 @@ describe('CodeceptJS Workers Runner', function () {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run_glob('configs/workers/codecept.workers-negative.conf.js')} 2`, (err, stdout) => {
       expect(stdout).toContain('Running tests in 2 workers...');
-      expect(stdout).not.toContain('FAIL  | 2 passed, -6 failed');
-      expect(stdout).toContain('FAIL  | 2 passed, 2 failed');
+      expect(stdout).toContain('FAIL  | 2 passed, 4 failed');
       expect(err).not.toBe(null);
       done();
     });
