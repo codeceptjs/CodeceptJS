@@ -39,7 +39,14 @@ Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright @Protractor @Night
 });
 
 const assert = require('assert');
-const webDriver = require('../codecept/lib/container').helpers('WebDriver');
+
+let container;
+try {
+  container = require('../codecept/lib/container'); // Tests started over docker-compose (e.g. WebDriver)
+} catch (error) {
+  container = require('../../lib/container'); // Tests started in non-docker env (e.g. Playwright)
+}
+const webDriver = container.helpers('WebDriver');
 
 Scenario('Check custom waitForTimeout @WebDriverIO', () => {
   assert.strictEqual(webDriver.options.waitForTimeout, 15);
