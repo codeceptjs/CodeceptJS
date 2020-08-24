@@ -1,3 +1,7 @@
+## 2.6.10
+
+* Fixed saving options for suite via `Feature('title', {key: value})` by @Diokuz. See #2553 and [Docs](https://codecept.io/advanced/#dynamic-configuration)
+
 ## 2.6.9
 
 * [Puppeteer][Playwright] SessionStorage is now cleared in after hook. See #2524
