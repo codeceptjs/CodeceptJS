@@ -99,7 +99,12 @@ describe('ui', () => {
     it('Feature are not skipped by default', () => {
       suiteConfig = context.Feature('not skipped suite');
       assert.equal(suiteConfig.suite.pending, false, 'Feature must not contain pending === true');
-      assert.equal(suiteConfig.suite.opts, undefined, 'Features should have no skip info');
+      assert.deepEqual(suiteConfig.suite.opts, {}, 'Features should have no skip info');
+    });
+
+    it('Feature should correctly pass options to suite context', () => {
+      suiteConfig = context.Feature('not skipped suite', { key: 'value' });
+      assert.deepEqual(suiteConfig.suite.opts, { key: 'value' }, 'Features should have passed options');
     });
   });
 

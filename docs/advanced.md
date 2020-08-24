@@ -159,6 +159,27 @@ Feature('My feature', {key: val});
 Scenario('My scenario', {key: val}, (I) => {});
 ```
 
+You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
+
+```js
+  // for test
+  event.dispatcher.on(event.test.before, (test) => {
+    ...
+    if (test.opts.key) {
+      ...
+    }
+    ...
+  });
+  // or for suite
+  event.dispatcher.on(event.suite.before, (suite) => {
+    ...
+    if (suite.opts.key) {
+      ...
+    }
+    ...
+  });
+```
+
 ### Timeout
 
 By default there is no timeout for tests, however you can change this value for a specific suite:
