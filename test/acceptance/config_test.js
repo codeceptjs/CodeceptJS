@@ -37,3 +37,18 @@ Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright @Protractor @Night
   await new Promise(r => setTimeout(r, 50));
   return { url: 'https://github.com' };
 });
+
+const assert = require('assert');
+const webDriver = require('../codecept/lib/container').helpers('WebDriver');
+
+Scenario('Check custom waitForTimeout @WebDriverIO', () => {
+  assert.strictEqual(webDriver.options.waitForTimeout, 15);
+}).config({ waitForTimeout: 15000 });
+
+Scenario('Check default waitForTimeout @WebDriverIO', () => {
+  assert.strictEqual(webDriver.options.waitForTimeout, 1); // Check that previous scenario reset the timeout when finished
+});
+
+Scenario('Check that default waitForTimeout is still set @WebDriverIO', () => {
+  assert.strictEqual(webDriver.options.waitForTimeout, 1);
+});
