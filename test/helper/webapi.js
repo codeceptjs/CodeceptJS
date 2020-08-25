@@ -6,6 +6,10 @@ const formContents = require('../../lib/utils').test.submittedData(dataFile);
 const fileExists = require('../../lib/utils').fileExists;
 const secret = require('../../lib/secret').secret;
 
+const Locator = require('../../lib/locator');
+const customLocators = require('../../lib/plugin/customLocator');
+
+let originalLocators;
 let I;
 let data;
 let siteUrl;
@@ -21,6 +25,20 @@ module.exports.tests = function () {
     I = data.I;
     siteUrl = data.siteUrl;
     if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
+  });
+
+  describe('#saveElementScreenshot', () => {
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output');
+    });
+
+    it('should create a screenshot file in output dir of element', async () => {
+      await I.amOnPage('/form/field');
+      await I.seeElement('input[name=\'name\']');
+      const sec = (new Date()).getUTCMilliseconds();
+      await I.saveElementScreenshot('input[name=\'name\']', `element_screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists');
+    });
   });
 
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
@@ -236,6 +254,45 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#forceClick', () => {
+    beforeEach(function () {
+      if (isHelper('Protractor')) this.skip();
+      if (isHelper('TestCafe')) this.skip();
+    });
+
+    it('should forceClick by inner text', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('More info');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+
+    it('should forceClick by css', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('#link');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+
+    it('should forceClick by xpath', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('//a[@id="link"]');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+
+    it('should forceClick on context', async () => {
+      if (isHelper('Nightmare')) return;
+      await I.amOnPage('/');
+      await I.forceClick('More info', 'body>p');
+      if (isHelper('Puppeteer')) await I.waitForNavigation();
+      await I.seeInCurrentUrl('/info');
+    });
+  });
+
   // Could not get double click to work
   describe('#doubleClick', () => {
     it('it should doubleClick', async () => {
@@ -269,7 +326,6 @@ module.exports.tests = function () {
       await I.see('right clicked');
     });
   });
-
 
   describe('#checkOption', () => {
     it('should check option by css', async () => {
@@ -387,7 +443,6 @@ module.exports.tests = function () {
       assert.equal(val, 10);
     });
 
-
     it('should return value from sync script in iframe', async function () {
       if (isHelper('Nightmare')) return; // TODO Not yet implemented
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
@@ -400,6 +455,7 @@ module.exports.tests = function () {
 
     it('should execute async script', async function () {
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
+      if (isHelper('Playwright')) return; // It won't be implemented
 
       await I.amOnPage('/');
       const val = await I.executeAsyncScript((val, done) => {
@@ -516,6 +572,38 @@ module.exports.tests = function () {
     });
   });
 
+  describe('#type', () => {
+    it('should type into a field', async function () {
+      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('Nightmare')) return;
+      if (isHelper('Protractor')) this.skip();
+
+      await I.amOnPage('/form/field');
+      await I.click('Name');
+
+      await I.type('Type Test');
+      await I.seeInField('Name', 'Type Test');
+
+      await I.fillField('Name', '');
+
+      await I.type(['T', 'y', 'p', 'e', '2']);
+      await I.seeInField('Name', 'Type2');
+    });
+
+    it('should use delay to slow down typing', async function () {
+      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('Nightmare')) return;
+      if (isHelper('Protractor')) this.skip();
+
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', '');
+      const time = Date.now();
+      await I.type('12345', 100);
+      await I.seeInField('Name', '12345');
+      assert(Date.now() - time > 500);
+    });
+  });
+
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should check for empty field', async () => {
       await I.amOnPage('/form/empty');
@@ -595,7 +683,6 @@ module.exports.tests = function () {
       assert.equal(vals[2], 'Third');
     });
 
-
     it('should grab value from field', async () => {
       await I.amOnPage('/form/hidden');
       let val = await I.grabValueFrom('#action');
@@ -652,7 +739,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/file');
       await I.attachFile('#avatar', 'app/avatar.jpg');
       await I.click('Submit');
-      await I.amOnPage('/');
+      await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
@@ -664,6 +751,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/file');
       await I.attachFile('Avatar', 'app/avatar.jpg');
       await I.click('Submit');
+      await I.see('Thank you');
       formContents().files.should.have.key('avatar');
       formContents().files.avatar.name.should.eql('avatar.jpg');
       formContents().files.avatar.type.should.eql('image/jpeg');
@@ -696,6 +784,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.seeCookie('auth');
       await I.dontSeeCookie('auuth');
@@ -712,10 +801,12 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.setCookie({
         name: 'user',
         value: 'davert',
+        url: 'http://localhost',
       });
 
       const cookies = await I.grabCookie();
@@ -729,6 +820,7 @@ module.exports.tests = function () {
       await I.setCookie({
         name: 'auth',
         value: '123456',
+        url: 'http://localhost',
       });
       await I.clearCookie();
       await I.dontSeeCookie('auth');
@@ -1221,7 +1313,6 @@ module.exports.tests = function () {
       }
     });
 
-
     it('should check css property for several elements', async function () {
       if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
@@ -1272,6 +1363,61 @@ module.exports.tests = function () {
         'background-color': 'rgba(128,0,128,1)',
         color: 'rgba(255,255,0,1)',
       });
+    });
+  });
+
+  describe('#customLocators', () => {
+    beforeEach(() => {
+      originalLocators = Locator.filters;
+      Locator.filters = [];
+    });
+    afterEach(() => {
+      // reset custom locators
+      Locator.filters = originalLocators;
+    });
+    it('should support xpath custom locator by default', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
+    });
+    it('can use css strategy for custom locator', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+        strategy: 'css',
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
+    });
+    it('can use xpath strategy for custom locator', async () => {
+      customLocators({
+        attribute: 'data-test-id',
+        enabled: true,
+        strategy: 'xpath',
+      });
+      await I.amOnPage('/form/custom_locator');
+      await I.dontSee('Step One Button');
+      await I.dontSeeElement('$step_1');
+      await I.waitForVisible('$step_1', 2);
+      await I.seeElement('$step_1');
+      await I.click('$step_1');
+      await I.waitForVisible('$step_2', 2);
+      await I.see('Step Two Button');
     });
   });
 };

@@ -37,9 +37,9 @@ Run Rerun - Command --
     I print message "RunRerun"
 RunRerun
   ✔ OK`);
-      stdout.should.include('Process run 1 of max 3, success runs 1/3 ');
-      stdout.should.include('Process run 2 of max 3, success runs 2/3 ');
-      stdout.should.include('Process run 3 of max 3, success runs 3/3 ');
+      stdout.should.include('Process run 1 of max 3, success runs 1/3');
+      stdout.should.include('Process run 2 of max 3, success runs 2/3');
+      stdout.should.include('Process run 3 of max 3, success runs 3/3');
       stdout.should.include('OK  | 1 passed');
       assert(!err);
       done();
@@ -69,8 +69,8 @@ Run Rerun - Command --
     I print message "RunRerun"
 RunRerun
   ✔ OK`);
-      stdout.should.include('Process run 1 of max 3, success runs 1/2 ');
-      stdout.should.include('Process run 2 of max 3, success runs 2/2 ');
+      stdout.should.include('Process run 1 of max 3, success runs 1/2');
+      stdout.should.include('Process run 2 of max 3, success runs 2/2');
       stdout.should.not.include('Process run 3 of max 3');
       stdout.should.include('OK  | 1 passed');
       assert(!err);
@@ -78,9 +78,9 @@ RunRerun
     });
   });
 
-  it('should display error if minSuccess more then maxReruns', (done) => {
+  it('should display error if minSuccess more than maxReruns', (done) => {
     exec(`${codecept_run_config('codecept.conf.min_more_max.js')} --debug`, (err, stdout) => {
-      stdout.should.include('minSuccess must be less then maxReruns');
+      stdout.should.include('minSuccess must be less than maxReruns');
       assert(err);
       done();
     });
@@ -88,10 +88,10 @@ RunRerun
 
   it('should display errors if test is fail always', (done) => {
     exec(`${codecept_run_config('codecept.conf.fail_test.js', '@RunRerun - Fail all attempt')} --debug`, (err, stdout) => {
-      stdout.should.include('Fail run 1 of max 3, success runs 0/2 ');
-      stdout.should.include('Fail run 2 of max 3, success runs 0/2 ');
-      stdout.should.include('Fail run 3 of max 3, success runs 0/2 ');
-      stdout.should.include('Test suite unstable!');
+      stdout.should.include('Fail run 1 of max 3, success runs 0/2');
+      stdout.should.include('Fail run 2 of max 3, success runs 0/2');
+      stdout.should.include('Fail run 3 of max 3, success runs 0/2');
+      stdout.should.include('Flaky tests detected!');
       assert(err);
       done();
     });
@@ -102,7 +102,7 @@ RunRerun
       stdout.should.include('Process run 1 of max 3, success runs 1/2');
       stdout.should.include('Fail run 2 of max 3, success runs 1/2');
       stdout.should.include('Process run 3 of max 3, success runs 2/2');
-      stdout.should.not.include('Test suite unstable!');
+      stdout.should.not.include('Flaky tests detected!');
       assert(!err);
       done();
     });

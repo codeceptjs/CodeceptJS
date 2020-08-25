@@ -7,10 +7,10 @@ editLink: false
 ---
 
 # Examples
-> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)
-## [TodoMVC Examples](https://github.com/codecept-js/examples)
+> Add your own examples to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Examples)
+## [TodoMVC Examples](https://github.com/codeceptjs/examples)
 
-![](https://github.com/codecept-js/examples/raw/master/todo.png)
+![](https://github.com/codeceptjs/examples/raw/master/todo.png)
 
 Playground repository where you can run tests in different helpers on a basic single-page website.
 
@@ -21,9 +21,9 @@ Tests repository demonstrate usage of
 * TestCafe plugin
 * Toggle headless mode with env variables
 * PageObjects
-* Cucumber Syntax
+* Cucumber syntax
 
-## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
+## [Basic Examples](https://github.com/codeceptjs/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
@@ -33,7 +33,7 @@ Our team uses it to test new features and run simple scenarios.
 
 ![](https://user-images.githubusercontent.com/220264/56353972-56975080-61db-11e9-8b23-06e8b4620995.png)
 
-End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps to collect user feedback and transform it into professional bugreports.
+End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps collecting users' feedbacks and transforming them into professional bug reports.
 
 Tests repository demonstrate usage of
 
@@ -44,7 +44,7 @@ Tests repository demonstrate usage of
 
 ## [Practical E2E Tests](https://gitlab.com/paulvincent/codeceptjs-e2e-testing)
 
-Examples from the book [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/) by **Paul Vincent Beigang**.
+Examples from the book [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/) by **Paul Vincent Beigang**. 
 
 This repository demonstrates usage of:
 
@@ -96,7 +96,7 @@ Running CodeceptJS tests with Docker Compose
 
 This repository demonstrates usage of:
 
-* CodeceptJS Docker image
+* CodeceptJS Docker image 
 * WebDriver helper
 * Allure plugin
 
@@ -133,7 +133,7 @@ This repository demonstrates usage of
 The purpose of this application is for learning the basics and how to use good practices and useful tools in automation.
 
 * Puppeteer helper
-* Working with gherkin, also it has type definitions and to be able to use them inside when, given and then make sure you add `declare function inject(): { I: CodeceptJS.I, [key: string]: any; };`in the `steps.d.ts`file
+* Working with gherkin, also it has type definitions and to be able to use them inside when, given and then make sure you add `declare function inject(): { I: CodeceptJS.I, [key: string]: any; };`in the `steps.d.ts`file 
 * Linting `airbnb-base`, `codeceptjs/codeceptjs` and full ES6 support
 
 ## [Example for using: Puppeteer, Gherkin, Allure with parallel execution](https://github.com/SchnuckySchuster/codeceptJSExample)
@@ -145,4 +145,4 @@ This is a ready to use example that shows how to integrate CodeceptJS with Puppe
 * puppeteer helper example
 * test steps, pages, fragments
 * examples for sequential and parallel execution
-* generation of allure test results
+* generation of allure test results  

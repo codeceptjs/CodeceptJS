@@ -159,6 +159,27 @@ Feature('My feature', {key: val});
 Scenario('My scenario', {key: val}, (I) => {});
 ```
 
+You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
+
+```js
+  // for test
+  event.dispatcher.on(event.test.before, (test) => {
+    ...
+    if (test.opts.key) {
+      ...
+    }
+    ...
+  });
+  // or for suite
+  event.dispatcher.on(event.suite.before, (suite) => {
+    ...
+    if (suite.opts.key) {
+      ...
+    }
+    ...
+  });
+```
+
 ### Timeout
 
 By default there is no timeout for tests, however you can change this value for a specific suite:
@@ -227,4 +248,46 @@ Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
 Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
 
 Configuration changes will be reverted after a test or a suite.
+
+
+### Rerunning Flaky Tests Multiple Times <Badge text="Since 2.4" type="warning"/>
+
+End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
+
+* Detect flaky tests in our suite
+* Fix flaky tests by rerunning them.
+
+Both tasks can be achieved with [`run-rerun` command](/commands/#run-rerun) which runs tests multiple times until all tests are passed.
+
+You should set min and max runs boundaries so when few tests fail in a row you can rerun them until they are succeeded.
+
+```js
+// inside to codecept.conf.js
+exports.config = { // ...
+  rerun: {
+    // run 4 times until 1st success
+    minSuccess: 1,
+    maxReruns: 4,
+  }
+}
+```
+
+If you want to check all your tests for stability you can set high boundaries for minimal success:
+
+```js
+// inside to codecept.conf.js
+exports.config = { // ...
+  rerun: {
+    // run all tests must pass exactly 5 times
+    minSuccess: 5,
+    maxReruns: 5,
+  }
+}
+```
+
+Now execute tests with `run-rerun` command:
+
+```
+npx codeceptjs run-rerun
+```
 

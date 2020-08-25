@@ -61,7 +61,6 @@ program.command('gherkin:snippets [path]')
   .option('--path [file]', 'file in which to place the new snippets')
   .action(require('../lib/command/gherkin/snippets'));
 
-
 program.command('generate:test [path]')
   .alias('gt')
   .description('Generates an empty test')
@@ -161,6 +160,7 @@ program.command('run-workers <workers>')
   .description('Executes tests in workers')
   .option('-c, --config [file]', 'configuration file to be used')
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-i, --invert', 'inverts --grep matches')
   .option('-o, --override [value]', 'override current config options')
   .option('--suites', 'parallel execution of suites not single tests')
   .option('--debug', 'output additional information')
@@ -190,6 +190,9 @@ program.command('run-multiple [suites...]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('--recursive', 'include sub directories')
 
+  // mocha options
+  .option('--colors', 'force enabling of colors')
+
   .action(require('../lib/command/run-multiple'));
 
 program.command('info [path]')
@@ -217,7 +220,6 @@ program.on('command:*', (cmd) => {
   console.log(`\nUnknown command ${cmd}\n`);
   program.outputHelp();
 });
-
 
 if (process.argv.length <= 2) {
   program.outputHelp();

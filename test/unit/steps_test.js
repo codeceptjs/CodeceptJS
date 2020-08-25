@@ -34,7 +34,7 @@ describe('Step', () => {
 
     let testUndefined;
     step.args = [testUndefined, 'undefined'];
-    step.humanizeArgs().should.eql('undefined, "undefined"');
+    step.humanizeArgs().should.eql(', "undefined"');
 
     step.args = [secret('word'), 1];
     step.humanizeArgs().should.eql('*****, 1');

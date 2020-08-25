@@ -247,51 +247,6 @@ npx codeceptjs def
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
 
 
-## Cloud Browsers
-
-Puppeteer browser can be executed locally or remotely.
-If you want to run your tests in parallel you may face problem of maintaining infrastructure for Puppeteer tests.
-
-That's why we recommend using [Aerokube Browsers](https://browsers.aerokube.com) as a fast cloud provider for browsers. At this moment, this is the only cloud provider that can launch multiple puppeteer sessions for you.
-
-To start with Aerokube Browsers you need to register at [Aerokube Browsers](https://browsers.aerokube.com) and obtain a private key. Then install `aerokube-plugin`:
-
-```
-npm i @codeceptjs/aerokube-plugin --save-dev
-```
-
-And add this plugin to a config. Please provide Aerokube credentials in configuration:
-
-```js
-// codecept.conf.js config
-exports.config = {
-  helpers: {
-    Puppeteer: {
-     // regular Puppeteer config goes here
-     // no need to change anything here
-    }
-  },
-  // ....
-  plugins: {
-    aerokube: {
-      // uncomment next line to permanently enable this plugin
-      // enabled: true,
-       require: '@codeceptjs/aerokube-plugin',
-       user: '<username from aerokube>',
-       password: '<password from aerokube>',
-     }
-  }
-}
-```
-
-To launch tests and use Aerokube Browsers enable `aerokube` plugin from a command line:
-
-```
-npx codeceptjs run --plugins aerokube
-```
-
-> ℹ When running a browser from Aerokube it can't access your local environment or private networks. Consider using [Selenoid or Moon](https://aerokube.com) to set up a private browsers cloud.
-
 ## Extending
 
 Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.

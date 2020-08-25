@@ -1,6 +1,6 @@
 ---
-permalink: helpers/Nightmare
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Nightmare.js
+permalink: /helpers/Nightmare
+editLink: false
 sidebar: auto
 title: Nightmare
 ---
@@ -421,7 +421,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 An array as a result will be returned if there are more than one matched element.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -438,7 +438,7 @@ Returns **[Promise][8]&lt;[string][3]>** attribute value
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -462,6 +462,34 @@ console.log(`Current URL is [${url}]`);
 ```
 
 Returns **[Promise][8]&lt;[string][3]>** current URL
+
+### grabElementBoundingRect
+
+Grab the width, height, location of given locator.
+Provide `width` or `height`as second param to get your desired prop.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+Returns an object with `x`, `y`, `width`, `height` keys.
+
+```js
+const value = await I.grabElementBoundingRect('h3');
+// value is like { x: 226.5, y: 89, width: 527, height: 220 }
+```
+
+To get only one metric use second parameter:
+
+```js
+const width = await I.grabElementBoundingRect('h3', 'width');
+// width == 527
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+-   `prop`  
+-   `elementSize` **[string][3]** x, y, width or height of the given element.
+
+Returns **[object][4]** Element bounding rectangle
 
 ### grabHAR
 
@@ -492,6 +520,7 @@ Returns **[Promise][8]&lt;[string][3]>** HTML code for an element
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -635,6 +664,20 @@ I.rightClick('Click me', '.context');
 
 -   `locator` **([string][3] | [object][4])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][3]** file name to save.
 
 ### saveScreenshot
 
@@ -876,15 +919,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][4]** a cookie object.Wrapper for `.cookies.set(cookie)`.
+-   `cookie` **([object][4] | [array][11])** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
     [See more][14]
 
 ### triggerMouseEvent

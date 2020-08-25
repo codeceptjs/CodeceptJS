@@ -25,6 +25,7 @@ const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
 
 describe('ApiDataFactory', function () {
   this.timeout(20000);
+  this.retries(1);
 
   before(() => {
     I = new ApiDataFactory({
@@ -157,7 +158,6 @@ describe('ApiDataFactory', function () {
       resp = await I.restHelper.sendGetRequest('/comments');
       resp.data.length.should.eql(1);
     });
-
 
     it('should not remove records if cleanup:false', async () => {
       I = new ApiDataFactory({

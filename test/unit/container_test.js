@@ -20,7 +20,6 @@ describe('Container', () => {
     });
   });
 
-
   describe('#translation', () => {
     const Translation = require('../../lib/translation');
 
@@ -37,6 +36,13 @@ describe('Container', () => {
       container.translation().loaded.should.be.true;
       container.translation().I.should.eql('Я');
       container.translation().actionAliasFor('see').should.eql('вижу');
+    });
+    it('should have translations for context', () => {
+      container.create({ translation: 'it-IT' });
+      container.translation().should.be.instanceOf(Translation);
+      container.translation().loaded.should.be.true;
+      container.translation().I.should.eql('io');
+      container.translation().value('contexts').Feature.should.eql('Caratteristica');
     });
   });
 
@@ -164,7 +170,6 @@ describe('Container', () => {
       container.support('dummyPage').should.include.keys('openDummyPage');
       container.support('dummyPage').getI().should.have.keys(Object.keys(container.support('I')));
     });
-
 
     it('should load DI and inject custom I into PO', () => {
       container.create({

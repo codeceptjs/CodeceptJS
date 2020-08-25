@@ -1,5 +1,13 @@
 module.exports = {
   I: 'Я',
+  contexts: {
+    Feature: 'Цель',
+    Scenario: 'Сценарий',
+    Before: 'Начало',
+    After: 'Конец',
+    BeforeSuite: 'Перед_всем',
+    AfterSuite: 'После_всего',
+  },
   actions: {
     waitForElement: 'ожидаю_элемент',
     waitForVisible: 'ожидаю_увидеть',

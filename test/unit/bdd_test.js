@@ -68,7 +68,6 @@ describe('BDD', () => {
     assert.equal('@super', suite.tests[0].tags[0]);
   });
 
-
   it('should load step definitions', (done) => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
@@ -81,7 +80,6 @@ describe('BDD', () => {
       done();
     });
   });
-
 
   it('should allow failed steps', (done) => {
     let sum = 0;
@@ -114,7 +112,6 @@ describe('BDD', () => {
       done();
     });
   });
-
 
   it('should execute scenarios step-by-step ', (done) => {
     printed = [];
@@ -214,10 +211,15 @@ describe('BDD', () => {
       Given I have product with price <price>$ in my cart
       And discount is 10 %
       Then I should see price is "<total>" $
-
+      
       Examples:
         | price | total |
         | 10    | 9     |
+
+      @exampleTag1
+      @exampleTag2
+      Examples:
+        | price | total |
         | 20    | 18    |
     `;
     let cart = 0;
@@ -235,9 +237,8 @@ describe('BDD', () => {
     const suite = run(text);
 
     assert.ok(suite.tests[0].tags);
-    assert.equal('@awesome', suite.tests[0].tags[0]);
-    assert.equal('@cool', suite.tests[0].tags[1]);
-    assert.equal('@super', suite.tests[0].tags[2]);
+    assert.deepEqual(['@awesome', '@cool', '@super'], suite.tests[0].tags);
+    assert.deepEqual(['@awesome', '@cool', '@super', '@exampleTag1', '@exampleTag2'], suite.tests[1].tags);
 
     assert.equal(2, suite.tests.length);
     suite.tests[0].fn(() => {

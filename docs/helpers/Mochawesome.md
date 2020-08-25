@@ -1,6 +1,6 @@
 ---
-permalink: helpers/Mochawesome
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Mochawesome.js
+permalink: /helpers/Mochawesome
+editLink: false
 sidebar: auto
 title: Mochawesome
 ---

@@ -2,7 +2,7 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
-/// <reference types="Mocha" />
+/// <reference path="./Mocha.d.ts" />
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
@@ -13,6 +13,7 @@ declare namespace CodeceptJS {
   interface I {}
   interface IHook {}
   interface IScenario {}
+  interface IFeature {}
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
@@ -24,12 +25,6 @@ declare namespace CodeceptJS {
   // Extending JSDoc generated typings
   interface Step {
     isMetaStep(): this is MetaStep;
-  }
-
-  interface index {
-    actor: CodeceptJS.actor;
-    pause: typeof CodeceptJS.pause;
-    within: typeof CodeceptJS.within;
   }
 
   // Types who are not be defined by JSDoc
@@ -45,15 +40,21 @@ declare namespace CodeceptJS {
     | { frame: string }
     | { android: string }
     | { ios: string }
+    | { android: string, ios: string }
     | { react: string };
 
   type LocatorOrString = string | ILocator | Locator;
 
   interface HookCallback<U extends any[]> { (...args: U): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario }
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface Feature extends IFeature { skip: IFeature }
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
+    // Scenario.todo can be called only with a title.
+    <T extends any[] = CallbackOrder>(
+      title: string
+    ): ScenarioConfig;
     <T extends any[] = CallbackOrder>(
       title: string,
       callback: HookCallback<T>
@@ -85,7 +86,7 @@ declare const pause: typeof CodeceptJS.pause;
 declare const within: typeof CodeceptJS.within;
 declare const session: typeof CodeceptJS.session;
 declare const DataTable: typeof CodeceptJS.DataTable;
-declare const codeceptjs: CodeceptJS.index;
+declare const codeceptjs: typeof CodeceptJS.index;
 declare const locate: typeof CodeceptJS.Locator.build;
 declare function inject(): CodeceptJS.SupportObject;
 declare function inject<T extends keyof CodeceptJS.SupportObject>(
@@ -101,6 +102,7 @@ declare const Then: typeof CodeceptJS.addStep;
 declare const Feature: typeof CodeceptJS.Feature;
 declare const Scenario: CodeceptJS.Scenario;
 declare const xScenario: CodeceptJS.IScenario;
+declare const xFeature: CodeceptJS.IFeature;
 declare function Data(data: any): CodeceptJS.IData;
 declare function xData(data: any): CodeceptJS.IData;
 
@@ -112,7 +114,7 @@ declare const Before: CodeceptJS.IHook;
 declare const After: CodeceptJS.IHook;
 
 interface Window {
-  codeceptjs: CodeceptJS.browserCodecept;
+  codeceptjs: typeof CodeceptJS.browserCodecept;
   resq: any;
 }
 
@@ -148,6 +150,7 @@ declare namespace Mocha {
   interface MochaGlobals {
     Feature: typeof Feature;
     Scenario: typeof Scenario;
+    xFeature: typeof xFeature;
     xScenario: typeof xScenario;
     Data: typeof Data;
     xData: typeof xData;
@@ -158,14 +161,14 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite {
+  interface Suite extends SuiteRunnable{
     tags: any[]
     comment: string
     feature: any
   }
 
-  interface Test {
-    tags: any[]
+  interface Test  extends Runnable{
+    tags: any[];
   }
 }
 

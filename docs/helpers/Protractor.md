@@ -1,6 +1,6 @@
 ---
-permalink: helpers/Protractor
-editLink: https://github.com/Codeception/CodeceptJS/blob/master/lib/helper/Protractor.js
+permalink: /helpers/Protractor
+editLink: false
 sidebar: auto
 title: Protractor
 ---
@@ -569,7 +569,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 An array as a result will be returned if there are more than one matched element.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -598,7 +598,7 @@ Returns **[Promise][13]&lt;[Array][14]&lt;any>>** all browser logs
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -659,6 +659,7 @@ Returns **[Promise][13]&lt;[string][9]>** HTML code for an element
 ### grabNumberOfOpenTabs
 
 Grab number of open tabs.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let tabs = await I.grabNumberOfOpenTabs();
@@ -669,6 +670,7 @@ Returns **[Promise][13]&lt;[number][7]>** number of open tabs
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -702,7 +704,7 @@ await I.grabPopupText();
 ### grabSource
 
 Retrieves page source and returns it to test.
-Resumes test execution, so should be used inside an async function.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let pageSource = await I.grabSource();
@@ -903,6 +905,20 @@ I.rightClick('Click me', '.context');
 -   `locator` **([string][9] | [object][10])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][9]? | [object][10])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][10])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][9]** file name to save.
+
 ### saveScreenshot
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
@@ -1094,9 +1110,13 @@ I.seeInField('#searchform input','Search');
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
 given string.
 
+```js
+I.seeInPopup('Popup text');
+```
+
 #### Parameters
 
--   `text`  
+-   `text` **[string][9]** value to check.
 
 ### seeInSource
 
@@ -1160,8 +1180,8 @@ I.seeTextEquals('text', 'h1');
 
 #### Parameters
 
--   `text`  
--   `context`   
+-   `text` **[string][9]** element value to check.
+-   `context` **([string][9] | [object][10]?)** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 
@@ -1203,15 +1223,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][10]** a cookie object.
+-   `cookie` **([object][10] | [array][14])** a cookie object or array of cookie objects.
 
 ### switchTo
 

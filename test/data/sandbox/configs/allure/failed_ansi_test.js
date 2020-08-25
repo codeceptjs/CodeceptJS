@@ -1,4 +1,3 @@
-
 Feature('Filesystem').tag('main');
 
 Scenario('check error with ansi symbols', (I) => {

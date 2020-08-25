@@ -1,5 +1,6 @@
 const assert = require('assert');
 const os = require('os');
+const path = require('path');
 const sinon = require('sinon');
 
 const utils = require('../../lib/utils');
@@ -50,7 +51,6 @@ describe('utils', () => {
 };`);
     });
   });
-
 
   describe('#xpathLocator', () => {
     it('combines xpaths', () => {
@@ -307,12 +307,33 @@ describe('utils', () => {
 
     it('returns the joined filename for filename only', () => {
       const _path = utils.screenshotOutputFolder('screenshot1.failed.png');
-      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+      _path.should.eql(
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
+          /\//g,
+          path.sep,
+        ),
+      );
     });
 
     it('returns the given filename for absolute one', () => {
-      const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
-      _path.should.eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png');
+      const _path = utils.screenshotOutputFolder(
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
+          /\//g,
+          path.sep,
+        ),
+      );
+      if (os.platform() === 'win32') {
+        _path.should.eql(
+          path.resolve(
+            global.codecept_dir,
+            '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
+          ),
+        );
+      } else {
+        _path.should.eql(
+          '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
+        );
+      }
     });
   });
 });

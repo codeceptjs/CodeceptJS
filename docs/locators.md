@@ -12,6 +12,8 @@ CodeceptJS provides flexible strategies for locating elements:
 * [Locator Builder](#locator-builder)
 * [ID locators](#id-locators): by CSS id or by accessibility id
 * [Custom Locator Strategies](#custom-locators): by data attributes or whatever you prefer.
+* [Shadow DOM](/shadow): to access shadow dom elements
+* [React](/react): to access React elements by component names and props
 
 Most methods in CodeceptJS use locators which can be either a string or an object.
 
@@ -40,8 +42,17 @@ For example, here's the heuristic used for the `fillField` method:
 5. If nothing found, check if there is a label with specified text for input element.
 6. If nothing found, throw an `ElementNotFound` exception.
 
-Be warned that fuzzy locators can be significantly slower than strict locators.
-If speed is a concern, it's recommended you stick with explicitly specifying the locator type via object syntax.
+> ⚠ Be warned that fuzzy locators can be significantly slower than strict locators. If speed is a concern, it's recommended you stick with explicitly specifying the locator type via object syntax.
+
+It is recommended to avoid using implicit CSS locators in methods like `fillField` or `click`, where semantic locators are allowed.
+Use locator type to speed up search by various locator strategies.
+
+```js
+// will search for "input[type=password]" text before trying to search by CSS
+I.fillField('input[type=password]', '123456');
+// replace with strict locator
+I.fillField({ css: 'input[type=password]' }, '123456');
+```
 
 ## CSS and XPath
 
@@ -290,4 +301,4 @@ New locator strategy is ready to use:
 I.click('=Login');
 ```
 
-> For more details on locator object see [Locator](https://github.com/Codeception/CodeceptJS/blob/master/lib/locator.js) class implementation.
+> For more details on locator object see [Locator](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/locator.js) class implementation.

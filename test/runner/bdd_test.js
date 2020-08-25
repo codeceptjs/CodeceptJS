@@ -50,7 +50,6 @@ describe('BDD Gherkin', () => {
   it('should print events in verbose mode', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --verbose --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Emitted | step.start (I add product "Harry Potter", 5)');
-      stdout.should.include('Emitted | step.comment (Given I have products in my cart');
       stdout.should.include('name            | category        | price');
       stdout.should.include('Harry Potter    | Books           | 5');
       stdout.should.include('iPhone 5        | Smartphones     | 1200 ');
@@ -184,7 +183,6 @@ describe('BDD Gherkin', () => {
     });
   });
 
-
   it('should run scenario and scenario outline by tags', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.not.include('0 passed');
@@ -275,6 +273,14 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
   // From "support/dummy.feature" {"line":16,"column":5}
   throw new Error('Not implemented yet');
 });`);
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should not generate duplicated steps', (done) => {
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+      assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
       assert(!err);
       done();
     });

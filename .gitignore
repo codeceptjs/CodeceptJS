@@ -12,6 +12,7 @@ docs/build
 test/data/output
 test/acceptance/output
 examples/output
+examples/selenoid-example/output
 test/data/app/db
 test/data/sandbox/steps.d.ts
 testpullfilecache*
@@ -19,3 +20,4 @@ testpullfilecache*
 package-lock.json
 yarn.lock
 /.vs
+typings/types.d.ts
