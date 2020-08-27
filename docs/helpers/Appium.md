@@ -989,8 +989,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 -   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
--   `scrollIntoViewOptions`  
--   `alignToTop` **([boolean][15] \| [object][6])** (optional) or scrollIntoViewOptions (optional), see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][16].Supported only for web testing
+-   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][15].Supported only for web testing
 
 ### seeCheckboxIsChecked
 
@@ -1140,12 +1139,12 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 ### useWebDriverTo
 
-Use [webdriverio][17] API inside a test.
+Use [webdriverio][16] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][17]) } object from WebDriver API is available.
+{ [`browser`][16]) } object from WebDriver API is available.
 
 ```js
 I.useWebDriverTo('open multiple windows', async ({ browser }) {
@@ -1157,7 +1156,7 @@ I.useWebDriverTo('open multiple windows', async ({ browser }) {
 #### Parameters
 
 -   `description` **[string][4]** used to show in logs.
--   `fn` **[function][18]** async functuion that executed with WebDriver helper as argument
+-   `fn` **[function][17]** async functuion that executed with WebDriver helper as argument
 
 ### \_isShadowLocator
 
@@ -1237,7 +1236,7 @@ this.helpers['WebDriver']._locateFields('Your email').then // ...
 
 ### defineTimeout
 
-Set [WebDriver timeouts][19] in realtime.
+Set [WebDriver timeouts][18] in realtime.
 
 Timeouts are expected to be passed as object:
 
@@ -1535,13 +1534,14 @@ Returns **[Promise][13]&lt;[string][4]>** source code
 ### grabBrowserLogs
 
 Get JS log from browser. Log buffer is reset after each request.
+Resumes test execution, so **should be used inside an async function with `await`** operator.
 
 ```js
 let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][13]&lt;([string][4] \| [undefined][20])>** 
+Returns **([Promise][13]&lt;[Array][14]&lt;[object][6]>> | [undefined][19])** all browser logs
 
 ### dontSeeInSource
 
@@ -1674,7 +1674,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][4]** file name to save.
--   `fullPage` **[boolean][15]** (optional, `false` by default) flag to enable fullscreen screenshot mode. (optional, default `false`)
+-   `fullPage` **[boolean][20]** (optional, `false` by default) flag to enable fullscreen screenshot mode. (optional, default `false`)
 
 ### type
 
@@ -1709,8 +1709,7 @@ I.dragAndDrop('#dragHandle', '#container');
 #### Parameters
 
 -   `srcElement` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
--   `destElement` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
-    Appium: not tested
+-   `destElement` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.Appium: not tested
 
 ### dragSlider
 
@@ -1736,6 +1735,8 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** 
+
 ### grabCurrentWindowHandle
 
 Get the current Window Handle.
@@ -1744,6 +1745,8 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 ```js
 const window = await I.grabCurrentWindowHandle();
 ```
+
+Returns **[Promise][13]&lt;[string][4]>** 
 
 ### switchToWindow
 
@@ -1761,7 +1764,7 @@ await I.switchToWindow( window );
 
 #### Parameters
 
--   `window`  
+-   `window` **[string][4]** name of window handle.
 
 ### closeOtherTabs
 
@@ -1820,7 +1823,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][13]&lt;[Object][6]&lt;[string][4], any>>** scroll position
+Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
 
 ### setGeoLocation
 
@@ -1835,7 +1838,7 @@ I.setGeoLocation(121.21, 11.56, 10);
 
 -   `latitude` **[number][8]** to set.
 -   `longitude` **[number][8]** to set
--   `altitude` **[number][8]** (optional, null by default) to set (optional, default `null`)
+-   `altitude` **[number][8]?** (optional, null by default) to set (optional, default `null`)
 
 ### grabGeoLocation
 
@@ -1872,9 +1875,9 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 -   `prop`  
--   `elementSize` **[string][4]** x, y, width or height of the given element.
+-   `elementSize` **[string][4]?** x, y, width or height of the given element.
 
-Returns **[object][6]** Element bounding rectangle
+Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][8]>)** Element bounding rectangle
 
 [1]: http://codecept.io/helpers/WebDriver/
 
@@ -1904,16 +1907,16 @@ Returns **[object][6]** Element bounding rectangle
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[15]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[16]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[16]: https://webdriver.io/docs/api.html
 
-[17]: https://webdriver.io/docs/api.html
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[18]: https://webdriver.io/docs/timeouts.html
 
-[19]: https://webdriver.io/docs/timeouts.html
+[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
 [21]: #fillfield

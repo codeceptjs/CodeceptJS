@@ -799,7 +799,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][8]?** cookie name. 
 
-Returns **[Promise][13]&lt;[string][8]>** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][13]&lt;[string][8]> | [Promise][13]&lt;[Array][14]&lt;[string][8]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -901,9 +901,9 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `prop`  
--   `elementSize` **[string][8]** x, y, width or height of the given element.
+-   `elementSize` **[string][8]?** x, y, width or height of the given element.
 
-Returns **[object][6]** Element bounding rectangle
+Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][10]>)** Element bounding rectangle
 
 ### grabHTMLFrom
 
@@ -978,7 +978,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][13]&lt;[Object][6]&lt;[string][8], any>>** scroll position
+Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1644,7 +1644,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][6] | [array][14])** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][14]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 ### switchTo
 
