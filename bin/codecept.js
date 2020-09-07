@@ -120,6 +120,21 @@ program.command('run [test]')
 
   .action(require('../lib/command/run'));
 
+program.command('rerun-workers <workers>')
+  .description('Executes tests in workers')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-i, --invert', 'inverts --grep matches')
+  .option('-o, --override [value]', 'override current config options')
+  .option('--suites', 'parallel execution of suites not single tests')
+  .option('--debug', 'output additional information')
+  .option('--verbose', 'output internal logging information')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
+  .option('--profile [value]', 'configuration profile to be used')
+  .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .action(require('../lib/command/rerun-workers'));
+
 program.command('run-workers <workers>')
   .description('Executes tests in workers')
   .option('-c, --config [file]', 'configuration file to be used')

@@ -9,9 +9,9 @@ const execSync = require('child_process').execSync;
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/run-rerun/');
 const codecept_run = `${runner} run`;
-const codecept_run_workers = `${runner} run-workers`;
+const codecept_run_workers = `${runner} rerun-workers`;
 const codecept_run_config = (config, grep) => `${codecept_run} --rerun --config ${codecept_dir}/${config} --grep "${grep || ''}"`;
-const codecept_run_workers_config = (config, grep) => `${codecept_run_workers} 2 --rerun --config ${codecept_dir}/${config} --grep "${grep || ''}"`;
+const codecept_run_workers_config = (config, grep) => `${codecept_run_workers} 2 --config ${codecept_dir}/${config} --grep "${grep || ''}"`;
 
 describe('run with --rerun command', () => {
   before(() => {
@@ -127,9 +127,10 @@ RunRerun
       });
     });
 
-    it.skip('should display count of attemps', (done) => {
-      exec(`${codecept_run_workers_config('codecept.conf.fail_test.js', '@RunRerun - Fail all attempt')} --debug`, (err, stdout) => {
+    it.only('should display count of attemps', (done) => {
+      exec(`${codecept_run_workers_config('codecept.conf.fail_test.js', '@RunRerun - Fail all attempt')} --debug`, (err, stdout, stderr) => {
         console.log(stdout);
+        console.log(stderr);
         expect(stdout).toContain('Fail run 1 of max 3, success runs 0/2');
         expect(stdout).toContain('Fail run 2 of max 3, success runs 0/2');
         expect(stdout).toContain('Fail run 3 of max 3, success runs 0/2');
