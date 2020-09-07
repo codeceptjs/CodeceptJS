@@ -459,7 +459,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][4]?** cookie name. 
 
-Returns **[Promise][7]&lt;[string][4]>** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][7]&lt;[string][4]> | [Promise][7]&lt;[Array][8]&lt;[string][4]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCurrentUrl
 
@@ -486,7 +486,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[number][8]>** number of visible elements
+Returns **[Promise][7]&lt;[number][9]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -497,7 +497,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][7]&lt;[Object][5]&lt;[string][4], any>>** scroll position
+Returns **[Promise][7]&lt;PageScrollPosition>** scroll position
 
 ### grabSource
 
@@ -540,7 +540,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[Array][9]&lt;[string][4]>>** attribute value
+Returns **[Promise][7]&lt;[Array][8]&lt;[string][4]>>** attribute value
 
 ### grabValueFrom
 
@@ -571,7 +571,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[Array][9]&lt;[string][4]>>** attribute value
+Returns **[Promise][7]&lt;[Array][8]&lt;[string][4]>>** attribute value
 
 ### moveCursorTo
 
@@ -586,8 +586,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. 
+-   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset. 
 
 ### pressKey
 
@@ -603,7 +603,7 @@ I.pressKey(['Control','a']);
 
 #### Parameters
 
--   `key` **([string][4] | [Array][9]&lt;[string][4]>)** key or array of keys to press.
+-   `key` **([string][4] | [Array][8]&lt;[string][4]>)** key or array of keys to press.
 
 
 [Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
@@ -653,8 +653,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][8]** width in pixels or `maximize`.
--   `height` **[number][8]** height in pixels.
+-   `width` **[number][9]** width in pixels or `maximize`.
+-   `height` **[number][9]** height in pixels.
 
 ### rightClick
 
@@ -733,8 +733,8 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][8]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][8]** (optional, `0` by default) Y-axis offset. 
+-   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset. 
 
 ### see
 
@@ -872,7 +872,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `num` **[number][8]** number of elements.
+-   `num` **[number][9]** number of elements.
 
 ### seeTextEquals
 
@@ -911,7 +911,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] | [Array][9]&lt;any>)** visible text or value of option.
+-   `option` **([string][4] | [Array][8]&lt;any>)** visible text or value of option.
 
 ### setCookie
 
@@ -931,7 +931,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][5] | [array][9])** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][8]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 ### switchTo
 
@@ -994,7 +994,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][8]** number of second to wait.
+-   `sec` **[number][9]** number of second to wait.
 
 ### waitForElement
 
@@ -1009,7 +1009,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait
 
 ### waitForFunction
 
@@ -1029,8 +1029,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 -   `fn` **([string][4] | [function][6])** to be executed in browser context.
--   `argsOrSec` **([Array][9]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
+-   `argsOrSec` **([Array][8]&lt;any> | [number][9])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
 
@@ -1044,7 +1044,7 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitForText
 
@@ -1060,7 +1060,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][4]** to wait for.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator. 
 
 ### waitForVisible
@@ -1075,7 +1075,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitInUrl
 
@@ -1088,7 +1088,7 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitNumberOfVisibleElements
 
@@ -1101,8 +1101,8 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `num` **[number][8]** number of elements.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `num` **[number][9]** number of elements.
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitToHide
 
@@ -1116,7 +1116,7 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ### waitUrlEquals
 
@@ -1130,7 +1130,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
 
 ## getPageUrl
 
@@ -1154,9 +1154,9 @@ Client Functions
 
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
 [10]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 
