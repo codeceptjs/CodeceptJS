@@ -66,6 +66,26 @@ Scenario('Efetuar login', (Eu) => {
 });
 ```
 
+## French
+
+To write your tests in French you can enable the French translation by adding to config:
+
+```json
+  "translation": "fr-FR"
+```
+
+Now you can write tests like this:
+
+```js
+Fonctionnalité('Se connecter sur GitHub', (io) => {
+    Je.suisSurLaPage('https://github.com/login');
+    Je.remplisLeChamp("Username or email address", "jean-dupond");
+    Je.remplisLeChamp("Password", "*********");
+    Je.cliqueSur("Sign in");
+    Je.Vois("Learn Git and GitHub without any code!");
+});
+```
+
 ## Italian
 
 Add to config
