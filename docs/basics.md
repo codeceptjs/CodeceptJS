@@ -637,6 +637,7 @@ I.see('There were problems creating your account.');
 ```
 
 > ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+> Since `within` returns a Promise, it may be necessary to `await` the result even when you're not intending to use the return value.
 
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
 
