@@ -77,12 +77,12 @@ To write your tests in French you can enable the French translation by adding to
 Now you can write tests like this:
 
 ```js
-Fonctionnalité('Se connecter sur GitHub', (io) => {
+Scenario('Se connecter sur GitHub', (Je) => {
     Je.suisSurLaPage('https://github.com/login');
     Je.remplisLeChamp("Username or email address", "jean-dupond");
     Je.remplisLeChamp("Password", "*********");
     Je.cliqueSur("Sign in");
-    Je.Vois("Learn Git and GitHub without any code!");
+    Je.vois("Learn Git and GitHub without any code!");
 });
 ```
 

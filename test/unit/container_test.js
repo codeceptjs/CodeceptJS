@@ -30,19 +30,28 @@ describe('Container', () => {
       container.translation().actionAliasFor('see').should.eql('see');
     });
 
-    it('should create russian translation', () => {
+    it('should create Russian translation', () => {
       container.create({ translation: 'ru-RU' });
       container.translation().should.be.instanceOf(Translation);
       container.translation().loaded.should.be.true;
       container.translation().I.should.eql('Я');
       container.translation().actionAliasFor('see').should.eql('вижу');
     });
-    it('should have translations for context', () => {
+
+    it('should create Italian translation', () => {
       container.create({ translation: 'it-IT' });
       container.translation().should.be.instanceOf(Translation);
       container.translation().loaded.should.be.true;
       container.translation().I.should.eql('io');
       container.translation().value('contexts').Feature.should.eql('Caratteristica');
+    });
+
+    it('should create French translation', () => {
+      container.create({ translation: 'fr-FR' });
+      container.translation().should.be.instanceOf(Translation);
+      container.translation().loaded.should.be.true;
+      container.translation().I.should.eql('Je');
+      container.translation().value('contexts').Feature.should.eql('Fonctionnalité');
     });
   });
 
