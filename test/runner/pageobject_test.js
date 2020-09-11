@@ -163,4 +163,14 @@ describe('CodeceptJS PageObject', () => {
       });
     });
   });
+
+  it('built methods are still available custom I steps_file is added', (done) => {
+    exec(`${config_run_config('codecept.class.js', '@CustomStepsBuiltIn')} --debug`, (err, stdout) => {
+      expect(stdout).toContain('Built in say');
+      expect(stdout).toContain('Say called from custom step');
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(err).toBeFalsy();
+      done();
+    });
+  });
 });
