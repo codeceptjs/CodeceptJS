@@ -7,6 +7,7 @@ exports.config = {
     },
   },
   include: {
+    I: './steps_file.js',
     classpage: './pages/classpage.js',
     classnestedpage: './pages/classnestedpage.js',
   },
