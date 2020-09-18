@@ -301,4 +301,4 @@ New locator strategy is ready to use:
 I.click('=Login');
 ```
 
-> For more details on locator object see [Locator](https://github.com/codecept-js/CodeceptJS/blob/master/lib/locator.js) class implementation.
+> For more details on locator object see [Locator](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/locator.js) class implementation.

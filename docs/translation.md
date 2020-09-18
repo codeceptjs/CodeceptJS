@@ -10,7 +10,7 @@ title: Translation
 Test output and the way tests are written can be localized.
 This way scenarios can be written in almost native language using UTF support of JavaScript.
 If you have non-English team and you work on non-English project consider enabling translation
-by setting translation to [one of available languages](https://github.com/codecept-js/CodeceptJS/blob/master/translations).
+by setting translation to [one of available languages](https://github.com/codeceptjs/CodeceptJS/blob/master/translations).
 
 Please refer to translated steps inside translation files and send Pull Requests to add missing.
 
@@ -63,6 +63,26 @@ Scenario('Efetuar login', (Eu) => {
     Eu.preenchoOCampo("senha", "123456");
     Eu.clico("Entrar");
     Eu.vejo("Seja bem vindo usuário!");
+});
+```
+
+## French
+
+To write your tests in French you can enable the French translation by adding to config:
+
+```json
+  "translation": "fr-FR"
+```
+
+Now you can write tests like this:
+
+```js
+Scenario('Se connecter sur GitHub', (Je) => {
+    Je.suisSurLaPage('https://github.com/login');
+    Je.remplisLeChamp("Username or email address", "jean-dupond");
+    Je.remplisLeChamp("Password", "*********");
+    Je.cliqueSur("Sign in");
+    Je.vois("Learn Git and GitHub without any code!");
 });
 ```
 
