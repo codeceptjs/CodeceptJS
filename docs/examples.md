@@ -8,9 +8,9 @@ editLink: false
 
 # Examples
 > Add your own examples to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Examples)
-## [TodoMVC Examples](https://github.com/codeceptjs/examples)
+## [TodoMVC Examples](https://github.com/codecept-js/examples)
 
-![](https://github.com/codeceptjs/examples/raw/master/todo.png)
+![](https://github.com/codecept-js/examples/raw/master/todo.png)
 
 Playground repository where you can run tests in different helpers on a basic single-page website.
 
@@ -23,7 +23,7 @@ Tests repository demonstrate usage of
 * PageObjects
 * Cucumber syntax
 
-## [Basic Examples](https://github.com/codeceptjs/CodeceptJS/tree/master/examples)
+## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
@@ -146,3 +146,13 @@ This is a ready to use example that shows how to integrate CodeceptJS with Puppe
 * test steps, pages, fragments
 * examples for sequential and parallel execution
 * generation of allure test results  
+
+## [Framework with UI and API test support : CodeceptJS , Puppeteer , REST , ESLint](https://github.com/avighub/CodeceptJS-puppeteer)
+This is a basic framework with Puppeteer , REST helpers which can support both UI and API actions within same test.
+More improvements and features will be added and will be updated. 
+Suggestions and improvements are welcome , please raise a ticket in Issue tab.
+
+* Step by step setup in README
+* Two helpers are added. UI - Puppeteer , API - REST and chai-codeceptJS for assetion
+* ESLint for code check
+* Upcoming : API generic functions , Adaptor design pattern , More utilities

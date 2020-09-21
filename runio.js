@@ -233,7 +233,7 @@ title: ${name}
       cfg.line('# Community Helpers');
       cfg.line('> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)');
       cfg.line('');
-      cfg.textFromFile('docs/wiki/Community-Helpers.md');
+      cfg.textFromFile('docs/wiki/Community-Helpers-&-Plugins.md');
     });
 
     writeToFile('docs/examples.md', (cfg) => {
