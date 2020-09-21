@@ -127,7 +127,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
-#### Example #6: Lunach tests emulating iPhone 6
+#### Example #6: Launch tests emulating iPhone 6
 
 ```js
 const { devices } = require('playwright');
