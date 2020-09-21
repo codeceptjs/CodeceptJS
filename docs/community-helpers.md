@@ -5,7 +5,7 @@ editLink: false
 ---
 
 # Community Helpers
-> Share your helpers at our [Wiki Page](https://github.com/codecept-js/CodeceptJS/wiki/Community-Helpers)
+> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)
 
 Here is the list of helpers created by our community.
 Please **add your own** by editing this page.
@@ -13,12 +13,13 @@ Please **add your own** by editing this page.
 ## Email Checking
 
 * [MailCatcher](https://gist.github.com/schmkr/026732dfa1627b927ff3a08dc31ee884) - to check emails via Mailcatcher locally.
+* [codeceptjs-mailhog-helper](https://github.com/tsuemura/codeceptjs-mailhog-helper) - to check emails via Mailhog locally.
 
 ## Data Sources
 
 * [codeceptjs-httpmock](https://github.com/testphony/codeceptjs-httpMock) -  a helper which wraps mockttp library to manage http mock in tests.
 * [codeceptjs-http](https://github.com/testphony/codeceptjs-http) - a helper which wraps then-request library to process HTTP requests. It's alternative helper that provides more flexible request management.
-* [codeceptjs-dbhelper](https://www.npmjs.com/package/codeceptjs-dbhelper) - allows you to execute queries or commands to databases using database-js. 
+* [codeceptjs-dbhelper](https://github.com/thiagodp/codeceptjs-dbhelper) - allows you to execute queries or commands to databases using database-js. 
 
 ## Cloud Providers
 * [codeceptjs-saucehelper](https://github.com/puneet0191/codeceptjs-saucehelper/) - a helper which updates `Test Names` & `Test Results` on Saucelabs 
@@ -33,7 +34,9 @@ Please **add your own** by editing this page.
 * [codeceptjs-applitoolshelper](https://www.npmjs.com/package/codeceptjs-applitoolshelper) - a helper which helps interaction with [Applitools](https://applitools.com)
 
 ## Reporters
-* [codeceptjs-rphelper](https://www.npmjs.com/package/codeceptjs-rphelper) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
+* [codeceptjs-rphelper](https://github.com/reportportal/agent-js-codecept) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
+* [codeceptjs-xray-helper](https://www.npmjs.com/package/codeceptjs-xray-helper) is a CodeceptJS helper which can publish tests results on [XRAY](https://confluence.xpand-it.com/display/XRAYCLOUD/Import+Execution+Results+-+REST).
+* [codeceptjs-slack-reporter](https://www.npmjs.com/package/codeceptjs-slack-reporter) Get a Slack notification when one or more scenarios fail.
 
 ## Page Object Code Generator
 * [codeceptjs-CodeGenerator](https://github.com/senthillkumar/CodeCeptJS-PageObject) is a CodeceptJS custom wrapper which can create page class with action methods from the page object file(JSON) and project setup(Folder Structure).
@@ -47,4 +50,5 @@ Please **add your own** by editing this page.
 
 ## Other
 
+* [codeceptjs-cmdhelper](https://github.com/thiagodp/codeceptjs-cmdhelper) allows you to run commands in the terminal/console
 * [eslint-plugin-codeceptjs](https://www.npmjs.com/package/eslint-plugin-codeceptjs) Eslint rules for CodeceptJS.

@@ -22,7 +22,7 @@ CodeceptUI can be used for
 * easily switch to headless/headful mode
 
 CodeceptUI is a useful addon to CodeceptJS, we recommend to try.
-It is an [open-source Vue-based application](https://github.com/codecept-js/ui) which runs in your browser.
+It is an [open-source Vue-based application](https://github.com/codeceptjs/ui) which runs in your browser.
 
 > 📺 [Watch CodeceptUI in Action](https://www.youtube.com/watch?v=7pKNVjAckPA)
 
@@ -50,7 +50,7 @@ npx codecept-ui
 CodeceptUI is in beta. It means that we didn't have a chance to test it for all possible setups.
 You are highly welcome to try it, test it, send issues and **pull requests**.
 
-[Join development team on GitHub!](https://github.com/codecept-js/ui)
+[Join development team on GitHub!](https://github.com/codeceptjs/ui)
 
 
 

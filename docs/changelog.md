@@ -15,6 +15,41 @@ layout: Section
 * **[Playwright]** Fix `setCookie` method [#2491](https://github.com/codecept-js/CodeceptJS/issues/2491) by **[bmbarker90](https://github.com/bmbarker90)**
 * **[TypeScript]** Update compilerOptions.target to es2017 [#2483](https://github.com/codecept-js/CodeceptJS/issues/2483) by **[shanplourde](https://github.com/shanplourde)**
 * **[Mocha]** Honor reporter configuration [#2465](https://github.com/codecept-js/CodeceptJS/issues/2465) by **[trinhpham](https://github.com/trinhpham)**
+## 2.6.11
+
+* **[Playwright]** Playwright 1.4 compatibility
+* **[Playwright]** Added `ignoreHTTPSErrors` config option (default: false). See [#2566](https://github.com/codeceptjs/CodeceptJS/issues/2566) by gurjeetbains 
+* Added French translation by **[vimar](https://github.com/vimar)** 
+* **[WebDriver]** Updated `dragSlider` to work in WebDriver W3C protocol. Fixes [#2557](https://github.com/codeceptjs/CodeceptJS/issues/2557) by suniljaiswal01  
+
+## 2.6.10
+
+* Fixed saving options for suite via `Feature('title', {key: value})` by **[Diokuz](https://github.com/Diokuz)**. See [#2553](https://github.com/codeceptjs/CodeceptJS/issues/2553) and [Docs](https://codecept.io/advanced/#dynamic-configuration)
+
+## 2.6.9
+
+* [Puppeteer][Playwright] SessionStorage is now cleared in after hook. See [#2524](https://github.com/codeceptjs/CodeceptJS/issues/2524)
+* When helper load failed the error stack is now logged by **[SkReD](https://github.com/SkReD)**. See [#2541](https://github.com/codeceptjs/CodeceptJS/issues/2541)
+* Small documentation fixes.
+
+## 2.6.8
+
+* [WebDriver][Protractor][Playwright][Puppeteer][Nightmare] `saveElementScreenshot` method added to make screenshot of an element. By **[suniljaiswal01](https://github.com/suniljaiswal01)**
+* [Playwright][Puppeteer] Added `type` method to type a text using keyboard with an optional delay.
+* **[WebDriver]** Added optional `delay` argument to `type` method to slow down typing.
+* **[Puppeteer]** Fixed `amOnPage` freeze when `getPageTimeout` is 0"; set 30 sec as default timeout by **[Vorobeyko](https://github.com/Vorobeyko)**.
+* Fixed printing step with null argument in custom helper by **[sjana-aj](https://github.com/sjana-aj)**. See [#2494](https://github.com/codeceptjs/CodeceptJS/issues/2494)
+* Fix missing screenshot on failure when REST helper is in use [#2513](https://github.com/codeceptjs/CodeceptJS/issues/2513) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Improve error logging in the `screenshotOnFail` plugin [#2512](https://github.com/codeceptjs/CodeceptJS/issues/2512) by **[pablopaul](https://github.com/pablopaul)**
+
+## 2.6.7
+
+* Add REST helper into `standardActingHelpers` array [#2474](https://github.com/codeceptjs/CodeceptJS/issues/2474) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Add missing `--invert` option for `run-workers` command [#2504](https://github.com/codeceptjs/CodeceptJS/issues/2504) by **[pablopaul](https://github.com/pablopaul)**
+* **[WebDriver]** Introduce `forceRightClick` method [#2485](https://github.com/codeceptjs/CodeceptJS/issues/2485) bylsuniljaiswal01
+* **[Playwright]** Fix `setCookie` method [#2491](https://github.com/codeceptjs/CodeceptJS/issues/2491) by **[bmbarker90](https://github.com/bmbarker90)**
+* **[TypeScript]** Update compilerOptions.target to es2017 [#2483](https://github.com/codeceptjs/CodeceptJS/issues/2483) by **[shanplourde](https://github.com/shanplourde)**
+* **[Mocha]** Honor reporter configuration [#2465](https://github.com/codeceptjs/CodeceptJS/issues/2465) by **[trinhpham](https://github.com/trinhpham)**
 
 ## 2.6.6
 

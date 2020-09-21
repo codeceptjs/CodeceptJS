@@ -215,7 +215,7 @@ I.fillField('password', secret('123456'));
 
 ### Assertions
 
-In order to verify the expected behavior of a web application, it's content should be checked.
+In order to verify the expected behavior of a web application, its content should be checked.
 CodeceptJS provides built-in assertions for that. They start with a `see` (or `dontSee`) prefix.
 
 The most general and common assertion is `see`, which checks visilibility of a text on a page:
@@ -297,7 +297,7 @@ Tests are written in a synchronous way. This improves the readability and mainta
 While writing tests you should not think about promises, and instead should focus on the test scenario.
 
 However, behind the scenes **all actions are wrapped in promises**, inside of the `I` object.
-[Global promise](https://github.com/codecept-js/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
+[Global promise](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
 
 > 📺 [Learn how CodeceptJS](https://www.youtube.com/watch?v=MDLLpHAwy_s) works with promises by watching video on YouTube
 
@@ -403,7 +403,7 @@ You can have multiple configuration files for a the same project, in this case y
 npx codeceptjs run -c codecept.ci.conf.js
 ```
 
-Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how these technologies work. Use the [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with common configuration recipes.
+Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how these technologies work. Use the [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package with common configuration recipes.
 
 For instance, you can set the window size or toggle headless mode, no matter of which helpers are actually used.
 
@@ -420,7 +420,7 @@ exports.config = {
 }
 ```
 
-> ▶ See more [configuration recipes](https://github.com/codecept-js/configure)
+> ▶ See more [configuration recipes](https://github.com/codeceptjs/configure)
 
 ## Debug
 
@@ -617,7 +617,7 @@ AfterSuite((I) => {
 });
 ```
 
-[Here are some ideas](https://github.com/codecept-js/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
+[Here are some ideas](https://github.com/codeceptjs/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
 
 ## Within
 
@@ -638,6 +638,7 @@ I.see('There were problems creating your account.');
 ```
 
 > ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+> Since `within` returns a Promise, it may be necessary to `await` the result even when you're not intending to use the return value.
 
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
 
