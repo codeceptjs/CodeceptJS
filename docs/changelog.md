@@ -7,6 +7,33 @@ layout: Section
 
 # Releases
 
+## 2.6.11
+
+* **[Playwright]** Playwright 1.4 compatibility
+* **[Playwright]** Added `ignoreHTTPSErrors` config option (default: false). See [#2566](https://github.com/codeceptjs/CodeceptJS/issues/2566) by gurjeetbains 
+* Added French translation by **[vimar](https://github.com/vimar)** 
+* **[WebDriver]** Updated `dragSlider` to work in WebDriver W3C protocol. Fixes [#2557](https://github.com/codeceptjs/CodeceptJS/issues/2557) by suniljaiswal01  
+
+## 2.6.10
+
+* Fixed saving options for suite via `Feature('title', {key: value})` by **[Diokuz](https://github.com/Diokuz)**. See [#2553](https://github.com/codeceptjs/CodeceptJS/issues/2553) and [Docs](https://codecept.io/advanced/#dynamic-configuration)
+
+## 2.6.9
+
+* [Puppeteer][Playwright] SessionStorage is now cleared in after hook. See [#2524](https://github.com/codeceptjs/CodeceptJS/issues/2524)
+* When helper load failed the error stack is now logged by **[SkReD](https://github.com/SkReD)**. See [#2541](https://github.com/codeceptjs/CodeceptJS/issues/2541)
+* Small documentation fixes.
+
+## 2.6.8
+
+* [WebDriver][Protractor][Playwright][Puppeteer][Nightmare] `saveElementScreenshot` method added to make screenshot of an element. By **[suniljaiswal01](https://github.com/suniljaiswal01)**
+* [Playwright][Puppeteer] Added `type` method to type a text using keyboard with an optional delay.
+* **[WebDriver]** Added optional `delay` argument to `type` method to slow down typing.
+* **[Puppeteer]** Fixed `amOnPage` freeze when `getPageTimeout` is 0"; set 30 sec as default timeout by **[Vorobeyko](https://github.com/Vorobeyko)**.
+* Fixed printing step with null argument in custom helper by **[sjana-aj](https://github.com/sjana-aj)**. See [#2494](https://github.com/codeceptjs/CodeceptJS/issues/2494)
+* Fix missing screenshot on failure when REST helper is in use [#2513](https://github.com/codeceptjs/CodeceptJS/issues/2513) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Improve error logging in the `screenshotOnFail` plugin [#2512](https://github.com/codeceptjs/CodeceptJS/issues/2512) by **[pablopaul](https://github.com/pablopaul)**
+
 ## 2.6.7
 
 * Add REST helper into `standardActingHelpers` array [#2474](https://github.com/codeceptjs/CodeceptJS/issues/2474) by **[PeterNgTr](https://github.com/PeterNgTr)**
@@ -103,7 +130,7 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
 ```
 
 * **Fixed parallel execution of `run-workers` for Gherkin** scenarios by **[koushikmohan1996](https://github.com/koushikmohan1996)**
-* **[MockRequest]** Updated and **moved to [standalone package](https://github.com/codeceptjs/mock-request)**:
+* **[MockRequest]** Updated and **moved to [standalone package](https://github.com/codecept-js/mock-request)**:
   * full support for record/replay mode for Puppeteer
   * added `mockServer` method to use flexible PollyJS API to define mocks
   * fixed stale browser screen in record mode.
@@ -264,7 +291,7 @@ Changed pressKey method to resolve issues and extend functionality.
 * [Puppeteer][WebDriver] Added `grabElementBoundingRect` by **[PeterNgTr](https://github.com/PeterNgTr)**.
 * **[Puppeteer]** Fixed speed degradation introduced in [#1306](https://github.com/codeceptjs/CodeceptJS/issues/1306) with accessibility locators support. See [#1953](https://github.com/codeceptjs/CodeceptJS/issues/1953).
 * Added `Config.addHook` to add a function that will update configuration on load.
-* Started [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package with a collection of common configuration patterns.
+* Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
 * **[TestCafe]** port's management removed (left on TestCafe itself) by **[orihomie](https://github.com/orihomie)**. Fixes [#1934](https://github.com/codeceptjs/CodeceptJS/issues/1934).
 * **[REST]** Headers are no more declared as singleton variable. Fixes [#1959](https://github.com/codeceptjs/CodeceptJS/issues/1959)
 * Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By **[PeterNgTr](https://github.com/PeterNgTr)**.
