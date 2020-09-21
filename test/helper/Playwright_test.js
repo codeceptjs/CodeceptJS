@@ -576,7 +576,7 @@ describe('Playwright', function () {
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
       .then(() => I.see('Dropped')));
 
-    it('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
+    xit('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
       .then(() => I.resizeWindow(700, 700))
       .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
       .then(() => I.seeElementInDOM('#draggable'))

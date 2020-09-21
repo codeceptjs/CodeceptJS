@@ -1923,8 +1923,8 @@ I.type(['T', 'E', 'X', 'T']);
 #### Parameters
 
 -   `keys`  
--   `key` **([string][19] | [Array][27]&lt;[string][19]>)** or array of keys to type.
-    Type out given array of keys or a string of text
+-   `delay` **[number][22]?** (optional) delay in ms between key presses 
+-   `key` **([string][19] | [Array][28]&lt;[string][19]>)** or array of keys to type.
 
 ### uncheckOption
 
