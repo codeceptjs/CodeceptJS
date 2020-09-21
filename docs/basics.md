@@ -213,7 +213,7 @@ I.fillField('password', secret('123456'));
 
 ### Assertions
 
-In order to verify the expected behavior of a web application, it's content should be checked.
+In order to verify the expected behavior of a web application, its content should be checked.
 CodeceptJS provides built-in assertions for that. They start with a `see` (or `dontSee`) prefix.
 
 The most general and common assertion is `see`, which checks visilibility of a text on a page:
