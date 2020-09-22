@@ -2,6 +2,7 @@ const assert = require('assert');
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
 
+global.codeceptjs = require('../../../lib');
 const makeUI = require('../../lib/ui');
 
 describe('ui', () => {
