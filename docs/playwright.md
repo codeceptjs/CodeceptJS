@@ -28,7 +28,7 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright@^1 --save
+npm install codeceptjs playwright --save
 ```
 
 Or see [alternative installation options](http://codecept.io/installation/)

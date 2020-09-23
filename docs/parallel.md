@@ -138,7 +138,7 @@ workers.on(event.all.result, (status, completedTests, workerStats) => {
 }
 ```
 
-### Example: Running Tests Splitted By A Custom Function
+### Example: Running Tests Split By A Custom Function
 
 If you want your tests to split according to your need this method is suited for you. For example: If you have 4 long running test files and 4 normal test files there chance all 4 tests end up in same worker thread. For these cases custom function will be helpful.
 
