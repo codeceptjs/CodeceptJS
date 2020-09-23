@@ -808,8 +808,8 @@ describe('Puppeteer', function () {
 
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
-      await I.amOnPage('https://www.google.com');
-      const size = await I.grabElementBoundingRect('#hplogo');
+      await I.amOnPage('/form/hidden');
+      const size = await I.grabElementBoundingRect('input[type=submit]');
       expect(size.x).is.greaterThan(0);
       expect(size.y).is.greaterThan(0);
       expect(size.width).is.greaterThan(0);
@@ -817,14 +817,14 @@ describe('Puppeteer', function () {
     });
 
     it('should get the element width', async () => {
-      await I.amOnPage('https://www.google.com');
-      const width = await I.grabElementBoundingRect('#hplogo', 'width');
+      await I.amOnPage('/form/hidden');
+      const width = await I.grabElementBoundingRect('input[type=submit]', 'width');
       expect(width).is.greaterThan(0);
     });
 
     it('should get the element height', async () => {
-      await I.amOnPage('https://www.google.com');
-      const height = await I.grabElementBoundingRect('#hplogo', 'height');
+      await I.amOnPage('/form/hidden');
+      const height = await I.grabElementBoundingRect('input[type=submit]', 'height');
       expect(height).is.greaterThan(0);
     });
   });
