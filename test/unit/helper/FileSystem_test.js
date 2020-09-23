@@ -2,6 +2,8 @@ const path = require('path');
 
 const FileSystem = require('../../../lib/helper/FileSystem');
 
+global.codeceptjs = require('../../../lib');
+
 let fs;
 
 describe('FileSystem', () => {
