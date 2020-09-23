@@ -5,6 +5,34 @@ title: Installation
 
 # Installation
 
+## Via Installer
+
+Creating a new project via [`create-codeceptjs` installer](https://github.com/codeceptjs/create-codeceptjs) is the simplest way to start
+
+Install CodeceptJS + Playwright into current directory
+
+```
+npx create-codeceptjs .
+```
+
+Install CodeceptJS + Puppeteer into current directory
+
+```
+npx create-codeceptjs . --puppeteer
+```
+
+Install CodeceptJS + webdriverio into current directory
+
+```
+npx create-codeceptjs . --webdriverio
+```
+
+Install CodeceptJS + webdriverio into `e2e-tests` directory:
+
+```
+npx create-codeceptjs e2e-tests --webdriverio
+```
+
 ## Local
 
 Use NPM install CodeceptJS:
@@ -58,24 +86,4 @@ Launch Selenium with Chrome browser inside a Docker container:
 
 ```sh
 docker run --net=host selenium/standalone-chrome
-```
-
-## Global
-
-CodeceptJS can be installed via NPM globally:
-
-```sh
-[sudo] npm install -g codeceptjs webdriverio
-# or
-[sudo] npm install -g codeceptjs protractor
-# or
-[sudo] npm install -g codeceptjs puppeteer
-# or
-[sudo] npm install -g codeceptjs nightmare
-```
-
-then it can be started as
-
-```sh
-codeceptjs
 ```
