@@ -1,6 +1,7 @@
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
+const assert = require('assert');
 const expect = require('expect');
 const { parseString, Parser } = require('xml2js');
 const { deleteDir } = require('../../lib/utils');

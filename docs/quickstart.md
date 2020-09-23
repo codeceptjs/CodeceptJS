@@ -48,11 +48,15 @@ npx create-codeceptjs
 
 > To install codeceptjs into a different folder, like `tests` use `npx create-codeceptjs tests`
 
-After CodeceptJS is installed, try running demo tests using this commands:
+After CodeceptJS is installed, try running **demo tests** using this commands:
 
 * `npm run codeceptjs:demo` - executes demo tests in window mode
 * `npm run codeceptjs:demo:headless` - executes demo tests in headless mode
-* `npm run codeceptjs:demo:ui` - open CodeceptJS app to list and run demo tests. 
+* `npm run codeceptjs:demo:ui` - open CodeceptJS UI to list and run demo tests. 
+
+CodeceptJS UI application:
+
+![](https://user-images.githubusercontent.com/220264/93860826-4d5fbc80-fcc8-11ea-99dc-af816f3db466.png)
 
 ---
 
@@ -75,9 +79,9 @@ Answer questions, agree on defaults, when asked to select helpers choose **Playw
  ◯ FileSystem
  ```
 
-Create first feature and suite when asked.
-
-4) Enter a test name. Open a generated file in your favorite JavaScript editor.
+Create first feature and test when asked.
+Open a newly created file in your favorite JavaScript editor. 
+The file should look like this:
 
 ```js
 Feature('My First Test');
@@ -86,8 +90,7 @@ Scenario('test something', ({ I }) => {
 
 });
 ```
-
-5) Write a simple scenario
+Write a simple test scenario:
 
 ```js
 Feature('My First Test');
@@ -98,10 +101,10 @@ Scenario('test something', ({ I }) => {
 });
 ```
 
-7) Run a test:
+Run a test:
 
 ```
-npx codeceptjs run --steps
+npm run codeceptjs
 ```
 
 The output should be similar to this:
@@ -112,7 +115,18 @@ My First Test --
      I am on page "https://github.com"
      I see "GitHub"
  ✓ OK
- ```
+```
+
+To quickly execute tests use following npm scripts:
+
+After CodeceptJS is installed, try running **demo tests** using this commands:
+
+* `npm run codeceptjs` - executes tests in window mode
+* `npm run codeceptjs:headless` - executes tests in headless mode
+* `npm run codeceptjs:ui` - open CodeceptJS UI to list and run tests. 
+
+More commands available in [CodeceptJS CLI runner](https://codecept.io/commands/).
+
 
 > [▶ Next: CodeceptJS Basics](/basics/)
 
