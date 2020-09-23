@@ -38,10 +38,10 @@ However, because of the difference in backends and their limitations, they are n
 
 Refer to following guides to more information on:
 
-* [▶ WebDriver](/webdriver)
-* [▶ Protractor](/angular)
-* [▶ Puppeteer](/puppeteer)
 * [▶ Playwright](/playwright)
+* [▶ WebDriver](/webdriver)
+* [▶ Puppeteer](/puppeteer)
+* [▶ Protractor](/angular)
 * [▶ Nightmare](/nightmare)
 * [▶ TestCafe](/testcafe)
 
@@ -50,7 +50,7 @@ Refer to following guides to more information on:
 To list all available commands for the current configuration run `codeceptjs list`
 or enable [auto-completion by generating TypeScript definitions](#intellisense).
 
-> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/#extending-codeceptjs-with-custom-helpers). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
+> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
 
 
 ## Writing Tests
