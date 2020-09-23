@@ -3,14 +3,14 @@ permalink: /typescript
 title: TypeScript
 ---
 
-# Typescript
+# TypeScript
 
 CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that you can write your tests in TS. Also, all of your custom steps can be written in TS
 
 # Why TypeScript?
 
 With the TypeScript writing CodeceptJS tests becomes much easier. If you configure TS properly in your project as well as your IDE, you will get the following features:
-- [Autocomplete (with InteleSence)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
+- [Autocomplete (with InteliSence)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
 Example:
 
 ![Auto Complete](/img/Auto_comlete.gif)
@@ -22,15 +22,24 @@ Example:
 - Checks types - thanks to TypeScript support in CodeceptJS now allow to tests your tests. TypeScript can prevent some errors: 
   - invalid type of variables passed to function;
   - calls no-exist method from PageObject or `I` object;
-  - incorrect used CodeceptJS features; 
+  - incorrectly used CodeceptJS features; 
 
 
 ## Getting Started
+
+### TypeScript Boilerplate
+
+To get started faster we prepared [typescript boilerplate project](https://github.com/codeceptjs/typescript-boilerplate) which can be used instead of configuring TypeScript on your own. Clone this repository into an empty folder and you are done.
+
+Otherwise, follow next steps to introduce TypeScript into the project.
+
 ### Install TypeScipt
 
-For writing tests in TypeScript you`ll need to install `typescript` and `ts-node` into your project.
+For writing tests in TypeScript you'll need to install `typescript` and `ts-node` into your project.
 
-`npm install typescript ts-node`
+```
+npm install typescript ts-node
+```
 
 ### Configure codecept.conf.js
 

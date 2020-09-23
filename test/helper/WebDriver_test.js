@@ -1130,8 +1130,8 @@ describe('WebDriver', function () {
 
   describe('#grabElementBoundingRect', () => {
     it('should get the element size', async () => {
-      await wd.amOnPage('https://www.google.com');
-      const size = await wd.grabElementBoundingRect('#hplogo');
+      await wd.amOnPage('/form/hidden');
+      const size = await wd.grabElementBoundingRect('input[type=submit]');
       expect(size.x).is.greaterThan(0);
       expect(size.y).is.greaterThan(0);
       expect(size.width).is.greaterThan(0);
@@ -1139,14 +1139,14 @@ describe('WebDriver', function () {
     });
 
     it('should get the element width', async () => {
-      await wd.amOnPage('https://www.google.com');
-      const width = await wd.grabElementBoundingRect('#hplogo', 'width');
+      await wd.amOnPage('/form/hidden');
+      const width = await wd.grabElementBoundingRect('input[type=submit]', 'width');
       expect(width).is.greaterThan(0);
     });
 
     it('should get the element height', async () => {
-      await wd.amOnPage('https://www.google.com');
-      const height = await wd.grabElementBoundingRect('#hplogo', 'height');
+      await wd.amOnPage('/form/hidden');
+      const height = await wd.grabElementBoundingRect('input[type=submit]', 'height');
       expect(height).is.greaterThan(0);
     });
   });
