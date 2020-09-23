@@ -39,8 +39,6 @@ TestCafe provides cross-browser support without Selenium. TestCafe tests are fas
 
 > CodeceptJS supports various engines for running browser tests. By default we recommend using **Playwright** which is cross-browser and performant solution.
 
-<video onclick="this.paused ? this.play() : this.pause();" src="/img/install.mp4" style="width: 100%" controls></video>
-
 
 Use [CodeceptJS all-in-one installer](https://github.com/codeceptjs/create-codeceptjs) to get CodeceptJS, a demo project, and Playwright.
 
