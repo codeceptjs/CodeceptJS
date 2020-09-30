@@ -16,6 +16,7 @@ Scenario('title', ({ I, loginPage }) => {});
 ```
 
 * **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* **[TypeScript guide])(/typscript) and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
 * [tryTo](/plugins/#tryTo) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
 * Introduced one-line installer:
 
@@ -23,12 +24,11 @@ Scenario('title', ({ I, loginPage }) => {});
 npx create-codeceptjs .
 ```
 
-Check for mode updates of 3.0 version 👇
+Read changelog to learn more about version 👇
 
 ## 3.0.0-rc
 
 
-> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
 
 * Moved [Helper class into its own package](https://github.com/codeceptjs/helper) to simplify publishing standalone helpers.
 * Fixed typings for `I.say` and `I.retry` by @Vorobeyko
@@ -86,7 +86,6 @@ MyPage: hasFile "First arg", "Second arg"
 
 ## 3.0.0-beta
 
-> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
 
 * **NodeJS 12+ required**
 * **BREAKING CHANGE:** Syntax for tests has changed.
