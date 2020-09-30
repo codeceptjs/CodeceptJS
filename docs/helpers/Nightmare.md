@@ -520,9 +520,9 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `prop`  
--   `elementSize` **[string][3]** x, y, width or height of the given element.
+-   `elementSize` **[string][3]?** x, y, width or height of the given element.
 
-Returns **[object][4]** Element bounding rectangle
+Returns **([Promise][8]&lt;DOMRect> | [Promise][8]&lt;[number][11]>)** Element bounding rectangle
 
 ### grabHAR
 

@@ -1680,7 +1680,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][19] is not an option.
+_Note:_ Should be used when [`fillField`][21] is not an option.
 
 ```js
 // passing in a string
