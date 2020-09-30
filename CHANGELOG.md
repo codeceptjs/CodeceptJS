@@ -1,8 +1,35 @@
-## 3.0.0-rc.0
+## 3.0.0
 
 > [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
 
 * Playwright set to be a default engine.
+* **NodeJS 12+ required**
+* **BREAKING CHANGE:** Syntax for tests has changed.
+
+
+```js
+// Previous
+Scenario('title', (I, loginPage) => {});
+
+// Current
+Scenario('title', ({ I, loginPage }) => {});
+```
+
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* [tryTo](/plugins/#tryTo) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
+* Introduced one-line installer:
+
+```
+npx create-codeceptjs .
+```
+
+Check for mode updates of 3.0 version 👇
+
+## 3.0.0-rc
+
+
+> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
+
 * Moved [Helper class into its own package](https://github.com/codeceptjs/helper) to simplify publishing standalone helpers.
 * Fixed typings for `I.say` and `I.retry` by @Vorobeyko
 * Updated documentation:

@@ -40,11 +40,14 @@ TestCafe provides cross-browser support without Selenium. TestCafe tests are fas
 > CodeceptJS supports various engines for running browser tests. By default we recommend using **Playwright** which is cross-browser and performant solution.
 
 
+
 Use [CodeceptJS all-in-one installer](https://github.com/codeceptjs/create-codeceptjs) to get CodeceptJS, a demo project, and Playwright.
 
 ```
-npx create-codeceptjs 
+npx create-codeceptjs .
 ```
+
+![Installation](/img/codeceptinstall.gif)
 
 > To install codeceptjs into a different folder, like `tests` use `npx create-codeceptjs tests`
 
@@ -54,7 +57,7 @@ After CodeceptJS is installed, try running **demo tests** using this commands:
 * `npm run codeceptjs:demo:headless` - executes demo tests in headless mode
 * `npm run codeceptjs:demo:ui` - open CodeceptJS UI to list and run demo tests. 
 
-CodeceptJS UI application:
+[CodeceptJS UI](/ui) application:
 
 ![](https://user-images.githubusercontent.com/220264/93860826-4d5fbc80-fcc8-11ea-99dc-af816f3db466.png)
 
