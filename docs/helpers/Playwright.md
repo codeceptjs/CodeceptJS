@@ -1910,6 +1910,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[18]: https://github.com/microsoft/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
+[21]: https://github.com/microsoft/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
 
 [22]: https://codecept.io/react

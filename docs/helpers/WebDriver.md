@@ -1924,7 +1924,7 @@ I.type(['T', 'E', 'X', 'T']);
 
 -   `keys`  
 -   `delay` **[number][22]?** (optional) delay in ms between key presses 
--   `key` **([string][19] | [Array][28]&lt;[string][19]>)** or array of keys to type.
+-   `key` **([string][19] | [Array][27]&lt;[string][19]>)** or array of keys to type.
 
 ### uncheckOption
 

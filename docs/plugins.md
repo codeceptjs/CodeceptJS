@@ -786,12 +786,20 @@ Possible config options:
 
 Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
 
+Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
+
+````js
+plugins: {
+  tryTo: {
+    enabled: true
+  }
+}
 ```js
 const result = await tryTo(() => I.see('Welcome'));
 
-// if user is on page, result => true
-// if user is on page, result => false
-```
+// if text "Welcome" is on page, result => true
+// if text "Welcome" is not on page, result => false
+````
 
 Disables retryFailedStep plugin for steps inside a block;
 
