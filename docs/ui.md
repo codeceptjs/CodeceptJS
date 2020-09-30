@@ -1,6 +1,5 @@
 ---
 title: CodeceptUI
-layout: Section
 permalink: /ui
 ---
 
@@ -19,38 +18,42 @@ CodeceptUI can be used for
 * review tests
 * edit tests and page objects
 * write new tests
+* reuse one browser session accross multiple test runs
 * easily switch to headless/headful mode
 
-CodeceptUI is a useful addon to CodeceptJS, we recommend to try.
-It is an [open-source Vue-based application](https://github.com/codeceptjs/ui) which runs in your browser.
 
-> 📺 [Watch CodeceptUI in Action](https://www.youtube.com/watch?v=7pKNVjAckPA)
+![](https://user-images.githubusercontent.com/220264/93860826-4d5fbc80-fcc8-11ea-99dc-af816f3db466.png)
 
-> 📺 [Watch how to write a new test in CodeceptUI](https://www.youtube.com/watch?v=7P99P5aNnz8)
+## Installation
 
-
-## Using CodeceptUI
-
-To start using CodeceptUI you need to have CodeceptJS project already created with a few tests already written.
-
-Install CodeceptUI via npm
+CodeceptUI is already installed with `create-codeceptjs` command but you can install it manually via:
 
 ```
 npm i @codeceptjs/ui --save
 ```
 
-Execute it:
+## Usage
+
+To start using CodeceptUI you need to have CodeceptJS project with a few tests written.
+If CodeceptUI was installed by `create-codecept` command it can be started with:
+
+```
+npm run codeceptjs:ui
+```
+
+CodeceptUI can be started in two modes:
+
+* **Application** mode - starts Electron application in a window. Designed for desktop systems.
+* **Server** mode - starts a webserver. Deigned for CI systems.
+
+To start CodeceptUI in application mode:
+
+```
+npx codecept-ui --app
+```
+
+To start CodeceptUI in server mode:
 
 ```
 npx codecept-ui
 ```
-
-## Notice
-
-CodeceptUI is in beta. It means that we didn't have a chance to test it for all possible setups.
-You are highly welcome to try it, test it, send issues and **pull requests**.
-
-[Join development team on GitHub!](https://github.com/codeceptjs/ui)
-
-
-

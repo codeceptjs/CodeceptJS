@@ -479,14 +479,20 @@ I.=> func()
 I.=> 2 + 5
 ```
 
-### Pause on Failure <Badge text="Since 2.4" type="warning"/>
+### Pause on Fail
 
 To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
 When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
 
-This is an **essential feature to debug flaky tests**, as you can analyze them in the moment of failure.
+> **[pauseOnFail plugin](/plugins/#pauseOnFail) can be used** for new setups
 
-> ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
+To run tests with pause on fail enabled use `-p pauseOnFail` option
+
+```
+npx codeceptjs run -p pauseOnFail
+```
+
+> To enable pause after a test without a plugin you can use `After(pause)` inside a test file.
 
 
 ### Screenshot on Failure
@@ -494,7 +500,7 @@ This is an **essential feature to debug flaky tests**, as you can analyze them i
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
 
-> **screenshotOnFail plugin is enabled by default** for new setups
+> **[screenshotOnFail plugin](/plugins/#screenshotonfail) is enabled by default** for new setups
 
 ### Step By Step Report
 
@@ -506,7 +512,7 @@ To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepby
 
 You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
 
-> **autoRetry plugin is enabled by default** for new setups since CodeceptJS 2.4
+> **[retryFailedStep plugin](/plugins/#retryfailedstep) is enabled by default** for new setups
 
 ### Retry Step
 
@@ -675,6 +681,24 @@ const val = await within('#sidebar', () => {
 I.fillField('Description', val);
 ```
 
+## Conditional Actions
+
+There is a way to execute unsuccessful actions to without failing a test. 
+This might be useful when you might need to click "Accept cookie" button but probably cookies were already accepted.
+To handle these cases `tryTo` function was introduced:
+
+```js
+tryTo(() => I.click('Accept', '.cookies'));
+```
+
+You may also use `tryTo` for cases when you deal with uncertainty on page:
+
+* A/B testing
+* soft assertions
+* cookies & gdpr
+
+`tryTo` function is enabled by default via [tryTo plugin](/plugins#tryTo)
+
 ## Comments
 
 There is a simple way to add additional comments to your test scenario:
@@ -805,7 +829,7 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 * `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
 
 
-## Todo Test <Badge text="Since 2.4" type="warning"/>
+## Todo Test
 
 You can use `Scenario.todo` when you are planning on writing tests.
 
