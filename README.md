@@ -2,7 +2,7 @@
 
 # CodeceptJS
 
-Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/blob/master/docs) | [Demo](https://github.com/codeceptjs/codeceptjs-demo)
+Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/blob/master/docs)
 
 ## Supercharged E2E Testing
 
