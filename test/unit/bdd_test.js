@@ -217,8 +217,9 @@ describe('BDD', () => {
     const suite = run(text);
     const done = () => { };
     suite._beforeEach.forEach(hook => hook.run(done));
-    suite.tests[0].fn(done);
-    assert.equal(2, sum);
+    suite.tests[0].fn(() => {
+      assert.equal(2, sum);
+    });
   });
 
   it('should execute scenario outlines', (done) => {
