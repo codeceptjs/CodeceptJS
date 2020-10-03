@@ -20,7 +20,7 @@ I.click('Login', 'nav.user');
 ```
 
 If we replace raw CSS selector with a button title we can improve readability of such test.
-Even a text on the button changes its much easier to update it.
+Even if the text on the button changes, its much easier to update it.
 
 > If your code goes beyond using `I` object or page objects, you are probably doing something wrong.
 
@@ -63,9 +63,9 @@ Scenario('editing a metric', async ({ I, loginAs, metricPage }) => {
 ## Locators
 
 * If you don't use multi-lingual website or you don't update texts often it is OK to click on links by their texts or match fields by their placeholders.
-* If you don't want to rely on guessing locators, specify them manyally with `{ css: 'button' }` or `{ xpath: '//button' }`.  We call them strict locators. Those locators will be faster but less readable.
-* Even better if you have a convention on acive elements with special attributes like `data-test` or `data-qa`. Use `customLocator` plugin to easily add them to tests.
-* Keep tests readable whcih will make them maintainable.
+* If you don't want to rely on guessing locators, specify them manually with `{ css: 'button' }` or `{ xpath: '//button' }`.  We call them strict locators. Those locators will be faster but less readable.
+* Even better if you have a convention on active elements with special attributes like `data-test` or `data-qa`. Use `customLocator` plugin to easily add them to tests.
+* Keep tests readable which will make them maintainable.
 
 ## Page Objects
 
@@ -76,7 +76,7 @@ Here is a recommended strategy what to store where:
 * Move site-wide actions into an **Actor** file (`custom_steps.js` file). Such actions like `login`, using site-wide common controls, like drop-downs, rich text editors, calendars.
 * Move page-based actions and selectors into **Page Object**. All acitivities made on that page can go into methods of page object. If you test Single Page Application a PageObject should represent a screen of your application.
 * When site-wide widgets are used, interactions with them should be placed in **Page Fragments**. This should be applied to global navigation, modals, widgets.
-* A custom action that require some low-level driver access, should be placed into a **Helper**. For instance, database connections, complex mouse actions, email testing, filesystem, services access.
+* A custom action that requires some low-level driver access, should be placed into a **Helper**. For instance, database connections, complex mouse actions, email testing, filesystem, services access.
 
 > [Learn more](/pageobjects) about different refactoring options
 
@@ -86,14 +86,14 @@ However, it's recommended to not overengineer and keep tests simple. If a test c
 * use page objects to store common actions
 * don't make page objects for every page! Only for pages shared across different tests and suites.
 * use classes for page objects, this allows inheritace. Export instance of that classes.
-* if a page object is focused around a form with a multiple fields in it, use a flexible set of arguments in it:
+* if a page object is focused around a form with multiple fields in it, use a flexible set of arguments in it:
 
 ```js
 class CheckoutForm {
   
   fillBillingInformation(data = {}) {
     // take data in a flexible format
-    // iterate over fields to will them all
+    // iterate over fields to fill them all
     for (let key of Object.keys(data)) {
       I.fillField(key, data[key]); // like this one
     }
@@ -104,7 +104,7 @@ module.exports = new CheckoutForm();
 module.exports.CheckoutForm = CheckoutForm; // for inheritance
 ```
 
-* for a components that are repeated accross a website (widgets) but doesn't belong to any page, use component objects. They are the same as page objects but focused only aroung one element:
+* for components that are repeated accross a website (widgets) but don't belong to any page, use component objects. They are the same as page objects but focused only aroung one element:
 
 ```js
 class DropDownComponent {
