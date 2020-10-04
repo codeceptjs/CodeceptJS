@@ -2,7 +2,7 @@
 
 # CodeceptJS
 
-Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/blob/master/docs)
+Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/tree/master/docs/helpers)
 
 ## Supercharged E2E Testing
 
@@ -228,7 +228,7 @@ CodeceptJS provides the most simple way to create and use page objects in your t
 You can create one by running
 
 ```sh
-codeceptjs generate pageobject
+npx codeceptjs generate pageobject
 ```
 
 It will create a page object file for you and add it to the config.
