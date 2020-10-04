@@ -186,10 +186,11 @@ They are expected to be used inside async/await functions, and their results wil
 
 ```js
 const assert = require('assert');
+const { I } = inject();
 
 Feature('CodeceptJS Demonstration');
 
-Scenario('test page title', async ({ I }) => {
+Scenario('test page title', async () => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   const title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
@@ -255,13 +256,15 @@ module.exports = {
 You can easily inject it to test by providing its name in test arguments:
 
 ```js
+const { I, docsPage } = inject();
+
 Feature('CodeceptJS Demonstration');
 
-Before(({ I }) => { // or Background
+Before(() => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', ({ I, docsPage }) => {
+Scenario('test some forms', () => {
   docsPage.sendForm('hello@world.com','123456');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
