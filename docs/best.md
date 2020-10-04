@@ -20,7 +20,7 @@ I.click('Login', 'nav.user');
 ```
 
 If we replace raw CSS selector with a button title we can improve readability of such test.
-Even if the text on the button changes, its much easier to update it.
+Even if the text on the button changes, it's much easier to update it.
 
 > If your code goes beyond using `I` object or page objects, you are probably doing something wrong.
 
