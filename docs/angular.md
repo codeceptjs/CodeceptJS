@@ -211,7 +211,7 @@ Our scenarios will also probably deal with created todo items, so we can move th
 ```js
 Feature('TodoMvc');
 
-Before((I) => {
+Before(({ I }) => {
   I.amOnPage('/');
 });
 
