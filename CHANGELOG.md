@@ -16,7 +16,7 @@ Scenario('title', ({ I, loginPage }) => {});
 ```
 
 * **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
-* **[TypeScript guide])(/typescript) and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
+* **[TypeScript guide](/typescript)** and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
 * [tryTo](/plugins/#tryTo) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
 * Introduced one-line installer:
 
