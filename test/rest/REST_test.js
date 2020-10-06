@@ -171,7 +171,7 @@ describe('REST', () => {
 describe('REST - Form upload', () => {
   beforeEach((done) => {
     I = new REST({
-      endpoint: 'http://localhost:8000/',
+      endpoint: 'http://the-internet.herokuapp.com/',
       maxUploadFileSize: 0.000080,
       defaultHeaders: {
         'X-Test': 'test',
@@ -187,7 +187,7 @@ describe('REST - Form upload', () => {
       form.append('file', fs.createReadStream(testFile));
 
       try {
-        await I.sendPostRequest('/form/complex', form, { ...form.getHeaders() });
+        await I.sendPostRequest('upload', form, { ...form.getHeaders() });
       } catch (error) {
         error.message.should.eql('Request body larger than maxBodyLength limit');
       }
@@ -198,8 +198,8 @@ describe('REST - Form upload', () => {
       form.append('file', fs.createReadStream(testFile));
 
       try {
-        const response = await I.sendPostRequest('form/complex', form, { ...form.getHeaders() });
-        response.data.should.include('I am here!!!');
+        const response = await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+        response.data.should.include('File Uploaded!');
       } catch (error) {
         console.log(error.message);
       }
