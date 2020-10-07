@@ -2,7 +2,7 @@
 
 # CodeceptJS
 
-Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/blob/master/docs) | [Demo](https://github.com/codeceptjs/codeceptjs-demo)
+Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/tree/master/docs/helpers)
 
 ## Supercharged E2E Testing
 
@@ -27,6 +27,7 @@ CodeceptJS tests are:
 
 CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
 
+* [**Playwright**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Playwright.md) - is a Node library to automate the Chromium, WebKit and Firefox browsers with a single API.
 * [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
 * [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
 * [**Protractor**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) to run tests via WebDriver protocol.
@@ -56,10 +57,10 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 ## Install
 
 ```sh
-npm install codeceptjs --save
+npm i codeceptjs --save
 ```
 
-Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run
+Move to directory where you'd like to have your tests (and codeceptjs config) stored, and execute
 
 ```sh
 npx codeceptjs init
@@ -87,7 +88,9 @@ npx codeceptjs def .
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
-Note that CodeceptJS requires Node.js version `8.9.1+` or later.
+Note:
+- CodeceptJS requires Node.js version `8.9.1+` or later. 
+- To use the parallel tests execution, requiring Node.js version `11.7` or later.
 
 ## Usage
 
@@ -103,7 +106,7 @@ Feature('CodeceptJS Demonstration');
 Scenario('test some forms', ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   I.fillField('Email', 'hello@world.com');
-  I.fillField('Password', '123456');
+  I.fillField('Password', secret('123456'));
   I.checkOption('Active');
   I.checkOption('Male');
   I.click('Create User');
@@ -128,7 +131,7 @@ CodeceptJS Demonstration --
  test some forms
  • I am on page "http://simple-form-bootstrap.plataformatec.com.br/documentation"
  • I fill field "Email", "hello@world.com"
- • I fill field "Password", "123456"
+ • I fill field "Password", "****"
  • I check option "Active"
  • I check option "Male"
  • I click "Create User"
@@ -137,7 +140,7 @@ CodeceptJS Demonstration --
  ✓ OK in 17752ms
 ```
 
-CodeceptJS has an ultimate feature to help you develop and debug you test.
+CodeceptJS has an ultimate feature to help you develop and debug your test.
 You can **pause execution of test in any place and use interactive shell** to try different actions and locators.
 Just add `pause()` call at any place in a test and run it.
 
@@ -150,7 +153,7 @@ npx codeceptjs shell
 ### Actions
 
 We filled form with `fillField` methods, which located form elements by their label.
-The same way you can locate element by name, CSS or XPath locators in tests:
+The same way you can locate element by name, `CSS` or `XPath` locators in tests:
 
 ```js
 // by name
@@ -200,19 +203,21 @@ The same way you can grab text, attributes, or form values and use them in next 
 Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background`:
 
 ```js
+const { I } = inject();
+
 Feature('CodeceptJS Demonstration');
 
-Before(({ I }) => { // or Background
+Before(() => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', ({ I }) => {
+Scenario('test some forms', () => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', ({ I }) => {
+Scenario('test title', () => {
   I.seeInTitle('Example application');
 });
 ```
@@ -223,10 +228,10 @@ CodeceptJS provides the most simple way to create and use page objects in your t
 You can create one by running
 
 ```sh
-codeceptjs generate pageobject
+npx codeceptjs generate pageobject
 ```
 
-It will create a page object file for you and add it to config.
+It will create a page object file for you and add it to the config.
 Let's assume we created one named `docsPage`:
 
 ```js
@@ -256,14 +261,14 @@ Before(({ I }) => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', (I, docsPage) => {
+Scenario('test some forms', ({ I, docsPage }) => {
   docsPage.sendForm('hello@world.com','123456');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 ```
 
-When using typescript, replace `module.exports` with `export` for autocompletion.
+When using Typescript, replace `module.exports` with `export` for autocompletion.
 
 
 ## Contributing
