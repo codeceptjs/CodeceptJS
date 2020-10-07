@@ -131,7 +131,7 @@ Before(login => {
 });
 
 // Alternatively log in for one scenario
-Scenario('log me in', (I, login) => {
+Scenario('log me in', ( {I, login} ) => {
    login('admin');
    I.see('I am logged in');
 });
@@ -296,7 +296,7 @@ autoLogin: {
 ```
 
 ```js
-Scenario('login', async (I, login) => {
+Scenario('login', async ( {I, login} ) => {
   await login('admin') // you should use `await`
 })
 ```

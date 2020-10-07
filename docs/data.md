@@ -76,7 +76,7 @@ Scenario('check post page', async ({ I })  => {
 });
 
 // cleanup created data
-After((I) => {
+After(({ I }) => {
   I.sendDeleteRequest('/api/posts/'+postId);
 });
 ```
@@ -152,7 +152,7 @@ Scenario('check post page', async ({ I })  => {
 });
 
 // cleanup created data
-After((I) => {
+After(({ I }) => {
   I.sendMutation(
     'mutation deletePost($permalink: /ID!) { deletePost(permalink: /$id) }',
     { permalink: /postData.id},

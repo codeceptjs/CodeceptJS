@@ -589,7 +589,7 @@ Common preparation steps like opening a web page or logging in a user, can be pl
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('/documentation');
 });
 
@@ -613,11 +613,11 @@ If you need to run complex a setup before all tests and have to teardown this af
 You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work only for the file it was declared in (so you can declare different setups for files)
 
 ```js
-BeforeSuite((I) => {
+BeforeSuite(({ I }) => {
   I.syncDown('testfolder');
 });
 
-AfterSuite((I) => {
+AfterSuite(({ I }) => {
   I.syncUp('testfolder');
   I.clearDir('testfolder');
 });
