@@ -37,7 +37,7 @@ declare namespace CodeceptJS {
   }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: () => void }>(
+  type actor = <T extends { [action: string]: (...args: any[]) => void }>(
     customSteps?: T & ThisType<WithTranslation<Methods & T>>
   ) => WithTranslation<Methods & T>;
 
