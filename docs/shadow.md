@@ -51,7 +51,7 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
 ```js
 Feature('Shadow Dom Locators');
 
-Scenario('should fill input field within shadow elements', I => {
+Scenario('should fill input field within shadow elements', ({I}) => {
 
   // navigate to LWC webpage containing shadow dom
   I.amOnPage('https://recipes.lwc.dev/');
