@@ -1,5 +1,15 @@
-## 3.0.0
+## 3.0.1
 
+♨️ Hot fix:
+  * Lock the mocha version to avoid the errors. See #2624 by PeterNgTr
+ 
+🐛 Bug Fix:
+  * Fixed error handling in Scenario.js. See #2607 by haveac1gar
+  * Changing type definition in order to allow the use of functions with any number of any arguments. See #2616 by akoltun
+
+* Some updates/changes on documentations
+
+## 3.0.0
 > [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
 
 * Playwright set to be a default engine.
