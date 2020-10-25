@@ -1879,11 +1879,11 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 ### waitForResponse
 
-Waits for a network response.
+Waits for a network request.
 
 ```js
 I.waitForResponse('http://example.com/resource');
-I.waitForResponse(response => response.url() === 'http://example.com' && response.request().method() === 'GET');
+I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
 ```
 
 #### Parameters
