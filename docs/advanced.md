@@ -156,7 +156,7 @@ Features and Scenarios have their options that can be set by passing a hash afte
 ```js
 Feature('My feature', {key: val});
 
-Scenario('My scenario', {key: val}, (I) => {});
+Scenario('My scenario', {key: val},({ I }) => {});
 ```
 
 You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
@@ -192,15 +192,15 @@ or for the test:
 
 ```js
 // set timeout to 1s
-Scenario("Stop me faster", (I) => {
+Scenario("Stop me faster",({ I }) => {
   // test goes here
 }).timeout(1000);
 
 // alternative
-Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+Scenario("Stop me faster", {timeout: 1000},({ I }) => {});
 
 // disable timeout for this scenario
-Scenario("Don't stop me", {timeout: 0}, (I) => {});
+Scenario("Don't stop me", {timeout: 0},({ I }) => {});
 ```
 
 

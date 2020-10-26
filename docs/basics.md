@@ -564,7 +564,7 @@ Scenario('Really complex', ({ I }) => {
 }).retry(2);
 
 // alternative
-Scenario('Really complex', { retries: 2 }, (I) => {});
+Scenario('Really complex', { retries: 2 },({ I }) => {});
 ```
 
 This scenario will be restarted two times on a failure.
