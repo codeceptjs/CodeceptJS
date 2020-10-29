@@ -64,7 +64,7 @@ const mailbox1 = await I.haveNewMailbox();
 const mailbox2 = await I.haveNewMailbox();
 // mailbox2 is now default mailbox
 // switch back to mailbox1
-I.openMailbox(mailbox);
+I.openMailbox(mailbox1);
 ```
 
 ## Receiving An Email
