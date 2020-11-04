@@ -1022,7 +1022,7 @@ I.moveCursorTo('#submit', 5,5);
 
 ### openNewTab
 
-Open new tab and switch to it
+Open new tab and automatically switched to new tab
 
 ```js
 I.openNewTab();
