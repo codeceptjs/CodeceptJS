@@ -59,6 +59,20 @@ describe('CodeceptJS Workers Runner', function () {
     });
   });
 
+  it('should use suites', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    exec(`${codecept_run} 2 --suites`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Running tests in 2 workers'); // feature
+      expect(stdout).toContain('glob current dir');
+      expect(stdout).toContain('From worker @1_grep print message 1');
+      expect(stdout).toContain('From worker @2_grep print message 2');
+      expect(stdout).not.toContain('this is running inside worker');
+      expect(err.code).toEqual(1);
+      done();
+    });
+  });
+
   it('should show failures when suite is failing', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout) => {
