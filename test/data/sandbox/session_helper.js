@@ -1,5 +1,4 @@
 const Helper = require('../../../lib/helper');
-const output = require('../../../lib/output');
 
 let uniqueSessions = 0;
 
@@ -22,7 +21,7 @@ class Session extends Helper {
     };
   }
 
-  do(action) {
+  do() {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve('res');

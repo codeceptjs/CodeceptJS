@@ -1,240 +1,12 @@
 ---
 permalink: /hooks
-title: Bootstrap / Teardown / Plugins
+title: Extending CodeceptJS
 ---
 
-# Bootstrap / Teardown / Plugins
+# Extending 
 
 CodeceptJS provides API to run custom code before and after the test and inject custom listeners into the event system.
 
-## Bootstrap & Teardown
-
-In case you need to execute arbitrary code before or after the tests,
-you can use `bootstrap` and `teardown` config. Use it to start and stop webserver, Selenium, etc.
-
-When using the [Multiple Execution](http://codecept.io/advanced/#multiple-execution) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [BootstrapAll & TeardownAll](#bootstrapall-teardownall) for more information.
-
-There are different ways to define bootstrap and teardown functions:
-
-* JS file executed as is (synchronously).
-* JS file exporting function with optional callback for async execution.
-* JS file exporting an object with `bootstrap` and `teardown` methods.
-* Inside JS config file
-
-Corresponding examples provided in next sections.
-
-### Example: Async Bootstrap in a Function
-
-Add to `codecept.conf.js`:
-
-```json
-"bootstrap": "./run_server.js"
-```
-
-Export a function in your bootstrap file:
-
-```js
-// bootstrap.js
-var server = require('./app_server');
-module.exports = function(done) {
-  // on error call done('error description') to stop
-  if (!server.validateConfig()) {
-    done("Can't execute server with invalid config, tests stopped");
-  }
-  // call done() to continue execution
-  server.run(done);
-}
-```
-
-### Example: Async Teardown in a Function
-
-Stopping a server from a previous example can be done in a similar manner.
-Create a teardown file and add it to `codecept.json`:
-
-```json
-"teardown": "./stop_server.js"
-```
-
-Inside `stop_server.js`:
-
-```js
-var server = require('./app_server');
-module.exports = function(done) {
-  server.stop(done);
-}
-```
-
-### Example: Bootstrap & Teardown Inside an Object
-
-Examples above can be combined into one file.
-
-Add to config (`codecept.json`):
-
-```js
-  "bootstrap": "./server.js"
-  "teardown": "./server.js"
-```
-
-`server.js` should export object with `bootstrap` and `teardown` functions:
-
-```js
-// bootstrap.js
-var server = require('./app_server');
-module.exports = {
-  bootstrap: function(done) {
-    server.start(done);
-  },
-  teardown: function(done) {
-    server.stop(done);
-  }
-}
-```
-
-### Example: Bootstrap & Teardown Inside Config
-
-If you are using JavaScript-style config `codecept.conf.js`, bootstrap and teardown functions can be placed inside of it:
-
-```js
-var server = require('./app_server');
-
-exports.config = {
-  tests: "./*_test.js",
-  helpers: {},
-
-  // adding bootstrap/teardown
-  bootstrap: function(done) {
-    server.launch(done);
-  },
-  teardown: function(done) {
-    server.stop(done);
-  }
-  // ...
-  // other config options
-}
-
-```
-
-## BootstrapAll & TeardownAll
-
-There are two additional hooks for [parallel execution](http://codecept.io/parallel) in `run-multiple` or `run-workers` commands.
-
-These hooks are only called in the parent process. Before child processes start (`bootstrapAll`) and after all of runs have finished (`teardownAll`). Unlike them, the `bootstrap` and `teardown` hooks are called between and after each of child processes respectively.
-
-For example, when you run tests in 2 workers using the following command:
-
-```
-npx codeceptjs run-workers 2
-```
-
-First, `bootstrapAll` is called. Then two `bootstrap` runs in each of workers. Then tests in worker #1 ends and `teardown` is called. Same for worker #2. Finally, `teardownAll` runs in the main process.
-
-> The same behavior is set for `run-multiple` command
-
-The `bootstrapAll` and `teardownAll` hooks are preferred to use for setting up common logic of tested project: to start application server or database, to start webdriver's grid.
-
-The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](/helpers/WebDriverIO#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
-
-Same as `bootstrap` and `teardown`, there are 3 ways to define `bootstrapAll` and `teardownAll` functions:
-
-* JS file executed as is (synchronously).
-* JS file exporting function with optional callback for async execution.
-* JS file exporting an object with `bootstrapAll` and `teardownAll` methods.
-* Inside JS config file
-
-### Example: BootstrapAll & TeardownAll Inside Config
-
-Using JavaScript-style config `codecept.conf.js`, bootstrapAll and teardownAll functions can be placed inside of it:
-
-
-```js
-const fs = require('fs');
-const tempFolder = process.cwd() + '/tmpFolder';
-
-exports.config = {
-  tests: "./*_test.js",
-  helpers: {},
-
-  multiple: {
-    suite1: {
-      grep: '@suite1',
-      browsers: [ 'chrome', 'firefox' ],
-    },
-    suite2: {
-      grep: '@suite2',
-      browsers: [ 'chrome' ],
-    },
-  },
-
-  // adding bootstrapAll/teardownAll
-  bootstrapAll: function(done) {
-    fs.mkdir(tempFolder, (err) => {
-      console.log('Create a temp folder before all test suites start', err);
-      done();
-    });
-  },
-
-  bootstrap: function(done) {
-    console.log('Do some pretty suite setup stuff');
-    done(); // Don't forget to call done()
-  },
-
-  teardown: function(done) {
-    console.log('Cool, one of the test suites have finished');
-    done();
-  },
-
-  teardownAll: function(done) {
-    console.log('All suites are now done so we should clean up the temp folder');
-
-    fs.rmdir(tempFolder, (err) => {
-      console.log('Ok, now I am done', err);
-      done();
-    });
-  },
-
-  // ...
-  // other config options
-}
-```
-
-### Example: Bootstrap & Teardown Inside an Object
-
-Examples above can be combined into one file.
-
-Add to config (`codecept.json`):
-
-```js
-  "bootstrapAll": "./presettings.js"
-  "teardownAll": "./presettings.js"
-  "bootstrap": "./presettings.js"
-  "teardown": "./presettings.js"
-```
-
-`presettings.js` should export object with `bootstrap` and `teardown` functions:
-
-```js
-// presettings.js
-const server = require('./app_server');
-const browserstackConnection = require("./browserstackConnection");
-const uniqueIdentifier = generateSomeUniqueIdentifierFunction();
-
-module.exports = {
-  bootstrapAll: function(done) {
-    server.start(done);
-  },
-  teardownAll: function(done) {
-    server.stop(done);
-  },
-  bootstrap: function(done) {
-    browserstackConnection.connect(uniqueIdentifier);
-  },
-  teardown: function(done) {
-    browserstackConnection.disconnect(uniqueIdentifier);
-  },
-}
-```
-
-**Remember**: The `bootstrapAll` and `teardownAll` hooks are only called when using [Multiple Execution](http://codecept.io/advanced/#multiple-execution).
 
 ## Plugins
 
@@ -274,13 +46,13 @@ To enable your custom plugin in config add it to `plugins` section. Specify path
 If a plugin is disabled (`enabled` is not set or false) this plugin can be enabled from command line:
 
 ```
-./node_modules/.bin/codeceptjs run --plugin myPlugin
+npx codeceptjs run --plugin myPlugin
 ```
 
 Several plugins can be enabled as well:
 
 ```
-./node_modules/.bin/codeceptjs run --plugin myPlugin,allure
+npx codeceptjs run --plugin myPlugin,allure
 ```
 
 ### Example: Execute code for a specific group of tests
@@ -374,12 +146,14 @@ Available events:
 * `event.suite.before(suite)` - *async* before a suite
 * `event.suite.after(suite)` - *async* after a suite
 * `event.step.before(step)` - *async* when the step is scheduled for execution
-* `event.step.after(step)`- *async* after a step
+* `event.step.after(step)` - *async* after a step
 * `event.step.started(step)` - *sync* when step starts.
 * `event.step.passed(step)` - *sync* when step passed.
 * `event.step.failed(step, err)` - *sync* when step failed.
 * `event.step.finished(step)` - *sync* when step finishes.
 * `event.step.comment(step)` - *sync* fired for comments like `I.say`.
+* `event.bddStep.before(bddStep)` - *async* when the gherkin step is scheduled for execution
+* `event.bddStep.after(bddStep)` - *async* after a gherkin step
 * `event.all.before` - before running tests
 * `event.all.after` - after running tests
 * `event.all.result` - when results are printed
@@ -539,32 +313,26 @@ CodeceptJS can be imported and used in custom runners.
 To initialize Codecept you need to create Config and Container objects.
 
 ```js
-const { container: Container, codecept: Codecept } = require('codeceptjs');
+const { codecept: Codecept } = require('codeceptjs');
 
 const config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
 const opts = { steps: true };
 
-// create runner
-const codecept = new Codecept(config, opts);
+const codecept = new Codecept(config, options);
+codecept.init(testRoot);
 
-// initialize codeceptjs in current dir
-codecept.initGlobals(__dirname);
-
-// create helpers, support files, mocha
-Container.create(config, opts);
-
-// initialize listeners
-codecept.runHooks();
-
-// run bootstrap function from config
-codecept.runBootstrap((err) => {
-
-  // load tests
+// run tests
+try {
+  await codecept.bootstrap();
   codecept.loadTests('*_test.js');
+  await codecept.run(test);
+} catch (err) {
+  printError(err);
+  process.exitCode = 1;
+} finally {
+  await codecept.teardown();
+}
 
-  // run tests
-  codecept.run();
-});
 
 ```
 

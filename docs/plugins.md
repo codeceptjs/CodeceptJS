@@ -131,7 +131,7 @@ Before(login => {
 });
 
 // Alternatively log in for one scenario
-Scenario('log me in', (I, login) => {
+Scenario('log me in', ( {I, login} ) => {
    login('admin');
    I.see('I am logged in');
 });
@@ -296,7 +296,7 @@ autoLogin: {
 ```
 
 ```js
-Scenario('login', async (I, login) => {
+Scenario('login', async ( {I, login} ) => {
   await login('admin') // you should use `await`
 })
 ```
@@ -494,10 +494,6 @@ Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
 Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
-
-### Parameters
-
--   `config`  
 
 ## puppeteerCoverage
 
@@ -785,6 +781,64 @@ Possible config options:
 ### Parameters
 
 -   `config` **any** 
+
+## tryTo
+
+Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
+
+Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
+
+````js
+plugins: {
+  tryTo: {
+    enabled: true
+  }
+}
+```js
+const result = await tryTo(() => I.see('Welcome'));
+
+// if text "Welcome" is on page, result => true
+// if text "Welcome" is not on page, result => false
+````
+
+Disables retryFailedStep plugin for steps inside a block;
+
+Use this plugin if:
+
+-   you need to perform multiple assertions inside a test
+-   there is A/B testing on a website you test
+-   there is "Accept Cookie" banner which may surprisingly appear on a page.
+
+#### Usage
+
+#### Multiple Conditional Assertions
+
+```js
+const result1 = await tryTo(() => I.see('Hello, user'));
+const result2 = await tryTo(() => I.seeElement('.welcome'));
+assert.ok(result1 && result2, 'Assertions were not succesful');
+```
+
+##### Optional click
+
+```js
+I.amOnPage('/');
+tryTo(() => I.click('Agree', '.cookies'));
+```
+
+#### Configuration
+
+-   `registerGlobal` - to register `tryTo` function globally, true by default
+
+If `registerGlobal` is false you can use tryTo from the plugin:
+
+```js
+const tryTo = codeceptjs.container.plugins('tryTo');
+```
+
+### Parameters
+
+-   `config`  
 
 ## wdio
 

@@ -79,7 +79,7 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendGetRequest
 
@@ -92,7 +92,7 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendPatchRequest
 
@@ -105,8 +105,8 @@ I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **[string][3]** 
--   `payload` **[object][2]** 
--   `headers` **[object][2]**  
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendPostRequest
 
@@ -119,8 +119,8 @@ I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **any** 
--   `payload` **any**  
--   `headers` **[object][2]**  
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendPutRequest
 
@@ -133,8 +133,8 @@ I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
 #### Parameters
 
 -   `url` **[string][3]** 
--   `payload` **[object][2]**  
--   `headers` **[object][2]**  
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### setRequestTimeout
 

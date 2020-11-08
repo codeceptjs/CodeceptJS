@@ -8,7 +8,7 @@ const codecept_run = `${runner} run --config ${codecept_dir}/codecept.conf.js `;
 
 describe('Translation', () => {
   it('Should run translated test file', (done) => {
-    exec(`${codecept_run}`, (err, stdout) => {
+    exec(`${codecept_run}`, (err) => {
       assert(!err);
       done();
     });

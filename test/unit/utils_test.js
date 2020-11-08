@@ -10,7 +10,7 @@ describe('utils', () => {
     it('exists', () => assert(utils.fileExists(__filename)));
     it('not exists', () => assert(!utils.fileExists('not_utils.js')));
   });
-
+  /* eslint-disable no-unused-vars */
   describe('#getParamNames', () => {
     it('fn#1', () => utils.getParamNames((a, b) => {}).should.eql(['a', 'b']));
     it('fn#2', () => utils.getParamNames((I, userPage) => { }).should.eql(['I', 'userPage']));
@@ -21,6 +21,7 @@ describe('utils', () => {
       comma,
     ) => {}).should.eql(['I', 'trailing', 'comma']));
   });
+  /* eslint-enable no-unused-vars */
 
   describe('#methodsOfObject', () => {
     it('should get methods', () => {
@@ -272,14 +273,14 @@ describe('utils', () => {
     });
 
     it('should normalize modifier key based on operating system', () => {
-      sinon.stub(os, 'platform', () => { return 'notdarwin'; });
+      sinon.stub(os, 'platform').returns('notdarwin');
       utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
       os.platform.restore();
 
-      sinon.stub(os, 'platform', () => { return 'darwin'; });
+      sinon.stub(os, 'platform').returns('darwin');
       utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
       utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
       utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');

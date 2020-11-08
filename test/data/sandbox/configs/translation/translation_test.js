@@ -1,17 +1,17 @@
 Caratteristica('DevTo');
 
-Prima((I) => {
+Prima(() => {
   console.log('Before');
 });
 
-lo_scenario('Simple translation test', (io) => {
+lo_scenario('Simple translation test', () => {
   console.log('Simple test');
 });
 
-Scenario('Simple translation test 2', (I) => {
+Scenario('Simple translation test 2', () => {
   console.log('Simple test 2');
 });
 
-Dopo((I) => {
+Dopo(() => {
   console.log('After');
 });

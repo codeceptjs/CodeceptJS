@@ -24,7 +24,7 @@ accounts.xadd(['admin', '23456'])
 
 // Pass dataTable to Data()
 // Use special param `current` to get current data set
-Data(accounts).Scenario('Test Login', (I, current) => {
+Data(accounts).Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -33,7 +33,7 @@ Data(accounts).Scenario('Test Login', (I, current) => {
 
 
 // Also you can set only for Data tests. It will launch executes only the current test but with all data options
-Data(accounts).only.Scenario('Test Login', (I, current) => {
+Data(accounts).only.Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -55,7 +55,7 @@ S Test Login | {"login":"admin","password":"23456"}
 ```js
 // You can filter your data table
 Data(accounts.filter(account => account.login == 'admin')
-.Scenario('Test Login', (I, current) => {
+.Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login);
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -92,7 +92,7 @@ Scenario('update user profile @slow')
 Alternativly, use `tag` method of Scenario to set additional tags:
 
 ```js
-Scenario('update user profile', () => {
+Scenario('update user profile', ({  }) => {
   // test goes here
 }).tag('@slow').tag('important');
 ```
@@ -156,7 +156,7 @@ Features and Scenarios have their options that can be set by passing a hash afte
 ```js
 Feature('My feature', {key: val});
 
-Scenario('My scenario', {key: val}, (I) => {});
+Scenario('My scenario', {key: val},({ I }) => {});
 ```
 
 You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
@@ -192,15 +192,15 @@ or for the test:
 
 ```js
 // set timeout to 1s
-Scenario("Stop me faster", (I) => {
+Scenario("Stop me faster",({ I }) => {
   // test goes here
 }).timeout(1000);
 
 // alternative
-Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+Scenario("Stop me faster", {timeout: 1000},({ I }) => {});
 
 // disable timeout for this scenario
-Scenario("Don't stop me", {timeout: 0}, (I) => {});
+Scenario("Don't stop me", {timeout: 0},({ I }) => {});
 ```
 
 
@@ -211,7 +211,7 @@ This might be useful when some tests should be executed with different settings 
 In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
 
 ```js
-Scenario('should be executed in firefox', (I) => {
+Scenario('should be executed in firefox', ({ I }) => {
   // I.amOnPage(..)
 }).config({ browser: 'firefox' })
 ```
@@ -220,7 +220,7 @@ In this case `config` overrides current config of the first helper.
 To change config of specific helper pass two arguments: helper name and config values:
 
 ```js
-Scenario('should create data via v2 version of API', (I) => {
+Scenario('should create data via v2 version of API', ({ I }) => {
   // I.amOnPage(..)
 }).config('REST', { endpoint: 'https://api.mysite.com/v2' })
 ```
@@ -229,7 +229,7 @@ Config can also be set by a function, in this case you can get a test object and
 This is very useful when running tests against cloud providers, like BrowserStack. This function can also be asynchronous.
 
 ```js
-Scenario('should report to BrowserStack', (I) => {
+Scenario('should report to BrowserStack', ({ I }) => {
   // I.amOnPage(..)
 }).config((test) => {
   return { desiredCapabilities: {

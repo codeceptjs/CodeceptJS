@@ -89,6 +89,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     let helper = 'Detox';
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+      cfg.replace(/LocatorOrString/g, 'string | object');
     });
     await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
 
@@ -99,12 +100,14 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
       cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+      cfg.replace(/string \| object/g, 'LocatorOrString');
     });
 
     console.log('Building @codeceptjs/mock-request');
     helper = 'MockRequest';
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+      cfg.replace(/LocatorOrString/g, 'string | object');
     });
     await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
 
@@ -115,6 +118,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
       cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+      cfg.replace(/string \| object/g, 'LocatorOrString');
     });
   },
 
@@ -151,6 +155,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         }
         if (!forTypings) {
           cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+          cfg.replace(/LocatorOrString/g, 'string | object');
         }
       });
     }
@@ -160,7 +165,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
 
-    const ignoreList = ['WebDriverIO', 'SeleniumWebdriver', 'Polly', 'MockRequest']; // WebDriverIO won't be documented and should be removed
+    const ignoreList = ['Polly', 'MockRequest']; // WebDriverIO won't be documented and should be removed
 
     const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache');
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
@@ -184,6 +189,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(placeholders[i], templates[i]);
         }
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+        cfg.replace(/LocatorOrString/g, 'string | object');
       });
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
@@ -218,7 +224,7 @@ title: ${name}
     // publish wiki pages to website
     if (!fs.existsSync('docs/wiki/Home.md')) {
       await git((fn) => {
-        fn.clone('git@github.com:Codeception/CodeceptJS.wiki.git', 'docs/wiki');
+        fn.clone('git@github.com:codeceptjs/CodeceptJS.wiki.git', 'docs/wiki');
       });
     }
     await chdir('docs/wiki', () => git(cfg => cfg.pull('origin master')));
@@ -233,7 +239,7 @@ title: ${name}
       cfg.line('# Community Helpers');
       cfg.line('> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)');
       cfg.line('');
-      cfg.textFromFile('docs/wiki/Community-Helpers.md');
+      cfg.textFromFile('docs/wiki/Community-Helpers-&-Plugins.md');
     });
 
     writeToFile('docs/examples.md', (cfg) => {
@@ -324,7 +330,7 @@ title: ${name}
       await exec(`rm -rf ${dir}`);
     }
 
-    await git((fn) => fn.clone('git@github.com:codecept-js/website.git', dir));
+    await git((fn) => fn.clone('git@github.com:codeceptjs/website.git', dir));
     await copy('docs', 'website/docs');
 
     await chdir(dir, async () => {
@@ -386,7 +392,7 @@ async function processChangelog() {
   changelog = changelog.replace(/\s@([\w-]+)/mg, ' **[$1](https://github.com/$1)**');
 
   // issue
-  changelog = changelog.replace(/#(\d+)/mg, '[#$1](https://github.com/Codeception/CodeceptJS/issues/$1)');
+  changelog = changelog.replace(/#(\d+)/mg, '[#$1](https://github.com/codeceptjs/CodeceptJS/issues/$1)');
 
   // helper
   changelog = changelog.replace(/\s\[(\w+)\]\s/mg, ' **[$1]** ');

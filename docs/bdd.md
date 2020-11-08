@@ -185,6 +185,12 @@ To list all defined steps run `gherkin:steps` command:
 npx codeceptjs gherkin:steps
 ```
 
+Use `grep` to find steps in a list (grep works on Linux & MacOS):
+
+```
+npx codeceptjs gherkin:steps | grep user
+```
+
 To run tests and see step-by step output use `--steps` optoin:
 
 ```
@@ -265,7 +271,7 @@ If we use hashes() with the previous exemple :
 Given('I have products in my cart', (table) => { // eslint-disable-line
   //parse the table by header
   const tableByHeader = table.parse().hashes();
-  for (const row in tableByHeader) {
+  for (const row of tableByHeader) {
 
     // take values
     const name = row.name;
@@ -416,4 +422,3 @@ To run only tests without features use `--tests` option:
 ```
 npx codeceptjs run --tests
 ```
-

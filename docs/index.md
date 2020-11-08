@@ -14,7 +14,7 @@ Type in commands to complete the test scenario.
 Successful commands will be saved into a file.
 
 ```js
-Scenario('Checkout test', () => {
+Scenario('Checkout test', ({ I }) => {
   I.amOnPage('/checkout');
   pause();
 })
@@ -68,7 +68,7 @@ Features:
 
 Each executed step will be printed on screen when running with `--steps`
 ```js
-Scenario('Checkout test', () => {
+Scenario('Checkout test', ({ I }) => {
   I.amOnPage('/checkout');
   I.fillField('First name', 'davert');
   I.fillField('#lastName', 'mik');
@@ -90,10 +90,9 @@ const faker = require('faker');                               // Use 3rd-party J
 
 Feature('Store');
 
-Scenario('Create a new store', async (I, login, SettingsPage) => {
+Scenario('Create a new store', async ({ I, login, SettingsPage }) => {
   const storeName = faker.lorem.slug();
   login('customer');                                          // Login customer from saved cookies
-  I.mockRequest('GET', '/support-chat');                      // Mock HTTP requests with Polly
   SettingsPage.open();                                        // Use Page objects
   I.dontSee(storeName, '.settings');                          // Assert text not present inside an element (located by CSS)
   I.click('Add', '.settings');                                // Click link by text inside element (located by CSS)
@@ -101,11 +100,11 @@ Scenario('Create a new store', async (I, login, SettingsPage) => {
   I.fillField('Email', faker.internet.email());
   I.fillField('Telephone', faker.phone.phoneNumberFormat());
   I.selectInDropdown('Status', 'Active');                     // Use custom methods
-  I.retry(2).click('Create');                                 // Auto-retry flaky step
+  I.retry(2).click('Create');                                 // Retry flaky step
   I.waitInUrl('/settings/setup/stores');                      // Explicit waiter
   I.see(storeName, '.settings');                              // Assert text present inside an element (located by CSS)
-  const storeId = await I.grabTextFrom('#store-id');          // use await to get information from browser
-  I.say(`Created a store with ${storeId}`);                   // print custom comments
+  const storeId = await I.grabTextFrom('#store-id');          // Use await to get information from browser
+  I.say(`Created a store with ${storeId}`);                   // Print custom comments
 }).tag('stores');`;
 
 ```

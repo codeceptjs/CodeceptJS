@@ -1,6 +1,6 @@
-const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;
+const expect = require('expect');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(
@@ -20,28 +20,38 @@ describe('CodeceptJS commentStep plugin', function () {
   });
 
   it('should print nested steps when global var comments used', done => {
-    exec(
-      `${config_run_config('codecept.conf.js', 'global var')} --debug`,
-      (err, stdout) => {
-        stdout.should.include('    Prepare user base  \n      I print "other thins"');
-        stdout.should.include('    Update data  \n      I print "do some things"');
-        stdout.should.include('    Check the result  \n      I print "see everything works"');
-        assert(!err);
-        done();
-      },
-    );
+    exec(`${config_run_config('codecept.conf.js', 'global var')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining('Prepare user base:'),
+          expect.stringContaining('I print "other thins"'),
+          expect.stringContaining('Update data:'),
+          expect.stringContaining('I print "do some things"'),
+          expect.stringContaining('Check the result:'),
+          expect.stringContaining('I print "see everything works"'),
+        ]),
+      );
+      expect(err).toBeFalsy();
+      done();
+    });
   });
 
   it('should print nested steps when local var comments used', done => {
-    exec(
-      `${config_run_config('codecept.conf.js', 'local var')} --debug`,
-      (err, stdout) => {
-        stdout.should.include('    Prepare project  \n      I print "other thins"');
-        stdout.should.include('    Update project  \n      I print "do some things"');
-        stdout.should.include('    Check project  \n      I print "see everything works"');
-        assert(!err);
-        done();
-      },
-    );
+    exec(`${config_run_config('codecept.conf.js', 'local var')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining('Prepare project:'),
+          expect.stringContaining('I print "other thins"'),
+          expect.stringContaining('Update project:'),
+          expect.stringContaining('I print "do some things"'),
+          expect.stringContaining('Check project:'),
+          expect.stringContaining('I print "see everything works"'),
+        ]),
+      );
+      expect(err).toBeFalsy();
+      done();
+    });
   });
 });

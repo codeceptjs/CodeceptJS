@@ -20,6 +20,6 @@ Given('I opened {string} website', (website) => {
   I.amOnPage(website);
 });
 
-Then('I should be able to fill the value in Hello Binding Shadow Input Element', (website) => {
+Then('I should be able to fill the value in Hello Binding Shadow Input Element', () => {
   I.fillField({ shadow: ['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'] }, 'value');
 });

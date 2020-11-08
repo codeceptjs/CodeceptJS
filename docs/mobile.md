@@ -139,7 +139,7 @@ A test is written in a scenario-driven manner, listing an actions taken by a use
 This is the sample test for a native mobile application:
 
 ```js
-Scenario('test registration', (I) => {
+Scenario('test registration', ({ I }) => {
   I.click('~startUserRegistrationCD');
   I.fillField('~inputUsername', 'davert');
   I.fillField('~inputEmail', 'davert@codecept.io');

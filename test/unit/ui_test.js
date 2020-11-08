@@ -2,6 +2,7 @@ const assert = require('assert');
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
 
+global.codeceptjs = require('../../lib');
 const makeUI = require('../../lib/ui');
 
 describe('ui', () => {
@@ -72,14 +73,54 @@ describe('ui', () => {
     it('helpers can be configured', () => {
       suiteConfig = context.Feature('basic suite');
       assert(!suiteConfig.suite.config);
-      suiteConfig.config('WebDriverIO', { browser: 'chrome' });
-      assert.equal('chrome', suiteConfig.suite.config.WebDriverIO.browser);
+      suiteConfig.config('WebDriver', { browser: 'chrome' });
+      assert.equal('chrome', suiteConfig.suite.config.WebDriver.browser);
       suiteConfig.config({ browser: 'firefox' });
       assert.equal('firefox', suiteConfig.suite.config[0].browser);
-      suiteConfig.config('WebDriverIO', () => {
+      suiteConfig.config('WebDriver', () => {
         return { browser: 'edge' };
       });
-      assert.equal('edge', suiteConfig.suite.config.WebDriverIO.browser);
+      assert.equal('edge', suiteConfig.suite.config.WebDriver.browser);
+    });
+
+    it('Feature can be skipped', () => {
+      suiteConfig = context.Feature.skip('skipped suite');
+      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
+      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
+      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature can be skipped via xFeature', () => {
+      suiteConfig = context.xFeature('skipped suite');
+      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
+      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
+      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature are not skipped by default', () => {
+      suiteConfig = context.Feature('not skipped suite');
+      assert.equal(suiteConfig.suite.pending, false, 'Feature must not contain pending === true');
+      // assert.equal(suiteConfig.suite.opts, undefined, 'Features should have no skip info');
+    });
+
+    it('Feature can be skipped', () => {
+      suiteConfig = context.Feature.skip('skipped suite');
+      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
+      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
+      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature can be skipped via xFeature', () => {
+      suiteConfig = context.xFeature('skipped suite');
+      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
+      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
+      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature are not skipped by default', () => {
+      suiteConfig = context.Feature('not skipped suite');
+      assert.equal(suiteConfig.suite.pending, false, 'Feature must not contain pending === true');
+      // assert.equal(suiteConfig.suite.opts, undefined, 'Features should have no skip info');
     });
 
     it('Feature can be skipped', () => {
@@ -125,7 +166,7 @@ describe('ui', () => {
     });
 
     it('should contain tags', () => {
-      const suiteConfig = context.Feature('basic suite @cool');
+      context.Feature('basic suite @cool');
 
       scenarioConfig = context.Scenario('scenario @very @important');
 
