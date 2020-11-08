@@ -41,6 +41,7 @@ Refer to following guides to more information on:
 * [▶ WebDriver](/webdriver)
 * [▶ Protractor](/angular)
 * [▶ Puppeteer](/puppeteer)
+* [▶ Playwright](/playwright)
 * [▶ Nightmare](/nightmare)
 * [▶ TestCafe](/testcafe)
 
@@ -146,24 +147,31 @@ I.click('#signup');
 I.click('//dev[@test-id="myid"]');
 ```
 
+> ℹ If click doesn't work in a test but works for user, it is possible that frontend application is not designed for automated testing. To overcome limitation of standard click in this edgecase use `forceClick` method. It will emulate click instead of sending native event. This command will click an element no matter if this element is visible or animating. It will send JavaScript "click" event to it.
+
 ### Filling Fields
 
 Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.
 
 Let's submit this sample form for a test:
 
+![](https://user-images.githubusercontent.com/220264/80355863-494a8280-8881-11ea-9b41-ba1f07abf094.png)
+
 ```html
 <form method="post" action="/update" id="update_form">
      <label for="user_name">Name</label>
-     <input type="text" name="user[name]" id="user_name" />
+     <input type="text" name="user[name]" id="user_name" /><br>
      <label for="user_email">Email</label>
-     <input type="text" name="user[email]" id="user_email" />
-     <label for="user_gender">Gender</label>
-     <select id="user_gender" name="user[gender]">
-          <option value="m">Male</option>
-          <option value="f">Female</option>
-     </select>
-     <input type="submit" name="submitButton" value="Update" />
+     <input type="text" name="user[email]" id="user_email" /><br>
+     <label for="user_role">Role</label>
+     <select id="user_role" name="user[role]">
+          <option value="0">Admin</option>
+          <option value="1">User</option>
+     </select><br>
+     <input type="checkbox" id="accept" /> <label for="accept">Accept changes</label>
+     <div>
+     <input type="submit" name="submitButton" class="btn btn-primary" value="Save" />
+     </div>
 </form>
 ```
 
@@ -175,10 +183,15 @@ I.fillField('Name', 'Miles');
 // we can use input name
 I.fillField('user[email]','miles@davis.com');
 // select element by label, choose option by text
-I.selectOption('Gender','Male');
-// click 'Update' button, found by text
-I.click('Update');
+I.selectOption('Role','Admin');
+// click 'Save' button, found by text
+I.checkOption('Accept');
+I.click('Save');
 ```
+
+> ℹ `selectOption` works only with standard `<select>` <select></select> HTML elements. If your selectbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
+
+> ℹ `checkOption` also works only with standard `<input type="checkbox">` <input type="checkbox"> HTML elements. If your checkbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
 
 Alternative scenario:
 
@@ -187,12 +200,12 @@ Alternative scenario:
 I.fillField('#user_name', 'Miles');
 I.fillField('#user_email','miles@davis.com');
 // select element by label, option by value
-I.selectOption('#user_gender','m');
+I.selectOption('#user_role','1');
 // click 'Update' button, found by name
 I.click('submitButton', '#update_form');
 ```
 
-To fill in sensitive data use the `secret` function:
+To fill in sensitive data use the `secret` function, it won't expose actual value in logs.
 
 ```js
 I.fillField('password', secret('123456'));
@@ -232,6 +245,8 @@ I.seeInTitle('My Website');
 ```
 
 To see all possible assertions, check the helper's reference.
+
+> ℹ If you need custom assertions, you can install an assertion libarary like `chai`, use grabbers to obtain information from a browser and perform assertions. However, it is recommended to put custom assertions into a helper for further reuse.
 
 ### Grabbing
 
@@ -281,7 +296,7 @@ Tests are written in a synchronous way. This improves the readability and mainta
 While writing tests you should not think about promises, and instead should focus on the test scenario.
 
 However, behind the scenes **all actions are wrapped in promises**, inside of the `I` object.
-[Global promise](https://github.com/Codeception/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
+[Global promise](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
 
 > 📺 [Learn how CodeceptJS](https://www.youtube.com/watch?v=MDLLpHAwy_s) works with promises by watching video on YouTube
 
@@ -387,7 +402,7 @@ You can have multiple configuration files for a the same project, in this case y
 npx codeceptjs run -c codecept.ci.conf.js
 ```
 
-Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how these technologies work. Use the [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with common configuration recipes.
+Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how these technologies work. Use the [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package with common configuration recipes.
 
 For instance, you can set the window size or toggle headless mode, no matter of which helpers are actually used.
 
@@ -404,7 +419,7 @@ exports.config = {
 }
 ```
 
-> ▶ See more [configuration recipes](https://github.com/codecept-js/configure)
+> ▶ See more [configuration recipes](https://github.com/codeceptjs/configure)
 
 ## Debug
 
@@ -423,17 +438,19 @@ Try to perform your scenario step by step. Then copy succesful commands and inse
 ### Pause
 
 Test execution can be paused in any place of a test with `pause()` call.
+Variables can also be passed to `pause({data: 'hi', func: () => console.log('hello')})` which can be accessed in Interactive shell.
 
 This launches the interactive console where you can call any action from the `I` object.
 
 ```
  Interactive shell started
  Press ENTER to resume test
- - Use JavaScript syntax to try steps in action
+ Use JavaScript syntax to try steps in action
+ - Press ENTER to run the next step
  - Press TAB twice to see all available commands
- - Enter next to run the next step
- I.click
-
+ - Type exit + Enter to exit the interactive shell
+ - Prefix => to run js commands
+ I.
 ```
 
 Type in different actions to try them, copy and paste successful ones into the test file.
@@ -444,10 +461,21 @@ To **debug test step-by-step** press Enter, the next step will be executed and i
 
 To see all available commands, press TAB two times to see list of all actions included in the `I` object.
 
-The interactive shell can be started outside of test context by running
+> The interactive shell can be started outside of test context by running `npx codeceptjs shell`
 
-```bash
-npx codeceptjs shell
+PageObjects and other variables can also be passed to as object:
+
+```js
+pause({ loginPage, data: 'hi', func: () => console.log('hello') });
+```
+
+Inside a pause mode you can use `loginPage`, `data`, `func` variables.
+Arbitrary JavaScript code can be executed when used `=> ` prefix:
+
+```js
+I.=> loginPage.open()
+I.=> func()
+I.=> 2 + 5
 ```
 
 ### Pause on Failure <Badge text="Since 2.4" type="warning"/>
@@ -588,7 +616,7 @@ AfterSuite((I) => {
 });
 ```
 
-[Here are some ideas](https://github.com/Codeception/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
+[Here are some ideas](https://github.com/codeceptjs/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
 
 ## Within
 
@@ -608,7 +636,7 @@ within('.js-signup-form', () => {
 I.see('There were problems creating your account.');
 ```
 
-> ⚠ `within` can cause problems when used incorrectly. If you see a weired behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
+> ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
 
 `within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
 
@@ -667,7 +695,7 @@ I.say('This is by default'); //cyan is used
 
 ## IntelliSense
 
-![](/img/edit.gif)
+![Edit](/img/edit.gif)
 
 To get autocompletion when working with CodeceptJS, use Visual Studio Code or another IDE that supports TypeScript Definitions.
 
@@ -769,7 +797,11 @@ Also, you can use `within` inside a session, but you can't call session from ins
 Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 
 * `xScenario` - skips current test
+* `Scenario.skip` - skips current test
 * `Scenario.only` - executes only the current test
+* `xFeature` - skips current suite <Badge text="Since 2.6.6" type="warning"/>
+* `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
+
 
 ## Todo Test <Badge text="Since 2.4" type="warning"/>
 

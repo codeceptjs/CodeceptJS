@@ -2,7 +2,7 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
-/// <reference types="Mocha" />
+/// <reference path="./Mocha.d.ts" />
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
@@ -13,6 +13,7 @@ declare namespace CodeceptJS {
   interface I {}
   interface IHook {}
   interface IScenario {}
+  interface IFeature {}
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
@@ -45,10 +46,15 @@ declare namespace CodeceptJS {
   type LocatorOrString = string | ILocator | Locator;
 
   interface HookCallback<U extends any[]> { (...args: U): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario }
+  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
+  interface Feature extends IFeature { skip: IFeature }
   interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
 
   interface IScenario {
+    // Scenario.todo can be called only with a title.
+    <T extends any[] = CallbackOrder>(
+      title: string
+    ): ScenarioConfig;
     <T extends any[] = CallbackOrder>(
       title: string,
       callback: HookCallback<T>
@@ -96,6 +102,7 @@ declare const Then: typeof CodeceptJS.addStep;
 declare const Feature: typeof CodeceptJS.Feature;
 declare const Scenario: CodeceptJS.Scenario;
 declare const xScenario: CodeceptJS.IScenario;
+declare const xFeature: CodeceptJS.IFeature;
 declare function Data(data: any): CodeceptJS.IData;
 declare function xData(data: any): CodeceptJS.IData;
 
@@ -143,6 +150,7 @@ declare namespace Mocha {
   interface MochaGlobals {
     Feature: typeof Feature;
     Scenario: typeof Scenario;
+    xFeature: typeof xFeature;
     xScenario: typeof xScenario;
     Data: typeof Data;
     xData: typeof xData;
@@ -153,14 +161,14 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite {
+  interface Suite extends SuiteRunnable{
     tags: any[]
     comment: string
     feature: any
   }
 
-  interface Test {
-    tags: any[]
+  interface Test  extends Runnable{
+    tags: any[];
   }
 }
 

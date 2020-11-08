@@ -214,7 +214,7 @@ npx codeceptjs def --config path/to/codecept.json
 
 After doing that IDE should provide autocompletion for `I` object inside `Scenario` and `within` blocks.
 
-Add optional parameter `output` (or shortcat `-o`), if you want to place your definition file in specific folder:
+Add optional parameter `output` (or shortcut `-o`), if you want to place your definition file in specific folder:
 
 ```sh
 npx codeceptjs def --output ./tests/typings

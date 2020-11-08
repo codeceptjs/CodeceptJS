@@ -17,12 +17,14 @@ let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
-describe('Puppeteer - BasicAuth', () => {
+describe('Puppeteer - BasicAuth', function () {
+  this.timeout(10000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
     I = new Puppeteer({
-      url: 'http://localhost:8000',
+      url: siteUrl,
       windowSize: '500x700',
       show: false,
       waitForTimeout: 5000,
@@ -53,6 +55,10 @@ describe('Puppeteer - BasicAuth', () => {
 
   describe('open page with provided basic auth', () => {
     it('should be authenticated ', async () => {
+      await I.amOnPage('/basic_auth');
+      await I.see('You entered admin as your password.');
+    });
+    it('should be authenticated on second run', async () => {
       await I.amOnPage('/basic_auth');
       await I.see('You entered admin as your password.');
     });
@@ -372,7 +378,6 @@ describe('Puppeteer', function () {
       .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
-
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
@@ -649,6 +654,13 @@ describe('Puppeteer', function () {
       .then(() => I.see('button was clicked', '#message')));
   });
 
+  describe('#waitForText', () => {
+    it('should wait for text after load body', async () => {
+      await I.amOnPage('/redirect_long');
+      await I.waitForText('Hi there and greetings!', 5);
+    });
+  });
+
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () => I.amOnPage('/info')
       .then(() => I.waitForValue('//input[@name= "rus"]', 'Верно'))
@@ -680,7 +692,6 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#text', 'Brisbane'))
       .then(() => I.seeInField('#text2', 'London')));
   });
-
 
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
@@ -832,8 +843,7 @@ describe('Puppeteer', function () {
       await I.amOnPage('/form/download');
       await I.handleDownloads();
       await I.click('Download file');
-      await I.wait(5);
-      await FS.seeFile('downloads/avatar.jpg');
+      await FS.waitForFile('downloads/avatar.jpg', 5);
     });
   });
 
@@ -909,6 +919,22 @@ describe('Puppeteer', function () {
         if (isClickable) throw new Error('Element is clickable, but must be unclickable');
       }).catch((e) => {
         e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec');
+      });
+    });
+
+    it('should pass if element change class', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      await I.waitForClickable('//button[@name="button_publish"]');
+    });
+
+    it('should fail if element change class and not clickable', async () => {
+      await I.amOnPage('/form/wait_for_clickable');
+      await I.click('button_save');
+      I.waitForClickable('//button[@name="button_publish"]', 0.1).then((isClickable) => {
+        if (isClickable) throw new Error('Element is clickable, but must be unclickable');
+      }).catch((e) => {
+        e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec');
       });
     });
   });

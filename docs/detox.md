@@ -3,7 +3,7 @@ permalink: /detox
 title: Testing React Native with Detox
 ---
 
-> Warning! Detox support in CodeceptJS is experimental. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/Codeception/detox-helper).
+> Warning! Detox support in CodeceptJS is experimental. Please try it and help us to test it and improve it. [See Detox helper repository](https://github.com/codeceptjs/detox-helper).
 
 Automated mobile testing can be slow, hard, and ineffective. The price of it goes high, if we take into account fragility of applications, slowness of emulators, and the complexity of debug. [Appium](/mobile) helps writing mobile tests but not all apps can be tested effectively with it. That's why you should consider using an alternative approach.
 
@@ -119,7 +119,7 @@ There are also common assertions:
 * `seeElement` - to check visibility of element
 * `seeElementExists` - to check that element exists
 
-> For more details on actions refer to the [API reference of Detox helper](https://github.com/Codeception/detox-helper#api).
+> For more details on actions refer to the [API reference of Detox helper](https://github.com/codeceptjs/detox-helper#api).
 
 ## Locators
 
@@ -179,7 +179,7 @@ If element differs on on iOS and Android you can use **cross platform locators**
 ```js
 // locate element by text on Android
 // locate element by accessibility id on iOS
-I.click({ andropermalink: /'Start', ios: '~start' });
+I.click({ android: /'Start', ios: '~start' });
 ```
 
 When application behavior differs on Android and iOS use platform-specific actions:
@@ -207,7 +207,7 @@ Scenario('save in application', (I) => {
   I.fillField('#text', 'a new text');
   I.see('a new text', '#textValue');
   I.dontSeeElement('#createdAndVisibleText');
-  I.click({ ios: '#GoButton', andropermalink: /'Button' });
+  I.click({ ios: '#GoButton', android: /'Button' });
   I.waitForElement('#createdAndVisibleText', 20);
   I.seeElement('#createdAndVisibleText');
   I.runOnAndroid(() => {

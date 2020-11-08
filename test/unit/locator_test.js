@@ -171,7 +171,6 @@ describe('Locator', () => {
     expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath());
   });
 
-
   it('should select child element by name', () => {
     const l = Locator.build('.form-field')
       .withDescendant(Locator.build('//input[@name="name1"]'));

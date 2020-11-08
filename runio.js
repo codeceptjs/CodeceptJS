@@ -86,7 +86,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
   async docsExternalHelpers() {
     // generate documentation for helpers outside of main repo
     console.log('Building @codecepjs/detox helper docs');
-    const helper = 'Detox';
+    let helper = 'Detox';
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
     });
@@ -98,6 +98,22 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     });
 
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
+      cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+    });
+
+    console.log('Building @codeceptjs/mock-request');
+    helper = 'MockRequest';
+    replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
+      cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+    });
+    await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
+
+    await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
+      cfg.line(`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
+      cfg.textFromFile(`docs/helpers/${helper}.md`);
+    });
+
+    replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
       cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
     });
   },
@@ -144,7 +160,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js');
 
-    const ignoreList = ['WebDriverIO', 'SeleniumWebdriver', 'Polly']; // WebDriverIO won't be documented and should be removed
+    const ignoreList = ['WebDriverIO', 'SeleniumWebdriver', 'Polly', 'MockRequest']; // WebDriverIO won't be documented and should be removed
 
     const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache');
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`);
@@ -215,7 +231,7 @@ title: ${name}
       cfg.line('---');
       cfg.line('');
       cfg.line('# Community Helpers');
-      cfg.line('> Share your helpers at our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Community-Helpers)');
+      cfg.line('> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)');
       cfg.line('');
       cfg.textFromFile('docs/wiki/Community-Helpers.md');
     });
@@ -230,7 +246,7 @@ title: ${name}
       cfg.line('---');
       cfg.line('');
       cfg.line('# Examples');
-      cfg.line('> Add your own examples to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Examples)');
+      cfg.line('> Add your own examples to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Examples)');
       cfg.textFromFile('docs/wiki/Examples.md');
     });
 
@@ -244,7 +260,7 @@ title: ${name}
       cfg.line('---');
       cfg.line('');
       cfg.line('# Books & Posts');
-      cfg.line('> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)');
+      cfg.line('> Add your own books or posts to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Books-&-Posts)');
       cfg.textFromFile('docs/wiki/Books-&-Posts.md');
     });
 
@@ -257,11 +273,10 @@ title: ${name}
       cfg.line('editLink: false');
       cfg.line('---');
       cfg.line('');
-      cfg.line('> Add your own videos to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Videos)');
+      cfg.line('> Add your own videos to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Videos)');
       cfg.textFromFile('docs/wiki/Videos.md');
     });
   },
-
 
   async docsAppium() {
     // generates docs for appium
@@ -305,14 +320,11 @@ title: ${name}
     await this.wiki();
 
     const dir = 'website';
-    await git((fn) => {
-      if (!fs.existsSync(dir)) {
-        fn.clone('git@github.com:codecept-js/website.git', dir);
-      } else {
-        fn.pull();
-      }
-    });
+    if (fs.existsSync(dir)) {
+      await exec(`rm -rf ${dir}`);
+    }
 
+    await git((fn) => fn.clone('git@github.com:codecept-js/website.git', dir));
     await copy('docs', 'website/docs');
 
     await chdir(dir, async () => {
@@ -320,7 +332,8 @@ title: ${name}
       await git((fn) => {
         fn.add('-A');
         fn.commit('-m "synchronized with docs"');
-        fn.push('--no-verify');
+        fn.pull();
+        fn.push();
       });
       stopOnFail(true);
 
@@ -358,12 +371,12 @@ title: ${name}
       cmd.tag(version);
       cmd.push('origin master --tags');
     });
+    await exec('rm -rf docs/wiki/.git');
     await exec('npm publish');
     console.log('-- RELEASED --');
   },
 
 };
-
 
 async function processChangelog() {
   const file = 'CHANGELOG.md';

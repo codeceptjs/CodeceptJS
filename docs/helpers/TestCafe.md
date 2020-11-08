@@ -405,7 +405,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
 An array as a result will be returned if there are more than one matched element.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -431,7 +431,7 @@ console.log(JSON.stringify(logs))
 
 Gets a cookie object by name.
 If none provided gets all cookies.
-Resumes test execution, so **should be used inside async with `await`** operator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let cookie = await I.grabCookie('auth');
@@ -459,6 +459,7 @@ Returns **[Promise][7]&lt;[string][4]>** current URL
 ### grabNumberOfVisibleElements
 
 Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
@@ -484,7 +485,7 @@ Returns **[Promise][7]&lt;[Object][5]&lt;[string][4], any>>** scroll position
 ### grabSource
 
 Retrieves page source and returns it to test.
-Resumes test execution, so should be used inside an async function.
+Resumes test execution, so **should be used inside async function with `await`** operator.
 
 ```js
 let pageSource = await I.grabSource();
@@ -624,6 +625,20 @@ I.rightClick('Click me', '.context');
 
 -   `locator` **([string][4] | [object][5])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+
+### saveElementScreenshot
+
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveElementScreenshot(`#submit`,'debug.png');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+-   `fileName` **[string][4]** file name to save.
 
 ### saveScreenshot
 
@@ -852,15 +867,23 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 ### setCookie
 
-Sets a cookie.
+Sets cookie(s).
+
+Can be a single cookie object or an array of cookies:
 
 ```js
 I.setCookie({name: 'auth', value: true});
+
+// as array
+I.setCookie([
+  {name: 'auth', value: true},
+  {name: 'agree', value: true}
+]);
 ```
 
 #### Parameters
 
--   `cookie` **[object][5]** a cookie object.
+-   `cookie` **([object][5] | [array][9])** a cookie object or array of cookie objects.
 
 ### switchTo
 

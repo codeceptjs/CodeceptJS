@@ -1,4 +1,4 @@
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -15,3 +15,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         has-tests-label: true
         comment-on-empty: true
+        github-pat: ${{ secrets.GH_PAT }}
+        enable-documentation: true
+        documentation-branch: "master"
