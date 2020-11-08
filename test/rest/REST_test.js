@@ -168,7 +168,7 @@ describe('REST', () => {
       I.removeHeader('x-test');
       I.headers.should.not.have.property('x-test');
     });
-    
+
     it('should set Content-Type header if data is string and Content-Type is omitted', async () => {
       const response = await I.sendPostRequest(
         '/user',
