@@ -129,6 +129,46 @@ describe('REST', () => {
       response.config.headers.HTTP_X_REQUESTED_WITH.should.eql('xmlhttprequest');
     });
 
+    it('should return all headers', () => {
+      I.headers = {
+        'content-type': 'application/json',
+        'x-auth': 'auth',
+      };
+      const headers = I.grabHeaders();
+      headers.should.have.property('content-type');
+      headers.should.have.property('x-auth');
+    });
+
+    it('should see correct header', () => {
+      I.response = { headers: { 'content-type': 'application/json' } };
+      I.seeHeader('content-type');
+      I.seeHeader('content-type', 'application/json');
+    });
+
+    it('shouldnt see correct header', () => {
+      I.response = { headers: { 'content-type': 'application/json' } };
+      I.dontSeeHeader('x-auth-token');
+    });
+
+    it('should return correct header from response object', () => {
+      I.headers = { 'content-type': 'application/json' };
+      const headers = I.grabHeader('content-type');
+      headers.should.eql('application/json');
+    });
+
+    it('should add header to request object', () => {
+      I.setHeader('x-test', 'custom-header');
+      I.headers.should.have.property('x-test');
+      I.headers['x-test'].should.eql('custom-header');
+    });
+
+    it('should remove header from request object', () => {
+      I.setHeader('x-test', 'custom-header');
+      I.headers.should.have.property('x-test');
+      I.removeHeader('x-test');
+      I.headers.should.not.have.property('x-test');
+    });
+
     it('should set Content-Type header if data is string and Content-Type is omitted', async () => {
       const response = await I.sendPostRequest(
         '/user',
