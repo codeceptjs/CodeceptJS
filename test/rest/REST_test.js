@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const FormData = require('form-data');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
@@ -8,6 +9,7 @@ const api_url = TestHelper.jsonServerUrl();
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
+const testFile = path.join(__dirname, '/../data/rest/testUpload.json');
 
 const data = {
   posts: [
@@ -162,6 +164,45 @@ describe('REST', () => {
 
     it('should prepend base url, when url is not absolute, and "http" in request', () => {
       I._url('/blabla&p=http://bla.bla').should.eql(`${api_url}/blabla&p=http://bla.bla`);
+    });
+  });
+});
+
+describe('REST - Form upload', () => {
+  beforeEach((done) => {
+    I = new REST({
+      endpoint: 'http://the-internet.herokuapp.com/',
+      maxUploadFileSize: 0.000080,
+      defaultHeaders: {
+        'X-Test': 'test',
+      },
+    });
+
+    setTimeout(done, 1000);
+  });
+
+  describe('upload file', () => {
+    it('should show error when file size exceedes the permit', async () => {
+      let form = new FormData();
+      form.append('file', fs.createReadStream(testFile));
+
+      try {
+        await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+      } catch (error) {
+        error.message.should.eql('Request body larger than maxBodyLength limit');
+      }
+    });
+
+    it('should not show error when file size doesnt exceedes the permit', async () => {
+      let form = new FormData();
+      form.append('file', fs.createReadStream(testFile));
+
+      try {
+        const response = await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+        response.data.should.include('File Uploaded!');
+      } catch (error) {
+        console.log(error.message);
+      }
     });
   });
 });
