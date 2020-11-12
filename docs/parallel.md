@@ -53,7 +53,7 @@ Create a placeholder in file:
 
 ```js
 #!/usr/bin/env node
-const { Workers } = require('codeceptjs');
+const { Workers, event } = require('codeceptjs');
 // here will go magic
 ```
 
@@ -80,7 +80,7 @@ const configs = browsers.map(browser => {
 });
 
 for (const config of configs) {
-  for (group of groupOfTests) {
+  for (group of testGroups) {
     const worker = workers.spawn();
     worker.addTests(group);
     worker.addConfig(config);
