@@ -59,7 +59,7 @@ describe('Recorder', () => {
         if (counter < 3) {
           throw new Error('ups');
         }
-      });
+      }, undefined, undefined, true);
       return recorder.promise();
     });
 
@@ -74,7 +74,7 @@ describe('Recorder', () => {
         if (counter < 3) {
           throw new Error(errorText);
         }
-      });
+      }, undefined, undefined, true);
       return recorder.promise();
     });
   });
