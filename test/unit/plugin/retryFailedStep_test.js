@@ -30,7 +30,7 @@ describe('retryFailedStep', () => {
       if (counter < 3) {
         throw new Error();
       }
-    });
+    }, undefined, undefined, true);
     return recorder.promise();
   });
   it('should not retry within', async () => {
@@ -44,7 +44,7 @@ describe('retryFailedStep', () => {
         recorder.add(() => {
           counter++;
           throw new Error();
-        });
+        }, undefined, undefined, true);
       });
       await recorder.promise();
     } catch (e) {
@@ -67,7 +67,7 @@ describe('retryFailedStep', () => {
         if (counter < 3) {
           throw new Error();
         }
-      });
+      }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
       recorder.catchWithoutStop((err) => err);
@@ -89,7 +89,7 @@ describe('retryFailedStep', () => {
         if (counter < 3) {
           throw new Error();
         }
-      });
+      }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
       recorder.catchWithoutStop((err) => err);
@@ -111,7 +111,7 @@ describe('retryFailedStep', () => {
         if (counter < 3) {
           throw new Error();
         }
-      });
+      }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
       recorder.catchWithoutStop((err) => err);
@@ -132,7 +132,7 @@ describe('retryFailedStep', () => {
         recorder.add(() => {
           counter++;
           throw new Error();
-        });
+        }, undefined, undefined, true);
       });
       await recorder.promise();
     } catch (e) {
