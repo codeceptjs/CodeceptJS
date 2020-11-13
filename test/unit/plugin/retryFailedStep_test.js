@@ -142,4 +142,21 @@ describe('retryFailedStep', () => {
     // expects to retry only once
     counter.should.equal(2);
   });
+
+  it('should not turn around the chain of retries', () => {
+    recorder.retry({ retries: 2, when: (err) => { return err.message === 'someerror'; }, identifier: 'test' });
+    recorder.retry({ retries: 2, when: (err) => { return err.message === 'othererror'; } });
+
+    const getRetryIndex = () => recorder.retries.indexOf(recorder.retries.find(retry => retry.identifier));
+    let initalIndex;
+
+    recorder.add(() => {
+      initalIndex = getRetryIndex();
+    }, undefined, undefined, true);
+
+    recorder.add(() => {
+      initalIndex.should.equal(getRetryIndex());
+    }, undefined, undefined, true);
+    return recorder.promise();
+  });
 });

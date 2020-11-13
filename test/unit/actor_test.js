@@ -21,15 +21,16 @@ describe('Actor', () => {
         bye: () => 'bye world',
         die: () => { throw new Error('ups'); },
         _hidden: () => 'hidden',
-        failFirst: () => {
+        failAfter: (i = 1) => {
           counter++;
-          if (counter < 2) throw new Error('ups');
+          if (counter <= i) throw new Error('ups');
+          counter = 0;
         },
       },
       MyHelper2: {
         greeting: () => 'greetings, world',
       },
-    });
+    }, undefined, undefined);
     container.translation().vocabulary.actions.hello = 'привет';
     I = actor();
     event.cleanDispatcher();
@@ -79,7 +80,7 @@ describe('Actor', () => {
   });
 
   it('should take all methods from helpers and built in', () => {
-    ['hello', 'bye', 'die', 'failFirst', 'say', 'retry', 'greeting'].forEach(key => {
+    ['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach(key => {
       expect(I).toHaveProperty(key);
     });
   });
@@ -108,11 +109,40 @@ describe('Actor', () => {
   });
 
   it('should retry failed step with #retry', () => {
-    return I.retry(2).failFirst();
+    recorder.start();
+    return I.retry({ retries: 2, minTimeout: 0 }).failAfter(1);
   });
 
   it('should retry once step with #retry', () => {
-    return I.retry().failFirst();
+    recorder.start();
+    return I.retry().failAfter(1);
+  });
+
+  it('should alway use the latest global retry options', () => {
+    recorder.start();
+    recorder.retry({
+      retries: 0,
+      minTimeout: 0,
+      when: () => true,
+    });
+    recorder.retry({
+      retries: 1,
+      minTimeout: 0,
+      when: () => true,
+    });
+    I.hello(); // before fix: this changed the order of retries
+    return I.failAfter(1);
+  });
+
+  it('should not delete a global retry option', () => {
+    recorder.start();
+    recorder.retry({
+      retries: 2,
+      minTimeout: 0,
+      when: () => true,
+    });
+    I.retry(1).failAfter(1); // before fix: this changed the order of retries
+    return I.failAfter(2);
   });
 
   it('should print handle failed steps', () => {
