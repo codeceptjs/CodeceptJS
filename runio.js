@@ -375,7 +375,7 @@ title: ${name}
     await git((cmd) => {
       cmd.pull();
       cmd.tag(version);
-      cmd.push('origin master --tags');
+      cmd.push('origin 3.x --tags');
     });
     await exec('rm -rf docs/wiki/.git');
     await exec('npm publish');
