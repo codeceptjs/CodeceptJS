@@ -1,12 +1,10 @@
 const path = require('path');
 const expect = require('expect');
-const sinon = require('sinon');
+
 const actor = require('../../lib/actor');
 const container = require('../../lib/container');
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
-const Step = require('../../lib/step');
-const { MetaStep } = require('../../lib/step');
 
 global.codecept_dir = path.join(__dirname, '/..');
 let I;
