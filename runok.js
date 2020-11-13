@@ -4,8 +4,10 @@ const path = require('path');
 const axios = require('axios');
 const documentation = require('documentation');
 const {
-  stopOnFail, chdir, git, copy, exec, replaceInFile, npmRun, npx, writeToFile, runio,
-} = require('runio.js');
+  stopOnFail, chdir, tasks: {
+    git, copy, exec, replaceInFile, npmRun, npx, writeToFile,
+  }, runok,
+} = require('runok');
 
 stopOnFail();
 
@@ -21,7 +23,7 @@ module.exports = {
 
   async def() {
     await Promise.all([
-      this.buildLibWithDocs(true),
+      // this.buildLibWithDocs(true),
       this.docsPlugins(),
       this.docsExternalHelpers(),
     ]);
@@ -411,4 +413,4 @@ async function processChangelog() {
   });
 }
 
-if (require.main === module) runio(module.exports);
+if (require.main === module) runok(module.exports);
