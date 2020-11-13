@@ -183,7 +183,7 @@ describe('REST - Form upload', () => {
 
   describe('upload file', () => {
     it('should show error when file size exceedes the permit', async () => {
-      let form = new FormData();
+      const form = new FormData();
       form.append('file', fs.createReadStream(testFile));
 
       try {
@@ -194,7 +194,7 @@ describe('REST - Form upload', () => {
     });
 
     it('should not show error when file size doesnt exceedes the permit', async () => {
-      let form = new FormData();
+      const form = new FormData();
       form.append('file', fs.createReadStream(testFile));
 
       try {
