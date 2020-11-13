@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 
 const DataTable = require('../../../lib/data/table');
 
@@ -6,8 +6,8 @@ describe('DataTable', () => {
   it('should take an array for creation', () => {
     const data = ['login', 'password'];
     const dataTable = new DataTable(data);
-    assert.deepEqual(dataTable.array, data);
-    assert.deepEqual(dataTable.rows, []);
+    expect(dataTable.array).to.deep.equal(data);
+    expect(dataTable.rows).to.deep.equal([]);
   });
 
   it('should allow arrays to be added', () => {
@@ -19,25 +19,25 @@ describe('DataTable', () => {
       login: 'jon',
       password: 'snow',
     };
-    assert.equal(dataTable.rows[0].data, JSON.stringify(expected));
+    expect(JSON.stringify(dataTable.rows[0].data)).to.equal(JSON.stringify(expected));
   });
 
   it('should not allow an empty array to be added', () => {
     const data = ['login', 'password'];
     const dataTable = new DataTable(data);
-    assert.throws(() => dataTable.add([]));
+    expect(() => dataTable.add([])).to.throw();
   });
 
   it('should not allow an array with more slots than the original to be added', () => {
     const data = ['login', 'password'];
     const dataTable = new DataTable(data);
-    assert.throws(() => dataTable.add(['Henrietta']));
+    expect(() => dataTable.add(['Henrietta'])).to.throw();
   });
 
   it('should not allow an array with less slots than the original to be added', () => {
     const data = ['login', 'password'];
     const dataTable = new DataTable(data);
-    assert.throws(() => dataTable.add(['Acid', 'Jazz', 'Singer']));
+    expect(() => dataTable.add(['Acid', 'Jazz', 'Singer'])).to.throw();
   });
 
   it('should filter an array', () => {
@@ -60,7 +60,7 @@ describe('DataTable', () => {
         password: 'lannister',
       },
     }];
-    assert.equal(JSON.stringify(dataTable.filter(row => row.password === 'lannister')), JSON.stringify(expected));
+    expect(JSON.stringify(dataTable.filter(row => row.password === 'lannister'))).to.equal(JSON.stringify(expected));
   });
 
   it('should filter an array with skips', () => {
@@ -83,6 +83,6 @@ describe('DataTable', () => {
         password: 'lannister',
       },
     }];
-    assert.equal(JSON.stringify(dataTable.filter(row => row.password === 'lannister')), JSON.stringify(expected));
+    expect(JSON.stringify(dataTable.filter(row => row.password === 'lannister'))).to.equal(JSON.stringify(expected));
   });
 });

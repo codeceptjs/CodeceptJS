@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const DataTableArgument = require('../../../lib/data/dataTableArgument');
 
 describe('DataTableArgument', () => {
@@ -48,20 +48,20 @@ describe('DataTableArgument', () => {
     const dta = new DataTableArgument(gherkinDataTable);
     const raw = dta.raw();
     const expectedRaw = [['John', 'Doe'], ['Chuck', 'Norris']];
-    assert.deepEqual(raw, expectedRaw);
+    expect(raw).to.deep.equal(expectedRaw);
   });
 
   it('should return a 2D array containing each row without the header (first one)', () => {
     const dta = new DataTableArgument(gherkinDataTableWithHeader);
     const rows = dta.rows();
     const expectedRows = [['Chuck', 'Norris']];
-    assert.deepEqual(rows, expectedRows);
+    expect(rows).to.deep.equal(expectedRows);
   });
 
   it('should return an of object where properties is the header', () => {
     const dta = new DataTableArgument(gherkinDataTableWithHeader);
     const rows = dta.hashes();
     const expectedRows = [{ firstName: 'Chuck', lastName: 'Norris' }];
-    assert.deepEqual(rows, expectedRows);
+    expect(rows).to.deep.equal(expectedRows);
   });
 });

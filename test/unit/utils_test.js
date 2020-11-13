@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const os = require('os');
 const path = require('path');
 const sinon = require('sinon');
@@ -7,43 +7,42 @@ const utils = require('../../lib/utils');
 
 describe('utils', () => {
   describe('#fileExists', () => {
-    it('exists', () => assert(utils.fileExists(__filename)));
-    it('not exists', () => assert(!utils.fileExists('not_utils.js')));
+    it('exists', () => expect(utils.fileExists(__filename)));
+    it('not exists', () => expect(!utils.fileExists('not_utils.js')));
   });
   /* eslint-disable no-unused-vars */
   describe('#getParamNames', () => {
-    it('fn#1', () => utils.getParamNames((a, b) => {}).should.eql(['a', 'b']));
-    it('fn#2', () => utils.getParamNames((I, userPage) => { }).should.eql(['I', 'userPage']));
-    it('should handle single-param arrow functions with omitted parens', () => utils.getParamNames((I) => {}).should.eql(['I']));
-    it('should handle trailing comma', () => utils.getParamNames((
+    it('fn#1', () => expect(utils.getParamNames((a, b) => { })).eql(['a', 'b']));
+    it('fn#2', () => expect(utils.getParamNames((I, userPage) => { })).eql(['I', 'userPage']));
+    it('should handle single-param arrow functions with omitted parens', () => expect(utils.getParamNames((I) => { })).eql(['I']));
+    it('should handle trailing comma', () => expect(utils.getParamNames((
       I,
       trailing,
       comma,
-    ) => {}).should.eql(['I', 'trailing', 'comma']));
+    ) => { })).eql(['I', 'trailing', 'comma']));
   });
   /* eslint-enable no-unused-vars */
 
   describe('#methodsOfObject', () => {
     it('should get methods', () => {
-      utils.methodsOfObject({
+      expect(utils.methodsOfObject({
         a: 1,
-        hello: () => {},
-        world: () => {},
-      }).should.eql(['hello', 'world']);
+        hello: () => { },
+        world: () => { },
+      })).eql(['hello', 'world']);
     });
   });
 
   describe('#ucfirst', () => {
     it('should capitalize first letter', () => {
-      utils.ucfirst('hello').should.equal('Hello');
+      expect(utils.ucfirst('hello')).equal('Hello');
     });
   });
 
   describe('#beautify', () => {
     it('should beautify JS code', () => {
-      utils
-        .beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')
-        .should.eql(`module.exports = function(a, b) {
+      expect(utils
+        .beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {
   a++;
   b = a;
   if (a == b) {
@@ -55,13 +54,11 @@ describe('utils', () => {
 
   describe('#xpathLocator', () => {
     it('combines xpaths', () => {
-      utils.xpathLocator.combine(['//a', '//button'])
-        .should.eql('//a | //button');
+      expect(utils.xpathLocator.combine(['//a', '//button'])).eql('//a | //button');
     });
 
     it('converts string to xpath literal', () => {
-      utils.xpathLocator.literal("can't find thing")
-        .should.eql('concat(\'can\',"\'",\'t find thing\')');
+      expect(utils.xpathLocator.literal("can't find thing")).eql('concat(\'can\',"\'",\'t find thing\')');
     });
   });
 
@@ -76,8 +73,8 @@ describe('utils', () => {
         },
       };
 
-      utils.replaceValueDeep(target.helpers, 'something', 1234).should.eql({ something: 1234 });
-      target.should.eql({
+      expect(utils.replaceValueDeep(target.helpers, 'something', 1234)).eql({ something: 1234 });
+      expect(target).eql({
         timeout: 1,
         helpers: {
           something: 1234,
@@ -94,7 +91,7 @@ describe('utils', () => {
       };
 
       utils.replaceValueDeep(target, 'unexisting', 1234);
-      target.should.eql({
+      expect(target).eql({
         timeout: 1,
         helpers: {
           something: 2,
@@ -111,7 +108,7 @@ describe('utils', () => {
       };
 
       utils.replaceValueDeep(target, 'timeout', 1234);
-      target.should.eql({
+      expect(target).eql({
         timeout: 1234,
         helpers: {
           something: 2,
@@ -139,7 +136,7 @@ describe('utils', () => {
       };
 
       utils.replaceValueDeep(target, 'timeout', 1234);
-      target.should.eql({
+      expect(target).eql({
         zeroValue: {
           timeout: 1234,
         },
@@ -173,7 +170,7 @@ describe('utils', () => {
       };
 
       utils.replaceValueDeep(target, 'a', 1234);
-      target.should.eql({
+      expect(target).eql({
         timeout: 1,
         something: [{
           a: 1234,
@@ -198,7 +195,7 @@ describe('utils', () => {
       };
 
       utils.replaceValueDeep(target, 'otherthing', 1234);
-      target.should.eql({
+      expect(target).eql({
         timeout: 1,
         helpers: {
           something: {
@@ -223,7 +220,7 @@ describe('utils', () => {
       };
 
       utils.replaceValueDeep(target.helpers, 'WebDriver', { timeouts: 1234 });
-      target.should.eql({
+      expect(target).eql({
         timeout: 1,
         helpers: {
           WebDriver: {
@@ -240,51 +237,51 @@ describe('utils', () => {
 
   describe('#getNormalizedKeyAttributeValue', () => {
     it('should normalize key (alias) to key attribute value', () => {
-      utils.getNormalizedKeyAttributeValue('Arrow down').should.equal('ArrowDown');
-      utils.getNormalizedKeyAttributeValue('RIGHT_ARROW').should.equal('ArrowRight');
-      utils.getNormalizedKeyAttributeValue('leftarrow').should.equal('ArrowLeft');
-      utils.getNormalizedKeyAttributeValue('Up arrow').should.equal('ArrowUp');
+      expect(utils.getNormalizedKeyAttributeValue('Arrow down')).equal('ArrowDown');
+      expect(utils.getNormalizedKeyAttributeValue('RIGHT_ARROW')).equal('ArrowRight');
+      expect(utils.getNormalizedKeyAttributeValue('leftarrow')).equal('ArrowLeft');
+      expect(utils.getNormalizedKeyAttributeValue('Up arrow')).equal('ArrowUp');
 
-      utils.getNormalizedKeyAttributeValue('Left Alt').should.equal('AltLeft');
-      utils.getNormalizedKeyAttributeValue('RIGHT_ALT').should.equal('AltRight');
-      utils.getNormalizedKeyAttributeValue('alt').should.equal('Alt');
+      expect(utils.getNormalizedKeyAttributeValue('Left Alt')).equal('AltLeft');
+      expect(utils.getNormalizedKeyAttributeValue('RIGHT_ALT')).equal('AltRight');
+      expect(utils.getNormalizedKeyAttributeValue('alt')).equal('Alt');
 
-      utils.getNormalizedKeyAttributeValue('oPTION left').should.equal('AltLeft');
-      utils.getNormalizedKeyAttributeValue('ALTGR').should.equal('AltGraph');
-      utils.getNormalizedKeyAttributeValue('alt graph').should.equal('AltGraph');
+      expect(utils.getNormalizedKeyAttributeValue('oPTION left')).equal('AltLeft');
+      expect(utils.getNormalizedKeyAttributeValue('ALTGR')).equal('AltGraph');
+      expect(utils.getNormalizedKeyAttributeValue('alt graph')).equal('AltGraph');
 
-      utils.getNormalizedKeyAttributeValue('Control Left').should.equal('ControlLeft');
-      utils.getNormalizedKeyAttributeValue('RIGHT_CTRL').should.equal('ControlRight');
-      utils.getNormalizedKeyAttributeValue('Ctrl').should.equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('Control Left')).equal('ControlLeft');
+      expect(utils.getNormalizedKeyAttributeValue('RIGHT_CTRL')).equal('ControlRight');
+      expect(utils.getNormalizedKeyAttributeValue('Ctrl')).equal('Control');
 
-      utils.getNormalizedKeyAttributeValue('Cmd').should.equal('Meta');
-      utils.getNormalizedKeyAttributeValue('LeftCommand').should.equal('MetaLeft');
-      utils.getNormalizedKeyAttributeValue('os right').should.equal('MetaRight');
-      utils.getNormalizedKeyAttributeValue('SUPER').should.equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('Cmd')).equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('LeftCommand')).equal('MetaLeft');
+      expect(utils.getNormalizedKeyAttributeValue('os right')).equal('MetaRight');
+      expect(utils.getNormalizedKeyAttributeValue('SUPER')).equal('Meta');
 
-      utils.getNormalizedKeyAttributeValue('NumpadComma').should.equal('Comma');
-      utils.getNormalizedKeyAttributeValue('Separator').should.equal('Comma');
+      expect(utils.getNormalizedKeyAttributeValue('NumpadComma')).equal('Comma');
+      expect(utils.getNormalizedKeyAttributeValue('Separator')).equal('Comma');
 
-      utils.getNormalizedKeyAttributeValue('Add').should.equal('NumpadAdd');
-      utils.getNormalizedKeyAttributeValue('Decimal').should.equal('NumpadDecimal');
-      utils.getNormalizedKeyAttributeValue('Divide').should.equal('NumpadDivide');
-      utils.getNormalizedKeyAttributeValue('Multiply').should.equal('NumpadMultiply');
-      utils.getNormalizedKeyAttributeValue('Subtract').should.equal('NumpadSubtract');
+      expect(utils.getNormalizedKeyAttributeValue('Add')).equal('NumpadAdd');
+      expect(utils.getNormalizedKeyAttributeValue('Decimal')).equal('NumpadDecimal');
+      expect(utils.getNormalizedKeyAttributeValue('Divide')).equal('NumpadDivide');
+      expect(utils.getNormalizedKeyAttributeValue('Multiply')).equal('NumpadMultiply');
+      expect(utils.getNormalizedKeyAttributeValue('Subtract')).equal('NumpadSubtract');
     });
 
     it('should normalize modifier key based on operating system', () => {
       sinon.stub(os, 'platform').returns('notdarwin');
-      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
-      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
-      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
-      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
+      expect(utils.getNormalizedKeyAttributeValue('CmdOrCtrl')).equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL')).equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('ControlOrCommand')).equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('left ctrl or command')).equal('ControlLeft');
       os.platform.restore();
 
       sinon.stub(os, 'platform').returns('darwin');
-      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
-      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
-      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');
-      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight');
+      expect(utils.getNormalizedKeyAttributeValue('CtrlOrCmd')).equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND')).equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('CommandOrControl')).equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('right command or ctrl')).equal('MetaRight');
       os.platform.restore();
     });
   });
@@ -308,7 +305,7 @@ describe('utils', () => {
 
     it('returns the joined filename for filename only', () => {
       const _path = utils.screenshotOutputFolder('screenshot1.failed.png');
-      _path.should.eql(
+      expect(_path).eql(
         '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
           /\//g,
           path.sep,
@@ -324,14 +321,14 @@ describe('utils', () => {
         ),
       );
       if (os.platform() === 'win32') {
-        _path.should.eql(
+        expect(_path).eql(
           path.resolve(
             global.codecept_dir,
             '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
           ),
         );
       } else {
-        _path.should.eql(
+        expect(_path).eql(
           '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
         );
       }

@@ -1,8 +1,5 @@
-const chai = require('chai');
-
+const { expect } = require('chai');
 const parser = require('../../lib/parser');
-
-const expect = chai.expect;
 
 /* eslint-disable no-unused-vars */
 class Obj {
