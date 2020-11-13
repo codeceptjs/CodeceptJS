@@ -17,7 +17,7 @@ CodeceptJS provides flexible strategies for locating elements:
 
 Most methods in CodeceptJS use locators which can be either a string or an object.
 
-If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, or `class`) and the value being the locator itself. This is called a "strict" locator.
+If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class` or `shadow`) and the value being the locator itself. This is called a "strict" locator.
 
 Examples:
 
