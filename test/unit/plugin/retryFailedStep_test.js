@@ -1,3 +1,5 @@
+const { expect } = require('chai');
+
 const retryFailedStep = require('../../../lib/plugin/retryFailedStep');
 const within = require('../../../lib/within');
 const session = require('../../../lib/session');
@@ -73,7 +75,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    counter.should.equal(1);
+    expect(counter).to.equal(1);
     // expects to retry only once
   });
 
@@ -95,7 +97,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    counter.should.equal(1);
+    expect(counter).to.equal(1);
     // expects to retry only once
   });
 
@@ -117,7 +119,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    counter.should.equal(1);
+    expect(counter).to.equal(1);
     // expects to retry only once
   });
 
@@ -140,7 +142,7 @@ describe('retryFailedStep', () => {
     }
 
     // expects to retry only once
-    counter.should.equal(2);
+    expect(counter).to.equal(2);
   });
 
   it('should not turn around the chain of retries', () => {

@@ -1,11 +1,8 @@
-const assert = require('assert');
-const chai = require('chai');
+const { expect } = require('chai');
 const Dom = require('xmldom').DOMParser;
 const xpath = require('xpath');
 
 const Locator = require('../../lib/locator');
-
-const expect = chai.expect;
 
 let doc;
 const xml = `<body>
@@ -189,15 +186,15 @@ describe('Locator', () => {
   });
 
   it('should throw an error when xpath with round brackets is nested', () => {
-    assert.throws(() => {
+    expect(() => {
       Locator.build('tr').find('(./td)[@id="id"]');
-    }, /round brackets/);
+    }, /round brackets/).to.be.thrown;
   });
 
   it('should throw an error when locator with specific position is nested', () => {
-    assert.throws(() => {
+    expect(() => {
       Locator.build('tr').withChild(Locator.build('td').first());
-    }, /round brackets/);
+    }, /round brackets/).to.be.thrown;
   });
 
   it('should not select element by deep nested siblings', () => {
