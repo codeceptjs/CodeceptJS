@@ -23,7 +23,7 @@ module.exports = {
 
   async def() {
     await Promise.all([
-      this.buildLibWithDocs(true),
+      // this.buildLibWithDocs(true),
       this.docsPlugins(),
       this.docsExternalHelpers(),
     ]);
