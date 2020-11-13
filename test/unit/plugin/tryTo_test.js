@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const tryTo = require('../../../lib/plugin/tryTo')();
 const recorder = require('../../../lib/recorder');
 
@@ -9,7 +9,7 @@ describe('retryFailedStep', () => {
 
   it('should execute command on success', async () => {
     const ok = await tryTo(() => recorder.add(() => 5));
-    assert.equal(true, ok);
+    expect(true).is.equal(ok);
     return recorder.promise();
   });
 
@@ -17,7 +17,7 @@ describe('retryFailedStep', () => {
     const notOk = await tryTo(() => recorder.add(() => {
       throw new Error('Ups');
     }));
-    assert.equal(false, notOk);
+    expect(false).is.equal(notOk);
     return recorder.promise();
   });
 });
