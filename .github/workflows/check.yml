@@ -9,6 +9,7 @@ jobs:
       with:
         fetch-depth: 0
     - uses: testomatio/check-tests@master
+      if: github.repository == 'codeceptjs/CodeceptJS'
       with:
         framework: mocha
         tests: "./test/**/*_test.js"
