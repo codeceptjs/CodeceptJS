@@ -5,7 +5,7 @@ title: TypeScript
 
 # TypeScript
 
-CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that you can write your tests in TS. Also, all of your custom steps can be written in TS
+CodeceptJS supports [type declaration](https://github.com/codeceptjs/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that you can write your tests in TS. Also, all of your custom steps can be written in TS
 
 # Why TypeScript?
 
@@ -80,7 +80,7 @@ We recommended the following configuration in a [tsconfig.json](https://www.type
 }
 ```
 
-> You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codecept-js/typescript-boilerplate).
+> You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codeceptjs/typescript-boilerplate).
 
 ### Set Up steps.d.ts
 
