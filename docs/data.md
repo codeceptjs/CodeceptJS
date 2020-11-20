@@ -314,7 +314,7 @@ By doing this we can make requests within the current browser session without a 
 > Sharing browser session with ApiDataFactory or GraphQLDataFactory can be especially useful when you test Single Page Applications
 
 Since CodeceptJS 2.3.3 there is a simple way to enable shared session for browser and data helpers.
-Install [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package:
+Install [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package:
 
 ```
 npm i @codeceptjs/configure --save

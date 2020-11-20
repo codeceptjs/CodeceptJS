@@ -155,7 +155,7 @@ I.seeInEmailSubject('Awesome Proposal!');
 I.seeInEmailBody('To unsubscribe click here');
 ```
 
-> More methods are listed in [helper's API reference](https://github.com/codecept-js/mailslurp-helper/blob/master/README.md#api)
+> More methods are listed in [helper's API reference](https://github.com/codeceptjs/mailslurp-helper/blob/master/README.md#api)
 
 ## Listing All Emails
 

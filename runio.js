@@ -218,7 +218,7 @@ title: ${name}
     // publish wiki pages to website
     if (!fs.existsSync('docs/wiki/Home.md')) {
       await git((fn) => {
-        fn.clone('git@github.com:Codeception/CodeceptJS.wiki.git', 'docs/wiki');
+        fn.clone('git@github.com:codeceptjs/CodeceptJS.wiki.git', 'docs/wiki');
       });
     }
     await chdir('docs/wiki', () => git(cfg => cfg.pull('origin master')));
@@ -233,7 +233,7 @@ title: ${name}
       cfg.line('# Community Helpers');
       cfg.line('> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)');
       cfg.line('');
-      cfg.textFromFile('docs/wiki/Community-Helpers.md');
+      cfg.textFromFile('docs/wiki/Community-Helpers-&-Plugins.md');
     });
 
     writeToFile('docs/examples.md', (cfg) => {
@@ -324,7 +324,7 @@ title: ${name}
       await exec(`rm -rf ${dir}`);
     }
 
-    await git((fn) => fn.clone('git@github.com:codecept-js/website.git', dir));
+    await git((fn) => fn.clone('git@github.com:codeceptjs/website.git', dir));
     await copy('docs', 'website/docs');
 
     await chdir(dir, async () => {
@@ -386,7 +386,7 @@ async function processChangelog() {
   changelog = changelog.replace(/\s@([\w-]+)/mg, ' **[$1](https://github.com/$1)**');
 
   // issue
-  changelog = changelog.replace(/#(\d+)/mg, '[#$1](https://github.com/Codeception/CodeceptJS/issues/$1)');
+  changelog = changelog.replace(/#(\d+)/mg, '[#$1](https://github.com/codeceptjs/CodeceptJS/issues/$1)');
 
   // helper
   changelog = changelog.replace(/\s\[(\w+)\]\s/mg, ' **[$1]** ');

@@ -1,3 +1,20 @@
+## 2.6.11
+
+* [Playwright] Playwright 1.4 compatibility
+* [Playwright] Added `ignoreHTTPSErrors` config option (default: false). See #2566 by gurjeetbains 
+* Added French translation by @vimar 
+* [WebDriver] Updated `dragSlider` to work in WebDriver W3C protocol. Fixes #2557 by suniljaiswal01  
+
+## 2.6.10
+
+* Fixed saving options for suite via `Feature('title', {key: value})` by @Diokuz. See #2553 and [Docs](https://codecept.io/advanced/#dynamic-configuration)
+
+## 2.6.9
+
+* [Puppeteer][Playwright] SessionStorage is now cleared in after hook. See #2524
+* When helper load failed the error stack is now logged by @SkReD. See #2541
+* Small documentation fixes.
+
 ## 2.6.8
 
 * [WebDriver][Protractor][Playwright][Puppeteer][Nightmare] `saveElementScreenshot` method added to make screenshot of an element. By @suniljaiswal01
