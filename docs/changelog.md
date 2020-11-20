@@ -7,6 +7,172 @@ layout: Section
 
 # Releases
 
+## 3.0.2
+
+* **[Playwright]** Fix connection close with remote browser. See [#2629](https://github.com/codeceptjs/CodeceptJS/issues/2629) by **[dipiash](https://github.com/dipiash)**
+* **[REST]** set maxUploadFileSize when performing api calls. See [#2611](https://github.com/codeceptjs/CodeceptJS/issues/2611) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Duplicate Scenario names (combined with Feature name) are now detected via a warning message. 
+Duplicate test names can cause `codeceptjs run-workers` to not function. See [#2656](https://github.com/codeceptjs/CodeceptJS/issues/2656) by **[Georgegriff](https://github.com/Georgegriff)**
+* Documentation fixes
+
+Bug Fixes:
+  *  --suites flag now should function correctly for `codeceptjs run-workers`. See [#2655](https://github.com/codeceptjs/CodeceptJS/issues/2655) by **[Georgegriff](https://github.com/Georgegriff)**
+  * [autoLogin plugin] Login methods should now function as expected with `codeceptjs run-workers`. See [#2658](https://github.com/codeceptjs/CodeceptJS/issues/2658) by **[Georgegriff](https://github.com/Georgegriff)**, resolves [#2620](https://github.com/codeceptjs/CodeceptJS/issues/2620)
+  
+
+
+## 3.0.1
+
+♨️ Hot fix:
+  * Lock the mocha version to avoid the errors. See [#2624](https://github.com/codeceptjs/CodeceptJS/issues/2624) by PeterNgTr
+ 
+🐛 Bug Fix:
+  * Fixed error handling in Scenario.js. See [#2607](https://github.com/codeceptjs/CodeceptJS/issues/2607) by haveac1gar
+  * Changing type definition in order to allow the use of functions with any number of any arguments. See [#2616](https://github.com/codeceptjs/CodeceptJS/issues/2616) by akoltun
+
+* Some updates/changes on documentations
+
+## 3.0.0
+> [ 👌 **LEARN HOW TO UPGRADE TO CODECEPTJS 3 ➡**](https://bit.ly/codecept3Up)
+
+* Playwright set to be a default engine.
+* **NodeJS 12+ required**
+* **BREAKING CHANGE:** Syntax for tests has changed.
+
+
+```js
+// Previous
+Scenario('title', (I, loginPage) => {});
+
+// Current
+Scenario('title', ({ I, loginPage }) => {});
+```
+
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* **[TypeScript guide](/typescript)** and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
+* [tryTo](/plugins/#tryTo) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
+* Introduced one-line installer:
+
+```
+npx create-codeceptjs .
+```
+
+Read changelog to learn more about version 👇
+
+## 3.0.0-rc
+
+
+
+* Moved [Helper class into its own package](https://github.com/codeceptjs/helper) to simplify publishing standalone helpers.
+* Fixed typings for `I.say` and `I.retry` by **[Vorobeyko](https://github.com/Vorobeyko)**
+* Updated documentation:
+  * [Quickstart](https://github.com/codeceptjs/CodeceptJS/blob/codeceptjs-v3.0/docs/quickstart.md#quickstart)
+  * [Best Practices](https://github.com/codeceptjs/CodeceptJS/blob/codeceptjs-v3.0/docs/best.md)
+  * [Custom Helpers](https://github.com/codeceptjs/CodeceptJS/blob/codeceptjs-v3.0/docs/custom-helpers.md)
+  * [TypeScript](https://github.com/codeceptjs/CodeceptJS/blob/codeceptjs-v3.0/docs/typescript.md)
+
+## 3.0.0-beta.4
+
+🐛 Bug Fix:
+  * PageObject was broken when using "this" inside a simple object.
+  * The typings for all WebDriver methods work correctly.
+  * The typings for "this.helper" and helper constructor work correctly, too.
+
+🧤 Internal:
+ * Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
+ Example:
+  ```ts
+  const psp = wd.grabPageScrollPosition() // $ExpectType Promise<PageScrollPosition>
+  psp.then(
+    result => {
+      result.x // $ExpectType number
+      result.y // $ExpectType number
+    }
+  )
+  ```
+ * And last: Reducing package size from 3.3Mb to 2.0Mb
+
+## 3.0.0-beta-3
+
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* Test artifacts introduced. Each test object has `artifacts` property, to keep attachment files. For instance, a screenshot of a failed test is attached to a test as artifact.
+* Improved output for test execution
+  * Changed colors for steps output, simplified
+  * Added stack trace for test failures
+  * Removed `Event emitted` from log in `--verbose` mode
+  * List artifacts of a failed tests
+
+![](https://user-images.githubusercontent.com/220264/82160052-397bf800-989b-11ea-81c0-8e58b3d33525.png)
+
+* Steps & metasteps refactored by **[Vorobeyko](https://github.com/Vorobeyko)**. Logs to arguments passed to page objects:
+
+```js
+// TEST:
+MyPage.hasFiles('first arg', 'second arg');
+
+// OUTPUT:
+MyPage: hasFile "First arg", "Second arg"
+  I see file "codecept.json"
+  I see file "codecept.po.json"
+```
+* Introduced official [TypeScript boilerplate](https://github.com/codecept-js/typescript-boilerplate). Started by **[Vorobeyko](https://github.com/Vorobeyko)**.
+
+## 3.0.0-beta
+
+
+* **NodeJS 12+ required**
+* **BREAKING CHANGE:** Syntax for tests has changed.
+
+
+```js
+// Previous
+Scenario('title', (I, loginPage) => {});
+
+// Current
+Scenario('title', ({ I, loginPage }) => {});
+```
+
+* **BREAKING CHANGE:** [WebDriver][Protractor][Puppeteer][Playwright][Nightmare] `grab*` functions unified:
+  * `grab*From` => **returns single value** from element or throws error when no matchng elements found
+  * `grab*FromAll` => returns array of values, or empty array when no matching elements
+* Public API for workers introduced by **[koushikmohan1996](https://github.com/koushikmohan1996)**. [Customize parallel execution](https://github.com/Codeception/CodeceptJS/blob/codeceptjs-v3.0/docs/parallel.md#custom-parallel-execution) with workers by building custom scripts.
+
+* **[Playwright]** Added `usePlaywrightTo` method to access Playwright API in tests directly:
+
+```js
+I.usePlaywrightTo('do something special', async ({ page }) => {
+  // use page or browser objects here
+});
+```
+
+* **[Puppeteer]** Introduced `usePuppeteerTo` method to access Puppeteer API:
+
+```js
+I.usePuppeteerTo('do something special', async ({ page, browser }) => {
+  // use page or browser objects here
+});
+```
+
+* **[WebDriver]** Introduced `useWebDriverTo` method to access webdriverio API:
+
+```js
+I.useWebDriverTo('do something special', async ({ browser }) => {
+  // use browser object here
+});
+```
+
+* **[Protractor]** Introduced `useProtractorTo` method to access protractor API
+* `tryTo` plugin introduced. Allows conditional action execution:
+
+```js
+const isSeen = await tryTo(() => {
+  I.see('Some text');
+});
+// we are not sure if cookie bar is displayed, but if so - accept cookies
+tryTo(() => I.click('Accept', '.cookies'));
+```
+
+* **Possible breaking change** In semantic locators `[` char indicates CSS selector.
 ## 2.6.11
 
 * **[Playwright]** Playwright 1.4 compatibility

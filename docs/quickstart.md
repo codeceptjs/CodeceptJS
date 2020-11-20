@@ -32,82 +32,82 @@ TestCafe provides cross-browser support without Selenium. TestCafe tests are fas
 
 * [Mobile Testing with Appium »](/mobile)
 * [Testing with Protractor »](/angular)
-* [Testing with NigthmareJS »](/nightmare)
 
 :::
 
 # Quickstart
 
-> Puppeteer is a great way to start if you need fast end 2 end tests in Chrome browser. No Selenium required!
+> CodeceptJS supports various engines for running browser tests. By default we recommend using **Playwright** which is cross-browser and performant solution.
 
-If you need cross-browser support check alternative installations with WebDriver or TestCafe &rarr;
 
-<video onclick="this.paused ? this.play() : this.pause();" src="/img/install.mp4" style="width: 100%" controls></video>
 
-If you start with empty project initialize npm first:
+Use [CodeceptJS all-in-one installer](https://github.com/codeceptjs/create-codeceptjs) to get CodeceptJS, a demo project, and Playwright.
 
 ```
-npm init -y
+npx create-codeceptjs .
 ```
 
-1) Install CodeceptJS with Puppeteer
+![Installation](/img/codeceptinstall.gif)
 
-```
-npm install codeceptjs puppeteer --save-dev
-```
+> To install codeceptjs into a different folder, like `tests` use `npx create-codeceptjs tests`
 
+After CodeceptJS is installed, try running **demo tests** using this commands:
 
-2) Initialize CodeceptJS in current directory by running:
+* `npm run codeceptjs:demo` - executes demo tests in window mode
+* `npm run codeceptjs:demo:headless` - executes demo tests in headless mode
+* `npm run codeceptjs:demo:ui` - open CodeceptJS UI to list and run demo tests. 
+
+[CodeceptJS UI](/ui) application:
+
+![](https://user-images.githubusercontent.com/220264/93860826-4d5fbc80-fcc8-11ea-99dc-af816f3db466.png)
+
+---
+
+To start a new project initialize CodeceptJS to create main config file: `codecept.conf.js`.
 
 ```
 npx codeceptjs init
 ```
 
-(use `node node_modules/.bin/codeceptjs` if you have issues with npx)
-
-3) Answer questions. Agree on defaults, when asked to select helpers choose **Puppeteer**.
+Answer questions, agree on defaults, when asked to select helpers choose **Playwright**.
 
 ```
 ? What helpers do you want to use?
+❯◉ Playwright
  ◯ WebDriver
  ◯ Protractor
-❯◉ Puppeteer
+ ◯ Puppeteer
  ◯ Appium
  ◯ Nightmare
  ◯ FileSystem
  ```
 
-4) Create First Test.
-
-```
-npx codeceptjs gt
-```
-
-5) Enter a test name. Open a generated file in your favorite JavaScript editor.
+Create first feature and test when asked.
+Open a newly created file in your favorite JavaScript editor. 
+The file should look like this:
 
 ```js
 Feature('My First Test');
 
-Scenario('test something', (I) => {
+Scenario('test something', ({ I }) => {
 
 });
 ```
-
-6) Write a simple scenario
+Write a simple test scenario:
 
 ```js
 Feature('My First Test');
 
-Scenario('test something', (I) => {
+Scenario('test something', ({ I }) => {
   I.amOnPage('https://github.com');
   I.see('GitHub');
 });
 ```
 
-7) Run a test:
+Run a test:
 
 ```
-npx codeceptjs run --steps
+npm run codeceptjs
 ```
 
 The output should be similar to this:
@@ -118,9 +118,20 @@ My First Test --
      I am on page "https://github.com"
      I see "GitHub"
  ✓ OK
- ```
+```
+
+To quickly execute tests use following npm scripts:
+
+After CodeceptJS is installed, try running **demo tests** using this commands:
+
+* `npm run codeceptjs` - executes tests in window mode
+* `npm run codeceptjs:headless` - executes tests in headless mode
+* `npm run codeceptjs:ui` - open CodeceptJS UI to list and run tests. 
+
+More commands available in [CodeceptJS CLI runner](https://codecept.io/commands/).
+
 
 > [▶ Next: CodeceptJS Basics](/basics/)
 
-> [▶ Next: CodeceptJS with Puppeteer](/puppeteer/)
+> [▶ Next: CodeceptJS with Playwright](/playwright/)
 

@@ -9,12 +9,14 @@ exports.config = {
     },
   },
   include: {},
-  bootstrap: (done) => {
-    process.stdout.write('bootstrap b1+');
-    setTimeout(() => {
-      process.stdout.write('b2');
-      done();
-    }, 1000);
+  bootstrap: async () => {
+    return new Promise(done => {
+      process.stdout.write('bootstrap b1+');
+      setTimeout(() => {
+        process.stdout.write('b2');
+        done();
+      }, 1000);
+    });
   },
   mocha: {},
   name: 'sandbox',

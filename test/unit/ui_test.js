@@ -1,7 +1,8 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
 
+global.codeceptjs = require('../../lib');
 const makeUI = require('../../lib/ui');
 
 describe('ui', () => {
@@ -19,7 +20,7 @@ describe('ui', () => {
     const constants = ['Before', 'Background', 'BeforeAll', 'After', 'AfterAll', 'Scenario', 'xScenario'];
 
     constants.forEach((c) => {
-      it(`context should contain ${c}`, () => assert.ok(context[c]));
+      it(`context should contain ${c}`, () => expect(context[c]).is.ok);
     });
   });
 
@@ -28,22 +29,22 @@ describe('ui', () => {
 
     it('Feature should return featureConfig', () => {
       suiteConfig = context.Feature('basic suite');
-      assert.ok(suiteConfig.suite);
+      expect(suiteConfig.suite).is.ok;
     });
 
     it('should contain title', () => {
       suiteConfig = context.Feature('basic suite');
-      assert.ok(suiteConfig.suite);
-      assert.equal(suiteConfig.suite.title, 'basic suite');
-      assert.equal(suiteConfig.suite.fullTitle(), 'basic suite:');
+      expect(suiteConfig.suite).is.ok;
+      expect(suiteConfig.suite.title).eq('basic suite');
+      expect(suiteConfig.suite.fullTitle()).eq('basic suite:');
     });
 
     it('should contain tags', () => {
       suiteConfig = context.Feature('basic suite');
-      assert.equal(0, suiteConfig.suite.tags.length);
+      expect(0).eq(suiteConfig.suite.tags.length);
 
       suiteConfig = context.Feature('basic suite @very @important');
-      assert.ok(suiteConfig.suite);
+      expect(suiteConfig.suite).is.ok;
 
       suiteConfig.suite.tags.should.include('@very');
       suiteConfig.suite.tags.should.include('@important');
@@ -59,52 +60,92 @@ describe('ui', () => {
     it('retries can be set', () => {
       suiteConfig = context.Feature('basic suite');
       suiteConfig.retry(3);
-      assert.equal(3, suiteConfig.suite.retries());
+      expect(3).eq(suiteConfig.suite.retries());
     });
 
     it('timeout can be set', () => {
       suiteConfig = context.Feature('basic suite');
-      assert.equal(0, suiteConfig.suite.timeout());
+      expect(0).eq(suiteConfig.suite.timeout());
       suiteConfig.timeout(3);
-      assert.equal(3, suiteConfig.suite.timeout());
+      expect(3).eq(suiteConfig.suite.timeout());
     });
 
     it('helpers can be configured', () => {
       suiteConfig = context.Feature('basic suite');
-      assert(!suiteConfig.suite.config);
-      suiteConfig.config('WebDriverIO', { browser: 'chrome' });
-      assert.equal('chrome', suiteConfig.suite.config.WebDriverIO.browser);
+      expect(!suiteConfig.suite.config);
+      suiteConfig.config('WebDriver', { browser: 'chrome' });
+      expect('chrome').eq(suiteConfig.suite.config.WebDriver.browser);
       suiteConfig.config({ browser: 'firefox' });
-      assert.equal('firefox', suiteConfig.suite.config[0].browser);
-      suiteConfig.config('WebDriverIO', () => {
+      expect('firefox').eq(suiteConfig.suite.config[0].browser);
+      suiteConfig.config('WebDriver', () => {
         return { browser: 'edge' };
       });
-      assert.equal('edge', suiteConfig.suite.config.WebDriverIO.browser);
+      expect('edge').eq(suiteConfig.suite.config.WebDriver.browser);
     });
 
     it('Feature can be skipped', () => {
       suiteConfig = context.Feature.skip('skipped suite');
-      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
-      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
-      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+      expect(suiteConfig.suite.pending).eq(true, 'Skipped Feature must be contain pending === true');
+      expect(suiteConfig.suite.opts.skipInfo.message).eq('Skipped due to "skip" on Feature.');
+      expect(suiteConfig.suite.opts.skipInfo.skipped).eq(true, 'Skip should be set on skipInfo');
     });
 
     it('Feature can be skipped via xFeature', () => {
       suiteConfig = context.xFeature('skipped suite');
-      assert.equal(suiteConfig.suite.pending, true, 'Skipped Feature must be contain pending === true');
-      assert.equal(suiteConfig.suite.opts.skipInfo.message, 'Skipped due to "skip" on Feature.');
-      assert.equal(suiteConfig.suite.opts.skipInfo.skipped, true, 'Skip should be set on skipInfo');
+      expect(suiteConfig.suite.pending).eq(true, 'Skipped Feature must be contain pending === true');
+      expect(suiteConfig.suite.opts.skipInfo.message).eq('Skipped due to "skip" on Feature.');
+      expect(suiteConfig.suite.opts.skipInfo.skipped).eq(true, 'Skip should be set on skipInfo');
     });
 
     it('Feature are not skipped by default', () => {
       suiteConfig = context.Feature('not skipped suite');
-      assert.equal(suiteConfig.suite.pending, false, 'Feature must not contain pending === true');
-      assert.deepEqual(suiteConfig.suite.opts, {}, 'Features should have no skip info');
+      expect(suiteConfig.suite.pending).eq(false, 'Feature must not contain pending === true');
+      // expect(suiteConfig.suite.opts, undefined, 'Features should have no skip info');
+    });
+
+    it('Feature can be skipped', () => {
+      suiteConfig = context.Feature.skip('skipped suite');
+      expect(suiteConfig.suite.pending).eq(true, 'Skipped Feature must be contain pending === true');
+      expect(suiteConfig.suite.opts.skipInfo.message).eq('Skipped due to "skip" on Feature.');
+      expect(suiteConfig.suite.opts.skipInfo.skipped).eq(true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature can be skipped via xFeature', () => {
+      suiteConfig = context.xFeature('skipped suite');
+      expect(suiteConfig.suite.pending).eq(true, 'Skipped Feature must be contain pending === true');
+      expect(suiteConfig.suite.opts.skipInfo.message).eq('Skipped due to "skip" on Feature.');
+      expect(suiteConfig.suite.opts.skipInfo.skipped).eq(true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature are not skipped by default', () => {
+      suiteConfig = context.Feature('not skipped suite');
+      expect(suiteConfig.suite.pending).eq(false, 'Feature must not contain pending === true');
+      // expect(suiteConfig.suite.opts, undefined, 'Features should have no skip info');
+    });
+
+    it('Feature can be skipped', () => {
+      suiteConfig = context.Feature.skip('skipped suite');
+      expect(suiteConfig.suite.pending).eq(true, 'Skipped Feature must be contain pending === true');
+      expect(suiteConfig.suite.opts.skipInfo.message).eq('Skipped due to "skip" on Feature.');
+      expect(suiteConfig.suite.opts.skipInfo.skipped).eq(true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature can be skipped via xFeature', () => {
+      suiteConfig = context.xFeature('skipped suite');
+      expect(suiteConfig.suite.pending).eq(true, 'Skipped Feature must be contain pending === true');
+      expect(suiteConfig.suite.opts.skipInfo.message).eq('Skipped due to "skip" on Feature.');
+      expect(suiteConfig.suite.opts.skipInfo.skipped).eq(true, 'Skip should be set on skipInfo');
+    });
+
+    it('Feature are not skipped by default', () => {
+      suiteConfig = context.Feature('not skipped suite');
+      expect(suiteConfig.suite.pending).eq(false, 'Feature must not contain pending === true');
+      expect(suiteConfig.suite.opts).to.deep.eq({}, 'Features should have no skip info');
     });
 
     it('Feature should correctly pass options to suite context', () => {
       suiteConfig = context.Feature('not skipped suite', { key: 'value' });
-      assert.deepEqual(suiteConfig.suite.opts, { key: 'value' }, 'Features should have passed options');
+      expect(suiteConfig.suite.opts).to.deep.eq({ key: 'value' }, 'Features should have passed options');
     });
   });
 
@@ -113,19 +154,19 @@ describe('ui', () => {
 
     it('Scenario should return scenarioConfig', () => {
       scenarioConfig = context.Scenario('basic scenario');
-      assert.ok(scenarioConfig.test);
+      expect(scenarioConfig.test).is.ok;
     });
 
     it('should contain title', () => {
       context.Feature('suite');
       scenarioConfig = context.Scenario('scenario');
-      assert.equal(scenarioConfig.test.title, 'scenario');
-      assert.equal(scenarioConfig.test.fullTitle(), 'suite: scenario');
-      assert.equal(scenarioConfig.test.tags.length, 0);
+      expect(scenarioConfig.test.title).eq('scenario');
+      expect(scenarioConfig.test.fullTitle()).eq('suite: scenario');
+      expect(scenarioConfig.test.tags.length).eq(0);
     });
 
     it('should contain tags', () => {
-      const suiteConfig = context.Feature('basic suite @cool');
+      context.Feature('basic suite @cool');
 
       scenarioConfig = context.Scenario('scenario @very @important');
 
@@ -140,36 +181,36 @@ describe('ui', () => {
     it('should dynamically inject dependencies', () => {
       scenarioConfig = context.Scenario('scenario');
       scenarioConfig.injectDependencies({ Data: 'data' });
-      assert.equal(scenarioConfig.test.inject.Data, 'data');
+      expect(scenarioConfig.test.inject.Data).eq('data');
     });
 
     describe('todo', () => {
       it('should inject skipInfo to opts', () => {
         scenarioConfig = context.Scenario.todo('scenario', () => { console.log('Scenario Body'); });
 
-        assert.equal(scenarioConfig.test.pending, true, 'Todo Scenario must be contain pending === true');
-        assert.equal(scenarioConfig.test.opts.skipInfo.message, 'Test not implemented!');
-        assert.equal(scenarioConfig.test.opts.skipInfo.description, "() => { console.log('Scenario Body'); }");
+        expect(scenarioConfig.test.pending).eq(true, 'Todo Scenario must be contain pending === true');
+        expect(scenarioConfig.test.opts.skipInfo.message).eq('Test not implemented!');
+        expect(scenarioConfig.test.opts.skipInfo.description).eq("() => { console.log('Scenario Body'); }");
       });
 
       it('should contain empty description in skipInfo and empty body', () => {
         scenarioConfig = context.Scenario.todo('scenario');
 
-        assert.equal(scenarioConfig.test.pending, true, 'Todo Scenario must be contain pending === true');
-        assert.equal(scenarioConfig.test.opts.skipInfo.description, '');
-        assert.equal(scenarioConfig.test.body, '');
+        expect(scenarioConfig.test.pending).eq(true, 'Todo Scenario must be contain pending === true');
+        expect(scenarioConfig.test.opts.skipInfo.description).eq('');
+        expect(scenarioConfig.test.body).eq('');
       });
 
       it('should inject custom opts to opts and without callback', () => {
         scenarioConfig = context.Scenario.todo('scenario', { customOpts: 'Custom Opts' });
 
-        assert.equal(scenarioConfig.test.opts.customOpts, 'Custom Opts');
+        expect(scenarioConfig.test.opts.customOpts).eq('Custom Opts');
       });
 
       it('should inject custom opts to opts and with callback', () => {
         scenarioConfig = context.Scenario.todo('scenario', { customOpts: 'Custom Opts' }, () => { console.log('Scenario Body'); });
 
-        assert.equal(scenarioConfig.test.opts.customOpts, 'Custom Opts');
+        expect(scenarioConfig.test.opts.customOpts).eq('Custom Opts');
       });
     });
   });

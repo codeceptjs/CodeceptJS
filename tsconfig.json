@@ -16,5 +16,8 @@
   "include": [
     "lib",
     "typings"
+  ],
+  "exclude": [
+    "typings/tests"
   ]
 }

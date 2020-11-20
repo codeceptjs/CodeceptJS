@@ -96,7 +96,7 @@ A test starts when emulator starts and loads an application. So you can begin te
 
 ```js
 // inside a created test
-Scenario('test React Native app', (I) => {
+Scenario('test React Native app', ({ I }) => {
   I.see('Welcome');
   I.tap('Start');
   I.see('Started!');
@@ -202,7 +202,7 @@ Finally, you can get a test looking like this
 ```js
 Feature('My Detox App');
 
-Scenario('save in application', (I) => {
+Scenario('save in application', ({ I }) => {
   I.setLandscapeOrientation();
   I.fillField('#text', 'a new text');
   I.see('a new text', '#textValue');

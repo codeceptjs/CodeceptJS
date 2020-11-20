@@ -19,7 +19,6 @@ module.exports.config = {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: './output',
     },
-    MockRequest: {},
   },
   include: {},
   bootstrap: false,

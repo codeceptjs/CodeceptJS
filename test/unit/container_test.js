@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const path = require('path');
 
 const FileSystem = require('../../lib/helper/FileSystem');
@@ -25,33 +25,33 @@ describe('Container', () => {
 
     it('should create empty translation', () => {
       container.create({});
-      container.translation().should.be.instanceOf(Translation);
-      container.translation().loaded.should.be.false;
-      container.translation().actionAliasFor('see').should.eql('see');
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.false;
+      expect(container.translation().actionAliasFor('see')).to.eql('see');
     });
 
     it('should create Russian translation', () => {
       container.create({ translation: 'ru-RU' });
-      container.translation().should.be.instanceOf(Translation);
-      container.translation().loaded.should.be.true;
-      container.translation().I.should.eql('Я');
-      container.translation().actionAliasFor('see').should.eql('вижу');
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.true;
+      expect(container.translation().I).to.eql('Я');
+      expect(container.translation().actionAliasFor('see')).to.eql('вижу');
     });
 
     it('should create Italian translation', () => {
       container.create({ translation: 'it-IT' });
-      container.translation().should.be.instanceOf(Translation);
-      container.translation().loaded.should.be.true;
-      container.translation().I.should.eql('io');
-      container.translation().value('contexts').Feature.should.eql('Caratteristica');
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.true;
+      expect(container.translation().I).to.eql('io');
+      expect(container.translation().value('contexts').Feature).to.eql('Caratteristica');
     });
 
     it('should create French translation', () => {
       container.create({ translation: 'fr-FR' });
-      container.translation().should.be.instanceOf(Translation);
-      container.translation().loaded.should.be.true;
-      container.translation().I.should.eql('Je');
-      container.translation().value('contexts').Feature.should.eql('Fonctionnalité');
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.true;
+      expect(container.translation().I).to.eql('Je');
+      expect(container.translation().value('contexts').Feature).to.eql('Fonctionnalité');
     });
   });
 
@@ -63,14 +63,14 @@ describe('Container', () => {
       });
     });
 
-    it('should return all helper with no args', () => container.helpers().should.have.keys('helper1', 'helper2'));
+    it('should return all helper with no args', () => expect(container.helpers()).to.have.keys('helper1', 'helper2'));
 
     it('should return helper by name', () => {
-      container.helpers('helper1').should.be.ok;
-      container.helpers('helper1').name.should.eql('hello');
-      container.helpers('helper2').should.be.ok;
-      container.helpers('helper2').name.should.eql('world');
-      assert.ok(!container.helpers('helper3'));
+      expect(container.helpers('helper1')).is.ok;
+      expect(container.helpers('helper1').name).to.eql('hello');
+      expect(container.helpers('helper2')).is.ok;
+      expect(container.helpers('helper2').name).to.eql('world');
+      expect(!container.helpers('helper3')).is.ok;
     });
   });
 
@@ -82,14 +82,14 @@ describe('Container', () => {
       });
     });
 
-    it('should return all support objects', () => container.support().should.have.keys('support1', 'support2'));
+    it('should return all support objects', () => expect(container.support()).to.have.keys('support1', 'support2'));
 
     it('should support object by name', () => {
-      container.support('support1').should.be.ok;
-      container.support('support1').name.should.eql('hello');
-      container.support('support2').should.be.ok;
-      container.support('support2').name.should.eql('world');
-      assert.ok(!container.support('support3'));
+      expect(container.support('support1')).is.ok;
+      expect(container.support('support1').name).to.eql('hello');
+      expect(container.support('support2')).is.ok;
+      expect(container.support('support2').name).to.eql('world');
+      expect(!container.support('support3')).is.ok;
     });
   });
 
@@ -101,14 +101,14 @@ describe('Container', () => {
       });
     });
 
-    it('should return all plugins', () => container.plugins().should.have.keys('plugin1', 'plugin2'));
+    it('should return all plugins', () => expect(container.plugins()).to.have.keys('plugin1', 'plugin2'));
 
     it('should get plugin by name', () => {
-      container.plugins('plugin1').should.be.ok;
-      container.plugins('plugin1').name.should.eql('hello');
-      container.plugins('plugin2').should.be.ok;
-      container.plugins('plugin2').name.should.eql('world');
-      assert.ok(!container.plugins('plugin3'));
+      expect(container.plugins('plugin1')).is.ok;
+      expect(container.plugins('plugin1').name).is.eql('hello');
+      expect(container.plugins('plugin2')).is.ok;
+      expect(container.plugins('plugin2').name).is.eql('world');
+      expect(!container.plugins('plugin3')).is.ok;
     });
   });
 
@@ -124,17 +124,17 @@ describe('Container', () => {
       };
       container.create(config);
       // custom helpers
-      assert.ok(container.helpers('MyHelper'));
-      container.helpers('MyHelper').method().should.eql('hello world');
+      expect(container.helpers('MyHelper')).is.ok;
+      expect(container.helpers('MyHelper').method()).to.eql('hello world');
 
       // built-in helpers
-      assert.ok(container.helpers('FileSystem'));
-      container.helpers('FileSystem').should.be.instanceOf(FileSystem);
+      expect(container.helpers('FileSystem')).is.ok;
+      expect(container.helpers('FileSystem')).to.be.instanceOf(FileSystem);
     });
 
     it('should always create I', () => {
       container.create({});
-      assert.ok(container.support('I'));
+      expect(container.support('I')).is.ok;
     });
 
     it('should load DI and return a reference to the module', () => {
@@ -144,7 +144,7 @@ describe('Container', () => {
         },
       });
       const dummyPage = require('../data/dummy_page');
-      container.support('dummyPage').should.be.eql(dummyPage);
+      expect(container.support('dummyPage')).is.eql(dummyPage);
     });
 
     it('should load I from path and execute _init', () => {
@@ -153,9 +153,9 @@ describe('Container', () => {
           I: './data/I',
         },
       });
-      assert.ok(container.support('I'));
-      container.support('I').should.include.keys('_init', 'doSomething');
-      assert(global.I_initialized);
+      expect(container.support('I')).is.ok;
+      expect(container.support('I')).to.include.keys('_init', 'doSomething');
+      expect(global.I_initialized).to.be.true;
     });
 
     it('should load DI includes provided as require paths', () => {
@@ -164,8 +164,8 @@ describe('Container', () => {
           dummyPage: './data/dummy_page',
         },
       });
-      assert.ok(container.support('dummyPage'));
-      container.support('dummyPage').should.include.keys('openDummyPage');
+      expect(container.support('dummyPage')).is.ok;
+      expect(container.support('dummyPage')).to.include.keys('openDummyPage');
     });
 
     it('should load DI and inject I into PO', () => {
@@ -174,10 +174,10 @@ describe('Container', () => {
           dummyPage: './data/dummy_page',
         },
       });
-      assert.ok(container.support('dummyPage'));
-      assert.ok(container.support('I'));
-      container.support('dummyPage').should.include.keys('openDummyPage');
-      container.support('dummyPage').getI().should.have.keys(Object.keys(container.support('I')));
+      expect(container.support('dummyPage')).is.ok;
+      expect(container.support('I')).is.ok;
+      expect(container.support('dummyPage')).to.include.keys('openDummyPage');
+      expect(container.support('dummyPage').getI()).to.have.keys(Object.keys(container.support('I')));
     });
 
     it('should load DI and inject custom I into PO', () => {
@@ -187,10 +187,10 @@ describe('Container', () => {
           I: './data/I',
         },
       });
-      assert.ok(container.support('dummyPage'));
-      assert.ok(container.support('I'));
-      container.support('dummyPage').should.include.keys('openDummyPage');
-      container.support('dummyPage').getI().should.include.keys(Object.keys(container.support('I')));
+      expect(container.support('dummyPage')).is.ok;
+      expect(container.support('I')).is.ok;
+      expect(container.support('dummyPage')).to.include.keys('openDummyPage');
+      expect(container.support('dummyPage').getI()).to.have.keys(Object.keys(container.support('I')));
     });
 
     it('should load DI includes provided as objects', () => {
@@ -201,8 +201,8 @@ describe('Container', () => {
           },
         },
       });
-      assert.ok(container.support('dummyPage'));
-      container.support('dummyPage').should.have.keys('openDummyPage');
+      expect(container.support('dummyPage')).is.ok;
+      expect(container.support('dummyPage')).to.include.keys('openDummyPage');
     });
 
     it('should load DI includes provided as objects', () => {
@@ -213,8 +213,8 @@ describe('Container', () => {
           },
         },
       });
-      assert.ok(container.support('dummyPage'));
-      container.support('dummyPage').should.have.keys('openDummyPage');
+      expect(container.support('dummyPage')).is.ok;
+      expect(container.support('dummyPage')).to.include.keys('openDummyPage');
     });
   });
 
@@ -231,19 +231,19 @@ describe('Container', () => {
           AnotherHelper: { method: () => 'executed' },
         },
       });
-      assert.ok(container.helpers('FileSystem'));
-      container.helpers('FileSystem').should.be.instanceOf(FileSystem);
+      expect(container.helpers('FileSystem')).is.ok;
+      expect(container.helpers('FileSystem')).is.instanceOf(FileSystem);
 
-      assert.ok(container.helpers('AnotherHelper'));
-      container.helpers('AnotherHelper').method().should.eql('executed');
+      expect(container.helpers('AnotherHelper')).is.ok;
+      expect(container.helpers('AnotherHelper').method()).is.eql('executed');
     });
 
     it('should be able to add new support object', () => {
       container.create({});
       container.append({ support: { userPage: { login: '#login' } } });
-      assert.ok(container.support('I'));
-      assert.ok(container.support('userPage'));
-      container.support('userPage').login.should.eql('#login');
+      expect(container.support('I')).is.ok;
+      expect(container.support('userPage')).is.ok;
+      expect(container.support('userPage').login).is.eql('#login');
     });
   });
 });

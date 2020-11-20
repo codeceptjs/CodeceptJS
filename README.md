@@ -2,7 +2,7 @@
 
 # CodeceptJS
 
-Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/blob/master/docs) | [Demo](https://github.com/codeceptjs/codeceptjs-demo)
+Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/tree/master/docs/helpers)
 
 ## Supercharged E2E Testing
 
@@ -13,7 +13,7 @@ A simple test that verifies the "Welcome" text is present on a main page of a si
 ```js
 Feature('CodeceptJS demo');
 
-Scenario('check Welcome page on site', (I) => {
+Scenario('check Welcome page on site', ({ I }) => {
   I.amOnPage('/');
   I.see('Welcome');
 });
@@ -27,6 +27,7 @@ CodeceptJS tests are:
 
 CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently CodeceptJS has these helpers:
 
+* [**Playwright**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Playwright.md) - is a Node library to automate the Chromium, WebKit and Firefox browsers with a single API.
 * [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
 * [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
 * [**Protractor**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Protractor.md) - helper empowered by [Protractor](http://protractortest.org/) to run tests via WebDriver protocol.
@@ -56,16 +57,16 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 ## Install
 
 ```sh
-npm install codeceptjs --save
+npm i codeceptjs --save
 ```
 
-Move to directory where you'd like to have your tests (and codeceptjs config) stored, and run
+Move to directory where you'd like to have your tests (and codeceptjs config) stored, and execute
 
 ```sh
 npx codeceptjs init
 ```
 
-to create and configure test environment. It is recommended to select WebDriverIO from the list of helpers, if you need to write Selenium WebDriver tests.
+to create and configure test environment. It is recommended to select WebDriver from the list of helpers, if you need to write Selenium WebDriver tests.
 
 After that create your first test by executing:
 
@@ -87,11 +88,13 @@ npx codeceptjs def .
 
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
-Note that CodeceptJS requires Node.js version `8.9.1+` or later.
+Note:
+- CodeceptJS requires Node.js version `8.9.1+` or later. 
+- To use the parallel tests execution, requiring Node.js version `11.7` or later.
 
 ## Usage
 
-Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriverIO helper enabled.
+Learn CodeceptJS by examples. Let's assume we have CodeceptJS installed and WebDriver helper enabled.
 
 ### Basics
 
@@ -100,10 +103,10 @@ Let's see how we can handle basic form testing:
 ```js
 Feature('CodeceptJS Demonstration');
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   I.fillField('Email', 'hello@world.com');
-  I.fillField('Password', '123456');
+  I.fillField('Password', secret('123456'));
   I.checkOption('Active');
   I.checkOption('Male');
   I.click('Create User');
@@ -128,7 +131,7 @@ CodeceptJS Demonstration --
  test some forms
  • I am on page "http://simple-form-bootstrap.plataformatec.com.br/documentation"
  • I fill field "Email", "hello@world.com"
- • I fill field "Password", "123456"
+ • I fill field "Password", "****"
  • I check option "Active"
  • I check option "Male"
  • I click "Create User"
@@ -137,7 +140,7 @@ CodeceptJS Demonstration --
  ✓ OK in 17752ms
 ```
 
-CodeceptJS has an ultimate feature to help you develop and debug you test.
+CodeceptJS has an ultimate feature to help you develop and debug your test.
 You can **pause execution of test in any place and use interactive shell** to try different actions and locators.
 Just add `pause()` call at any place in a test and run it.
 
@@ -150,7 +153,7 @@ npx codeceptjs shell
 ### Actions
 
 We filled form with `fillField` methods, which located form elements by their label.
-The same way you can locate element by name, CSS or XPath locators in tests:
+The same way you can locate element by name, `CSS` or `XPath` locators in tests:
 
 ```js
 // by name
@@ -186,7 +189,7 @@ const assert = require('assert');
 
 Feature('CodeceptJS Demonstration');
 
-Scenario('test page title', async (I) => {
+Scenario('test page title', async ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   const title = await I.grabTitle();
   assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
@@ -200,19 +203,21 @@ The same way you can grab text, attributes, or form values and use them in next 
 Common preparation steps like opening a web page, logging in a user, can be placed in `Before` or `Background`:
 
 ```js
+const { I } = inject();
+
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(() => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', () => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', (I) => {
+Scenario('test title', () => {
   I.seeInTitle('Example application');
 });
 ```
@@ -223,10 +228,10 @@ CodeceptJS provides the most simple way to create and use page objects in your t
 You can create one by running
 
 ```sh
-codeceptjs generate pageobject
+npx codeceptjs generate pageobject
 ```
 
-It will create a page object file for you and add it to config.
+It will create a page object file for you and add it to the config.
 Let's assume we created one named `docsPage`:
 
 ```js
@@ -252,18 +257,18 @@ You can easily inject it to test by providing its name in test arguments:
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
 });
 
-Scenario('test some forms', (I, docsPage) => {
+Scenario('test some forms', ({ I, docsPage }) => {
   docsPage.sendForm('hello@world.com','123456');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 ```
 
-When using typescript, replace `module.exports` with `export` for autocompletion.
+When using Typescript, replace `module.exports` with `export` for autocompletion.
 
 
 ## Contributing
@@ -279,16 +284,18 @@ Thanks all to those who are and will have contributing to this awesome project!
 [//]: contributor-faces
 <a href="https://github.com/DavertMik"><img src="https://avatars0.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a>
 <a href="https://github.com/PeterNgTr"><img src="https://avatars0.githubusercontent.com/u/7845001?v=4" title="PeterNgTr" width="80" height="80"></a>
+<a href="https://github.com/Vorobeyko"><img src="https://avatars3.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
 <a href="https://github.com/APshenkin"><img src="https://avatars1.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a>
 <a href="https://github.com/reubenmiller"><img src="https://avatars0.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a>
-<a href="https://github.com/Vorobeyko"><img src="https://avatars3.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
 <a href="https://github.com/fabioel"><img src="https://avatars1.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a>
 <a href="https://github.com/pablopaul"><img src="https://avatars1.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a>
+<a href="https://github.com/koushikmohan1996"><img src="https://avatars3.githubusercontent.com/u/24666922?v=4" title="koushikmohan1996" width="80" height="80"></a>
+<a href="https://github.com/Arhell"><img src="https://avatars2.githubusercontent.com/u/26163841?v=4" title="Arhell" width="80" height="80"></a>
 <a href="https://github.com/tsuemura"><img src="https://avatars1.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
 <a href="https://github.com/VikalpP"><img src="https://avatars2.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
 <a href="https://github.com/elukoyanov"><img src="https://avatars3.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
 <a href="https://github.com/MercifulCode"><img src="https://avatars2.githubusercontent.com/u/1740822?v=4" title="MercifulCode" width="80" height="80"></a>
-<a href="https://github.com/koushikmohan1996"><img src="https://avatars3.githubusercontent.com/u/24666922?v=4" title="koushikmohan1996" width="80" height="80"></a>
+<a href="https://github.com/Georgegriff"><img src="https://avatars3.githubusercontent.com/u/9056958?v=4" title="Georgegriff" width="80" height="80"></a>
 <a href="https://github.com/hubidu"><img src="https://avatars2.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
 <a href="https://github.com/BorisOsipov"><img src="https://avatars0.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
 <a href="https://github.com/jploskonka"><img src="https://avatars3.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
@@ -301,12 +308,10 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/johnyb"><img src="https://avatars2.githubusercontent.com/u/86358?v=4" title="johnyb" width="80" height="80"></a>
 <a href="https://github.com/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a>
 <a href="https://github.com/jinjorge"><img src="https://avatars3.githubusercontent.com/u/2208083?v=4" title="jinjorge" width="80" height="80"></a>
+<a href="https://github.com/gkushang"><img src="https://avatars1.githubusercontent.com/u/3663389?v=4" title="gkushang" width="80" height="80"></a>
 <a href="https://github.com/galkin"><img src="https://avatars3.githubusercontent.com/u/5930544?v=4" title="galkin" width="80" height="80"></a>
 <a href="https://github.com/orihomie"><img src="https://avatars2.githubusercontent.com/u/29889683?v=4" title="orihomie" width="80" height="80"></a>
 <a href="https://github.com/radhey1851"><img src="https://avatars2.githubusercontent.com/u/22446528?v=4" title="radhey1851" width="80" height="80"></a>
-<a href="https://github.com/abner"><img src="https://avatars1.githubusercontent.com/u/42773?v=4" title="abner" width="80" height="80"></a>
-<a href="https://github.com/Akxe"><img src="https://avatars3.githubusercontent.com/u/2001798?v=4" title="Akxe" width="80" height="80"></a>
-<a href="https://github.com/Kalostrinho"><img src="https://avatars0.githubusercontent.com/u/19229249?v=4" title="Kalostrinho" width="80" height="80"></a>
 
 [//]: contributor-faces
 

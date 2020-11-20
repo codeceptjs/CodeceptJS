@@ -63,7 +63,7 @@ Here is a usage example:
 ```js
 let postId = null;
 
-Scenario('check post page', async (I)  => {
+Scenario('check post page', async ({ I })  => {
   // valid access token
   I.haveRequestHeaders({auth: '1111111'});
   // get the first user
@@ -76,7 +76,7 @@ Scenario('check post page', async (I)  => {
 });
 
 // cleanup created data
-After((I) => {
+After(({ I }) => {
   I.sendDeleteRequest('/api/posts/'+postId);
 });
 ```
@@ -129,7 +129,7 @@ Here is a usage example:
 ```js
 let postData = null;
 
-Scenario('check post page', async (I)  => {
+Scenario('check post page', async ({ I })  => {
   // valid access token
   I.haveRequestHeaders({auth: '1111111'});
   // get the first user
@@ -152,7 +152,7 @@ Scenario('check post page', async (I)  => {
 });
 
 // cleanup created data
-After((I) => {
+After(({ I }) => {
   I.sendMutation(
     'mutation deletePost($permalink: /ID!) { deletePost(permalink: /$id) }',
     { permalink: /postData.id},

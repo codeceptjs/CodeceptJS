@@ -1,0 +1,23 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Appium tests
+    task:
+      secrets:
+        - name: saucelabs
+      prologue:
+        commands:
+          - checkout
+          - npm i
+          - cache restore
+      jobs:
+        - name: Quick tests
+          commands:
+            - 'npm run test:appium-quick'
+        - name: Other Tests
+          commands:
+            - 'npm run test:appium-other'

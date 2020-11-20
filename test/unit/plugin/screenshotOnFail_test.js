@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const sinon = require('sinon');
 
 const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail');
@@ -24,34 +24,34 @@ describe('screenshotOnFail', () => {
     screenshotOnFail({});
     event.dispatcher.emit(event.test.failed, { title: 'Scenario with data driven | {"login":"admin","password":"123456"}' });
     await recorder.promise();
-    assert.ok(screenshotSaved.called);
-    assert.equal('Scenario_with_data_driven.failed.png', screenshotSaved.getCall(0).args[0]);
+    expect(screenshotSaved.called).is.ok;
+    expect('Scenario_with_data_driven.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
   });
 
   it('should create screenshot on fail', async () => {
     screenshotOnFail({});
     event.dispatcher.emit(event.test.failed, { title: 'test1' });
     await recorder.promise();
-    assert.ok(screenshotSaved.called);
-    assert.equal('test1.failed.png', screenshotSaved.getCall(0).args[0]);
+    expect(screenshotSaved.called).is.ok;
+    expect('test1.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
   });
 
   it('should create screenshot with unique name', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1', uuid: 1 });
     await recorder.promise();
-    assert.ok(screenshotSaved.called);
-    assert.equal('test1_1.failed.png', screenshotSaved.getCall(0).args[0]);
+    expect(screenshotSaved.called).is.ok;
+    expect('test1_1.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
   });
 
   it('should create screenshot with unique name when uuid is null', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1' });
     await recorder.promise();
-    assert.ok(screenshotSaved.called);
+    expect(screenshotSaved.called).is.ok;
     const fileName = screenshotSaved.getCall(0).args[0];
     const regexpFileName = /test1_[0-9]{10}.failed.png/;
-    assert.equal(fileName.match(regexpFileName).length, 1);
+    expect(fileName.match(regexpFileName).length).is.equal(1);
   });
 
   // TODO: write more tests for different options
