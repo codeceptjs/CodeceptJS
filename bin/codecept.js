@@ -131,6 +131,8 @@ program.command('run-workers <workers>')
   .option('--tests', 'run only JS test files and skip features')
   .option('--profile [value]', 'configuration profile to be used')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
+  .option('-R, --reporter <name>', 'specify the reporter to use')
   .action(require('../lib/command/run-workers'));
 
 program.command('run-multiple [suites...]')
