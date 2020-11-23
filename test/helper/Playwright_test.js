@@ -172,6 +172,7 @@ describe('Playwright', function () {
     it('should be able to assert after post request', () => I.openNewTab()
       .then(() => I.amOnPage('/info'))
       .then(() => I.click('input[type=submit]'))
+      .then(() => I._beforeStep())
       .then(() => I.see('Welcome to test app!')));
 
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
