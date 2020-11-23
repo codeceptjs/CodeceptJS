@@ -205,7 +205,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 TO launch additional browser context (or incognito window) use `session` command.
 
 ```js
-Scenario('I try to open this site as anonymous user', () => {
+Scenario('I try to open this site as anonymous user', ({ I }) => {
   I.amOnPage('/');
   I.dontSee('Agree to cookies');
   session('anonymous user', () => {
