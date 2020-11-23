@@ -169,6 +169,11 @@ describe('Playwright', function () {
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 2)));
 
+    it('should be able to assert after post request', () => I.openNewTab()
+      .then(() => I.amOnPage('/info'))
+      .then(() => I.click('input[type=submit]'))
+      .then(() => I.see('Welcome to test app!')));
+
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
       .then(() => I.click('More info'))
       .then(() => I.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
