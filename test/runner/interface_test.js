@@ -149,6 +149,19 @@ describe('CodeceptJS Interface', () => {
     });
   });
 
+  it('should provide skipped test for each entry of data', (done) => {
+    exec(config_run_config('codecept.skip_ddt.json'), (err, stdout) => {
+      const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
+      expect(output).toContain('S Should add skip entry for each item | {"user":"bob"}');
+      expect(output).toContain('S Should add skip entry for each item | {"user":"anne"}');
+      expect(output).toContain('OK');
+      expect(output).toContain('0 passed');
+      expect(output).toContain('2 skipped');
+      expect(err).toBeFalsy();
+      done();
+    });
+  });
+
   it('should execute expected promise chain', (done) => {
     exec(`${codecept_run} --verbose`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
