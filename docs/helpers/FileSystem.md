@@ -137,26 +137,6 @@ Writes test to file
 -   `name` **[string][1]** 
 -   `text` **[string][1]** 
 
-## getFileContents
-
-### Parameters
-
--   `file` **[string][1]** 
--   `encoding` **[string][1]**  
-
-Returns **[string][1]** 
-
-## isFileExists
-
-### Parameters
-
--   `file` **[string][1]** 
--   `timeout` **[number][2]** 
-
-Returns **[Promise][3]&lt;any>** 
-
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
