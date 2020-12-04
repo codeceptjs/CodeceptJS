@@ -190,6 +190,8 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         for (const i in placeholders) {
           cfg.replace(placeholders[i], templates[i]);
         }
+        cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+        cfg.replace(/LocatorOrString\?/g, '(string | object)?');
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
         cfg.replace(/LocatorOrString/g, 'string | object');
       });
