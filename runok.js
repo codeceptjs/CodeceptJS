@@ -23,7 +23,7 @@ module.exports = {
 
   async def() {
     await Promise.all([
-      // this.buildLibWithDocs(true),
+      this.buildLibWithDocs(true),
       this.docsPlugins(),
       this.docsExternalHelpers(),
     ]);
@@ -156,6 +156,8 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(placeholders[i], templates[i]);
         }
         if (!forTypings) {
+          cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+          cfg.replace(/LocatorOrString\?/g, '(string | object)?');
           cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
           cfg.replace(/LocatorOrString/g, 'string | object');
         }
