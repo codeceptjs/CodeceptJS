@@ -10,7 +10,7 @@ CodeceptJS supports [type declaration](https://github.com/codeceptjs/CodeceptJS/
 # Why TypeScript?
 
 With the TypeScript writing CodeceptJS tests becomes much easier. If you configure TS properly in your project as well as your IDE, you will get the following features:
-- [Autocomplete (with InteliSence)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
+- [Autocomplete (with IntelliSense)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
 Example:
 
 ![Auto Complete](/img/Auto_comlete.gif)
