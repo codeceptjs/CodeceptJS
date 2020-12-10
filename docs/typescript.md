@@ -5,12 +5,12 @@ title: TypeScript
 
 # TypeScript
 
-CodeceptJS supports [type declaration](https://github.com/codecept-js/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that you can write your tests in TS. Also, all of your custom steps can be written in TS
+CodeceptJS supports [type declaration](https://github.com/codeceptjs/CodeceptJS/tree/master/typings) for [TypeScript](https://www.typescriptlang.org/). It means that you can write your tests in TS. Also, all of your custom steps can be written in TS
 
 # Why TypeScript?
 
 With the TypeScript writing CodeceptJS tests becomes much easier. If you configure TS properly in your project as well as your IDE, you will get the following features:
-- [Autocomplete (with InteliSence)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
+- [Autocomplete (with IntelliSense)](https://code.visualstudio.com/docs/editor/intellisense) - a tool that streamlines your work by suggesting when you typing what function or property which exists in a class, what arguments can be passed to that method, what it returns, etc.
 Example:
 
 ![Auto Complete](/img/Auto_comlete.gif)
@@ -80,7 +80,7 @@ We recommended the following configuration in a [tsconfig.json](https://www.type
 }
 ```
 
-> You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codecept-js/typescript-boilerplate).
+> You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codeceptjs/typescript-boilerplate).
 
 ### Set Up steps.d.ts
 

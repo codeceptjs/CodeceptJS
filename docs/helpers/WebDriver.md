@@ -1768,7 +1768,7 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][19]** element value to check.
--   `context` **([string][19] | [object][18]?)** element located by CSS|XPath|strict locator. 
+-   `context` **([string][19] | [object][18])?** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 

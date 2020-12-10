@@ -106,7 +106,7 @@ MyPage: hasFile "First arg", "Second arg"
   I see file "codecept.json"
   I see file "codecept.po.json"
 ```
-* Introduced official [TypeScript boilerplate](https://github.com/codecept-js/typescript-boilerplate). Started by @Vorobeyko.
+* Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by @Vorobeyko.
 
 ## 3.0.0-beta
 
@@ -288,7 +288,7 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
 ```
 
 * **Fixed parallel execution of `run-workers` for Gherkin** scenarios by @koushikmohan1996
-* [MockRequest] Updated and **moved to [standalone package](https://github.com/codecept-js/mock-request)**:
+* [MockRequest] Updated and **moved to [standalone package](https://github.com/codeceptjs/mock-request)**:
   * full support for record/replay mode for Puppeteer
   * added `mockServer` method to use flexible PollyJS API to define mocks
   * fixed stale browser screen in record mode.
@@ -449,7 +449,7 @@ Changed pressKey method to resolve issues and extend functionality.
 * [Puppeteer][WebDriver] Added `grabElementBoundingRect` by @PeterNgTr.
 * [Puppeteer] Fixed speed degradation introduced in #1306 with accessibility locators support. See #1953.
 * Added `Config.addHook` to add a function that will update configuration on load.
-* Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
+* Started [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package with a collection of common configuration patterns.
 * [TestCafe] port's management removed (left on TestCafe itself) by @orihomie. Fixes #1934.
 * [REST] Headers are no more declared as singleton variable. Fixes #1959
 * Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By @PeterNgTr.

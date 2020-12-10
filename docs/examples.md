@@ -8,9 +8,9 @@ editLink: false
 
 # Examples
 > Add your own examples to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Examples)
-## [TodoMVC Examples](https://github.com/codecept-js/examples)
+## [TodoMVC Examples](https://github.com/codeceptjs/examples)
 
-![](https://github.com/codecept-js/examples/raw/master/todo.png)
+![](https://github.com/codeceptjs/examples/raw/master/todo.png)
 
 Playground repository where you can run tests in different helpers on a basic single-page website.
 
@@ -23,7 +23,7 @@ Tests repository demonstrate usage of
 * PageObjects
 * Cucumber syntax
 
-## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
+## [Basic Examples](https://github.com/codeceptjs/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
