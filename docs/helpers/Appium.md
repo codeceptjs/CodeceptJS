@@ -1481,7 +1481,7 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][4]** element value to check.
--   `context` **([string][4] \| [object][6]?)** element located by CSS|XPath|strict locator. (optional, default `null`)
+-   `context` **([string][4] \| [object][6])?** element located by CSS|XPath|strict locator. (optional, default `null`)
 
 ### seeElementInDOM
 
