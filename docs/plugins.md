@@ -57,6 +57,7 @@ const allure = codeceptjs.container.plugins('allure');
 
 -   `addAttachment(name, buffer, type)` - add an attachment to current test / suite
 -   `addLabel(name, value)` - adds a label to current test
+-   `addParameter(kind, name, value)` - adds a parameter to current test
 -   `severity(value)` - adds severity label
 -   `epic(value)` - adds epic label
 -   `feature(value)` - adds feature label
