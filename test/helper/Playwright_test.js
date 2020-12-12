@@ -648,24 +648,28 @@ describe('Playwright', function () {
 
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
-      await I.amOnPage('https://www.google.com');
-      const size = await I.grabElementBoundingRect('#hplogo');
-      expect(size.x).is.greaterThan(0);
-      expect(size.y).is.greaterThan(0);
+      await I.amOnPage('/image');
+      const size = await I.grabElementBoundingRect('#logo');
+      expect(size.x).is.greaterThan(39); // 40 or more
+      expect(size.y).is.greaterThan(39);
       expect(size.width).is.greaterThan(0);
       expect(size.height).is.greaterThan(0);
+      expect(size.width).to.eql(100);
+      expect(size.height).to.eql(100);
     });
 
     it('should get the element width', async () => {
-      await I.amOnPage('https://www.google.com');
-      const width = await I.grabElementBoundingRect('#hplogo', 'width');
+      await I.amOnPage('/image');
+      const width = await I.grabElementBoundingRect('#logo', 'width');
       expect(width).is.greaterThan(0);
+      expect(width).to.eql(100);
     });
 
     it('should get the element height', async () => {
-      await I.amOnPage('https://www.google.com');
-      const height = await I.grabElementBoundingRect('#hplogo', 'height');
+      await I.amOnPage('/image');
+      const height = await I.grabElementBoundingRect('#logo', 'height');
       expect(height).is.greaterThan(0);
+      expect(height).to.eql(100);
     });
   });
 

@@ -123,6 +123,14 @@ class login {
 
 }
 
+
+class basic_image {
+    function GET() {
+      include __DIR__ . '/view/image.php';
+    }
+  }
+  
+
 class cookies {
 
     function GET($matches) {
