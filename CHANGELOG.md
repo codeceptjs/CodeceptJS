@@ -1,3 +1,29 @@
+## 3.0.3
+
+* **Playwright 1.7 support**
+* [Playwright] Fixed handling null context in click. See #2667 by @matthewjf  
+* [Playwright] Fixed `Cannot read property '$$' of null` when locating elements. See #2713 by @matthewjf 
+* Command `npx codeceptjs init` improved
+  * auto-installing required packages
+  * better error messages
+  * fixed generating type definitions
+* Data Driven Tests improvements: instead of having one skipped test for data driven scenarios when using xData you get a skipped test for each entry in the data table. See #2698 by @Georgegriff 
+* [Puppeteer] Fixed that `waitForFunction` was not working with number values. See #2703 by @MumblesNZ 
+* Enabled autocompletion for custom helpers. #2695 by @PeterNgTr
+* Emit test.after on workers. Fix #2693 by @jccguimaraes
+* TypeScript: Allow .ts config files. See #2708 by @elukoyanov 
+* Fixed definitions generation errors by @elukoyanov. See #2707 and #2718
+* Fixed handing error in _after function; for example, browser is closed during test and tests executions is stopped, but error was not logged. See #2715 by @elukoyanov
+* Emit hook.failed in workers. Fix #2723 by @jccguimaraes
+* [wdio plugin] Added `seleniumArgs` and `seleniumInstallArgs` config options for plugin. See #2687 by @andrerleao 
+* [allure plugin] Added `addParameter` method in #2717 by @jancorvus. Fixes #2716
+* Added mocha-based `--reporter-options` and `--reporter <name>` commands to `run-workers` command by in #2691 @Ameterezu 
+* Fixed infinite loop for junit reports. See #2691 @Ameterezu 
+* Added status, start/end time, and match line for BDD steps. See #2678 by @ktryniszewski-mdsol 
+* [stepByStepReport plugin] Fixed "helper.saveScreenshot is not a function". Fix #2688 by @andrerleao 
+
+
+
 ## 3.0.2
 
 * [Playwright] Fix connection close with remote browser. See #2629 by @dipiash
