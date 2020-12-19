@@ -5,7 +5,7 @@ title: Installation
 
 # Installation
 
-## Via Installer
+## QuickStart Via Installer
 
 Creating a new project via [`create-codeceptjs` installer](https://github.com/codeceptjs/create-codeceptjs) is the simplest way to start
 
@@ -33,54 +33,38 @@ Install CodeceptJS + webdriverio into `e2e-tests` directory:
 npx create-codeceptjs e2e-tests --webdriverio
 ```
 
-## Local
+## Standard Installation
 
-Use NPM install CodeceptJS:
+Open a directory where you want to install CodeceptJS tests.
+If it is an empty directory - create a new NPM package with 
 
-```sh
-npm install --save-dev codeceptjs
+```
+npm init -y
 ```
 
-and started as
+Install CodeceptJS with NPM:
 
 ```sh
-./node_modules/.bin/codeceptjs
+npx codeceptjs init
 ```
 
-To use it with WebDriver install webdriverio package:
+After choosing default helper (Playwright, Puppeteer, WebDriver, etc) a corresponding package should be installed automatically. 
 
-```sh
-npm install webdriverio --save-dev
-```
+> If you face issues installing additional packages while running `npx codeceptjs init` command, install required packages manually using npm
 
-To use it with Protractor install protractor package:
-
-```sh
-npm install protractor --save-dev
-```
-
-To use it with Nightmare install nightmare and nightmare-upload packages:
-
-```sh
-npm install nightmare --save-dev
-```
-
-To use it with Puppeteer install puppeteer package:
-
-```sh
-npm install puppeteer --save-dev
-```
+Unless you are using WebDriver - CodeceptJS is ready to go!
+For WebDriver installation Selenium Server is required 👇 
 
 ## WebDriver
 
-WebDriver based helpers like WebDriver, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriver/#selenium-installation) or [PhantomJS](http://codecept.io/helpers/WebDriver/#phantomjs-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
+WebDriver based helpers like WebDriver, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriver/#selenium-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
 
 We recommend to install them manually or use NPM packages:
 
-* [Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
-* [Phantomjs](https://www.npmjs.com/package/phantomjs-prebuilt): to install and execute Phantomjs
+[Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
 
-or use [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless browser testing.
+
+Alternatively, you can execute headless Selenium in [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless browser testing.
 
 Launch Selenium with Chrome browser inside a Docker container:
 
