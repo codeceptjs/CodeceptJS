@@ -349,7 +349,7 @@ title: ${name}
       });
       stopOnFail(true);
 
-      await exec('./runio.js publish');
+      await exec('./runok.js publish');
     });
   },
 
