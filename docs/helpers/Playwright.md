@@ -613,7 +613,7 @@ If a function returns a Promise it will wait for its resolution.
 #### Parameters
 
 -   `fn` **([string][7] | [function][9])** function to be executed in browser context.
--   `arg` **...any** to be passed to function.
+-   `arg` **...any?** to be passed to function.
 
 Returns **[Promise][10]&lt;any>** 
 
