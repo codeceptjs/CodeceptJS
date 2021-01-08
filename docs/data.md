@@ -154,8 +154,8 @@ Scenario('check post page', async ({ I })  => {
 // cleanup created data
 After(({ I }) => {
   I.sendMutation(
-    'mutation deletePost($permalink: /ID!) { deletePost(permalink: /$id) }',
-    { permalink: /postData.id},
+    'mutation deletePost($id: ID!) { deletePost(id: $id) }',
+    { id: postData.id},
   );
 });
 ```
@@ -196,7 +196,7 @@ The way for setting data for a test is as simple as writing:
 ```js
 // inside async function
 let post = await I.have('post');
-I.haveMultiple('comment', 5, { postpermalink: /post.id});
+I.haveMultiple('comment', 5, { postId: post.id});
 ```
 
 After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
@@ -248,7 +248,7 @@ This way for setting data for a test is as simple as writing:
 ```js
 // inside async function
 let post = await I.mutateData('createPost');
-I.mutateMultiple('createComment', 5, { postpermalink: /post.id});
+I.mutateMultiple('createComment', 5, { postId: post.id});
 ```
 
 
@@ -288,7 +288,7 @@ GraphQLDataFactory: {
       query: 'mutation createUser($input: UserInput!) { createUser(input: $input) { id name }}',
       factory: './factories/users',
       revert: (data) => ({
-        query: 'mutation deleteUser($permalink: /ID!) { deleteUser(permalink: /$id) }',
+        query: 'mutation deleteUser($id: ID!) { deleteUser(id: $id) }',
         variables: { id : data.id},
       }),
     },
