@@ -46,14 +46,14 @@ You could do it just by changing `automationName` in the `helpers` section of th
 ```
 Then you could locate components using XPath expression:
 ```js
-I.tap({android: /'//*[@view-tag="someButton"]', ios: '~someButton'})
+I.tap({android: '//*[@view-tag="someButton"]', ios: '~someButton'})
 ```
 This way test would work for both platforms without any changes in code.
 To simplify things further you could write a helper function:
 ```js
 function tid(id) {
   return {
-    android: /`//*[@view-tag="${id}"]`,
+    android: `//*[@view-tag="${id}"]`,
     ios: '~' + id
   }
 }
