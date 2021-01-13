@@ -1,4 +1,7 @@
 language: node_js
+branches:
+  only:
+    - "3.x"
 node_js:
 - 12
 sudo: required
