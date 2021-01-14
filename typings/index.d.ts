@@ -22,7 +22,9 @@ declare namespace CodeceptJS {
   interface I {}
   interface IHook {}
   interface IScenario {}
-  interface IFeature {}
+  interface IFeature {
+    (title: string): FeatureConfig
+  }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
