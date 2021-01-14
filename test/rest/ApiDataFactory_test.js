@@ -113,7 +113,7 @@ describe('ApiDataFactory', function () {
 
     it('should cleanup created data', async () => {
       await I.have('post', { author: 'Tapac' });
-      let resp = await I.restHelper.sendGetRequest('/posts/2');
+      let resp = await I.restHelper.sendGetRequest('/posts');
       for (const post of resp.data) {
         if (post.author === 'Tapac') {
           post.author.should.eql('Tapac');
