@@ -415,7 +415,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][3]** text value to fill.
+-   `value` **([string][3] | [object][4])** text value to fill.
 
 ### grabAttributeFrom
 

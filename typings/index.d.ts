@@ -55,6 +55,7 @@ declare namespace CodeceptJS {
     | { react: string };
 
   type LocatorOrString = string | ILocator | Locator;
+  type StringOrSecret = string | CodeceptJS.Secret;
 
   interface HookCallback { (args: SupportObject): void; }
   interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo: IScenario}
