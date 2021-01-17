@@ -90,8 +90,8 @@
   "devDependencies": {
     "@codeceptjs/detox-helper": "^1.0.2",
     "@codeceptjs/mock-request": "^0.3.0",
-    "@pollyjs/adapter-puppeteer": "^2.6.3",
-    "@pollyjs/core": "^2.6.3",
+    "@pollyjs/adapter-puppeteer": "^5.1.0",
+    "@pollyjs/core": "^5.1.0",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.10.66",
     "@wdio/sauce-service": "^5.22.5",
