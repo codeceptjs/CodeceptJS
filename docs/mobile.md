@@ -118,6 +118,7 @@ helpers: {
     app: "bs://<hashed app-id>",
     host: "hub-cloud.browserstack.com",
     port: 4444,
+    platform: "ios",
     user: "BROWSERSTACK_USER",
     key: "BROWSERSTACK_KEY",
     device: "iPhone 7"
