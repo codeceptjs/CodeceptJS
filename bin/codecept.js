@@ -180,6 +180,14 @@ program.command('dry-run [test]')
   .option('--debug', 'output additional information')
   .action(require('../lib/command/dryRun'));
 
+program.command('list-of-tests')
+    .description('Prints a list of tests in json format')
+    .option('-g, --grep <pattern>', 'select only tests matching <pattern>')
+    .option('-f, --fgrep <string>', 'select only tests containing <string>')
+    .option('-i, --invert', 'invert --grep and --fgrep matches')
+    .option('--file', 'save information to output directory')
+    .action(require('../lib/command/listOfTests'));
+
 program.on('command:*', (cmd) => {
   console.log(`\nUnknown command ${cmd}\n`);
   program.outputHelp();
