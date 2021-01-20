@@ -236,3 +236,17 @@ Prints debugging information concerning the local environment
 ```sh
 npx codeceptjs info
 ```
+
+## List of tests
+
+Prints a list of tests in json format
+
+```
+npx codeceptjs list-of-tests
+```
+
+When passed `--file` option saves a list of tests to output directory.
+
+```
+npx codeceptjs list-of-tests --file
+```
