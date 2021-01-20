@@ -9,7 +9,7 @@ jobs:
       with:
         fetch-depth: 0
     - uses: testomatio/check-tests@master
-      if: github.repository == 'codeceptjs/CodeceptJS'
+      if: github.repository == 'codeceptjs/CodeceptJS' && github.event.pull_request.title == '3.x'
       with:
         framework: mocha
         tests: "./test/**/*_test.js"

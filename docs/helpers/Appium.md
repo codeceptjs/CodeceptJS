@@ -911,7 +911,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][4] \| [object][6])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][4]** text value to fill.
+-   `value` **([string][4] \| [object][6])** text value to fill.
 
 ### grabTextFromAll
 
@@ -1481,7 +1481,7 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][4]** element value to check.
--   `context` **([string][4] \| [object][6]?)** element located by CSS|XPath|strict locator. (optional, default `null`)
+-   `context` **([string][4] \| [object][6])?** element located by CSS|XPath|strict locator. (optional, default `null`)
 
 ### seeElementInDOM
 

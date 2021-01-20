@@ -23,7 +23,7 @@ module.exports = {
 
   async def() {
     await Promise.all([
-      // this.buildLibWithDocs(true),
+      this.buildLibWithDocs(true),
       this.docsPlugins(),
       this.docsExternalHelpers(),
     ]);
@@ -156,8 +156,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(placeholders[i], templates[i]);
         }
         if (!forTypings) {
+          cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+          cfg.replace(/LocatorOrString\?/g, '(string | object)?');
           cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
           cfg.replace(/LocatorOrString/g, 'string | object');
+          cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
         }
       });
     }
@@ -190,8 +193,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         for (const i in placeholders) {
           cfg.replace(placeholders[i], templates[i]);
         }
+        cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+        cfg.replace(/LocatorOrString\?/g, '(string | object)?');
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
         cfg.replace(/LocatorOrString/g, 'string | object');
+        cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
       });
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
@@ -345,7 +351,7 @@ title: ${name}
       });
       stopOnFail(true);
 
-      await exec('./runio.js publish');
+      await exec('./runok.js publish');
     });
   },
 

@@ -43,7 +43,8 @@ $urls = array(
     '/dynamic' => 'dynamic',
     '/timeout' => 'timeout',
     '/download' => 'download',
-    '/basic_auth' => 'basic_auth'
+    '/basic_auth' => 'basic_auth',
+    '/image' => 'basic_image'
 );
 
 glue::stick($urls);

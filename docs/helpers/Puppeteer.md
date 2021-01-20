@@ -690,7 +690,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][8]** text value to fill.
+-   `value` **([string][8] | [object][6])** text value to fill.
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1586,7 +1586,7 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][8]** element value to check.
--   `context` **([string][8] | [object][6]?)** element located by CSS|XPath|strict locator. 
+-   `context` **([string][8] | [object][6])?** element located by CSS|XPath|strict locator. 
 
 ### seeTitleEquals
 
