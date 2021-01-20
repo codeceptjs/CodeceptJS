@@ -160,6 +160,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(/LocatorOrString\?/g, '(string | object)?');
           cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
           cfg.replace(/LocatorOrString/g, 'string | object');
+          cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
         }
       });
     }
@@ -196,6 +197,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         cfg.replace(/LocatorOrString\?/g, '(string | object)?');
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
         cfg.replace(/LocatorOrString/g, 'string | object');
+        cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
       });
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);

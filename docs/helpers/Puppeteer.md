@@ -690,7 +690,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][8]** text value to fill.
+-   `value` **([string][8] | [object][6])** text value to fill.
 
 
 This action supports [React locators](https://codecept.io/react#locators)
