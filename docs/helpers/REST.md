@@ -101,6 +101,9 @@ Sends PATCH request to API.
 
 ```js
 I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
@@ -115,6 +118,9 @@ Sends POST request to API.
 
 ```js
 I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
@@ -129,6 +135,9 @@ Sends PUT request to API.
 
 ```js
 I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPutRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
