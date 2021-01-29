@@ -360,9 +360,9 @@ Configure mocha-multi with reports that you want:
       "mocha-junit-reporter": {
         "stdout": "./output/console.log",
         "options": {
-          "mochaFile": "./output/result.xml"
-        },
-        "attachments": true //add screenshot for a failed test
+          "mochaFile": "./output/result.xml",
+          "attachments": true //add screenshot for a failed test
+        }
       }
     }
   }

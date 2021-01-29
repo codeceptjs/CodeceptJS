@@ -1,4 +1,5 @@
 const assert = require('assert');
+const expect = require('expect');
 const path = require('path');
 const exec = require('child_process').exec;
 
@@ -168,6 +169,16 @@ describe('CodeceptJS Multiple Runner', function () {
       stdout.should.not.include('Checkout examples process');
       stdout.should.not.include('Checkout string');
       assert(!err);
+      done();
+    });
+  });
+
+  it('should exit with non-zero code for failures during init process', (done) => {
+    process.chdir(codecept_dir);
+    exec(`${runner} run-multiple --config codecept.multiple.initFailure.json default --all`, (err, stdout) => {
+      expect(err).not.toBeFalsy();
+      expect(err.code).toBe(1);
+      expect(stdout).toContain('Failed on FailureHelper');
       done();
     });
   });

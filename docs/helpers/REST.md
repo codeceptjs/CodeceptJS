@@ -20,6 +20,7 @@ REST helper allows to send additional requests to the REST API during acceptance
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 -   onRequest: a async function which can update request object.
+-   maxUploadFileSize: set the max content file size in MB when performing api calls.
 
 ## Example
 
@@ -100,6 +101,9 @@ Sends PATCH request to API.
 
 ```js
 I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
@@ -114,6 +118,9 @@ Sends POST request to API.
 
 ```js
 I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
@@ -128,6 +135,9 @@ Sends PUT request to API.
 
 ```js
 I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPutRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters

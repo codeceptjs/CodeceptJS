@@ -1,8 +1,53 @@
+## 3.0.4
+
+* **Hotfix** Fixed `init` script by adding `cross-spawn` package. By @vipulgupta2048
+* Fixed handling error during initialization of `run-multiple`. See #2730 by @wagoid
+
+## 3.0.3
+
+* **Playwright 1.7 support**
+* [Playwright] Fixed handling null context in click. See #2667 by @matthewjf
+* [Playwright] Fixed `Cannot read property '$$' of null` when locating elements. See #2713 by @matthewjf
+* Command `npx codeceptjs init` improved
+  * auto-installing required packages
+  * better error messages
+  * fixed generating type definitions
+* Data Driven Tests improvements: instead of having one skipped test for data driven scenarios when using xData you get a skipped test for each entry in the data table. See #2698 by @Georgegriff
+* [Puppeteer] Fixed that `waitForFunction` was not working with number values. See #2703 by @MumblesNZ
+* Enabled autocompletion for custom helpers. #2695 by @PeterNgTr
+* Emit test.after on workers. Fix #2693 by @jccguimaraes
+* TypeScript: Allow .ts config files. See #2708 by @elukoyanov
+* Fixed definitions generation errors by @elukoyanov. See #2707 and #2718
+* Fixed handing error in _after function; for example, browser is closed during test and tests executions is stopped, but error was not logged. See #2715 by @elukoyanov
+* Emit hook.failed in workers. Fix #2723 by @jccguimaraes
+* [wdio plugin] Added `seleniumArgs` and `seleniumInstallArgs` config options for plugin. See #2687 by @andrerleao
+* [allure plugin] Added `addParameter` method in #2717 by @jancorvus. Fixes #2716
+* Added mocha-based `--reporter-options` and `--reporter <name>` commands to `run-workers` command by in #2691 @Ameterezu
+* Fixed infinite loop for junit reports. See #2691 @Ameterezu
+* Added status, start/end time, and match line for BDD steps. See #2678 by @ktryniszewski-mdsol
+* [stepByStepReport plugin] Fixed "helper.saveScreenshot is not a function". Fix #2688 by @andrerleao
+
+
+
+## 3.0.2
+
+* [Playwright] Fix connection close with remote browser. See #2629 by @dipiash
+* [REST] set maxUploadFileSize when performing api calls. See #2611 by @PeterNgTr
+* Duplicate Scenario names (combined with Feature name) are now detected via a warning message.
+Duplicate test names can cause `codeceptjs run-workers` to not function. See #2656 by @Georgegriff
+* Documentation fixes
+
+Bug Fixes:
+  *  --suites flag now should function correctly for `codeceptjs run-workers`. See #2655 by @Georgegriff
+  * [autoLogin plugin] Login methods should now function as expected with `codeceptjs run-workers`. See #2658 by @Georgegriff, resolves #2620
+
+
+
 ## 3.0.1
 
 ♨️ Hot fix:
   * Lock the mocha version to avoid the errors. See #2624 by PeterNgTr
- 
+
 🐛 Bug Fix:
   * Fixed error handling in Scenario.js. See #2607 by haveac1gar
   * Changing type definition in order to allow the use of functions with any number of any arguments. See #2616 by akoltun
@@ -92,7 +137,7 @@ MyPage: hasFile "First arg", "Second arg"
   I see file "codecept.json"
   I see file "codecept.po.json"
 ```
-* Introduced official [TypeScript boilerplate](https://github.com/codecept-js/typescript-boilerplate). Started by @Vorobeyko.
+* Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by @Vorobeyko.
 
 ## 3.0.0-beta
 
@@ -153,9 +198,9 @@ tryTo(() => I.click('Accept', '.cookies'));
 ## 2.6.11
 
 * [Playwright] Playwright 1.4 compatibility
-* [Playwright] Added `ignoreHTTPSErrors` config option (default: false). See #2566 by gurjeetbains 
-* Added French translation by @vimar 
-* [WebDriver] Updated `dragSlider` to work in WebDriver W3C protocol. Fixes #2557 by suniljaiswal01  
+* [Playwright] Added `ignoreHTTPSErrors` config option (default: false). See #2566 by gurjeetbains
+* Added French translation by @vimar
+* [WebDriver] Updated `dragSlider` to work in WebDriver W3C protocol. Fixes #2557 by suniljaiswal01
 
 ## 2.6.10
 
@@ -274,7 +319,7 @@ I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
 ```
 
 * **Fixed parallel execution of `run-workers` for Gherkin** scenarios by @koushikmohan1996
-* [MockRequest] Updated and **moved to [standalone package](https://github.com/codecept-js/mock-request)**:
+* [MockRequest] Updated and **moved to [standalone package](https://github.com/codeceptjs/mock-request)**:
   * full support for record/replay mode for Puppeteer
   * added `mockServer` method to use flexible PollyJS API to define mocks
   * fixed stale browser screen in record mode.
@@ -435,7 +480,7 @@ Changed pressKey method to resolve issues and extend functionality.
 * [Puppeteer][WebDriver] Added `grabElementBoundingRect` by @PeterNgTr.
 * [Puppeteer] Fixed speed degradation introduced in #1306 with accessibility locators support. See #1953.
 * Added `Config.addHook` to add a function that will update configuration on load.
-* Started [`@codeceptjs/configure`](https://github.com/codecept-js/configure) package with a collection of common configuration patterns.
+* Started [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package with a collection of common configuration patterns.
 * [TestCafe] port's management removed (left on TestCafe itself) by @orihomie. Fixes #1934.
 * [REST] Headers are no more declared as singleton variable. Fixes #1959
 * Updated Docker image to include run tests in workers with `NUMBER_OF_WORKERS` env variable. By @PeterNgTr.

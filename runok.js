@@ -4,8 +4,10 @@ const path = require('path');
 const axios = require('axios');
 const documentation = require('documentation');
 const {
-  stopOnFail, chdir, git, copy, exec, replaceInFile, npmRun, npx, writeToFile, runio,
-} = require('runio.js');
+  stopOnFail, chdir, tasks: {
+    git, copy, exec, replaceInFile, npmRun, npx, writeToFile,
+  }, runok,
+} = require('runok');
 
 stopOnFail();
 
@@ -154,8 +156,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(placeholders[i], templates[i]);
         }
         if (!forTypings) {
+          cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+          cfg.replace(/LocatorOrString\?/g, '(string | object)?');
           cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
           cfg.replace(/LocatorOrString/g, 'string | object');
+          cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
         }
       });
     }
@@ -188,8 +193,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         for (const i in placeholders) {
           cfg.replace(placeholders[i], templates[i]);
         }
+        cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+        cfg.replace(/LocatorOrString\?/g, '(string | object)?');
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
         cfg.replace(/LocatorOrString/g, 'string | object');
+        cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
       });
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
@@ -343,7 +351,7 @@ title: ${name}
       });
       stopOnFail(true);
 
-      await exec('./runio.js publish');
+      await exec('./runok.js publish');
     });
   },
 
@@ -375,7 +383,7 @@ title: ${name}
     await git((cmd) => {
       cmd.pull();
       cmd.tag(version);
-      cmd.push('origin master --tags');
+      cmd.push('origin 3.x --tags');
     });
     await exec('rm -rf docs/wiki/.git');
     await exec('npm publish');
@@ -411,4 +419,4 @@ async function processChangelog() {
   });
 }
 
-if (require.main === module) runio(module.exports);
+if (require.main === module) runok(module.exports);

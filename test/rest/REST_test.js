@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const FormData = require('form-data');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
@@ -8,6 +9,7 @@ const api_url = TestHelper.jsonServerUrl();
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
+const testFile = path.join(__dirname, '/../data/rest/testUpload.json');
 
 const data = {
   posts: [
@@ -308,6 +310,45 @@ describe('REST', () => {
       I.response = { data: { author: 'John Mayer', book: 'How to slow dance in a burning room', rel: { author: 'Jerry Garcia' } } };
       const expectedObj = { author: 'John Mayer', book: 'How to slow dance in a burning room', rel: { author: 'Jerry Garcia' } };
       I.seeResponseBody(expectedObj);
+    });
+  });
+});
+
+describe('REST - Form upload', () => {
+  beforeEach((done) => {
+    I = new REST({
+      endpoint: 'http://the-internet.herokuapp.com/',
+      maxUploadFileSize: 0.000080,
+      defaultHeaders: {
+        'X-Test': 'test',
+      },
+    });
+
+    setTimeout(done, 1000);
+  });
+
+  describe('upload file', () => {
+    it('should show error when file size exceedes the permit', async () => {
+      const form = new FormData();
+      form.append('file', fs.createReadStream(testFile));
+
+      try {
+        await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+      } catch (error) {
+        error.message.should.eql('Request body larger than maxBodyLength limit');
+      }
+    });
+
+    it('should not show error when file size doesnt exceedes the permit', async () => {
+      const form = new FormData();
+      form.append('file', fs.createReadStream(testFile));
+
+      try {
+        const response = await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+        response.data.should.include('File Uploaded!');
+      } catch (error) {
+        console.log(error.message);
+      }
     });
   });
 });

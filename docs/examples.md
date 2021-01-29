@@ -23,7 +23,7 @@ Tests repository demonstrate usage of
 * PageObjects
 * Cucumber syntax
 
-## [Basic Examples](https://github.com/codecept-js/CodeceptJS/tree/master/examples)
+## [Basic Examples](https://github.com/Codeception/CodeceptJS/tree/master/examples)
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
