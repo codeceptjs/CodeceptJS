@@ -26,6 +26,17 @@ const text = `
     When I go to checkout process
 `;
 
+const checkTestForErrors = (test) => {
+  return new Promise((resolve, reject) => {
+    test.fn((err) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
 describe('BDD', () => {
   beforeEach(() => {
     clearSteps();
@@ -82,18 +93,49 @@ describe('BDD', () => {
     });
   });
 
-  it('should allow failed steps', (done) => {
+  it('should allow failed steps', async () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
-    When('I go to checkout process', () => expect(false).is.false);
+    When('I go to checkout process', () => expect(false).is.true);
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
-    let errored = false;
-    suite.tests[0].fn((err) => {
-      errored = !!err;
-      expect(errored).is.exist;
-      done();
-    });
+    try {
+      await checkTestForErrors(suite.tests[0]);
+      return Promise.reject((new Error('Test should have thrown with failed step, but did not')));
+    } catch (err) {
+      const errored = !!err;
+      expect(errored).is.true;
+    }
+  });
+
+  it('handles errors in steps', async () => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', () => { throw new Error('errored step'); });
+    const suite = run(text);
+    expect('checkout process').is.equal(suite.title);
+    try {
+      await checkTestForErrors(suite.tests[0]);
+      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+    } catch (err) {
+      const errored = !!err;
+      expect(errored).is.true;
+    }
+  });
+
+  it('handles async errors in steps', async () => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', () => Promise.reject(new Error('step failed')));
+    const suite = run(text);
+    expect('checkout process').is.equal(suite.title);
+    try {
+      await checkTestForErrors(suite.tests[0]);
+      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+    } catch (err) {
+      const errored = !!err;
+      expect(errored).is.true;
+    }
   });
 
   it('should work with async functions', (done) => {
