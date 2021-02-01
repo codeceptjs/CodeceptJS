@@ -32,7 +32,9 @@ const { I, myPage, mySteps } = inject();
 // inject objects for a test by name
 Scenario('sample test', ({ I, myPage, mySteps }) => {
   // ...
-  }
+});
+```
+
 ## Actor
 
 During initialization you were asked to create a custom steps file. If you accepted this option, you are now able to use the `custom_steps.js` file to extend `I`. See how the `login` method can be added to `I`:
