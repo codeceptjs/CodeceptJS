@@ -1,3 +1,31 @@
+## 3.0.5
+
+Features:
+* Better support for Typescript `codecept.conf.ts` configuration files. See #2750 by @elaichenkov
+* [mocha-junit-reporter] Now supports attachments, see documentation for details. See #2675 by @Shard
+* [REST] Mask sensitive data from log messages.
+```js
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
+```
+See #2786 by @PeterNgTr
+
+Bug fixes:
+* Fixed issue with `codeceptjs shell` which was broken since 3.0.0. See #2743 by @stedman
+* [Gherkin] Fixed issue suppressed or hidden errors in tests. See #2745 by @ktryniszewski-mdsol
+* [Playwright] fix grabCssPropertyFromAll serialization by using property names. See #2757 by @elaichenkov
+* [Allure] fix report for multi sessions. See #2771 by @cbayer97
+* [WebDriver] Fix locator object debug log messages in smart wait. See 2748 by @elaichenkov
+
+Documentation fixes:
+* Fixed some broken examples. See #2756 by @danielrentz
+* Fixed Typescript typings. See #2747, #2758 and #2769 by @elaichenkov
+* Added missing type for xFeature. See #2754 by @PeterNgTr
+* Fixed code example in Page Object documentation. See #2793 by @mkrtchian
+
+Library updates:
+* Updated Axios to 0.21.1. See by @sseide
+* Updated @pollyjs/core @pollyjs/adapter-puppeteer. See #2760 by @Anikethana
+
 ## 3.0.4
 
 * **Hotfix** Fixed `init` script by adding `cross-spawn` package. By @vipulgupta2048
