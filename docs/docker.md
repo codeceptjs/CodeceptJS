@@ -1,6 +1,6 @@
 # Codeceptjs Docker
 
-CodeceptJS packed into container with the Nightmare, Protractor, Puppeteer, and WebDriver drivers.
+CodeceptJS has an [official docker image](https://hub.docker.com/r/codeceptjs/codeceptjs) based on Playwright image. Image supports Playwright, Puppeteer, and WebDriver engines.
 
 ## How to Use
 
@@ -16,17 +16,17 @@ CodeceptJS runner is available inside container as `codeceptjs`.
 You can execute CodeceptJS with Puppeteer or Nightmare locally with no extra configuration.
 
 ```sh
-docker run --net=host -v $PWD:/tests codeception/codeceptjs
+docker run --net=host -v $PWD:/tests codeceptjs/codeceptjs
 ```
 
 To customize execution call `codeceptjs` command:
 
 ```sh
 # run tests with steps
-docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --steps
+docker run --net=host -v $PWD:/tests codeceptjs/codeceptjs codeceptjs run --steps
 
 # run tests with @user in a name
-docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --grep "@user"
+docker run --net=host -v $PWD:/tests codeceptjs/codeceptjs codeceptjs run --grep "@user"
 ```
 
 
@@ -36,7 +36,7 @@ docker run --net=host -v $PWD:/tests codeception/codeceptjs codeceptjs run --gre
 version: '2'
 services:
   codeceptjs:
-    image: codeception/codeceptjs
+    image: codeceptjs/codeceptjs
     depends_on:
       - firefox
       - web
@@ -75,7 +75,7 @@ $ docker run -d -P --name selenium-chrome selenium/standalone-chrome
 
 # Alternatively, selenium/standalone-firefox can be used
 
-$ docker run -it --rm -v /<path_to_codeceptjs_test_dir>/:/tests/ --link selenium-chrome:selenium codeception/codeceptjs
+$ docker run -it --rm -v /<path_to_codeceptjs_test_dir>/:/tests/ --link selenium-chrome:selenium codeceptjs/codeceptjs
 ```
 
 You may run use `-v $(pwd)/:tests/` if running this from the root of your CodeceptJS tests directory.
@@ -87,7 +87,7 @@ _Note: If running with the Nightmare driver, it is not necessary to run a seleni
 To build this image:
 
 ```sh
-docker build -t codeception/codeceptjs .
+docker build -t codeceptjs/codeceptjs .
 ```
 
 * this directory will be added as `/codecept` insde container
@@ -97,7 +97,7 @@ docker build -t codeception/codeceptjs .
 To build this image with your desired Node version:
 
 ```sh
-docker build -t codeception/codeceptjs . --build-arg NODE_VERSION=12.10.0
+docker build -t codeceptjs/codeceptjs . --build-arg NODE_VERSION=12.10.0
 ```
 
 ### Passing Options
@@ -105,7 +105,7 @@ docker build -t codeception/codeceptjs . --build-arg NODE_VERSION=12.10.0
 Options can be passed by calling `codeceptjs`:
 
 ```
-docker run -v $PWD:/tests codeception/codeceptjs codeceptjs run --debug
+docker run -v $PWD:/tests codeceptjs/codeceptjs codeceptjs run --debug
 ```
 
 Alternatively arguments to `codecept run` command can be passed via `CODECEPT_ARGS` environment variable. For example to run your tests with debug
@@ -115,7 +115,7 @@ output:
 version: '2'
 services:
   codeceptjs:
-    image: codeception/codeceptjs
+    image: codeceptjs/codeceptjs
     environment:
       - CODECEPT_ARGS=--debug
     volumes:
@@ -128,7 +128,7 @@ You can also use `run-workers`to run tests by passing `NO_OF_WORKERS`, additiona
 version: '2'
 services:
   codeceptjs:
-    image: codeception/codeceptjs
+    image: codeceptjs/codeceptjs
     environment:
       - NO_OF_WORKERS=3
       - CODECEPT_ARGS=--debug
