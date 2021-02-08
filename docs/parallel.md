@@ -74,9 +74,11 @@ const testGroups = workers.createGroupsOfSuites(2);
 const browsers = ['firefox', 'chrome'];
 
 const configs = browsers.map(browser => {
-  return helpers: {
-    WebDriver: { browser }
-  }
+  return {
+    helpers: {
+      WebDriver: { browser }
+    }
+  };
 });
 
 for (const config of configs) {
