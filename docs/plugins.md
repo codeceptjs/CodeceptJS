@@ -947,7 +947,7 @@ npx codeceptjs run --plugins reRunFailedTest
 
 | Param            | Description                                                                    |
 | ---------------- | ------------------------------------------------------------------------------ |
-| failed           | Only executes the failed/cutom scipts present in failedCases.json                                     |
+| failed           | Only executes the failed/custom(selective) scripts present in failedCases.json              |
 
 ```js
 npx codeceptjs run --failed
