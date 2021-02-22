@@ -869,3 +869,41 @@ describe('Playwright - Emulation', () => {
     assert.equal(width, 980);
   });
 });
+
+describe('Playwright - PERSISTENT', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chromium: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        launchType: 'PERSISTENT',
+        userDataDir: '/tmp/playwright-tmp',
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  it('should launch a persistent context', async () => {
+    assert.equal(I._getType(), 'BrowserContext');
+  });
+});
