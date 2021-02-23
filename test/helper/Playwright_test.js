@@ -884,7 +884,6 @@ describe('Playwright - PERSISTENT', () => {
       waitForAction: 500,
       chromium: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        launchType: 'PERSISTENT',
         userDataDir: '/tmp/playwright-tmp',
       },
     });
