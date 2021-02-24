@@ -99,7 +99,7 @@ This helper should be configured in codecept.json or codecept.conf.js
      Playwright: {
        url: "http://localhost",
        chromium: {
-         browserWSEndpoint: "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
+         browserWSEndpoint: { wsEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a' } 
        }
      }
    }
@@ -1894,7 +1894,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [2]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
 
-[3]: https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target
+[3]: https://playwright.dev/docs/api/class-browsertype#browsertypeconnectparams
 
 [4]: https://github.com/microsoft/playwright/blob/v0.11.0/docs/api.md#working-with-chrome-extensions
 
