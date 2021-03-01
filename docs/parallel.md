@@ -180,7 +180,7 @@ customWorkers.on(event.all.result, () => {
 
 ### Emitting messages to the parent worker
 
-Child workers can send non test events to the main worker. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
+Child workers can send non test events to the main process. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
 
 ```js
 
