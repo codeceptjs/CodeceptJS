@@ -178,7 +178,7 @@ customWorkers.on(event.all.result, () => {
 });
 ```
 
-### Example: Emitting messages to the parent worker
+### Emitting messages to the parent worker
 
 Child workers can send non test events to the main worker. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
 
