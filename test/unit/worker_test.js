@@ -220,4 +220,37 @@ describe('Workers', () => {
       done();
     });
   });
+
+  it('should propagate non test events', (done) => {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    const messages = [];
+
+    const createTestGroups = () => {
+      const files = [
+        [path.join(codecept_dir, '/non-test-events-worker/non_test_event.worker.js')],
+      ];
+
+      return files;
+    };
+
+    const workerConfig = {
+      by: createTestGroups,
+      testConfig: './test/data/sandbox/codecept.non-test-events-worker.js',
+    };
+
+    workers = new Workers(2, workerConfig);
+
+    workers.run();
+
+    workers.on('message', (data) => {
+      messages.push(data);
+    });
+
+    workers.on(event.all.result, () => {
+      expect(messages.length).equal(2);
+      expect(messages[0]).equal('message 1');
+      expect(messages[1]).equal('message 2');
+      done();
+    });
+  });
 });
