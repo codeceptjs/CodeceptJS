@@ -99,7 +99,7 @@ This helper should be configured in codecept.json or codecept.conf.js
      Playwright: {
        url: "http://localhost",
        chromium: {
-         browserWSEndpoint: { wsEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a' } 
+         browserWSEndpoint: { wsEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a' }
        }
      }
    }
@@ -117,6 +117,7 @@ This helper should be configured in codecept.json or codecept.conf.js
      url: "http://localhost",
      show: true // headless mode not supported for extensions
      chromium: {
+       userDataDir: '/tmp/playwright-tmp', // necessary to launch the browser in normal mode instead of incognito,
        args: [
           `--disable-extensions-except=${pathToExtension}`,
           `--load-extension=${pathToExtension}`
