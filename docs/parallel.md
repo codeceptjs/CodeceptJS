@@ -178,6 +178,22 @@ customWorkers.on(event.all.result, () => {
 });
 ```
 
+### Emitting messages to the parent worker
+
+Child workers can send non test events to the main process. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
+
+```js
+// inside main process
+// listen for any non test related events
+workers.on('message', (data) => {
+  console.log(data)
+});
+
+workers.on(event.all.result, (status, completedTests, workerStats) => {
+  // logic
+});
+```
+
 ## Sharing Data Between Workers
 
 NodeJS Workers can communicate between each other via messaging system. It may happen that you want to pass some data from one of workers to other. For instance, you may want to share user credentials accross all tests. Data will be appended to a container.
