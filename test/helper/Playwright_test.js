@@ -940,4 +940,15 @@ describe('Playwright - Electron', () => {
   afterEach(() => {
     return I._after();
   });
+
+  describe('#amOnPage', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.amOnPage('/');
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot open pages inside an Electron container');
+      }
+    });
+  });
 });
