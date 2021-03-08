@@ -99,7 +99,7 @@ This helper should be configured in codecept.json or codecept.conf.js
      Playwright: {
        url: "http://localhost",
        chromium: {
-         browserWSEndpoint: "ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a"
+         browserWSEndpoint: { wsEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a' }
        }
      }
    }
@@ -117,6 +117,7 @@ This helper should be configured in codecept.json or codecept.conf.js
      url: "http://localhost",
      show: true // headless mode not supported for extensions
      chromium: {
+       userDataDir: '/tmp/playwright-tmp', // necessary to launch the browser in normal mode instead of incognito,
        args: [
           `--disable-extensions-except=${pathToExtension}`,
           `--load-extension=${pathToExtension}`
@@ -612,8 +613,10 @@ If a function returns a Promise it will wait for its resolution.
 
 #### Parameters
 
--   `fn`  
--   `arg`  
+-   `fn` **([string][7] | [function][9])** function to be executed in browser context.
+-   `arg` **any?** optional argument to pass to the function
+
+Returns **[Promise][10]&lt;any>** 
 
 ### fillField
 
@@ -634,21 +637,39 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][7]** text value to fill.
+-   `value` **([string][7] | [object][5])** text value to fill.
 
 ### forceClick
 
-Force clicks an element without waiting for it to become visible and not animating.
+Perform an emulated click on a link or a button, given by a locator.
+Unlike normal click instead of sending native event, emulates a click with JavaScript.
+This works on hidden, animated or inactive elements as well.
+
+If a fuzzy locator is given, the page will be searched for a button, link, or image matching the locator string.
+For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
+For images, the "alt" attribute and inner text of any parent links are searched.
+
+The second parameter is a context (CSS or XPath locator) to narrow the search.
 
 ```js
-I.forceClick('#hiddenButton');
-I.forceClick('Click me', '#hidden');
+// simple link
+I.forceClick('Logout');
+// button of form
+I.forceClick('Submit');
+// CSS button
+I.forceClick('#form input[type=submit]');
+// XPath
+I.forceClick('//form/*[@type=submit]');
+// link in context
+I.forceClick('Logout', '#nav');
+// using strict locator
+I.forceClick({css: 'nav a.login'});
 ```
 
 #### Parameters
 
--   `locator`  
--   `context`   
+-   `locator` **([string][7] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][7]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 ### grabAttributeFrom
 
@@ -665,7 +686,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][7]** attribute name.
 
-Returns **[Promise][9]&lt;[string][7]>** attribute value
+Returns **[Promise][10]&lt;[string][7]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -681,7 +702,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][7]** attribute name.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][7]>>** attribute value
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][7]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -692,7 +713,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][9]&lt;[Array][10]&lt;any>>** 
+Returns **[Promise][10]&lt;[Array][11]&lt;any>>** 
 
 ### grabCookie
 
@@ -709,7 +730,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][7]?** cookie name. 
 
-Returns **([Promise][9]&lt;[string][7]> | [Promise][9]&lt;[Array][10]&lt;[string][7]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][10]&lt;[string][7]> | [Promise][10]&lt;[Array][11]&lt;[string][7]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -726,7 +747,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][7]** CSS property name.
 
-Returns **[Promise][9]&lt;[string][7]>** CSS value
+Returns **[Promise][10]&lt;[string][7]>** CSS value
 
 ### grabCssPropertyFromAll
 
@@ -742,7 +763,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][7]** CSS property name.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][7]>>** CSS value
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][7]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -754,7 +775,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][9]&lt;[string][7]>** current URL
+Returns **[Promise][10]&lt;[string][7]>** current URL
 
 ### grabDataFromPerformanceTiming
 
@@ -805,7 +826,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][7]?** x, y, width or height of the given element.
 
-Returns **([Promise][9]&lt;DOMRect> | [Promise][9]&lt;[number][8]>)** Element bounding rectangle
+Returns **([Promise][10]&lt;DOMRect> | [Promise][10]&lt;[number][8]>)** Element bounding rectangle
 
 ### grabHTMLFrom
 
@@ -822,7 +843,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[string][7]>** HTML code for an element
+Returns **[Promise][10]&lt;[string][7]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -838,7 +859,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][7]>>** HTML code for an element
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][7]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -849,7 +870,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][9]&lt;[number][8]>** number of open tabs
+Returns **[Promise][10]&lt;[number][8]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -864,7 +885,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[number][8]>** number of visible elements
+Returns **[Promise][10]&lt;[number][8]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -875,7 +896,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][9]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][10]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -885,7 +906,7 @@ Grab the text within the popup. If no popup is visible then it will return null
 await I.grabPopupText();
 ```
 
-Returns **[Promise][9]&lt;([string][7] | null)>** 
+Returns **[Promise][10]&lt;([string][7] | null)>** 
 
 ### grabSource
 
@@ -896,7 +917,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][9]&lt;[string][7]>** source code
+Returns **[Promise][10]&lt;[string][7]>** source code
 
 ### grabTextFrom
 
@@ -913,7 +934,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[string][7]>** attribute value
+Returns **[Promise][10]&lt;[string][7]>** attribute value
 
 ### grabTextFromAll
 
@@ -928,7 +949,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][7]>>** attribute value
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][7]>>** attribute value
 
 ### grabTitle
 
@@ -939,7 +960,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][9]&lt;[string][7]>** title
+Returns **[Promise][10]&lt;[string][7]>** title
 
 ### grabValueFrom
 
@@ -955,7 +976,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[string][7]>** attribute value
+Returns **[Promise][10]&lt;[string][7]>** attribute value
 
 ### grabValueFromAll
 
@@ -970,14 +991,14 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][7]>>** attribute value
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][7]>>** attribute value
 
 ### handleDownloads
 
 Handles a file download.Aa file name is required to save the file on disk.
 Files are saved to "output" directory.
 
-Should be used with [FileSystem helper][11] to check that file were downloaded correctly.
+Should be used with [FileSystem helper][12] to check that file were downloaded correctly.
 
 ```js
 I.handleDownloads('downloads/avatar.jpg');
@@ -1028,7 +1049,7 @@ Open new tab and automatically switched to new tab
 I.openNewTab();
 ```
 
-You can pass in [page options][12] to emulate device on this page
+You can pass in [page options][13] to emulate device on this page
 
 ```js
 // enable mobile
@@ -1043,7 +1064,7 @@ I.openNewTab({ isMobile: true });
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][13].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][14].
 
 ```js
 I.pressKey('Backspace');
@@ -1102,13 +1123,13 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][7] | [Array][10]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][14]).
+-   `key` **([string][7] | [Array][11]&lt;[string][7]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][15]).
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][15]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][16]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1124,7 +1145,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][15]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][16]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1206,7 +1227,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][7]** file name to save.
--   `fullPage` **[boolean][16]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][17]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 ### scrollPageToBottom
 
@@ -1466,7 +1487,7 @@ I.seeTitleEquals('Test title.');
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][7]** value to check.
 
 ### selectOption
 
@@ -1492,7 +1513,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][7] | [Array][10]&lt;any>)** visible text or value of option.
+-   `option` **([string][7] | [Array][11]&lt;any>)** visible text or value of option.
 
 ### setCookie
 
@@ -1512,7 +1533,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **(Cookie | [Array][10]&lt;Cookie>)** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][11]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 ### switchTo
 
@@ -1557,7 +1578,7 @@ I.switchToPreviousTab(2);
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][13] is not an option.
+_Note:_ Should be used when [`fillField`][14] is not an option.
 
 ```js
 // passing in a string
@@ -1574,7 +1595,7 @@ I.type(['T', 'E', 'X', 'T']);
 
 -   `keys`  
 -   `delay` **[number][8]?** (optional) delay in ms between key presses 
--   `key` **([string][7] | [Array][10]&lt;[string][7]>)** or array of keys to type.
+-   `key` **([string][7] | [Array][11]&lt;[string][7]>)** or array of keys to type.
 
 ### uncheckOption
 
@@ -1601,7 +1622,7 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][17], [`context`][18] [`browser`][19] } objects from Playwright API are available.
+{ [`page`][18], [`context`][19] [`browser`][20] } objects from Playwright API are available.
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async ({ context }) {
@@ -1612,7 +1633,7 @@ I.usePlaywrightTo('emulate offline mode', async ({ context }) {
 #### Parameters
 
 -   `description` **[string][7]** used to show in logs.
--   `fn` **[function][20]** async functuion that executed with Playwright helper as argument
+-   `fn` **[function][9]** async functuion that executed with Playwright helper as argument
 
 ### wait
 
@@ -1698,8 +1719,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][7] | [function][20])** to be executed in browser context.
--   `argsOrSec` **([Array][10]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
+-   `fn` **([string][7] | [function][9])** to be executed in browser context.
+-   `argsOrSec` **([Array][11]&lt;any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
 
 ### waitForInvisible
@@ -1720,7 +1741,7 @@ I.waitForInvisible('#popup');
 
 Waits for navigation to finish. By default takes configured `waitForNavigation` option.
 
-See [Pupeteer's reference][21]
+See [Playwright's reference][21]
 
 #### Parameters
 
@@ -1737,7 +1758,7 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][20])** 
+-   `urlOrPredicate` **([string][7] | [function][9])** 
 -   `sec` **[number][8]?** seconds to wait 
 
 ### waitForResponse
@@ -1751,7 +1772,7 @@ I.waitForResponse(request => request.url() === 'http://example.com' && request.m
 
 #### Parameters
 
--   `urlOrPredicate` **([string][7] | [function][20])** 
+-   `urlOrPredicate` **([string][7] | [function][9])** 
 -   `sec` **[number][8]?** number of seconds to wait 
 
 ### waitForText
@@ -1851,7 +1872,7 @@ I.waitUntil(() => window.requests == 0, 5);
 
 #### Parameters
 
--   `fn` **([function][20] | [string][7])** function which is executed in browser context.
+-   `fn` **([function][9] | [string][7])** function which is executed in browser context.
 -   `sec` **[number][8]** (optional, `1` by default) time in seconds to wait 
 -   `timeoutMsg` **[string][7]** message to show in case of timeout fail. 
 -   `interval` **[number][8]?**  
@@ -1874,7 +1895,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [2]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
 
-[3]: https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target
+[3]: https://playwright.dev/docs/api/class-browsertype#browsertypeconnectparams
 
 [4]: https://github.com/microsoft/playwright/blob/v0.11.0/docs/api.md#working-with-chrome-extensions
 
@@ -1886,30 +1907,30 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[11]: https://codecept.io/helpers/FileSystem
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
+[12]: https://codecept.io/helpers/FileSystem
 
-[13]: #fillfield
+[13]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
 
-[14]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[14]: #fillfield
 
-[15]: #click
+[15]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[16]: #click
 
-[17]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[18]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context
+[18]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
 
-[19]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser
+[19]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context
 
-[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[20]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser
 
-[21]: https://github.com/microsoft/Playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
+[21]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 
 [22]: https://codecept.io/react

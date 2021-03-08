@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -55,11 +55,11 @@
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.6.2",
-    "@codeceptjs/helper": "^1.0.1",
+    "@codeceptjs/helper": "^1.0.2",
     "acorn": "^7.4.1",
     "allure-js-commons": "^1.3.2",
     "arrify": "^2.0.1",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "chalk": "^4.1.0",
     "commander": "^2.20.3",
     "cross-spawn": "^7.0.3",
@@ -90,8 +90,8 @@
   "devDependencies": {
     "@codeceptjs/detox-helper": "^1.0.2",
     "@codeceptjs/mock-request": "^0.3.0",
-    "@pollyjs/adapter-puppeteer": "^2.6.3",
-    "@pollyjs/core": "^2.6.3",
+    "@pollyjs/adapter-puppeteer": "^5.1.0",
+    "@pollyjs/core": "^5.1.0",
     "@types/inquirer": "^0.0.35",
     "@types/node": "^8.10.66",
     "@wdio/sauce-service": "^5.22.5",

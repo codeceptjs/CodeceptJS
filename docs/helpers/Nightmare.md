@@ -415,7 +415,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][3]** text value to fill.
+-   `value` **([string][3] | [object][4])** text value to fill.
 
 ### grabAttributeFrom
 
@@ -653,19 +653,18 @@ Returns **[Promise][8]&lt;[string][3]>** attribute value
 
 ### grabValueFromAll
 
-Retrieves a value from a form element located by CSS or XPath and returns it to test.
+Retrieves an array of value from a form located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - value of first element is returned.
 
 ```js
-let email = await I.grabValueFrom('input[name=email]');
+let inputs = await I.grabValueFromAll('//form/input');
 ```
 
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[string][3]>** attribute value
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### haveHeader
 

@@ -343,12 +343,23 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
 ## Configuration
 
 * `gherkin`
-  * `features` - path to feature files
+  * `features` - path to feature files, or an array of feature file paths
   * `steps` - array of files with step definitions
 
 ```js
 "gherkin": {
   "features": "./features/*.feature",
+  "steps": [
+    "./step_definitions/steps.js"
+  ]
+}
+```
+```js
+"gherkin": {
+  "features": [
+      "./features/*.feature",
+      "./features/api_features/*.feature"
+    ],
   "steps": [
     "./step_definitions/steps.js"
   ]

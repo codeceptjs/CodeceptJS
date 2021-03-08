@@ -19,10 +19,10 @@ Example:
 
 ![Quick Info](/img/Quick_info.gif)
 
-- Checks types - thanks to TypeScript support in CodeceptJS now allow to tests your tests. TypeScript can prevent some errors: 
+- Checks types - thanks to TypeScript support in CodeceptJS now allow to tests your tests. TypeScript can prevent some errors:
   - invalid type of variables passed to function;
   - calls no-exist method from PageObject or `I` object;
-  - incorrectly used CodeceptJS features; 
+  - incorrectly used CodeceptJS features;
 
 
 ## Getting Started
@@ -106,7 +106,7 @@ declare namespace CodeceptJS {
 
 ## Types for custom helper or page object
 
-If you want to get types for your [custom helper](https://codecept.io/helpers/#configuration), you can add their automatically with CodeceptJS command `npx codeceptjs def`. 
+If you want to get types for your [custom helper](https://codecept.io/helpers/#configuration), you can add their automatically with CodeceptJS command `npx codeceptjs def`.
 
 For example, if you add the new step `printMessage` for your custom helper like this:
 ```js
@@ -121,9 +121,9 @@ export = CustomHelper
 ```
 
 Then you need to add this helper to your `codecept.conf.js` like in this [docs](https://codecept.io/helpers/#configuration).
-And then run the command `npx codeceptjs def`. 
+And then run the command `npx codeceptjs def`.
 
-As result our `steps.d.ts` file will be updated like this: 
+As result our `steps.d.ts` file will be updated like this:
 ```ts
 /// <reference types='codeceptjs' />
 type CustomHelper = import('./CustomHelper');
@@ -153,6 +153,48 @@ declare namespace CodeceptJS {
   interface I extends WithTranslation<Methods> {}
   namespace Translation {
     interface Actions {}
+  }
+}
+```
+
+## Types for custom strict locators
+
+You can define [custom strict locators](https://codecept.io/locators/#custom-strict-locators) that can be used in all methods taking a locator (parameter type `LocatorOrString`).
+
+Example: A custom strict locator with a `data` property, which can be used like this:
+
+```ts
+I.click({ data: 'user-login' });
+```
+
+In order to use the custom locator in TypeScript code, its type shape needs to be registered in the interface `CustomLocators` in your `steps.d.ts` file:
+
+```ts
+/// <reference types='codeceptjs' />
+...
+
+declare namespace CodeceptJS {
+  ...
+
+  interface CustomLocators {
+    data: { data: string };
+  }
+}
+```
+
+The property keys used in the `CustomLocators` interface do not matter (only the *types* of the interface properties are used). For simplicity it is recommended to use the name that is also used in your custom locator itself.
+
+You can also define more complicated custom locators with multiple (also optional) properties:
+
+```ts
+/// <reference types='codeceptjs' />
+...
+
+declare namespace CodeceptJS {
+  ...
+
+  interface CustomLocators {
+    data: { data: string, value?: number, flag?: boolean };
   }
 }
 ```

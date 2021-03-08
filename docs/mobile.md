@@ -19,7 +19,7 @@ I.see('davert@codecept.io', '~email of the customer'));
 I.clearField('~email of the customer'));
 I.dontSee('Nothing special', '~email of the customer'));
 I.seeElement({
-  android: /'android.widget.Button',
+  android: 'android.widget.Button',
   ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'
 });
 ```
@@ -118,6 +118,7 @@ helpers: {
     app: "bs://<hashed app-id>",
     host: "hub-cloud.browserstack.com",
     port: 4444,
+    platform: "ios",
     user: "BROWSERSTACK_USER",
     key: "BROWSERSTACK_KEY",
     device: "iPhone 7"
@@ -262,7 +263,7 @@ It is often happen that mobile applications behave similarly on different platfo
 CodeceptJS provides a way to specify different locators for Android and iOS platforms:
 
 ```js
-I.click({android: /'//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
+I.click({android: '//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
 
 In case some code should be executed on one platform and ignored on others use `runOnAndroid` and `runOnIOS` methods:
@@ -293,4 +294,3 @@ Just as you can specify android, and ios-specific locators, you can do so for we
 ```js
 I.click({web: '#login', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
-

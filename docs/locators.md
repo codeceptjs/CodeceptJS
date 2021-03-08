@@ -21,7 +21,7 @@ If the locator is an object, it should have a single element, with the key signi
 
 Examples:
 
-* {permalink: /'foo'} matches `<div id="foo">`
+* {id: 'foo'} matches `<div id="foo">`
 * {name: 'foo'} matches `<div name="foo">`
 * {css: 'input[type=input][value=foo]'} matches `<input type="input" value="foo">`
 * {xpath: "//input[@type='submit'][contains(@value, 'foo')]"} matches `<input type="submit" value="foobar">`
@@ -229,7 +229,7 @@ locate('button').after('.btn-cancel');
 
 ID locators are best to select the exact semantic element in web and mobile testing:
 
-* `#user` or `{ permalink: /'user' }` finds element with id="user"
+* `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
 
 ## Custom Locators

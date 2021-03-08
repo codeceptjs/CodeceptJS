@@ -1,3 +1,37 @@
+## 3.0.5
+
+
+Features:
+
+* **[Official Docker image for CodeceptJS v3](https://hub.docker.com/r/codeceptjs/codeceptjs)**. New Docker image is based on official Playwright image and supports Playwright, Puppeteer, WebDriver engines. Thanks @VikentyShevyrin  
+* Better support for Typescript `codecept.conf.ts` configuration files. See #2750 by @elaichenkov
+* Propagate more events for custom parallel script. See #2796 by @jccguimaraes 
+* [mocha-junit-reporter] Now supports attachments, see documentation for details. See #2675 by @Shard
+* CustomLocators interface for TypeScript to extend from LocatorOrString. See #2798 by @danielrentz
+* [REST] Mask sensitive data from log messages.
+```js
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
+```
+See #2786 by @PeterNgTr
+
+Bug fixes:
+* Fixed reporting of nested steps with PageObjects and BDD scenarios. See #2800 by @davertmik. Fixes #2720 #2682
+* Fixed issue with `codeceptjs shell` which was broken since 3.0.0. See #2743 by @stedman
+* [Gherkin] Fixed issue suppressed or hidden errors in tests. See #2745 by @ktryniszewski-mdsol
+* [Playwright] fix grabCssPropertyFromAll serialization by using property names. See #2757 by @elaichenkov
+* [Allure] fix report for multi sessions. See #2771 by @cbayer97
+* [WebDriver] Fix locator object debug log messages in smart wait. See 2748 by @elaichenkov
+
+Documentation fixes:
+* Fixed some broken examples. See #2756 by @danielrentz
+* Fixed Typescript typings. See #2747, #2758 and #2769 by @elaichenkov
+* Added missing type for xFeature. See #2754 by @PeterNgTr
+* Fixed code example in Page Object documentation. See #2793 by @mkrtchian
+
+Library updates:
+* Updated Axios to 0.21.1. See by @sseide
+* Updated @pollyjs/core @pollyjs/adapter-puppeteer. See #2760 by @Anikethana
+
 ## 3.0.4
 
 * **Hotfix** Fixed `init` script by adding `cross-spawn` package. By @vipulgupta2048
@@ -70,7 +104,7 @@ Scenario('title', (I, loginPage) => {});
 Scenario('title', ({ I, loginPage }) => {});
 ```
 
-* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrade guide](https://bit.ly/codecept3Up).
 * **[TypeScript guide](/typescript)** and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
 * [tryTo](/plugins/#tryTo) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
 * Introduced one-line installer:

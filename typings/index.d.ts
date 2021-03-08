@@ -22,7 +22,9 @@ declare namespace CodeceptJS {
   interface I {}
   interface IHook {}
   interface IScenario {}
-  interface IFeature {}
+  interface IFeature {
+    (title: string): FeatureConfig
+  }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
@@ -52,7 +54,10 @@ declare namespace CodeceptJS {
     | { android: string, ios: string }
     | { react: string };
 
-  type LocatorOrString = string | ILocator | Locator;
+  interface CustomLocators { }
+  type LocatorOrString = string | ILocator | Locator | CustomLocators[keyof CustomLocators];
+
+  type StringOrSecret = string | CodeceptJS.Secret;
 
   interface HookCallback { (args: SupportObject): void; }
   interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo: IScenario}

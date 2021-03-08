@@ -179,7 +179,7 @@ If element differs on on iOS and Android you can use **cross platform locators**
 ```js
 // locate element by text on Android
 // locate element by accessibility id on iOS
-I.click({ android: /'Start', ios: '~start' });
+I.click({ android: 'Start', ios: '~start' });
 ```
 
 When application behavior differs on Android and iOS use platform-specific actions:
@@ -207,7 +207,7 @@ Scenario('save in application', ({ I }) => {
   I.fillField('#text', 'a new text');
   I.see('a new text', '#textValue');
   I.dontSeeElement('#createdAndVisibleText');
-  I.click({ ios: '#GoButton', android: /'Button' });
+  I.click({ ios: '#GoButton', android: 'Button' });
   I.waitForElement('#createdAndVisibleText', 20);
   I.seeElement('#createdAndVisibleText');
   I.runOnAndroid(() => {
