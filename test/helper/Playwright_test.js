@@ -951,4 +951,48 @@ describe('Playwright - Electron', () => {
       }
     });
   });
+
+  describe('#openNewTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.openNewTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot open new tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#switchToNextTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToNextTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#switchToPreviousTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToNextTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#closeCurrentTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.closeCurrentTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot close current tab inside an Electron container');
+      }
+    });
+  });
 });
