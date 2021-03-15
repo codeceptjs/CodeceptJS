@@ -1,4 +1,6 @@
 const assert = require('assert');
+const session = require('../../lib/session');
+const { addWorker } = require('../../lib/workerStorage');
 
 const { event } = codeceptjs;
 
@@ -13,6 +15,13 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', ({ I 
   });
   I.dontSee('GitHub');
   I.seeInCurrentUrl('/info');
+});
+
+Scenario('simple session @Playwright-Electron', ({ I }) => {
+  I.see('Hello World!');
+  session('john', () => {
+    I.see('Hello World!');
+  });
 });
 
 Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright @WebDriver', async ({ I }) => {
