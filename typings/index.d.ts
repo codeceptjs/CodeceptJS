@@ -23,7 +23,7 @@ declare namespace CodeceptJS {
   interface IHook {}
   interface IScenario {}
   interface IFeature {
-    (title: string): FeatureConfig
+    (title: string): FeatureConfig;
   }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
@@ -53,10 +53,16 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
-    | any;
+    | { shadow: string }
+    | { custom: string }
+    | { customShadow: string };
 
-  interface CustomLocators { }
-  type LocatorOrString = string | ILocator | Locator | CustomLocators[keyof CustomLocators];
+  interface CustomLocators {}
+  type LocatorOrString =
+    | string
+    | ILocator
+    | Locator
+    | CustomLocators[keyof CustomLocators];
 
   type StringOrSecret = string | CodeceptJS.Secret;
 
