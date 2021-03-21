@@ -54,8 +54,7 @@ declare namespace CodeceptJS {
     | { android: string; ios: string }
     | { react: string }
     | { shadow: string }
-    | { custom: string }
-    | { customShadow: string };
+    | { custom: string };
 
   interface CustomLocators {}
   type LocatorOrString =
