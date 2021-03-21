@@ -8,13 +8,13 @@ declare namespace CodeceptJS {
     import("./utils").Translate<T, Translation.Actions>;
 
   type Cookie = {
-    name: string
-    value: string
-  }
+    name: string;
+    value: string;
+  };
 
   interface PageScrollPosition {
-    x: number,
-    y: number
+    x: number;
+    y: number;
   }
 
   // Could get extended by user generated typings
@@ -51,25 +51,43 @@ declare namespace CodeceptJS {
     | { frame: string }
     | { android: string }
     | { ios: string }
-    | { android: string, ios: string }
-    | { react: string };
+    | { android: string; ios: string }
+    | { react: string }
+    | any;
 
   interface CustomLocators { }
   type LocatorOrString = string | ILocator | Locator | CustomLocators[keyof CustomLocators];
 
   type StringOrSecret = string | CodeceptJS.Secret;
 
-  interface HookCallback { (args: SupportObject): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo: IScenario}
-  interface Feature extends IFeature { skip: IFeature }
-  interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
+  interface HookCallback {
+    (args: SupportObject): void;
+  }
+  interface Scenario extends IScenario {
+    only: IScenario;
+    skip: IScenario;
+    todo: IScenario;
+  }
+  interface Feature extends IFeature {
+    skip: IFeature;
+  }
+  interface IData {
+    Scenario: IScenario;
+    only: { Scenario: IScenario };
+  }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
     (title: string, callback?: HookCallback): ScenarioConfig;
-    (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig;
+    (
+      title: string,
+      opts: { [key: string]: any },
+      callback: HookCallback
+    ): ScenarioConfig;
   }
-  interface IHook { (callback: HookCallback): void; }
+  interface IHook {
+    (callback: HookCallback): void;
+  }
 
   interface Globals {
     codeceptjs: typeof codeceptjs;
@@ -164,12 +182,12 @@ declare namespace Mocha {
   }
 
   interface Suite extends SuiteRunnable {
-    tags: any[]
-    comment: string
-    feature: any
+    tags: any[];
+    comment: string;
+    feature: any;
   }
 
-  interface Test  extends Runnable {
+  interface Test extends Runnable {
     tags: any[];
   }
 }
