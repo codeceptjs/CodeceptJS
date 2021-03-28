@@ -1,19 +1,16 @@
 const path = require('path');
-const TestHelper = require('../support/TestHelper');
 
 module.exports.config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',
-  grep: '@Playwright-Electron',
+  grep: '@ElectronPlaywright',
   helpers: {
     Playwright: {
-      url: TestHelper.siteUrl(),
-      show: false,
-      browser: '_electron',
-      _electron: {
+      browser: 'electron',
+      electron: {
         executablePath: require('electron'),
-        args: [path.join('data/', 'electron/')],
+        args: [path.join('test/data/', 'electron/')],
       },
     },
     ScreenshotSessionHelper: {
@@ -30,8 +27,4 @@ module.exports.config = {
     },
   },
   name: 'acceptance',
-  gherkin: {
-    features: './gherkin/*.feature',
-    steps: ['./gherkin/steps.js'],
-  },
 };

@@ -912,33 +912,17 @@ describe('Playwright - Electron', () => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
     I = new Playwright({
-      show: true,
       waitForTimeout: 5000,
       waitForAction: 500,
       restart: true,
-      browser: '_electron',
-      _electron: {
+      browser: 'electron',
+      electron: {
         executablePath: require('electron'),
         args: [path.join(codecept_dir, '/electron/')],
       },
-      defaultPopupAction: 'accept',
     });
     I._init();
     return I._beforeSuite();
-  });
-
-  beforeEach(() => {
-    webApiTests.init({
-      I, siteUrl,
-    });
-    return I._before().then(() => {
-      page = I.page;
-      browser = I.browser;
-    });
-  });
-
-  afterEach(() => {
-    return I._after();
   });
 
   describe('#amOnPage', () => {
