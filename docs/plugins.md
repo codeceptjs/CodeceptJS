@@ -510,8 +510,8 @@ Scenario Outline: ...
              When ...
              Then ...
         Examples:
-  | productName          | customer                | email               | anythingMore |
-  | {{commerce.product}} | Dr. {{ name.findName }} | {{ internet.email}} | staticData   |
+  | productName          | customer              | email              | anythingMore |
+  | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
 ```
 
 ### Parameters
