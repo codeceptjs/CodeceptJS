@@ -134,6 +134,17 @@ services:
       - ./support:/support
       - node_modules:/node_modules
 
+  test-bdd.faker:
+    build: ..
+    env_file: .env
+    environment:
+      - CODECEPT_ARGS=-c codecept.faker.js
+    volumes:
+      - ./bdd:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
+
   selenium.chrome:
     image: selenium/standalone-chrome:3.141.59-oxygen
     shm_size: 2g

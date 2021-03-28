@@ -51,11 +51,17 @@ Scenario('Different cookies for different sessions @WebDriverIO @Protractor @Pla
   const cookies = {};
 
   I.amOnPage(cookiePage);
+  I.click(locate('#uhfCookieAlert button').withText('Accept all'));
+  I.refreshPage();
   session('john', () => {
     I.amOnPage(cookiePage);
+    I.click(locate('#uhfCookieAlert button').withText('Accept all'));
+    I.refreshPage();
   });
   session('mary', () => {
     I.amOnPage(cookiePage);
+    I.click(locate('#uhfCookieAlert button').withText('Accept all'));
+    I.refreshPage();
   });
 
   cookies.default = (await I.grabCookie(cookieName)).value;
