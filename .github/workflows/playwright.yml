@@ -39,8 +39,6 @@ jobs:
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run chromium tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run electron tests
-      run: "./bin/codecept.js run -c test/acceptance/codecept.Playwright-Electron.js --grep @ElectronPlaywright --debug"
     - name: run firefox tests
       run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests

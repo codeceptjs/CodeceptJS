@@ -15,13 +15,6 @@ Scenario('simple session @WebDriverIO @Protractor @Puppeteer @Playwright', ({ I 
   I.seeInCurrentUrl('/info');
 });
 
-Scenario('simple session @ElectronPlaywright', ({ I }) => {
-  I.see('Hello World!');
-  session('john', () => {
-    I.see('Hello World!');
-  });
-});
-
 Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright @WebDriver', async ({ I }) => {
   I.amOnPage('/');
   I.saveScreenshot('session_default_1.png');
