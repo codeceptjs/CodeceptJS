@@ -697,7 +697,7 @@ You may also use `tryTo` for cases when you deal with uncertainty on page:
 * soft assertions
 * cookies & gdpr
 
-`tryTo` function is enabled by default via [tryTo plugin](/plugins#tryTo)
+`tryTo` function is enabled by default via [tryTo plugin](/plugins/#tryto)
 
 ## Comments
 
