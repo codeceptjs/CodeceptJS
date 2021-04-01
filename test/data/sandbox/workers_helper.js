@@ -5,8 +5,7 @@ const Helper = require('../../../lib/helper');
 
 class Workers extends Helper {
   seeThisIsWorker() {
-    assert(true, true);
-    // assert(!isMainThread, 'this is running inside worker');
+    assert(!isMainThread, 'this is running inside worker');
   }
 }
 
