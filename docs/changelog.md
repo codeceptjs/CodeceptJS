@@ -7,29 +7,68 @@ layout: Section
 
 # Releases
 
+## 3.0.5
+
+
+Features:
+
+* **[Official Docker image for CodeceptJS v3](https://hub.docker.com/r/codeceptjs/codeceptjs)**. New Docker image is based on official Playwright image and supports Playwright, Puppeteer, WebDriver engines. Thanks **[VikentyShevyrin](https://github.com/VikentyShevyrin)**  
+* Better support for Typescript `codecept.conf.ts` configuration files. See [#2750](https://github.com/codeceptjs/CodeceptJS/issues/2750) by **[elaichenkov](https://github.com/elaichenkov)**
+* Propagate more events for custom parallel script. See [#2796](https://github.com/codeceptjs/CodeceptJS/issues/2796) by **[jccguimaraes](https://github.com/jccguimaraes)** 
+* [mocha-junit-reporter] Now supports attachments, see documentation for details. See [#2675](https://github.com/codeceptjs/CodeceptJS/issues/2675) by **[Shard](https://github.com/Shard)**
+* CustomLocators interface for TypeScript to extend from LocatorOrString. See [#2798](https://github.com/codeceptjs/CodeceptJS/issues/2798) by **[danielrentz](https://github.com/danielrentz)**
+* **[REST]** Mask sensitive data from log messages.
+```js
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
+```
+See [#2786](https://github.com/codeceptjs/CodeceptJS/issues/2786) by **[PeterNgTr](https://github.com/PeterNgTr)**
+
+Bug fixes:
+* Fixed reporting of nested steps with PageObjects and BDD scenarios. See [#2800](https://github.com/codeceptjs/CodeceptJS/issues/2800) by **[davertmik](https://github.com/davertmik)**. Fixes [#2720](https://github.com/codeceptjs/CodeceptJS/issues/2720) [#2682](https://github.com/codeceptjs/CodeceptJS/issues/2682)
+* Fixed issue with `codeceptjs shell` which was broken since 3.0.0. See [#2743](https://github.com/codeceptjs/CodeceptJS/issues/2743) by **[stedman](https://github.com/stedman)**
+* **[Gherkin]** Fixed issue suppressed or hidden errors in tests. See [#2745](https://github.com/codeceptjs/CodeceptJS/issues/2745) by **[ktryniszewski-mdsol](https://github.com/ktryniszewski-mdsol)**
+* **[Playwright]** fix grabCssPropertyFromAll serialization by using property names. See [#2757](https://github.com/codeceptjs/CodeceptJS/issues/2757) by **[elaichenkov](https://github.com/elaichenkov)**
+* **[Allure]** fix report for multi sessions. See [#2771](https://github.com/codeceptjs/CodeceptJS/issues/2771) by **[cbayer97](https://github.com/cbayer97)**
+* **[WebDriver]** Fix locator object debug log messages in smart wait. See 2748 by **[elaichenkov](https://github.com/elaichenkov)**
+
+Documentation fixes:
+* Fixed some broken examples. See [#2756](https://github.com/codeceptjs/CodeceptJS/issues/2756) by **[danielrentz](https://github.com/danielrentz)**
+* Fixed Typescript typings. See [#2747](https://github.com/codeceptjs/CodeceptJS/issues/2747), [#2758](https://github.com/codeceptjs/CodeceptJS/issues/2758) and [#2769](https://github.com/codeceptjs/CodeceptJS/issues/2769) by **[elaichenkov](https://github.com/elaichenkov)**
+* Added missing type for xFeature. See [#2754](https://github.com/codeceptjs/CodeceptJS/issues/2754) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Fixed code example in Page Object documentation. See [#2793](https://github.com/codeceptjs/CodeceptJS/issues/2793) by **[mkrtchian](https://github.com/mkrtchian)**
+
+Library updates:
+* Updated Axios to 0.21.1. See by **[sseide](https://github.com/sseide)**
+* Updated **[pollyjs](https://github.com/pollyjs)**/core **[pollyjs](https://github.com/pollyjs)**/adapter-puppeteer. See [#2760](https://github.com/codeceptjs/CodeceptJS/issues/2760) by **[Anikethana](https://github.com/Anikethana)**
+
+## 3.0.4
+
+* **Hotfix** Fixed `init` script by adding `cross-spawn` package. By **[vipulgupta2048](https://github.com/vipulgupta2048)**
+* Fixed handling error during initialization of `run-multiple`. See [#2730](https://github.com/codeceptjs/CodeceptJS/issues/2730) by **[wagoid](https://github.com/wagoid)**
+
 ## 3.0.3
 
 * **Playwright 1.7 support**
-* **[Playwright]** Fixed handling null context in click. See [#2667](https://github.com/codeceptjs/CodeceptJS/issues/2667) by **[matthewjf](https://github.com/matthewjf)**  
-* **[Playwright]** Fixed `Cannot read property '$$' of null` when locating elements. See [#2713](https://github.com/codeceptjs/CodeceptJS/issues/2713) by **[matthewjf](https://github.com/matthewjf)** 
+* **[Playwright]** Fixed handling null context in click. See [#2667](https://github.com/codeceptjs/CodeceptJS/issues/2667) by **[matthewjf](https://github.com/matthewjf)**
+* **[Playwright]** Fixed `Cannot read property '$$' of null` when locating elements. See [#2713](https://github.com/codeceptjs/CodeceptJS/issues/2713) by **[matthewjf](https://github.com/matthewjf)**
 * Command `npx codeceptjs init` improved
   * auto-installing required packages
   * better error messages
   * fixed generating type definitions
-* Data Driven Tests improvements: instead of having one skipped test for data driven scenarios when using xData you get a skipped test for each entry in the data table. See [#2698](https://github.com/codeceptjs/CodeceptJS/issues/2698) by **[Georgegriff](https://github.com/Georgegriff)** 
-* **[Puppeteer]** Fixed that `waitForFunction` was not working with number values. See [#2703](https://github.com/codeceptjs/CodeceptJS/issues/2703) by **[MumblesNZ](https://github.com/MumblesNZ)** 
+* Data Driven Tests improvements: instead of having one skipped test for data driven scenarios when using xData you get a skipped test for each entry in the data table. See [#2698](https://github.com/codeceptjs/CodeceptJS/issues/2698) by **[Georgegriff](https://github.com/Georgegriff)**
+* **[Puppeteer]** Fixed that `waitForFunction` was not working with number values. See [#2703](https://github.com/codeceptjs/CodeceptJS/issues/2703) by **[MumblesNZ](https://github.com/MumblesNZ)**
 * Enabled autocompletion for custom helpers. [#2695](https://github.com/codeceptjs/CodeceptJS/issues/2695) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Emit test.after on workers. Fix [#2693](https://github.com/codeceptjs/CodeceptJS/issues/2693) by **[jccguimaraes](https://github.com/jccguimaraes)**
-* TypeScript: Allow .ts config files. See [#2708](https://github.com/codeceptjs/CodeceptJS/issues/2708) by **[elukoyanov](https://github.com/elukoyanov)** 
+* TypeScript: Allow .ts config files. See [#2708](https://github.com/codeceptjs/CodeceptJS/issues/2708) by **[elukoyanov](https://github.com/elukoyanov)**
 * Fixed definitions generation errors by **[elukoyanov](https://github.com/elukoyanov)**. See [#2707](https://github.com/codeceptjs/CodeceptJS/issues/2707) and [#2718](https://github.com/codeceptjs/CodeceptJS/issues/2718)
 * Fixed handing error in _after function; for example, browser is closed during test and tests executions is stopped, but error was not logged. See [#2715](https://github.com/codeceptjs/CodeceptJS/issues/2715) by **[elukoyanov](https://github.com/elukoyanov)**
 * Emit hook.failed in workers. Fix [#2723](https://github.com/codeceptjs/CodeceptJS/issues/2723) by **[jccguimaraes](https://github.com/jccguimaraes)**
-* [wdio plugin] Added `seleniumArgs` and `seleniumInstallArgs` config options for plugin. See [#2687](https://github.com/codeceptjs/CodeceptJS/issues/2687) by **[andrerleao](https://github.com/andrerleao)** 
+* [wdio plugin] Added `seleniumArgs` and `seleniumInstallArgs` config options for plugin. See [#2687](https://github.com/codeceptjs/CodeceptJS/issues/2687) by **[andrerleao](https://github.com/andrerleao)**
 * [allure plugin] Added `addParameter` method in [#2717](https://github.com/codeceptjs/CodeceptJS/issues/2717) by **[jancorvus](https://github.com/jancorvus)**. Fixes [#2716](https://github.com/codeceptjs/CodeceptJS/issues/2716)
-* Added mocha-based `--reporter-options` and `--reporter <name>` commands to `run-workers` command by in [#2691](https://github.com/codeceptjs/CodeceptJS/issues/2691) **[Ameterezu](https://github.com/Ameterezu)** 
-* Fixed infinite loop for junit reports. See [#2691](https://github.com/codeceptjs/CodeceptJS/issues/2691) **[Ameterezu](https://github.com/Ameterezu)** 
-* Added status, start/end time, and match line for BDD steps. See [#2678](https://github.com/codeceptjs/CodeceptJS/issues/2678) by **[ktryniszewski-mdsol](https://github.com/ktryniszewski-mdsol)** 
-* [stepByStepReport plugin] Fixed "helper.saveScreenshot is not a function". Fix [#2688](https://github.com/codeceptjs/CodeceptJS/issues/2688) by **[andrerleao](https://github.com/andrerleao)** 
+* Added mocha-based `--reporter-options` and `--reporter <name>` commands to `run-workers` command by in [#2691](https://github.com/codeceptjs/CodeceptJS/issues/2691) **[Ameterezu](https://github.com/Ameterezu)**
+* Fixed infinite loop for junit reports. See [#2691](https://github.com/codeceptjs/CodeceptJS/issues/2691) **[Ameterezu](https://github.com/Ameterezu)**
+* Added status, start/end time, and match line for BDD steps. See [#2678](https://github.com/codeceptjs/CodeceptJS/issues/2678) by **[ktryniszewski-mdsol](https://github.com/ktryniszewski-mdsol)**
+* [stepByStepReport plugin] Fixed "helper.saveScreenshot is not a function". Fix [#2688](https://github.com/codeceptjs/CodeceptJS/issues/2688) by **[andrerleao](https://github.com/andrerleao)**
 
 
 
@@ -37,21 +76,21 @@ layout: Section
 
 * **[Playwright]** Fix connection close with remote browser. See [#2629](https://github.com/codeceptjs/CodeceptJS/issues/2629) by **[dipiash](https://github.com/dipiash)**
 * **[REST]** set maxUploadFileSize when performing api calls. See [#2611](https://github.com/codeceptjs/CodeceptJS/issues/2611) by **[PeterNgTr](https://github.com/PeterNgTr)**
-* Duplicate Scenario names (combined with Feature name) are now detected via a warning message. 
+* Duplicate Scenario names (combined with Feature name) are now detected via a warning message.
 Duplicate test names can cause `codeceptjs run-workers` to not function. See [#2656](https://github.com/codeceptjs/CodeceptJS/issues/2656) by **[Georgegriff](https://github.com/Georgegriff)**
 * Documentation fixes
 
 Bug Fixes:
   *  --suites flag now should function correctly for `codeceptjs run-workers`. See [#2655](https://github.com/codeceptjs/CodeceptJS/issues/2655) by **[Georgegriff](https://github.com/Georgegriff)**
   * [autoLogin plugin] Login methods should now function as expected with `codeceptjs run-workers`. See [#2658](https://github.com/codeceptjs/CodeceptJS/issues/2658) by **[Georgegriff](https://github.com/Georgegriff)**, resolves [#2620](https://github.com/codeceptjs/CodeceptJS/issues/2620)
-  
+
 
 
 ## 3.0.1
 
 ♨️ Hot fix:
   * Lock the mocha version to avoid the errors. See [#2624](https://github.com/codeceptjs/CodeceptJS/issues/2624) by PeterNgTr
- 
+
 🐛 Bug Fix:
   * Fixed error handling in Scenario.js. See [#2607](https://github.com/codeceptjs/CodeceptJS/issues/2607) by haveac1gar
   * Changing type definition in order to allow the use of functions with any number of any arguments. See [#2616](https://github.com/codeceptjs/CodeceptJS/issues/2616) by akoltun
@@ -202,9 +241,9 @@ tryTo(() => I.click('Accept', '.cookies'));
 ## 2.6.11
 
 * **[Playwright]** Playwright 1.4 compatibility
-* **[Playwright]** Added `ignoreHTTPSErrors` config option (default: false). See [#2566](https://github.com/codeceptjs/CodeceptJS/issues/2566) by gurjeetbains 
-* Added French translation by **[vimar](https://github.com/vimar)** 
-* **[WebDriver]** Updated `dragSlider` to work in WebDriver W3C protocol. Fixes [#2557](https://github.com/codeceptjs/CodeceptJS/issues/2557) by suniljaiswal01  
+* **[Playwright]** Added `ignoreHTTPSErrors` config option (default: false). See [#2566](https://github.com/codeceptjs/CodeceptJS/issues/2566) by gurjeetbains
+* Added French translation by **[vimar](https://github.com/vimar)**
+* **[WebDriver]** Updated `dragSlider` to work in WebDriver W3C protocol. Fixes [#2557](https://github.com/codeceptjs/CodeceptJS/issues/2557) by suniljaiswal01
 
 ## 2.6.10
 
