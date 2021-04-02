@@ -74,9 +74,11 @@ const testGroups = workers.createGroupsOfSuites(2);
 const browsers = ['firefox', 'chrome'];
 
 const configs = browsers.map(browser => {
-  return helpers: {
-    WebDriver: { browser }
-  }
+  return {
+    helpers: {
+      WebDriver: { browser }
+    }
+  };
 });
 
 for (const config of configs) {
@@ -173,6 +175,22 @@ customWorkers.run();
 // You can use event listeners similar to above example.
 customWorkers.on(event.all.result, () => {
   workers.printResults();
+});
+```
+
+### Emitting messages to the parent worker
+
+Child workers can send non test events to the main process. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
+
+```js
+// inside main process
+// listen for any non test related events
+workers.on('message', (data) => {
+  console.log(data)
+});
+
+workers.on(event.all.result, (status, completedTests, workerStats) => {
+  // logic
 });
 ```
 

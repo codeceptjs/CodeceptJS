@@ -104,13 +104,14 @@
     "contributor-faces": "^1.0.3",
     "documentation": "^12.3.0",
     "dtslint": "^3.6.12",
+    "electron": "^12.0.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-mocha": "^6.3.0",
     "expect": "^26.6.2",
     "express": "^4.17.1",
-    "faker": "^4.1.0",
+    "faker": "^5.5.1",
     "form-data": "^3.0.0",
     "graphql": "^14.6.0",
     "husky": "^4.3.5",
@@ -120,9 +121,9 @@
     "mocha-parallel-tests": "^2.3.0",
     "nightmare": "^3.0.2",
     "nodemon": "^1.19.4",
-    "playwright": "^1.6.2",
+    "playwright": "^1.9.1",
     "protractor": "^5.4.4",
-    "puppeteer": "^4.0.0",
+    "puppeteer": "^8.0.0",
     "qrcode-terminal": "^0.12.0",
     "rosie": "^1.6.0",
     "runok": "^0.9.2",
@@ -141,6 +142,9 @@
   "engines": {
     "node": ">=8.9.1",
     "npm": ">=5.6.0"
+  },
+  "peerDependencies": {
+    "faker": "^5.5.1"
   },
   "es6": true,
   "husky": {
