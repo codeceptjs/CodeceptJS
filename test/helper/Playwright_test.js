@@ -869,3 +869,114 @@ describe('Playwright - Emulation', () => {
     assert.equal(width, 980);
   });
 });
+
+describe('Playwright - PERSISTENT', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chromium: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        userDataDir: '/tmp/playwright-tmp',
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  it('should launch a persistent context', async () => {
+    assert.equal(I._getType(), 'BrowserContext');
+  });
+});
+
+describe('Playwright - Electron', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      restart: true,
+      browser: 'electron',
+      electron: {
+        executablePath: require('electron'),
+        args: [path.join(codecept_dir, '/electron/')],
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  describe('#amOnPage', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.amOnPage('/');
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot open pages inside an Electron container');
+      }
+    });
+  });
+
+  describe('#openNewTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.openNewTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot open new tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#switchToNextTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToNextTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#switchToPreviousTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToNextTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#closeCurrentTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.closeCurrentTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot close current tab inside an Electron container');
+      }
+    });
+  });
+});

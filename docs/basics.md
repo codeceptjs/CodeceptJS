@@ -30,7 +30,7 @@ The following is a diagram of the CodeceptJS architecture:
 ![architecture](/img/architecture.svg)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
-However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
+However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppeteer or Nightmare.
 
 **Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another.
 
@@ -697,7 +697,7 @@ You may also use `tryTo` for cases when you deal with uncertainty on page:
 * soft assertions
 * cookies & gdpr
 
-`tryTo` function is enabled by default via [tryTo plugin](/plugins#tryTo)
+`tryTo` function is enabled by default via [tryTo plugin](/plugins/#tryto)
 
 ## Comments
 

@@ -478,9 +478,49 @@ I.click('=sign-up'); // matches => [data-qa=sign-up]
 
 -   `config`  
 
+## fakerTransform
+
+Use the [faker.js][4] package to generate fake data inside examples on your gherkin tests
+
+![Faker.js][5]
+
+#### Usage
+
+To start please install `faker.js` package
+
+    npm install -D faker
+
+    yarn add -D faker
+
+Add this plugin to config file:
+
+```js
+plugins: {
+   fakerTransform: {
+     enabled: true
+   }
+}
+```
+
+Add the faker API using a mustache string format inside examples tables in your gherkin scenario outline
+
+```feature
+Scenario Outline: ...
+            Given ...
+             When ...
+             Then ...
+        Examples:
+  | productName          | customer              | email              | anythingMore |
+  | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
+```
+
+### Parameters
+
+-   `config`  
+
 ## pauseOnFail
 
-Automatically launches [interactive pause][4] when a test fails.
+Automatically launches [interactive pause][6] when a test fails.
 
 Useful for debugging flaky tests on local environment.
 Add this plugin to config file:
@@ -527,9 +567,9 @@ Possible config options:
 
     Links:
 
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][5]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][6]
--   [https://github.com/gotwarlost/istanbul][7]
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][7]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][8]
+-   [https://github.com/gotwarlost/istanbul][9]
 
 ### Parameters
 
@@ -633,14 +673,14 @@ Possible config options:
 
 ## selenoid
 
-[Selenoid][8] plugin automatically starts browsers and video recording.
+[Selenoid][10] plugin automatically starts browsers and video recording.
 Works with WebDriver helper.
 
 ### Prerequisite
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][9] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][11] tool from Selenoid
 
 ### Usage
 
@@ -669,7 +709,7 @@ plugins: {
   }
 ```
 
-When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][10] and start Selenoid automatically.
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][12] and start Selenoid automatically.
 It will also create `browsers.json` file required by Selenoid.
 
 In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
@@ -681,10 +721,10 @@ In automatic mode the latest version of browser will be used for tests. It is re
 While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
 This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
 
-> Use [Selenoid Configuration Manager][9] to create and start containers semi-automatically.
+> Use [Selenoid Configuration Manager][11] to create and start containers semi-automatically.
 
 1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
-    [Refer to Selenoid documentation][11] to know more about browsers.json.
+    [Refer to Selenoid documentation][13] to know more about browsers.json.
 
 _Sample browsers.json_
 
@@ -709,7 +749,7 @@ _Sample browsers.json_
 
 2.  Create Selenoid container
 
-Run the following command to create a container. To know more [refer here][12]
+Run the following command to create a container. To know more [refer here][14]
 
 ```bash
 docker create                                    \
@@ -742,7 +782,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 | enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
 | enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
 | deletePassed     | Delete video and logs of passed tests (default : true)                         |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][13] to know more   |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][15] to know more   |
 
 ### Parameters
 
@@ -750,7 +790,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ## stepByStepReport
 
-![step-by-step-report][14]
+![step-by-step-report][16]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -857,7 +897,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][15].
+A complete list of all available services can be found on [webdriverio website][17].
 
 #### Setup
 
@@ -869,7 +909,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][16].
+Install `@wdio/selenium-standalone-service` package, as [described here][18].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -888,7 +928,7 @@ Please note, this service can be used with Protractor helper as well!
 
 #### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][17].
+Install `@wdio/sauce-service` package, as [described here][19].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -924,30 +964,34 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [3]: https://codecept.io/locators#custom-locators
 
-[4]: /basics/#pause
+[4]: https://www.npmjs.com/package/faker
 
-[5]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[5]: https://raw.githubusercontent.com/Marak/faker.js/master/logo.png
 
-[6]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[6]: /basics/#pause
 
-[7]: https://github.com/gotwarlost/istanbul
+[7]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
 
-[8]: https://aerokube.com/selenoid/
+[8]: https://github.com/istanbuljs/puppeteer-to-istanbul
 
-[9]: https://aerokube.com/cm/latest/
+[9]: https://github.com/gotwarlost/istanbul
 
-[10]: https://hub.docker.com/u/selenoid
+[10]: https://aerokube.com/selenoid/
 
-[11]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[11]: https://aerokube.com/cm/latest/
 
-[12]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[12]: https://hub.docker.com/u/selenoid
 
-[13]: https://docs.docker.com/engine/reference/commandline/create/
+[13]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[14]: https://codecept.io/img/codeceptjs-slideshow.gif
+[14]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[15]: https://webdriver.io
+[15]: https://docs.docker.com/engine/reference/commandline/create/
 
-[16]: https://webdriver.io/docs/selenium-standalone-service.html
+[16]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[17]: https://webdriver.io/docs/sauce-service.html
+[17]: https://webdriver.io
+
+[18]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[19]: https://webdriver.io/docs/sauce-service.html
