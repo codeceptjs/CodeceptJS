@@ -7,6 +7,37 @@ layout: Section
 
 # Releases
 
+## 3.0.6
+
+* **[Playwright]** Added `electron` as a browser to config. See [#2834](https://github.com/codeceptjs/CodeceptJS/issues/2834) by **[cbayer97](https://github.com/cbayer97)**  
+* **[Playwright]** Implemented `launchPersistentContext` to be able to launch persistent remote browsers. See [#2817](https://github.com/codeceptjs/CodeceptJS/issues/2817) by **[brunoqueiros](https://github.com/brunoqueiros)**. Fixes [#2376](https://github.com/codeceptjs/CodeceptJS/issues/2376).
+* Fixed printing logs and stack traces for `run-workers`. See [#2857](https://github.com/codeceptjs/CodeceptJS/issues/2857) by **[haveac1gar](https://github.com/haveac1gar)**. Fixes [#2621](https://github.com/codeceptjs/CodeceptJS/issues/2621), [#2852](https://github.com/codeceptjs/CodeceptJS/issues/2852)
+* Emit custom messages from worker to the main thread. See [#2824](https://github.com/codeceptjs/CodeceptJS/issues/2824) by **[jccguimaraes](https://github.com/jccguimaraes)** 
+* Improved workers processes output. See [#2804](https://github.com/codeceptjs/CodeceptJS/issues/2804) by **[drfiresign](https://github.com/drfiresign)** 
+* BDD. Added ability to use an array of feature files inside config in `gherkin.features`. See [#2814](https://github.com/codeceptjs/CodeceptJS/issues/2814) by **[jbergeronjr](https://github.com/jbergeronjr)**
+
+```js
+"features": [
+  "./features/*.feature",
+  "./features/api_features/*.feature"
+],
+```
+* Added `getQueueId` to reporter to rerun a specific promise. See [#2837](https://github.com/codeceptjs/CodeceptJS/issues/2837) by **[jonatask](https://github.com/jonatask)** 
+* **Added `fakerTransform` plugin** to use faker data in Gherkin scenarios. See [#2854](https://github.com/codeceptjs/CodeceptJS/issues/2854) by **[adrielcodeco](https://github.com/adrielcodeco)** 
+
+```feature
+Scenario Outline: ...
+  Given ...
+  When ...
+  Then ...
+
+  Examples:
+  | productName          | customer              | email              | anythingMore |
+  | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
+```
+* **[REST]** Use class instance of axios, not the global instance, to avoid contaminating global configuration. [#2846](https://github.com/codeceptjs/CodeceptJS/issues/2846) by **[vanvoljg](https://github.com/vanvoljg)** 
+* **[Appium]** Added `tunnelIdentifier` config option to provide tunnel for SauceLabs. See [#2832](https://github.com/codeceptjs/CodeceptJS/issues/2832) by **[gurjeetbains](https://github.com/gurjeetbains)**
+
 ## 3.0.5
 
 
