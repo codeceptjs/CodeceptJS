@@ -5,7 +5,7 @@ title: Testing with Playwright
 
 # Testing with Playwright <Badge text="Since 2.5" type="warning"/>
 
-Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
+Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers as well as [Electron](https://www.electronjs.org/) apps with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
 
 Playwright was built similarly to [Puppeteer](https://github.com/puppeteer/puppeteer), using its API and so is very different in usage. However, Playwright has cross browser support with better design for test automaiton.
 
@@ -202,7 +202,7 @@ CodeceptJS allows you to implement custom actions like `I.createTodo` or use **P
 
 ## Multi Session Testing
 
-TO launch additional browser context (or incognito window) use `session` command.
+To launch additional browser context (or incognito window) use `session` command.
 
 ```js
 Scenario('I try to open this site as anonymous user', ({ I }) => {
@@ -216,6 +216,53 @@ Scenario('I try to open this site as anonymous user', ({ I }) => {
 ```
 
 > ℹ Learn more about [multi-session testing](/basics/#multiple-sessions)
+
+## Electron Testing
+
+CodeceptJS allows you to make use of [Playwright's Electron flavor](https://github.com/microsoft/playwright/blob/master/packages/playwright-electron/README.md).
+To use this functionality, all you need to do is set the browser to `electron` in the CodeceptJS configuration file and, according to the [Playwright BrowserType API](https://playwright.dev/docs/api/class-browsertype/#browsertypelaunchoptions), set the launch options to point to your Electron application.
+
+`main.js` - main Electron application file
+```js
+const { app, BrowserWindow } = require("electron");
+
+function createWindow() {
+  const window = new BrowserWindow({ width: 800, height: 600 });
+  window.loadURL("https://example.com");
+}
+
+app.whenReady().then(createWindow);
+```
+
+`codecept.conf.js` - CodeceptJS configuration file
+```js
+const path = require("path");
+
+exports.config = {
+  helpers: {
+    Playwright: {
+      browser: "electron",
+      electron: {
+        executablePath: require("electron"),
+        args: [path.join(__dirname, "main.js")],
+      },
+    },
+  },
+  // rest of config
+}
+```
+
+### Headless Mode
+
+With Electron, headless mode must be set when creating the window. Therefore, CodeceptJS's `show` configuration parameter will not work. However, you can set it in the `main.js` file as shown below:
+
+```js
+function createWindow() {
+  const window = new BrowserWindow({ width: 800, height: 600, show: false });
+  window.loadURL("https://example.com");
+}
+```
+
 
 ## Device Emulation
 
