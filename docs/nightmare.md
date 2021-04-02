@@ -221,8 +221,3 @@ I.seeAttributeContains('#main img', 'src', '/cat.jpg');
 This sample assertion used `_locate` helper method which searched for elements
 by CSS/XPath or a strict locator. Then `browser.evaluate` method was called to
 use locate found elements on a page and return attribute from the first of them.
-
-## Additional Links
-
-* [Nightmare Tutorial](http://codenroll.it/acceptance-testing-with-codecept-js/) by jploskonka.
-
