@@ -82,6 +82,13 @@ describe('Locator', () => {
         expect(l.toString()).to.equal('foo');
       });
 
+      it('should create custom locator', () => {
+        const l = new Locator({ custom: 'foo' });
+        expect(l.type).to.equal('custom');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('{custom: foo}');
+      });
+
       it('should create shadow locator', () => {
         const l = new Locator({ shadow: ['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'] });
         expect(l.type).to.equal('shadow');
