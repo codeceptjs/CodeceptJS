@@ -36,18 +36,47 @@ describe('WebDriver', function () {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
         },
       },
+      customLocatorStrategies: {
+        customSelector: (selector) => (
+          { 'element-6066-11e4-a52e-4f735466cecf': `${selector}-foobar` }
+        ),
+      },
     });
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     webApiTests.init({ I: wd, siteUrl });
-    return wd._before();
+    this.wdBrowser = await wd._before();
+    return this.wdBrowser;
   });
 
-  afterEach(() => wd._after());
+  afterEach(async () => wd._after());
 
   // load common test suite
   webApiTests.tests();
+
+  describe('customLocatorStrategies', () => {
+    it('should locate through custom selector', async () => {
+      const el = await this.wdBrowser.custom$('customSelector', '.test');
+      expect(el.elementId).to.equal('.test-foobar');
+    });
+
+    it('should include the custom strategy', async () => {
+      expect(wd.customLocatorStrategies.customSelector).to.not.be.undefined;
+    });
+
+    it('should be added to the browser locator strategies', async () => {
+      expect(this.wdBrowser.addLocatorStrategy).to.not.be.undefined;
+    });
+
+    it('throws on invalid custom selector', async () => {
+      try {
+        await wd.waitForEnabled({ madeUpSelector: '#text' }, 2);
+      } catch (e) {
+        expect(e.message).to.include('Please define "customLocatorStrategies"');
+      }
+    });
+  });
 
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
