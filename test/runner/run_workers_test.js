@@ -199,7 +199,6 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stderr).not.toContain('UnhandledPromiseRejectionWarning');
       expect(stdout).toContain('badFn is not defined');
       expect(err).not.toBe(null);
-
       done();
     });
   });
