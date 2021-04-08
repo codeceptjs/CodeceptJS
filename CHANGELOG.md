@@ -1,3 +1,34 @@
+## 3.0.6
+
+* [Playwright] Added `electron` as a browser to config. See #2834 by @cbayer97  
+* [Playwright] Implemented `launchPersistentContext` to be able to launch persistent remote browsers. See #2817 by @brunoqueiros. Fixes #2376.
+* Fixed printing logs and stack traces for `run-workers`. See #2857 by @haveac1gar. Fixes #2621, #2852
+* Emit custom messages from worker to the main thread. See #2824 by @jccguimaraes 
+* Improved workers processes output. See #2804 by @drfiresign 
+* BDD. Added ability to use an array of feature files inside config in `gherkin.features`. See #2814 by @jbergeronjr
+
+```js
+"features": [
+  "./features/*.feature",
+  "./features/api_features/*.feature"
+],
+```
+* Added `getQueueId` to reporter to rerun a specific promise. See #2837 by @jonatask 
+* **Added `fakerTransform` plugin** to use faker data in Gherkin scenarios. See #2854 by @adrielcodeco 
+
+```feature
+Scenario Outline: ...
+  Given ...
+  When ...
+  Then ...
+
+  Examples:
+  | productName          | customer              | email              | anythingMore |
+  | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
+```
+* [REST] Use class instance of axios, not the global instance, to avoid contaminating global configuration. #2846 by @vanvoljg 
+* [Appium] Added `tunnelIdentifier` config option to provide tunnel for SauceLabs. See #2832 by @gurjeetbains
+
 ## 3.0.5
 
 
@@ -106,7 +137,7 @@ Scenario('title', ({ I, loginPage }) => {});
 
 * **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrade guide](https://bit.ly/codecept3Up).
 * **[TypeScript guide](/typescript)** and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
-* [tryTo](/plugins/#tryTo) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
+* [tryTo](/plugins/#tryto) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
 * Introduced one-line installer:
 
 ```

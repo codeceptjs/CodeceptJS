@@ -11,6 +11,7 @@ website
 docs/build
 test/data/output
 test/acceptance/output
+test/bdd/output
 examples/output
 examples/selenoid-example/output
 test/data/app/db
