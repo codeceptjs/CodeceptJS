@@ -31,6 +31,10 @@ defaults: &defaults
         command: docker-compose run --rm test-acceptance.protractor
         working_directory: test
         when: always
+    - run:
+        command: docker-compose run --rm test-bdd.faker
+        working_directory: test
+        when: always
 
 jobs:
   docker:

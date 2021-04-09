@@ -297,8 +297,35 @@ codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
 ```
 New locator strategy is ready to use:
 
+
 ```js
 I.click('=Login');
 ```
+
+#### Custom Strategy Locators
+
+CodeceptJS provides the option to specify custom locators that uses Custom Locator Strategies defined in the WebDriver configuration. It uses the WebDriverIO's [custom$](https://webdriver.io/docs/api/browser/custom$.html) locators internally to locate the elements on page.
+To use the defined Custom Locator Strategy add your custom strategy to your configuration.
+
+```js
+// in codecept.conf.js
+
+const myStrat = (selector) => {
+  return document.querySelectorAll(selector)
+}
+
+// under WebDriver Helpers Configuration
+WebDriver: {
+  ...
+  customLocatorStrategies: {
+    custom: myStrat
+  }
+}
+```
+
+```js
+I.click({custom: 'my-shadow-element-unique-css'})
+```
+
 
 > For more details on locator object see [Locator](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/locator.js) class implementation.
