@@ -1,10 +1,8 @@
-const assert = require('assert');
-const chai = require('chai');
-const Locator = require('../../lib/locator');
-const xpath = require('xpath');
+const { expect } = require('chai');
 const Dom = require('xmldom').DOMParser;
+const xpath = require('xpath');
 
-const expect = chai.expect;
+const Locator = require('../../lib/locator');
 
 let doc;
 const xml = `<body>
@@ -84,6 +82,20 @@ describe('Locator', () => {
         expect(l.toString()).to.equal('foo');
       });
 
+      it('should create custom locator', () => {
+        const l = new Locator({ custom: 'foo' });
+        expect(l.type).to.equal('custom');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('{custom: foo}');
+      });
+
+      it('should create shadow locator', () => {
+        const l = new Locator({ shadow: ['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'] });
+        expect(l.type).to.equal('shadow');
+        expect(l.value).to.deep.equal(['my-app', 'recipe-hello-binding', 'ui-input', 'input.input']);
+        expect(l.toString()).to.equal('{shadow: my-app,recipe-hello-binding,ui-input,input.input}');
+      });
+
       it('should create described custom default type locator', () => {
         const l = new Locator('foo', 'defaultLocator');
         expect(l.type).to.equal('defaultLocator');
@@ -156,7 +168,7 @@ describe('Locator', () => {
       .find('td')
       .first();
     const nodes = xpath.select(l.toXPath(), doc);
-    expect(nodes).to.have.length(1);
+    expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Show');
   });
 
@@ -169,7 +181,6 @@ describe('Locator', () => {
     expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath());
   });
-
 
   it('should select child element by name', () => {
     const l = Locator.build('.form-field')
@@ -186,6 +197,18 @@ describe('Locator', () => {
         .withText('Also Edit'));
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
+  });
+
+  it('should throw an error when xpath with round brackets is nested', () => {
+    expect(() => {
+      Locator.build('tr').find('(./td)[@id="id"]');
+    }, /round brackets/).to.be.thrown;
+  });
+
+  it('should throw an error when locator with specific position is nested', () => {
+    expect(() => {
+      Locator.build('tr').withChild(Locator.build('td').first());
+    }, /round brackets/).to.be.thrown;
   });
 
   it('should not select element by deep nested siblings', () => {

@@ -1,0 +1,9 @@
+Retrieves all the innerHTML from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTMLs = await I.grabHTMLFromAll('.post');
+```
+
+@param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
+@returns {Promise<string[]>} HTML code for an element

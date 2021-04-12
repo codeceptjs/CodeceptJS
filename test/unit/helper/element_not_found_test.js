@@ -1,5 +1,6 @@
+const { expect } = require('chai');
+
 const ElementNotFound = require('../../../lib/helper/errors/ElementNotFound');
-const expect = require('chai').expect;
 
 const locator = '#invalidSelector';
 

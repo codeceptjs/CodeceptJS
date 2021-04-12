@@ -1,9 +1,10 @@
+const { expect } = require('chai');
 const Mocha = require('mocha/lib/mocha');
+const Suite = require('mocha/lib/suite');
+
 const makeUI = require('../../../lib/ui');
 const addData = require('../../../lib/data/context');
 const DataTable = require('../../../lib/data/table');
-const Suite = require('mocha/lib/suite');
-const should = require('chai').should();
 
 describe('ui', () => {
   let suite;
@@ -30,7 +31,7 @@ describe('ui', () => {
       dataScenarioConfig.tag('@user');
 
       dataScenarioConfig.scenarios.forEach((scenario) => {
-        scenario.test.tags.should.include('@user');
+        expect(scenario.test.tags).to.include('@user');
       });
     });
 
@@ -39,7 +40,7 @@ describe('ui', () => {
 
       dataScenarioConfig.timeout(3);
 
-      dataScenarioConfig.scenarios.forEach(scenario => should.equal(3, scenario.test._timeout));
+      dataScenarioConfig.scenarios.forEach(scenario => expect(3).to.equal(scenario.test._timeout));
     });
 
     it('can add retries to all scenarios', () => {
@@ -47,7 +48,7 @@ describe('ui', () => {
 
       dataScenarioConfig.retry(3);
 
-      dataScenarioConfig.scenarios.forEach(scenario => should.equal(3, scenario.test._retries));
+      dataScenarioConfig.scenarios.forEach(scenario => expect(3).to.equal(scenario.test._retries));
     });
 
     it('can expect failure for all scenarios', () => {
@@ -55,7 +56,7 @@ describe('ui', () => {
 
       dataScenarioConfig.fails();
 
-      dataScenarioConfig.scenarios.forEach(scenario => should.exist(scenario.test.throws));
+      dataScenarioConfig.scenarios.forEach(scenario => expect(scenario.test.throws).to.exist);
     });
 
     it('can expect a specific error for all scenarios', () => {
@@ -65,7 +66,7 @@ describe('ui', () => {
 
       dataScenarioConfig.throws(err);
 
-      dataScenarioConfig.scenarios.forEach(scenario => should.equal(err, scenario.test.throws));
+      dataScenarioConfig.scenarios.forEach(scenario => expect(err).to.equal(scenario.test.throws));
     });
 
     it('can configure a helper for all scenarios', () => {
@@ -76,7 +77,7 @@ describe('ui', () => {
 
       dataScenarioConfig.config(helperName, helper);
 
-      dataScenarioConfig.scenarios.forEach(scenario => should.equal(helper, scenario.test.config[helperName]));
+      dataScenarioConfig.scenarios.forEach(scenario => expect(helper).to.equal(scenario.test.config[helperName]));
     });
 
     it("should shows object's toString() method in each scenario's name if the toString() method is overrided", () => {
@@ -86,13 +87,13 @@ describe('ui', () => {
         },
       ];
       const dataScenarioConfig = context.Data(data).Scenario('scenario', () => {});
-      should.equal('scenario | test case title', dataScenarioConfig.scenarios[0].test.title);
+      expect('scenario | test case title').to.equal(dataScenarioConfig.scenarios[0].test.title);
     });
 
     it("should shows JSON.stringify() in each scenario's name if the toString() method isn't overrided", () => {
       const data = [{ name: 'John Do' }];
       const dataScenarioConfig = context.Data(data).Scenario('scenario', () => {});
-      should.equal(`scenario | ${JSON.stringify(data[0])}`, dataScenarioConfig.scenarios[0].test.title);
+      expect(`scenario | ${JSON.stringify(data[0])}`).to.equal(dataScenarioConfig.scenarios[0].test.title);
     });
   });
 });

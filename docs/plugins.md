@@ -1,5 +1,7 @@
 ---
-id: plugins
+permalink: plugins
+sidebarDepth: 
+sidebar: auto
 title: Plugins
 ---
 
@@ -13,7 +15,7 @@ Allure reporter
 
 Enables Allure reporter.
 
-##### Usage
+#### Usage
 
 To start please install `allure-commandline` package (which requires Java 8)
 
@@ -29,14 +31,14 @@ Add this plugin to config file:
 
 Run tests with allure plugin enabled:
 
-    codeceptjs run --plugins allure
+    npx codeceptjs run --plugins allure
 
 By default, allure reports are saved to `output` directory.
 Launch Allure server and see the report like on a screenshot above:
 
     allure serve output
 
-##### Configuration
+#### Configuration
 
 -   `outputDir` - a directory where allure reports should be stored. Standard output directory is set by default.
 -   `enableScreenshotDiffPlugin` - a boolean flag for add screenshot diff to report.
@@ -55,6 +57,7 @@ const allure = codeceptjs.container.plugins('allure');
 
 -   `addAttachment(name, buffer, type)` - add an attachment to current test / suite
 -   `addLabel(name, value)` - adds a label to current test
+-   `addParameter(kind, name, value)` - adds a parameter to current test
 -   `severity(value)` - adds severity label
 -   `epic(value)` - adds epic label
 -   `feature(value)` - adds feature label
@@ -69,7 +72,7 @@ const allure = codeceptjs.container.plugins('allure');
 ## autoDelay
 
 Sometimes it takes some time for a page to respond to user's actions.
-Depending on app's perfromance this can be either slow or fast.
+Depending on app's performance this can be either slow or fast.
 
 For instance, if you click a button and nothing happens - probably JS event is not attached to this button yet
 Also, if you fill field and input validation doesn't accept your input - maybe because you typed value too fast.
@@ -86,12 +89,12 @@ Commands affected (by default):
 -   `doubleClick`
 -   `rightClick`
 
-##### Configuration
+#### Configuration
 
 ```js
-"plugins": {
-   "autoDelay": {
-     "enabled": true
+plugins: {
+   autoDelay: {
+     enabled: true
    }
 }
 ```
@@ -129,7 +132,7 @@ Before(login => {
 });
 
 // Alternatively log in for one scenario
-Scenario('log me in', (I, login) => {
+Scenario('log me in', ( {I, login} ) => {
    login('admin');
    I.see('I am logged in');
 });
@@ -188,11 +191,11 @@ autoLogin: {
          I.fillField('email', 'user@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
          I.see('User', '.navbar');
-      }
+      },
     },
     admin: {
       login: (I) => {
@@ -200,10 +203,11 @@ autoLogin: {
          I.fillField('email', 'admin@site.com');
          I.fillField('password', '123456');
          I.click('Login');
-      }
+      },
       check: (I) => {
          I.amOnPage('/');
-         I.see('Admin', '.navbar'),
+         I.see('Admin', '.navbar');
+      },
     },
   }
 }
@@ -253,7 +257,7 @@ plugins: {
    autoLogin: {
     admin: {
       login: (I) => I.loginAsAdmin(),
-      check: (I) => I.see('Admin', '.navbar');
+      check: (I) => I.see('Admin', '.navbar'),
       fetch: (I) => {
         return I.executeScript(() => localStorage.getItem('session_id'));
       },
@@ -286,14 +290,14 @@ autoLogin: {
       check: (I) => {
          I.amOnPage('/');
          I.see('Admin');
-      }
+      },
     }
   }
 }
 ```
 
 ```js
-Scenario('login', async (I, login) => {
+Scenario('login', async ( {I, login} ) => {
   await login('admin') // you should use `await`
 })
 ```
@@ -302,25 +306,255 @@ Scenario('login', async (I, login) => {
 
 -   `config`  
 
+## commentStep
+
+Add descriptive nested steps for your tests:
+
+```js
+Scenario('project update test', async (I) => {
+  __`Given`;
+  const projectId = await I.have('project');
+
+  __`When`;
+  projectPage.update(projectId, { title: 'new title' });
+
+  __`Then`;
+  projectPage.open(projectId);
+  I.see('new title', 'h1');
+})
+```
+
+Steps prefixed with `__` will be printed as nested steps in `--steps` output:
+
+      Given
+        I have "project"
+      When
+        projectPage update
+      Then
+        projectPage open
+        I see "new title", "h1"
+
+Also those steps will be exported to allure reports.
+
+This plugin can be used
+
+### Config
+
+-   `enabled` - (default: false) enable a plugin
+-   `regusterGlobal` - (default: false) register `__` template literal function globally. You can override function global name by providing a name as a value.
+
+### Examples
+
+Registering `__` globally:
+
+```js
+plugins: {
+  commentStep: {
+    enabled: true,
+    registerGlobal: true
+  }
+}
+```
+
+Registering `Step` globally:
+
+```js
+plugins: {
+  commentStep: {
+    enabled: true,
+    registerGlobal: 'Step'
+  }
+}
+```
+
+Using only local function names:
+
+```js
+plugins: {
+  commentStep: {
+    enabled: true
+  }
+}
+```
+
+Then inside a test import a comment function from a plugin.
+For instance, you can prepare Given/When/Then functions to use them inside tests:
+
+```js
+// inside a test
+const step = codeceptjs.container.plugins('commentStep');
+
+const Given = () => step`Given`;
+const When = () => step`When`;
+const Then = () => step`Then`;
+```
+
+Scenario('project update test', async (I) => {
+  Given();
+  const projectId = await I.have('project');
+
+  When();
+  projectPage.update(projectId, { title: 'new title' });
+
+  Then();
+  projectPage.open(projectId);
+  I.see('new title', 'h1');
+});
+
+```
+
+```
+
+### Parameters
+
+-   `config`  
+
+## customLocator
+
+Creates a [custom locator][3] by using special attributes in HTML.
+
+If you have a convention to use `data-test-id` or `data-qa` attributes to mark active elements for e2e tests,
+you can enable this plugin to simplify matching elements with these attributes:
+
+```js
+// replace this:
+I.click({ css: '[data-test-id=register_button]');
+// with this:
+I.click('$register_button');
+```
+
+This plugin will create a valid XPath locator for you.
+
+#### Configuration
+
+-   `enabled` (default: `false`) should a locator be enabled
+-   `prefix` (default: `$`) sets a prefix for a custom locator.
+-   `attribute` (default: `data-test-id`) to set an attribute to be matched.
+-   `strategy` (default: `xpath`) actual locator strategy to use in query (`css` or `xpath`).
+-   `showActual` (default: false) show in the output actually produced XPath or CSS locator. By default shows custom locator value.
+
+#### Examples:
+
+Using `data-test` attribute with `$` prefix:
+
+```js
+// in codecept.conf.js
+plugins: {
+ customLocator: {
+   enabled: true
+   attribute: 'data-test'
+ }
+}
+```
+
+In a test:
+
+```js
+I.seeElement('$user'); // matches => [data-test=user]
+I.click('$sign-up'); // matches => [data-test=sign-up]
+```
+
+Using `data-qa` attribute with `=` prefix:
+
+```js
+// in codecept.conf.js
+plugins: {
+ customLocator: {
+   enabled: true
+   prefix: '=',
+   attribute: 'data-qa'
+ }
+}
+```
+
+In a test:
+
+```js
+I.seeElement('=user'); // matches => [data-qa=user]
+I.click('=sign-up'); // matches => [data-qa=sign-up]
+```
+
+### Parameters
+
+-   `config`  
+
+## fakerTransform
+
+Use the [faker.js][4] package to generate fake data inside examples on your gherkin tests
+
+![Faker.js][5]
+
+#### Usage
+
+To start please install `faker.js` package
+
+    npm install -D faker
+
+    yarn add -D faker
+
+Add this plugin to config file:
+
+```js
+plugins: {
+   fakerTransform: {
+     enabled: true
+   }
+}
+```
+
+Add the faker API using a mustache string format inside examples tables in your gherkin scenario outline
+
+```feature
+Scenario Outline: ...
+            Given ...
+             When ...
+             Then ...
+        Examples:
+  | productName          | customer              | email              | anythingMore |
+  | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
+```
+
+### Parameters
+
+-   `config`  
+
+## pauseOnFail
+
+Automatically launches [interactive pause][6] when a test fails.
+
+Useful for debugging flaky tests on local environment.
+Add this plugin to config file:
+
+```js
+plugins: {
+  pauseOnFail: {},
+}
+```
+
+Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
+Enable it manually on each run via `-p` option:
+
+    npx codeceptjs run -p pauseOnFail
+
 ## puppeteerCoverage
 
 Dumps puppeteers code coverage after every test.
 
-##### Configuration
+#### Configuration
 
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
 ```js
-"plugins": {
-   "puppeteerCoverage": {
-     "enabled": true
+plugins: {
+   puppeteerCoverage: {
+     enabled: true
    }
 }
 ```
 
 Possible config options:
 
--   `outputDir`: directory to dump coverage files
+-   `coverageDir`: directory to dump coverage files
 -   `uniqueFileName`: generate a unique filename by adding uuid
 
     First of all, your mileage may vary!
@@ -333,9 +567,9 @@ Possible config options:
 
     Links:
 
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][3]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][4]
--   [https://github.com/gotwarlost/istanbul][5]
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][7]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][8]
+-   [https://github.com/gotwarlost/istanbul][9]
 
 ### Parameters
 
@@ -348,18 +582,18 @@ Retries each failed step in a test.
 Add this plugin to config file:
 
 ```js
-"plugins": {
-    "retryFailedStep": {
-       "enabled": true
+plugins: {
+    retryFailedStep: {
+       enabled: true
     }
 }
 ```
 
 Run tests with plugin enabled:
 
-    codeceptjs run --plugins retryFailedStep
+    npx codeceptjs run --plugins retryFailedStep
 
-##### Configuration:
+#### Configuration:
 
 -   `retries` - number of retries (by default 5),
 -   `when` - function, when to perform a retry (accepts error as parameter)
@@ -367,8 +601,42 @@ Run tests with plugin enabled:
 -   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
 -   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
 -   `randomize` - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.
+-   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
+    -   `amOnPage`
+    -   `wait*`
+    -   `send*`
+    -   `execute*`
+    -   `run*`
+    -   `have*`
+-   `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+    To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 
-This plugin is very basic so it's recommended to improve it to match your custom needs.
+#### Example
+
+```js
+plugins: {
+    retryFailedStep: {
+        enabled: true,
+        ignoreSteps: [
+          'scroll*', // ignore all scroll steps
+          /Cookie/, // ignore all steps with a Cookie in it (by regexp)
+        ]
+    }
+}
+```
+
+#### Disable Per Test
+
+This plugin can be disabled per test. In this case you will need to stet `I.retry()` to all flaky steps:
+
+Use scenario configuration to disable plugin for a test
+
+```js
+Scenario('scenario tite', () => {
+   // test goes here
+}).config(test => test.disableRetryFailedStep = true)
+```
 
 ### Parameters
 
@@ -382,14 +650,14 @@ Initially this functionality was part of corresponding helper but has been moved
 
 This plugin is **enabled by default**.
 
-##### Configuration
+#### Configuration
 
 Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
 
 ```js
-"plugins": {
-   "screenshotOnFail": {
-     "enabled": true
+plugins: {
+   screenshotOnFail: {
+     enabled: true
    }
 }
 ```
@@ -403,9 +671,126 @@ Possible config options:
 
 -   `config`  
 
+## selenoid
+
+[Selenoid][10] plugin automatically starts browsers and video recording.
+Works with WebDriver helper.
+
+### Prerequisite
+
+This plugin **requires Docker** to be installed.
+
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][11] tool from Selenoid
+
+### Usage
+
+Selenoid plugin can be started in two ways:
+
+1.  **Automatic** - this plugin will create and manage selenoid container for you.
+2.  **Manual** - you create the conatainer and configure it with a plugin (recommended).
+
+#### Automatic
+
+If you are new to Selenoid and you want plug and play setup use automatic mode.
+
+Add plugin configuration in `codecept.conf.js`:
+
+```js
+plugins: {
+    selenoid: {
+      enabled: true,
+      deletePassed: true,
+      autoCreate: true,
+      autoStart: true,
+      sessionTimeout: '30m',
+      enableVideo: true,
+      enableLog: true,
+    },
+  }
+```
+
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][12] and start Selenoid automatically.
+It will also create `browsers.json` file required by Selenoid.
+
+In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
+
+> **If you are using Windows machine or if `autoCreate` does not work properly, create container manually**
+
+#### Manual
+
+While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
+This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
+
+> Use [Selenoid Configuration Manager][11] to create and start containers semi-automatically.
+
+1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
+    [Refer to Selenoid documentation][13] to know more about browsers.json.
+
+_Sample browsers.json_
+
+```js
+{
+ "chrome": {
+   "default": "latest",
+   "versions": {
+     "latest": {
+       "image": "selenoid/chrome:latest",
+       "port": "4444",
+       "path": "/"
+     }
+   }
+ }
+}
+```
+
+> It is recommended to use specific versions of browsers in `browsers.json` instead of latest. This will prevent tests fail when browsers will be updated.
+
+**⚠ At first launch selenoid plugin takes extra time to download all Docker images before tests starts**.
+
+2.  Create Selenoid container
+
+Run the following command to create a container. To know more [refer here][14]
+
+```bash
+docker create                                    \
+--name selenoid                                  \
+-p 4444:4444                                     \
+-v /var/run/docker.sock:/var/run/docker.sock     \
+-v `pwd`/:/etc/selenoid/:ro                      \
+-v `pwd`/output/video/:/opt/selenoid/video/      \
+-e OVERRIDE_VIDEO_OUTPUT_DIR=`pwd`/output/video/ \
+aerokube/selenoid:latest-release
+```
+
+### Video Recording
+
+This plugin allows to record and save video per each executed tests.
+
+When `enableVideo` is `true` this plugin saves video in `output/videos` directory with each test by name
+To save space videos for all succesful tests are deleted. This can be changed by `deletePassed` option.
+
+When `allure` plugin is enabled a video is attached to report automatically.
+
+### Options:
+
+| Param            | Description                                                                    |
+| ---------------- | ------------------------------------------------------------------------------ |
+| name             | Name of the container (default : selenoid)                                     |
+| port             | Port of selenium server (default : 4444)                                       |
+| autoCreate       | Will automatically create container (Linux only) (default : true)              |
+| autoStart        | If disabled start the container manually before running tests (default : true) |
+| enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
+| enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
+| deletePassed     | Delete video and logs of passed tests (default : true)                         |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][15] to know more   |
+
+### Parameters
+
+-   `config`  
+
 ## stepByStepReport
 
-![step-by-step-report][6]
+![step-by-step-report][16]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -413,9 +798,9 @@ By default, reports are generated only for failed tests.
 
 Run tests with plugin enabled:
 
-    codeceptjs run --plugins stepByStepReport
+    npx codeceptjs run --plugins stepByStepReport
 
-##### Configuration
+#### Configuration
 
 ```js
 "plugins": {
@@ -438,6 +823,68 @@ Possible config options:
 
 -   `config` **any** 
 
+## tryTo
+
+Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
+
+Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
+
+```js
+plugins: {
+  tryTo: {
+    enabled: true
+  }
+}
+```
+
+Use it in your tests:
+
+```js
+const result = await tryTo(() => I.see('Welcome'));
+
+// if text "Welcome" is on page, result => true
+// if text "Welcome" is not on page, result => false
+```
+
+Disables retryFailedStep plugin for steps inside a block;
+
+Use this plugin if:
+
+-   you need to perform multiple assertions inside a test
+-   there is A/B testing on a website you test
+-   there is "Accept Cookie" banner which may surprisingly appear on a page.
+
+#### Usage
+
+#### Multiple Conditional Assertions
+
+```js
+const result1 = await tryTo(() => I.see('Hello, user'));
+const result2 = await tryTo(() => I.seeElement('.welcome'));
+assert.ok(result1 && result2, 'Assertions were not succesful');
+```
+
+##### Optional click
+
+```js
+I.amOnPage('/');
+tryTo(() => I.click('Agree', '.cookies'));
+```
+
+#### Configuration
+
+-   `registerGlobal` - to register `tryTo` function globally, true by default
+
+If `registerGlobal` is false you can use tryTo from the plugin:
+
+```js
+const tryTo = codeceptjs.container.plugins('tryTo');
+```
+
+### Parameters
+
+-   `config`  
+
 ## wdio
 
 Webdriverio services runner.
@@ -450,9 +897,9 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][7].
+A complete list of all available services can be found on [webdriverio website][17].
 
-###### Setup
+#### Setup
 
 1.  Install a webdriverio service
 2.  Enable `wdio` plugin in config
@@ -460,9 +907,9 @@ A complete list of all available services can be found on [webdriverio website][
 
 See examples below:
 
-###### Selenium Standalone Service
+#### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][8].
+Install `@wdio/selenium-standalone-service` package, as [described here][18].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -479,9 +926,9 @@ plugins: {
 
 Please note, this service can be used with Protractor helper as well!
 
-##### Sauce Service
+#### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][9].
+Install `@wdio/sauce-service` package, as [described here][19].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -515,16 +962,36 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
 
-[3]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[3]: https://codecept.io/locators#custom-locators
 
-[4]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[4]: https://www.npmjs.com/package/faker
 
-[5]: https://github.com/gotwarlost/istanbul
+[5]: https://raw.githubusercontent.com/Marak/faker.js/master/logo.png
 
-[6]: https://codecept.io/img/codeceptjs-slideshow.gif
+[6]: /basics/#pause
 
-[7]: https://webdriver.io
+[7]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
 
-[8]: https://webdriver.io/docs/selenium-standalone-service.html
+[8]: https://github.com/istanbuljs/puppeteer-to-istanbul
 
-[9]: https://webdriver.io/docs/sauce-service.html
+[9]: https://github.com/gotwarlost/istanbul
+
+[10]: https://aerokube.com/selenoid/
+
+[11]: https://aerokube.com/cm/latest/
+
+[12]: https://hub.docker.com/u/selenoid
+
+[13]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+
+[14]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+
+[15]: https://docs.docker.com/engine/reference/commandline/create/
+
+[16]: https://codecept.io/img/codeceptjs-slideshow.gif
+
+[17]: https://webdriver.io
+
+[18]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[19]: https://webdriver.io/docs/sauce-service.html

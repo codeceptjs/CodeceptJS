@@ -1,7 +1,9 @@
 ---
-id: advanced
+permalink: /advanced
 title: Advanced Usage
 ---
+
+# Advanced Usage
 
 ## Data Driven Tests
 
@@ -22,7 +24,7 @@ accounts.xadd(['admin', '23456'])
 
 // Pass dataTable to Data()
 // Use special param `current` to get current data set
-Data(accounts).Scenario('Test Login', (I, current) => {
+Data(accounts).Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -31,7 +33,7 @@ Data(accounts).Scenario('Test Login', (I, current) => {
 
 
 // Also you can set only for Data tests. It will launch executes only the current test but with all data options
-Data(accounts).only.Scenario('Test Login', (I, current) => {
+Data(accounts).only.Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -53,7 +55,7 @@ S Test Login | {"login":"admin","password":"23456"}
 ```js
 // You can filter your data table
 Data(accounts.filter(account => account.login == 'admin')
-.Scenario('Test Login', (I, current) => {
+.Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login);
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -90,7 +92,7 @@ Scenario('update user profile @slow')
 Alternativly, use `tag` method of Scenario to set additional tags:
 
 ```js
-Scenario('update user profile', () => {
+Scenario('update user profile', ({  }) => {
   // test goes here
 }).tag('@slow').tag('important');
 ```
@@ -147,170 +149,6 @@ For Visual Studio Code, add the following configuration in launch.json:
 ```
 
 
-
-## Multiple Browsers Execution
-
-This is useful if you want to execute same tests but on different browsers and with different configurations or different tests on same browsers in parallel.
-
-Create `multiple` section in configuration file, and fill it with run suites. Each suite should have `browser` array with browser names or driver helper's configuration:
-```js
-"multiple": {
-  "basic": {
-    // run all tests in chrome and firefox
-    "browsers": ["chrome", "firefox"]
-  },
-
-  "smoke": {
-    "browsers": [
-      "firefox",
-      // replace any config values from WebDriver helper
-      {
-        "browser": "chrome",
-        "windowSize": "maximize",
-        "desiredCapabilities": {
-          "acceptSslCerts": true
-        }
-      },
-    ]
-  },
-}
-```
-
-You can use `grep` and `outputName` params to filter tests and output directory for suite:
-```js
-"multiple": {
-  "smoke": {
-    // run only tests containing "@smoke" in name
-    "grep": "@smoke",
-
-    // store results into `output/smoke` directory
-    "outputName": "smoke",
-
-    "browsers": [
-      "firefox",
-      {"browser": "chrome", "windowSize": "maximize"}
-    ]
-  }
-}
-```
-
-Then tests can be executed using `run-multiple` command.
-
-Run all suites for all browsers:
-
-```sh
-codeceptjs run-multiple --all
-```
-
-Run `basic` suite for all browsers
-
-```sh
-codeceptjs run-multiple basic
-```
-
-Run `basic` suite for chrome only:
-
-```sh
-codeceptjs run-multiple basic:chrome
-```
-
-Run `basic` suite for chrome and `smoke` for firefox
-
-```sh
-codeceptjs run-multiple basic:chrome smoke:firefox
-```
-
-Run basic tests with grep and junit reporter
-
-```sh
-codeceptjs run-multiple basic --grep signin --reporter mocha-junit-reporter
-```
-
-Run regression tests specifying different config path:
-
-```sh
-codeceptjs run-multiple regression -c path/to/config
-```
-
-Each executed process uses custom folder for reports and output. It is stored in subfolder inside an output directory. Subfolders will be named in `suite_browser` format.
-
-Output is printed for all running processes. Each line is tagged with a suite and browser name:
-
-```sh
-[basic:firefox] GitHub --
-[basic:chrome] GitHub --
-[basic:chrome]    it should not enter
-[basic:chrome]  ✓ signin in 2869ms
-
-[basic:chrome]   OK  | 1 passed   // 30s
-[basic:firefox]    it should not enter
-[basic:firefox]  ✖ signin in 2743ms
-
-[basic:firefox] -- FAILURES:
-```
-
-### Hooks
-
-Hooks are available when using the `run-multiple` command to perform actions before the test suites start and after the test suites have finished. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown) for an example.
-
-
-## Parallel Execution
-
-CodeceptJS can be configured to run tests in parallel.
-
-When enabled, it collects all test files and executes them in parallel by the specified amount of chunks. Given we have five test scenarios (`a_test.js`,`b_test.js`,`c_test.js`,`d_test.js` and `e_test.js`), by setting `"chunks": 2` we tell the runner to run two suites in parallel. The first suite will run `a_test.js`,`b_test.js` and `c_test.js`, the second suite will run `d_test.js` and `e_test.js`.
-
-
-```js
-"multiple": {
-  "parallel": {
-    // Splits tests into 2 chunks
-    "chunks": 2
-  }
-}
-```
-
-To execute them use `run-multiple` command passing configured suite, which is `parallel` in this example:
-
-```
-codeceptjs run-multiple parallel
-```
-
-Grep and multiple browsers are supported. Passing more than one browser will multiply the amount of suites by the amount of browsers passed. The following example will lead to four parallel runs.
-
-```js
-"multiple": {
-  // 2x chunks + 2x browsers = 4
-  "parallel": {
-    // Splits tests into chunks
-    "chunks": 2,
-    // run all tests in chrome and firefox
-    "browsers": ["chrome", "firefox"]
-  },
-}
-```
-
-Passing a function will enable you to provide your own chunking algorithm. The first argument passed to you function is an array of all test files, if you enabled grep the test files passed are already filtered to match the grep pattern.
-
-```js
-"multiple": {
-  "parallel": {
-    // Splits tests into chunks by passing an anonymous function,
-    // only execute first and last found test file
-    "chunks": (files) => {
-      return [
-        [ files[0] ], // chunk 1
-        [ files[files.length-1] ], // chunk 2
-      ]
-    },
-    // run all tests in chrome and firefox
-    "browsers": ["chrome", "firefox"]
-  }
-}
-```
-
-Note: Chunking will be most effective if you have many individual test files that contain only a small amount of scenarios. Otherwise the combined execution time of many scenarios or big scenarios in one single test file potentially lead to an uneven execution time.
-
 ## Test Options
 
 Features and Scenarios have their options that can be set by passing a hash after their names:
@@ -318,7 +156,28 @@ Features and Scenarios have their options that can be set by passing a hash afte
 ```js
 Feature('My feature', {key: val});
 
-Scenario('My scenario', {key: val}, (I) => {});
+Scenario('My scenario', {key: val},({ I }) => {});
+```
+
+You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
+
+```js
+  // for test
+  event.dispatcher.on(event.test.before, (test) => {
+    ...
+    if (test.opts.key) {
+      ...
+    }
+    ...
+  });
+  // or for suite
+  event.dispatcher.on(event.suite.before, (suite) => {
+    ...
+    if (suite.opts.key) {
+      ...
+    }
+    ...
+  });
 ```
 
 ### Timeout
@@ -333,15 +192,15 @@ or for the test:
 
 ```js
 // set timeout to 1s
-Scenario("Stop me faster", (I) => {
+Scenario("Stop me faster",({ I }) => {
   // test goes here
 }).timeout(1000);
 
 // alternative
-Scenario("Stop me faster", {timeout: 1000}, (I) => {});
+Scenario("Stop me faster", {timeout: 1000},({ I }) => {});
 
 // disable timeout for this scenario
-Scenario("Don't stop me", {timeout: 0}, (I) => {});
+Scenario("Don't stop me", {timeout: 0},({ I }) => {});
 ```
 
 
@@ -352,7 +211,7 @@ This might be useful when some tests should be executed with different settings 
 In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
 
 ```js
-Scenario('should be executed in firefox', (I) => {
+Scenario('should be executed in firefox', ({ I }) => {
   // I.amOnPage(..)
 }).config({ browser: 'firefox' })
 ```
@@ -361,16 +220,16 @@ In this case `config` overrides current config of the first helper.
 To change config of specific helper pass two arguments: helper name and config values:
 
 ```js
-Scenario('should create data via v2 version of API', (I) => {
+Scenario('should create data via v2 version of API', ({ I }) => {
   // I.amOnPage(..)
 }).config('REST', { endpoint: 'https://api.mysite.com/v2' })
 ```
 
 Config can also be set by a function, in this case you can get a test object and specify config values based on it.
-This is very useful when running tests against cloud providers, like BrowserStack.
+This is very useful when running tests against cloud providers, like BrowserStack. This function can also be asynchronous.
 
 ```js
-Scenario('should report to BrowserStack', (I) => {
+Scenario('should report to BrowserStack', ({ I }) => {
   // I.amOnPage(..)
 }).config((test) => {
   return { desiredCapabilities: {
@@ -389,4 +248,46 @@ Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
 Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
 
 Configuration changes will be reverted after a test or a suite.
+
+
+### Rerunning Flaky Tests Multiple Times <Badge text="Since 2.4" type="warning"/>
+
+End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
+
+* Detect flaky tests in our suite
+* Fix flaky tests by rerunning them.
+
+Both tasks can be achieved with [`run-rerun` command](/commands/#run-rerun) which runs tests multiple times until all tests are passed.
+
+You should set min and max runs boundaries so when few tests fail in a row you can rerun them until they are succeeded.
+
+```js
+// inside to codecept.conf.js
+exports.config = { // ...
+  rerun: {
+    // run 4 times until 1st success
+    minSuccess: 1,
+    maxReruns: 4,
+  }
+}
+```
+
+If you want to check all your tests for stability you can set high boundaries for minimal success:
+
+```js
+// inside to codecept.conf.js
+exports.config = { // ...
+  rerun: {
+    // run all tests must pass exactly 5 times
+    minSuccess: 5,
+    maxReruns: 5,
+  }
+}
+```
+
+Now execute tests with `run-rerun` command:
+
+```
+npx codeceptjs run-rerun
+```
 

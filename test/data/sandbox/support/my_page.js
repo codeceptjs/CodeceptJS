@@ -6,7 +6,7 @@ module.exports = {
     I = actor();
   },
 
-  hasFile() {
+  hasFile(arg) {
     I.seeFile('codecept.json');
     I.seeFile('codecept.po.json');
   },

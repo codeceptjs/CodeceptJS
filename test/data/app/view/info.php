@@ -3,6 +3,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
+<style>
+    .span {
+        height: 15px; 
+    }
+</style>
 <body>
 
 <h1>Information</h1>
@@ -48,5 +53,9 @@
 <a href="/login" target="_blank">New tab</a>
 </div>
 
+<div id="grab-css">
+   <span class="span" style="height:12px">Fisrt <span>
+   <span class="span">Second <span>
+</div>
 </body>
 </html>

@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 const program = require('commander');
-const path = require('path');
-const Config = require('../lib/config');
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
 
@@ -12,6 +10,9 @@ if (process.versions.node && process.versions.node.split('.') && process.version
   print(`Current NodeJS version: ${process.version}`);
   process.exit(1);
 }
+
+program.usage('<command> [options]');
+program.version(Codecept.version());
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
@@ -53,11 +54,12 @@ program.command('gherkin:steps [path]')
 
 program.command('gherkin:snippets [path]')
   .alias('bdd:snippets')
-  .description('Generate step defintions from steps.')
+  .description('Generate step definitions from steps.')
   .option('--dry-run', "don't save snippets to file")
   .option('-c, --config [file]', 'configuration file to be used')
+  .option('--feature [file]', 'feature files(s) to scan')
+  .option('--path [file]', 'file in which to place the new snippets')
   .action(require('../lib/command/gherkin/snippets'));
-
 
 program.command('generate:test [path]')
   .alias('gt')
@@ -116,6 +118,22 @@ program.command('run [test]')
   .option('--child <string>', 'option for child processes')
 
   .action(require('../lib/command/run'));
+program.command('run-workers <workers>')
+  .description('Executes tests in workers')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-i, --invert', 'inverts --grep matches')
+  .option('-o, --override [value]', 'override current config options')
+  .option('--suites', 'parallel execution of suites not single tests')
+  .option('--debug', 'output additional information')
+  .option('--verbose', 'output internal logging information')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
+  .option('--profile [value]', 'configuration profile to be used')
+  .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
+  .option('-R, --reporter <name>', 'specify the reporter to use')
+  .action(require('../lib/command/run-workers'));
 
 program.command('run-multiple [suites...]')
   .description('Executes tests multiple')
@@ -136,10 +154,38 @@ program.command('run-multiple [suites...]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('--recursive', 'include sub directories')
 
+  // mocha options
+  .option('--colors', 'force enabling of colors')
+
   .action(require('../lib/command/run-multiple'));
 
+program.command('info [path]')
+  .description('Print debugging information concerning the local environment')
+  .option('-c, --config', 'your config file path')
+  .action(require('../lib/command/info'));
+
+program.command('dry-run [test]')
+  .description('Prints step-by-step scenario for a test without actually running it')
+  .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .option('--bootstrap', 'enable bootstrap script for dry-run')
+  .option('-c, --config [file]', 'configuration file to be used')
+  .option('--all', 'run all suites')
+  .option('--features', 'run only *.feature files and skip tests')
+  .option('--tests', 'run only JS test files and skip features')
+  .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
+  .option('-f, --fgrep <string>', 'only run tests containing <string>')
+  .option('-i, --invert', 'inverts --grep and --fgrep matches')
+  .option('--steps', 'show step-by-step execution')
+  .option('--verbose', 'output internal logging information')
+  .option('--debug', 'output additional information')
+  .action(require('../lib/command/dryRun'));
+
+program.on('command:*', (cmd) => {
+  console.log(`\nUnknown command ${cmd}\n`);
+  program.outputHelp();
+});
+
 if (process.argv.length <= 2) {
-  console.log(`CodeceptJS v${Codecept.version()}`);
   program.outputHelp();
 }
 program.parse(process.argv);

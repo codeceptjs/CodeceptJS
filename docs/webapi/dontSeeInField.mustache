@@ -1,4 +1,4 @@
-Checks that value of input field or textare doesn't equal to given value
+Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
 ```js
@@ -6,5 +6,5 @@ I.dontSeeInField('email', 'user@user.com'); // field by name
 I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 ```
 
-@param {string|object} field located by label|name|CSS|XPath|strict locator.
+@param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
 @param {string} value value to check.

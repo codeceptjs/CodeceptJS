@@ -6,7 +6,6 @@ const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run`;
 const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
-const config_run_override = config => `${codecept_run} --override '${JSON.stringify(config)}'`;
 
 describe('BDD Gherkin', () => {
   before(() => {
@@ -42,6 +41,18 @@ describe('BDD Gherkin', () => {
       stdout.should.include('I see num 2');
       stdout.should.include('And my order amount is $1600');
       stdout.should.include('I see sum 1600');
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should print events in nodejs debug mode', (done) => {
+    exec(`DEBUG=codeceptjs:* ${config_run_config('codecept.bdd.json')} --grep "Checkout products" --verbose`, (err, stdout, stderr) => { //eslint-disable-line
+      stderr.should.include('Emitted | step.start (I add product "Harry Potter", 5)');
+      stdout.should.include('name            | category        | price');
+      stdout.should.include('Harry Potter    | Books           | 5');
+      stdout.should.include('iPhone 5        | Smartphones     | 1200 ');
+      stdout.should.include('Nuclear Bomb    | Weapons         | 100000');
       assert(!err);
       done();
     });
@@ -170,7 +181,6 @@ describe('BDD Gherkin', () => {
     });
   });
 
-
   it('should run scenario and scenario outline by tags', (done) => {
     exec(config_run_config('codecept.bdd.json') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.not.include('0 passed');
@@ -220,7 +230,55 @@ When('I submit {int} form', () => {
 Then('I should log in', () => {
   // From "support/dummy.feature" {"line":8,"column":5}
   throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with an opening paren \\( only$/, () => {
+  // From "support/dummy.feature" {"line":9,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a closing paren \\) only$/, () => {
+  // From "support/dummy.feature" {"line":10,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a opening brace \\{ only$/, () => {
+  // From "support/dummy.feature" {"line":11,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a closing brace \\} only$/, () => {
+  // From "support/dummy.feature" {"line":12,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a slash http:\\/\\/example\\.com\\/foo$/, () => {
+  // From "support/dummy.feature" {"line":13,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \\( paren and an (\\d+) int$/, () => {
+  // From "support/dummy.feature" {"line":14,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \\( paren and a (\\d+\\.\\d+) float$/, () => {
+  // From "support/dummy.feature" {"line":15,"column":5}
+  throw new Error('Not implemented yet');
+});
+
+When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
+  // From "support/dummy.feature" {"line":16,"column":5}
+  throw new Error('Not implemented yet');
 });`);
+      assert(!err);
+      done();
+    });
+  });
+
+  it('should not generate duplicated steps', (done) => {
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+      assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
       assert(!err);
       done();
     });

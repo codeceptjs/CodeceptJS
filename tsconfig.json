@@ -10,11 +10,14 @@
     "types": [
         "node"
     ],
-    "target": "es2015"
+    "target": "es2017"
   },
   "compileOnSave": true,
   "include": [
     "lib",
     "typings"
+  ],
+  "exclude": [
+    "typings/tests"
   ]
 }

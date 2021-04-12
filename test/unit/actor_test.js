@@ -1,6 +1,8 @@
+const path = require('path');
+const expect = require('expect');
+
 const actor = require('../../lib/actor');
 const container = require('../../lib/container');
-const path = require('path');
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
 
@@ -17,28 +19,75 @@ describe('Actor', () => {
         bye: () => 'bye world',
         die: () => { throw new Error('ups'); },
         _hidden: () => 'hidden',
-        failFirst: () => {
+        failAfter: (i = 1) => {
           counter++;
-          if (counter < 2) throw new Error('ups');
+          if (counter <= i) throw new Error('ups');
+          counter = 0;
         },
       },
       MyHelper2: {
         greeting: () => 'greetings, world',
       },
-    });
+    }, undefined, undefined);
+    container.translation().vocabulary.actions.hello = 'привет';
     I = actor();
     event.cleanDispatcher();
   });
 
+  it('should init actor on store', () => {
+    const store = require('../../lib/store');
+    expect(store.actor).toBeTruthy();
+  });
+
+  it('should collect pageobject methods in actor', () => {
+    const poI = actor({
+      customStep: () => {},
+    });
+    expect(poI).toHaveProperty('customStep');
+    expect(I).toHaveProperty('customStep');
+  });
+
+  it('should correct run step from Helper inside PageObject', () => {
+    actor({
+      customStep() {
+        return this.hello();
+      },
+    });
+    recorder.start();
+    const promise = I.customStep();
+    return promise.then(val => expect(val).toEqual('hello world'));
+  });
+
+  it('should init pageobject methods as metastep', () => {
+    actor({
+      customStep: () => 3,
+    });
+    expect(I.customStep()).toEqual(3);
+  });
+
+  it('should correct add translation for step from Helper', () => {
+    expect(I).toHaveProperty('привет');
+  });
+
+  it('should correct add translation for step from PageObject', () => {
+    container.translation().vocabulary.actions.customStep = 'кастомный_шаг';
+    actor({
+      customStep: () => 3,
+    });
+    expect(I).toHaveProperty('кастомный_шаг');
+  });
+
   it('should take all methods from helpers and built in', () => {
-    I.should.contain.keys(['hello', 'bye', 'die', 'greeting', 'say', 'failFirst']);
+    ['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach(key => {
+      expect(I).toHaveProperty(key);
+    });
   });
 
   it('should return promise', () => {
     recorder.start();
     const promise = I.hello();
-    promise.should.be.instanceOf(Promise);
-    return promise.then(val => val.should.eql('hello world'));
+    expect(promise).toBeInstanceOf(Promise);
+    return promise.then(val => expect(val).toEqual('hello world'));
   });
 
   it('should produce step events', () => {
@@ -48,25 +97,51 @@ describe('Actor', () => {
     event.dispatcher.addListener(event.step.after, () => listeners++);
     event.dispatcher.addListener(event.step.passed, (step) => {
       listeners++;
-      step.endTime.should.not.be.null;
-      step.startTime.should.not.be.null;
-      step.startTime.should.not.eql(step.endTime);
+      expect(step.endTime).toBeTruthy();
+      expect(step.startTime).toBeTruthy();
     });
 
     return I.hello().then(() => {
-      listeners.should.eql(3);
+      expect(listeners).toEqual(3);
     });
   });
 
-
   it('should retry failed step with #retry', () => {
-    return I.retry(2).failFirst();
+    recorder.start();
+    return I.retry({ retries: 2, minTimeout: 0 }).failAfter(1);
   });
 
   it('should retry once step with #retry', () => {
-    return I.retry().failFirst();
+    recorder.start();
+    return I.retry().failAfter(1);
   });
 
+  it('should alway use the latest global retry options', () => {
+    recorder.start();
+    recorder.retry({
+      retries: 0,
+      minTimeout: 0,
+      when: () => true,
+    });
+    recorder.retry({
+      retries: 1,
+      minTimeout: 0,
+      when: () => true,
+    });
+    I.hello(); // before fix: this changed the order of retries
+    return I.failAfter(1);
+  });
+
+  it('should not delete a global retry option', () => {
+    recorder.start();
+    recorder.retry({
+      retries: 2,
+      minTimeout: 0,
+      when: () => true,
+    });
+    I.retry(1).failAfter(1); // before fix: this changed the order of retries
+    return I.failAfter(2);
+  });
 
   it('should print handle failed steps', () => {
     recorder.start();
@@ -75,16 +150,15 @@ describe('Actor', () => {
     event.dispatcher.addListener(event.step.after, () => listeners++);
     event.dispatcher.addListener(event.step.failed, (step) => {
       listeners++;
-      step.endTime.should.not.be.null;
-      step.startTime.should.not.be.null;
-      step.startTime.should.not.eql(step.endTime);
+      expect(step.endTime).toBeTruthy();
+      expect(step.startTime).toBeTruthy();
     });
 
     return I.die()
       .then(() => listeners = 0)
-      .catch(err => null)
+      .catch(() => null)
       .then(() => {
-        listeners.should.eql(3);
+        expect(listeners).toEqual(3);
       });
   });
 });

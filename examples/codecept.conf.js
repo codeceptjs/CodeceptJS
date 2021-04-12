@@ -6,7 +6,7 @@ exports.config = {
       browser: 'chrome',
       restart: false,
       windowSize: '1600x1200',
-      show: true,
+      show: !process.env.HEADLESS,
     },
     REST: {},
   },
@@ -21,9 +21,6 @@ exports.config = {
       mochaFile: './output/result.xml',
     },
   },
-  bootstrap: './bootstrap.js',
-  teardown: null,
-  hooks: [],
   gherkin: {
     features: './features/*.feature',
     steps: [
@@ -31,6 +28,9 @@ exports.config = {
     ],
   },
   plugins: {
+    tryTo: {
+      enabled: true,
+    },
     allure: {
       enabled: false,
     },

@@ -1,10 +1,10 @@
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
 Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
 ```
-@param {string|object} locator element located by CSS|XPath|strict locator.
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
 @param {string} attr attribute name.
 @returns {Promise<string>} attribute value

@@ -1,15 +1,15 @@
 console.log('Use JS config file');
 
-console.log(process.profile);
+console.log(process.env.profile);
 
 exports.config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',
   helpers: {
-    WebDriverIO: {
+    WebDriver: {
       url: 'http://localhost',
-      browser: process.profile || 'firefox',
+      browser: process.env.profile || 'firefox',
       restart: true,
     },
   },

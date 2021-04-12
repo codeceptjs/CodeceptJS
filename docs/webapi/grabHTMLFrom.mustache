@@ -1,10 +1,10 @@
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - an array of HTMLs returned.
+If more than one element is found - HTML of first element is returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
 ```
 
-@param locator element located by CSS|XPath|strict locator.
+@param {CodeceptJS.LocatorOrString} element located by CSS|XPath|strict locator.
 @returns {Promise<string>} HTML code for an element

@@ -1,7 +1,9 @@
 ---
-id: mobile
+permalink: /mobile
 title: Mobile Testing with Appium
 ---
+
+# Mobile Testing with Appium
 
 CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.
 Such tests are executed using [Appium](http://appium.io) on emulated or physical devices. Also, Appium allows to test web application on mobile devices.
@@ -58,7 +60,7 @@ To run mobile test you need either an device emulator (available with Android SD
 CodeceptJS should be installed with webdriverio support:
 
 ```bash
-npm install -g codeceptjs webdriverio
+npm install codeceptjs webdriverio --save
 ```
 
 ## Configuring
@@ -66,7 +68,7 @@ npm install -g codeceptjs webdriverio
 Initialize CodeceptJS with `init` command:
 
 ```sh
-codeceptjs init
+npx codeceptjs init
 ```
 
 Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
@@ -91,11 +93,11 @@ Check the newly created `codecept.conf.js` configuration file.
 You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/docs/en/writing-running-appium/caps/)
 
 ```js
-"helpers": {
-  "Appium": {
-    "app": "my_app.apk",
-    "platform": "Android",
-    "desiredCapabilities": {}
+helpers: {
+  Appium: {
+    app: "my_app.apk",
+    platform: "Android",
+    desiredCapabilities: {}
   }
 }
 ```
@@ -103,7 +105,7 @@ You may want to set some additional Appium settings via [desiredCapabilities](ht
 Once you configured Appium, create the first test by running
 
 ```sh
-codeceptjs gt
+npx codeceptjs gt
 ```
 
 ## BrowserStack Configuration
@@ -111,14 +113,15 @@ codeceptjs gt
 If you wish to use BrowserStack's [Automated Mobile App Testing](https://www.browserstack.com/app-automate) platform. Configure the Appium helper like this:
 
 ```js
-"helpers": {
-  "Appium":
-    "app": "bs://<hashed app-id>",
-    "host": "hub-cloud.browserstack.com",
-    "port": 4444,
-    "user": "BROWSERSTACK_USER",
-    "key": "BROWSERSTACK_KEY",
-    "device": "iPhone 7"
+helpers: {
+  Appium:
+    app: "bs://<hashed app-id>",
+    host: "hub-cloud.browserstack.com",
+    port: 4444,
+    platform: "ios",
+    user: "BROWSERSTACK_USER",
+    key: "BROWSERSTACK_KEY",
+    device: "iPhone 7"
 }
 ```
 Here is the full list of [capabilities](https://www.browserstack.com/app-automate/capabilities).
@@ -137,7 +140,7 @@ A test is written in a scenario-driven manner, listing an actions taken by a use
 This is the sample test for a native mobile application:
 
 ```js
-Scenario('test registration', (I) => {
+Scenario('test registration', ({ I }) => {
   I.click('~startUserRegistrationCD');
   I.fillField('~inputUsername', 'davert');
   I.fillField('~inputEmail', 'davert@codecept.io');
@@ -173,6 +176,8 @@ In both Android and iPhone elements are defined in XML format and can be searche
 I.seeElement('//android.widget.ScrollView/android.widget.LinearLayout')'
 ```
 
+> Despite showing XPath in this guide we **do not recommend using XPath for testing iOS native apps. XPath runs very slow on iOS. Consider using ID or Accessibility ID locators instead.
+
 CSS locators are not supported in native mobile apps, you need to switch to web context to use them.
 
 Elements can also be located by their accessability id, available both at Android and iOS.
@@ -181,7 +186,9 @@ Accessibility id is recommended to use for locating element, as it rarely change
 * iOS uses [UIAccessibilityIdentification](https://developer.apple.com/documentation/uikit/uiaccessibilityidentification)
 * Android `accessibility id` matches the content-description
 * Web view uses `[aria-label]` attribute as accessibility id
-* ReactNative for Android has some caveats you could find more [here](mobile-react-native-locators.md)
+* For [React Native for Android see our special guide](mobile-react-native-locators.md).
+
+> If you test React Native application, consider using [Detox helper](/detox) for faster tests.
 
 Add `~` prefix to search for element by its accessibility id:
 
@@ -287,4 +294,3 @@ Just as you can specify android, and ios-specific locators, you can do so for we
 ```js
 I.click({web: '#login', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
-

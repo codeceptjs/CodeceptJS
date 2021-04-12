@@ -1,8 +1,9 @@
+const { expect } = require('chai');
+const sinon = require('sinon');
+
 const scenario = require('../../lib/scenario');
 const recorder = require('../../lib/recorder');
 const event = require('../../lib/event');
-const assert = require('assert');
-const sinon = require('sinon');
 
 let test;
 let fn;
@@ -24,12 +25,11 @@ describe('Scenario', () => {
 
   it('should wrap test function', () => {
     scenario.test(test).fn(() => {});
-    assert.ok(fn.called);
+    expect(fn.called).is.ok;
   });
 
   it('should work with async func', () => {
     let counter = 0;
-    let error;
     test.fn = () => {
       recorder.add('test', async () => {
         await counter++;
@@ -41,7 +41,7 @@ describe('Scenario', () => {
 
     scenario.setup();
     scenario.test(test).fn(() => null);
-    recorder.add('validation', () => assert.equal(counter, 4));
+    recorder.add('validation', () => expect(counter).to.eq(4));
     return recorder.promise();
   });
 
@@ -58,14 +58,14 @@ describe('Scenario', () => {
 
     it('should fire events', () => {
       scenario.test(test).fn(() => null);
-      assert.ok(started.called);
+      expect(started.called).is.ok;
       scenario.teardown();
       scenario.suiteTeardown();
       return recorder.promise()
-        .then(() => assert.ok(beforeSuite.called))
-        .then(() => assert.ok(afterSuite.called))
-        .then(() => assert.ok(before.called))
-        .then(() => assert.ok(after.called));
+        .then(() => expect(beforeSuite.called).is.ok)
+        .then(() => expect(afterSuite.called).is.ok)
+        .then(() => expect(before.called).is.ok)
+        .then(() => expect(after.called).is.ok);
     });
 
     it('should fire failed event on error', () => {
@@ -76,7 +76,7 @@ describe('Scenario', () => {
       };
       scenario.test(test).fn(() => {});
       return recorder.promise()
-        .then(() => assert.ok(failed.called))
+        .then(() => expect(failed.called).is.ok)
         .catch(() => null);
     });
 
@@ -86,7 +86,7 @@ describe('Scenario', () => {
       };
       scenario.test(test).fn(() => {});
       return recorder.promise()
-        .then(() => assert.ok(failed.called))
+        .then(() => expect(failed.called).is.ok)
         .catch(() => null);
     });
   });

@@ -24,6 +24,12 @@ class redirect {
     }
 }
 
+class redirect_long {
+    function GET() {
+        include __DIR__.'/view/redirect_long.php';
+    }
+}
+
 class redirect4 {
     function GET() {
         header('Location: /search?ln=test@gmail.com&sn=testnumber');
@@ -116,6 +122,14 @@ class login {
     }
 
 }
+
+
+class basic_image {
+    function GET() {
+      include __DIR__ . '/view/image.php';
+    }
+  }
+  
 
 class cookies {
 
@@ -281,5 +295,11 @@ class download {
         flush();
         readfile($file_url); //Absolute URL
         exit();
+    }
+}
+
+class basic_auth {
+    function GET() {
+        include __DIR__.'/view/basic_auth.php';
     }
 }

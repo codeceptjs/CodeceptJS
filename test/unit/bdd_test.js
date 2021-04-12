@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const { Parser } = require('gherkin');
 const {
   Given,
@@ -11,6 +11,7 @@ const run = require('../../lib/interfaces/gherkin');
 const recorder = require('../../lib/recorder');
 const container = require('../../lib/container');
 const actor = require('../../lib/actor');
+const event = require('../../lib/event');
 
 const text = `
   Feature: checkout process
@@ -24,6 +25,17 @@ const text = `
     And I have product with 1000 price
     When I go to checkout process
 `;
+
+const checkTestForErrors = (test) => {
+  return new Promise((resolve, reject) => {
+    test.fn((err) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+};
 
 describe('BDD', () => {
   beforeEach(() => {
@@ -44,18 +56,18 @@ describe('BDD', () => {
     // console.log('Feature', ast.feature);
     // console.log('Scenario', ast.feature.children);
     // console.log('Steps', ast.feature.children[0].steps[0]);
-    assert.ok(ast.feature);
-    assert.ok(ast.feature.children);
-    assert.ok(ast.feature.children[0].steps);
+    expect(ast.feature).is.ok;
+    expect(ast.feature.children).is.ok;
+    expect(ast.feature.children[0].steps).is.ok;
   });
 
   it('should load step definitions', () => {
     Given('I am a bird', () => 1);
     When('I fly over ocean', () => 2);
     Then(/I see (.*?)/, () => 3);
-    assert.equal(1, matchStep('I am a bird')());
-    assert.equal(3, matchStep('I see ocean')());
-    assert.equal(3, matchStep('I see world')());
+    expect(1).is.equal(matchStep('I am a bird')());
+    expect(3).is.equal(matchStep('I see ocean')());
+    expect(3).is.equal(matchStep('I see world')());
   });
 
   it('should contain tags', async () => {
@@ -64,37 +76,66 @@ describe('BDD', () => {
     When('I go to checkout process', () => sum += 10);
     const suite = run(text);
     suite.tests[0].fn(() => {});
-    assert.ok(suite.tests[0].tags);
-    assert.equal('@super', suite.tests[0].tags[0]);
+    expect(suite.tests[0].tags).is.ok;
+    expect('@super').is.equal(suite.tests[0].tags[0]);
   });
-
 
   it('should load step definitions', (done) => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
     const suite = run(text);
-    assert.equal('checkout process', suite.title);
+    expect('checkout process').is.equal(suite.title);
     suite.tests[0].fn(() => {
-      assert.ok(suite.tests[0].steps);
-      assert.equal(1610, sum);
+      expect(suite.tests[0].steps).is.ok;
+      expect(1610).is.equal(sum);
       done();
     });
   });
 
-
-  it('should allow failed steps', (done) => {
+  it('should allow failed steps', async () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
-    When('I go to checkout process', () => assert(false));
+    When('I go to checkout process', () => expect(false).is.true);
     const suite = run(text);
-    assert.equal('checkout process', suite.title);
-    let errored = false;
-    suite.tests[0].fn((err) => {
-      errored = !!err;
-      assert(errored);
-      done();
-    });
+    expect('checkout process').is.equal(suite.title);
+    try {
+      await checkTestForErrors(suite.tests[0]);
+      return Promise.reject((new Error('Test should have thrown with failed step, but did not')));
+    } catch (err) {
+      const errored = !!err;
+      expect(errored).is.true;
+    }
+  });
+
+  it('handles errors in steps', async () => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', () => { throw new Error('errored step'); });
+    const suite = run(text);
+    expect('checkout process').is.equal(suite.title);
+    try {
+      await checkTestForErrors(suite.tests[0]);
+      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+    } catch (err) {
+      const errored = !!err;
+      expect(errored).is.true;
+    }
+  });
+
+  it('handles async errors in steps', async () => {
+    let sum = 0;
+    Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
+    When('I go to checkout process', () => Promise.reject(new Error('step failed')));
+    const suite = run(text);
+    expect('checkout process').is.equal(suite.title);
+    try {
+      await checkTestForErrors(suite.tests[0]);
+      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+    } catch (err) {
+      const errored = !!err;
+      expect(errored).is.true;
+    }
   });
 
   it('should work with async functions', (done) => {
@@ -107,14 +148,13 @@ describe('BDD', () => {
       });
     });
     const suite = run(text);
-    assert.equal('checkout process', suite.title);
+    expect('checkout process').is.equal(suite.title);
     suite.tests[0].fn(() => {
-      assert.ok(suite.tests[0].steps);
-      assert.equal(1610, sum);
+      expect(suite.tests[0].steps).is.ok;
+      expect(1610).is.equal(sum);
       done();
     });
   });
-
 
   it('should execute scenarios step-by-step ', (done) => {
     printed = [];
@@ -165,7 +205,26 @@ describe('BDD', () => {
   it('should match step with params', () => {
     Given('I am a {word}', param => param);
     const fn = matchStep('I am a bird');
-    assert.equal('bird', fn.params[0]);
+    expect('bird').is.equal(fn.params[0]);
+  });
+
+  it('should produce step events', (done) => {
+    const text = `
+    Feature: Emit step event
+
+      Scenario:
+        Then I emit step events
+    `;
+    Then('I emit step events', () => {});
+    let listeners = 0;
+    event.dispatcher.addListener(event.bddStep.before, () => listeners++);
+    event.dispatcher.addListener(event.bddStep.after, () => listeners++);
+
+    const suite = run(text);
+    suite.tests[0].fn(() => {
+      listeners.should.eql(2);
+      done();
+    });
   });
 
   it('should use shortened form for step definitions', () => {
@@ -175,13 +234,13 @@ describe('BDD', () => {
     Given('I have ${int} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
     Given('I have also ${float} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
     fn = matchStep('I am a bird');
-    assert.equal('bird', fn(fn.params));
+    expect('bird').is.equal(fn(fn.params));
     fn = matchStep('I have 2 wings and 2 eyes');
-    assert.equal(4, fn(fn.params));
+    expect(4).is.equal(fn(fn.params));
     fn = matchStep('I have $500 in my pocket');
-    assert.equal(500, fn(fn.params));
+    expect(500).is.equal(fn(fn.params));
     fn = matchStep('I have also $500.30 in my pocket');
-    assert.equal(500.30, fn(fn.params));
+    expect(500.30).is.equal(fn(fn.params));
   });
 
   it('should attach before hook for Background', () => {
@@ -201,7 +260,7 @@ describe('BDD', () => {
     const done = () => { };
     suite._beforeEach.forEach(hook => hook.run(done));
     suite.tests[0].fn(done);
-    assert.equal(2, sum);
+    expect(2).is.equal(sum);
   });
 
   it('should execute scenario outlines', (done) => {
@@ -218,6 +277,11 @@ describe('BDD', () => {
       Examples:
         | price | total |
         | 10    | 9     |
+
+      @exampleTag1
+      @exampleTag2
+      Examples:
+        | price | total |
         | 20    | 18    |
     `;
     let cart = 0;
@@ -234,21 +298,61 @@ describe('BDD', () => {
 
     const suite = run(text);
 
-    assert.ok(suite.tests[0].tags);
-    assert.equal('@awesome', suite.tests[0].tags[0]);
-    assert.equal('@cool', suite.tests[0].tags[1]);
-    assert.equal('@super', suite.tests[0].tags[2]);
+    expect(suite.tests[0].tags).is.ok;
+    expect(['@awesome', '@cool', '@super']).is.deep.equal(suite.tests[0].tags);
+    expect(['@awesome', '@cool', '@super', '@exampleTag1', '@exampleTag2']).is.deep.equal(suite.tests[1].tags);
 
-    assert.equal(2, suite.tests.length);
+    expect(2).is.equal(suite.tests.length);
     suite.tests[0].fn(() => {
-      assert.equal(9, cart);
-      assert.equal(9, sum);
+      expect(9).is.equal(cart);
+      expect(9).is.equal(sum);
 
       suite.tests[1].fn(() => {
-        assert.equal(18, cart);
-        assert.equal(18, sum);
+        expect(18).is.equal(cart);
+        expect(18).is.equal(sum);
         done();
       });
+    });
+  });
+
+  it('should provide a parsed DataTable', (done) => {
+    const text = `
+    @awesome @cool
+    Feature: checkout process
+
+    @super
+    Scenario: order products
+      Given I have the following products :
+        | label   | price  |
+        | beer    | 9      |
+        | cookies | 12     |
+      Then I should see the following products :
+        | label   | price  |
+        | beer    | 9      |
+        | cookies | 12     |
+    `;
+
+    let givenParsedRows;
+    let thenParsedRows;
+
+    Given('I have the following products :', (products) => {
+      givenParsedRows = products.parse();
+    });
+    Then('I should see the following products :', (products) => {
+      thenParsedRows = products.parse();
+    });
+
+    const suite = run(text);
+
+    const expectedParsedDataTable = [
+      ['label', 'price'],
+      ['beer', '9'],
+      ['cookies', '12'],
+    ];
+    suite.tests[0].fn(() => {
+      expect(givenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
+      expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
+      done();
     });
   });
 });

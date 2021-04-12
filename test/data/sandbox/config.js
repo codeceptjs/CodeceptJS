@@ -1,4 +1,4 @@
-const profile = process.profile;
+const profile = process.env.profile || process.profile;
 
 exports.config = {
   tests: './*_test.js',
@@ -15,8 +15,4 @@ exports.config = {
 
 if (profile === 'failed') {
   exports.config.tests = './*_test_failed.js';
-}
-
-if (profile === 'bootstrap') {
-  exports.config.bootstrap = 'hooks.js';
 }

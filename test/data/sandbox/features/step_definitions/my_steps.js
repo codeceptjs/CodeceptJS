@@ -45,7 +45,7 @@ Given(/^I have this product in my cart$/, (table) => {
   console.log(str);
 });
 
-Then(/^I should see total price is "([^"]*)" \$$/, (price) => {
+Then(/^I should see total price is "([^"]*)" \$$/, () => {
 });
 
 Before((test) => {

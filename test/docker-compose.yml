@@ -9,6 +9,15 @@ services:
       - ..:/codecept
       - node_modules:/codecept/node_modules
 
+  test-runner:
+    image: node:12.13-slim
+    entrypoint: /codecept/node_modules/.bin/mocha
+    command: test/runner
+    working_dir: /codecept
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
   test-helpers:
     build: ..
     entrypoint: /codecept/node_modules/.bin/mocha --invert --fgrep Appium
@@ -31,6 +40,18 @@ services:
     env_file: .env
     depends_on:
       - json_server
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
+  test-graphql:
+    build: ..
+    entrypoint: /codecept/node_modules/.bin/mocha
+    command: test/graphql
+    working_dir: /codecept
+    env_file: .env
+    depends_on:
+      - json_server-graphql
     volumes:
       - ..:/codecept
       - node_modules:/codecept/node_modules
@@ -113,8 +134,19 @@ services:
       - ./support:/support
       - node_modules:/node_modules
 
+  test-bdd.faker:
+    build: ..
+    env_file: .env
+    environment:
+      - CODECEPT_ARGS=-c codecept.faker.js
+    volumes:
+      - ./bdd:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
+
   selenium.chrome:
-    image: selenium/standalone-chrome:3.9.1-actinium
+    image: selenium/standalone-chrome:3.141.59-oxygen
     shm_size: 2g
     ports:
       - 4444:4444
@@ -134,6 +166,17 @@ services:
     working_dir: /codecept
     expose:
       - 8010
+    volumes:
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
+
+  json_server-graphql:
+    build: ..
+    entrypoint: []
+    command: npm run json-server:graphql
+    working_dir: /codecept
+    expose:
+      - 8020
     volumes:
       - ..:/codecept
       - node_modules:/codecept/node_modules

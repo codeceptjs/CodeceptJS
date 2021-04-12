@@ -1,0 +1,10 @@
+Scroll element into viewport.
+
+```js
+I.scrollIntoView('#submit');
+I.scrollIntoView('#submit', true);
+I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "center" });
+```
+
+@param {LocatorOrString} locator located by CSS|XPath|strict locator.
+@param {ScrollIntoViewOptions} scrollIntoViewOptions see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView.

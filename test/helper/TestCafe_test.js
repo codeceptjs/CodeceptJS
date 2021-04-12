@@ -1,6 +1,8 @@
+const path = require('path');
+const assert = require('assert');
+
 const TestHelper = require('../support/TestHelper');
 const TestCafe = require('../../lib/helper/TestCafe');
-const path = require('path');
 const webApiTests = require('./webapi');
 
 let I;
@@ -8,7 +10,7 @@ const siteUrl = TestHelper.siteUrl();
 
 describe('TestCafe', function () {
   this.timeout(35000);
-  this.retries(0);
+  this.retries(1);
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
@@ -63,5 +65,27 @@ describe('TestCafe', function () {
     });
   });
 
+  describe('#waitForFunction', () => {
+    it('should wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(() => window.__waitJs, 3));
+    });
+
+    it('should pass arguments and wait for function returns true', () => {
+      return I.amOnPage('/form/wait_js')
+        .then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3));
+    });
+  });
+
   webApiTests.tests();
+
+  describe('#useTestCafeTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.useTestCafeTo('test', async ({ t }) => {
+        return t.eval(() => document.title, { boundTestRun: null });
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+  });
 });

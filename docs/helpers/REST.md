@@ -1,5 +1,7 @@
 ---
-id: REST
+permalink: /helpers/REST
+editLink: false
+sidebar: auto
 title: REST
 ---
 
@@ -7,7 +9,7 @@ title: REST
 
 ## REST
 
-Extends Helper
+**Extends Helper**
 
 REST helper allows to send additional requests to the REST API during acceptance tests.
 [Axios][1] library is used to perform requests.
@@ -18,15 +20,19 @@ REST helper allows to send additional requests to the REST API during acceptance
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 -   onRequest: a async function which can update request object.
+-   maxUploadFileSize: set the max content file size in MB when performing api calls.
 
 ## Example
 
 ```js
-REST: {
-   endpoint: 'http://site.com/api',
-   onRequest: (request) => {
-     request.headers.auth = '123';
-   }
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      onRequest: (request) => {
+      request.headers.auth = '123';
+    }
+  }
 }
 ```
 
@@ -47,21 +53,21 @@ this.helpers['REST']._executeRequest({
 
 -   `config`  
 
-### \_executeRequest
+### _executeRequest
 
 Executes axios request
 
 #### Parameters
 
--   `request` any 
+-   `request` **any** 
 
-### \_url
+### _url
 
 Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 
 #### Parameters
 
--   `url` any 
+-   `url` **any** 
 
 ### sendDeleteRequest
 
@@ -73,8 +79,8 @@ I.sendDeleteRequest('/api/users/1');
 
 #### Parameters
 
--   `url` any 
--   `headers` [object][2]  
+-   `url` **any** 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendGetRequest
 
@@ -86,8 +92,8 @@ I.sendGetRequest('/api/users.json');
 
 #### Parameters
 
--   `url` any 
--   `headers` [object][2]  
+-   `url` **any** 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendPatchRequest
 
@@ -95,13 +101,16 @@ Sends PATCH request to API.
 
 ```js
 I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
 
--   `url` [string][3] 
--   `payload` [object][2] 
--   `headers` [object][2]  
+-   `url` **[string][3]** 
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendPostRequest
 
@@ -109,13 +118,16 @@ Sends POST request to API.
 
 ```js
 I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
 
--   `url` any 
--   `payload` any  
--   `headers` [object][2]  
+-   `url` **any** 
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### sendPutRequest
 
@@ -123,13 +135,16 @@ Sends PUT request to API.
 
 ```js
 I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPutRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
 
--   `url` [string][3] 
--   `payload` [object][2]  
--   `headers` [object][2]  
+-   `url` **[string][3]** 
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
 
 ### setRequestTimeout
 

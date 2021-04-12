@@ -1,9 +1,13 @@
 ---
-id: books
+permalink: /books
+layout: Section
+sidebar: false
 title: Books & Posts
+editLink: false
 ---
 
-> Add your own books or posts to our [Wiki Page](https://github.com/Codeception/CodeceptJS/wiki/Books-&-Posts)
+# Books & Posts
+> Add your own books or posts to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Books-&-Posts)
 ### [Practical End 2 End Testing with CodeceptJS](https://leanpub.com/codeceptjs/)
 
 A book by **Paul Vincent Beigang**
@@ -25,7 +29,9 @@ A book by **Paul Vincent Beigang**
 
 A list of good educational posts about CodeceptJS
 
+* [QA Automation From Zero-to-Hero with CodeceptJS End-to-End Testing](https://medium.com/@dan.ryan.emmons/qa-automation-from-zero-to-hero-with-codeceptjs-end-to-end-testing-719db9d6ff5c) by Dan Emmons
 * [Effective End2End Tests with CodeceptJS](https://hackernoon.com/effective-end-2-end-testing-in-javascript-with-codeceptjs-37c8d7d6a928) by @davertmik
+* [Customizing CodeceptJS Skeleton](https://medium.com/@successivetech/codeceptjs-skeleton-9ba86d3b45ec)
 * [Running End to End tests as Google Cloud Functions](https://hackernoon.com/running-end-to-end-tests-as-google-cloud-functions-f5e34ffc3984)
 * [End-To-End Testing With CodeceptJS](https://www.monterail.com/blog/end-to-end-testing-with-codeceptjs) by Piotr Michalski
 * [Getting started with CodeceptJS and Selenium WebDriver](https://medium.com/@garrettvorce/getting-started-with-selenium-and-codeceptjs-c0698e8df677)
