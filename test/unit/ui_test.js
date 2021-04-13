@@ -213,5 +213,19 @@ describe('ui', () => {
         expect(scenarioConfig.test.opts.customOpts).eq('Custom Opts');
       });
     });
+
+    describe('skip', () => {
+      it('should inject custom opts to opts and without callback', () => {
+        scenarioConfig = context.Scenario.skip('scenario', { customOpts: 'Custom Opts' });
+
+        expect(scenarioConfig.test.opts.customOpts).eq('Custom Opts');
+      });
+
+      it('should inject custom opts to opts and with callback', () => {
+        scenarioConfig = context.Scenario.skip('scenario', { customOpts: 'Custom Opts' }, () => { console.log('Scenario Body'); });
+
+        expect(scenarioConfig.test.opts.customOpts).eq('Custom Opts');
+      });
+    });
   });
 });
