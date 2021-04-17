@@ -53,6 +53,13 @@ describe('Output', () => {
     expect(console.log).to.have.been.calledTwice;
   });
 
+  it('should not throwing error when using non predefined system color for say function', () => {
+    const debugMsg = 'Dear Henrietta';
+
+    output.say(debugMsg, 'orange');
+    expect(console.log).to.have.been.called;
+  });
+
   afterEach(() => {
     console.log.restore();
   });
