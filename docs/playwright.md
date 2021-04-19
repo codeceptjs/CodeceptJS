@@ -7,7 +7,7 @@ title: Testing with Playwright
 
 Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers as well as [Electron](https://www.electronjs.org/) apps with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
 
-Playwright was built similarly to [Puppeteer](https://github.com/puppeteer/puppeteer), using its API and so is very different in usage. However, Playwright has cross browser support with better design for test automaiton.
+Playwright was built similarly to [Puppeteer](https://github.com/puppeteer/puppeteer), using its API and so is very different in usage. However, Playwright has cross browser support with better design for test automation.
 
 Take a look at a sample test:
 
@@ -270,7 +270,7 @@ Playwright can emulate browsers of mobile devices. Instead of paying for expensi
 
 Device emulation can be enabled in CodeceptJS globally in a config or per session.
 
-Playwright contains a [list of predefined devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+Playwright contains a [list of predefined devices](https://github.com/microsoft/playwright/blob/master/src/server/deviceDescriptors.js) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
 
 ```js
 const { devices } = require('playwright');
@@ -282,7 +282,7 @@ helpers: {
   }
 }
 ```
-To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions)
+To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/master/docs/src/api/class-browsercontext.md)
 
 ```js
 helpers: {
@@ -322,7 +322,7 @@ Playwright can be added to GitHub Actions using [official action](https://github
 
 ## Accessing Playwright API
 
-To get [Playwright API](https://github.com/microsoft/playwright/blob/master/docs/api.md) inside a test use `I.usePlaywrightTo` method with a callback.
+To get [Playwright API](https://github.com/microsoft/playwright/tree/master/docs/src/api) inside a test use `I.usePlaywrightTo` method with a callback.
 To keep test readable provide a description of a callback inside the first parameter.
 
 ```js
@@ -385,6 +385,6 @@ async setPermissions() {
 }
 ```
 
-> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext)
+> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/src/api/class-browsercontext.md)
 
-> [▶ Learn more about Helpers](http://codecept.io/helpers/)
+> [▶ Learn more about Helpers](https://codecept.io/helpers/)
