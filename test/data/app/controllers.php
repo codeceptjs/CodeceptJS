@@ -18,6 +18,15 @@ class info {
 
 }
 
+class invisible_elements {
+    function GET() {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) data::set('ajax',array('GET'));
+        data::set('params', $_GET);
+        include __DIR__.'/view/invisible_elements.php';
+    }
+
+}
+
 class redirect {
     function GET() {
         header('Location: /info');

@@ -85,6 +85,13 @@ describe('Playwright', function () {
 
   webApiTests.tests();
 
+  describe('#click', () => {
+    it('should not try to click on invisible elements', async () => {
+      await I.amOnPage('/invisible_elements');
+      await I.click('Hello World');
+    });
+  });
+
   describe('#waitForFunction', () => {
     it('should wait for function returns true', () => {
       return I.amOnPage('/form/wait_js')
