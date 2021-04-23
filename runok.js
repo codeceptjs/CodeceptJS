@@ -390,6 +390,27 @@ title: ${name}
     console.log('-- RELEASED --');
   },
 
+  async versioning() {
+    const semver = require('semver');
+
+    if (fs.existsSync('./package.json')) {
+      const packageFile = require('./package.json');
+      const currentVersion = packageFile.version;
+      let type = process.argv[3];
+      console.log(process.argv);
+      if (!['major', 'minor', 'patch'].includes(type)) {
+        type = 'patch';
+      }
+
+      const newVersion = semver.inc(packageFile.version, type);
+      packageFile.version = newVersion;
+      fs.writeFileSync('./package.json', JSON.stringify(packageFile, null, 2));
+      console.log('Version updated', currentVersion, '=>', newVersion);
+
+      console.log('Creating and switching to release branch...');
+      await exec(`git checkout -b release-${newVersion}`);
+    }
+  },
 };
 
 async function processChangelog() {
