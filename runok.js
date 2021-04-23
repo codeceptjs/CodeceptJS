@@ -397,7 +397,6 @@ title: ${name}
       const packageFile = require('./package.json');
       const currentVersion = packageFile.version;
       let type = process.argv[3];
-      console.log(process.argv);
       if (!['major', 'minor', 'patch'].includes(type)) {
         type = 'patch';
       }
