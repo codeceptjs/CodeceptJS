@@ -1,3 +1,18 @@
+## 3.0.7
+
+Documentation fixes:
+* Remove broken link from Nightmare helper. See #2860 by @Arhell
+* Fixed broken links in playwright.md. See #2848 by @johnhoodjr
+
+Features:
+* [WebDriver] Shadow DOM Support for Webdriver. See #2741 by @gkushang
+
+Bug fixes:
+* [GraphQL] Use a helper-specific instance of Axios to avoid contaminating global defaults. See #2868 by @vanvoljg
+* A default system color is used when passing non supported system color when using I.say(). See #2874 by @PeterNgTr
+* [Playwright] Avoid the timout due to calling the click on invisible elements. See #2875 by cbayer97
+
+
 ## 3.0.6
 
 * [Playwright] Added `electron` as a browser to config. See #2834 by @cbayer97  
