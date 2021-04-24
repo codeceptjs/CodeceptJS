@@ -6,10 +6,10 @@ title: Email Testing
 # Email Testing
 
 In End 2 End testing we need to interact with emails.
-Email delivery can't tested locally or mocked while testing.
-That's why for an end to end test you need to use a real emails to be sent and real email address to receive that emails.
+Email delivery can't be tested locally or mocked while testing.
+That's why for an end to end test you need real emails to be sent and real email address to receive that emails.
 
-Setting up an email server can be hard. So we recommend to use a [MailSlurp](https://mailslurp.com/) - a service designed for testing emails. It creates disposable mailboxes and provides you an access to those mailboxes via REST API.
+Setting up an email server can be hard. So we recommend to use [MailSlurp](https://mailslurp.com/) - a service designed for testing emails. It creates disposable mailboxes and provides you an access to those mailboxes via REST API.
 
 > You no longer need to open your gmail account in a browser to check for an email!
 
@@ -41,7 +41,7 @@ npx codeceptjs def
 
 ## Creating Mailbox
 
-MailSlurp allows you to create disposable mailboxes. It means that an email address is created for a one test only and is deleted afterwards. So you can be confident that no other emails are received at that address.
+MailSlurp allows you to create disposable mailboxes. It means that an email address is created for one test only and is deleted afterwards. So you can be confident that no other emails are received at that address.
 
 To create a mailbox use `I.haveNewMailbox()` command:
 
@@ -57,7 +57,7 @@ mailbox object contains:
 
 > See [MailSlurp's guide](https://www.mailslurp.com/guides/getting-started/#create-email-addresses) for details.
 
-Mailbox is opened on creation. If you need more than one mailboxes and you want to switch between them use `openMailbox` method:
+Mailbox is opened on creation. If you need more than one mailbox and you want to switch between them use `openMailbox` method:
 
 ```js
 const mailbox1 = await I.haveNewMailbox();
@@ -71,7 +71,7 @@ I.openMailbox(mailbox1);
 
 A last created mailbox will be activated. It means that it will be used by default to check for emails.
 
-After an action that triggers sending an email is performed on a website you should wait for this email to be received.
+After an action that triggers sending an email is performed on a website, you should wait for this email to be received.
 A timeout for waiting an email can be set globally for a helper or for a one call.
 
 Use `waitForLatestEmail` function to return the first email from a mailbox:
@@ -109,7 +109,7 @@ const email = await I.waitForLatestEmail();
 ```
 > Please note, that we use `await` to assign email. This should be declared inside async function
 
-An `email` object contains following fields:
+An `email` object contains the following fields:
 
 * `subject`
 * `for`
@@ -130,7 +130,7 @@ I.amOnPage(url);
 
 ## Assertions
 
-Assertions are performed on the currently opened email.Email is opened on `waitFor` email call, however, you can open an exact email by using `openEmail` function.
+Assertions are performed on the currently opened email. Email is opened on `waitFor` email call, however, you can open an exact email by using `openEmail` function.
 
 ```js
 const email1 = await I.waitForLatestEmail();
