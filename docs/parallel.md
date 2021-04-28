@@ -225,7 +225,7 @@ if (!userData) {
 }
 ```
 
-If you want to share data only within same worker, and not across all workers, you can need to add option `local: true` every time you run `share` 
+If you want to share data only within same worker, and not across all workers, you need to add option `local: true` every time you run `share` 
 
 ```js
 share({ userData: false }, {local: true });
