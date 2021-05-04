@@ -1,11 +1,16 @@
 ## 3.0.7
 
 Documentation fixes:
-* Remove broken link from Nightmare helper. See #2860 by @Arhell
-* Fixed broken links in playwright.md. See #2848 by @johnhoodjr
+* Remove broken link from `Nightmare helper`. See #2860 by @Arhell
+* Fixed broken links in `playwright.md`. See #2848 by @johnhoodjr
+* Fix mocha-multi config example. See #2881 by @rimesc
+* Fix small errors in email documentation file. See #2884 by @mkrtchian
+* Improve documentation for `Sharing Data Between Workers` section. See #2891 by @ngraf
 
 Features:
-* [WebDriver] Shadow DOM Support for Webdriver. See #2741 by @gkushang
+* [WebDriver] Shadow DOM Support for `Webdriver`. See #2741 by @gkushang
+* [Release management] Introduce the versioning automatically, it follows the semantics versioning. See #2883 by @PeterNgTr
+* Adding opts into `Scenario.skip` that it would be useful for building reports. See #2867 by @AlexKo4
 
 Bug fixes:
 * [GraphQL] Use a helper-specific instance of Axios to avoid contaminating global defaults. See #2868 by @vanvoljg
