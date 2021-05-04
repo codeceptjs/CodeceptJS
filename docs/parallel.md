@@ -26,7 +26,7 @@ This command is similar to `run`, however, steps output can't be shown in worker
 
 Each worker spins an instance of CodeceptJS, executes a group of tests, and sends back report to the main process.
 
-By default the tests are assigned one by one to the avaible workers this may lead to multiple execution of `BeforeSuite()`. Use the option `--suites` to assigne the suites one by one to the workers.
+By default the tests are assigned one by one to the available workers this may lead to multiple execution of `BeforeSuite()`. Use the option `--suites` to assigne the suites one by one to the workers.
 
 ```sh
 npx codeceptjs run-workers --suites 2
