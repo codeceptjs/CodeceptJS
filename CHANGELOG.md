@@ -1,10 +1,36 @@
+## 3.0.7
+
+Documentation fixes:
+* Remove broken link from `Nightmare helper`. See #2860 by @Arhell
+* Fixed broken links in `playwright.md`. See #2848 by @johnhoodjr
+* Fix mocha-multi config example. See #2881 by @rimesc
+* Fix small errors in email documentation file. See #2884 by @mkrtchian
+* Improve documentation for `Sharing Data Between Workers` section. See #2891 by @ngraf
+
+Features:
+* [WebDriver] Shadow DOM Support for `Webdriver`. See #2741 by @gkushang
+* [Release management] Introduce the versioning automatically, it follows the semantics versioning. See #2883 by @PeterNgTr
+* Adding opts into `Scenario.skip` that it would be useful for building reports. See #2867 by @AlexKo4
+* Added support for attaching screenshots to [cucumberJsonReporter](https://github.com/ktryniszewski-mdsol/codeceptjs-cucumber-json-reporter) See #2888 by @fijijavis
+* Supported config file for `codeceptjs shell` command. See #2895 by @PeterNgTr:
+
+```
+npx codeceptjs shell -c foo.conf.js
+```
+
+Bug fixes:
+* [GraphQL] Use a helper-specific instance of Axios to avoid contaminating global defaults. See #2868 by @vanvoljg
+* A default system color is used when passing non supported system color when using I.say(). See #2874 by @PeterNgTr
+* [Playwright] Avoid the timout due to calling the click on invisible elements. See #2875 by cbayer97
+
+
 ## 3.0.6
 
-* [Playwright] Added `electron` as a browser to config. See #2834 by @cbayer97  
+* [Playwright] Added `electron` as a browser to config. See #2834 by @cbayer97
 * [Playwright] Implemented `launchPersistentContext` to be able to launch persistent remote browsers. See #2817 by @brunoqueiros. Fixes #2376.
 * Fixed printing logs and stack traces for `run-workers`. See #2857 by @haveac1gar. Fixes #2621, #2852
-* Emit custom messages from worker to the main thread. See #2824 by @jccguimaraes 
-* Improved workers processes output. See #2804 by @drfiresign 
+* Emit custom messages from worker to the main thread. See #2824 by @jccguimaraes
+* Improved workers processes output. See #2804 by @drfiresign
 * BDD. Added ability to use an array of feature files inside config in `gherkin.features`. See #2814 by @jbergeronjr
 
 ```js
@@ -13,8 +39,8 @@
   "./features/api_features/*.feature"
 ],
 ```
-* Added `getQueueId` to reporter to rerun a specific promise. See #2837 by @jonatask 
-* **Added `fakerTransform` plugin** to use faker data in Gherkin scenarios. See #2854 by @adrielcodeco 
+* Added `getQueueId` to reporter to rerun a specific promise. See #2837 by @jonatask
+* **Added `fakerTransform` plugin** to use faker data in Gherkin scenarios. See #2854 by @adrielcodeco
 
 ```feature
 Scenario Outline: ...
@@ -26,7 +52,7 @@ Scenario Outline: ...
   | productName          | customer              | email              | anythingMore |
   | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
 ```
-* [REST] Use class instance of axios, not the global instance, to avoid contaminating global configuration. #2846 by @vanvoljg 
+* [REST] Use class instance of axios, not the global instance, to avoid contaminating global configuration. #2846 by @vanvoljg
 * [Appium] Added `tunnelIdentifier` config option to provide tunnel for SauceLabs. See #2832 by @gurjeetbains
 
 ## 3.0.5
@@ -34,9 +60,9 @@ Scenario Outline: ...
 
 Features:
 
-* **[Official Docker image for CodeceptJS v3](https://hub.docker.com/r/codeceptjs/codeceptjs)**. New Docker image is based on official Playwright image and supports Playwright, Puppeteer, WebDriver engines. Thanks @VikentyShevyrin  
+* **[Official Docker image for CodeceptJS v3](https://hub.docker.com/r/codeceptjs/codeceptjs)**. New Docker image is based on official Playwright image and supports Playwright, Puppeteer, WebDriver engines. Thanks @VikentyShevyrin
 * Better support for Typescript `codecept.conf.ts` configuration files. See #2750 by @elaichenkov
-* Propagate more events for custom parallel script. See #2796 by @jccguimaraes 
+* Propagate more events for custom parallel script. See #2796 by @jccguimaraes
 * [mocha-junit-reporter] Now supports attachments, see documentation for details. See #2675 by @Shard
 * CustomLocators interface for TypeScript to extend from LocatorOrString. See #2798 by @danielrentz
 * [REST] Mask sensitive data from log messages.

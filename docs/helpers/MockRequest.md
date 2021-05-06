@@ -56,7 +56,7 @@ helpers: {
    Puppeteer: {
      // regular Puppeteer config here
    },
-   MockRequest: {
+   MockRequestHelper: {
      require: '@codeceptjs/mock-request',
    }
 }
@@ -67,7 +67,7 @@ helpers: {
 ```js
 // sample options
 helpers: {
-  MockRequest: {
+  MockRequestHelper: {
      require: '@codeceptjs/mock-request',
      mode: record,
      recordIfMissing: true,
@@ -115,7 +115,7 @@ helpers: {
    WebDriver: {
      // regular WebDriver config here
    },
-   MockRequest: {
+   MockRequestHelper: {
      require: '@codeceptjs/mock-request',
    }
 }
