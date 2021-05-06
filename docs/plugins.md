@@ -604,7 +604,7 @@ Run tests with plugin enabled:
 -   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
     -   `amOnPage`
     -   `wait*`
-    -   `send*`,
+    -   `send*`
     -   `execute*`
     -   `run*`
     -   `have*`
