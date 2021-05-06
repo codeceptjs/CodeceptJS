@@ -28,7 +28,7 @@ Requires `playwright` package version ^1 to be installed:
 This helper should be configured in codecept.json or codecept.conf.js
 
 -   `url`: base url of website to be tested
--   `browser`: a browser to test on, either: `chromium`, `firefox`, `webkit`. Default: chromium.
+-   `browser`: a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show`:  - show browser window.
 -   `restart`:  - restart browser between tests.
 -   `disableScreenshots`:   - don't save screenshot on failure.
@@ -47,6 +47,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `userAgent`: (optional) user-agent string.
 -   `manualStart`:  - do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
 -   `chromium`: (optional) pass additional chromium options
+-   `electron`: (optional) pass additional electron options
 
 #### Example #1: Wait for 0 network connections.
 
