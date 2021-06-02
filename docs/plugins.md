@@ -127,7 +127,7 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
-Before(login => {
+Before({ login } => {
    login('user'); // login using user session
 });
 
@@ -387,7 +387,6 @@ const step = codeceptjs.container.plugins('commentStep');
 const Given = () => step`Given`;
 const When = () => step`When`;
 const Then = () => step`Then`;
-```
 
 Scenario('project update test', async (I) => {
   Given();
@@ -400,9 +399,6 @@ Scenario('project update test', async (I) => {
   projectPage.open(projectId);
   I.see('new title', 'h1');
 });
-
-```
-
 ```
 
 ### Parameters
