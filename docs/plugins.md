@@ -311,7 +311,7 @@ Scenario('login', async ( {I, login} ) => {
 Add descriptive nested steps for your tests:
 
 ```js
-Scenario('project update test', async (I) => {
+Scenario('project update test', async ({ I }) => {
   __`Given`;
   const projectId = await I.have('project');
 
@@ -388,7 +388,7 @@ const Given = () => step`Given`;
 const When = () => step`When`;
 const Then = () => step`Then`;
 
-Scenario('project update test', async (I) => {
+Scenario('project update test', async ({ I }) => {
   Given();
   const projectId = await I.have('project');
 
