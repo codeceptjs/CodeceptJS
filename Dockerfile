@@ -21,7 +21,7 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
 COPY . /codecept
 
 RUN chown -R pptruser:pptruser /codecept
-RUN runuser -l pptruser -c 'npm install --loglevel=warn --prefix /codecept'
+RUN runuser -l pptruser -c 'npm install --legacy-peer-deps --loglevel=warn --prefix /codecept'
 
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
