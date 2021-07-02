@@ -114,7 +114,7 @@ If you wish to use BrowserStack's [Automated Mobile App Testing](https://www.bro
 
 ```js
 helpers: {
-  Appium:
+  Appium: {
     app: "bs://<hashed app-id>",
     host: "hub-cloud.browserstack.com",
     port: 4444,
@@ -122,6 +122,7 @@ helpers: {
     user: "BROWSERSTACK_USER",
     key: "BROWSERSTACK_KEY",
     device: "iPhone 7"
+  }
 }
 ```
 Here is the full list of [capabilities](https://www.browserstack.com/app-automate/capabilities).
