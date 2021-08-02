@@ -352,10 +352,11 @@ Configure mocha-multi with reports that you want:
         }
       },
       "mochawesome": {
-       "stdout": "./output/console.log",
-       "options": {
-         "reportDir": "./output",
-         "reportFilename": "report"
+        "stdout": "./output/console.log",
+        "options": {
+          "reportDir": "./output",
+          "reportFilename": "report"
+        }
       },
       "mocha-junit-reporter": {
         "stdout": "./output/console.log",

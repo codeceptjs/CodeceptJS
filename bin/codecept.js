@@ -37,6 +37,7 @@ program.command('shell [path]')
   .description('Interactive shell')
   .option('--verbose', 'output internal logging information')
   .option('--profile [value]', 'configuration profile to be used')
+  .option('-c, --config [file]', 'configuration file to be used')
   .action(errorHandler(require('../lib/command/interactive')));
 
 program.command('list [path]')
