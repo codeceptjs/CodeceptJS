@@ -19,21 +19,13 @@ jobs:
 
     runs-on: ubuntu-18.04
     services:
-      hub:
-        image: selenium/hub:3.141.59-gold
+      chrome:
+        image: selenium/standalone-chrome-debug
         ports:
           - 4444:4444
-          - 5900:5900        
-      chrome:
-        image: selenium/node-chrome:3.141.59-gold
-        env:
-          HUB_HOST: hub
-          HUB_PORT: 4444
-      firefox:
-        image: selenium/node-firefox:3.141.59-gold
-        env:
-          HUB_HOST: hub
-          HUB_PORT: 4444
+          - 5900:5900
+        volumes:
+          - /dev/shm:/dev/shm
 
     strategy:
       matrix:
@@ -56,6 +48,8 @@ jobs:
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
       env:
-        SELENIUM_HOST: hub
+        SELENIUM_HOST: chrome
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+      env:
+        SELENIUM_HOST: chrome      

@@ -176,6 +176,14 @@ Add the 'dialog' event listener to a page
 
 -   `page`  
 
+### _contextLocator
+
+Grab Locator if called within Context
+
+#### Parameters
+
+-   `locator` **any** 
+
 ### _getPageUrl
 
 Gets page URL including hash.

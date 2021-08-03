@@ -7,13 +7,39 @@ layout: Section
 
 # Releases
 
+## 3.0.7
+
+Documentation fixes:
+* Remove broken link from `Nightmare helper`. See [#2860](https://github.com/codeceptjs/CodeceptJS/issues/2860) by **[Arhell](https://github.com/Arhell)**
+* Fixed broken links in `playwright.md`. See [#2848](https://github.com/codeceptjs/CodeceptJS/issues/2848) by **[johnhoodjr](https://github.com/johnhoodjr)**
+* Fix mocha-multi config example. See [#2881](https://github.com/codeceptjs/CodeceptJS/issues/2881) by **[rimesc](https://github.com/rimesc)**
+* Fix small errors in email documentation file. See [#2884](https://github.com/codeceptjs/CodeceptJS/issues/2884) by **[mkrtchian](https://github.com/mkrtchian)**
+* Improve documentation for `Sharing Data Between Workers` section. See [#2891](https://github.com/codeceptjs/CodeceptJS/issues/2891) by **[ngraf](https://github.com/ngraf)**
+
+Features:
+* **[WebDriver]** Shadow DOM Support for `Webdriver`. See [#2741](https://github.com/codeceptjs/CodeceptJS/issues/2741) by **[gkushang](https://github.com/gkushang)**
+* [Release management] Introduce the versioning automatically, it follows the semantics versioning. See [#2883](https://github.com/codeceptjs/CodeceptJS/issues/2883) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Adding opts into `Scenario.skip` that it would be useful for building reports. See [#2867](https://github.com/codeceptjs/CodeceptJS/issues/2867) by **[AlexKo4](https://github.com/AlexKo4)**
+* Added support for attaching screenshots to [cucumberJsonReporter](https://github.com/ktryniszewski-mdsol/codeceptjs-cucumber-json-reporter) See [#2888](https://github.com/codeceptjs/CodeceptJS/issues/2888) by **[fijijavis](https://github.com/fijijavis)**
+* Supported config file for `codeceptjs shell` command. See [#2895](https://github.com/codeceptjs/CodeceptJS/issues/2895) by **[PeterNgTr](https://github.com/PeterNgTr)**:
+
+```
+npx codeceptjs shell -c foo.conf.js
+```
+
+Bug fixes:
+* **[GraphQL]** Use a helper-specific instance of Axios to avoid contaminating global defaults. See [#2868](https://github.com/codeceptjs/CodeceptJS/issues/2868) by **[vanvoljg](https://github.com/vanvoljg)**
+* A default system color is used when passing non supported system color when using I.say(). See [#2874](https://github.com/codeceptjs/CodeceptJS/issues/2874) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Playwright]** Avoid the timout due to calling the click on invisible elements. See [#2875](https://github.com/codeceptjs/CodeceptJS/issues/2875) by cbayer97
+
+
 ## 3.0.6
 
-* **[Playwright]** Added `electron` as a browser to config. See [#2834](https://github.com/codeceptjs/CodeceptJS/issues/2834) by **[cbayer97](https://github.com/cbayer97)**  
+* **[Playwright]** Added `electron` as a browser to config. See [#2834](https://github.com/codeceptjs/CodeceptJS/issues/2834) by **[cbayer97](https://github.com/cbayer97)**
 * **[Playwright]** Implemented `launchPersistentContext` to be able to launch persistent remote browsers. See [#2817](https://github.com/codeceptjs/CodeceptJS/issues/2817) by **[brunoqueiros](https://github.com/brunoqueiros)**. Fixes [#2376](https://github.com/codeceptjs/CodeceptJS/issues/2376).
 * Fixed printing logs and stack traces for `run-workers`. See [#2857](https://github.com/codeceptjs/CodeceptJS/issues/2857) by **[haveac1gar](https://github.com/haveac1gar)**. Fixes [#2621](https://github.com/codeceptjs/CodeceptJS/issues/2621), [#2852](https://github.com/codeceptjs/CodeceptJS/issues/2852)
-* Emit custom messages from worker to the main thread. See [#2824](https://github.com/codeceptjs/CodeceptJS/issues/2824) by **[jccguimaraes](https://github.com/jccguimaraes)** 
-* Improved workers processes output. See [#2804](https://github.com/codeceptjs/CodeceptJS/issues/2804) by **[drfiresign](https://github.com/drfiresign)** 
+* Emit custom messages from worker to the main thread. See [#2824](https://github.com/codeceptjs/CodeceptJS/issues/2824) by **[jccguimaraes](https://github.com/jccguimaraes)**
+* Improved workers processes output. See [#2804](https://github.com/codeceptjs/CodeceptJS/issues/2804) by **[drfiresign](https://github.com/drfiresign)**
 * BDD. Added ability to use an array of feature files inside config in `gherkin.features`. See [#2814](https://github.com/codeceptjs/CodeceptJS/issues/2814) by **[jbergeronjr](https://github.com/jbergeronjr)**
 
 ```js
@@ -22,8 +48,8 @@ layout: Section
   "./features/api_features/*.feature"
 ],
 ```
-* Added `getQueueId` to reporter to rerun a specific promise. See [#2837](https://github.com/codeceptjs/CodeceptJS/issues/2837) by **[jonatask](https://github.com/jonatask)** 
-* **Added `fakerTransform` plugin** to use faker data in Gherkin scenarios. See [#2854](https://github.com/codeceptjs/CodeceptJS/issues/2854) by **[adrielcodeco](https://github.com/adrielcodeco)** 
+* Added `getQueueId` to reporter to rerun a specific promise. See [#2837](https://github.com/codeceptjs/CodeceptJS/issues/2837) by **[jonatask](https://github.com/jonatask)**
+* **Added `fakerTransform` plugin** to use faker data in Gherkin scenarios. See [#2854](https://github.com/codeceptjs/CodeceptJS/issues/2854) by **[adrielcodeco](https://github.com/adrielcodeco)**
 
 ```feature
 Scenario Outline: ...
@@ -35,7 +61,7 @@ Scenario Outline: ...
   | productName          | customer              | email              | anythingMore |
   | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
 ```
-* **[REST]** Use class instance of axios, not the global instance, to avoid contaminating global configuration. [#2846](https://github.com/codeceptjs/CodeceptJS/issues/2846) by **[vanvoljg](https://github.com/vanvoljg)** 
+* **[REST]** Use class instance of axios, not the global instance, to avoid contaminating global configuration. [#2846](https://github.com/codeceptjs/CodeceptJS/issues/2846) by **[vanvoljg](https://github.com/vanvoljg)**
 * **[Appium]** Added `tunnelIdentifier` config option to provide tunnel for SauceLabs. See [#2832](https://github.com/codeceptjs/CodeceptJS/issues/2832) by **[gurjeetbains](https://github.com/gurjeetbains)**
 
 ## 3.0.5
@@ -43,9 +69,9 @@ Scenario Outline: ...
 
 Features:
 
-* **[Official Docker image for CodeceptJS v3](https://hub.docker.com/r/codeceptjs/codeceptjs)**. New Docker image is based on official Playwright image and supports Playwright, Puppeteer, WebDriver engines. Thanks **[VikentyShevyrin](https://github.com/VikentyShevyrin)**  
+* **[Official Docker image for CodeceptJS v3](https://hub.docker.com/r/codeceptjs/codeceptjs)**. New Docker image is based on official Playwright image and supports Playwright, Puppeteer, WebDriver engines. Thanks **[VikentyShevyrin](https://github.com/VikentyShevyrin)**
 * Better support for Typescript `codecept.conf.ts` configuration files. See [#2750](https://github.com/codeceptjs/CodeceptJS/issues/2750) by **[elaichenkov](https://github.com/elaichenkov)**
-* Propagate more events for custom parallel script. See [#2796](https://github.com/codeceptjs/CodeceptJS/issues/2796) by **[jccguimaraes](https://github.com/jccguimaraes)** 
+* Propagate more events for custom parallel script. See [#2796](https://github.com/codeceptjs/CodeceptJS/issues/2796) by **[jccguimaraes](https://github.com/jccguimaraes)**
 * [mocha-junit-reporter] Now supports attachments, see documentation for details. See [#2675](https://github.com/codeceptjs/CodeceptJS/issues/2675) by **[Shard](https://github.com/Shard)**
 * CustomLocators interface for TypeScript to extend from LocatorOrString. See [#2798](https://github.com/codeceptjs/CodeceptJS/issues/2798) by **[danielrentz](https://github.com/danielrentz)**
 * **[REST]** Mask sensitive data from log messages.
@@ -144,7 +170,7 @@ Scenario('title', (I, loginPage) => {});
 Scenario('title', ({ I, loginPage }) => {});
 ```
 
-* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrde guide](https://bit.ly/codecept3Up).
+* **BREAKING** Replaced bootstrap/teardown scripts to accept only functions or async functions. Async function with callback (with done parameter) should be replaced with async/await. [See our upgrade guide](https://bit.ly/codecept3Up).
 * **[TypeScript guide](/typescript)** and [boilerplate project](https://github.com/codeceptjs/typescript-boilerplate)
 * [tryTo](/plugins/#tryto) and [pauseOnFail](/plugins/#pauseOnFail) plugins installed by default
 * Introduced one-line installer:
