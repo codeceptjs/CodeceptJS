@@ -32,4 +32,6 @@ class TestHelper {
   }
 }
 
+console.log('Selenium', seleniumAddress());
+
 module.exports = TestHelper;
