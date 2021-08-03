@@ -1,4 +1,4 @@
-name: WebDriver Tests
+name: TestCafe Tests
 
 on:
   push:
@@ -16,16 +16,6 @@ env:
 
 jobs:
   build:
-
-    runs-on: ubuntu-18.04
-    services:
-      hub:
-        image: selenium/hub:3.141.59-gold
-      chrome:
-        image: selenium/node-chrome:3.141.59-gold
-        env:
-          HUB_HOST: hub
-          HUB_PORT: 4444
 
     strategy:
       matrix:
@@ -45,7 +35,5 @@ jobs:
         npm install
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
-    - name: run tests
-      run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
     - name: run unit tests
-      run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+      run: xvfb-run --server-args="-screen 0 1280x720x24" ./node_modules/.bin/mocha test/helper/TestCafe_test.js
