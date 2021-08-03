@@ -23,12 +23,12 @@ jobs:
         node-version: [12.x]
 
     steps:
+    - name: Start selenoid
+      uses: Xotabu4/selenoid-github-action@v2      
     - uses: actions/checkout@v1
     - name: install required packages
       run: |
         sudo apt-get install php
-    - name: Start selenoid
-      uses: Xotabu4/selenoid-github-action@v2
     - name: npm install
       run: |
         npm install
