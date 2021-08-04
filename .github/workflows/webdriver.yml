@@ -3,7 +3,7 @@ name: WebDriver Tests
 on:
   push:
     branches:
-      - master
+      - 3.x
   pull_request:
     branches:
       - '**'
@@ -13,28 +13,17 @@ env:
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
 
-
 jobs:
   build:
 
     runs-on: ubuntu-18.04
-    services:
-      chrome:
-        image: selenium/standalone-chrome-debug
-        ports:
-          - 4444:4444
-          - 5900:5900
-        volumes:
-          - /dev/shm:/dev/shm
-      app:
-        image: php:apache
-        options: -v ${{ github.workspace }}/test/data/app:/var/www/html --name app
 
     strategy:
       matrix:
         node-version: [12.x]
 
     steps:
+    - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-oxygen
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -42,15 +31,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: install required packages
       run: |
-        sudo apt-get install php
+        sudo apt-get install php    
     - name: npm install
       run: |
         npm install
+    - name: start a server
+      run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
-      env:
-        SITE_URL: http://app
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
-      env:
-        SITE_URL: http://app      
