@@ -26,7 +26,11 @@ jobs:
           - 5900:5900
         volumes:
           - /dev/shm:/dev/shm
-        options: "--network host"
+      app:
+        image: docker-php-builtin-server
+        volumes:
+          - "test/data/app:/root_dir"
+        
 
     strategy:
       matrix:
@@ -44,9 +48,11 @@ jobs:
     - name: npm install
       run: |
         npm install
-    - name: start a server
-      run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+      env:
+        SITE_URL: http://app:8000
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
+      env:
+        SITE_URL: http://app:8000      
