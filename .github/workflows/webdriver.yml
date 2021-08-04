@@ -27,10 +27,9 @@ jobs:
         volumes:
           - /dev/shm:/dev/shm
       app:
-        image: docker-php-builtin-server
+        image: php:apache
         volumes:
-          - "test/data/app:/root_dir"
-        
+          - "test/data/app:/var/www/html"        
 
     strategy:
       matrix:
@@ -51,8 +50,8 @@ jobs:
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
       env:
-        SITE_URL: http://app:8000
+        SITE_URL: http://app
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
       env:
-        SITE_URL: http://app:8000      
+        SITE_URL: http://app      
