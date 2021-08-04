@@ -28,7 +28,7 @@ jobs:
           - /dev/shm:/dev/shm
       app:
         image: php:apache
-        options: -v ${{ github.workspace }}/build:/var/www/html --name app
+        options: -v ${{ github.workspace }}/test/data/app:/var/www/html --name app
 
     strategy:
       matrix:
