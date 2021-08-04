@@ -47,9 +47,5 @@ jobs:
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
-      env:
-        SELENIUM_HOST: chrome
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
-      env:
-        SELENIUM_HOST: chrome
