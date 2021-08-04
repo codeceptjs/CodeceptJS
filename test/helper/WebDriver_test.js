@@ -11,6 +11,8 @@ const webApiTests = require('./webapi');
 const siteUrl = TestHelper.siteUrl();
 let wd;
 
+console.log('Connecting to Selenium Server', TestHelper.seleniumAddress());
+
 describe('WebDriver', function () {
   this.retries(1);
   this.timeout(35000);
