@@ -16,16 +16,27 @@ env:
 
 jobs:
   build:
+
     runs-on: ubuntu-18.04
+    services:
+      chrome:
+        image: selenium/standalone-chrome-debug
+        ports:
+          - 4444:4444
+          - 5900:5900
+        volumes:
+          - /dev/shm:/dev/shm
 
     strategy:
       matrix:
         node-version: [12.x]
 
     steps:
-    - name: Start selenoid
-      uses: Xotabu4/selenoid-github-action@v2      
     - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: install required packages
       run: |
         sudo apt-get install php
@@ -36,5 +47,9 @@ jobs:
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
+      env:
+        SELENIUM_HOST: chrome
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+      env:
+        SELENIUM_HOST: chrome      
