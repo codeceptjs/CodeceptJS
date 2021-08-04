@@ -29,7 +29,7 @@ jobs:
       app:
         image: php:apache
         volumes:
-          - ./test/data/app:/var/www/html
+          - "${GITHUB_WORKSPACE}/test/data/app:/var/www/html"
 
     strategy:
       matrix:
