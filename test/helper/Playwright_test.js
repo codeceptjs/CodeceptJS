@@ -737,7 +737,7 @@ async function createRemoteBrowser() {
   return remoteBrowser;
 }
 
-describe('Playwright (remote browser)', function () {
+describe('Playwright (remote browser) websocket', function () {
   this.timeout(35000);
   this.retries(1);
 
@@ -786,7 +786,15 @@ describe('Playwright (remote browser)', function () {
       }
     });
 
-    it('should connect to remove browsers', async () => {
+    it('should connect to legacy API endpoint', async () => {
+      const wsEndpoint = await remoteBrowser.wsEndpoint();
+      I._setConfig({ ...helperConfig, chromium: { browserWSEndpoint: { wsEndpoint } } });
+      await I._before();
+      await I.amOnPage('/');
+      await I.see('Welcome to test app');
+    });
+
+    it('should connect to remote browsers', async () => {
       helperConfig.chromium.browserWSEndpoint = await remoteBrowser.wsEndpoint();
       I._setConfig(helperConfig);
 
