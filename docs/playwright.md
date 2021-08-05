@@ -322,28 +322,138 @@ Playwright can be added to GitHub Actions using [official action](https://github
 
 ## Accessing Playwright API
 
-To get [Playwright API](https://github.com/microsoft/playwright/tree/master/docs/src/api) inside a test use `I.usePlaywrightTo` method with a callback.
+To get [Playwright API](https://playwright.dev/docs/api/class-playwright) inside a test use `I.usePlaywrightTo` method with a callback.
+
+`usePlaywrightTo` passes in an instance of Playwright helper from which you can obtain access to main Playwright classes:
+
+* [`browser`](https://playwright.dev/docs/api/class-browser)
+* [`browserContext`](https://playwright.dev/docs/api/class-browsercontext)
+* [`page`](https://playwright.dev/docs/api/class-page)
+
 To keep test readable provide a description of a callback inside the first parameter.
 
 ```js
-I.usePlaywrightTo('emulate offline mode', async ({ browser, context, page }) => {
+I.usePlaywrightTo('emulate offline mode', async ({ browser, browserContext, page }) => {
   // use browser, page, context objects inside this function
-  await context.setOffline(true);
+  await browserContext.setOffline(true);
 });
 ```
 
 Playwright commands are asynchronous so a callback function must be async.
 
-A Playwright helper is passed as argument for callback, so you can combine Playwrigth API with CodeceptJS API:
+A Playwright helper is passed as argument for callback, so you can combine Playwright API with CodeceptJS API:
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
   // access internal objects browser, page, context of helper
-  await Playwright.context.setOffline(true);
+  await Playwright.browserContext.setOffline(true);
   // call a method of helper, await is required here
   await Playwright.click('Reload');
 });
 
+```
+
+## Mocking Network Requests
+
+Network requests & responses can be mocked and modified. Use `mockRequest` which strictly follows [Playwright's `route` API](https://playwright.dev/docs/api/class-browsercontext#browser-context-route).
+
+```js
+I.mockRoute('/api/**', route => {
+  if (route.request().postData().includes('my-string'))
+    route.fulfill({ body: 'mocked-data' });
+  else
+    route.continue();
+});
+
+I.mockRoute('**/*.{png,jpg,jpeg}', route => route.abort());
+
+// To disable mocking for a route call `stopMockingRoute`
+// for previously mocked URL
+I.stopMockingRoute('**/*.{png,jpg,jpeg}'
+```
+
+To master request intercepting [use `route` object](https://playwright.dev/docs/api/class-route) object passed into mock request handler.
+
+## Video
+
+Playwright may record videos for failed tests. This can be enabled in a config with `video: true` option:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      // ...
+      video: true
+    }
+  }
+}
+```
+When a test fails and video was enabled a video file is shown under the `artifacts` section in the error message:
+
+```
+-- FAILURES:
+
+  1) GitHub
+       open:
+    
+  Scenario Steps:
+  - I.amOnPage("https://gothub11.com/search") at Test.<anonymous> (./github_test.js:16:5)
+  
+  Artifacts:
+  - screenshot: /home/davert/projects/codeceptjs/examples/output/open.failed.png
+  - video: /home/davert/projects/codeceptjs/examples/output/videos/5ecf6aaa78865bce14d271b55de964fd.webm
+```
+
+Open video and use it to debug a failed test case. Video helps when running tests on CI. Configure your CI system to enable artifacts storage for `output/video` and review videos of failed test case to understand failures. 
+
+## Trace
+
+If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer/) can be recorded.
+
+![](https://user-images.githubusercontent.com/220264/128403246-7e1b9b33-9ce2-42d5-b87b-b8749d5d7a78.png)
+
+Inside a trace you get screenshots, DOM snapshots, console logs, network requests and playwright commands logged and showed on a timeline. This may help for a deep debug of a failed test cases. Trace file is saved into ZIP archive and can be viewed with Trace Viewer built into Playwright.
+
+
+Enable trace with `trace: true` option in a config:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      // ...
+      trace: true
+    }
+  }
+}
+```
+
+When a test fails and trace was enabled, a trace file is shown under the `artifacts` section in the error message:
+
+```
+-- FAILURES:
+
+  1) GitHub
+       open:
+    
+  Scenario Steps:
+  - I.amOnPage("https://gothub11.com/search") at Test.<anonymous> (./github_test.js:16:5)
+  
+  Artifacts:
+  - screenshot: /home/davert/projects/codeceptjs/examples/output/open.failed.png
+  - trace: /home/davert/projects/codeceptjs/examples/output/trace/open.zip
+```
+
+Use Playwright's trace viewer to analyze the trace:
+
+```
+npx playwright show-trace {path-to-trace-file}
+```
+
+For instance, this is how you can read a trace for a failed test from an example:
+
+```
+npx playwright show-trace /home/davert/projects/codeceptjs/examples/output/trace/open.zip
 ```
 
 ## Extending Helper

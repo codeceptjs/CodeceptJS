@@ -1,6 +1,7 @@
 const assert = require('assert');
 const expect = require('chai').expect;
 const path = require('path');
+const fs = require('fs');
 
 const playwright = require('playwright');
 
@@ -10,6 +11,7 @@ const Playwright = require('../../lib/helper/Playwright');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
+const { deleteDir } = require('../../lib/utils');
 
 let I;
 let page;
@@ -39,7 +41,7 @@ describe('Playwright', function () {
     return I._beforeSuite();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     webApiTests.init({
       I, siteUrl,
     });
@@ -49,7 +51,7 @@ describe('Playwright', function () {
     });
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     return I._after();
   });
 
@@ -653,6 +655,26 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#mockRoute, #stopMockingRoute', () => {
+    it('should mock a route', async () => {
+      await I.amOnPage('/form/fetch_call');
+      await I.mockRoute('https://jsonplaceholder.typicode.com/comments/1', route => {
+        route.fulfill({
+          status: 200,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json',
+          body: '{"name": "this was mocked" }',
+        });
+      });
+      await I.click('GET COMMENTS');
+      await I.see('this was mocked');
+      await I.stopMockingRoute('https://jsonplaceholder.typicode.com/comments/1');
+      await I.click('GET COMMENTS');
+      await I.see('postId');
+      await I.dontSee('this was mocked');
+    });
+  });
+
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
       await I.amOnPage('/image');
@@ -704,7 +726,7 @@ async function createRemoteBrowser() {
   if (remoteBrowser) {
     await remoteBrowser.close();
   }
-  remoteBrowser = await playwright.chromium.launchBrowserApp({
+  remoteBrowser = await playwright.chromium.launchServer({
     webSocket: true,
     // args: ['--no-sandbox', '--disable-setuid-sandbox'],
     headless: true,
@@ -715,64 +737,70 @@ async function createRemoteBrowser() {
   return remoteBrowser;
 }
 
-const helperConfig = {
-  chromium: {
-    browserWSEndpoint: 'ws://localhost:9222/devtools/browser/<id>',
-    // Following options are ignored with remote browser
-    headless: false,
-    devtools: true,
-  },
-  browser: 'chromium',
-  // Important in order to handle remote browser state before starting/stopping browser
-  manualStart: true,
-  url: siteUrl,
-  waitForTimeout: 5000,
-  waitForAction: 500,
-  windowSize: '500x700',
-};
-
-xdescribe('Playwright (remote browser) - not supported disconnection yet', function () {
+describe('Playwright (remote browser)', function () {
   this.timeout(35000);
   this.retries(1);
+
+  const helperConfig = {
+    chromium: {
+      browserWSEndpoint: 'ws://localhost:9222/devtools/browser/<id>',
+      // Following options are ignored with remote browser
+      headless: false,
+      devtools: true,
+    },
+    browser: 'chromium',
+    restart: true,
+    // Important in order to handle remote browser state before starting/stopping browser
+    url: siteUrl,
+    waitForTimeout: 5000,
+    waitForAction: 500,
+    windowSize: '500x700',
+  };
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     I = new Playwright(helperConfig);
     I._init();
-    return I._beforeSuite();
   });
 
   beforeEach(async () => {
     // Mimick remote session by creating another browser instance
-    await createRemoteBrowser();
+    const remoteBrowser = await createRemoteBrowser();
+    // I.isRunning = false;
     // Set websocket endpoint to other browser instance
-    helperConfig.chromium = await remoteBrowser.connectOptions();
-    I._setConfig(helperConfig);
-
-    return I._before();
   });
 
-  afterEach(() => {
-    return I._after()
-      .then(() => {
-        remoteBrowser && remoteBrowser.close();
-      });
+  afterEach(async () => {
+    await I._after();
+    return remoteBrowser && remoteBrowser.close();
   });
 
   describe('#_startBrowser', () => {
     it('should throw an exception when endpoint is unreachable', async () => {
-      helperConfig.chromium.browserWSEndpoint = 'ws://unreachable/';
-      I._setConfig(helperConfig);
+      I._setConfig({ ...helperConfig, chromium: { browserWSEndpoint: 'ws://unreachable/' } });
       try {
         await I._startBrowser();
         throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.');
+        e.message.should.include('Cannot connect to websocket');
       }
     });
 
+    it('should connect to remove browsers', async () => {
+      helperConfig.chromium.browserWSEndpoint = await remoteBrowser.wsEndpoint();
+      I._setConfig(helperConfig);
+
+      await I._before();
+      await I.amOnPage('/');
+      await I.see('Welcome to test app');
+    });
+
     it('should manage pages in remote browser', async () => {
-      await I._startBrowser();
+      helperConfig.chromium.browserWSEndpoint = await remoteBrowser.wsEndpoint();
+      I._setConfig(helperConfig);
+
+      await I._before();
+      assert.ok(I.isRemoteBrowser);
       const context = await I.browserContext;
       // Session was cleared
       let currentPages = await context.pages();
@@ -789,7 +817,7 @@ xdescribe('Playwright (remote browser) - not supported disconnection yet', funct
       await I._stopBrowser();
 
       currentPages = await context.pages();
-      assert.equal(currentPages.length, 2);
+      assert.equal(currentPages.length, 0);
     });
   });
 });
@@ -985,5 +1013,57 @@ describe('Playwright - Electron', () => {
         e.message.should.include('Cannot close current tab inside an Electron container');
       }
     });
+  });
+});
+
+describe('Playwright - Video & Trace', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(`${__dirname}/../data/output`);
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+      trace: true,
+      video: true,
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    deleteDir(path.join(global.output_dir, 'video'));
+    deleteDir(path.join(global.output_dir, 'trace'));
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('checks that video is recorded', async () => {
+    const test = { title: 'a failed test', artifacts: {} };
+    await I.amOnPage('/');
+    await I.dontSee('this should be an error');
+    await I.click('More info');
+    await I.dontSee('this should be an error');
+    await I._failed(test);
+    assert(test.artifacts);
+    // expect(Object.keys(test.artifacts).length).should.eq(2);
+    expect(Object.keys(test.artifacts)).to.include('trace');
+    expect(Object.keys(test.artifacts)).to.include('video');
+
+    assert.ok(fs.existsSync(test.artifacts.trace));
+    expect(test.artifacts.video).to.include(path.join(global.output_dir, 'video'));
+    expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
   });
 });
