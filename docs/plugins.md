@@ -341,7 +341,7 @@ This plugin can be used
 ### Config
 
 -   `enabled` - (default: false) enable a plugin
--   `regusterGlobal` - (default: false) register `__` template literal function globally. You can override function global name by providing a name as a value.
+-   `registerGlobal` - (default: false) register `__` template literal function globally. You can override function global name by providing a name as a value.
 
 ### Examples
 
