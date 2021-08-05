@@ -1,3 +1,19 @@
+## 3.1.0
+
+* [Plawyright] Updated to Playwright 1.13
+* [Playwright] Added recording of [video](https://codecept.io/playwright/#video) and [traces](https://codecept.io/playwright/#trace) by @davertmik
+* [Playwritght] [Mocking requests](https://codecept.io/playwright/#mocking-network-requests) implemented via `route` API of Playwright by @davertmik
+* [Playwright] Added **support for [React locators](https://codecept.io/react/#locators)** in #2912 by @AAAstorga
+* [Puppeteer] Updated to Puppeteer 10.2.
+* [Puppeteer] Fixed #2244 `els[0]._clickablePoint is not a function` by @karunandrii.
+* [Puppeteer] Fixed `fillField` to check for invisible elements. See #2916 by @anne-open-xchange 
+* [Playwright] Reset of dialog event listener before registration of new one. #2946 by @nikocanvacom 
+* Fixed running Gherkin features with `run-multiple` using chunks. See #2900 by @andrenoberto
+* Fixed #2937 broken typings for subfolders on Windows by @jancorvus
+* Fixed issue where cucumberJsonReporter not working with fakerTransform plugin. See #2942 by @ilangv 
+* Fixed #2952 finished job with status code 0 when playwright cannot connect to remote wss url. By @davertmik
+
+
 ## 3.0.7
 
 Documentation fixes:
