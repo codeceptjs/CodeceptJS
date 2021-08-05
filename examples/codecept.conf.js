@@ -1,11 +1,14 @@
 exports.config = {
   output: './output',
   helpers: {
-    Puppeteer: {
+    Playwright: {
       url: 'http://localhost',
-      browser: 'chrome',
+      browser: 'chromium',
       restart: false,
       windowSize: '1600x1200',
+      chromium: {
+        // browserWSEndpoint: 'ws://127.0.0.1:45635/09b7aa1ac28c317e5abee7cb6d35d519',
+      },
       show: !process.env.HEADLESS,
     },
     REST: {},
@@ -45,7 +48,7 @@ exports.config = {
       enabled: false,
     },
     retryFailedStep: {
-      enabled: true,
+      enabled: false,
     },
   },
   tests: './*_test.js',
