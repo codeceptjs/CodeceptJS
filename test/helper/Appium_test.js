@@ -14,6 +14,7 @@ describe('Appium', function () {
   this.timeout(0);
 
   before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
     app = new Appium({
       app: apk_path,
       desiredCapabilities: {
@@ -584,15 +585,15 @@ describe('Appium', function () {
     });
   });
 
-  describe('#saveScreenshot', () => {
+  describe('#saveScreenshot @quick', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
 
     it('should create a screenshot file in output dir', async () => {
       const sec = (new Date()).getUTCMilliseconds();
-      await app.saveScreenshot(`screenshot_${sec}`);
-      assert.ok(fileExists(path.join(output_dir, `screenshot_${sec}`)), null, 'file does not exists');
+      await app.saveScreenshot(`screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists');
     });
   });
 
