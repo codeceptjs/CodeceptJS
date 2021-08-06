@@ -945,6 +945,57 @@ If multiple elements found returns first element.
 
 Returns **[Promise][13]&lt;[string][4]>** attribute value
 
+### grabNumberOfVisibleElements
+
+Grab number of visible elements by locator.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let numOfElements = await I.grabNumberOfVisibleElements('p');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[number][8]>** number of visible elements
+
+### grabAttributeFrom
+
+Can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+
+Retrieves an attribute from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
+
+```js
+let hint = await I.grabAttributeFrom('#tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][4]** attribute name.
+
+Returns **[Promise][13]&lt;[string][4]>** attribute value
+
+### grabAttributeFromAll
+
+Can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let hints = await I.grabAttributeFromAll('.tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][4]** attribute name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** attribute value
+
 ### grabValueFromAll
 
 Retrieves an array of value from a form located by CSS or XPath and returns it to test.
@@ -1437,39 +1488,6 @@ let postHTML = await I.grabHTMLFrom('#post');
 
 Returns **[Promise][13]&lt;[string][4]>** HTML code for an element
 
-### grabAttributeFromAll
-
-Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside async with `await`** operator.
-
-```js
-let hints = await I.grabAttributeFromAll('.tooltip', 'title');
-```
-
-#### Parameters
-
--   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
--   `attr` **[string][4]** attribute name.
-
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** attribute valueAppium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
-
-### grabAttributeFrom
-
-Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-Resumes test execution, so **should be used inside async with `await`** operator.
-If more than one element is found - attribute of first element is returned.
-
-```js
-let hint = await I.grabAttributeFrom('#tooltip', 'title');
-```
-
-#### Parameters
-
--   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
--   `attr` **[string][4]** attribute name.
-
-Returns **[Promise][13]&lt;[string][4]>** attribute valueAppium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
-
 ### seeTextEquals
 
 Checks that text is equal to provided one.
@@ -1596,21 +1614,6 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 -   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
 -   `attributes` **[object][6]** attributes and their values to check.
-
-### grabNumberOfVisibleElements
-
-Grab number of visible elements by locator.
-Resumes test execution, so **should be used inside async function with `await`** operator.
-
-```js
-let numOfElements = await I.grabNumberOfVisibleElements('p');
-```
-
-#### Parameters
-
--   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
-
-Returns **[Promise][13]&lt;[number][8]>** number of visible elements
 
 ### scrollTo
 
