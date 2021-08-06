@@ -1,3 +1,8 @@
+## 3.1.1
+
+* [Appium] Fixed #2759
+ `grabNumberOfVisibleElements`, `grabAttributeFrom`, `grabAttributeFromAll` to allow id locators.
+
 ## 3.1.0
 
 * [Plawyright] Updated to Playwright 1.13
