@@ -1,10 +1,18 @@
 ## 3.1.0
 
 * [Plawyright] Updated to Playwright 1.13
+* [Playwright] **Possible breaking change**: `BrowserContext` is initialized before each test and closed after. This behavior matches recommendation from Playwright team to use different contexts for tests.
+* [Puppeteer] Updated to Puppeteer 10.2.
+* [Protractor] Helper deprecated
+
+🛩️ Features:
+
 * [Playwright] Added recording of [video](https://codecept.io/playwright/#video) and [traces](https://codecept.io/playwright/#trace) by @davertmik
 * [Playwritght] [Mocking requests](https://codecept.io/playwright/#mocking-network-requests) implemented via `route` API of Playwright by @davertmik
 * [Playwright] Added **support for [React locators](https://codecept.io/react/#locators)** in #2912 by @AAAstorga
-* [Puppeteer] Updated to Puppeteer 10.2.
+
+🐛 Bugfixes:
+
 * [Puppeteer] Fixed #2244 `els[0]._clickablePoint is not a function` by @karunandrii.
 * [Puppeteer] Fixed `fillField` to check for invisible elements. See #2916 by @anne-open-xchange 
 * [Playwright] Reset of dialog event listener before registration of new one. #2946 by @nikocanvacom 
@@ -16,14 +24,16 @@
 
 ## 3.0.7
 
-Documentation fixes:
+📖 Documentation fixes:
+
 * Remove broken link from `Nightmare helper`. See #2860 by @Arhell
 * Fixed broken links in `playwright.md`. See #2848 by @johnhoodjr
 * Fix mocha-multi config example. See #2881 by @rimesc
 * Fix small errors in email documentation file. See #2884 by @mkrtchian
 * Improve documentation for `Sharing Data Between Workers` section. See #2891 by @ngraf
 
-Features:
+🛩️ Features:
+
 * [WebDriver] Shadow DOM Support for `Webdriver`. See #2741 by @gkushang
 * [Release management] Introduce the versioning automatically, it follows the semantics versioning. See #2883 by @PeterNgTr
 * Adding opts into `Scenario.skip` that it would be useful for building reports. See #2867 by @AlexKo4
