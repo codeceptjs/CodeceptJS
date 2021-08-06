@@ -3,7 +3,7 @@ permalink: /playwright
 title: Testing with Playwright
 ---
 
-# Testing with Playwright <Badge text="Since 2.5" type="warning"/>
+# Testing with Playwright
 
 Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers as well as [Electron](https://www.electronjs.org/) apps with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
 
@@ -353,7 +353,7 @@ I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
 
 ```
 
-## Mocking Network Requests
+## Mocking Network Requests <Badge text="Since 3.1" type="warning"/>
 
 Network requests & responses can be mocked and modified. Use `mockRequest` which strictly follows [Playwright's `route` API](https://playwright.dev/docs/api/class-browsercontext#browser-context-route).
 
@@ -374,7 +374,7 @@ I.stopMockingRoute('**/*.{png,jpg,jpeg}'
 
 To master request intercepting [use `route` object](https://playwright.dev/docs/api/class-route) object passed into mock request handler.
 
-## Video
+## Video <Badge text="Since 3.1" type="warning"/>
 
 Playwright may record videos for failed tests. This can be enabled in a config with `video: true` option:
 
@@ -406,7 +406,7 @@ When a test fails and video was enabled a video file is shown under the `artifac
 
 Open video and use it to debug a failed test case. Video helps when running tests on CI. Configure your CI system to enable artifacts storage for `output/video` and review videos of failed test case to understand failures. 
 
-## Trace
+## Trace <Badge text="Since 3.1" type="warning"/>
 
 If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer/) can be recorded.
 
