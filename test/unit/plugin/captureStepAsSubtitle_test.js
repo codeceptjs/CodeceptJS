@@ -31,7 +31,9 @@ describe('captureStepAsSubtitle', () => {
 
     fsMock.expects('writeFile')
       .once()
-      .withArgs('../../lib/output/failedTest1.srt');
+      .withArgs('../../lib/output/failedTest1.srt', sinon.match((value) => {
+        return value.match(/1\n[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}\s-->\s[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}\nI\.click\(Continue\)\n\n/gm);
+      }));
 
     event.dispatcher.emit(event.test.before, test);
     const step1 = { name: 'click', actor: 'I', args: ['Continue'] };
