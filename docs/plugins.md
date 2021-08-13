@@ -306,6 +306,22 @@ Scenario('login', async ( {I, login} ) => {
 
 -   `config`  
 
+## captureStepAsSubtitle
+
+Automatically captures steps as subtitle, and saves it as an artifact when a video is found for a failed test
+
+Add this plugin to config file:
+
+```js
+plugins: {
+  captureStepAsSubtitle: {
+   enabled: true
+ }
+}
+```
+
+`captureStepAsSubtitle` plugin should only be enabled, when `video: true` is enabled for playwright config.
+
 ## commentStep
 
 Add descriptive nested steps for your tests:
