@@ -36,7 +36,7 @@ exports.config = {
       enabled: true,
     },
     captureStepAsSubtitle: {
-      enabled: true,
+      enabled: false,
     },
     allure: {
       enabled: false,

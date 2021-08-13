@@ -85,7 +85,6 @@
     "requireg": "^0.2.2",
     "resq": "^1.10.0",
     "sprintf-js": "^1.1.1",
-    "subtitle": "^4.1.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
