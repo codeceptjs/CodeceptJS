@@ -31,7 +31,7 @@ describe('captureStepAsSubtitle', () => {
 
     fsMock.expects('writeFile')
       .once()
-      .withArgs('../../lib/output/failedTest1.srt', '1\n00:00:00,000 --> 00:00:00,000\nI.click(Continue)\n\n');
+      .withArgs('../../lib/output/failedTest1.srt');
 
     event.dispatcher.emit(event.test.before, test);
     const step1 = { name: 'click', actor: 'I', args: ['Continue'] };
