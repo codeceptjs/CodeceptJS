@@ -27,6 +27,7 @@ Applicable plugins:
 - [ ] selenoid
 - [ ] stepByStepReport
 - [ ] wdio
+- [ ] captureStepAsSubtitle
 
 ## Type of change
 
