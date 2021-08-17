@@ -314,7 +314,7 @@ Add this plugin to config file:
 
 ```js
 plugins: {
-  captureStepAsSubtitle: {
+ captureStepAsSubtitle: {
    enabled: true
  }
 }
@@ -457,7 +457,7 @@ Using `data-test` attribute with `$` prefix:
 // in codecept.conf.js
 plugins: {
  customLocator: {
-   enabled: true
+   enabled: true,
    attribute: 'data-test'
  }
 }
@@ -476,7 +476,7 @@ Using `data-qa` attribute with `=` prefix:
 // in codecept.conf.js
 plugins: {
  customLocator: {
-   enabled: true
+   enabled: true,
    prefix: '=',
    attribute: 'data-qa'
  }
