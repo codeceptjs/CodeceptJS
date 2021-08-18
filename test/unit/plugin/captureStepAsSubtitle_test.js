@@ -1,6 +1,6 @@
 const sinon = require('sinon');
 
-const fsPromises = require('fs/promises');
+const fsPromises = require('fs').promises;
 const captureStepAsSubtitle = require('../../../lib/plugin/captureStepAsSubtitle');
 const container = require('../../../lib/container');
 const event = require('../../../lib/event');
