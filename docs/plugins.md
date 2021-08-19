@@ -441,7 +441,7 @@ Using `data-test` attribute with `$` prefix:
 // in codecept.conf.js
 plugins: {
  customLocator: {
-   enabled: true
+   enabled: true,
    attribute: 'data-test'
  }
 }
@@ -460,7 +460,7 @@ Using `data-qa` attribute with `=` prefix:
 // in codecept.conf.js
 plugins: {
  customLocator: {
-   enabled: true
+   enabled: true,
    prefix: '=',
    attribute: 'data-qa'
  }
@@ -822,6 +822,20 @@ Possible config options:
 ### Parameters
 
 -   `config` **any** 
+
+## subtitles
+
+Automatically captures steps as subtitle, and saves it as an artifact when a video is found for a failed test
+
+#### Configuration
+
+```js
+plugins: {
+ subtitles: {
+   enabled: true
+ }
+}
+```
 
 ## tryTo
 
