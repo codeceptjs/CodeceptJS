@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 
 const fsPromises = require('fs').promises;
-const captureStepAsSubtitle = require('../../../lib/plugin/captureStepAsSubtitle');
+const subtitles = require('../../../lib/plugin/subtitles');
 const container = require('../../../lib/container');
 const event = require('../../../lib/event');
 const recorder = require('../../../lib/recorder');
@@ -12,7 +12,7 @@ function sleep(ms) {
   });
 }
 
-describe('captureStepAsSubtitle', () => {
+describe('subtitles', () => {
   beforeEach(() => {
     container.clear({
       mock: {
@@ -22,7 +22,7 @@ describe('captureStepAsSubtitle', () => {
     recorder.start();
   });
   before(() => {
-    captureStepAsSubtitle({});
+    subtitles({});
   });
 
   it('should not capture subtitle as video artifact was missing', async () => {
