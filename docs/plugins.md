@@ -308,7 +308,7 @@ Scenario('login', async ( {I, login} ) => {
 
 ## captureStepAsSubtitle
 
-Automatically captures steps as subtitle, and saves it as an artifact when a video is found for a failed test
+Automatically captures steps as subtitles, and saves then as an artifact when a video is found for a failed test
 
 Add this plugin to config file:
 
