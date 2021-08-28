@@ -22,6 +22,7 @@ Applicable plugins:
 - [ ] customLocator
 - [ ] pauseOnFail
 - [ ] puppeteerCoverage
+- [ ] playwrightCoverage
 - [ ] retryFailedStep
 - [ ] screenshotOnFail
 - [ ] selenoid
