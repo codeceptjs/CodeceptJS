@@ -1667,11 +1667,9 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
 Filename is relative to output folder.
-Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
 ```js
 I.saveScreenshot('debug.png');
-I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
 ```
 
 #### Parameters

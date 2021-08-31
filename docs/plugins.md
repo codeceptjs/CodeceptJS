@@ -409,6 +409,29 @@ Scenario('project update test', async (I) => {
 
 -   `config`  
 
+## coverage
+
+Dumps code coverage from Playwright/Puppeteer after every test.
+
+#### Configuration
+
+```js
+plugins: {
+   playwrightCoverage: {
+     enabled: true
+   }
+}
+```
+
+Possible config options:
+
+-   `coverageDir`: directory to dump coverage files
+-   `uniqueFileName`: generate a unique filename by adding uuid
+
+### Parameters
+
+-   `config`  
+
 ## customLocator
 
 Creates a [custom locator][3] by using special attributes in HTML.
@@ -441,7 +464,7 @@ Using `data-test` attribute with `$` prefix:
 // in codecept.conf.js
 plugins: {
  customLocator: {
-   enabled: true
+   enabled: true,
    attribute: 'data-test'
  }
 }
@@ -460,7 +483,7 @@ Using `data-qa` attribute with `=` prefix:
 // in codecept.conf.js
 plugins: {
  customLocator: {
-   enabled: true
+   enabled: true,
    prefix: '=',
    attribute: 'data-qa'
  }
@@ -535,45 +558,6 @@ Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
 Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
-
-## puppeteerCoverage
-
-Dumps puppeteers code coverage after every test.
-
-#### Configuration
-
-Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
-
-```js
-plugins: {
-   puppeteerCoverage: {
-     enabled: true
-   }
-}
-```
-
-Possible config options:
-
--   `coverageDir`: directory to dump coverage files
--   `uniqueFileName`: generate a unique filename by adding uuid
-
-    First of all, your mileage may vary!
-
-    To work, you need the client javascript code to be NOT uglified. They need to be built in "development" mode.
-    And the end of your tests, you'll get a directory full of coverage per test run.  Now what?
-    You'll need to convert the coverage code to something istanbul can read.  Good news is someone wrote the code
-    for you (see puppeteer-to-istanbul link below).  Then using istanbul you need to combine the converted
-    coverage and create a report.  Good luck!
-
-    Links:
-
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][7]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][8]
--   [https://github.com/gotwarlost/istanbul][9]
-
-### Parameters
-
--   `config`  
 
 ## retryFailedStep
 
@@ -673,14 +657,14 @@ Possible config options:
 
 ## selenoid
 
-[Selenoid][10] plugin automatically starts browsers and video recording.
+[Selenoid][7] plugin automatically starts browsers and video recording.
 Works with WebDriver helper.
 
 ### Prerequisite
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][11] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][8] tool from Selenoid
 
 ### Usage
 
@@ -709,7 +693,7 @@ plugins: {
   }
 ```
 
-When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][12] and start Selenoid automatically.
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][9] and start Selenoid automatically.
 It will also create `browsers.json` file required by Selenoid.
 
 In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
@@ -721,10 +705,10 @@ In automatic mode the latest version of browser will be used for tests. It is re
 While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
 This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
 
-> Use [Selenoid Configuration Manager][11] to create and start containers semi-automatically.
+> Use [Selenoid Configuration Manager][8] to create and start containers semi-automatically.
 
 1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
-    [Refer to Selenoid documentation][13] to know more about browsers.json.
+    [Refer to Selenoid documentation][10] to know more about browsers.json.
 
 _Sample browsers.json_
 
@@ -749,7 +733,7 @@ _Sample browsers.json_
 
 2.  Create Selenoid container
 
-Run the following command to create a container. To know more [refer here][14]
+Run the following command to create a container. To know more [refer here][11]
 
 ```bash
 docker create                                    \
@@ -782,7 +766,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 | enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
 | enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
 | deletePassed     | Delete video and logs of passed tests (default : true)                         |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][15] to know more   |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][12] to know more   |
 
 ### Parameters
 
@@ -790,7 +774,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ## stepByStepReport
 
-![step-by-step-report][16]
+![step-by-step-report][13]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -822,6 +806,20 @@ Possible config options:
 ### Parameters
 
 -   `config` **any** 
+
+## subtitles
+
+Automatically captures steps as subtitle, and saves it as an artifact when a video is found for a failed test
+
+#### Configuration
+
+```js
+plugins: {
+ subtitles: {
+   enabled: true
+ }
+}
+```
 
 ## tryTo
 
@@ -897,7 +895,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][17].
+A complete list of all available services can be found on [webdriverio website][14].
 
 #### Setup
 
@@ -909,7 +907,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][18].
+Install `@wdio/selenium-standalone-service` package, as [described here][15].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -928,7 +926,7 @@ Please note, this service can be used with Protractor helper as well!
 
 #### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][19].
+Install `@wdio/sauce-service` package, as [described here][16].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -970,28 +968,22 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [6]: /basics/#pause
 
-[7]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[7]: https://aerokube.com/selenoid/
 
-[8]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[8]: https://aerokube.com/cm/latest/
 
-[9]: https://github.com/gotwarlost/istanbul
+[9]: https://hub.docker.com/u/selenoid
 
-[10]: https://aerokube.com/selenoid/
+[10]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[11]: https://aerokube.com/cm/latest/
+[11]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[12]: https://hub.docker.com/u/selenoid
+[12]: https://docs.docker.com/engine/reference/commandline/create/
 
-[13]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[13]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[14]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[14]: https://webdriver.io
 
-[15]: https://docs.docker.com/engine/reference/commandline/create/
+[15]: https://webdriver.io/docs/selenium-standalone-service.html
 
-[16]: https://codecept.io/img/codeceptjs-slideshow.gif
-
-[17]: https://webdriver.io
-
-[18]: https://webdriver.io/docs/selenium-standalone-service.html
-
-[19]: https://webdriver.io/docs/sauce-service.html
+[16]: https://webdriver.io/docs/sauce-service.html

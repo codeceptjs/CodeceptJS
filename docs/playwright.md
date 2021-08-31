@@ -456,6 +456,63 @@ For instance, this is how you can read a trace for a failed test from an example
 npx playwright show-trace /home/davert/projects/codeceptjs/examples/output/trace/open.zip
 ```
 
+## Capturing code coverage
+
+Code coverage can be captured, by enabling the `coverage` plugin in `codecept.config.js`.
+
+```js
+{
+  plugins: {
+    coverage: {
+      enabled: true
+    }
+  }
+}
+```
+
+Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
+
+![](https://user-images.githubusercontent.com/16587779/131362352-30ee9c51-705f-4098-b665-53035ea9275f.png)
+
+### Converting `playwright` coverage to `istanbul` coverage
+
+To convert coverage generated from `playwright` to `istanbul` coverage, you first need to install
+- [`v8-to-istanbul`](https://www.npmjs.com/package/v8-to-istanbul)
+
+Once installed, convert the coverage to a format which `istanbul` can recognize, by writing a script as shown below.
+
+```js
+const v8toIstanbul = require('v8-to-istanbul');
+// read all the coverage file from output/coverage folder
+const coverage = require('./output/coverage/Visit_Home_1630335005.coverage.json');
+const fs = require('fs/promises');
+
+(async () => {
+    for (const entry of coverage) {
+        // Used to get file name
+        const file = entry.url.match(/(?:http(s)*:\/\/.*\/)(?<file>.*)/);
+        const converter = new v8toIstanbul(file.groups.file, 0, {
+            source: entry.source
+        });
+
+        await converter.load();
+        converter.applyCoverage(entry.functions);
+
+        // Store converted coverage file which can later be used to generate report
+        await fs.writeFile('./coverage/final.json', JSON.stringify(converter.toIstanbul(), null, 2));
+    }
+})();
+```
+
+Once the istanbul compatible coverage is generated, use [`nyc`](https://www.npmjs.com/package/nyc) to generate your coverage report in your desired format.
+
+```
+npx nyc report --reporter text -t coverage
+```
+
+The above command will generate a text report like shown below.
+
+![](https://user-images.githubusercontent.com/16587779/131363170-b03b4398-5e9a-4142-bc32-764a5f4a5e11.png)
 ## Extending Helper
 
 To create custom `I.*` commands using Playwright API you need to create a custom helper.
