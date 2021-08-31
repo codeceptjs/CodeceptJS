@@ -21,7 +21,7 @@ Applicable plugins:
 - [ ] autoLogin
 - [ ] customLocator
 - [ ] pauseOnFail
-- [ ] puppeteerCoverage
+- [ ] coverage
 - [ ] retryFailedStep
 - [ ] screenshotOnFail
 - [ ] selenoid
