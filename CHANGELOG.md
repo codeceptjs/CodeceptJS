@@ -1,3 +1,30 @@
+## 3.1.2
+
+🛩️ Features:
+
+* Added `coverage` plugin to generate code coverage for Playwright & Puppeteer. By @anirudh-modi
+* Added `subtitle` plugin to generate subtitles for videos recorded with Playwright. By @anirudh-modi
+* Configuration: `config.tests` to accept array of file patterns. See #2994 by @monsteramba
+
+```js
+exports.config = {
+  tests: ['./*_test.js','./sampleTest.js'],
+  // ... 
+}
+```
+* Notification is shown for test files without `Feature()`. See #3011 by @PeterNgTr
+
+🐛 Bugfixes:
+
+* [Playwright] Fixed #2986 error is thrown when deleting a missing video. Fix by @hatufacci 
+* Fixed false positive result when invalid function is called in a helper. See #2997 by @abhimanyupandian
+* [Appium] Removed full page mode for `saveScreenshot`. See #3002 by @nlespiaucq
+* [Playwright] Fixed #3003 saving trace for a test with a long name. Fix by @hatufacci 
+
+🎱 Other:
+
+* Deprecated `puppeteerCoverage` plugin in favor of `coverage` plugin.
+
 ## 3.1.1
 
 * [Appium] Fixed #2759
