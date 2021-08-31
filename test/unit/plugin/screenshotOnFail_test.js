@@ -6,17 +6,16 @@ const container = require('../../../lib/container');
 const event = require('../../../lib/event');
 const recorder = require('../../../lib/recorder');
 
-let screenshotSaved;
+const WebDriver = require('../../../lib/helper/WebDriver');
+
+let webDriverStub;
 
 describe('screenshotOnFail', () => {
   beforeEach(() => {
+    webDriverStub = sinon.createStubInstance(WebDriver);
     recorder.reset();
-    screenshotSaved = sinon.spy();
     container.clear({
-      WebDriver: {
-        options: {},
-        saveScreenshot: screenshotSaved,
-      },
+      WebDriver: webDriverStub,
     });
   });
 
@@ -24,32 +23,32 @@ describe('screenshotOnFail', () => {
     screenshotOnFail({});
     event.dispatcher.emit(event.test.failed, { title: 'Scenario with data driven | {"login":"admin","password":"123456"}' });
     await recorder.promise();
-    expect(screenshotSaved.called).is.ok;
-    expect('Scenario_with_data_driven.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
+    expect(webDriverStub.saveScreenshot.called).is.ok;
+    expect('Scenario_with_data_driven.failed.png').is.equal(webDriverStub.saveScreenshot.getCall(0).args[0]);
   });
 
   it('should create screenshot on fail', async () => {
     screenshotOnFail({});
     event.dispatcher.emit(event.test.failed, { title: 'test1' });
     await recorder.promise();
-    expect(screenshotSaved.called).is.ok;
-    expect('test1.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
+    expect(webDriverStub.saveScreenshot.called).is.ok;
+    expect('test1.failed.png').is.equal(webDriverStub.saveScreenshot.getCall(0).args[0]);
   });
 
   it('should create screenshot with unique name', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1', uuid: 1 });
     await recorder.promise();
-    expect(screenshotSaved.called).is.ok;
-    expect('test1_1.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
+    expect(webDriverStub.saveScreenshot.called).is.ok;
+    expect('test1_1.failed.png').is.equal(webDriverStub.saveScreenshot.getCall(0).args[0]);
   });
 
   it('should create screenshot with unique name when uuid is null', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1' });
     await recorder.promise();
-    expect(screenshotSaved.called).is.ok;
-    const fileName = screenshotSaved.getCall(0).args[0];
+    expect(webDriverStub.saveScreenshot.called).is.ok;
+    const fileName = webDriverStub.saveScreenshot.getCall(0).args[0];
     const regexpFileName = /test1_[0-9]{10}.failed.png/;
     expect(fileName.match(regexpFileName).length).is.equal(1);
   });
