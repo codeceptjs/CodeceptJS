@@ -1027,6 +1027,19 @@ let email = await I.grabValueFrom('input[name=email]');
 
 Returns **[Promise][13]&lt;[string][4]>** attribute value
 
+### saveScreenshot
+
+Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Filename is relative to output folder.
+
+```js
+I.saveScreenshot('debug.png');
+```
+
+#### Parameters
+
+-   `fileName` **[string][4]** file name to save.
+
 ### scrollIntoView
 
 Scroll element into viewport.
@@ -1663,25 +1676,11 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][4]** file name to save.
 
-### saveScreenshot
-
-Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
-Filename is relative to output folder.
-
-```js
-I.saveScreenshot('debug.png');
-```
-
-#### Parameters
-
--   `fileName` **[string][4]** file name to save.
--   `fullPage` **[boolean][20]** (optional, `false` by default) flag to enable fullscreen screenshot mode. (optional, default `false`)
-
 ### type
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][21] is not an option.
+_Note:_ Should be used when [`fillField`][20] is not an option.
 
 ```js
 // passing in a string
@@ -1919,6 +1918,4 @@ Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][8]>)** Element 
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-
-[21]: #fillfield
+[20]: #fillfield

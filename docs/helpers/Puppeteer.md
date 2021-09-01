@@ -101,6 +101,8 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
+> Note: When connecting to remote browser `show` and specific `chrome` options (e.g. `headless` or `devtools`) are ignored.
+
 #### Example #5: Target URL with provided basic authentication
 
 ```js
@@ -115,7 +117,21 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
-Note: When connecting to remote browser `show` and specific `chrome` options (e.g. `headless` or `devtools`) are ignored.
+#### Troubleshooting
+
+Error Message:  `No usable sandbox!`
+
+When running Puppeteer on CI try to disable sandbox if you see that message
+
+    helpers: {
+     Puppeteer: {
+        url: 'http://localhost',
+        show: false,
+        chrome: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+        }
+      },
+    }
 
 ## Access From Helpers
 

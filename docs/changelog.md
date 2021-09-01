@@ -7,6 +7,33 @@ layout: Section
 
 # Releases
 
+## 3.1.2
+
+🛩️ Features:
+
+* Added `coverage` plugin to generate code coverage for Playwright & Puppeteer. By **[anirudh-modi](https://github.com/anirudh-modi)**
+* Added `subtitle` plugin to generate subtitles for videos recorded with Playwright. By **[anirudh-modi](https://github.com/anirudh-modi)**
+* Configuration: `config.tests` to accept array of file patterns. See [#2994](https://github.com/codeceptjs/CodeceptJS/issues/2994) by **[monsteramba](https://github.com/monsteramba)**
+
+```js
+exports.config = {
+  tests: ['./*_test.js','./sampleTest.js'],
+  // ... 
+}
+```
+* Notification is shown for test files without `Feature()`. See [#3011](https://github.com/codeceptjs/CodeceptJS/issues/3011) by **[PeterNgTr](https://github.com/PeterNgTr)**
+
+🐛 Bugfixes:
+
+* **[Playwright]** Fixed [#2986](https://github.com/codeceptjs/CodeceptJS/issues/2986) error is thrown when deleting a missing video. Fix by **[hatufacci](https://github.com/hatufacci)** 
+* Fixed false positive result when invalid function is called in a helper. See [#2997](https://github.com/codeceptjs/CodeceptJS/issues/2997) by **[abhimanyupandian](https://github.com/abhimanyupandian)**
+* **[Appium]** Removed full page mode for `saveScreenshot`. See [#3002](https://github.com/codeceptjs/CodeceptJS/issues/3002) by **[nlespiaucq](https://github.com/nlespiaucq)**
+* **[Playwright]** Fixed [#3003](https://github.com/codeceptjs/CodeceptJS/issues/3003) saving trace for a test with a long name. Fix by **[hatufacci](https://github.com/hatufacci)** 
+
+🎱 Other:
+
+* Deprecated `puppeteerCoverage` plugin in favor of `coverage` plugin.
+
 ## 3.1.1
 
 * **[Appium]** Fixed [#2759](https://github.com/codeceptjs/CodeceptJS/issues/2759)
