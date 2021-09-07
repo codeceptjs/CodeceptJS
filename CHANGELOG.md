@@ -1,13 +1,71 @@
+## 3.1.2
+
+🛩️ Features:
+
+* Added `coverage` plugin to generate code coverage for Playwright & Puppeteer. By @anirudh-modi
+* Added `subtitle` plugin to generate subtitles for videos recorded with Playwright. By @anirudh-modi
+* Configuration: `config.tests` to accept array of file patterns. See #2994 by @monsteramba
+
+```js
+exports.config = {
+  tests: ['./*_test.js','./sampleTest.js'],
+  // ... 
+}
+```
+* Notification is shown for test files without `Feature()`. See #3011 by @PeterNgTr
+
+🐛 Bugfixes:
+
+* [Playwright] Fixed #2986 error is thrown when deleting a missing video. Fix by @hatufacci 
+* Fixed false positive result when invalid function is called in a helper. See #2997 by @abhimanyupandian
+* [Appium] Removed full page mode for `saveScreenshot`. See #3002 by @nlespiaucq
+* [Playwright] Fixed #3003 saving trace for a test with a long name. Fix by @hatufacci 
+
+🎱 Other:
+
+* Deprecated `puppeteerCoverage` plugin in favor of `coverage` plugin.
+
+## 3.1.1
+
+* [Appium] Fixed #2759
+ `grabNumberOfVisibleElements`, `grabAttributeFrom`, `grabAttributeFromAll` to allow id locators.
+
+## 3.1.0
+
+* [Plawyright] Updated to Playwright 1.13
+* [Playwright] **Possible breaking change**: `BrowserContext` is initialized before each test and closed after. This behavior matches recommendation from Playwright team to use different contexts for tests.
+* [Puppeteer] Updated to Puppeteer 10.2.
+* [Protractor] Helper deprecated
+
+🛩️ Features:
+
+* [Playwright] Added recording of [video](https://codecept.io/playwright/#video) and [traces](https://codecept.io/playwright/#trace) by @davertmik
+* [Playwritght] [Mocking requests](https://codecept.io/playwright/#mocking-network-requests) implemented via `route` API of Playwright by @davertmik
+* [Playwright] Added **support for [React locators](https://codecept.io/react/#locators)** in #2912 by @AAAstorga
+
+🐛 Bugfixes:
+
+* [Puppeteer] Fixed #2244 `els[0]._clickablePoint is not a function` by @karunandrii.
+* [Puppeteer] Fixed `fillField` to check for invisible elements. See #2916 by @anne-open-xchange 
+* [Playwright] Reset of dialog event listener before registration of new one. #2946 by @nikocanvacom 
+* Fixed running Gherkin features with `run-multiple` using chunks. See #2900 by @andrenoberto
+* Fixed #2937 broken typings for subfolders on Windows by @jancorvus
+* Fixed issue where cucumberJsonReporter not working with fakerTransform plugin. See #2942 by @ilangv 
+* Fixed #2952 finished job with status code 0 when playwright cannot connect to remote wss url. By @davertmik
+
+
 ## 3.0.7
 
-Documentation fixes:
+📖 Documentation fixes:
+
 * Remove broken link from `Nightmare helper`. See #2860 by @Arhell
 * Fixed broken links in `playwright.md`. See #2848 by @johnhoodjr
 * Fix mocha-multi config example. See #2881 by @rimesc
 * Fix small errors in email documentation file. See #2884 by @mkrtchian
 * Improve documentation for `Sharing Data Between Workers` section. See #2891 by @ngraf
 
-Features:
+🛩️ Features:
+
 * [WebDriver] Shadow DOM Support for `Webdriver`. See #2741 by @gkushang
 * [Release management] Introduce the versioning automatically, it follows the semantics versioning. See #2883 by @PeterNgTr
 * Adding opts into `Scenario.skip` that it would be useful for building reports. See #2867 by @AlexKo4

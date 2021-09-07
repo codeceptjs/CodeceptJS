@@ -21,12 +21,13 @@ Applicable plugins:
 - [ ] autoLogin
 - [ ] customLocator
 - [ ] pauseOnFail
-- [ ] puppeteerCoverage
+- [ ] coverage
 - [ ] retryFailedStep
 - [ ] screenshotOnFail
 - [ ] selenoid
 - [ ] stepByStepReport
 - [ ] wdio
+- [ ] subtitles
 
 ## Type of change
 

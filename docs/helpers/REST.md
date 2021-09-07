@@ -61,6 +61,8 @@ Executes axios request
 
 -   `request` **any** 
 
+Returns **[Promise][2]&lt;any>** response
+
 ### _url
 
 Generates url based on format sent (takes endpoint + url if latter lacks 'http')
@@ -80,7 +82,9 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][3]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendGetRequest
 
@@ -93,7 +97,9 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][3]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendPatchRequest
 
@@ -108,9 +114,11 @@ I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
 
 #### Parameters
 
--   `url` **[string][3]** 
+-   `url` **[string][4]** 
 -   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][3]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendPostRequest
 
@@ -127,7 +135,9 @@ I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
 
 -   `url` **any** 
 -   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][3]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendPutRequest
 
@@ -142,9 +152,11 @@ I.sendPutRequest('/api/users.json', secret({ "email": "user@user.com" }));
 
 #### Parameters
 
--   `url` **[string][3]** 
+-   `url` **[string][4]** 
 -   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][2]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][3]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### setRequestTimeout
 
@@ -160,6 +172,8 @@ I.setRequestTimeout(10000); // In milliseconds
 
 [1]: https://github.com/axios/axios
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

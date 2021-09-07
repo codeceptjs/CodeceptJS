@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.0.7",
+  "version": "3.1.2",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -84,7 +84,8 @@
     "promise-retry": "^1.1.1",
     "requireg": "^0.2.2",
     "resq": "^1.10.0",
-    "sprintf-js": "^1.1.1"
+    "sprintf-js": "^1.1.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@codeceptjs/detox-helper": "^1.0.2",
@@ -122,7 +123,7 @@
     "nodemon": "^1.19.4",
     "playwright": "^1.9.1",
     "protractor": "^5.4.4",
-    "puppeteer": "^8.0.0",
+    "puppeteer": "^10.0.0",
     "qrcode-terminal": "^0.12.0",
     "rosie": "^1.6.0",
     "runok": "^0.9.2",

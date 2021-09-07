@@ -3,7 +3,7 @@ name: Appium Tests
 on:
   push:
     branches:
-      - master
+      - 3.x
 
 env:
   CI: true

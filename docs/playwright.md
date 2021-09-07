@@ -3,7 +3,7 @@ permalink: /playwright
 title: Testing with Playwright
 ---
 
-# Testing with Playwright <Badge text="Since 2.5" type="warning"/>
+# Testing with Playwright
 
 Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers as well as [Electron](https://www.electronjs.org/) apps with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
 
@@ -322,30 +322,203 @@ Playwright can be added to GitHub Actions using [official action](https://github
 
 ## Accessing Playwright API
 
-To get [Playwright API](https://github.com/microsoft/playwright/tree/master/docs/src/api) inside a test use `I.usePlaywrightTo` method with a callback.
+To get [Playwright API](https://playwright.dev/docs/api/class-playwright) inside a test use `I.usePlaywrightTo` method with a callback.
+
+`usePlaywrightTo` passes in an instance of Playwright helper from which you can obtain access to main Playwright classes:
+
+* [`browser`](https://playwright.dev/docs/api/class-browser)
+* [`browserContext`](https://playwright.dev/docs/api/class-browsercontext)
+* [`page`](https://playwright.dev/docs/api/class-page)
+
 To keep test readable provide a description of a callback inside the first parameter.
 
 ```js
-I.usePlaywrightTo('emulate offline mode', async ({ browser, context, page }) => {
+I.usePlaywrightTo('emulate offline mode', async ({ browser, browserContext, page }) => {
   // use browser, page, context objects inside this function
-  await context.setOffline(true);
+  await browserContext.setOffline(true);
 });
 ```
 
 Playwright commands are asynchronous so a callback function must be async.
 
-A Playwright helper is passed as argument for callback, so you can combine Playwrigth API with CodeceptJS API:
+A Playwright helper is passed as argument for callback, so you can combine Playwright API with CodeceptJS API:
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
   // access internal objects browser, page, context of helper
-  await Playwright.context.setOffline(true);
+  await Playwright.browserContext.setOffline(true);
   // call a method of helper, await is required here
   await Playwright.click('Reload');
 });
 
 ```
 
+## Mocking Network Requests <Badge text="Since 3.1" type="warning"/>
+
+Network requests & responses can be mocked and modified. Use `mockRequest` which strictly follows [Playwright's `route` API](https://playwright.dev/docs/api/class-browsercontext#browser-context-route).
+
+```js
+I.mockRoute('/api/**', route => {
+  if (route.request().postData().includes('my-string'))
+    route.fulfill({ body: 'mocked-data' });
+  else
+    route.continue();
+});
+
+I.mockRoute('**/*.{png,jpg,jpeg}', route => route.abort());
+
+// To disable mocking for a route call `stopMockingRoute`
+// for previously mocked URL
+I.stopMockingRoute('**/*.{png,jpg,jpeg}'
+```
+
+To master request intercepting [use `route` object](https://playwright.dev/docs/api/class-route) object passed into mock request handler.
+
+## Video <Badge text="Since 3.1" type="warning"/>
+
+Playwright may record videos for failed tests. This can be enabled in a config with `video: true` option:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      // ...
+      video: true
+    }
+  }
+}
+```
+When a test fails and video was enabled a video file is shown under the `artifacts` section in the error message:
+
+```
+-- FAILURES:
+
+  1) GitHub
+       open:
+    
+  Scenario Steps:
+  - I.amOnPage("https://gothub11.com/search") at Test.<anonymous> (./github_test.js:16:5)
+  
+  Artifacts:
+  - screenshot: /home/davert/projects/codeceptjs/examples/output/open.failed.png
+  - video: /home/davert/projects/codeceptjs/examples/output/videos/5ecf6aaa78865bce14d271b55de964fd.webm
+```
+
+Open video and use it to debug a failed test case. Video helps when running tests on CI. Configure your CI system to enable artifacts storage for `output/video` and review videos of failed test case to understand failures. 
+
+## Trace <Badge text="Since 3.1" type="warning"/>
+
+If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer/) can be recorded.
+
+![](https://user-images.githubusercontent.com/220264/128403246-7e1b9b33-9ce2-42d5-b87b-b8749d5d7a78.png)
+
+Inside a trace you get screenshots, DOM snapshots, console logs, network requests and playwright commands logged and showed on a timeline. This may help for a deep debug of a failed test cases. Trace file is saved into ZIP archive and can be viewed with Trace Viewer built into Playwright.
+
+
+Enable trace with `trace: true` option in a config:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      // ...
+      trace: true
+    }
+  }
+}
+```
+
+When a test fails and trace was enabled, a trace file is shown under the `artifacts` section in the error message:
+
+```
+-- FAILURES:
+
+  1) GitHub
+       open:
+    
+  Scenario Steps:
+  - I.amOnPage("https://gothub11.com/search") at Test.<anonymous> (./github_test.js:16:5)
+  
+  Artifacts:
+  - screenshot: /home/davert/projects/codeceptjs/examples/output/open.failed.png
+  - trace: /home/davert/projects/codeceptjs/examples/output/trace/open.zip
+```
+
+Use Playwright's trace viewer to analyze the trace:
+
+```
+npx playwright show-trace {path-to-trace-file}
+```
+
+For instance, this is how you can read a trace for a failed test from an example:
+
+```
+npx playwright show-trace /home/davert/projects/codeceptjs/examples/output/trace/open.zip
+```
+
+## Capturing code coverage
+
+Code coverage can be captured, by enabling the `coverage` plugin in `codecept.config.js`.
+
+```js
+{
+  plugins: {
+    coverage: {
+      enabled: true
+    }
+  }
+}
+```
+
+Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
+
+![](https://user-images.githubusercontent.com/16587779/131362352-30ee9c51-705f-4098-b665-53035ea9275f.png)
+
+### Converting `playwright` coverage to `istanbul` coverage
+
+To convert coverage generated from `playwright` to `istanbul` coverage, you first need to install
+- [`v8-to-istanbul`](https://www.npmjs.com/package/v8-to-istanbul)
+
+Once installed, convert the coverage to a format which `istanbul` can recognize, by writing a script as shown below.
+
+```js
+const v8toIstanbul = require('v8-to-istanbul');
+// read all the coverage file from output/coverage folder
+const coverage = require('./output/coverage/Visit_Home_1630335005.coverage.json');
+const fs = require('fs/promises');
+
+(async () => {
+    for (const entry of coverage) {
+        // Used to get file name
+        const file = entry.url.match(/(?:http(s)*:\/\/.*\/)(?<file>.*)/);
+        const converter = new v8toIstanbul(file.groups.file, 0, {
+            source: entry.source
+        });
+
+        await converter.load();
+        converter.applyCoverage(entry.functions);
+
+        // Store converted coverage file which can later be used to generate report
+        await fs.writeFile('./coverage/final.json', JSON.stringify(converter.toIstanbul(), null, 2));
+    }
+})();
+```
+
+Once the istanbul compatible coverage is generated, use [`nyc`](https://www.npmjs.com/package/nyc) to generate your coverage report in your desired format.
+
+```
+npx nyc report --reporter html -t coverage
+```
+
+The above command will generate will generate coverage in an interactive html format. It should generate `html` files in the directory where your code coverage is present, something like shown below.
+
+![](https://user-images.githubusercontent.com/16587779/131858419-cbc7df7d-0851-47b9-b086-b5e3b9165674.png)
+
+Open `index.html` in your browser to view the full interactive coverage report.
+
+![](https://user-images.githubusercontent.com/16587779/131858993-87d1aafc-8ef1-4a82-867d-e64a13e36106.png)
+
+![](https://user-images.githubusercontent.com/16587779/131859006-c6f17d18-c603-44a5-9d59-0670177276cf.png)
 ## Extending Helper
 
 To create custom `I.*` commands using Playwright API you need to create a custom helper.

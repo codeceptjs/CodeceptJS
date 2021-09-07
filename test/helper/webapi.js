@@ -127,12 +127,16 @@ module.exports.tests = function () {
       await I.seeElement('//input[@id="name"]');
       await I.dontSeeElement('#something-beyond');
       await I.dontSeeElement('//input[@id="something-beyond"]');
+      await I.dontSeeElement({ name: 'noname' });
+      await I.dontSeeElement('#noid');
     });
 
     it('should check elements are in the DOM', async () => {
       await I.amOnPage('/form/field');
       await I.seeElementInDOM('input[name=name]');
       await I.seeElementInDOM('//input[@id="name"]');
+      await I.seeElementInDOM({ name: 'noname' });
+      await I.seeElementInDOM('#noid');
       await I.dontSeeElementInDOM('#something-beyond');
       await I.dontSeeElementInDOM('//input[@id="something-beyond"]');
     });
@@ -177,6 +181,12 @@ module.exports.tests = function () {
       await I.amOnPage('/info');
       const num = await I.grabNumberOfVisibleElements('button[type=submit]');
       assert.equal(num, 0);
+    });
+
+    it('should honor visibility hidden style', async () => {
+      await I.amOnPage('/info');
+      const num = await I.grabNumberOfVisibleElements('.issue2928');
+      assert.equal(num, 1);
     });
   });
 
@@ -545,6 +555,12 @@ module.exports.tests = function () {
       await I.appendField('Name', '_AND_NEW');
       await I.click('Submit');
       assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+    });
+
+    it('should not fill invisible fields', async () => {
+      if (isHelper('Playwright')) return; // It won't be implemented
+      await I.amOnPage('/form/field');
+      await assert.rejects(I.fillField('email', 'test@1234'));
     });
   });
 

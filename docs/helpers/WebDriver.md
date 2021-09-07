@@ -963,7 +963,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][19]** attribute name.
 
-Returns **[Promise][25]&lt;[string][19]>** attribute valueAppium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+Returns **[Promise][25]&lt;[string][19]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -979,7 +979,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][19]** attribute name.
 
-Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** attribute valueAppium: can be used for apps only with several values ("contentDescription", "text", "className", "resourceId")
+Returns **[Promise][25]&lt;[Array][27]&lt;[string][19]>>** attribute value
 
 ### grabBrowserLogs
 
