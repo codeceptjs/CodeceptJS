@@ -382,7 +382,9 @@ This will give you cli with steps in console and HTML report in `output` directo
 
 Testrail integration with CodeceptJS is now so seamless. The test run is created automatically afterwards. The screenshots of failed tests are also attached to test results.
 
-To use this plugin:
+Try to use [codeceptjs-testrail](https://www.npmjs.com/package/codeceptjs-testrail) plugin
+
+Install it via NPM:
 
 ```sh
 npm i codeceptjs-testrail --save
