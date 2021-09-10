@@ -7,8 +7,8 @@ title: Reporters
 
 ## Cli
 
-By default CodeceptJS provides cli reporter with console output.
-Test names and failures will be printed to screen.
+By default, CodeceptJS provides cli reporter with console output.
+Test names and failures will be printed out on screen.
 
 ```sh
 GitHub --
@@ -201,7 +201,7 @@ npx codeceptjs dry-run --debug -p allure
 
 ## ReportPortal
 
-Allure is a great reportin tool, however, if you are running tests on different machines it is hard to merge its XML result files to build a proper report. So, for enterprise grade reporting we recommend using [ReportPortal](https://reportportal.io).
+Allure is a great reporting tool, however, if you are running tests on different machines it is hard to merge its XML result files to build a proper report. So, for enterprise grade reporting we recommend using [ReportPortal](https://reportportal.io).
 
 ![](https://camo.githubusercontent.com/6550c0365f1d0ce1e29c53f1860b12957d1fc529/68747470733a2f2f692e6962622e636f2f516d353247306e2f53637265656e73686f742d323031392d30342d31312d61742d31352d35372d34302e706e67)
 
@@ -376,3 +376,21 @@ npx codeceptjs run --reporter mocha-multi
 ```
 
 This will give you cli with steps in console and HTML report in `output` directory.
+
+
+## Testrail
+
+Testrail integration with CodeceptJS is now so seamless. The test run is created automatically afterwards. The screenshots of failed tests are also attached to test results.
+
+Try to use [codeceptjs-testrail](https://www.npmjs.com/package/codeceptjs-testrail) plugin
+
+Install it via NPM:
+
+```sh
+npm i codeceptjs-testrail --save
+```
+
+![Attachemnt for failed case](http://g.recordit.co/ajaa2QRlnW.gif)
+
+Now there is new feature, add the configuration to test run of test plan
+![Attachemnt for failed case](http://g.recordit.co/uQLvQUq7cT.gif)
