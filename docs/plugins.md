@@ -650,6 +650,7 @@ Possible config options:
 
 -   `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
 -   `fullPageScreenshots`: make full page screenshots. Default: false.
+-   `imageExtension`: define image file format. Default: png.
 
 ### Parameters
 
