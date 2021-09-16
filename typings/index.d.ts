@@ -111,6 +111,7 @@ declare const pause: typeof CodeceptJS.pause;
 declare const within: typeof CodeceptJS.within;
 declare const session: typeof CodeceptJS.session;
 declare const DataTable: typeof CodeceptJS.DataTable;
+declare const DataTableArgument: typeof CodeceptJS.DataTableArgument;
 declare const codeceptjs: typeof CodeceptJS.index;
 declare const locate: typeof CodeceptJS.Locator.build;
 declare function inject(): CodeceptJS.SupportObject;
@@ -160,6 +161,7 @@ declare namespace NodeJS {
     within: typeof within;
     session: typeof session;
     DataTable: typeof DataTable;
+    DataTableArgument: typeof DataTableArgument;
     locate: typeof locate;
     inject: typeof inject;
     secret: typeof secret;
