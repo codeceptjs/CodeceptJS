@@ -291,8 +291,10 @@ Examples of tables using:
     | Chuck | Norris  |
 ```
 ```js
+const { DataTableArgument } = require('codeceptjs');
+//...
 Given('I have a short employees card', (table) => {
-  const dataTableArgument = new CodeceptJS.DataTableArgument(table);
+  const dataTableArgument = new DataTableArgument(table);
   const raw = dataTableArgument.raw(); 
   // row = [['Harry', 'Potter'], ['Chuck', 'Norris']]
   dataTableArgument.transpose();
@@ -307,8 +309,10 @@ Given('I have a short employees card', (table) => {
     | Harry | Potter  | Seeker   |
 ```
 ```js
+const { DataTableArgument } = require('codeceptjs');
+//...
 Given('I have an employee card', (table) => {
-  const dataTableArgument = new CodeceptJS.DataTableArgument(table);
+  const dataTableArgument = new DataTableArgument(table);
   const hashes = dataTableArgument.hashes(); 
   // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
   const rows = dataTableArgument.rows();
@@ -323,8 +327,10 @@ Given('I have an employee card', (table) => {
     | position | Seeker |
 ```
 ```js
+const { DataTableArgument } = require('codeceptjs');
+//...
 Given('I have a formatted employee card', (table) => {
-  const dataTableArgument = new CodeceptJS.DataTableArgument(table);
+  const dataTableArgument = new DataTableArgument(table);
   const rawHash = dataTableArgument.rowsHash();
   // rawHash = { name: 'Harry', surname: 'Potter', position: 'Seeker' };
   }

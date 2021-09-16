@@ -7,6 +7,7 @@ module.exports = {
       './lib/config.js',
       './lib/container.js',
       './lib/data/table.js',
+      './lib/data/dataTableArgument.js',
       './lib/event.js',
       './lib/helper/clientscripts/nightmare.js',
       './lib/index.js',
