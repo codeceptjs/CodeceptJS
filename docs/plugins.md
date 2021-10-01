@@ -417,7 +417,7 @@ Dumps code coverage from Playwright/Puppeteer after every test.
 
 ```js
 plugins: {
-   playwrightCoverage: {
+   coverage: {
      enabled: true
    }
 }

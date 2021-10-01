@@ -264,8 +264,10 @@ You can also use the `parse()` method to obtain an object that allow you to get 
 - `raw()` - returns the table as a 2-D array
 - `rows()` - returns the table as a 2-D array, without the first row
 - `hashes()` - returns an array of objects where each row is converted to an object (column header is the key)
+- `rowsHash()` - returns an object where each row corresponds to an entry(first column is the key, second column is the value)
+- `transpose()` - transpose the data, returns nothing. To work with the transposed table use the methods above.
 
-If we use hashes() with the previous exemple :
+If we use hashes() with the previous example :
 
 ```js
 Given('I have products in my cart', (table) => { // eslint-disable-line
@@ -281,7 +283,59 @@ Given('I have products in my cart', (table) => { // eslint-disable-line
   }
 });
 ```
+Examples of tables using: 
 
+```gherkin
+  Given I have a short employees card
+    | Harry | Potter  |
+    | Chuck | Norris  |
+```
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have a short employees card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const raw = dataTableArgument.raw(); 
+  // row = [['Harry', 'Potter'], ['Chuck', 'Norris']]
+  dataTableArgument.transpose();
+  const transposedRaw = dataTableArgument.raw();
+  // transposedRaw = [['Harry', 'Chuck'], ['Potter', 'Norris']];
+  }
+);
+```
+```gherkin
+  Given I have an employee card
+    | name  | surname | position |
+    | Harry | Potter  | Seeker   |
+```
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have an employee card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const hashes = dataTableArgument.hashes(); 
+  // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
+  const rows = dataTableArgument.rows();
+  // rows = [['Harry', 'Potter', Seeker]];
+  }
+);
+```
+```gherkin
+  Given I have a formatted employee card
+    | name     | Harry  |
+    | surname  | Potter |
+    | position | Seeker |
+```
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have a formatted employee card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const rawHash = dataTableArgument.rowsHash();
+  // rawHash = { name: 'Harry', surname: 'Potter', position: 'Seeker' };
+  }
+);
+```
 ### Examples
 
 In case scenarios represent the same logic but differ on data, we can use *Scenario Outline* to provide different examples for the same behavior. Scenario outline is just like a basic scenario with some values replaced with placeholders, which are filled from a table. Each set of values is executed as a different test.
