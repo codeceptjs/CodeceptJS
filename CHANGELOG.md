@@ -1,3 +1,38 @@
+## 3.1.3
+
+🛩️ Features:
+
+* BDD Improvement. Added `DataTableArgument` class to work with table data structures. 
+
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have an employee card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const hashes = dataTableArgument.hashes(); 
+  // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
+  const rows = dataTableArgument.rows();
+  // rows = [['Harry', 'Potter', Seeker]];
+  }
+```
+See updated [BDD section](https://codecept.io/bdd/) for more API options.
+
+* Support `cjs` file extensions for config file: `codecept.conf.cjs`. See #3052 by @kalvenschraut
+* API updates: Added `test.file` and `suite.file` properties to `test` and `suite` objects to use in helpers and plugins. 
+
+🐛 Bugfixes:
+
+* [Playwright] Fixed resetting `test.artifacts` for failing tests. See #3033 by @jancorvus. Fixes #3032
+* [Playwright] Apply `basicAuth` credentials to all opened browser contexts. See #3036 by @nikocanvacom. Fixes #3035
+* [WebDriver] Updated `webdriverio` default version to `^6.12.1`. See #3043 by @sridhareaswaran
+* [Playwright] `I.haveRequestHeaders` affects all tabs. See #3049 by @jancorvus
+* BDD: Fixed unhandled empty feature files. Fix #3046 by @abhimanyupandian 
+
+📖 Documentation:
+
+* Added Testrail reporter [Reports Docs](https://codecept.io/reports/#testrail)
+
+
 ## 3.1.2
 
 🛩️ Features:
