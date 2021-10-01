@@ -245,10 +245,12 @@ Remove an app from the device.
 I.removeApp('appName', 'com.example.android.apis');
 ```
 
+Appium: support only Android
+
 #### Parameters
 
 -   `appId` **[string][4]** 
--   `bundleId` **[string][4]** String  ID of bundleAppium: support only Android
+-   `bundleId` **[string][4]?** ID of bundle
 
 ### seeCurrentActivityIs
 
@@ -473,10 +475,12 @@ I.hideDeviceKeyboard('tapOutside');
 I.hideDeviceKeyboard('pressKey', 'Done');
 ```
 
+Appium: support Android and iOS
+
 #### Parameters
 
--   `strategy` **(`"tapOutside"` \| `"pressKey"`)** desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)Appium: support Android and iOS
--   `key`  
+-   `strategy` **(`"tapOutside"` \| `"pressKey"`)?** Desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
+-   `key` **[string][4]?** Optional key
 
 ### sendDeviceKeyEvent
 
@@ -685,7 +689,7 @@ Appium: support Android and iOS
 
 #### Parameters
 
--   `actions`  
+-   `actions` **[Array][11]** Array of touch actions
 
 ### pullFile
 
@@ -722,7 +726,7 @@ Perform a rotation gesture centered on the specified element.
 I.rotate(120, 120)
 ```
 
-See corresponding [webdriverio reference][11].
+See corresponding [webdriverio reference][12].
 
 Appium: support only iOS
 
@@ -739,7 +743,7 @@ Appium: support only iOS
 
 Set immediate value in app.
 
-See corresponding [webdriverio reference][12].
+See corresponding [webdriverio reference][13].
 
 Appium: support only iOS
 
@@ -926,7 +930,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** attribute value
+Returns **[Promise][14]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### grabTextFrom
 
@@ -943,7 +947,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[string][4]>** attribute value
+Returns **[Promise][14]&lt;[string][4]>** attribute value
 
 ### grabNumberOfVisibleElements
 
@@ -958,7 +962,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[number][8]>** number of visible elements
+Returns **[Promise][14]&lt;[number][8]>** number of visible elements
 
 ### grabAttributeFrom
 
@@ -977,7 +981,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][4]** attribute name.
 
-Returns **[Promise][13]&lt;[string][4]>** attribute value
+Returns **[Promise][14]&lt;[string][4]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -994,7 +998,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][4] \| [object][6])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][4]** attribute name.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** attribute value
+Returns **[Promise][14]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### grabValueFromAll
 
@@ -1009,7 +1013,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][4] \| [object][6])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** attribute value
+Returns **[Promise][14]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### grabValueFrom
 
@@ -1025,7 +1029,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][4] \| [object][6])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[string][4]>** attribute value
+Returns **[Promise][14]&lt;[string][4]>** attribute value
 
 ### saveScreenshot
 
@@ -1139,7 +1143,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][4] \| [object][6])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] \| [Array][14]&lt;any>)** visible text or value of option.Supported only for web testing
+-   `option` **([string][4] \| [Array][11]&lt;any>)** visible text or value of option.Supported only for web testing
 
 ### waitForElement
 
@@ -1482,7 +1486,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** HTML code for an element
+Returns **[Promise][14]&lt;[Array][11]&lt;[string][4]>>** HTML code for an element
 
 ### grabHTMLFrom
 
@@ -1499,7 +1503,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][4] \| [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[string][4]>** HTML code for an element
+Returns **[Promise][14]&lt;[string][4]>** HTML code for an element
 
 ### seeTextEquals
 
@@ -1560,7 +1564,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][13]&lt;[string][4]>** source code
+Returns **[Promise][14]&lt;[string][4]>** source code
 
 ### grabBrowserLogs
 
@@ -1572,7 +1576,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][13]&lt;[Array][14]&lt;[object][6]>> | [undefined][19])** all browser logs
+Returns **([Promise][14]&lt;[Array][11]&lt;[object][6]>> | [undefined][19])** all browser logs
 
 ### dontSeeInSource
 
@@ -1697,7 +1701,7 @@ I.type(['T', 'E', 'X', 'T']);
 
 -   `keys`  
 -   `delay` **[number][8]?** (optional) delay in ms between key presses (optional, default `null`)
--   `key` **([string][4] \| [Array][14]&lt;[string][4]>)** or array of keys to type.
+-   `key` **([string][4] \| [Array][11]&lt;[string][4]>)** or array of keys to type.
 
 ### dragAndDrop
 
@@ -1736,7 +1740,7 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][4]>>** 
+Returns **[Promise][14]&lt;[Array][11]&lt;[string][4]>>** 
 
 ### grabCurrentWindowHandle
 
@@ -1747,7 +1751,7 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 const window = await I.grabCurrentWindowHandle();
 ```
 
-Returns **[Promise][13]&lt;[string][4]>** 
+Returns **[Promise][14]&lt;[string][4]>** 
 
 ### switchToWindow
 
@@ -1797,7 +1801,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][13]&lt;[number][8]>** number of open tabs
+Returns **[Promise][14]&lt;[number][8]>** number of open tabs
 
 ### scrollPageToTop
 
@@ -1824,7 +1828,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][14]&lt;PageScrollPosition>** scroll position
 
 ### setGeoLocation
 
@@ -1850,7 +1854,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let geoLocation = await I.grabGeoLocation();
 ```
 
-Returns **[Promise][13]&lt;{latitude: [number][8], longitude: [number][8], altitude: [number][8]}>** 
+Returns **[Promise][14]&lt;{latitude: [number][8], longitude: [number][8], altitude: [number][8]}>** 
 
 ### grabElementBoundingRect
 
@@ -1878,7 +1882,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][4]?** x, y, width or height of the given element.
 
-Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][8]>)** Element bounding rectangle
+Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][8]>)** Element bounding rectangle
 
 [1]: http://codecept.io/helpers/WebDriver/
 
@@ -1900,13 +1904,13 @@ Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][8]>)** Element 
 
 [10]: http://webdriver.io/api/mobile/swipe.html
 
-[11]: http://webdriver.io/api/mobile/rotate.html
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: http://webdriver.io/api/mobile/setImmediateValue.html
+[12]: http://webdriver.io/api/mobile/rotate.html
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[13]: http://webdriver.io/api/mobile/setImmediateValue.html
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 [15]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
