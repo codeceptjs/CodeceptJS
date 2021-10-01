@@ -484,14 +484,18 @@ Then you need to [convert code coverage from Playwright's format into Istanbul f
 Once the istanbul compatible coverage is generated, use [`nyc`](https://www.npmjs.com/package/nyc) to generate your coverage report in your desired format.
 
 ```
-npx nyc report --reporter text -t coverage
+npx nyc report --reporter html -t coverage
 ```
 
-The above command will generate a text report like shown below.
+The above command will generate will generate coverage in an interactive html format. It should generate `html` files in the directory where your code coverage is present, something like shown below.
 
-![](https://user-images.githubusercontent.com/16587779/131363170-b03b4398-5e9a-4142-bc32-764a5f4a5e11.png)
+![](https://user-images.githubusercontent.com/16587779/131858419-cbc7df7d-0851-47b9-b086-b5e3b9165674.png)
 
+Open `index.html` in your browser to view the full interactive coverage report.
 
+![](https://user-images.githubusercontent.com/16587779/131858993-87d1aafc-8ef1-4a82-867d-e64a13e36106.png)
+
+![](https://user-images.githubusercontent.com/16587779/131859006-c6f17d18-c603-44a5-9d59-0670177276cf.png)
 ## Extending Helper
 
 To create custom `I.*` commands using Playwright API you need to create a custom helper.
