@@ -47,16 +47,10 @@ Run single test with steps printed
 npx codeceptjs run github_test.js --steps
 ```
 
-Run single test in debug mode
+Run single test in debug mode (see more in [debugging](#Debugging) section)
 
 ```sh
 npx codeceptjs run github_test.js --debug
-```
-
-Run test with internal logs printed (global promises, and events).
-
-```sh
-npx codeceptjs run github_test.js --verbose
 ```
 
 Select config file manually (`-c` or `--config` option)
@@ -79,6 +73,26 @@ npx codeceptjs run --reporter xunit
 ```
 
 Use any of [Mocha reporters](https://github.com/mochajs/mocha/tree/master/lib/reporters) used.
+
+#### Debugging 
+
+Run single test in debug mode
+
+```sh
+npx codeceptjs run --debug
+```
+
+Run test with internal logs printed.
+
+```sh
+npx codeceptjs run --verbose
+```
+
+Display complete debug output including scheduled promises
+
+```
+DEBUG=codeceptjs:* npx codeceptjs run
+```
 
 ## Run Workers
 
