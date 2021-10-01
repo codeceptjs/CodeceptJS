@@ -27,6 +27,7 @@ See updated [BDD section](https://codecept.io/bdd/) for more API options.
 * [WebDriver] Updated `webdriverio` default version to `^6.12.1`. See #3043 by @sridhareaswaran
 * [Playwright] `I.haveRequestHeaders` affects all tabs. See #3049 by @jancorvus
 * BDD: Fixed unhandled empty feature files. Fix #3046 by @abhimanyupandian 
+* Fixed `RangeError: Invalid string length` in `recorder.js` when running huge amount of tests.  
 
 📖 Documentation:
 
