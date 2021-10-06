@@ -28,6 +28,10 @@ Scenario('scenario',
     args.I // $ExpectType I
   }
 )
+Scenario(
+  'scenario',
+  async () => {} // $ExpectType () => Promise<void>
+)
 
 Before((args) => {
   args // $ExpectType SupportObject
