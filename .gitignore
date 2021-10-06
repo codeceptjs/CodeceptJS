@@ -21,4 +21,3 @@ testpullfilecache*
 package-lock.json
 yarn.lock
 /.vs
-typings/types.d.ts
