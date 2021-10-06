@@ -1821,11 +1821,11 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 ### waitForResponse
 
-Waits for a network request.
+Waits for a network response.
 
 ```js
 I.waitForResponse('http://example.com/resource');
-I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+I.waitForResponse(response => response.url() === 'https://example.com' && response.status() === 200);
 ```
 
 #### Parameters
