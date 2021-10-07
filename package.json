@@ -10,7 +10,6 @@
     "webdriver",
     "testcafe",
     "playwright",
-    "protractor",
     "bdd",
     "tdd",
     "testing"
@@ -122,7 +121,6 @@
     "nightmare": "^3.0.2",
     "nodemon": "^1.19.4",
     "playwright": "^1.9.1",
-    "protractor": "^5.4.4",
     "puppeteer": "^10.0.0",
     "qrcode-terminal": "^0.12.0",
     "rosie": "^1.6.0",

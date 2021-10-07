@@ -192,7 +192,6 @@ Protractor tests:
 docker-compose run --rm test-acceptance.webdriverio
 docker-compose run --rm test-acceptance.nightmare
 docker-compose run --rm test-acceptance.puppeteer
-docker-compose run --rm test-acceptance.protractor
 ```
 
 #### Running against specific Node version

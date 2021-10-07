@@ -108,7 +108,7 @@ If you need to get access to web elements, it is recommended to implement operat
 
 To get access for elements, connect to a corresponding helper and use `_locate` function to match web elements by CSS or XPath, like you usually do:
 
-### Acessing Elements in WebDriver
+### Accessing Elements in WebDriver
 
 ```js
 // inside a custom helper
@@ -300,41 +300,6 @@ class MyHelper extends Helper {
     await page.emulate(iPhone);
   }
 
-}
-
-module.exports = MyHelper;
-```
-
-### Protractor Example
-
-Protractor example demonstrates usage of global `element` and `by` objects.
-However `browser` should be accessed from a helper instance via `this.helpers['Protractor']`;
-We also use `chai-as-promised` library to have nice assertions with promises.
-
-```js
-const Helper = require('@codeceptjs/helper');
-
-// use any assertion library you like
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-const expect = chai.expect;
-
-class MyHelper extends Helper {
-  /**
-   * checks that authentication cookie is set
-   */
-  seeInHistory(historyPosition, value) {
-    // access browser instance from Protractor helper
-    this.helpers['Protractor'].browser.refresh();
-
-    // you can use `element` as well as in protractor
-    const history = element.all(by.repeater('result in memory'));
-
-    // use chai as promised for better assertions
-    // end your method with `return` to handle promises
-    return expect(history.get(historyPosition).getText()).to.eventually.equal(value);
-  }
 }
 
 module.exports = MyHelper;
