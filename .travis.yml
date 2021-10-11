@@ -12,10 +12,6 @@ env:
   - secure: OlLkzBUwlRFIa5xDWEs/It6ofSfC+pXRVt17kTyox8beH5qu5Ks3/Zwa48YMqHKnbNHI7hiRBO2YfsJgjYJoQ5/ovKPa3rvffNXdKeDZpt+lQqlhjJYpgp0pNgck45RKnFj1pKpQCVG6dWWcT59Gi8NoI8AsAVCVgFtO8McfV8qbks6G2UP0GdFR5s6tRyZTjfCVmMNtJX9veYuibwoiwRyFhh1FY+sw5BvAONSBdOWmcK7RdDm7IE+Oitzn3bRZnC6sgLNpy6qhncED/pbn4GFD5MRlu0UkDGDfXldsOyjOtqdaN5WbOGdhevaYgr/5VvSeMbO7fITlDXbhz9pViogl6fnxj0zELZvG6b6H7nAVV29uzHP4jofocP41h33rvYnQUTfNHN8HIRN4LVfekN2I27GDO+J1QFiWNN/36nhsRH9tWPwSNC2f9QLIf6OrD60FVUIMlQrFHqyrO4KZBZkRsGMgYzsa5XmGOGUATUBrmQVTynNQc+yhniJd4Q8LwwmXMDWNeoeg5eh0TFgERVDlkQ8tPaWOXmpHi6BL4JZlGz275SDWgZH4bnH2B1RzO1qcGN905vIo5snX8LwZbxSfXrt+4WP3jOi+1i8ZrFwACk7jlovJiJquQuZQ5dL7C9rBwpAWB8YjgOKNikDWvUrVnYGS/gLwrdN7+pRiims=
   matrix:
   - HELPER=Nightmare
-  - HELPER=Puppeteer
-  - HELPER=ProtractorWeb
-  - HELPER=WebDriver
-  - HELPER=TestCafe
 addons:
   apt:
     packages:
