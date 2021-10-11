@@ -334,12 +334,6 @@ wd.waitUrlEquals() // $ExpectError
 wd.waitUrlEquals(str) // $ExpectType void
 wd.waitUrlEquals(str, num) // $ExpectType void
 
-wd.waitUntil() // $ExpectError
-wd.waitUntil(() => {}) // $ExpectType void
-wd.waitUntil(str) // $ExpectType void
-wd.waitUntil(str, num, str, num) // $ExpectType void
-wd.waitUntil(() => {}, num, str, num) // $ExpectType void
-
 wd.switchTo() // $ExpectType void
 wd.switchTo('div') // $ExpectType void
 
