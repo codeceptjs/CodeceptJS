@@ -31,6 +31,7 @@ Please **add your own** by editing this page.
 
 ## Visual-Testing
 * [codeceptjs-resemblehelper](https://github.com/puneet0191/codeceptjs-resemblehelper) - a helper which helps with visual testing using resemble.js. 
+* [@currys-co-uk/codeceptjs-resemblehelper](https://github.com/currys-co-uk/codeceptjs-resemblehelper) - forked helper rewritten to TypeScript with fixed bugs & much more functionality
 * [codeceptjs-applitoolshelper](https://www.npmjs.com/package/codeceptjs-applitoolshelper) - a helper which helps interaction with [Applitools](https://applitools.com)
 
 ## Reporters

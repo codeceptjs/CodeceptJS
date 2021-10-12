@@ -112,6 +112,49 @@ MisMatch Percentage Calculated is 2.85
 1) `seeVisualDiff` which can be used to compare two images and calculate the misMatch percentage.
 2) `seeVisualDiffForElement` which can be used to compare elements on the two images and calculate misMatch percentage.
 
+## Using @currys-co-uk/codeceptjs-resemblehelper
+
+Forked and updated codeceptjs-resemblehelper with fixed bugs and much more functionality.
+
+### Setup
+
+To install the package, just run
+
+```
+npm install @currys-co-uk/codeceptjs-resemblehelper --save
+```
+
+### Configuring
+
+This helper should be added to `codecept.conf.js` config file.
+
+Example:
+
+```json
+{
+  helpers: {
+    ResembleHelper: {
+      require: "@currys-co-uk/codeceptjs-resemblehelper",
+      screenshotFolder : "./tests/output/",
+      baseFolder: "./tests/screenshots/base/",
+      diffFolder: "./tests/screenshots/diff/",
+      prepareBaseImage: true, // optional
+      tolerance: 10, // optional
+      skipFailure: true, // optional
+      createDiffInToleranceRange: true, // optional
+      alwaysSaveDiff: true, // optional
+      createSubFoldersInBaseFolder: true, // optional
+      updateMismatchedBaseImage: true // optional
+    }
+  }
+}
+```
+
+### Usage
+
+All details about the helper and their options can be found on the [Github Repo](https://github.com/currys-co-uk/codeceptjs-resemblehelper)
+
+
 ## Using Applitools
 
 Applitools helps Test Automation engineers, DevOps, and FrontEnd Developers continuously test and validate visually perfect mobile, web, and native apps. Now it can be used with CodeceptJS.
