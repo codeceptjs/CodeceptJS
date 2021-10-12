@@ -132,23 +132,24 @@ Example:
 
 ```json
 {
-  helpers: {
-    ResembleHelper: {
-      require: "@currys-co-uk/codeceptjs-resemblehelper",
-      screenshotFolder : "./tests/output/",
-      baseFolder: "./tests/screenshots/base/",
-      diffFolder: "./tests/screenshots/diff/",
-      prepareBaseImage: true, // optional
-      tolerance: 10, // optional
-      skipFailure: true, // optional
-      createDiffInToleranceRange: true, // optional
-      alwaysSaveDiff: true, // optional
-      createSubFoldersInBaseFolder: true, // optional
-      updateMismatchedBaseImage: true // optional
+  "helpers": {
+    "ResembleHelper": {
+      "require": "@currys-co-uk/codeceptjs-resemblehelper",
+      "screenshotFolder": "./tests/output/",
+      "baseFolder": "./tests/screenshots/base/",
+      "diffFolder": "./tests/screenshots/diff/",
+      "prepareBaseImage": true,
+      "tolerance": 10,
+      "skipFailure": true,
+      "createDiffInToleranceRange": true,
+      "alwaysSaveDiff": true,
+      "createSubFoldersInBaseFolder": true,
+      "updateMismatchedBaseImage": true
     }
   }
 }
 ```
+Mandatory parameters as `screenshotFolder`, `baseFolder` and `diffFolder` are needed, boolean options and tolerance are optional.
 
 ### Usage
 
