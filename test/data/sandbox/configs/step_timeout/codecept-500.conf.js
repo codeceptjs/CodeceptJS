@@ -1,19 +1,23 @@
 exports.config = {
   tests: './*_test.js',
   output: './output',
-  stepTimeout: 500,
-  stepTimeoutOverride: [
-    {
-      pattern: 'wait.*',
-      timeout: 0,
-    },
-  ],
   helpers: {
     CustomHelper: {
       require: './customHelper.js',
     },
   },
   plugins: {
+    stepTimeout: {
+      enabled: true,
+      timeout: 0.5,
+      noTimeoutSteps: [
+        'wait*',
+      ],
+      customTimeoutSteps: [
+        [/^waitTadLonger$/, 0.9],
+        ['waitTadShorter', 0.3],
+      ],
+    },
   },
   name: 'steps',
 };

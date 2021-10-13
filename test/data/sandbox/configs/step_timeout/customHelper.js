@@ -5,12 +5,25 @@ function sleep(ms) {
 }
 
 class CustomHelper extends Helper {
-  async exceededByTimeout(s) {
-    await sleep(s);
+  exceededByTimeout(ms) {
+    return sleep(ms);
   }
 
-  async waitForSleep(s) {
-    await sleep(s);
+  waitForSleep(ms) {
+    return sleep(ms);
+  }
+
+  statefulSleep(ms) {
+    this.fraction = ++this.fraction || 1;
+    return sleep(ms - 100 * this.fraction);
+  }
+
+  waitTadLonger(ms) {
+    return sleep(ms);
+  }
+
+  waitTadShorter(ms) {
+    return sleep(ms);
   }
 }
 

@@ -27,8 +27,6 @@ Here is an overview of available options with their defaults:
 * **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](http://codecept.io/hooks/#custom-hooks)
 * **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
 * **require**: `[]` - array of module names to be required before codecept starts. See [Require](#require)
-* **stepTimeout**: `0` - framework global step timeout, ms. Zero value sets no timeout.
-* **stepTimeoutOverride**: `[]` - name based step timeout override, default disables step timeout on `wait*` methods. E.g. `[{pattern: 'myWait.*', timeout: 5000}, ...]`
 
 ## Require
 
