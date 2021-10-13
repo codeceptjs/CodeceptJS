@@ -37,7 +37,7 @@ describe('CodeceptJS Steps', function () {
 
   it('should not stop test, when step not exceeded', (done) => {
     exec(config_run_config('codecept-2000.conf.js', 'Default command timeout'), (err, stdout) => {
-      expect(stdout).not.toContain('Step execution timeout of 2000 ms exceeded');
+      expect(stdout).not.toContain('timed out after');
       expect(stdout).toContain('1 passed');
       expect(err).toBeFalsy();
       done();
@@ -46,7 +46,7 @@ describe('CodeceptJS Steps', function () {
 
   it('should ignore timeout for steps with `wait*` prefix', (done) => {
     exec(config_run_config('codecept-500.conf.js', 'Wait command timeout'), (err, stdout) => {
-      expect(stdout).not.toContain('Step execution timeout of 500 ms exceeded');
+      expect(stdout).not.toContain('timed out after');
       expect(stdout).toContain('1 passed');
       expect(err).toBeFalsy();
       done();
@@ -56,7 +56,7 @@ describe('CodeceptJS Steps', function () {
   it('step timeout should work nicely with step retries', (done) => {
     exec(config_run_config('codecept-500.conf.js', 'Rerun sleep', true), (err, stdout) => {
       console.log(stdout);
-      expect(stdout).not.toContain('Step execution timeout of 500 ms exceeded');
+      expect(stdout).not.toContain('timed out after');
       expect(stdout).toContain('1 passed');
       expect(stdout).toContain('Retrying... Attempt #2');
       expect(stdout).toContain('Retrying... Attempt #3');
