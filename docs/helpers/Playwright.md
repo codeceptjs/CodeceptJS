@@ -1680,11 +1680,11 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][22], [`context`][23] [`browser`][24] } objects from Playwright API are available.
+{ [`page`][22], [`browserContext`][23] [`browser`][24] } objects from Playwright API are available.
 
 ```js
-I.usePlaywrightTo('emulate offline mode', async ({ context }) {
-  await context.setOffline(true);
+I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) {
+  await browserContext.setOffline(true);
 });
 ```
 
@@ -1975,11 +1975,11 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [21]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[22]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
+[22]: https://playwright.dev/docs/api/class-page/
 
-[23]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context
+[23]: https://playwright.dev/docs/api/class-browsercontext/
 
-[24]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser
+[24]: https://playwright.dev/docs/api/class-browser/
 
 [25]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 
