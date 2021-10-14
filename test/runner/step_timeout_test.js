@@ -55,7 +55,6 @@ describe('CodeceptJS Steps', function () {
 
   it('step timeout should work nicely with step retries', (done) => {
     exec(config_run_config('codecept-500.conf.js', 'Rerun sleep', true), (err, stdout) => {
-      console.log(stdout);
       expect(stdout).not.toContain('timed out after');
       expect(stdout).toContain('1 passed');
       expect(stdout).toContain('Retrying... Attempt #2');
