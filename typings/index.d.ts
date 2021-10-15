@@ -97,28 +97,6 @@ declare namespace CodeceptJS {
   interface Globals {
     codeceptjs: typeof codeceptjs;
   }
-
-  class Helper {
-    constructor(config: unknown)
-    static _config(): unknown
-    _validateConfig(config: unknown): unknown
-    _setConfig(opts: unknown): unknown
-    _init(): unknown
-    _before(): unknown
-    _after(): unknown
-    _test(test: Mocha.Test): unknown
-    _passed(test: Mocha.Test): unknown
-    _failed(test: Mocha.Test): unknown
-    _beforeStep(step: CodeceptJS.Step): unknown
-    _afterStep(step: CodeceptJS.Step): unknown
-    _beforeSuite(suite: Mocha.Suite): unknown
-    _afterSuite(suite: Mocha.Suite): unknown
-    _finishTest(suite: Mocha.Suite): unknown
-    _useTo(description?: string, fn?: Function): void
-    get helpers(): any
-    debug(msg: string): void
-    debugSection(section: string, msg: string): void
-  }
 }
 
 // Globals
@@ -226,5 +204,5 @@ declare module "codeceptjs" {
 }
 
 declare module "@codeceptjs/helper" {
-  export default CodeceptJS.Helper;
+  export = CodeceptJS.Helper;
 }
