@@ -9,13 +9,13 @@ exports.config = {
   plugins: {
     stepTimeout: {
       enabled: true,
-      timeout: 0.5,
+      timeout: 1,
       noTimeoutSteps: [
         'wait*',
       ],
       customTimeoutSteps: [
-        [/^waitTadLonger$/, 0.9],
-        ['waitTadShorter', 0.3],
+        [/^waitTadLonger$/, 1.5],
+        ['waitTadShorter', 0.5],
       ],
     },
   },

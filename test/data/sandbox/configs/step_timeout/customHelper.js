@@ -15,7 +15,7 @@ class CustomHelper extends Helper {
 
   statefulSleep(ms) {
     this.fraction = ++this.fraction || 1;
-    return sleep(ms - 100 * this.fraction);
+    return sleep(ms - 500 * this.fraction);
   }
 
   waitTadLonger(ms) {

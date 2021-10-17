@@ -9,7 +9,7 @@ exports.config = {
   plugins: {
     stepTimeout: {
       enabled: true,
-      timeout: 1.5,
+      timeout: 2,
       noTimeoutSteps: [
         'wait*',
       ],
