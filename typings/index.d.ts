@@ -66,7 +66,7 @@ declare namespace CodeceptJS {
   type StringOrSecret = string | CodeceptJS.Secret;
 
   interface HookCallback {
-    (args: SupportObject): void;
+    (args: SupportObject): void | Promise<void>;
   }
   interface Scenario extends IScenario {
     only: IScenario;

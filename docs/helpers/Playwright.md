@@ -1821,11 +1821,11 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 ### waitForResponse
 
-Waits for a network request.
+Waits for a network response.
 
 ```js
 I.waitForResponse('http://example.com/resource');
-I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+I.waitForResponse(response => response.url() === 'https://example.com' && response.status() === 200);
 ```
 
 #### Parameters
@@ -1918,22 +1918,6 @@ I.waitToHide('#popup');
 
 -   `locator` **([string][9] | [object][7])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
-
-### waitUntil
-
-Waits for a function to return true (waits for 1sec by default).
-
-```js
-I.waitUntil(() => window.requests == 0);
-I.waitUntil(() => window.requests == 0, 5);
-```
-
-#### Parameters
-
--   `fn` **([function][11] | [string][9])** function which is executed in browser context.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
--   `timeoutMsg` **[string][9]** message to show in case of timeout fail. 
--   `interval` **[number][10]?**  
 
 ### waitUrlEquals
 
