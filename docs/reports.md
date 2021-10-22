@@ -33,8 +33,8 @@ GitHub --
   Run with --verbose flag to see NodeJS stacktrace
 
 ```
+
 npx codeceptjs run --stepsutput add `--steps` option to `run` command:
-```
 ```
 npx codeceptjs run --steps
 ```
