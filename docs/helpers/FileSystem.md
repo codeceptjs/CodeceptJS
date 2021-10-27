@@ -101,7 +101,7 @@ I.seeFileNameMatching('.pdf');
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][1]** 
 
 ### seeInThisFile
 
