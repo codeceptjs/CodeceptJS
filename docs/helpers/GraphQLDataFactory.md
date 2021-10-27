@@ -219,7 +219,7 @@ I.mutateMultiple('createUser', 3, { age: 25 });
 
 [2]: https://www.npmjs.com/package/faker
 
-[3]: http://codecept.io/helpers/GraphQL/
+[3]: https://codecept.io/helpers/GraphQL/
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
