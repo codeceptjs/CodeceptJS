@@ -1884,9 +1884,9 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][8]>)** Element bounding rectangle
 
-[1]: http://codecept.io/helpers/WebDriver/
+[1]: https://codecept.io/helpers/WebDriver/
 
-[2]: http://appium.io/
+[2]: https://appium.io/
 
 [3]: https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 
