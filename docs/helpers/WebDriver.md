@@ -2169,15 +2169,15 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `urlPart` **[string][19]** value to check.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 
-[1]: http://webdriver.io/
+[1]: https://webdriver.io/
 
 [2]: https://codecept.io/webdriver/#testing-with-webdriver
 
-[3]: http://codecept.io/acceptance/#smartwait
+[3]: https://codecept.io/acceptance/#smartwait
 
 [4]: https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
 
-[5]: http://webdriver.io/docs/timeouts.html
+[5]: https://webdriver.io/docs/timeouts/
 
 [6]: http://webdriver.io/guide/getstarted/configuration.html
 
@@ -2207,7 +2207,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[20]: http://jster.net/category/windows-modals-popups
+[20]: https://jster.net/category/windows-modals-popups
 
 [21]: https://webdriver.io/docs/timeouts.html
 
