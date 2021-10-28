@@ -57,6 +57,21 @@ const allure = codeceptjs.container.plugins('allure');
 
 -   `addAttachment(name, buffer, type)` - add an attachment to current test / suite
 -   `addLabel(name, value)` - adds a label to current test
+-   `createStep(name, stepFunc)` - create a step, stepFunc could consist an attachment
+    Example of usage:
+
+```js
+    allure.createStep('New created step', () => {
+      allure.addAttachment(
+        'Request params',
+        '{"clientId":123, "name":"Tom", "age":29}',
+        'application/json'
+      );
+    });
+```
+
+![Created Step Image][3]
+
 -   `severity(value)` - adds severity label
 -   `epic(value)` - adds epic label
 -   `feature(value)` - adds feature label
@@ -410,7 +425,7 @@ Scenario('project update test', async (I) => {
 
 ## customLocator
 
-Creates a [custom locator][3] by using special attributes in HTML.
+Creates a [custom locator][4] by using special attributes in HTML.
 
 If you have a convention to use `data-test-id` or `data-qa` attributes to mark active elements for e2e tests,
 you can enable this plugin to simplify matching elements with these attributes:
@@ -479,7 +494,7 @@ I.click('=sign-up'); // matches => [data-qa=sign-up]
 
 ## pauseOnFail
 
-Automatically launches [interactive pause][4] when a test fails.
+Automatically launches [interactive pause][5] when a test fails.
 
 Useful for debugging flaky tests on local environment.
 Add this plugin to config file:
@@ -526,9 +541,9 @@ Possible config options:
 
     Links:
 
--   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][5]
--   [https://github.com/istanbuljs/puppeteer-to-istanbul][6]
--   [https://github.com/gotwarlost/istanbul][7]
+-   [https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage][6]
+-   [https://github.com/istanbuljs/puppeteer-to-istanbul][7]
+-   [https://github.com/gotwarlost/istanbul][8]
 
 ### Parameters
 
@@ -632,14 +647,14 @@ Possible config options:
 
 ## selenoid
 
-[Selenoid][8] plugin automatically starts browsers and video recording.
+[Selenoid][9] plugin automatically starts browsers and video recording.
 Works with WebDriver helper.
 
 ### Prerequisite
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][9] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][10] tool from Selenoid
 
 ### Usage
 
@@ -668,7 +683,7 @@ plugins: {
   }
 ```
 
-When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][10] and start Selenoid automatically.
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][11] and start Selenoid automatically.
 It will also create `browsers.json` file required by Selenoid.
 
 In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
@@ -680,10 +695,10 @@ In automatic mode the latest version of browser will be used for tests. It is re
 While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
 This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
 
-> Use [Selenoid Configuration Manager][9] to create and start containers semi-automatically.
+> Use [Selenoid Configuration Manager][10] to create and start containers semi-automatically.
 
 1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
-    [Refer to Selenoid documentation][11] to know more about browsers.json.
+    [Refer to Selenoid documentation][12] to know more about browsers.json.
 
 _Sample browsers.json_
 
@@ -708,7 +723,7 @@ _Sample browsers.json_
 
 2.  Create Selenoid container
 
-Run the following command to create a container. To know more [refer here][12]
+Run the following command to create a container. To know more [refer here][13]
 
 ```bash
 docker create                                    \
@@ -741,7 +756,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 | enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
 | enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
 | deletePassed     | Delete video and logs of passed tests (default : true)                         |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][13] to know more   |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][14] to know more   |
 
 ### Parameters
 
@@ -749,7 +764,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ## stepByStepReport
 
-![step-by-step-report][14]
+![step-by-step-report][15]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -844,7 +859,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][15].
+A complete list of all available services can be found on [webdriverio website][16].
 
 #### Setup
 
@@ -856,7 +871,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][16].
+Install `@wdio/selenium-standalone-service` package, as [described here][17].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -875,7 +890,7 @@ Please note, this service can be used with Protractor helper as well!
 
 #### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][17].
+Install `@wdio/sauce-service` package, as [described here][18].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -909,32 +924,34 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
 
-[3]: https://codecept.io/locators#custom-locators
+[3]: https://user-images.githubusercontent.com/63167966/139339384-e6e70a62-3638-406d-a224-f32473071428.png
 
-[4]: /basics/#pause
+[4]: https://codecept.io/locators#custom-locators
 
-[5]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
+[5]: /basics/#pause
 
-[6]: https://github.com/istanbuljs/puppeteer-to-istanbul
+[6]: https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/api.md#class-coverage
 
-[7]: https://github.com/gotwarlost/istanbul
+[7]: https://github.com/istanbuljs/puppeteer-to-istanbul
 
-[8]: https://aerokube.com/selenoid/
+[8]: https://github.com/gotwarlost/istanbul
 
-[9]: https://aerokube.com/cm/latest/
+[9]: https://aerokube.com/selenoid/
 
-[10]: https://hub.docker.com/u/selenoid
+[10]: https://aerokube.com/cm/latest/
 
-[11]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[11]: https://hub.docker.com/u/selenoid
 
-[12]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[12]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[13]: https://docs.docker.com/engine/reference/commandline/create/
+[13]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[14]: https://codecept.io/img/codeceptjs-slideshow.gif
+[14]: https://docs.docker.com/engine/reference/commandline/create/
 
-[15]: https://webdriver.io
+[15]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[16]: https://webdriver.io/docs/selenium-standalone-service.html
+[16]: https://webdriver.io
 
-[17]: https://webdriver.io/docs/sauce-service.html
+[17]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[18]: https://webdriver.io/docs/sauce-service.html
