@@ -66,7 +66,7 @@ declare namespace CodeceptJS {
   type StringOrSecret = string | CodeceptJS.Secret;
 
   interface HookCallback {
-    (args: SupportObject): void;
+    (args: SupportObject): void | Promise<void>;
   }
   interface Scenario extends IScenario {
     only: IScenario;
@@ -201,4 +201,8 @@ declare namespace Mocha {
 
 declare module "codeceptjs" {
   export = codeceptjs;
+}
+
+declare module "@codeceptjs/helper" {
+  export = CodeceptJS.Helper;
 }

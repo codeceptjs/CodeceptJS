@@ -168,7 +168,7 @@ I.setRequestTimeout(10000); // In milliseconds
 
 #### Parameters
 
--   `newTimeout`  
+-   `newTimeout` **[number][5]** timeout in milliseconds
 
 [1]: https://github.com/axios/axios
 
@@ -177,3 +177,5 @@ I.setRequestTimeout(10000); // In milliseconds
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
