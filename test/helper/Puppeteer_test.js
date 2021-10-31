@@ -934,15 +934,9 @@ describe('Puppeteer', function () {
 
 let remoteBrowser;
 async function createRemoteBrowser() {
-  if (remoteBrowser) {
-    await remoteBrowser.close();
-  }
   remoteBrowser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     headless: true,
-  });
-  remoteBrowser.on('disconnected', () => {
-    remoteBrowser = null;
   });
   return remoteBrowser;
 }
@@ -1027,7 +1021,7 @@ describe('Puppeteer (remote browser)', function () {
       await I._stopBrowser();
 
       currentPages = await remoteBrowser.pages();
-      assert.equal(currentPages.length, 2);
+      assert.equal(currentPages.length, 0);
     });
   });
 });
