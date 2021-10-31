@@ -202,3 +202,7 @@ declare namespace Mocha {
 declare module "codeceptjs" {
   export = codeceptjs;
 }
+
+declare module "@codeceptjs/helper" {
+  export = CodeceptJS.Helper;
+}
