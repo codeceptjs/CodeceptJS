@@ -26,6 +26,7 @@ Applicable plugins:
 - [ ] screenshotOnFail
 - [ ] selenoid
 - [ ] stepByStepReport
+- [ ] stepTimeout
 - [ ] wdio
 - [ ] subtitles
 
