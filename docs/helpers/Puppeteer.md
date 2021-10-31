@@ -1998,22 +1998,6 @@ I.waitToHide('#popup');
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
 
-### waitUntil
-
-Waits for a function to return true (waits for 1sec by default).
-
-```js
-I.waitUntil(() => window.requests == 0);
-I.waitUntil(() => window.requests == 0, 5);
-```
-
-#### Parameters
-
--   `fn` **([function][12] | [string][8])** function which is executed in browser context.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
--   `timeoutMsg` **[string][8]** message to show in case of timeout fail. 
--   `interval` **[number][10]?**  
-
 ### waitUrlEquals
 
 Waits for the entire URL to match the expected
@@ -2040,7 +2024,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[7]: http://jster.net/category/windows-modals-popups
+[7]: https://jster.net/category/windows-modals-popups
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
