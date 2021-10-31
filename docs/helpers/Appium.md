@@ -1892,7 +1892,7 @@ Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][8]>)** Element 
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[5]: http://webdriver.io/api/mobile/setNetworkConnection.html
+[5]: http://v4.webdriver.io/api/mobile/setNetworkConnection.html
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
@@ -1900,15 +1900,15 @@ Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][8]>)** Element 
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[9]: http://webdriver.io/api/mobile/touchAction.html
+[9]: http://v4.webdriver.io/api/mobile/touchAction.html
 
-[10]: http://webdriver.io/api/mobile/swipe.html
+[10]: http://v4.webdriver.io/api/mobile/swipe.html
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: http://webdriver.io/api/mobile/rotate.html
+[12]: http://v4.webdriver.io/api/mobile/rotate.html
 
-[13]: http://webdriver.io/api/mobile/setImmediateValue.html
+[13]: http://v4.webdriver.io/api/mobile/setImmediateValue.html
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
