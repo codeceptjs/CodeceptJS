@@ -1,9 +1,9 @@
 Feature('Yahoo test');
 
-Scenario('Nightmare basic test', ({ I }) => {
+Scenario('Nightmare basic test', { timeout: 3 }, ({ I }) => {
   I.amOnPage('http://yahoo.com');
   I.fillField('p', 'github nightmare');
-  I.click('Search Web');
+  I.click('Search');
   I.waitForElement('#main', 2);
   I.seeElement('#main .searchCenterMiddle li a');
   // I.seeElement("//a[contains(@href,'github.com/segmentio/nightmare')]");
