@@ -22,3 +22,7 @@ Scenario('Wait with longer timeout', ({ I }) => {
 Scenario('Wait with shorter timeout', ({ I }) => {
   I.waitTadShorter(750);
 });
+
+Scenario('Set timeout with both limitTime and config', ({ I }) => {
+  I.limitTime(500).waitForSleep(750);
+});
