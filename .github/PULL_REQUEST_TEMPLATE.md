@@ -25,14 +25,14 @@ Applicable plugins:
 - [ ] retryFailedStep
 - [ ] screenshotOnFail
 - [ ] selenoid
-- [x] stepByStepReport
+- [ ] stepByStepReport
 - [ ] wdio
 - [ ] subtitles
 
 ## Type of change
 
 - [ ] :fire: Breaking changes
-- [x] :rocket: New functionality
+- [ ] :rocket: New functionality
 - [ ] :bug: Bug fix
 - [ ] :clipboard: Documentation changes/updates
 - [ ] :hotsprings: Hot fix
@@ -42,6 +42,6 @@ Applicable plugins:
 ## Checklist:
 
 - [ ] Tests have been added
-- [x] Documentation has been added (Run `npm run docs`)
-- [x] Lint checking (Run `npm run lint`)
-- [x] Local tests are passed (Run `npm test`)
+- [ ] Documentation has been added (Run `npm run docs`)
+- [ ] Lint checking (Run `npm run lint`)
+- [ ] Local tests are passed (Run `npm test`)
