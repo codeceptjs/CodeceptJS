@@ -1,5 +1,5 @@
 // / <reference path="./steps.d.ts" />
-Feature('GitHub');
+Feature('GitHub', { timeout: 6 });
 
 Before(({ Smth }) => {
   Smth.openGitHub();
@@ -12,7 +12,7 @@ Scenario('Visit Home Page @retry', async ({ I }) => {
   I.retry(2).see('IMAGES');
 });
 
-Scenario('search @grop', ({ I }) => {
+Scenario('search @grop', { timeout: 6 }, ({ I }) => {
   I.amOnPage('https://github.com/search');
   const a = {
     b: {
@@ -32,20 +32,20 @@ Scenario('search @grop', ({ I }) => {
     urls: {},
   };
   I.fillField('Search GitHub', 'CodeceptJS');
-  pause({ a, b });
+  // pause({ a, b });
   I.pressKey('Enter');
-  I.wait(1);
-  pause();
+  I.wait(3);
+  // pause();
   I.see('Codeception/CodeceptJS', locate('.repo-list .repo-list-item').first());
 });
 
-Scenario('signin', ({ I, loginPage }) => {
+Scenario('signin @sign', { timeout: 6 }, ({ I, loginPage }) => {
   I.say('it should not enter');
   loginPage.login('something@totest.com', '123456');
   I.see('Incorrect username or password.', '.flash-error');
 }).tag('normal').tag('important').tag('@slow');
 
-Scenario('signin2', ({ I, Smth }) => {
+Scenario('signin2', { timeout: 1 }, ({ I, Smth }) => {
   Smth.openAndLogin();
   I.see('Incorrect username or password.', '.flash-error');
 });
