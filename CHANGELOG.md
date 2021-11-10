@@ -1,5 +1,6 @@
 ## 3.2.0
 
+<<<<<<< HEAD
 🛩️ Features:
 
 **Timeouts implemented**
@@ -45,6 +46,8 @@ await retryTo(() => {
 * stepbyStepReport Plugin: Disabled screenshots after test has failed. See #3119 by @ioannisChalkias
 
 
+=======
+>>>>>>> timeouts
 ## 3.1.3
 
 🛩️ Features:

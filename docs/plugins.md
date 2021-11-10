@@ -645,7 +645,10 @@ Use it in your tests:
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
+<<<<<<< HEAD
   I.switchTo('#editor frame');
+=======
+>>>>>>> timeouts
   I.click('Open');
   I.see('Opened')
 }, 5);
@@ -656,7 +659,10 @@ Set polling interval as 3rd argument (200ms by default):
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
+<<<<<<< HEAD
   I.switchTo('#editor frame');
+=======
+>>>>>>> timeouts
   I.click('Open');
   I.see('Opened')
 }, 5, 100);
