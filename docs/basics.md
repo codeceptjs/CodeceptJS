@@ -108,7 +108,7 @@ I.seeElement({name: 'password'});
 I.seeElement({react: 'user-profile', props: {name: 'davert'}});
 ```
 
-In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~` to specify the accessibility id to locate an element. In web application you can locate elements by their `aria-label` value.
+In [mobile testing](https://codecept.io/mobile/#locating-elements) you can use `~` to specify the accessibility id to locate an element. In web application you can locate elements by their `aria-label` value.
 
 ```js
 // locate element by [aria-label] attribute in web
