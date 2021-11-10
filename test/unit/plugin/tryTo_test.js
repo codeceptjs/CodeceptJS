@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const tryTo = require('../../../lib/plugin/tryTo')();
 const recorder = require('../../../lib/recorder');
 
-describe('retryFailedStep', () => {
+describe('tryTo plugin', () => {
   beforeEach(() => {
     recorder.start();
   });
