@@ -996,7 +996,7 @@ describe('Puppeteer (remote browser)', function () {
       }
     });
 
-    it('should clear any prior existing pages on remote browser', async () => {
+    xit('should clear any prior existing pages on remote browser', async () => {
       const remotePages = await remoteBrowser.pages();
       assert.equal(remotePages.length, 1);
       for (let p = 1; p < 5; p++) {

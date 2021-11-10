@@ -15,7 +15,7 @@ Given('I have an employee card', (table) => {
   // rows = [['Harry', 'Potter', Seeker]];
   }
 ```
-See updated [BDD section](https://codecept.io/bdd/) for more API options.
+See updated [BDD section](https://codecept.io/bdd/) for more API options. Thanks to @EgorBodnar
 
 * Support `cjs` file extensions for config file: `codecept.conf.cjs`. See #3052 by @kalvenschraut
 * API updates: Added `test.file` and `suite.file` properties to `test` and `suite` objects to use in helpers and plugins. 
@@ -28,6 +28,7 @@ See updated [BDD section](https://codecept.io/bdd/) for more API options.
 * [Playwright] `I.haveRequestHeaders` affects all tabs. See #3049 by @jancorvus
 * BDD: Fixed unhandled empty feature files. Fix #3046 by @abhimanyupandian 
 * Fixed `RangeError: Invalid string length` in `recorder.js` when running huge amount of tests.  
+* [Appium] Fixed definitions for `touchPerform`, `hideDeviceKeyboard`, `removeApp` by @mirao 
 
 📖 Documentation:
 
