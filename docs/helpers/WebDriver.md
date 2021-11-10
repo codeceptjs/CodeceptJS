@@ -2169,23 +2169,23 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `urlPart` **[string][19]** value to check.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 
-[1]: http://webdriver.io/
+[1]: https://webdriver.io/
 
 [2]: https://codecept.io/webdriver/#testing-with-webdriver
 
-[3]: http://codecept.io/acceptance/#smartwait
+[3]: https://codecept.io/acceptance/#smartwait
 
 [4]: https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
 
-[5]: http://webdriver.io/docs/timeouts.html
+[5]: https://webdriver.io/docs/timeouts/
 
-[6]: http://webdriver.io/guide/getstarted/configuration.html
+[6]: http://v4.webdriver.io/guide/getstarted/configuration.html
 
 [7]: https://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/IE/Options.html
 
 [8]: https://aerokube.com/selenoid/latest/
 
-[9]: http://webdriver.io/guide/usage/cloudservices.html
+[9]: http://v4.webdriver.io/guide/usage/cloudservices.html
 
 [10]: https://webdriver.io/docs/sauce-service.html
 
@@ -2201,13 +2201,13 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [16]: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
 
-[17]: http://webdriver.io/guide/usage/multiremote.html
+[17]: http://v4.webdriver.io/guide/usage/multiremote.html
 
 [18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[20]: http://jster.net/category/windows-modals-popups
+[20]: https://jster.net/category/windows-modals-popups
 
 [21]: https://webdriver.io/docs/timeouts.html
 
@@ -2219,7 +2219,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[26]: http://webdriver.io/api/protocol/execute.html
+[26]: http://v4.webdriver.io/api/protocol/execute.html
 
 [27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 

@@ -808,6 +808,61 @@ Possible config options:
 
 -   `config` **any** 
 
+## stepTimeout
+
+Set timeout for test steps globally.
+
+Add this plugin to config file:
+
+```js
+plugins: {
+    stepTimeout: {
+       enabled: true
+    }
+}
+```
+
+Run tests with plugin enabled:
+
+    npx codeceptjs run --plugins stepTimeout
+
+#### Configuration:
+
+-   `timeout` - global step timeout, default 150 seconds
+-   `force` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
+-   `noTimeoutSteps` - an array of steps with no timeout. Default:
+
+    -   `amOnPage`
+    -   `wait*`
+
+    you could set your own noTimeoutSteps which would replace the default one.
+
+-   `customTimeoutSteps` - an array of step actions with custom timeout. Use it to override or extend noTimeoutSteps.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+
+#### Example
+
+```js
+plugins: {
+    stepTimeout: {
+        enabled: true,
+        force: true,
+        noTimeoutSteps: [
+          'scroll*', // ignore all scroll steps
+          /Cookie/, // ignore all steps with a Cookie in it (by regexp)
+        ],
+        customTimeoutSteps: [
+          ['myFlakyStep*', 1],
+          ['scrollWhichRequiresTimeout', 5],
+        ]
+    }
+}
+```
+
+### Parameters
+
+-   `config`  
+
 ## subtitles
 
 Automatically captures steps as subtitle, and saves it as an artifact when a video is found for a failed test

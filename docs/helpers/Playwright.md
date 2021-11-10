@@ -47,6 +47,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `basicAuth`: (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
 -   `userAgent`: (optional) user-agent string.
+-   `locale`: (optional) locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
 -   `manualStart`:  - do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
 -   `chromium`: (optional) pass additional chromium options
 -   `electron`: (optional) pass additional electron options
@@ -158,6 +159,19 @@ const { devices } = require('playwright');
      url: "http://localhost",
      emulate: devices['iPhone 6'],
    }
+ }
+}
+```
+
+#### Example #7: Launch test with a specifc user locale
+
+```js
+{
+ helpers: {
+  Playwright : {
+    url: "http://localhost",
+    locale: "fr-FR",
+  }
  }
 }
 ```
@@ -1947,7 +1961,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[8]: http://jster.net/category/windows-modals-popups
+[8]: https://jster.net/category/windows-modals-popups
 
 [9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

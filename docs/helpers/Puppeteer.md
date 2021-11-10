@@ -1614,7 +1614,7 @@ I.seeTitleEquals('Test title.');
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][8]** value to check.
 
 ### selectOption
 
@@ -2024,7 +2024,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[7]: http://jster.net/category/windows-modals-popups
+[7]: https://jster.net/category/windows-modals-popups
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
