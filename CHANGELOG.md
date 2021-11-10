@@ -9,14 +9,17 @@
     * _Breaking change:_ `Feature().timeout()` and `Scenario().timeout()` calls has no effect and are deprecated
 
 ```js
-Feature('tests with timeout', { timeout: 20 });
+// set timeout for every test in suite to 10 secs
+Feature('tests with timeout', { timeout: 10 });
 
+// set timeout for this test to 20 secs
 Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {});
 ```  
 
   * step timeouts (See #3059 by @nikocanvacom)
 
 ```js
+// set step timeout to 5 secs
 I.limitTime(5).click('Link');
 ```  
  * `stepTimeout` plugin introduced to automatically add timeouts for each step (#3059 by @nikocanvacom).
@@ -39,7 +42,7 @@ await retryTo(() => {
 
 * Fixed  allure plugin "Unexpected endStep()" error in #3098 by @abhimanyupandian 
 * [Puppeteer] always close remote browser on test end. See #3054 by @mattonem
-* 
+* stepbyStepReport Plugin: Disabled screenshots after test has failed. See #3119 by @ioannisChalkias
 
 
 ## 3.1.3
