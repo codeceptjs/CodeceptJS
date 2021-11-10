@@ -830,7 +830,9 @@ describe('Playwright (remote browser) websocket', function () {
   });
 });
 
-describe('Playwright - BasicAuth', () => {
+describe('Playwright - BasicAuth', function () {
+  this.timeout(35000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
