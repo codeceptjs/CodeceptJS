@@ -195,6 +195,7 @@ declare namespace Mocha {
   }
 
   interface Test extends Runnable {
+    artifacts: [],
     tags: any[];
   }
 }
