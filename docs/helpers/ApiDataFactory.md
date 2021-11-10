@@ -250,6 +250,6 @@ I.haveMultiple('post', 3, { author: 'davert' });
 
 [2]: https://www.npmjs.com/package/faker
 
-[3]: https://codecept.io/helpers/REST/
+[3]: http://codecept.io/helpers/REST/
 
 [4]: https://github.com/axios/axios#request-config

@@ -1961,7 +1961,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[8]: https://jster.net/category/windows-modals-popups
+[8]: http://jster.net/category/windows-modals-popups
 
 [9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

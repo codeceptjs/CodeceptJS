@@ -1,5 +1,47 @@
 ## 3.2.0
 
+🛩️ Features:
+
+**Timeouts implemented**
+  * global timeouts (via `timeout` config option). 
+    * _Breaking change:_ timeout option expects **timeout in seconds**, not in miliseconds as it was previously.
+  * test timeouts (via `Scenario` and `Feature` options)
+    * _Breaking change:_ `Feature().timeout()` and `Scenario().timeout()` calls has no effect and are deprecated
+
+```js
+Feature('tests with timeout', { timeout: 20 });
+
+Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {});
+```  
+
+  * step timeouts (See #3059 by @nikocanvacom)
+
+```js
+I.limitTime(5).click('Link');
+```  
+ * `stepTimeout` plugin introduced to automatically add timeouts for each step (#3059 by @nikocanvacom).
+
+[**retryTo**](/plugins/#retryto) plugin introduced to rerun a set of steps on failure:
+
+```js
+// editing in text in iframe
+// if iframe was not loaded - retry 5 times
+await retryTo(() => {
+  I.switchTo('#editor frame');
+  I.fillField('textarea', 'value');
+}, 5);
+```
+
+* [Playwright] added `locale` configuration
+* [WebDriver] upgraded to webdriverio v7
+
+🐛 Bugfixes:
+
+* Fixed  allure plugin "Unexpected endStep()" error in #3098 by @abhimanyupandian 
+* [Puppeteer] always close remote browser on test end. See #3054 by @mattonem
+* 
+
+
 ## 3.1.3
 
 🛩️ Features:
