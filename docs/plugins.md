@@ -869,6 +869,7 @@ Possible config options:
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 -   `output`: a directory where reports should be stored. Default: `output`.
 -   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
+-   `disableScreenshotOnFail` : Disables the capturing of screeshots after the failed step. Default: true.
 
 ### Parameters
 
