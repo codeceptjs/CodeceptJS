@@ -1614,7 +1614,7 @@ I.seeTitleEquals('Test title.');
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][8]** value to check.
 
 ### selectOption
 
