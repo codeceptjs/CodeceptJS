@@ -187,17 +187,10 @@ You can use this options for build your own [plugins](https://codecept.io/hooks/
 ```
 
 ### Timeout <Badge text="Updated in 3.2" type="warning"/>
-<<<<<<< HEAD
 
 Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
 This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
 
-=======
-
-Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
-This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
-
->>>>>>> timeouts
 > Previous timeout implementation was disabled as it had no effect when dealing with steps and promises. 
 
 ### Steps Timeout

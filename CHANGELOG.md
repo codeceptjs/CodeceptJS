@@ -1,9 +1,8 @@
 ## 3.2.0
 
-<<<<<<< HEAD
 🛩️ Features:
 
-**Timeouts implemented**
+**[Timeouts](https://codecept.io/advanced/#timeout) implemented**
   * global timeouts (via `timeout` config option). 
     * _Breaking change:_ timeout option expects **timeout in seconds**, not in miliseconds as it was previously.
   * test timeouts (via `Scenario` and `Feature` options)
@@ -46,8 +45,6 @@ await retryTo(() => {
 * stepbyStepReport Plugin: Disabled screenshots after test has failed. See #3119 by @ioannisChalkias
 
 
-=======
->>>>>>> timeouts
 ## 3.1.3
 
 🛩️ Features:
