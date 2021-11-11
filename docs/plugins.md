@@ -645,10 +645,7 @@ Use it in your tests:
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
-<<<<<<< HEAD
   I.switchTo('#editor frame');
-=======
->>>>>>> timeouts
   I.click('Open');
   I.see('Opened')
 }, 5);
@@ -659,10 +656,7 @@ Set polling interval as 3rd argument (200ms by default):
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
-<<<<<<< HEAD
   I.switchTo('#editor frame');
-=======
->>>>>>> timeouts
   I.click('Open');
   I.see('Opened')
 }, 5, 100);
@@ -674,7 +668,7 @@ Default polling interval can be changed in a config:
 plugins: {
   retryTo: {
     enabled: true,
-    pollingInterval: 500,
+    pollInterval: 500,
   }
 }
 ```
@@ -688,7 +682,7 @@ Use this plugin if:
 
 #### Configuration
 
--   `pollingInterval` - default interval between retries in ms. 200 by default.
+-   `pollInterval` - default interval between retries in ms. 200 by default.
 -   `registerGlobal` - to register `retryTo` function globally, true by default
 
 If `registerGlobal` is false you can use retryTo from the plugin:
