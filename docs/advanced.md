@@ -187,10 +187,17 @@ You can use this options for build your own [plugins](https://codecept.io/hooks/
 ```
 
 ### Timeout <Badge text="Updated in 3.2" type="warning"/>
+<<<<<<< HEAD
 
 Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
 This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
 
+=======
+
+Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
+This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
+
+>>>>>>> timeouts
 > Previous timeout implementation was disabled as it had no effect when dealing with steps and promises. 
 
 ### Steps Timeout
@@ -236,6 +243,49 @@ A timeout for a group of tests can be set on Feature level via options.
 Feature('flaky tests', { timeout: 30 })
 ```
 
+### Sum Up
+
+Let's list all available timeout options.
+
+Timeouts can be set globally in config:
+
+```js
+// in codecept.confg.js:
+{ // ...
+   timeout: 30, // limit all tests in all suites to 30 secs
+
+   plugins: {
+     stepTimeout: {
+       enabled: true,
+       timeout: 10, // limit all steps except waiters to 10 secs
+     }
+   }
+} 
+
+```
+
+or inside a test file:
+
+```js
+// limit all tests in this suite to 10 secs
+Feature('tests with timeout', { timeout: 10 });
+
+// limit this test to 20 secs
+Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {
+   // limit step to 5 seconds
+   I.limitTime(5).click('Link');
+});
+```
+
+Global timeouts will be overridden by explicit timeouts of a test or steps.
+
+### Disable Timeouts
+
+To execute tests ignoring all timeout settings use `--no-timeouts` option:
+
+```
+npx codeceptjs run --no-timeouts
+```
 
 ## Dynamic Configuration
 
