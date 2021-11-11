@@ -19,6 +19,17 @@ describe('CodeceptJS Timeouts', function () {
     });
   });
 
+  it('should take --no-timeouts option', (done) => {
+    exec(`${config_run_config('codecept.conf.js', 'timed out')} --no-timeouts`, (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).toContain('Timeouts were disabled');
+      expect(stdout).not.toContain('Timeout 2s exceeded');
+      expect(stdout).not.toContain('Timeout 1s exceeded');
+      expect(err).toBeFalsy();
+      done();
+    });
+  });
+
   it('should ignore timeouts if no timeout', (done) => {
     exec(config_run_config('codecept.conf.js', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout);
