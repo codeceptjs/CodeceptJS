@@ -645,6 +645,10 @@ Use it in your tests:
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
+<<<<<<< HEAD
+  I.switchTo('#editor frame');
+=======
+>>>>>>> timeouts
   I.click('Open');
   I.see('Opened')
 }, 5);
@@ -655,6 +659,10 @@ Set polling interval as 3rd argument (200ms by default):
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
+<<<<<<< HEAD
+  I.switchTo('#editor frame');
+=======
+>>>>>>> timeouts
   I.click('Open');
   I.see('Opened')
 }, 5, 100);
@@ -869,7 +877,7 @@ Possible config options:
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 -   `output`: a directory where reports should be stored. Default: `output`.
 -   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
--   `disableScreenshotOnFail` : Disables the capturing of screeshots after the failed step. Default: true.
+-   \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
 
 ### Parameters
 
