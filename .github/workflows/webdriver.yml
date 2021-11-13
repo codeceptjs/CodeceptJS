@@ -37,6 +37,7 @@ jobs:
         npm install
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run unit tests

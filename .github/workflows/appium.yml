@@ -27,6 +27,7 @@ jobs:
     - run: npm install
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - run: 'npm run test:appium-quick'
       env: # Or as an environment variable
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
@@ -50,6 +51,7 @@ jobs:
     - run: npm install
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - run: 'npm run test:appium-other'
       env: # Or as an environment variable
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

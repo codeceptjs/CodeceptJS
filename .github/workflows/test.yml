@@ -26,4 +26,5 @@ jobs:
     - run: npm install
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - run: npm test
