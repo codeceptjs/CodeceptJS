@@ -191,6 +191,8 @@ module.exports = new AttachFile();
 module.exports.AttachFile = AttachFile;
 ```
 
+> ⚠ While building complex page objects it is important to keep all `async` functions to be called with `await`. While CodeceptJS allows to run commands synchronously if async function has `I.grab*` or any custom function that returns a promise it must be called with `await`. If you see `UnhandledPromiseRejectionWarning` it might be caused by async page object function that was called without `await`.
+
 ## Page Fragments
 
 Similarly, CodeceptJS allows you to generate **PageFragments** and any other abstractions
