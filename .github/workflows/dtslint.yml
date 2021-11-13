@@ -21,5 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
     - run: npm run def
     - run: npm run dtslint

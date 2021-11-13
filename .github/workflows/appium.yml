@@ -24,7 +24,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
+    - run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = true npm install
     - run: 'npm run test:appium-quick'
       env: # Or as an environment variable
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
@@ -46,6 +46,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
     - run: 'npm run test:appium-other'
       env: # Or as an environment variable
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
