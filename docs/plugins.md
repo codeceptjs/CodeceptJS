@@ -579,9 +579,9 @@ Run tests with plugin enabled:
 
 #### Configuration:
 
--   `retries` - number of retries (by default 5),
+-   `retries` - number of retries (by default 3),
 -   `when` - function, when to perform a retry (accepts error as parameter)
--   `factor` - The exponential factor to use. Default is 2.
+-   `factor` - The exponential factor to use. Default is 1.5.
 -   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
 -   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
 -   `randomize` - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.
@@ -898,7 +898,7 @@ Run tests with plugin enabled:
 #### Configuration:
 
 -   `timeout` - global step timeout, default 150 seconds
--   `force` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
+-   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
 -   `noTimeoutSteps` - an array of steps with no timeout. Default:
 
     -   `amOnPage`
@@ -915,7 +915,7 @@ Run tests with plugin enabled:
 plugins: {
     stepTimeout: {
         enabled: true,
-        force: true,
+        overrideStepLimits: true,
         noTimeoutSteps: [
           'scroll*', // ignore all scroll steps
           /Cookie/, // ignore all steps with a Cookie in it (by regexp)
