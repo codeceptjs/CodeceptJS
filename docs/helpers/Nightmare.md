@@ -1194,10 +1194,10 @@ I.waitToHide('#popup');
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[12]: http://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent
+[12]: https://electron.atom.io/docs/api/web-contents/#webcontentssendinputeventevent
 
 [13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
 [14]: https://github.com/segmentio/nightmare/blob/master/Readme.md#cookiessetcookie
 
-[15]: http://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent
+[15]: https://electron.atom.io/docs/api/web-contents/#contentssendinputeventevent

@@ -1884,15 +1884,15 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][8]>)** Element bounding rectangle
 
-[1]: http://codecept.io/helpers/WebDriver/
+[1]: https://codecept.io/helpers/WebDriver/
 
-[2]: http://appium.io/
+[2]: https://appium.io/
 
 [3]: https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[5]: http://webdriver.io/api/mobile/setNetworkConnection.html
+[5]: https://webdriver.io/api/mobile/setNetworkConnection.html
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
@@ -1900,15 +1900,15 @@ Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][8]>)** Element 
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[9]: http://webdriver.io/api/mobile/touchAction.html
+[9]: https://webdriver.io/api/mobile/touchAction.html
 
-[10]: http://webdriver.io/api/mobile/swipe.html
+[10]: https://webdriver.io/api/mobile/swipe.html
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: http://webdriver.io/api/mobile/rotate.html
+[12]: https://webdriver.io/api/mobile/rotate.html
 
-[13]: http://webdriver.io/api/mobile/setImmediateValue.html
+[13]: https://webdriver.io/api/mobile/setImmediateValue.html
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
