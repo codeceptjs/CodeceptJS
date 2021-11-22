@@ -7,13 +7,22 @@ layout: Section
 
 # Releases
 
+## 3.2.1
+
+> ♻️ This release fixes hanging of tests by reducing timeouts for automatic retries on failures.
+
+* [retryFailedStep plugin] **New Defaults**: retries steps up to 3 times with factor of 1.5 (previously 5 with factor 2)
+* **[Playwright]** - disabled retry on failed context actions (not needed anymore)
+* **[Puppeteer]** - reduced retries on context failures to 3 times.
+* **[Playwright]** Handling `crash` event to automatically close crashed pages.
+
 ## 3.2.0
 
 🛩️ Features:
 
-**Timeouts implemented**
+**[Timeouts](https://codecept.io/advanced/#timeout) implemented**
   * global timeouts (via `timeout` config option). 
-    * _Breaking change:_ timeout option expects **timeout in seconds**, not in miliseconds as it was previously.
+    * _Breaking change:_ timeout option expects **timeout in seconds**, not in milliseconds as it was previously.
   * test timeouts (via `Scenario` and `Feature` options)
     * _Breaking change:_ `Feature().timeout()` and `Scenario().timeout()` calls has no effect and are deprecated
 

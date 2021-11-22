@@ -56,6 +56,9 @@ exports.config = {
     subtitles: {
       enabled: true,
     },
+    retryTo: {
+      enabled: true,
+    },
   },
   tests: './*_test.js',
   timeout: 10000,
