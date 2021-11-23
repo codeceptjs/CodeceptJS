@@ -77,5 +77,20 @@ describe('Recorder', () => {
       }, undefined, undefined, true);
       return recorder.promise();
     });
+
+    it('should prefer opts for non-when retry when possible', () => {
+      let counter = 0;
+      const errorText = 'noerror';
+      recorder.retry({ retries: 2 });
+      recorder.retry({ retries: 100, when: (err) => { return err.message === errorText; } });
+
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error(errorText);
+        }
+      }, undefined, undefined, true);
+      return recorder.promise();
+    });
   });
 });
