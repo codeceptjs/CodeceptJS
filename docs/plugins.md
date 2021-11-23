@@ -898,7 +898,7 @@ Run tests with plugin enabled:
 #### Configuration:
 
 -   `timeout` - global step timeout, default 150 seconds
--   `force` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
+-   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
 -   `noTimeoutSteps` - an array of steps with no timeout. Default:
 
     -   `amOnPage`
@@ -915,7 +915,7 @@ Run tests with plugin enabled:
 plugins: {
     stepTimeout: {
         enabled: true,
-        force: true,
+        overrideStepLimits: true,
         noTimeoutSteps: [
           'scroll*', // ignore all scroll steps
           /Cookie/, // ignore all steps with a Cookie in it (by regexp)

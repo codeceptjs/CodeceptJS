@@ -41,7 +41,6 @@ Refer to following guides to more information on:
 * [▶ Playwright](/playwright)
 * [▶ WebDriver](/webdriver)
 * [▶ Puppeteer](/puppeteer)
-* [▶ Protractor](/angular)
 * [▶ Nightmare](/nightmare)
 * [▶ TestCafe](/testcafe)
 
@@ -316,6 +315,32 @@ var title = await I.grabTitle();
 var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 ```
+
+It is important to understand the usage of **async** functions in CodeceptJS. While non-returning actions can be called without await, if an async function uses `grab*` action it must be called with `await`:
+
+```js
+// a helper function
+async function getAllUsers(I) {
+   const users = await I.grabTextFrom('.users');
+   return users.filter(u => u.includes('active'))
+}
+
+// a test
+Scenario('try helper functions', async ({ I }) => {
+  // we call function with await because it includes `grab`
+  const users = await getAllUsers(I);
+});
+```
+
+If you miss `await` you get commands unsynchrhonized. And this will result to an error like this:
+
+```
+(node:446390) UnhandledPromiseRejectionWarning: ...
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+(node:446390) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 2)
+```
+
+If you face that error please make sure that all async functions are called with `await`.
 
 ## Running Tests
 

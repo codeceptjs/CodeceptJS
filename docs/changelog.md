@@ -1554,7 +1554,7 @@ Thanks to [@Apshenkin](https://github.com/apshenkin) for implementation. Also, m
 
 We also introduced strict ESLint policies for our codebase. Thanks to [@Galkin](https://github.com/galkin) for that.
 
-* **[Puppeteer] Helper introduced**. [Learn how to run tests headlessly with Google Chrome's Puppeteer](http://codecept.io/puppeteer/).
+* **[Puppeteer] Helper introduced**. [Learn how to run tests headlessly with Google Chrome's Puppeteer](https://codecept.io/puppeteer/).
 * **[SeleniumWebdriver]** Helper is deprecated, it is recommended to use Protractor with config option `angular: false` instead.
 * **[WebDriverIO]** nested iframe support in the within block by **[reubenmiller](https://github.com/reubenmiller)**. Example:
 
@@ -1611,8 +1611,8 @@ I.dontSee('Email Address');
 ## 1.0.1
 
 * Reporters improvements:
-  * Allows to execute [multiple reporters](http://codecept.io/advanced/#Multi-Reports)
-  * Added [Mochawesome](http://codecept.io/helpers/Mochawesome/) helper
+  * Allows to execute [multiple reporters](https://codecept.io/advanced/#Multi-Reports)
+  * Added [Mochawesome](https://codecept.io/helpers/Mochawesome/) helper
   * `addMochawesomeContext` method to add custom data to mochawesome reports
   * Fixed Mochawesome context for failed screenshots.
 * **[WebDriverIO]** improved click on context to match clickable element with a text inside. Fixes [#647](https://github.com/codeceptjs/CodeceptJS/issues/647)* **[Nightmare]** Added `refresh` function by **[awhanks](https://github.com/awhanks)**
@@ -1630,7 +1630,7 @@ I.dontSee('Email Address');
 
 ## 1.0
 
-CodeceptJS hits first stable release. CodeceptJS provides a unified API for [web testing for Webdriverio](http://codecept.io/acceptance/), [Protractor](http://codecept.io/angular/), and [NightmareJS](http://codecept.io/nightmare/). Since 1.0 you can also **test mobile applications** in the similar manner with Appium.
+CodeceptJS hits first stable release. CodeceptJS provides a unified API for [web testing for Webdriverio](https://codecept.io/acceptance/), [Protractor](https://codecept.io/angular/), and [NightmareJS](https://codecept.io/nightmare/). Since 1.0 you can also **test mobile applications** in the similar manner with Appium.
 
 Sample test:
 
@@ -1643,8 +1643,8 @@ I.clearField('~email of the customer'));
 I.dontSee('Nothing special', '~email of the customer'));
 ```
 
-* Read [the Mobile Testing guide](http://codecept.io/mobile).
-* Discover [Appium Helper](http://codecept.io/helpers/Appium/)
+* Read [the Mobile Testing guide](https://codecept.io/mobile).
+* Discover [Appium Helper](https://codecept.io/helpers/Appium/)
 
 ---
 
@@ -1665,50 +1665,50 @@ I.see('Hello, davert');
 // user will be removed after the test
 ```
 
-* Read [Data Management guide](http://codecept.io/data)
-* [REST Helper](http://codecept.io/helpers/REST)
-* [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/)
+* Read [Data Management guide](https://codecept.io/data)
+* [REST Helper](https://codecept.io/helpers/REST)
+* [ApiDataFactory](https://codecept.io/helpers/ApiDataFactory/)
 
 ---
 
-Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)** for WebDriverIO, Protractor, SeleniumWebdriver. When `smartwait` option is set, script will wait for extra milliseconds to locate an element before failing. This feature uses implicit waits of Selenium but turns them on only in applicable pieces. For instance, implicit waits are enabled for `seeElement` but disabled for `dontSeeElement`
+Next notable feature is **[SmartWait](https://codecept.io/acceptance/#smartwait)** for WebDriverIO, Protractor, SeleniumWebdriver. When `smartwait` option is set, script will wait for extra milliseconds to locate an element before failing. This feature uses implicit waits of Selenium but turns them on only in applicable pieces. For instance, implicit waits are enabled for `seeElement` but disabled for `dontSeeElement`
 
-* Read more about [SmartWait](http://codecept.io/acceptance/#smartwait)
+* Read more about [SmartWait](https://codecept.io/acceptance/#smartwait)
 
 ##### Changelog
 
 * Minimal NodeJS version is 6.11.1 LTS
 * Use `within` command with generators.
-* [Data Driven Tests](http://codecept.io/advanced/#data-driven-tests) introduced.
+* [Data Driven Tests](https://codecept.io/advanced/#data-driven-tests) introduced.
 * Print execution time per step in `--debug` mode. [#591](https://github.com/codeceptjs/CodeceptJS/issues/591) by **[APshenkin](https://github.com/APshenkin)**
 * [WebDriverIO][Protractor][Nightmare] Added `disableScreenshots` option to disable screenshots on fail by **[Apshenkin](https://github.com/Apshenkin)**
 * [WebDriverIO][Protractor][Nightmare] Added `uniqueScreenshotNames` option to generate unique names for screenshots on failure by **[Apshenkin](https://github.com/Apshenkin)**
 * [WebDriverIO][Nightmare] Fixed click on context; `click('text', '#el')` will throw exception if text is not found inside `#el`.
-* [WebDriverIO][Protractor][SeleniumWebdriver] [SmartWait introduced](http://codecept.io/acceptance/#smartwait).
+* [WebDriverIO][Protractor][SeleniumWebdriver] [SmartWait introduced](https://codecept.io/acceptance/#smartwait).
 * [WebDriverIO][Protractor][Nightmare]Fixed `saveScreenshot` for PhantomJS, `fullPageScreenshots` option introduced by **[HughZurname](https://github.com/HughZurname)** [#549](https://github.com/codeceptjs/CodeceptJS/issues/549)
 * **[Appium]** helper introduced by **[APshenkin](https://github.com/APshenkin)**
 * **[REST]** helper introduced by **[atrevino](https://github.com/atrevino)** in [#504](https://github.com/codeceptjs/CodeceptJS/issues/504)
 * [WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version [#560](https://github.com/codeceptjs/CodeceptJS/issues/560) by **[APshenkin](https://github.com/APshenkin)**
 * **[Nightmare]** Fixed restarting by **[APshenkin](https://github.com/APshenkin)** [#581](https://github.com/codeceptjs/CodeceptJS/issues/581)
 * **[WebDriverIO]** Methods added by **[APshenkin](https://github.com/APshenkin)**:
-    * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
-    * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seetitleequals)
-    * [seeTextEquals](http://codecept.io/helpers/WebDriverIO/#seetextequals)
-    * [seeCssPropertiesOnElements](http://codecept.io/helpers/WebDriverIO/#seecsspropertiesonelements)
-    * [seeAttributesOnElements](http://codecept.io/helpers/WebDriverIO/#seeattributesonelements)
-    * [grabNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#grabnumberofvisibleelements)
-    * [waitInUrl](http://codecept.io/helpers/WebDriverIO/#waitinurl)
-    * [waitUrlEquals](http://codecept.io/helpers/WebDriverIO/#waiturlequals)
-    * [waitForValue](http://codecept.io/helpers/WebDriverIO/#waitforvalue)
-    * [waitNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#waitnumberofvisibleelements)
-    * [switchToNextTab](http://codecept.io/helpers/WebDriverIO/#switchtonexttab)
-    * [switchToPreviousTab](http://codecept.io/helpers/WebDriverIO/#switchtoprevioustab)
-    * [closeCurrentTab](http://codecept.io/helpers/WebDriverIO/#closecurrenttab)
-    * [openNewTab](http://codecept.io/helpers/WebDriverIO/#opennewtab)
-    * [refreshPage](http://codecept.io/helpers/WebDriverIO/#refreshpage)
-    * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
-    * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
-    * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
+    * [grabCssPropertyFrom](https://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
+    * [seeTitleEquals](https://codecept.io/helpers/WebDriverIO/#seetitleequals)
+    * [seeTextEquals](https://codecept.io/helpers/WebDriverIO/#seetextequals)
+    * [seeCssPropertiesOnElements](https://codecept.io/helpers/WebDriverIO/#seecsspropertiesonelements)
+    * [seeAttributesOnElements](https://codecept.io/helpers/WebDriverIO/#seeattributesonelements)
+    * [grabNumberOfVisibleElements](https://codecept.io/helpers/WebDriverIO/#grabnumberofvisibleelements)
+    * [waitInUrl](https://codecept.io/helpers/WebDriverIO/#waitinurl)
+    * [waitUrlEquals](https://codecept.io/helpers/WebDriverIO/#waiturlequals)
+    * [waitForValue](https://codecept.io/helpers/WebDriverIO/#waitforvalue)
+    * [waitNumberOfVisibleElements](https://codecept.io/helpers/WebDriverIO/#waitnumberofvisibleelements)
+    * [switchToNextTab](https://codecept.io/helpers/WebDriverIO/#switchtonexttab)
+    * [switchToPreviousTab](https://codecept.io/helpers/WebDriverIO/#switchtoprevioustab)
+    * [closeCurrentTab](https://codecept.io/helpers/WebDriverIO/#closecurrenttab)
+    * [openNewTab](https://codecept.io/helpers/WebDriverIO/#opennewtab)
+    * [refreshPage](https://codecept.io/helpers/WebDriverIO/#refreshpage)
+    * [scrollPageToBottom](https://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
+    * [scrollPageToTop](https://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
+    * [grabBrowserLogs](https://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
 * Use mkdirp to create output directory. [#592](https://github.com/codeceptjs/CodeceptJS/issues/592) by **[vkramskikh](https://github.com/vkramskikh)**
 * **[WebDriverIO]** Fixed `seeNumberOfVisibleElements` by **[BorisOsipov](https://github.com/BorisOsipov)** [#574](https://github.com/codeceptjs/CodeceptJS/issues/574)
 * Lots of fixes for promise chain by **[APshenkin](https://github.com/APshenkin)** [#568](https://github.com/codeceptjs/CodeceptJS/issues/568)
@@ -1742,14 +1742,14 @@ those options can be accessed as `opts` property inside a `test` object. Can be 
 
 ## 0.6.2
 
-* Added `config` object to [public API](http://codecept.io/hooks/#api)
+* Added `config` object to [public API](https://codecept.io/hooks/#api)
 * Extended `index.js` to include `actor` and `helpers`, so they could be required:
 
 ```js
 const actor = require('codeceptjs').actor;
 ```
 
-* Added [example for creating custom runner](http://codecept.io/hooks/#custom-runner) with public API.
+* Added [example for creating custom runner](https://codecept.io/hooks/#custom-runner) with public API.
 * run command to create `output` directory if it doesn't exist
 * **[Protractor]** fixed loading globally installed Protractor
 * run-multiple command improvements:
@@ -1779,17 +1779,17 @@ codeceptjs run -c tests/codecept.json
 codeceptjs run users_test.js -c tests
 ```
 
-* **Command `multiple-run` added**, to execute tests in several browsers in parallel by **[APshenkin](https://github.com/APshenkin)** and **[davertmik](https://github.com/davertmik)**. [See documentation](http://codecept.io/advanced/#multiple-execution).
-* **Hooks API added to extend CodeceptJS** with custom listeners and plugins. [See documentation](http://codecept.io/hooks/#hooks_1).
-* [Nightmare][WebDriverIO] `within` can work with iframes by **[imvetri](https://github.com/imvetri)**. [See documentation](http://codecept.io/acceptance/#iframes).
+* **Command `multiple-run` added**, to execute tests in several browsers in parallel by **[APshenkin](https://github.com/APshenkin)** and **[davertmik](https://github.com/davertmik)**. [See documentation](https://codecept.io/advanced/#multiple-execution).
+* **Hooks API added to extend CodeceptJS** with custom listeners and plugins. [See documentation](https://codecept.io/hooks/#hooks_1).
+* [Nightmare][WebDriverIO] `within` can work with iframes by **[imvetri](https://github.com/imvetri)**. [See documentation](https://codecept.io/acceptance/#iframes).
 * [WebDriverIO][SeleniumWebdriver][Protractor] Default browser changed to `chrome`
 * **[Nightmare]** Fixed globally locating `nightmare-upload`.
 * **[WebDriverIO]** added `seeNumberOfVisibleElements` method by **[elarouche](https://github.com/elarouche)**.
 * Exit with non-zero code if init throws an error by **[rincedd](https://github.com/rincedd)**
 * New guides published:
-    * [Installation](http://codecept.io/installation/)
-    * [Hooks](http://codecept.io/hooks/)
-    * [Advanced Usage](http://codecept.io/advanced/)
+    * [Installation](https://codecept.io/installation/)
+    * [Hooks](https://codecept.io/hooks/)
+    * [Advanced Usage](https://codecept.io/advanced/)
 * Meta packages published:
     * [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio)
     * [codecept-protractor](https://www.npmjs.com/package/codecept-protractor)
@@ -1798,7 +1798,7 @@ codeceptjs run users_test.js -c tests
 
 ## 0.5.1
 
-* [Polish translation](http://codecept.io/translation/#polish) added by **[limes](https://github.com/limes)**.
+* [Polish translation](https://codecept.io/translation/#polish) added by **[limes](https://github.com/limes)**.
 * Update process exit code so that mocha saves reports before exit by **[romanovma](https://github.com/romanovma)**.
 * **[Nightmare]** fixed `getAttributeFrom` for custom attributes by **[robrkerr](https://github.com/robrkerr)**
 * **[Nightmare]** Fixed *UnhandledPromiseRejectionWarning error* when selecting the dropdown using `selectOption` by **[robrkerr](https://github.com/robrkerr)**. [Se PR.
@@ -1895,11 +1895,11 @@ Scenario('Not that complex', {timeout: 1000}, (I) => {
 * [Nightmare][SeleniumWebdriver][Protractor] `clearField` method added.
 * **[Nightmare]** Fixed `waitForElement`, and `waitForVisible` methods.
 * **[Nightmare]** Fixed `resizeWindow` by **[norisk-it](https://github.com/norisk-it)**
-* Added italian [translation](http://codecept.io/translation/#italian).
+* Added italian [translation](https://codecept.io/translation/#italian).
 
 ## 0.4.12
 
-* Bootstrap / Teardown improved with [Hooks](http://codecept.io/configuration/#hooks). Various options for setup/teardown provided.
+* Bootstrap / Teardown improved with [Hooks](https://codecept.io/configuration/#hooks). Various options for setup/teardown provided.
 * Added `--override` or `-o` option for runner to dynamically override configs. Valid JSON should be passed:
 
 ```
@@ -1912,7 +1912,7 @@ codeceptjs run -o '{ "helpers": {"WebDriverIO": {"browser": "chrome"}}}'
 ## 0.4.11
 
 * Fixed regression in 0.4.10
-* Added `bootstrap`/`teardown` config options to accept functions as parameters by **[pscanf](https://github.com/pscanf)**. See updated [config reference](http://codecept.io/configuration/) [#319](https://github.com/codeceptjs/CodeceptJS/issues/319)
+* Added `bootstrap`/`teardown` config options to accept functions as parameters by **[pscanf](https://github.com/pscanf)**. See updated [config reference](https://codecept.io/configuration/) [#319](https://github.com/codeceptjs/CodeceptJS/issues/319)
 
 ## 0.4.10
 
@@ -1958,7 +1958,7 @@ module.exports = function(done) {
 
 ## 0.4.6
 
-* Added `BeforeSuite` and `AfterSuite` hooks to scenario by **[APshenkin](https://github.com/APshenkin)**. See [updated documentation](http://codecept.io/basics/#beforesuite)
+* Added `BeforeSuite` and `AfterSuite` hooks to scenario by **[APshenkin](https://github.com/APshenkin)**. See [updated documentation](https://codecept.io/basics/#beforesuite)
 
 ## 0.4.5
 
@@ -1976,7 +1976,7 @@ module.exports = function(done) {
 * **[Protractor]** Regression fixed to ^4.0.0 support
 * Translations included into package.
 * `teardown` option added to config (opposite to `bootstrap`), expects a JS file to be executed after tests stop.
-* [Configuration](http://codecept.io/configuration/) can be set via JavaScript file `codecept.conf.js` instead of `codecept.json`. It should export `config` object:
+* [Configuration](https://codecept.io/configuration/) can be set via JavaScript file `codecept.conf.js` instead of `codecept.json`. It should export `config` object:
 
 ```js
 // inside codecept.conf.js
@@ -1984,9 +1984,9 @@ exports.config = {
   // contents of codecept.json
 }
 ```
-* Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).
-* Documentation for [StepObjects, PageFragments](http://codecept.io/pageobjects#PageFragments) updated.
-* Documentation for [Configuration](http://codecept.io/configuration/) added.
+* Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](https://codecept.io/configuration#dynamic-configuration).
+* Documentation for [StepObjects, PageFragments](https://codecept.io/pageobjects#PageFragments) updated.
+* Documentation for [Configuration](https://codecept.io/configuration/) added.
 
 ## 0.4.2
 
@@ -1996,8 +1996,8 @@ exports.config = {
 * **[Protractor]** Protractor 4.0.4 compatibility.
 * [WebDriverIO][SeleniumWebdriver][Protractor] Fixed single browser session  mode for `restart: false`
 * Fixed using of 3rd party reporters (xunit, mocha-junit-reporter, mochawesome). Added guide.
-* Documentation for [Translation](http://codecept.io/translation/) added.
-* Documentation for [Reports](http://codecept.io/reports/) added.
+* Documentation for [Translation](https://codecept.io/translation/) added.
+* Documentation for [Reports](https://codecept.io/reports/) added.
 
 ## 0.4.1
 
@@ -2006,7 +2006,7 @@ exports.config = {
 
 ## 0.4.0
 
-* **[Nightmare](http://codecept.io/nightmare) Helper** added for faster web testing.
+* **[Nightmare](https://codecept.io/nightmare) Helper** added for faster web testing.
 * [Protractor][SeleniumWebdriver][WebDriverIO] added `restart: false` option to reuse one browser between tests (improves speed).
 * **Protractor 4.0** compatibility. Please upgrade Protractor library.
 * Added `--verbose` option for `run` command to log and print global promise and events.
