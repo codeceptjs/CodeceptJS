@@ -17,15 +17,15 @@ Here is an overview of available options with their defaults:
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
-* **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/parallel#multiple-browsers-execution)
-* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
-* **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
-* **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
-* **teardownAll**: - an option to run code _after_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
+* **mocha**: `{}` - mocha options, [reporters](https://codecept.io/reports/) can be configured here
+* **multiple**: `{}` - multiple options, see [Multiple Execution](https://codecept.io/parallel#multiple-browsers-execution)
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown)).
+* **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown)).
+* **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown).
+* **teardownAll**: - an option to run code _after_ tests are run. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown).
 * **noGlobals**: `false` - disable registering global variables like `Actor`, `Helper`, `pause`, `within`, `DataTable`
-* **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](http://codecept.io/hooks/#custom-hooks)
-* **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
+* **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](https://codecept.io/hooks/#custom-hooks)
+* **translation**: - [locale](https://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
 * **require**: `[]` - array of module names to be required before codecept starts. See [Require](#require)
 
 
