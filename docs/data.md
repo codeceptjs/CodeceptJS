@@ -5,7 +5,7 @@ title: Data Management
 
 # Data Management
 
-> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](http://codecept.io/advanced/#data-drivern-tests) section*
+> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](https://codecept.io/advanced/#data-drivern-tests) section*
 
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
@@ -22,7 +22,7 @@ API is supposed to be a stable interface and it can be used by acceptance tests.
 
 ## REST
 
-[REST helper](http://codecept.io/helpers/REST/) allows sending raw HTTP requests to application.
+[REST helper](https://codecept.io/helpers/REST/) allows sending raw HTTP requests to application.
 This is a tool to make shortcuts and create your data pragmatically via API. However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
 
 Enable REST helper in the config. It is recommended to set `endpoint`, a base URL for all API requests. If you need some authorization you can optionally set default headers too.
@@ -87,11 +87,11 @@ This can also be used to emulate Ajax requests:
 I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
 ```
 
-> See complete reference on [REST](http://codecept.io/helpers/REST) helper
+> See complete reference on [REST](https://codecept.io/helpers/REST) helper
 
 ## GraphQL
 
-[GraphQL helper](http://codecept.io/helpers/GraphQL/) allows sending GraphQL queries and mutations to application, over Http.
+[GraphQL helper](https://codecept.io/helpers/GraphQL/) allows sending GraphQL queries and mutations to application, over Http.
 This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver, Nightmare or Protractor helpers for browser testing.
 
 Enable GraphQL helper in the config. It is recommended to set `endpoint`, the URL to which the requests go to. If you need some authorization you can optionally set default headers too.
@@ -160,13 +160,13 @@ After(({ I }) => {
 });
 ```
 
-> See complete reference on [GraphQL](http://codecept.io/helpers/GraphQL) helper
+> See complete reference on [GraphQL](https://codecept.io/helpers/GraphQL) helper
 
 ## Data Generation with Factories
 
 This concept is extended by:
-- [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory/) helper, and,
-- [GraphQLDataFactory](http://codecept.io/helpers/GraphQLDataFactory/) helper.
+- [ApiDataFactory](https://codecept.io/helpers/ApiDataFactory/) helper, and,
+- [GraphQLDataFactory](https://codecept.io/helpers/GraphQLDataFactory/) helper.
 
 These helpers build data according to defined rules and use REST API or GraphQL mutations to store them and automatically clean them up after a test.
 
@@ -238,7 +238,7 @@ At the end of a test ApiDataFactory will clean up created record for you. This i
 ids from crated records and running `DELETE /api/users/{id}` requests at the end of a test.
 This rules can be customized in helper configuration.
 
-> See complete reference on [ApiDataFactory](http://codecept.io/helpers/ApiDataFactory) helper
+> See complete reference on [ApiDataFactory](https://codecept.io/helpers/ApiDataFactory) helper
 
 ### GraphQL Data Factory
 
@@ -303,7 +303,7 @@ data from crated records, creating deletion mutation objects by passing the data
 This behavior is according the `revert` function be customized in helper configuration.
 The revert function returns an object, that contains the query for deletion, and the variables object to go along with it.
 
-> See complete reference on [GraphQLDataFactory](http://codecept.io/helpers/GraphQLDataFactory) helper
+> See complete reference on [GraphQLDataFactory](https://codecept.io/helpers/GraphQLDataFactory) helper
 
 ## Requests Using Browser Session
 
