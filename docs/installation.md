@@ -57,7 +57,7 @@ For WebDriver installation Selenium Server is required 👇
 
 ## WebDriver
 
-WebDriver based helpers like WebDriver, Protractor, Selenium WebDriver will require [Selenium Server](http://codecept.io/helpers/WebDriver/#selenium-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
+WebDriver based helpers like WebDriver, Protractor, Selenium WebDriver will require [Selenium Server](https://codecept.io/helpers/WebDriver/#selenium-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
 
 We recommend to install them manually or use NPM packages:
 
