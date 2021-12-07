@@ -7,7 +7,7 @@ editLink: false
 ---
 
 > Add your own videos to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Videos)
-[![](http://i3.ytimg.com/vi/BRMWstiOTks/maxresdefault.jpg)](https://www.youtube.com/watch?v=BRMWstiOTks)
+[![](https://i3.ytimg.com/vi/BRMWstiOTks/maxresdefault.jpg)](https://www.youtube.com/watch?v=BRMWstiOTks)
 
 ## [An Introduction, Getting started and working with CodeceptJS & Puppeteer (EAWeekend)](https://www.youtube.com/watch?v=BRMWstiOTks)
 
@@ -15,7 +15,7 @@ editLink: false
 
 ## [Introductory Videos](https://www.youtube.com/watch?v=FPFG1rBNJ64&list=PLcFXthgti9Lt4SjSvL1ALDg6dOeTC0TvT)
 
-Free educational videos provided by our community member **[@ontytoom](http://github.com/ontytoom)**.
+Free educational videos provided by our community member **[@ontytoom](https://github.com/ontytoom)**.
 
 1. [Installation](https://www.youtube.com/watch?v=FPFG1rBNJ64)
 1. [Creating a Test](https://www.youtube.com/watch?v=mdQZjL3h9d0)
