@@ -54,7 +54,7 @@ A first test should be created with `codeceptjs gt` command
 npx codeceptjs gt
 ```
 
-In the next example we will [TodoMVC application](http://todomvc.com/examples/angularjs/#/). So let's create a test which will fill in todo list:
+In the next example we will [TodoMVC application](https://todomvc.com/examples/angularjs/#/). So let's create a test which will fill in todo list:
 
 ```js
 Feature('TodoMVC');
