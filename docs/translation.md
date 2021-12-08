@@ -38,7 +38,7 @@ This way tests can be written in native language while it is still JavaScript:
 
 ```js
 Сценарий('пробую написать реферат', (Я) => {
-    Я.на_странице('http://yandex.ru/referats');
+    Я.на_странице('https://yandex.ru/referats');
     Я.вижу("Написать реферат по");
     Я.выбираю_опцию('Психологии');
     Я.кликаю("Написать реферат");
