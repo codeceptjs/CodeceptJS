@@ -1989,11 +1989,11 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [21]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[22]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
+[22]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
 
-[23]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context
+[23]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
 
-[24]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser
+[24]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
 
 [25]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 
