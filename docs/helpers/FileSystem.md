@@ -21,6 +21,16 @@ I.seeInThisFile('FileSystem');
 I.dontSeeInThisFile("WebDriverIO");
 ```
 
+## Configuration
+
+Enable helper in config file:
+
+```js
+helpers: {
+    FileSystem: {},
+}
+```
+
 ## Methods
 
 ### amInPath
