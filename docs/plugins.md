@@ -981,6 +981,13 @@ Use this plugin if:
 
 #### Multiple Conditional Assertions
 
+Add assert requires first:
+
+```js
+const assert = require('assert');
+```
+Then use the assert:
+
 ```js
 const result1 = await tryTo(() => I.see('Hello, user'));
 const result2 = await tryTo(() => I.seeElement('.welcome'));
