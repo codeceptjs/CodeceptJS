@@ -1952,7 +1952,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [2]: https://playwright.dev/docs/trace-viewer
 
-[3]: https://github.com/microsoft/playwright/blob/master/docs/api.md#pagewaitfornavigationoptions
+[3]: https://github.com/microsoft/playwright/blob/main/docs/api.md#pagewaitfornavigationoptions
 
 [4]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
@@ -1982,7 +1982,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [17]: https://playwright.dev/docs/network#handle-requests
 
-[18]: https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewpageoptions
+[18]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
 
 [19]: #fillfield
 
@@ -1992,11 +1992,11 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[23]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-page
+[23]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
 
-[24]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-context
+[24]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
 
-[25]: https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browser
+[25]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
 
 [26]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 

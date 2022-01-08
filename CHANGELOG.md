@@ -1,3 +1,10 @@
+## 3.2.3
+
+* Documentation improvements by @maojunxyz
+* Guard mocha cli reporter from registering step logger multiple times #3180 by @nikocanvacom 
+* [Playwright] Fixed "tracing.stop: tracing.stop: ENAMETOOLONG: name too long" by @hatufacci
+* Fixed #2889: return always the same error contract from simplifyTest. See #3168 by @andremoah 
+
 ## 3.2.2
 
 * [Playwright] Reverted removal of retry on context errors. Fixes #3130

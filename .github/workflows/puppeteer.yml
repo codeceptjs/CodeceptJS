@@ -28,9 +28,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: install required packages
-      run: |
-        sudo apt-get install php
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
     - name: npm install
       run: |
         npm install
