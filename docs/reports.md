@@ -145,7 +145,7 @@ npx codecepjs dry-run --debug
 
 > ℹ  We recommend using Allure reports on CI. Allure is one of the best open-source reporters designed to collect and show test reports in nicest way.
 
-[Allure reporter](http://allure.qatools.ru/#) is a tool to store and display test reports.
+[Allure reporter](https://allure.qatools.ru/#) is a tool to store and display test reports.
 It provides nice web UI which contains all important information on test execution.
 CodeceptJS has built-in support for Allure reports. Inside reports you will have all steps, substeps and screenshots.
 

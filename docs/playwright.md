@@ -31,7 +31,7 @@ To start you need CodeceptJS with Playwright packages installed
 npm install codeceptjs playwright --save
 ```
 
-Or see [alternative installation options](http://codecept.io/installation/)
+Or see [alternative installation options](https://codecept.io/installation/)
 
 > If you already have CodeceptJS project, just install `playwright` package and enable a helper it in config.
 
@@ -84,7 +84,7 @@ When to consider navigation succeeded, defaults to `load`. Given an array of eve
 When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
-> ▶ More options are listed in [helper reference](http://codecept.io/helpers/Playwright/).
+> ▶ More options are listed in [helper reference](https://codecept.io/helpers/Playwright/).
 
 ## Writing Tests
 
@@ -109,7 +109,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 * `see`, `dontSee` - to check for a text on a page
 * `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ  All actions are listed in [Playwright helper reference](http://codecept.io/helpers/Playwright/).*
+> ℹ  All actions are listed in [Playwright helper reference](https://codecept.io/helpers/Playwright/).*
 
 All actions which interact with elements can use **[CSS or XPath locators](https://codecept.io/locators/#css-and-xpath)**. Actions like `click` or `fillField` can locate elements by their name or value on a page:
 
@@ -198,7 +198,7 @@ I.see('0 items left', '.todo-count');
 
 > [▶ Learn more about basic commands](/basics#writing-tests)
 
-CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
+CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](https://codecept.io/pageobjects/) guide.
 
 ## Multi Session Testing
 

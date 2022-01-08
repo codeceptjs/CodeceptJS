@@ -250,7 +250,7 @@ An interactive shell output may look like this:
 ```
 After typing in successful commands you can copy them into a test.
 
-Here is a test checking basic [todo application](http://todomvc.com/).
+Here is a test checking basic [todo application](https://todomvc.com/).
 
 ```js
 Feature('TodoMVC');
@@ -295,7 +295,7 @@ exports.config = {
 
 ## SmartWait
 
-It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
+It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
 
 SmartWait can be enabled by setting wait option in WebDriver config.
 Add `smartWait: 5000` to wait for additional 5s.

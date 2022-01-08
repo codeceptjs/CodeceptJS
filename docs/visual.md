@@ -58,7 +58,7 @@ Base Image is compared with the screenshot image and test results are derived ba
 
 ### Example
 
-Lets consider visual testing for [CodeceptJS Home](http://codecept.io)
+Lets consider visual testing for [CodeceptJS Home](https://codecept.io)
 
 ```js
 Feature('To test screen comparison with resemble Js Example test');
@@ -183,7 +183,7 @@ The first time you run this test a new baseline will be created, and subsequent 
 
 ### Example
 
-Lets consider visual testing for [CodeceptJS Home](http://codecept.io).
+Lets consider visual testing for [CodeceptJS Home](https://codecept.io).
 You can also find example repo here: https://github.com/PeterNgTr/codeceptjs-applitoolshelper
 
 ```js
