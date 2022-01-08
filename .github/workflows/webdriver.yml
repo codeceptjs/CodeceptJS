@@ -30,7 +30,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - uses: shivammathur/setup-php@v2
-      php-version: 7.4   
+      with:
+        php-version: 7.4
     - name: npm install
       run: |
         npm install
