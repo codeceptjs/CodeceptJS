@@ -1698,7 +1698,7 @@ Second argument is async function that gets this helper as parameter.
 { [`page`][23], [`context`][24] [`browser`][25] } objects from Playwright API are available.
 
 ```js
-I.usePlaywrightTo('emulate offline mode', async ({ context }) {
+I.usePlaywrightTo('emulate offline mode', async ({ context }) => {
   await context.setOffline(true);
 });
 ```
