@@ -264,7 +264,7 @@ class MyHelper extends Helper {
     const { WebDriver } = this.helpers
     const { browser } = WebDriver;
 
-    // get all cookies according to http://webdriver.io/api/protocol/cookie.html
+    // get all cookies according to https://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
     const res = await browser.cookie();
     // get values

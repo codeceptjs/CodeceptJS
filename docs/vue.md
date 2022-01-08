@@ -111,7 +111,7 @@ If you agreed to create a demo component, you will also see `TestMe` component i
 * [Learn CodeceptJS basics](/basics)
 * [Learn how to write CodeceptJS tests with Puppeteer](/puppeteer)
 * [See full reference for CodeceptJS Puppeteer Helper](/helpers/Puppeteer)
-* Ask your questions in [Slack](http://bit.ly/chat-codeceptjs) & [Forum](https://codecept.discourse.group/)
+* Ask your questions in [Slack](https://bit.ly/chat-codeceptjs) & [Forum](https://codecept.discourse.group/)
 
 ## Enjoy testing!
 
