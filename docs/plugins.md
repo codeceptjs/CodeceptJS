@@ -127,7 +127,11 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
+<<<<<<< HEAD
 Before(({ login }) => {
+=======
+Before( ({login}) => {
+>>>>>>> 435964dff7770cb3cd58c78a8579b6221a000d24
    login('user'); // login using user session
 });
 
