@@ -29,9 +29,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - uses: microsoft/playwright-github-action@v1
-    - name: install required packages
-      run: |
-        sudo apt-get install php
+    - uses: shivammathur/setup-php@v2
+      php-version: 7.4
     - name: npm install
       run: |
         npm install
