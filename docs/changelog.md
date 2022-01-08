@@ -7,6 +7,13 @@ layout: Section
 
 # Releases
 
+## 3.2.3
+
+* Documentation improvements by **[maojunxyz](https://github.com/maojunxyz)**
+* Guard mocha cli reporter from registering step logger multiple times [#3180](https://github.com/codeceptjs/CodeceptJS/issues/3180) by **[nikocanvacom](https://github.com/nikocanvacom)** 
+* **[Playwright]** Fixed "tracing.stop: tracing.stop: ENAMETOOLONG: name too long" by **[hatufacci](https://github.com/hatufacci)**
+* Fixed [#2889](https://github.com/codeceptjs/CodeceptJS/issues/2889): return always the same error contract from simplifyTest. See [#3168](https://github.com/codeceptjs/CodeceptJS/issues/3168) by **[andremoah](https://github.com/andremoah)** 
+
 ## 3.2.2
 
 * **[Playwright]** Reverted removal of retry on context errors. Fixes [#3130](https://github.com/codeceptjs/CodeceptJS/issues/3130)
