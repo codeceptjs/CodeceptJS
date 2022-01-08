@@ -127,7 +127,7 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
-Before(login => {
+Before(({ login }) => {
    login('user'); // login using user session
 });
 
@@ -981,25 +981,22 @@ Use this plugin if:
 
 #### Multiple Conditional Assertions
 
+````js
 Add assert requires first:
-
 ```js
 const assert = require('assert');
-```
-Then use the assert:
+````
 
-```js
+Then use the assert:
 const result1 = await tryTo(() => I.see('Hello, user'));
 const result2 = await tryTo(() => I.seeElement('.welcome'));
 assert.ok(result1 && result2, 'Assertions were not succesful');
-```
 
-##### Optional click
+    ##### Optional click
 
-```js
-I.amOnPage('/');
-tryTo(() => I.click('Agree', '.cookies'));
-```
+    ```js
+    I.amOnPage('/');
+    tryTo(() => I.click('Agree', '.cookies'));
 
 #### Configuration
 
