@@ -110,7 +110,7 @@
     "eslint-plugin-mocha": "^6.3.0",
     "expect": "^26.6.2",
     "express": "^4.17.1",
-    "faker": "^5.5.1",
+    "faker": "5.5.3",
     "form-data": "^3.0.0",
     "graphql": "^14.6.0",
     "husky": "^4.3.5",
