@@ -53,6 +53,14 @@ describe('Container', () => {
       expect(container.translation().I).to.eql('Je');
       expect(container.translation().value('contexts').Feature).to.eql('Fonctionnalité');
     });
+
+    it('should create Portuguese translation', () => {
+      container.create({ translation: 'pt-BR' });
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.true;
+      expect(container.translation().I).to.eql('Eu');
+      expect(container.translation().value('contexts').Feature).to.eql('Funcionalidade');
+    });
   });
 
   describe('#helpers', () => {
