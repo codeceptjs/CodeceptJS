@@ -653,6 +653,16 @@ describe('Playwright', function () {
       });
       assert.equal('TestEd Beta 2.0', title);
     });
+
+    it('should pass expected parameters', async () => {
+      await I.amOnPage('/');
+      const params = await I.usePlaywrightTo('test', async (params) => {
+        return params;
+      });
+      expect(params.page).to.exist;
+      expect(params.browserContext).to.exist;
+      expect(params.browser).to.exist;
+    });
   });
 
   describe('#mockRoute, #stopMockingRoute', () => {
