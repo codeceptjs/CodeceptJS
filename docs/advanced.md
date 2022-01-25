@@ -100,11 +100,7 @@ Scenario('update user profile', ({  }) => {
 All tests with `@tag` could be executed with `--grep '@tag'` option.
 
 ```sh
-<<<<<<< HEAD
-npx codeceptjs run --grep @slow
-=======
 codeceptjs run --grep '@slow'
->>>>>>> 435964dff7770cb3cd58c78a8579b6221a000d24
 ```
 
 Use regex for more flexible filtering:
