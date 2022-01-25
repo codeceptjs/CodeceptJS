@@ -334,4 +334,15 @@ describe('utils', () => {
       }
     });
   });
+
+  describe('#requireWithFallback', () => {
+    it('returns the fallback package', () => {
+      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(require('playwright'));
+    });
+
+    it('returns provide default require not found message', () => {
+      expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2'))
+        .to.throw(Error, 'Cannot find modules unexisting-package,unexisting-package2');
+    });
+  });
 });
