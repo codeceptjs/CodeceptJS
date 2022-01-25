@@ -1695,11 +1695,11 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][23], [`context`][24] [`browser`][25] } objects from Playwright API are available.
+{ [`page`][23], [`browserContext`][24] [`browser`][25] } objects from Playwright API are available.
 
 ```js
-I.usePlaywrightTo('emulate offline mode', async ({ context }) => {
-  await context.setOffline(true);
+I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
+  await browserContext.setOffline(true);
 });
 ```
 
