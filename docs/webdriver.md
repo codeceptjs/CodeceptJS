@@ -203,14 +203,49 @@ Scenario('login test', ({ I }) => {
   I.see('Welcome, John');
 });
 ```
-> ▶ Actions like `amOnPage`, `click`, `fillField` are not limited to WebDriver only. They work similarly for all available helpers. [Go to Basics guide to learn them](/basics#writing-tests).
-
 
 An empty test case can be created with `npx codeceptjs gt` command.
 
 ```
 npx codeceptjs gt
 ```
+
+
+### Actions
+
+Tests consist with a scenario of user's action taken on a page. The most widely used ones are:
+
+* `amOnPage` - to open a webpage (accepts relative or absolute url)
+* `click` - to locate a button or link and click on it
+* `fillField` - to enter a text inside a field
+* `selectOption`, `checkOption` - to interact with a form
+* `wait*` to wait for some parts of page to be fully rendered (important for testing SPA)
+* `grab*` to get values from page sources
+* `see`, `dontSee` - to check for a text on a page
+* `seeElement`, `dontSeeElement` - to check for elements on a page
+
+> ℹ  All actions are listed in [WebDriver helper reference](https://codecept.io/helpers/WebDriver/).*
+
+All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
+
+```js
+// search for link or button
+I.click('Login');
+// locate field by its label
+I.fillField('Name', 'Miles');
+// we can use input name
+I.fillField('user[email]','miles@davis.com');
+```
+
+You can also specify the exact locator type with strict locators:
+
+```js
+I.click({css: 'button.red'});
+I.fillField({name: 'user[email]'},'miles@davis.com');
+I.seeElement({xpath: '//body/header'});
+```
+
+### Interactive Pause
 
 It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
 
@@ -267,6 +302,59 @@ Scenario('create todo item', ({ I }) => {
 > [▶ Working example of CodeceptJS WebDriver tests](https://github.com/DavertMik/codeceptjs-webdriver-example) for TodoMVC application.
 
 WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as non-trivial [React locators](/react) and [Shadow DOM](/shadow).
+
+### Grabbers
+
+If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
+
+```js
+const assert = require('assert');
+Scenario('get value of current tasks', async ({ I }) => {
+  I.fillField('.todo', 'my first item');
+  I.pressKey('Enter')
+  I.fillField('.todo', 'my second item');
+  I.pressKey('Enter')
+  let numTodos = await I.grabTextFrom('.todo-count strong');
+  assert.equal(2, numTodos);
+});
+```
+
+### Within
+
+In case some actions should be taken inside one element (a container or modal window or iframe) you can use `within` block to narrow the scope.
+Please take a note that you can't use within inside another within in Puppeteer helper:
+
+```js
+await within('.todoapp', () => {
+  I.fillField('.todo', 'my new item');
+  I.pressKey('Enter')
+  I.see('1 item left', '.todo-count');
+  I.click('.todo-list input.toggle');
+});
+I.see('0 items left', '.todo-count');
+```
+
+### Each Element <Badge text="Since 3.3" type="warning"/>
+
+Usually, CodeceptJS performs an action on the first matched element. 
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
+
+`eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives element of webdriverio. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
+
+Usage example
+
+```js
+await eachElement(
+  'click all checkboxes', 
+  'input.custom-checkbox', 
+  async (el, index) => {
+    await el.click();
+  });
+);
+```
+
+> ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
+
 
 ## Waiting
 
