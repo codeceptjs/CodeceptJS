@@ -110,7 +110,6 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
 ```js
-
 // search for link or button
 I.click('Login');
 // locate field by its label
@@ -172,8 +171,10 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 ```js
 const assert = require('assert');
 Scenario('get value of current tasks', async ({ I }) => {
-  I.createTodo('do 1');
-  I.createTodo('do 2');
+  I.fillField('.todo', 'my first item');
+  I.pressKey('Enter')
+  I.fillField('.todo', 'my second item');
+  I.pressKey('Enter')
   let numTodos = await I.grabTextFrom('.todo-count strong');
   assert.equal(2, numTodos);
 });
@@ -185,20 +186,35 @@ In case some actions should be taken inside one element (a container or modal wi
 Please take a note that you can't use within inside another within in Puppeteer helper:
 
 ```js
-within('.todoapp', () => {
-  I.createTodo('my new item');
+await within('.todoapp', () => {
+  I.fillField('.todo', 'my new item');
+  I.pressKey('Enter')
   I.see('1 item left', '.todo-count');
   I.click('.todo-list input.toggle');
 });
 I.see('0 items left', '.todo-count');
 ```
 
-> [▶ Learn more about basic commands](/basics#writing-tests)
+### Each Element <Badge text="Since 3.3" type="warning"/>
 
-CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](https://codecept.io/pageobjects/) guide.
+Usually, CodeceptJS performs an action on the first matched element. 
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
 
-> [▶ Demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
+`eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives [ElementHandle instance](https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle) from Puppeteer API. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
 
+Usage example
+
+```js
+await eachElement(
+  'click all checkboxes', 
+  'input.custom-checkbox', 
+  async (el, index) => {
+    await el.click();
+  });
+);
+```
+
+> ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
 
 ## Mocking Requests
 
