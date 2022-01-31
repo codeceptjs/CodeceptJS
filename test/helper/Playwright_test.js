@@ -31,6 +31,7 @@ describe('Playwright', function () {
       show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
+      timeout: 2000,
       restart: true,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
