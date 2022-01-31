@@ -31,6 +31,7 @@ describe('Playwright', function () {
       show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
+      timeout: 2000,
       restart: true,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -580,12 +581,12 @@ describe('Playwright', function () {
   });
 
   describe('#dragAndDrop', () => {
-    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
       .then(() => I.seeElementInDOM('#draggable'))
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
       .then(() => I.see('Dropped')));
 
-    xit('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
+    xit('Drag and drop from within an iframe', () => I.amOnPage('https://jqueryui.com/droppable')
       .then(() => I.resizeWindow(700, 700))
       .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
       .then(() => I.seeElementInDOM('#draggable'))
