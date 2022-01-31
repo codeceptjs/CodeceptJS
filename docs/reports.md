@@ -144,7 +144,7 @@ npx codecepjs dry-run --debug
 
 ## Testomat.io
 
-[Testomat.io](https://testomat.io) is a modern test management tool focused on CodeceptJS and **created CodeceptJS author**.
+[Testomat.io](https://testomat.io) is a modern test management tool focused on CodeceptJS and **created by CodeceptJS team**.
 Testomat.io is commercial SaaS service that can receive run reports from local runs or CI. Out of box Testomat.io supports parallel runs, uploading of screenshots and videos.
 
 ![](https://user-images.githubusercontent.com/220264/151728836-b52d2b2b-56e1-4640-8d3a-b39de817b1fd.png)
