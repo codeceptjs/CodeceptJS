@@ -145,6 +145,8 @@ After opening an email assertion methods are available.
 * `seeEmailIsFrom`
 * `seeInEmailBody`
 * `dontSeeInEmailBody`
+* `seeNumberOfEmailAttachments`
+* `seeEmailAttachment`
 
 And here is an example of their usage:
 
@@ -153,6 +155,9 @@ I.waitForLatestEmail()
 I.seeEmailIsFrom('@mysite.com');
 I.seeInEmailSubject('Awesome Proposal!');
 I.seeInEmailBody('To unsubscribe click here');
+I.seeNumberOfEmailAttachments(2);
+I.seeEmailAttachment('Attachment_1.pdf')
+I.seeEmailAttachment('Attachment_2.pdf')
 ```
 
 > More methods are listed in [helper's API reference](https://github.com/codeceptjs/mailslurp-helper/blob/master/README.md#api)
