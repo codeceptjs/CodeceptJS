@@ -151,18 +151,34 @@ Testomat.io is commercial SaaS service that can receive run reports from local r
 
 > 😻 **Testomat.io is free** for small teams, so you can use its reporting features with CodeceptJS.
 
-To receive run reports you should:
 
 * [Sign up](https://app.testomat.io/users/sign_up) at Testomat.io
 * Create a new "Classical" project (select "BDD" project if you use CodeceptJS in BDD mode)
 * Select "Import from Source Code"
 * Select "CodeceptJS" as testing framework and JavaScript or TypeScript as a language. If you use BDD select "Gherkin" as language.
 * Execute provided command in a terminal with your project. This will be "check-tests" or "check-cucmber" command. It scans all your test files and imports them into Testomat.io. This way all your e2e tests will be visible in one UI.
-* After tests are imported, go to Runs tab and select "setup automated tests".
-* Follow the instructions on the screen. You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config.
-* Run tests with `TESTOMATIO=` key passed and see the run report is created and updated in realtime.
+* After tests are imported, go to Runs tab and select "Setup automated tests".
+* Follow the instructions on the screen. 
 
-[Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira. 
+![image](https://user-images.githubusercontent.com/77803888/151834217-5da44d92-a59a-458d-8856-64ce61bf3a38.png)
+
+* You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config:
+
+```js
+plugins: {
+  testomatio: {
+    enabled: true,
+    require: '@testomatio/reporter/lib/adapter/codecept',
+    apiKey: process.env.TESTOMATIO,
+  }
+}
+```
+
+* Run tests with `TESTOMATIO=` env variable and API key provided by Testomat.io
+* See the run report is created and updated in realtime.
+
+
+[Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira.
 
 
 ## Allure
