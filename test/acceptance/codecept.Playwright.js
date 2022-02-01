@@ -9,6 +9,7 @@ module.exports.config = {
     Playwright: {
       url: TestHelper.siteUrl(),
       show: false,
+      restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
     },
     ScreenshotSessionHelper: {
