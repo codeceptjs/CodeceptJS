@@ -1,3 +1,9 @@
+## 3.3.0
+
+* API Testing
+* [Playwright] APIs extended
+* [Playwright] Added `makeApiRequest` action
+
 ## 3.2.3
 
 * Documentation improvements by @maojunxyz
