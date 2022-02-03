@@ -686,6 +686,28 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#makeApiRequest', () => {
+    it('should make 3rd party API request', async () => {
+      const response = await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      expect(response.status()).to.equal(200);
+      expect(await response.json()).to.include.keys(['id', 'name']);
+    });
+
+    it('should make local API request', async () => {
+      const response = await I.makeApiRequest('get', '/form/fetch_call');
+      expect(response.status()).to.equal(200);
+    });
+
+    it('should convert to axios response with onResponse hook', async () => {
+      let response;
+      I.config.onResponse = (resp) => response = resp;
+      await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      expect(response).to.be.ok;
+      expect(response.status).to.equal(200);
+      expect(response.data).to.include.keys(['id', 'name']);
+    });
+  });
+
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
       await I.amOnPage('/image');
