@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const TestHelper = require('../support/TestHelper');
 const GraphQL = require('../../lib/helper/GraphQL');
+const Container = require('../../lib/container');
 
 const graphql_url = TestHelper.graphQLServerUrl();
 
@@ -94,6 +95,44 @@ describe('GraphQL', () => {
       const resp = await I.sendMutation(mutation, variables);
       const { deleteUser } = resp.data.data;
       deleteUser.should.eql('111');
+    });
+  });
+
+  describe('JSONResponse integration', () => {
+    let jsonResponse;
+
+    beforeEach(() => {
+      Container.create({
+        helpers: {
+          GraphQL: {
+            endpoint: graphql_url,
+          },
+          JSONResponse: {
+            requestHelper: 'GraphQL',
+          },
+        },
+      });
+      I = Container.helpers('GraphQL');
+      jsonResponse = Container.helpers('JSONResponse');
+      jsonResponse._beforeSuite();
+    });
+
+    afterEach(() => {
+      Container.clear();
+    });
+
+    it('should be able to parse JSON responses', async () => {
+      await I.sendQuery('{ user(id: 0) { id name email }}');
+      await jsonResponse.seeResponseCodeIsSuccessful();
+      await jsonResponse.seeResponseContainsKeys(['data']);
+      await jsonResponse.seeResponseContainsJson({
+        data: {
+          user: {
+            name: 'john doe',
+            email: 'johnd@mutex.com',
+          },
+        },
+      });
     });
   });
 });

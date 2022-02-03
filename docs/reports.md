@@ -144,7 +144,7 @@ npx codecepjs dry-run --debug
 
 ## Testomat.io
 
-[Testomat.io](https://testomat.io) is a modern test management tool focused on CodeceptJS and **created CodeceptJS author**.
+[Testomat.io](https://testomat.io) is a modern test management tool focused on CodeceptJS and **created by CodeceptJS team**.
 Testomat.io is commercial SaaS service that can receive run reports from local runs or CI. Out of box Testomat.io supports parallel runs, uploading of screenshots and videos.
 
 ![](https://user-images.githubusercontent.com/220264/151728836-b52d2b2b-56e1-4640-8d3a-b39de817b1fd.png)
@@ -158,11 +158,29 @@ To receive run reports you should:
 * Select "Import from Source Code"
 * Select "CodeceptJS" as testing framework and JavaScript or TypeScript as a language. If you use BDD select "Gherkin" as language.
 * Execute provided command in a terminal with your project. This will be "check-tests" or "check-cucmber" command. It scans all your test files and imports them into Testomat.io. This way all your e2e tests will be visible in one UI.
-* After tests are imported, go to Runs tab and select "setup automated tests".
-* Follow the instructions on the screen. You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config.
-* Run tests with `TESTOMATIO=` key passed and see the run report is created and updated in realtime.
+* After tests are imported, go to Runs tab and select "Setup automated tests".
+* Follow the instructions:
 
-[Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira. 
+
+![image](https://user-images.githubusercontent.com/77803888/151834217-5da44d92-a59a-458d-8856-64ce61bf3a38.png)
+
+* You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config:
+
+```js
+plugins: {
+  testomatio: {
+    enabled: true,
+    require: '@testomatio/reporter/lib/adapter/codecept',
+    apiKey: process.env.TESTOMATIO,
+  }
+}
+```
+
+* Run tests with `TESTOMATIO=` env variable and API key provided by Testomat.io
+* See the run report is created and updated in realtime.
+
+
+[Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira.
 
 
 ## Allure
