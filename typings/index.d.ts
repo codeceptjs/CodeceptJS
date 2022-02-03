@@ -2,7 +2,8 @@
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
-/// <reference path="joi" />
+/// <reference types="joi" />
+/// <reference types="playwright" />
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
