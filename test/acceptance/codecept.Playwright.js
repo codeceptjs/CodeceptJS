@@ -11,6 +11,9 @@ module.exports.config = {
       show: false,
       browser: process.env.BROWSER || 'chromium',
     },
+    JSONResponse: {
+      requestHelper: 'Playwright',
+    },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: 'test/acceptance/output',
