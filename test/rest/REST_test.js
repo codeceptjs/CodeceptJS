@@ -4,6 +4,7 @@ const FormData = require('form-data');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
+const Container = require('../../lib/container');
 
 const api_url = TestHelper.jsonServerUrl();
 
@@ -101,6 +102,32 @@ describe('REST', () => {
       await I.setRequestTimeout(2000);
       const response = await I.sendGetRequest('/posts');
       response.config.timeout.should.eql(2000);
+    });
+  });
+
+  describe('JSONResponse integration', () => {
+    let jsonResponse;
+
+    beforeEach(() => {
+      Container.create({
+        helpers: {
+          REST: {},
+          JSONResponse: {},
+        },
+      });
+      I = Container.helpers('REST');
+      jsonResponse = Container.helpers('JSONResponse');
+      jsonResponse._beforeSuite();
+    });
+
+    afterEach(() => {
+      Container.clear();
+    });
+
+    it('should be able to parse JSON responses', async () => {
+      await I.sendGetRequest('https://jsonplaceholder.typicode.com/comments/1');
+      await jsonResponse.seeResponseCodeIsSuccessful();
+      await jsonResponse.seeResponseContainsKeys(['id', 'name', 'email']);
     });
   });
 

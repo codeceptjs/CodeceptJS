@@ -327,6 +327,40 @@ Scenario('website looks nice on iPhone', () => {
 });
 ```
 
+## API Requests
+
+CodeceptJS has [REST](/helpers/REST) and [GraphQL]((/helpers/GraphQL)) helpers to perform requests to external APIs. This may be helpful to implement [data management](https://codecept.io/data/) strategy. 
+
+However, Playwright since 1.18 has its own [API for making request](https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get). It uses cookies from browser session to authenticate requests. So you can use it via [`makeApiRequest`](/helpers/Playwright#makeApiRequest) method:
+
+```js
+I.makeApiRequest('GET', '/users')
+```
+
+It is also possible to test JSON responses by adding [`JSONResponse`](/helpers/JSONResponse) and connecting it to Playwright:
+
+```js
+// inside codecept.conf.js
+{
+  helpers: {
+    Playwright: {
+      // current config
+    },
+    JSONResponse: {
+      requestHelper: 'Playwright',
+    }
+  }
+}
+```
+This helper provides you methods for [API testing](/api). For instance, you can check for status code, data inclusion and structure:
+
+```js
+I.makeApiRequest('GET', '/users/1');
+I.seeResponseCodeIs(200);
+I.seeResponseContainsKeys(['user']);
+```
+This way you can do full fledged API testing via Playwright.
+
 ## Accessing Playwright API
 
 To get [Playwright API](https://playwright.dev/docs/api/class-playwright) inside a test use `I.usePlaywrightTo` method with a callback.
@@ -357,7 +391,6 @@ I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
   // call a method of helper, await is required here
   await Playwright.click('Reload');
 });
-
 ```
 
 ## Mocking Network Requests <Badge text="Since 3.1" type="warning"/>

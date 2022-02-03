@@ -161,6 +161,7 @@ To receive run reports you should:
 * After tests are imported, go to Runs tab and select "Setup automated tests".
 * Follow the instructions:
 
+
 ![image](https://user-images.githubusercontent.com/77803888/151834217-5da44d92-a59a-458d-8856-64ce61bf3a38.png)
 
 * You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config:
