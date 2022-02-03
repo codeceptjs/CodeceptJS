@@ -33,6 +33,8 @@ Install CodeceptJS + webdriverio into `e2e-tests` directory:
 npx create-codeceptjs e2e-tests --webdriverio
 ```
 
+If you plan to use CodeceptJS for **API testing** only proceed to standard installation
+
 ## Standard Installation
 
 Open a directory where you want to install CodeceptJS tests.
