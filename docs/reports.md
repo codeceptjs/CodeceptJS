@@ -151,6 +151,7 @@ Testomat.io is commercial SaaS service that can receive run reports from local r
 
 > 😻 **Testomat.io is free** for small teams, so you can use its reporting features with CodeceptJS.
 
+To receive run reports you should:
 
 * [Sign up](https://app.testomat.io/users/sign_up) at Testomat.io
 * Create a new "Classical" project (select "BDD" project if you use CodeceptJS in BDD mode)
@@ -158,7 +159,7 @@ Testomat.io is commercial SaaS service that can receive run reports from local r
 * Select "CodeceptJS" as testing framework and JavaScript or TypeScript as a language. If you use BDD select "Gherkin" as language.
 * Execute provided command in a terminal with your project. This will be "check-tests" or "check-cucmber" command. It scans all your test files and imports them into Testomat.io. This way all your e2e tests will be visible in one UI.
 * After tests are imported, go to Runs tab and select "Setup automated tests".
-* Follow the instructions on the screen. 
+* Follow the instructions:
 
 ![image](https://user-images.githubusercontent.com/77803888/151834217-5da44d92-a59a-458d-8856-64ce61bf3a38.png)
 
