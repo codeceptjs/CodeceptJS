@@ -591,13 +591,13 @@ Returns **[Promise][4]&lt;void>** Appium: support Android and iOS
 Perform a swipe on the screen.
 
 ```js
-I.performswipe(100,200);
+I.performSwipe({ x: 300, y: 100 }, { x: 200, y: 100 });
 ```
 
 #### Parameters
 
--   `from` **[number][10]** 
--   `to` **[number][10]** Appium: support Android and iOS
+-   `from` **[object][8]** 
+-   `to` **[object][8]** Appium: support Android and iOS
 
 ### swipeDown
 
