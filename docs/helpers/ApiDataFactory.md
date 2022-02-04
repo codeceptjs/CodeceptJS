@@ -221,12 +221,15 @@ I.have('user');
 // create user with defined email
 // and receive it when inside async function
 const user = await I.have('user', { email: 'user@user.com'});
+// create a user with options that will not be included in the final request
+I.have('user', { }, { age: 33, height: 55 })
 ```
 
 #### Parameters
 
 -   `factory` **any** factory to use
 -   `params` **any** predefined parameters
+-   `options` **any** options for programmatically generate the attributes
 
 ### haveMultiple
 
@@ -238,6 +241,9 @@ I.haveMultiple('post', 3);
 
 // create 3 posts by one author
 I.haveMultiple('post', 3, { author: 'davert' });
+
+// create 3 posts by one author with options
+I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 ```
 
 #### Parameters
@@ -245,6 +251,7 @@ I.haveMultiple('post', 3, { author: 'davert' });
 -   `factory` **any** 
 -   `times` **any** 
 -   `params` **any** 
+-   `options` **any** 
 
 [1]: https://github.com/rosiejs/rosie
 
