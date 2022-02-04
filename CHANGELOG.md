@@ -9,6 +9,10 @@
   * Added dependency on `joi` and `chai`
 * [Playwright] Added `timeout` option to set [timeout](https://playwright.dev/docs/api/class-page#page-set-default-timeout) for all Playwright actions. If an action fails, Playwright keeps retrying it for a time set by timeout.
 * [Playwright] **Possible breaking change.** By default `timeout` is set to 1000ms. *Previous default was set by Playwright internally to 30s. This was causing contradiction to CodeceptJS retries, so triggered up to 3 retries for 30s of time. This timeout option was lowered so retryFailedStep plugin would not cause long delays.*
+* [Playwright] Updated `restart` config option to include 3 restart strategies:
+  * 'context' or **false** - restarts [browser context](https://playwright.dev/docs/api/class-browsercontext) but keeps running browser. Recommended by Playwright team to keep tests isolated.
+  * 'browser' or **true** - closes browser and opens it again between tests.
+  * 'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default prior CodeceptJS 3.1
 * [Playwright] Extended methods to provide more options from engine. These methods were updated so additional options can be be passed as the last argument:
   * [`click`](/helpers/Playwright#click)
   * [`dragAndDrop`](/helpers/Playwright#dragAndDrop)
