@@ -86,8 +86,15 @@ They were used to perform API requests for browser tests. As so, they lack asser
 
 > 💡 In CodeceptJS assertions start with `see` prefix. Learn more about assertions by [opening reference for JSONResponse](/helpers/JSONResponse/) helper.
 
-After helpers were configured, you can start writing first API test. By default, CodeceptJS saves tests in `tests` directory and uses `*_test.js` suffix. The `init` command created the first test for you to start.
+Generate TypeScript definitions to get auto-completions for JSONResponse:
 
+```
+npx codeceptjs def
+```
+
+After helpers were configured and typings were generated, you can start writing first API test. By default, CodeceptJS saves tests in `tests` directory and uses `*_test.js` suffix. The `init` command created the first test for you to start.
+
+> Check [API Examples](https://github.com/codeceptjs/api-examples) to see tests implementations.
 
 ## Requests
 
@@ -148,22 +155,26 @@ Authentication headers can be set in [helper's config](https://codecept.io/helpe
 Example:
 
 ```js
-// this way we pass Bearer token
-I.amBearerAuthenticated(secret('token-is-here'));
-// for custom authorization with headers use
-// I.haveRequestHeaders method
+Feature('Users endpoint')
 
-// here we send a POST request
-const response = await I.sendPostRequest('/users', {
-  name: 'joe',
-  email: 'joe@mail.com'
-});
-// usually we won't need direct access to response object for API testing 
-// but you can obtain it from request
+Scenario('create user', ({ I }) => {
+    // this way we pass Bearer token
+  I.amBearerAuthenticated(secret('token-is-here'));
+  // for custom authorization with headers use
+  // I.haveRequestHeaders method
 
-// check the last request was successful
-// this method introduced by JSONResponse helper
-I.seeResponseCodeIsSuccessful();
+  // here we send a POST request
+  const response = await I.sendPostRequest('/users', {
+    name: 'joe',
+    email: 'joe@mail.com'
+  });
+  // usually we won't need direct access to response object for API testing 
+  // but you can obtain it from request
+
+  // check the last request was successful
+  // this method introduced by JSONResponse helper
+  I.seeResponseCodeIsSuccessful();
+})
 ```
 
 ### GraphQL
@@ -173,21 +184,25 @@ It's plain old JSON. This why `JSONResponse` helper works for both API types.
 Configure authorization headers in `codecept.conf.js` and make your first query:  
 
 ```js
-// make GraphQL query or mutation
-const resp = await I.sendQuery('{ user(id: 0) { id name email }}');
-I.seeResponseCodeIsSuccessful();
+Feature('Users endpoint')
 
-// GraphQL always returns key data as part of response
-I.seeResponseContainsKeys(['data']);
+Scenario('get user by query', ({ I }) => {
+  // make GraphQL query or mutation
+  const resp = await I.sendQuery('{ user(id: 0) { id name email }}');
+  I.seeResponseCodeIsSuccessful();
 
-// check data for partial inclusion
-I.seeResponseContainsJson({
-  data: {
-    user: {
-      name: 'john doe',
-      email: 'johnd@mutex.com',
+  // GraphQL always returns key data as part of response
+  I.seeResponseContainsKeys(['data']);
+
+  // check data for partial inclusion
+  I.seeResponseContainsJson({
+    data: {
+      user: {
+        name: 'john doe',
+        email: 'johnd@mutex.com',
+      },
     },
-  },
+  });
 });
 ```
 
