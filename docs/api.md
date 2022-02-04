@@ -300,7 +300,7 @@ To perform arbitrary assertions on a response object use `seeResponseValidByCall
 It allows you to do any kind of assertions by using `expect` from [`chai`](https://www.chaijs.com) library.
 
 ```js
-I.seeResponseValidByCallback({ data, status, expect } => {
+I.seeResponseValidByCallback(({ data, status, expect }) => {
   // we receive data and expect to combine them for good assertion
   expect(data.users.length).to.be.gte(10);
 })
