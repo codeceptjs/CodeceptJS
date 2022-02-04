@@ -207,7 +207,7 @@ Executes a callback function passing in `response` object and chai assertions wi
 Use it to perform custom checks of response data
 
 ```js
-I.seeResponseValidByCallback({ data, status, expect } => {
+I.seeResponseValidByCallback(({ data, status, expect }) => {
   expect(status).to.eql(200);
   expect(data).keys.to.include(['user', 'company']);
 });
