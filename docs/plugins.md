@@ -583,17 +583,17 @@ Returns **([Promise][10]&lt;any> | [undefined][11])**
 
 ## fakerTransform
 
-Use the [faker.js][12] package to generate fake data inside examples on your gherkin tests
+Use the [@faker-js/faker][12] package to generate fake data inside examples on your gherkin tests
 
-![Faker.js][13]
+![@faker-js/faker][13]
 
 #### Usage
 
-To start please install `faker.js` package
+To start please install `@faker-js/faker` package
 
-    npm install -D faker
+    npm install -D @faker-js/faker
 
-    yarn add -D faker
+    yarn add -D @faker-js/faker
 
 Add this plugin to config file:
 
