@@ -11,7 +11,7 @@ This hardens setting it up testing environment for CI server and slows down test
 
 Is there a sane alternative to Selenium?
 
-Yes, how about [NightmareJS](http://www.nightmarejs.org)?
+Yes, how about [NightmareJS](https://www.nightmarejs.org)?
 
 It is modern Electron based testing framework which allows to execute tests in headless mode as well as in window mode for debug purposes.
 This makes Nightmare very useful, much more handy than PhantomJS. Nightmare is in active development and has nice API for writing acceptance tests.
@@ -105,7 +105,7 @@ codeceptjs init
 ```
 
 You will be asked for a Helper to use, you should select Nightmare and provide url of a website you are testing.
-Setup process is explained on [QuickStart page](http://codecept.io/quickstart/).
+Setup process is explained on [QuickStart page](https://codecept.io/quickstart/).
 
 (If you already have CodeceptJS project, just install nightmare globally or locally and enable it in config)
 
@@ -171,7 +171,7 @@ Nightmare helper is missing you can easily create `ExtendedNightmare` helper by 
 codeceptjs gh
 ```
 
-Learn more about [Helpers](http://codecept.io/helpers/).
+Learn more about [Helpers](https://codecept.io/helpers/).
 
 Nightmare instance can be accessed by custom helper:
 

@@ -29,16 +29,22 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - uses: microsoft/playwright-github-action@v1
-    - name: install required packages
-      run: |
-        sudo apt-get install php
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
     - name: npm install
       run: |
         npm install
+      env:
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run chromium tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+    - name: run chromium with restart==browser tests
+      run: "BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+    - name: run chromium with restart==session tests
+      run: "BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"      
     - name: run firefox tests
       run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests

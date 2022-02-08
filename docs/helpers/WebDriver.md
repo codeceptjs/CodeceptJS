@@ -599,7 +599,7 @@ I.defineTimeout({ implicit: 10000, pageLoad: 10000, script: 5000 });
 
 #### Parameters
 
--   `timeouts` **WebdriverIO.Timeouts** WebDriver timeouts object.
+-   `timeouts` **any** WebDriver timeouts object.
 
 ### dontSee
 
@@ -2154,22 +2154,6 @@ I.waitToHide('#popup');
 
 -   `locator` **([string][19] | [object][18])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
-
-### waitUntil
-
-Waits for a function to return true (waits for 1sec by default).
-
-```js
-I.waitUntil(() => window.requests == 0);
-I.waitUntil(() => window.requests == 0, 5);
-```
-
-#### Parameters
-
--   `fn` **([function][24] | [string][19])** function which is executed in browser context.
--   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
--   `timeoutMsg` **[string][19]** message to show in case of timeout fail. 
--   `interval` **[number][22]?**  
 
 ### waitUrlEquals
 

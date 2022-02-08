@@ -58,6 +58,21 @@ const allure = codeceptjs.container.plugins('allure');
 -   `addAttachment(name, buffer, type)` - add an attachment to current test / suite
 -   `addLabel(name, value)` - adds a label to current test
 -   `addParameter(kind, name, value)` - adds a parameter to current test
+-   `createStep(name, stepFunc)` - create a step, stepFunc could consist an attachment
+    Example of usage:
+
+```js
+    allure.createStep('New created step', () => {
+      allure.addAttachment(
+        'Request params',
+        '{"clientId":123, "name":"Tom", "age":29}',
+        'application/json'
+      );
+    });
+```
+
+![Created Step Image][3]
+
 -   `severity(value)` - adds severity label
 -   `epic(value)` - adds epic label
 -   `feature(value)` - adds feature label
@@ -127,7 +142,7 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
-Before(login => {
+Before(({ login }) => {
    login('user'); // login using user session
 });
 
@@ -434,7 +449,7 @@ Possible config options:
 
 ## customLocator
 
-Creates a [custom locator][3] by using special attributes in HTML.
+Creates a [custom locator][4] by using special attributes in HTML.
 
 If you have a convention to use `data-test-id` or `data-qa` attributes to mark active elements for e2e tests,
 you can enable this plugin to simplify matching elements with these attributes:
@@ -501,11 +516,76 @@ I.click('=sign-up'); // matches => [data-qa=sign-up]
 
 -   `config`  
 
+## eachElement
+
+Provides `eachElement` global function to iterate over found elements to perform actions on them.
+
+`eachElement` takes following args:
+
+-   `purpose` - the goal of an action. A comment text that will be displayed in output.
+-   `locator` - a CSS/XPath locator to match elements
+-   `fn(element, index)` - **asynchronous** function which will be executed for each matched element.
+
+Example of usage:
+
+```js
+// this example works with Playwright and Puppeteer helper
+await eachElement('click all checkboxes', 'form input[type=checkbox]', async (el) => {
+  await el.click();
+});
+```
+
+Click odd elements:
+
+```js
+// this example works with Playwright and Puppeteer helper
+await eachElement('click odd buttons', '.button-select', async (el, index) => {
+  if (index % 2) await el.click();
+});
+```
+
+Check all elements for visibility:
+
+```js
+// this example works with Playwright and Puppeteer helper
+const assert = require('assert');
+await eachElement('check all items are visible', '.item', async (el) => {
+  assert(await el.isVisible());
+});
+```
+
+This method works with WebDriver, Playwright, Puppeteer, Appium helpers.
+
+Function parameter `el` represents a matched element.
+Depending on a helper API of `el` can be different. Refer to API of corresponding browser testing engine for a complete API list:
+
+-   [Playwright ElementHandle][5]
+-   [Puppeteer][6]
+-   [webdriverio element][7]
+
+#### Configuration
+
+-   `registerGlobal` - to register `eachElement` function globally, true by default
+
+If `registerGlobal` is false you can use eachElement from the plugin:
+
+```js
+const eachElement = codeceptjs.container.plugins('eachElement');
+```
+
+### Parameters
+
+-   `purpose` **[string][8]** 
+-   `locator` **CodeceptJS.LocatorOrString** 
+-   `fn` **[Function][9]** 
+
+Returns **([Promise][10]&lt;any> | [undefined][11])** 
+
 ## fakerTransform
 
-Use the [faker.js][4] package to generate fake data inside examples on your gherkin tests
+Use the [faker.js][12] package to generate fake data inside examples on your gherkin tests
 
-![Faker.js][5]
+![Faker.js][13]
 
 #### Usage
 
@@ -543,7 +623,7 @@ Scenario Outline: ...
 
 ## pauseOnFail
 
-Automatically launches [interactive pause][6] when a test fails.
+Automatically launches [interactive pause][14] when a test fails.
 
 Useful for debugging flaky tests on local environment.
 Add this plugin to config file:
@@ -579,9 +659,9 @@ Run tests with plugin enabled:
 
 #### Configuration:
 
--   `retries` - number of retries (by default 5),
+-   `retries` - number of retries (by default 3),
 -   `when` - function, when to perform a retry (accepts error as parameter)
--   `factor` - The exponential factor to use. Default is 2.
+-   `factor` - The exponential factor to use. Default is 1.5.
 -   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
 -   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
 -   `randomize` - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.
@@ -626,6 +706,75 @@ Scenario('scenario tite', () => {
 
 -   `config`  
 
+## retryTo
+
+Adds global `retryTo` which retries steps a few times before failing.
+
+Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
+
+```js
+plugins: {
+  retryTo: {
+    enabled: true
+  }
+}
+```
+
+Use it in your tests:
+
+```js
+// retry these steps 5 times before failing
+await retryTo((tryNum) => {
+  I.switchTo('#editor frame');
+  I.click('Open');
+  I.see('Opened')
+}, 5);
+```
+
+Set polling interval as 3rd argument (200ms by default):
+
+```js
+// retry these steps 5 times before failing
+await retryTo((tryNum) => {
+  I.switchTo('#editor frame');
+  I.click('Open');
+  I.see('Opened')
+}, 5, 100);
+```
+
+Default polling interval can be changed in a config:
+
+```js
+plugins: {
+  retryTo: {
+    enabled: true,
+    pollInterval: 500,
+  }
+}
+```
+
+Disables retryFailedStep plugin for steps inside a block;
+
+Use this plugin if:
+
+-   you need repeat a set of actions in flaky tests
+-   iframe was not rendered and you need to retry switching to it
+
+#### Configuration
+
+-   `pollInterval` - default interval between retries in ms. 200 by default.
+-   `registerGlobal` - to register `retryTo` function globally, true by default
+
+If `registerGlobal` is false you can use retryTo from the plugin:
+
+```js
+const retryTo = codeceptjs.container.plugins('retryTo');
+```
+
+### Parameters
+
+-   `config`  
+
 ## screenshotOnFail
 
 Creates screenshot on failure. Screenshot is saved into `output` directory.
@@ -657,14 +806,14 @@ Possible config options:
 
 ## selenoid
 
-[Selenoid][7] plugin automatically starts browsers and video recording.
+[Selenoid][15] plugin automatically starts browsers and video recording.
 Works with WebDriver helper.
 
 ### Prerequisite
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][8] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][16] tool from Selenoid
 
 ### Usage
 
@@ -693,7 +842,7 @@ plugins: {
   }
 ```
 
-When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][9] and start Selenoid automatically.
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][17] and start Selenoid automatically.
 It will also create `browsers.json` file required by Selenoid.
 
 In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
@@ -705,10 +854,10 @@ In automatic mode the latest version of browser will be used for tests. It is re
 While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
 This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
 
-> Use [Selenoid Configuration Manager][8] to create and start containers semi-automatically.
+> Use [Selenoid Configuration Manager][16] to create and start containers semi-automatically.
 
 1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
-    [Refer to Selenoid documentation][10] to know more about browsers.json.
+    [Refer to Selenoid documentation][18] to know more about browsers.json.
 
 _Sample browsers.json_
 
@@ -733,7 +882,7 @@ _Sample browsers.json_
 
 2.  Create Selenoid container
 
-Run the following command to create a container. To know more [refer here][11]
+Run the following command to create a container. To know more [refer here][19]
 
 ```bash
 docker create                                    \
@@ -766,7 +915,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 | enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
 | enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
 | deletePassed     | Delete video and logs of passed tests (default : true)                         |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][12] to know more   |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][20] to know more   |
 
 ### Parameters
 
@@ -774,7 +923,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ## stepByStepReport
 
-![step-by-step-report][13]
+![step-by-step-report][21]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -802,10 +951,66 @@ Possible config options:
 -   `fullPageScreenshots`: should full page screenshots be used. Default: false.
 -   `output`: a directory where reports should be stored. Default: `output`.
 -   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
+-   \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
 
 ### Parameters
 
 -   `config` **any** 
+
+## stepTimeout
+
+Set timeout for test steps globally.
+
+Add this plugin to config file:
+
+```js
+plugins: {
+    stepTimeout: {
+       enabled: true
+    }
+}
+```
+
+Run tests with plugin enabled:
+
+    npx codeceptjs run --plugins stepTimeout
+
+#### Configuration:
+
+-   `timeout` - global step timeout, default 150 seconds
+-   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
+-   `noTimeoutSteps` - an array of steps with no timeout. Default:
+
+    -   `amOnPage`
+    -   `wait*`
+
+    you could set your own noTimeoutSteps which would replace the default one.
+
+-   `customTimeoutSteps` - an array of step actions with custom timeout. Use it to override or extend noTimeoutSteps.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+
+#### Example
+
+```js
+plugins: {
+    stepTimeout: {
+        enabled: true,
+        overrideStepLimits: true,
+        noTimeoutSteps: [
+          'scroll*', // ignore all scroll steps
+          /Cookie/, // ignore all steps with a Cookie in it (by regexp)
+        ],
+        customTimeoutSteps: [
+          ['myFlakyStep*', 1],
+          ['scrollWhichRequiresTimeout', 5],
+        ]
+    }
+}
+```
+
+### Parameters
+
+-   `config`  
 
 ## subtitles
 
@@ -856,18 +1061,22 @@ Use this plugin if:
 
 #### Multiple Conditional Assertions
 
+````js
+Add assert requires first:
 ```js
+const assert = require('assert');
+````
+
+Then use the assert:
 const result1 = await tryTo(() => I.see('Hello, user'));
 const result2 = await tryTo(() => I.seeElement('.welcome'));
 assert.ok(result1 && result2, 'Assertions were not succesful');
-```
 
-##### Optional click
+    ##### Optional click
 
-```js
-I.amOnPage('/');
-tryTo(() => I.click('Agree', '.cookies'));
-```
+    ```js
+    I.amOnPage('/');
+    tryTo(() => I.click('Agree', '.cookies'));
 
 #### Configuration
 
@@ -895,7 +1104,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][14].
+A complete list of all available services can be found on [webdriverio website][22].
 
 #### Setup
 
@@ -907,7 +1116,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][15].
+Install `@wdio/selenium-standalone-service` package, as [described here][23].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -926,7 +1135,7 @@ Please note, this service can be used with Protractor helper as well!
 
 #### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][16].
+Install `@wdio/sauce-service` package, as [described here][24].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -960,30 +1169,46 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [2]: https://github.com/allure-framework/allure2/blob/master/plugins/screen-diff-plugin/README.md
 
-[3]: https://codecept.io/locators#custom-locators
+[3]: https://user-images.githubusercontent.com/63167966/139339384-e6e70a62-3638-406d-a224-f32473071428.png
 
-[4]: https://www.npmjs.com/package/faker
+[4]: https://codecept.io/locators#custom-locators
 
-[5]: https://raw.githubusercontent.com/Marak/faker.js/master/logo.png
+[5]: https://playwright.dev/docs/api/class-elementhandle
 
-[6]: /basics/#pause
+[6]: https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle
 
-[7]: https://aerokube.com/selenoid/
+[7]: https://webdriver.io/docs/api
 
-[8]: https://aerokube.com/cm/latest/
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[9]: https://hub.docker.com/u/selenoid
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[10]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[11]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[12]: https://docs.docker.com/engine/reference/commandline/create/
+[12]: https://www.npmjs.com/package/faker
 
-[13]: https://codecept.io/img/codeceptjs-slideshow.gif
+[13]: https://raw.githubusercontent.com/Marak/faker.js/master/logo.png
 
-[14]: https://webdriver.io
+[14]: /basics/#pause
 
-[15]: https://webdriver.io/docs/selenium-standalone-service.html
+[15]: https://aerokube.com/selenoid/
 
-[16]: https://webdriver.io/docs/sauce-service.html
+[16]: https://aerokube.com/cm/latest/
+
+[17]: https://hub.docker.com/u/selenoid
+
+[18]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+
+[19]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+
+[20]: https://docs.docker.com/engine/reference/commandline/create/
+
+[21]: https://codecept.io/img/codeceptjs-slideshow.gif
+
+[22]: https://webdriver.io
+
+[23]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[24]: https://webdriver.io/docs/sauce-service.html

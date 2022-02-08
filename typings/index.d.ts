@@ -2,6 +2,8 @@
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
+/// <reference types="joi" />
+/// <reference types="playwright" />
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
@@ -10,6 +12,8 @@ declare namespace CodeceptJS {
   type Cookie = {
     name: string;
     value: string;
+    domain?: string,
+    path?: string,
   };
 
   interface PageScrollPosition {
@@ -66,7 +70,7 @@ declare namespace CodeceptJS {
   type StringOrSecret = string | CodeceptJS.Secret;
 
   interface HookCallback {
-    (args: SupportObject): void;
+    (args: SupportObject): void | Promise<void>;
   }
   interface Scenario extends IScenario {
     only: IScenario;
@@ -195,10 +199,15 @@ declare namespace Mocha {
   }
 
   interface Test extends Runnable {
+    artifacts: [],
     tags: any[];
   }
 }
 
 declare module "codeceptjs" {
   export = codeceptjs;
+}
+
+declare module "@codeceptjs/helper" {
+  export = CodeceptJS.Helper;
 }

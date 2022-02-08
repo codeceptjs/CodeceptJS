@@ -1,4 +1,4 @@
-@WebDriverIO @bdd
+@bdd
 Feature: Web Components Shadow Dom Elements
 
   In order to achieve my goals

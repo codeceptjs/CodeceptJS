@@ -1,6 +1,9 @@
 ## Automating React Native apps
 
 ### Problem
+
+> ⚠️ **NOTE**: This problem is not actual starting from `react-native@0.65.x` [CHANGELOG](https://github.com/react-native-community/releases/blob/master/CHANGELOG.md#android-specific-9), [#381fb3](https://github.com/facebook/react-native/commit/381fb395ad9d2d48717a5d082aaedbecdd804554)
+
 Let's say we have a React Native app with component defined like this
 ```html
 <Button testID='someButton'>My button</Button>
