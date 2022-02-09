@@ -86,7 +86,7 @@ Scenario('Checkout test', ({ I }) => {
 Can we use it for long scenarios? Sure!
 
 ```js
-const faker = require('faker');                               // Use 3rd-party JS code
+const faker = require('@faker-js/faker');                               // Use 3rd-party JS code
 
 Feature('Store');
 

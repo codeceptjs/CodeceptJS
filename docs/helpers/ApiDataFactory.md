@@ -43,7 +43,7 @@ To make this work you need
 Install [Rosie][1] and [Faker][2] libraries.
 
 ```sh
-npm i rosie faker --save-dev
+npm i rosie @faker-js/faker --save-dev
 ```
 
 Create a factory file for a resource.
@@ -53,8 +53,8 @@ See the example for Posts factories:
 ```js
 // tests/factories/posts.js
 
-var Factory = require('rosie').Factory;
-var faker = require('faker');
+const { Factory } = require('rosie');
+const faker = require('@faker-js/faker');
 
 module.exports = new Factory()
    // no need to set id, it will be set by REST API
