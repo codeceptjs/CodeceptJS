@@ -53,7 +53,7 @@ See the example for Posts factories:
 ```js
 // tests/factories/posts.js
 
-const { Factory } = require('rosie');
+const Factory = require('rosie').Factory;
 const faker = require('@faker-js/faker');
 
 module.exports = new Factory()

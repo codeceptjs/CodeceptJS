@@ -53,7 +53,7 @@ See the example for Users factories:
 ```js
 // tests/factories/users.js
 
-const { Factory } = require('rosie');
+const Factory = require('rosie').Factory;
 const faker = require('@faker-js/faker');
 
 // Used with a constructor function passed to Factory, so that the final build
