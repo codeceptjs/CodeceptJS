@@ -92,6 +92,7 @@
   "devDependencies": {
     "@codeceptjs/detox-helper": "^1.0.2",
     "@codeceptjs/mock-request": "^0.3.1",
+    "@faker-js/faker": "^5.5.3",
     "@pollyjs/adapter-puppeteer": "^5.1.0",
     "@pollyjs/core": "^5.1.0",
     "@types/inquirer": "^0.0.35",
@@ -112,7 +113,6 @@
     "eslint-plugin-mocha": "^6.3.0",
     "expect": "^26.6.2",
     "express": "^4.17.2",
-    "faker": "^6.6.6",
     "form-data": "^3.0.1",
     "graphql": "^14.6.0",
     "husky": "^4.3.8",
@@ -145,7 +145,7 @@
     "npm": ">=5.6.0"
   },
   "peerDependencies": {
-    "faker": "^6.6.6"
+    "@faker-js/faker": "^5.5.3"
   },
   "es6": true,
   "husky": {
