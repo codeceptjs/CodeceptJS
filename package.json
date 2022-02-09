@@ -112,7 +112,7 @@
     "eslint-plugin-mocha": "^6.3.0",
     "expect": "^26.6.2",
     "express": "^4.17.2",
-    "@faker-js/faker": "^6.0.0-alpha.5",
+    "faker": "^6.6.6",
     "form-data": "^3.0.1",
     "graphql": "^14.6.0",
     "husky": "^4.3.8",
@@ -145,7 +145,7 @@
     "npm": ">=5.6.0"
   },
   "peerDependencies": {
-    "@faker-js/faker": "^6.0.0-alpha.5"
+    "faker": "^6.6.6"
   },
   "es6": true,
   "husky": {

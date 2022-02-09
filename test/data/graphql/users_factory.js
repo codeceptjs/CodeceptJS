@@ -1,5 +1,5 @@
 const Factory = require('rosie').Factory;
-const faker = require('@faker-js/faker');
+const faker = require('faker');
 
 module.exports = new Factory(function (buildObject) {
   this.input = { ...buildObject };
