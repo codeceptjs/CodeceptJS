@@ -206,7 +206,7 @@ See the example providing a factory for User generation:
 ```js
 // factories/post.js
 var Factory = require('rosie').Factory;
-var faker = require('faker');
+var faker = require('@faker-js/faker');
 
 module.exports = new Factory()
   .attr('name', () => faker.name.findName())
@@ -262,7 +262,7 @@ See the example providing a factory for User generation:
 ```js
 // factories/post.js
 var Factory = require('rosie').Factory;
-var faker = require('faker');
+var faker = require('@faker-js/faker');
 
 module.exports = new Factory((buildObj) => {
   return {
