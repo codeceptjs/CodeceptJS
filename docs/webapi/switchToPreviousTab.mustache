@@ -1,9 +1,10 @@
- Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
 
- ```js
- I.switchToPreviousTab();
- I.switchToPreviousTab(2);
- ```
+```js
+I.switchToPreviousTab();
+I.switchToPreviousTab(2);
+```
 
- @param {number} [num] (optional) number of tabs to switch backward, default: 1.
- @param {number?} [sec] (optional) time in seconds to wait.
+@param {number} [num] (optional) number of tabs to switch backward, default: 1.
+@param {number?} [sec] (optional) time in seconds to wait.
+@return {Promise<any>}
