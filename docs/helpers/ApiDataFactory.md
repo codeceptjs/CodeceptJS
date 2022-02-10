@@ -231,6 +231,8 @@ I.have('user', { }, { age: 33, height: 55 })
 -   `params` **any** predefined parameters
 -   `options` **any** options for programmatically generate the attributes
 
+Returns **[Promise][5]&lt;any>** 
+
 ### haveMultiple
 
 Generates bunch of records and saves multiple API requests to store them.
@@ -260,3 +262,5 @@ I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 [3]: http://codecept.io/helpers/REST/
 
 [4]: https://github.com/axios/axios#request-config
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
