@@ -147,12 +147,16 @@ This is a ready to use example that shows how to integrate CodeceptJS with Puppe
 * examples for sequential and parallel execution
 * generation of allure test results  
 
-## [Framework with UI and API test support : CodeceptJS , Puppeteer , REST , ESLint](https://github.com/avighub/CodeceptJS-puppeteer)
-This is a basic framework with Puppeteer , REST helpers which can support both UI and API actions within same test.
-More improvements and features will be added and will be updated. 
-Suggestions and improvements are welcome , please raise a ticket in Issue tab.
+## [Example for Advanced REST API testing: TypeScript, Axios, CodeceptJS, Jest Expect, Docker, Allure, Mock-Server, Prettier + Eslint, pre-commit, Jest Unit Tests ](https://github.com/EgorBodnar/rest-axios-codeceptjs-allure-docker-test-example)
+One button example with built-in mocked backend. 
 
-* Step by step setup in README
-* Two helpers are added. UI - Puppeteer , API - REST and chai-codeceptJS for assetion
-* ESLint for code check
-* Upcoming : API generic functions , Adaptor design pattern , More utilities
+If you already have an UI testing solution based on the CodeceptJS and you need to implement REST API testing you can just extend your existing framework. Use this implementation as an example.
+This is necessary if all integrations with TMS and CI/CD are already configured, and you do not want to reconnect and configure the plugins used for the new test runner. Use CodeceptJS!
+
+* Easy run
+* Detailed README
+* Well documented mocked backend's REST API endpoints
+* HTTP request client with session support and unit tests
+* Exemplary code control
+* Ready to launch in a CI/CD system as is
+* OOP, Test data models and builders, endpoint decorators
