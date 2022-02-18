@@ -264,6 +264,8 @@ Appium: support only Android
 -   `appId` **[string][5]** 
 -   `bundleId` **[string][5]?** ID of bundle
 
+Returns **[Promise][4]&lt;any>** 
+
 ### seeCurrentActivityIs
 
 Check current activity on an Android device.
@@ -396,6 +398,8 @@ Switch to the specified context.
 
 -   `context` **any** the context to switch to
 
+Returns **[Promise][4]&lt;any>** 
+
 ### switchToWeb
 
 Switches to web context.
@@ -506,6 +510,8 @@ Appium: support Android and iOS
 -   `strategy` **(`"tapOutside"` \| `"pressKey"`)?** Desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
 -   `key` **[string][5]?** Optional key
 
+Returns **[Promise][4]&lt;any>** 
+
 ### sendDeviceKeyEvent
 
 Send a key event to the device.
@@ -597,7 +603,9 @@ I.performSwipe({ x: 300, y: 100 }, { x: 200, y: 100 });
 #### Parameters
 
 -   `from` **[object][8]** 
--   `to` **[object][8]** Appium: support Android and iOS
+-   `to` **[object][8]** 
+
+Returns **[Promise][4]&lt;any>** Appium: support Android and iOS
 
 ### swipeDown
 
@@ -731,6 +739,8 @@ Appium: support Android and iOS
 
 -   `actions` **[Array][6]** Array of touch actions
 
+Returns **[Promise][4]&lt;any>** 
+
 ### pullFile
 
 Pulls a file from the device.
@@ -833,6 +843,8 @@ I.appendField('#myTextField', 'appended');
 -   `field` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][5]** text value to append.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### checkOption
 
 Selects a checkbox or radio button.
@@ -850,6 +862,8 @@ I.checkOption('agree', '//form');
 
 -   `field` **([string][5] \| [object][8])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### click
 
@@ -880,6 +894,8 @@ I.click({css: 'nav a.login'});
 -   `locator` **([string][5] \| [object][8])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. (optional, default `null`)
 
+Returns **[Promise][4]&lt;any>** 
+
 ### dontSeeCheckboxIsChecked
 
 Verifies that the specified checkbox is not checked.
@@ -894,6 +910,8 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 -   `field` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### dontSeeElement
 
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
@@ -905,6 +923,8 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** located by CSS|XPath|Strict locator.
+
+Returns **[Promise][4]&lt;any>** 
 
 ### dontSeeInField
 
@@ -921,6 +941,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 -   `field` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][5]** value to check.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### dontSee
 
 Opposite to `see`. Checks that a text is not present on a page.
@@ -935,6 +957,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 -   `text` **[string][5]** which is not present.
 -   `context` **([string][5] \| [object][8])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### fillField
 
@@ -956,6 +980,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 -   `field` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][5] \| [object][8])** text value to fill.
+
+Returns **[Promise][4]&lt;any>** 
 
 ### grabTextFromAll
 
@@ -1099,7 +1125,9 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.
--   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][15].Supported only for web testing
+-   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][15].
+
+Returns **[Promise][4]&lt;any>** Supported only for web testing
 
 ### seeCheckboxIsChecked
 
@@ -1115,6 +1143,8 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 -   `field` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### seeElement
 
 Checks that a given Element is visible
@@ -1127,6 +1157,8 @@ I.seeElement('#modal');
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][4]&lt;any>** 
 
 ### seeInField
 
@@ -1145,6 +1177,8 @@ I.seeInField('#searchform input','Search');
 -   `field` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][5]** value to check.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### see
 
 Checks that a page contains a visible text.
@@ -1160,6 +1194,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 -   `text` **[string][5]** expected on page.
 -   `context` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### selectOption
 
@@ -1185,7 +1221,9 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][5] \| [object][8])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][5] \| [Array][6]&lt;any>)** visible text or value of option.Supported only for web testing
+-   `option` **([string][5] \| [Array][6]&lt;any>)** visible text or value of option.
+
+Returns **[Promise][4]&lt;any>** Supported only for web testing
 
 ### waitForElement
 
@@ -1202,6 +1240,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait (optional, default `null`)
 
+Returns **[Promise][4]&lt;any>** 
+
 ### waitForVisible
 
 Waits for an element to become visible on a page (by default waits for 1sec).
@@ -1216,6 +1256,8 @@ I.waitForVisible('#popup');
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 
+Returns **[Promise][4]&lt;any>** 
+
 ### waitForInvisible
 
 Waits for an element to be removed or become invisible on a page (by default waits for 1sec).
@@ -1229,6 +1271,8 @@ I.waitForInvisible('#popup');
 
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### waitForText
 
@@ -1246,6 +1290,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `text` **[string][5]** to wait for.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 -   `context` **([string][5] \| [object][8])?** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### useWebDriverTo
 
@@ -1374,6 +1420,8 @@ I.amOnPage('/login'); // opens a login page
 
 -   `url` **[string][5]** url path or global url.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### forceClick
 
 Perform an emulated click on a link or a button, given by a locator.
@@ -1404,7 +1452,9 @@ I.forceClick({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.{{ react }} (optional, default `null`)
+-   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** {{ react }}
 
 ### doubleClick
 
@@ -1421,7 +1471,9 @@ I.doubleClick('.btn.edit');
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.{{ react }} (optional, default `null`)
+-   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** {{ react }}
 
 ### rightClick
 
@@ -1439,7 +1491,9 @@ I.rightClick('Click me', '.context');
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** clickable element located by CSS|XPath|strict locator.
--   `context` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS|XPath|strict locator.{{ react }} (optional, default `null`)
+-   `context` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS|XPath|strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** {{ react }}
 
 ### forceRightClick
 
@@ -1461,7 +1515,9 @@ I.forceRightClick('Menu');
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.{{ react }} (optional, default `null`)
+-   `context` **([string][5]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** {{ react }}
 
 ### clearField
 
@@ -1478,6 +1534,8 @@ I.clearField('#email');
 -   `field`  
 -   `editable` **([string][5] \| [object][8])** field located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
@@ -1493,7 +1551,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 -   `locator` **([string][5] \| [object][8])** field located by label|name|CSS|XPath|strict locator.
 -   `pathToFile` **[string][5]** local file path relative to codecept.json config file.
-    Appium: not tested
+
+Returns **[Promise][4]&lt;any>** Appium: not tested
 
 ### uncheckOption
 
@@ -1511,8 +1570,9 @@ I.uncheckOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][5] \| [object][8])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator.
-    Appium: not tested (optional, default `null`)
+-   `context` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** Appium: not tested
 
 ### grabHTMLFromAll
 
@@ -1560,6 +1620,8 @@ I.seeTextEquals('text', 'h1');
 -   `text` **[string][5]** element value to check.
 -   `context` **([string][5] \| [object][8])?** element located by CSS|XPath|strict locator. (optional, default `null`)
 
+Returns **[Promise][4]&lt;any>** 
+
 ### seeElementInDOM
 
 Checks that a given Element is present in the DOM
@@ -1573,6 +1635,8 @@ I.seeElementInDOM('#modal');
 
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### dontSeeElementInDOM
 
 Opposite to `seeElementInDOM`. Checks that element is not on page.
@@ -1585,6 +1649,8 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 -   `locator` **([string][5] \| [object][8])** located by CSS|XPath|Strict locator.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### seeInSource
 
 Checks that the current page contains the given string in its raw source code.
@@ -1596,6 +1662,8 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 #### Parameters
 
 -   `text` **[string][5]** value to check.
+
+Returns **[Promise][4]&lt;any>** 
 
 ### grabSource
 
@@ -1633,6 +1701,8 @@ I.dontSeeInSource('<!--'); // no comments in source
 -   `text`  
 -   `value` **[string][5]** to check.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### seeNumberOfElements
 
 Asserts that an element appears a given number of times in the DOM.
@@ -1645,7 +1715,9 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.{{ react }}
+-   `num` **[number][10]** number of elements.
+
+Returns **[Promise][4]&lt;any>** {{ react }}
 
 ### seeNumberOfVisibleElements
 
@@ -1659,7 +1731,9 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.{{ react }}
+-   `num` **[number][10]** number of elements.
+
+Returns **[Promise][4]&lt;any>** {{ react }}
 
 ### seeAttributesOnElements
 
@@ -1673,6 +1747,8 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 -   `locator` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.
 -   `attributes` **[object][8]** attributes and their values to check.
+
+Returns **[Promise][4]&lt;any>** 
 
 ### scrollTo
 
@@ -1689,6 +1765,8 @@ I.scrollTo('#submit', 5, 5);
 -   `locator` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### moveCursorTo
 
@@ -1708,6 +1786,8 @@ I.moveCursorTo('#submit', 5,5);
 -   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. (optional, default `0`)
 -   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. (optional, default `0`)
 
+Returns **[Promise][4]&lt;any>** 
+
 ### saveElementScreenshot
 
 Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
@@ -1721,6 +1801,8 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 -   `locator` **([string][5] \| [object][8])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][5]** file name to save.
+
+Returns **[Promise][4]&lt;any>** 
 
 ### type
 
@@ -1745,6 +1827,8 @@ I.type(['T', 'E', 'X', 'T']);
 -   `delay` **[number][10]?** (optional) delay in ms between key presses (optional, default `null`)
 -   `key` **([string][5] \| [Array][6]&lt;[string][5]>)** or array of keys to type.
 
+Returns **[Promise][4]&lt;any>** 
+
 ### dragAndDrop
 
 Drag an item to a destination element.
@@ -1756,7 +1840,9 @@ I.dragAndDrop('#dragHandle', '#container');
 #### Parameters
 
 -   `srcElement` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.
--   `destElement` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.Appium: not tested
+-   `destElement` **([string][5] \| [object][8])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][4]&lt;any>** Appium: not tested
 
 ### dragSlider
 
@@ -1772,6 +1858,8 @@ I.dragSlider('#slider', -70);
 
 -   `locator` **([string][5] \| [object][8])** located by label|name|CSS|XPath|strict locator.
 -   `offsetX` **[number][10]** position to drag. (optional, default `0`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### grabAllWindowHandles
 
@@ -1821,6 +1909,8 @@ Close all tabs except for the current one.
 I.closeOtherTabs();
 ```
 
+Returns **[Promise][4]&lt;any>** 
+
 ### switchTo
 
 Switches frame or in case of null locator reverts to parent.
@@ -1833,6 +1923,8 @@ I.switchTo(); // switch back to main page
 #### Parameters
 
 -   `locator` **([string][5]? | [object][8])** (optional, `null` by default) element located by CSS|XPath|strict locator. (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### grabNumberOfOpenTabs
 
@@ -1853,6 +1945,8 @@ Scroll page to the top.
 I.scrollPageToTop();
 ```
 
+Returns **[Promise][4]&lt;any>** 
+
 ### scrollPageToBottom
 
 Scroll page to the bottom.
@@ -1860,6 +1954,8 @@ Scroll page to the bottom.
 ```js
 I.scrollPageToBottom();
 ```
+
+Returns **[Promise][4]&lt;any>** 
 
 ### grabPageScrollPosition
 
@@ -1886,6 +1982,8 @@ I.setGeoLocation(121.21, 11.56, 10);
 -   `latitude` **[number][10]** to set.
 -   `longitude` **[number][10]** to set
 -   `altitude` **[number][10]?** (optional, null by default) to set (optional, default `null`)
+
+Returns **[Promise][4]&lt;any>** 
 
 ### grabGeoLocation
 
