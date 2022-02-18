@@ -178,6 +178,44 @@ describe('REST', () => {
       response.config.headers.should.have.property('Content-Type');
       response.config.headers['Content-Type'].should.eql('application/json');
     });
+
+    it('should set headers for all requests', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1test' });
+      // 1st request
+      {
+        const response = await I.sendGetRequest('/user');
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1test');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+      // 2nd request
+      {
+        const response = await I.sendPostRequest('/user', { name: 'john' }, { 'XY2-Test': 'xy2test' });
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1test');
+
+        response.config.headers.should.have.property('XY2-Test');
+        response.config.headers['XY2-Test'].should.include('xy2test');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should set Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendGetRequest('/user');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
   });
 
   describe('_url autocompletion', () => {
