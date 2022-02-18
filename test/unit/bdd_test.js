@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const { Parser } = require('gherkin');
-const Config = require('../../lib/config')
+const Config = require('../../lib/config');
 const {
   Given,
   When,
@@ -78,8 +78,8 @@ describe('BDD', () => {
   it('should fail on duplicate step definitions with option', () => {
     Config.append({
       gherkin: {
-        avoidDuplicateSteps: true
-      }
+        avoidDuplicateSteps: true,
+      },
     });
 
     let error = null;
@@ -87,11 +87,11 @@ describe('BDD', () => {
       Given('I am a bird', () => 1);
       Then('I am a bird', () => 1);
     } catch (err) {
-      error = err
+      error = err;
     } finally {
       expect(!!error).is.true;
     }
-  })
+  });
 
   it('should contain tags', async () => {
     let sum = 0;
