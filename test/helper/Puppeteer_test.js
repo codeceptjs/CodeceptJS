@@ -415,7 +415,7 @@ describe('Puppeteer', function () {
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
-      .then(res => res.should.be.defined));
+      .then(res => res.should.be.ok));
   });
 
   describe('#_locateFields', () => {

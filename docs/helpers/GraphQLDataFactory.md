@@ -43,7 +43,7 @@ To make this work you need
 Install [Rosie][1] and [Faker][2] libraries.
 
 ```sh
-npm i rosie faker --save-dev
+npm i rosie @faker-js/faker --save-dev
 ```
 
 Create a factory file for a resource.
@@ -53,8 +53,8 @@ See the example for Users factories:
 ```js
 // tests/factories/users.js
 
-var Factory = require('rosie').Factory;
-var faker = require('faker');
+const Factory = require('rosie').Factory;
+const faker = require('@faker-js/faker');
 
 // Used with a constructor function passed to Factory, so that the final build
 // object matches the necessary pattern to be sent as the variables object.
@@ -219,7 +219,7 @@ I.mutateMultiple('createUser', 3, { age: 25 });
 
 [2]: https://www.npmjs.com/package/faker
 
-[3]: https://codecept.io/helpers/GraphQL/
+[3]: http://codecept.io/helpers/GraphQL/
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

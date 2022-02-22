@@ -14,10 +14,10 @@ Take a look. Here is the sample test for a native mobile application written in 
 ```js
 I.seeAppIsInstalled("io.super.app");
 I.click('~startUserRegistrationCD');
-I.fillField('~email of the customer', 'Nothing special'));
-I.see('davert@codecept.io', '~email of the customer'));
-I.clearField('~email of the customer'));
-I.dontSee('Nothing special', '~email of the customer'));
+I.fillField('~email of the customer', 'Nothing special');
+I.see('davert@codecept.io', '~email of the customer');
+I.clearField('~email of the customer');
+I.dontSee('Nothing special', '~email of the customer');
 I.seeElement({
   android: 'android.widget.Button',
   ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'

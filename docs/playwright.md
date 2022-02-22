@@ -175,8 +175,10 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 ```js
 const assert = require('assert');
 Scenario('get value of current tasks', async ({ I }) => {
-  I.createTodo('do 1');
-  I.createTodo('do 2');
+  I.fillField('.todo', 'my first item');
+  I.pressKey('Enter')
+  I.fillField('.todo', 'my second item');
+  I.pressKey('Enter')
   let numTodos = await I.grabTextFrom('.todo-count strong');
   assert.equal(2, numTodos);
 });
@@ -188,17 +190,35 @@ In case some actions should be taken inside one element (a container or modal wi
 Please take a note that you can't use within inside another within in Playwright helper:
 
 ```js
-within('.todoapp', () => {
-  I.createTodo('my new item');
+await within('.todoapp', () => {
+  I.fillField('.todo', 'my new item');
+  I.pressKey('Enter')
   I.see('1 item left', '.todo-count');
   I.click('.todo-list input.toggle');
 });
 I.see('0 items left', '.todo-count');
 ```
 
-> [▶ Learn more about basic commands](/basics#writing-tests)
+### Each Element <Badge text="Since 3.3" type="warning"/>
 
-CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](https://codecept.io/pageobjects/) guide.
+Usually, CodeceptJS performs an action on the first matched element. 
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
+
+`eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives [ElementHandle instance](https://playwright.dev/docs/api/class-elementhandle) from Playwright API. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
+
+Usage example
+
+```js
+await eachElement(
+  'tick all checkboxes', 
+  'input.custom-checkbox', 
+  async (el, index) => {
+    await el.check();
+  });
+);
+```
+
+> ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
 
 ## Multi Session Testing
 
@@ -307,18 +327,39 @@ Scenario('website looks nice on iPhone', () => {
 });
 ```
 
-## Configuring CI
+## API Requests
 
-### GitHub Actions
+CodeceptJS has [REST](/helpers/REST) and [GraphQL]((/helpers/GraphQL)) helpers to perform requests to external APIs. This may be helpful to implement [data management](https://codecept.io/data/) strategy. 
 
-Playwright can be added to GitHub Actions using [official action](https://github.com/microsoft/playwright-github-action). Use it before starting CodeceptJS tests to install all dependencies. It is important to run tests in headless mode ([otherwise you will need to enable xvfb to emulate desktop](https://github.com/microsoft/playwright-github-action#run-in-headful-mode)).
+However, Playwright since 1.18 has its own [API for making request](https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get). It uses cookies from browser session to authenticate requests. So you can use it via [`makeApiRequest`](/helpers/Playwright#makeApiRequest) method:
 
-```yml
-# from workflows/tests.yml
-- uses: microsoft/playwright-github-action@v1
-- name: run CodeceptJS tests
-  run: npx codeceptjs run
+```js
+I.makeApiRequest('GET', '/users')
 ```
+
+It is also possible to test JSON responses by adding [`JSONResponse`](/helpers/JSONResponse) and connecting it to Playwright:
+
+```js
+// inside codecept.conf.js
+{
+  helpers: {
+    Playwright: {
+      // current config
+    },
+    JSONResponse: {
+      requestHelper: 'Playwright',
+    }
+  }
+}
+```
+This helper provides you methods for [API testing](/api). For instance, you can check for status code, data inclusion and structure:
+
+```js
+I.makeApiRequest('GET', '/users/1');
+I.seeResponseCodeIs(200);
+I.seeResponseContainsKeys(['user']);
+```
+This way you can do full fledged API testing via Playwright.
 
 ## Accessing Playwright API
 
@@ -350,7 +391,6 @@ I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
   // call a method of helper, await is required here
   await Playwright.click('Reload');
 });
-
 ```
 
 ## Mocking Network Requests <Badge text="Since 3.1" type="warning"/>
@@ -496,6 +536,7 @@ Open `index.html` in your browser to view the full interactive coverage report.
 ![](https://user-images.githubusercontent.com/16587779/131858993-87d1aafc-8ef1-4a82-867d-e64a13e36106.png)
 
 ![](https://user-images.githubusercontent.com/16587779/131859006-c6f17d18-c603-44a5-9d59-0670177276cf.png)
+
 ## Extending Helper
 
 To create custom `I.*` commands using Playwright API you need to create a custom helper.
@@ -538,3 +579,17 @@ async setPermissions() {
 > [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/src/api/class-browsercontext.md)
 
 > [▶ Learn more about Helpers](https://codecept.io/helpers/)
+
+
+## Configuring CI
+
+### GitHub Actions
+
+Playwright can be added to GitHub Actions using [official action](https://github.com/microsoft/playwright-github-action). Use it before starting CodeceptJS tests to install all dependencies. It is important to run tests in headless mode ([otherwise you will need to enable xvfb to emulate desktop](https://github.com/microsoft/playwright-github-action#run-in-headful-mode)).
+
+```yml
+# from workflows/tests.yml
+- uses: microsoft/playwright-github-action@v1
+- name: run CodeceptJS tests
+  run: npx codeceptjs run
+```

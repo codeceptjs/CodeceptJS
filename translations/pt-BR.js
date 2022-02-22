@@ -1,5 +1,13 @@
 module.exports = {
   I: 'Eu',
+  contexts: {
+    Feature: 'Funcionalidade',
+    Scenario: 'Cenário',
+    Before: 'Antes',
+    After: 'Depois',
+    BeforeSuite: 'AntesDaSuite',
+    AfterSuite: 'DepoisDaSuite',
+  },
   actions: {
     amOutsideAngularApp: 'naoEstouEmAplicacaoAngular',
     amInsideAngularApp: 'estouNaAplicacaoAngular',

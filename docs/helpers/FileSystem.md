@@ -18,7 +18,17 @@ Can be easily used to check file structures:
 I.amInPath('test');
 I.seeFile('codecept.json');
 I.seeInThisFile('FileSystem');
-I.dontSeeInThisFile("WebDriverIO");
+I.dontSeeInThisFile("WebDriver");
+```
+
+## Configuration
+
+Enable helper in config file:
+
+```js
+helpers: {
+    FileSystem: {},
+}
 ```
 
 ## Methods

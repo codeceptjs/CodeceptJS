@@ -97,10 +97,10 @@ Scenario('update user profile', ({  }) => {
 }).tag('@slow').tag('important');
 ```
 
-All tests with `@tag` could be executed with `--grep @tag` option.
+All tests with `@tag` could be executed with `--grep '@tag'` option.
 
 ```sh
-npx codeceptjs run --grep @slow
+codeceptjs run --grep '@slow'
 ```
 
 Use regex for more flexible filtering:

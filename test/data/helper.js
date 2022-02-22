@@ -52,6 +52,10 @@ class MyHelper extends Helper {
   stringWithScenarioType(type) {
     return `Test: I'm ${type} test`;
   }
+
+  _locate() {
+    return [{ name: 'el1' }, { name: 'el2' }];
+  }
 }
 
 module.exports = MyHelper;

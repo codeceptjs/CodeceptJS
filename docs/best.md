@@ -215,7 +215,7 @@ include: {
 * When you need to customize access to API and go beyond what ApiDataFactory provides, implement DAO:
 
 ```js
-const faker = require('faker');
+const faker = require('@faker-js/faker');
 const { I } = inject();
 const { output } = require('codeceptjs');
 

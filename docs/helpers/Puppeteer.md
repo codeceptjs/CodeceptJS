@@ -15,7 +15,15 @@ Uses [Google Chrome's Puppeteer][1] library to run tests inside headless Chrome.
 Browser control is executed via DevTools Protocol (instead of Selenium).
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `puppeteer` package to be installed.
+Requires `puppeteer` or `puppeteer-core` package to be installed.
+
+    npm i puppeteer --save
+
+or
+
+    npm i puppeteer-core --save
+
+Using `puppeteer-core` package, will prevent the download of browser binaries and allow connecting to an existing browser installation or for connecting to a remote one.
 
 > Experimental Firefox support [can be activated][2].
 
@@ -2024,7 +2032,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[7]: https://jster.net/category/windows-modals-popups
+[7]: http://jster.net/category/windows-modals-popups
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

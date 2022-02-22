@@ -1,3 +1,64 @@
+## 3.3.0
+
+🛩️ Features:
+
+* [**API Testing introduced**](/api)
+  * Introduced [`JSONResponse`](/helpers/JSONResponse) helper which connects to REST, GraphQL or Playwright helper
+  * [REST] Added `amBearerAuthenticated` method
+  * [REST] Added `haveRequestHeaders` method
+  * Added dependency on `joi` and `chai`
+* [Playwright] Added `timeout` option to set [timeout](https://playwright.dev/docs/api/class-page#page-set-default-timeout) for all Playwright actions. If an action fails, Playwright keeps retrying it for a time set by timeout.
+* [Playwright] **Possible breaking change.** By default `timeout` is set to 1000ms. *Previous default was set by Playwright internally to 30s. This was causing contradiction to CodeceptJS retries, so triggered up to 3 retries for 30s of time. This timeout option was lowered so retryFailedStep plugin would not cause long delays.*
+* [Playwright] Updated `restart` config option to include 3 restart strategies:
+  * 'context' or **false** - restarts [browser context](https://playwright.dev/docs/api/class-browsercontext) but keeps running browser. Recommended by Playwright team to keep tests isolated.
+  * 'browser' or **true** - closes browser and opens it again between tests.
+  * 'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default prior CodeceptJS 3.1
+* [Playwright] Extended methods to provide more options from engine. These methods were updated so additional options can be be passed as the last argument:
+  * [`click`](/helpers/Playwright#click)
+  * [`dragAndDrop`](/helpers/Playwright#dragAndDrop)
+  * [`checkOption`](/helpers/Playwright#checkOption)
+  * [`uncheckOption`](/helpers/Playwright#uncheckOption)
+
+```js
+// use Playwright click options as 3rd argument
+I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+// check option also has options
+I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
+```
+
+* `eachElement` plugin introduced. It allows you to iterate over elements and perform some action on them using direct engines API
+
+```js
+await eachElement('click all links in .list', '.list a', (el) => {
+  await el.click();
+})
+```
+* [Playwright] Added support to `playwright-core` package if `playwright` is not installed. See #3190, fixes #2663.
+* [Playwright] Added `makeApiRequest` action to perform API requests. Requires Playwright >= 1.18
+* Added support to `codecept.config.js` for name consistency across other JS tools. See motivation at #3195 by @JiLiZART 
+* [ApiDataFactory] Added options arg to `have` method. See #3197 by @JJlokidoki
+* Improved pt-br translations to include keywords: 'Funcionalidade', 'Cenário', 'Antes', 'Depois', 'AntesDaSuite', 'DepoisDaSuite'. See #3206 by @danilolutz 
+* [allure plugin] Introduced `addStep` method to add comments and attachments. See #3104 by @EgorBodnar 
+
+🐛 Bugfixes:
+
+* Fixed #3212: using Regex flags for Cucumber steps. See #3214 by @anils92
+
+📖 Documentation
+
+* Added [Testomat.io reporter](/reports#testomatio)
+* Added [api testing](/api) guides
+* Added [internal api](/internal-api) guides
+* [Appium] Fixed documentation for `performSwipe`
+* [Playwright] update docs for `usePlaywrightTo` method by @dbudzins 
+
+## 3.2.3
+
+* Documentation improvements by @maojunxyz
+* Guard mocha cli reporter from registering step logger multiple times #3180 by @nikocanvacom 
+* [Playwright] Fixed "tracing.stop: tracing.stop: ENAMETOOLONG: name too long" by @hatufacci
+* Fixed #2889: return always the same error contract from simplifyTest. See #3168 by @andremoah 
+
 ## 3.2.2
 
 * [Playwright] Reverted removal of retry on context errors. Fixes #3130
