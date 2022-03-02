@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const { Parser } = require('gherkin');
+const Config = require('../../lib/config');
 const {
   Given,
   When,
@@ -43,6 +44,7 @@ describe('BDD', () => {
     clearSteps();
     recorder.start();
     container.create({});
+    Config.reset();
   });
 
   afterEach(() => {
@@ -71,6 +73,24 @@ describe('BDD', () => {
     expect(3).is.equal(matchStep('I Fly oVer Land')());
     expect(4).is.equal(matchStep('I see ocean')());
     expect(4).is.equal(matchStep('I see world')());
+  });
+
+  it('should fail on duplicate step definitions with option', () => {
+    Config.append({
+      gherkin: {
+        avoidDuplicateSteps: true,
+      },
+    });
+
+    let error = null;
+    try {
+      Given('I am a bird', () => 1);
+      Then('I am a bird', () => 1);
+    } catch (err) {
+      error = err;
+    } finally {
+      expect(!!error).is.true;
+    }
   });
 
   it('should contain tags', async () => {

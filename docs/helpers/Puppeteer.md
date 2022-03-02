@@ -279,6 +279,8 @@ I.amOnPage('/login'); // opens a login page
 
 -   `url` **[string][8]** url path or global url.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### appendField
 
 Appends text to a input field or textarea.
@@ -292,6 +294,8 @@ I.appendField('#myTextField', 'appended');
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][8]** text value to append.
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -311,7 +315,9 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
--   `pathToFile` **[string][8]** local file path relative to codecept.json config file.> ⚠ There is an [issue with file upload in Puppeteer 2.1.0 & 2.1.1][9], downgrade to 2.0.0 if you face it.
+-   `pathToFile` **[string][8]** local file path relative to codecept.json config file.
+
+Returns **[Promise][9]&lt;any>** > ⚠ There is an [issue with file upload in Puppeteer 2.1.0 & 2.1.1][10], downgrade to 2.0.0 if you face it.
 
 ### cancelPopup
 
@@ -335,6 +341,8 @@ I.checkOption('agree', '//form');
 -   `field` **([string][8] | [object][6])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+Returns **[Promise][9]&lt;any>** 
+
 ### clearCookie
 
 Clears a cookie by name,
@@ -350,6 +358,8 @@ I.clearCookie('test');
 -   `name`  
 -   `cookie` **[string][8]?** (optional, `null` by default) cookie name 
 
+Returns **[Promise][9]&lt;any>** 
+
 ### clearField
 
 Clears a `<textarea>` or text `<input>` element's value.
@@ -364,6 +374,8 @@ I.clearField('#email');
 
 -   `field`  
 -   `editable` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### click
 
@@ -392,11 +404,13 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### clickLink
 
@@ -409,11 +423,13 @@ I.clickLink('Logout', '#nav');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### closeCurrentTab
 
@@ -444,11 +460,13 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 #### Parameters
 
 -   `text` **[string][8]** which is not present.
--   `context` **([string][8] | [object][6])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+-   `context` **([string][8] | [object][6])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### dontSeeCheckboxIsChecked
 
@@ -464,6 +482,8 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### dontSeeCookie
 
 Checks that cookie with given name does not exist.
@@ -475,6 +495,8 @@ I.dontSeeCookie('auth'); // no auth cookie
 #### Parameters
 
 -   `name` **[string][8]** cookie name.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### dontSeeCurrentUrlEquals
 
@@ -490,6 +512,8 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 
 -   `url` **[string][8]** value to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### dontSeeElement
 
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
@@ -501,7 +525,8 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|Strict locator.
-    
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -519,6 +544,8 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|Strict locator.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### dontSeeInCurrentUrl
 
 Checks that current url does not contain a provided fragment.
@@ -526,6 +553,8 @@ Checks that current url does not contain a provided fragment.
 #### Parameters
 
 -   `url` **[string][8]** value to check.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### dontSeeInField
 
@@ -542,6 +571,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][8]** value to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### dontSeeInSource
 
 Checks that the current page does not contains the given string in its raw source code.
@@ -555,6 +586,8 @@ I.dontSeeInSource('<!--'); // no comments in source
 -   `text`  
 -   `value` **[string][8]** to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### dontSeeInTitle
 
 Checks that title does not contain text.
@@ -566,6 +599,8 @@ I.dontSeeInTitle('Error');
 #### Parameters
 
 -   `text` **[string][8]** value to check.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### doubleClick
 
@@ -582,11 +617,13 @@ I.doubleClick('.btn.edit');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### downloadFile
 
@@ -612,6 +649,8 @@ I.dragAndDrop('#dragHandle', '#container');
 -   `srcElement` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `destElement` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### dragSlider
 
 Drag the scrubber of a slider to a given position
@@ -625,19 +664,20 @@ I.dragSlider('#slider', -70);
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
--   `offsetX` **[number][10]** position to drag.
-    
+-   `offsetX` **[number][11]** position to drag. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### executeAsyncScript
 
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][11].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][12].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -658,9 +698,9 @@ let val = await I.executeAsyncScript(function(url, done) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
+-   `fn` **([string][8] | [function][13])** function to be executed in browser context.
 
-Returns **[Promise][13]&lt;any>** Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
+Returns **[Promise][9]&lt;any>** Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 
 ### executeScript
 
@@ -691,9 +731,9 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
+-   `fn` **([string][8] | [function][13])** function to be executed in browser context.
 
-Returns **[Promise][13]&lt;any>** If a function returns a Promise It will wait for it resolution.
+Returns **[Promise][9]&lt;any>** If a function returns a Promise It will wait for it resolution.
 
 ### fillField
 
@@ -715,6 +755,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][8] | [object][6])** text value to fill.
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -750,11 +792,13 @@ I.forceClick({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### grabAttributeFrom
 
@@ -771,7 +815,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][8]** attribute name.
 
-Returns **[Promise][13]&lt;[string][8]>** attribute value
+Returns **[Promise][9]&lt;[string][8]>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -791,7 +835,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][8]** attribute name.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
+Returns **[Promise][9]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -806,7 +850,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][13]&lt;[Array][14]&lt;any>>** 
+Returns **[Promise][9]&lt;[Array][14]&lt;any>>** 
 
 ### grabCookie
 
@@ -823,7 +867,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][8]?** cookie name. 
 
-Returns **([Promise][13]&lt;[string][8]> | [Promise][13]&lt;[Array][14]&lt;[string][8]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][9]&lt;[string][8]> | [Promise][9]&lt;[Array][14]&lt;[string][8]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -840,7 +884,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][8]** CSS property name.
 
-Returns **[Promise][13]&lt;[string][8]>** CSS value
+Returns **[Promise][9]&lt;[string][8]>** CSS value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -860,7 +904,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][8]** CSS property name.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** CSS value
+Returns **[Promise][9]&lt;[Array][14]&lt;[string][8]>>** CSS value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -876,7 +920,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][13]&lt;[string][8]>** current URL
+Returns **[Promise][9]&lt;[string][8]>** current URL
 
 ### grabDataFromPerformanceTiming
 
@@ -900,6 +944,8 @@ let data = await I.grabDataFromPerformanceTiming();
   loadEventEnd: 241
 }
 ```
+
+Returns **[Promise][9]&lt;any>** 
 
 ### grabElementBoundingRect
 
@@ -927,7 +973,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][8]?** x, y, width or height of the given element.
 
-Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][10]>)** Element bounding rectangle
+Returns **([Promise][9]&lt;DOMRect> | [Promise][9]&lt;[number][11]>)** Element bounding rectangle
 
 ### grabHTMLFrom
 
@@ -944,7 +990,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[string][8]>** HTML code for an element
+Returns **[Promise][9]&lt;[string][8]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -960,7 +1006,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** HTML code for an element
+Returns **[Promise][9]&lt;[Array][14]&lt;[string][8]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -971,7 +1017,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][13]&lt;[number][10]>** number of open tabs
+Returns **[Promise][9]&lt;[number][11]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -986,7 +1032,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[number][10]>** number of visible elements
+Returns **[Promise][9]&lt;[number][11]>** number of visible elements
 
 
 
@@ -1002,7 +1048,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][9]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1012,7 +1058,7 @@ Grab the text within the popup. If no popup is visible then it will return null
 await I.grabPopupText();
 ```
 
-Returns **[Promise][13]&lt;([string][8] | null)>** 
+Returns **[Promise][9]&lt;([string][8] | null)>** 
 
 ### grabSource
 
@@ -1023,7 +1069,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][13]&lt;[string][8]>** source code
+Returns **[Promise][9]&lt;[string][8]>** source code
 
 ### grabTextFrom
 
@@ -1040,7 +1086,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[string][8]>** attribute value
+Returns **[Promise][9]&lt;[string][8]>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1059,7 +1105,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
+Returns **[Promise][9]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1074,7 +1120,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][13]&lt;[string][8]>** title
+Returns **[Promise][9]&lt;[string][8]>** title
 
 ### grabValueFrom
 
@@ -1090,7 +1136,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[string][8]>** attribute value
+Returns **[Promise][9]&lt;[string][8]>** attribute value
 
 ### grabValueFromAll
 
@@ -1105,7 +1151,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
+Returns **[Promise][9]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 ### handleDownloads
 
@@ -1153,12 +1199,14 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### openNewTab
 
@@ -1231,7 +1279,9 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][8] | [Array][14]&lt;[string][8]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
+-   `key` **([string][8] | [Array][14]&lt;[string][8]>)** key or array of keys to press.
+
+Returns **[Promise][9]&lt;any>** _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
 
 ### pressKeyDown
 
@@ -1249,6 +1299,8 @@ I.pressKeyUp('Control');
 
 -   `key` **[string][8]** name of key to press down.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### pressKeyUp
 
 Releases a key in the browser which was previously set to a down state.
@@ -1265,6 +1317,8 @@ I.pressKeyUp('Control');
 
 -   `key` **[string][8]** name of key to release.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### refreshPage
 
 Reload the current page.
@@ -1273,6 +1327,8 @@ Reload the current page.
 I.refreshPage();
 ```
 
+Returns **[Promise][9]&lt;any>** 
+
 ### resizeWindow
 
 Resize the current window to provided width and height.
@@ -1280,10 +1336,12 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][10]** width in pixels or `maximize`.
--   `height` **[number][10]** height in pixels.Unlike other drivers Puppeteer changes the size of a viewport, not the window!
-    Puppeteer does not control the window of a browser so it can't adjust its real size.
-    It also can't maximize a window.
+-   `width` **[number][11]** width in pixels or `maximize`.
+-   `height` **[number][11]** height in pixels.
+
+Returns **[Promise][9]&lt;any>** Unlike other drivers Puppeteer changes the size of a viewport, not the window!
+Puppeteer does not control the window of a browser so it can't adjust its real size.
+It also can't maximize a window.
 
 ### rightClick
 
@@ -1301,11 +1359,13 @@ I.rightClick('Click me', '.context');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable element located by CSS|XPath|strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### saveElementScreenshot
 
@@ -1320,6 +1380,8 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][8]** file name to save.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### saveScreenshot
 
@@ -1337,6 +1399,8 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fileName` **[string][8]** file name to save.
 -   `fullPage` **[boolean][19]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
+Returns **[Promise][9]&lt;any>** 
+
 ### scrollPageToBottom
 
 Scroll page to the bottom.
@@ -1345,6 +1409,8 @@ Scroll page to the bottom.
 I.scrollPageToBottom();
 ```
 
+Returns **[Promise][9]&lt;any>** 
+
 ### scrollPageToTop
 
 Scroll page to the top.
@@ -1352,6 +1418,8 @@ Scroll page to the top.
 ```js
 I.scrollPageToTop();
 ```
+
+Returns **[Promise][9]&lt;any>** 
 
 ### scrollTo
 
@@ -1366,8 +1434,10 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. 
+-   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset. 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### see
 
@@ -1383,11 +1453,13 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 #### Parameters
 
 -   `text` **[string][8]** expected on page.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### seeAttributesOnElements
 
@@ -1401,7 +1473,8 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `attributes` **[object][6]** attributes and their values to check.
-    
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1421,6 +1494,8 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeCookie
 
 Checks that cookie with given name exists.
@@ -1432,6 +1507,8 @@ I.seeCookie('Auth');
 #### Parameters
 
 -   `name` **[string][8]** cookie name.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### seeCssPropertiesOnElements
 
@@ -1445,7 +1522,8 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `cssProperties` **[object][6]** object with CSS properties and their values to check.
-    
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1466,6 +1544,8 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 -   `url` **[string][8]** value to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeElement
 
 Checks that a given Element is visible
@@ -1478,7 +1558,8 @@ I.seeElement('#modal');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
-    
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1497,6 +1578,8 @@ I.seeElementInDOM('#modal');
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeInCurrentUrl
 
 Checks that current url contains a provided fragment.
@@ -1508,6 +1591,8 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 #### Parameters
 
 -   `url` **[string][8]** a fragment to check
+
+Returns **[Promise][9]&lt;any>** 
 
 ### seeInField
 
@@ -1526,6 +1611,8 @@ I.seeInField('#searchform input','Search');
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][8]** value to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeInPopup
 
 Checks that the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`, contains the
@@ -1539,6 +1626,8 @@ I.seeInPopup('Popup text');
 
 -   `text` **[string][8]** value to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeInSource
 
 Checks that the current page contains the given string in its raw source code.
@@ -1550,6 +1639,8 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 #### Parameters
 
 -   `text` **[string][8]** value to check.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### seeInTitle
 
@@ -1563,6 +1654,8 @@ I.seeInTitle('Home Page');
 
 -   `text` **[string][8]** text value to check.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeNumberOfElements
 
 Asserts that an element appears a given number of times in the DOM.
@@ -1575,7 +1668,9 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.
+-   `num` **[number][11]** number of elements.
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1593,7 +1688,9 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.
+-   `num` **[number][11]** number of elements.
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1612,6 +1709,8 @@ I.seeTextEquals('text', 'h1');
 -   `text` **[string][8]** element value to check.
 -   `context` **([string][8] | [object][6])?** element located by CSS|XPath|strict locator. 
 
+Returns **[Promise][9]&lt;any>** 
+
 ### seeTitleEquals
 
 Checks that title is equal to provided one.
@@ -1623,6 +1722,8 @@ I.seeTitleEquals('Test title.');
 #### Parameters
 
 -   `text` **[string][8]** value to check.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### selectOption
 
@@ -1650,6 +1751,8 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 -   `select` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][8] | [Array][14]&lt;any>)** visible text or value of option.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### setCookie
 
 Sets cookie(s).
@@ -1670,6 +1773,8 @@ I.setCookie([
 
 -   `cookie` **(Cookie | [Array][14]&lt;Cookie>)** a cookie object or array of cookie objects.
 
+Returns **[Promise][9]&lt;any>** 
+
 ### switchTo
 
 Switches frame or in case of null locator reverts to parent.
@@ -1683,6 +1788,8 @@ I.switchTo(); // switch back to main page
 
 -   `locator` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
+Returns **[Promise][9]&lt;any>** 
+
 ### switchToNextTab
 
 Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
@@ -1694,7 +1801,7 @@ I.switchToNextTab(2);
 
 #### Parameters
 
--   `num` **[number][10]**  
+-   `num` **[number][11]**  
 
 ### switchToPreviousTab
 
@@ -1707,7 +1814,7 @@ I.switchToPreviousTab(2);
 
 #### Parameters
 
--   `num` **[number][10]**  
+-   `num` **[number][11]**  
 
 ### type
 
@@ -1729,8 +1836,10 @@ I.type(['T', 'E', 'X', 'T']);
 #### Parameters
 
 -   `keys`  
--   `delay` **[number][10]?** (optional) delay in ms between key presses 
+-   `delay` **[number][11]?** (optional) delay in ms between key presses 
 -   `key` **([string][8] | [Array][14]&lt;[string][8]>)** or array of keys to type.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### uncheckOption
 
@@ -1750,6 +1859,8 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][8] | [object][6])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+Returns **[Promise][9]&lt;any>** 
+
 ### usePuppeteerTo
 
 Use Puppeteer API inside a test.
@@ -1768,7 +1879,7 @@ I.usePuppeteerTo('emulate offline mode', async ({ page }) {
 #### Parameters
 
 -   `description` **[string][8]** used to show in logs.
--   `fn` **[function][12]** async function that is executed with Puppeteer as argument
+-   `fn` **[function][13]** async function that is executed with Puppeteer as argument
 
 ### wait
 
@@ -1780,7 +1891,9 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][10]** number of second to wait.
+-   `sec` **[number][11]** number of second to wait.
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForClickable
 
@@ -1796,7 +1909,9 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `waitTimeout`  
--   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForDetached
 
@@ -1810,7 +1925,9 @@ I.waitForDetached('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForElement
 
@@ -1825,8 +1942,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait
-    
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1840,7 +1958,9 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional) time in seconds to wait, 1 by default. 
+-   `sec` **[number][11]** (optional) time in seconds to wait, 1 by default. 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForFunction
 
@@ -1859,9 +1979,11 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** to be executed in browser context.
--   `argsOrSec` **([Array][14]&lt;any> | [number][10])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait 
+-   `fn` **([string][8] | [function][13])** to be executed in browser context.
+-   `argsOrSec` **([Array][14]&lt;any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForInvisible
 
@@ -1875,7 +1997,9 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForNavigation
 
@@ -1898,8 +2022,8 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 #### Parameters
 
--   `urlOrPredicate` **([string][8] | [function][12])** 
--   `sec` **[number][10]?** seconds to wait 
+-   `urlOrPredicate` **([string][8] | [function][13])** 
+-   `sec` **[number][11]?** seconds to wait 
 
 ### waitForResponse
 
@@ -1912,8 +2036,8 @@ I.waitForResponse(response => response.url() === 'http://example.com' && respons
 
 #### Parameters
 
--   `urlOrPredicate` **([string][8] | [function][12])** 
--   `sec` **[number][10]?** number of seconds to wait 
+-   `urlOrPredicate` **([string][8] | [function][13])** 
+-   `sec` **[number][11]?** number of seconds to wait 
 
 ### waitForText
 
@@ -1929,8 +2053,10 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][8]** to wait for.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][8] | [object][6])?** (optional) element located by CSS|XPath|strict locator. 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForValue
 
@@ -1944,7 +2070,9 @@ I.waitForValue('//input', "GoodValue");
 
 -   `field` **([string][8] | [object][6])** input field.
 -   `value` **[string][8]** expected value.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitForVisible
 
@@ -1958,7 +2086,9 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][22]. 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** This method accepts [React selectors][22].
 
 ### waitInUrl
 
@@ -1971,7 +2101,9 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][8]** value to check.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitNumberOfVisibleElements
 
@@ -1984,13 +2116,14 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `num` **[number][10]** number of elements.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
-    
+-   `num` **[number][11]** number of elements.
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 
 This action supports [React locators](https://codecept.io/react#locators)
- 
+
 
 ### waitToHide
 
@@ -2004,7 +2137,9 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 ### waitUrlEquals
 
@@ -2018,7 +2153,9 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][8]** value to check.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][9]&lt;any>** 
 
 [1]: https://github.com/GoogleChrome/puppeteer
 
@@ -2036,15 +2173,15 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[9]: https://github.com/puppeteer/puppeteer/issues/5420
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[10]: https://github.com/puppeteer/puppeteer/issues/5420
 
-[11]: https://vuejs.org/v2/api/#Vue-nextTick
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[12]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 

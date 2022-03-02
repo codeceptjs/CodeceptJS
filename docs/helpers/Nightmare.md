@@ -82,6 +82,8 @@ I.amOnPage('/login'); // opens a login page
 -   `url` **[string][3]** url path or global url.
 -   `headers` **[object][4]?** list of request headers can be passed 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### appendField
 
 Appends text to a input field or textarea.
@@ -95,6 +97,8 @@ I.appendField('#myTextField', 'appended');
 
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][3]** text value to append.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### attachFile
 
@@ -110,7 +114,9 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
--   `pathToFile` **[string][3]** local file path relative to codecept.json config file.Doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. [See more][5])
+-   `pathToFile` **[string][3]** local file path relative to codecept.json config file.
+
+Returns **[Promise][5]&lt;any>** Doesn't work if the Chromium DevTools panel is open (as Chromium allows only one attachment to the debugger at a time. [See more][6])
 
 ### checkOption
 
@@ -130,6 +136,8 @@ I.checkOption('agree', '//form');
 -   `field` **([string][3] | [object][4])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### clearCookie
 
 Clears a cookie by name,
@@ -143,6 +151,8 @@ I.clearCookie('test');
 #### Parameters
 
 -   `cookie` **[string][3]?** (optional, `null` by default) cookie name 
+
+Returns **[Promise][5]&lt;any>** 
 
 ### clearField
 
@@ -158,6 +168,8 @@ I.clearField('#email');
 
 -   `field`  
 -   `editable` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### click
 
@@ -188,6 +200,8 @@ I.click({css: 'nav a.login'});
 -   `locator` **([string][3] | [object][4])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSee
 
 Opposite to `see`. Checks that a text is not present on a page.
@@ -203,6 +217,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 -   `text` **[string][3]** which is not present.
 -   `context` **([string][3] | [object][4])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSeeCheckboxIsChecked
 
 Verifies that the specified checkbox is not checked.
@@ -217,6 +233,8 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSeeCookie
 
 Checks that cookie with given name does not exist.
@@ -228,6 +246,8 @@ I.dontSeeCookie('auth'); // no auth cookie
 #### Parameters
 
 -   `name` **[string][3]** cookie name.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### dontSeeCurrentUrlEquals
 
@@ -243,6 +263,8 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 
 -   `url` **[string][3]** value to check.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSeeElement
 
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
@@ -254,6 +276,8 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|Strict locator.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### dontSeeElementInDOM
 
@@ -267,6 +291,8 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|Strict locator.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSeeInCurrentUrl
 
 Checks that current url does not contain a provided fragment.
@@ -274,6 +300,8 @@ Checks that current url does not contain a provided fragment.
 #### Parameters
 
 -   `url` **[string][3]** value to check.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### dontSeeInField
 
@@ -290,6 +318,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][3]** value to check.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSeeInSource
 
 Checks that the current page does not contains the given string in its raw source code.
@@ -303,6 +333,8 @@ I.dontSeeInSource('<!--'); // no comments in source
 -   `text`  
 -   `value` **[string][3]** to check.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### dontSeeInTitle
 
 Checks that title does not contain text.
@@ -314,6 +346,8 @@ I.dontSeeInTitle('Error');
 #### Parameters
 
 -   `text` **[string][3]** value to check.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### doubleClick
 
@@ -332,12 +366,14 @@ I.doubleClick('.btn.edit');
 -   `locator` **([string][3] | [object][4])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### executeAsyncScript
 
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][6].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][7].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -358,9 +394,9 @@ let val = await I.executeAsyncScript(function(url, done) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
--   `fn` **([string][3] | [function][7])** function to be executed in browser context.
+-   `fn` **([string][3] | [function][8])** function to be executed in browser context.
 
-Returns **[Promise][8]&lt;any>** Wrapper for asynchronous [evaluate][9].
+Returns **[Promise][5]&lt;any>** Wrapper for asynchronous [evaluate][9].
 Unlike NightmareJS implementation calling `done` will return its first argument.
 
 ### executeScript
@@ -392,9 +428,9 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
--   `fn` **([string][3] | [function][7])** function to be executed in browser context.
+-   `fn` **([string][3] | [function][8])** function to be executed in browser context.
 
-Returns **[Promise][8]&lt;any>** Wrapper for synchronous [evaluate][9]
+Returns **[Promise][5]&lt;any>** Wrapper for synchronous [evaluate][9]
 
 ### fillField
 
@@ -417,6 +453,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][3] | [object][4])** text value to fill.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -432,7 +470,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][3]** attribute name.
 
-Returns **[Promise][8]&lt;[string][3]>** attribute value
+Returns **[Promise][5]&lt;[string][3]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -448,7 +486,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][3]** attribute name.
 
-Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
+Returns **[Promise][5]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### grabCookie
 
@@ -465,7 +503,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][3]?** cookie name. 
 
-Returns **([Promise][8]&lt;[string][3]> | [Promise][8]&lt;[Array][10]&lt;[string][3]>>)** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+Returns **([Promise][5]&lt;[string][3]> | [Promise][5]&lt;[Array][10]&lt;[string][3]>>)** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ### grabCssPropertyFrom
 
@@ -482,7 +520,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][3]** CSS property name.
 
-Returns **[Promise][8]&lt;[string][3]>** CSS value
+Returns **[Promise][5]&lt;[string][3]>** CSS value
 
 ### grabCurrentUrl
 
@@ -494,7 +532,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][8]&lt;[string][3]>** current URL
+Returns **[Promise][5]&lt;[string][3]>** current URL
 
 ### grabElementBoundingRect
 
@@ -522,7 +560,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][3]?** x, y, width or height of the given element.
 
-Returns **([Promise][8]&lt;DOMRect> | [Promise][8]&lt;[number][11]>)** Element bounding rectangle
+Returns **([Promise][5]&lt;DOMRect> | [Promise][5]&lt;[number][11]>)** Element bounding rectangle
 
 ### grabHAR
 
@@ -548,7 +586,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[string][3]>** HTML code for an element
+Returns **[Promise][5]&lt;[string][3]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -564,7 +602,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** HTML code for an element
+Returns **[Promise][5]&lt;[Array][10]&lt;[string][3]>>** HTML code for an element
 
 ### grabNumberOfVisibleElements
 
@@ -579,7 +617,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[number][11]>** number of visible elements
+Returns **[Promise][5]&lt;[number][11]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -590,7 +628,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][8]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][5]&lt;PageScrollPosition>** scroll position
 
 ### grabTextFrom
 
@@ -607,7 +645,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[string][3]>** attribute value
+Returns **[Promise][5]&lt;[string][3]>** attribute value
 
 ### grabTextFromAll
 
@@ -622,7 +660,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
+Returns **[Promise][5]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### grabTitle
 
@@ -633,7 +671,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][8]&lt;[string][3]>** title
+Returns **[Promise][5]&lt;[string][3]>** title
 
 ### grabValueFrom
 
@@ -649,7 +687,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[string][3]>** attribute value
+Returns **[Promise][5]&lt;[string][3]>** attribute value
 
 ### grabValueFromAll
 
@@ -664,7 +702,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
+Returns **[Promise][5]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### haveHeader
 
@@ -696,6 +734,8 @@ I.moveCursorTo('#submit', 5,5);
 -   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### pressKey
 
 Sends [input event][12] on a page.
@@ -717,6 +757,8 @@ Reload the current page.
 I.refreshPage();
 ```
 
+Returns **[Promise][5]&lt;any>** 
+
 ### resizeWindow
 
 Resize the current window to provided width and height.
@@ -726,6 +768,8 @@ First parameter can be set to `maximize`.
 
 -   `width` **[number][11]** width in pixels or `maximize`.
 -   `height` **[number][11]** height in pixels.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### rightClick
 
@@ -745,6 +789,8 @@ I.rightClick('Click me', '.context');
 -   `locator` **([string][3] | [object][4])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### saveElementScreenshot
 
 Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
@@ -758,6 +804,8 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][3]** file name to save.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### saveScreenshot
 
@@ -775,6 +823,8 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 -   `fileName` **[string][3]** file name to save.
 -   `fullPage` **[boolean][13]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### scrollPageToBottom
 
 Scroll page to the bottom.
@@ -783,6 +833,8 @@ Scroll page to the bottom.
 I.scrollPageToBottom();
 ```
 
+Returns **[Promise][5]&lt;any>** 
+
 ### scrollPageToTop
 
 Scroll page to the top.
@@ -790,6 +842,8 @@ Scroll page to the top.
 ```js
 I.scrollPageToTop();
 ```
+
+Returns **[Promise][5]&lt;any>** 
 
 ### scrollTo
 
@@ -807,6 +861,8 @@ I.scrollTo('#submit', 5, 5);
 -   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### see
 
 Checks that a page contains a visible text.
@@ -823,6 +879,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 -   `text` **[string][3]** expected on page.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeCheckboxIsChecked
 
 Verifies that the specified checkbox is checked.
@@ -837,6 +895,8 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeCookie
 
 Checks that cookie with given name exists.
@@ -848,6 +908,8 @@ I.seeCookie('Auth');
 #### Parameters
 
 -   `name` **[string][3]** cookie name.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### seeCurrentUrlEquals
 
@@ -864,6 +926,8 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 -   `url` **[string][3]** value to check.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeElement
 
 Checks that a given Element is visible
@@ -876,6 +940,8 @@ I.seeElement('#modal');
 #### Parameters
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### seeElementInDOM
 
@@ -890,6 +956,8 @@ I.seeElementInDOM('#modal');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeInCurrentUrl
 
 Checks that current url contains a provided fragment.
@@ -901,6 +969,8 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 #### Parameters
 
 -   `url` **[string][3]** a fragment to check
+
+Returns **[Promise][5]&lt;any>** 
 
 ### seeInField
 
@@ -919,6 +989,8 @@ I.seeInField('#searchform input','Search');
 -   `field` **([string][3] | [object][4])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][3]** value to check.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeInSource
 
 Checks that the current page contains the given string in its raw source code.
@@ -931,6 +1003,8 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 -   `text` **[string][3]** value to check.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeInTitle
 
 Checks that title contains text.
@@ -942,6 +1016,8 @@ I.seeInTitle('Home Page');
 #### Parameters
 
 -   `text` **[string][3]** text value to check.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### seeNumberOfElements
 
@@ -957,6 +1033,8 @@ I.seeNumberOfElements('#submitBtn', 1);
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `num` **[number][11]** number of elements.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### seeNumberOfVisibleElements
 
 Asserts that an element is visible a given number of times.
@@ -970,6 +1048,8 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `num` **[number][11]** number of elements.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### selectOption
 
@@ -997,6 +1077,8 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 -   `select` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][3] | [Array][10]&lt;any>)** visible text or value of option.
 
+Returns **[Promise][5]&lt;any>** 
+
 ### setCookie
 
 Sets cookie(s).
@@ -1015,8 +1097,10 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **(Cookie | [Array][10]&lt;Cookie>)** a cookie object or array of cookie objects.Wrapper for `.cookies.set(cookie)`.
-    [See more][14]
+-   `cookie` **(Cookie | [Array][10]&lt;Cookie>)** a cookie object or array of cookie objects.
+
+Returns **[Promise][5]&lt;any>** Wrapper for `.cookies.set(cookie)`.
+[See more][14]
 
 ### triggerMouseEvent
 
@@ -1051,6 +1135,8 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][3] | [object][4])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### wait
 
 Pauses execution for a number of seconds.
@@ -1062,6 +1148,8 @@ I.wait(2); // wait 2 secs
 #### Parameters
 
 -   `sec` **[number][11]** number of second to wait.
+
+Returns **[Promise][5]&lt;any>** 
 
 ### waitForDetached
 
@@ -1077,6 +1165,8 @@ I.waitForDetached('#popup');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### waitForElement
 
 Waits for element to be present on page (by default waits for 1sec).
@@ -1091,6 +1181,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
+
+Returns **[Promise][5]&lt;any>** 
 
 ### waitForFunction
 
@@ -1109,9 +1201,11 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][3] | [function][7])** to be executed in browser context.
+-   `fn` **([string][3] | [function][8])** to be executed in browser context.
 -   `argsOrSec` **([Array][10]&lt;any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][5]&lt;any>** 
 
 ### waitForInvisible
 
@@ -1126,6 +1220,8 @@ I.waitForInvisible('#popup');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][5]&lt;any>** 
 
 ### waitForText
 
@@ -1144,6 +1240,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][3] | [object][4])?** (optional) element located by CSS|XPath|strict locator. 
 
+Returns **[Promise][5]&lt;any>** 
+
 ### waitForVisible
 
 Waits for an element to become visible on a page (by default waits for 1sec).
@@ -1157,6 +1255,8 @@ I.waitForVisible('#popup');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
+
+Returns **[Promise][5]&lt;any>** 
 
 ### waitToHide
 
@@ -1172,6 +1272,8 @@ I.waitToHide('#popup');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 
+Returns **[Promise][5]&lt;any>** 
+
 [1]: https://github.com/segmentio/nightmare
 
 [2]: https://github.com/segmentio/nightmare#api
@@ -1180,13 +1282,13 @@ I.waitToHide('#popup');
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[5]: https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[6]: https://vuejs.org/v2/api/#Vue-nextTick
+[6]: https://github.com/rosshinkley/nightmare-upload#important-note-about-setting-file-upload-inputs
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[7]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
 [9]: https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2
 
