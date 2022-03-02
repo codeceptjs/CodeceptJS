@@ -429,7 +429,7 @@ I.switchToNative('SOME_OTHER_CONTEXT');
 
 #### Parameters
 
--   `context` **any**  (optional, default `null`)
+-   `context` **any?**  (optional, default `null`)
 
 Returns **[Promise][4]&lt;void>** 
 

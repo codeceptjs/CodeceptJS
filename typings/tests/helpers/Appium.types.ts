@@ -38,6 +38,7 @@ appium.grabOrientation(); // $ExpectType Promise<string>
 appium.grabSettings(); // $ExpectType Promise<string>
 appium._switchToContext(str_ap); // $ExpectType Promise<any>
 appium.switchToWeb(); // $ExpectType Promise<void>
+appium.switchToNative(); // $ExpectType Promise<void>
 appium.switchToNative(str_ap); // $ExpectType Promise<void>
 appium.startActivity(); // $ExpectType Promise<void>
 appium.setNetworkConnection(); // $ExpectType Promise<{}>
