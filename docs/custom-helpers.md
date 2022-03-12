@@ -7,7 +7,7 @@ title: Custom Helpers
 
 Helper is the core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them. When `I` object is used in tests it delegates execution of its functions to currently enabled helper classes. 
 
-Use Helpers to introduce low-level API to your tests without polluting test scenarios. Helpers can also be used to share functionality accross different project and installed as npm packages.
+Use Helpers to introduce low-level API to your tests without polluting test scenarios. Helpers can also be used to share functionality across different project and installed as npm packages.
 
 ## Development
 
