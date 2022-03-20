@@ -410,14 +410,14 @@ describe('WebDriver', function () {
     });
 
     it('should check text is not equal to empty string of element text', async () => {
-      await wd.amOnPage('https://codecept.discourse.group/');
+      await wd.amOnPage('https://codecept.io');
 
       try {
-        await wd.seeTextEquals('', '[id="site-logo"]');
-        await wd.seeTextEquals('This is not empty', '[id="site-logo"]');
+        await wd.seeTextEquals('', '.logo');
+        await wd.seeTextEquals('This is not empty', '.logo');
       } catch (e) {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('expected element [id="site-logo"] "This is not empty" to equal ""');
+        e.message.should.be.equal('expected element .logo "This is not empty" to equal ""');
       }
     });
   });
