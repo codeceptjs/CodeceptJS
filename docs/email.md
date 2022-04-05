@@ -21,7 +21,7 @@ MailSlurp is a commercial service with a free plan available. To start, [create 
 npm i @codeceptjs/mailslurp-helper --save-dev
 ```
 
-Then enable a helper in `codecept.conf.js`:
+Then enable a helper in `codecept.config.js`:
 
 ```js
 helpers: {

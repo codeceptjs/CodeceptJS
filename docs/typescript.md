@@ -41,7 +41,7 @@ For writing tests in TypeScript you'll need to install `typescript` and `ts-node
 npm install typescript ts-node
 ```
 
-### Configure codecept.conf.js
+### Configure codecept.config.js
 
 To configure TypeScript in your project, you need to add [`ts-node/register`](https://github.com/TypeStrong/ts-node) on first line in your config. Like in the following config file:
 
@@ -84,7 +84,7 @@ We recommended the following configuration in a [tsconfig.json](https://www.type
 
 ### Set Up steps.d.ts
 
-Configuring the `tsconfig.json` and `codecept.conf.js` is not enough, you will need to configure the `steps.d.ts` file for custom steps. Just simply do this by running this command::
+Configuring the `tsconfig.json` and `codecept.config.js` is not enough, you will need to configure the `steps.d.ts` file for custom steps. Just simply do this by running this command::
 
 `npx codeceptjs def`
 
@@ -120,7 +120,7 @@ class CustomHelper extends Helper {
 export = CustomHelper
 ```
 
-Then you need to add this helper to your `codecept.conf.js` like in this [docs](https://codecept.io/helpers/#configuration).
+Then you need to add this helper to your `codecept.config.js` like in this [docs](https://codecept.io/helpers/#configuration).
 And then run the command `npx codeceptjs def`.
 
 As result our `steps.d.ts` file will be updated like this:

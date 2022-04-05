@@ -70,7 +70,7 @@ You need to install Detox CodeceptJS helper:
 npm i @codeceptjs/detox-helper --save-dev
 ```
 
-Then enable this helper in `codecept.conf.js`:
+Then enable this helper in `codecept.config.js`:
 
 ```js
 helpers: {
@@ -226,7 +226,7 @@ To execute it use `codeceptjs run` command
 ```
 npx codeceptjs run
 ```
-If you want to use detox configuration other than is set in `codecept.conf.js` use `--configuration` argument:
+If you want to use detox configuration other than is set in `codecept.config.js` use `--configuration` argument:
 
 ```
 npx codeceptjs run --configuration android.test.ci

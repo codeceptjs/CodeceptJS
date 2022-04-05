@@ -23,7 +23,7 @@ Launch the daemon: `appium`
 
 ## Helper configuration
 
-This helper should be configured in codecept.json or codecept.conf.js
+This helper should be configured in codecept.json or codecept.config.js
 
 -   `app`: Application path. Local path or remote URL to an .ipa or .apk file, or a .zip containing one of these. Alias to desiredCapabilities.appPackage
 -   `host`: (default: 'localhost') Appium host
@@ -1099,7 +1099,7 @@ Returns **[Promise][4]&lt;[string][5]>** attribute value
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Saves a screenshot to ouput folder (set in codecept.json or codecept.config.js).
 Filename is relative to output folder.
 
 ```js
@@ -1539,7 +1539,7 @@ Returns **[Promise][4]&lt;any>**
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+Path to file is relative current codecept directory (where codecept.json or codecept.config.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -1790,7 +1790,7 @@ Returns **[Promise][4]&lt;any>**
 
 ### saveElementScreenshot
 
-Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.config.js).
 Filename is relative to output folder.
 
 ```js

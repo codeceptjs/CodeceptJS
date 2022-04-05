@@ -147,7 +147,7 @@ In this case `el` will be an instance of [ElementHandle](https://playwright.dev/
 
 ## Configuration
 
-Helpers should be enabled inside `codecept.json` or `codecept.conf.js` files. Command `generate helper`
+Helpers should be enabled inside `codecept.json` or `codecept.config.js` files. Command `generate helper`
 does that for you, however you can enable them manually by placing helper to `helpers` section inside config file.
 You can also pass additional config options to your helper from a config - **(please note, this example contains comments, while JSON format doesn't support them)**:
 

@@ -31,7 +31,7 @@ Using playwright-core package, will prevent the download of browser binaries and
 
 ## Configuration
 
-This helper should be configured in codecept.json or codecept.conf.js
+This helper should be configured in codecept.json or codecept.config.js
 
 -   `url`: base url of website to be tested
 -   `browser`: a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
@@ -375,7 +375,7 @@ Returns **[Promise][10]&lt;any>**
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+Path to file is relative current codecept directory (where codecept.json or codecept.config.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -1374,7 +1374,7 @@ First parameter can be set to `maximize`.
 Returns **[Promise][10]&lt;any>** Unlike other drivers Playwright changes the size of a viewport, not the window!
 Playwright does not control the window of a browser so it can't adjust its real size.
 It also can't maximize a window.Update configuration to change real window size on start:```js
-// inside codecept.conf.js
+// inside codecept.config.js
 // @codeceptjs/configure package must be installed
 { setWindowSize } = require('@codeceptjs/configure');
 ```
@@ -1401,7 +1401,7 @@ Returns **[Promise][10]&lt;any>**
 
 ### saveElementScreenshot
 
-Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.config.js).
 Filename is relative to output folder.
 
 ```js
@@ -1417,7 +1417,7 @@ Returns **[Promise][10]&lt;any>**
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Saves a screenshot to ouput folder (set in codecept.json or codecept.config.js).
 Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 

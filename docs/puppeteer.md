@@ -47,7 +47,7 @@ You will be asked for a Helper to use, you should select Puppeteer and provide u
 
 ## Configuring
 
-Make sure `Puppeteer` helper is enabled in `codecept.conf.js` config:
+Make sure `Puppeteer` helper is enabled in `codecept.config.js` config:
 
 ```js
 { // ..

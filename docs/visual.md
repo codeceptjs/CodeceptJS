@@ -27,7 +27,7 @@ npm install codeceptjs-resemblehelper --save
 
 ### Configuring
 
-This helper should be added to `codecept.conf.js` config file.
+This helper should be added to `codecept.config.js` config file.
 
 Example:
 

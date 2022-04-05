@@ -18,7 +18,7 @@ WebDriver requires Selenium Server and ChromeDriver/GeckoDriver to be installed.
 
 ### Configuration
 
-This helper should be configured in codecept.json or codecept.conf.js
+This helper should be configured in codecept.json or codecept.config.js
 
 -   `url`: base url of website to be tested.
 -   `basicAuth`: (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
@@ -474,7 +474,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+Path to file is relative current codecept directory (where codecept.json or codecept.config.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -1528,7 +1528,7 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 ### saveElementScreenshot
 
-Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.config.js).
 Filename is relative to output folder.
 
 ```js
@@ -1544,7 +1544,7 @@ Returns **[Promise][21]&lt;any>**
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Saves a screenshot to ouput folder (set in codecept.json or codecept.config.js).
 Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 

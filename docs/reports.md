@@ -264,7 +264,7 @@ Install it via NPM (locally or globally, depending on CodeceptJS installation ty
 npm i mocha-junit-reporter
 ```
 
-Additional configuration should be added to `codecept.conf.js` to print xml report to `output` directory:
+Additional configuration should be added to `codecept.config.js` to print xml report to `output` directory:
 
 ```json
   "mocha": {

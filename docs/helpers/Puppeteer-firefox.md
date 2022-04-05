@@ -14,7 +14,7 @@ npm install puppeteer-firefox
 
 ## Configuration
 
-If you want to use puppeteer-firefox, you should add it in Puppeteer section in codecept.conf.js.
+If you want to use puppeteer-firefox, you should add it in Puppeteer section in codecept.config.js.
 
 - browser: 'chrome' OR 'firefox', 'chrome' is default value
 
@@ -38,7 +38,7 @@ helpers: {
 
 ## Run-multiple
 
-Example multiple section in codecept.conf.js:
+Example multiple section in codecept.config.js:
 
 ```js
  multiple: {
@@ -63,7 +63,7 @@ Historically, Puppeteer supported Firefox indirectly through puppeteer-firefox, 
 npm i puppeteer@v2.1.0
 ```
 
-If you want to try this expirement within CodeceptJS, you should add it in Puppeteer section in codecept.conf.js.
+If you want to try this expirement within CodeceptJS, you should add it in Puppeteer section in codecept.config.js.
 
 - browser: 'chrome' OR 'firefox', 'chrome' is default value
 

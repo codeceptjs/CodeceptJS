@@ -28,7 +28,7 @@ It can check status codes, response data, response structure.
 Zero-configuration when paired with REST:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 {
   helpers: {
     REST: {
@@ -42,7 +42,7 @@ Zero-configuration when paired with REST:
 Explicitly setting request helper if you use `makeApiRequest` of Playwright to perform requests and not paired REST:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 // ...
   helpers: {
     Playwright: {

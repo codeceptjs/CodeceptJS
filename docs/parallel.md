@@ -8,7 +8,7 @@ title: Parallel Execution
 CodeceptJS has two engines for running tests in parallel:
 
 * `run-workers` - which spawns [NodeJS Worker](https://nodejs.org/api/worker_threads.html) in a thread. Tests are split by scenarios, scenarios are mixed between groups, each worker runs tests from its own group.
-* `run-multiple` - which spawns a subprocess with CodeceptJS. Tests are split by files and configured in `codecept.conf.js`.
+* `run-multiple` - which spawns a subprocess with CodeceptJS. Tests are split by files and configured in `codecept.config.js`.
 
 Workers are faster and simpler to start, while `run-multiple` requires additional configuration and can be used to run tests in different browsers at once.
 
@@ -202,7 +202,7 @@ However, you can't access uninitialized data from a container, so to start, you 
 
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 exports.config = {
   bootstrap() {
     // append empty userData to container

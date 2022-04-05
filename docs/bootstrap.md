@@ -15,7 +15,7 @@ When using the [parallel execution](/parallel) mode, there are two additional ho
 
 ### Example: Bootstrap & Teardown
 
-If you are using JavaScript-style config `codecept.conf.js`, bootstrap and teardown functions can be placed inside of it:
+If you are using JavaScript-style config `codecept.config.js`, bootstrap and teardown functions can be placed inside of it:
 
 ```js
 var server = require('./app_server');
@@ -59,7 +59,7 @@ The `bootstrap` and `teardown` hooks are used for setting up each testing browse
 
 ### Example: BootstrapAll & TeardownAll Inside Config
 
-Using JavaScript-style config `codecept.conf.js`, bootstrapAll and teardownAll functions can be placed inside of it:
+Using JavaScript-style config `codecept.config.js`, bootstrapAll and teardownAll functions can be placed inside of it:
 
 
 ```js
@@ -98,7 +98,7 @@ exports.config = {
 It is quite common that you expect that bootstrapAll and bootstrap will do the same thing. If an application server is already started in `bootstrapAll` we should not run it again inside `bootstrap` for each worker. To avoid code duplication we can run bootstrap script only when we are not inside a worker. And we will use NodeJS `isMainThread` Workers API to detect that:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 
 // detect if we are in a worker thread
 const { isMainThread } = require('worker_threads');

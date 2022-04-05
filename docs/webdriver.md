@@ -62,7 +62,7 @@ WebDriver can be configured to run browser tests in window, headlessly, on a rem
 
 > By default CodeceptJS is already configured to run WebDriver tests locally with Chrome or Firefox. If you just need to start running tests - proceed to the next chapter.
 
-Configuration for WebDriver should be provided inside `codecept.conf.js` file under `helpers: WebDriver` section:
+Configuration for WebDriver should be provided inside `codecept.config.js` file under `helpers: WebDriver` section:
 
 ```js
   helpers: {
@@ -119,7 +119,7 @@ CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load
 It is recommended to use `@codeceptjs/configure` package to easily toggle headless mode for WebDriver:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
 
 setHeadlessWhen(process.env.HEADLESS); // enables headless mode when HEADLESS environment variable exists
@@ -369,7 +369,7 @@ Most popular "waiters" are:
 By default, they will wait for 1 second. This number can be changed in WebDriver configuration:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 exports.config = {
   helpers: {
     WebDriver: {
@@ -389,7 +389,7 @@ SmartWait can be enabled by setting wait option in WebDriver config.
 Add `smartWait: 5000` to wait for additional 5s.
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 exports.config = {
   helpers: {
     WebDriver: {

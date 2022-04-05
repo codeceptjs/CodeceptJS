@@ -50,12 +50,12 @@ npx codeceptjs init
 
 ## Configuration
 
-Ensure that inside `codecept.conf.js` in helpers section `REST` or `GraphQL` helpers are enabled.
+Ensure that inside `codecept.config.js` in helpers section `REST` or `GraphQL` helpers are enabled.
 
 * If you use `REST` helper add `JSONResponse` helper below with no extra config:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 // ...
   helpers: {
     REST: {
@@ -100,7 +100,7 @@ After helpers were configured and typings were generated, you can start writing 
 
 [REST](/helpers/REST/) or [GraphQL](/helpers/GraphQL/) helpers implement methods for making API requests.
 Both helpers send requests via HTTP protocol from CodeceptJS process. 
-For most cases, you will need to have authentication. It can be passed via headers, which can be added to helper's configuration in `codecept.conf.js`. 
+For most cases, you will need to have authentication. It can be passed via headers, which can be added to helper's configuration in `codecept.config.js`. 
 
 ```js
 helpers: {
@@ -181,7 +181,7 @@ Scenario('create user', ({ I }) => {
 
 GraphQL have request format different then in REST API, but the response format is the same.
 It's plain old JSON. This why `JSONResponse` helper works for both API types.
-Configure authorization headers in `codecept.conf.js` and make your first query:  
+Configure authorization headers in `codecept.config.js` and make your first query:  
 
 ```js
 Feature('Users endpoint')

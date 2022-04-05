@@ -45,7 +45,7 @@ You will be asked for a Helper to use, you should select Playwright and provide 
 
 ## Configuring
 
-Make sure `Playwright` helper is enabled in `codecept.conf.js` config:
+Make sure `Playwright` helper is enabled in `codecept.config.js` config:
 
 ```js
 { // ..
@@ -254,7 +254,7 @@ function createWindow() {
 app.whenReady().then(createWindow);
 ```
 
-`codecept.conf.js` - CodeceptJS configuration file
+`codecept.config.js` - CodeceptJS configuration file
 ```js
 const path = require("path");
 
@@ -340,7 +340,7 @@ I.makeApiRequest('GET', '/users')
 It is also possible to test JSON responses by adding [`JSONResponse`](/helpers/JSONResponse) and connecting it to Playwright:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 {
   helpers: {
     Playwright: {

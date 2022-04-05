@@ -323,7 +323,7 @@ npm i @codeceptjs/configure --save
 Import `setSharedCookies` function and call it inside a config:
 
 ```js
-// in codecept.conf.js
+// in codecept.config.js
 const { setSharedCookies } = require('@codeceptjs/configure');
 
 // share cookies between browser helpers and REST/GraphQL

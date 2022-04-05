@@ -51,7 +51,7 @@ If you completed step 1 and step 2 you should have a configuration similar this:
 
 Besides Detox configuration, CodeceptJS should also be configured to use Detox.
 
-In `codecept.conf.js` enable Detox helper:
+In `codecept.config.js` enable Detox helper:
 
 ```js
 helpers: {

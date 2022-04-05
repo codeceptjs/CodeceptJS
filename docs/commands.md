@@ -7,7 +7,7 @@ title: Commands
 
 ## Run
 
-Executes tests. Requires `codecept.conf.js` config to be present in provided path.
+Executes tests. Requires `codecept.config.js` config to be present in provided path.
 
 ---
 
@@ -56,7 +56,7 @@ npx codeceptjs run github_test.js --debug
 Select config file manually (`-c` or `--config` option)
 
 ```sh
-npx codeceptjs run -c my.codecept.conf.js
+npx codeceptjs run -c my.codecept.config.js
 npx codeceptjs run --config path/to/codecept.json
 ```
 
@@ -114,7 +114,7 @@ For this command configuration is required:
 
 ```js
 {
-  // inside codecept.conf.js
+  // inside codecept.config.js
   rerun: {
     // how many times all tests should pass
     minSuccess: 2,
@@ -169,7 +169,7 @@ npx codeceptjs run-multiple smoke:chrome regression:firefox
 
 ## Init
 
-Creates `codecept.conf.js` file in current directory:
+Creates `codecept.config.js` file in current directory:
 
 ```sh
 npx codeceptjs init
@@ -183,7 +183,7 @@ npx codecept init test
 
 ## Migrate
 
-Migrate your current `codecept.json` to `codecept.conf.js`
+Migrate your current `codecept.json` to `codecept.config.js`
 
 ```sh
 npx codeceptjs migrate

@@ -249,7 +249,7 @@ module.exports = {
 }
 ```
 
-> PageObject and PageFragment names are declared inside `include` section of `codecept.conf.js`. See [Dependency Injection](#dependency-injection)
+> PageObject and PageFragment names are declared inside `include` section of `codecept.config.js`. See [Dependency Injection](#dependency-injection)
 
 ## StepObjects
 

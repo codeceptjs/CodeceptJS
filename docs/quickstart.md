@@ -62,7 +62,7 @@ After CodeceptJS is installed, try running **demo tests** using this commands:
 
 ---
 
-To start a new project initialize CodeceptJS to create main config file: `codecept.conf.js`.
+To start a new project initialize CodeceptJS to create main config file: `codecept.config.js`.
 
 ```
 npx codeceptjs init

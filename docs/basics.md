@@ -403,7 +403,7 @@ Tests are split by scenarios, not by files. Results are aggregated and shown up 
 
 ## Configuration
 
-Configuration is set in the `codecept.conf.js` file which was created during the `init` process.
+Configuration is set in the `codecept.config.js` file which was created during the `init` process.
 Inside the config file you can enable and configure helpers and plugins, and set bootstrap and teardown scripts.
 
 ```js

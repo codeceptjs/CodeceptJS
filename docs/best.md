@@ -150,9 +150,9 @@ module.exports.DatePicker = DatePicker; // for inheritance
 ## Configuration
 
 * create multiple config files for different setups/enrionments:
-  * `codecept.conf.js` - default one
-  * `codecept.ci.conf.js` - for CI
-  * `codecept.windows.conf.js` - for Windows, etc
+  * `codecept.config.js` - default one
+  * `codecept.ci.config.js` - for CI
+  * `codecept.windows.config.js` - for Windows, etc
 * use `.env` files and dotenv package to load sensitive data
 
 ```js

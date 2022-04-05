@@ -216,7 +216,7 @@ Scenario('slow test that should be stopped', { timeout: 20 }, ({ I }) => {
 })
 ```
 
-This timeout can be set globally in `codecept.conf.js` in seconds:
+This timeout can be set globally in `codecept.config.js` in seconds:
 
 ```js
 exports.config = {

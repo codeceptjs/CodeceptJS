@@ -1144,7 +1144,7 @@ Use it with `FileSystem` helper to test availability of a file:
     1. Refer to [axios API](https://github.com/axios/axios).
     2. If you were using `unirest` requests/responses in your tests change them to axios format.
 * **Breaking Change.** Generators support in tests removed. Use `async/await` in your tests
-* **Using `codecept.conf.js` as default configuration format**
+* **Using `codecept.config.js` as default configuration format**
 * Fixed "enametoolong" error when saving screenshots for data driven tests by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Updated NodeJS to 10 in Docker image
 * **[Pupeteer]** Add support to use WSEndpoint. Allows to execute tests remotely. [See [#1350](https://github.com/codeceptjs/CodeceptJS/issues/1350)] by **[gabrielcaires](https://github.com/gabrielcaires)** (https://github.com/codeceptjs/CodeceptJS/pull/1350)
@@ -2047,15 +2047,15 @@ module.exports = function(done) {
 * **[Protractor]** Regression fixed to ^4.0.0 support
 * Translations included into package.
 * `teardown` option added to config (opposite to `bootstrap`), expects a JS file to be executed after tests stop.
-* [Configuration](http://codecept.io/configuration/) can be set via JavaScript file `codecept.conf.js` instead of `codecept.json`. It should export `config` object:
+* [Configuration](http://codecept.io/configuration/) can be set via JavaScript file `codecept.config.js` instead of `codecept.json`. It should export `config` object:
 
 ```js
-// inside codecept.conf.js
+// inside codecept.config.js
 exports.config = {
   // contents of codecept.json
 }
 ```
-* Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).
+* Added `--profile` option to pass its value to `codecept.config.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).
 * Documentation for [StepObjects, PageFragments](http://codecept.io/pageobjects#PageFragments) updated.
 * Documentation for [Configuration](http://codecept.io/configuration/) added.
 

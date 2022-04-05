@@ -89,7 +89,7 @@ You will also be asked for the platform and the application package.
 ? [Appium] Application package. Path to file or url
 ```
 
-Check the newly created `codecept.conf.js` configuration file.
+Check the newly created `codecept.config.js` configuration file.
 You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/docs/en/writing-running-appium/caps/)
 
 ```js

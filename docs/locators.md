@@ -308,7 +308,7 @@ CodeceptJS provides the option to specify custom locators that uses Custom Locat
 To use the defined Custom Locator Strategy add your custom strategy to your configuration.
 
 ```js
-// in codecept.conf.js
+// in codecept.config.js
 
 const myStrat = (selector) => {
   return document.querySelectorAll(selector)

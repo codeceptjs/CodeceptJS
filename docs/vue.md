@@ -91,7 +91,7 @@ npm run test:e2e:open
 Generator has created these files:
 
 ```js
-codecept.conf.js          👈 codeceptjs config
+codecept.config.js          👈 codeceptjs config
 jsconfig.json             👈 enabling type definitons
 tests
 ├── e2e

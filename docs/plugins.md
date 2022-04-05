@@ -476,7 +476,7 @@ This plugin will create a valid XPath locator for you.
 Using `data-test` attribute with `$` prefix:
 
 ```js
-// in codecept.conf.js
+// in codecept.config.js
 plugins: {
  customLocator: {
    enabled: true,
@@ -495,7 +495,7 @@ I.click('$sign-up'); // matches => [data-test=sign-up]
 Using `data-qa` attribute with `=` prefix:
 
 ```js
-// in codecept.conf.js
+// in codecept.config.js
 plugins: {
  customLocator: {
    enabled: true,
@@ -710,7 +710,7 @@ Scenario('scenario tite', () => {
 
 Adds global `retryTo` which retries steps a few times before failing.
 
-Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
+Enable this plugin in `codecept.config.js` (enabled by default for new setups):
 
 ```js
 plugins: {
@@ -826,7 +826,7 @@ Selenoid plugin can be started in two ways:
 
 If you are new to Selenoid and you want plug and play setup use automatic mode.
 
-Add plugin configuration in `codecept.conf.js`:
+Add plugin configuration in `codecept.config.js`:
 
 ```js
 plugins: {
@@ -856,7 +856,7 @@ This is especially useful for Continous Integration server as you can configure 
 
 > Use [Selenoid Configuration Manager][16] to create and start containers semi-automatically.
 
-1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
+1.  Create `browsers.json` file in the same directory `codecept.config.js` is located
     [Refer to Selenoid documentation][18] to know more about browsers.json.
 
 _Sample browsers.json_
@@ -1030,7 +1030,7 @@ plugins: {
 
 Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
 
-Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
+Enable this plugin in `codecept.config.js` (enabled by default for new setups):
 
 ```js
 plugins: {

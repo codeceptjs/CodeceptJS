@@ -5,7 +5,7 @@ title: Configuration
 
 # Configuration
 
-CodeceptJS configuration is set in `codecept.conf.js` file.
+CodeceptJS configuration is set in `codecept.config.js` file.
 
 After running `codeceptjs init` it should be saved in test root.
 
@@ -70,7 +70,7 @@ codeceptjs run -o '{ "helpers": {"WebDriver": {"browser": "firefox"}}}'
 ```
 
  You can also switch to JS configuration format for more dynamic options.
- Create `codecept.conf.js` file and make it export `config` property.
+ Create `codecept.config.js` file and make it export `config` property.
 
  See the config example:
 
