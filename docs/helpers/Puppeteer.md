@@ -1871,7 +1871,7 @@ Second argument is async function that gets this helper as parameter.
 { [`page`][20], [`browser`][21] } from Puppeteer API are available.
 
 ```js
-I.usePuppeteerTo('emulate offline mode', async ({ page }) {
+I.usePuppeteerTo('emulate offline mode', async ({ page }) => {
   await page.setOfflineMode(true);
 });
 ```
