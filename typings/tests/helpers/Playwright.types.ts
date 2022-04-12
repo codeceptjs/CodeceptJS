@@ -2,6 +2,9 @@ const playwright = new CodeceptJS.Playwright();
 
 const str_pl = 'text';
 const num_pl = 1;
+const position = { x: 100, y: 200 };
+const sourcePosition = { x: 10, y: 20 };
+const targetPosition = { x: 20, y: 30 };
 
 playwright.usePlaywrightTo(str_pl, () => {}); // $ExpectType Promise<any>
 playwright.amAcceptingPopups(); // $ExpectType Promise<any>
@@ -17,7 +20,9 @@ playwright.amOnPage(str_pl); // $ExpectType Promise<any>
 playwright.resizeWindow(num_pl, num_pl); // $ExpectType Promise<any>
 playwright.haveRequestHeaders(str_pl); // $ExpectType Promise<any>
 playwright.moveCursorTo(str_pl, num_pl, num_pl); // $ExpectType Promise<any>
+playwright.dragAndDrop(str_pl); // $ExpectError
 playwright.dragAndDrop(str_pl, str_pl); // $ExpectType Promise<any>
+playwright.dragAndDrop(str_pl, str_pl, { sourcePosition, targetPosition }); // $ExpectType Promise<any>
 playwright.refreshPage(); // $ExpectType Promise<any>
 playwright.scrollPageToTop(); // $ExpectType Promise<any>
 playwright.scrollPageToBottom(); // $ExpectType Promise<any>
@@ -43,6 +48,8 @@ playwright.seeElementInDOM(str_pl); // $ExpectType Promise<any>
 playwright.dontSeeElementInDOM(str_pl); // $ExpectType Promise<any>
 playwright.handleDownloads(); // $ExpectType Promise<void>
 playwright.click(str_pl); // $ExpectType Promise<any>
+playwright.click(str_pl, str_pl); // $ExpectType Promise<any>
+playwright.click(str_pl, null, { position }); // $ExpectType Promise<any>
 playwright.clickLink(); // $ExpectType Promise<any>
 playwright.forceClick(str_pl); // $ExpectType Promise<any>
 playwright.doubleClick(str_pl); // $ExpectType Promise<any>
