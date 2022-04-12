@@ -1,3 +1,15 @@
+## 3.3.1
+🛩️ Features:
+* Add option to avoid duplicate gherkin step definitions (#3257) - @raywiis
+
+🐛 Bugfixes:
+* Changing the defunct faker library. See #3232 - @cybersonic 
+* Fixed haveRequestHeaders() and amBearerAuthenticated() of REST helper (#3260) - @mirao
+
+📖 Documentation
+* Improving the typings in many places
+* Improving the return type of helpers for TS users (#3245) - @nlespiaucq
+
 ## 3.3.0
 
 🛩️ Features:
