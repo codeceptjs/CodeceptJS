@@ -174,7 +174,7 @@ const { devices } = require('playwright');
 }
 ```
 
-#### Example #7: Launch test with a specifc user locale
+#### Example #7: Launch test with a specific user locale
 
 ```js
 {
@@ -182,6 +182,19 @@ const { devices } = require('playwright');
   Playwright : {
     url: "http://localhost",
     locale: "fr-FR",
+  }
+ }
+}
+```
+
+#### Example #8: Launch test with a specific color scheme
+
+```js
+{
+ helpers: {
+  Playwright : {
+    url: "http://localhost",
+    colorScheme: "dark",
   }
  }
 }
