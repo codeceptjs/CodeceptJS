@@ -52,6 +52,14 @@ describe('CodeceptJS Runner', () => {
       err.code.should.eql(1);
       done();
     });
+
+    it('should except a directory glob pattern', (done) => {
+      process.chdir(codecept_dir);
+      exec(`${codecept_run} "test-dir/*"`, (err, stdout) => {
+        stdout.should.include('2 passed'); // number of tests present in directory
+        done();
+      });
+    });
   });
 
   describe('grep', () => {
