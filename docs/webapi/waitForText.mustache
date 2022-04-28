@@ -10,4 +10,4 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 @param {string }text to wait for.
 @param {number} [sec=1] (optional, `1` by default) time in seconds to wait
 @param {CodeceptJS.LocatorOrString} [context] (optional) element located by CSS|XPath|strict locator.
-@return {Promise<any>}
+[!] returns a _promise_ which is synchronized internally by recorder
