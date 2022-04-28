@@ -45,6 +45,8 @@ npx codeceptjs run test-dir/*"
 * Improving the typings in many places
 * Improving the return type of helpers for TS users ([#3245](https://github.com/codeceptjs/CodeceptJS/issues/3245)) - **[nlespiaucq](https://github.com/nlespiaucq)**
 
+🇺🇦 Added #StandWithUkraine hashtag notice to CLI
+
 ## 3.3.0
 
 🛩️ Features:

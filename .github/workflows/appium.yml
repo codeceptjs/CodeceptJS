@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 3.x
+      - appium-tests-fix
 
 env:
   CI: true

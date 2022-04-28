@@ -26,6 +26,7 @@ describe('Appium', function () {
         platformVersion: '6.0',
         deviceName: 'Android Emulator',
       },
+      restart: true,
       protocol: 'http',
       host: 'ondemand.saucelabs.com',
       port: 80,
