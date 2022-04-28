@@ -56,6 +56,7 @@ This helper should be configured in codecept.json or codecept.conf.js
 -   `waitForTimeout`: (optional) default wait* timeout in ms. Default: 1000.
 -   `basicAuth`: (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `windowSize`: (optional) default window size. Set a dimension like `640x480`.
+-   `colorScheme`: (optional) default color scheme. Possible values: `dark` | `light` | `no-preference`.
 -   `userAgent`: (optional) user-agent string.
 -   `locale`: (optional) locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
 -   `manualStart`:  - do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
@@ -187,7 +188,7 @@ const { devices } = require('playwright');
 }
 ```
 
-#### Example #8: Launch test with a specific color scheme
+-   #### Example #8: Launch test with a specific color scheme
 
 ```js
 {
@@ -493,16 +494,16 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][13] | [object][11])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][13]? | [object][11])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
--   `opts`   
+-   `context` **([string][13]? | [object][11] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+-   `opts` **any?** [Additional options][15] for click available as 3rd argument.Examples:```js
+    // click on element at position
+    I.click('canvas', '.model', { position: { x: 20, y: 40 } })
 
-Returns **[Promise][10]&lt;any>** [Additional options][15] for click available as 3rd argument.Examples:```js
-// click on element at position
-I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+    // make ctrl-click
+    I.click('.edit', null, { modifiers: ['Ctrl'] } )
+    ``` 
 
-// make ctrl-click
-I.click('.edit', null, { modifiers: ['Ctrl'] } )
-```
+Returns **[Promise][10]&lt;any>** 
 
 ### clickLink
 
@@ -713,12 +714,12 @@ I.dragAndDrop('#dragHandle', '#container');
 
 -   `srcElement` **([string][13] | [object][11])** located by CSS|XPath|strict locator.
 -   `destElement` **([string][13] | [object][11])** located by CSS|XPath|strict locator.
--   `options`   
+-   `options` **any?** [Additional options][16] can be passed as 3rd argument.```js
+    // specify coordinates for source position
+    I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
+    ```> By default option `force: true` is set 
 
-Returns **[Promise][10]&lt;any>** [Additional options][16] can be passed as 3rd argument.```js
-// specify coordinates for source position
-I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
-```> By default option `force: true` is set
+Returns **[Promise][10]&lt;any>** 
 
 ### dragSlider
 
@@ -1217,7 +1218,7 @@ This method allows intercepting and mocking requests & responses. [Learn more ab
 
 #### Parameters
 
--   `url` **[string][13]?** URL, regex or pattern for to match URL
+-   `url` **([string][13] | [RegExp][24])?** URL, regex or pattern for to match URL
 -   `handler` **[function][18]?** a function to process request
 
 Returns **[Promise][10]&lt;any>** 
@@ -1248,7 +1249,7 @@ Open new tab and automatically switched to new tab
 I.openNewTab();
 ```
 
-You can pass in [page options][24] to emulate device on this page
+You can pass in [page options][25] to emulate device on this page
 
 ```js
 // enable mobile
@@ -1265,7 +1266,7 @@ Returns **[Promise][10]&lt;any>**
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][25].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][26].
 
 ```js
 I.pressKey('Backspace');
@@ -1326,13 +1327,13 @@ Some of the supported key names are:
 
 -   `key` **([string][13] | [Array][19]&lt;[string][13]>)** key or array of keys to press.
 
-Returns **[Promise][10]&lt;any>** _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][26]).
+Returns **[Promise][10]&lt;any>** _Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][27]).
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][27]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1350,7 +1351,7 @@ Returns **[Promise][10]&lt;any>**
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][27]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1442,7 +1443,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][13]** file name to save.
--   `fullPage` **[boolean][28]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][29]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 Returns **[Promise][10]&lt;any>** 
 
@@ -1809,7 +1810,7 @@ If no handler is passed, all mock requests for the rote are disabled.
 
 #### Parameters
 
--   `url` **[string][13]?** URL, regex or pattern for to match URL
+-   `url` **([string][13] | [RegExp][24])?** URL, regex or pattern for to match URL
 -   `handler` **[function][18]?** a function to process request
 
 Returns **[Promise][10]&lt;any>** 
@@ -1863,7 +1864,7 @@ Returns **[Promise][10]&lt;any>**
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][25] is not an option.
+_Note:_ Should be used when [`fillField`][26] is not an option.
 
 ```js
 // passing in a string
@@ -1903,7 +1904,7 @@ I.uncheckOption('agree', '//form');
 -   `context` **([string][13]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 -   `options`   
 
-Returns **[Promise][10]&lt;any>** [Additional options][29] for uncheck available as 3rd argument.Examples:```js
+Returns **[Promise][10]&lt;any>** [Additional options][30] for uncheck available as 3rd argument.Examples:```js
 // click on element at position
 I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
 ```> ⚠️ To avoid flakiness, option `force: true` is set by default
@@ -1915,7 +1916,7 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][30], [`browserContext`][31] [`browser`][32] } objects from Playwright API are available.
+{ [`page`][31], [`browserContext`][32] [`browser`][33] } objects from Playwright API are available.
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
@@ -2050,7 +2051,7 @@ Returns **[Promise][10]&lt;any>**
 
 Waits for navigation to finish. By default takes configured `waitForNavigation` option.
 
-See [Playwright's reference][33]
+See [Playwright's reference][34]
 
 #### Parameters
 
@@ -2139,7 +2140,7 @@ I.waitForVisible('#popup');
 -   `locator` **([string][13] | [object][11])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
 
-Returns **[Promise][10]&lt;any>** This method accepts [React selectors][34].
+Returns **[Promise][10]&lt;any>** This method accepts [React selectors][35].
 
 ### waitInUrl
 
@@ -2250,24 +2251,26 @@ Returns **[Promise][10]&lt;any>**
 
 [23]: https://playwright.dev/docs/network#handle-requests
 
-[24]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
+[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[25]: #fillfield
+[25]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
 
-[26]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[26]: #fillfield
 
-[27]: #click
+[27]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[28]: #click
 
-[29]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[30]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
+[30]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
 
-[31]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
+[31]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
 
-[32]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
+[32]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
 
-[33]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
+[33]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
 
-[34]: https://codecept.io/react
+[34]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
+
+[35]: https://codecept.io/react

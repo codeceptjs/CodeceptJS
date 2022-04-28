@@ -573,7 +573,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][19] | [object][18])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][19]? | [object][18])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+-   `context` **([string][19]? | [object][18] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][21]&lt;any>** 
 
@@ -1514,8 +1514,10 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 #### Parameters
 
--   `caps`  
--   `fn`  
+-   `caps` **any** 
+-   `fn` **any** 
+
+Returns **[Promise][21]&lt;any>** 
 
 ### runOnIOS
 
@@ -1523,8 +1525,10 @@ Placeholder for ~ locator only test case write once run on both Appium and WebDr
 
 #### Parameters
 
--   `caps`  
--   `fn`  
+-   `caps` **any** 
+-   `fn` **any** 
+
+Returns **[Promise][21]&lt;any>** 
 
 ### saveElementScreenshot
 

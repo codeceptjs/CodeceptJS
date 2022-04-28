@@ -7,6 +7,44 @@ layout: Section
 
 # Releases
 
+## 3.3.1
+
+🛩️ Features:
+
+* Add option to avoid duplicate gherkin step definitions ([#3257](https://github.com/codeceptjs/CodeceptJS/issues/3257)) - **[raywiis](https://github.com/raywiis)**
+* Added `step.*` for run-workers [#3272](https://github.com/codeceptjs/CodeceptJS/issues/3272). Thanks to **[abhimanyupandian](https://github.com/abhimanyupandian)**
+* Fixed loading tests for `codecept run` using glob patterns. By **[jayudey-wf](https://github.com/jayudey-wf)** 
+
+```
+npx codeceptjs run test-dir/*"
+```
+
+* **[Playwright]** **Possible breaking change.** By default `timeout` is changed to 5000ms. The value set in 3.3.0 was too low. Please set `timeout` explicitly to not depend on release values.
+* **[Playwright]** Added for color scheme option by **[PeterNgTr](https://github.com/PeterNgTr)**
+
+```js
+ helpers: {
+  Playwright : {
+    url: "http://localhost",
+    colorScheme: "dark",
+  }
+ }
+```
+
+
+🐛 Bugfixes:
+
+* **[Playwright]** Fixed `Cannot read property 'video' of undefined`
+* Fixed haveRequestHeaders() and amBearerAuthenticated() of REST helper ([#3260](https://github.com/codeceptjs/CodeceptJS/issues/3260)) - **[mirao](https://github.com/mirao)**
+* Fixed: allure attachment fails if screenshot failed [#3298](https://github.com/codeceptjs/CodeceptJS/issues/3298) by **[ruudvanderweijde](https://github.com/ruudvanderweijde)** 
+* Fixed [#3105](https://github.com/codeceptjs/CodeceptJS/issues/3105) using autoLogin() plugin with TypeScript. Fix [#3290](https://github.com/codeceptjs/CodeceptJS/issues/3290) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* **[Playwright]** Added extra params for click and dragAndDrop to type definitions by **[mirao](https://github.com/mirao)**
+
+
+📖 Documentation
+* Improving the typings in many places
+* Improving the return type of helpers for TS users ([#3245](https://github.com/codeceptjs/CodeceptJS/issues/3245)) - **[nlespiaucq](https://github.com/nlespiaucq)**
+
 ## 3.3.0
 
 🛩️ Features:

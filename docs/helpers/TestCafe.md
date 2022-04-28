@@ -225,7 +225,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][4] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][4]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+-   `context` **([string][4]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][5]&lt;any>** 
 

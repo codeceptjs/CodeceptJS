@@ -404,7 +404,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+-   `context` **([string][8]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][9]&lt;any>** 
 
@@ -1871,7 +1871,7 @@ Second argument is async function that gets this helper as parameter.
 { [`page`][20], [`browser`][21] } from Puppeteer API are available.
 
 ```js
-I.usePuppeteerTo('emulate offline mode', async ({ page }) => {
+I.usePuppeteerTo('emulate offline mode', async ({ page }) {
   await page.setOfflineMode(true);
 });
 ```
