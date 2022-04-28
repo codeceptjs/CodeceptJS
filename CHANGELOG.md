@@ -1,3 +1,8 @@
+## 3.3.2
+
+* [REST] Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See #3304 by @mirao
+* Reverted typings change introduced in #3245. [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873) 
+
 ## 3.3.1
 
 🛩️ Features:
