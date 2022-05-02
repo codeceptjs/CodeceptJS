@@ -1,3 +1,9 @@
+## 3.3.3
+
+* Fixed `DataCloneError: () => could not be cloned` when running data tests in run-workers
+* 🇺🇦 Added #StandWithUkraine notice to CLI
+
+
 ## 3.3.2
 
 * [REST] Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See #3304 by @mirao
@@ -40,8 +46,6 @@ npx codeceptjs run test-dir/*"
 📖 Documentation
 * Improving the typings in many places
 * Improving the return type of helpers for TS users (#3245) - @nlespiaucq
-
-🇺🇦 Added #StandWithUkraine hashtag notice to CLI
 
 ## 3.3.0
 
