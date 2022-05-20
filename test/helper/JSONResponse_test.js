@@ -86,6 +86,22 @@ describe('JSONResponse', () => {
       expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('AssertionError');
     });
 
+    it('should check for json inclusion - returned Array', () => {
+      const arrayData = [{ ...data }];
+      restHelper.config.onResponse({ data: arrayData });
+      I.seeResponseContainsJson({
+        posts: [
+          { id: 2 },
+        ],
+      });
+      I.seeResponseContainsJson({
+        posts: [
+          { id: 1, author: 'davert' },
+        ],
+      });
+      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('expected { …(2) } to deeply match { Object (posts) }');
+    });
+
     it('should simply check for json inclusion', () => {
       restHelper.config.onResponse({ data: { user: { name: 'jon', email: 'jon@doe.com' } } });
       I.seeResponseContainsJson({ user: { name: 'jon' } });
