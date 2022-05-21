@@ -11,7 +11,7 @@ module.exports.config = {
       show: false,
       restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
-      ignoreHTTPSErrors: true,
+      ignoreHTTPSErrors: false,
     },
     JSONResponse: {
       requestHelper: 'Playwright',
