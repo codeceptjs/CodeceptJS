@@ -13,7 +13,6 @@ module.exports.config = {
       browser: process.env.BROWSER || 'chromium',
       ignoreHTTPSErrors: true,
         webkit: {
-          args: ['--ignore-certificate-errors'],
           ignoreHTTPSErrors: true,
       }
     },
