@@ -12,6 +12,10 @@ module.exports.config = {
       restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
       ignoreHTTPSErrors: true,
+        webkit: {
+          args: ['--ignore-certificate-errors'],
+          ignoreHTTPSErrors: true,
+      }
     },
     JSONResponse: {
       requestHelper: 'Playwright',
