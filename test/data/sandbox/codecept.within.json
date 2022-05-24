@@ -1,6 +1,5 @@
 {
   "tests": "./*test_within.js",
-  "timeout": 10000,
   "output": "./output",
   "helpers": {
     "Within": {

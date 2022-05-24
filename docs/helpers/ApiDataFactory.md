@@ -43,7 +43,7 @@ To make this work you need
 Install [Rosie][1] and [Faker][2] libraries.
 
 ```sh
-npm i rosie faker --save-dev
+npm i rosie @faker-js/faker --save-dev
 ```
 
 Create a factory file for a resource.
@@ -53,8 +53,8 @@ See the example for Posts factories:
 ```js
 // tests/factories/posts.js
 
-var Factory = require('rosie').Factory;
-var faker = require('faker');
+const Factory = require('rosie').Factory;
+const faker = require('@faker-js/faker');
 
 module.exports = new Factory()
    // no need to set id, it will be set by REST API
@@ -221,12 +221,17 @@ I.have('user');
 // create user with defined email
 // and receive it when inside async function
 const user = await I.have('user', { email: 'user@user.com'});
+// create a user with options that will not be included in the final request
+I.have('user', { }, { age: 33, height: 55 })
 ```
 
 #### Parameters
 
 -   `factory` **any** factory to use
 -   `params` **any** predefined parameters
+-   `options` **any** options for programmatically generate the attributes
+
+Returns **[Promise][5]&lt;any>** 
 
 ### haveMultiple
 
@@ -238,6 +243,9 @@ I.haveMultiple('post', 3);
 
 // create 3 posts by one author
 I.haveMultiple('post', 3, { author: 'davert' });
+
+// create 3 posts by one author with options
+I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 ```
 
 #### Parameters
@@ -245,6 +253,7 @@ I.haveMultiple('post', 3, { author: 'davert' });
 -   `factory` **any** 
 -   `times` **any** 
 -   `params` **any** 
+-   `options` **any** 
 
 [1]: https://github.com/rosiejs/rosie
 
@@ -253,3 +262,5 @@ I.haveMultiple('post', 3, { author: 'davert' });
 [3]: http://codecept.io/helpers/REST/
 
 [4]: https://github.com/axios/axios#request-config
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise

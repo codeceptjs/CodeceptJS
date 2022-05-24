@@ -30,6 +30,12 @@ Scenario('change config 5 @WebDriverIO @Puppeteer @Playwright @Protractor @Night
   I.seeInCurrentUrl('google.com');
 });
 
+Scenario('make API call and check response @Playwright', ({ I }) => {
+  I.amOnPage('/');
+  I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+  I.seeResponseCodeIsSuccessful();
+});
+
 Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', ({ I }) => {
   I.amOnPage('/');
   I.seeInCurrentUrl('github.com');

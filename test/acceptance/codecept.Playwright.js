@@ -9,7 +9,15 @@ module.exports.config = {
     Playwright: {
       url: TestHelper.siteUrl(),
       show: false,
+      restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
+      ignoreHTTPSErrors: true,
+        webkit: {
+          ignoreHTTPSErrors: true,
+      }
+    },
+    JSONResponse: {
+      requestHelper: 'Playwright',
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',

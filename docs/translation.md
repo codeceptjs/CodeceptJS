@@ -38,7 +38,7 @@ This way tests can be written in native language while it is still JavaScript:
 
 ```js
 Сценарий('пробую написать реферат', (Я) => {
-    Я.на_странице('http://yandex.ru/referats');
+    Я.на_странице('https://yandex.ru/referats');
     Я.вижу("Написать реферат по");
     Я.выбираю_опцию('Психологии');
     Я.кликаю("Написать реферат");
@@ -57,7 +57,7 @@ To write your tests in portuguese you can enable the portuguese translation in c
 Now you can write test like this:
 
 ```js
-Scenario('Efetuar login', ({ Eu }) => {
+Cenário('Efetuar login', ({ Eu }) => {
     Eu.estouNaPagina('http://minhaAplicacao.com.br');
     Eu.preenchoOCampo("login", "usuario@minhaAplicacao.com.br");
     Eu.preenchoOCampo("senha", "123456");

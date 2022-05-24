@@ -1,3 +1,216 @@
+## 3.3.3
+
+* Fixed `DataCloneError: () => could not be cloned` when running data tests in run-workers
+* 🇺🇦 Added #StandWithUkraine notice to CLI
+
+
+## 3.3.2
+
+* [REST] Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See #3304 by @mirao
+* Reverted typings change introduced in #3245. [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873) 
+
+## 3.3.1
+
+🛩️ Features:
+
+* Add option to avoid duplicate gherkin step definitions (#3257) - @raywiis
+* Added `step.*` for run-workers #3272. Thanks to @abhimanyupandian
+* Fixed loading tests for `codecept run` using glob patterns. By @jayudey-wf 
+
+```
+npx codeceptjs run test-dir/*"
+```
+
+* [Playwright] **Possible breaking change.** By default `timeout` is changed to 5000ms. The value set in 3.3.0 was too low. Please set `timeout` explicitly to not depend on release values.
+* [Playwright] Added for color scheme option by @PeterNgTr
+
+```js
+ helpers: {
+  Playwright : {
+    url: "http://localhost",
+    colorScheme: "dark",
+  }
+ }
+```
+
+
+🐛 Bugfixes:
+
+* [Playwright] Fixed `Cannot read property 'video' of undefined`
+* Fixed haveRequestHeaders() and amBearerAuthenticated() of REST helper (#3260) - @mirao
+* Fixed: allure attachment fails if screenshot failed #3298 by @ruudvanderweijde 
+* Fixed #3105 using autoLogin() plugin with TypeScript. Fix #3290 by @PeterNgTr 
+* [Playwright] Added extra params for click and dragAndDrop to type definitions by @mirao
+
+
+📖 Documentation
+* Improving the typings in many places
+* Improving the return type of helpers for TS users (#3245) - @nlespiaucq
+
+## 3.3.0
+
+🛩️ Features:
+
+* [**API Testing introduced**](/api)
+  * Introduced [`JSONResponse`](/helpers/JSONResponse) helper which connects to REST, GraphQL or Playwright helper
+  * [REST] Added `amBearerAuthenticated` method
+  * [REST] Added `haveRequestHeaders` method
+  * Added dependency on `joi` and `chai`
+* [Playwright] Added `timeout` option to set [timeout](https://playwright.dev/docs/api/class-page#page-set-default-timeout) for all Playwright actions. If an action fails, Playwright keeps retrying it for a time set by timeout.
+* [Playwright] **Possible breaking change.** By default `timeout` is set to 1000ms. *Previous default was set by Playwright internally to 30s. This was causing contradiction to CodeceptJS retries, so triggered up to 3 retries for 30s of time. This timeout option was lowered so retryFailedStep plugin would not cause long delays.*
+* [Playwright] Updated `restart` config option to include 3 restart strategies:
+  * 'context' or **false** - restarts [browser context](https://playwright.dev/docs/api/class-browsercontext) but keeps running browser. Recommended by Playwright team to keep tests isolated.
+  * 'browser' or **true** - closes browser and opens it again between tests.
+  * 'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default prior CodeceptJS 3.1
+* [Playwright] Extended methods to provide more options from engine. These methods were updated so additional options can be be passed as the last argument:
+  * [`click`](/helpers/Playwright#click)
+  * [`dragAndDrop`](/helpers/Playwright#dragAndDrop)
+  * [`checkOption`](/helpers/Playwright#checkOption)
+  * [`uncheckOption`](/helpers/Playwright#uncheckOption)
+
+```js
+// use Playwright click options as 3rd argument
+I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+// check option also has options
+I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
+```
+
+* `eachElement` plugin introduced. It allows you to iterate over elements and perform some action on them using direct engines API
+
+```js
+await eachElement('click all links in .list', '.list a', (el) => {
+  await el.click();
+})
+```
+* [Playwright] Added support to `playwright-core` package if `playwright` is not installed. See #3190, fixes #2663.
+* [Playwright] Added `makeApiRequest` action to perform API requests. Requires Playwright >= 1.18
+* Added support to `codecept.config.js` for name consistency across other JS tools. See motivation at #3195 by @JiLiZART 
+* [ApiDataFactory] Added options arg to `have` method. See #3197 by @JJlokidoki
+* Improved pt-br translations to include keywords: 'Funcionalidade', 'Cenário', 'Antes', 'Depois', 'AntesDaSuite', 'DepoisDaSuite'. See #3206 by @danilolutz 
+* [allure plugin] Introduced `addStep` method to add comments and attachments. See #3104 by @EgorBodnar 
+
+🐛 Bugfixes:
+
+* Fixed #3212: using Regex flags for Cucumber steps. See #3214 by @anils92
+
+📖 Documentation
+
+* Added [Testomat.io reporter](/reports#testomatio)
+* Added [api testing](/api) guides
+* Added [internal api](/internal-api) guides
+* [Appium] Fixed documentation for `performSwipe`
+* [Playwright] update docs for `usePlaywrightTo` method by @dbudzins 
+
+## 3.2.3
+
+* Documentation improvements by @maojunxyz
+* Guard mocha cli reporter from registering step logger multiple times #3180 by @nikocanvacom 
+* [Playwright] Fixed "tracing.stop: tracing.stop: ENAMETOOLONG: name too long" by @hatufacci
+* Fixed #2889: return always the same error contract from simplifyTest. See #3168 by @andremoah 
+
+## 3.2.2
+
+* [Playwright] Reverted removal of retry on context errors. Fixes #3130
+* Timeout improvements by @nikocanvacom:
+  * Added priorites to timeouts
+  * Added `overrideStepLimits` to [stepTimeout plugin](https://codecept.io/plugins/#steptimeout) to override steps timeouts set by `limitTime`.
+  * Fixed step timeout not working due to override by NaN by test timeout #3126
+* [Appium] Fixed logging error when `manualStart` is true. See #3140 by @nikocanvacom
+
+
+## 3.2.1
+
+> ♻️ This release fixes hanging of tests by reducing timeouts for automatic retries on failures.
+
+* [retryFailedStep plugin] **New Defaults**: retries steps up to 3 times with factor of 1.5 (previously 5 with factor 2)
+* [Playwright] - disabled retry on failed context actions (not needed anymore)
+* [Puppeteer] - reduced retries on context failures to 3 times.
+* [Playwright] Handling `crash` event to automatically close crashed pages.
+
+## 3.2.0
+
+🛩️ Features:
+
+**[Timeouts](https://codecept.io/advanced/#timeout) implemented**
+  * global timeouts (via `timeout` config option). 
+    * _Breaking change:_ timeout option expects **timeout in seconds**, not in milliseconds as it was previously.
+  * test timeouts (via `Scenario` and `Feature` options)
+    * _Breaking change:_ `Feature().timeout()` and `Scenario().timeout()` calls has no effect and are deprecated
+
+```js
+// set timeout for every test in suite to 10 secs
+Feature('tests with timeout', { timeout: 10 });
+
+// set timeout for this test to 20 secs
+Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {});
+```  
+
+  * step timeouts (See #3059 by @nikocanvacom)
+
+```js
+// set step timeout to 5 secs
+I.limitTime(5).click('Link');
+```  
+ * `stepTimeout` plugin introduced to automatically add timeouts for each step (#3059 by @nikocanvacom).
+
+[**retryTo**](/plugins/#retryto) plugin introduced to rerun a set of steps on failure:
+
+```js
+// editing in text in iframe
+// if iframe was not loaded - retry 5 times
+await retryTo(() => {
+  I.switchTo('#editor frame');
+  I.fillField('textarea', 'value');
+}, 5);
+```
+
+* [Playwright] added `locale` configuration
+* [WebDriver] upgraded to webdriverio v7
+
+🐛 Bugfixes:
+
+* Fixed  allure plugin "Unexpected endStep()" error in #3098 by @abhimanyupandian 
+* [Puppeteer] always close remote browser on test end. See #3054 by @mattonem
+* stepbyStepReport Plugin: Disabled screenshots after test has failed. See #3119 by @ioannisChalkias
+
+
+## 3.1.3
+
+🛩️ Features:
+
+* BDD Improvement. Added `DataTableArgument` class to work with table data structures. 
+
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have an employee card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const hashes = dataTableArgument.hashes(); 
+  // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
+  const rows = dataTableArgument.rows();
+  // rows = [['Harry', 'Potter', Seeker]];
+  }
+```
+See updated [BDD section](https://codecept.io/bdd/) for more API options. Thanks to @EgorBodnar
+
+* Support `cjs` file extensions for config file: `codecept.conf.cjs`. See #3052 by @kalvenschraut
+* API updates: Added `test.file` and `suite.file` properties to `test` and `suite` objects to use in helpers and plugins. 
+
+🐛 Bugfixes:
+
+* [Playwright] Fixed resetting `test.artifacts` for failing tests. See #3033 by @jancorvus. Fixes #3032
+* [Playwright] Apply `basicAuth` credentials to all opened browser contexts. See #3036 by @nikocanvacom. Fixes #3035
+* [WebDriver] Updated `webdriverio` default version to `^6.12.1`. See #3043 by @sridhareaswaran
+* [Playwright] `I.haveRequestHeaders` affects all tabs. See #3049 by @jancorvus
+* BDD: Fixed unhandled empty feature files. Fix #3046 by @abhimanyupandian 
+* Fixed `RangeError: Invalid string length` in `recorder.js` when running huge amount of tests.  
+* [Appium] Fixed definitions for `touchPerform`, `hideDeviceKeyboard`, `removeApp` by @mirao 
+
+📖 Documentation:
+
+* Added Testrail reporter [Reports Docs](https://codecept.io/reports/#testrail)
+
+
 ## 3.1.2
 
 🛩️ Features:

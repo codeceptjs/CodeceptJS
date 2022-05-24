@@ -107,6 +107,8 @@ I.amOnPage('/login'); // opens a login page
 
 -   `url` **[string][4]** url path or global url.
 
+Returns **void** automatically synchronized promise with recorder #!
+
 ### appendField
 
 Appends text to a input field or textarea.
@@ -120,6 +122,7 @@ I.appendField('#myTextField', 'appended');
 
 -   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][4]** text value to append.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### attachFile
 
@@ -136,6 +139,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 -   `field`  
 -   `pathToFile` **[string][4]** local file path relative to codecept.json config file.
+    [!] returns a _promise_ which is synchronized internally by recorder
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
 ### checkOption
@@ -154,7 +158,8 @@ I.checkOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### clearCookie
 
@@ -169,7 +174,8 @@ I.clearCookie('test');
 #### Parameters
 
 -   `cookieName`  
--   `cookie` **[string][4]?** (optional, `null` by default) cookie name 
+-   `cookie` **[string][4]?** (optional, `null` by default) cookie name
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### clearField
 
@@ -185,6 +191,7 @@ I.clearField('#email');
 
 -   `field`  
 -   `editable` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### click
 
@@ -213,7 +220,8 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][4]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+-   `context` **([string][4]? | [object][5] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### dontSee
 
@@ -228,7 +236,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 #### Parameters
 
 -   `text` **[string][4]** which is not present.
--   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
+-   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### dontSeeCheckboxIsChecked
 
@@ -243,6 +252,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 #### Parameters
 
 -   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeCookie
 
@@ -255,6 +265,7 @@ I.dontSeeCookie('auth'); // no auth cookie
 #### Parameters
 
 -   `name` **[string][4]** cookie name.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeCurrentUrlEquals
 
@@ -269,6 +280,7 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 #### Parameters
 
 -   `url` **[string][4]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeElement
 
@@ -281,6 +293,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeElementInDOM
 
@@ -293,6 +306,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInCurrentUrl
 
@@ -301,6 +315,7 @@ Checks that current url does not contain a provided fragment.
 #### Parameters
 
 -   `url` **[string][4]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInField
 
@@ -316,6 +331,7 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 -   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][4]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInSource
 
@@ -329,6 +345,7 @@ I.dontSeeInSource('<!--'); // no comments in source
 
 -   `text`  
 -   `value` **[string][4]** to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### doubleClick
 
@@ -345,7 +362,8 @@ I.doubleClick('.btn.edit');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][4]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### executeScript
 
@@ -377,8 +395,7 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` **([string][4] | [function][6])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-
-Returns **[Promise][7]&lt;any>** If a function returns a Promise It will wait for it resolution.
+    [!] returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for it resolution.
 
 ### fillField
 
@@ -400,6 +417,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 -   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][4] | [object][5])** text value to fill.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### grabAttributeFrom
 
@@ -587,7 +605,8 @@ I.moveCursorTo('#submit', 5,5);
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset. 
+-   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### pressKey
 
@@ -604,6 +623,7 @@ I.pressKey(['Control','a']);
 #### Parameters
 
 -   `key` **([string][4] | [Array][8]&lt;[string][4]>)** key or array of keys to press.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 [Valid key names](https://w3c.github.io/webdriver/#keyboard-actions) are:
@@ -646,6 +666,8 @@ Reload the current page.
 I.refreshPage();
 ```
 
+[!] returns a _promise_ which is synchronized internally by recorder
+
 ### resizeWindow
 
 Resize the current window to provided width and height.
@@ -655,6 +677,7 @@ First parameter can be set to `maximize`.
 
 -   `width` **[number][9]** width in pixels or `maximize`.
 -   `height` **[number][9]** height in pixels.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### rightClick
 
@@ -672,7 +695,8 @@ I.rightClick('Click me', '.context');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** clickable element located by CSS|XPath|strict locator.
--   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### saveElementScreenshot
 
@@ -687,6 +711,7 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][4]** file name to save.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### saveScreenshot
 
@@ -702,7 +727,8 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][4]** file name to save.
--   `fullPage` **[boolean][11]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][11]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### scrollPageToBottom
 
@@ -712,6 +738,8 @@ Scroll page to the bottom.
 I.scrollPageToBottom();
 ```
 
+[!] returns a _promise_ which is synchronized internally by recorder
+
 ### scrollPageToTop
 
 Scroll page to the top.
@@ -719,6 +747,8 @@ Scroll page to the top.
 ```js
 I.scrollPageToTop();
 ```
+
+[!] returns a _promise_ which is synchronized internally by recorder
 
 ### scrollTo
 
@@ -734,7 +764,8 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset. 
+-   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### see
 
@@ -750,7 +781,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 #### Parameters
 
 -   `text` **[string][4]** expected on page.
--   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### seeCheckboxIsChecked
 
@@ -765,6 +797,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 #### Parameters
 
 -   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeCookie
 
@@ -777,6 +810,7 @@ I.seeCookie('Auth');
 #### Parameters
 
 -   `name` **[string][4]** cookie name.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeCurrentUrlEquals
 
@@ -792,6 +826,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 #### Parameters
 
 -   `url` **[string][4]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeElement
 
@@ -805,6 +840,7 @@ I.seeElement('#modal');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeElementInDOM
 
@@ -818,6 +854,7 @@ I.seeElementInDOM('#modal');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInCurrentUrl
 
@@ -830,6 +867,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 #### Parameters
 
 -   `url` **[string][4]** a fragment to check
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
 
@@ -847,6 +885,7 @@ I.seeInField('#searchform input','Search');
 
 -   `field` **([string][4] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][4]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInSource
 
@@ -859,6 +898,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 #### Parameters
 
 -   `text` **[string][4]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeNumberOfVisibleElements
 
@@ -873,6 +913,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `num` **[number][9]** number of elements.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeTextEquals
 
@@ -912,6 +953,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 -   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][4] | [Array][8]&lt;any>)** visible text or value of option.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### setCookie
 
@@ -932,6 +974,7 @@ I.setCookie([
 #### Parameters
 
 -   `cookie` **(Cookie | [Array][8]&lt;Cookie>)** a cookie object or array of cookie objects.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### switchTo
 
@@ -944,7 +987,8 @@ I.switchTo(); // switch back to main page
 
 #### Parameters
 
--   `locator` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+-   `locator` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### uncheckOption
 
@@ -962,7 +1006,8 @@ I.uncheckOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][4] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+-   `context` **([string][4]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### useTestCafeTo
 
@@ -995,6 +1040,7 @@ I.wait(2); // wait 2 secs
 #### Parameters
 
 -   `sec` **[number][9]** number of second to wait.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### waitForElement
 
@@ -1010,6 +1056,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### waitForFunction
 
@@ -1030,7 +1077,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 -   `fn` **([string][4] | [function][6])** to be executed in browser context.
 -   `argsOrSec` **([Array][8]&lt;any> | [number][9])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
 
@@ -1044,7 +1092,8 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForText
 
@@ -1061,7 +1110,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 -   `text` **[string][4]** to wait for.
 -   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
--   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator. 
+-   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForVisible
 
@@ -1075,7 +1125,8 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitInUrl
 
@@ -1088,7 +1139,8 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitNumberOfVisibleElements
 
@@ -1102,7 +1154,8 @@ I.waitNumberOfVisibleElements('a', 3);
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `num` **[number][9]** number of elements.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitToHide
 
@@ -1116,7 +1169,8 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitUrlEquals
 
@@ -1130,7 +1184,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ## getPageUrl
 

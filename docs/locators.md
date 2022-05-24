@@ -243,7 +243,7 @@ Instead of writing a full CSS locator like `[data-qa-id=user_name]` simplify it 
 
 ```js
 // replace this:
-I.click({ css: '[data-test-id=register_button]');
+I.click({ css: '[data-test-id=register_button]'});
 // with this:
 I.click('$register_button');
 ```

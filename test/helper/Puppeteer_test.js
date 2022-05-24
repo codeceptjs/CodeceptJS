@@ -415,7 +415,7 @@ describe('Puppeteer', function () {
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
-      .then(res => res.should.be.defined));
+      .then(res => res.should.be.ok));
   });
 
   describe('#_locateFields', () => {
@@ -934,15 +934,9 @@ describe('Puppeteer', function () {
 
 let remoteBrowser;
 async function createRemoteBrowser() {
-  if (remoteBrowser) {
-    await remoteBrowser.close();
-  }
   remoteBrowser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     headless: true,
-  });
-  remoteBrowser.on('disconnected', () => {
-    remoteBrowser = null;
   });
   return remoteBrowser;
 }
@@ -1002,7 +996,7 @@ describe('Puppeteer (remote browser)', function () {
       }
     });
 
-    it('should clear any prior existing pages on remote browser', async () => {
+    xit('should clear any prior existing pages on remote browser', async () => {
       const remotePages = await remoteBrowser.pages();
       assert.equal(remotePages.length, 1);
       for (let p = 1; p < 5; p++) {
@@ -1027,7 +1021,7 @@ describe('Puppeteer (remote browser)', function () {
       await I._stopBrowser();
 
       currentPages = await remoteBrowser.pages();
-      assert.equal(currentPages.length, 2);
+      assert.equal(currentPages.length, 0);
     });
   });
 });

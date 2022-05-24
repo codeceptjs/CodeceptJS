@@ -1,8 +1,10 @@
 const { expect } = require('chai');
 const { Parser } = require('gherkin');
+const Config = require('../../lib/config');
 const {
   Given,
   When,
+  And,
   Then,
   matchStep,
   clearSteps,
@@ -42,6 +44,7 @@ describe('BDD', () => {
     clearSteps();
     recorder.start();
     container.create({});
+    Config.reset();
   });
 
   afterEach(() => {
@@ -64,10 +67,30 @@ describe('BDD', () => {
   it('should load step definitions', () => {
     Given('I am a bird', () => 1);
     When('I fly over ocean', () => 2);
-    Then(/I see (.*?)/, () => 3);
+    And(/^I fly over land$/i, () => 3);
+    Then(/I see (.*?)/, () => 4);
     expect(1).is.equal(matchStep('I am a bird')());
-    expect(3).is.equal(matchStep('I see ocean')());
-    expect(3).is.equal(matchStep('I see world')());
+    expect(3).is.equal(matchStep('I Fly oVer Land')());
+    expect(4).is.equal(matchStep('I see ocean')());
+    expect(4).is.equal(matchStep('I see world')());
+  });
+
+  it('should fail on duplicate step definitions with option', () => {
+    Config.append({
+      gherkin: {
+        avoidDuplicateSteps: true,
+      },
+    });
+
+    let error = null;
+    try {
+      Given('I am a bird', () => 1);
+      Then('I am a bird', () => 1);
+    } catch (err) {
+      error = err;
+    } finally {
+      expect(!!error).is.true;
+    }
   });
 
   it('should contain tags', async () => {

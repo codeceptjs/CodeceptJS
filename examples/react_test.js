@@ -1,6 +1,6 @@
 Feature('React Apps');
 
-Scenario('try react app', ({ I }) => {
+Data([{ a: 1, toString: () => 'a' }, { b: 2, toString: () => 'b' }]).Scenario('try react app', ({ I }) => {
   I.amOnPage('https://ahfarmer.github.io/calculator/');
   I.click('7');
   I.seeElement({ react: 't', props: { name: '5' } });

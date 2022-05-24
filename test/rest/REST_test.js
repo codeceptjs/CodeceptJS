@@ -4,6 +4,7 @@ const FormData = require('form-data');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
+const Container = require('../../lib/container');
 
 const api_url = TestHelper.jsonServerUrl();
 
@@ -104,6 +105,32 @@ describe('REST', () => {
     });
   });
 
+  describe('JSONResponse integration', () => {
+    let jsonResponse;
+
+    beforeEach(() => {
+      Container.create({
+        helpers: {
+          REST: {},
+          JSONResponse: {},
+        },
+      });
+      I = Container.helpers('REST');
+      jsonResponse = Container.helpers('JSONResponse');
+      jsonResponse._beforeSuite();
+    });
+
+    afterEach(() => {
+      Container.clear();
+    });
+
+    it('should be able to parse JSON responses', async () => {
+      await I.sendGetRequest('https://jsonplaceholder.typicode.com/comments/1');
+      await jsonResponse.seeResponseCodeIsSuccessful();
+      await jsonResponse.seeResponseContainsKeys(['id', 'name', 'email']);
+    });
+  });
+
   describe('headers', () => {
     it('should send request headers', async () => {
       const response = await I.sendGetRequest('/user', { 'Content-Type': 'application/json' });
@@ -150,6 +177,98 @@ describe('REST', () => {
 
       response.config.headers.should.have.property('Content-Type');
       response.config.headers['Content-Type'].should.eql('application/json');
+    });
+
+    it('should set headers for all requests', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1test' });
+      // 1st request
+      {
+        const response = await I.sendGetRequest('/user');
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1test');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+      // 2nd request
+      {
+        const response = await I.sendPostRequest('/user', { name: 'john' }, { 'XY2-Test': 'xy2test' });
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1test');
+
+        response.config.headers.should.have.property('XY2-Test');
+        response.config.headers['XY2-Test'].should.include('xy2test');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should set headers for all requests multiple times', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-first' });
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-second' });
+      I.haveRequestHeaders({ 'XY2-Test': 'xy2' });
+      {
+        const response = await I.sendGetRequest('/user');
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1-second');
+
+        response.config.headers.should.have.property('XY2-Test');
+        response.config.headers['XY2-Test'].should.eql('xy2');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should override the header set for all requests', async () => {
+      I.haveRequestHeaders({ 'XY-Test': 'first' });
+      {
+        const response = await I.sendGetRequest('/user', { 'XY-Test': 'value_custom' });
+
+        response.config.headers.should.have.property('XY-Test');
+        response.config.headers['XY-Test'].should.eql('value_custom');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should set Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendGetRequest('/user');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should set Bearer authorization multiple times', async () => {
+      I.amBearerAuthenticated('token1');
+      I.amBearerAuthenticated('token2');
+      const response = await I.sendGetRequest('/user');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token2');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should override Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendGetRequest('/user', { Authorization: 'Bearer token_custom' });
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token_custom');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
     });
   });
 

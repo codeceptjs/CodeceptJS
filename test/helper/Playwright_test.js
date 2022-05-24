@@ -31,6 +31,7 @@ describe('Playwright', function () {
       show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
+      timeout: 2000,
       restart: true,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -356,7 +357,7 @@ describe('Playwright', function () {
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
-      .then(res => res.should.be.defined));
+      .then(res => res.should.be.not.undefined));
   });
 
   describe('#_locateFields', () => {
@@ -580,12 +581,12 @@ describe('Playwright', function () {
   });
 
   describe('#dragAndDrop', () => {
-    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
       .then(() => I.seeElementInDOM('#draggable'))
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
       .then(() => I.see('Dropped')));
 
-    xit('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
+    xit('Drag and drop from within an iframe', () => I.amOnPage('https://jqueryui.com/droppable')
       .then(() => I.resizeWindow(700, 700))
       .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
       .then(() => I.seeElementInDOM('#draggable'))
@@ -653,6 +654,16 @@ describe('Playwright', function () {
       });
       assert.equal('TestEd Beta 2.0', title);
     });
+
+    it('should pass expected parameters', async () => {
+      await I.amOnPage('/');
+      const params = await I.usePlaywrightTo('test', async (params) => {
+        return params;
+      });
+      expect(params.page).to.exist;
+      expect(params.browserContext).to.exist;
+      expect(params.browser).to.exist;
+    });
   });
 
   describe('#mockRoute, #stopMockingRoute', () => {
@@ -672,6 +683,28 @@ describe('Playwright', function () {
       await I.click('GET COMMENTS');
       await I.see('postId');
       await I.dontSee('this was mocked');
+    });
+  });
+
+  describe('#makeApiRequest', () => {
+    it('should make 3rd party API request', async () => {
+      const response = await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      expect(response.status()).to.equal(200);
+      expect(await response.json()).to.include.keys(['id', 'name']);
+    });
+
+    it('should make local API request', async () => {
+      const response = await I.makeApiRequest('get', '/form/fetch_call');
+      expect(response.status()).to.equal(200);
+    });
+
+    it('should convert to axios response with onResponse hook', async () => {
+      let response;
+      I.config.onResponse = (resp) => response = resp;
+      await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      expect(response).to.be.ok;
+      expect(response.status).to.equal(200);
+      expect(response.data).to.include.keys(['id', 'name']);
     });
   });
 
@@ -830,7 +863,9 @@ describe('Playwright (remote browser) websocket', function () {
   });
 });
 
-describe('Playwright - BasicAuth', () => {
+describe('Playwright - BasicAuth', function () {
+  this.timeout(35000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
