@@ -399,6 +399,7 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
 * `gherkin`
   * `features` - path to feature files, or an array of feature file paths
   * `steps` - array of files with step definitions
+  * `avoidDuplicateSteps` - attempts to avoid duplicate step definitions by shallow compare
 
 ```js
 "gherkin": {

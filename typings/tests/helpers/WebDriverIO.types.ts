@@ -1,7 +1,7 @@
 const wd = new CodeceptJS.WebDriver();
 
-const str = 'text';
-const num = 1;
+const str_wd = 'text';
+const num_wd = 1;
 
 wd.amOnPage(); // $ExpectError
 wd.amOnPage(''); // $ExpectType void
@@ -80,25 +80,25 @@ wd.rightClick('div', { ios: '//div' });
 
 wd.fillField(); // $ExpectError
 wd.fillField('div'); // $ExpectError
-wd.fillField('div', str); // $ExpectType void
-wd.fillField({ css: 'div' }, str);
-wd.fillField({ xpath: '//div' }, str);
-wd.fillField({ name: 'div' }, str);
-wd.fillField({ id: 'div' }, str);
-wd.fillField({ android: 'div' }, str);
-wd.fillField({ ios: 'div' }, str);
-wd.fillField(locate('div'), str);
+wd.fillField('div', str_wd); // $ExpectType void
+wd.fillField({ css: 'div' }, str_wd);
+wd.fillField({ xpath: '//div' }, str_wd);
+wd.fillField({ name: 'div' }, str_wd);
+wd.fillField({ id: 'div' }, str_wd);
+wd.fillField({ android: 'div' }, str_wd);
+wd.fillField({ ios: 'div' }, str_wd);
+wd.fillField(locate('div'), str_wd);
 
 wd.appendField(); // $ExpectError
 wd.appendField('div'); // $ExpectError
-wd.appendField('div', str); // $ExpectType void
-wd.appendField({ css: 'div' }, str);
-wd.appendField({ xpath: '//div' }, str);
-wd.appendField({ name: 'div' }, str);
-wd.appendField({ id: 'div' }, str);
-wd.appendField({ android: 'div' }, str);
-wd.appendField({ ios: 'div' }, str);
-wd.appendField(locate('div'), str);
+wd.appendField('div', str_wd); // $ExpectType void
+wd.appendField({ css: 'div' }, str_wd);
+wd.appendField({ xpath: '//div' }, str_wd);
+wd.appendField({ name: 'div' }, str_wd);
+wd.appendField({ id: 'div' }, str_wd);
+wd.appendField({ android: 'div' }, str_wd);
+wd.appendField({ ios: 'div' }, str_wd);
+wd.appendField(locate('div'), str_wd);
 
 wd.clearField(); // $ExpectError
 wd.clearField('div');
@@ -111,11 +111,11 @@ wd.clearField({ ios: 'div' });
 
 wd.selectOption(); // $ExpectError
 wd.selectOption('div'); // $ExpectError
-wd.selectOption('div', str); // $ExpectType void
+wd.selectOption('div', str_wd); // $ExpectType void
 
 wd.attachFile(); // $ExpectError
 wd.attachFile('div'); // $ExpectError
-wd.attachFile('div', str); // $ExpectType void
+wd.attachFile('div', str_wd); // $ExpectType void
 
 wd.checkOption(); // $ExpectError
 wd.checkOption('div'); // $ExpectType void
@@ -124,33 +124,33 @@ wd.uncheckOption(); // $ExpectError
 wd.uncheckOption('div'); // $ExpectType void
 
 wd.seeInTitle(); // $ExpectError
-wd.seeInTitle(str); // $ExpectType void
+wd.seeInTitle(str_wd); // $ExpectType void
 
 wd.seeTitleEquals(); // $ExpectError
-wd.seeTitleEquals(str); // $ExpectType void
+wd.seeTitleEquals(str_wd); // $ExpectType void
 
 wd.dontSeeInTitle(); // $ExpectError
-wd.dontSeeInTitle(str); // $ExpectType void
+wd.dontSeeInTitle(str_wd); // $ExpectType void
 
 wd.see(); // $ExpectError
-wd.see(str); // $ExpectType void
-wd.see(str, 'div'); // $ExpectType void
+wd.see(str_wd); // $ExpectType void
+wd.see(str_wd, 'div'); // $ExpectType void
 
 wd.dontSee(); // $ExpectError
-wd.dontSee(str); // $ExpectType void
-wd.dontSee(str, 'div'); // $ExpectType void
+wd.dontSee(str_wd); // $ExpectType void
+wd.dontSee(str_wd, 'div'); // $ExpectType void
 
 wd.seeTextEquals(); // $ExpectError
-wd.seeTextEquals(str); // $ExpectType void
-wd.seeTextEquals(str, 'div'); // $ExpectType void
+wd.seeTextEquals(str_wd); // $ExpectType void
+wd.seeTextEquals(str_wd, 'div'); // $ExpectType void
 
 wd.seeInField(); // $ExpectError
 wd.seeInField('div'); // $ExpectError
-wd.seeInField('div', str); // $ExpectType void
+wd.seeInField('div', str_wd); // $ExpectType void
 
 wd.dontSeeInField(); // $ExpectError
 wd.dontSeeInField('div'); // $ExpectError
-wd.dontSeeInField('div', str); // $ExpectType void
+wd.dontSeeInField('div', str_wd); // $ExpectType void
 
 wd.seeCheckboxIsChecked(); // $ExpectError
 wd.seeCheckboxIsChecked('div'); // $ExpectType void
@@ -171,48 +171,48 @@ wd.dontSeeElementInDOM(); // $ExpectError
 wd.dontSeeElementInDOM('div'); // $ExpectType void
 
 wd.seeInSource(); // $ExpectError
-wd.seeInSource(str); // $ExpectType void
+wd.seeInSource(str_wd); // $ExpectType void
 
 wd.dontSeeInSource(); // $ExpectError
-wd.dontSeeInSource(str); // $ExpectType void
+wd.dontSeeInSource(str_wd); // $ExpectType void
 
 wd.seeNumberOfElements(); // $ExpectError
 wd.seeNumberOfElements('div'); // $ExpectError
-wd.seeNumberOfElements('div', num); // $ExpectType void
+wd.seeNumberOfElements('div', num_wd); // $ExpectType void
 
 wd.seeNumberOfVisibleElements(); // $ExpectError
 wd.seeNumberOfVisibleElements('div'); // $ExpectError
-wd.seeNumberOfVisibleElements('div', num); // $ExpectType void
+wd.seeNumberOfVisibleElements('div', num_wd); // $ExpectType void
 
 wd.seeCssPropertiesOnElements(); // $ExpectError
 wd.seeCssPropertiesOnElements('div'); // $ExpectError
-wd.seeCssPropertiesOnElements('div', str); // $ExpectType void
+wd.seeCssPropertiesOnElements('div', str_wd); // $ExpectType void
 
 wd.seeAttributesOnElements(); // $ExpectError
 wd.seeAttributesOnElements('div'); // $ExpectError
-wd.seeAttributesOnElements('div', str); // $ExpectType void
+wd.seeAttributesOnElements('div', str_wd); // $ExpectType void
 
 wd.seeInCurrentUrl(); // $ExpectError
-wd.seeInCurrentUrl(str); // $ExpectType void
+wd.seeInCurrentUrl(str_wd); // $ExpectType void
 
 wd.seeCurrentUrlEquals(); // $ExpectError
-wd.seeCurrentUrlEquals(str); // $ExpectType void
+wd.seeCurrentUrlEquals(str_wd); // $ExpectType void
 
 wd.dontSeeInCurrentUrl(); // $ExpectError
-wd.dontSeeInCurrentUrl(str); // $ExpectType void
+wd.dontSeeInCurrentUrl(str_wd); // $ExpectType void
 
 wd.dontSeeCurrentUrlEquals(); // $ExpectError
-wd.dontSeeCurrentUrlEquals(str); // $ExpectType void
+wd.dontSeeCurrentUrlEquals(str_wd); // $ExpectType void
 
 wd.executeScript(); // $ExpectError
-wd.executeScript(str); // $ExpectType Promise<any>
-wd.executeScript(() => {}); // $ExpectType Promise<any>
-wd.executeScript(() => {}, {}); // $ExpectType Promise<any>
+wd.executeScript(str_wd); // $ExpectType void
+wd.executeScript(() => {}); // $ExpectType void
+wd.executeScript(() => {}, {}); // $ExpectType void
 
 wd.executeAsyncScript(); // $ExpectError
-wd.executeAsyncScript(str); // $ExpectType Promise<any>
-wd.executeAsyncScript(() => {}); // $ExpectType Promise<any>
-wd.executeAsyncScript(() => {}, {}); // $ExpectType Promise<any>
+wd.executeAsyncScript(str_wd); // $ExpectType void
+wd.executeAsyncScript(() => {}); // $ExpectType void
+wd.executeAsyncScript(() => {}, {}); // $ExpectType void
 
 wd.scrollIntoView(); // $ExpectError
 wd.scrollIntoView('div'); // $ExpectError
@@ -220,126 +220,126 @@ wd.scrollIntoView('div', { behavior: 'auto', block: 'center', inline: 'center' }
 
 wd.scrollTo(); // $ExpectError
 wd.scrollTo('div'); // $ExpectType void
-wd.scrollTo('div', num, num); // $ExpectType void
+wd.scrollTo('div', num_wd, num_wd); // $ExpectType void
 
 wd.moveCursorTo(); // $ExpectError
 wd.moveCursorTo('div'); // $ExpectType void
-wd.moveCursorTo('div', num, num); // $ExpectType void
+wd.moveCursorTo('div', num_wd, num_wd); // $ExpectType void
 
 wd.saveScreenshot(); // $ExpectError
-wd.saveScreenshot(str); // $ExpectType void
-wd.saveScreenshot(str, true); // $ExpectType void
+wd.saveScreenshot(str_wd); // $ExpectType void
+wd.saveScreenshot(str_wd, true); // $ExpectType void
 
 wd.setCookie(); // $ExpectError
-wd.setCookie({ name: str, value: str }); // $ExpectType void
-wd.setCookie([{ name: str, value: str }]); // $ExpectType void
+wd.setCookie({ name: str_wd, value: str_wd }); // $ExpectType void
+wd.setCookie([{ name: str_wd, value: str_wd }]); // $ExpectType void
 
 wd.clearCookie(); // $ExpectType void
-wd.clearCookie(str); // $ExpectType void
+wd.clearCookie(str_wd); // $ExpectType void
 
 wd.seeCookie(); // $ExpectError
-wd.seeCookie(str); // $ExpectType void
+wd.seeCookie(str_wd); // $ExpectType void
 
 wd.acceptPopup(); // $ExpectType void
 
 wd.cancelPopup(); // $ExpectType void
 
 wd.seeInPopup(); // $ExpectError
-wd.seeInPopup(str); // $ExpectType void
+wd.seeInPopup(str_wd); // $ExpectType void
 
 wd.pressKeyDown(); // $ExpectError
-wd.pressKeyDown(str); // $ExpectType void
+wd.pressKeyDown(str_wd); // $ExpectType void
 
 wd.pressKeyUp(); // $ExpectError
-wd.pressKeyUp(str); // $ExpectType void
+wd.pressKeyUp(str_wd); // $ExpectType void
 
 wd.pressKey(); // $ExpectError
-wd.pressKey(str); // $ExpectType void
+wd.pressKey(str_wd); // $ExpectType void
 
 wd.type(); // $ExpectError
-wd.type(str); // $ExpectType void
+wd.type(str_wd); // $ExpectType void
 
 wd.resizeWindow(); // $ExpectError
-wd.resizeWindow(num); // $ExpectError
-wd.resizeWindow(num, num); // $ExpectType void
+wd.resizeWindow(num_wd); // $ExpectError
+wd.resizeWindow(num_wd, num_wd); // $ExpectType void
 
 wd.dragAndDrop(); // $ExpectError
 wd.dragAndDrop('div'); // $ExpectError
 wd.dragAndDrop('div', 'div'); // $ExpectType void
 
 wd.dragSlider(); // $ExpectError
-wd.dragSlider('div', num); // $ExpectType void
+wd.dragSlider('div', num_wd); // $ExpectType void
 
 wd.switchToWindow(); // $ExpectError
-wd.switchToWindow(str); // $ExpectType void
+wd.switchToWindow(str_wd); // $ExpectType void
 
 wd.closeOtherTabs(); // $ExpectType void
 
 wd.wait(); // $ExpectError
-wd.wait(num); // $ExpectType void
+wd.wait(num_wd); // $ExpectType void
 
 wd.waitForEnabled(); // $ExpectError
 wd.waitForEnabled('div'); // $ExpectType void
-wd.waitForEnabled('div', num); // $ExpectType void
+wd.waitForEnabled('div', num_wd); // $ExpectType void
 
 wd.waitForElement(); // $ExpectError
 wd.waitForElement('div'); // $ExpectType void
-wd.waitForElement('div', num); // $ExpectType void
+wd.waitForElement('div', num_wd); // $ExpectType void
 
 wd.waitForClickable(); // $ExpectError
 wd.waitForClickable('div'); // $ExpectType void
-wd.waitForClickable('div', num); // $ExpectType void
+wd.waitForClickable('div', num_wd); // $ExpectType void
 
 wd.waitForVisible(); // $ExpectError
 wd.waitForVisible('div'); // $ExpectType void
-wd.waitForVisible('div', num); // $ExpectType void
+wd.waitForVisible('div', num_wd); // $ExpectType void
 
 wd.waitForInvisible(); // $ExpectError
 wd.waitForInvisible('div'); // $ExpectType void
-wd.waitForInvisible('div', num); // $ExpectType void
+wd.waitForInvisible('div', num_wd); // $ExpectType void
 
 wd.waitToHide(); // $ExpectError
 wd.waitToHide('div'); // $ExpectType void
-wd.waitToHide('div', num); // $ExpectType void
+wd.waitToHide('div', num_wd); // $ExpectType void
 
 wd.waitForDetached(); // $ExpectError
 wd.waitForDetached('div'); // $ExpectType void
-wd.waitForDetached('div', num); // $ExpectType void
+wd.waitForDetached('div', num_wd); // $ExpectType void
 
 wd.waitForFunction(); // $ExpectError
 wd.waitForFunction('div'); // $ExpectType void
 wd.waitForFunction(() => {}); // $ExpectType void
-wd.waitForFunction(() => {}, [num], num); // $ExpectType void
-wd.waitForFunction(() => {}, [str], num); // $ExpectType void
+wd.waitForFunction(() => {}, [num_wd], num_wd); // $ExpectType void
+wd.waitForFunction(() => {}, [str_wd], num_wd); // $ExpectType void
 
 wd.waitInUrl(); // $ExpectError
-wd.waitInUrl(str); // $ExpectType void
-wd.waitInUrl(str, num); // $ExpectType void
+wd.waitInUrl(str_wd); // $ExpectType void
+wd.waitInUrl(str_wd, num_wd); // $ExpectType void
 
 wd.waitForText(); // $ExpectError
-wd.waitForText(str); // $ExpectType void
-wd.waitForText(str, num, str); // $ExpectType void
+wd.waitForText(str_wd); // $ExpectType void
+wd.waitForText(str_wd, num_wd, str_wd); // $ExpectType void
 
 wd.waitForValue(); // $ExpectError
-wd.waitForValue(str); // $ExpectError
-wd.waitForValue(str, str); // $ExpectType void
-wd.waitForValue(str, str, num); // $ExpectType void
+wd.waitForValue(str_wd); // $ExpectError
+wd.waitForValue(str_wd, str_wd); // $ExpectType void
+wd.waitForValue(str_wd, str_wd, num_wd); // $ExpectType void
 
 wd.waitNumberOfVisibleElements(); // $ExpectError
 wd.waitNumberOfVisibleElements('div'); // $ExpectError
-wd.waitNumberOfVisibleElements(str, num); // $ExpectType void
-wd.waitNumberOfVisibleElements(str, num, num); // $ExpectType void
+wd.waitNumberOfVisibleElements(str_wd, num_wd); // $ExpectType void
+wd.waitNumberOfVisibleElements(str_wd, num_wd, num_wd); // $ExpectType void
 
 wd.waitUrlEquals(); // $ExpectError
-wd.waitUrlEquals(str); // $ExpectType void
-wd.waitUrlEquals(str, num); // $ExpectType void
+wd.waitUrlEquals(str_wd); // $ExpectType void
+wd.waitUrlEquals(str_wd, num_wd); // $ExpectType void
 
 wd.switchTo(); // $ExpectType void
 wd.switchTo('div'); // $ExpectType void
 
-wd.switchToNextTab(num, num); // $ExpectType void
+wd.switchToNextTab(num_wd, num_wd); // $ExpectType void
 
-wd.switchToPreviousTab(num, num); // $ExpectType void
+wd.switchToPreviousTab(num_wd, num_wd); // $ExpectType void
 
 wd.closeCurrentTab(); // $ExpectType void
 
@@ -352,12 +352,12 @@ wd.scrollPageToTop(); // $ExpectType void
 wd.scrollPageToBottom(); // $ExpectType void
 
 wd.setGeoLocation(); // $ExpectError
-wd.setGeoLocation(num); // $ExpectError
-wd.setGeoLocation(num, num); // $ExpectType void
-wd.setGeoLocation(num, num, num); // $ExpectType void
+wd.setGeoLocation(num_wd); // $ExpectError
+wd.setGeoLocation(num_wd, num_wd); // $ExpectType void
+wd.setGeoLocation(num_wd, num_wd, num_wd); // $ExpectType void
 
 wd.dontSeeCookie(); // $ExpectError
-wd.dontSeeCookie(str); // $ExpectType void
+wd.dontSeeCookie(str_wd); // $ExpectType void
 
 wd.dragAndDrop(); // $ExpectError
 wd.dragAndDrop('#dragHandle'); // $ExpectError

@@ -682,7 +682,7 @@ Run tests with plugin enabled:
 plugins: {
     retryFailedStep: {
         enabled: true,
-        ignoreSteps: [
+        ignoredSteps: [
           'scroll*', // ignore all scroll steps
           /Cookie/, // ignore all steps with a Cookie in it (by regexp)
         ]

@@ -1,3 +1,52 @@
+## 3.3.3
+
+* Fixed `DataCloneError: () => could not be cloned` when running data tests in run-workers
+* 🇺🇦 Added #StandWithUkraine notice to CLI
+
+
+## 3.3.2
+
+* [REST] Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See #3304 by @mirao
+* Reverted typings change introduced in #3245. [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873) 
+
+## 3.3.1
+
+🛩️ Features:
+
+* Add option to avoid duplicate gherkin step definitions (#3257) - @raywiis
+* Added `step.*` for run-workers #3272. Thanks to @abhimanyupandian
+* Fixed loading tests for `codecept run` using glob patterns. By @jayudey-wf 
+
+```
+npx codeceptjs run test-dir/*"
+```
+
+* [Playwright] **Possible breaking change.** By default `timeout` is changed to 5000ms. The value set in 3.3.0 was too low. Please set `timeout` explicitly to not depend on release values.
+* [Playwright] Added for color scheme option by @PeterNgTr
+
+```js
+ helpers: {
+  Playwright : {
+    url: "http://localhost",
+    colorScheme: "dark",
+  }
+ }
+```
+
+
+🐛 Bugfixes:
+
+* [Playwright] Fixed `Cannot read property 'video' of undefined`
+* Fixed haveRequestHeaders() and amBearerAuthenticated() of REST helper (#3260) - @mirao
+* Fixed: allure attachment fails if screenshot failed #3298 by @ruudvanderweijde 
+* Fixed #3105 using autoLogin() plugin with TypeScript. Fix #3290 by @PeterNgTr 
+* [Playwright] Added extra params for click and dragAndDrop to type definitions by @mirao
+
+
+📖 Documentation
+* Improving the typings in many places
+* Improving the return type of helpers for TS users (#3245) - @nlespiaucq
+
 ## 3.3.0
 
 🛩️ Features:
