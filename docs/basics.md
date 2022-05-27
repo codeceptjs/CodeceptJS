@@ -210,6 +210,8 @@ To fill in sensitive data use the `secret` function, it won't expose actual valu
 
 ```js
 I.fillField('password', secret('123456'));
+// you can also mask a property value in an object as an argument
+I.doMyCustomLogIn({ login: 'Jan', password: secret('12345') });
 ```
 
 ### Assertions
