@@ -578,6 +578,43 @@ describe('Playwright', function () {
         const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
         assert.equal(matchingLogs.length, 1);
       }));
+
+    it('should grab browser logs in new tab', () => I.amOnPage('/')
+      .then(() => I.openNewTab())
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs in two tabs', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => I.openNewTab())
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().includes('Test log entry'));
+        assert.equal(matchingLogs.length, 2);
+      }));
+
+    it('should grab browser logs in next tab', () => I.amOnPage('/info')
+      .then(() => I.click('New tab'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
   });
 
   describe('#dragAndDrop', () => {
