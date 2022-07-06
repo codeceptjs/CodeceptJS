@@ -131,7 +131,8 @@ Traces will be saved to `output/trace`
      Playwright: {
        url: "http://localhost",
        chromium: {
-         browserWSEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a'
+         browserWSEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a',
+         cdpConnection: false // default is false
        }
      }
    }
