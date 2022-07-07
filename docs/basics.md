@@ -212,6 +212,8 @@ To fill in sensitive data use the `secret` function, it won't expose actual valu
 I.fillField('password', secret('123456'));
 ```
 
+> ℹ️ Learn more about [masking secret](/secrets/) output
+
 ### Assertions
 
 In order to verify the expected behavior of a web application, its content should be checked.
