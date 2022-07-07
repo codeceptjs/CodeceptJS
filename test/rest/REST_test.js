@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const FormData = require('form-data');
+const secret = require('../../lib/secret').secret;
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
@@ -66,6 +67,14 @@ describe('REST', () => {
     it('should send POST requests: payload format = form urlencoded', async () => {
       const response = await I.sendPostRequest('/user', 'name=john');
       response.data.name.should.eql('john');
+    });
+
+    it('should send POST requests with secret', async () => {
+      const secretData = secret({ name: 'john', password: '123456' }, 'password');
+      const response = await I.sendPostRequest('/user', secretData);
+      response.data.name.should.eql('john');
+      response.data.password.should.eql('123456');
+      secretData.toString().should.include('"password":"****"');
     });
 
     it('should send PUT requests: payload format = json', async () => {
