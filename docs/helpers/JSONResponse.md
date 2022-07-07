@@ -92,6 +92,12 @@ Checks for deep inclusion of a provided json in a response data.
 I.dontSeeResponseContainsJson({ user: 2 });
 ```
 
+```js
+// response.data == [{ data: { user: 1 } }]
+
+I.dontSeeResponseContainsJson({ user: 2 });
+```
+
 #### Parameters
 
 -   `json` **[object][2]**  
@@ -139,6 +145,12 @@ Checks for deep inclusion of a provided json in a response data.
 I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
 ```
 
+```js
+// response.data == [{ user: { name: 'jon', email: 'jon@doe.com' } }]
+
+I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+```
+
 #### Parameters
 
 -   `json` **[object][2]**  
@@ -149,6 +161,12 @@ Checks for deep inclusion of a provided json in a response data.
 
 ```js
 // response.data == { user: { name: 'jon', email: 'jon@doe.com' } }
+
+I.seeResponseContainsKeys(['user']);
+```
+
+```js
+// response.data == [{ user: { name: 'jon', email: 'jon@doe.com' } }]
 
 I.seeResponseContainsKeys(['user']);
 ```
