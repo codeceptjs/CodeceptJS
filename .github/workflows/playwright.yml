@@ -28,7 +28,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: microsoft/playwright-github-action@v1
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 7.4
@@ -37,6 +36,8 @@ jobs:
         npm install
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    - name: Install deps
+      run: npx playwright install-deps        
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run chromium tests
