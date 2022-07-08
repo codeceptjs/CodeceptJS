@@ -53,4 +53,36 @@ describe('customLocator', () => {
     expect(l.isCSS()).to.be.true;
     expect(l.simplify()).to.eql('[data-test=user]');
   });
+
+  it('add a custom locator with array $ -> data-qa, data-qa-id', () => {
+    customLocatorPlugin({
+      prefix: '$',
+      attribute: ['data-qa', 'data-qa-id'],
+      showActual: true,
+    });
+    const l = new Locator('$user-id');
+    expect(l.isXPath()).to.be.true;
+    expect(l.toXPath()).to.eql('.//*[@data-qa=\'user-id\' or @data-qa-id=\'user-id\']');
+    expect(l.toString()).to.eql('.//*[@data-qa=\'user-id\' or @data-qa-id=\'user-id\']');
+  });
+
+  it('add a custom locator array with CSS', () => {
+    customLocatorPlugin({
+      prefix: '$',
+      attribute: ['data-test', 'data-test-id'],
+      strategy: 'css',
+    });
+    const l = new Locator('$user');
+    expect(l.isCSS()).to.be.true;
+    expect(l.simplify()).to.eql('[data-test=user],[data-test-id=user]');
+  });
+
+  it('should return initial locator value when it does not start with specified prefix', () => {
+    customLocatorPlugin({
+      prefix: '$',
+      attribute: 'data-test',
+    });
+    const l = new Locator('=user');
+    expect(l.simplify()).to.eql('=user');
+  });
 });

@@ -131,7 +131,8 @@ Traces will be saved to `output/trace`
      Playwright: {
        url: "http://localhost",
        chromium: {
-         browserWSEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a'
+         browserWSEndpoint: 'ws://localhost:9222/devtools/browser/c5aa6160-b5bc-4d53-bb49-6ecb36cd2e0a',
+         cdpConnection: false // default is false
        }
      }
    }
@@ -811,9 +812,12 @@ Returns **[Promise][18]&lt;[Array][19]&lt;[string][12]>>** attribute value
 Get JS log from browser.
 
 ```js
-let logs = await I.grabBrowserLogs();
-console.log(JSON.stringify(logs))
+const logs = await I.grabBrowserLogs();
+const errors = logs.map(l => ({ type: l.type(), text: l.text() })).filter(l => l.type === 'error');
+console.log(JSON.stringify(errors));
 ```
+
+[Learn more about console messages][20]
 
 Returns **[Promise][18]&lt;[Array][19]&lt;any>>** 
 
@@ -1102,7 +1106,7 @@ Returns **[Promise][18]&lt;[Array][19]&lt;[string][12]>>** attribute value
 Handles a file download.Aa file name is required to save the file on disk.
 Files are saved to "output" directory.
 
-Should be used with [FileSystem helper][20] to check that file were downloaded correctly.
+Should be used with [FileSystem helper][21] to check that file were downloaded correctly.
 
 ```js
 I.handleDownloads('downloads/avatar.jpg');
@@ -1133,7 +1137,7 @@ I.haveRequestHeaders({
 
 ### makeApiRequest
 
-Performs [api request][21] using
+Performs [api request][22] using
 the cookies from the current browser session.
 
 ```js
@@ -1154,17 +1158,17 @@ Returns **[Promise][18]&lt;[object][10]>** response
 
 ### mockRoute
 
-Mocks network request using [`browserContext.route`][22] of Playwright
+Mocks network request using [`browserContext.route`][23] of Playwright
 
 ```js
 I.mockRoute(/(.png$)|(.jpg$)/, route => route.abort());
 ```
 
-This method allows intercepting and mocking requests & responses. [Learn more about it][23]
+This method allows intercepting and mocking requests & responses. [Learn more about it][24]
 
 #### Parameters
 
--   `url` **([string][12] | [RegExp][24])?** URL, regex or pattern for to match URL
+-   `url` **([string][12] | [RegExp][25])?** URL, regex or pattern for to match URL
 -   `handler` **[function][17]?** a function to process reques
 
 ### moveCursorTo
@@ -1192,7 +1196,7 @@ Open new tab and automatically switched to new tab
 I.openNewTab();
 ```
 
-You can pass in [page options][25] to emulate device on this page
+You can pass in [page options][26] to emulate device on this page
 
 ```js
 // enable mobile
@@ -1207,7 +1211,7 @@ I.openNewTab({ isMobile: true });
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][26].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][27].
 
 ```js
 I.pressKey('Backspace');
@@ -1267,13 +1271,13 @@ Some of the supported key names are:
 #### Parameters
 
 -   `key` **([string][12] | [Array][19]&lt;[string][12]>)** key or array of keys to press.
-    [!] returns a _promise_ which is synchronized internally by recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][27]).
+    [!] returns a _promise_ which is synchronized internally by recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][28]).
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][29]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1290,7 +1294,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][29]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1378,7 +1382,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][12]** file name to save.
--   `fullPage` **[boolean][29]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` **[boolean][30]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
     [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### scrollPageToBottom
@@ -1724,7 +1728,7 @@ If no handler is passed, all mock requests for the rote are disabled.
 
 #### Parameters
 
--   `url` **([string][12] | [RegExp][24])?** URL, regex or pattern for to match URL
+-   `url` **([string][12] | [RegExp][25])?** URL, regex or pattern for to match URL
 -   `handler` **[function][17]?** a function to process reques
 
 ### switchTo
@@ -1771,7 +1775,7 @@ I.switchToPreviousTab(2);
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][26] is not an option.
+_Note:_ Should be used when [`fillField`][27] is not an option.
 
 ```js
 // passing in a string
@@ -1808,7 +1812,7 @@ I.uncheckOption('agree', '//form');
 
 -   `field` **([string][12] | [object][10])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][12]? | [object][10])** (optional, `null` by default) element located by CSS | XPath | strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder[Additional options][30] for uncheck available as 3rd argument.Examples:```js
+    [!] returns a _promise_ which is synchronized internally by recorder[Additional options][31] for uncheck available as 3rd argument.Examples:```js
     // click on element at position
     I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
     ```> ⚠️ To avoid flakiness, option `force: true` is set by default 
@@ -1821,7 +1825,7 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][31], [`browserContext`][32] [`browser`][33] } objects from Playwright API are available.
+{ [`page`][32], [`browserContext`][33] [`browser`][34] } objects from Playwright API are available.
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
@@ -1947,7 +1951,7 @@ I.waitForInvisible('#popup');
 
 Waits for navigation to finish. By default takes configured `waitForNavigation` option.
 
-See [Playwright's reference][34]
+See [Playwright's reference][35]
 
 #### Parameters
 
@@ -2027,7 +2031,7 @@ I.waitForVisible('#popup');
 
 -   `locator` **([string][12] | [object][10])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][35]. 
+    [!] returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][36]. 
 
 ### waitInUrl
 
@@ -2126,34 +2130,36 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[20]: https://codecept.io/helpers/FileSystem
+[20]: https://playwright.dev/docs/api/class-consolemessage
 
-[21]: https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get
+[21]: https://codecept.io/helpers/FileSystem
 
-[22]: https://playwright.dev/docs/api/class-browsercontext#browser-context-route
+[22]: https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get
 
-[23]: https://playwright.dev/docs/network#handle-requests
+[23]: https://playwright.dev/docs/api/class-browsercontext#browser-context-route
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+[24]: https://playwright.dev/docs/network#handle-requests
 
-[25]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[26]: #fillfield
+[26]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
 
-[27]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[27]: #fillfield
 
-[28]: #click
+[28]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[29]: #click
 
-[30]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[31]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
+[31]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
 
-[32]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
+[32]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
 
-[33]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
+[33]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
 
-[34]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
+[34]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
 
-[35]: https://codecept.io/react
+[35]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
+
+[36]: https://codecept.io/react
