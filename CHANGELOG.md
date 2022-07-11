@@ -25,13 +25,16 @@ plugins: {
 * [JSONResponse] Updated response validation to iterate over array items if response is array. Thanks to @PeterNgTr
 
 ```js
-// response.data == [{ user: { name: 'jon', email: 'jon@doe.com' } }]
+// response.data == [
+//   { user: { name: 'jon', email: 'jon@doe.com' } },
+//   { user: { name: 'matt', email: 'matt@doe.com' } },
+//]
 
 I.seeResponseContainsKeys(['user']);
 I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+I.seeResponseContainsJson({ user: { email: 'matt@doe.com' } });
 I.dontSeeResponseContainsJson({ user: 2 });
 ```
-
 
 ## 3.3.3
 
