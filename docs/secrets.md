@@ -27,4 +27,4 @@ I.sendPostRequest('/login', secret({
 
 The object created from `secret` is as Proxy to the object passed in. When printed password will be replaced with ****. 
 
-> ⚠️ Currently, properties of nested objects can't be masked via `secret`
+> ⚠️ Only direct properties of the object can be masked via `secret`
