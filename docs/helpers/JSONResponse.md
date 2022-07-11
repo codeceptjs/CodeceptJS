@@ -92,8 +92,10 @@ Checks for deep inclusion of a provided json in a response data.
 I.dontSeeResponseContainsJson({ user: 2 });
 ```
 
+If an array is received, checks that no element of array contains json:
+
 ```js
-// response.data == [{ data: { user: 1 } }]
+// response.data == [{ user: 1 }, { user: 3 }]
 
 I.dontSeeResponseContainsJson({ user: 2 });
 ```
@@ -145,6 +147,8 @@ Checks for deep inclusion of a provided json in a response data.
 I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
 ```
 
+If an array is received, checks that at least one element contains JSON
+
 ```js
 // response.data == [{ user: { name: 'jon', email: 'jon@doe.com' } }]
 
@@ -165,8 +169,10 @@ Checks for deep inclusion of a provided json in a response data.
 I.seeResponseContainsKeys(['user']);
 ```
 
+If an array is received, check is performed for each element of array:
+
 ```js
-// response.data == [{ user: { name: 'jon', email: 'jon@doe.com' } }]
+// response.data == [{ user: 'jon' }, { user: 'matt'}]
 
 I.seeResponseContainsKeys(['user']);
 ```
