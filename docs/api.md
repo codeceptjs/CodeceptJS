@@ -263,6 +263,8 @@ The most basic thing to check in response is existence of keys in JSON object. U
 I.seeResponseContainsKeys(['name', 'email']);
 ```
 
+> ℹ️ If response is an array, it will check that every element in array have provided keys
+
 However, this is a very naive approach. It won't work for arrays or nested objects.
 To check complex JSON structures `JSONResponse` helper uses [`joi`](https://joi.dev) library. 
 It has rich API to validate JSON by the schema defined using JavaScript. 
@@ -295,6 +297,8 @@ I.seeResponseContainsJson({
   }
 })
 ```
+
+> ℹ️ If response is an array, it will check that at least one element in array matches JSON
 
 To perform arbitrary assertions on a response object use `seeResponseValidByCallback`. 
 It allows you to do any kind of assertions by using `expect` from [`chai`](https://www.chaijs.com) library.
