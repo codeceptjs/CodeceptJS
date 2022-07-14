@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const FormData = require('form-data');
-const secret = require('../../lib/secret').secret;
+const { secret } = require('../../lib/secret');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
