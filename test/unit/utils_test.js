@@ -279,7 +279,7 @@ describe('utils', () => {
       utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
       os.platform.restore();
 
-      sinon.stub(os, 'platform', () => { return 'darwin'; });
+      sinon.stub(os, 'platform').callsFake(() => { return 'darwin'; });
       utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
       utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
       utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');
