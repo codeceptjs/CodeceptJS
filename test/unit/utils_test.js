@@ -272,7 +272,7 @@ describe('utils', () => {
     });
 
     it('should normalize modifier key based on operating system', () => {
-      sinon.stub(os, 'platform', () => { return 'notdarwin'; });
+      sinon.stub(os, 'platform').callsFake(() => { return 'notdarwin'; });
       utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
       utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
