@@ -37,6 +37,7 @@ Please **add your own** by editing this page.
 * [codeceptjs-rphelper](https://github.com/reportportal/agent-js-codecept) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
 * [codeceptjs-xray-helper](https://www.npmjs.com/package/codeceptjs-xray-helper) is a CodeceptJS helper which can publish tests results on [XRAY](https://confluence.xpand-it.com/display/XRAYCLOUD/Import+Execution+Results+-+REST).
 * [codeceptjs-slack-reporter](https://www.npmjs.com/package/codeceptjs-slack-reporter) Get a Slack notification when one or more scenarios fail.
+* [codeceptjs-tesults](https://www.npmjs.com/package/codeceptjs-tesults) Report test results data from CodeceptJS to Tesults with this plugin.
 
 ## Page Object Code Generator
 * [codeceptjs-CodeGenerator](https://github.com/senthillkumar/CodeCeptJS-PageObject) is a CodeceptJS custom wrapper which can create page class with action methods from the page object file(JSON) and project setup(Folder Structure).
