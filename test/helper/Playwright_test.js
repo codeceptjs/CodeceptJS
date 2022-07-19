@@ -1,6 +1,7 @@
 const assert = require('assert');
 const expect = require('chai').expect;
 const path = require('path');
+const fs = require('fs');
 
 const playwright = require('playwright');
 
@@ -10,9 +11,9 @@ const Playwright = require('../../lib/helper/Playwright');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
+const { deleteDir } = require('../../lib/utils');
 
 let I;
-let browser;
 let page;
 let FS;
 const siteUrl = TestHelper.siteUrl();
@@ -30,6 +31,7 @@ describe('Playwright', function () {
       show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
+      timeout: 2000,
       restart: true,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -40,7 +42,7 @@ describe('Playwright', function () {
     return I._beforeSuite();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     webApiTests.init({
       I, siteUrl,
     });
@@ -50,7 +52,7 @@ describe('Playwright', function () {
     });
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     return I._after();
   });
 
@@ -85,6 +87,13 @@ describe('Playwright', function () {
   });
 
   webApiTests.tests();
+
+  describe('#click', () => {
+    it('should not try to click on invisible elements', async () => {
+      await I.amOnPage('/invisible_elements');
+      await I.click('Hello World');
+    });
+  });
 
   describe('#waitForFunction', () => {
     it('should wait for function returns true', () => {
@@ -348,7 +357,7 @@ describe('Playwright', function () {
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateCheckable('I Agree'))
-      .then(res => res.should.be.defined));
+      .then(res => res.should.be.not.undefined));
   });
 
   describe('#_locateFields', () => {
@@ -550,7 +559,7 @@ describe('Playwright', function () {
       .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
 
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
-      .then(() => I.grabHTMLFrom('//a'))
+      .then(() => I.grabHTMLFromAll('//a'))
       .then(html => assert.equal(html.length, 5)));
 
     it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
@@ -569,15 +578,52 @@ describe('Playwright', function () {
         const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
         assert.equal(matchingLogs.length, 1);
       }));
+
+    it('should grab browser logs in new tab', () => I.amOnPage('/')
+      .then(() => I.openNewTab())
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
+
+    it('should grab browser logs in two tabs', () => I.amOnPage('/')
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 1');
+      }))
+      .then(() => I.openNewTab())
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry 2');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().includes('Test log entry'));
+        assert.equal(matchingLogs.length, 2);
+      }));
+
+    it('should grab browser logs in next tab', () => I.amOnPage('/info')
+      .then(() => I.click('New tab'))
+      .then(() => I.switchToNextTab())
+      .then(() => I.executeScript(() => {
+        console.log('Test log entry');
+      }))
+      .then(() => I.grabBrowserLogs())
+      .then((logs) => {
+        const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
+        assert.equal(matchingLogs.length, 1);
+      }));
   });
 
   describe('#dragAndDrop', () => {
-    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html')
+    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
       .then(() => I.seeElementInDOM('#draggable'))
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
       .then(() => I.see('Dropped')));
 
-    xit('Drag and drop from within an iframe', () => I.amOnPage('http://jqueryui.com/droppable')
+    xit('Drag and drop from within an iframe', () => I.amOnPage('https://jqueryui.com/droppable')
       .then(() => I.resizeWindow(700, 700))
       .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
       .then(() => I.seeElementInDOM('#draggable'))
@@ -637,26 +683,92 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#usePlaywrightTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.usePlaywrightTo('test', async ({ page }) => {
+        return page.title();
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+
+    it('should pass expected parameters', async () => {
+      await I.amOnPage('/');
+      const params = await I.usePlaywrightTo('test', async (params) => {
+        return params;
+      });
+      expect(params.page).to.exist;
+      expect(params.browserContext).to.exist;
+      expect(params.browser).to.exist;
+    });
+  });
+
+  describe('#mockRoute, #stopMockingRoute', () => {
+    it('should mock a route', async () => {
+      await I.amOnPage('/form/fetch_call');
+      await I.mockRoute('https://jsonplaceholder.typicode.com/comments/1', route => {
+        route.fulfill({
+          status: 200,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json',
+          body: '{"name": "this was mocked" }',
+        });
+      });
+      await I.click('GET COMMENTS');
+      await I.see('this was mocked');
+      await I.stopMockingRoute('https://jsonplaceholder.typicode.com/comments/1');
+      await I.click('GET COMMENTS');
+      await I.see('postId');
+      await I.dontSee('this was mocked');
+    });
+  });
+
+  describe('#makeApiRequest', () => {
+    it('should make 3rd party API request', async () => {
+      const response = await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      expect(response.status()).to.equal(200);
+      expect(await response.json()).to.include.keys(['id', 'name']);
+    });
+
+    it('should make local API request', async () => {
+      const response = await I.makeApiRequest('get', '/form/fetch_call');
+      expect(response.status()).to.equal(200);
+    });
+
+    it('should convert to axios response with onResponse hook', async () => {
+      let response;
+      I.config.onResponse = (resp) => response = resp;
+      await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      expect(response).to.be.ok;
+      expect(response.status).to.equal(200);
+      expect(response.data).to.include.keys(['id', 'name']);
+    });
+  });
+
   describe('#grabElementBoundingRect', () => {
     it('should get the element bounding rectangle', async () => {
-      await I.amOnPage('https://www.google.com');
-      const size = await I.grabElementBoundingRect('#hplogo');
-      expect(size.x).is.greaterThan(0);
-      expect(size.y).is.greaterThan(0);
+      await I.amOnPage('/image');
+      const size = await I.grabElementBoundingRect('#logo');
+      expect(size.x).is.greaterThan(39); // 40 or more
+      expect(size.y).is.greaterThan(39);
       expect(size.width).is.greaterThan(0);
       expect(size.height).is.greaterThan(0);
+      expect(size.width).to.eql(100);
+      expect(size.height).to.eql(100);
     });
 
     it('should get the element width', async () => {
-      await I.amOnPage('https://www.google.com');
-      const width = await I.grabElementBoundingRect('#hplogo', 'width');
+      await I.amOnPage('/image');
+      const width = await I.grabElementBoundingRect('#logo', 'width');
       expect(width).is.greaterThan(0);
+      expect(width).to.eql(100);
     });
 
     it('should get the element height', async () => {
-      await I.amOnPage('https://www.google.com');
-      const height = await I.grabElementBoundingRect('#hplogo', 'height');
+      await I.amOnPage('/image');
+      const height = await I.grabElementBoundingRect('#logo', 'height');
       expect(height).is.greaterThan(0);
+      expect(height).to.eql(100);
     });
   });
 
@@ -684,7 +796,7 @@ async function createRemoteBrowser() {
   if (remoteBrowser) {
     await remoteBrowser.close();
   }
-  remoteBrowser = await playwright.chromium.launchBrowserApp({
+  remoteBrowser = await playwright.chromium.launchServer({
     webSocket: true,
     // args: ['--no-sandbox', '--disable-setuid-sandbox'],
     headless: true,
@@ -695,64 +807,78 @@ async function createRemoteBrowser() {
   return remoteBrowser;
 }
 
-const helperConfig = {
-  chromium: {
-    browserWSEndpoint: 'ws://localhost:9222/devtools/browser/<id>',
-    // Following options are ignored with remote browser
-    headless: false,
-    devtools: true,
-  },
-  browser: 'chromium',
-  // Important in order to handle remote browser state before starting/stopping browser
-  manualStart: true,
-  url: siteUrl,
-  waitForTimeout: 5000,
-  waitForAction: 500,
-  windowSize: '500x700',
-};
-
-xdescribe('Playwright (remote browser) - not supported disconnection yet', function () {
+describe('Playwright (remote browser) websocket', function () {
   this.timeout(35000);
   this.retries(1);
+
+  const helperConfig = {
+    chromium: {
+      browserWSEndpoint: 'ws://localhost:9222/devtools/browser/<id>',
+      // Following options are ignored with remote browser
+      headless: false,
+      devtools: true,
+    },
+    browser: 'chromium',
+    restart: true,
+    // Important in order to handle remote browser state before starting/stopping browser
+    url: siteUrl,
+    waitForTimeout: 5000,
+    waitForAction: 500,
+    windowSize: '500x700',
+  };
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     I = new Playwright(helperConfig);
     I._init();
-    return I._beforeSuite();
   });
 
   beforeEach(async () => {
     // Mimick remote session by creating another browser instance
-    await createRemoteBrowser();
+    const remoteBrowser = await createRemoteBrowser();
+    // I.isRunning = false;
     // Set websocket endpoint to other browser instance
-    helperConfig.chromium = await remoteBrowser.connectOptions();
-    I._setConfig(helperConfig);
-
-    return I._before();
   });
 
-  afterEach(() => {
-    return I._after()
-      .then(() => {
-        remoteBrowser && remoteBrowser.close();
-      });
+  afterEach(async () => {
+    await I._after();
+    return remoteBrowser && remoteBrowser.close();
   });
 
   describe('#_startBrowser', () => {
     it('should throw an exception when endpoint is unreachable', async () => {
-      helperConfig.chromium.browserWSEndpoint = 'ws://unreachable/';
-      I._setConfig(helperConfig);
+      I._setConfig({ ...helperConfig, chromium: { browserWSEndpoint: 'ws://unreachable/' } });
       try {
         await I._startBrowser();
         throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.');
+        e.message.should.include('Cannot connect to websocket');
       }
     });
 
+    it('should connect to legacy API endpoint', async () => {
+      const wsEndpoint = await remoteBrowser.wsEndpoint();
+      I._setConfig({ ...helperConfig, chromium: { browserWSEndpoint: { wsEndpoint } } });
+      await I._before();
+      await I.amOnPage('/');
+      await I.see('Welcome to test app');
+    });
+
+    it('should connect to remote browsers', async () => {
+      helperConfig.chromium.browserWSEndpoint = await remoteBrowser.wsEndpoint();
+      I._setConfig(helperConfig);
+
+      await I._before();
+      await I.amOnPage('/');
+      await I.see('Welcome to test app');
+    });
+
     it('should manage pages in remote browser', async () => {
-      await I._startBrowser();
+      helperConfig.chromium.browserWSEndpoint = await remoteBrowser.wsEndpoint();
+      I._setConfig(helperConfig);
+
+      await I._before();
+      assert.ok(I.isRemoteBrowser);
       const context = await I.browserContext;
       // Session was cleared
       let currentPages = await context.pages();
@@ -769,12 +895,14 @@ xdescribe('Playwright (remote browser) - not supported disconnection yet', funct
       await I._stopBrowser();
 
       currentPages = await context.pages();
-      assert.equal(currentPages.length, 2);
+      assert.equal(currentPages.length, 0);
     });
   });
 });
 
-describe('Playwright - BasicAuth', () => {
+describe('Playwright - BasicAuth', function () {
+  this.timeout(35000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
 
@@ -802,7 +930,6 @@ describe('Playwright - BasicAuth', () => {
     });
     return I._before().then(() => {
       page = I.page;
-      browser = I.browser;
     });
   });
 
@@ -855,5 +982,168 @@ describe('Playwright - Emulation', () => {
     await I.amOnPage('/');
     const width = await I.executeScript('window.innerWidth');
     assert.equal(width, 980);
+  });
+});
+
+describe('Playwright - PERSISTENT', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      url: 'http://localhost:8000',
+      browser: 'chromium',
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chromium: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        userDataDir: '/tmp/playwright-tmp',
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(() => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(() => {
+    return I._after();
+  });
+
+  it('should launch a persistent context', async () => {
+    assert.equal(I._getType(), 'BrowserContext');
+  });
+});
+
+describe('Playwright - Electron', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+
+    I = new Playwright({
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      restart: true,
+      browser: 'electron',
+      electron: {
+        executablePath: require('electron'),
+        args: [path.join(codecept_dir, '/electron/')],
+      },
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  describe('#amOnPage', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.amOnPage('/');
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot open pages inside an Electron container');
+      }
+    });
+  });
+
+  describe('#openNewTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.openNewTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot open new tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#switchToNextTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToNextTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#switchToPreviousTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToNextTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container');
+      }
+    });
+  });
+
+  describe('#closeCurrentTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.closeCurrentTab();
+        throw Error('It should never get this far');
+      } catch (e) {
+        e.message.should.include('Cannot close current tab inside an Electron container');
+      }
+    });
+  });
+});
+
+describe('Playwright - Video & Trace', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(`${__dirname}/../data/output`);
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+      trace: true,
+      video: true,
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    deleteDir(path.join(global.output_dir, 'video'));
+    deleteDir(path.join(global.output_dir, 'trace'));
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('checks that video is recorded', async () => {
+    const test = { title: 'a failed test', artifacts: {} };
+    await I.amOnPage('/');
+    await I.dontSee('this should be an error');
+    await I.click('More info');
+    await I.dontSee('this should be an error');
+    await I._failed(test);
+    assert(test.artifacts);
+    // expect(Object.keys(test.artifacts).length).should.eq(2);
+    expect(Object.keys(test.artifacts)).to.include('trace');
+    expect(Object.keys(test.artifacts)).to.include('video');
+
+    assert.ok(fs.existsSync(test.artifacts.trace));
+    expect(test.artifacts.video).to.include(path.join(global.output_dir, 'video'));
+    expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
   });
 });

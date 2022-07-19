@@ -1,11 +1,8 @@
-const assert = require('assert');
-const chai = require('chai');
+const { expect } = require('chai');
 const Dom = require('xmldom').DOMParser;
 const xpath = require('xpath');
 
 const Locator = require('../../lib/locator');
-
-const expect = chai.expect;
 
 let doc;
 const xml = `<body>
@@ -83,6 +80,20 @@ describe('Locator', () => {
         expect(l.type).to.equal('fuzzy');
         expect(l.value).to.equal('foo');
         expect(l.toString()).to.equal('foo');
+      });
+
+      it('should create custom locator', () => {
+        const l = new Locator({ custom: 'foo' });
+        expect(l.type).to.equal('custom');
+        expect(l.value).to.equal('foo');
+        expect(l.toString()).to.equal('{custom: foo}');
+      });
+
+      it('should create shadow locator', () => {
+        const l = new Locator({ shadow: ['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'] });
+        expect(l.type).to.equal('shadow');
+        expect(l.value).to.deep.equal(['my-app', 'recipe-hello-binding', 'ui-input', 'input.input']);
+        expect(l.toString()).to.equal('{shadow: my-app,recipe-hello-binding,ui-input,input.input}');
       });
 
       it('should create described custom default type locator', () => {
@@ -189,15 +200,15 @@ describe('Locator', () => {
   });
 
   it('should throw an error when xpath with round brackets is nested', () => {
-    assert.throws(() => {
+    expect(() => {
       Locator.build('tr').find('(./td)[@id="id"]');
-    }, /round brackets/);
+    }).to.throw('round brackets');
   });
 
   it('should throw an error when locator with specific position is nested', () => {
-    assert.throws(() => {
+    expect(() => {
       Locator.build('tr').withChild(Locator.build('td').first());
-    }, /round brackets/);
+    }).to.throw('round brackets');
   });
 
   it('should not select element by deep nested siblings', () => {

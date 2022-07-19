@@ -195,7 +195,7 @@ A typical test case may look like this:
 ```js
 Feature('login');
 
-Scenario('login test', (I) => {
+Scenario('login test', ({ I }) => {
   I.amOnPage('/login');
   I.fillField('Username', 'john');
   I.fillField('Password', '123456');
@@ -203,8 +203,6 @@ Scenario('login test', (I) => {
   I.see('Welcome, John');
 });
 ```
-> ▶ Actions like `amOnPage`, `click`, `fillField` are not limited to WebDriver only. They work similarly for all available helpers. [Go to Basics guide to learn them](/basics#writing-tests).
-
 
 An empty test case can be created with `npx codeceptjs gt` command.
 
@@ -212,12 +210,49 @@ An empty test case can be created with `npx codeceptjs gt` command.
 npx codeceptjs gt
 ```
 
+
+### Actions
+
+Tests consist with a scenario of user's action taken on a page. The most widely used ones are:
+
+* `amOnPage` - to open a webpage (accepts relative or absolute url)
+* `click` - to locate a button or link and click on it
+* `fillField` - to enter a text inside a field
+* `selectOption`, `checkOption` - to interact with a form
+* `wait*` to wait for some parts of page to be fully rendered (important for testing SPA)
+* `grab*` to get values from page sources
+* `see`, `dontSee` - to check for a text on a page
+* `seeElement`, `dontSeeElement` - to check for elements on a page
+
+> ℹ  All actions are listed in [WebDriver helper reference](https://codecept.io/helpers/WebDriver/).*
+
+All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
+
+```js
+// search for link or button
+I.click('Login');
+// locate field by its label
+I.fillField('Name', 'Miles');
+// we can use input name
+I.fillField('user[email]','miles@davis.com');
+```
+
+You can also specify the exact locator type with strict locators:
+
+```js
+I.click({css: 'button.red'});
+I.fillField({name: 'user[email]'},'miles@davis.com');
+I.seeElement({xpath: '//body/header'});
+```
+
+### Interactive Pause
+
 It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
 
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('/');
   pause();
 });
@@ -250,12 +285,12 @@ An interactive shell output may look like this:
 ```
 After typing in successful commands you can copy them into a test.
 
-Here is a test checking basic [todo application](http://todomvc.com/).
+Here is a test checking basic [todo application](https://todomvc.com/).
 
 ```js
 Feature('TodoMVC');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('/examples/vue/');
   I.waitForElement('.new-todo');
   I.fillField('.new-todo', 'Write a test')
@@ -267,6 +302,59 @@ Scenario('create todo item', (I) => {
 > [▶ Working example of CodeceptJS WebDriver tests](https://github.com/DavertMik/codeceptjs-webdriver-example) for TodoMVC application.
 
 WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as non-trivial [React locators](/react) and [Shadow DOM](/shadow).
+
+### Grabbers
+
+If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
+
+```js
+const assert = require('assert');
+Scenario('get value of current tasks', async ({ I }) => {
+  I.fillField('.todo', 'my first item');
+  I.pressKey('Enter')
+  I.fillField('.todo', 'my second item');
+  I.pressKey('Enter')
+  let numTodos = await I.grabTextFrom('.todo-count strong');
+  assert.equal(2, numTodos);
+});
+```
+
+### Within
+
+In case some actions should be taken inside one element (a container or modal window or iframe) you can use `within` block to narrow the scope.
+Please take a note that you can't use within inside another within in Puppeteer helper:
+
+```js
+await within('.todoapp', () => {
+  I.fillField('.todo', 'my new item');
+  I.pressKey('Enter')
+  I.see('1 item left', '.todo-count');
+  I.click('.todo-list input.toggle');
+});
+I.see('0 items left', '.todo-count');
+```
+
+### Each Element <Badge text="Since 3.3" type="warning"/>
+
+Usually, CodeceptJS performs an action on the first matched element. 
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
+
+`eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives element of webdriverio. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
+
+Usage example
+
+```js
+await eachElement(
+  'click all checkboxes', 
+  'input.custom-checkbox', 
+  async (el, index) => {
+    await el.click();
+  });
+);
+```
+
+> ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
+
 
 ## Waiting
 
@@ -295,7 +383,7 @@ exports.config = {
 
 ## SmartWait
 
-It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](http://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
+It is possible to wait for elements pragmatically. If a test uses element which is not on a page yet, CodeceptJS will wait for few extra seconds before failing. This feature is based on [Implicit Wait](https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp#implicit-waits) of Selenium. CodeceptJS enables implicit wait only when searching for a specific element and disables in all other cases. Thus, the performance of a test is not affected.
 
 SmartWait can be enabled by setting wait option in WebDriver config.
 Add `smartWait: 5000` to wait for additional 5s.
@@ -361,7 +449,7 @@ To share the same user session across different tests CodeceptJS provides [autoL
 This plugin requires some configuration but is very simple in use:
 
 ```js
-Scenario('do something with logged in user', (I, login)) => {
+Scenario('do something with logged in user', ({ I, login) }) => {
   login('user');
   I.see('Dashboard','h1');
 });
@@ -379,7 +467,7 @@ CodeceptJS allows to use several browser windows inside a test. Sometimes we are
 ```js
 const assert = require('assert');
 
-Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async (I) => {
+Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async ({ I }) => {
     I.amOnPage('/');
     const handleBeforePopup = await I.grabCurrentWindowHandle();
     const urlBeforePopup = await I.grabCurrentUrl();
@@ -466,6 +554,31 @@ npx codeceptjs def
 ```
 
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
+
+
+## Accessing webdriverio API
+
+To get [webdriverio browser API](https://webdriver.io/docs/api.html) inside a test use [`I.useWebDriverTo`](/helpers/WebDriver/#usewebdriverto) method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.useWebDriverTo('do something with native webdriverio api', async ({ browser }) => {
+  // use browser object here
+});
+```
+
+> webdriverio commands are asynchronous so a callback function must be async.
+
+WebDriver helper can be obtained in this function as well. Use this to get full access to webdriverio elements inside the test.
+
+```js
+I.useWebDriverTo('click all Save buttons', async (WebDriver) => {
+  const els = await WebDriver._locateClickable('Save');
+  for (let el of els) {
+    await el.click();
+  }
+});
+```
 
 ## Extending WebDriver
 

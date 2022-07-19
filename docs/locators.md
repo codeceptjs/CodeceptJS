@@ -17,11 +17,11 @@ CodeceptJS provides flexible strategies for locating elements:
 
 Most methods in CodeceptJS use locators which can be either a string or an object.
 
-If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, or `class`) and the value being the locator itself. This is called a "strict" locator.
+If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class` or `shadow`) and the value being the locator itself. This is called a "strict" locator.
 
 Examples:
 
-* {permalink: /'foo'} matches `<div id="foo">`
+* {id: 'foo'} matches `<div id="foo">`
 * {name: 'foo'} matches `<div name="foo">`
 * {css: 'input[type=input][value=foo]'} matches `<input type="input" value="foo">`
 * {xpath: "//input[@type='submit'][contains(@value, 'foo')]"} matches `<input type="submit" value="foobar">`
@@ -229,7 +229,7 @@ locate('button').after('.btn-cancel');
 
 ID locators are best to select the exact semantic element in web and mobile testing:
 
-* `#user` or `{ permalink: /'user' }` finds element with id="user"
+* `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
 
 ## Custom Locators
@@ -243,7 +243,7 @@ Instead of writing a full CSS locator like `[data-qa-id=user_name]` simplify it 
 
 ```js
 // replace this:
-I.click({ css: '[data-test-id=register_button]');
+I.click({ css: '[data-test-id=register_button]'});
 // with this:
 I.click('$register_button');
 ```
@@ -297,8 +297,35 @@ codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
 ```
 New locator strategy is ready to use:
 
+
 ```js
 I.click('=Login');
 ```
+
+#### Custom Strategy Locators
+
+CodeceptJS provides the option to specify custom locators that uses Custom Locator Strategies defined in the WebDriver configuration. It uses the WebDriverIO's [custom$](https://webdriver.io/docs/api/browser/custom$.html) locators internally to locate the elements on page.
+To use the defined Custom Locator Strategy add your custom strategy to your configuration.
+
+```js
+// in codecept.conf.js
+
+const myStrat = (selector) => {
+  return document.querySelectorAll(selector)
+}
+
+// under WebDriver Helpers Configuration
+WebDriver: {
+  ...
+  customLocatorStrategies: {
+    custom: myStrat
+  }
+}
+```
+
+```js
+I.click({custom: 'my-shadow-element-unique-css'})
+```
+
 
 > For more details on locator object see [Locator](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/locator.js) class implementation.

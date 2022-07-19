@@ -19,7 +19,7 @@
 * CodeceptJS version:
 * NodeJS Version:
 * Operating System:
-* puppeteer || webdriverio || protractor || testcafe version (if related)
+* puppeteer || webdriverio || testcafe version (if related)
 * Configuration file:
 
 ```js

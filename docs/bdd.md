@@ -5,7 +5,7 @@ title: Behavior Driven Development
 
 # Behavior Driven Development
 
-Behavior Driven Development (BDD) is a popular software development methodology. BDD is considered an extension of TDD, and is greatly inspired by [Agile](http://agilemanifesto.org/) practices. The primary reason to choose BDD as your development process is to break down communication barriers between business and technical teams. BDD encourages the use of automated testing to verify all documented features of a project from the very beginning. This is why it is common to talk about BDD in the context of test frameworks (like CodeceptJS). The BDD approach, however, is about much more than testing - it is a common language for all team members to use during the development process.
+Behavior Driven Development (BDD) is a popular software development methodology. BDD is considered an extension of TDD, and is greatly inspired by [Agile](https://agilemanifesto.org/) practices. The primary reason to choose BDD as your development process is to break down communication barriers between business and technical teams. BDD encourages the use of automated testing to verify all documented features of a project from the very beginning. This is why it is common to talk about BDD in the context of test frameworks (like CodeceptJS). The BDD approach, however, is about much more than testing - it is a common language for all team members to use during the development process.
 
 ## What is Behavior Driven Development
 
@@ -55,7 +55,7 @@ I should see that total number of products I want to buy is 2
 And my order amount is $1600
 ```
 
-As we can see this simple story highlights core concepts that are called *contracts*. We should fulfill those contracts to model software correctly. But how we can verify that those contracts are being satisfied? [Cucumber](http://cucumber.io) introduced a special language for such stories called **Gherkin**. Same story transformed to Gherkin will look like this:
+As we can see this simple story highlights core concepts that are called *contracts*. We should fulfill those contracts to model software correctly. But how we can verify that those contracts are being satisfied? [Cucumber](https://cucumber.io) introduced a special language for such stories called **Gherkin**. Same story transformed to Gherkin will look like this:
 
 ```gherkin
 Feature: checkout process
@@ -185,6 +185,12 @@ To list all defined steps run `gherkin:steps` command:
 npx codeceptjs gherkin:steps
 ```
 
+Use `grep` to find steps in a list (grep works on Linux & MacOS):
+
+```
+npx codeceptjs gherkin:steps | grep user
+```
+
 To run tests and see step-by step output use `--steps` optoin:
 
 ```
@@ -258,8 +264,10 @@ You can also use the `parse()` method to obtain an object that allow you to get 
 - `raw()` - returns the table as a 2-D array
 - `rows()` - returns the table as a 2-D array, without the first row
 - `hashes()` - returns an array of objects where each row is converted to an object (column header is the key)
+- `rowsHash()` - returns an object where each row corresponds to an entry(first column is the key, second column is the value)
+- `transpose()` - transpose the data, returns nothing. To work with the transposed table use the methods above.
 
-If we use hashes() with the previous exemple :
+If we use hashes() with the previous example :
 
 ```js
 Given('I have products in my cart', (table) => { // eslint-disable-line
@@ -275,7 +283,59 @@ Given('I have products in my cart', (table) => { // eslint-disable-line
   }
 });
 ```
+Examples of tables using: 
 
+```gherkin
+  Given I have a short employees card
+    | Harry | Potter  |
+    | Chuck | Norris  |
+```
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have a short employees card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const raw = dataTableArgument.raw(); 
+  // row = [['Harry', 'Potter'], ['Chuck', 'Norris']]
+  dataTableArgument.transpose();
+  const transposedRaw = dataTableArgument.raw();
+  // transposedRaw = [['Harry', 'Chuck'], ['Potter', 'Norris']];
+  }
+);
+```
+```gherkin
+  Given I have an employee card
+    | name  | surname | position |
+    | Harry | Potter  | Seeker   |
+```
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have an employee card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const hashes = dataTableArgument.hashes(); 
+  // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
+  const rows = dataTableArgument.rows();
+  // rows = [['Harry', 'Potter', Seeker]];
+  }
+);
+```
+```gherkin
+  Given I have a formatted employee card
+    | name     | Harry  |
+    | surname  | Potter |
+    | position | Seeker |
+```
+```js
+const { DataTableArgument } = require('codeceptjs');
+//...
+Given('I have a formatted employee card', (table) => {
+  const dataTableArgument = new DataTableArgument(table);
+  const rawHash = dataTableArgument.rowsHash();
+  // rawHash = { name: 'Harry', surname: 'Potter', position: 'Seeker' };
+  }
+);
+```
 ### Examples
 
 In case scenarios represent the same logic but differ on data, we can use *Scenario Outline* to provide different examples for the same behavior. Scenario outline is just like a basic scenario with some values replaced with placeholders, which are filled from a table. Each set of values is executed as a different test.
@@ -337,12 +397,24 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
 ## Configuration
 
 * `gherkin`
-  * `features` - path to feature files
+  * `features` - path to feature files, or an array of feature file paths
   * `steps` - array of files with step definitions
+  * `avoidDuplicateSteps` - attempts to avoid duplicate step definitions by shallow compare
 
 ```js
 "gherkin": {
   "features": "./features/*.feature",
+  "steps": [
+    "./step_definitions/steps.js"
+  ]
+}
+```
+```js
+"gherkin": {
+  "features": [
+      "./features/*.feature",
+      "./features/api_features/*.feature"
+    ],
   "steps": [
     "./step_definitions/steps.js"
   ]

@@ -1,3 +1,5 @@
+const { expect } = require('chai');
+
 const retryFailedStep = require('../../../lib/plugin/retryFailedStep');
 const within = require('../../../lib/within');
 const session = require('../../../lib/session');
@@ -30,7 +32,7 @@ describe('retryFailedStep', () => {
       if (counter < 3) {
         throw new Error();
       }
-    });
+    }, undefined, undefined, true);
     return recorder.promise();
   });
   it('should not retry within', async () => {
@@ -44,11 +46,11 @@ describe('retryFailedStep', () => {
         recorder.add(() => {
           counter++;
           throw new Error();
-        });
+        }, undefined, undefined, true);
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {});
+      recorder.catchWithoutStop((err) => err);
     }
 
     // expects to retry only once
@@ -67,14 +69,13 @@ describe('retryFailedStep', () => {
         if (counter < 3) {
           throw new Error();
         }
-      });
+      }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {
-      });
+      recorder.catchWithoutStop((err) => err);
     }
 
-    counter.should.equal(1);
+    expect(counter).to.equal(1);
     // expects to retry only once
   });
 
@@ -90,14 +91,13 @@ describe('retryFailedStep', () => {
         if (counter < 3) {
           throw new Error();
         }
-      });
+      }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {
-      });
+      recorder.catchWithoutStop((err) => err);
     }
 
-    counter.should.equal(1);
+    expect(counter).to.equal(1);
     // expects to retry only once
   });
 
@@ -113,14 +113,35 @@ describe('retryFailedStep', () => {
         if (counter < 3) {
           throw new Error();
         }
-      });
+      }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {
-      });
+      recorder.catchWithoutStop((err) => err);
     }
 
-    counter.should.equal(1);
+    expect(counter).to.equal(1);
+    // expects to retry only once
+  });
+
+  it('should add custom regexp steps to ignore', async () => {
+    retryFailedStep({ retries: 2, minTimeout: 1, ignoredSteps: [/somethingNew/] });
+    event.dispatcher.emit(event.test.before, {});
+
+    let counter = 0;
+    event.dispatcher.emit(event.step.started, { name: 'somethingNew' });
+    try {
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error();
+        }
+      }, undefined, undefined, true);
+      await recorder.promise();
+    } catch (e) {
+      recorder.catchWithoutStop((err) => err);
+    }
+
+    expect(counter).to.equal(1);
     // expects to retry only once
   });
 
@@ -135,14 +156,31 @@ describe('retryFailedStep', () => {
         recorder.add(() => {
           counter++;
           throw new Error();
-        });
+        }, undefined, undefined, true);
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => {});
+      recorder.catchWithoutStop((err) => err);
     }
 
     // expects to retry only once
-    counter.should.equal(2);
+    expect(counter).to.equal(2);
+  });
+
+  it('should not turn around the chain of retries', () => {
+    recorder.retry({ retries: 2, when: (err) => { return err.message === 'someerror'; }, identifier: 'test' });
+    recorder.retry({ retries: 2, when: (err) => { return err.message === 'othererror'; } });
+
+    const getRetryIndex = () => recorder.retries.indexOf(recorder.retries.find(retry => retry.identifier));
+    let initalIndex;
+
+    recorder.add(() => {
+      initalIndex = getRetryIndex();
+    }, undefined, undefined, true);
+
+    recorder.add(() => {
+      initalIndex.should.equal(getRetryIndex());
+    }, undefined, undefined, true);
+    return recorder.promise();
   });
 });

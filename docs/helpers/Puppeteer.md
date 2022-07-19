@@ -15,7 +15,15 @@ Uses [Google Chrome's Puppeteer][1] library to run tests inside headless Chrome.
 Browser control is executed via DevTools Protocol (instead of Selenium).
 This helper works with a browser out of the box with no additional tools required to install.
 
-Requires `puppeteer` package to be installed.
+Requires `puppeteer` or `puppeteer-core` package to be installed.
+
+    npm i puppeteer --save
+
+or
+
+    npm i puppeteer-core --save
+
+Using `puppeteer-core` package, will prevent the download of browser binaries and allow connecting to an existing browser installation or for connecting to a remote one.
 
 > Experimental Firefox support [can be activated][2].
 
@@ -101,6 +109,8 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
+> Note: When connecting to remote browser `show` and specific `chrome` options (e.g. `headless` or `devtools`) are ignored.
+
 #### Example #5: Target URL with provided basic authentication
 
 ```js
@@ -115,7 +125,21 @@ This helper should be configured in codecept.json or codecept.conf.js
 }
 ```
 
-Note: When connecting to remote browser `show` and specific `chrome` options (e.g. `headless` or `devtools`) are ignored.
+#### Troubleshooting
+
+Error Message:  `No usable sandbox!`
+
+When running Puppeteer on CI try to disable sandbox if you see that message
+
+    helpers: {
+     Puppeteer: {
+        url: 'http://localhost',
+        show: false,
+        chrome: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+        }
+      },
+    }
 
 ## Access From Helpers
 
@@ -255,6 +279,8 @@ I.amOnPage('/login'); // opens a login page
 
 -   `url` **[string][8]** url path or global url.
 
+Returns **void** automatically synchronized promise with recorder #!
+
 ### appendField
 
 Appends text to a input field or textarea.
@@ -268,6 +294,7 @@ I.appendField('#myTextField', 'appended');
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][8]** text value to append.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -287,7 +314,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
--   `pathToFile` **[string][8]** local file path relative to codecept.json config file.> ⚠ There is an [issue with file upload in Puppeteer 2.1.0 & 2.1.1][9], downgrade to 2.0.0 if you face it.
+-   `pathToFile` **[string][8]** local file path relative to codecept.json config file.
+    [!] returns a _promise_ which is synchronized internally by recorder> ⚠ There is an [issue with file upload in Puppeteer 2.1.0 & 2.1.1][9], downgrade to 2.0.0 if you face it.
 
 ### cancelPopup
 
@@ -309,7 +337,8 @@ I.checkOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### clearCookie
 
@@ -324,7 +353,8 @@ I.clearCookie('test');
 #### Parameters
 
 -   `name`  
--   `cookie` **[string][8]?** (optional, `null` by default) cookie name 
+-   `cookie` **[string][8]?** (optional, `null` by default) cookie name
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### clearField
 
@@ -340,6 +370,7 @@ I.clearField('#email');
 
 -   `field`  
 -   `editable` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### click
 
@@ -368,7 +399,8 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `context` **([string][8]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -386,6 +418,7 @@ I.clickLink('Logout', '#nav');
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -421,6 +454,7 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 -   `text` **[string][8]** which is not present.
 -   `context` **([string][8] | [object][6])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -439,6 +473,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeCookie
 
@@ -451,6 +486,7 @@ I.dontSeeCookie('auth'); // no auth cookie
 #### Parameters
 
 -   `name` **[string][8]** cookie name.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeCurrentUrlEquals
 
@@ -465,6 +501,7 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 #### Parameters
 
 -   `url` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeElement
 
@@ -477,6 +514,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -494,6 +532,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInCurrentUrl
 
@@ -502,6 +541,7 @@ Checks that current url does not contain a provided fragment.
 #### Parameters
 
 -   `url` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInField
 
@@ -517,6 +557,7 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInSource
 
@@ -530,6 +571,7 @@ I.dontSeeInSource('<!--'); // no comments in source
 
 -   `text`  
 -   `value` **[string][8]** to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInTitle
 
@@ -542,6 +584,7 @@ I.dontSeeInTitle('Error');
 #### Parameters
 
 -   `text` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### doubleClick
 
@@ -559,6 +602,7 @@ I.doubleClick('.btn.edit');
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -587,6 +631,7 @@ I.dragAndDrop('#dragHandle', '#container');
 
 -   `srcElement` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `destElement` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### dragSlider
 
@@ -602,6 +647,7 @@ I.dragSlider('#slider', -70);
 
 -   `locator` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 -   `offsetX` **[number][10]** position to drag.
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -633,10 +679,9 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-
-Returns **[Promise][13]&lt;any>** Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
+    [!] returns a _promise_ which is synchronized internally by recorderAsynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
+-   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 
 ### executeScript
 
@@ -666,10 +711,9 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-
-Returns **[Promise][13]&lt;any>** If a function returns a Promise It will wait for it resolution.
+    [!] returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for it resolution.
+-   `fn` **([string][8] | [function][12])** function to be executed in browser context.
 
 ### fillField
 
@@ -690,7 +734,9 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][8]** text value to fill.
+-   `value` **([string][8] | [object][6])** text value to fill.
+    [!] returns a _promise_ which is synchronized internally by recorder
+    
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -727,6 +773,7 @@ I.forceClick({css: 'nav a.login'});
 
 -   `locator` **([string][8] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -735,8 +782,8 @@ This action supports [React locators](https://codecept.io/react#locators)
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
-An array as a result will be returned if there are more than one matched element.
-Resumes test execution, so **should be used inside async function with `await`** operator.
+Resumes test execution, so **should be used inside async with `await`** operator.
+If more than one element is found - attribute of first element is returned.
 
 ```js
 let hint = await I.grabAttributeFrom('#tooltip', 'title');
@@ -749,6 +796,25 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 Returns **[Promise][13]&lt;[string][8]>** attribute value
 
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
+### grabAttributeFromAll
+
+Retrieves an array of attributes from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let hints = await I.grabAttributeFromAll('.tooltip', 'title');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][8]** attribute name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -780,12 +846,13 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][8]?** cookie name. 
 
-Returns **[Promise][13]&lt;[string][8]>** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][13]&lt;[string][8]> | [Promise][13]&lt;[Array][14]&lt;[string][8]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
 Grab CSS property for given locator
 Resumes test execution, so **should be used inside an async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 const value = await I.grabCssPropertyFrom('h3', 'font-weight');
@@ -798,6 +865,25 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
 Returns **[Promise][13]&lt;[string][8]>** CSS value
 
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
+### grabCssPropertyFromAll
+
+Grab array of CSS properties for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+-   `cssProperty` **[string][8]** CSS property name.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** CSS value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -838,6 +924,8 @@ let data = await I.grabDataFromPerformanceTiming();
 }
 ```
 
+Returns **[Promise][13]&lt;any>** automatically synchronized promise through #recorder
+
 ### grabElementBoundingRect
 
 Grab the width, height, location of given locator.
@@ -862,15 +950,15 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `prop`  
--   `elementSize` **[string][8]** x, y, width or height of the given element.
+-   `elementSize` **[string][8]?** x, y, width or height of the given element.
 
-Returns **[object][6]** Element bounding rectangle
+Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][10]>)** Element bounding rectangle
 
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
-If more than one element is found - an array of HTMLs returned.
+If more than one element is found - HTML of first element is returned.
 
 ```js
 let postHTML = await I.grabHTMLFrom('#post');
@@ -882,6 +970,22 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `element` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;[string][8]>** HTML code for an element
+
+### grabHTMLFromAll
+
+Retrieves all the innerHTML from elements located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let postHTMLs = await I.grabHTMLFromAll('.post');
+```
+
+#### Parameters
+
+-   `locator`  
+-   `element` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -923,7 +1027,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][13]&lt;[Object][6]&lt;[string][8], any>>** scroll position
+Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -955,14 +1059,32 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let pin = await I.grabTextFrom('#pin');
 ```
 
-If multiple elements found returns an array of texts.
+If multiple elements found returns first element.
 
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][13]&lt;([string][8] | [Array][14]&lt;[string][8]>)>** attribute value
+Returns **[Promise][13]&lt;[string][8]>** attribute value
 
+
+This action supports [React locators](https://codecept.io/react#locators)
+
+
+### grabTextFromAll
+
+Retrieves all texts from an element located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async with `await`** operator.
+
+```js
+let pins = await I.grabTextFromAll('#pin li');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -983,6 +1105,7 @@ Returns **[Promise][13]&lt;[string][8]>** title
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
 Resumes test execution, so **should be used inside async function with `await`** operator.
+If more than one element is found - value of first element is returned.
 
 ```js
 let email = await I.grabValueFrom('input[name=email]');
@@ -993,6 +1116,21 @@ let email = await I.grabValueFrom('input[name=email]');
 -   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;[string][8]>** attribute value
+
+### grabValueFromAll
+
+Retrieves an array of value from a form located by CSS or XPath and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+let inputs = await I.grabValueFromAll('//form/input');
+```
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
+
+Returns **[Promise][13]&lt;[Array][14]&lt;[string][8]>>** attribute value
 
 ### handleDownloads
 
@@ -1042,6 +1180,8 @@ I.moveCursorTo('#submit', 5,5);
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset.
+    [!] returns a _promise_ which is synchronized internally by recorder
+    
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1118,7 +1258,8 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][8] | [Array][14]&lt;[string][8]>)** key or array of keys to press._Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
+-   `key` **([string][8] | [Array][14]&lt;[string][8]>)** key or array of keys to press.
+    [!] returns a _promise_ which is synchronized internally by recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
 
 ### pressKeyDown
 
@@ -1135,6 +1276,7 @@ I.pressKeyUp('Control');
 #### Parameters
 
 -   `key` **[string][8]** name of key to press down.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### pressKeyUp
 
@@ -1151,6 +1293,7 @@ I.pressKeyUp('Control');
 #### Parameters
 
 -   `key` **[string][8]** name of key to release.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### refreshPage
 
@@ -1160,6 +1303,8 @@ Reload the current page.
 I.refreshPage();
 ```
 
+[!] returns a _promise_ which is synchronized internally by recorder
+
 ### resizeWindow
 
 Resize the current window to provided width and height.
@@ -1168,7 +1313,8 @@ First parameter can be set to `maximize`.
 #### Parameters
 
 -   `width` **[number][10]** width in pixels or `maximize`.
--   `height` **[number][10]** height in pixels.Unlike other drivers Puppeteer changes the size of a viewport, not the window!
+-   `height` **[number][10]** height in pixels.
+    [!] returns a _promise_ which is synchronized internally by recorderUnlike other drivers Puppeteer changes the size of a viewport, not the window!
     Puppeteer does not control the window of a browser so it can't adjust its real size.
     It also can't maximize a window.
 
@@ -1189,6 +1335,7 @@ I.rightClick('Click me', '.context');
 
 -   `locator` **([string][8] | [object][6])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1207,6 +1354,7 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][8]** file name to save.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### saveScreenshot
 
@@ -1222,7 +1370,8 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][8]** file name to save.
--   `fullPage` **[boolean][19]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][19]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### scrollPageToBottom
 
@@ -1232,6 +1381,8 @@ Scroll page to the bottom.
 I.scrollPageToBottom();
 ```
 
+[!] returns a _promise_ which is synchronized internally by recorder
+
 ### scrollPageToTop
 
 Scroll page to the top.
@@ -1239,6 +1390,8 @@ Scroll page to the top.
 ```js
 I.scrollPageToTop();
 ```
+
+[!] returns a _promise_ which is synchronized internally by recorder
 
 ### scrollTo
 
@@ -1254,7 +1407,8 @@ I.scrollTo('#submit', 5, 5);
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. 
+-   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### see
 
@@ -1271,6 +1425,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 -   `text` **[string][8]** expected on page.
 -   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1288,6 +1443,7 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `attributes` **[object][6]** attributes and their values to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -1307,6 +1463,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeCookie
 
@@ -1319,6 +1476,7 @@ I.seeCookie('Auth');
 #### Parameters
 
 -   `name` **[string][8]** cookie name.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeCssPropertiesOnElements
 
@@ -1332,6 +1490,7 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
 -   `cssProperties` **[object][6]** object with CSS properties and their values to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -1352,6 +1511,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 #### Parameters
 
 -   `url` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeElement
 
@@ -1365,6 +1525,7 @@ I.seeElement('#modal');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -1383,6 +1544,7 @@ I.seeElementInDOM('#modal');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInCurrentUrl
 
@@ -1395,6 +1557,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 #### Parameters
 
 -   `url` **[string][8]** a fragment to check
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
 
@@ -1412,6 +1575,7 @@ I.seeInField('#searchform input','Search');
 
 -   `field` **([string][8] | [object][6])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInPopup
 
@@ -1425,6 +1589,7 @@ I.seeInPopup('Popup text');
 #### Parameters
 
 -   `text` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInSource
 
@@ -1437,6 +1602,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 #### Parameters
 
 -   `text` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeInTitle
 
@@ -1449,6 +1615,7 @@ I.seeInTitle('Home Page');
 #### Parameters
 
 -   `text` **[string][8]** text value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### seeNumberOfElements
 
@@ -1463,6 +1630,7 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `num` **[number][10]** number of elements.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1481,6 +1649,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `num` **[number][10]** number of elements.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1497,7 +1666,8 @@ I.seeTextEquals('text', 'h1');
 #### Parameters
 
 -   `text` **[string][8]** element value to check.
--   `context` **([string][8] | [object][6]?)** element located by CSS|XPath|strict locator. 
+-   `context` **([string][8] | [object][6])?** element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### seeTitleEquals
 
@@ -1509,7 +1679,8 @@ I.seeTitleEquals('Test title.');
 
 #### Parameters
 
--   `text`  
+-   `text` **[string][8]** value to check.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### selectOption
 
@@ -1536,6 +1707,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 -   `select` **([string][8] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][8] | [Array][14]&lt;any>)** visible text or value of option.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### setCookie
 
@@ -1555,7 +1727,8 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **([object][6] | [array][14])** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][14]&lt;Cookie>)** a cookie object or array of cookie objects.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### switchTo
 
@@ -1568,7 +1741,8 @@ I.switchTo(); // switch back to main page
 
 #### Parameters
 
--   `locator` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+-   `locator` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### switchToNextTab
 
@@ -1616,7 +1790,8 @@ I.type(['T', 'E', 'X', 'T']);
 #### Parameters
 
 -   `keys`  
--   `delay` **[number][10]?** (optional) delay in ms between key presses 
+-   `delay` **[number][10]?** (optional) delay in ms between key presses
+    [!] returns a _promise_ which is synchronized internally by recorder 
 -   `key` **([string][8] | [Array][14]&lt;[string][8]>)** or array of keys to type.
 
 ### uncheckOption
@@ -1635,7 +1810,28 @@ I.uncheckOption('agree', '//form');
 #### Parameters
 
 -   `field` **([string][8] | [object][6])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+-   `context` **([string][8]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
+
+### usePuppeteerTo
+
+Use Puppeteer API inside a test.
+
+First argument is a description of an action.
+Second argument is async function that gets this helper as parameter.
+
+{ [`page`][20], [`browser`][21] } from Puppeteer API are available.
+
+```js
+I.usePuppeteerTo('emulate offline mode', async ({ page }) {
+  await page.setOfflineMode(true);
+});
+```
+
+#### Parameters
+
+-   `description` **[string][8]** used to show in logs.
+-   `fn` **[function][12]** async function that is executed with Puppeteer as argument
 
 ### wait
 
@@ -1648,6 +1844,7 @@ I.wait(2); // wait 2 secs
 #### Parameters
 
 -   `sec` **[number][10]** number of second to wait.
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### waitForClickable
 
@@ -1664,6 +1861,7 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `waitTimeout`  
 -   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder
 
 ### waitForDetached
 
@@ -1677,7 +1875,8 @@ I.waitForDetached('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForElement
 
@@ -1693,6 +1892,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -1707,7 +1907,8 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional) time in seconds to wait, 1 by default. 
+-   `sec` **[number][10]** (optional) time in seconds to wait, 1 by default.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForFunction
 
@@ -1728,7 +1929,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 -   `fn` **([string][8] | [function][12])** to be executed in browser context.
 -   `argsOrSec` **([Array][14]&lt;any> | [number][10])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
 
@@ -1742,7 +1944,8 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForNavigation
 
@@ -1770,11 +1973,11 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 ### waitForResponse
 
-Waits for a network request.
+Waits for a network response.
 
 ```js
 I.waitForResponse('http://example.com/resource');
-I.waitForResponse(request => request.url() === 'http://example.com' && request.method() === 'GET');
+I.waitForResponse(response => response.url() === 'http://example.com' && response.request().method() === 'GET');
 ```
 
 #### Parameters
@@ -1797,7 +2000,8 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 -   `text` **[string][8]** to wait for.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
--   `context` **([string][8] | [object][6])?** (optional) element located by CSS|XPath|strict locator. 
+-   `context` **([string][8] | [object][6])?** (optional) element located by CSS|XPath|strict locator.
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForValue
 
@@ -1811,7 +2015,8 @@ I.waitForValue('//input', "GoodValue");
 
 -   `field` **([string][8] | [object][6])** input field.
 -   `value` **[string][8]** expected value.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForVisible
 
@@ -1825,7 +2030,8 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to waitThis method accepts [React selectors][20]. 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][22]. 
 
 ### waitInUrl
 
@@ -1838,7 +2044,8 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][8]** value to check.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitNumberOfVisibleElements
 
@@ -1853,6 +2060,7 @@ I.waitNumberOfVisibleElements('a', 3);
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
 -   `num` **[number][10]** number of elements.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder
     
 
 
@@ -1871,23 +2079,8 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][6])** element located by CSS|XPath|strict locator.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
-
-### waitUntil
-
-Waits for a function to return true (waits for 1sec by default).
-
-```js
-I.waitUntil(() => window.requests == 0);
-I.waitUntil(() => window.requests == 0, 5);
-```
-
-#### Parameters
-
--   `fn` **([function][12] | [string][8])** function which is executed in browser context.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
--   `timeoutMsg` **[string][8]** message to show in case of timeout fail. 
--   `interval` **[number][10]?**  
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 ### waitUrlEquals
 
@@ -1901,7 +2094,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][8]** value to check.
--   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
+    [!] returns a _promise_ which is synchronized internally by recorder 
 
 [1]: https://github.com/GoogleChrome/puppeteer
 
@@ -1941,4 +2135,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[20]: https://codecept.io/react
+[20]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
+
+[21]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
+
+[22]: https://codecept.io/react

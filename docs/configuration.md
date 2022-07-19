@@ -11,21 +11,21 @@ After running `codeceptjs init` it should be saved in test root.
 
 Here is an overview of available options with their defaults:
 
-* **tests**: `"./*_test.js"` - pattern to locate tests. Allows to enter [glob pattern](https://github.com/isaacs/node-glob).
+* **tests**: `"./*_test.js"` - pattern to locate tests. Allows to enter [glob pattern](https://github.com/isaacs/node-glob), Can either be a pattern to locate tests or an array of patterns to locate tests / test file names.
 * **grep**: - pattern to filter tests by name
 * **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require` paths
 * **timeout**: `10000` - default tests timeout
 * **output**: `"./output"` - where to store failure screenshots, etc
 * **helpers**: `{}` - list of enabled helpers
-* **mocha**: `{}` - mocha options, [reporters](http://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [Multiple Execution](http://codecept.io/parallel#multiple-browsers-execution)
-* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
-* **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown)).
-* **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
-* **teardownAll**: - an option to run code _after_ tests are run. See [Hooks](http://codecept.io/hooks/#bootstrap-teardown).
+* **mocha**: `{}` - mocha options, [reporters](https://codecept.io/reports/) can be configured here
+* **multiple**: `{}` - multiple options, see [Multiple Execution](https://codecept.io/parallel#multiple-browsers-execution)
+* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown)).
+* **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown)).
+* **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown).
+* **teardownAll**: - an option to run code _after_ tests are run. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown).
 * **noGlobals**: `false` - disable registering global variables like `Actor`, `Helper`, `pause`, `within`, `DataTable`
-* **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](http://codecept.io/hooks/#custom-hooks)
-* **translation**: - [locale](http://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
+* **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](https://codecept.io/hooks/#custom-hooks)
+* **translation**: - [locale](https://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
 * **require**: `[]` - array of module names to be required before codecept starts. See [Require](#require)
 
 
@@ -47,7 +47,20 @@ exports.config = {
   require: ["ts-node/register", "should"]
 }
 ```
-
+For array of test pattern
+```js
+exports.config = {
+  tests: ['./*_test.js','./sampleTest.js'],
+  timeout: 10000,
+  output: '',
+  helpers: {},
+  include: {},
+  bootstrap: false,
+  mocha: {},
+  // require modules
+  require: ["ts-node/register", "should"]
+}
+```
 ## Dynamic Configuration
 
  By default `codecept.json` is used for configuration. You can override its values in runtime by using `--override` or `-o` option in command line, passing valid JSON as a value:

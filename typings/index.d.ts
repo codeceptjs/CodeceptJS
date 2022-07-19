@@ -1,19 +1,34 @@
-// Type definitions for CodeceptJS
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
+/// <reference types="joi" />
+/// <reference types="playwright" />
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
-    import("./utils").Translate<T, CodeceptJS.Translation.Actions>;
+    import("./utils").Translate<T, Translation.Actions>;
+
+  type Cookie = {
+    name: string;
+    value: string;
+    domain?: string,
+    path?: string,
+  };
+
+  interface PageScrollPosition {
+    x: number;
+    y: number;
+  }
 
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}
   interface IHook {}
   interface IScenario {}
-  interface IFeature {}
+  interface IFeature {
+    (title: string): FeatureConfig;
+  }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
     I: CodeceptJS.I;
@@ -28,7 +43,7 @@ declare namespace CodeceptJS {
   }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: Function }>(
+  type actor = <T extends { [action: string]: (...args: any[]) => void }>(
     customSteps?: T & ThisType<WithTranslation<Methods & T>>
   ) => WithTranslation<Methods & T>;
 
@@ -40,33 +55,47 @@ declare namespace CodeceptJS {
     | { frame: string }
     | { android: string }
     | { ios: string }
-    | { android: string, ios: string }
-    | { react: string };
+    | { android: string; ios: string }
+    | { react: string }
+    | { shadow: string }
+    | { custom: string };
 
-  type LocatorOrString = string | ILocator | Locator;
+  interface CustomLocators {}
+  type LocatorOrString =
+    | string
+    | ILocator
+    | Locator
+    | CustomLocators[keyof CustomLocators];
 
-  interface HookCallback<U extends any[]> { (...args: U): void; }
-  interface Scenario extends IScenario { only: IScenario, skip: IScenario, todo:  IScenario}
-  interface Feature extends IFeature { skip: IFeature }
-  interface IData { Scenario: IScenario, only: { Scenario: IScenario } }
+  type StringOrSecret = string | CodeceptJS.Secret;
+
+  interface HookCallback {
+    (args: SupportObject): void | Promise<void>;
+  }
+  interface Scenario extends IScenario {
+    only: IScenario;
+    skip: IScenario;
+    todo: IScenario;
+  }
+  interface Feature extends IFeature {
+    skip: IFeature;
+  }
+  interface IData {
+    Scenario: IScenario;
+    only: { Scenario: IScenario };
+  }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
-    <T extends any[] = CallbackOrder>(
-      title: string
-    ): ScenarioConfig;
-    <T extends any[] = CallbackOrder>(
-      title: string,
-      callback: HookCallback<T>
-    ): ScenarioConfig;
-    <T extends any[] = CallbackOrder>(
+    (title: string, callback?: HookCallback): ScenarioConfig;
+    (
       title: string,
       opts: { [key: string]: any },
-      callback: HookCallback<T>
+      callback: HookCallback
     ): ScenarioConfig;
   }
   interface IHook {
-    <T extends any[] = CallbackOrder>(callback: HookCallback<T>): void;
+    (callback: HookCallback): void;
   }
 
   interface Globals {
@@ -86,6 +115,7 @@ declare const pause: typeof CodeceptJS.pause;
 declare const within: typeof CodeceptJS.within;
 declare const session: typeof CodeceptJS.session;
 declare const DataTable: typeof CodeceptJS.DataTable;
+declare const DataTableArgument: typeof CodeceptJS.DataTableArgument;
 declare const codeceptjs: typeof CodeceptJS.index;
 declare const locate: typeof CodeceptJS.Locator.build;
 declare function inject(): CodeceptJS.SupportObject;
@@ -135,6 +165,7 @@ declare namespace NodeJS {
     within: typeof within;
     session: typeof session;
     DataTable: typeof DataTable;
+    DataTableArgument: typeof DataTableArgument;
     locate: typeof locate;
     inject: typeof inject;
     secret: typeof secret;
@@ -161,17 +192,22 @@ declare namespace Mocha {
     After: typeof After;
   }
 
-  interface Suite extends SuiteRunnable{
-    tags: any[]
-    comment: string
-    feature: any
+  interface Suite extends SuiteRunnable {
+    tags: any[];
+    comment: string;
+    feature: any;
   }
 
-  interface Test  extends Runnable{
+  interface Test extends Runnable {
+    artifacts: [],
     tags: any[];
   }
 }
 
 declare module "codeceptjs" {
   export = codeceptjs;
+}
+
+declare module "@codeceptjs/helper" {
+  export = CodeceptJS.Helper;
 }

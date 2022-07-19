@@ -96,7 +96,7 @@ A test starts when emulator starts and loads an application. So you can begin te
 
 ```js
 // inside a created test
-Scenario('test React Native app', (I) => {
+Scenario('test React Native app', ({ I }) => {
   I.see('Welcome');
   I.tap('Start');
   I.see('Started!');
@@ -179,7 +179,7 @@ If element differs on on iOS and Android you can use **cross platform locators**
 ```js
 // locate element by text on Android
 // locate element by accessibility id on iOS
-I.click({ android: /'Start', ios: '~start' });
+I.click({ android: 'Start', ios: '~start' });
 ```
 
 When application behavior differs on Android and iOS use platform-specific actions:
@@ -202,12 +202,12 @@ Finally, you can get a test looking like this
 ```js
 Feature('My Detox App');
 
-Scenario('save in application', (I) => {
+Scenario('save in application', ({ I }) => {
   I.setLandscapeOrientation();
   I.fillField('#text', 'a new text');
   I.see('a new text', '#textValue');
   I.dontSeeElement('#createdAndVisibleText');
-  I.click({ ios: '#GoButton', android: /'Button' });
+  I.click({ ios: '#GoButton', android: 'Button' });
   I.waitForElement('#createdAndVisibleText', 20);
   I.seeElement('#createdAndVisibleText');
   I.runOnAndroid(() => {

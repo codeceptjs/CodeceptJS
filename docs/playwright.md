@@ -3,11 +3,11 @@ permalink: /playwright
 title: Testing with Playwright
 ---
 
-# Testing with Playwright <Badge text="Since 2.5" type="warning"/>
+# Testing with Playwright
 
-Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
+Playwright is a Node library to automate the [Chromium](https://www.chromium.org/Home), [WebKit](https://webkit.org/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) browsers as well as [Electron](https://www.electronjs.org/) apps with a single API. It enables **cross-browser** web automation that is **ever-green**, **capable**, **reliable** and **fast**.
 
-Playwright was built similarly to [Puppeteer](https://github.com/puppeteer/puppeteer), using its API and so is very different in usage. However, Playwright has cross browser support with better design for test automaiton.
+Playwright was built similarly to [Puppeteer](https://github.com/puppeteer/puppeteer), using its API and so is very different in usage. However, Playwright has cross browser support with better design for test automation.
 
 Take a look at a sample test:
 
@@ -28,10 +28,10 @@ It's readable and simple and working using Playwright API!
 To start you need CodeceptJS with Playwright packages installed
 
 ```bash
-npm install codeceptjs playwright@^1 --save
+npm install codeceptjs playwright --save
 ```
 
-Or see [alternative installation options](http://codecept.io/installation/)
+Or see [alternative installation options](https://codecept.io/installation/)
 
 > If you already have CodeceptJS project, just install `playwright` package and enable a helper it in config.
 
@@ -84,7 +84,7 @@ When to consider navigation succeeded, defaults to `load`. Given an array of eve
 When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
-> ▶ More options are listed in [helper reference](http://codecept.io/helpers/Playwright/).
+> ▶ More options are listed in [helper reference](https://codecept.io/helpers/Playwright/).
 
 ## Writing Tests
 
@@ -109,7 +109,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 * `see`, `dontSee` - to check for a text on a page
 * `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ  All actions are listed in [Playwright helper reference](http://codecept.io/helpers/Playwright/).*
+> ℹ  All actions are listed in [Playwright helper reference](https://codecept.io/helpers/Playwright/).*
 
 All actions which interact with elements can use **[CSS or XPath locators](https://codecept.io/locators/#css-and-xpath)**. Actions like `click` or `fillField` can locate elements by their name or value on a page:
 
@@ -137,7 +137,7 @@ It's easy to start writing a test if you use [interactive pause](/basics#debug).
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   pause();
 });
@@ -158,7 +158,7 @@ A complete ToDo-MVC test may look like:
 ```js
 Feature('ToDo');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   I.dontSeeElement('.todo-count');
   I.fillField('What needs to be done?', 'Write a guide');
@@ -174,9 +174,11 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 
 ```js
 const assert = require('assert');
-Scenario('get value of current tasks', async (I) => {
-  I.createTodo('do 1');
-  I.createTodo('do 2');
+Scenario('get value of current tasks', async ({ I }) => {
+  I.fillField('.todo', 'my first item');
+  I.pressKey('Enter')
+  I.fillField('.todo', 'my second item');
+  I.pressKey('Enter')
   let numTodos = await I.grabTextFrom('.todo-count strong');
   assert.equal(2, numTodos);
 });
@@ -188,24 +190,42 @@ In case some actions should be taken inside one element (a container or modal wi
 Please take a note that you can't use within inside another within in Playwright helper:
 
 ```js
-within('.todoapp', () => {
-  I.createTodo('my new item');
+await within('.todoapp', () => {
+  I.fillField('.todo', 'my new item');
+  I.pressKey('Enter')
   I.see('1 item left', '.todo-count');
   I.click('.todo-list input.toggle');
 });
 I.see('0 items left', '.todo-count');
 ```
 
-> [▶ Learn more about basic commands](/basics#writing-tests)
+### Each Element <Badge text="Since 3.3" type="warning"/>
 
-CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
+Usually, CodeceptJS performs an action on the first matched element. 
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
+
+`eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives [ElementHandle instance](https://playwright.dev/docs/api/class-elementhandle) from Playwright API. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
+
+Usage example
+
+```js
+await eachElement(
+  'tick all checkboxes', 
+  'input.custom-checkbox', 
+  async (el, index) => {
+    await el.check();
+  });
+);
+```
+
+> ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
 
 ## Multi Session Testing
 
-TO launch additional browser context (or incognito window) use `session` command.
+To launch additional browser context (or incognito window) use `session` command.
 
 ```js
-Scenario('I try to open this site as anonymous user', () => {
+Scenario('I try to open this site as anonymous user', ({ I }) => {
   I.amOnPage('/');
   I.dontSee('Agree to cookies');
   session('anonymous user', () => {
@@ -217,13 +237,60 @@ Scenario('I try to open this site as anonymous user', () => {
 
 > ℹ Learn more about [multi-session testing](/basics/#multiple-sessions)
 
+## Electron Testing
+
+CodeceptJS allows you to make use of [Playwright's Electron flavor](https://github.com/microsoft/playwright/blob/master/packages/playwright-electron/README.md).
+To use this functionality, all you need to do is set the browser to `electron` in the CodeceptJS configuration file and, according to the [Playwright BrowserType API](https://playwright.dev/docs/api/class-browsertype/#browsertypelaunchoptions), set the launch options to point to your Electron application.
+
+`main.js` - main Electron application file
+```js
+const { app, BrowserWindow } = require("electron");
+
+function createWindow() {
+  const window = new BrowserWindow({ width: 800, height: 600 });
+  window.loadURL("https://example.com");
+}
+
+app.whenReady().then(createWindow);
+```
+
+`codecept.conf.js` - CodeceptJS configuration file
+```js
+const path = require("path");
+
+exports.config = {
+  helpers: {
+    Playwright: {
+      browser: "electron",
+      electron: {
+        executablePath: require("electron"),
+        args: [path.join(__dirname, "main.js")],
+      },
+    },
+  },
+  // rest of config
+}
+```
+
+### Headless Mode
+
+With Electron, headless mode must be set when creating the window. Therefore, CodeceptJS's `show` configuration parameter will not work. However, you can set it in the `main.js` file as shown below:
+
+```js
+function createWindow() {
+  const window = new BrowserWindow({ width: 800, height: 600, show: false });
+  window.loadURL("https://example.com");
+}
+```
+
+
 ## Device Emulation
 
 Playwright can emulate browsers of mobile devices. Instead of paying for expensive devices for mobile tests you can adjust Playwright settings so it could emulate mobile browsers on iPhone, Samsung Galaxy, etc.
 
 Device emulation can be enabled in CodeceptJS globally in a config or per session.
 
-Playwright contains a [list of predefined devices](https://github.com/Microsoft/playwright/blob/master/src/deviceDescriptors.ts) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+Playwright contains a [list of predefined devices](https://github.com/microsoft/playwright/blob/master/src/server/deviceDescriptors.js) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
 
 ```js
 const { devices } = require('playwright');
@@ -235,7 +302,7 @@ helpers: {
   }
 }
 ```
-To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/master/docs/api.md#browsernewcontextoptions)
+To adjust browser settings you can pass [custom options](https://github.com/microsoft/playwright/blob/master/docs/src/api/class-browsercontext.md)
 
 ```js
 helpers: {
@@ -260,22 +327,219 @@ Scenario('website looks nice on iPhone', () => {
 });
 ```
 
-## Configuring CI
+## API Requests
 
-### GitHub Actions
+CodeceptJS has [REST](/helpers/REST) and [GraphQL]((/helpers/GraphQL)) helpers to perform requests to external APIs. This may be helpful to implement [data management](https://codecept.io/data/) strategy. 
 
-Playwright can be added to GitHub Actions using [official action](https://github.com/microsoft/playwright-github-action). Use it before starting CodeceptJS tests to install all dependencies. It is important to run tests in headless mode ([otherwise you will need to enable xvfb to emulate desktop](https://github.com/microsoft/playwright-github-action#run-in-headful-mode)).
+However, Playwright since 1.18 has its own [API for making request](https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get). It uses cookies from browser session to authenticate requests. So you can use it via [`makeApiRequest`](/helpers/Playwright#makeApiRequest) method:
 
-```yml
-# from workflows/tests.yml
-- uses: microsoft/playwright-github-action@v1
-- name: run CodeceptJS tests
-  run: npx codeceptjs run
+```js
+I.makeApiRequest('GET', '/users')
 ```
 
-## Extending
+It is also possible to test JSON responses by adding [`JSONResponse`](/helpers/JSONResponse) and connecting it to Playwright:
 
-Playwright has a very [rich and flexible API](https://github.com/microsoft/playwright/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+```js
+// inside codecept.conf.js
+{
+  helpers: {
+    Playwright: {
+      // current config
+    },
+    JSONResponse: {
+      requestHelper: 'Playwright',
+    }
+  }
+}
+```
+This helper provides you methods for [API testing](/api). For instance, you can check for status code, data inclusion and structure:
+
+```js
+I.makeApiRequest('GET', '/users/1');
+I.seeResponseCodeIs(200);
+I.seeResponseContainsKeys(['user']);
+```
+This way you can do full fledged API testing via Playwright.
+
+## Accessing Playwright API
+
+To get [Playwright API](https://playwright.dev/docs/api/class-playwright) inside a test use `I.usePlaywrightTo` method with a callback.
+
+`usePlaywrightTo` passes in an instance of Playwright helper from which you can obtain access to main Playwright classes:
+
+* [`browser`](https://playwright.dev/docs/api/class-browser)
+* [`browserContext`](https://playwright.dev/docs/api/class-browsercontext)
+* [`page`](https://playwright.dev/docs/api/class-page)
+
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.usePlaywrightTo('emulate offline mode', async ({ browser, browserContext, page }) => {
+  // use browser, page, context objects inside this function
+  await browserContext.setOffline(true);
+});
+```
+
+Playwright commands are asynchronous so a callback function must be async.
+
+A Playwright helper is passed as argument for callback, so you can combine Playwright API with CodeceptJS API:
+
+```js
+I.usePlaywrightTo('emulate offline mode', async (Playwright) => {
+  // access internal objects browser, page, context of helper
+  await Playwright.browserContext.setOffline(true);
+  // call a method of helper, await is required here
+  await Playwright.click('Reload');
+});
+```
+
+## Mocking Network Requests <Badge text="Since 3.1" type="warning"/>
+
+Network requests & responses can be mocked and modified. Use `mockRequest` which strictly follows [Playwright's `route` API](https://playwright.dev/docs/api/class-browsercontext#browser-context-route).
+
+```js
+I.mockRoute('/api/**', route => {
+  if (route.request().postData().includes('my-string'))
+    route.fulfill({ body: 'mocked-data' });
+  else
+    route.continue();
+});
+
+I.mockRoute('**/*.{png,jpg,jpeg}', route => route.abort());
+
+// To disable mocking for a route call `stopMockingRoute`
+// for previously mocked URL
+I.stopMockingRoute('**/*.{png,jpg,jpeg}'
+```
+
+To master request intercepting [use `route` object](https://playwright.dev/docs/api/class-route) object passed into mock request handler.
+
+## Video <Badge text="Since 3.1" type="warning"/>
+
+Playwright may record videos for failed tests. This can be enabled in a config with `video: true` option:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      // ...
+      video: true
+    }
+  }
+}
+```
+When a test fails and video was enabled a video file is shown under the `artifacts` section in the error message:
+
+```
+-- FAILURES:
+
+  1) GitHub
+       open:
+    
+  Scenario Steps:
+  - I.amOnPage("https://gothub11.com/search") at Test.<anonymous> (./github_test.js:16:5)
+  
+  Artifacts:
+  - screenshot: /home/davert/projects/codeceptjs/examples/output/open.failed.png
+  - video: /home/davert/projects/codeceptjs/examples/output/videos/5ecf6aaa78865bce14d271b55de964fd.webm
+```
+
+Open video and use it to debug a failed test case. Video helps when running tests on CI. Configure your CI system to enable artifacts storage for `output/video` and review videos of failed test case to understand failures. 
+
+It is recommended to enable [subtitles](https://codecept.io/plugins/#subtitles) plugin which will generate subtitles from steps in `.srt` format. Subtitles file will be saved into after a video file so video player (like VLC) would load them automatically:
+
+![](https://user-images.githubusercontent.com/220264/131644090-38d1ca55-1ba1-41fa-8fd1-7dea2b7ae995.png)
+
+
+## Trace <Badge text="Since 3.1" type="warning"/>
+
+If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer/) can be recorded.
+
+![](https://user-images.githubusercontent.com/220264/128403246-7e1b9b33-9ce2-42d5-b87b-b8749d5d7a78.png)
+
+Inside a trace you get screenshots, DOM snapshots, console logs, network requests and playwright commands logged and showed on a timeline. This may help for a deep debug of a failed test cases. Trace file is saved into ZIP archive and can be viewed with Trace Viewer built into Playwright.
+
+
+Enable trace with `trace: true` option in a config:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      // ...
+      trace: true
+    }
+  }
+}
+```
+
+When a test fails and trace was enabled, a trace file is shown under the `artifacts` section in the error message:
+
+```
+-- FAILURES:
+
+  1) GitHub
+       open:
+    
+  Scenario Steps:
+  - I.amOnPage("https://gothub11.com/search") at Test.<anonymous> (./github_test.js:16:5)
+  
+  Artifacts:
+  - screenshot: /home/davert/projects/codeceptjs/examples/output/open.failed.png
+  - trace: /home/davert/projects/codeceptjs/examples/output/trace/open.zip
+```
+
+Use Playwright's trace viewer to analyze the trace:
+
+```
+npx playwright show-trace {path-to-trace-file}
+```
+
+For instance, this is how you can read a trace for a failed test from an example:
+
+```
+npx playwright show-trace /home/davert/projects/codeceptjs/examples/output/trace/open.zip
+```
+
+## Capturing Code Coverage
+
+Code coverage can be captured, by enabling the `coverage` plugin in `codecept.config.js`.
+
+```js
+{
+  plugins: {
+    coverage: {
+      enabled: true
+    }
+  }
+}
+```
+
+Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
+
+![](https://user-images.githubusercontent.com/16587779/131362352-30ee9c51-705f-4098-b665-53035ea9275f.png)
+
+Then you need to [convert code coverage from Playwright's format into Istanbul format](https://github.com/codeceptjs/CodeceptJS/wiki/Converting-Playwright-to-Istanbul-Coverage).
+
+Once the istanbul compatible coverage is generated, use [`nyc`](https://www.npmjs.com/package/nyc) to generate your coverage report in your desired format.
+
+```
+npx nyc report --reporter html -t coverage
+```
+
+The above command will generate will generate coverage in an interactive html format. It should generate `html` files in the directory where your code coverage is present, something like shown below.
+
+![](https://user-images.githubusercontent.com/16587779/131858419-cbc7df7d-0851-47b9-b086-b5e3b9165674.png)
+
+Open `index.html` in your browser to view the full interactive coverage report.
+
+![](https://user-images.githubusercontent.com/16587779/131858993-87d1aafc-8ef1-4a82-867d-e64a13e36106.png)
+
+![](https://user-images.githubusercontent.com/16587779/131859006-c6f17d18-c603-44a5-9d59-0670177276cf.png)
+
+## Extending Helper
+
+To create custom `I.*` commands using Playwright API you need to create a custom helper.
 
 Start with creating an `MyPlaywright` helper using `generate:helper` or `gh` command:
 
@@ -312,6 +576,20 @@ async setPermissions() {
 }
 ```
 
-> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/api.md#class-browsercontext)
+> [▶ Learn more about BrowserContext](https://github.com/microsoft/playwright/blob/master/docs/src/api/class-browsercontext.md)
 
-> [▶ Learn more about Helpers](http://codecept.io/helpers/)
+> [▶ Learn more about Helpers](https://codecept.io/helpers/)
+
+
+## Configuring CI
+
+### GitHub Actions
+
+Playwright can be added to GitHub Actions using [official action](https://github.com/microsoft/playwright-github-action). Use it before starting CodeceptJS tests to install all dependencies. It is important to run tests in headless mode ([otherwise you will need to enable xvfb to emulate desktop](https://github.com/microsoft/playwright-github-action#run-in-headful-mode)).
+
+```yml
+# from workflows/tests.yml
+- uses: microsoft/playwright-github-action@v1
+- name: run CodeceptJS tests
+  run: npx codeceptjs run
+```

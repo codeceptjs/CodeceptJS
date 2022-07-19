@@ -244,13 +244,15 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
 Use PollyJS [Server Routes API][12] to declare mocks via callback function:
 
 ```js
-// basic usage
-server.get('/api/v2/users').intercept((req, res) => {
-  res.sendStatus(200).json({ users });
-});
+I.mockServer((server) => {
+  // basic usage
+  server.get('/api/v2/users').intercept((req, res) => {
+    res.sendStatus(200).json({ users });
+  });
 
-// passthrough requests to "/api/v2"
-server.get('/api/v1').passthrough();
+  // passthrough requests to "/api/v2"
+  server.get('/api/v1').passthrough();
+});
 ```
 
 In record replay mode you can define which routes should be recorded and where to store them:

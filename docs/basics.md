@@ -10,7 +10,7 @@ CodeceptJS is a modern end to end testing framework with a special BDD-style syn
 ```js
 Feature('CodeceptJS demo');
 
-Scenario('check Welcome page on site', (I) => {
+Scenario('check Welcome page on site', ({ I }) => {
   I.amOnPage('/');
   I.see('Welcome');
 });
@@ -30,7 +30,7 @@ The following is a diagram of the CodeceptJS architecture:
 ![architecture](/img/architecture.svg)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
-However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppteer or Nightmare.
+However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppeteer or Nightmare.
 
 **Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another.
 
@@ -38,10 +38,9 @@ However, because of the difference in backends and their limitations, they are n
 
 Refer to following guides to more information on:
 
-* [▶ WebDriver](/webdriver)
-* [▶ Protractor](/angular)
-* [▶ Puppeteer](/puppeteer)
 * [▶ Playwright](/playwright)
+* [▶ WebDriver](/webdriver)
+* [▶ Puppeteer](/puppeteer)
 * [▶ Nightmare](/nightmare)
 * [▶ TestCafe](/testcafe)
 
@@ -49,6 +48,8 @@ Refer to following guides to more information on:
 
 To list all available commands for the current configuration run `codeceptjs list`
 or enable [auto-completion by generating TypeScript definitions](#intellisense).
+
+> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
 
 
 ## Writing Tests
@@ -106,7 +107,7 @@ I.seeElement({name: 'password'});
 I.seeElement({react: 'user-profile', props: {name: 'davert'}});
 ```
 
-In [mobile testing](http://codecept.io/mobile/#locating-elements) you can use `~` to specify the accessibility id to locate an element. In web application you can locate elements by their `aria-label` value.
+In [mobile testing](https://codecept.io/mobile/#locating-elements) you can use `~` to specify the accessibility id to locate an element. In web application you can locate elements by their `aria-label` value.
 
 ```js
 // locate element by [aria-label] attribute in web
@@ -211,6 +212,8 @@ To fill in sensitive data use the `secret` function, it won't expose actual valu
 I.fillField('password', secret('123456'));
 ```
 
+> ℹ️ Learn more about [masking secret](/secrets/) output
+
 ### Assertions
 
 In order to verify the expected behavior of a web application, its content should be checked.
@@ -254,7 +257,7 @@ Sometimes you need to retrieve data from a page to use it in the following steps
 Imagine the application generates a password, and you want to ensure that user can login using this password.
 
 ```js
-Scenario('login with generated password', async (I) => {
+Scenario('login with generated password', async ({ I }) => {
   I.fillField('email', 'miles@davis.com');
   I.click('Generate Password');
   const password = await I.grabTextFrom('#password');
@@ -269,7 +272,7 @@ Scenario('login with generated password', async (I) => {
 The `grabTextFrom` action is used to retrieve the text from an element. All actions starting with the `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause the test execution with the `await` keyword of ES6. To make it work, your test should be written inside a async function (notice `async` in its definition).
 
 ```js
-Scenario('use page title', async (I) => {
+Scenario('use page title', async ({ I }) => {
   // ...
   const password = await I.grabTextFrom('#password');
   I.fillField('password', password);
@@ -287,7 +290,6 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-
 > ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works
@@ -303,7 +305,7 @@ However, behind the scenes **all actions are wrapped in promises**, inside of th
 If you want to get information from a running test you can use `await` inside the **async function**, and utilize special methods of helpers started with the `grab` prefix.
 
 ```js
-Scenario('try grabbers', async (I) => {
+Scenario('try grabbers', async ({ I }) => {
   let title = await I.grabTitle();
 });
 ```
@@ -315,6 +317,32 @@ var title = await I.grabTitle();
 var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 ```
+
+It is important to understand the usage of **async** functions in CodeceptJS. While non-returning actions can be called without await, if an async function uses `grab*` action it must be called with `await`:
+
+```js
+// a helper function
+async function getAllUsers(I) {
+   const users = await I.grabTextFrom('.users');
+   return users.filter(u => u.includes('active'))
+}
+
+// a test
+Scenario('try helper functions', async ({ I }) => {
+  // we call function with await because it includes `grab`
+  const users = await getAllUsers(I);
+});
+```
+
+If you miss `await` you get commands unsynchrhonized. And this will result to an error like this:
+
+```
+(node:446390) UnhandledPromiseRejectionWarning: ...
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+(node:446390) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 2)
+```
+
+If you face that error please make sure that all async functions are called with `await`.
 
 ## Running Tests
 
@@ -478,14 +506,20 @@ I.=> func()
 I.=> 2 + 5
 ```
 
-### Pause on Failure <Badge text="Since 2.4" type="warning"/>
+### Pause on Fail
 
 To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
 When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
 
-This is an **essential feature to debug flaky tests**, as you can analyze them in the moment of failure.
+> **[pauseOnFail plugin](/plugins/#pauseOnFail) can be used** for new setups
 
-> ℹ To enable pause after a test without a plugin use `After(pause)` inside a test file.
+To run tests with pause on fail enabled use `-p pauseOnFail` option
+
+```
+npx codeceptjs run -p pauseOnFail
+```
+
+> To enable pause after a test without a plugin you can use `After(pause)` inside a test file.
 
 
 ### Screenshot on Failure
@@ -493,7 +527,7 @@ This is an **essential feature to debug flaky tests**, as you can analyze them i
 By default CodeceptJS saves a screenshot of a failed test.
 This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
 
-> **screenshotOnFail plugin is enabled by default** for new setups
+> **[screenshotOnFail plugin](/plugins/#screenshotonfail) is enabled by default** for new setups
 
 ### Step By Step Report
 
@@ -505,7 +539,7 @@ To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepby
 
 You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
 
-> **autoRetry plugin is enabled by default** for new setups since CodeceptJS 2.4
+> **[retryFailedStep plugin](/plugins/#retryfailedstep) is enabled by default** for new setups
 
 ### Retry Step
 
@@ -552,12 +586,12 @@ CodeceptJS implements retries the same way [Mocha does](https://mochajs.org#retr
 You can set the number of a retries for a feature:
 
 ```js
-Scenario('Really complex', (I) => {
+Scenario('Really complex', ({ I }) => {
   // test goes here
 }).retry(2);
 
 // alternative
-Scenario('Really complex', { retries: 2 }, (I) => {});
+Scenario('Really complex', { retries: 2 },({ I }) => {});
 ```
 
 This scenario will be restarted two times on a failure.
@@ -582,17 +616,17 @@ Common preparation steps like opening a web page or logging in a user, can be pl
 ```js
 Feature('CodeceptJS Demonstration');
 
-Before((I) => { // or Background
+Before(({ I }) => { // or Background
   I.amOnPage('/documentation');
 });
 
-Scenario('test some forms', (I) => {
+Scenario('test some forms', ({ I }) => {
   I.click('Create User');
   I.see('User is valid');
   I.dontSeeInCurrentUrl('/documentation');
 });
 
-Scenario('test title', (I) => {
+Scenario('test title', ({ I }) => {
   I.seeInTitle('Example application');
 });
 ```
@@ -606,11 +640,11 @@ If you need to run complex a setup before all tests and have to teardown this af
 You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work only for the file it was declared in (so you can declare different setups for files)
 
 ```js
-BeforeSuite((I) => {
+BeforeSuite(({ I }) => {
   I.syncDown('testfolder');
 });
 
-AfterSuite((I) => {
+AfterSuite(({ I }) => {
   I.syncUp('testfolder');
   I.clearDir('testfolder');
 });
@@ -674,6 +708,24 @@ const val = await within('#sidebar', () => {
 I.fillField('Description', val);
 ```
 
+## Conditional Actions
+
+There is a way to execute unsuccessful actions to without failing a test. 
+This might be useful when you might need to click "Accept cookie" button but probably cookies were already accepted.
+To handle these cases `tryTo` function was introduced:
+
+```js
+tryTo(() => I.click('Accept', '.cookies'));
+```
+
+You may also use `tryTo` for cases when you deal with uncertainty on page:
+
+* A/B testing
+* soft assertions
+* cookies & gdpr
+
+`tryTo` function is enabled by default via [tryTo plugin](/plugins/#tryto)
+
 ## Comments
 
 There is a simple way to add additional comments to your test scenario:
@@ -725,7 +777,7 @@ to get method autocompletion while writing tests.
 CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a chat or other systems. To open another browser use the `session()` function as shown in the example:
 
 ```js
-Scenario('test app', (I) => {
+Scenario('test app', ({ I }) => {
   I.amOnPage('/chat');
   I.fillField('name', 'davert');
   I.click('Sign In');
@@ -762,7 +814,7 @@ session('john', { browser: 'firefox' } , () => {
 or just start the session without switching to it. Call `session` passing only its name:
 
 ```js
-Scenario('test', (I) => {
+Scenario('test', ({ I }) => {
   // opens 3 additional browsers
   session('john');
   session('mary');
@@ -804,7 +856,7 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 * `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
 
 
-## Todo Test <Badge text="Since 2.4" type="warning"/>
+## Todo Test
 
 You can use `Scenario.todo` when you are planning on writing tests.
 

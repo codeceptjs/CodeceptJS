@@ -31,7 +31,7 @@ To start you need CodeceptJS with Puppeteer packages installed
 npm install codeceptjs puppeteer --save
 ```
 
-Or see [alternative installation options](http://codecept.io/installation/)
+Or see [alternative installation options](https://codecept.io/installation/)
 
 > If you already have CodeceptJS project, just install `puppeteer` package and enable a helper it in config.
 
@@ -80,7 +80,7 @@ By default it is set to `domcontentloaded` which waits for `DOMContentLoaded` ev
 When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
-> ▶ More options are listed in [helper reference](http://codecept.io/helpers/Puppeteer/).
+> ▶ More options are listed in [helper reference](https://codecept.io/helpers/Puppeteer/).
 
 ## Writing Tests
 
@@ -105,12 +105,11 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 * `see`, `dontSee` - to check for a text on a page
 * `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ  All actions are listed in [Puppeteer helper reference](http://codecept.io/helpers/Puppeteer/).*
+> ℹ  All actions are listed in [Puppeteer helper reference](https://codecept.io/helpers/Puppeteer/).*
 
 All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
 ```js
-
 // search for link or button
 I.click('Login');
 // locate field by its label
@@ -134,7 +133,7 @@ It's easy to start writing a test if you use [interactive pause](/basics#debug).
 ```js
 Feature('Sample Test');
 
-Scenario('open my website', (I) => {
+Scenario('open my website', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   pause();
 });
@@ -155,7 +154,7 @@ A complete ToDo-MVC test may look like:
 ```js
 Feature('ToDo');
 
-Scenario('create todo item', (I) => {
+Scenario('create todo item', ({ I }) => {
   I.amOnPage('http://todomvc.com/examples/react/');
   I.dontSeeElement('.todo-count');
   I.fillField('What needs to be done?', 'Write a guide');
@@ -171,9 +170,11 @@ If you need to get element's value inside a test you can use `grab*` methods. Th
 
 ```js
 const assert = require('assert');
-Scenario('get value of current tasks', async (I) => {
-  I.createTodo('do 1');
-  I.createTodo('do 2');
+Scenario('get value of current tasks', async ({ I }) => {
+  I.fillField('.todo', 'my first item');
+  I.pressKey('Enter')
+  I.fillField('.todo', 'my second item');
+  I.pressKey('Enter')
   let numTodos = await I.grabTextFrom('.todo-count strong');
   assert.equal(2, numTodos);
 });
@@ -185,19 +186,35 @@ In case some actions should be taken inside one element (a container or modal wi
 Please take a note that you can't use within inside another within in Puppeteer helper:
 
 ```js
-within('.todoapp', () => {
-  I.createTodo('my new item');
+await within('.todoapp', () => {
+  I.fillField('.todo', 'my new item');
+  I.pressKey('Enter')
   I.see('1 item left', '.todo-count');
   I.click('.todo-list input.toggle');
 });
 I.see('0 items left', '.todo-count');
 ```
 
-> [▶ Learn more about basic commands](/basics#writing-tests)
+### Each Element <Badge text="Since 3.3" type="warning"/>
 
-CodeceptJS allows you to implement custom actions like `I.createTodo` or use **PageObjects**. Learn how to improve your tests in [PageObjects](http://codecept.io/pageobjects/) guide.
+Usually, CodeceptJS performs an action on the first matched element. 
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
 
-> [▶ Demo project is available on GitHub](https://github.com/DavertMik/codeceptjs-todomvc-puppeteer)
+`eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives [ElementHandle instance](https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle) from Puppeteer API. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
+
+Usage example
+
+```js
+await eachElement(
+  'click all checkboxes', 
+  'input.custom-checkbox', 
+  async (el, index) => {
+    await el.click();
+  });
+);
+```
+
+> ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
 
 ## Mocking Requests
 
@@ -247,9 +264,34 @@ npx codeceptjs def
 Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
 
 
-## Extending
+## Accessing Puppeteer API
 
-Puppeteer has a very [rich and flexible API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md). Sure, you can extend your test suites to use the methods listed there. CodeceptJS already prepares some objects for you and you can use them from your you helpers.
+To get Puppeteer API inside a test use [`I.usePupepteerTo`](/helpers/Puppeteer/#usepuppeteerto) method with a callback.
+To keep test readable provide a description of a callback inside the first parameter.
+
+```js
+I.usePuppeteerTo('emulate offline mode', async ({ page, browser }) => {
+  await page.setOfflineMode(true);
+});
+```
+
+> Puppeteer commands are asynchronous so a callback function must be async.
+
+A Puppeteer helper is passed as argument for callback, so you can combine Puppeteer API with CodeceptJS API:
+
+```js
+I.usePuppeteerTo('emulate offline mode', async (Puppeteer) => {
+  // access internal objects browser, page, context of helper
+  await Puppeteer.page.setOfflineMode(true);
+  // call a method of helper, await is required here
+  await Puppeteer.click('Reload');
+});
+```
+
+
+## Extending Helper
+
+To create custom `I.*` commands using Puppeteer API you need to create a custom helper.
 
 Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` command:
 
@@ -271,5 +313,4 @@ async renderPageToPdf() {
 
 The same way you can also access `browser` object to implement more actions or handle events.
 
-> [▶ Learn more about Helpers](http://codecept.io/helpers/)
-
+> [▶ Learn more about Helpers](https://codecept.io/helpers/)

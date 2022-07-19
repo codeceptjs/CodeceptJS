@@ -7,8 +7,8 @@ title: Reporters
 
 ## Cli
 
-By default CodeceptJS provides cli reporter with console output.
-Test names and failures will be printed to screen.
+By default, CodeceptJS provides cli reporter with console output.
+Test names and failures will be printed out on screen.
 
 ```sh
 GitHub --
@@ -33,8 +33,8 @@ GitHub --
   Run with --verbose flag to see NodeJS stacktrace
 
 ```
-npx codeceptjs run --stepsutput add `--steps` option to `run` command:
-```
+
+output steps use `--steps` option:
 ```
 npx codeceptjs run --steps
 ```
@@ -141,11 +141,52 @@ npx codecepjs dry-run --debug
 
 > ℹ If you use custom JavaScript code inside tests, or rely on values from `grab*` commands, dry-run may produce error output.
 
+
+## Testomat.io
+
+[Testomat.io](https://testomat.io) is a modern test management tool focused on CodeceptJS and **created by CodeceptJS team**.
+Testomat.io is commercial SaaS service that can receive run reports from local runs or CI. Out of box Testomat.io supports parallel runs, uploading of screenshots and videos.
+
+![](https://user-images.githubusercontent.com/220264/151728836-b52d2b2b-56e1-4640-8d3a-b39de817b1fd.png)
+
+> 😻 **Testomat.io is free** for small teams, so you can use its reporting features with CodeceptJS.
+
+To receive run reports you should:
+
+* [Sign up](https://app.testomat.io/users/sign_up) at Testomat.io
+* Create a new "Classical" project (select "BDD" project if you use CodeceptJS in BDD mode)
+* Select "Import from Source Code"
+* Select "CodeceptJS" as testing framework and JavaScript or TypeScript as a language. If you use BDD select "Gherkin" as language.
+* Execute provided command in a terminal with your project. This will be "check-tests" or "check-cucmber" command. It scans all your test files and imports them into Testomat.io. This way all your e2e tests will be visible in one UI.
+* After tests are imported, go to Runs tab and select "Setup automated tests".
+* Follow the instructions:
+
+
+![image](https://user-images.githubusercontent.com/77803888/151834217-5da44d92-a59a-458d-8856-64ce61bf3a38.png)
+
+* You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config:
+
+```js
+plugins: {
+  testomatio: {
+    enabled: true,
+    require: '@testomatio/reporter/lib/adapter/codecept',
+    apiKey: process.env.TESTOMATIO,
+  }
+}
+```
+
+* Run tests with `TESTOMATIO=` env variable and API key provided by Testomat.io
+* See the run report is created and updated in realtime.
+
+
+[Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira.
+
+
 ## Allure
 
-> ℹ  We recommend using Allure reports on CI. Allure is one of the best open-source reporters designed to collect and show test reports in nicest way.
 
-[Allure reporter](http://allure.qatools.ru/#) is a tool to store and display test reports.
+[Allure reporter](https://allure.qatools.ru/#) is a tool to store and display test reports.
 It provides nice web UI which contains all important information on test execution.
 CodeceptJS has built-in support for Allure reports. Inside reports you will have all steps, substeps and screenshots.
 
@@ -201,7 +242,7 @@ npx codeceptjs dry-run --debug -p allure
 
 ## ReportPortal
 
-Allure is a great reportin tool, however, if you are running tests on different machines it is hard to merge its XML result files to build a proper report. So, for enterprise grade reporting we recommend using [ReportPortal](https://reportportal.io).
+For enterprise grade we reporting we recommend using [ReportPortal](https://reportportal.io).
 
 ![](https://camo.githubusercontent.com/6550c0365f1d0ce1e29c53f1860b12957d1fc529/68747470733a2f2f692e6962622e636f2f516d353247306e2f53637265656e73686f742d323031392d30342d31312d61742d31352d35372d34302e706e67)
 
@@ -352,17 +393,18 @@ Configure mocha-multi with reports that you want:
         }
       },
       "mochawesome": {
-       "stdout": "./output/console.log",
-       "options": {
-         "reportDir": "./output",
-         "reportFilename": "report"
+        "stdout": "./output/console.log",
+        "options": {
+          "reportDir": "./output",
+          "reportFilename": "report"
+        }
       },
       "mocha-junit-reporter": {
         "stdout": "./output/console.log",
         "options": {
-          "mochaFile": "./output/result.xml"
-        },
-        "attachments": true //add screenshot for a failed test
+          "mochaFile": "./output/result.xml",
+          "attachments": true //add screenshot for a failed test
+        }
       }
     }
   }
@@ -375,3 +417,21 @@ npx codeceptjs run --reporter mocha-multi
 ```
 
 This will give you cli with steps in console and HTML report in `output` directory.
+
+
+## Testrail
+
+Testrail integration with CodeceptJS is now so seamless. The test run is created automatically afterwards. The screenshots of failed tests are also attached to test results.
+
+Try to use [codeceptjs-testrail](https://www.npmjs.com/package/codeceptjs-testrail) plugin
+
+Install it via NPM:
+
+```sh
+npm i codeceptjs-testrail --save
+```
+
+![Attachemnt for failed case](http://g.recordit.co/ajaa2QRlnW.gif)
+
+Now there is new feature, add the configuration to test run of test plan
+![Attachemnt for failed case](http://g.recordit.co/uQLvQUq7cT.gif)

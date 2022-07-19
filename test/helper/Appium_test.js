@@ -14,6 +14,7 @@ describe('Appium', function () {
   this.timeout(0);
 
   before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
     app = new Appium({
       app: apk_path,
       desiredCapabilities: {
@@ -572,7 +573,7 @@ describe('Appium', function () {
     });
   });
 
-  describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom', () => {
+  describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom @quick', () => {
     it('should grab text from page', async () => {
       const val = await app.grabTextFrom('~buttonTestCD');
       assert.equal(val, 'EN Button');
@@ -582,17 +583,41 @@ describe('Appium', function () {
       const val = await app.grabAttributeFrom('~buttonTestCD', 'resourceId');
       assert.equal(val, 'io.selendroid.testapp:id/buttonTest');
     });
+
+    it('should be able to grab elements', async () => {
+      await app.click('~startUserRegistrationCD');
+      await app.click('~email of the customer');
+      await app.appendField('~email of the customer', '1');
+      await app.hideDeviceKeyboard('pressKey', 'Done');
+      await app.swipeTo(
+        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
+        100, 700,
+      );
+      await app.click('//android.widget.Button');
+      await app.see(
+        '1',
+        '#io.selendroid.testapp:id/label_email_data',
+      );
+      const num = await app.grabNumberOfVisibleElements('#io.selendroid.testapp:id/label_email_data');
+      assert.strictEqual(1, num);
+
+      const id = await app.grabNumberOfVisibleElements(
+        '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
+        'contentDescription',
+      );
+      assert.strictEqual(1, id);
+    });
   });
 
-  describe('#saveScreenshot', () => {
+  describe('#saveScreenshot @quick', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output');
     });
 
     it('should create a screenshot file in output dir', async () => {
       const sec = (new Date()).getUTCMilliseconds();
-      await app.saveScreenshot(`screenshot_${sec}`);
-      assert.ok(fileExists(path.join(output_dir, `screenshot_${sec}`)), null, 'file does not exists');
+      await app.saveScreenshot(`screenshot_${sec}.png`);
+      assert.ok(fileExists(path.join(global.output_dir, `screenshot_${sec}.png`)), null, 'file does not exists');
     });
   });
 
@@ -618,10 +643,7 @@ describe('Appium', function () {
     });
 
     it('should execute only on Android >= 5.0 @quick', () => {
-      let platform = null;
-      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {
-        platform = 'android';
-      });
+      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
     });
 
     it('should execute only in Web', () => {

@@ -21,8 +21,6 @@ const data = {
   ],
 };
 
-const getDataFromFile = () => JSON.parse(fs.readFileSync(dbFile));
-
 describe('ApiDataFactory', function () {
   this.timeout(20000);
   this.retries(1);
@@ -104,22 +102,23 @@ describe('ApiDataFactory', function () {
         factories: {
           post: {
             factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
-            create: data => ({ url: '/posts', method: 'post', data: { author: 'Yorik', title: 'xxx', body: 'yyy' } }),
+            create: () => ({ url: '/posts', method: 'post', data: { author: 'Yorik', title: 'xxx', body: 'yyy' } }),
             delete: id => ({ url: `/posts/${id}`, method: 'delete' }),
           },
         },
       });
       const post = await I.have('post');
       post.author.should.eql('Yorik');
-      await I._after();
-      resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(1);
     });
 
     it('should cleanup created data', async () => {
       await I.have('post', { author: 'Tapac' });
-      let resp = await I.restHelper.sendGetRequest('/posts/2');
-      resp.data.author.should.eql('Tapac');
+      let resp = await I.restHelper.sendGetRequest('/posts');
+      for (const post of resp.data) {
+        if (post.author === 'Tapac') {
+          post.author.should.eql('Tapac');
+        }
+      }
       await I._after();
       resp = await I.restHelper.sendGetRequest('/posts/2');
       resp.data.should.be.empty;

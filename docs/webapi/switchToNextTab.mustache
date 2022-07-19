@@ -1,0 +1,10 @@
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab.
+
+```js
+I.switchToNextTab();
+I.switchToNextTab(2);
+```
+
+@param {number} [num] (optional) number of tabs to switch forward, default: 1.
+@param {number | null} [sec] (optional) time in seconds to wait.
+[!] returns a _promise_ which is synchronized internally by recorder

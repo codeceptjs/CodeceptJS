@@ -1,4 +1,5 @@
 const path = require('path');
+const assert = require('assert');
 
 const TestHelper = require('../support/TestHelper');
 const TestCafe = require('../../lib/helper/TestCafe');
@@ -77,4 +78,14 @@ describe('TestCafe', function () {
   });
 
   webApiTests.tests();
+
+  describe('#useTestCafeTo', () => {
+    it('should return title', async () => {
+      await I.amOnPage('/');
+      const title = await I.useTestCafeTo('test', async ({ t }) => {
+        return t.eval(() => document.title, { boundTestRun: null });
+      });
+      assert.equal('TestEd Beta 2.0', title);
+    });
+  });
 });

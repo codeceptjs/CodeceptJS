@@ -11,6 +11,8 @@ const webApiTests = require('./webapi');
 const siteUrl = TestHelper.siteUrl();
 let wd;
 
+console.log('Connecting to Selenium Server', TestHelper.seleniumAddress());
+
 describe('WebDriver', function () {
   this.retries(1);
   this.timeout(35000);
@@ -36,18 +38,47 @@ describe('WebDriver', function () {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
         },
       },
+      customLocatorStrategies: {
+        customSelector: (selector) => (
+          { 'element-6066-11e4-a52e-4f735466cecf': `${selector}-foobar` }
+        ),
+      },
     });
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     webApiTests.init({ I: wd, siteUrl });
-    return wd._before();
+    this.wdBrowser = await wd._before();
+    return this.wdBrowser;
   });
 
-  afterEach(() => wd._after());
+  afterEach(async () => wd._after());
 
   // load common test suite
   webApiTests.tests();
+
+  describe('customLocatorStrategies', () => {
+    it('should locate through custom selector', async () => {
+      const el = await this.wdBrowser.custom$('customSelector', '.test');
+      expect(el.elementId).to.equal('.test-foobar');
+    });
+
+    it('should include the custom strategy', async () => {
+      expect(wd.customLocatorStrategies.customSelector).to.not.be.undefined;
+    });
+
+    it('should be added to the browser locator strategies', async () => {
+      expect(this.wdBrowser.addLocatorStrategy).to.not.be.undefined;
+    });
+
+    it('throws on invalid custom selector', async () => {
+      try {
+        await wd.waitForEnabled({ madeUpSelector: '#text' }, 2);
+      } catch (e) {
+        expect(e.message).to.include('Please define "customLocatorStrategies"');
+      }
+    });
+  });
 
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
@@ -379,14 +410,14 @@ describe('WebDriver', function () {
     });
 
     it('should check text is not equal to empty string of element text', async () => {
-      await wd.amOnPage('https://codecept.discourse.group/');
+      await wd.amOnPage('https://codecept.io');
 
       try {
-        await wd.seeTextEquals('', '[id="site-logo"]');
-        await wd.seeTextEquals('This is not empty', '[id="site-logo"]');
+        await wd.seeTextEquals('', '.logo');
+        await wd.seeTextEquals('This is not empty', '.logo');
       } catch (e) {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('expected element [id="site-logo"] "This is not empty" to equal ""');
+        e.message.should.be.equal('expected element .logo "This is not empty" to equal ""');
       }
     });
   });
@@ -1130,8 +1161,8 @@ describe('WebDriver', function () {
 
   describe('#grabElementBoundingRect', () => {
     it('should get the element size', async () => {
-      await wd.amOnPage('https://www.google.com');
-      const size = await wd.grabElementBoundingRect('#hplogo');
+      await wd.amOnPage('/form/hidden');
+      const size = await wd.grabElementBoundingRect('input[type=submit]');
       expect(size.x).is.greaterThan(0);
       expect(size.y).is.greaterThan(0);
       expect(size.width).is.greaterThan(0);
@@ -1139,14 +1170,14 @@ describe('WebDriver', function () {
     });
 
     it('should get the element width', async () => {
-      await wd.amOnPage('https://www.google.com');
-      const width = await wd.grabElementBoundingRect('#hplogo', 'width');
+      await wd.amOnPage('/form/hidden');
+      const width = await wd.grabElementBoundingRect('input[type=submit]', 'width');
       expect(width).is.greaterThan(0);
     });
 
     it('should get the element height', async () => {
-      await wd.amOnPage('https://www.google.com');
-      const height = await wd.grabElementBoundingRect('#hplogo', 'height');
+      await wd.amOnPage('/form/hidden');
+      const height = await wd.grabElementBoundingRect('input[type=submit]', 'height');
       expect(height).is.greaterThan(0);
     });
   });
@@ -1158,6 +1189,16 @@ describe('WebDriver', function () {
       expect(await element.isDisplayedInViewport()).to.be.false;
       await wd.scrollIntoView('#notInViewportByDefault');
       expect(await element.isDisplayedInViewport()).to.be.true;
+    });
+  });
+
+  describe('#useWebDriverTo', () => {
+    it('should return title', async () => {
+      await wd.amOnPage('/');
+      const title = await wd.useWebDriverTo('test', async ({ browser }) => {
+        return browser.getTitle();
+      });
+      assert.equal('TestEd Beta 2.0', title);
     });
   });
 });

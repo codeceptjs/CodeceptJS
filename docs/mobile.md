@@ -6,7 +6,7 @@ title: Mobile Testing with Appium
 # Mobile Testing with Appium
 
 CodeceptJS allows to test mobile and hybrid apps in a similar manner web applications are tested.
-Such tests are executed using [Appium](http://appium.io) on emulated or physical devices. Also, Appium allows to test web application on mobile devices.
+Such tests are executed using [Appium](https://appium.io) on emulated or physical devices. Also, Appium allows to test web application on mobile devices.
 
 What makes CodeceptJS better for mobile testing?
 Take a look. Here is the sample test for a native mobile application written in CodeceptJS:
@@ -19,7 +19,7 @@ I.see('davert@codecept.io', '~email of the customer');
 I.clearField('~email of the customer');
 I.dontSee('Nothing special', '~email of the customer');
 I.seeElement({
-  android: /'android.widget.Button',
+  android: 'android.widget.Button',
   ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'
 });
 ```
@@ -29,15 +29,15 @@ Doesn't it sound cool?
 
 ## Setting Up
 
-Ensure that you have [CodeceptJS installed](http://codecept.io/installation/).
-You will also need to install [Appium](http://appium.io/).
+Ensure that you have [CodeceptJS installed](https://codecept.io/installation/).
+You will also need to install [Appium](https://appium.io/).
 We suggest to use [appium-doctor](https://www.npmjs.com/package/appium-doctor) to check if your system is ready for mobile testing.
 
 ```sh
 npm i -g appium-doctor
 ```
 
-If everything is OK, continue with installing Appium. If not, consider using cloud based alternatives like [SauceLabs](https://saucelabs.com) or [BrowserStack](http://browserstack.com). Cloud services provide hosted appium with real and emulated mobile devices.
+If everything is OK, continue with installing Appium. If not, consider using cloud based alternatives like [SauceLabs](https://saucelabs.com) or [BrowserStack](https://browserstack.com). Cloud services provide hosted appium with real and emulated mobile devices.
 
 To install Appium use npm:
 
@@ -71,7 +71,7 @@ Initialize CodeceptJS with `init` command:
 npx codeceptjs init
 ```
 
-Select [Appium helper](http://codecept.io/helpers/Appium/) when asked.
+Select [Appium helper](https://codecept.io/helpers/Appium/) when asked.
 
 ```sh
 ? What helpers do you want to use?
@@ -141,7 +141,7 @@ A test is written in a scenario-driven manner, listing an actions taken by a use
 This is the sample test for a native mobile application:
 
 ```js
-Scenario('test registration', (I) => {
+Scenario('test registration', ({ I }) => {
   I.click('~startUserRegistrationCD');
   I.fillField('~inputUsername', 'davert');
   I.fillField('~inputEmail', 'davert@codecept.io');
@@ -166,7 +166,7 @@ There are mobile-only methods like:
 * `hideDeviceKeyboard`,
 * `seeAppIsInstalled`, `installApp`, `removeApp`, `seeAppIsNotInstalled` - Android only
 
-and [others](http://codecept.io/helpers/Appium/).
+and [others](https://codecept.io/helpers/Appium/).
 
 ## Locating Elements
 
@@ -211,7 +211,7 @@ I.tap('Click me!');
 I.click('Click me!');
 ```
 
-Native iOS/Android locators can be used with `android=` and `ios=` prefixes. [Learn more](http://webdriver.io/guide/usage/selectors.html#Mobile-Selectors).
+Native iOS/Android locators can be used with `android=` and `ios=` prefixes. [Learn more](https://webdriver.io/guide/usage/selectors.html#Mobile-Selectors).
 
 But how to get all those locators? We recommend to use [Appium Inspector](https://github.com/appium/appium-desktop).
 
@@ -264,7 +264,7 @@ It is often happen that mobile applications behave similarly on different platfo
 CodeceptJS provides a way to specify different locators for Android and iOS platforms:
 
 ```js
-I.click({android: /'//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
+I.click({android: '//android.widget.Button', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
 
 In case some code should be executed on one platform and ignored on others use `runOnAndroid` and `runOnIOS` methods:
@@ -295,4 +295,3 @@ Just as you can specify android, and ios-specific locators, you can do so for we
 ```js
 I.click({web: '#login', ios: '//UIAApplication[1]/UIAWindow[1]/UIAButton[1]'});
 ```
-

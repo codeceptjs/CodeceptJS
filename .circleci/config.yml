@@ -8,10 +8,6 @@ defaults: &defaults
     - checkout
     - run: .circleci/build.sh
     - run:
-        command: docker-compose run --rm test-unit
-        working_directory: test
-        when: always
-    - run:
         command: docker-compose run --rm test-rest
         working_directory: test
         when: always
@@ -32,7 +28,7 @@ defaults: &defaults
         working_directory: test
         when: always
     - run:
-        command: docker-compose run --rm test-acceptance.protractor
+        command: docker-compose run --rm test-bdd.faker
         working_directory: test
         when: always
 

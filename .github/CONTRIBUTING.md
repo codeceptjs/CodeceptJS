@@ -4,7 +4,7 @@ Thanks for getting here. If you have a good will to improve CodeceptJS we are al
 
 To start you need:
 
-1.  Fork the repo.
+1.  Fork and clone the repo.
 2.  Run `npm install` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
@@ -27,11 +27,19 @@ node bin/codecept.js run -c examples
 
 Depending on a type of a change you should do the following.
 
+## Debugging
+
+To see recorder queue in logs enable NodeJS debug output by passing `DEBUG=codeceptjs:*` env variable:
+
+```
+DEBUG=codeceptjs:* npx codeceptjs run
+```
+
 ## Helpers
 
-Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
+Please keep in mind that CodeceptJS have **unified API** for Playwright, WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
 
-### Updating a WebDriverIO | Nightmare
+### Updating Playwright | Puppeteer | WebDriver | Nightmare
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
@@ -49,7 +57,7 @@ php -S 127.0.0.1:8000 -t test/data/app
 Execute test suite:
 
 ```sh
-mocha test/helper/WebDriverIO_test.js
+mocha test/helper/WebDriver_test.js
 mocha test/helper/Puppeteer_test.js
 mocha test/helper/Nightmare_test.js
 ```
@@ -69,18 +77,6 @@ Then is should be accessible at:
 ```sh
 http://localhost:8000/form/myexample
 ```
-
-### Updating Protractor
-
-*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
-
-Protractor helper is based on [Protractor library](http://www.protractortest.org)
-
-In case you do Protractor-specific change, please add a test:To run the test suite you need:
-
-* selenium server + chromedriver
-
-Demo application is located at: [http://davertmik.github.io/angular-demo-app](http://davertmik.github.io/angular-demo-app)
 
 ### Updating REST | ApiDataFactory
 
@@ -180,8 +176,8 @@ docker-compose run --rm test-unit
 docker-compose run --rm test-helpers
 
 # or pass path to helper test to run specific helper,
-# for example to run only WebDriverIO tests:
-docker-compose run --rm test-helpers test/helper/WebDriverIO_test.js
+# for example to run only WebDriver tests:
+docker-compose run --rm test-helpers test/helper/WebDriver_test.js
 
 # Or to run only rest and ApiDataFactory tests
 docker-compose run --rm test-helpers test/rest
@@ -189,14 +185,13 @@ docker-compose run --rm test-helpers test/rest
 
 #### Run acceptance tests
 
-To that we provide three separate services respectively for WebDriverIO, Nightmare, Puppeteer and
+To that we provide three separate services respectively for WebDriver, Nightmare, Puppeteer and
 Protractor tests:
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio
 docker-compose run --rm test-acceptance.nightmare
 docker-compose run --rm test-acceptance.puppeteer
-docker-compose run --rm test-acceptance.protractor
 ```
 
 #### Running against specific Node version
@@ -220,14 +215,6 @@ We're currently using bunch of CI services to build and test codecept in
 different environments. Here's short summary of what are differences between
 separate services
 
-#### TravisCI
-Travis CI uses runs tests against Node 8 and Node 9. In total it uses 8 jobs to
-build each helper against both Node versions. For every job it runs unit tests
-first, then  `ApiDataFactory` and `REST` tests present in `test/rest` directory.
-Finally if those pass we run specific helper tests found in `test/helper`
-directory. It doesn't run acceptance tests.
-Config is present in `.travis.yml` file.
-
 #### CircleCI
 Here we use CodeceptJS docker image to build and execute tests inside it. We
 start with building Docker container based on Dockerfile present in main project
@@ -236,6 +223,3 @@ directory. Then we run (in this order) unit tests, all helpers present in
 passed so far it executes acceptance tests. For easier maintenance and local
 debugging CircleCI uses `docker-compose.yml` file from `test` directory.
 You can find Circle config in `.circleci` directory.
-
-#### Semaphore
-Currently Semaphore runs only Appium helper tests.

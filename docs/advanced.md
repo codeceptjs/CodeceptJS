@@ -24,7 +24,7 @@ accounts.xadd(['admin', '23456'])
 
 // Pass dataTable to Data()
 // Use special param `current` to get current data set
-Data(accounts).Scenario('Test Login', (I, current) => {
+Data(accounts).Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -33,7 +33,7 @@ Data(accounts).Scenario('Test Login', (I, current) => {
 
 
 // Also you can set only for Data tests. It will launch executes only the current test but with all data options
-Data(accounts).only.Scenario('Test Login', (I, current) => {
+Data(accounts).only.Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login); // current is reserved!
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -55,7 +55,7 @@ S Test Login | {"login":"admin","password":"23456"}
 ```js
 // You can filter your data table
 Data(accounts.filter(account => account.login == 'admin')
-.Scenario('Test Login', (I, current) => {
+.Scenario('Test Login', ({ I, current }) => {
   I.fillField('Username', current.login);
   I.fillField('Password', current.password);
   I.click('Sign In');
@@ -92,7 +92,7 @@ Scenario('update user profile @slow')
 Alternativly, use `tag` method of Scenario to set additional tags:
 
 ```js
-Scenario('update user profile', () => {
+Scenario('update user profile', ({  }) => {
   // test goes here
 }).tag('@slow').tag('important');
 ```
@@ -119,24 +119,30 @@ CodeceptJS provides a debug mode in which additional information is printed.
 It can be turned on with `--debug` flag.
 
 ```sh
-codeceptjs run --debug
+npx codeceptjs run --debug
 ```
 
 to receive even more information turn on `--verbose` flag:
 
 ```sh
-codeceptjs run --verbose
+npx codeceptjs run --verbose
 ```
 
-And don't forget that you can pause execution and enter **interactive console** mode by calling `pause()` inside your test.
+> You can pause execution and enter **interactive console** mode by calling `pause()` inside your test.
 
-For advanced debugging use NodeJS debugger. In WebStorm IDE:
+To see a complete internal debug of CodeceptJS use `DEBUG` env variable:
+
+```sh
+DEBUG=codeceptjs:* npx codeceptjs run
+```
+
+For an interactive debugging use NodeJS debugger. In **WebStorm**:
 
 ```sh
 node $NODE_DEBUG_OPTION ./node_modules/.bin/codeceptjs run
 ```
 
-For Visual Studio Code, add the following configuration in launch.json:
+For **Visual Studio Code**, add the following configuration in launch.json:
 
 ```json
 {
@@ -156,7 +162,7 @@ Features and Scenarios have their options that can be set by passing a hash afte
 ```js
 Feature('My feature', {key: val});
 
-Scenario('My scenario', {key: val}, (I) => {});
+Scenario('My scenario', {key: val},({ I }) => {});
 ```
 
 You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
@@ -180,29 +186,99 @@ You can use this options for build your own [plugins](https://codecept.io/hooks/
   });
 ```
 
-### Timeout
+## Timeout <Badge text="Updated in 3.2" type="warning"/>
 
-By default there is no timeout for tests, however you can change this value for a specific suite:
+Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
+This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
+
+> Previous timeout implementation was disabled as it had no effect when dealing with steps and promises. 
+
+### Steps Timeout
+
+It is possible to limit a step execution to specified time with `I.limitTime` command. 
+It will set timeout in seconds for the next executed step:
 
 ```js
-Feature('Stop me').timeout(5000); // set timeout to 5s
+// limit clicking to 5 seconds
+I.limitTime(5).click('Link')
 ```
 
-or for the test:
+It is possible to set a timeout for all steps implicitly (except waiters) using [stepTimeout plugin](/plugins/#steptimeout).
+
+### Tests Timeout
+
+Test timeout can be set in seconds via Scenario options:
 
 ```js
-// set timeout to 1s
-Scenario("Stop me faster", (I) => {
-  // test goes here
-}).timeout(1000);
-
-// alternative
-Scenario("Stop me faster", {timeout: 1000}, (I) => {});
-
-// disable timeout for this scenario
-Scenario("Don't stop me", {timeout: 0}, (I) => {});
+// limit test to 20 seconds
+Scenario('slow test that should be stopped', { timeout: 20 }, ({ I }) => {
+  // ...
+})
 ```
 
+This timeout can be set globally in `codecept.conf.js` in seconds:
+
+```js
+exports.config = {
+
+  // each test must not run longer than 5 mins
+  timeout: 300,
+
+}
+```
+
+### Suites Timeout
+
+A timeout for a group of tests can be set on Feature level via options. 
+
+```js
+// limit all tests in this suite to 30 seconds
+Feature('flaky tests', { timeout: 30 })
+```
+
+### Sum Up
+
+Let's list all available timeout options.
+
+Timeouts can be set globally in config:
+
+```js
+// in codecept.confg.js:
+{ // ...
+   timeout: 30, // limit all tests in all suites to 30 secs
+
+   plugins: {
+     stepTimeout: {
+       enabled: true,
+       timeout: 10, // limit all steps except waiters to 10 secs
+     }
+   }
+} 
+
+```
+
+or inside a test file:
+
+```js
+// limit all tests in this suite to 10 secs
+Feature('tests with timeout', { timeout: 10 });
+
+// limit this test to 20 secs
+Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {
+   // limit step to 5 seconds
+   I.limitTime(5).click('Link');
+});
+```
+
+Global timeouts will be overridden by explicit timeouts of a test or steps.
+
+### Disable Timeouts
+
+To execute tests ignoring all timeout settings use `--no-timeouts` option:
+
+```
+npx codeceptjs run --no-timeouts
+```
 
 ## Dynamic Configuration
 
@@ -211,7 +287,7 @@ This might be useful when some tests should be executed with different settings 
 In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
 
 ```js
-Scenario('should be executed in firefox', (I) => {
+Scenario('should be executed in firefox', ({ I }) => {
   // I.amOnPage(..)
 }).config({ browser: 'firefox' })
 ```
@@ -220,7 +296,7 @@ In this case `config` overrides current config of the first helper.
 To change config of specific helper pass two arguments: helper name and config values:
 
 ```js
-Scenario('should create data via v2 version of API', (I) => {
+Scenario('should create data via v2 version of API', ({ I }) => {
   // I.amOnPage(..)
 }).config('REST', { endpoint: 'https://api.mysite.com/v2' })
 ```
@@ -229,7 +305,7 @@ Config can also be set by a function, in this case you can get a test object and
 This is very useful when running tests against cloud providers, like BrowserStack. This function can also be asynchronous.
 
 ```js
-Scenario('should report to BrowserStack', (I) => {
+Scenario('should report to BrowserStack', ({ I }) => {
   // I.amOnPage(..)
 }).config((test) => {
   return { desiredCapabilities: {
@@ -248,46 +324,4 @@ Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
 Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
 
 Configuration changes will be reverted after a test or a suite.
-
-
-### Rerunning Flaky Tests Multiple Times <Badge text="Since 2.4" type="warning"/>
-
-End to end tests can be flaky for various reasons. Even when we can't do anything to solve this problem it we can do next two things:
-
-* Detect flaky tests in our suite
-* Fix flaky tests by rerunning them.
-
-Both tasks can be achieved with [`run-rerun` command](/commands/#run-rerun) which runs tests multiple times until all tests are passed.
-
-You should set min and max runs boundaries so when few tests fail in a row you can rerun them until they are succeeded.
-
-```js
-// inside to codecept.conf.js
-exports.config = { // ...
-  rerun: {
-    // run 4 times until 1st success
-    minSuccess: 1,
-    maxReruns: 4,
-  }
-}
-```
-
-If you want to check all your tests for stability you can set high boundaries for minimal success:
-
-```js
-// inside to codecept.conf.js
-exports.config = { // ...
-  rerun: {
-    // run all tests must pass exactly 5 times
-    minSuccess: 5,
-    maxReruns: 5,
-  }
-}
-```
-
-Now execute tests with `run-rerun` command:
-
-```
-npx codeceptjs run-rerun
-```
 

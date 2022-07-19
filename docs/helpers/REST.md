@@ -17,9 +17,11 @@ REST helper allows to send additional requests to the REST API during acceptance
 ## Configuration
 
 -   endpoint: API base URL
+-   prettyPrintJson: pretty print json for response/request on console logs
 -   timeout: timeout for requests in milliseconds. 10000ms by default
 -   defaultHeaders: a list of default headers
 -   onRequest: a async function which can update request object.
+-   maxUploadFileSize: set the max content file size in MB when performing api calls.
 
 ## Example
 
@@ -28,6 +30,7 @@ REST helper allows to send additional requests to the REST API during acceptance
   helpers: {
     REST: {
       endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
       onRequest: (request) => {
       request.headers.auth = '123';
     }
@@ -60,6 +63,8 @@ Executes axios request
 
 -   `request` **any** 
 
+Returns **[Promise][2]&lt;any>** response
+
 ### _url
 
 Generates url based on format sent (takes endpoint + url if latter lacks 'http')
@@ -67,6 +72,27 @@ Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 #### Parameters
 
 -   `url` **any** 
+
+### amBearerAuthenticated
+
+Adds a header for Bearer authentication
+
+```js
+// we use secret function to hide token from logs
+I.amBearerAuthenticated(secret('heregoestoken'))
+```
+
+#### Parameters
+
+-   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+
+### haveRequestHeaders
+
+Sets request headers for all requests of this test
+
+#### Parameters
+
+-   `headers` **[object][4]** headers list
 
 ### sendDeleteRequest
 
@@ -79,7 +105,9 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  
+-   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendGetRequest
 
@@ -92,7 +120,9 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][2]**  
+-   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendPatchRequest
 
@@ -100,13 +130,18 @@ Sends PATCH request to API.
 
 ```js
 I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
 
 -   `url` **[string][3]** 
--   `payload` **[object][2]** 
--   `headers` **[object][2]**  
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendPostRequest
 
@@ -114,13 +149,18 @@ Sends POST request to API.
 
 ```js
 I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
 
 -   `url` **any** 
--   `payload` **any**  
--   `headers` **[object][2]**  
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### sendPutRequest
 
@@ -128,13 +168,18 @@ Sends PUT request to API.
 
 ```js
 I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
+
+// To mask the payload in logs
+I.sendPutRequest('/api/users.json', secret({ "email": "user@user.com" }));
 ```
 
 #### Parameters
 
 -   `url` **[string][3]** 
--   `payload` **[object][2]**  
--   `headers` **[object][2]**  
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
 
 ### setRequestTimeout
 
@@ -146,10 +191,14 @@ I.setRequestTimeout(10000); // In milliseconds
 
 #### Parameters
 
--   `newTimeout`  
+-   `newTimeout` **[number][5]** timeout in milliseconds
 
 [1]: https://github.com/axios/axios
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number

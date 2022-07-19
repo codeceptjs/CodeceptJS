@@ -30,9 +30,9 @@ Required objects can be obtained via parameters in tests or via a global `inject
 const { I, myPage, mySteps } = inject();
 
 // inject objects for a test by name
-Scenario('sample test', (I, myPage, mySteps) => {
+Scenario('sample test', ({ I, myPage, mySteps }) => {
   // ...
-})
+});
 ```
 
 ## Actor
@@ -108,7 +108,7 @@ You can include this pageobject in a test by its name (defined in `codecept.json
 it should be added to the list of arguments to be included in the test:
 
 ```js
-Scenario('login', (I, loginPage) => {
+Scenario('login', ({ I, loginPage }) => {
   loginPage.sendForm('john@doe.com','123456');
   I.see('Hello, John');
 });
@@ -147,7 +147,7 @@ module.exports = {
 and use them in your tests:
 
 ```js
-Scenario('login2', async (I, loginPage, basePage) => {
+Scenario('login2', async ({ I, loginPage, basePage }) => {
   let title = await mainPage.openMainArticle()
   basePage.pageShouldBeOpened(title)
 });
@@ -191,6 +191,8 @@ module.exports = new AttachFile();
 module.exports.AttachFile = AttachFile;
 ```
 
+> ⚠ While building complex page objects it is important to keep all `async` functions to be called with `await`. While CodeceptJS allows to run commands synchronously if async function has `I.grab*` or any custom function that returns a promise it must be called with `await`. If you see `UnhandledPromiseRejectionWarning` it might be caused by async page object function that was called without `await`.
+
 ## Page Fragments
 
 Similarly, CodeceptJS allows you to generate **PageFragments** and any other abstractions
@@ -224,7 +226,7 @@ module.exports = {
 To use a Page Fragment within a Test Scenario, just inject it into your Scenario:
 
 ```js
-Scenario('failed_login', async (I, loginPage, modal) => {
+Scenario('failed_login', async ({ I, loginPage, modal }) => {
   loginPage.sendForm('john@doe.com','wrong password');
   I.waitForVisible(modal.root);
   within(modal.root, function () {
@@ -280,7 +282,7 @@ module.exports = {
 You can inject objects per test by calling `injectDependencies` function in a Scenario:
 
 ```js
-Scenario('search @grop', (I, Data) => {
+Scenario('search @grop', ({ I, Data }) => {
   I.fillField('Username', Data.username);
   I.pressKey('Enter');
 }).injectDependencies({ Data: require('./data.js') });

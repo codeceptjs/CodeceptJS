@@ -1,13 +1,17 @@
 const path = require('path');
 const fs = require('fs');
+const FormData = require('form-data');
+const { secret } = require('../../lib/secret');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
+const Container = require('../../lib/container');
 
 const api_url = TestHelper.jsonServerUrl();
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');
+const testFile = path.join(__dirname, '/../data/rest/testUpload.json');
 
 const data = {
   posts: [
@@ -65,6 +69,14 @@ describe('REST', () => {
       response.data.name.should.eql('john');
     });
 
+    it('should send POST requests with secret', async () => {
+      const secretData = secret({ name: 'john', password: '123456' }, 'password');
+      const response = await I.sendPostRequest('/user', secretData);
+      response.data.name.should.eql('john');
+      response.data.password.should.eql('123456');
+      secretData.toString().should.include('"password":"****"');
+    });
+
     it('should send PUT requests: payload format = json', async () => {
       const putResponse = await I.sendPutRequest('/posts/1', { author: 'john' });
       putResponse.data.author.should.eql('john');
@@ -99,6 +111,32 @@ describe('REST', () => {
       await I.setRequestTimeout(2000);
       const response = await I.sendGetRequest('/posts');
       response.config.timeout.should.eql(2000);
+    });
+  });
+
+  describe('JSONResponse integration', () => {
+    let jsonResponse;
+
+    beforeEach(() => {
+      Container.create({
+        helpers: {
+          REST: {},
+          JSONResponse: {},
+        },
+      });
+      I = Container.helpers('REST');
+      jsonResponse = Container.helpers('JSONResponse');
+      jsonResponse._beforeSuite();
+    });
+
+    afterEach(() => {
+      Container.clear();
+    });
+
+    it('should be able to parse JSON responses', async () => {
+      await I.sendGetRequest('https://jsonplaceholder.typicode.com/comments/1');
+      await jsonResponse.seeResponseCodeIsSuccessful();
+      await jsonResponse.seeResponseContainsKeys(['id', 'name', 'email']);
     });
   });
 
@@ -149,6 +187,98 @@ describe('REST', () => {
       response.config.headers.should.have.property('Content-Type');
       response.config.headers['Content-Type'].should.eql('application/json');
     });
+
+    it('should set headers for all requests', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1test' });
+      // 1st request
+      {
+        const response = await I.sendGetRequest('/user');
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1test');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+      // 2nd request
+      {
+        const response = await I.sendPostRequest('/user', { name: 'john' }, { 'XY2-Test': 'xy2test' });
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1test');
+
+        response.config.headers.should.have.property('XY2-Test');
+        response.config.headers['XY2-Test'].should.include('xy2test');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should set headers for all requests multiple times', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-first' });
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-second' });
+      I.haveRequestHeaders({ 'XY2-Test': 'xy2' });
+      {
+        const response = await I.sendGetRequest('/user');
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1-second');
+
+        response.config.headers.should.have.property('XY2-Test');
+        response.config.headers['XY2-Test'].should.eql('xy2');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should override the header set for all requests', async () => {
+      I.haveRequestHeaders({ 'XY-Test': 'first' });
+      {
+        const response = await I.sendGetRequest('/user', { 'XY-Test': 'value_custom' });
+
+        response.config.headers.should.have.property('XY-Test');
+        response.config.headers['XY-Test'].should.eql('value_custom');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should set Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendGetRequest('/user');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should set Bearer authorization multiple times', async () => {
+      I.amBearerAuthenticated('token1');
+      I.amBearerAuthenticated('token2');
+      const response = await I.sendGetRequest('/user');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token2');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should override Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendGetRequest('/user', { Authorization: 'Bearer token_custom' });
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token_custom');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
   });
 
   describe('_url autocompletion', () => {
@@ -162,6 +292,45 @@ describe('REST', () => {
 
     it('should prepend base url, when url is not absolute, and "http" in request', () => {
       I._url('/blabla&p=http://bla.bla').should.eql(`${api_url}/blabla&p=http://bla.bla`);
+    });
+  });
+});
+
+describe('REST - Form upload', () => {
+  beforeEach((done) => {
+    I = new REST({
+      endpoint: 'http://the-internet.herokuapp.com/',
+      maxUploadFileSize: 0.000080,
+      defaultHeaders: {
+        'X-Test': 'test',
+      },
+    });
+
+    setTimeout(done, 1000);
+  });
+
+  describe('upload file', () => {
+    it('should show error when file size exceedes the permit', async () => {
+      const form = new FormData();
+      form.append('file', fs.createReadStream(testFile));
+
+      try {
+        await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+      } catch (error) {
+        error.message.should.eql('Request body larger than maxBodyLength limit');
+      }
+    });
+
+    it('should not show error when file size doesnt exceedes the permit', async () => {
+      const form = new FormData();
+      form.append('file', fs.createReadStream(testFile));
+
+      try {
+        const response = await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+        response.data.should.include('File Uploaded!');
+      } catch (error) {
+        console.log(error.message);
+      }
     });
   });
 });

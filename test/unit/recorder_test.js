@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 
 const recorder = require('../../lib/recorder');
 
@@ -6,7 +6,7 @@ describe('Recorder', () => {
   beforeEach(() => recorder.start());
 
   it('should create a promise', () => {
-    recorder.promise().should.be.instanceof(Promise);
+    expect(recorder.promise()).to.be.instanceof(Promise);
   });
 
   it('should execute error handler on error', (done) => {
@@ -27,7 +27,7 @@ describe('Recorder', () => {
       recorder.add(() => recorder.session.restore());
       recorder.add(() => order += 'b');
       return recorder.promise()
-        .then(() => assert.equal(order, 'acdb'));
+        .then(() => expect(order).is.equal('acdb'));
     });
   });
 
@@ -36,7 +36,7 @@ describe('Recorder', () => {
       let counter = 0;
       recorder.add(() => counter++);
       recorder.add(() => counter++);
-      recorder.add(() => counter.should.eql(2));
+      recorder.add(() => expect(counter).eql(2));
       return recorder.promise();
     });
 
@@ -46,7 +46,7 @@ describe('Recorder', () => {
       recorder.stop();
       recorder.add(() => counter++);
       return recorder.promise()
-        .then(() => counter.should.eql(1));
+        .then(() => expect(counter).eql(1));
     });
   });
 
@@ -59,7 +59,7 @@ describe('Recorder', () => {
         if (counter < 3) {
           throw new Error('ups');
         }
-      });
+      }, undefined, undefined, true);
       return recorder.promise();
     });
 
@@ -74,7 +74,22 @@ describe('Recorder', () => {
         if (counter < 3) {
           throw new Error(errorText);
         }
-      });
+      }, undefined, undefined, true);
+      return recorder.promise();
+    });
+
+    it('should prefer opts for non-when retry when possible', () => {
+      let counter = 0;
+      const errorText = 'noerror';
+      recorder.retry({ retries: 2 });
+      recorder.retry({ retries: 100, when: (err) => { return err.message === errorText; } });
+
+      recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error(errorText);
+        }
+      }, undefined, undefined, true);
       return recorder.promise();
     });
   });

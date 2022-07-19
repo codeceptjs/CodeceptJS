@@ -17,7 +17,7 @@ Please refer to translated steps inside translation files and send Pull Requests
 To get autocompletion for localized method names generate definitions by running
 
 ```sh
-тзч codeceptjs def
+npx codeceptjs def
 ```
 
 ## Russian
@@ -38,7 +38,7 @@ This way tests can be written in native language while it is still JavaScript:
 
 ```js
 Сценарий('пробую написать реферат', (Я) => {
-    Я.на_странице('http://yandex.ru/referats');
+    Я.на_странице('https://yandex.ru/referats');
     Я.вижу("Написать реферат по");
     Я.выбираю_опцию('Психологии');
     Я.кликаю("Написать реферат");
@@ -57,7 +57,7 @@ To write your tests in portuguese you can enable the portuguese translation in c
 Now you can write test like this:
 
 ```js
-Scenario('Efetuar login', (Eu) => {
+Cenário('Efetuar login', ({ Eu }) => {
     Eu.estouNaPagina('http://minhaAplicacao.com.br');
     Eu.preenchoOCampo("login", "usuario@minhaAplicacao.com.br");
     Eu.preenchoOCampo("senha", "123456");
@@ -117,7 +117,7 @@ Add to config
 Now you can write test like this:
 
 ```js
-Scenario('Zakładanie konta free trial na stronie głównej GetResponse', (Ja) => {
+Scenario('Zakładanie konta free trial na stronie głównej GetResponse', ({ Ja }) => {
     Ja.jestem_na_stronie('https://getresponse.com');
     Ja.wypełniam_pole("Email address", "sjakubowski@getresponse.com");
     Ja.wypełniam_pole("Password", "digital-marketing-systems");
@@ -144,7 +144,7 @@ This way tests can be written in Chinese language while it is still JavaScript:
 ```JavaScript
 Feature('CodeceptJS 演示');
 
-Scenario('成功提交表单', (我) => {
+Scenario('成功提交表单', ({ 我 }) => {
     我.在页面('/documentation')
     我.填写字段('电邮', 'hello@world.com')
     我.填写字段('密码', '123456')
@@ -159,7 +159,7 @@ or
 ```JavaScript
 Feature('CodeceptJS 演示');
 
-Scenario('成功提交表單', (我) => {
+Scenario('成功提交表單', ({ 我 }) => {
     我.在頁面('/documentation')
     我.填寫欄位('電郵', 'hello@world.com')
     我.填寫欄位('密碼', '123456')
@@ -182,7 +182,7 @@ Add to config
 Now you can write test like this:
 
 ```js
-Scenario('ログインできる', (私は) => {
+Scenario('ログインできる', ({ 私は }) => {
     私は.ページを移動する('/login');
     私は.フィールドに入力する("Eメール", "foo@example.com");
     私は.フィールドに入力する("パスワード", "p@ssword");

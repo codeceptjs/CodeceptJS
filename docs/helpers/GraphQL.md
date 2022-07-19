@@ -66,6 +66,8 @@ Prepares request for axios call
 -   `operation` **[object][2]** 
 -   `headers` **[object][2]** 
 
+Returns **[object][2]** graphQLRequest
+
 ### sendMutation
 
 Send query to GraphQL endpoint over http
@@ -95,6 +97,8 @@ I.sendMutation(`
 -   `options` **[object][2]** are additional query options 
 -   `headers` **[object][2]**  
 
+Returns **any** Promise<any>
+
 ### sendQuery
 
 Send query to GraphQL endpoint over http.
@@ -116,6 +120,8 @@ const user = response.data.data;
 -   `variables` **[object][2]** that may go along with the query
 -   `options` **[object][2]** are additional query options 
 -   `headers` **[object][2]**  
+
+Returns **any** Promise<any>
 
 [1]: https://github.com/axios/axios
 
