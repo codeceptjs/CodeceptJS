@@ -90,7 +90,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@codeceptjs/detox-helper": "^1.0.2",    
+    "@codeceptjs/detox-helper": "^1.0.2",
     "@codeceptjs/mock-request": "^0.3.1",
     "@faker-js/faker": "^5.5.3",
     "@pollyjs/adapter-puppeteer": "^5.1.0",
@@ -123,7 +123,7 @@
     "nightmare": "^3.0.2",
     "nodemon": "^1.19.4",
     "playwright": "^1.23.2",
-    "puppeteer": "^10.4.0",
+    "puppeteer": "^15.4.2",
     "qrcode-terminal": "^0.12.0",
     "rosie": "^1.6.0",
     "runok": "^0.9.2",
