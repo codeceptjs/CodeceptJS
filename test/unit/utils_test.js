@@ -7,8 +7,9 @@ const utils = require('../../lib/utils');
 
 describe('utils', () => {
   describe('#fileExists', () => {
-    it('exists', () => expect(utils.fileExists(__filename)));
-    it('not exists', () => expect(!utils.fileExists('not_utils.js')));
+    it('exists', () => expect(utils.fileExists(__filename)).to.be.true);
+    it('not exists', () => expect(utils.fileExists('not_utils.js')).to.be.false);
+    it('not exists if file used as directory', () => expect(utils.fileExists(`${__filename}/not_utils.js`)).to.be.false);
   });
   /* eslint-disable no-unused-vars */
   describe('#getParamNames', () => {
