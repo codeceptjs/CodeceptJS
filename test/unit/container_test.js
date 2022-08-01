@@ -191,10 +191,12 @@ describe('Container', () => {
     it('should load DI and inject custom I into PO', () => {
       container.create({
         include: {
+          dummyClassPage: './data/dummy_class_page',
           dummyPage: './data/dummy_page',
           I: './data/I',
         },
       });
+      expect(container.support('dummyClassPage')).to.have.keys('pageUrl');
       expect(container.support('dummyPage')).is.ok;
       expect(container.support('I')).is.ok;
       expect(container.support('dummyPage')).to.include.keys('openDummyPage');
