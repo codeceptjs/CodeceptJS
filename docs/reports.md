@@ -435,3 +435,14 @@ npm i codeceptjs-testrail --save
 
 Now there is new feature, add the configuration to test run of test plan
 ![Attachemnt for failed case](http://g.recordit.co/uQLvQUq7cT.gif)
+
+
+## Tesults
+
+Submit test results data from CodeceptJS to [Tesults](https://www.tesults.com) easily with the [codeceptjs-tesults](https://www.npmjs.com/package/codeceptjs-tesults) plugin. Test results data is submitted automatically after a test run completes.
+
+```sh
+npm i codeceptjs-tesults --save
+```
+
+Once installed, follow the [quick and easy integration instructions](https://www.tesults.com/docs/codeceptjs) to get setup in no time.
