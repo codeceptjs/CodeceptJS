@@ -6,3 +6,10 @@ Feature: Business rules
   Scenario: do something
     Given I have a defined step
     When I open GitHub
+
+  Scenario Outline: check parameter substitution
+    Given I have a defined step
+    When I see "<text>" text and "<text>" is not "xyz"
+    Examples:
+      | text   |
+      | Google |

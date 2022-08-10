@@ -356,6 +356,18 @@ In case scenarios represent the same logic but differ on data, we can use *Scena
       | 50    | 45    |
 ```
 
+It might be the case that the same column value needs to be utilized multiple times in the same step, that also can be possible with scenario outline.
+
+```gherkin
+  Scenario Outline: check parameter substitution
+    Given I have a defined step
+    When I see "<text>" text and "<text>" is not "xyz"
+    Examples:
+      | text   |
+      | Google |
+
+```
+
 ### Long Strings
 
 Text values inside a scenarios can be set inside a `"""` block:
