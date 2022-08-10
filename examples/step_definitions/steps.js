@@ -26,3 +26,8 @@ Then('check link', async () => {
   assert(response.statusCode === 200);
   I.see('Google');
 });
+
+When(/^I see "(.*)" text and "(.*)" is not "(.*)"$/, async (text, text2, text3) => {
+  I.see(text);
+  assert(text2 !== text3)
+});
