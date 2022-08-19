@@ -5,7 +5,7 @@ Scenario('@ClassPageObject', async ({ classpage }) => {
   await classpage.purgeDomains();
 });
 
-Scenario('@NestedClassPageObject', ({ classnestedpage }) => {
-  classnestedpage.type('Nested Class Page Type');
+Scenario('@NestedClassPageObject', async ({ classnestedpage, I }) => {
+  await classnestedpage.type('Nested Class Page Type');
   classnestedpage.purgeDomains();
 });
