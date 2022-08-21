@@ -29,5 +29,5 @@ Then('check link', async () => {
 
 When(/^I see "(.*)" text and "(.*)" is not "(.*)"$/, async (text, text2, text3) => {
   I.see(text);
-  assert(text2 !== text3)
+  assert(text2 !== text3);
 });

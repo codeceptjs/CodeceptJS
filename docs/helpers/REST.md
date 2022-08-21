@@ -14,14 +14,23 @@ title: REST
 REST helper allows to send additional requests to the REST API during acceptance tests.
 [Axios][1] library is used to perform requests.
 
+
+
 ## Configuration
 
--   endpoint: API base URL
--   prettyPrintJson: pretty print json for response/request on console logs
--   timeout: timeout for requests in milliseconds. 10000ms by default
--   defaultHeaders: a list of default headers
--   onRequest: a async function which can update request object.
--   maxUploadFileSize: set the max content file size in MB when performing api calls.
+Type: [object][4]
+
+### Properties
+
+-   `endpoint` **[string][3]** API base URL
+-   `prettyPrintJson` **[boolean][6]?** pretty print json for response/request on console logs
+-   `timeout` **[number][5]?** timeout for requests in milliseconds. 10000ms by default
+-   `defaultHeaders` **[object][4]?** a list of default headers
+-   `onRequest` **[function][7]?** a async function which can update request object.
+-   `onResponse` **[function][7]?** a async function which can update response object.
+-   `maxUploadFileSize` **[number][5]?** set the max content file size in MB when performing api calls.
+
+
 
 ## Example
 
@@ -193,7 +202,7 @@ I.setRequestTimeout(10000); // In milliseconds
 
 -   `newTimeout` **[number][5]** timeout in milliseconds
 
-[1]: https://github.com/axios/axios
+: https://github.com/axios/axios
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
@@ -202,3 +211,7 @@ I.setRequestTimeout(10000); // In milliseconds
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
