@@ -29,11 +29,35 @@ CodeceptJS repo contains basic tests (both failing and passing) just to show how
 Our team uses it to test new features and run simple scenarios.
 
 
+## [CodeceptJS Cucumber E2E Framework](https://github.com/gkushang/codeceptjs-e2e)
+
+This repository contains complete E2E framework for CodeceptJS with Cucumber and SauceLabs Integration
+
+* CodecepJS-Cucumber E2E Framework
+* Saucelabs Integration
+* Run Cross Browser tests in Parallel on SauceLabs with a simple command
+* Run tests on `chrome:headless`
+* Page Objects
+* `Should.js` Assertion Library
+* Uses `wdio` service (selenium-standalone, sauce)
+* Allure HTML Reports
+* Uses shared Master configuration
+* Sample example and feature files of GitHub Features
+
+## [Enterprise Grade Tests](https://github.com/uc-cdis/gen3-qa)
+
+Complex testing solution by [Gen3](https://github.com/uc-cdis/gen3-qa) 
+
+Includes 
+
+* classical CodeceptJS tests
+* BDD tests
+* Jenkins integration
+* Complex Before/BeforeSuite scripts and more
+
 ## [Testing Single Page Application](https://github.com/bugiratracker/codeceptjs-demo)
 
-![](https://user-images.githubusercontent.com/220264/56353972-56975080-61db-11e9-8b23-06e8b4620995.png)
-
-End 2 end tests for [Bugira Bugtracker](https://bugira.com) app built with Rails & EmberJS. Bugira is a SaaS application that helps collecting users' feedbacks and transforming them into professional bug reports.
+End 2 end tests for Task management app (currently offline).
 
 Tests repository demonstrate usage of
 
@@ -52,21 +76,6 @@ This repository demonstrates usage of:
 * testing WYSIWYG editor
 * GitLab CI
 
-## [CodeceptJS Cucumber E2E Framework](https://github.com/gkushang/codeceptjs-e2e)
-
-This repository contains complete E2E framework for CodeceptJS with Cucumber and SauceLabs Integration
-
-* CodecepJS-Cucumber E2E Framework
-* Saucelabs Integration
-* Run Cross Browser tests in Parallel on SauceLabs with a simple command
-* Run tests on `chrome:headless`
-* Page Objects
-* `Should.js` Assertion Library
-* Uses `wdio` service (selenium-standalone, sauce)
-* Allure HTML Reports
-* Uses shared Master configuration
-* Sample example and feature files of GitHub Features
-
 ## [Amazon Tests v2](https://gitlab.com/thanhnguyendh/codeceptjs-wdio-services)
 
 Testing Amazon website using Selenium WebDriver.
@@ -79,17 +88,6 @@ This repository demonstrates usage of:
 * Parallel execution
 * GitLab CI setup
 
-## [Amazon Tests v1](https://github.com/PeterNgTr/amazon-ui-tests)
-
-Previous version of Amazon Tests, still valid but quite different.
-
-This repository demonstrates usage of:
-
-* WebDriver helper
-* Page Objects
-* Bootstrap and teardown
-* Parallel execution
-
 ## [Tests with Docker Compose](https://github.com/mathesouza/codeceptjs-docker-compose)
 
 Running CodeceptJS tests with Docker Compose
@@ -100,17 +98,6 @@ This repository demonstrates usage of:
 * WebDriver helper
 * Allure plugin
 
-
-## [ModusCreate Tests](https://github.com/ModusCreateOrg/codeceptjs-nightmare-harness)
-
-Test automation by ModusCreate agency with NightmareJS.
-
-This repository demonstrates usage of:
-
-* Nightmare helper
-* Reports with Mochawesome
-* Docker
-* Page objects and page fragments
 
 ## [AngularJS Example Tests](https://github.com/armno/angular-e2e-codeceptjs-example)
 
@@ -147,12 +134,16 @@ This is a ready to use example that shows how to integrate CodeceptJS with Puppe
 * examples for sequential and parallel execution
 * generation of allure test results  
 
-## [Framework with UI and API test support : CodeceptJS , Puppeteer , REST , ESLint](https://github.com/avighub/CodeceptJS-puppeteer)
-This is a basic framework with Puppeteer , REST helpers which can support both UI and API actions within same test.
-More improvements and features will be added and will be updated. 
-Suggestions and improvements are welcome , please raise a ticket in Issue tab.
+## [Example for Advanced REST API testing: TypeScript, Axios, CodeceptJS, Jest Expect, Docker, Allure, Mock-Server, Prettier + Eslint, pre-commit, Jest Unit Tests ](https://github.com/EgorBodnar/rest-axios-codeceptjs-allure-docker-test-example)
+One button example with built-in mocked backend. 
 
-* Step by step setup in README
-* Two helpers are added. UI - Puppeteer , API - REST and chai-codeceptJS for assetion
-* ESLint for code check
-* Upcoming : API generic functions , Adaptor design pattern , More utilities
+If you already have a UI testing solution based on the CodeceptJS and you need to implement advanced REST API testing you can just extend your existing framework. Use this implementation as an example.
+This is necessary if all integrations with TMS and CI/CD are already configured, and you do not want to reconnect and configure the plugins and libraries used for the new test runner. Use CodeceptJS!
+
+* Easy run
+* Detailed README
+* Well documented mocked backend's REST API endpoints
+* HTTP request client with session support and unit tests
+* Exemplary code control
+* Ready to launch in a CI/CD system as is
+* OOP, Test data models and builders, endpoint decorators
