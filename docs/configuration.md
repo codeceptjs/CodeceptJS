@@ -11,25 +11,24 @@ After running `codeceptjs init` it should be saved in test root.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bootstrap` | `Function` \| `boolean` \| `string` | Execute JS code before tests are run. https://codecept.io/bootstrap/ Can be either JS module file or async function:  ```js bootstrap: async () => server.launch(), ``` or ```js bootstrap: 'bootstrap.js', ``` |
-| `bootstrapAll` | `Function` \| `boolean` \| `string` | Execute JS code before launching tests in parallel mode.  https://codecept.io/bootstrap/#bootstrapall-teardownall |
-| `gherkin?` | { `features`: `string` \| `string`[] ; `steps`: `string`[]  } | Enable BDD features. https://codecept.io/bdd/#configuration   Sample configuration: ```js gherkin: {   features: "./features/*.feature",   steps: ["./step_definitions/steps.js"] } ``` |
+| `bootstrap?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute code before](https://codecept.io/bootstrap/) tests are run.  Can be either JS module file or async function:  ```bootstrap: async () => server.launch(), ``` or ```bootstrap: 'bootstrap.js', ``` |
+| `bootstrapAll?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
+| `gherkin?` | { `features`: `string` \| `string`[] ; `steps`: `string`[]  } | Enable [BDD features](https://codecept.io/bdd/#configuration).   Sample configuration: ```gherkin: {   features: "./features/*.feature",   steps: ["./step_definitions/steps.js"] } ``` |
 | `gherkin.features` | `string` \| `string`[] | load feature files by pattern. Multiple patterns can be specified as array |
 | `gherkin.steps` | `string`[] | load step definitions from JS files |
-| `grep` | `string` | Pattern to filter tests by name |
-| `helpers?` | { `[key: string]`: `any`;  } | Enabled and configured helpers   ```js helpers: {   Playwright: {     url: 'https://mysite.com',     browser: 'firefox'   } } ``` |
-| `include?` | `any` | Include page objects to access them via dependency injection  ```js I: "./custom_steps.js", loginPage: "./pages/Login.js", User: "./pages/User.js", ``` Configured modules can be injected by name in a Scenario:  ```js Scenario('test', { I, loginPage, User }) ``` |
-| `mocha?` | `any` | [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.  Example:  ```js mocha: {    "mocha-junit-reporter": {      stdout: "./output/console.log",      options: {        mochaFile: "./output/result.xml",        attachments: true //add screenshot for a failed test      }   } } ``` |
+| `grep?` | `string` | Pattern to filter tests by name. This option is useful if you plan to use multiple configs for different environments.  To execute only tests with  @firefox tag use  ```grep: '@firefox' ``` |
+| `helpers?` | {} | Enable and configure helpers:  ```helpers: {   Playwright: {     url: 'https://mysite.com',     browser: 'firefox'   } } ``` |
+| `include?` | `any` | Include page objects to access them via dependency injection  ```I: "./custom_steps.js", loginPage: "./pages/Login.js", User: "./pages/User.js", ``` Configured modules can be injected by name in a Scenario:  ```Scenario('test', { I, loginPage, User }) ``` |
+| `mocha?` | `any` | [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.  Example:  ```mocha: {   "mocha-junit-reporter": {      stdout: "./output/console.log",      options: {        mochaFile: "./output/result.xml",        attachments: true //add screenshot for a failed test      }   } } ``` |
 | `noGlobals?` | `boolean` | Disable registering global functions (Before, Scenario, etc). Not recommended |
-| `output` | `string` | Where to store failure screenshots, artifacts, etc |
-| `plugins?` | `any` | [Enabled plugins](https://codecept.io/plugins/) |
-| `require?` | `string`[] | Require additional JS modules. https://codecept.io/configuration/#require   Example: ``` require: ["ts-node/register", "should"] ``` |
-| `teardown` | `Function` \| `boolean` \| `string` | Execute JS code after tests are run. https://codecept.io/bootstrap/ Can be either JS module file or async function:  ```js teardown: async () => server.stop(), ``` or ```js teardown: 'teardown.js', ``` |
-| `teardownAll` | `Function` \| `boolean` \| `string` | Execute JS code after finishing tests in parallel mode.  https://codecept.io/bootstrap/#bootstrapall-teardownall |
-| `tests` | `string` | Pattern to locate CodeceptJS tests.  Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.   For tests in JavaScript:  ```js tests: 'tests/**.test.js' ```  For tests in TypeScript:  ```js tests: 'tests/**.test.ts' ``` |
-| `timeout?` | `number` | Set default tests timeout in seconds.  Tests will be killed on no response after timeout.  ```js timeout: 20, ``` |
-| `translation?` | `string` | Enable localized test commands https://codecept.io/translation/ |
-
+| `output` | `string` | Where to store failure screenshots, artifacts, etc   ```output: './output' ``` |
+| `plugins?` | `any` | Enable CodeceptJS plugins. Example:  ```plugins: {   autoDelay: {     enabled: true   }  } ``` |
+| `require?` | `string`[] | [Require additional JS modules](https://codecept.io/configuration/#require)  Example: ``` require: ["should"] ``` |
+| `teardown?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute code after tests](https://codecept.io/bootstrap/) finished.   Can be either JS module file or async function:  ```teardown: async () => server.stop(), ``` or ```teardown: 'teardown.js', ``` |
+| `teardownAll?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
+| `tests` | `string` | Pattern to locate CodeceptJS tests. Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.  For tests in JavaScript:  ```tests: 'tests/**.test.js' ``` For tests in TypeScript:  ```tests: 'tests/**.test.ts' ``` |
+| `timeout?` | `number` | Set default tests timeout in seconds. Tests will be killed on no response after timeout.  ```timeout: 20, ``` |
+| `translation?` | `string` | Enable [localized test commands](https://codecept.io/translation/) |
 
 
 ## Require

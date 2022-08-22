@@ -1,3 +1,40 @@
+## 3.3.5
+
+🛩️ Features
+
+* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by @PeterNgTr and @davertmik)
+* Include `node-ts` automatically when using TypeScript setup
+* Added TS types for CodeceptJS config. Update `codecept.conf.js` to get intellisense when writing config file: 
+
+```js
+// inside codecept.conf.js
+/** @type {CodeceptJS.MainConfig} */
+exports.config = {
+  //...
+}
+```
+* Added TS types for helpers config:
+  * Playwright
+  * Puppeteer
+  * WebDriver
+  * REST
+
+🐛 Bugfixes
+
+* [Puppeteer] Fixed support for Puppeteer > 14.4 by @PeterNgTr 
+* Don't report files as existing when non-directory is in path by @jonathanperret. See #3374
+* Fixed TS type for `secret` function by @PeterNgTr 
+* Fixed wrong order for async MetaSteps by @dwentland24. See #3393
+* Fixed same param substitution in BDD step. See #3385 by @snehabhandge 
+
+📖 Documentation
+
+* Updated [configuration options](https://codecept.io/configuration/) to match TypeScript types
+* Updated [TypeScript documentation](https://codecept.io/typescript/) on simplifying TS installation
+* Added codecept-tesults plugin documentation by @ajeetd 
+
+
+
 ## 3.3.4
 
 * Added support for masking fields in objects via `secret` function:

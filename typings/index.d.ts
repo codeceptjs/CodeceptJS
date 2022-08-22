@@ -32,12 +32,27 @@ declare namespace CodeceptJS {
      * ```
      */
     tests: string;
-    /** Where to store failure screenshots, artifacts, etc */
+    /** 
+     * Where to store failure screenshots, artifacts, etc 
+     * 
+     * ```js
+     * output: './output'
+     * ```
+     */
     output: string;
-    /** Pattern to filter tests by name */
-    grep: string;
+    /** 
+     * Pattern to filter tests by name.
+     * This option is useful if you plan to use multiple configs for different environments.
+     * 
+     * To execute only tests with @firefox tag
+     * 
+     * ```js
+     * grep: '@firefox'
+     * ```
+     */
+    grep?: string;
     /**
-     * Enabled and configured helpers
+     * Enable and configure helpers:
      *
      * ```js
      * helpers: {
@@ -49,17 +64,90 @@ declare namespace CodeceptJS {
      * ```
     */
     helpers?: {
-      /** Run web tests controlling browsers via Playwright engine. https://codecept.io/playwright */
+      /** 
+       * Run web tests controlling browsers via Playwright engine. 
+       *
+       * https://codecept.io/helpers/playwright 
+       * 
+       * Available commands:
+       * ```js
+       * I.amOnPage('/');
+       * I.click('Open');
+       * I.see('Welcome');
+       * ```
+       */
       Playwright?: PlaywrightConfig;
-      /** Run web tests controlling browsers via Puppeteer engine. https://codecept.io/puppeteer */
+      /** 
+       * Run web tests controlling browsers via Puppeteer engine. 
+       * 
+       * https://codecept.io/helpers/puppeteer 
+       * 
+       * Available commands:
+       * ```js
+       * I.amOnPage('/');
+       * I.click('Open');
+       * I.see('Welcome');
+       * ```
+       */
       Puppeteer?: PuppeteerConfig;
-      /** Run web tests controlling browsers via WebDriver engine. https://codecept.io/webdriver */
+
+      /** 
+       * Run web tests controlling browsers via WebDriver engine. 
+       * 
+       * Available commands:
+       * ```js
+       * I.amOnPage('/');
+       * I.click('Open');
+       * I.see('Welcome');
+       * ```
+       * 
+       * https://codecept.io/helpers/webdriver 
+       */
       WebDriver?: WebDriverConfig;
-      /** Execute REST API requests for API testing or to assist web testing. https://codecept.io/api/ */
+      /** 
+       * Execute REST API requests for API testing or to assist web testing. 
+       * 
+       * https://codecept.io/helpers/REST 
+       * 
+       * Available commands:
+       * ```js
+       * I.sendGetRequest('/');
+       * ```
+       */
       REST?: RESTConfig;
+
+      /** 
+       * Use JSON assertions for API testing.
+       * Can be paired with REST or GraphQL helpers.
+       * 
+       * https://codecept.io/helpers/JSONResponse 
+       * 
+       * Available commands:
+       * ```js
+       * I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+       * ```
+       */
+      JSONResponse?: any;      
+
       [key: string]: any;
     },
-    /** [Enabled plugins](https://codecept.io/plugins/)  */
+    /** 
+     * Enable CodeceptJS plugins. 
+     * 
+     * https://codecept.io/plugins/
+     * 
+     * Plugins listen to test events and extend functionality of CodeceptJS.
+     * 
+     * Example:
+     * 
+     * ```js
+     * plugins: {
+     *   autoDelay: {
+     *     enabled: true
+     *   }
+      }
+     * ```
+     */
     plugins?: any;
     /**
      * Include page objects to access them via dependency injection
@@ -106,7 +194,8 @@ declare namespace CodeceptJS {
      */
     mocha?: any;
     /**
-     * Execute JS code before tests are run. https://codecept.io/bootstrap/
+     * [Execute code before](https://codecept.io/bootstrap/) tests are run.
+     * 
      * Can be either JS module file or async function:
      *
      * ```js
@@ -117,9 +206,10 @@ declare namespace CodeceptJS {
      * bootstrap: 'bootstrap.js',
      * ```
     */
-    bootstrap: () => Promise<void> | boolean | string;
+    bootstrap?: () => Promise<void> | boolean | string;
     /**
-     * Execute JS code after tests are run. https://codecept.io/bootstrap/
+     * [Execute code after tests](https://codecept.io/bootstrap/) finished. 
+     * 
      * Can be either JS module file or async function:
      *
      * ```js
@@ -130,32 +220,31 @@ declare namespace CodeceptJS {
      * teardown: 'teardown.js',
      * ```
     */
-    teardown: () => Promise<void> | boolean | string;
+    teardown?: () => Promise<void> | boolean | string;
     /**
-     * Execute JS code before launching tests in parallel mode.
-     * https://codecept.io/bootstrap/#bootstrapall-teardownall
-    */
-    bootstrapAll: () => Promise<void> | boolean | string;
+     * [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
+     * 
+     */
+    bootstrapAll?: () => Promise<void> | boolean | string;
     /**
-     * Execute JS code after finishing tests in parallel mode.
-     * https://codecept.io/bootstrap/#bootstrapall-teardownall
+     * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
     */
-    teardownAll: () => Promise<void> | boolean | string;
-    /** Enable localized test commands https://codecept.io/translation/ */
+    teardownAll?: () => Promise<void> | boolean | string;
+    /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string;
     /**
-     * Require additional JS modules. https://codecept.io/configuration/#require
+     * [Require additional JS modules](https://codecept.io/configuration/#require)
      *
      * Example:
      * ```
-     * require: ["ts-node/register", "should"]
+     * require: ["should"]
      * ```
     */
     require?: Array<string>;
 
     /**
-     * Enable BDD features. https://codecept.io/bdd/#configuration
-     *
+     * Enable [BDD features](https://codecept.io/bdd/#configuration). 
+     * 
      * Sample configuration:
      * ```js
      * gherkin: {
