@@ -16,6 +16,164 @@ declare namespace CodeceptJS {
     path?: string,
   };
 
+  type MainConfig = {
+    /** Pattern to locate CodeceptJS tests.
+     * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
+     *
+     * For tests in JavaScript:
+     *
+     * ```js
+     * tests: 'tests/**.test.js'
+     * ```
+     * For tests in TypeScript:
+     *
+     * ```js
+     * tests: 'tests/**.test.ts'
+     * ```
+     */
+    tests: string;
+    /** Where to store failure screenshots, artifacts, etc */
+    output: string;
+    /** Pattern to filter tests by name */
+    grep: string;
+    /**
+     * Enabled and configured helpers
+     *
+     * ```js
+     * helpers: {
+     *   Playwright: {
+     *     url: 'https://mysite.com',
+     *     browser: 'firefox'
+     *   }
+     * }
+     * ```
+    */
+    helpers?: {
+      /** Run web tests controlling browsers via Playwright engine. https://codecept.io/playwright */
+      Playwright?: PlaywrightConfig;
+      /** Run web tests controlling browsers via Puppeteer engine. https://codecept.io/puppeteer */
+      Puppeteer?: PuppeteerConfig;
+      /** Run web tests controlling browsers via WebDriver engine. https://codecept.io/webdriver */
+      WebDriver?: WebDriverConfig;
+      /** Execute REST API requests for API testing or to assist web testing. https://codecept.io/api/ */
+      REST?: RESTConfig;
+      [key: string]: any;
+    },
+    /** [Enabled plugins](https://codecept.io/plugins/)  */
+    plugins?: any;
+    /**
+     * Include page objects to access them via dependency injection
+     *
+     * ```js
+     * I: "./custom_steps.js",
+     * loginPage: "./pages/Login.js",
+     * User: "./pages/User.js",
+     * ```
+     * Configured modules can be injected by name in a Scenario:
+     *
+     * ```js
+     * Scenario('test', { I, loginPage, User })
+     * ```
+     */
+    include?: any;
+    /**
+     * Set default tests timeout in seconds.
+     * Tests will be killed on no response after timeout.
+     *
+     * ```js
+     * timeout: 20,
+     * ```
+     */
+    timeout?: number;
+    /** Disable registering global functions (Before, Scenario, etc). Not recommended */
+    noGlobals?: boolean;
+    /**
+     * [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.
+     *
+     * Example:
+     *
+     * ```js
+     * mocha: {
+     *   "mocha-junit-reporter": {
+     *      stdout: "./output/console.log",
+     *      options: {
+     *        mochaFile: "./output/result.xml",
+     *        attachments: true //add screenshot for a failed test
+     *      }
+     *   }
+     * }
+     * ```
+     */
+    mocha?: any;
+    /**
+     * Execute JS code before tests are run. https://codecept.io/bootstrap/
+     * Can be either JS module file or async function:
+     *
+     * ```js
+     * bootstrap: async () => server.launch(),
+     * ```
+     * or
+     * ```js
+     * bootstrap: 'bootstrap.js',
+     * ```
+    */
+    bootstrap: () => Promise<void> | boolean | string;
+    /**
+     * Execute JS code after tests are run. https://codecept.io/bootstrap/
+     * Can be either JS module file or async function:
+     *
+     * ```js
+     * teardown: async () => server.stop(),
+     * ```
+     * or
+     * ```js
+     * teardown: 'teardown.js',
+     * ```
+    */
+    teardown: () => Promise<void> | boolean | string;
+    /**
+     * Execute JS code before launching tests in parallel mode.
+     * https://codecept.io/bootstrap/#bootstrapall-teardownall
+    */
+    bootstrapAll: () => Promise<void> | boolean | string;
+    /**
+     * Execute JS code after finishing tests in parallel mode.
+     * https://codecept.io/bootstrap/#bootstrapall-teardownall
+    */
+    teardownAll: () => Promise<void> | boolean | string;
+    /** Enable localized test commands https://codecept.io/translation/ */
+    translation?: string;
+    /**
+     * Require additional JS modules. https://codecept.io/configuration/#require
+     *
+     * Example:
+     * ```
+     * require: ["ts-node/register", "should"]
+     * ```
+    */
+    require?: Array<string>;
+
+    /**
+     * Enable BDD features. https://codecept.io/bdd/#configuration
+     *
+     * Sample configuration:
+     * ```js
+     * gherkin: {
+     *   features: "./features/*.feature",
+     *   steps: ["./step_definitions/steps.js"]
+     * }
+     * ```
+     */
+    gherkin?: {
+      /** load feature files by pattern. Multiple patterns can be specified as array */
+      features: string | Array<string>,
+      /** load step definitions from JS files */
+      steps: Array<string>
+    };
+
+    [key: string]: any;
+  };
+
   interface PageScrollPosition {
     x: number;
     y: number;
