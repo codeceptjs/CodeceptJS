@@ -2,9 +2,9 @@
 
 🛩️ Features
 
-* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by @PeterNgTr and @davertmik)
-* Includes `node-ts` automatically when using TypeScript setup.
-* Added TS types for CodeceptJS config. Add  `codecept.conf.js` to get intellisense when writing config file: 
+* Added **TypeScript types for CodeceptJS config**. 
+
+Update `codecept.conf.js` to get intellisense when writing config file:
 
 ```js
 /**@type {CodeceptJS.MainConfig}**/
@@ -17,6 +17,9 @@ exports.config = {
   * Puppeteer
   * WebDriver
   * REST
+* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by @PeterNgTr and @davertmik)
+* Includes `node-ts` automatically when using TypeScript setup.
+
 
 🐛 Bugfixes
 
