@@ -3,12 +3,11 @@
 🛩️ Features
 
 * Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by @PeterNgTr and @davertmik)
-* Include `node-ts` automatically when using TypeScript setup
-* Added TS types for CodeceptJS config. Update `codecept.conf.js` to get intellisense when writing config file: 
+* Includes `node-ts` automatically when using TypeScript setup.
+* Added TS types for CodeceptJS config. Add  `codecept.conf.js` to get intellisense when writing config file: 
 
 ```js
-// inside codecept.conf.js
-/** @type {CodeceptJS.MainConfig} */
+/**@type {CodeceptJS.MainConfig}**/
 exports.config = {
   //...
 }
