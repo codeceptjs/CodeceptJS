@@ -27,7 +27,7 @@ CodeceptJS bypasses execution commands to helpers. Depending on the helper enabl
 
 The following is a diagram of the CodeceptJS architecture:
 
-![architecture](/img/architecture.svg)
+![architecture](/img/architecture.png)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
 However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppeteer or Nightmare.
@@ -577,6 +577,18 @@ I.retry({
 
 Pass a function to the `when` option to retry only when an error matches the expected one.
 
+### Retry Multiple Steps
+
+To retry a group of steps enable [retryTo plugin](/plugins/#retryto):
+
+```js
+// retry these steps 5 times before failing
+await retryTo((tryNum) => {
+  I.switchTo('#editor frame');
+  I.click('Open');
+  I.see('Opened')
+}, 5);
+```
 
 ### Retry Scenario
 
