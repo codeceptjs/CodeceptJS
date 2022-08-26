@@ -16,6 +16,8 @@ playwright._setPage(str_pl); // $ExpectType void
 playwright._addPopupListener(); // $ExpectType void
 playwright._getPageUrl(); // $ExpectType void
 playwright.grabPopupText(); // $ExpectType Promise<string | null>
+playwright._createContextPage(); // $ExpectType void
+playwright._createContextPage({}); // $ExpectType void
 playwright.amOnPage(str_pl); // $ExpectType void
 playwright.resizeWindow(num_pl, num_pl); // $ExpectType void
 playwright.haveRequestHeaders(str_pl); // $ExpectType void

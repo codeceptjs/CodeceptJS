@@ -56,6 +56,17 @@ describe('Playwright', function () {
     return I._after();
   });
 
+  describe('#_createContextPage', () => {
+    it('should open a page after restart of browser', async () => {
+      await I._stopBrowser();
+      await I._startBrowser();
+      await I._createContextPage();
+      await I.wait(1);
+      const numPages = await I.grabNumberOfOpenTabs();
+      assert.equal(numPages, 1);
+    });
+  });
+
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
