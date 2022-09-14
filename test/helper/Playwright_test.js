@@ -57,7 +57,7 @@ describe('Playwright', function () {
   });
 
   describe('restart browser: #restartBrowser', () => {
-    it('should open a page after restart of browser', async () => {
+    it('should open a new tab after restart of browser', async () => {
       await I.restartBrowser();
       await I.wait(1);
       const numPages = await I.grabNumberOfOpenTabs();
