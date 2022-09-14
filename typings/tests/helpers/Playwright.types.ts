@@ -25,6 +25,8 @@ playwright.moveCursorTo(str_pl, num_pl, num_pl); // $ExpectType void
 playwright.dragAndDrop(str_pl); // $ExpectError
 playwright.dragAndDrop(str_pl, str_pl); // $ExpectType void
 playwright.dragAndDrop(str_pl, str_pl, { sourcePosition, targetPosition }); // $ExpectType void
+playwright.restartBrowser(); // $ExpectType void
+playwright.restartBrowser({}); // $ExpectType void
 playwright.refreshPage(); // $ExpectType void
 playwright.scrollPageToTop(); // $ExpectType void
 playwright.scrollPageToBottom(); // $ExpectType void

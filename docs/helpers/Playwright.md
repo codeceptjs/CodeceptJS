@@ -1349,6 +1349,23 @@ First parameter can be set to `maximize`.
     { setWindowSize } = require('@codeceptjs/configure');
     ```
 
+### restartBrowser
+
+Restart browser with a new context and a new page
+
+```js
+// Restart browser and use a new timezone
+I.restartBrowser({ timezoneId: 'America/Phoenix' });
+// Open URL in a new page in changed timezone
+I.amOnPage('/');
+// Restart browser, allow reading/copying of text from/into clipboard in Chrome
+I.restartBrowser({ permissions: ['clipboard-read', 'clipboard-write'] });
+```
+
+#### Parameters
+
+-   `contextOptions` **[object][5]?** [Options for browser context][6] when starting new browser
+
 ### rightClick
 
 Performs right click on a clickable element matched by semantic locator, CSS or XPath.

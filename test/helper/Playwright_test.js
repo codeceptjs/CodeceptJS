@@ -56,11 +56,9 @@ describe('Playwright', function () {
     return I._after();
   });
 
-  describe('#_createContextPage', () => {
+  describe('restart browser: #restartBrowser', () => {
     it('should open a page after restart of browser', async () => {
-      await I._stopBrowser();
-      await I._startBrowser();
-      await I._createContextPage();
+      await I.restartBrowser();
       await I.wait(1);
       const numPages = await I.grabNumberOfOpenTabs();
       assert.equal(numPages, 1);

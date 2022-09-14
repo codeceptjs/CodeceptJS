@@ -584,21 +584,13 @@ async setPermissions() {
 
 Sometimes it's useful to test browser in different timezones. You can change timezone this way:
 
-Create a method in your custom helper:
-```js
-async restartBrowser(options) {
-  const Playwright = this.helpers.Playwright;
-  await Playwright._stopBrowser();
-  await Playwright._startBrowser();
-  await Playwright._createContextPage(options);
-}
-```
-Call the method from a test:
 ```js
 Scenario("Test in a different timezone", ({ I }) => {
-  I.restartBrowser({ timezoneId: "America/Phoenix" });
+  I.restartBrowser({ timezoneId: 'America/Phoenix' });
   I.amOnPage("/");
   // ...
+  // Reset timezone to default one (taken from OS)
+  I.restartBrowser();
 });
 ```
 Other context options: https://playwright.dev/docs/api/class-browser#browser-new-context
