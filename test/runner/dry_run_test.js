@@ -81,7 +81,7 @@ describe('dry-run command', () => {
   });
 
   it('should display meta steps and substeps', (done) => {
-    exec(`${codecept_run_config('configs/pageObjects/codecept.po.json')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('configs/pageObjects/codecept.po.js')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(lines).toEqual(
         expect.arrayContaining([
@@ -91,8 +91,8 @@ describe('dry-run command', () => {
           '      I see file "codecept.class.js"',
           '    MyPage: hasFile "First arg", "Second arg"',
           '      I see file "codecept.class.js"',
-          '      I see file "codecept.po.json"',
-          '    I see file "codecept.po.json"',
+          '      I see file "codecept.po.js"',
+          '    I see file "codecept.po.js"',
         ]),
       );
       expect(stdout).toContain('OK  | 1 passed');
@@ -159,7 +159,7 @@ describe('dry-run command', () => {
   });
 
   it('should work with inject() keyword', (done) => {
-    exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.json', 'check current dir')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(stdout).toContain('injected');
       expect(lines).toEqual(
@@ -170,8 +170,8 @@ describe('dry-run command', () => {
           '      I see file "codecept.class.js"',
           '    MyPage: hasFile "uu"',
           '      I see file "codecept.class.js"',
-          '      I see file "codecept.po.json"',
-          '    I see file "codecept.po.json"',
+          '      I see file "codecept.po.js"',
+          '    I see file "codecept.po.js"',
         ]),
       );
       expect(stdout).toContain('OK  | 1 passed');

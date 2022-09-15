@@ -5,7 +5,7 @@ Feature('Filesystem');
 Scenario('check current dir', () => {
   console.log('injected', I, MyPage);
   I.openDir('aaa');
-  I.seeFile('codecept.json');
+  I.seeFile('codecept.js');
   MyPage.hasFile('uu');
-  I.seeFile('codecept.po.json');
+  I.seeFile('codecept.po.js');
 });
