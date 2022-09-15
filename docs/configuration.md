@@ -99,7 +99,7 @@ exports.config = {
     dashboardPage: new DashboardPage()
   }
 
-  // here goes config as it was in codecept.json
+  // here goes config as it was in codecept.conf.ts
   // ....
 };
 ```
