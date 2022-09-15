@@ -37,7 +37,7 @@ describe('dry-run command', () => {
   });
 
   it('should not run actual steps', (done) => {
-    exec(codecept_run_config('codecept.flaky.json'), (err, stdout) => {
+    exec(codecept_run_config('codecept.flaky.js'), (err, stdout) => {
       expect(stdout).toContain('Flaky'); // feature
       expect(stdout).toContain('Not so flaky test'); // test name
       expect(stdout).toContain('Old style flaky'); // test name
@@ -103,7 +103,7 @@ describe('dry-run command', () => {
   });
 
   it('should run feature files', (done) => {
-    exec(codecept_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
+    exec(codecept_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
       expect(stdout).toContain('Checkout process'); // feature
       expect(stdout).toContain('-- before checkout --');
       expect(stdout).toContain('-- after checkout --');
@@ -121,7 +121,7 @@ describe('dry-run command', () => {
   });
 
   it('should print substeps in debug mode', (done) => {
-    exec(codecept_run_config('codecept.bdd.json') + ' --debug --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
+    exec(codecept_run_config('codecept.bdd.js') + ' --debug --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
       expect(stdout).toContain('Checkout process'); // feature
       // expect(stdout).toContain('In order to buy products'); // test name
       expect(stdout).toContain('Given I have product with $600 price');
@@ -139,7 +139,7 @@ describe('dry-run command', () => {
   });
 
   it('should run tests with different data', (done) => {
-    exec(codecept_run_config('codecept.ddt.json'), (err, stdout) => {
+    exec(codecept_run_config('codecept.ddt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       expect(output).toContain(`${char} Should log accounts1 | {"login":"davert","password":"123456"}`);
       expect(output).toContain(`${char} Should log accounts1 | {"login":"admin","password":"666666"}`);

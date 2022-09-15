@@ -13,7 +13,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should rerun flaky tests', (done) => {
-    exec(config_run_config('codecept.flaky.json'), (err, stdout) => {
+    exec(config_run_config('codecept.flaky.js'), (err, stdout) => {
       expect(stdout).toContain('Flaky'); // feature
       expect(stdout).toContain('Not so flaky test'); // test name
       expect(stdout).toContain('Old style flaky'); // test name
@@ -73,7 +73,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should include grep option tests', (done) => {
-    exec(config_run_config('codecept.grep.json'), (err, stdout) => {
+    exec(config_run_config('codecept.grep.js'), (err, stdout) => {
       expect(stdout).toContain('Got login davert and password'); // feature
       expect(stdout).not.toContain('Got changed login'); // test name
       expect(err).toBeFalsy();
@@ -82,7 +82,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should run tests with different data', (done) => {
-    exec(config_run_config('codecept.ddt.json'), (err, stdout) => {
+    exec(config_run_config('codecept.ddt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       expect(output).toContain(`Got login davert and password 123456
   ✔ Should log accounts1 | {"login":"davert","password":"123456"}`);
@@ -123,7 +123,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should run all tests with data of array by only', (done) => {
-    exec(config_run_config('codecept.addt.json'), (err, stdout) => {
+    exec(config_run_config('codecept.addt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       expect(output).toContain('Got array item 1');
       expect(output).toContain('Should log array of strings | {"1"}');
@@ -137,7 +137,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should run all tests with data of generator by only', (done) => {
-    exec(config_run_config('codecept.gddt.json'), (err, stdout) => {
+    exec(config_run_config('codecept.gddt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       expect(output).toContain(`Got generator login nick
   ✔ Should log generator of strings | {"user":"nick"}`);
