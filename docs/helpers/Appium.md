@@ -433,12 +433,14 @@ Start an arbitrary Android activity during a session.
 I.startActivity('io.selendroid.testapp', '.RegisterUserActivity');
 ```
 
+Appium: support only Android
+
 #### Parameters
 
--   `appPackage`  
--   `appActivity`  
+-   `appPackage` **[string][4]** 
+-   `appActivity` **[string][4]** 
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][5]&lt;void>** 
 
 ### setNetworkConnection
 
