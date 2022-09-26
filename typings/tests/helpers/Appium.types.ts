@@ -2,6 +2,7 @@ const appium = new CodeceptJS.Appium();
 
 const str_ap = "text";
 const num_ap = 1;
+const appPackage = "com.example.android.apis";
 
 appium.touchPerform(); // $ExpectError
 appium.touchPerform("press"); // $ExpectError
@@ -16,8 +17,8 @@ appium.hideDeviceKeyboard("pressKey", "Done", "Done"); // $ExpectError
 
 appium.removeApp(); // $ExpectError
 appium.removeApp("appName"); // $ExpectType void
-appium.removeApp("appName", "com.example.android.apis"); // $ExpectType void
-appium.removeApp("appName", "com.example.android.apis", "remove"); // $ExpectError
+appium.removeApp("appName", appPackage); // $ExpectType void
+appium.removeApp("appName", appPackage, "remove"); // $ExpectError
 
 appium.runOnIOS(str_ap, () => {}); // $ExpectType void
 appium.runOnAndroid(str_ap, () => {}); // $ExpectType void
@@ -40,7 +41,9 @@ appium._switchToContext(str_ap); // $ExpectType void
 appium.switchToWeb(); // $ExpectType Promise<void>
 appium.switchToNative(); // $ExpectType Promise<void>
 appium.switchToNative(str_ap); // $ExpectType Promise<void>
-appium.startActivity(); // $ExpectType Promise<void>
+appium.startActivity(); // $ExpectError
+appium.startActivity(appPackage); // $ExpectError
+appium.startActivity(appPackage, '.RegisterUserActivity'); // $ExpectType Promise<void>
 appium.setNetworkConnection(); // $ExpectType Promise<{}>
 appium.setSettings(str_ap); // $ExpectType void
 appium.hideDeviceKeyboard(); // $ExpectType void
