@@ -57,7 +57,7 @@ Select config file manually (`-c` or `--config` option)
 
 ```sh
 npx codeceptjs run -c my.codecept.conf.js
-npx codeceptjs run --config path/to/codecept.js
+npx codeceptjs run --config path/to/codecept.conf.js
 ```
 
 Override config on the fly. Provide valid JSON which will be merged into current config:
@@ -223,7 +223,7 @@ TypeScript Definitions allows IDEs to provide autocompletion when writing tests.
 
 ```sh
 npx codeceptjs def
-npx codeceptjs def --config path/to/codecept.js
+npx codeceptjs def --config path/to/codecept.conf.js
 ```
 
 After doing that IDE should provide autocompletion for `I` object inside `Scenario` and `within` blocks.
