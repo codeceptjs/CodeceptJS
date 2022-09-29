@@ -56,7 +56,7 @@ Type: [object][5]
 -   `keepBrowserState` **[boolean][25]?** keep browser state between tests when `restart` is set to 'session'.
 -   `keepCookies` **[boolean][25]?** keep cookies between tests when `restart` is set to 'session'.
 -   `waitForAction` **[number][11]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **[number][11]?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][35].
+-   `waitForNavigation` **[string][7]?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][35].
 -   `pressKeyDelay` **[number][11]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][11]?** config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout` **[number][11]?** default wait* timeout in ms. Default: 1000.
