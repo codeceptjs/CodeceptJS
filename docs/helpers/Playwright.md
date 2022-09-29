@@ -2167,6 +2167,6 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [34]: https://playwright.dev/docs/trace-viewer
 
-[35]: https://github.com/microsoft/playwright/blob/main/docs/api.md#pagewaitfornavigationoptions
+[35]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
 
 [36]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
