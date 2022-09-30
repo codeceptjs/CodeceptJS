@@ -30,11 +30,11 @@ Type: [object][16]
 -   `browser` **[string][17]** browser in which to perform testing.
 -   `basicAuth` **[string][17]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `host` **[string][17]?** WebDriver host to connect.
--   `port` **[string][17]?** WebDriver port to connect.
+-   `port` **[number][20]?** WebDriver port to connect.
 -   `protocol` **[string][17]?** protocol for WebDriver server.
 -   `path` **[string][17]?** path to WebDriver server,
 -   `restart` **[boolean][29]?** restart browser between tests.
--   `smartWait` **[boolean][29]?** **enables [SmartWait][33]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+-   `smartWait` **([boolean][29] | [number][20])?** **enables [SmartWait][33]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots` **[boolean][29]?** don't save screenshots on failure.
 -   `fullPageScreenshots` **[boolean][29]?** (optional - make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][29]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
