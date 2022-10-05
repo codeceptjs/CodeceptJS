@@ -49,6 +49,7 @@ Type: [object][5]
 -   `disableScreenshots` **[boolean][25]?** don't save screenshot on failure.
 -   `emulate` **any?** browser in device emulation mode.
 -   `video` **[boolean][25]?** enables video recording for failed tests; videos are saved into `output/videos` folder
+-   `keepVideoForPassedTests` **[boolean][25]?** save videos for passed tests; videos are saved into `output/videos` folder
 -   `trace` **[boolean][25]?** record [tracing information][34] with screenshots and snapshots.
 -   `fullPageScreenshots` **[boolean][25]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][25]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
@@ -66,7 +67,6 @@ Type: [object][5]
 -   `locale` **[string][7]?** locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
 -   `manualStart` **[boolean][25]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
 -   `chromium` **[object][5]?** pass additional chromium options
--   `firefox` **[object][5]?** pass additional firefox options
 -   `electron` **[object][5]?** (pass additional electron options
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][36].
 
