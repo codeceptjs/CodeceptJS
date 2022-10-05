@@ -206,7 +206,7 @@ declare namespace CodeceptJS {
      * bootstrap: 'bootstrap.js',
      * ```
     */
-    bootstrap?: () => Promise<void> | boolean | string;
+    bootstrap?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute code after tests](https://codecept.io/bootstrap/) finished.
      *
@@ -220,16 +220,16 @@ declare namespace CodeceptJS {
      * teardown: 'teardown.js',
      * ```
     */
-    teardown?: () => Promise<void> | boolean | string;
+    teardown?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
      *
      */
-    bootstrapAll?: () => Promise<void> | boolean | string;
+    bootstrapAll?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
     */
-    teardownAll?: () => Promise<void> | boolean | string;
+    teardownAll?: (() => Promise<void>) | boolean | string;
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string;
     /**
