@@ -175,6 +175,24 @@ Then('I should see that total number of products is {int}', (num) => {
 Then('my order amount is ${int}', (sum) => { // eslint-disable-line
   I.see('Total: ' + sum);
 });
+
+// custom parameter types
+class Color {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+DefineParameterType( {
+    name: 'color',
+    regexp: /red|blue|yellow/,
+    transformer: (s) => new Color(s),
+  });
+
+Given('I see a {color} button', async (color) => {
+  const value = await I.grabCssPropertyFrom('button', 'background-color');
+  assert.equal(color.name, value)
+});
 ```
 
 Steps can be either strings or regular expressions. Parameters from string are passed as function arguments. To define parameters in a string we use [Cucumber expressions](https://docs.cucumber.io/cucumber/cucumber-expressions/)
