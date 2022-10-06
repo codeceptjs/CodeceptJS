@@ -1,6 +1,5 @@
 const { expect } = require('chai');
 const { Parser } = require('gherkin');
-const { resolve } = require('dns');
 const Config = require('../../lib/config');
 const {
   Given,
