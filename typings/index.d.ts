@@ -430,7 +430,7 @@ declare namespace NodeJS {
     Given: typeof Given;
     When: typeof When;
     Then: typeof Then;
-    defineParameterType: typeof defineParameterType
+    DefineParameterType: typeof defineParameterType
   }
 }
 
