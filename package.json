@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
