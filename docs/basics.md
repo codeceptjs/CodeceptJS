@@ -620,6 +620,17 @@ Feature('Complex JS Stuff').retry(3);
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
 
+### Retry Run 
+
+On the highest level of the "retry pyramid" there is an option to retry a complete run multiple times.
+Even this is the slowest option of all, it can be helpful to detect flaky tests. 
+
+[`run-rerun`](https://codecept.io/commands/#run-rerun) command will restart the run multiple times to values you provide. You can set minimal and maximal number of restarts in configuration file.
+
+```
+npx codeceptjs run-rerun
+```
+
 
 ## Before
 

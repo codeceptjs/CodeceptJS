@@ -1,3 +1,31 @@
+## 3.3.6
+
+* [`run-rerun`](https://codecept.io/commands/#run-rerun) command was re-introduced by @dwentland24 in #3436. Use it to perform run multiple times and detect flaky tests
+* Enabled `retryFailedStep` by default in `@codeceptjs/configure` v 0.10. See https://github.com/codeceptjs/configure/pull/26
+* [Playwright] Fixed properties types "waitForNavigation" and "firefox" by @mirao in #3401
+* [REST] Changed "endpoint" to optional by @mirao in #3404
+* [REST] Use [`secret`]() for form encoded string by @PeterNgTr:
+
+```js
+const secretData = secret('name=john&password=123456');
+const response = await I.sendPostRequest('/user', secretData);
+```
+
+* [Playwright]Fixed docs related to fixed properties types "waitForNavigation" and "firefox" by @mirao in #3407
+* [Playwright]Fixed parameters of startActivity() by @mirao in #3408
+* Move semver to prod dependencies by @timja in #3413
+* check if browser is W3C instead of Android by @mikk150 in #3414
+* Pass service configs with options and caps as array for browsers… by @07souravkunda in #3418
+* fix for type of "webdriver.port" by @ngraf in #3421
+* fix for type of "webdriver.smartWait" by @pmajewski24 in #3426
+* fix(datatable): mask secret text by @PeterNgTr in #3432
+* fix(playwright) - video name and missing type by @PeterNgTr in #3430
+* fix for expected type of "bootstrap", "teardown", "bootstrapAll" and "teardownAll" by @ngraf in #3424
+* Improve generate pageobject `gpo` command to work with TypeScript by @PeterNgTr in #3411
+* Fixed dry-run to always return 0 code and exit 
+* Added minimal version notice for NodeJS >= 12
+* fix(utils): remove . of test title to avoid confusion by @PeterNgTr in #3431
+
 ## 3.3.5
 
 🛩️ Features

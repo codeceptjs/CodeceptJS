@@ -13,8 +13,8 @@ const errorHandler = (fn) => async (...args) => {
   }
 };
 
-if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 8) {
-  error('NodeJS >= 8 is required to run.');
+if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 12) {
+  error('NodeJS >= 12 is required to run.');
   print();
   print('Please upgrade your NodeJS engine');
   print(`Current NodeJS version: ${process.version}`);
@@ -179,7 +179,7 @@ program.command('info [path]')
 program.command('dry-run [test]')
   .description('Prints step-by-step scenario for a test without actually running it')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
-  .option('--bootstrap', 'enable bootstrap script for dry-run')
+  .option('--bootstrap', 'enable bootstrap & teardown scripts for dry-run')
   .option('-c, --config [file]', 'configuration file to be used')
   .option('--all', 'run all suites')
   .option('--features', 'run only *.feature files and skip tests')
