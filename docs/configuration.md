@@ -11,8 +11,8 @@ After running `codeceptjs init` it should be saved in test root.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bootstrap?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute code before](https://codecept.io/bootstrap/) tests are run.  Can be either JS module file or async function:  ```bootstrap: async () => server.launch(), ``` or ```bootstrap: 'bootstrap.js', ``` |
-| `bootstrapAll?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
+| `bootstrap?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code before](https://codecept.io/bootstrap/) tests are run.  Can be either JS module file or async function:  ```bootstrap: async () => server.launch(), ``` or ```bootstrap: 'bootstrap.js', ``` |
+| `bootstrapAll?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
 | `gherkin?` | { `features`: `string` \| `string`[] ; `steps`: `string`[]  } | Enable [BDD features](https://codecept.io/bdd/#configuration).   Sample configuration: ```gherkin: {   features: "./features/*.feature",   steps: ["./step_definitions/steps.js"] } ``` |
 | `gherkin.features` | `string` \| `string`[] | load feature files by pattern. Multiple patterns can be specified as array |
 | `gherkin.steps` | `string`[] | load step definitions from JS files |
@@ -24,8 +24,8 @@ After running `codeceptjs init` it should be saved in test root.
 | `output` | `string` | Where to store failure screenshots, artifacts, etc   ```output: './output' ``` |
 | `plugins?` | `any` | Enable CodeceptJS plugins. Example:  ```plugins: {   autoDelay: {     enabled: true   }  } ``` |
 | `require?` | `string`[] | [Require additional JS modules](https://codecept.io/configuration/#require)  Example: ``` require: ["should"] ``` |
-| `teardown?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute code after tests](https://codecept.io/bootstrap/) finished.   Can be either JS module file or async function:  ```teardown: async () => server.stop(), ``` or ```teardown: 'teardown.js', ``` |
-| `teardownAll?` | () => `Promise`<`void`\> \| `boolean` \| `string` | [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
+| `teardown?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code after tests](https://codecept.io/bootstrap/) finished.   Can be either JS module file or async function:  ```teardown: async () => server.stop(), ``` or ```teardown: 'teardown.js', ``` |
+| `teardownAll?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
 | `tests` | `string` | Pattern to locate CodeceptJS tests. Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.  For tests in JavaScript:  ```tests: 'tests/**.test.js' ``` For tests in TypeScript:  ```tests: 'tests/**.test.ts' ``` |
 | `timeout?` | `number` | Set default tests timeout in seconds. Tests will be killed on no response after timeout.  ```timeout: 20, ``` |
 | `translation?` | `string` | Enable [localized test commands](https://codecept.io/translation/) |
@@ -99,7 +99,7 @@ exports.config = {
     dashboardPage: new DashboardPage()
   }
 
-  // here goes config as it was in codecept.json
+  // here goes config as it was in codecept.conf.ts
   // ....
 };
 ```

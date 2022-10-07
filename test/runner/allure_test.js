@@ -32,7 +32,7 @@ describe('CodeceptJS Allure Plugin', function () {
   });
 
   it('should correct save info about page object for xml file', (done) => {
-    exec(codecept_run_config('codecept.po.json'), (err) => {
+    exec(codecept_run_config('codecept.po.js'), (err) => {
       const files = fs.readdirSync(path.join(codecept_dir, 'output/pageobject'));
 
       fs.readFile(path.join(codecept_dir, 'output/pageobject', files[0]), (err, data) => {

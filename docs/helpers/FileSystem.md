@@ -16,7 +16,7 @@ Can be easily used to check file structures:
 
 ```js
 I.amInPath('test');
-I.seeFile('codecept.json');
+I.seeFile('codecept.js');
 I.seeInThisFile('FileSystem');
 I.dontSeeInThisFile("WebDriver");
 ```

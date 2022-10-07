@@ -1,4 +1,4 @@
-Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Saves screenshot of the specified locator to ouput folder (set in codecept.conf.ts or codecept.conf.js).
 Filename is relative to output folder.
 
 ```js
@@ -7,4 +7,4 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 @param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
 @param {string} fileName file name to save.
-[!] returns a _promise_ which is synchronized internally by recorder
+⚠️ returns a _promise_ which is synchronized internally by recorder

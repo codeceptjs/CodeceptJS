@@ -8,5 +8,5 @@ Scenario('say something', ({ I }) => {
 Scenario('glob current dir', ({ I }) => {
   I.amInPath('.');
   I.say('hello world');
-  I.seeFile('codecept.glob.json');
+  I.seeFile('codecept.glob.js');
 });
