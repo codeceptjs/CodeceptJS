@@ -41,7 +41,7 @@ Type: [object][16]
 -   `keepBrowserState` **[boolean][29]?** keep browser state between tests when `restart` is set to false.
 -   `keepCookies` **[boolean][29]?** keep cookies between tests when `restart` set to false.
 -   `windowSize` **[string][17]?** default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout` **[number][20]?** sets default wait time in _ms_ for all `wait*` functions.
+-   `waitforTimeout` **[number][20]?** sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities` **[object][16]?** Selenium's [desired capabilities][6].
 -   `manualStart` **[boolean][29]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
 -   `timeouts` **[object][16]?** [WebDriver timeouts][34] defined as hash.

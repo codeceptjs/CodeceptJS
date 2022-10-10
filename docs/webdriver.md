@@ -375,7 +375,7 @@ exports.config = {
     WebDriver: {
       // WebDriver config goes here
       // wait for 5 seconds
-      waitForTimeout: 5000
+      waitforTimeout: 5000
     }
   }
 }

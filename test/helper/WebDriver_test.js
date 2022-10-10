@@ -32,7 +32,7 @@ describe('WebDriver', function () {
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
-      waitForTimeout: 5000,
+      waitforTimeout: 5000,
       capabilities: {
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
@@ -1221,7 +1221,7 @@ describe('WebDriver - Basic Authentication', () => {
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
-      waitForTimeout: 5000,
+      waitforTimeout: 5000,
       capabilities: {
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],

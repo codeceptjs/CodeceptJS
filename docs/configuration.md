@@ -87,7 +87,7 @@ exports.config = {
       key: process.env.CLOUDSERVICE_KEY,
 
       coloredLogs: true,
-      waitForTimeout: 10000
+      waitforTimeout: 10000
     }
   },
 
