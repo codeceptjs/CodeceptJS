@@ -69,6 +69,7 @@ Type: [object][5]
 -   `chromium` **[object][5]?** pass additional chromium options
 -   `electron` **[object][5]?** (pass additional electron options
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][36].
+-   `ignoreLog` **[Array][14]&lt;[string][7]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][37].
 
 
 
@@ -2170,3 +2171,5 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 [35]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
 
 [36]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
+
+[37]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
