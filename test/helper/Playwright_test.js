@@ -772,7 +772,25 @@ describe('Playwright', function () {
     });
   });
 
-  describe('#handleDownloads', () => {
+  describe('#handleDownloads - with passed folder', () => {
+    before(() => {
+      // create download folder;
+      global.output_dir = path.join(`${__dirname}/../data/output`);
+
+      FS = new FileSystem();
+      FS._before();
+      FS.amInPath('output/downloadHere');
+    });
+
+    it('should download file', async () => {
+      await I.amOnPage('/form/download');
+      await I.handleDownloads('downloadHere/avatar.jpg');
+      await I.click('Download file');
+      await FS.waitForFile('avatar.jpg', 5);
+    });
+  });
+
+  describe('#handleDownloads - with default folder', () => {
     before(() => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -782,14 +800,7 @@ describe('Playwright', function () {
       FS.amInPath('output');
     });
 
-    it('should download file - passed folder', async () => {
-      await I.amOnPage('/form/download');
-      await I.handleDownloads('downloadHere/avatar.jpg');
-      await I.click('Download file');
-      await FS.waitForFile('downloadHere/avatar.jpg', 5);
-    });
-
-    it('should download file - default folder', async () => {
+    it('should download file', async () => {
       await I.amOnPage('/form/download');
       await I.handleDownloads('avatar.jpg');
       await I.click('Download file');
