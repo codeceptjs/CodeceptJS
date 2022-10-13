@@ -69,6 +69,7 @@ Type: [object][5]
 -   `chromium` **[object][5]?** pass additional chromium options
 -   `electron` **[object][5]?** (pass additional electron options
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][36].
+-   `ignoreHTTPSErrors` **[boolean][25]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 
 
 
