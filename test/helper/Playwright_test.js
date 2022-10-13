@@ -782,11 +782,18 @@ describe('Playwright', function () {
       FS.amInPath('output');
     });
 
-    it('should dowload file', async () => {
+    it('should download file - passed folder', async () => {
       await I.amOnPage('/form/download');
-      await I.handleDownloads('downloads/avatar.jpg');
+      await I.handleDownloads('downloadHere/avatar.jpg');
       await I.click('Download file');
-      await FS.waitForFile('downloads/avatar.jpg', 5);
+      await FS.waitForFile('downloadHere/avatar.jpg', 5);
+    });
+
+    it('should download file - default folder', async () => {
+      await I.amOnPage('/form/download');
+      await I.handleDownloads('avatar.jpg');
+      await I.click('Download file');
+      await FS.waitForFile('avatar.jpg', 5);
     });
   });
 });
