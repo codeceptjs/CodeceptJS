@@ -726,6 +726,8 @@ If a function returns a Promise it will wait for its resolution.
 -   `fn` **([string][7] | [function][12])** function to be executed in browser context.
 -   `arg` **any?** optional argument to pass to the function
 
+Returns **[Promise][13]&lt;any>** 
+
 ### fillField
 
 Fills a text field or textarea, after clearing its value, with the given string.
