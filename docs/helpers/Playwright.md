@@ -40,7 +40,7 @@ Type: [object][5]
 ### Properties
 
 -   `url` **[string][7]** base url of website to be tested
--   `browser` **[string][7]** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
+-   `browser` **[string][7]?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][25]?** show browser window.
 -   `restart` **([string][7] | [boolean][25])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][32] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
