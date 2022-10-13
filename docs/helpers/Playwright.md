@@ -1119,7 +1119,7 @@ Should be used with [FileSystem helper][16] to check that file were downloaded c
 I.handleDownloads('downloads/avatar.jpg');
 I.click('Download Avatar');
 I.amInPath('output/downloads');
-I.waitForFile('downloads/avatar.jpg', 5);
+I.waitForFile('avatar.jpg', 5);
 ```
 
 #### Parameters
