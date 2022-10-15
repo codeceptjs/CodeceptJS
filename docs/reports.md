@@ -342,7 +342,7 @@ Then tests with failure will have screenshots.
 
 ### Configuration
 
-This helper should be configured in codecept.json
+This helper should be configured in codecept.conf.ts
 
 - `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
 - `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
@@ -435,3 +435,14 @@ npm i codeceptjs-testrail --save
 
 Now there is new feature, add the configuration to test run of test plan
 ![Attachemnt for failed case](http://g.recordit.co/uQLvQUq7cT.gif)
+
+
+## Tesults
+
+Submit test results data from CodeceptJS to [Tesults](https://www.tesults.com) easily with the [codeceptjs-tesults](https://www.npmjs.com/package/codeceptjs-tesults) plugin. Test results data is submitted automatically after a test run completes.
+
+```sh
+npm i codeceptjs-tesults --save
+```
+
+Once installed, follow the [quick and easy integration instructions](https://www.tesults.com/docs/codeceptjs) to get setup in no time.

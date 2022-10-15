@@ -9,11 +9,16 @@ editLink: false
 
 Here is the list of helpers created by our community.
 Please **add your own** by editing this page.
+## Webhooks
+
+* [codeceptjs-webhook-helper](https://github.com/onemolegames/codeceptjs-webhook-helper) - to check webhook calls during the tests.
 
 ## Email Checking
 
 * [MailCatcher](https://gist.github.com/schmkr/026732dfa1627b927ff3a08dc31ee884) - to check emails via Mailcatcher locally.
 * [codeceptjs-mailhog-helper](https://github.com/tsuemura/codeceptjs-mailhog-helper) - to check emails via Mailhog locally.
+* [codeceptjs-testmailapp-helper](https://github.com/pavkam/codeceptjs-testmailapp-helper) - to check emails via Testmail.app service.
+* [codeceptjs-mailosaurhelper](https://github.com/yurkovychv/codeceptjs-mailosaur) - to check emails via [Mailosaur](https://mailosaur.com/) service.
 
 ## Data Sources
 
@@ -32,14 +37,13 @@ Please **add your own** by editing this page.
 ## Visual-Testing
 * [codeceptjs-resemblehelper](https://github.com/puneet0191/codeceptjs-resemblehelper) - a helper which helps with visual testing using resemble.js. 
 * [codeceptjs-applitoolshelper](https://www.npmjs.com/package/codeceptjs-applitoolshelper) - a helper which helps interaction with [Applitools](https://applitools.com)
+* [codeceptjs-pixelmatchhelper](https://github.com/stracker-phil/codeceptjs-pixelmatchhelper) - a helper that integrates pixelmatch for visual testing. 
 
 ## Reporters
 * [codeceptjs-rphelper](https://github.com/reportportal/agent-js-codecept) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
 * [codeceptjs-xray-helper](https://www.npmjs.com/package/codeceptjs-xray-helper) is a CodeceptJS helper which can publish tests results on [XRAY](https://confluence.xpand-it.com/display/XRAYCLOUD/Import+Execution+Results+-+REST).
 * [codeceptjs-slack-reporter](https://www.npmjs.com/package/codeceptjs-slack-reporter) Get a Slack notification when one or more scenarios fail.
-
-## Page Object Code Generator
-* [codeceptjs-CodeGenerator](https://github.com/senthillkumar/CodeCeptJS-PageObject) is a CodeceptJS custom wrapper which can create page class with action methods from the page object file(JSON) and project setup(Folder Structure).
+* [codeceptjs-browserlogs-plugin](https://github.com/pavkam/codeceptjs-browserlogs-plugin) Record the browser logs for failed tests.
 
 ## Browser request control
 * [codeceptjs-resources-check](https://github.com/luarmr/codeceptjs-resources-check) Load a URL with Puppeteer and listen to the requests while the page is loading. Enabling count the number or check the sizes of the requests.

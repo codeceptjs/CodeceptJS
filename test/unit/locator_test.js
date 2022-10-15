@@ -202,13 +202,13 @@ describe('Locator', () => {
   it('should throw an error when xpath with round brackets is nested', () => {
     expect(() => {
       Locator.build('tr').find('(./td)[@id="id"]');
-    }, /round brackets/).to.be.thrown;
+    }).to.throw('round brackets');
   });
 
   it('should throw an error when locator with specific position is nested', () => {
     expect(() => {
       Locator.build('tr').withChild(Locator.build('td').first());
-    }, /round brackets/).to.be.thrown;
+    }).to.throw('round brackets');
   });
 
   it('should not select element by deep nested siblings', () => {

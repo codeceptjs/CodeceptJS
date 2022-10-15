@@ -512,6 +512,46 @@ I.seeElement('=user'); // matches => [data-qa=user]
 I.click('=sign-up'); // matches => [data-qa=sign-up]
 ```
 
+Using `data-qa` OR `data-test` attribute with `=` prefix:
+
+```js
+// in codecept.conf.js
+plugins: {
+ customLocator: {
+   enabled: true,
+   prefix: '=',
+   attribute: ['data-qa', 'data-test'],
+   strategy: 'xpath'
+ }
+}
+```
+
+In a test:
+
+```js
+I.seeElement('=user'); // matches => //*[@data-qa=user or @data-test=user]
+I.click('=sign-up'); // matches => //*[data-qa=sign-up or @data-test=sign-up]
+```
+
+```js
+// in codecept.conf.js
+plugins: {
+ customLocator: {
+   enabled: true,
+   prefix: '=',
+   attribute: ['data-qa', 'data-test'],
+   strategy: 'css'
+ }
+}
+```
+
+In a test:
+
+```js
+I.seeElement('=user'); // matches => [data-qa=user],[data-test=user]
+I.click('=sign-up'); // matches => [data-qa=sign-up],[data-test=sign-up]
+```
+
 ### Parameters
 
 -   `config`  
@@ -682,7 +722,7 @@ Run tests with plugin enabled:
 plugins: {
     retryFailedStep: {
         enabled: true,
-        ignoreSteps: [
+        ignoredSteps: [
           'scroll*', // ignore all scroll steps
           /Cookie/, // ignore all steps with a Cookie in it (by regexp)
         ]

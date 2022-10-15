@@ -1,3 +1,119 @@
+## 3.3.6
+
+* [`run-rerun`](https://codecept.io/commands/#run-rerun) command was re-introduced by @dwentland24 in #3436. Use it to perform run multiple times and detect flaky tests
+* Enabled `retryFailedStep` by default in `@codeceptjs/configure` v 0.10. See https://github.com/codeceptjs/configure/pull/26
+* [Playwright] Fixed properties types "waitForNavigation" and "firefox" by @mirao in #3401
+* [REST] Changed "endpoint" to optional by @mirao in #3404
+* [REST] Use [`secret`]() for form encoded string by @PeterNgTr:
+
+```js
+const secretData = secret('name=john&password=123456');
+const response = await I.sendPostRequest('/user', secretData);
+```
+
+* [Playwright]Fixed docs related to fixed properties types "waitForNavigation" and "firefox" by @mirao in #3407
+* [Playwright]Fixed parameters of startActivity() by @mirao in #3408
+* Move semver to prod dependencies by @timja in #3413
+* check if browser is W3C instead of Android by @mikk150 in #3414
+* Pass service configs with options and caps as array for browsers… by @07souravkunda in #3418
+* fix for type of "webdriver.port" by @ngraf in #3421
+* fix for type of "webdriver.smartWait" by @pmajewski24 in #3426
+* fix(datatable): mask secret text by @PeterNgTr in #3432
+* fix(playwright) - video name and missing type by @PeterNgTr in #3430
+* fix for expected type of "bootstrap", "teardown", "bootstrapAll" and "teardownAll" by @ngraf in #3424
+* Improve generate pageobject `gpo` command to work with TypeScript by @PeterNgTr in #3411
+* Fixed dry-run to always return 0 code and exit 
+* Added minimal version notice for NodeJS >= 12
+* fix(utils): remove . of test title to avoid confusion by @PeterNgTr in #3431
+
+## 3.3.5
+
+🛩️ Features
+
+* Added **TypeScript types for CodeceptJS config**. 
+
+Update `codecept.conf.js` to get intellisense when writing config file:
+
+```js
+/**@type {CodeceptJS.MainConfig}**/
+exports.config = {
+  //...
+}
+```
+* Added TS types for helpers config:
+  * Playwright
+  * Puppeteer
+  * WebDriver
+  * REST
+* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by @PeterNgTr and @davertmik)
+* Includes `node-ts` automatically when using TypeScript setup.
+
+
+🐛 Bugfixes
+
+* [Puppeteer] Fixed support for Puppeteer > 14.4 by @PeterNgTr 
+* Don't report files as existing when non-directory is in path by @jonathanperret. See #3374
+* Fixed TS type for `secret` function by @PeterNgTr 
+* Fixed wrong order for async MetaSteps by @dwentland24. See #3393
+* Fixed same param substitution in BDD step. See #3385 by @snehabhandge 
+
+📖 Documentation
+
+* Updated [configuration options](https://codecept.io/configuration/) to match TypeScript types
+* Updated [TypeScript documentation](https://codecept.io/typescript/) on simplifying TS installation
+* Added codecept-tesults plugin documentation by @ajeetd 
+
+
+
+## 3.3.4
+
+* Added support for masking fields in objects via `secret` function:
+
+```js
+I.sendPostRequest('/auth', secret({ name: 'jon', password: '123456' }, 'password'));
+```
+* Added [a guide about using of `secret`](/secrets) function
+* [Appium] Use `touchClick` when interacting with elements in iOS. See #3317 by @mikk150
+* [Playwright] Added `cdpConnection` option to connect over CDP. See #3309 by @Hmihaly 
+* [customLocator plugin] Allowed to specify multiple attributes for custom locator. Thanks to @aruiz-caritsqa
+
+```js
+plugins: {
+ customLocator: {
+   enabled: true,
+   prefix: '$',
+   attribute: ['data-qa', 'data-test'],
+ }
+}
+```
+* [retryTo plugin] Fixed #3147 using `pollInterval` option. See #3351 by @cyonkee
+* [Playwright] Fixed grabbing of browser console messages and window resize in new tab. Thanks to @mirao
+* [REST] Added `prettyPrintJson` option to print JSON in nice way by @PeterNgTr 
+* [JSONResponse] Updated response validation to iterate over array items if response is array. Thanks to @PeterNgTr
+
+```js
+// response.data == [
+//   { user: { name: 'jon', email: 'jon@doe.com' } },
+//   { user: { name: 'matt', email: 'matt@doe.com' } },
+//]
+
+I.seeResponseContainsKeys(['user']);
+I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+I.seeResponseContainsJson({ user: { email: 'matt@doe.com' } });
+I.dontSeeResponseContainsJson({ user: 2 });
+```
+
+## 3.3.3
+
+* Fixed `DataCloneError: () => could not be cloned` when running data tests in run-workers
+* 🇺🇦 Added #StandWithUkraine notice to CLI
+
+
+## 3.3.2
+
+* [REST] Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See #3304 by @mirao
+* Reverted typings change introduced in #3245. [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873) 
+
 ## 3.3.1
 
 🛩️ Features:
@@ -35,8 +151,6 @@ npx codeceptjs run test-dir/*"
 📖 Documentation
 * Improving the typings in many places
 * Improving the return type of helpers for TS users (#3245) - @nlespiaucq
-
-🇺🇦 Added #StandWithUkraine hashtag notice to CLI
 
 ## 3.3.0
 
@@ -487,7 +601,7 @@ MyPage.hasFiles('first arg', 'second arg');
 
 // OUTPUT:
 MyPage: hasFile "First arg", "Second arg"
-  I see file "codecept.json"
+  I see file "codecept.js"
   I see file "codecept.po.json"
 ```
 * Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by @Vorobeyko.
@@ -2084,7 +2198,7 @@ module.exports = function(done) {
 ```js
 // inside codecept.conf.js
 exports.config = {
-  // contents of codecept.json
+  // contents of codecept.js
 }
 ```
 * Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).

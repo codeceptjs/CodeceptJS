@@ -16,6 +16,253 @@ declare namespace CodeceptJS {
     path?: string,
   };
 
+  type MainConfig = {
+    /** Pattern to locate CodeceptJS tests.
+     * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
+     *
+     * For tests in JavaScript:
+     *
+     * ```js
+     * tests: 'tests/**.test.js'
+     * ```
+     * For tests in TypeScript:
+     *
+     * ```js
+     * tests: 'tests/**.test.ts'
+     * ```
+     */
+    tests: string;
+    /**
+     * Where to store failure screenshots, artifacts, etc
+     *
+     * ```js
+     * output: './output'
+     * ```
+     */
+    output: string;
+    /**
+     * Pattern to filter tests by name.
+     * This option is useful if you plan to use multiple configs for different environments.
+     *
+     * To execute only tests with @firefox tag
+     *
+     * ```js
+     * grep: '@firefox'
+     * ```
+     */
+    grep?: string;
+    /**
+     * Enable and configure helpers:
+     *
+     * ```js
+     * helpers: {
+     *   Playwright: {
+     *     url: 'https://mysite.com',
+     *     browser: 'firefox'
+     *   }
+     * }
+     * ```
+    */
+    helpers?: {
+      /**
+       * Run web tests controlling browsers via Playwright engine.
+       *
+       * https://codecept.io/helpers/playwright
+       *
+       * Available commands:
+       * ```js
+       * I.amOnPage('/');
+       * I.click('Open');
+       * I.see('Welcome');
+       * ```
+       */
+      Playwright?: PlaywrightConfig;
+      /**
+       * Run web tests controlling browsers via Puppeteer engine.
+       *
+       * https://codecept.io/helpers/puppeteer
+       *
+       * Available commands:
+       * ```js
+       * I.amOnPage('/');
+       * I.click('Open');
+       * I.see('Welcome');
+       * ```
+       */
+      Puppeteer?: PuppeteerConfig;
+
+      /**
+       * Run web tests controlling browsers via WebDriver engine.
+       *
+       * Available commands:
+       * ```js
+       * I.amOnPage('/');
+       * I.click('Open');
+       * I.see('Welcome');
+       * ```
+       *
+       * https://codecept.io/helpers/webdriver
+       */
+      WebDriver?: WebDriverConfig;
+      /**
+       * Execute REST API requests for API testing or to assist web testing.
+       *
+       * https://codecept.io/helpers/REST
+       *
+       * Available commands:
+       * ```js
+       * I.sendGetRequest('/');
+       * ```
+       */
+      REST?: RESTConfig;
+
+      /**
+       * Use JSON assertions for API testing.
+       * Can be paired with REST or GraphQL helpers.
+       *
+       * https://codecept.io/helpers/JSONResponse
+       *
+       * Available commands:
+       * ```js
+       * I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+       * ```
+       */
+      JSONResponse?: any;
+
+      [key: string]: any;
+    },
+    /**
+     * Enable CodeceptJS plugins.
+     *
+     * https://codecept.io/plugins/
+     *
+     * Plugins listen to test events and extend functionality of CodeceptJS.
+     *
+     * Example:
+     *
+     * ```js
+     * plugins: {
+     *   autoDelay: {
+     *     enabled: true
+     *   }
+      }
+     * ```
+     */
+    plugins?: any;
+    /**
+     * Include page objects to access them via dependency injection
+     *
+     * ```js
+     * I: "./custom_steps.js",
+     * loginPage: "./pages/Login.js",
+     * User: "./pages/User.js",
+     * ```
+     * Configured modules can be injected by name in a Scenario:
+     *
+     * ```js
+     * Scenario('test', { I, loginPage, User })
+     * ```
+     */
+    include?: any;
+    /**
+     * Set default tests timeout in seconds.
+     * Tests will be killed on no response after timeout.
+     *
+     * ```js
+     * timeout: 20,
+     * ```
+     */
+    timeout?: number;
+    /** Disable registering global functions (Before, Scenario, etc). Not recommended */
+    noGlobals?: boolean;
+    /**
+     * [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.
+     *
+     * Example:
+     *
+     * ```js
+     * mocha: {
+     *   "mocha-junit-reporter": {
+     *      stdout: "./output/console.log",
+     *      options: {
+     *        mochaFile: "./output/result.xml",
+     *        attachments: true //add screenshot for a failed test
+     *      }
+     *   }
+     * }
+     * ```
+     */
+    mocha?: any;
+    /**
+     * [Execute code before](https://codecept.io/bootstrap/) tests are run.
+     *
+     * Can be either JS module file or async function:
+     *
+     * ```js
+     * bootstrap: async () => server.launch(),
+     * ```
+     * or
+     * ```js
+     * bootstrap: 'bootstrap.js',
+     * ```
+    */
+    bootstrap?: (() => Promise<void>) | boolean | string;
+    /**
+     * [Execute code after tests](https://codecept.io/bootstrap/) finished.
+     *
+     * Can be either JS module file or async function:
+     *
+     * ```js
+     * teardown: async () => server.stop(),
+     * ```
+     * or
+     * ```js
+     * teardown: 'teardown.js',
+     * ```
+    */
+    teardown?: (() => Promise<void>) | boolean | string;
+    /**
+     * [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
+     *
+     */
+    bootstrapAll?: (() => Promise<void>) | boolean | string;
+    /**
+     * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
+    */
+    teardownAll?: (() => Promise<void>) | boolean | string;
+    /** Enable [localized test commands](https://codecept.io/translation/) */
+    translation?: string;
+    /**
+     * [Require additional JS modules](https://codecept.io/configuration/#require)
+     *
+     * Example:
+     * ```
+     * require: ["should"]
+     * ```
+    */
+    require?: Array<string>;
+
+    /**
+     * Enable [BDD features](https://codecept.io/bdd/#configuration).
+     *
+     * Sample configuration:
+     * ```js
+     * gherkin: {
+     *   features: "./features/*.feature",
+     *   steps: ["./step_definitions/steps.js"]
+     * }
+     * ```
+     */
+    gherkin?: {
+      /** load feature files by pattern. Multiple patterns can be specified as array */
+      features: string | Array<string>,
+      /** load step definitions from JS files */
+      steps: Array<string>
+    };
+
+    [key: string]: any;
+  };
+
   interface PageScrollPosition {
     x: number;
     y: number;

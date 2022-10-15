@@ -9,24 +9,26 @@ CodeceptJS configuration is set in `codecept.conf.js` file.
 
 After running `codeceptjs init` it should be saved in test root.
 
-Here is an overview of available options with their defaults:
-
-* **tests**: `"./*_test.js"` - pattern to locate tests. Allows to enter [glob pattern](https://github.com/isaacs/node-glob), Can either be a pattern to locate tests or an array of patterns to locate tests / test file names.
-* **grep**: - pattern to filter tests by name
-* **include**: `{}` - actors and page objects to be registered in DI container and included in tests. Accepts objects and module `require` paths
-* **timeout**: `10000` - default tests timeout
-* **output**: `"./output"` - where to store failure screenshots, etc
-* **helpers**: `{}` - list of enabled helpers
-* **mocha**: `{}` - mocha options, [reporters](https://codecept.io/reports/) can be configured here
-* **multiple**: `{}` - multiple options, see [Multiple Execution](https://codecept.io/parallel#multiple-browsers-execution)
-* **bootstrap**: `"./bootstrap.js"` - an option to run code _before_ tests are run. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown)).
-* **bootstrapAll**: `"./bootstrap.js"` - an option to run code _before_ all test suites are run when using the run-multiple mode. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown)).
-* **teardown**: - an option to run code _after_  all test suites are run when using the run-multiple mode. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown).
-* **teardownAll**: - an option to run code _after_ tests are run. See [Hooks](https://codecept.io/hooks/#bootstrap-teardown).
-* **noGlobals**: `false` - disable registering global variables like `Actor`, `Helper`, `pause`, `within`, `DataTable`
-* **hooks**: - include custom listeners to plug into execution workflow. See [Custom Hooks](https://codecept.io/hooks/#custom-hooks)
-* **translation**: - [locale](https://codecept.io/translation/) to be used to print s  teps output, as well as used in source code.
-* **require**: `[]` - array of module names to be required before codecept starts. See [Require](#require)
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `bootstrap?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code before](https://codecept.io/bootstrap/) tests are run.  Can be either JS module file or async function:  ```bootstrap: async () => server.launch(), ``` or ```bootstrap: 'bootstrap.js', ``` |
+| `bootstrapAll?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
+| `gherkin?` | { `features`: `string` \| `string`[] ; `steps`: `string`[]  } | Enable [BDD features](https://codecept.io/bdd/#configuration).   Sample configuration: ```gherkin: {   features: "./features/*.feature",   steps: ["./step_definitions/steps.js"] } ``` |
+| `gherkin.features` | `string` \| `string`[] | load feature files by pattern. Multiple patterns can be specified as array |
+| `gherkin.steps` | `string`[] | load step definitions from JS files |
+| `grep?` | `string` | Pattern to filter tests by name. This option is useful if you plan to use multiple configs for different environments.  To execute only tests with  @firefox tag use  ```grep: '@firefox' ``` |
+| `helpers?` | {} | Enable and configure helpers:  ```helpers: {   Playwright: {     url: 'https://mysite.com',     browser: 'firefox'   } } ``` |
+| `include?` | `any` | Include page objects to access them via dependency injection  ```I: "./custom_steps.js", loginPage: "./pages/Login.js", User: "./pages/User.js", ``` Configured modules can be injected by name in a Scenario:  ```Scenario('test', { I, loginPage, User }) ``` |
+| `mocha?` | `any` | [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.  Example:  ```mocha: {   "mocha-junit-reporter": {      stdout: "./output/console.log",      options: {        mochaFile: "./output/result.xml",        attachments: true //add screenshot for a failed test      }   } } ``` |
+| `noGlobals?` | `boolean` | Disable registering global functions (Before, Scenario, etc). Not recommended |
+| `output` | `string` | Where to store failure screenshots, artifacts, etc   ```output: './output' ``` |
+| `plugins?` | `any` | Enable CodeceptJS plugins. Example:  ```plugins: {   autoDelay: {     enabled: true   }  } ``` |
+| `require?` | `string`[] | [Require additional JS modules](https://codecept.io/configuration/#require)  Example: ``` require: ["should"] ``` |
+| `teardown?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code after tests](https://codecept.io/bootstrap/) finished.   Can be either JS module file or async function:  ```teardown: async () => server.stop(), ``` or ```teardown: 'teardown.js', ``` |
+| `teardownAll?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall) |
+| `tests` | `string` | Pattern to locate CodeceptJS tests. Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.  For tests in JavaScript:  ```tests: 'tests/**.test.js' ``` For tests in TypeScript:  ```tests: 'tests/**.test.ts' ``` |
+| `timeout?` | `number` | Set default tests timeout in seconds. Tests will be killed on no response after timeout.  ```timeout: 20, ``` |
+| `translation?` | `string` | Enable [localized test commands](https://codecept.io/translation/) |
 
 
 ## Require
@@ -97,7 +99,7 @@ exports.config = {
     dashboardPage: new DashboardPage()
   }
 
-  // here goes config as it was in codecept.json
+  // here goes config as it was in codecept.conf.ts
   // ....
 };
 ```

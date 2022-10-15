@@ -16,11 +16,11 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -28,7 +28,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: microsoft/playwright-github-action@v1
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 7.4
@@ -37,6 +36,8 @@ jobs:
         npm install
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    - name: Install deps
+      run: npx playwright install-deps
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run chromium tests
@@ -44,7 +45,7 @@ jobs:
     - name: run chromium with restart==browser tests
       run: "BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run chromium with restart==session tests
-      run: "BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"      
+      run: "BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run firefox tests
       run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests

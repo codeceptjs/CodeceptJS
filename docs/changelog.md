@@ -7,6 +7,94 @@ layout: Section
 
 # Releases
 
+## 3.3.5
+
+🛩️ Features
+
+* Added **TypeScript types for CodeceptJS config**. 
+
+Update `codecept.conf.js` to get intellisense when writing config file:
+
+```js
+/**@type {CodeceptJS.MainConfig}**/
+exports.config = {
+  //...
+}
+```
+* Added TS types for helpers config:
+  * Playwright
+  * Puppeteer
+  * WebDriver
+  * REST
+* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by **[PeterNgTr](https://github.com/PeterNgTr)** and **[davertmik](https://github.com/davertmik)**)
+* Includes `node-ts` automatically when using TypeScript setup.
+
+
+🐛 Bugfixes
+
+* **[Puppeteer]** Fixed support for Puppeteer > 14.4 by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* Don't report files as existing when non-directory is in path by **[jonathanperret](https://github.com/jonathanperret)**. See [#3374](https://github.com/codeceptjs/CodeceptJS/issues/3374)
+* Fixed TS type for `secret` function by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* Fixed wrong order for async MetaSteps by **[dwentland24](https://github.com/dwentland24)**. See [#3393](https://github.com/codeceptjs/CodeceptJS/issues/3393)
+* Fixed same param substitution in BDD step. See [#3385](https://github.com/codeceptjs/CodeceptJS/issues/3385) by **[snehabhandge](https://github.com/snehabhandge)** 
+
+📖 Documentation
+
+* Updated [configuration options](https://codecept.io/configuration/) to match TypeScript types
+* Updated [TypeScript documentation](https://codecept.io/typescript/) on simplifying TS installation
+* Added codecept-tesults plugin documentation by **[ajeetd](https://github.com/ajeetd)** 
+
+
+
+## 3.3.4
+
+* Added support for masking fields in objects via `secret` function:
+
+```js
+I.sendPostRequest('/auth', secret({ name: 'jon', password: '123456' }, 'password'));
+```
+* Added [a guide about using of `secret`](/secrets) function
+* **[Appium]** Use `touchClick` when interacting with elements in iOS. See [#3317](https://github.com/codeceptjs/CodeceptJS/issues/3317) by **[mikk150](https://github.com/mikk150)**
+* **[Playwright]** Added `cdpConnection` option to connect over CDP. See [#3309](https://github.com/codeceptjs/CodeceptJS/issues/3309) by **[Hmihaly](https://github.com/Hmihaly)** 
+* [customLocator plugin] Allowed to specify multiple attributes for custom locator. Thanks to **[aruiz-caritsqa](https://github.com/aruiz-caritsqa)**
+
+```js
+plugins: {
+ customLocator: {
+   enabled: true,
+   prefix: '$',
+   attribute: ['data-qa', 'data-test'],
+ }
+}
+```
+* [retryTo plugin] Fixed [#3147](https://github.com/codeceptjs/CodeceptJS/issues/3147) using `pollInterval` option. See [#3351](https://github.com/codeceptjs/CodeceptJS/issues/3351) by **[cyonkee](https://github.com/cyonkee)**
+* **[Playwright]** Fixed grabbing of browser console messages and window resize in new tab. Thanks to **[mirao](https://github.com/mirao)**
+* **[REST]** Added `prettyPrintJson` option to print JSON in nice way by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* **[JSONResponse]** Updated response validation to iterate over array items if response is array. Thanks to **[PeterNgTr](https://github.com/PeterNgTr)**
+
+```js
+// response.data == [
+//   { user: { name: 'jon', email: 'jon@doe.com' } },
+//   { user: { name: 'matt', email: 'matt@doe.com' } },
+//]
+
+I.seeResponseContainsKeys(['user']);
+I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+I.seeResponseContainsJson({ user: { email: 'matt@doe.com' } });
+I.dontSeeResponseContainsJson({ user: 2 });
+```
+
+## 3.3.3
+
+* Fixed `DataCloneError: () => could not be cloned` when running data tests in run-workers
+* 🇺🇦 Added #StandWithUkraine notice to CLI
+
+
+## 3.3.2
+
+* **[REST]** Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See [#3304](https://github.com/codeceptjs/CodeceptJS/issues/3304) by **[mirao](https://github.com/mirao)**
+* Reverted typings change introduced in [#3245](https://github.com/codeceptjs/CodeceptJS/issues/3245). [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873) 
+
 ## 3.3.1
 
 🛩️ Features:
@@ -496,7 +584,7 @@ MyPage.hasFiles('first arg', 'second arg');
 
 // OUTPUT:
 MyPage: hasFile "First arg", "Second arg"
-  I see file "codecept.json"
+  I see file "codecept.js"
   I see file "codecept.po.json"
 ```
 * Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by **[Vorobeyko](https://github.com/Vorobeyko)**.
@@ -2092,7 +2180,7 @@ module.exports = function(done) {
 ```js
 // inside codecept.conf.js
 exports.config = {
-  // contents of codecept.json
+  // contents of codecept.js
 }
 ```
 * Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).

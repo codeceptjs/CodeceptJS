@@ -212,6 +212,14 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         }
       });
 
+      replaceInFile(`docs/helpers/${name}.md`, (cfg) => {
+        const fullText = fs.readFileSync(`docs/helpers/${name}.md`).toString();
+        const text = fullText.match(/## config((.|\n)*)\[1\]/m);
+        if (!text) return;
+        cfg.replace('<!-- configuration -->', text[1]);
+        cfg.replace(/## config((.|\n)*)\[1\]/m, '');
+      });
+
       await writeToFile(`docs/helpers/${name}.md`, (cfg) => {
         cfg.append(`---
 permalink: /helpers/${name}

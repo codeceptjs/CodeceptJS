@@ -25,84 +25,24 @@ Example:
   - incorrectly used CodeceptJS features;
 
 
-## Getting Started
+## Getting Started <Badge text="Since 3.3.5" type="warning"/>
 
-### TypeScript Boilerplate
-
-To get started faster we prepared [typescript boilerplate project](https://github.com/codeceptjs/typescript-boilerplate) which can be used instead of configuring TypeScript on your own. Clone this repository into an empty folder and you are done.
-
-Otherwise, follow next steps to introduce TypeScript into the project.
-
-### Install TypeScipt
-
-For writing tests in TypeScript you'll need to install `typescript` and `ts-node` into your project.
+CodeceptJS can initialize tests as a TypeScript project.
+When starting a new project with a standard installation via 
 
 ```
-npm install typescript ts-node
-```
-
-### Configure codecept.conf.js
-
-To configure TypeScript in your project, you need to add [`ts-node/register`](https://github.com/TypeStrong/ts-node) on first line in your config. Like in the following config file:
-
-```js
-require('ts-node/register')
-
-exports.config = {
-  tests: './*_test.ts',
-  output: './output',
-  helpers: {
-    Puppeteer: {
-      url: 'http://example.com',
-    },
-  },
-  name: 'project name',
-}
-```
-
-### Configure tsconfig.json
-
-We recommended the following configuration in a [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html):
-
-```json
-{
-  "ts-node": {
-    "files": true
-  },
-  "compilerOptions": {
-    "target": "es2018",
-    "lib": ["es2018", "DOM"],
-    "esModuleInterop": true,
-    "module": "commonjs",
-    "strictNullChecks": true,
-    "types": ["codeceptjs"],
-  },
-}
-```
-
-> You can find an example project with TypeScript and CodeceptJS on our project [typescript-boilerplate](https://github.com/codeceptjs/typescript-boilerplate).
-
-### Set Up steps.d.ts
-
-Configuring the `tsconfig.json` and `codecept.conf.js` is not enough, you will need to configure the `steps.d.ts` file for custom steps. Just simply do this by running this command::
-
-`npx codeceptjs def`
-
-As a result, a file will be created on your root folder with following content:
-
-```ts
-/// <reference types='codeceptjs' />
-
-declare namespace CodeceptJS {
-  interface SupportObject { I: I }
-  interface Methods extends Puppeteer {}
-  interface I extends WithTranslation<Methods> {}
-  namespace Translation {
-    interface Actions {}
-  }
-}
+npx codeceptjs init
+``` 
+Then select TypeScript as the first question:
 
 ```
+? Do you plan to write tests in TypeScript? Yes
+```
+
+Then a config file and new tests will be created in TypeScript format.
+
+If a config file is set in TypeScrip format (`codecept.conf.ts`) package `node-ts` will be used to run tests. 
+
 
 ## Types for custom helper or page object
 

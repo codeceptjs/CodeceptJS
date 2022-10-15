@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const FormData = require('form-data');
+const { secret } = require('../../lib/secret');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
@@ -66,6 +67,22 @@ describe('REST', () => {
     it('should send POST requests: payload format = form urlencoded', async () => {
       const response = await I.sendPostRequest('/user', 'name=john');
       response.data.name.should.eql('john');
+    });
+
+    it('should send POST requests with secret', async () => {
+      const secretData = secret({ name: 'john', password: '123456' }, 'password');
+      const response = await I.sendPostRequest('/user', secretData);
+      response.data.name.should.eql('john');
+      response.data.password.should.eql('123456');
+      secretData.toString().should.include('"password":"****"');
+    });
+
+    it('should send POST requests with secret form encoded is not converted to string', async () => {
+      const secretData = secret('name=john&password=123456');
+      const response = await I.sendPostRequest('/user', secretData);
+      response.data.name.should.eql('john');
+      response.data.password.should.eql('123456');
+      secretData.getMasked().should.eql('*****');
     });
 
     it('should send PUT requests: payload format = json', async () => {
@@ -206,12 +223,66 @@ describe('REST', () => {
       }
     });
 
+    it('should set headers for all requests multiple times', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-first' });
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-second' });
+      I.haveRequestHeaders({ 'XY2-Test': 'xy2' });
+      {
+        const response = await I.sendGetRequest('/user');
+
+        response.config.headers.should.have.property('XY1-Test');
+        response.config.headers['XY1-Test'].should.eql('xy1-second');
+
+        response.config.headers.should.have.property('XY2-Test');
+        response.config.headers['XY2-Test'].should.eql('xy2');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
+    it('should override the header set for all requests', async () => {
+      I.haveRequestHeaders({ 'XY-Test': 'first' });
+      {
+        const response = await I.sendGetRequest('/user', { 'XY-Test': 'value_custom' });
+
+        response.config.headers.should.have.property('XY-Test');
+        response.config.headers['XY-Test'].should.eql('value_custom');
+
+        response.config.headers.should.have.property('X-Test');
+        response.config.headers['X-Test'].should.eql('test');
+      }
+    });
+
     it('should set Bearer authorization', async () => {
       I.amBearerAuthenticated('token');
       const response = await I.sendGetRequest('/user');
 
       response.config.headers.should.have.property('Authorization');
       response.config.headers.Authorization.should.eql('Bearer token');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should set Bearer authorization multiple times', async () => {
+      I.amBearerAuthenticated('token1');
+      I.amBearerAuthenticated('token2');
+      const response = await I.sendGetRequest('/user');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token2');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should override Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendGetRequest('/user', { Authorization: 'Bearer token_custom' });
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token_custom');
 
       response.config.headers.should.have.property('X-Test');
       response.config.headers['X-Test'].should.eql('test');

@@ -60,7 +60,7 @@ exports.config = {
     },
   },
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 100,
   multiple: {
     parallel: {
       chunks: 2,

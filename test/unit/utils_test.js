@@ -7,8 +7,9 @@ const utils = require('../../lib/utils');
 
 describe('utils', () => {
   describe('#fileExists', () => {
-    it('exists', () => expect(utils.fileExists(__filename)));
-    it('not exists', () => expect(!utils.fileExists('not_utils.js')));
+    it('exists', () => expect(utils.fileExists(__filename)).to.be.true);
+    it('not exists', () => expect(utils.fileExists('not_utils.js')).to.be.false);
+    it('not exists if file used as directory', () => expect(utils.fileExists(`${__filename}/not_utils.js`)).to.be.false);
   });
   /* eslint-disable no-unused-vars */
   describe('#getParamNames', () => {
@@ -270,18 +271,18 @@ describe('utils', () => {
     });
 
     it('should normalize modifier key based on operating system', () => {
-      sinon.stub(os, 'platform').returns('notdarwin');
-      expect(utils.getNormalizedKeyAttributeValue('CmdOrCtrl')).equal('Control');
-      expect(utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL')).equal('Control');
-      expect(utils.getNormalizedKeyAttributeValue('ControlOrCommand')).equal('Control');
-      expect(utils.getNormalizedKeyAttributeValue('left ctrl or command')).equal('ControlLeft');
+      sinon.stub(os, 'platform').callsFake(() => { return 'notdarwin'; });
+      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control');
+      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft');
       os.platform.restore();
 
-      sinon.stub(os, 'platform').returns('darwin');
-      expect(utils.getNormalizedKeyAttributeValue('CtrlOrCmd')).equal('Meta');
-      expect(utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND')).equal('Meta');
-      expect(utils.getNormalizedKeyAttributeValue('CommandOrControl')).equal('Meta');
-      expect(utils.getNormalizedKeyAttributeValue('right command or ctrl')).equal('MetaRight');
+      sinon.stub(os, 'platform').callsFake(() => { return 'darwin'; });
+      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta');
+      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight');
       os.platform.restore();
     });
   });

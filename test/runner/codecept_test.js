@@ -26,7 +26,7 @@ describe('CodeceptJS Runner', () => {
 
   it('should be executed with glob', (done) => {
     process.chdir(codecept_dir);
-    exec(codecept_run_config('codecept.glob.json'), (err, stdout) => {
+    exec(codecept_run_config('codecept.glob.js'), (err, stdout) => {
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('glob current dir'); // test name
       assert(!err);
@@ -45,7 +45,7 @@ describe('CodeceptJS Runner', () => {
   });
 
   it('should show failures and exit with 1 on fail', (done) => {
-    exec(codecept_run_config('codecept.failed.json'), (err, stdout) => {
+    exec(codecept_run_config('codecept.failed.js'), (err, stdout) => {
       stdout.should.include('Not-A-Filesystem');
       stdout.should.include('file is not in dir');
       stdout.should.include('FAILURES');
@@ -96,7 +96,7 @@ describe('CodeceptJS Runner', () => {
     describe('without "invert" option', () => {
       it('should filter by scenario tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @1_grep`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 1');
           stdout.should.not.include('grep message 2');
@@ -107,7 +107,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by scenario tags #2', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @2_grep`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 2');
           stdout.should.not.include('grep message 1');
@@ -118,7 +118,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by feature tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @feature_grep`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 1');
           stdout.should.include('grep message 2');
@@ -131,7 +131,7 @@ describe('CodeceptJS Runner', () => {
     describe('with "invert" option', () => {
       it('should filter by scenario tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @1_grep --invert`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @1_grep --invert`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.not.include('grep message 1');
           stdout.should.include('grep message 2');
@@ -142,7 +142,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by scenario tags #2', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @2_grep --invert`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @2_grep --invert`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.not.include('grep message 2');
           stdout.should.include('grep message 1');
@@ -153,7 +153,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by feature tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @main --invert`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @main --invert`, (err, stdout) => {
           stdout.should.include('@feature_grep'); // feature
           stdout.should.include('grep message 1');
           stdout.should.include('grep message 2');
@@ -164,7 +164,7 @@ describe('CodeceptJS Runner', () => {
 
       it('should filter by feature tags', (done) => {
         process.chdir(codecept_dir);
-        exec(`${codecept_run_config('codecept.grep.2.json')} --grep @feature_grep --invert`, (err, stdout) => {
+        exec(`${codecept_run_config('codecept.grep.2.js')} --grep @feature_grep --invert`, (err, stdout) => {
           stdout.should.not.include('@feature_grep'); // feature
           stdout.should.not.include('grep message 1');
           stdout.should.not.include('grep message 2');

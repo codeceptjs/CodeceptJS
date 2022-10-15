@@ -6,7 +6,7 @@ const debug_this_test = false;
 
 const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose || debug_this_test ? '--verbose' : ''} --config ${codecept_dir}/configs/timeouts/${config} ${grep ? `--grep "${grep}"` : ''}`;
 
-describe('CodeceptJS Timeouts', function () {
+describe.only('CodeceptJS Timeouts', function () {
   this.timeout(10000);
 
   it('should stop test when timeout exceeded', (done) => {
