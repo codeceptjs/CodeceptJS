@@ -17,7 +17,9 @@ module.exports = {
           // add 'Ts' suffix to generate promise-based helpers definition
           .replace(/class (.*) extends/, 'class $1Ts extends')
           // rename parent class to fix the inheritance
-          .replace(/(@augments \w+)/, '$1Ts');
+          .replace(/(@augments \w+)/, '$1Ts')
+          // avoid to export twice the configuration of the helper
+          .replace(/\/\*\*(.+?(?=config))config = \{\};/s, '');
       }
     },
     newDoclet: ({ doclet }) => {
