@@ -7,7 +7,7 @@ const AssertionFailedError = require('../../lib/assert/error');
 const fileExists = require('../../lib/utils').fileExists;
 
 let app;
-const apk_path = 'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk';
+const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk';
 
 describe('Appium', function () {
   // this.retries(1);
