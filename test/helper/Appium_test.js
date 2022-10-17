@@ -13,7 +13,7 @@ describe('Appium', function () {
   // this.retries(1);
   this.timeout(0);
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data');
     app = new Appium({
       app: apk_path,
