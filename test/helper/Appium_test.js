@@ -34,16 +34,14 @@ describe('Appium', function () {
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
-    return app._beforeSuite();
-  });
-
-  beforeEach(async () => {
+    await app._beforeSuite();
     app.isWeb = false;
     await app._before();
-    // await app.installApp(apk_path);
   });
 
-  afterEach(() => app._after());
+  after(async () => {
+    await app._after()
+  });
 
   describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {
     describe(
