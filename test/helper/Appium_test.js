@@ -302,7 +302,7 @@ describe('Appium', function () {
       );
       await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        1200, 1000,
+        120, 100,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       assert.equal(type, 'FLICK');
@@ -417,7 +417,7 @@ describe('Appium', function () {
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
         assert.equal(type, 'FLICK');
-        expect(parseInt(vy.split(' ')[1], 10)).to.be.above(178);
+        expect(parseInt(vy.split(' ')[1], 10)).to.be.above(-300);
       });
 
       it('should react on swipeLeft action', async () => {
