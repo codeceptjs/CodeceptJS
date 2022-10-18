@@ -354,6 +354,7 @@ declare namespace CodeceptJS {
 declare const codecept_dir: string;
 declare const output_dir: string;
 declare function tryTo(...fn): Promise<boolean>;
+declare function retryTo(...fn): Promise<null>;
 
 declare const actor: CodeceptJS.actor;
 declare const codecept_actor: CodeceptJS.actor;
@@ -419,6 +420,7 @@ declare namespace NodeJS {
     secret: typeof secret;
     // plugins
     tryTo: typeof tryTo;
+    retryTo: typeof retryTo;
 
     // BDD
     Given: typeof Given;
