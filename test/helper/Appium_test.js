@@ -7,13 +7,13 @@ const AssertionFailedError = require('../../lib/assert/error');
 const fileExists = require('../../lib/utils').fileExists;
 
 let app;
-const apk_path = 'https://github.com/PerfectoCode/AppsForSamples/blob/master/selendroid-test-app-0.17.0/selendroid-test-app-0.17.0.apk';
+const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk';
 
 describe('Appium', function () {
   // this.retries(1);
   this.timeout(0);
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data');
     app = new Appium({
       app: apk_path,
@@ -35,16 +35,14 @@ describe('Appium', function () {
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
-    return app._beforeSuite();
-  });
-
-  beforeEach(async () => {
+    await app._beforeSuite();
     app.isWeb = false;
     await app._before();
-    // await app.installApp(apk_path);
   });
 
-  afterEach(() => app._after());
+  after(async () => {
+    await app._after();
+  });
 
   describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {
     describe(

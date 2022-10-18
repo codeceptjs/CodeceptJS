@@ -40,7 +40,7 @@ Type: [object][5]
 ### Properties
 
 -   `url` **[string][7]** base url of website to be tested
--   `browser` **[string][7]** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
+-   `browser` **[string][7]?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][25]?** show browser window.
 -   `restart` **([string][7] | [boolean][25])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][32] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
@@ -67,8 +67,10 @@ Type: [object][5]
 -   `locale` **[string][7]?** locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
 -   `manualStart` **[boolean][25]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
 -   `chromium` **[object][5]?** pass additional chromium options
+-   `firefox` **[object][5]?** pass additional firefox options
 -   `electron` **[object][5]?** (pass additional electron options
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][36].
+-   `ignoreHTTPSErrors` **[boolean][25]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 
 
 
@@ -725,6 +727,8 @@ If a function returns a Promise it will wait for its resolution.
 
 -   `fn` **([string][7] | [function][12])** function to be executed in browser context.
 -   `arg` **any?** optional argument to pass to the function
+
+Returns **[Promise][13]&lt;any>** 
 
 ### fillField
 
