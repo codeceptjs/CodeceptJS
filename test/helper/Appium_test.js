@@ -40,7 +40,7 @@ describe('Appium', function () {
   });
 
   after(async () => {
-    await app._after()
+    await app._after();
   });
 
   describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {

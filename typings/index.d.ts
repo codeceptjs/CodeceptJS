@@ -353,6 +353,7 @@ declare namespace CodeceptJS {
 // Globals
 declare const codecept_dir: string;
 declare const output_dir: string;
+declare function tryTo(...fn): Promise<boolean>;
 
 declare const actor: CodeceptJS.actor;
 declare const codecept_actor: CodeceptJS.actor;
@@ -416,6 +417,8 @@ declare namespace NodeJS {
     locate: typeof locate;
     inject: typeof inject;
     secret: typeof secret;
+    // plugins
+    tryTo: typeof tryTo;
 
     // BDD
     Given: typeof Given;
