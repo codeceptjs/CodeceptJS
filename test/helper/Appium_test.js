@@ -8,7 +8,7 @@ const fileExists = require('../../lib/utils').fileExists;
 
 let app;
 const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk';
-const smallWait = 5;
+const smallWait = 10;
 
 describe('Appium', function () {
   // this.retries(1);
