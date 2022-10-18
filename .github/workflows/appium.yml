@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 3.x
+      - appium-tests-fix
 
 env:
   CI: true
@@ -12,7 +13,7 @@ env:
 
 jobs:
   appium1:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -36,7 +37,7 @@ jobs:
 
   appium2:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:

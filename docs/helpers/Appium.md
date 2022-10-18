@@ -258,6 +258,14 @@ Appium: support only Android
 -   `appId` **[string][4]** 
 -   `bundleId` **[string][4]?** ID of bundle
 
+### resetApp
+
+Reset the currently running app for current session.
+
+```js
+I.resetApp();
+```
+
 ### seeCurrentActivityIs
 
 Check current activity on an Android device.
