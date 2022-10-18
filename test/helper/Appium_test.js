@@ -8,6 +8,7 @@ const fileExists = require('../../lib/utils').fileExists;
 
 let app;
 const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk';
+const smallWait = 5;
 
 describe('Appium', function () {
   // this.retries(1);
@@ -49,7 +50,7 @@ describe('Appium', function () {
       '#grabAllContexts, #grabContext, #grabCurrentActivity, #grabNetworkConnection, #grabOrientation, #grabSettings',
       () => {
         it('should grab all available contexts for screen', async () => {
-          await app.waitForElement('~buttonStartWebviewCD');
+          await app.waitForElement('~buttonStartWebviewCD', smallWait);
           await app.click('~buttonStartWebviewCD');
           const val = await app.grabAllContexts();
           assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']);
@@ -150,7 +151,7 @@ describe('Appium', function () {
     });
 
     it('should set device orientation', async () => {
-      await app.waitForElement('~buttonStartWebviewCD');
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
       await app.setOrientation('LANDSCAPE');
       await app.seeOrientationIs('LANDSCAPE');
@@ -159,7 +160,7 @@ describe('Appium', function () {
 
   describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
     it('should switch context', async () => {
-      await app.waitForElement('~buttonStartWebviewCD');
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
       await app._switchToContext('WEBVIEW_io.selendroid.testapp');
       const val = await app.grabContext();
@@ -167,7 +168,7 @@ describe('Appium', function () {
     });
 
     it('should switch to native and web contexts @quick', async () => {
-      await app.waitForElement('~buttonStartWebviewCD');
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
       await app.see('WebView location');
       await app.switchToWeb();
@@ -204,7 +205,7 @@ describe('Appium', function () {
 
   describe('#hideDeviceKeyboard', () => {
     it('should hide device Keyboard @quick', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       try {
         await app.click('//android.widget.CheckBox');
@@ -246,7 +247,7 @@ describe('Appium', function () {
 
   describe('#makeTouchAction', () => {
     it('should react on touch actions', async () => {
-      await app.waitForElement('~buttonStartWebviewCD');
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.tap('~buttonStartWebviewCD');
       const val = await app.grabCurrentActivity();
       assert.equal(val, '.WebViewActivity');
@@ -361,7 +362,7 @@ describe('Appium', function () {
     });
 
     it('should assert when you dont scroll the document anymore', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       try {
         await app.swipeTo(
@@ -374,7 +375,7 @@ describe('Appium', function () {
     });
 
     it('should react on swipeTo action', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.swipeTo(
         '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
@@ -453,7 +454,7 @@ describe('Appium', function () {
     });
 
     it('should work inside web view as normally @quick', async () => {
-      await app.waitForElement('~buttonStartWebviewCD');
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
       await app.switchToWeb();
       await app.see('Prefered Car:');
@@ -462,7 +463,7 @@ describe('Appium', function () {
 
   describe('#appendField', () => {
     it('should be able to send special keys to element @second', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.click('~email of the customer');
       await app.appendField('~email of the customer', '1');
@@ -505,7 +506,7 @@ describe('Appium', function () {
 
   describe('see element : #seeElement, #dontSeeElement', () => {
     it('should check visible elements on page @quick', async () => {
-      await app.waitForElement('~buttonTestCD');
+      await app.waitForElement('~buttonTestCD', smallWait);
       await app.seeElement('~buttonTestCD');
       await app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
       await app.dontSeeElement('#something-beyond');
@@ -515,7 +516,7 @@ describe('Appium', function () {
 
   describe('#click @quick', () => {
     it('should click by accessibility id', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.seeElement('~label_usernameCD');
     });
@@ -528,7 +529,7 @@ describe('Appium', function () {
 
   describe('#fillField, #appendField @second', () => {
     it('should fill field by accessibility id', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('~email of the customer', 'Nothing special');
       await app.hideDeviceKeyboard('pressKey', 'Done');
@@ -544,7 +545,7 @@ describe('Appium', function () {
     });
 
     it('should fill field by xpath', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
       await app.hideDeviceKeyboard('pressKey', 'Done');
@@ -560,7 +561,7 @@ describe('Appium', function () {
     });
 
     it('should append field value @second', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('~email of the customer', 'Nothing special');
       await app.appendField('~email of the customer', 'blabla');
@@ -579,7 +580,7 @@ describe('Appium', function () {
 
   describe('#clearField', () => {
     it('should clear a given element', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('~email of the customer', 'Nothing special');
       await app.see('Nothing special', '~email of the customer');
@@ -590,7 +591,7 @@ describe('Appium', function () {
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom @quick', () => {
     it('should grab text from page', async () => {
-      await app.waitForElement('~buttonTestCD');
+      await app.waitForElement('~buttonTestCD', smallWait);
       const val = await app.grabTextFrom('~buttonTestCD');
       assert.equal(val, 'EN Button');
     });
@@ -601,7 +602,7 @@ describe('Appium', function () {
     });
 
     it('should be able to grab elements', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.click('~email of the customer');
       await app.appendField('~email of the customer', '1');
@@ -640,7 +641,7 @@ describe('Appium', function () {
 
   describe('#runOnIOS, #runOnAndroid, #runInWeb', () => {
     it('should use Android locators', async () => {
-      await app.waitForElement('~startUserRegistrationCD');
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' });
       await app.see('Welcome to register a new User');
     });
