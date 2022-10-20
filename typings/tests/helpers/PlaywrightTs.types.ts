@@ -107,7 +107,7 @@ playwright.grabAttributeFrom(str, str); // $ExpectType Promise<string>
 playwright.grabAttributeFromAll(str, str); // $ExpectType Promise<string[]>
 playwright.saveElementScreenshot(str, str); // $ExpectType Promise<any>
 playwright.saveScreenshot(str); // $ExpectType Promise<any>
-playwright.makeApiRequest(str, str, str); // $ExpectType Promise<any>
+playwright.makeApiRequest(str, str, str); // $ExpectType Promise<object>
 playwright.wait(num); // $ExpectType Promise<any>
 playwright.waitForEnabled(str); // $ExpectType Promise<any>
 playwright.waitForValue(str, str); // $ExpectType Promise<any>

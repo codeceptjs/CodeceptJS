@@ -261,6 +261,13 @@ declare namespace CodeceptJS {
       steps: Array<string>
     };
 
+    /**
+     * Enable full promise-based helper methods for [TypeScript](https://codecept.io/typescript/) project.
+     * If true, all helper methods are typed as asynchronous;
+     * Otherwise, it remains as it works in versions prior to 3.3.6
+     */
+    fullPromiseBased?: boolean;
+
     [key: string]: any;
   };
 
