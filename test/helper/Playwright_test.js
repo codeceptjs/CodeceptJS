@@ -74,6 +74,12 @@ describe('Playwright', function () {
       return url.should.eql(`${siteUrl}/`);
     });
 
+    it('should open any page of configured site without leading slash', async () => {
+      await I.amOnPage('info');
+      const url = await page.url();
+      return url.should.eql(`${siteUrl}/info`);
+    });
+
     it('should open blank page', async () => {
       await I.amOnPage('about:blank');
       const url = await page.url();
