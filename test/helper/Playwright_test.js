@@ -85,12 +85,6 @@ describe('Playwright', function () {
       const url = await page.url();
       return url.should.eql('about:blank');
     });
-
-    it('should open page with specific protocol', async () => {
-      await I.amOnPage('mailto:example@gmail.com');
-      const url = await page.url();
-      return url.should.eql('mailto:example@gmail.com');
-    });
   });
 
   describe('grabDataFromPerformanceTiming', () => {
