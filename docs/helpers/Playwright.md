@@ -1110,7 +1110,7 @@ Returns **[Promise][13]&lt;[Array][14]&lt;[string][7]>>** attribute value
 
 ### handleDownloads
 
-Handles a file download.A file name is required to save the file on disk.
+Handles a file download. A file name is required to save the file on disk.
 Files are saved to "output" directory.
 
 Should be used with [FileSystem helper][16] to check that file were downloaded correctly.
