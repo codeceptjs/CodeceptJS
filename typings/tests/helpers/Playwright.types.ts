@@ -89,7 +89,7 @@ playwright.seeCookie(str_pl); // $ExpectType void
 playwright.dontSeeCookie(str_pl); // $ExpectType void
 playwright.grabCookie(); // $ExpectType Promise<string[]> | Promise<string>
 playwright.clearCookie(); // $ExpectType void
-playwright.executeScript(() => {}); // $ExpectType void
+playwright.executeScript(() => {}); // $ExpectType Promise<any>
 playwright.grabTextFrom(str_pl); // $ExpectType Promise<string>
 playwright.grabTextFromAll(str_pl); // $ExpectType Promise<string[]>
 playwright.grabValueFrom(str_pl); // $ExpectType Promise<string>

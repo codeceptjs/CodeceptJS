@@ -348,11 +348,21 @@ declare namespace CodeceptJS {
   interface Globals {
     codeceptjs: typeof codeceptjs;
   }
+
+  interface IParameterTypeDefinition<T> {
+    name: string
+    regexp: readonly RegExp[] | readonly string[] | RegExp | string
+    transformer: (...match: string[]) => T
+    useForSnippets?: boolean
+    preferForRegexpMatch?: boolean
+  }
 }
 
 // Globals
 declare const codecept_dir: string;
 declare const output_dir: string;
+declare function tryTo(...fn): Promise<boolean>;
+declare function retryTo(...fn): Promise<null>;
 
 declare const actor: CodeceptJS.actor;
 declare const codecept_actor: CodeceptJS.actor;
@@ -382,6 +392,7 @@ declare const xScenario: CodeceptJS.IScenario;
 declare const xFeature: CodeceptJS.IFeature;
 declare function Data(data: any): CodeceptJS.IData;
 declare function xData(data: any): CodeceptJS.IData;
+declare function defineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
 
 // Hooks
 declare const BeforeSuite: CodeceptJS.IHook;
@@ -416,11 +427,15 @@ declare namespace NodeJS {
     locate: typeof locate;
     inject: typeof inject;
     secret: typeof secret;
+    // plugins
+    tryTo: typeof tryTo;
+    retryTo: typeof retryTo;
 
     // BDD
     Given: typeof Given;
     When: typeof When;
     Then: typeof Then;
+    DefineParameterType: typeof defineParameterType
   }
 }
 
