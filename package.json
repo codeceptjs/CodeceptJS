@@ -74,7 +74,6 @@
     "gherkin": "^5.1.0",
     "glob": "^6.0.1",
     "inquirer": "^6.5.2",
-    "inquirer-test": "^2.0.1",
     "joi": "^17.6.0",
     "js-beautify": "^1.14.0",
     "lodash.clonedeep": "^4.5.0",
@@ -142,7 +141,8 @@
     "webdriverio": "^7.16.14",
     "xml2js": "^0.4.23",
     "xmldom": "^0.1.31",
-    "xpath": "0.0.27"
+    "xpath": "0.0.27",
+    "inquirer-test": "^2.0.1"
   },
   "engines": {
     "node": ">=8.9.1",
