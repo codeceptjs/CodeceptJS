@@ -133,15 +133,17 @@
     "sinon-chai": "^3.7.0",
     "testcafe": "^1.18.3",
     "ts-morph": "^3.1.3",
+    "ts-node": "^10.9.1",
     "tsd-jsdoc": "https://github.com/englercj/tsd-jsdoc.git",
     "typedoc": "^0.23.10",
     "typedoc-plugin-markdown": "^3.13.4",
-    "typescript": "^4.4.3",
+    "typescript": "^4.8.4",
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^7.16.14",
     "xml2js": "^0.4.23",
     "xmldom": "^0.1.31",
-    "xpath": "0.0.27"
+    "xpath": "0.0.27",
+    "inquirer-test": "^2.0.1"
   },
   "engines": {
     "node": ">=8.9.1",
