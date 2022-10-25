@@ -32,7 +32,7 @@ Type: [object][16]
 -   `host` **[string][17]?** WebDriver host to connect.
 -   `port` **[number][20]?** WebDriver port to connect.
 -   `protocol` **[string][17]?** protocol for WebDriver server.
--   `path` **[string][17]?** path to WebDriver server,
+-   `path` **[string][17]?** path to WebDriver server.
 -   `restart` **[boolean][29]?** restart browser between tests.
 -   `smartWait` **([boolean][29] | [number][20])?** **enables [SmartWait][33]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots` **[boolean][29]?** don't save screenshots on failure.
