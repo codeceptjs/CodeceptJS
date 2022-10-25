@@ -406,6 +406,39 @@ npx codeceptjs run --grep "@important"
 
 Tag should be placed before *Scenario:* or before *Feature:* keyword. In the last case all scenarios of that feature will be added to corresponding group.
 
+### Custom types
+
+If you need parameter text in more advanced way and you like using [Cucumber expressions](https://docs.cucumber.io/cucumber/cucumber-expressions/) better that regular expressions, use `DefineParameterType` function. You can extend Cucumber Expressions so they automatically convert output parameters to your own types or transforms the match from the regexp.
+
+```js
+DefineParameterType({
+  name: 'popup_type',
+  regexp: /critical|non-critical/,
+  transformer: (match) => {
+    return match === 'critical' ? '[class$="error"]' 
+    : '[class$="warning"]';
+  },
+};);
+
+Given('I see {popup_type} popup', (popup) => {
+  I.seeElement(popup);
+});
+```
+
+```gherkin
+  Scenario: Display error message if user doesn't have permissions
+    Given I on "Main" page without permissons
+    Then I see error popup
+```
+
+#### Parameters
+
+*  `name` **[string]** The name the parameter type will be recognised by in output parameters.
+*  `regexp` **([string] | [RegExp])** A regexp that will match the parameter. May include capture groups.
+*  `transformer` **[function]** A function or method that transforms the match from the regexp.
+*  `useForSnippets` **[boolean]** Defaults to `true`. That means this parameter type will be used to generate snippets for undefined steps. 
+*  `preferForRegexpMatch` **[boolean]** Defaults to `false`. Set to true if you have step definitions that use regular expressions, and you want this parameter type to take precedence over others during a match.
+
 ## Configuration
 
 * `gherkin`

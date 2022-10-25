@@ -40,7 +40,7 @@ Type: [object][5]
 ### Properties
 
 -   `url` **[string][7]** base url of website to be tested
--   `browser` **[string][7]** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
+-   `browser` **[string][7]?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][25]?** show browser window.
 -   `restart` **([string][7] | [boolean][25])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][32] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
@@ -49,6 +49,7 @@ Type: [object][5]
 -   `disableScreenshots` **[boolean][25]?** don't save screenshot on failure.
 -   `emulate` **any?** browser in device emulation mode.
 -   `video` **[boolean][25]?** enables video recording for failed tests; videos are saved into `output/videos` folder
+-   `keepVideoForPassedTests` **[boolean][25]?** save videos for passed tests; videos are saved into `output/videos` folder
 -   `trace` **[boolean][25]?** record [tracing information][34] with screenshots and snapshots.
 -   `fullPageScreenshots` **[boolean][25]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][25]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
@@ -69,6 +70,8 @@ Type: [object][5]
 -   `firefox` **[object][5]?** pass additional firefox options
 -   `electron` **[object][5]?** (pass additional electron options
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][36].
+-   `ignoreLog` **[Array][14]&lt;[string][7]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][37].
+-   `ignoreHTTPSErrors` **[boolean][25]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 
 
 
@@ -370,12 +373,12 @@ I.appendField('#myTextField', 'appended');
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][7]** text value to append.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### attachFile
 
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+Path to file is relative current codecept directory (where codecept.conf.ts or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -386,8 +389,8 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `pathToFile` **[string][7]** local file path relative to codecept.json config file.
-    [!] returns a _promise_ which is synchronized internally by recorder
+-   `pathToFile` **[string][7]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### cancelPopup
 
@@ -410,7 +413,7 @@ I.checkOption('agree', '//form');
 
 -   `field` **([string][7] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder[Additional options][8] for check available as 3rd argument.Examples:```js
+    ⚠️ returns a _promise_ which is synchronized internally by recorder[Additional options][8] for check available as 3rd argument.Examples:```js
     // click on element at position
     I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
     ```> ⚠️ To avoid flakiness, option `force: true` is set by default 
@@ -429,7 +432,7 @@ I.clearCookie('test');
 #### Parameters
 
 -   `cookie` **[string][7]?** (optional, `null` by default) cookie name
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### clearField
 
@@ -445,7 +448,7 @@ I.clearField('#email');
 
 -   `field`  
 -   `editable` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder.
 
 ### click
 
@@ -475,7 +478,7 @@ I.click({css: 'nav a.login'});
 
 -   `locator` **([string][7] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][7]? | [object][5] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 -   `opts` **any?** [Additional options][9] for click available as 3rd argument.Examples:```js
     // click on element at position
     I.click('canvas', '.model', { position: { x: 20, y: 40 } })
@@ -523,7 +526,7 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 -   `text` **[string][7]** which is not present.
 -   `context` **([string][7] | [object][5])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### dontSeeCheckboxIsChecked
 
@@ -538,7 +541,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 #### Parameters
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeCookie
 
@@ -551,7 +554,7 @@ I.dontSeeCookie('auth'); // no auth cookie
 #### Parameters
 
 -   `name` **[string][7]** cookie name.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeCurrentUrlEquals
 
@@ -566,7 +569,7 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 #### Parameters
 
 -   `url` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeElement
 
@@ -579,7 +582,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|Strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeElementInDOM
 
@@ -592,7 +595,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|Strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInCurrentUrl
 
@@ -601,7 +604,7 @@ Checks that current url does not contain a provided fragment.
 #### Parameters
 
 -   `url` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInField
 
@@ -617,7 +620,7 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInSource
 
@@ -631,7 +634,7 @@ I.dontSeeInSource('<!--'); // no comments in source
 
 -   `text`  
 -   `value` **[string][7]** to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInTitle
 
@@ -644,7 +647,7 @@ I.dontSeeInTitle('Error');
 #### Parameters
 
 -   `text` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### doubleClick
 
@@ -662,7 +665,7 @@ I.doubleClick('.btn.edit');
 
 -   `locator` **([string][7] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### dragAndDrop
 
@@ -676,7 +679,7 @@ I.dragAndDrop('#dragHandle', '#container');
 
 -   `srcElement` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 -   `destElement` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 -   `options` **any?** [Additional options][10] can be passed as 3rd argument.```js
     // specify coordinates for source position
     I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
@@ -696,7 +699,7 @@ I.dragSlider('#slider', -70);
 
 -   `locator` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `offsetX` **[number][11]** position to drag.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### executeScript
 
@@ -726,6 +729,8 @@ If a function returns a Promise it will wait for its resolution.
 -   `fn` **([string][7] | [function][12])** function to be executed in browser context.
 -   `arg` **any?** optional argument to pass to the function
 
+Returns **[Promise][13]&lt;any>** 
+
 ### fillField
 
 Fills a text field or textarea, after clearing its value, with the given string.
@@ -746,7 +751,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][7] | [object][5])** text value to fill.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### forceClick
 
@@ -779,7 +784,7 @@ I.forceClick({css: 'nav a.login'});
 
 -   `locator` **([string][7] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### grabAttributeFrom
 
@@ -1110,7 +1115,7 @@ Returns **[Promise][13]&lt;[Array][14]&lt;[string][7]>>** attribute value
 
 ### handleDownloads
 
-Handles a file download.Aa file name is required to save the file on disk.
+Handles a file download. A file name is required to save the file on disk.
 Files are saved to "output" directory.
 
 Should be used with [FileSystem helper][16] to check that file were downloaded correctly.
@@ -1193,7 +1198,7 @@ I.moveCursorTo('#submit', 5,5);
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### openNewTab
 
@@ -1278,7 +1283,7 @@ Some of the supported key names are:
 #### Parameters
 
 -   `key` **([string][7] | [Array][14]&lt;[string][7]>)** key or array of keys to press.
-    [!] returns a _promise_ which is synchronized internally by recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][23]).
+    ⚠️ returns a _promise_ which is synchronized internally by recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][23]).
 
 ### pressKeyDown
 
@@ -1295,7 +1300,7 @@ I.pressKeyUp('Control');
 #### Parameters
 
 -   `key` **[string][7]** name of key to press down.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### pressKeyUp
 
@@ -1312,7 +1317,7 @@ I.pressKeyUp('Control');
 #### Parameters
 
 -   `key` **[string][7]** name of key to release.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### refreshPage
 
@@ -1322,7 +1327,7 @@ Reload the current page.
 I.refreshPage();
 ```
 
-[!] returns a _promise_ which is synchronized internally by recorder
+⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### resizeWindow
 
@@ -1333,7 +1338,7 @@ First parameter can be set to `maximize`.
 
 -   `width` **[number][11]** width in pixels or `maximize`.
 -   `height` **[number][11]** height in pixels.
-    [!] returns a _promise_ which is synchronized internally by recorderUnlike other drivers Playwright changes the size of a viewport, not the window!
+    ⚠️ returns a _promise_ which is synchronized internally by recorderUnlike other drivers Playwright changes the size of a viewport, not the window!
     Playwright does not control the window of a browser so it can't adjust its real size.
     It also can't maximize a window.Update configuration to change real window size on start:```js
     // inside codecept.conf.js
@@ -1358,11 +1363,11 @@ I.rightClick('Click me', '.context');
 
 -   `locator` **([string][7] | [object][5])** clickable element located by CSS|XPath|strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### saveElementScreenshot
 
-Saves screenshot of the specified locator to ouput folder (set in codecept.json or codecept.conf.js).
+Saves screenshot of the specified locator to ouput folder (set in codecept.conf.ts or codecept.conf.js).
 Filename is relative to output folder.
 
 ```js
@@ -1373,11 +1378,11 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `fileName` **[string][7]** file name to save.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.json or codecept.conf.js).
+Saves a screenshot to ouput folder (set in codecept.conf.ts or codecept.conf.js).
 Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
@@ -1390,7 +1395,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 
 -   `fileName` **[string][7]** file name to save.
 -   `fullPage` **[boolean][25]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### scrollPageToBottom
 
@@ -1400,7 +1405,7 @@ Scroll page to the bottom.
 I.scrollPageToBottom();
 ```
 
-[!] returns a _promise_ which is synchronized internally by recorder
+⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### scrollPageToTop
 
@@ -1410,7 +1415,7 @@ Scroll page to the top.
 I.scrollPageToTop();
 ```
 
-[!] returns a _promise_ which is synchronized internally by recorder
+⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### scrollTo
 
@@ -1427,7 +1432,7 @@ I.scrollTo('#submit', 5, 5);
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 -   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
 -   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### see
 
@@ -1444,7 +1449,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 -   `text` **[string][7]** expected on page.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### seeAttributesOnElements
 
@@ -1458,7 +1463,7 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 -   `attributes` **[object][5]** attributes and their values to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeCheckboxIsChecked
 
@@ -1473,7 +1478,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 #### Parameters
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeCookie
 
@@ -1486,7 +1491,7 @@ I.seeCookie('Auth');
 #### Parameters
 
 -   `name` **[string][7]** cookie name.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeCssPropertiesOnElements
 
@@ -1500,7 +1505,7 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
 -   `cssProperties` **[object][5]** object with CSS properties and their values to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeCurrentUrlEquals
 
@@ -1516,7 +1521,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 #### Parameters
 
 -   `url` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeElement
 
@@ -1530,7 +1535,7 @@ I.seeElement('#modal');
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeElementInDOM
 
@@ -1544,7 +1549,7 @@ I.seeElementInDOM('#modal');
 #### Parameters
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInCurrentUrl
 
@@ -1557,7 +1562,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 #### Parameters
 
 -   `url` **[string][7]** a fragment to check
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
 
@@ -1575,7 +1580,7 @@ I.seeInField('#searchform input','Search');
 
 -   `field` **([string][7] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInPopup
 
@@ -1589,7 +1594,7 @@ I.seeInPopup('Popup text');
 #### Parameters
 
 -   `text` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInSource
 
@@ -1602,7 +1607,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 #### Parameters
 
 -   `text` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInTitle
 
@@ -1615,7 +1620,7 @@ I.seeInTitle('Home Page');
 #### Parameters
 
 -   `text` **[string][7]** text value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeNumberOfElements
 
@@ -1630,7 +1635,7 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `num` **[number][11]** number of elements.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeNumberOfVisibleElements
 
@@ -1645,7 +1650,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `num` **[number][11]** number of elements.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeTextEquals
 
@@ -1659,7 +1664,7 @@ I.seeTextEquals('text', 'h1');
 
 -   `text` **[string][7]** element value to check.
 -   `context` **([string][7] | [object][5])?** element located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### seeTitleEquals
 
@@ -1672,7 +1677,7 @@ I.seeTitleEquals('Test title.');
 #### Parameters
 
 -   `text` **[string][7]** value to check.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### selectOption
 
@@ -1699,7 +1704,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 -   `select` **([string][7] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][7] | [Array][14]&lt;any>)** visible text or value of option.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### setCookie
 
@@ -1720,7 +1725,7 @@ I.setCookie([
 #### Parameters
 
 -   `cookie` **(Cookie | [Array][14]&lt;Cookie>)** a cookie object or array of cookie objects.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### stopMockingRoute
 
@@ -1750,7 +1755,7 @@ I.switchTo(); // switch back to main page
 #### Parameters
 
 -   `locator` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### switchToNextTab
 
@@ -1799,7 +1804,7 @@ I.type(['T', 'E', 'X', 'T']);
 
 -   `keys`  
 -   `delay` **[number][11]?** (optional) delay in ms between key presses
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 -   `key` **([string][7] | [Array][14]&lt;[string][7]>)** or array of keys to type.
 
 ### uncheckOption
@@ -1819,7 +1824,7 @@ I.uncheckOption('agree', '//form');
 
 -   `field` **([string][7] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][7]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder[Additional options][26] for uncheck available as 3rd argument.Examples:```js
+    ⚠️ returns a _promise_ which is synchronized internally by recorder[Additional options][26] for uncheck available as 3rd argument.Examples:```js
     // click on element at position
     I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
     ```> ⚠️ To avoid flakiness, option `force: true` is set by default 
@@ -1856,7 +1861,7 @@ I.wait(2); // wait 2 secs
 #### Parameters
 
 -   `sec` **[number][11]** number of second to wait.
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForClickable
 
@@ -1873,7 +1878,7 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `waitTimeout`  
 -   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForDetached
 
@@ -1888,7 +1893,7 @@ I.waitForDetached('#popup');
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForElement
 
@@ -1904,7 +1909,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForEnabled
 
@@ -1915,7 +1920,7 @@ Element can be located by CSS or XPath.
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional) time in seconds to wait, 1 by default.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForFunction
 
@@ -1937,7 +1942,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 -   `fn` **([string][7] | [function][12])** to be executed in browser context.
 -   `argsOrSec` **([Array][14]&lt;any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
 
@@ -1952,7 +1957,7 @@ I.waitForInvisible('#popup');
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForNavigation
 
@@ -2008,7 +2013,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `text` **[string][7]** to wait for.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][7] | [object][5])?** (optional) element located by CSS|XPath|strict locator.
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForValue
 
@@ -2023,7 +2028,7 @@ I.waitForValue('//input', "GoodValue");
 -   `field` **([string][7] | [object][5])** input field.
 -   `value` **[string][7]** expected value.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForVisible
 
@@ -2038,7 +2043,7 @@ I.waitForVisible('#popup');
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][31]. 
+    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][31]. 
 
 ### waitInUrl
 
@@ -2052,7 +2057,7 @@ I.waitInUrl('/info', 2);
 
 -   `urlPart` **[string][7]** value to check.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitNumberOfVisibleElements
 
@@ -2067,7 +2072,7 @@ I.waitNumberOfVisibleElements('a', 3);
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `num` **[number][11]** number of elements.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitToHide
 
@@ -2082,7 +2087,7 @@ I.waitToHide('#popup');
 
 -   `locator` **([string][7] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitUrlEquals
 
@@ -2097,7 +2102,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 -   `urlPart` **[string][7]** value to check.
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
-    [!] returns a _promise_ which is synchronized internally by recorder 
+    ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 : https://github.com/microsoft/playwright
 
@@ -2170,3 +2175,5 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 [35]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
 
 [36]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
+
+[37]: https://playwright.dev/docs/api/class-consolemessage#console-message-type

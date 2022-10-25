@@ -20,6 +20,14 @@ describe('screenshotOnFail', () => {
     });
   });
 
+  it('should remove the . at the end of test title', async () => {
+    screenshotOnFail({});
+    event.dispatcher.emit(event.test.failed, { title: 'test title.' });
+    await recorder.promise();
+    expect(screenshotSaved.called).is.ok;
+    expect('test_title.failed.png').is.equal(screenshotSaved.getCall(0).args[0]);
+  });
+
   it('should exclude the data driven in failed screenshot file name', async () => {
     screenshotOnFail({});
     event.dispatcher.emit(event.test.failed, { title: 'Scenario with data driven | {"login":"admin","password":"123456"}' });
@@ -53,6 +61,5 @@ describe('screenshotOnFail', () => {
     const regexpFileName = /test1_[0-9]{10}.failed.png/;
     expect(fileName.match(regexpFileName).length).is.equal(1);
   });
-
   // TODO: write more tests for different options
 });
