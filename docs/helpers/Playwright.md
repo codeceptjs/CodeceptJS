@@ -1124,12 +1124,12 @@ Should be used with [FileSystem helper][16] to check that file were downloaded c
 I.handleDownloads('downloads/avatar.jpg');
 I.click('Download Avatar');
 I.amInPath('output/downloads');
-I.waitForFile('downloads/avatar.jpg', 5);
+I.waitForFile('avatar.jpg', 5);
 ```
 
 #### Parameters
 
--   `fileName` **[string][7]?** set filename for downloaded file 
+-   `fileName` **[string][7]?** set filename for downloaded file
 
 Returns **[Promise][13]&lt;void>** 
 
