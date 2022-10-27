@@ -7,7 +7,7 @@ module.exports = {
   opts: {
     template: 'node_modules/tsd-jsdoc/dist',
     recurse: true,
-    destination: './',
+    destination: './typings/',
   },
   plugins: ['jsdoc.promiseBased.js', 'jsdoc.namespace.js', 'jsdoc-typeof-plugin'],
 };
