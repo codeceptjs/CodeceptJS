@@ -2250,7 +2250,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
-: http://webdriver.io/
+[1]:http://webdriver.io/
 
 [2]: https://codecept.io/webdriver/#testing-with-webdriver
 
