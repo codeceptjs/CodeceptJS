@@ -216,9 +216,9 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         const fullText = fs.readFileSync(`docs/helpers/${name}.md`).toString();
         const text = fullText.match(/## config((.|\n)*)\[1\]/m);
         if (!text) return;
+
         cfg.replace('<!-- configuration -->', text[1]);
-        cfg.replace(/## config((.|\n)*)\[1\]/m, '');
-        cfg.replace(/^: /m, '[1]: ');
+        cfg.replace(/## config((.|\n)*)\[1\]/m, '[1]');
       });
 
       await writeToFile(`docs/helpers/${name}.md`, (cfg) => {
