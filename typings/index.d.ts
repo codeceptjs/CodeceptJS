@@ -356,6 +356,23 @@ declare namespace CodeceptJS {
     useForSnippets?: boolean
     preferForRegexpMatch?: boolean
   }
+
+  interface DataTypeArgument {
+    [key: T]: {
+      skip: boolean;
+      data: T;
+    } 
+  }
+
+  interface DataTable<T> {
+    array: DataTypeArgument[];
+    rows: {
+      
+    };
+    add: (array: DataTypeArgument[]) => void;
+    xadd: (array: DataTypeArgument[]) => void;
+    filter: (func: (item: DataTypeArgument) => boolean) => DataTypeArgument[];
+  }
 }
 
 // Globals
