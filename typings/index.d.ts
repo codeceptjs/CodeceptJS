@@ -357,21 +357,26 @@ declare namespace CodeceptJS {
     preferForRegexpMatch?: boolean
   }
 
-  interface DataTypeArgument {
-    [key: T]: {
-      skip: boolean;
-      data: T;
-    } 
+  interface DataTableArgument {
+    rawData: string[][];
+    raw(): string[][];
+    rows(): string[][];
+    hashes(): { [columnHeader: string]: string }[];
+    rowsHash(): { [columnHeader: string]: string };
+    transpose(): string[][];
   }
 
-  interface DataTable<T> {
-    array: DataTypeArgument[];
+  interface DataTable {
+    array: DataTableArgument[];
     rows: {
-      
+      [key: string]: {
+        skip: boolean;
+        data: DataTableArgument;
+      }
     };
-    add: (array: DataTypeArgument[]) => void;
-    xadd: (array: DataTypeArgument[]) => void;
-    filter: (func: (item: DataTypeArgument) => boolean) => DataTypeArgument[];
+    add: (array: DataTableArgument[]) => void;
+    xadd: (array: DataTableArgument[]) => void;
+    filter: (func: (item: DataTableArgument) => boolean) => DataTableArgument[];
   }
 }
 
