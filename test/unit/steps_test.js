@@ -1,9 +1,12 @@
 const sinon = require('sinon');
-const { expect } = require('chai');
+const chai = require('chai');
 const Step = require('../../lib/step');
 const { MetaStep } = require('../../lib/step');
 const event = require('../../lib/event');
 const { secret } = require('../../lib/secret');
+
+const expect = chai.expect;
+chai.use(require('chai-as-promised'));
 
 let step;
 let action;
@@ -80,6 +83,7 @@ describe('Steps', () => {
     // let metaStep;
     beforeEach(() => {
       action = sinon.spy(() => 'done');
+      asyncAction = sinon.spy(async () => 'done');
       // metaStep = new MetaStep({ doSomething: action }, 'doSomething');
     });
 
@@ -131,15 +135,24 @@ describe('Steps', () => {
       let metaStep;
       let fn;
       let boundedRun;
+      let boundedAsyncRun;
       beforeEach(() => {
         metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething');
+        asyncMetaStep = new MetaStep({ metaStepDoSomething: asyncAction }, 'metaStepDoSomething');
         fn = (msg) => `result from callback = ${msg}`;
+        asyncFn = async (msg) => `result from callback = ${msg}`;
         boundedRun = metaStep.run.bind(metaStep, fn);
+        boundedAsyncRun = metaStep.run.bind(metaStep, asyncFn);
       });
 
       it('should return result from run callback function', () => {
         const fn = () => 'result from callback';
         expect(metaStep.run(fn)).eql('result from callback');
+      });
+
+      it('should return result from run async callback function', async () => {
+        const fn = async () => 'result from callback';
+        expect(await metaStep.run(fn)).eql('result from callback');
       });
 
       it('should return result when run is bound', () => {
@@ -148,9 +161,20 @@ describe('Steps', () => {
         expect(boundedRun()).eql('result from callback');
       });
 
+      it('should return result when async run is bound', async () => {
+        const fn = async () => 'result from callback';
+        const boundedRun = metaStep.run.bind(metaStep, fn);
+        expect(await boundedRun()).eql('result from callback');
+      });
+
       it('should correct init args when run is bound', () => {
         const msg = 'arg message';
         expect(boundedRun(msg)).eql(`result from callback = ${msg}`);
+      });
+
+      it('should correct init args when async run is bound', async () => {
+        const msg = 'arg message';
+        expect(await boundedAsyncRun(msg)).eql(`result from callback = ${msg}`);
       });
 
       it('should init as metaStep in step', () => {
@@ -167,6 +191,56 @@ describe('Steps', () => {
         boundedRun();
         expect(step1.metaStep).eql(metaStep);
         expect(step2.metaStep).eql(metaStep);
+      });
+
+      it('should init as metaStep in step with async metaStep', async () => {
+        let step1;
+        let step2;
+        const stepAction1 = sinon.spy(() => event.emit(event.step.before, step1));
+        const stepAction2 = sinon.spy(() => event.emit(event.step.before, step2));
+        step1 = new Step({ doSomething: stepAction1 }, 'doSomething');
+        step2 = new Step({ doSomething2: stepAction2 }, 'doSomething2');
+        boundedRun = asyncMetaStep.run.bind(asyncMetaStep, async () => {
+          step1.run();
+          await Promise.resolve('Oh wait, need to do something async stuff!!');
+          step2.run();
+          return Promise.resolve('Give me some promised return value');
+        });
+
+        const result = await boundedRun();
+        expect(step1.metaStep).eql(asyncMetaStep);
+        expect(step2.metaStep).eql(asyncMetaStep);
+        expect(result).eql('Give me some promised return value');
+      });
+
+      it('should fail if async method fails inside async metaStep', async () => {
+        let step1;
+        let step2;
+        const stepAction1 = sinon.spy(() => event.emit(event.step.before, step1));
+        const stepAction2 = sinon.spy(() => event.emit(event.step.before, step2));
+        step1 = new Step({ doSomething: stepAction1 }, 'doSomething');
+        step2 = new Step({ doSomething2: stepAction2 }, 'doSomething2');
+        boundedRun = asyncMetaStep.run.bind(asyncMetaStep, async () => {
+          step1.run();
+          await Promise.reject(new Error('FAILED INSIDE ASYNC METHOD OF METASTEP'));
+          throw new Error('FAILED INSIDE METASTEP');
+        });
+        await expect(boundedRun()).to.be.rejectedWith('FAILED INSIDE ASYNC METHOD OF METASTEP');
+      });
+
+      it('should fail if async method fails', async () => {
+        let step1;
+        let step2;
+        const stepAction1 = sinon.spy(() => event.emit(event.step.before, step1));
+        const stepAction2 = sinon.spy(() => event.emit(event.step.before, step2));
+        step1 = new Step({ doSomething: stepAction1 }, 'doSomething');
+        step2 = new Step({ doSomething2: stepAction2 }, 'doSomething2');
+        boundedRun = asyncMetaStep.run.bind(asyncMetaStep, async () => {
+          step1.run();
+          await Promise.resolve('Oh wait, need to do something async stuff!!');
+          throw new Error('FAILED INSIDE METASTEP');
+        });
+        await expect(boundedRun()).to.be.rejectedWith('FAILED INSIDE METASTEP');
       });
     });
   });
