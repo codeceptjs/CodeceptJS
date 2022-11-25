@@ -290,7 +290,6 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-> ℹ See [helpers reference](/helpers) for a complete list of all available commands for the helper you use.
 
 ## How It Works
 
