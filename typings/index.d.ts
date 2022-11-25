@@ -257,7 +257,7 @@ declare namespace CodeceptJS {
       /** load feature files by pattern. Multiple patterns can be specified as array */
       features: string | Array<string>,
       /** load step definitions from JS files */
-      steps: Array<string>
+      steps: string | Array<string>
     };
 
     [key: string]: any;
