@@ -9,6 +9,11 @@ const {
   }, runok,
 } = require('runok');
 
+const helperMarkDownFile = function (name) {
+  return `docs/helpers/${name}.md`;
+};
+const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alpha';
+
 stopOnFail();
 
 module.exports = {
@@ -37,7 +42,7 @@ module.exports = {
 
   async docsPlugins() {
     // generate documentation for plugins
-    await npx('documentation build lib/plugin/*.js -o docs/plugins.md -f md --shallow --markdown-toc=false --sort-order=alpha');
+    await npx(`documentation build lib/plugin/*.js -o docs/plugins.md ${documentjsCliArgs}`);
     await replaceInFile('docs/plugins.md', (cfg) => {
       cfg.replace(/^/, '---\npermalink: plugins\nsidebarDepth: \nsidebar: auto\ntitle: Plugins\n---\n\n');
     });
@@ -93,11 +98,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
       cfg.replace(/LocatorOrString/g, 'string | object');
     });
-    await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
+    await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`);
 
-    await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
+    await writeToFile(helperMarkDownFile(helper), (cfg) => {
       cfg.line(`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
-      cfg.textFromFile(`docs/helpers/${helper}.md`);
+      cfg.textFromFile(helperMarkDownFile(helper));
     });
 
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
@@ -111,11 +116,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
       cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
       cfg.replace(/LocatorOrString/g, 'string | object');
     });
-    await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o docs/helpers/${helper}.md -f md --shallow --markdown-toc=false --sort-order=alpha `);
+    await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`);
 
-    await writeToFile(`docs/helpers/${helper}.md`, (cfg) => {
+    await writeToFile(helperMarkDownFile(helper), (cfg) => {
       cfg.line(`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`);
-      cfg.textFromFile(`docs/helpers/${helper}.md`);
+      cfg.textFromFile(helperMarkDownFile(helper));
     });
 
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
@@ -200,27 +205,29 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
       });
 
-      await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md -f md --shallow --markdown-toc=false --sort-order=alpha`);
-      replaceInFile(`docs/helpers/${name}.md`, (cfg) => {
+      await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md ${documentjsCliArgs}`);
+      replaceInFile(helperMarkDownFile(name), (cfg) => {
         cfg.replace(/\(optional, default.*?\)/gm, '');
         cfg.replace(/\\*/gm, '');
       });
 
-      replaceInFile(`docs/helpers/${name}.md`, (cfg) => {
+      replaceInFile(helperMarkDownFile(name), (cfg) => {
         for (const i in sharedPlaceholders) {
           cfg.replace(sharedPlaceholders[i], sharedTemplates[i]);
         }
       });
 
-      replaceInFile(`docs/helpers/${name}.md`, (cfg) => {
-        const fullText = fs.readFileSync(`docs/helpers/${name}.md`).toString();
-        const text = fullText.match(/## config((.|\n)*)\[1\]/m);
+      replaceInFile(helperMarkDownFile(name), (cfg) => {
+        const regex = new RegExp(/## config((.|\n)*)\[1\]/m);
+        const fullText = fs.readFileSync(helperMarkDownFile(name)).toString();
+        const text = fullText.match(regex);
         if (!text) return;
+
         cfg.replace('<!-- configuration -->', text[1]);
-        cfg.replace(/## config((.|\n)*)\[1\]/m, '');
+        cfg.replace(regex, '[1]');
       });
 
-      await writeToFile(`docs/helpers/${name}.md`, (cfg) => {
+      await writeToFile(helperMarkDownFile(name), (cfg) => {
         cfg.append(`---
 permalink: /helpers/${name}
 editLink: false
@@ -229,7 +236,7 @@ title: ${name}
 ---
 
 `);
-        cfg.textFromFile(`docs/helpers/${name}.md`);
+        cfg.textFromFile(helperMarkDownFile(name));
       });
     }
 
@@ -372,9 +379,9 @@ title: ${name}
   },
 
   async release(releaseType = null) {
+    const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     // Releases CodeceptJS. You can pass in argument "patch", "minor", "major" to update package.json
     if (releaseType) {
-      const packageInfo = JSON.parse(fs.readFileSync('package.json'));
       packageInfo.version = semver.inc(packageInfo.version, releaseType);
       fs.writeFileSync('package.json', JSON.stringify(packageInfo));
       await git((cmd) => {
@@ -383,7 +390,6 @@ title: ${name}
       });
     }
     // publish a new release on npm. Update version in package.json!
-    const packageInfo = JSON.parse(fs.readFileSync('package.json'));
     const version = packageInfo.version;
     await this.docs();
     await this.def();

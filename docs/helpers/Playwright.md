@@ -2104,7 +2104,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
-: https://github.com/microsoft/playwright
+[1]: https://github.com/microsoft/playwright
 
 [2]: https://playwright.dev/docs/next/api/class-browser#browser-new-context
 

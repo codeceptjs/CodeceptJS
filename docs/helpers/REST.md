@@ -202,7 +202,7 @@ I.setRequestTimeout(10000); // In milliseconds
 
 -   `newTimeout` **[number][5]** timeout in milliseconds
 
-: https://github.com/axios/axios
+[1]: https://github.com/axios/axios
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
