@@ -1,5 +1,6 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
+/// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
 /// <reference types="joi" />
@@ -259,6 +260,13 @@ declare namespace CodeceptJS {
       /** load step definitions from JS files */
       steps: string | Array<string>
     };
+
+    /**
+     * Enable full promise-based helper methods for [TypeScript](https://codecept.io/typescript/) project.
+     * If true, all helper methods are typed as asynchronous;
+     * Otherwise, it remains as it works in versions prior to 3.3.6
+     */
+    fullPromiseBased?: boolean;
 
     [key: string]: any;
   };
