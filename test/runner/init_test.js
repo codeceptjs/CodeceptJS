@@ -35,14 +35,14 @@ describe('Init Command', function () {
   });
 
   it('init - Where should logs, screenshots, and reports to be stored? (./output)', async () => {
-    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER]);
+    const result = await run([runner, 'init'], [ENTER, ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER]);
     result.should.include('? What helpers do you want to use? REST');
     result.should.include('Where should logs, screenshots, and reports to be stored? (./output)');
   });
 
-  it('init - Do you want localization for tests? (See https://codecept.io/translation/)', async () => {
-    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER]);
-    result.should.include('? Do you want localization for tests? (See https://codecept.io/translation/)');
+  it('init - Do you want to enable localization for tests? (See https://codecept.io/translation)', async () => {
+    const result = await run([runner, 'init'], [ENTER, ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER]);
+    result.should.include('? Do you want to enable localization for tests? (See https://codecept.io/translation)');
     result.should.include('❯ English (no localization)');
     for (const item of ['de-DE', 'it-IT', 'fr-FR', 'ja-JP', 'pl-PL', 'pt-BR']) {
       result.should.include(item);
@@ -51,8 +51,8 @@ describe('Init Command', function () {
   });
 
   it('init - [REST] Endpoint of API you are going to test (http://localhost:3000/api)', async () => {
-    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER, ENTER]);
-    result.should.include('Do you want localization for tests? (See https://codecept.io/translation/) Eng');
+    const result = await run([runner, 'init'], [ENTER, ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER, ENTER]);
+    result.should.include('Do you want to enable localization for tests? (See https://codecept.io/translation) Eng');
     result.should.include('Configure helpers...');
     result.should.include('? [REST] Endpoint of API you are going to test (http://localhost:3000/api)');
   });

@@ -3,55 +3,58 @@ permalink: /translation
 title: Translation
 ---
 
-> 🌍 Since CodeceptJS 2.4.2 you can use translation for `Scenario`, `Before`, and other keywords within your tests. Please help us to update language definition files to include the best translation for your language!
+# Translation 
 
-# Translation
+*Unique feature of CodeceptJS: write tests in your language!*
 
-Test output and the way tests are written can be localized.
-This way scenarios can be written in almost native language using UTF support of JavaScript.
+🇩🇪🇯🇵🇫🇷🇹🇼🇨🇳🇵🇱🇧🇷🇮🇹
+
+Test output and the way tests are written can be localized. This way scenarios can be written in almost native language using UTF support of JavaScript.
+
 If you have non-English team and you work on non-English project consider enabling translation
-by setting translation to [one of available languages](https://github.com/codeceptjs/CodeceptJS/blob/master/translations).
+by setting translation to [one of available languages](https://github.com/codeceptjs/CodeceptJS/blob/3.x/translations) or writing vocabulary for your language.
 
-Please refer to translated steps inside translation files and send Pull Requests to add missing.
+## How it works
 
-To get autocompletion for localized method names generate definitions by running
+CodceptJS provides a high-level domain specific language (DSL) for writing end-to-end tests. 
+As CodeceptJS API is designed to provide a minimal set of methods to write test cases of any kind of complexity.
 
-```sh
-npx codeceptjs def
+It is possible to add aliases for all CodeceptJS keywords and methods. So if all keywords and methods are translated to a specific language it is possible to write tests in that language. Sure, this is not perfect, as CSS/XPath locators as well as REST API speific words are used as is. However, writing tests in your native language may improve the team's understanding of the test behavior.
+
+You can enable translation if your team is not from English-speaking country developing non-English product.
+
+> ⚠️ It's important to note that default translations are far from being complete. So there are still lots of methods and keywords not translated to your language yet. We recommend to [extend a vocabulary](#extending-vocabulary) to add aliases for non-translated methods and submit a pull request with improvements to a [corresponding language file](https://github.com/codeceptjs/CodeceptJS/blob/3.x/translations).
+
+To enable translition create a new project with 
+
+```
+npx codeceptjs init
 ```
 
-## Russian
+And select a language of your choice from a list:
 
-Add to config:
-
-```json
-  "translation": "ru-RU"
 ```
-
-when running with `--steps` option steps output will be translated:
-
-![steps-in-russian](/img/translate-ru1.png)
-
-This also enables localized method names for actor object.
-
-This way tests can be written in native language while it is still JavaScript:
-
-```js
-Сценарий('пробую написать реферат', (Я) => {
-    Я.на_странице('https://yandex.ru/referats');
-    Я.вижу("Написать реферат по");
-    Я.выбираю_опцию('Психологии');
-    Я.кликаю("Написать реферат");
-    Я.вижу("Реферат по психологии");
-});
+? Do you want localization for tests? (See https://codecept.io/translation/)
+❯ English (no localization) 
+  de-DE 
+  it-IT 
+  fr-FR 
+  ja-JP 
+  pl-PL 
+  pt-BR 
+(Move up and down to reveal more choices)
 ```
+> 💡 If you don't see your language in the list but still want to use localized tests, select 'English (no localization)' and create [custom translation](#custom-translation).
 
-## Portuguese
+
+## Languages
+
+### Portuguese 🇧🇷
 
 To write your tests in portuguese you can enable the portuguese translation in config file like:
 
-```json
-  "translation": "pt-BR"
+```js
+  translation: "pt-BR"
 ```
 
 Now you can write test like this:
@@ -66,12 +69,12 @@ Cenário('Efetuar login', ({ Eu }) => {
 });
 ```
 
-## French
+### French 🇫🇷
 
 To write your tests in French you can enable the French translation by adding to config:
 
-```json
-  "translation": "fr-FR"
+```js
+  translation: "fr-FR"
 ```
 
 Now you can write tests like this:
@@ -86,12 +89,12 @@ Scenario('Se connecter sur GitHub', (Je) => {
 });
 ```
 
-## Italian
+### Italian 🇮🇹
 
-Add to config
+Add to `codeceptjs.conf.js` or `codeceptjs.conf.ts` config file:
 
-```json
-  "translation": "it-IT"
+```js
+  translation: "it-IT"
 ```
 
 Now you can write test like this:
@@ -106,12 +109,12 @@ Caratteristica('Effettuare il Login su GitHub', (io) => {
 });
 ```
 
-## Polish
+### Polish 🇵🇱
 
-Add to config
+Add to `codeceptjs.conf.js` or `codeceptjs.conf.ts` config file:
 
-```json
-  "translation": "pl-PL"
+```js
+  translation: "pl-PL"
 ```
 
 Now you can write test like this:
@@ -127,16 +130,16 @@ Scenario('Zakładanie konta free trial na stronie głównej GetResponse', ({ Ja 
 });
 ```
 
-## Chinese
+### Chinese 🇹🇼🇨🇳
 
-Add to config:
+Add to `codeceptjs.conf.js` or `codeceptjs.conf.ts` config: file:
 
-```JSON
-  "translation": "zh-CN"
+```JS
+  translation: "zh-CN"
 ```
 or
-```JSON
-  "translation": "zh-TW"
+```JS
+  translation: "zh-TW"
 ```
 
 This way tests can be written in Chinese language while it is still JavaScript:
@@ -156,6 +159,7 @@ Scenario('成功提交表单', ({ 我 }) => {
 });
 ```
 or
+
 ```JavaScript
 Feature('CodeceptJS 演示');
 
@@ -171,12 +175,12 @@ Scenario('成功提交表單', ({ 我 }) => {
 });
 ```
 
-## Japanese
+### Japanese 🇯🇵
 
-Add to config
+Add to `codeceptjs.conf.js` or `codeceptjs.conf.ts` config file:
 
-```json
-  "translation": "ja-JP"
+```js
+  translation: "ja-JP"
 ```
 
 Now you can write test like this:
@@ -192,13 +196,35 @@ Scenario('ログインできる', ({ 私は }) => {
 });
 ```
 
-## Using your own translation file
+## Extending Vocabulary
+
+To add localized aliases to more actions create a new JSON or JavaScript file returning an object with following fields:
+
+```js
+module.exports = {
+  actions: {
+    // add action aliases, translating method name to your language
+    rightClick: 'Rechtsklick'
+  }
+}
+```
+
+Then enable this vocabulary file in codecept conf:
+
+```js
+// inside codecept.conf.js or codecept.conf.ts
+// ...
+  translation: 'de_DE',
+  vocabularies: ['my_translation_file.js'],
+```
+
+### Custom Translation
 
 Create translation file like this:
 
 ```js
 module.exports = {
-  I: '',
+  I: 'Ya',
   contexts: {
     Feature: 'Feature',
     Scenario: 'Szenario',
@@ -215,6 +241,7 @@ module.exports = {
 
 And add the file path to your config
 
-```json
-    "translation": "./path/to/your/translation.js"
+```js
+  translation: "MyLang",
+  vocabularies: ["./relative/path/to/your/translation.js"]
 ```

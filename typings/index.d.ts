@@ -234,7 +234,7 @@ declare namespace CodeceptJS {
 
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string;
-    
+
     /** Additional vocabularies for [localication](https://codecept.io/translation/) */
     vocabularies?: Array<string>;
 
