@@ -231,8 +231,13 @@ declare namespace CodeceptJS {
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
     */
     teardownAll?: (() => Promise<void>) | boolean | string;
+
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string;
+    
+    /** Additional vocabularies for [localication](https://codecept.io/translation/) */
+    vocabularies?: Array<string>;
+
     /**
      * [Require additional JS modules](https://codecept.io/configuration/#require)
      *
