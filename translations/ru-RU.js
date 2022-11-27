@@ -9,6 +9,7 @@ module.exports = {
     AfterSuite: 'После_всего',
   },
   actions: {
+    say: 'сообщаю',
     waitForElement: 'ожидаю_элемент',
     waitForVisible: 'ожидаю_увидеть',
     waitForText: 'ожидаю_текст',
