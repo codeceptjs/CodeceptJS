@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
-const codecept_run = `${runner} run-multiple --config ${codecept_dir}/codecept.multiple.json `;
+const codecept_run = `${runner} run-multiple --config ${codecept_dir}/codecept.multiple.js `;
 
 describe('CodeceptJS Multiple Runner', function () {
   this.timeout(40000);
@@ -175,7 +175,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should exit with non-zero code for failures during init process', (done) => {
     process.chdir(codecept_dir);
-    exec(`${runner} run-multiple --config codecept.multiple.initFailure.json default --all`, (err, stdout) => {
+    exec(`${runner} run-multiple --config codecept.multiple.initFailure.js default --all`, (err, stdout) => {
       expect(err).not.toBeFalsy();
       expect(err.code).toBe(1);
       expect(stdout).toContain('Failed on FailureHelper');
@@ -235,7 +235,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
     it('should be executed with several module when described', (done) => {
       process.chdir(codecept_dir);
-      exec(`${runner} ${_codecept_run}/codecept.require.multiple.several.json default`, (err, stdout) => {
+      exec(`${runner} ${_codecept_run}/codecept.require.multiple.several.js default`, (err, stdout) => {
         stdout.should.include(moduleOutput);
         stdout.should.include(moduleOutput2);
         (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);

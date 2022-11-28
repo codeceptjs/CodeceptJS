@@ -138,3 +138,15 @@ declare namespace CodeceptJS {
   }
 }
 ```
+
+## Full promise-based methods <Badge text="Since 3.3.6" type="warning"/>
+
+All CodeceptJS methods return a promise; however, some of its are not typed as accordingly.
+This feature, which is enabled by [configuration](https://codecept.io/configuration/), refers to alternative typescript definitions transforming all methods to asynchronous actions.
+
+How to enable it?
+- Add required configuration
+```ts
+  fullPromiseBased: true;
+```
+- Refresh internal TypeScript definitions by running following command: `npx codeceptjs def`

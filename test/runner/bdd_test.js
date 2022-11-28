@@ -193,7 +193,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should show all available steps', (done) => {
-    exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Gherkin');
       stdout.should.include('/I have product with \\$(\\d+) price/');
       stdout.should.include('step_definitions/my_steps.js:3:1');
@@ -206,7 +206,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should generate snippets for missing steps', (done) => {
-    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(`Given('I open a browser on a site', () => {
   // From "support/dummy.feature" {"line":4,"column":5}
   throw new Error('Not implemented yet');
@@ -277,7 +277,7 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
   });
 
   it('should not generate duplicated steps', (done) => {
-    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
       assert(!err);
       done();

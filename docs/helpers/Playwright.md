@@ -1124,12 +1124,12 @@ Should be used with [FileSystem helper][16] to check that file were downloaded c
 I.handleDownloads('downloads/avatar.jpg');
 I.click('Download Avatar');
 I.amInPath('output/downloads');
-I.waitForFile('downloads/avatar.jpg', 5);
+I.waitForFile('avatar.jpg', 5);
 ```
 
 #### Parameters
 
--   `fileName` **[string][7]?** set filename for downloaded file 
+-   `fileName` **[string][7]?** set filename for downloaded file
 
 Returns **[Promise][13]&lt;void>** 
 
@@ -2104,7 +2104,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 -   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
-: https://github.com/microsoft/playwright
+[1]: https://github.com/microsoft/playwright
 
 [2]: https://playwright.dev/docs/next/api/class-browser#browser-new-context
 

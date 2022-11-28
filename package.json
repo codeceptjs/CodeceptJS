@@ -42,7 +42,7 @@
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.js --fix",
     "docs": "./runok.js docs",
     "test:unit": "mocha test/unit --recursive",
-    "test:runner": "mocha test/runner --recursive",
+    "test:runner": "mocha test/runner --recursive --timeout 5000",
     "test": "npm run test:unit && npm run test:runner",
     "test:appium-quick": "mocha test/helper/Appium_test.js --grep 'quick'",
     "test:appium-other": "mocha test/helper/Appium_test.js --grep 'second'",
@@ -148,9 +148,6 @@
   "engines": {
     "node": ">=8.9.1",
     "npm": ">=5.6.0"
-  },
-  "peerDependencies": {
-    "@faker-js/faker": "^5.5.3"
   },
   "es6": true
 }
