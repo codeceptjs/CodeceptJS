@@ -6,7 +6,7 @@ const runner = path.join(__dirname, '../../bin/codecept.js');
 
 describe('Init Command', function () {
   this.timeout(20000);
-  this.retries(4);
+  // this.retries(4);
 
   it('init - welcome message', async () => {
     const result = await run([runner, 'init'], []);
@@ -18,6 +18,13 @@ describe('Init Command', function () {
   it('init - Do you plan to write tests in TypeScript?', async () => {
     const result = await run([runner, 'init'], []);
     result.should.include('? Do you plan to write tests in TypeScript? (y/N)');
+  });
+
+  it('init - TypeScript and Promise Based', async () => {
+    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, 'y']);
+    result.should.include('? Do you plan to write tests in TypeScript? (y/N)');
+    result.should.include('promise-based typings');
+    result.should.include('I.* commands? (y/N) y');
   });
 
   it('init - Where are your tests located?', async () => {
@@ -35,14 +42,14 @@ describe('Init Command', function () {
   });
 
   it('init - Where should logs, screenshots, and reports to be stored? (./output)', async () => {
-    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER]);
+    const result = await run([runner, 'init'], [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER]);
     result.should.include('? What helpers do you want to use? REST');
     result.should.include('Where should logs, screenshots, and reports to be stored? (./output)');
   });
 
-  it('init - Do you want localization for tests? (See https://codecept.io/translation/)', async () => {
-    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER]);
-    result.should.include('? Do you want localization for tests? (See https://codecept.io/translation/)');
+  it('init - Do you want to enable localization for tests? http://bit.ly/3GNUBbh', async () => {
+    const result = await run([runner, 'init'], [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER]);
+    result.should.include('? Do you want to enable localization for tests? http://bit.ly/3GNUBbh');
     result.should.include('❯ English (no localization)');
     for (const item of ['de-DE', 'it-IT', 'fr-FR', 'ja-JP', 'pl-PL', 'pt-BR']) {
       result.should.include(item);
@@ -51,8 +58,8 @@ describe('Init Command', function () {
   });
 
   it('init - [REST] Endpoint of API you are going to test (http://localhost:3000/api)', async () => {
-    const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER, ENTER]);
-    result.should.include('Do you want localization for tests? (See https://codecept.io/translation/) Eng');
+    const result = await run([runner, 'init'], [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER, ENTER]);
+    result.should.include('Do you want to enable localization for tests? http://bit.ly/3GNUBbh Eng');
     result.should.include('Configure helpers...');
     result.should.include('? [REST] Endpoint of API you are going to test (http://localhost:3000/api)');
   });
