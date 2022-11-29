@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 3.x
-      - appium-tests-fix
+      - feat/appium-is-app-installed
 
 env:
   CI: true

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const path = require('path');
 
 const Appium = require('../../lib/helper/Appium');
@@ -96,6 +96,11 @@ describe('Appium', function () {
       await app.seeAppIsNotInstalled('io.selendroid.testapp');
       await app.installApp(apk_path);
       await app.seeAppIsInstalled('io.selendroid.testapp');
+    });
+
+    it('should return true if app is installed @quick', async () => {
+      const status = await app.checkIfAppIsInstalled('io.selendroid.testapp');
+      expect(status).to.be.true;
     });
 
     it('should assert when app is/is not installed', async () => {
