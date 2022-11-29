@@ -98,13 +98,12 @@ If you want to get types for your [custom helper](https://codecept.io/helpers/#c
 For example, if you add the new step `printMessage` for your custom helper like this:
 ```js
 // customHelper.ts
-class CustomHelper extends Helper {
+export class CustomHelper extends Helper {
   printMessage(msg: string) {
     console.log(msg)
   }
 }
 
-export = CustomHelper
 ```
 
 Then you need to add this helper to your `codecept.conf.js` like in this [docs](https://codecept.io/helpers/#configuration).
