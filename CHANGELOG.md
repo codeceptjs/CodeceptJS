@@ -10,6 +10,7 @@
 * Added [Cucumber custom types](/bdd#custom-types) for BDD in #3435 by @Likstern 
 * Propose using JSONResponse helper when initializing project for API testing. #3455 by @PeterNgTr 
 * When translation enabled, generate tests using localized aliases. By @davertmik
+* [Appium] Added `checkIfAppIsInstalled` in #3507 by @PeterNgTr 
 
 🐛 Bugfixes
 
