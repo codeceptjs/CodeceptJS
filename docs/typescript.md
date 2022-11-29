@@ -43,19 +43,53 @@ Then a config file and new tests will be created in TypeScript format.
 
 If a config file is set in TypeScript format (`codecept.conf.ts`) package `node-ts` will be used to run tests. 
 
+## Promise-Based Typings
 
-## Full promise-based methods <Badge text="Since 3.3.7" type="warning"/>
+If you plan to write tests in TypeScript you will probably want to enable "promise-based typings" as you will be asked in `init` command about it:
 
-All CodeceptJS methods return a promise; however, some of its are not typed as accordingly.
-This feature, which is enabled by [configuration](https://codecept.io/configuration/), refers to alternative typescript definitions transforming all methods to asynchronous actions.
+```js
+? Would you prefer to use promise-based typings and explicitly use `await` for all I.* commands?
+```
 
-How to enable it?
-- Add required configuration
+By default, CodeceptJS tests are written in synchronous mode. This is a regular CodeceptJS test:
+
+```js
+I.amOnPage('/')
+I.click('Login')
+I.see('Hello!')
+```
+
+Even thought we don't see any `await`, those commands are executed synchronously, one by one.
+All methods of `I` object actually return promise and TypeScript linter requires to use `await` operator for those promises.
+To trick TypeScript and allow writing tests in CodeceptJS manner we create typings where `void` is returned instead of promises. This way linter won't complain on async code without await, as no promise is returned. 
+
+Our philosophy here is: use `await` only when it is actually needed, don't add visual mess to your code prefixing each line with `await`. However, you might want to get a better control of your tests and follow TypeScript conventions.
+This is why you might want to **enable promise-based typings**.
+
+A previous test should be rewritten with `await`s:
+
+```js
+await I.amOnPage('/')
+await I.click('Login')
+await I.see('Hello!')
+```
+
+Using `await` explicitly provides a beter control of execution flow. Some CodeceptJS users report that they increased stability of tests by adopting `await` for all CodeceptJS commands in their codebase.
+
+If you select to use promise-based typings, type definitions will be generated so all actions to return a promise. 
+Otherwise they will still return promises but it won't be relfected in type definitions.
+
+To introduce promise-based typings into a current project edit `codecept.conf.ts`:
+
 ```ts
   fullPromiseBased: true;
 ```
-- Refresh internal TypeScript definitions by running following command: `npx codeceptjs def`
 
+and rebuild type definitions with
+
+```
+npx codeceptjs def
+```
 
 ## Types for custom helper or page object
 

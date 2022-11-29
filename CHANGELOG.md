@@ -1,10 +1,44 @@
+## 3.3.7
+
+🛩️ Features
+
+* **Promise-based typings** for TypeScript definitions in #3465 by @nlespiaucq. If you use TypeScript or use linters [check how it may be useful to you](https://bit.ly/3XIMq6n).
+* **Translation** improved to use [custom vocabulary](https://codecept.io/translation/). 
+* [Playwright] Added methods in #3398 by @mirao
+  * `restartBrowser` - to restart a browser (with different config)
+  * `_createContextPage` - to create a new browser context with a page from a helper
+* Added [Cucumber custom types](/bdd#custom-types) for BDD in #3435 by @Likstern 
+* Propose using JSONResponse helper when initializing project for API testing. #3455 by @PeterNgTr 
+* When translation enabled, generate tests using localized aliases. By @davertmik
+
+🐛 Bugfixes
+
+* Fixed #3462 `TypeError: Cannot read properties of undefined (reading 'setStatus')` by @dwentland24 in #3438
+* Fixed creating steps file for TypeScript setup #3459 by @PeterNgTr 
+* Fixed issue of after all event in `run-rerun` command after complete execution #3464 by @jain-neeeraj 
+* [Playwright][WebDriver][Appium] Do not change `waitForTimeout` value on validation. See #3478 by @pmajewski24. Fixes #2589
+* [Playwright][WebDriver][Protractor][Puppeteer][TestCafe] Fixes `Element "{null: undefined}" was not found` and `element ([object Object]) still not present` messages when using object locators. See #3501 and #3502 by @pmajewski24
+* [Playwright] Improved file names when downloading file in #3449 by @PeterNgTr. Fixes #3412 and #3409
+* Add default value to `profile` env variable. See #3443 by @dwentland24. Resolves #3339
+* [Playwright] Using system-native path separator when saving artifacts in #3460 by @PeterNgTr
+* [Playwright] Saving videos and traces from multiple sessions in #3505 by @davertmik
+* [Playwright] Fixed `amOnPage` to navigate to `about:blank` by @zaxoavoki in #3470 Fixes #2311
+* Various typing improvements by @AWolf81 @PeterNgTr @mirao  
+
+📖 Documentation
+
+* Updated [Auickstart](https://codecept.io/quickstart/) with detailed explanation of questions in init
+* Added [Translation](/translations/) guide
+* Updated [TypeScript](https://bit.ly/3XIMq6n) guide for promise-based typings
+* Reordered guides list on a website
+
 ## 3.3.6
 
 * [`run-rerun`](https://codecept.io/commands/#run-rerun) command was re-introduced by @dwentland24 in #3436. Use it to perform run multiple times and detect flaky tests
 * Enabled `retryFailedStep` by default in `@codeceptjs/configure` v 0.10. See https://github.com/codeceptjs/configure/pull/26
 * [Playwright] Fixed properties types "waitForNavigation" and "firefox" by @mirao in #3401
 * [REST] Changed "endpoint" to optional by @mirao in #3404
-* [REST] Use [`secret`]() for form encoded string by @PeterNgTr:
+* [REST] Use [`secret`](/secrets) for form encoded string by @PeterNgTr:
 
 ```js
 const secretData = secret('name=john&password=123456');

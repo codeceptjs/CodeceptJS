@@ -23,14 +23,14 @@ The `I` object is an **actor**, an abstraction for a testing user. The `I` is a 
 
 ## Architecture
 
-CodeceptJS bypasses execution commands to helpers. Depending on the helper enabled, your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or TestCafé. If you are interested in speed - you should use Chrome-based Puppeteer.
+CodeceptJS bypasses execution commands to helpers. Depending on the helper enabled, your tests will be executed differently.
 
 The following is a diagram of the CodeceptJS architecture:
 
 ![architecture](/img/architecture.png)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
-However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppeteer or Nightmare.
+However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver but you can do so in Playwright or Puppeteer.
 
 **Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another.
 
