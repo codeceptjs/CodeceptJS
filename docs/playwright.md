@@ -580,6 +580,20 @@ async setPermissions() {
 
 > [▶ Learn more about Helpers](https://codecept.io/helpers/)
 
+## Timezone change
+
+Sometimes it's useful to test browser in different timezones. You can change timezone this way:
+
+```js
+Scenario("Test in a different timezone", ({ I }) => {
+  I.restartBrowser({ timezoneId: 'America/Phoenix' });
+  I.amOnPage("/");
+  // ...
+  // Reset timezone to default one (taken from OS)
+  I.restartBrowser();
+});
+```
+Other context options: https://playwright.dev/docs/api/class-browser#browser-new-context
 
 ## Configuring CI
 

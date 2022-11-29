@@ -18,6 +18,8 @@ playwright._setPage(str); // $ExpectType void
 playwright._addPopupListener(); // $ExpectType void
 playwright._getPageUrl(); // $ExpectType void
 playwright.grabPopupText(); // $ExpectType Promise<string | null>
+playwright._createContextPage(); // $ExpectType void
+playwright._createContextPage({}); // $ExpectType void
 playwright.amOnPage(str); // $ExpectType void
 playwright.resizeWindow(num, num); // $ExpectType void
 playwright.haveRequestHeaders(str); // $ExpectType void
@@ -25,6 +27,8 @@ playwright.moveCursorTo(str, num, num); // $ExpectType void
 playwright.dragAndDrop(str); // $ExpectError
 playwright.dragAndDrop(str, str); // $ExpectType void
 playwright.dragAndDrop(str, str, { sourcePosition, targetPosition }); // $ExpectType void
+playwright.restartBrowser(); // $ExpectType void
+playwright.restartBrowser({}); // $ExpectType void
 playwright.refreshPage(); // $ExpectType void
 playwright.scrollPageToTop(); // $ExpectType void
 playwright.scrollPageToBottom(); // $ExpectType void
