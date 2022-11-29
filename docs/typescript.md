@@ -41,7 +41,20 @@ Then select TypeScript as the first question:
 
 Then a config file and new tests will be created in TypeScript format.
 
-If a config file is set in TypeScrip format (`codecept.conf.ts`) package `node-ts` will be used to run tests. 
+If a config file is set in TypeScript format (`codecept.conf.ts`) package `node-ts` will be used to run tests. 
+
+
+## Full promise-based methods <Badge text="Since 3.3.7" type="warning"/>
+
+All CodeceptJS methods return a promise; however, some of its are not typed as accordingly.
+This feature, which is enabled by [configuration](https://codecept.io/configuration/), refers to alternative typescript definitions transforming all methods to asynchronous actions.
+
+How to enable it?
+- Add required configuration
+```ts
+  fullPromiseBased: true;
+```
+- Refresh internal TypeScript definitions by running following command: `npx codeceptjs def`
 
 
 ## Types for custom helper or page object
@@ -138,15 +151,3 @@ declare namespace CodeceptJS {
   }
 }
 ```
-
-## Full promise-based methods <Badge text="Since 3.3.6" type="warning"/>
-
-All CodeceptJS methods return a promise; however, some of its are not typed as accordingly.
-This feature, which is enabled by [configuration](https://codecept.io/configuration/), refers to alternative typescript definitions transforming all methods to asynchronous actions.
-
-How to enable it?
-- Add required configuration
-```ts
-  fullPromiseBased: true;
-```
-- Refresh internal TypeScript definitions by running following command: `npx codeceptjs def`

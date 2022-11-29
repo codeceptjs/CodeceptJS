@@ -93,9 +93,9 @@ I.sendMutation(`
 #### Parameters
 
 -   `mutation` **[String][3]** 
--   `variables` **[object][2]** that may go along with the mutation
--   `options` **[object][2]** are additional query options 
--   `headers` **[object][2]**  
+-   `variables` **[object][2]?** that may go along with the mutation
+-   `options` **[object][2]?** are additional query options 
+-   `headers` **[object][2]?**  
 
 Returns **any** Promise<any>
 
@@ -117,9 +117,9 @@ const user = response.data.data;
 #### Parameters
 
 -   `query` **[String][3]** 
--   `variables` **[object][2]** that may go along with the query
--   `options` **[object][2]** are additional query options 
--   `headers` **[object][2]**  
+-   `variables` **[object][2]?** that may go along with the query
+-   `options` **[object][2]?** are additional query options 
+-   `headers` **[object][2]?**  
 
 Returns **any** Promise<any>
 
