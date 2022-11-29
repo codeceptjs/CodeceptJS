@@ -24,7 +24,7 @@ describe('Init Command', function () {
     const result = await run([runner, 'init'], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, 'y']);
     result.should.include('? Do you plan to write tests in TypeScript? (y/N)');
     result.should.include('promise-based typings');
-    result.should.include('I.* commands? (y/N) y');
+    result.should.include('(y/N) y');
   });
 
   it('init - Where are your tests located?', async () => {
@@ -47,9 +47,9 @@ describe('Init Command', function () {
     result.should.include('Where should logs, screenshots, and reports to be stored? (./output)');
   });
 
-  it('init - Do you want to enable localization for tests? http://bit.ly/3GNUBbh', async () => {
+  it('init - Do you want to enable localization for tests?', async () => {
     const result = await run([runner, 'init'], [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, ENTER, ENTER]);
-    result.should.include('? Do you want to enable localization for tests? http://bit.ly/3GNUBbh');
+    result.should.include('? Do you want to enable localization for tests?');
     result.should.include('❯ English (no localization)');
     for (const item of ['de-DE', 'it-IT', 'fr-FR', 'ja-JP', 'pl-PL', 'pt-BR']) {
       result.should.include(item);

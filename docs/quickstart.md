@@ -62,26 +62,53 @@ After CodeceptJS is installed, try running **demo tests** using this commands:
 
 ---
 
+### Init
+
 To start a new project initialize CodeceptJS to create main config file: `codecept.conf.js`.
 
 ```
 npx codeceptjs init
 ```
 
-Answer questions, agree on defaults, when asked to select helpers choose **Playwright**.
+Answer questions, agree on defaults:
+
+
+| Question | Default Answer  | Alternative
+|---|---|---|
+| Do you plan to write tests in TypeScript?  | **n** (No)  | or [learn how to use TypeScript](/typescript)
+| Where are your tests located? | `**./*_test.js` | or any glob pattern like `**.spec.js`
+| What helpers do you want to use? | **Playwright** | Which helper to use for: [web testing](https://codecept.io/basics/#architecture), [mobile testing](https://codecept.io/mobile/), [API testing](https://codecept.io/api/)
+| Where should logs, screenshots, and reports to be stored? | `./output` | path to store artifacts and temporary files 
+| Do you want to enable localization for tests? | **n** English (no localization) | or write [localized tests](https://codecept.io/translation/) in your language
+  
+
+Sample output:
+
+```js
+? Do you plan to write tests in TypeScript? 'No'
+? Where are your tests located? '**./*_test.js'
+? What helpers do you want to use? 'Playwright'
+? Where should logs, screenshots, and reports to be stored? '**./output**'
+? Do you want to enable localization for tests? 'English (no localization)'
+```
+
+For Playwright helper provide a website to be tested and browser to be used:
+
+| Question | Default Answer  | Alternative
+|---|---|---|
+| Base url of site to be tested | http://localhost | Base URL of website you plan to test. Use http://github.com or [sample checkout page](https://getbootstrap.com/docs/5.2/examples/checkout/) if you just want to play around
+| Show browser window | **y** Yes | or run browser in **headless mode** 
+| Browser in which testing will be performed | **chromium** | or run tests in firefox, webkit (which is opensource version of Safari) or launch electron app
+
+```js
+? [Playwright] Base url of site to be tested 'http://mysite.com'
+? [Playwright] Show browser window 'Yes'
+? [Playwright] Browser in which testing will be performed. Possible options: chromium, firefox, webkit or electron 'chromium'
 
 ```
-? What helpers do you want to use?
-❯◉ Playwright
- ◯ WebDriver
- ◯ Puppeteer
- ◯ Puppeteer
- ◯ Appium
- ◯ Nightmare
- ◯ FileSystem
- ```
 
-Create first feature and test when asked.
+Create first feature and test when asked
+
 Open a newly created file in your favorite JavaScript editor. 
 The file should look like this:
 
@@ -106,7 +133,7 @@ Scenario('test something', ({ I }) => {
 Run a test:
 
 ```
-npm run codeceptjs
+npx codeceptjs run
 ```
 
 The output should be similar to this:
