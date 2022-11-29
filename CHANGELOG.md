@@ -28,8 +28,8 @@
 
 📖 Documentation
 
-* Updated [Auickstart](https://codecept.io/quickstart/) with detailed explanation of questions in init
-* Added [Translation](/translations/) guide
+* Updated [Quickstart](https://codecept.io/quickstart/) with detailed explanation of questions in init
+* Added [Translation](/translation/) guide
 * Updated [TypeScript](https://bit.ly/3XIMq6n) guide for promise-based typings
 * Reordered guides list on a website
 
