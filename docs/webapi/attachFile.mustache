@@ -1,5 +1,5 @@
 Attaches a file to element located by label, name, CSS or XPath
-Path to file is relative current codecept directory (where codecept.json or codecept.conf.js is located).
+Path to file is relative current codecept directory (where codecept.conf.ts or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
 ```js
@@ -8,5 +8,5 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 ```
 
 @param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
-@param {string} pathToFile local file path relative to codecept.json config file.
-[!] returns a _promise_ which is synchronized internally by recorder
+@param {string} pathToFile local file path relative to codecept.conf.ts or codecept.conf.js config file.
+⚠️ returns a _promise_ which is synchronized internally by recorder

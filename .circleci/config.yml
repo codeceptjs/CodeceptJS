@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   machine:
-    image: circleci/classic:201710-02
+    image: ubuntu-2204:2022.10.1
     docker_layer_caching: false
   steps:
     - checkout

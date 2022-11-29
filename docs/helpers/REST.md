@@ -22,7 +22,7 @@ Type: [object][4]
 
 ### Properties
 
--   `endpoint` **[string][3]** API base URL
+-   `endpoint` **[string][3]?** API base URL
 -   `prettyPrintJson` **[boolean][6]?** pretty print json for response/request on console logs
 -   `timeout` **[number][5]?** timeout for requests in milliseconds. 10000ms by default
 -   `defaultHeaders` **[object][4]?** a list of default headers
@@ -202,7 +202,7 @@ I.setRequestTimeout(10000); // In milliseconds
 
 -   `newTimeout` **[number][5]** timeout in milliseconds
 
-: https://github.com/axios/axios
+[1]: https://github.com/axios/axios
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 

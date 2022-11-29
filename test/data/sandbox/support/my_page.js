@@ -7,7 +7,7 @@ module.exports = {
   },
 
   hasFile(arg) {
-    I.seeFile('codecept.json');
-    I.seeFile('codecept.po.json');
+    I.seeFile('codecept.js');
+    I.seeFile('codecept.po.js');
   },
 };

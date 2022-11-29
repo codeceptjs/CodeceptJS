@@ -1,5 +1,6 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
+/// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
 /// <reference types="joi" />
@@ -206,7 +207,7 @@ declare namespace CodeceptJS {
      * bootstrap: 'bootstrap.js',
      * ```
     */
-    bootstrap?: () => Promise<void> | boolean | string;
+    bootstrap?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute code after tests](https://codecept.io/bootstrap/) finished.
      *
@@ -220,18 +221,23 @@ declare namespace CodeceptJS {
      * teardown: 'teardown.js',
      * ```
     */
-    teardown?: () => Promise<void> | boolean | string;
+    teardown?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
      *
      */
-    bootstrapAll?: () => Promise<void> | boolean | string;
+    bootstrapAll?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
     */
-    teardownAll?: () => Promise<void> | boolean | string;
+    teardownAll?: (() => Promise<void>) | boolean | string;
+
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string;
+
+    /** Additional vocabularies for [localication](https://codecept.io/translation/) */
+    vocabularies?: Array<string>;
+
     /**
      * [Require additional JS modules](https://codecept.io/configuration/#require)
      *
@@ -257,8 +263,15 @@ declare namespace CodeceptJS {
       /** load feature files by pattern. Multiple patterns can be specified as array */
       features: string | Array<string>,
       /** load step definitions from JS files */
-      steps: Array<string>
+      steps: string | Array<string>
     };
+
+    /**
+     * Enable full promise-based helper methods for [TypeScript](https://codecept.io/typescript/) project.
+     * If true, all helper methods are typed as asynchronous;
+     * Otherwise, it remains as it works in versions prior to 3.3.6
+     */
+    fullPromiseBased?: boolean;
 
     [key: string]: any;
   };
@@ -348,11 +361,21 @@ declare namespace CodeceptJS {
   interface Globals {
     codeceptjs: typeof codeceptjs;
   }
+
+  interface IParameterTypeDefinition<T> {
+    name: string
+    regexp: readonly RegExp[] | readonly string[] | RegExp | string
+    transformer: (...match: string[]) => T
+    useForSnippets?: boolean
+    preferForRegexpMatch?: boolean
+  }
 }
 
 // Globals
 declare const codecept_dir: string;
 declare const output_dir: string;
+declare function tryTo(...fn): Promise<boolean>;
+declare function retryTo(...fn): Promise<null>;
 
 declare const actor: CodeceptJS.actor;
 declare const codecept_actor: CodeceptJS.actor;
@@ -382,6 +405,7 @@ declare const xScenario: CodeceptJS.IScenario;
 declare const xFeature: CodeceptJS.IFeature;
 declare function Data(data: any): CodeceptJS.IData;
 declare function xData(data: any): CodeceptJS.IData;
+declare function defineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
 
 // Hooks
 declare const BeforeSuite: CodeceptJS.IHook;
@@ -416,11 +440,15 @@ declare namespace NodeJS {
     locate: typeof locate;
     inject: typeof inject;
     secret: typeof secret;
+    // plugins
+    tryTo: typeof tryTo;
+    retryTo: typeof retryTo;
 
     // BDD
     Given: typeof Given;
     When: typeof When;
     Then: typeof Then;
+    DefineParameterType: typeof defineParameterType
   }
 }
 

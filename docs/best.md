@@ -90,7 +90,7 @@ However, it's recommended to not overengineer and keep tests simple. If a test c
 
 ```js
 class CheckoutForm {
-  
+
   fillBillingInformation(data = {}) {
     // take data in a flexible format
     // iterate over fields to fill them all
@@ -99,7 +99,7 @@ class CheckoutForm {
     }
   }
 
-} 
+}
 module.exports = new CheckoutForm();
 module.exports.CheckoutForm = CheckoutForm; // for inheritance
 ```
@@ -108,7 +108,7 @@ module.exports.CheckoutForm = CheckoutForm; // for inheritance
 
 ```js
 class DropDownComponent {
-  
+
   selectFirstItem(locator) {
     I.click(locator);
     I.click('#dropdown-items li');
@@ -133,17 +133,17 @@ class DatePicker {
     I.click(locator);
     I.click('.currentDate', '.date-picker');
   }
-  
+
   selectInNextMonth(locator, date = '15') {
     I.click(locator);
     I.click('show next month', '.date-picker')
     I.click(date, '.date-picker')
   }
-  
+
 }
 
 
-module.exports = new DatePicker;
+module.exports = new DatePicker();
 module.exports.DatePicker = DatePicker; // for inheritance
 ```
 
@@ -187,7 +187,7 @@ include them like this:
 
 ```js
 // inside codecept conf file
-bootstrap: () => {  
+bootstrap: () => {
   codeceptjs.container.append({
     testUser: {
       email: 'test@test.com',
@@ -202,7 +202,7 @@ bootstrap: () => {
 ```js
 include: {
   // ...
-  testData: './config/testData' 
+  testData: './config/testData'
 
 }
 ```

@@ -11,13 +11,12 @@ layout: Section
 
 🛩️ Features
 
-* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by **[PeterNgTr](https://github.com/PeterNgTr)** and **[davertmik](https://github.com/davertmik)**)
-* Include `node-ts` automatically when using TypeScript setup
-* Added TS types for CodeceptJS config. Update `codecept.conf.js` to get intellisense when writing config file: 
+* Added **TypeScript types for CodeceptJS config**. 
+
+Update `codecept.conf.js` to get intellisense when writing config file:
 
 ```js
-// inside codecept.conf.js
-/** **[type](https://github.com/type)** {CodeceptJS.MainConfig} */
+/**@type {CodeceptJS.MainConfig}**/
 exports.config = {
   //...
 }
@@ -27,6 +26,9 @@ exports.config = {
   * Puppeteer
   * WebDriver
   * REST
+* Added **[TypeScript option](/typescript)** for installation via `codeceptjs init` to initialize new projects in TS (by **[PeterNgTr](https://github.com/PeterNgTr)** and **[davertmik](https://github.com/davertmik)**)
+* Includes `node-ts` automatically when using TypeScript setup.
+
 
 🐛 Bugfixes
 
@@ -130,6 +132,8 @@ npx codeceptjs run test-dir/*"
 📖 Documentation
 * Improving the typings in many places
 * Improving the return type of helpers for TS users ([#3245](https://github.com/codeceptjs/CodeceptJS/issues/3245)) - **[nlespiaucq](https://github.com/nlespiaucq)**
+
+🇺🇦 Added #StandWithUkraine hashtag notice to CLI
 
 ## 3.3.0
 
@@ -580,7 +584,7 @@ MyPage.hasFiles('first arg', 'second arg');
 
 // OUTPUT:
 MyPage: hasFile "First arg", "Second arg"
-  I see file "codecept.json"
+  I see file "codecept.js"
   I see file "codecept.po.json"
 ```
 * Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by **[Vorobeyko](https://github.com/Vorobeyko)**.
@@ -2176,7 +2180,7 @@ module.exports = function(done) {
 ```js
 // inside codecept.conf.js
 exports.config = {
-  // contents of codecept.json
+  // contents of codecept.js
 }
 ```
 * Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).

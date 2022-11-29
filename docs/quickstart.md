@@ -74,7 +74,7 @@ Answer questions, agree on defaults, when asked to select helpers choose **Playw
 ? What helpers do you want to use?
 ❯◉ Playwright
  ◯ WebDriver
- ◯ Protractor
+ ◯ Puppeteer
  ◯ Puppeteer
  ◯ Appium
  ◯ Nightmare

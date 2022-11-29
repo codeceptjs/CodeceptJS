@@ -342,7 +342,7 @@ Then tests with failure will have screenshots.
 
 ### Configuration
 
-This helper should be configured in codecept.json
+This helper should be configured in codecept.conf.ts
 
 - `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
 - `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
