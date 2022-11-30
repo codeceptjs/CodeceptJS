@@ -53,8 +53,8 @@ See the example for Posts factories:
 ```js
 // tests/factories/posts.js
 
-const Factory = require('rosie').Factory;
-const faker = require('@faker-js/faker');
+const { Factory } = require('rosie');
+const { faker } = require('@faker-js/faker');
 
 module.exports = new Factory()
    // no need to set id, it will be set by REST API
