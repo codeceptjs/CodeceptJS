@@ -1138,7 +1138,7 @@ I.waitForFile('avatar.jpg', 5);
 
 #### Parameters
 
--   `fileName` **[string][8]?** set filename for downloaded file
+-   `fileName` **[string][8]** set filename for downloaded file
 
 Returns **[Promise][14]&lt;void>** 
 
