@@ -141,7 +141,6 @@ I.dontSeeResponseContainsJson({ user: 2 });
 ## 3.3.3
 
 * Fixed `DataCloneError: () => could not be cloned` when running data tests in run-workers
-* 🇺🇦 Added #StandWithUkraine notice to CLI
 
 
 ## 3.3.2
