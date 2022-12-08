@@ -1150,7 +1150,8 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('GeoLocation', () => {
+  // Unsupported by Webdriver protocol
+  describe.skip('GeoLocation', () => {
     it('should set the geoLocation', async () => {
       await wd.setGeoLocation(37.4043, -122.0748);
       const geoLocation = await wd.grabGeoLocation();

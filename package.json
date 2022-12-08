@@ -118,6 +118,7 @@
     "form-data": "^3.0.1",
     "graphql": "^14.6.0",
     "husky": "^8.0.1",
+    "inquirer-test": "^2.0.1",
     "jsdoc": "^3.6.10",
     "jsdoc-typeof-plugin": "^1.0.0",
     "json-server": "^0.10.1",
@@ -142,8 +143,7 @@
     "webdriverio": "^8.0.7",
     "xml2js": "^0.4.23",
     "xmldom": "^0.1.31",
-    "xpath": "0.0.27",
-    "inquirer-test": "^2.0.1"
+    "xpath": "0.0.27"
   },
   "engines": {
     "node": ">=8.9.1",
