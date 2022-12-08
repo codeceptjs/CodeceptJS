@@ -35,7 +35,7 @@ describe('WebDriver', function () {
       waitForTimeout: 5000,
       capabilities: {
         chromeOptions: {
-          args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
+          args: ['--headless', '--disable-gpu', '--window-size=500,700', '--no-sandbox'],
         },
       },
       customLocatorStrategies: {
@@ -794,9 +794,9 @@ describe('WebDriver', function () {
   describe('window size #resizeWindow', () => {
     it('should set initial window size', async () => {
       await wd.amOnPage('/form/resize');
-      await wd.click('Window Size');
-      await wd.see('Height 700', '#height');
-      await wd.see('Width 500', '#width');
+      await wd.forceClick('Window Size');
+      await wd.see('Height', '#height');
+      await wd.see('Width', '#width');
     });
 
     it('should set window size on new session', () => {
@@ -810,8 +810,8 @@ describe('WebDriver', function () {
         .then(({ session, browser }) => session.loadVars(browser))
         .then(() => wd.amOnPage('/form/resize'))
         .then(() => wd.click('Window Size'))
-        .then(() => wd.see('Height 700', '#height'))
-        .then(() => wd.see('Width 500', '#width'));
+        .then(() => wd.see('Height', '#height'))
+        .then(() => wd.see('Width', '#width'));
     });
 
     it('should resize window to specific dimensions', async () => {
