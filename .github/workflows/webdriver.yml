@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [16.x]
 
     steps:
     - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-selenium
