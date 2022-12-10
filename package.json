@@ -1,5 +1,5 @@
 {
-  "name": "@gaainf/codeceptjs",
+  "name": "codeceptjs",
   "version": "3.3.7",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
@@ -33,7 +33,7 @@
   "bin": {
     "codeceptjs": "./bin/codecept.js"
   },
-  "repository": "@gaainf/codeceptjs",
+  "repository": "Codeception/codeceptjs",
   "scripts": {
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
