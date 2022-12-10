@@ -33,7 +33,7 @@
   "bin": {
     "codeceptjs": "./bin/codecept.js"
   },
-  "repository": "Codeception/codeceptjs",
+  "repository": "@gaainf/codeceptjs",
   "scripts": {
     "build": "tsc -p ./",
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
