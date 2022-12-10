@@ -1,5 +1,5 @@
 {
-  "name": "codeceptjs",
+  "name": "@gaainf/codeceptjs",
   "version": "3.3.7",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [

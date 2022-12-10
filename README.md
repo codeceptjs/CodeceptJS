@@ -10,7 +10,7 @@ Build Status:
 [![Appium Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium.yml)
 [![TestCafe Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml)
 
-# CodeceptJS)
+# CodeceptJS
 
 Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/tree/master/docs/helpers)
 
